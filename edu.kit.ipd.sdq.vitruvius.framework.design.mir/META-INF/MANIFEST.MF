@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Viruvius Mappings Invariants Responses
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.design.mir.manager;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.design.mir.generator;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.framework.contracts,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts

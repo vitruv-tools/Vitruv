@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<system:System xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:composition="http://sdq.ipd.uka.de/PalladioComponentModel/Core/Composition/5.0" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" xmlns:subsystem="http://sdq.ipd.uka.de/PalladioComponentModel/SubSystem/5.0" xmlns:system="http://sdq.ipd.uka.de/PalladioComponentModel/System/5.0" id="_UcFkIGDmEeOVS519yHwWgw" entityName="vitruviusSystem">
+  <assemblyContexts__ComposedStructure id="_41NSQGDmEeOVS519yHwWgw" entityName="MetaRepository &lt;MetaRepository>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:CompositeComponent" href="vitruvius.repository#_HVNmwGDhEeOVS519yHwWgw"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_Phtp8GDoEeOVS519yHwWgw" entityName="MetamodelManager &lt;MetamodelManager>">
+    <encapsulatedComponent__AssemblyContext xsi:type="subsystem:SubSystem" href="vitruvius.repository#_YabGIGDfEeOVS519yHwWgw"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_ghlEYGDoEeOVS519yHwWgw" entityName="VSUM &lt;VSUM>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:CompositeComponent" href="vitruvius.repository#_LFwOQGDjEeOVS519yHwWgw"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_ymCIUGDoEeOVS519yHwWgw" entityName="SyncManager &lt;SyncManager>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:CompositeComponent" href="vitruvius.repository#_2nG_0GDiEeOVS519yHwWgw"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_GES30GDpEeOVS519yHwWgw" entityName="PropagationEngine &lt;PropagationEngine>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:CompositeComponent" href="vitruvius.repository#_slP5UGDiEeOVS519yHwWgw"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_M9lD0GDpEeOVS519yHwWgw" entityName="CorrespondenceMMProvider &lt;CorrespondenceMMProvider>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="vitruvius.repository#_6uuOEGDlEeOVS519yHwWgw"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_OxbAAGDpEeOVS519yHwWgw" entityName="SyncTransformationProvider &lt;SyncTransformationProvider>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="vitruvius.repository#_qzhVoGDlEeOVS519yHwWgw"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="__5yLcGDqEeOVS519yHwWgw" entityName="AMonitoredEditor &lt;AMonitoredEditor>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="vitruvius.repository#_qwpOgGDqEeOVS519yHwWgw"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_K-9wIGDrEeOVS519yHwWgw" entityName="AnExAndImporter &lt;AnExAndImporter>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="vitruvius.repository#_vr0IAGDqEeOVS519yHwWgw"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_ylvosGM-EeOuRbxDTXSxUQ" entityName="Assembly_MIRManager &lt;MIRManager>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:CompositeComponent" href="vitruvius.repository#_gOJu4GDkEeOVS519yHwWgw"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_CfS7UGM_EeOuRbxDTXSxUQ" entityName="Assembly_MIRGenerator &lt;MIRGenerator>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:CompositeComponent" href="vitruvius.repository#_fEEhYGDkEeOVS519yHwWgw"/>
+  </assemblyContexts__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_WMGo4GDpEeOVS519yHwWgw" entityName="Connector PropagationEngine &lt;PropagationEngine> -> SyncTransformationProvider &lt;SyncTransformationProvider>" requiringAssemblyContext_AssemblyConnector="_GES30GDpEeOVS519yHwWgw" providingAssemblyContext_AssemblyConnector="_OxbAAGDpEeOVS519yHwWgw">
+    <providedRole_AssemblyConnector href="vitruvius.repository#_vhKwgGDlEeOVS519yHwWgw"/>
+    <requiredRole_AssemblyConnector href="vitruvius.repository#_w_2cYGDiEeOVS519yHwWgw"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_Y2vqMGDpEeOVS519yHwWgw" entityName="Connector VSUM &lt;VSUM> -> CorrespondenceMMProvider &lt;CorrespondenceMMProvider>" requiringAssemblyContext_AssemblyConnector="_ghlEYGDoEeOVS519yHwWgw" providingAssemblyContext_AssemblyConnector="_M9lD0GDpEeOVS519yHwWgw">
+    <providedRole_AssemblyConnector href="vitruvius.repository#_AJ6rcGDmEeOVS519yHwWgw"/>
+    <requiredRole_AssemblyConnector href="vitruvius.repository#_S9lGIGDjEeOVS519yHwWgw"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_bZkzUGDpEeOVS519yHwWgw" entityName="Connector SyncManager &lt;SyncManager> -> PropagationEngine &lt;PropagationEngine>" requiringAssemblyContext_AssemblyConnector="_ymCIUGDoEeOVS519yHwWgw" providingAssemblyContext_AssemblyConnector="_GES30GDpEeOVS519yHwWgw">
+    <providedRole_AssemblyConnector href="vitruvius.repository#_v8fh8GDiEeOVS519yHwWgw"/>
+    <requiredRole_AssemblyConnector href="vitruvius.repository#_76wqwGDiEeOVS519yHwWgw"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_cZ8rMGDpEeOVS519yHwWgw" entityName="Connector SyncManager &lt;SyncManager> -> VSUM &lt;VSUM>" requiringAssemblyContext_AssemblyConnector="_ymCIUGDoEeOVS519yHwWgw" providingAssemblyContext_AssemblyConnector="_ghlEYGDoEeOVS519yHwWgw">
+    <providedRole_AssemblyConnector href="vitruvius.repository#_WIdGsGDjEeOVS519yHwWgw"/>
+    <requiredRole_AssemblyConnector href="vitruvius.repository#_7EiNYGDiEeOVS519yHwWgw"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_kHBroGDpEeOVS519yHwWgw" entityName="Connector VSUM &lt;VSUM> -> MetaRepository &lt;MetaRepository>" requiringAssemblyContext_AssemblyConnector="_ghlEYGDoEeOVS519yHwWgw" providingAssemblyContext_AssemblyConnector="_41NSQGDmEeOVS519yHwWgw">
+    <providedRole_AssemblyConnector href="vitruvius.repository#_bVoBEGDhEeOVS519yHwWgw"/>
+    <requiredRole_AssemblyConnector href="vitruvius.repository#_Sja5sGDjEeOVS519yHwWgw"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_r3syoGDpEeOVS519yHwWgw" entityName="Connector VSUM &lt;VSUM> -> MetaRepository &lt;MetaRepository>" requiringAssemblyContext_AssemblyConnector="_ghlEYGDoEeOVS519yHwWgw" providingAssemblyContext_AssemblyConnector="_41NSQGDmEeOVS519yHwWgw">
+    <providedRole_AssemblyConnector href="vitruvius.repository#_cPnkIGDhEeOVS519yHwWgw"/>
+    <requiredRole_AssemblyConnector href="vitruvius.repository#_UY-tIGDjEeOVS519yHwWgw"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_6A7-MGDpEeOVS519yHwWgw" entityName="Connector VSUM &lt;VSUM> -> MetaRepository &lt;MetaRepository>" requiringAssemblyContext_AssemblyConnector="_ghlEYGDoEeOVS519yHwWgw" providingAssemblyContext_AssemblyConnector="_41NSQGDmEeOVS519yHwWgw">
+    <providedRole_AssemblyConnector href="vitruvius.repository#_aqJbIGDhEeOVS519yHwWgw"/>
+    <requiredRole_AssemblyConnector href="vitruvius.repository#_SJBcsGDjEeOVS519yHwWgw"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:ProvidedDelegationConnector" id="_8_8tAGDpEeOVS519yHwWgw" entityName="ProvDelegation Provided_MetamodelManaging -> Provided_MetamodelManaging_MetamodelManager" outerProvidedRole_ProvidedDelegationConnector="_wMxc0GDmEeOVS519yHwWgw" assemblyContext_ProvidedDelegationConnector="_Phtp8GDoEeOVS519yHwWgw">
+    <innerProvidedRole_ProvidedDelegationConnector href="vitruvius.repository#_VyWlwGDhEeOVS519yHwWgw"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_C7qdgGDqEeOVS519yHwWgw" entityName="Connector MetamodelManager &lt;MetamodelManager> -> MetaRepository &lt;MetaRepository>" requiringAssemblyContext_AssemblyConnector="_Phtp8GDoEeOVS519yHwWgw" providingAssemblyContext_AssemblyConnector="_41NSQGDmEeOVS519yHwWgw">
+    <providedRole_AssemblyConnector href="vitruvius.repository#_aqJbIGDhEeOVS519yHwWgw"/>
+    <requiredRole_AssemblyConnector href="vitruvius.repository#_WYoioGDhEeOVS519yHwWgw"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:ProvidedDelegationConnector" id="_-u_nwGD0EeOMQP5cwzMIvg" entityName="ProvDelegation Provided_ModelExAndImporting -> Provided_ModelExAndImporting_AnExAndImporter" outerProvidedRole_ProvidedDelegationConnector="_gRCY4GDmEeOVS519yHwWgw" assemblyContext_ProvidedDelegationConnector="_K-9wIGDrEeOVS519yHwWgw">
+    <innerProvidedRole_ProvidedDelegationConnector href="vitruvius.repository#_RyfVkGDvEeOMQP5cwzMIvg"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_B06P0GD1EeOMQP5cwzMIvg" entityName="Connector AnExAndImporter &lt;AnExAndImporter> -> SyncManager &lt;SyncManager>" requiringAssemblyContext_AssemblyConnector="_K-9wIGDrEeOVS519yHwWgw" providingAssemblyContext_AssemblyConnector="_ymCIUGDoEeOVS519yHwWgw">
+    <providedRole_AssemblyConnector href="vitruvius.repository#_9RcJ0GDiEeOVS519yHwWgw"/>
+    <requiredRole_AssemblyConnector href="vitruvius.repository#_TJHKQGDvEeOMQP5cwzMIvg"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_Cdi9IGD1EeOMQP5cwzMIvg" entityName="Connector AnExAndImporter &lt;AnExAndImporter> -> VSUM &lt;VSUM>" requiringAssemblyContext_AssemblyConnector="_K-9wIGDrEeOVS519yHwWgw" providingAssemblyContext_AssemblyConnector="_ghlEYGDoEeOVS519yHwWgw">
+    <providedRole_AssemblyConnector href="vitruvius.repository#_WIdGsGDjEeOVS519yHwWgw"/>
+    <requiredRole_AssemblyConnector href="vitruvius.repository#_T2J2cGDvEeOMQP5cwzMIvg"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:ProvidedDelegationConnector" id="__JSBwGM-EeOuRbxDTXSxUQ" entityName="ProvDelegation Provided_MIRManaging -> Provided_MIRManaging_MIRManager" outerProvidedRole_ProvidedDelegationConnector="_kItXYGM-EeOuRbxDTXSxUQ" assemblyContext_ProvidedDelegationConnector="_ylvosGM-EeOuRbxDTXSxUQ">
+    <innerProvidedRole_ProvidedDelegationConnector href="vitruvius.repository#_CAK2sGM8EeOuRbxDTXSxUQ"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:ProvidedDelegationConnector" id="_f7qSsGM_EeOuRbxDTXSxUQ" entityName="ProvDelegation Provided_SyncTransformationGenerating -> Provided_SyncTransformationGenerating_MIRGenerator" outerProvidedRole_ProvidedDelegationConnector="_d30LoGM_EeOuRbxDTXSxUQ" assemblyContext_ProvidedDelegationConnector="_CfS7UGM_EeOuRbxDTXSxUQ">
+    <innerProvidedRole_ProvidedDelegationConnector href="vitruvius.repository#_OkTssGM8EeOuRbxDTXSxUQ"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_hElCkGM_EeOuRbxDTXSxUQ" entityName="Connector Assembly_MIRGenerator &lt;MIRGenerator> -> Assembly_MIRManager &lt;MIRManager>" requiringAssemblyContext_AssemblyConnector="_CfS7UGM_EeOuRbxDTXSxUQ" providingAssemblyContext_AssemblyConnector="_ylvosGM-EeOuRbxDTXSxUQ">
+    <providedRole_AssemblyConnector href="vitruvius.repository#_CAK2sGM8EeOuRbxDTXSxUQ"/>
+    <requiredRole_AssemblyConnector href="vitruvius.repository#_RPqfsGM8EeOuRbxDTXSxUQ"/>
+  </connectors__ComposedStructure>
+  <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_gRCY4GDmEeOVS519yHwWgw" entityName="Provided_ModelExAndImporting">
+    <providedInterface__OperationProvidedRole href="vitruvius.repository#_aEHkoGDbEeOVS519yHwWgw"/>
+  </providedRoles_InterfaceProvidingEntity>
+  <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_wMxc0GDmEeOVS519yHwWgw" entityName="Provided_MetamodelManaging">
+    <providedInterface__OperationProvidedRole href="vitruvius.repository#_XBlAsGDbEeOVS519yHwWgw"/>
+  </providedRoles_InterfaceProvidingEntity>
+  <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_kItXYGM-EeOuRbxDTXSxUQ" entityName="Provided_MIRManaging">
+    <providedInterface__OperationProvidedRole href="vitruvius.repository#_tS0v0GM5EeOuRbxDTXSxUQ"/>
+  </providedRoles_InterfaceProvidingEntity>
+  <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_d30LoGM_EeOuRbxDTXSxUQ" entityName="Provided_SyncTransformationGenerating">
+    <providedInterface__OperationProvidedRole href="vitruvius.repository#_FUqtUGM8EeOuRbxDTXSxUQ"/>
+  </providedRoles_InterfaceProvidingEntity>
+</system:System>

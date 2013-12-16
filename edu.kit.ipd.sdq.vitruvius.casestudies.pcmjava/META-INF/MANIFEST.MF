@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: PCM Java Vitruvius Project
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ edu.kit.ipd.sdq.vitruvius.framework.projects
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

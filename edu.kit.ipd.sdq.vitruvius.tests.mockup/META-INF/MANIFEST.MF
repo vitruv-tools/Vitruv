@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mockup Tests
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.mockup
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit,
+ edu.kit.ipd.sdq.vitruvius.framework.design.mir.generator,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts

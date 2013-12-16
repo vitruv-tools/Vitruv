@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius Project Generator
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.design.projectgenerator
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.projects;bundle-version="1.0.0"

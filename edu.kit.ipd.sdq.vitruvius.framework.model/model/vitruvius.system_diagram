@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" type="CompositeModel" name="vitruvius.system_diagram" measurementUnit="Pixel">
+  <children xsi:type="notation:Shape" type="2002" fontName="Ubuntu">
+    <children xsi:type="notation:DecorationNode" type="5012"/>
+    <children xsi:type="notation:DecorationNode" type="7002">
+      <children xsi:type="notation:Shape" type="3006" fontName="Ubuntu">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="vitruvius.repository#_aqJbIGDhEeOVS519yHwWgw"/>
+          <layoutConstraint xsi:type="notation:Bounds" x="1" y="79"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3007" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" x="50" y="35"/>
+          </children>
+          <element href="vitruvius.repository#_bVoBEGDhEeOVS519yHwWgw"/>
+          <layoutConstraint xsi:type="notation:Bounds" x="15" y="79"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3007" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" x="50" y="15"/>
+          </children>
+          <element href="vitruvius.repository#_cPnkIGDhEeOVS519yHwWgw"/>
+          <layoutConstraint xsi:type="notation:Bounds" x="49" y="79"/>
+        </children>
+        <element href="vitruvius.system#_41NSQGDmEeOVS519yHwWgw"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="275" y="210"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName="Ubuntu">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="vitruvius.repository#_VyWlwGDhEeOVS519yHwWgw"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" x="50" y="5"/>
+          </children>
+          <element href="vitruvius.repository#_WYoioGDhEeOVS519yHwWgw"/>
+          <layoutConstraint xsi:type="notation:Bounds" x="79" y="1"/>
+        </children>
+        <element href="vitruvius.system#_Phtp8GDoEeOVS519yHwWgw"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="60" y="255"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName="Ubuntu">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" x="50" y="35"/>
+          </children>
+          <element href="vitruvius.repository#_WIdGsGDjEeOVS519yHwWgw"/>
+          <layoutConstraint xsi:type="notation:Bounds" x="26" y="79"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" x="50" y="4"/>
+          </children>
+          <element href="vitruvius.repository#_SJBcsGDjEeOVS519yHwWgw"/>
+          <layoutConstraint xsi:type="notation:Bounds" x="1" y="-29"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="vitruvius.repository#_Sja5sGDjEeOVS519yHwWgw"/>
+          <layoutConstraint xsi:type="notation:Bounds" x="40" y="-29"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="vitruvius.repository#_S9lGIGDjEeOVS519yHwWgw"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" x="50" y="4"/>
+          </children>
+          <element href="vitruvius.repository#_UY-tIGDjEeOVS519yHwWgw"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="vitruvius.system#_ghlEYGDoEeOVS519yHwWgw"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="270" y="405"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName="Ubuntu">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" x="50" y="35"/>
+          </children>
+          <element href="vitruvius.repository#_9RcJ0GDiEeOVS519yHwWgw"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="vitruvius.repository#_7EiNYGDiEeOVS519yHwWgw"/>
+          <layoutConstraint xsi:type="notation:Bounds" x="20" y="-29"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="vitruvius.repository#_76wqwGDiEeOVS519yHwWgw"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="vitruvius.system#_ymCIUGDoEeOVS519yHwWgw"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="531" y="590"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName="Ubuntu">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" x="50" y="15"/>
+          </children>
+          <element href="vitruvius.repository#_v8fh8GDiEeOVS519yHwWgw"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="vitruvius.repository#_w_2cYGDiEeOVS519yHwWgw"/>
+          <layoutConstraint xsi:type="notation:Bounds" x="30" y="-29"/>
+        </children>
+        <element href="vitruvius.system#_GES30GDpEeOVS519yHwWgw"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="781" y="550"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName="Ubuntu">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" x="50" y="35"/>
+          </children>
+          <element href="vitruvius.repository#_AJ6rcGDmEeOVS519yHwWgw"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="vitruvius.system#_M9lD0GDpEeOVS519yHwWgw"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="658" y="395"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName="Ubuntu">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="vitruvius.repository#_vhKwgGDlEeOVS519yHwWgw"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="vitruvius.system#_OxbAAGDpEeOVS519yHwWgw"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="868" y="391"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName="Ubuntu">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <element href="vitruvius.system#__5yLcGDqEeOVS519yHwWgw"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="268" y="545"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName="Ubuntu">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" x="50" y="35"/>
+          </children>
+          <element href="vitruvius.repository#_RyfVkGDvEeOMQP5cwzMIvg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="vitruvius.repository#_TJHKQGDvEeOMQP5cwzMIvg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="vitruvius.repository#_T2J2cGDvEeOMQP5cwzMIvg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="vitruvius.system#_K-9wIGDrEeOVS519yHwWgw"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="68" y="615"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName="Ubuntu">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="vitruvius.repository#_CAK2sGM8EeOuRbxDTXSxUQ"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="vitruvius.system#_ylvosGM-EeOuRbxDTXSxUQ"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="260"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName="Ubuntu">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" x="50" y="35"/>
+          </children>
+          <element href="vitruvius.repository#_OkTssGM8EeOuRbxDTXSxUQ"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Ubuntu">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" x="50"/>
+          </children>
+          <element href="vitruvius.repository#_RPqfsGM8EeOuRbxDTXSxUQ"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="vitruvius.system#_CfS7UGM_EeOuRbxDTXSxUQ"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="120" y="115"/>
+      </children>
+    </children>
+    <children xsi:type="notation:Shape" type="3011" fontName="Ubuntu">
+      <children xsi:type="notation:DecorationNode" type="5013">
+        <layoutConstraint xsi:type="notation:Location" y="5"/>
+      </children>
+      <element href="vitruvius.system#_gRCY4GDmEeOVS519yHwWgw"/>
+      <layoutConstraint xsi:type="notation:Bounds" x="-59" y="590"/>
+    </children>
+    <children xsi:type="notation:Shape" type="3011" fontName="Ubuntu">
+      <children xsi:type="notation:DecorationNode" type="5013">
+        <layoutConstraint xsi:type="notation:Location" x="80" y="64"/>
+      </children>
+      <element href="vitruvius.system#_wMxc0GDmEeOVS519yHwWgw"/>
+      <layoutConstraint xsi:type="notation:Bounds" x="-59" y="255"/>
+    </children>
+    <children xsi:type="notation:Shape" type="3011" fontName="Ubuntu">
+      <children xsi:type="notation:DecorationNode" type="5013">
+        <layoutConstraint xsi:type="notation:Location" y="5"/>
+      </children>
+      <element href="vitruvius.system#_kItXYGM-EeOuRbxDTXSxUQ"/>
+      <layoutConstraint xsi:type="notation:Bounds" x="-59" y="110"/>
+    </children>
+    <children xsi:type="notation:Shape" type="3011" fontName="Ubuntu">
+      <children xsi:type="notation:DecorationNode" type="5013">
+        <layoutConstraint xsi:type="notation:Location" y="5"/>
+      </children>
+      <element href="vitruvius.system#_d30LoGM_EeOuRbxDTXSxUQ"/>
+      <layoutConstraint xsi:type="notation:Bounds" x="-59" y="185"/>
+    </children>
+    <element href="vitruvius.system#_UcFkIGDmEeOVS519yHwWgw"/>
+    <layoutConstraint xsi:type="notation:Bounds" x="115" y="20" width="991" height="766"/>
+  </children>
+  <styles xsi:type="notation:DiagramStyle"/>
+  <element href="vitruvius.system#_UcFkIGDmEeOVS519yHwWgw"/>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.4/@children.2" target="//@children.0/@children.1/@children.6/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Ubuntu"/>
+    <element href="vitruvius.system#_WMGo4GDpEeOVS519yHwWgw"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[7, 0, -81, 140]$[82, -141, -6, -1]"/>
+    <targetAnchor xsi:type="notation:IdentityAnchor" id="(0.2,0.4666666666666667)"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.2/@children.4" target="//@children.0/@children.1/@children.5/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Ubuntu"/>
+    <element href="vitruvius.system#_Y2vqMGDpEeOVS519yHwWgw"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[0, -8, -310, -67]$[308, 54, -2, -5]"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.3/@children.3" target="//@children.0/@children.1/@children.4/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Ubuntu"/>
+    <element href="vitruvius.system#_bZkzUGDpEeOVS519yHwWgw"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[7, 0, -369, -42]$[370, 41, -6, -1]"/>
+    <targetAnchor xsi:type="notation:IdentityAnchor" id="(0.2,0.4666666666666667)"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.3/@children.2" target="//@children.0/@children.1/@children.2/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Ubuntu"/>
+    <element href="vitruvius.system#_cZ8rMGDpEeOVS519yHwWgw"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[7, 0, 27, 126]$[-23, -128, -3, -2]"/>
+    <targetAnchor xsi:type="notation:IdentityAnchor" id="(0.1,0.3)"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.2/@children.3" target="//@children.0/@children.1/@children.0/@children.2">
+    <styles xsi:type="notation:FontStyle" fontName="Ubuntu"/>
+    <element href="vitruvius.system#_kHBroGDpEeOVS519yHwWgw"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[7, 0, 80, 118]$[-78, -116, -5, 2]"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.2/@children.5" target="//@children.0/@children.1/@children.0/@children.3">
+    <styles xsi:type="notation:FontStyle" fontName="Ubuntu"/>
+    <element href="vitruvius.system#_r3syoGDpEeOVS519yHwWgw"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[0, -8, -5, 79]$[5, -73, 0, 14]"/>
+    <targetAnchor xsi:type="notation:IdentityAnchor" id="(0.43333333333333335,0.8)"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.2/@children.2" target="//@children.0/@children.1/@children.0/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Ubuntu"/>
+    <element href="vitruvius.system#_6A7-MGDpEeOVS519yHwWgw"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[7, 0, -1, 176]$[9, -180, 1, -4]"/>
+    <targetAnchor xsi:type="notation:IdentityAnchor" id="(0.6,0.13333333333333333)"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4006" source="//@children.0/@children.3" target="//@children.0/@children.1/@children.1/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Ubuntu"/>
+    <element href="vitruvius.system#_8_8tAGDpEeOVS519yHwWgw"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[30, 0, -855, 251]$[884, -254, -1, -3]"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.1/@children.2" target="//@children.0/@children.1/@children.0/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Ubuntu"/>
+    <element href="vitruvius.system#_C7qdgGDqEeOVS519yHwWgw"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[7, 0, -170, 103]$[175, -103, -2, 0]"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4006" source="//@children.0/@children.2" target="//@children.0/@children.1/@children.8/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Ubuntu"/>
+    <element href="vitruvius.system#_-u_nwGD0EeOMQP5cwzMIvg"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[30, 0, -60, -125]$[84, 131, -6, 6]"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.8/@children.2" target="//@children.0/@children.1/@children.3/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Ubuntu"/>
+    <element href="vitruvius.system#_B06P0GD1EeOMQP5cwzMIvg"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[7, 0, -336, 22]$[340, -22, -3, 0]"/>
+    <targetAnchor xsi:type="notation:IdentityAnchor" id="(0.1,0.6)"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.8/@children.3" target="//@children.0/@children.1/@children.2/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Ubuntu"/>
+    <element href="vitruvius.system#_Cdi9IGD1EeOMQP5cwzMIvg"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[7, 0, -142, 133]$[147, -133, -2, 0]"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4006" source="//@children.0/@children.4" target="//@children.0/@children.1/@children.9/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Ubuntu"/>
+    <element href="vitruvius.system#__JSBwGM-EeOuRbxDTXSxUQ"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[30, 0, -250, 40]$[279, -41, -1, -1]"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4006" source="//@children.0/@children.5" target="//@children.0/@children.1/@children.10/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Ubuntu"/>
+    <element href="vitruvius.system#_f7qSsGM_EeOuRbxDTXSxUQ"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[30, 0, -101, 1]$[125, -2, -6, -1]"/>
+    <targetAnchor xsi:type="notation:IdentityAnchor" id="(0.2,0.4666666666666667)"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.10/@children.2" target="//@children.0/@children.1/@children.9/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Ubuntu"/>
+    <element href="vitruvius.system#_hElCkGM_EeOuRbxDTXSxUQ"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[7, 0, -17, 112]$[17, -110, -7, 2]"/>
+    <targetAnchor xsi:type="notation:IdentityAnchor" id="(0.23333333333333334,0.6)"/>
+  </edges>
+</notation:Diagram>
