@@ -1,10 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
-public class Metamodel {
+public class Metamodel extends AbstractURIHaving {
 
-	public URI getURI() {
-		// TODO Auto-generated method stub
-		return null;
+	public Metamodel(URI uri) {
+		super(uri);
 	}
 	
 }

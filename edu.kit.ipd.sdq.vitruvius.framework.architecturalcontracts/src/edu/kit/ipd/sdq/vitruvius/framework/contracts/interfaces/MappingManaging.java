@@ -5,5 +5,5 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.URI;
 
 public interface MappingManaging {
 	void addMapping(Mapping mapping);
-	Mapping getMapping(URI uriMM1, URI uriMM2);
+	Mapping getMapping(URI... metamodelURIs);
 }

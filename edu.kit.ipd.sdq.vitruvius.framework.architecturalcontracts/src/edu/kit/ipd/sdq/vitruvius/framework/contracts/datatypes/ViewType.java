@@ -2,16 +2,17 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
 import java.util.Set;
 
-public class ViewType {
-
-	public URI getURI() {
-		// TODO Auto-generated method stub
-		return null;
+public class ViewType extends AbstractMetamodelsReferring implements URIHaving {
+	private URI uri;
+	
+	public ViewType(URI uri, Set<URI> metamodelURIs) {
+		super(metamodelURIs);
+		this.uri = uri;
 	}
-
-	public Set<URI> getMetamodelURIs() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	@Override
+	public URI getURI() {
+		return uri;
 	}
 
 }

@@ -17,14 +17,28 @@
    </license>
 
    <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.run.editor.legacy"
+         id="edu.kit.ipd.sdq.vitruvius.framework.run.exandimporter"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored"
+         id="edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+         
+   <plugin
+         id="edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+         
+   <plugin
+         id="edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager"
          download-size="0"
          install-size="0"
          version="0.0.0"

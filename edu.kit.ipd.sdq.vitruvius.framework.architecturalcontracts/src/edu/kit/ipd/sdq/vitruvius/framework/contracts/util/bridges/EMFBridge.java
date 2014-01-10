@@ -93,4 +93,8 @@ public final class EMFBridge {
       }
 
    }
+   
+   public static URI createPlatformResourceURI(String pathAfterPlatformResource) {
+	   return URI.createPlatformResourceURI(pathAfterPlatformResource, true);
+   }
 }

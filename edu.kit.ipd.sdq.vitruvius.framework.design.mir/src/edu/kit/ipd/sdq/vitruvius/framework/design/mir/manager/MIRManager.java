@@ -19,7 +19,7 @@ public class MIRManager implements MIRManaging {
 	}
 
 	@Override
-	public Mapping getMapping(URI uriMM1, URI uriMM2) {
+	public Mapping getMapping(URI... metamodelURIs) {
 		// TODO Auto-generated method stub
 		return null;
 	}

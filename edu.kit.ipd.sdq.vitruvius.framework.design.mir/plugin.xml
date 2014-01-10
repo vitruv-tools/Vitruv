@@ -10,7 +10,7 @@
    <extension
          point="edu.kit.ipd.sdq.vitruvius.framework.contracts.mirmanaging">
       <provides
-            provider="edu.kit.ipd.sdq.vitruvius.framework.design.mir.manager.MIRManaging1">
+            provider="edu.kit.ipd.sdq.vitruvius.framework.design.mir.manager.MIRManager">
       </provides>
    </extension>
 
