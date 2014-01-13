@@ -44,7 +44,7 @@ public final class EMFBridge {
     *           an Eclipse resource
     * @return a platform resource URI for the resource
     */
-   public static URI getEMFUriForIResource(final IResource iResource) {
+   public static URI getEMFPlatformUriForIResource(final IResource iResource) {
       return URI.createPlatformResourceURI(iResource.getFullPath().toString(), true);
    }
 
