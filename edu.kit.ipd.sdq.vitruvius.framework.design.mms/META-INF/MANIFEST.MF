@@ -6,3 +6,4 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.metarepository;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.contracts
+Export-Package: edu.kit.ipd.sdq.vitruvius.framework.design.metamodelmanager
