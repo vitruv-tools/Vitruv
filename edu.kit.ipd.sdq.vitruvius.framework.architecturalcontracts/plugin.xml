@@ -13,4 +13,6 @@
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.synctransformationproviding" name="SyncTransformationProviding" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.synctransformationproviding.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.mirmanaging" name="MIRManaging" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.mirmanaging.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.synctransformationgenerating" name="SyncTransformationGenerating" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.synctransformationgenerating.exsd"/>
+   <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.projectgenerating" name="ProjectGenerating" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.projectgenerating.exsd"/>
+   <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.projectpreparing" name="ProjectPreparing" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.projectpreparing.exsd"/>
 </plugin>

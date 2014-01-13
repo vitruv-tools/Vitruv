@@ -17,7 +17,8 @@ public class MetaRepositoryTest {
 	public void testAll() {
 		MetaRepositoryImpl metaRepository = testMetaRepository();
 		
-		testAddMapping(metaRepository, "aproject/metamodels/mm1.ecore", "aproject/metamodels/mm2.ecore");
+		testAddMapping(metaRepository, "MockupProject/metamodel/pcm_mockup.ecore", "MockupProject/metamodel/uml_mockup.ecore");
+		
 		
 		
 		// generiere VSUM plugins (jetzt erst mal hart verdrahtet)

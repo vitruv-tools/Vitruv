@@ -8,6 +8,7 @@
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_aqJbIGDhEeOVS519yHwWgw" entityName="Provided_MetamodelManaging_MetaRepository" providedInterface__OperationProvidedRole="_XBlAsGDbEeOVS519yHwWgw"/>
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_bVoBEGDhEeOVS519yHwWgw" entityName="Provided_MappingManaging_MetaRepository" providedInterface__OperationProvidedRole="_VJVssGDbEeOVS519yHwWgw"/>
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_cPnkIGDhEeOVS519yHwWgw" entityName="Provided_ViewTypeManaging_MetaRepository" providedInterface__OperationProvidedRole="_u5PckGDfEeOVS519yHwWgw"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_Xq8DgHx2EeOSj_S3DgbyHA" entityName="Provided_ProjectPreparing_MetaRepository" providedInterface__OperationProvidedRole="_WQiiEHx2EeOSj_S3DgbyHA"/>
   </components__Repository>
   <components__Repository xsi:type="repository:CompleteComponentType" id="_olt-IGDhEeOVS519yHwWgw" entityName="ExAndImporter">
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_soVfAGDhEeOVS519yHwWgw" entityName="Provided_ModelExAndImporting_ExAndImporter" providedInterface__OperationProvidedRole="_aEHkoGDbEeOVS519yHwWgw"/>
@@ -41,7 +42,9 @@
   <components__Repository xsi:type="repository:CompositeComponent" id="_gOJu4GDkEeOVS519yHwWgw" entityName="MIRManager">
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_CAK2sGM8EeOuRbxDTXSxUQ" entityName="Provided_MIRManaging_MIRManager" providedInterface__OperationProvidedRole="_tS0v0GM5EeOuRbxDTXSxUQ"/>
   </components__Repository>
-  <components__Repository xsi:type="repository:CompositeComponent" id="_hvHyYGDkEeOVS519yHwWgw" entityName="ProjectGenerator"/>
+  <components__Repository xsi:type="repository:CompositeComponent" id="_hvHyYGDkEeOVS519yHwWgw" entityName="ProjectGenerator">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_US-CIHx2EeOSj_S3DgbyHA" entityName="Provided_ProjectGenerating_ProjectGenerator" providedInterface__OperationProvidedRole="_SkRrsHx2EeOSj_S3DgbyHA"/>
+  </components__Repository>
   <components__Repository xsi:type="repository:CompositeComponent" id="_jasjYGDkEeOVS519yHwWgw" entityName="ViewTypeGenerator"/>
   <components__Repository xsi:type="repository:CompositeComponent" id="_lr9bYGDkEeOVS519yHwWgw" entityName="ViewTypeManager"/>
   <components__Repository xsi:type="repository:BasicComponent" id="_qzhVoGDlEeOVS519yHwWgw" entityName="SyncTransformationProvider">
@@ -155,6 +158,14 @@
   </interfaces__Repository>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_tS0v0GM5EeOuRbxDTXSxUQ" entityName="MIRManaging" parentInterfaces__Interface="_VJVssGDbEeOVS519yHwWgw"/>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_FUqtUGM8EeOuRbxDTXSxUQ" entityName="SyncTransformationGenerating"/>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_SkRrsHx2EeOSj_S3DgbyHA" entityName="ProjectGenerating">
+    <signatures__OperationInterface id="_gplZgHx2EeOSj_S3DgbyHA" entityName="generateProject" returnType__OperationSignature="_dwu9HXx2EeOSj_S3DgbyHA">
+      <parameters__OperationSignature dataType__Parameter="_Z-aiAXx2EeOSj_S3DgbyHA" parameterName="projectInput"/>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_WQiiEHx2EeOSj_S3DgbyHA" entityName="ProjectPreparing">
+    <signatures__OperationInterface id="_pvU2AHx2EeOSj_S3DgbyHA" entityName="getProjectInput" returnType__OperationSignature="_Z-aiAXx2EeOSj_S3DgbyHA"/>
+  </interfaces__Repository>
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_6Hs17WDbEeOVS519yHwWgw" entityName="Change"/>
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_-xS3PWDbEeOVS519yHwWgw" entityName="CorrespondenceMM"/>
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_AlHlTWDcEeOVS519yHwWgw" entityName="CorrespondenceModelInstance"/>
@@ -165,4 +176,6 @@
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_GJ7RrWDcEeOVS519yHwWgw" entityName="SyncTransformation"/>
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_IeAiPWDeEeOVS519yHwWgw" entityName="URI"/>
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_GrMysWDcEeOVS519yHwWgw" entityName="ViewType"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_Z-aiAXx2EeOSj_S3DgbyHA" entityName="ProjectInput"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_dwu9HXx2EeOSj_S3DgbyHA" entityName="ProjectOutput"/>
 </repository:Repository>

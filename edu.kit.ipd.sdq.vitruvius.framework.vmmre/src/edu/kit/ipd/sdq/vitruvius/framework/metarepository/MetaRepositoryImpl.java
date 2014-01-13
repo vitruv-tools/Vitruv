@@ -3,17 +3,19 @@ package edu.kit.ipd.sdq.vitruvius.framework.metarepository;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.MetamodelsReferring;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ProjectInput;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ViewType;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MappingManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ProjectPreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ViewTypeManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableConcatHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableConcatMap;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableMap;
 
-public class MetaRepositoryImpl implements MetamodelManaging, ViewTypeManaging, MappingManaging {
+public class MetaRepositoryImpl implements MetamodelManaging, ViewTypeManaging, MappingManaging, ProjectPreparing {
 	
 	private ClaimableMap<VURI, Metamodel> uri2MetamodelMap;
 	private ClaimableMap<VURI, ViewType> uri2ViewTypeMap;
@@ -70,5 +72,9 @@ public class MetaRepositoryImpl implements MetamodelManaging, ViewTypeManaging, 
 		return this.uris2MappingMap.claimValueForKeys(metamodelURIs);
 	}
 
-
+	@Override
+	public ProjectInput getProjectInput() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
