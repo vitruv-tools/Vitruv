@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.design.metamodelmanager;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.URI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
 
 public class MetamodelManagerImpl implements MetamodelManaging {
@@ -18,7 +18,7 @@ public class MetamodelManagerImpl implements MetamodelManaging {
 	}
 
 	@Override
-	public Metamodel getMetamodel(URI uri) {
+	public Metamodel getMetamodel(VURI uri) {
 		return metamodelManaging.getMetamodel(uri);
 	}
 

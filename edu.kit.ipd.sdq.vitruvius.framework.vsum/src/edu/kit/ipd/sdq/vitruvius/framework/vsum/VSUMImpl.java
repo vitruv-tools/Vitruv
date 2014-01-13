@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.vsum;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.URI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceMMProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MappingManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
@@ -23,13 +23,13 @@ public class VSUMImpl implements ModelProviding {
 	}
 
 	@Override
-	public ModelInstance getModelInstanceCopy(URI uri) {
+	public ModelInstance getModelInstanceCopy(VURI uri) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ModelInstance getModelInstanceOriginal(URI uri) {
+	public ModelInstance getModelInstanceOriginal(VURI uri) {
 		// TODO Auto-generated method stub
 		return null;
 	}	

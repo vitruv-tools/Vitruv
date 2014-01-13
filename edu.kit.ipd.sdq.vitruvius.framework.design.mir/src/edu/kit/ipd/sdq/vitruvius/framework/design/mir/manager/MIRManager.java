@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.design.mir.manager;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Invariants;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Responses;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.URI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MIRManaging;
 
 public class MIRManager implements MIRManaging {
@@ -19,7 +19,7 @@ public class MIRManager implements MIRManaging {
 	}
 
 	@Override
-	public Mapping getMapping(URI... metamodelURIs) {
+	public Mapping getMapping(VURI... metamodelURIs) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -31,7 +31,7 @@ public class MIRManager implements MIRManaging {
 	}
 
 	@Override
-	public Invariants getInvariants(URI mmURI) {
+	public Invariants getInvariants(VURI mmURI) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -43,7 +43,7 @@ public class MIRManager implements MIRManaging {
 	}
 
 	@Override
-	public Responses getResponses(URI mmURI) {
+	public Responses getResponses(VURI mmURI) {
 		// TODO Auto-generated method stub
 		return null;
 	}

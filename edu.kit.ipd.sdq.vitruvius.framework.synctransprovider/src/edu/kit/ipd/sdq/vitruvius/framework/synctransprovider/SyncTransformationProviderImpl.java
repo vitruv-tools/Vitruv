@@ -2,7 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.synctransprovider;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.SyncTransformation;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.URI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SyncTransformationProviding;
 
 public class SyncTransformationProviderImpl implements
@@ -13,8 +13,8 @@ public class SyncTransformationProviderImpl implements
 	}
 
 	@Override
-	public SyncTransformation getSyncTransformation(URI mmURI1,
-			Change change, URI mmURI2) {
+	public SyncTransformation getSyncTransformation(VURI mmURI1,
+			Change change, VURI mmURI2) {
 		// TODO Auto-generated method stub
 		return null;
 	}

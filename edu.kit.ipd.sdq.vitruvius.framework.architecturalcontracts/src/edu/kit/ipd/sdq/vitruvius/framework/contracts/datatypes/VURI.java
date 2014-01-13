@@ -1,12 +1,18 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
+import org.eclipse.emf.common.util.URI;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFBridge;
 
-public class URI implements Comparable<URI> {
+public class VURI implements Comparable<VURI> {
 	private org.eclipse.emf.common.util.URI emfURI;
 	
-	public URI(String uriString) {
+	public VURI(String uriString) {
 		this.emfURI = EMFBridge.createPlatformResourceURI(uriString);
+	}
+	
+	public VURI(URI emfURI) {
+		this.emfURI = emfURI;
 	}
 	
 	@Override
@@ -15,7 +21,7 @@ public class URI implements Comparable<URI> {
 	}
 
 	@Override
-	public int compareTo(URI otherURI) {
+	public int compareTo(VURI otherURI) {
 		return this.toString().compareTo(otherURI.toString());
 	}
 }
