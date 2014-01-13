@@ -1,7 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.framework.metarepository;
 
-import java.util.Set;
-
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.MetamodelsReferring;
@@ -46,7 +44,7 @@ public class MetaRepositoryImpl implements MetamodelManaging, ViewTypeManaging, 
 	}
 	
 	private void claimReferredMetamodels(MetamodelsReferring metamodelsReferring) {
-		Set<URI> metamodelURIs = metamodelsReferring.getMetamodelURIs();
+		URI[] metamodelURIs = metamodelsReferring.getMetamodelURIs();
 		for (URI metamodelURI : metamodelURIs) {
 			this.uri2MetamodelMap.claimKeyIsMapped(metamodelURI);
 		}
@@ -60,7 +58,7 @@ public class MetaRepositoryImpl implements MetamodelManaging, ViewTypeManaging, 
 	@Override
 	public void addMapping(Mapping mapping) {
 		claimReferredMetamodels(mapping);
-		URI[] metamodelURIs = (URI[]) mapping.getMetamodelURIs().toArray();
+		URI[] metamodelURIs = mapping.getMetamodelURIs();
 		this.uris2MappingMap.putClaimingNullOrSameMapped(mapping, metamodelURIs);
 	}
 

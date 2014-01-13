@@ -1,15 +1,14 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
-import java.util.Set;
 
 public class AbstractMetamodelsReferring implements MetamodelsReferring {
-	private Set<URI> metamodelURIs;
+	private URI[] metamodelURIs;
 	
-	public AbstractMetamodelsReferring(Set<URI> metamodelURIs) {
+	public AbstractMetamodelsReferring(URI... metamodelURIs) {
 		this.metamodelURIs = metamodelURIs;
 	}
 	
-	public Set<URI> getMetamodelURIs() {
+	public URI[] getMetamodelURIs() {
 		return metamodelURIs;
 	}
 }
