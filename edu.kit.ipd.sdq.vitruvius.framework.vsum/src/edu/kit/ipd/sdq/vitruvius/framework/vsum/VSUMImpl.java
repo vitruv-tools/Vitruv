@@ -28,17 +28,18 @@ public class VSUMImpl implements ModelProviding {
         this.mappingManaging = mappingManaging;
         this.correspondenceMMproviding = correspondenceMMproviding;
     }
-	@Override
-	public ModelInstance getModelInstanceCopy(VURI uri) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
+    @Override
+    public ModelInstance getModelInstanceCopy(VURI uri) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
     @Override
     public ModelInstance getModelInstanceOriginal(VURI uri) {
         // TODO Auto-generated method stub
         return null;
-    }   
+    }
 
     public static synchronized VSUMImpl getVSUM() {
         if (null == vsumImplInstance) {
@@ -51,6 +52,5 @@ public class VSUMImpl implements ModelProviding {
         }
         return vsumImplInstance;
     }
-
 
 }
