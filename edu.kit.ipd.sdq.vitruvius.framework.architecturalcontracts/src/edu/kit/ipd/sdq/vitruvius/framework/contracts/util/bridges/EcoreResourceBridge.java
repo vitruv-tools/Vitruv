@@ -46,9 +46,8 @@ public final class EcoreResourceBridge {
     *           a resource
     * @return the unique root element (if existing) otherwise {@code null}
     */
-   public static EObject getResourceContentRootFromVURIIfUnique(final VURI vuri) {
-      ResourceSet resSet = new ResourceSetImpl();
-      Resource emfResource = resSet.getResource(vuri.getEMFUri(), true);
+   public static EObject getResourceContentRootFromVURIIfUnique(final VURI vuri, ResourceSet resourceSet ) {
+      Resource emfResource = resourceSet.getResource(vuri.getEMFUri(), true);
       return getResourceContentRootIfUnique(emfResource);
    }
    
