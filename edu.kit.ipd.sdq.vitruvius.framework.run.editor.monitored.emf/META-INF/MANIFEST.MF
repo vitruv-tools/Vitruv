@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Monitored
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor;singleton:=true
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emf;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager;bundle-version="1.0.0",
