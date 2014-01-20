@@ -12,7 +12,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.
  org.eclipse.core.commands,
  org.eclipse.jface,
  org.eclipse.ui.workbench
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emf
