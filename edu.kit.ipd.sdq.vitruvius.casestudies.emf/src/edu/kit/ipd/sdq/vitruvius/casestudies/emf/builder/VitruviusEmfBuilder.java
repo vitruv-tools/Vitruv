@@ -28,11 +28,14 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
 
     private List<String> monitoredFileTypes;
     private ResourceSet resourceSet;
+    private MonitoredEmfEditorImpl monitor;
 
     public static final String VITRUVIUS_EMF_BUILDER_ID = "edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.VitruviusEmfBuilder.id";
 
     public VitruviusEmfBuilder() {
         this.resourceSet = new ResourceSetImpl();
+        SyncManagerImpl syncManager = SyncManagerImpl.getSyncManagerInstance();
+        this.monitor = new MonitoredEmfEditorImpl(syncManager, syncManager.getModelProviding());
     }
 
     public VitruviusEmfBuilder(List<String> monitoredFileTypes) {
@@ -72,7 +75,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
 
         private boolean isMonitoredResource(IResource resource) {
             // check if it is relevant resource
-            return false;
+            return true;
         }
     }
 
@@ -124,12 +127,18 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
      *            new resource
      */
     private void importToVitruvius(IResource resource) {
-        SyncManagerImpl syncManager = SyncManagerImpl.getSyncManagerInstance();
-        VURI vuri = new VURI(resource);
-        ModelInstance model = syncManager.getModelProviding().getModelInstanceOriginal(vuri);
-        MonitoredEmfEditorImpl monitor = new MonitoredEmfEditorImpl(syncManager, syncManager.getModelProviding());
-        EObject rootObject = EcoreResourceBridge.getResourceContentRootFromVURIIfUnique(model.getVURI(), resourceSet);
-        rootObject.eAdapters().add(monitor.getContentAdapter());
+        if (resource.getName().endsWith(".java") || resource.getName().endsWith(".repository")) {
+            SyncManagerImpl syncManager = SyncManagerImpl.getSyncManagerInstance();
+            VURI vuri = new VURI(resource);
+            ModelInstance model = syncManager.getModelProviding().getModelInstanceOriginal(vuri);
+            EObject rootObject = EcoreResourceBridge.getResourceContentRootFromVURIIfUnique(vuri, resourceSet);
+            if (null == rootObject) {
+                logger.error("Could not get EObject from resource: '" + resource.getFullPath().toOSString()
+                        + "' . Resource is not included to Vitruvius.");
+                return;
+            }
+            rootObject.eAdapters().add(monitor.getContentAdapter());
+        }
     }
 
     /**

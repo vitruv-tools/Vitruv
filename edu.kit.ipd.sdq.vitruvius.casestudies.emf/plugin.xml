@@ -11,12 +11,13 @@
        </builder>
    </extension>
 
-   <extension point="org.eclipse.ui.menus">
+   <extension 
+   	        point="org.eclipse.ui.menus">
 	    <menuContribution
 	    	   allPopups="false"
 	    	   locationURI="popup:org.eclipse.ui.projectConfigure?after=additions">
 	        <command
-	        	commandId="edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.addbuilder"
+	        	commandId="edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.addbuilder.commandId"
 	        	style="push">
 	        	<visibleWhen
                   checkEnabled="false">
@@ -43,7 +44,7 @@
             </visibleWhen>
 	        </command>
 	        <command 
-	        	commandId="edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.removebuilder"
+	        	commandId="edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.removebuilder.commandId"
 	         	style="push">
 	         	<visibleWhen
                   checkEnabled="false">
@@ -73,12 +74,12 @@
 	<extension point="org.eclipse.ui.commands">
     	<command
     		 defaultHandler="edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.AddBuilder" 
-    		 id="edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.addbuilder" 
+    		 id="edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.addbuilder.commandId" 
     		 name="Add Vitruvius EMF Builder Builder">
     	</command>
 	    <command
 	    	 defaultHandler="edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.RemoveBuilder"
-	    	  id="edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.removebuilder" 
+	    	  id="edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.removebuilder.commandId" 
 	    	  name="Remove Vitruvius EMF Builder Builder">
 	    </command>
 	</extension>
@@ -87,7 +88,7 @@
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
             class="edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.TestBuilderEnabled"
-            id="edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.BuilderEnabled"
+            id="edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.VitruviusEmfBuilder.id"
             namespace="edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder"
             properties="isEnabled"
             type="java.lang.Object">
