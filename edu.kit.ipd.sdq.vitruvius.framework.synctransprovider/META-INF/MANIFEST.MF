@@ -5,3 +5,4 @@ Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.synctransprovider;singl
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts
+Export-Package: edu.kit.ipd.sdq.vitruvius.framework.synctransprovider

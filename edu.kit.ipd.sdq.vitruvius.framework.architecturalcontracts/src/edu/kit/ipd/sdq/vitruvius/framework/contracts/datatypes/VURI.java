@@ -29,4 +29,8 @@ public class VURI implements Comparable<VURI> {
 	public int compareTo(VURI otherURI) {
 		return this.toString().compareTo(otherURI.toString());
 	}
+
+    public URI getEMFUri() {
+        return emfURI;
+    }
 }

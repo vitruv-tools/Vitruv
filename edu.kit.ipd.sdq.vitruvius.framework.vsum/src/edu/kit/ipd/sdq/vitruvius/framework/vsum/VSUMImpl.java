@@ -19,9 +19,7 @@ public class VSUMImpl implements ModelProviding {
     private final ViewTypeManaging viewTypeManaging;
     private final CorrespondenceMMProviding correspondenceMMproviding;
 
-    private static VSUMImpl vsumImplInstance = null;
-
-    private VSUMImpl(MetamodelManaging metamodelManaging, ViewTypeManaging viewTypeManaging,
+    public VSUMImpl(MetamodelManaging metamodelManaging, ViewTypeManaging viewTypeManaging,
             MappingManaging mappingManaging, CorrespondenceMMProviding correspondenceMMproviding) {
         this.metamodelManaging = metamodelManaging;
         this.viewTypeManaging = viewTypeManaging;
@@ -39,18 +37,6 @@ public class VSUMImpl implements ModelProviding {
     public ModelInstance getModelInstanceOriginal(VURI uri) {
         // TODO Auto-generated method stub
         return null;
-    }
-
-    public static synchronized VSUMImpl getVSUM() {
-        if (null == vsumImplInstance) {
-            MetaRepositoryImpl mediaRepository = new MetaRepositoryImpl();
-            MetamodelManagerImpl metaModelManager = new MetamodelManagerImpl(mediaRepository);
-            ViewTypeManagerImpl viewTypeManager = new ViewTypeManagerImpl();
-            CorrespondenceMMProviderImpl correspondenceProvider = new CorrespondenceMMProviderImpl();
-            MIRManager mirManager = new MIRManager();
-            vsumImplInstance = new VSUMImpl(metaModelManager, viewTypeManager, mirManager, correspondenceProvider);
-        }
-        return vsumImplInstance;
     }
 
 }

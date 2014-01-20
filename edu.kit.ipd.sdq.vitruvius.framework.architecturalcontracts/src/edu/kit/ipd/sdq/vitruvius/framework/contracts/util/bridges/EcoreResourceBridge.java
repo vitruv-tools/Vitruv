@@ -15,8 +15,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.resources.IResource;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 
 /**
  * A utility class hiding details of the resources part of the Eclipse Modeling Framework API related for recurring tasks that are
@@ -32,6 +38,20 @@ public final class EcoreResourceBridge {
    private EcoreResourceBridge() {
    }
 
+   /**
+    * Returns the root element of the content of the given IResource if it is unique (exactly one root element) and {@code null}
+    * otherwise.
+    * @see getResourceContentRootIfUnique
+    * @param iResource
+    *           a resource
+    * @return the unique root element (if existing) otherwise {@code null}
+    */
+   public static EObject getResourceContentRootFromVURIIfUnique(final VURI vuri) {
+      ResourceSet resSet = new ResourceSetImpl();
+      Resource emfResource = resSet.getResource(vuri.getEMFUri(), true);
+      return getResourceContentRootIfUnique(emfResource);
+   }
+   
    /**
     * Returns the root element of the content of the given resource if it is unique (exactly one root element) and {@code null}
     * otherwise.

@@ -5,4 +5,12 @@ Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager;singlet
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.framework.contracts
+ edu.kit.ipd.sdq.vitruvius.framework.contracts,
+ edu.kit.ipd.sdq.vitruvius.framework.metarepository,
+ edu.kit.ipd.sdq.vitruvius.framework.design.metamodelmanager,
+ edu.kit.ipd.sdq.vitruvius.framework.design.viewtype.manager,
+ edu.kit.ipd.sdq.vitruvius.framework.correspmmprovider,
+ edu.kit.ipd.sdq.vitruvius.framework.design.mir.manager,
+ edu.kit.ipd.sdq.vitruvius.framework.vsum,
+ edu.kit.ipd.sdq.vitruvius.framework.synctransprovider
+Export-Package: edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager
