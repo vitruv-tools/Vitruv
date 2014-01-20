@@ -332,6 +332,19 @@
       <element xmi:type="repository:OperationInterface" href="vitruvius.repository#_WQiiEHx2EeOSj_S3DgbyHA"/>
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WQkXQXx2EeOSj_S3DgbyHA" x="482" y="248"/>
     </children>
+    <children xmi:type="notation:Shape" xmi:id="_XKd70IHpEeODW91Frt3ceg" type="2107" fontName="Ubuntu">
+      <children xmi:type="notation:DecorationNode" xmi:id="_XKfJ8IHpEeODW91Frt3ceg" type="5108"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_XKfJ8YHpEeODW91Frt3ceg" type="7106">
+        <children xmi:type="notation:Node" xmi:id="_YV07sIHpEeODW91Frt3ceg" type="3106">
+          <element xmi:type="repository:OperationSignature" href="vitruvius.repository#_YVzGgIHpEeODW91Frt3ceg"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_YV07sYHpEeODW91Frt3ceg"/>
+        </children>
+        <styles xmi:type="notation:SortingStyle" xmi:id="_XKfJ8oHpEeODW91Frt3ceg"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_XKfJ84HpEeODW91Frt3ceg"/>
+      </children>
+      <element xmi:type="repository:OperationInterface" href="vitruvius.repository#_XKWnEIHpEeODW91Frt3ceg"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_XKd70YHpEeODW91Frt3ceg" x="800" y="570"/>
+    </children>
     <styles xmi:type="notation:DiagramStyle" xmi:id="_7WBZsVt2EeOdes90l5wu6g"/>
     <element xmi:type="repository:Repository" href="vitruvius.repository#_7Vw7AFt2EeOdes90l5wu6g"/>
     <edges xmi:type="notation:Connector" xmi:id="_VyYa8GDhEeOVS519yHwWgw" type="4105" source="_YabtMGDfEeOVS519yHwWgw" target="_XBmO0GDbEeOVS519yHwWgw">
@@ -674,6 +687,25 @@
       <styles xmi:type="notation:FontStyle" xmi:id="_Xq9RoXx2EeOSj_S3DgbyHA" fontName="Ubuntu"/>
       <element xmi:type="repository:OperationProvidedRole" href="vitruvius.repository#_Xq8DgHx2EeOSj_S3DgbyHA"/>
       <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_Xq9Ronx2EeOSj_S3DgbyHA" points="[-55, 5, 136, -18]$[-248, 22, -57, -1]"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_icEy8IHpEeODW91Frt3ceg" type="4105" source="_LFz4oGDjEeOVS519yHwWgw" target="_XKd70IHpEeODW91Frt3ceg">
+      <children xmi:type="notation:DecorationNode" xmi:id="_icFaAIHpEeODW91Frt3ceg" type="6105">
+        <styles xmi:type="notation:DescriptionStyle" xmi:id="_icFaAYHpEeODW91Frt3ceg"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_icFaAoHpEeODW91Frt3ceg" y="40"/>
+      </children>
+      <styles xmi:type="notation:FontStyle" xmi:id="_icEy8YHpEeODW91Frt3ceg" fontName="Ubuntu"/>
+      <element xmi:type="repository:OperationProvidedRole" href="vitruvius.repository#_icBvoIHpEeODW91Frt3ceg"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_icEy8oHpEeODW91Frt3ceg" points="[-6, 20, 24, -216]$[-203, 237, -173, 1]"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_icHPMIHpEeODW91Frt3ceg" id="(0.21568627450980393,0.5)"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_lTKU0IHpEeODW91Frt3ceg" type="4106" source="_2nMfYGDiEeOVS519yHwWgw" target="_XKd70IHpEeODW91Frt3ceg">
+      <children xmi:type="notation:DecorationNode" xmi:id="_lTKU04HpEeODW91Frt3ceg" type="6106">
+        <styles xmi:type="notation:DescriptionStyle" xmi:id="_lTKU1IHpEeODW91Frt3ceg"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_lTKU1YHpEeODW91Frt3ceg" y="40"/>
+      </children>
+      <styles xmi:type="notation:FontStyle" xmi:id="_lTKU0YHpEeODW91Frt3ceg" fontName="Ubuntu"/>
+      <element xmi:type="repository:OperationRequiredRole" href="vitruvius.repository#_lTGqcIHpEeODW91Frt3ceg"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_lTKU0oHpEeODW91Frt3ceg" points="[47, 19, -587, -232]$[461, 247, -173, -4]"/>
     </edges>
   </notation:Diagram>
   <notation:Diagram xmi:id="_rhnKsGDlEeOVS519yHwWgw" type="CompositeModel" measurementUnit="Pixel">

@@ -4,6 +4,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.MetamodelsReferring;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ProjectInput;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ProjectOutput;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ViewType;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MappingManaging;
@@ -74,7 +75,7 @@ public class MetaRepositoryImpl implements MetamodelManaging, ViewTypeManaging, 
 
 	@Override
 	public ProjectInput getProjectInput() {
-		// TODO Auto-generated method stub
-		return null;
+		ProjectInput projectInput = new ProjectInput(this.uri2MetamodelMap, this.uri2ViewTypeMap, this.uris2MappingMap);
+		return projectInput;
 	}
 }

@@ -27,9 +27,11 @@
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_9RcJ0GDiEeOVS519yHwWgw" entityName="Provided_ChangeSynchronizing_SyncManager" providedInterface__OperationProvidedRole="_QrFYsGDbEeOVS519yHwWgw"/>
     <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_7EiNYGDiEeOVS519yHwWgw" entityName="Required_ModelProviding_SyncManager" requiredInterface__OperationRequiredRole="_cDEkoGDbEeOVS519yHwWgw"/>
     <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_76wqwGDiEeOVS519yHwWgw" entityName="Required_ChangePropagating_SyncManager" requiredInterface__OperationRequiredRole="_P2_CQGDbEeOVS519yHwWgw"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_lTGqcIHpEeODW91Frt3ceg" entityName="Required_CorrespondenceProviding_SyncManager" requiredInterface__OperationRequiredRole="_XKWnEIHpEeODW91Frt3ceg"/>
   </components__Repository>
   <components__Repository xsi:type="repository:CompositeComponent" id="_LFwOQGDjEeOVS519yHwWgw" entityName="VSUM">
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_WIdGsGDjEeOVS519yHwWgw" entityName="Provided_ModelProviding_VSUM" providedInterface__OperationProvidedRole="_cDEkoGDbEeOVS519yHwWgw"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_icBvoIHpEeODW91Frt3ceg" entityName="Provided_CorrespondenceProviding_VSUM" providedInterface__OperationProvidedRole="_XKWnEIHpEeODW91Frt3ceg"/>
     <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_SJBcsGDjEeOVS519yHwWgw" entityName="Required_MetamodelManaging_VSUM" requiredInterface__OperationRequiredRole="_XBlAsGDbEeOVS519yHwWgw"/>
     <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_Sja5sGDjEeOVS519yHwWgw" entityName="Required_MappingManaging_VSUM" requiredInterface__OperationRequiredRole="_VJVssGDbEeOVS519yHwWgw"/>
     <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_S9lGIGDjEeOVS519yHwWgw" entityName="Required_CorrespondenceMMProviding_VSUM" requiredInterface__OperationRequiredRole="_SnSmsGDbEeOVS519yHwWgw"/>
@@ -166,6 +168,9 @@
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_WQiiEHx2EeOSj_S3DgbyHA" entityName="ProjectPreparing">
     <signatures__OperationInterface id="_pvU2AHx2EeOSj_S3DgbyHA" entityName="getProjectInput" returnType__OperationSignature="_Z-aiAXx2EeOSj_S3DgbyHA"/>
   </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_XKWnEIHpEeODW91Frt3ceg" entityName="CorrespondenceProviding">
+    <signatures__OperationInterface id="_YVzGgIHpEeODW91Frt3ceg" entityName="getCorrespondenceInstance" returnType__OperationSignature="_bWVfUoHpEeODW91Frt3ceg"/>
+  </interfaces__Repository>
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_6Hs17WDbEeOVS519yHwWgw" entityName="Change"/>
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_-xS3PWDbEeOVS519yHwWgw" entityName="CorrespondenceMM"/>
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_AlHlTWDcEeOVS519yHwWgw" entityName="CorrespondenceModelInstance"/>
@@ -178,4 +183,5 @@
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_GrMysWDcEeOVS519yHwWgw" entityName="ViewType"/>
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_Z-aiAXx2EeOSj_S3DgbyHA" entityName="ProjectInput"/>
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_dwu9HXx2EeOSj_S3DgbyHA" entityName="ProjectOutput"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_bWVfUoHpEeODW91Frt3ceg" entityName="CorrespondenceInstance"/>
 </repository:Repository>
