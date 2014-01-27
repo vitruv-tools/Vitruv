@@ -1,20 +1,21 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 
 public class ModelInstance extends AbstractURIHaving {
-    private EObject rootElement;
+    private Resource resource;
 
-    public ModelInstance(final VURI uri, final EObject rootElement) {
+    public ModelInstance(final VURI uri, final Resource resource) {
         super(uri);
-        this.rootElement = rootElement;
+        this.resource = resource;
     }
 
-    public EObject getRootElement() {
-        if (this.rootElement == null) {
-            // FIXME KEEP ON WORKING HERE: add a resource to modelInstance and remove rootElement?
-        }
-        return this.rootElement;
+    public Resource getResource() {
+        // if (this.rootElement == null) {
+        // FIXME KEEP ON WORKING HERE: add a resource to modelInstance and remove rootElement?
+        // }
+        // return this.rootElement;
+        return this.resource;
     }
 
 }

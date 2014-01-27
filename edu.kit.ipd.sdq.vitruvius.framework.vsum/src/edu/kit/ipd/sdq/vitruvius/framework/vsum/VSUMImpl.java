@@ -89,7 +89,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
         if (rootElement != null) {
             importSoloRoot(rootElement, uri, metamodel);
         }
-        return new ModelInstance(uri, rootElement);
+        return new ModelInstance(uri, resource);
     }
 
     private void importSoloRoot(final EObject root, final VURI uri, final Metamodel metamodel) {
