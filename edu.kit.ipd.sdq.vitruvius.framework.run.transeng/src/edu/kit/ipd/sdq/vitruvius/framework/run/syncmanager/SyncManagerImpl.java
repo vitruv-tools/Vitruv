@@ -2,12 +2,9 @@ package edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.SyncTransformation;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePropagating;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SyncTransformationProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.correspmmprovider.CorrespondenceMMProviderImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.design.metamodelmanager.MetamodelManagerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.design.mir.manager.MIRManager;
@@ -23,25 +20,27 @@ public class SyncManagerImpl implements ChangeSynchronizing {
 
     private static SyncManagerImpl syncManagerImplInstance;
 
-    private SyncManagerImpl(ModelProviding modelProviding, ChangePropagating changePropagating) {
+    private SyncManagerImpl(final ModelProviding modelProviding, final ChangePropagating changePropagating) {
         this.modelProviding = modelProviding;
         this.changePropagating = changePropagating;
     }
 
     @Override
-    public void synchronizeChange(Change change, ModelInstance sourceModel) {
+    public void synchronizeChange(final Change change, final ModelInstance sourceModel) {
         // TODO Auto-generated method stub
-        /*ModelInstance model = modelProviding.getModelInstanceOriginal(sourceModel.getVURI());
-        changePropagating.propagateChange(change, model, correspondenceModelInstance, model);*/
+        /*
+         * ModelInstance model = modelProviding.getModelInstanceOriginal(sourceModel.getVURI());
+         * changePropagating.propagateChange(change, model, correspondenceModelInstance, model);
+         */
     }
 
     public ModelProviding getModelProviding() {
-        return modelProviding;
+        return this.modelProviding;
     }
 
     public static synchronized SyncManagerImpl getSyncManagerInstance() {
-        if(null == syncManagerImplInstance){
-            //create vsum
+        if (null == syncManagerImplInstance) {
+            // create vsum
             MetaRepositoryImpl mediaRepository = new MetaRepositoryImpl();
             MetamodelManagerImpl metaModelManager = new MetamodelManagerImpl(mediaRepository);
             ViewTypeManagerImpl viewTypeManager = new ViewTypeManagerImpl();
@@ -49,7 +48,7 @@ public class SyncManagerImpl implements ChangeSynchronizing {
             MIRManager mirManager = new MIRManager();
             VSUMImpl vsum = new VSUMImpl(metaModelManager, viewTypeManager, mirManager, correspondenceProvider);
             // create syncTransformationProvider
-            SyncTransformationProviderImpl syncTransformationProvider = new SyncTransformationProviderImpl(); 
+            SyncTransformationProviderImpl syncTransformationProvider = new SyncTransformationProviderImpl();
             PropagationEngineImpl propagatingChange = new PropagationEngineImpl(syncTransformationProvider);
             // create syncManager
             syncManagerImplInstance = new SyncManagerImpl(vsum, propagatingChange);

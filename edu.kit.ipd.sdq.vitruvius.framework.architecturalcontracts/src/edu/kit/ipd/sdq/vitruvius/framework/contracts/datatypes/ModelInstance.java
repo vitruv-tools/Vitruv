@@ -1,22 +1,20 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
-public class ModelInstance {
-    private VURI vuri;
-    
-    //TODO: check if we need a constructor without parameter
-    public ModelInstance(){
-    }
-    
-    public ModelInstance(VURI vuri){
-        this.setVURI(vuri);
+import org.eclipse.emf.ecore.EObject;
+
+public class ModelInstance extends AbstractURIHaving {
+    private EObject rootElement;
+
+    public ModelInstance(final VURI uri, final EObject rootElement) {
+        super(uri);
+        this.rootElement = rootElement;
     }
 
-    public VURI getVURI() {
-        return vuri;
+    public EObject getRootElement() {
+        if (this.rootElement == null) {
+            // FIXME KEEP ON WORKING HERE: add a resource to modelInstance and remove rootElement?
+        }
+        return this.rootElement;
     }
 
-    public void setVURI(VURI vuri) {
-        this.vuri = vuri;
-    }
-    
 }

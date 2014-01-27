@@ -120,6 +120,11 @@
     <signatures__OperationInterface id="_TZPWIGDdEeOVS519yHwWgw" entityName="getMetamodel" returnType__OperationSignature="_Dw5kzWDcEeOVS519yHwWgw">
       <parameters__OperationSignature dataType__Parameter="_IeAiPWDeEeOVS519yHwWgw" parameterName="uri"/>
     </signatures__OperationInterface>
+    <signatures__OperationInterface id="_bU3NgIdsEeOZlJvncnrJ_g" entityName="getMetamodel" returnType__OperationSignature="_Dw5kzWDcEeOVS519yHwWgw">
+      <parameters__OperationSignature parameterName="fileExtension">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.1"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
   </interfaces__Repository>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_YypVsGDbEeOVS519yHwWgw" entityName="ModelCopyProviding">
     <signatures__OperationInterface id="_di4foGDdEeOVS519yHwWgw" entityName="getModelInstanceCopy" returnType__OperationSignature="_FYspDWDcEeOVS519yHwWgw">
@@ -169,7 +174,10 @@
     <signatures__OperationInterface id="_pvU2AHx2EeOSj_S3DgbyHA" entityName="getProjectInput" returnType__OperationSignature="_Z-aiAXx2EeOSj_S3DgbyHA"/>
   </interfaces__Repository>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_XKWnEIHpEeODW91Frt3ceg" entityName="CorrespondenceProviding">
-    <signatures__OperationInterface id="_YVzGgIHpEeODW91Frt3ceg" entityName="getCorrespondenceInstance" returnType__OperationSignature="_bWVfUoHpEeODW91Frt3ceg"/>
+    <signatures__OperationInterface id="_YVzGgIHpEeODW91Frt3ceg" entityName="getCorrespondenceInstance" returnType__OperationSignature="_bWVfUoHpEeODW91Frt3ceg">
+      <parameters__OperationSignature dataType__Parameter="_IeAiPWDeEeOVS519yHwWgw" parameterName="model1URI"/>
+      <parameters__OperationSignature dataType__Parameter="_IeAiPWDeEeOVS519yHwWgw" parameterName="model2URI"/>
+    </signatures__OperationInterface>
   </interfaces__Repository>
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_6Hs17WDbEeOVS519yHwWgw" entityName="Change"/>
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_-xS3PWDbEeOVS519yHwWgw" entityName="CorrespondenceMM"/>

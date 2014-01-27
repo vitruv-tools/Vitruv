@@ -68,6 +68,10 @@
           <element xmi:type="repository:OperationSignature" href="vitruvius.repository#_TZPWIGDdEeOVS519yHwWgw"/>
           <layoutConstraint xmi:type="notation:Location" xmi:id="_TZP9MWDdEeOVS519yHwWgw"/>
         </children>
+        <children xmi:type="notation:Node" xmi:id="_bU_wYIdsEeOZlJvncnrJ_g" type="3106">
+          <element xmi:type="repository:OperationSignature" href="vitruvius.repository#_bU3NgIdsEeOZlJvncnrJ_g"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_bU_wYYdsEeOZlJvncnrJ_g"/>
+        </children>
         <styles xmi:type="notation:SortingStyle" xmi:id="_XBnc8WDbEeOVS519yHwWgw"/>
         <styles xmi:type="notation:FilteringStyle" xmi:id="_XBnc8mDbEeOVS519yHwWgw"/>
       </children>

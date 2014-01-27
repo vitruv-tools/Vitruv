@@ -18,83 +18,95 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 
 /**
- * A utility class hiding details of the Eclipse Modeling Framework API for recurring tasks that are not project-specific. Methods
- * for Ecore metamodels, Ecore metamodel creation, Ecore metamodel variants and Ecore resources should not be put in this utility
- * but in the corresponding separate utilities!<br/>
+ * A utility class hiding details of the Eclipse Modeling Framework API for recurring tasks that are
+ * not project-specific. Methods for Ecore metamodels, Ecore metamodel creation, Ecore metamodel
+ * variants and Ecore resources should not be put in this utility but in the corresponding separate
+ * utilities!<br/>
  * <br/>
- * (Note that it is disputable whether this class conforms to the bridge pattern as we are currently only providing one
- * implementation and the "abstractions" can be regarded as low-level.)
- *
+ * (Note that it is disputable whether this class conforms to the bridge pattern as we are currently
+ * only providing one implementation and the "abstractions" can be regarded as low-level.)
+ * 
  * @author Max E. Kramer
- *
+ * 
  * @see EcoreBridge
  * @see EcoreFactoryBridge
  * @see EcorePkgVariantsBridge
  * @see EcoreResourceBridge
  */
 public final class EMFBridge {
-   /** Utility classes should not have a public or default constructor. */
-   private EMFBridge() {
-   }
+    /** Utility classes should not have a public or default constructor. */
+    private EMFBridge() {
+    }
 
-   /**
-    * Creates and returns an EMF platform resource URI for the given Eclipse resource.
-    *
-    * @param iResource
-    *           an Eclipse resource
-    * @return a platform resource URI for the resource
-    */
-   public static URI getEMFPlatformUriForIResource(final IResource iResource) {
-      return URI.createPlatformResourceURI(iResource.getFullPath().toString(), true);
-   }
+    /**
+     * Returns the path of an IResource
+     * 
+     * @param iResource
+     * @return
+     */
+    public static String getPathForIResource(final IResource iResource) {
+        URI emfURI = getEMFPlatformUriForIResource(iResource);
+        return emfURI.toString();
+    }
 
-   /**
-    * Creates and returns a new Eclipse path for the given EMF URI.
-    *
-    * @param uri
-    *           an EMF URI
-    * @return a new Eclipse path for the given URI
-    */
-   public static IPath getIPathForEMFUri(final URI uri) {
-      return new Path(uri.toPlatformString(true));
-   }
+    /**
+     * Creates and returns an EMF platform resource URI for the given Eclipse resource.
+     * 
+     * @param iResource
+     *            an Eclipse resource
+     * @return a platform resource URI for the resource
+     */
+    public static URI getEMFPlatformUriForIResource(final IResource iResource) {
+        return URI.createPlatformResourceURI(iResource.getFullPath().toString(), true);
+    }
 
-   /**
-    * Returns an Eclipse file for the given EMF URI.
-    *
-    * @param uri
-    *           an EMF URI
-    * @return an Eclipse file for the given URI
-    */
-   public static IFile getIFileForEMFUri(final URI uri) {
-      IPath path = getIPathForEMFUri(uri);
-      return ResourcesPlugin.getWorkspace().getRoot().getFile(path);
-   }
+    /**
+     * Creates and returns a new Eclipse path for the given EMF URI.
+     * 
+     * @param uri
+     *            an EMF URI
+     * @return a new Eclipse path for the given URI
+     */
+    public static IPath getIPathForEMFUri(final URI uri) {
+        return new Path(uri.toPlatformString(true));
+    }
 
-   /**
-    * Creates a new URI from the given URI by appending the given string to the file name of the URI (i.e. before the dot "." and
-    * the file extension)
-    *
-    * @param uri
-    *           an URI
-    * @param toAppend
-    *           the string to be appended to the file name of the URI
-    * @return the new URI
-    */
-   public static URI newURIWithStringAppendedToFilename(final URI uri, final String toAppend) {
-      String fileExt = uri.fileExtension();
-      if (fileExt != null) {
-         URI uriWithoutFileExt = uri.trimFileExtension();
-         String resultFileName = uriWithoutFileExt.lastSegment() + toAppend;
-         return uriWithoutFileExt.trimSegments(1).appendSegment(resultFileName).appendFileExtension(fileExt);
-      } else {
-         throw new RuntimeException("The uri '" + uri + "' has no file extension so '" + toAppend
-               + "' cannot be appended before the file extension!");
-      }
+    /**
+     * Returns an Eclipse file for the given EMF URI.
+     * 
+     * @param uri
+     *            an EMF URI
+     * @return an Eclipse file for the given URI
+     */
+    public static IFile getIFileForEMFUri(final URI uri) {
+        IPath path = getIPathForEMFUri(uri);
+        return ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+    }
 
-   }
-   
-   public static URI createPlatformResourceURI(String pathAfterPlatformResource) {
-	   return URI.createPlatformResourceURI(pathAfterPlatformResource, true);
-   }
+    /**
+     * Creates a new URI from the given URI by appending the given string to the file name of the
+     * URI (i.e. before the dot "." and the file extension)
+     * 
+     * @param uri
+     *            an URI
+     * @param toAppend
+     *            the string to be appended to the file name of the URI
+     * @return the new URI
+     */
+    public static URI newURIWithStringAppendedToFilename(final URI uri, final String toAppend) {
+        String fileExt = uri.fileExtension();
+        if (fileExt != null) {
+            URI uriWithoutFileExt = uri.trimFileExtension();
+            String resultFileName = uriWithoutFileExt.lastSegment() + toAppend;
+            return uriWithoutFileExt.trimSegments(1).appendSegment(resultFileName).appendFileExtension(fileExt);
+        } else {
+            throw new RuntimeException("The uri '" + uri + "' has no file extension so '" + toAppend
+                    + "' cannot be appended before the file extension!");
+        }
+
+    }
+
+    public static URI createPlatformResourceURI(final String pathAfterPlatformResource) {
+        return URI.createPlatformResourceURI(pathAfterPlatformResource, true);
+    }
 }

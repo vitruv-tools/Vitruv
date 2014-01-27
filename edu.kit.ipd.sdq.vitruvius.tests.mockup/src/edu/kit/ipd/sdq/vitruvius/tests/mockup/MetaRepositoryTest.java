@@ -53,10 +53,10 @@ public class MetaRepositoryTest {
 
     public Pair<VURI, VURI> testAddMapping(final MetaRepositoryImpl metaRepository, final String uri1String,
             final String uri2String) {
-        VURI uri1 = new VURI(uri1String);
+        VURI uri1 = VURI.getInstance(uri1String);
         testAddMetamodel(metaRepository, uri1);
 
-        VURI uri2 = new VURI(uri2String);
+        VURI uri2 = VURI.getInstance(uri2String);
         testAddMetamodel(metaRepository, uri2);
 
         Mapping mapping = new Mapping(uri1, uri2);
@@ -71,10 +71,10 @@ public class MetaRepositoryTest {
     public void testAddViewType(final String uri1String, final String uri2String, final String viewTypeURIString) {
         MetaRepositoryImpl metaRepository = testMetaRepository();
 
-        VURI uri1 = new VURI(uri1String);
+        VURI uri1 = VURI.getInstance(uri1String);
         testAddMetamodel(metaRepository, uri1);
 
-        VURI uri2 = new VURI(uri2String);
+        VURI uri2 = VURI.getInstance(uri2String);
         testAddMetamodel(metaRepository, uri2);
 
         testAddViewType(metaRepository, uri1, uri2, viewTypeURIString);
@@ -83,7 +83,7 @@ public class MetaRepositoryTest {
     public VURI testAddViewType(final MetaRepositoryImpl metaRepository, final VURI uri1, final VURI uri2,
             final String viewTypeURIString) {
 
-        VURI viewTypeURI = new VURI(viewTypeURIString);
+        VURI viewTypeURI = VURI.getInstance(viewTypeURIString);
         ViewType vt = new ViewType(viewTypeURI, uri1, uri2);
         metaRepository.addViewType(vt);
 

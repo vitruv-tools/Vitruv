@@ -1,36 +1,47 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
-import org.eclipse.core.resources.IResource;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.emf.common.util.URI;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFBridge;
 
-public class VURI implements Comparable<VURI> {
-	private org.eclipse.emf.common.util.URI emfURI;
-	
-	public VURI(String uriString) {
-		this.emfURI = EMFBridge.createPlatformResourceURI(uriString);
-	}
-	
-	public VURI(URI emfURI) {
-		this.emfURI = emfURI;
-	}
-	
-	public VURI(IResource iResource) {
-		this.emfURI = EMFBridge.getEMFPlatformUriForIResource(iResource);
-	}
-	
-	@Override
-	public String toString() {
-		return emfURI.toString();
-	}
+/**
+ * Implements the multiton design pattern.
+ * 
+ * @author kramerm
+ * 
+ */
+public class VURI {
+    private static final Map<String, VURI> INSTANCES = new HashMap<String, VURI>();
 
-	@Override
-	public int compareTo(VURI otherURI) {
-		return this.toString().compareTo(otherURI.toString());
-	}
+    private org.eclipse.emf.common.util.URI emfURI;
+
+    /** Multiton classes should not have a public or default constructor. */
+    private VURI(final String uriString) {
+        this.emfURI = EMFBridge.createPlatformResourceURI(uriString);
+    }
+
+    public static synchronized VURI getInstance(final String key) {
+        VURI instance = INSTANCES.get(key);
+        if (key == null) {
+            instance = new VURI(key);
+            INSTANCES.put(key, instance);
+        }
+        return instance;
+    }
+
+    @Override
+    public String toString() {
+        return this.emfURI.toString();
+    }
 
     public URI getEMFUri() {
-        return emfURI;
+        return this.emfURI;
+    }
+
+    public String getFileExtension() {
+        return this.emfURI.fileExtension();
     }
 }

@@ -6,20 +6,25 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManagin
 
 public class MetamodelManagerImpl implements MetamodelManaging {
 
-	private final MetamodelManaging metamodelManaging;
+    private final MetamodelManaging metamodelManaging;
 
-	public MetamodelManagerImpl(MetamodelManaging metamodelManaging) {
-		this.metamodelManaging = metamodelManaging;
-	}
+    public MetamodelManagerImpl(final MetamodelManaging metamodelManaging) {
+        this.metamodelManaging = metamodelManaging;
+    }
 
-	@Override
-	public void addMetamodel(Metamodel metamodel) {
-		metamodelManaging.addMetamodel(metamodel);
-	}
+    @Override
+    public void addMetamodel(final Metamodel metamodel) {
+        this.metamodelManaging.addMetamodel(metamodel);
+    }
 
-	@Override
-	public Metamodel getMetamodel(VURI uri) {
-		return metamodelManaging.getMetamodel(uri);
-	}
+    @Override
+    public Metamodel getMetamodel(final VURI uri) {
+        return this.metamodelManaging.getMetamodel(uri);
+    }
+
+    @Override
+    public Metamodel getMetamodel(final String fileExtension) {
+        return this.metamodelManaging.getMetamodel(fileExtension);
+    }
 
 }

@@ -12,12 +12,14 @@ import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emf.MonitoredEmfEditorImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager.SyncManagerImpl;
@@ -129,9 +131,11 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
     private void importToVitruvius(IResource resource) {
         if (resource.getName().endsWith(".java") || resource.getName().endsWith(".repository")) {
             SyncManagerImpl syncManager = SyncManagerImpl.getSyncManagerInstance();
-            VURI vuri = new VURI(resource);
+            String path = EMFBridge.getPathForIResource(resource);
+            VURI vuri = VURI.getInstance(path);
             ModelInstance model = syncManager.getModelProviding().getModelInstanceOriginal(vuri);
-            EObject rootObject = EcoreResourceBridge.getResourceContentRootFromVURIIfUnique(vuri, resourceSet);
+            MonitoredEmfEditorImpl monitor = new MonitoredEmfEditorImpl(syncManager, syncManager.getModelProviding());
+            EObject rootObject = EcoreResourceBridge.getResourceContentRootFromVURIIfUnique(model.getURI(), resourceSet);
             if (null == rootObject) {
                 logger.error("Could not get EObject from resource: '" + resource.getFullPath().toOSString()
                         + "' . Resource is not included to Vitruvius.");
@@ -149,9 +153,10 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
      */
     private void removeFromVitruvius(IResource resource) {
         SyncManagerImpl syncManager = SyncManagerImpl.getSyncManagerInstance();
-        VURI vuri = new VURI(resource);
+        String path = EMFBridge.getPathForIResource(resource);
+        VURI vuri = VURI.getInstance(path);
         ModelInstance model = syncManager.getModelProviding().getModelInstanceOriginal(vuri);
-        EObject rootObject = EcoreResourceBridge.getResourceContentRootFromVURIIfUnique(model.getVURI(), resourceSet);
+        EObject rootObject = EcoreResourceBridge.getResourceContentRootFromVURIIfUnique(model.getURI(), resourceSet);
         // TODO: create change that contains remove of rootObject
         // Change change = new Change(Change.KIND.REMOVE, rootObject);
         syncManager.synchronizeChange(null, model);
