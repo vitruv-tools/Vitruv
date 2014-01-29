@@ -2,5 +2,18 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="AbstractMonitor" name="provided" schema="schema/AbstractMonitor.exsd"/>
-
+	
+	<extension point="org.eclipse.emf.transaction.listeners">
+	    <listener class="edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emf.VitruviusEmfListener">
+	       <editingDomain id="edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emf.VitruviusEmfEditingDomain"/>
+    	</listener>
+	</extension>
+	
+	<extension
+         point="org.eclipse.emf.transaction.editingDomains">
+      <editingDomain
+            factory="edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emf.VitruviusEditingDomainFactory"
+            id="edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emf.VitruviusEmfEditingDomain"/>
+   </extension>
+	
 </plugin>

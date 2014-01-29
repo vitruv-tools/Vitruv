@@ -12,15 +12,7 @@ import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFBridge;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emf.MonitoredEmfEditorImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager.SyncManagerImpl;
 
@@ -29,21 +21,18 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
     private static final Logger logger = Logger.getLogger(VitruviusEmfBuilder.class.getSimpleName());
 
     private List<String> monitoredFileTypes;
-    private ResourceSet resourceSet;
-    private MonitoredEmfEditorImpl monitor;
+    private final MonitoredEmfEditorImpl monitor;
 
     public static final String VITRUVIUS_EMF_BUILDER_ID = "edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.VitruviusEmfBuilder.id";
 
     public VitruviusEmfBuilder() {
-        this.resourceSet = new ResourceSetImpl();
-        SyncManagerImpl syncManager = SyncManagerImpl.getSyncManagerInstance();
+        final SyncManagerImpl syncManager = SyncManagerImpl.getSyncManagerInstance();
         this.monitor = new MonitoredEmfEditorImpl(syncManager, syncManager.getModelProviding());
     }
 
-    public VitruviusEmfBuilder(List<String> monitoredFileTypes) {
+    public VitruviusEmfBuilder(final List<String> monitoredFileTypes) {
         this();
         this.monitoredFileTypes = monitoredFileTypes;
-        this.resourceSet = new ResourceSetImpl();
     }
 
     class VitruviusEMFDeltaVisitor implements IResourceDeltaVisitor {
@@ -53,21 +42,18 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
          * @see org.eclipse.core.resources.IResourceDeltaVisitor#visit(org.eclipse.core.resources.
          * IResourceDelta)
          */
-        public boolean visit(IResourceDelta delta) throws CoreException {
-            IResource resource = delta.getResource();
-            if (isMonitoredResource(resource)) {
+        @Override
+        public boolean visit(final IResourceDelta delta) throws CoreException {
+            final IResource resource = delta.getResource();
+            if (this.isMonitoredResource(resource)) {
                 switch (delta.getKind()) {
                 case IResourceDelta.ADDED:
-                    importToVitruvius(resource);
+                    VitruviusEmfBuilder.this.importToVitruvius(resource);
                     break;
                 case IResourceDelta.REMOVED:
-                    removeFromVitruvius(resource);
+                    VitruviusEmfBuilder.this.removeFromVitruvius(resource);
                     break;
                 case IResourceDelta.CHANGED:
-                    /**
-                     * We do not need to track changes here. Changes are tracked via adapters on the
-                     * EMF models.
-                     */
                     break;
                 }
             }
@@ -75,14 +61,15 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
             return true;
         }
 
-        private boolean isMonitoredResource(IResource resource) {
+        private boolean isMonitoredResource(final IResource resource) {
             // check if it is relevant resource
             return true;
         }
     }
 
     class VitruviusEMFResourceVisitor implements IResourceVisitor {
-        public boolean visit(IResource resource) {
+        @Override
+        public boolean visit(final IResource resource) {
             // return true to continue visiting children.
             return true;
         }
@@ -95,15 +82,16 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
      * org.eclipse.core.runtime.IProgressMonitor)
      */
     @Override
-    protected IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
+    protected IProject[] build(final int kind, final Map<String, String> args, final IProgressMonitor monitor)
+            throws CoreException {
         if (kind == FULL_BUILD) {
-            fullBuild(monitor);
+            this.fullBuild(monitor);
         } else {
-            IResourceDelta delta = getDelta(getProject());
+            final IResourceDelta delta = this.getDelta(this.getProject());
             if (delta == null) {
-                fullBuild(monitor);
+                this.fullBuild(monitor);
             } else {
-                incrementalBuild(delta, monitor);
+                this.incrementalBuild(delta, monitor);
             }
         }
         return null;
@@ -111,12 +99,12 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
 
     protected void fullBuild(final IProgressMonitor monitor) throws CoreException {
         try {
-            getProject().accept(new VitruviusEMFResourceVisitor());
-        } catch (CoreException e) {
+            this.getProject().accept(new VitruviusEMFResourceVisitor());
+        } catch (final CoreException e) {
         }
     }
 
-    protected void incrementalBuild(IResourceDelta delta, IProgressMonitor monitor) throws CoreException {
+    protected void incrementalBuild(final IResourceDelta delta, final IProgressMonitor monitor) throws CoreException {
         // the visitor does the work.
         delta.accept(new VitruviusEMFDeltaVisitor());
     }
@@ -125,41 +113,24 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
      * @importToVitruvius: Imports new file to Vitruvius by: 1) adding adapter to root object of
      *                     instance, hence the MonitoredEmfEditor is called when file changes 2)
      *                     calling get with the new URI the resource is added to VSUM.
-     * @param resource
+     * @param iResource
      *            new resource
      */
-    private void importToVitruvius(IResource resource) {
-        if (resource.getName().endsWith(".java") || resource.getName().endsWith(".repository")) {
-            SyncManagerImpl syncManager = SyncManagerImpl.getSyncManagerInstance();
-            String path = EMFBridge.getPathForIResource(resource);
-            VURI vuri = VURI.getInstance(path);
-            ModelInstance model = syncManager.getModelProviding().getModelInstanceOriginal(vuri);
-            MonitoredEmfEditorImpl monitor = new MonitoredEmfEditorImpl(syncManager, syncManager.getModelProviding());
-            EObject rootObject = EcoreResourceBridge.getResourceContentRootFromVURIIfUnique(model.getURI(), resourceSet);
-            if (null == rootObject) {
-                logger.error("Could not get EObject from resource: '" + resource.getFullPath().toOSString()
-                        + "' . Resource is not included to Vitruvius.");
-                return;
-            }
-            rootObject.eAdapters().add(monitor.getContentAdapter());
+    private void importToVitruvius(final IResource iResource) {
+        if (iResource.getName().endsWith(".java") || iResource.getName().endsWith(".repository")) {
+            this.monitor.addMonitorToIResource(iResource);
         }
     }
 
     /**
      * Removes file from Vitruvius control by deleting its root element
      * 
-     * @param resource
+     * @param iResource
      *            resource to remove
      */
-    private void removeFromVitruvius(IResource resource) {
-        SyncManagerImpl syncManager = SyncManagerImpl.getSyncManagerInstance();
-        String path = EMFBridge.getPathForIResource(resource);
-        VURI vuri = VURI.getInstance(path);
-        ModelInstance model = syncManager.getModelProviding().getModelInstanceOriginal(vuri);
-        EObject rootObject = EcoreResourceBridge.getResourceContentRootFromVURIIfUnique(model.getURI(), resourceSet);
-        // TODO: create change that contains remove of rootObject
-        // Change change = new Change(Change.KIND.REMOVE, rootObject);
-        syncManager.synchronizeChange(null, model);
+    private void removeFromVitruvius(final IResource iResource) {
+        if (iResource.getName().endsWith(".java") || iResource.getName().endsWith(".repository")) {
+            this.monitor.removeMonitorFromIResource(iResource);
+        }
     }
-
 }
