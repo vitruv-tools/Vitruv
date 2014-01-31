@@ -25,7 +25,7 @@ public class VURI {
 
     public static synchronized VURI getInstance(final String key) {
         VURI instance = INSTANCES.get(key);
-        if (key == null) {
+        if (instance == null) {
             instance = new VURI(key);
             INSTANCES.put(key, instance);
         }

@@ -2,4 +2,35 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
 public class Change {
 
+    public enum KIND {
+        ADD, CHANGE, REMOVE
+    }
+
+    private final Object oldValue;
+    private final Object newValue;
+    private final KIND kind;
+
+    public Change(final Object oldValue, final Object newValue) {
+        this.oldValue = oldValue;
+        this.newValue = newValue;
+        if (null == oldValue && null != newValue) {
+            this.kind = KIND.ADD;
+        } else if (null != oldValue && null != newValue) {
+            this.kind = KIND.CHANGE;
+        } else {// if (null != oldValue && null == newValue) {
+            this.kind = KIND.REMOVE;
+        }
+    }
+
+    public Object getOldValue() {
+        return this.oldValue;
+    }
+
+    public Object getNewValue() {
+        return this.newValue;
+    }
+
+    public KIND getKind() {
+        return this.kind;
+    }
 }
