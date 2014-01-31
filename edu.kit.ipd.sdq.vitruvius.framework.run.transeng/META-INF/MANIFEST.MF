@@ -12,5 +12,6 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine;bundle
  edu.kit.ipd.sdq.vitruvius.framework.correspmmprovider,
  edu.kit.ipd.sdq.vitruvius.framework.design.mir.manager,
  edu.kit.ipd.sdq.vitruvius.framework.vsum,
- edu.kit.ipd.sdq.vitruvius.framework.synctransprovider
+ edu.kit.ipd.sdq.vitruvius.framework.synctransprovider,
+ org.eclipse.emf.ecore
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager

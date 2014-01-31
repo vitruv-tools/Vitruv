@@ -3,8 +3,13 @@ package edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePropagating;
@@ -43,26 +48,61 @@ public class SyncManagerImpl implements ChangeSynchronizing {
 
     @Override
     public void synchronizeChange(final Change change, final VURI sourceModelURI) {
+        if (change instanceof EMFModelChange) {
+            synchronizeChange((EMFModelChange) change, sourceModelURI);
+        } else if (change instanceof FileChange) {
+            synchronizeChange((FileChange) change, sourceModelURI);
+        }
+
+    }
+
+    // if the change is a file created change then
+    // VSUM.getModelInstance(); // also creates all correspondence models
+    // syncRootCreatedChange:
+    // EObject rootElement = null;
+    // if (resourceContents.size() == 1) {
+    // rootElement = resourceContents.get(0);
+    // } else if (resourceContents.size() > 1) {
+    // throw new RuntimeException("The requested model instance resource '" + resource
+    // + "' has to contain at most one root element "
+    // + "in order to be added to the VSUM without an explicit import!");
+    // }
+    // importSoloRoot
+    /**
+     * If the change is a file created change then we create model instance in VSUM
+     * 
+     * @param change
+     * @param sourceModelURI
+     */
+    private void synchronizeChange(final FileChange change, final VURI sourceModelURI) {
+        // if (KIND.CREATE == change.getKind()) {
+        synchronizeFileCreated(sourceModelURI);
+        // }
+
+    }
+
+    private void synchronizeFileCreated(final VURI sourceModelURI) {
+        ModelInstance newModelInstance = this.modelProviding.getModelInstanceOriginal(sourceModelURI);
+        Resource resource = newModelInstance.getResource();
+        EObject rootElement = null;
+        if (1 == resource.getContents().size()) {
+            rootElement = resource.getContents().get(0);
+        } else if (1 < resource.getContents().size()) {
+            throw new RuntimeException("The requested model instance resource '" + resource
+                    + "' has to contain at most one root element "
+                    + "in order to be added to the VSUM without an explicit import!");
+        }
+        EMFModelChange rootChange = new EMFModelChange();
+        synchronizeChange(rootChange, sourceModelURI);
+    }
+
+    private void synchronizeChange(final EMFModelChange change, final VURI sourceModelURI) {
         ModelInstance sourceModel = this.modelProviding.getModelInstanceOriginal(sourceModelURI);
         Set<CorrespondenceInstance> correspondenceInstances = this.correspondenceProviding
                 .getAllCorrespondenceInstances(sourceModelURI);
         for (CorrespondenceInstance correspondenceInstance : correspondenceInstances) {
             this.changePropagating.propagateChange(change, sourceModel, correspondenceInstance);
         }
-
-        // if the change is a file created change then
-        // VSUM.getModelInstance(); // also creates all correspondence models
-        // syncRootCreatedChange:
-        // EObject rootElement = null;
-        // if (resourceContents.size() == 1) {
-        // rootElement = resourceContents.get(0);
-        // } else if (resourceContents.size() > 1) {
-        // throw new RuntimeException("The requested model instance resource '" + resource
-        // + "' has to contain at most one root element "
-        // + "in order to be added to the VSUM without an explicit import!");
-        // }
-        // importSoloRoot
-
     }
 
     public ModelProviding getModelProviding() {

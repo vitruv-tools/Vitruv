@@ -10,8 +10,10 @@ public class ModelInstance extends AbstractURIHaving {
     public ModelInstance(final VURI uri, final Resource resource) {
         super(uri);
         this.resource = resource;
-        // TODO: get mmURI from eResource
+        if (null != resource || 0 == resource.getContents().size()) {
 
+        }
+        this.mmURI = VURI.getInstance(resource.getContents().get(0).eClass().getEPackage().getNsURI().toString());
     }
 
     public Resource getResource() {

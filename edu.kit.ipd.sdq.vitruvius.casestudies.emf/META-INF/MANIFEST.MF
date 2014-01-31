@@ -15,5 +15,6 @@ Require-Bundle: org.eclipse.core.resources,
  edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emf,
- edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor
+ edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor,
+ org.eclipse.emf.transaction;bundle-version="1.4.0"
 
