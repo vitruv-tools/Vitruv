@@ -16,9 +16,7 @@ public class PropagationEngineImpl implements ChangePropagating {
 
     @Override
     public void propagateChange(final Change change, final ModelInstance sourceModel,
-            final CorrespondenceInstance correspondenceInstance, final ModelInstance targetModel) {
-        // TODO Auto-generated method stub
+            final CorrespondenceInstance correspondenceInstance) {
 
     }
-
 }

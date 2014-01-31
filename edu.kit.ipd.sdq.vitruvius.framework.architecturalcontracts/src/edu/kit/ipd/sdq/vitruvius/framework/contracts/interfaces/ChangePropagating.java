@@ -5,6 +5,5 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceIns
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 
 public interface ChangePropagating {
-    void propagateChange(Change change, ModelInstance sourceModel, CorrespondenceInstance correspondenceInstance,
-            ModelInstance targetModel);
+    void propagateChange(Change change, ModelInstance sourceModel, CorrespondenceInstance correspondenceInstance);
 }
