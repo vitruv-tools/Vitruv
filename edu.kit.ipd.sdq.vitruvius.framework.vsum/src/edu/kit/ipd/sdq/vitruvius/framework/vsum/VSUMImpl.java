@@ -3,6 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.vsum;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -109,4 +110,9 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
         return null;
     }
 
+    @Override
+    public Set<CorrespondenceInstance> getAllCorrespondenceInstances(final VURI model1uri) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
