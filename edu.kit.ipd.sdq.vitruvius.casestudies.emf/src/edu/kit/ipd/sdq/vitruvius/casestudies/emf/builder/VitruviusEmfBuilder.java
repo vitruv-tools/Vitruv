@@ -13,6 +13,8 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emf.MonitoredEmfEditorImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager.SyncManagerImpl;
 
@@ -44,16 +46,17 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
          */
         @Override
         public boolean visit(final IResourceDelta delta) throws CoreException {
-            final IResource resource = delta.getResource();
-            if (this.isMonitoredResource(resource)) {
+            final IResource iResource = delta.getResource();
+            if (this.isMonitoredResource(iResource)) {
                 switch (delta.getKind()) {
                 case IResourceDelta.ADDED:
-                    VitruviusEmfBuilder.this.importToVitruvius(resource);
+                    VitruviusEmfBuilder.this.importToVitruvius(iResource);
                     break;
                 case IResourceDelta.REMOVED:
-                    VitruviusEmfBuilder.this.removeFromVitruvius(resource);
+                    VitruviusEmfBuilder.this.removeFromVitruvius(iResource);
                     break;
                 case IResourceDelta.CHANGED:
+                    VitruviusEmfBuilder.this.triggerSynchronisation(iResource);
                     break;
                 }
             }
@@ -118,7 +121,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
      */
     private void importToVitruvius(final IResource iResource) {
         if (iResource.getName().endsWith(".java") || iResource.getName().endsWith(".repository")) {
-            this.monitor.addMonitorToIResource(iResource);
+            // TODO: anything todo?
         }
     }
 
@@ -130,7 +133,13 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
      */
     private void removeFromVitruvius(final IResource iResource) {
         if (iResource.getName().endsWith(".java") || iResource.getName().endsWith(".repository")) {
-            this.monitor.removeMonitorFromIResource(iResource);
+            // TODO: implement removeFromVitruvius
         }
+    }
+
+    private void triggerSynchronisation(final IResource iResource) {
+        final VURI vuri = VURI.getInstance(EMFBridge.getEMFPlatformUriForIResource(iResource).toString());
+        this.monitor.triggerSynchronisation(vuri);
+
     }
 }

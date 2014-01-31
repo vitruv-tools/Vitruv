@@ -1,9 +1,14 @@
 package edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager;
 
+import java.util.List;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePropagating;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceMMProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.correspmmprovider.CorrespondenceMMProviderImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.design.metamodelmanager.MetamodelManagerImpl;
@@ -17,21 +22,37 @@ import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 public class SyncManagerImpl implements ChangeSynchronizing {
     private final ModelProviding modelProviding;
     private final ChangePropagating changePropagating;
+    private final CorrespondenceProviding correspondenceProviding;
+    private final CorrespondenceMMProviding correspondenceMMProviding;
 
     private static SyncManagerImpl syncManagerImplInstance;
 
-    private SyncManagerImpl(final ModelProviding modelProviding, final ChangePropagating changePropagating) {
+    private SyncManagerImpl(final ModelProviding modelProviding, final ChangePropagating changePropagating,
+            final CorrespondenceProviding correspondenceProviding,
+            final CorrespondenceMMProviding correspondenceMMProviding) {
         this.modelProviding = modelProviding;
         this.changePropagating = changePropagating;
+        this.correspondenceProviding = correspondenceProviding;
+        this.correspondenceMMProviding = correspondenceMMProviding;
     }
 
     @Override
-    public void synchronizeChange(final Change change, final ModelInstance sourceModel) {
-        // TODO Auto-generated method stub
-        /*
-         * ModelInstance model = modelProviding.getModelInstanceOriginal(sourceModel.getVURI());
-         * changePropagating.propagateChange(change, model, correspondenceModelInstance, model);
-         */
+    public void synchronizeChanges(final List<Change> changes, final VURI sourceModelURI) {
+        for (Change change : changes) {
+            synchronizeChange(change, sourceModelURI);
+        }
+    }
+
+    @Override
+    public void synchronizeChange(final Change change, final VURI sourceModelURI) {
+        ModelInstance model = this.modelProviding.getModelInstanceOriginal(sourceModelURI);
+
+        // CorrespondenceMM correspondenceMM =
+        // this.correspondenceMMProviding.getCorrespondenceMM(null, uriMM2)
+        // CorrespondenceModelInstance correspondenceModelInstance = this.correspondenceProviding
+        // .getCorrespondenceInstance(sourceModel.getURI(), model2URI);
+        // this.changePropagating.propagateChange(change, sourceModel, correspondenceModelInstance,
+        // targetModel);
     }
 
     public ModelProviding getModelProviding() {
@@ -51,7 +72,7 @@ public class SyncManagerImpl implements ChangeSynchronizing {
             SyncTransformationProviderImpl syncTransformationProvider = new SyncTransformationProviderImpl();
             PropagationEngineImpl propagatingChange = new PropagationEngineImpl(syncTransformationProvider);
             // create syncManager
-            syncManagerImplInstance = new SyncManagerImpl(vsum, propagatingChange);
+            syncManagerImplInstance = new SyncManagerImpl(vsum, propagatingChange, vsum, correspondenceProvider);
         }
         return syncManagerImplInstance;
     }
