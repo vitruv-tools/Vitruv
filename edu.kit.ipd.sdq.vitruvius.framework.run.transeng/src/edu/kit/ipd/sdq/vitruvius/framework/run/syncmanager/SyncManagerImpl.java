@@ -49,6 +49,20 @@ public class SyncManagerImpl implements ChangeSynchronizing {
         for (CorrespondenceInstance correspondenceInstance : correspondenceInstances) {
             this.changePropagating.propagateChange(change, sourceModel, correspondenceInstance);
         }
+
+        // if the change is a file created change then
+        // VSUM.getModelInstance(); // also creates all correspondence models
+        // syncRootCreatedChange:
+        // EObject rootElement = null;
+        // if (resourceContents.size() == 1) {
+        // rootElement = resourceContents.get(0);
+        // } else if (resourceContents.size() > 1) {
+        // throw new RuntimeException("The requested model instance resource '" + resource
+        // + "' has to contain at most one root element "
+        // + "in order to be added to the VSUM without an explicit import!");
+        // }
+        // importSoloRoot
+
     }
 
     public ModelProviding getModelProviding() {
