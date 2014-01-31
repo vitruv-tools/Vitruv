@@ -10,6 +10,10 @@ public class Change {
     private final Object newValue;
     private final KIND kind;
 
+    public Change() {
+        this.oldValue = this.newValue = this.kind = null;
+    }
+
     public Change(final Object oldValue, final Object newValue) {
         this.oldValue = oldValue;
         this.newValue = newValue;

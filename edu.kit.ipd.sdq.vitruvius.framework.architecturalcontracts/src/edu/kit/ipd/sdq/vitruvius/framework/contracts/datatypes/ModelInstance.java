@@ -4,10 +4,14 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 public class ModelInstance extends AbstractURIHaving {
     private Resource resource;
+    private Metamodel metamodel;
+    private VURI mmURI;
 
     public ModelInstance(final VURI uri, final Resource resource) {
         super(uri);
         this.resource = resource;
+        // TODO: get mmURI from eResource
+
     }
 
     public Resource getResource() {
@@ -16,6 +20,10 @@ public class ModelInstance extends AbstractURIHaving {
         // }
         // return this.rootElement;
         return this.resource;
+    }
+
+    public VURI getMetamodeURI() {
+        return this.mmURI;
     }
 
 }
