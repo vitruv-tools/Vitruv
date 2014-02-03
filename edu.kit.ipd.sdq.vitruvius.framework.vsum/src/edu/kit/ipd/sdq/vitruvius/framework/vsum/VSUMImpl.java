@@ -1,13 +1,12 @@
 package edu.kit.ipd.sdq.vitruvius.framework.vsum;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -17,13 +16,13 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.helper.FileSystemHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceMMProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MappingManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ViewTypeManaging;
+import edu.kit.ipd.sdq.vitruvius.framework.vsum.helper.FileSystemHelper;
 
 public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
     private final MappingManaging mappingManaging;
@@ -33,6 +32,8 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
 
     private final Map<VURI, ModelInstance> modelInstances;
     private final ResourceSet resourceSet;
+    private final Map<Metamodel, Collection<CorrespondenceInstance>> metamodel2CorrespondenceInstancesMap;
+    private final Map<Mapping, CorrespondenceInstance> mapping2CorrespondenceInstanceMap;
 
     public VSUMImpl(final MetamodelManaging metamodelManaging, final ViewTypeManaging viewTypeManaging,
             final MappingManaging mappingManaging, final CorrespondenceMMProviding correspondenceMMproviding) {
@@ -43,6 +44,8 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
 
         this.modelInstances = new HashMap<VURI, ModelInstance>();
         this.resourceSet = new ResourceSetImpl();
+        this.metamodel2CorrespondenceInstancesMap = new HashMap<Metamodel, Collection<CorrespondenceInstance>>();
+        this.mapping2CorrespondenceInstanceMap = new HashMap<Mapping, CorrespondenceInstance>();
     }
 
     @Override
@@ -82,21 +85,36 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
         URI emfURI = modelURI.getEMFUri();
         boolean loadOnDemand = true;
         Resource modelResource = this.resourceSet.getResource(emfURI, loadOnDemand);
-        List<EObject> resourceContents = modelResource.getContents();
         ModelInstance modelInstance = new ModelInstance(modelURI, modelResource);
-        // createAndRegisterAllCorrespondenceInstances
-        Collection<Mapping> mappings = this.mappingManaging.getAllMappings(metamodel);
-        for (Mapping mapping : mappings) {
-            VURI[] mmURIs = mapping.getMetamodelURIs();
-            VURI correspondenceURI = FileSystemHelper.getCorrespondenceURI(mmURIs);
-            Resource correspondenceResource;
-            // TODO AAA KEEP ON WORKING HERE
-            // CorrespondenceInstance correspondence = new CorrespondenceInstance(modelInstance,
-            // metamodel, mapping,
-            // correspondenceURI, correspondenceResource);
-        }
-
+        getOrCreateAllCorrespondenceInstances(metamodel);
         return modelInstance;
+    }
+
+    private void getOrCreateAllCorrespondenceInstances(final Metamodel metamodel) {
+        Collection<CorrespondenceInstance> correspondenceInstances = this.metamodel2CorrespondenceInstancesMap
+                .get(metamodel);
+        if (correspondenceInstances == null) {
+            correspondenceInstances = createAndRegisterAllCorrespondenceInstances(metamodel);
+            this.metamodel2CorrespondenceInstancesMap.put(metamodel, correspondenceInstances);
+        }
+    }
+
+    private Collection<CorrespondenceInstance> createAndRegisterAllCorrespondenceInstances(final Metamodel metamodel) {
+        Collection<Mapping> mappings = this.mappingManaging.getAllMappings(metamodel);
+        Collection<CorrespondenceInstance> correspondenceInstances = new ArrayList<CorrespondenceInstance>(
+                mappings.size());
+        for (Mapping mapping : mappings) {
+            CorrespondenceInstance correspondenceInstance = this.mapping2CorrespondenceInstanceMap.get(mapping);
+            if (correspondenceInstance == null) {
+                VURI[] mmURIs = mapping.getMetamodelURIs();
+                VURI correspondenceURI = FileSystemHelper.createCorrespondenceInstanceURI(mmURIs);
+                Resource correspondenceResource = this.resourceSet.createResource(correspondenceURI.getEMFUri());
+                correspondenceInstance = new CorrespondenceInstance(mapping, correspondenceURI, correspondenceResource);
+                this.mapping2CorrespondenceInstanceMap.put(mapping, correspondenceInstance);
+            }
+            correspondenceInstances.add(correspondenceInstance);
+        }
+        return correspondenceInstances;
     }
 
     // @Override

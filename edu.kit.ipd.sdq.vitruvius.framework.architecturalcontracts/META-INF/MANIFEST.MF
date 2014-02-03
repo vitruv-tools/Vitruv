@@ -5,7 +5,6 @@ Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.contracts;singleton:=tr
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.helper,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes
