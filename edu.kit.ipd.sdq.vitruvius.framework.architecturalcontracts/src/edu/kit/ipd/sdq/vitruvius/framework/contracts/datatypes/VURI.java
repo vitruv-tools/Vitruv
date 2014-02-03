@@ -13,7 +13,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFBridge;
  * @author kramerm
  * 
  */
-public class VURI {
+public class VURI implements Comparable<VURI> {
     private static final Map<String, VURI> INSTANCES = new HashMap<String, VURI>();
 
     private org.eclipse.emf.common.util.URI emfURI;
@@ -43,5 +43,10 @@ public class VURI {
 
     public String getFileExtension() {
         return this.emfURI.fileExtension();
+    }
+
+    @Override
+    public int compareTo(final VURI otherVURI) {
+        return this.emfURI.toString().compareTo(otherVURI.toString());
     }
 }
