@@ -1,10 +1,16 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
+public class Mapping implements MetamodelsReferring {
+    private Metamodel metamodelA;
+    private Metamodel metamodelB;
 
-public class Mapping extends AbstractMetamodelsReferring {
+    public Mapping(final Metamodel metamodelA, final Metamodel metamodelB) {
+        this.metamodelA = metamodelA;
+        this.metamodelB = metamodelB;
+    }
 
-	public Mapping(VURI... metamodelURIs) {
-		super(metamodelURIs);
-	}
-	
+    @Override
+    public VURI[] getMetamodelURIs() {
+        return new VURI[] { this.metamodelA.getURI(), this.metamodelB.getURI() };
+    }
 }

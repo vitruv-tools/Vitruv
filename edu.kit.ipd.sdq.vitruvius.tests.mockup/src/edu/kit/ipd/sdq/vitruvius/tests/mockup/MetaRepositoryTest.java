@@ -39,11 +39,10 @@ public class MetaRepositoryTest {
         return metaRepository;
     }
 
-    public void testAddMetamodel(final MetaRepositoryImpl metaRepository, final VURI uri) {
-        Metamodel mm1 = new Metamodel(uri);
-        metaRepository.addMetamodel(mm1);
-
-        assertEquals(metaRepository.getMetamodel(uri), mm1);
+    public Metamodel testAddMetamodel(final MetaRepositoryImpl metaRepository, final VURI uri) {
+        Metamodel mm = new Metamodel(uri);
+        metaRepository.addMetamodel(mm);
+        return mm;
     }
 
     public void testAddMapping(final String uri1String, final String uri2String) {
@@ -54,12 +53,12 @@ public class MetaRepositoryTest {
     public Pair<VURI, VURI> testAddMapping(final MetaRepositoryImpl metaRepository, final String uri1String,
             final String uri2String) {
         VURI uri1 = VURI.getInstance(uri1String);
-        testAddMetamodel(metaRepository, uri1);
+        Metamodel mm1 = testAddMetamodel(metaRepository, uri1);
 
         VURI uri2 = VURI.getInstance(uri2String);
-        testAddMetamodel(metaRepository, uri2);
+        Metamodel mm2 = testAddMetamodel(metaRepository, uri2);
 
-        Mapping mapping = new Mapping(uri1, uri2);
+        Mapping mapping = new Mapping(mm1, mm2);
         metaRepository.addMapping(mapping);
 
         Mapping mapping2 = metaRepository.getMapping(uri1, uri2);

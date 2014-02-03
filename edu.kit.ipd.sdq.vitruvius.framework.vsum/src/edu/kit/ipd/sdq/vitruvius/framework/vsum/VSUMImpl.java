@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.vsum;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,9 +13,11 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.helper.FileSystemHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceMMProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MappingManaging;
@@ -55,47 +58,45 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
      *   3) get unregistered but existing that contains at most a root element without children.
      *  But throws an exception if an instance that contains more than one element exists at the uri.
      */
-    public ModelInstance getModelInstanceOriginal(final VURI uri) {
-        ModelInstance modelInstance = this.modelInstances.get(uri);
+    public ModelInstance getModelInstanceOriginal(final VURI modelURI) {
+        ModelInstance modelInstance = this.modelInstances.get(modelURI);
         if (modelInstance == null) {
             // case 2 or 3
-            modelInstance = getOrCreateUnregisteredModelInstance(uri);
-            this.modelInstances.put(uri, modelInstance);
+            modelInstance = getOrCreateUnregisteredModelInstance(modelURI);
+            this.modelInstances.put(modelURI, modelInstance);
         }
         return modelInstance;
     }
 
-    private ModelInstance getOrCreateUnregisteredModelInstance(final VURI uri) {
-        String fileExtension = uri.getFileExtension();
+    private ModelInstance getOrCreateUnregisteredModelInstance(final VURI modelURI) {
+        String fileExtension = modelURI.getFileExtension();
         Metamodel metamodel = this.metamodelManaging.getMetamodel(fileExtension);
         if (metamodel == null) {
-            throw new RuntimeException("Cannot create a new model instance at the uri '" + uri
+            throw new RuntimeException("Cannot create a new model instance at the uri '" + modelURI
                     + "' because no metamodel is registered for the file extension '" + fileExtension + "'!");
         }
-        return getOrCreateUnregisteredModelInstance(uri, metamodel);
+        return getOrCreateUnregisteredModelInstance(modelURI, metamodel);
     }
 
-    private ModelInstance getOrCreateUnregisteredModelInstance(final VURI uri, final Metamodel metamodel) {
-        URI emfURI = uri.getEMFUri();
-        Resource resource = this.resourceSet.getResource(emfURI, true);
-        List<EObject> resourceContents = resource.getContents();
-        EObject rootElement = null;
-        if (resourceContents.size() == 1) {
-            rootElement = resourceContents.get(0);
-        } else if (resourceContents.size() > 1) {
-            throw new RuntimeException("The requested model instance resource '" + resource
-                    + "' has to contain at most one root element "
-                    + "in order to be added to the VSUM without an explicit import!");
+    private ModelInstance getOrCreateUnregisteredModelInstance(final VURI modelURI, final Metamodel metamodel) {
+        URI emfURI = modelURI.getEMFUri();
+        boolean loadOnDemand = true;
+        Resource modelResource = this.resourceSet.getResource(emfURI, loadOnDemand);
+        List<EObject> resourceContents = modelResource.getContents();
+        ModelInstance modelInstance = new ModelInstance(modelURI, modelResource);
+        // createAndRegisterAllCorrespondenceInstances
+        Collection<Mapping> mappings = this.mappingManaging.getAllMappings(metamodel);
+        for (Mapping mapping : mappings) {
+            VURI[] mmURIs = mapping.getMetamodelURIs();
+            VURI correspondenceURI = FileSystemHelper.getCorrespondenceURI(mmURIs);
+            Resource correspondenceResource;
+            // TODO AAA KEEP ON WORKING HERE
+            // CorrespondenceInstance correspondence = new CorrespondenceInstance(modelInstance,
+            // metamodel, mapping,
+            // correspondenceURI, correspondenceResource);
         }
-        if (rootElement != null) {
-            importSoloRoot(rootElement, uri, metamodel);
-        }
-        return new ModelInstance(uri, resource);
-    }
 
-    private void importSoloRoot(final EObject root, final VURI uri, final Metamodel metamodel) {
-        // TODO Auto-generated method stub
-
+        return modelInstance;
     }
 
     // @Override

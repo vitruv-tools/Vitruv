@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.metarepository;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -99,6 +100,22 @@ public class MetaRepositoryImpl implements MetamodelManaging, ViewTypeManaging, 
             this.uri2MetamodelMap.claimKeyIsMapped(metamodelURI);
         }
         return this.uris2MappingMap.claimValueForKeys(metamodelURIs);
+    }
+
+    @Override
+    public Mapping getMapping(final Metamodel... metamodels) {
+        VURI[] uris = new VURI[metamodels.length];
+        for (int i = 0; i < metamodels.length; i++) {
+            VURI uri = metamodels[i].getURI();
+            uris[i] = uri;
+        }
+        return getMapping(uris);
+    }
+
+    @Override
+    public Collection<Mapping> getAllMappings(final Metamodel metamodel) {
+        VURI uri = metamodel.getURI();
+        return this.uris2MappingMap.get(uri);
     }
 
     @Override
