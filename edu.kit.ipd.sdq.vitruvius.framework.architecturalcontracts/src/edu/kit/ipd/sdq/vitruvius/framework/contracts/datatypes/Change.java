@@ -3,12 +3,12 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 public class Change {
 
     public enum KIND {
-        ADD, CHANGE, REMOVE
+        ADD, CHANGE, REMOVE, CREATE, DELETE
     }
 
-    private final Object oldValue;
-    private final Object newValue;
-    private final KIND kind;
+    protected final Object oldValue;
+    protected final Object newValue;
+    protected KIND kind;
 
     public Change() {
         this.oldValue = this.newValue = this.kind = null;

@@ -1,10 +1,11 @@
 package edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
+import org.apache.log4j.Logger;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
@@ -26,9 +27,14 @@ import edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.SyncTransformationP
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
 public class SyncManagerImpl implements ChangeSynchronizing {
+
+    private static Logger logger = Logger.getLogger(SyncManagerImpl.class.getSimpleName());
+
     private final ModelProviding modelProviding;
     private final ChangePropagating changePropagating;
     private final CorrespondenceProviding correspondenceProviding;
+
+    private Map<Class<?>, ConcreteChangeSynchronizer> changeSynchonizerMap;
 
     private static SyncManagerImpl syncManagerImplInstance;
 
@@ -37,6 +43,9 @@ public class SyncManagerImpl implements ChangeSynchronizing {
         this.modelProviding = modelProviding;
         this.changePropagating = changePropagating;
         this.correspondenceProviding = correspondenceProviding;
+        this.changeSynchonizerMap = new HashMap<Class<?>, ConcreteChangeSynchronizer>();
+        this.changeSynchonizerMap.put(EMFModelChange.class, new EMFModelSynchronizer(modelProviding, this));
+        this.changeSynchonizerMap.put(FileChange.class, new FileChangeSynchronizer(modelProviding, this));
     }
 
     @Override
@@ -48,52 +57,12 @@ public class SyncManagerImpl implements ChangeSynchronizing {
 
     @Override
     public void synchronizeChange(final Change change, final VURI sourceModelURI) {
-        if (change instanceof EMFModelChange) {
-            synchronizeChange((EMFModelChange) change, sourceModelURI);
-        } else if (change instanceof FileChange) {
-            synchronizeChange((FileChange) change, sourceModelURI);
+        if (!this.changeSynchonizerMap.containsKey(change.getClass())) {
+            logger.warn("Could not find ChangeSynchronizer for change " + change.getClass().getSimpleName()
+                    + ". Can not synchronize change in source model " + sourceModelURI.toString() + " not synchroized.");
+            return;
         }
-
-    }
-
-    // if the change is a file created change then
-    // VSUM.getModelInstance(); // also creates all correspondence models
-    // syncRootCreatedChange:
-    // EObject rootElement = null;
-    // if (resourceContents.size() == 1) {
-    // rootElement = resourceContents.get(0);
-    // } else if (resourceContents.size() > 1) {
-    // throw new RuntimeException("The requested model instance resource '" + resource
-    // + "' has to contain at most one root element "
-    // + "in order to be added to the VSUM without an explicit import!");
-    // }
-    // importSoloRoot
-    /**
-     * If the change is a file created change then we create model instance in VSUM
-     * 
-     * @param change
-     * @param sourceModelURI
-     */
-    private void synchronizeChange(final FileChange change, final VURI sourceModelURI) {
-        // if (KIND.CREATE == change.getKind()) {
-        synchronizeFileCreated(sourceModelURI);
-        // }
-
-    }
-
-    private void synchronizeFileCreated(final VURI sourceModelURI) {
-        ModelInstance newModelInstance = this.modelProviding.getModelInstanceOriginal(sourceModelURI);
-        Resource resource = newModelInstance.getResource();
-        EObject rootElement = null;
-        if (1 == resource.getContents().size()) {
-            rootElement = resource.getContents().get(0);
-        } else if (1 < resource.getContents().size()) {
-            throw new RuntimeException("The requested model instance resource '" + resource
-                    + "' has to contain at most one root element "
-                    + "in order to be added to the VSUM without an explicit import!");
-        }
-        EMFModelChange rootChange = new EMFModelChange();
-        synchronizeChange(rootChange, sourceModelURI);
+        this.changeSynchonizerMap.get(change).synchronizeChange(change, sourceModelURI);
     }
 
     private void synchronizeChange(final EMFModelChange change, final VURI sourceModelURI) {

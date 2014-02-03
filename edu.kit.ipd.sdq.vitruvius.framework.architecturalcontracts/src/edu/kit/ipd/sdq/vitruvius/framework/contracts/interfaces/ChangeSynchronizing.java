@@ -7,7 +7,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 
 public interface ChangeSynchronizing {
     /**
-     * May resort changes and igores undos/redos.
+     * Resort changes and igores undos/redos.
      * 
      * @param change
      *            list of changes
