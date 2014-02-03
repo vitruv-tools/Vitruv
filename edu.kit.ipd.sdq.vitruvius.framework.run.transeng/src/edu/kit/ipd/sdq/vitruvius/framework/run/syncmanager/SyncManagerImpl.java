@@ -3,15 +3,12 @@ package edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePropagating;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
@@ -44,7 +41,8 @@ public class SyncManagerImpl implements ChangeSynchronizing {
         this.changePropagating = changePropagating;
         this.correspondenceProviding = correspondenceProviding;
         this.changeSynchonizerMap = new HashMap<Class<?>, ConcreteChangeSynchronizer>();
-        this.changeSynchonizerMap.put(EMFModelChange.class, new EMFModelSynchronizer(modelProviding, this));
+        this.changeSynchonizerMap.put(EMFModelChange.class, new EMFModelSynchronizer(modelProviding, this,
+                this.changePropagating, this.correspondenceProviding));
         this.changeSynchonizerMap.put(FileChange.class, new FileChangeSynchronizer(modelProviding, this));
     }
 
@@ -62,16 +60,7 @@ public class SyncManagerImpl implements ChangeSynchronizing {
                     + ". Can not synchronize change in source model " + sourceModelURI.toString() + " not synchroized.");
             return;
         }
-        this.changeSynchonizerMap.get(change).synchronizeChange(change, sourceModelURI);
-    }
-
-    private void synchronizeChange(final EMFModelChange change, final VURI sourceModelURI) {
-        ModelInstance sourceModel = this.modelProviding.getModelInstanceOriginal(sourceModelURI);
-        Set<CorrespondenceInstance> correspondenceInstances = this.correspondenceProviding
-                .getAllCorrespondenceInstances(sourceModelURI);
-        for (CorrespondenceInstance correspondenceInstance : correspondenceInstances) {
-            this.changePropagating.propagateChange(change, sourceModel, correspondenceInstance);
-        }
+        this.changeSynchonizerMap.get(change.getClass()).synchronizeChange(change, sourceModelURI);
     }
 
     public ModelProviding getModelProviding() {
