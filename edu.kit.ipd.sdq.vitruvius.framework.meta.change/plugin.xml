@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="TODO"
+            class="change.ChangePackage"
+            genModel="metamodel/change.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated change -->
+      <package
+            uri="TODO"
+            class="edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.ChangePackage"
+            genModel="metamodel/change.genmodel"/>
+   </extension>
+
+</plugin>

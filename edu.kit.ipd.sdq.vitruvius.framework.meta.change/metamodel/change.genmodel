@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/edu.kit.ipd.sdq.vitruvius.framework.meta.change/src"
+    modelPluginID="edu.kit.ipd.sdq.vitruvius.framework.meta.change" modelName="Change"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0" copyrightFields="false">
+  <foreignModel>change.ecore</foreignModel>
+  <genPackages prefix="Change" basePackage="edu.kit.ipd.sdq.vitruvius.framework.meta.change"
+      disposableProviderFactory="true" ecorePackage="change.ecore#/">
+    <genClasses image="false" ecoreClass="change.ecore#//EObjectChange"/>
+    <genClasses image="false" ecoreClass="change.ecore#//EFeatureChange"/>
+    <genClasses image="false" ecoreClass="change.ecore#//EAttributeChange"/>
+    <genClasses image="false" ecoreClass="change.ecore#//EReferenceChange"/>
+    <genClasses ecoreClass="change.ecore#//CreateEObject"/>
+    <genClasses ecoreClass="change.ecore#//CreateNonRootEObject">
+      <genTypeParameters ecoreTypeParameter="change.ecore#//CreateNonRootEObject/T"/>
+    </genClasses>
+    <genClasses ecoreClass="change.ecore#//CreateRootEObject"/>
+    <genClasses image="false" ecoreClass="change.ecore#//UpdateEFeature">
+      <genTypeParameters ecoreTypeParameter="change.ecore#//UpdateEFeature/T"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference change.ecore#//UpdateEFeature/newValue"/>
+    </genClasses>
+    <genClasses ecoreClass="change.ecore#//UnsetEFeature"/>
+    <genClasses ecoreClass="change.ecore#//UpdateEAttribute">
+      <genTypeParameters ecoreTypeParameter="change.ecore#//UpdateEAttribute/T"/>
+    </genClasses>
+    <genClasses ecoreClass="change.ecore#//UpdateEReference">
+      <genTypeParameters ecoreTypeParameter="change.ecore#//UpdateEReference/T"/>
+    </genClasses>
+    <genClasses ecoreClass="change.ecore#//UpdateEContainmentReference">
+      <genTypeParameters ecoreTypeParameter="change.ecore#//UpdateEContainmentReference/T"/>
+    </genClasses>
+    <genClasses ecoreClass="change.ecore#//DeleteEObject"/>
+    <genClasses ecoreClass="change.ecore#//DeleteNonRootEObject">
+      <genTypeParameters ecoreTypeParameter="change.ecore#//DeleteNonRootEObject/T"/>
+    </genClasses>
+    <genClasses ecoreClass="change.ecore#//DeleteRootEObject"/>
+  </genPackages>
+</genmodel:GenModel>
