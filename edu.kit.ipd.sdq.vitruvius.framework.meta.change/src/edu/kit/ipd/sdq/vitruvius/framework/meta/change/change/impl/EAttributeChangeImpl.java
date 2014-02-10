@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public abstract class EAttributeChangeImpl<T extends EAttribute> extends EFeatureChangeImpl<T> implements EAttributeChange<T> {
+public abstract class EAttributeChangeImpl extends EFeatureChangeImpl<EAttribute> implements EAttributeChange {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -44,7 +44,7 @@ public abstract class EAttributeChangeImpl<T extends EAttribute> extends EFeatur
      * @generated
      */
     @Override
-    public void setAffectedFeature(T newAffectedFeature) {
+    public void setAffectedFeature(EAttribute newAffectedFeature) {
         super.setAffectedFeature(newAffectedFeature);
     }
 

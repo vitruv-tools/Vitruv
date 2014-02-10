@@ -31,7 +31,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class UpdateEReferenceImpl<T extends EObject, U extends EReference> extends UpdateEFeatureImpl<T> implements UpdateEReference<T, U> {
+public class UpdateEReferenceImpl<T extends EObject> extends UpdateEFeatureImpl<T> implements UpdateEReference<T> {
     /**
      * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
      * <!-- begin-user-doc -->
@@ -40,7 +40,7 @@ public class UpdateEReferenceImpl<T extends EObject, U extends EReference> exten
      * @generated
      * @ordered
      */
-    protected U affectedFeature;
+    protected EReference affectedFeature;
 
     /**
      * The cached value of the '{@link #getAffectedEObject() <em>Affected EObject</em>}' reference.
@@ -77,10 +77,10 @@ public class UpdateEReferenceImpl<T extends EObject, U extends EReference> exten
      * @generated
      */
     @SuppressWarnings("unchecked")
-    public U getAffectedFeature() {
+    public EReference getAffectedFeature() {
         if (affectedFeature != null && affectedFeature.eIsProxy()) {
             InternalEObject oldAffectedFeature = (InternalEObject)affectedFeature;
-            affectedFeature = (U)eResolveProxy(oldAffectedFeature);
+            affectedFeature = (EReference)eResolveProxy(oldAffectedFeature);
             if (affectedFeature != oldAffectedFeature) {
                 if (eNotificationRequired())
                     eNotify(new ENotificationImpl(this, Notification.RESOLVE, ChangePackage.UPDATE_EREFERENCE__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
@@ -94,7 +94,7 @@ public class UpdateEReferenceImpl<T extends EObject, U extends EReference> exten
      * <!-- end-user-doc -->
      * @generated
      */
-    public U basicGetAffectedFeature() {
+    public EReference basicGetAffectedFeature() {
         return affectedFeature;
     }
 
@@ -103,8 +103,8 @@ public class UpdateEReferenceImpl<T extends EObject, U extends EReference> exten
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setAffectedFeature(U newAffectedFeature) {
-        U oldAffectedFeature = affectedFeature;
+    public void setAffectedFeature(EReference newAffectedFeature) {
+        EReference oldAffectedFeature = affectedFeature;
         affectedFeature = newAffectedFeature;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ChangePackage.UPDATE_EREFERENCE__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
@@ -176,7 +176,7 @@ public class UpdateEReferenceImpl<T extends EObject, U extends EReference> exten
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case ChangePackage.UPDATE_EREFERENCE__AFFECTED_FEATURE:
-                setAffectedFeature((U)newValue);
+                setAffectedFeature((EReference)newValue);
                 return;
             case ChangePackage.UPDATE_EREFERENCE__AFFECTED_EOBJECT:
                 setAffectedEObject((EObject)newValue);
@@ -194,7 +194,7 @@ public class UpdateEReferenceImpl<T extends EObject, U extends EReference> exten
     public void eUnset(int featureID) {
         switch (featureID) {
             case ChangePackage.UPDATE_EREFERENCE__AFFECTED_FEATURE:
-                setAffectedFeature((U)null);
+                setAffectedFeature((EReference)null);
                 return;
             case ChangePackage.UPDATE_EREFERENCE__AFFECTED_EOBJECT:
                 setAffectedEObject((EObject)null);

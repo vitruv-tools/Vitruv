@@ -14,5 +14,5 @@ import org.eclipse.emf.ecore.EAttribute;
  * @model TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
-public interface UpdateEAttribute<T extends Object, U extends EAttribute> extends UpdateEFeature<T>, EAttributeChange<U> {
+public interface UpdateEAttribute<T extends Object> extends UpdateEFeature<T>, EAttributeChange {
 } // UpdateEAttribute

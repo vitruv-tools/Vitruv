@@ -77,8 +77,8 @@ public class ChangeFactoryImpl extends EFactoryImpl implements ChangeFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public <T extends EObject, U extends EReference> CreateNonRootEObject<T, U> createCreateNonRootEObject() {
-        CreateNonRootEObjectImpl<T, U> createNonRootEObject = new CreateNonRootEObjectImpl<T, U>();
+    public <T extends EObject> CreateNonRootEObject<T> createCreateNonRootEObject() {
+        CreateNonRootEObjectImpl<T> createNonRootEObject = new CreateNonRootEObjectImpl<T>();
         return createNonRootEObject;
     }
 
@@ -107,8 +107,8 @@ public class ChangeFactoryImpl extends EFactoryImpl implements ChangeFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public <T extends Object, U extends EAttribute> UpdateEAttribute<T, U> createUpdateEAttribute() {
-        UpdateEAttributeImpl<T, U> updateEAttribute = new UpdateEAttributeImpl<T, U>();
+    public <T extends Object> UpdateEAttribute<T> createUpdateEAttribute() {
+        UpdateEAttributeImpl<T> updateEAttribute = new UpdateEAttributeImpl<T>();
         return updateEAttribute;
     }
 
@@ -117,8 +117,8 @@ public class ChangeFactoryImpl extends EFactoryImpl implements ChangeFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public <T extends EObject, U extends EReference> UpdateEReference<T, U> createUpdateEReference() {
-        UpdateEReferenceImpl<T, U> updateEReference = new UpdateEReferenceImpl<T, U>();
+    public <T extends EObject> UpdateEReference<T> createUpdateEReference() {
+        UpdateEReferenceImpl<T> updateEReference = new UpdateEReferenceImpl<T>();
         return updateEReference;
     }
 
@@ -127,8 +127,8 @@ public class ChangeFactoryImpl extends EFactoryImpl implements ChangeFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public <T extends EObject, U extends EReference> UpdateEContainmentReference<T, U> createUpdateEContainmentReference() {
-        UpdateEContainmentReferenceImpl<T, U> updateEContainmentReference = new UpdateEContainmentReferenceImpl<T, U>();
+    public <T extends EObject> UpdateEContainmentReference<T> createUpdateEContainmentReference() {
+        UpdateEContainmentReferenceImpl<T> updateEContainmentReference = new UpdateEContainmentReferenceImpl<T>();
         return updateEContainmentReference;
     }
 
@@ -137,8 +137,8 @@ public class ChangeFactoryImpl extends EFactoryImpl implements ChangeFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public <T extends EObject, U extends EReference> DeleteNonRootEObject<T, U> createDeleteNonRootEObject() {
-        DeleteNonRootEObjectImpl<T, U> deleteNonRootEObject = new DeleteNonRootEObjectImpl<T, U>();
+    public <T extends EObject> DeleteNonRootEObject<T> createDeleteNonRootEObject() {
+        DeleteNonRootEObjectImpl<T> deleteNonRootEObject = new DeleteNonRootEObjectImpl<T>();
         return deleteNonRootEObject;
     }
 

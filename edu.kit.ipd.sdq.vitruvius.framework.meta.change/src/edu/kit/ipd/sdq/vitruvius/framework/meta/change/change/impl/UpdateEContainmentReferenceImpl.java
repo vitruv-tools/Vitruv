@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.EReference;
  *
  * @generated
  */
-public class UpdateEContainmentReferenceImpl<T extends EObject, U extends EReference> extends UpdateEReferenceImpl<T, U> implements UpdateEContainmentReference<T, U> {
+public class UpdateEContainmentReferenceImpl<T extends EObject> extends UpdateEReferenceImpl<T> implements UpdateEContainmentReference<T> {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

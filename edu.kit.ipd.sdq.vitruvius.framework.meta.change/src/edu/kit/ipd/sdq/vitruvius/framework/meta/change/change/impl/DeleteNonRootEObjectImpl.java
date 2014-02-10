@@ -34,7 +34,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class DeleteNonRootEObjectImpl<T extends EObject, U extends EReference> extends DeleteRootEObjectImpl implements DeleteNonRootEObject<T, U> {
+public class DeleteNonRootEObjectImpl<T extends EObject> extends DeleteRootEObjectImpl implements DeleteNonRootEObject<T> {
     /**
      * The cached value of the '{@link #getNewValue() <em>New Value</em>}' reference.
      * <!-- begin-user-doc -->
@@ -53,7 +53,7 @@ public class DeleteNonRootEObjectImpl<T extends EObject, U extends EReference> e
      * @generated
      * @ordered
      */
-    protected U affectedFeature;
+    protected EReference affectedFeature;
 
     /**
      * The cached value of the '{@link #getAffectedEObject() <em>Affected EObject</em>}' reference.
@@ -129,10 +129,10 @@ public class DeleteNonRootEObjectImpl<T extends EObject, U extends EReference> e
      * @generated
      */
     @SuppressWarnings("unchecked")
-    public U getAffectedFeature() {
+    public EReference getAffectedFeature() {
         if (affectedFeature != null && affectedFeature.eIsProxy()) {
             InternalEObject oldAffectedFeature = (InternalEObject)affectedFeature;
-            affectedFeature = (U)eResolveProxy(oldAffectedFeature);
+            affectedFeature = (EReference)eResolveProxy(oldAffectedFeature);
             if (affectedFeature != oldAffectedFeature) {
                 if (eNotificationRequired())
                     eNotify(new ENotificationImpl(this, Notification.RESOLVE, ChangePackage.DELETE_NON_ROOT_EOBJECT__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
@@ -146,7 +146,7 @@ public class DeleteNonRootEObjectImpl<T extends EObject, U extends EReference> e
      * <!-- end-user-doc -->
      * @generated
      */
-    public U basicGetAffectedFeature() {
+    public EReference basicGetAffectedFeature() {
         return affectedFeature;
     }
 
@@ -155,8 +155,8 @@ public class DeleteNonRootEObjectImpl<T extends EObject, U extends EReference> e
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setAffectedFeature(U newAffectedFeature) {
-        U oldAffectedFeature = affectedFeature;
+    public void setAffectedFeature(EReference newAffectedFeature) {
+        EReference oldAffectedFeature = affectedFeature;
         affectedFeature = newAffectedFeature;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ChangePackage.DELETE_NON_ROOT_EOBJECT__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
@@ -234,7 +234,7 @@ public class DeleteNonRootEObjectImpl<T extends EObject, U extends EReference> e
                 setNewValue((T)newValue);
                 return;
             case ChangePackage.DELETE_NON_ROOT_EOBJECT__AFFECTED_FEATURE:
-                setAffectedFeature((U)newValue);
+                setAffectedFeature((EReference)newValue);
                 return;
             case ChangePackage.DELETE_NON_ROOT_EOBJECT__AFFECTED_EOBJECT:
                 setAffectedEObject((EObject)newValue);
@@ -255,7 +255,7 @@ public class DeleteNonRootEObjectImpl<T extends EObject, U extends EReference> e
                 setNewValue((T)null);
                 return;
             case ChangePackage.DELETE_NON_ROOT_EOBJECT__AFFECTED_FEATURE:
-                setAffectedFeature((U)null);
+                setAffectedFeature((EReference)null);
                 return;
             case ChangePackage.DELETE_NON_ROOT_EOBJECT__AFFECTED_EOBJECT:
                 setAffectedEObject((EObject)null);

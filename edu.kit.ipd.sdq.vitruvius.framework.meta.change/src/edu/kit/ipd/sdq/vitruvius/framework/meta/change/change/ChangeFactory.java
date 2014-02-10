@@ -32,7 +32,7 @@ public interface ChangeFactory extends EFactory {
      * @return a new object of class '<em>Create Non Root EObject</em>'.
      * @generated
      */
-    <T extends EObject, U extends EReference> CreateNonRootEObject<T, U> createCreateNonRootEObject();
+    <T extends EObject> CreateNonRootEObject<T> createCreateNonRootEObject();
 
     /**
      * Returns a new object of class '<em>Create Root EObject</em>'.
@@ -59,7 +59,7 @@ public interface ChangeFactory extends EFactory {
      * @return a new object of class '<em>Update EAttribute</em>'.
      * @generated
      */
-    <T extends Object, U extends EAttribute> UpdateEAttribute<T, U> createUpdateEAttribute();
+    <T extends Object> UpdateEAttribute<T> createUpdateEAttribute();
 
     /**
      * Returns a new object of class '<em>Update EReference</em>'.
@@ -68,7 +68,7 @@ public interface ChangeFactory extends EFactory {
      * @return a new object of class '<em>Update EReference</em>'.
      * @generated
      */
-    <T extends EObject, U extends EReference> UpdateEReference<T, U> createUpdateEReference();
+    <T extends EObject> UpdateEReference<T> createUpdateEReference();
 
     /**
      * Returns a new object of class '<em>Update EContainment Reference</em>'.
@@ -77,7 +77,7 @@ public interface ChangeFactory extends EFactory {
      * @return a new object of class '<em>Update EContainment Reference</em>'.
      * @generated
      */
-    <T extends EObject, U extends EReference> UpdateEContainmentReference<T, U> createUpdateEContainmentReference();
+    <T extends EObject> UpdateEContainmentReference<T> createUpdateEContainmentReference();
 
     /**
      * Returns a new object of class '<em>Delete Non Root EObject</em>'.
@@ -86,7 +86,7 @@ public interface ChangeFactory extends EFactory {
      * @return a new object of class '<em>Delete Non Root EObject</em>'.
      * @generated
      */
-    <T extends EObject, U extends EReference> DeleteNonRootEObject<T, U> createDeleteNonRootEObject();
+    <T extends EObject> DeleteNonRootEObject<T> createDeleteNonRootEObject();
 
     /**
      * Returns a new object of class '<em>Delete Root EObject</em>'.

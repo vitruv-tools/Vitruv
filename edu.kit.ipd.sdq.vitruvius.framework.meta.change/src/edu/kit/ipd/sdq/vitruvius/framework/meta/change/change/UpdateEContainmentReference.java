@@ -15,5 +15,5 @@ import org.eclipse.emf.ecore.EReference;
  * @model
  * @generated
  */
-public interface UpdateEContainmentReference<T extends EObject, U extends EReference> extends UpdateEReference<T, U> {
+public interface UpdateEContainmentReference<T extends EObject> extends UpdateEReference<T> {
 } // UpdateEContainmentReference

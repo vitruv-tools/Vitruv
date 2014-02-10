@@ -14,5 +14,5 @@ import org.eclipse.emf.ecore.EReference;
  * @model abstract="true"
  * @generated
  */
-public interface EReferenceChange<T extends EReference> extends EFeatureChange<T> {
+public interface EReferenceChange extends EFeatureChange<EReference> {
 } // EReferenceChange

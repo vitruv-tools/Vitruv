@@ -31,7 +31,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class UpdateEAttributeImpl<T extends Object, U extends EAttribute> extends UpdateEFeatureImpl<T> implements UpdateEAttribute<T, U> {
+public class UpdateEAttributeImpl<T extends Object> extends UpdateEFeatureImpl<T> implements UpdateEAttribute<T> {
     /**
      * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
      * <!-- begin-user-doc -->
@@ -40,7 +40,7 @@ public class UpdateEAttributeImpl<T extends Object, U extends EAttribute> extend
      * @generated
      * @ordered
      */
-    protected U affectedFeature;
+    protected EAttribute affectedFeature;
 
     /**
      * The cached value of the '{@link #getAffectedEObject() <em>Affected EObject</em>}' reference.
@@ -88,10 +88,10 @@ public class UpdateEAttributeImpl<T extends Object, U extends EAttribute> extend
      * @generated
      */
     @SuppressWarnings("unchecked")
-    public U getAffectedFeature() {
+    public EAttribute getAffectedFeature() {
         if (affectedFeature != null && affectedFeature.eIsProxy()) {
             InternalEObject oldAffectedFeature = (InternalEObject)affectedFeature;
-            affectedFeature = (U)eResolveProxy(oldAffectedFeature);
+            affectedFeature = (EAttribute)eResolveProxy(oldAffectedFeature);
             if (affectedFeature != oldAffectedFeature) {
                 if (eNotificationRequired())
                     eNotify(new ENotificationImpl(this, Notification.RESOLVE, ChangePackage.UPDATE_EATTRIBUTE__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
@@ -105,7 +105,7 @@ public class UpdateEAttributeImpl<T extends Object, U extends EAttribute> extend
      * <!-- end-user-doc -->
      * @generated
      */
-    public U basicGetAffectedFeature() {
+    public EAttribute basicGetAffectedFeature() {
         return affectedFeature;
     }
 
@@ -114,8 +114,8 @@ public class UpdateEAttributeImpl<T extends Object, U extends EAttribute> extend
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setAffectedFeature(U newAffectedFeature) {
-        U oldAffectedFeature = affectedFeature;
+    public void setAffectedFeature(EAttribute newAffectedFeature) {
+        EAttribute oldAffectedFeature = affectedFeature;
         affectedFeature = newAffectedFeature;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ChangePackage.UPDATE_EATTRIBUTE__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
@@ -187,7 +187,7 @@ public class UpdateEAttributeImpl<T extends Object, U extends EAttribute> extend
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case ChangePackage.UPDATE_EATTRIBUTE__AFFECTED_FEATURE:
-                setAffectedFeature((U)newValue);
+                setAffectedFeature((EAttribute)newValue);
                 return;
             case ChangePackage.UPDATE_EATTRIBUTE__AFFECTED_EOBJECT:
                 setAffectedEObject((EObject)newValue);
@@ -205,7 +205,7 @@ public class UpdateEAttributeImpl<T extends Object, U extends EAttribute> extend
     public void eUnset(int featureID) {
         switch (featureID) {
             case ChangePackage.UPDATE_EATTRIBUTE__AFFECTED_FEATURE:
-                setAffectedFeature((U)null);
+                setAffectedFeature((EAttribute)null);
                 return;
             case ChangePackage.UPDATE_EATTRIBUTE__AFFECTED_EOBJECT:
                 setAffectedEObject((EObject)null);

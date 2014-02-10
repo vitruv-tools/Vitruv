@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.EReference;
  *
  * @generated
  */
-public abstract class EReferenceChangeImpl<T extends EReference> extends EFeatureChangeImpl<T> implements EReferenceChange<T> {
+public abstract class EReferenceChangeImpl extends EFeatureChangeImpl<EReference> implements EReferenceChange {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -44,7 +44,7 @@ public abstract class EReferenceChangeImpl<T extends EReference> extends EFeatur
      * @generated
      */
     @Override
-    public void setAffectedFeature(T newAffectedFeature) {
+    public void setAffectedFeature(EReference newAffectedFeature) {
         super.setAffectedFeature(newAffectedFeature);
     }
 

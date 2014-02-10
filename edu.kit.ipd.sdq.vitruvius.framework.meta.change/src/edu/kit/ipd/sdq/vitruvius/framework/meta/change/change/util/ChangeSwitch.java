@@ -90,7 +90,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 return result;
             }
             case ChangePackage.EATTRIBUTE_CHANGE: {
-                EAttributeChange<?> eAttributeChange = (EAttributeChange<?>)theEObject;
+                EAttributeChange eAttributeChange = (EAttributeChange)theEObject;
                 T1 result = caseEAttributeChange(eAttributeChange);
                 if (result == null) result = caseEFeatureChange(eAttributeChange);
                 if (result == null) result = caseEChange(eAttributeChange);
@@ -98,7 +98,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 return result;
             }
             case ChangePackage.EREFERENCE_CHANGE: {
-                EReferenceChange<?> eReferenceChange = (EReferenceChange<?>)theEObject;
+                EReferenceChange eReferenceChange = (EReferenceChange)theEObject;
                 T1 result = caseEReferenceChange(eReferenceChange);
                 if (result == null) result = caseEFeatureChange(eReferenceChange);
                 if (result == null) result = caseEChange(eReferenceChange);
@@ -114,7 +114,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 return result;
             }
             case ChangePackage.CREATE_NON_ROOT_EOBJECT: {
-                CreateNonRootEObject<?, ?> createNonRootEObject = (CreateNonRootEObject<?, ?>)theEObject;
+                CreateNonRootEObject<?> createNonRootEObject = (CreateNonRootEObject<?>)theEObject;
                 T1 result = caseCreateNonRootEObject(createNonRootEObject);
                 if (result == null) result = caseCreateEObject(createNonRootEObject);
                 if (result == null) result = caseUpdateEContainmentReference(createNonRootEObject);
@@ -151,7 +151,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 return result;
             }
             case ChangePackage.UPDATE_EATTRIBUTE: {
-                UpdateEAttribute<?, ?> updateEAttribute = (UpdateEAttribute<?, ?>)theEObject;
+                UpdateEAttribute<?> updateEAttribute = (UpdateEAttribute<?>)theEObject;
                 T1 result = caseUpdateEAttribute(updateEAttribute);
                 if (result == null) result = caseUpdateEFeature(updateEAttribute);
                 if (result == null) result = caseEAttributeChange(updateEAttribute);
@@ -161,7 +161,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 return result;
             }
             case ChangePackage.UPDATE_EREFERENCE: {
-                UpdateEReference<?, ?> updateEReference = (UpdateEReference<?, ?>)theEObject;
+                UpdateEReference<?> updateEReference = (UpdateEReference<?>)theEObject;
                 T1 result = caseUpdateEReference(updateEReference);
                 if (result == null) result = caseUpdateEFeature(updateEReference);
                 if (result == null) result = caseEReferenceChange(updateEReference);
@@ -171,7 +171,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 return result;
             }
             case ChangePackage.UPDATE_ECONTAINMENT_REFERENCE: {
-                UpdateEContainmentReference<?, ?> updateEContainmentReference = (UpdateEContainmentReference<?, ?>)theEObject;
+                UpdateEContainmentReference<?> updateEContainmentReference = (UpdateEContainmentReference<?>)theEObject;
                 T1 result = caseUpdateEContainmentReference(updateEContainmentReference);
                 if (result == null) result = caseUpdateEReference(updateEContainmentReference);
                 if (result == null) result = caseUpdateEFeature(updateEContainmentReference);
@@ -190,7 +190,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 return result;
             }
             case ChangePackage.DELETE_NON_ROOT_EOBJECT: {
-                DeleteNonRootEObject<?, ?> deleteNonRootEObject = (DeleteNonRootEObject<?, ?>)theEObject;
+                DeleteNonRootEObject<?> deleteNonRootEObject = (DeleteNonRootEObject<?>)theEObject;
                 T1 result = caseDeleteNonRootEObject(deleteNonRootEObject);
                 if (result == null) result = caseDeleteRootEObject(deleteNonRootEObject);
                 if (result == null) result = caseUpdateEContainmentReference(deleteNonRootEObject);
@@ -273,7 +273,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends EAttribute> T1 caseEAttributeChange(EAttributeChange<T> object) {
+    public T1 caseEAttributeChange(EAttributeChange object) {
         return null;
     }
 
@@ -288,7 +288,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends EReference> T1 caseEReferenceChange(EReferenceChange<T> object) {
+    public T1 caseEReferenceChange(EReferenceChange object) {
         return null;
     }
 
@@ -318,7 +318,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends EObject, U extends EReference> T1 caseCreateNonRootEObject(CreateNonRootEObject<T, U> object) {
+    public <T extends EObject> T1 caseCreateNonRootEObject(CreateNonRootEObject<T> object) {
         return null;
     }
 
@@ -378,7 +378,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object, U extends EAttribute> T1 caseUpdateEAttribute(UpdateEAttribute<T, U> object) {
+    public <T extends Object> T1 caseUpdateEAttribute(UpdateEAttribute<T> object) {
         return null;
     }
 
@@ -393,7 +393,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends EObject, U extends EReference> T1 caseUpdateEReference(UpdateEReference<T, U> object) {
+    public <T extends EObject> T1 caseUpdateEReference(UpdateEReference<T> object) {
         return null;
     }
 
@@ -408,7 +408,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends EObject, U extends EReference> T1 caseUpdateEContainmentReference(UpdateEContainmentReference<T, U> object) {
+    public <T extends EObject> T1 caseUpdateEContainmentReference(UpdateEContainmentReference<T> object) {
         return null;
     }
 
@@ -438,7 +438,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends EObject, U extends EReference> T1 caseDeleteNonRootEObject(DeleteNonRootEObject<T, U> object) {
+    public <T extends EObject> T1 caseDeleteNonRootEObject(DeleteNonRootEObject<T> object) {
         return null;
     }
 

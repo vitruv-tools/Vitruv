@@ -15,5 +15,5 @@ import org.eclipse.emf.ecore.EReference;
  * @model
  * @generated
  */
-public interface CreateNonRootEObject<T extends EObject, U extends EReference> extends CreateEObject, UpdateEContainmentReference<T, U> {
+public interface CreateNonRootEObject<T extends EObject> extends CreateEObject, UpdateEContainmentReference<T> {
 } // CreateNonRootEObject

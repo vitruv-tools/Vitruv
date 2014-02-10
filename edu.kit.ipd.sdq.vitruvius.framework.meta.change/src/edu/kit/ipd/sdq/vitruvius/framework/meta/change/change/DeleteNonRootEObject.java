@@ -15,5 +15,5 @@ import org.eclipse.emf.ecore.EReference;
  * @model
  * @generated
  */
-public interface DeleteNonRootEObject<T extends EObject, U extends EReference> extends DeleteRootEObject, UpdateEContainmentReference<T, U> {
+public interface DeleteNonRootEObject<T extends EObject> extends DeleteRootEObject, UpdateEContainmentReference<T> {
 } // DeleteNonRootEObject

@@ -479,62 +479,41 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
 
         // Create type parameters
         ETypeParameter eFeatureChangeEClass_T = addETypeParameter(eFeatureChangeEClass, "T");
-        ETypeParameter eAttributeChangeEClass_T = addETypeParameter(eAttributeChangeEClass, "T");
-        ETypeParameter eReferenceChangeEClass_T = addETypeParameter(eReferenceChangeEClass, "T");
         ETypeParameter createNonRootEObjectEClass_T = addETypeParameter(createNonRootEObjectEClass, "T");
-        ETypeParameter createNonRootEObjectEClass_U = addETypeParameter(createNonRootEObjectEClass, "U");
         ETypeParameter updateEFeatureEClass_T = addETypeParameter(updateEFeatureEClass, "T");
         ETypeParameter unsetEFeatureEClass_T = addETypeParameter(unsetEFeatureEClass, "T");
         ETypeParameter updateEAttributeEClass_T = addETypeParameter(updateEAttributeEClass, "T");
-        ETypeParameter updateEAttributeEClass_U = addETypeParameter(updateEAttributeEClass, "U");
         ETypeParameter updateEReferenceEClass_T = addETypeParameter(updateEReferenceEClass, "T");
-        ETypeParameter updateEReferenceEClass_U = addETypeParameter(updateEReferenceEClass, "U");
         ETypeParameter updateEContainmentReferenceEClass_T = addETypeParameter(updateEContainmentReferenceEClass, "T");
-        ETypeParameter updateEContainmentReferenceEClass_U = addETypeParameter(updateEContainmentReferenceEClass, "U");
         ETypeParameter deleteNonRootEObjectEClass_T = addETypeParameter(deleteNonRootEObjectEClass, "T");
-        ETypeParameter deleteNonRootEObjectEClass_U = addETypeParameter(deleteNonRootEObjectEClass, "U");
 
         // Set bounds for type parameters
         EGenericType g1 = createEGenericType(ecorePackage.getEStructuralFeature());
         eFeatureChangeEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEAttribute());
-        eAttributeChangeEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEReference());
-        eReferenceChangeEClass_T.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEObject());
         createNonRootEObjectEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEReference());
-        createNonRootEObjectEClass_U.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEJavaObject());
         updateEFeatureEClass_T.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEStructuralFeature());
         unsetEFeatureEClass_T.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEJavaObject());
         updateEAttributeEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEAttribute());
-        updateEAttributeEClass_U.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEObject());
         updateEReferenceEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEReference());
-        updateEReferenceEClass_U.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEObject());
         updateEContainmentReferenceEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEReference());
-        updateEContainmentReferenceEClass_U.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEObject());
         deleteNonRootEObjectEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEReference());
-        deleteNonRootEObjectEClass_U.getEBounds().add(g1);
 
         // Add supertypes to classes
         eObjectChangeEClass.getESuperTypes().add(this.getEChange());
         eFeatureChangeEClass.getESuperTypes().add(this.getEChange());
         g1 = createEGenericType(this.getEFeatureChange());
-        EGenericType g2 = createEGenericType(eAttributeChangeEClass_T);
+        EGenericType g2 = createEGenericType(ecorePackage.getEAttribute());
         g1.getETypeArguments().add(g2);
         eAttributeChangeEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(this.getEFeatureChange());
-        g2 = createEGenericType(eReferenceChangeEClass_T);
+        g2 = createEGenericType(ecorePackage.getEReference());
         g1.getETypeArguments().add(g2);
         eReferenceChangeEClass.getEGenericSuperTypes().add(g1);
         createEObjectEClass.getESuperTypes().add(this.getEObjectChange());
@@ -542,8 +521,6 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         createNonRootEObjectEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(this.getUpdateEContainmentReference());
         g2 = createEGenericType(createNonRootEObjectEClass_T);
-        g1.getETypeArguments().add(g2);
-        g2 = createEGenericType(createNonRootEObjectEClass_U);
         g1.getETypeArguments().add(g2);
         createNonRootEObjectEClass.getEGenericSuperTypes().add(g1);
         createRootEObjectEClass.getESuperTypes().add(this.getCreateEObject());
@@ -556,21 +533,15 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         g1.getETypeArguments().add(g2);
         updateEAttributeEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(this.getEAttributeChange());
-        g2 = createEGenericType(updateEAttributeEClass_U);
-        g1.getETypeArguments().add(g2);
         updateEAttributeEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(this.getUpdateEFeature());
         g2 = createEGenericType(updateEReferenceEClass_T);
         g1.getETypeArguments().add(g2);
         updateEReferenceEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(this.getEReferenceChange());
-        g2 = createEGenericType(updateEReferenceEClass_U);
-        g1.getETypeArguments().add(g2);
         updateEReferenceEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(this.getUpdateEReference());
         g2 = createEGenericType(updateEContainmentReferenceEClass_T);
-        g1.getETypeArguments().add(g2);
-        g2 = createEGenericType(updateEContainmentReferenceEClass_U);
         g1.getETypeArguments().add(g2);
         updateEContainmentReferenceEClass.getEGenericSuperTypes().add(g1);
         deleteEObjectEClass.getESuperTypes().add(this.getEObjectChange());
@@ -578,8 +549,6 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         deleteNonRootEObjectEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(this.getUpdateEContainmentReference());
         g2 = createEGenericType(deleteNonRootEObjectEClass_T);
-        g1.getETypeArguments().add(g2);
-        g2 = createEGenericType(deleteNonRootEObjectEClass_U);
         g1.getETypeArguments().add(g2);
         deleteNonRootEObjectEClass.getEGenericSuperTypes().add(g1);
         deleteRootEObjectEClass.getESuperTypes().add(this.getDeleteEObject());

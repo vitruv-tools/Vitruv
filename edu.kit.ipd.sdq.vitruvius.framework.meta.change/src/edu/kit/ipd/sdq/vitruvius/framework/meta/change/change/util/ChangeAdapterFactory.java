@@ -83,11 +83,11 @@ public class ChangeAdapterFactory extends AdapterFactoryImpl {
                 return createEFeatureChangeAdapter();
             }
             @Override
-            public <T extends EAttribute> Adapter caseEAttributeChange(EAttributeChange<T> object) {
+            public Adapter caseEAttributeChange(EAttributeChange object) {
                 return createEAttributeChangeAdapter();
             }
             @Override
-            public <T extends EReference> Adapter caseEReferenceChange(EReferenceChange<T> object) {
+            public Adapter caseEReferenceChange(EReferenceChange object) {
                 return createEReferenceChangeAdapter();
             }
             @Override
@@ -95,7 +95,7 @@ public class ChangeAdapterFactory extends AdapterFactoryImpl {
                 return createCreateEObjectAdapter();
             }
             @Override
-            public <T extends EObject, U extends EReference> Adapter caseCreateNonRootEObject(CreateNonRootEObject<T, U> object) {
+            public <T extends EObject> Adapter caseCreateNonRootEObject(CreateNonRootEObject<T> object) {
                 return createCreateNonRootEObjectAdapter();
             }
             @Override
@@ -111,15 +111,15 @@ public class ChangeAdapterFactory extends AdapterFactoryImpl {
                 return createUnsetEFeatureAdapter();
             }
             @Override
-            public <T extends Object, U extends EAttribute> Adapter caseUpdateEAttribute(UpdateEAttribute<T, U> object) {
+            public <T extends Object> Adapter caseUpdateEAttribute(UpdateEAttribute<T> object) {
                 return createUpdateEAttributeAdapter();
             }
             @Override
-            public <T extends EObject, U extends EReference> Adapter caseUpdateEReference(UpdateEReference<T, U> object) {
+            public <T extends EObject> Adapter caseUpdateEReference(UpdateEReference<T> object) {
                 return createUpdateEReferenceAdapter();
             }
             @Override
-            public <T extends EObject, U extends EReference> Adapter caseUpdateEContainmentReference(UpdateEContainmentReference<T, U> object) {
+            public <T extends EObject> Adapter caseUpdateEContainmentReference(UpdateEContainmentReference<T> object) {
                 return createUpdateEContainmentReferenceAdapter();
             }
             @Override
@@ -127,7 +127,7 @@ public class ChangeAdapterFactory extends AdapterFactoryImpl {
                 return createDeleteEObjectAdapter();
             }
             @Override
-            public <T extends EObject, U extends EReference> Adapter caseDeleteNonRootEObject(DeleteNonRootEObject<T, U> object) {
+            public <T extends EObject> Adapter caseDeleteNonRootEObject(DeleteNonRootEObject<T> object) {
                 return createDeleteNonRootEObjectAdapter();
             }
             @Override

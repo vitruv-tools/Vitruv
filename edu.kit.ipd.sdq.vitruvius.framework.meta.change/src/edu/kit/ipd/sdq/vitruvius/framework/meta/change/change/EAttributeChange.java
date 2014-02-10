@@ -14,5 +14,5 @@ import org.eclipse.emf.ecore.EAttribute;
  * @model abstract="true"
  * @generated
  */
-public interface EAttributeChange<T extends EAttribute> extends EFeatureChange<T> {
+public interface EAttributeChange extends EFeatureChange<EAttribute> {
 } // EAttributeChange
