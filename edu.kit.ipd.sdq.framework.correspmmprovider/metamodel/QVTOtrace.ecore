@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="trace"
+    nsURI="http:///www.eclipse.org/m2m/qvt/operational/trace.ecore" nsPrefix="trace">
+  <eClassifiers xsi:type="ecore:EClass" name="Trace">
+    <eOperations name="getRecordBySource" eType="#//TraceRecord">
+      <eParameters name="mapping" eType="ecore:EClass QVTOperational.ecore#//expressions/MappingOperation"/>
+      <eParameters name="sourceObject" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+    </eOperations>
+    <eOperations name="addRecordBySource">
+      <eParameters name="sourceObject" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+      <eParameters name="mapping" eType="ecore:EClass QVTOperational.ecore#//expressions/MappingOperation"/>
+      <eParameters name="trace" eType="#//TraceRecord"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="traceRecords" upperBound="-1"
+        eType="#//TraceRecord" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="traceRecordMap" ordered="false"
+        upperBound="-1" eType="#//MappingOperationToTraceRecordMapEntry" transient="true"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sourceToTraceRecordMap"
+        ordered="false" upperBound="-1" eType="#//ObjectToTraceRecordMapEntry" transient="true"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetToTraceRecordMap"
+        ordered="false" upperBound="-1" eType="#//ObjectToTraceRecordMapEntry" transient="true"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TraceRecord">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappingOperation" lowerBound="1"
+        eType="#//EMappingOperation" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="context" lowerBound="1"
+        eType="#//EMappingContext" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" lowerBound="1"
+        eType="#//EMappingParameters" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="result" lowerBound="1"
+        eType="#//EMappingResults" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="VarParameterValue">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" lowerBound="1" eType="#//EDirectionKind"
+        defaultValueLiteral="IN"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" lowerBound="1" eType="#//EValue"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MappingOperationToTraceRecordMapEntry"
+      instanceClassName="java.util.Map$Entry">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" upperBound="-1"
+        eType="#//TraceRecord"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="key" lowerBound="1" eType="ecore:EClass QVTOperational.ecore#//expressions/MappingOperation"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EMappingOperation">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="package" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="module" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="runtimeMappingOperation"
+        lowerBound="1" eType="ecore:EClass QVTOperational.ecore#//expressions/MappingOperation"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="EDirectionKind">
+    <eLiterals name="IN"/>
+    <eLiterals name="INOUT" value="1"/>
+    <eLiterals name="OUT" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EValue">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="primitiveValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="modelElement" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="oclObject" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"
+        transient="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="intermediateElement" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="collectionType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="collection" upperBound="-1"
+        eType="#//EValue" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ETuplePartValue" eSuperTypes="#//EValue">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//EValue"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EMappingContext">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="#//VarParameterValue"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EMappingParameters">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
+        eType="#//VarParameterValue" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EMappingResults">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="result" upperBound="-1"
+        eType="#//VarParameterValue" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ObjectToTraceRecordMapEntry" instanceClassName="java.util.Map$Entry">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" upperBound="-1"
+        eType="#//TraceRecord"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+  </eClassifiers>
+</ecore:EPackage>
