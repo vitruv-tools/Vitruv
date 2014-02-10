@@ -1,10 +1,16 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
-import org.eclipse.emf.ecore.EObject;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.EChange;
 
 public class EMFModelChange extends Change {
 
-    public EMFModelChange(final EObject oldValue, final EObject newValue) {
-        super(oldValue, newValue);
+    private EChange eChange;
+
+    public EMFModelChange(final EChange eChange) {
+        this.eChange = eChange;
+    }
+
+    public EChange getEChange() {
+        return this.eChange;
     }
 }

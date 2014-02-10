@@ -34,6 +34,7 @@ public class SyncManagerImpl implements ChangeSynchronizing {
     private Map<Class<?>, ConcreteChangeSynchronizer> changeSynchonizerMap;
 
     private static SyncManagerImpl syncManagerImplInstance;
+    private static MetaRepositoryImpl metaRepositoryImpl;
 
     private SyncManagerImpl(final ModelProviding modelProviding, final ChangePropagating changePropagating,
             final CorrespondenceProviding correspondenceProviding) {
@@ -70,8 +71,10 @@ public class SyncManagerImpl implements ChangeSynchronizing {
     public static synchronized SyncManagerImpl getSyncManagerInstance() {
         if (null == syncManagerImplInstance) {
             // create vsum
-            MetaRepositoryImpl mediaRepository = new MetaRepositoryImpl();
-            MetamodelManagerImpl metaModelManager = new MetamodelManagerImpl(mediaRepository);
+            if (null == metaRepositoryImpl) {
+                setMetaRepositoryImpl(new MetaRepositoryImpl());
+            }
+            MetamodelManagerImpl metaModelManager = new MetamodelManagerImpl(metaRepositoryImpl);
             ViewTypeManagerImpl viewTypeManager = new ViewTypeManagerImpl();
             CorrespondenceMMProviderImpl correspondenceProvider = new CorrespondenceMMProviderImpl();
             MIRManager mirManager = new MIRManager();
@@ -83,6 +86,10 @@ public class SyncManagerImpl implements ChangeSynchronizing {
             syncManagerImplInstance = new SyncManagerImpl(vsum, propagatingChange, vsum);
         }
         return syncManagerImplInstance;
+    }
+
+    public static void setMetaRepositoryImpl(final MetaRepositoryImpl metaRepositoryImpl) {
+        SyncManagerImpl.metaRepositoryImpl = metaRepositoryImpl;
     }
 
 }

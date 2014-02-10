@@ -6,8 +6,13 @@
   <foreignModel>change.ecore</foreignModel>
   <genPackages prefix="Change" basePackage="edu.kit.ipd.sdq.vitruvius.framework.meta.change"
       disposableProviderFactory="true" ecorePackage="change.ecore#/">
-    <genClasses image="false" ecoreClass="change.ecore#//EObjectChange"/>
-    <genClasses image="false" ecoreClass="change.ecore#//EFeatureChange"/>
+    <genClasses image="false" ecoreClass="change.ecore#//EChange"/>
+    <genClasses image="false" ecoreClass="change.ecore#//EObjectChange">
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference change.ecore#//EObjectChange/changedEObject"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="change.ecore#//EFeatureChange">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference change.ecore#//EFeatureChange/changedFeatureType"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="change.ecore#//EAttributeChange"/>
     <genClasses image="false" ecoreClass="change.ecore#//EReferenceChange"/>
     <genClasses ecoreClass="change.ecore#//CreateEObject"/>

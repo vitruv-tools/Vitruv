@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="change" nsURI="TODO" nsPrefix="change">
-  <eClassifiers xsi:type="ecore:EClass" name="EObjectChange" abstract="true"/>
-  <eClassifiers xsi:type="ecore:EClass" name="EFeatureChange" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EChange" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EObjectChange" abstract="true" eSuperTypes="#//EChange">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="changedEObject" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EFeatureChange" abstract="true" eSuperTypes="#//EChange">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="changedFeatureType" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EAttributeChange" abstract="true" eSuperTypes="#//EFeatureChange"/>
   <eClassifiers xsi:type="ecore:EClass" name="EReferenceChange" abstract="true" eSuperTypes="#//EFeatureChange"/>
   <eClassifiers xsi:type="ecore:EClass" name="CreateEObject" abstract="true" eSuperTypes="#//EObjectChange"/>

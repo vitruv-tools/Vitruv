@@ -13,4 +13,12 @@ public class Mapping implements MetamodelsReferring {
     public VURI[] getMetamodelURIs() {
         return new VURI[] { this.metamodelA.getURI(), this.metamodelB.getURI() };
     }
+
+    public Metamodel getMetamodelA() {
+        return this.metamodelA;
+    }
+
+    public Metamodel getMetamodelB() {
+        return this.metamodelB;
+    }
 }

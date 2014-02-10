@@ -13,5 +13,6 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.projects;bundle-version="1.0
  edu.kit.ipd.sdq.vitruvius.framework.correspmmprovider,
  org.eclipse.emf.ecore;bundle-version="2.8.3",
  org.eclipse.core.resources,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.apache.log4j;bundle-version="1.2.15"
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.vsum

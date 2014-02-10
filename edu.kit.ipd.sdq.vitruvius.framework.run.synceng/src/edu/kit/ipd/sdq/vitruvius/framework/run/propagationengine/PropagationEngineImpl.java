@@ -17,6 +17,7 @@ public class PropagationEngineImpl implements ChangePropagating {
     @Override
     public void propagateChange(final Change change, final ModelInstance sourceModel,
             final CorrespondenceInstance correspondenceInstance) {
-
+        // this.syncTransformationProviding.getSyncTransformation(correspondenceInstance.getMapping(),
+        // change, mmURI2)
     }
 }

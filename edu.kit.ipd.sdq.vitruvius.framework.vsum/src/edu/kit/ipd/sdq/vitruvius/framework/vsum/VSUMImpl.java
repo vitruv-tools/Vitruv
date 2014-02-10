@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -25,6 +26,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ViewTypeManaging
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.helper.FileSystemHelper;
 
 public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
+
+    private static final Logger logger = Logger.getLogger(VSUMImpl.class.getSimpleName());
+
     private final MappingManaging mappingManaging;
     private final MetamodelManaging metamodelManaging;
     private final ViewTypeManaging viewTypeManaging;
@@ -102,7 +106,12 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
     private Collection<CorrespondenceInstance> createAndRegisterAllCorrespondenceInstances(final Metamodel metamodel) {
         Collection<Mapping> mappings = this.mappingManaging.getAllMappings(metamodel);
         Collection<CorrespondenceInstance> correspondenceInstances = new ArrayList<CorrespondenceInstance>(
-                mappings.size());
+                null == mappings ? 0 : mappings.size());
+        if (null == mappings) {
+            logger.warn("mappings == null. No correspondence instace for MM: " + metamodel + " created."
+                    + "Empty correspondence list will be returned");
+            return correspondenceInstances;
+        }
         for (Mapping mapping : mappings) {
             CorrespondenceInstance correspondenceInstance = this.mapping2CorrespondenceInstanceMap.get(mapping);
             if (correspondenceInstance == null) {

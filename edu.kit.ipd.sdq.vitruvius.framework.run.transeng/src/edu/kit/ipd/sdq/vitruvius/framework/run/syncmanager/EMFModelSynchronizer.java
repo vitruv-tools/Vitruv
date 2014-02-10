@@ -2,6 +2,8 @@ package edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager;
 
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
@@ -12,6 +14,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondencePr
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 
 class EMFModelSynchronizer extends ConcreteChangeSynchronizer {
+
+    private static final Logger logger = Logger.getLogger(EMFModelSynchronizer.class.getSimpleName());
 
     private final ChangePropagating changePropagating;
     private final CorrespondenceProviding correspondenceProviding;
@@ -28,6 +32,11 @@ class EMFModelSynchronizer extends ConcreteChangeSynchronizer {
         ModelInstance sourceModel = this.modelProviding.getModelInstanceOriginal(sourceModelURI);
         Set<CorrespondenceInstance> correspondenceInstances = this.correspondenceProviding
                 .getAllCorrespondenceInstances(sourceModelURI);
+        if (null == correspondenceInstances) {
+            logger.info("No correspondenceInstance found for model: " + sourceModelURI
+                    + ". Change not sychronized with any other model.");
+            return;
+        }
         for (CorrespondenceInstance correspondenceInstance : correspondenceInstances) {
             this.changePropagating.propagateChange(change, sourceModel, correspondenceInstance);
         }

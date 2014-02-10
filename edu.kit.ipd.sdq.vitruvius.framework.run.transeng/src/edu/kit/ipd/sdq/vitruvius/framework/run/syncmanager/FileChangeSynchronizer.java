@@ -6,10 +6,14 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.ChangeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.CreateRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.DeleteNonRootEObject;
 
 class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
 
@@ -24,14 +28,15 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
      * synchronizeChange porcess for the root element in the new model.
      * 
      * @param change
-     *            the incomming change
+     *            The incoming change. It has to be an instanceof {@link FileChange} otherwise a
+     *            class cast exception will occur.
      * @param sourceModelURI
      *            the model where the change occured
      */
     @Override
     public void synchronizeChange(final Change change, final VURI sourceModelURI) {
-
-        switch (change.getKind()) {
+        FileChange fileChange = (FileChange) change;
+        switch (fileChange.getFileChangeKind()) {
         case CREATE:
             synchronizeFileCreated(sourceModelURI);
             break;
@@ -39,8 +44,8 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
             synchronizeFileDeleted(sourceModelURI);
             break;
         default:
-            logger.warn("No change action for kind: " + change.getKind().toString() + ". Change " + change.toString()
-                    + " in source model " + sourceModelURI.toString() + " not synchronized.");
+            logger.warn("No change action for kind: " + fileChange.getFileChangeKind() + ". Change "
+                    + change.toString() + " in source model " + sourceModelURI.toString() + " not synchronized.");
             break;
         }
     }
@@ -57,11 +62,16 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
                     + "in order to be added to the VSUM without an explicit import!");
         } else { // resource.getContents().size() == null --> no element in newModelInstance
             logger.info("Empty model file created: " + sourceModelURI
-                    + ". Synchronization for 'root element created‘ not triggerd.");
+                    + ". Synchronization for 'root element created' not triggerd.");
             return;
         }
-
-        EMFModelChange rootAdd = new EMFModelChange(null, rootElement);
+        // FIXME: The type in CreateNonRootEObject should be the runtime class of rootElement.
+        // Apparently this does not work. Maybe because the type of the generic class has to static?
+        // CreateNonRootEObject<rootElement.getClass()> createRootObj =
+        // ChangeFactory.eINSTANCE.createCreateNonRootEObject();
+        CreateRootEObject createRootEObj = ChangeFactory.eINSTANCE.createCreateRootEObject();
+        // createRootEObj.setEObject(rootElement);
+        EMFModelChange rootAdd = new EMFModelChange(createRootEObj);
         this.changeSynchronizing.synchronizeChange(rootAdd, sourceModelURI);
     }
 
@@ -70,7 +80,9 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
         Resource resource = oldModelInstance.getResource();
         if (0 < resource.getContents().size()) {
             EObject rootElement = resource.getContents().get(0);
-            EMFModelChange rootDeleted = new EMFModelChange(rootElement, null);
+            DeleteNonRootEObject<EObject> deleteRootObj = ChangeFactory.eINSTANCE.createDeleteNonRootEObject();
+            deleteRootObj.setNewValue(rootElement);
+            EMFModelChange rootDeleted = new EMFModelChange(deleteRootObj);
             this.changeSynchronizing.synchronizeChange(rootDeleted, sourceModelURI);
         }
     }

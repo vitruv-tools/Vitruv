@@ -13,4 +13,7 @@ public class CorrespondenceInstance extends ModelInstance {
         // link to this instance from a private field
     }
 
+    public Mapping getMapping() {
+        return this.mapping;
+    }
 }

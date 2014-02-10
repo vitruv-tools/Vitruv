@@ -11,6 +11,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.DeleteEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.DeleteNonRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.DeleteRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.EAttributeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.EFeatureChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.EObjectChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.EReferenceChange;
@@ -35,6 +36,13 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
  * @generated
  */
 public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass eChangeEClass = null;
+
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -206,6 +214,15 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getEChange() {
+        return eChangeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getEObjectChange() {
         return eObjectChangeEClass;
     }
@@ -215,8 +232,26 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EReference getEObjectChange_ChangedEObject() {
+        return (EReference)eObjectChangeEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getEFeatureChange() {
         return eFeatureChangeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getEFeatureChange_ChangedFeatureType() {
+        return (EReference)eFeatureChangeEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -373,9 +408,13 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         isCreated = true;
 
         // Create classes and their features
+        eChangeEClass = createEClass(ECHANGE);
+
         eObjectChangeEClass = createEClass(EOBJECT_CHANGE);
+        createEReference(eObjectChangeEClass, EOBJECT_CHANGE__CHANGED_EOBJECT);
 
         eFeatureChangeEClass = createEClass(EFEATURE_CHANGE);
+        createEReference(eFeatureChangeEClass, EFEATURE_CHANGE__CHANGED_FEATURE_TYPE);
 
         eAttributeChangeEClass = createEClass(EATTRIBUTE_CHANGE);
 
@@ -451,6 +490,8 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         deleteNonRootEObjectEClass_T.getEBounds().add(g1);
 
         // Add supertypes to classes
+        eObjectChangeEClass.getESuperTypes().add(this.getEChange());
+        eFeatureChangeEClass.getESuperTypes().add(this.getEChange());
         eAttributeChangeEClass.getESuperTypes().add(this.getEFeatureChange());
         eReferenceChangeEClass.getESuperTypes().add(this.getEFeatureChange());
         createEObjectEClass.getESuperTypes().add(this.getEObjectChange());
@@ -489,9 +530,13 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         deleteRootEObjectEClass.getESuperTypes().add(this.getDeleteEObject());
 
         // Initialize classes and features; add operations and parameters
+        initEClass(eChangeEClass, EChange.class, "EChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
         initEClass(eObjectChangeEClass, EObjectChange.class, "EObjectChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEReference(getEObjectChange_ChangedEObject(), ecorePackage.getEObject(), null, "changedEObject", null, 0, 1, EObjectChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(eFeatureChangeEClass, EFeatureChange.class, "EFeatureChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEReference(getEFeatureChange_ChangedFeatureType(), ecorePackage.getEObject(), null, "changedFeatureType", null, 0, 1, EFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(eAttributeChangeEClass, EAttributeChange.class, "EAttributeChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

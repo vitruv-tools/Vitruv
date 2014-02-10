@@ -66,15 +66,23 @@ public class ChangeSwitch<T1> extends Switch<T1> {
     @Override
     protected T1 doSwitch(int classifierID, EObject theEObject) {
         switch (classifierID) {
+            case ChangePackage.ECHANGE: {
+                EChange eChange = (EChange)theEObject;
+                T1 result = caseEChange(eChange);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
             case ChangePackage.EOBJECT_CHANGE: {
                 EObjectChange eObjectChange = (EObjectChange)theEObject;
                 T1 result = caseEObjectChange(eObjectChange);
+                if (result == null) result = caseEChange(eObjectChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
             case ChangePackage.EFEATURE_CHANGE: {
                 EFeatureChange eFeatureChange = (EFeatureChange)theEObject;
                 T1 result = caseEFeatureChange(eFeatureChange);
+                if (result == null) result = caseEChange(eFeatureChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -82,6 +90,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 EAttributeChange eAttributeChange = (EAttributeChange)theEObject;
                 T1 result = caseEAttributeChange(eAttributeChange);
                 if (result == null) result = caseEFeatureChange(eAttributeChange);
+                if (result == null) result = caseEChange(eAttributeChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -89,6 +98,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 EReferenceChange eReferenceChange = (EReferenceChange)theEObject;
                 T1 result = caseEReferenceChange(eReferenceChange);
                 if (result == null) result = caseEFeatureChange(eReferenceChange);
+                if (result == null) result = caseEChange(eReferenceChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -96,6 +106,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 CreateEObject createEObject = (CreateEObject)theEObject;
                 T1 result = caseCreateEObject(createEObject);
                 if (result == null) result = caseEObjectChange(createEObject);
+                if (result == null) result = caseEChange(createEObject);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -109,6 +120,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 if (result == null) result = caseUpdateEFeature(createNonRootEObject);
                 if (result == null) result = caseEReferenceChange(createNonRootEObject);
                 if (result == null) result = caseEFeatureChange(createNonRootEObject);
+                if (result == null) result = caseEChange(createNonRootEObject);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -117,6 +129,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 T1 result = caseCreateRootEObject(createRootEObject);
                 if (result == null) result = caseCreateEObject(createRootEObject);
                 if (result == null) result = caseEObjectChange(createRootEObject);
+                if (result == null) result = caseEChange(createRootEObject);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -124,6 +137,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 UpdateEFeature<?> updateEFeature = (UpdateEFeature<?>)theEObject;
                 T1 result = caseUpdateEFeature(updateEFeature);
                 if (result == null) result = caseEFeatureChange(updateEFeature);
+                if (result == null) result = caseEChange(updateEFeature);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -131,6 +145,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 UnsetEFeature unsetEFeature = (UnsetEFeature)theEObject;
                 T1 result = caseUnsetEFeature(unsetEFeature);
                 if (result == null) result = caseEFeatureChange(unsetEFeature);
+                if (result == null) result = caseEChange(unsetEFeature);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -140,6 +155,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 if (result == null) result = caseUpdateEFeature(updateEAttribute);
                 if (result == null) result = caseEAttributeChange(updateEAttribute);
                 if (result == null) result = caseEFeatureChange(updateEAttribute);
+                if (result == null) result = caseEChange(updateEAttribute);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -149,6 +165,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 if (result == null) result = caseUpdateEFeature(updateEReference);
                 if (result == null) result = caseEReferenceChange(updateEReference);
                 if (result == null) result = caseEFeatureChange(updateEReference);
+                if (result == null) result = caseEChange(updateEReference);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -159,6 +176,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 if (result == null) result = caseUpdateEFeature(updateEContainmentReference);
                 if (result == null) result = caseEReferenceChange(updateEContainmentReference);
                 if (result == null) result = caseEFeatureChange(updateEContainmentReference);
+                if (result == null) result = caseEChange(updateEContainmentReference);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -166,6 +184,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 DeleteEObject deleteEObject = (DeleteEObject)theEObject;
                 T1 result = caseDeleteEObject(deleteEObject);
                 if (result == null) result = caseEObjectChange(deleteEObject);
+                if (result == null) result = caseEChange(deleteEObject);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -180,6 +199,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 if (result == null) result = caseUpdateEFeature(deleteNonRootEObject);
                 if (result == null) result = caseEReferenceChange(deleteNonRootEObject);
                 if (result == null) result = caseEFeatureChange(deleteNonRootEObject);
+                if (result == null) result = caseEChange(deleteNonRootEObject);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -188,11 +208,27 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 T1 result = caseDeleteRootEObject(deleteRootEObject);
                 if (result == null) result = caseDeleteEObject(deleteRootEObject);
                 if (result == null) result = caseEObjectChange(deleteRootEObject);
+                if (result == null) result = caseEChange(deleteRootEObject);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
             default: return defaultCase(theEObject);
         }
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>EChange</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>EChange</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T1 caseEChange(EChange object) {
+        return null;
     }
 
     /**

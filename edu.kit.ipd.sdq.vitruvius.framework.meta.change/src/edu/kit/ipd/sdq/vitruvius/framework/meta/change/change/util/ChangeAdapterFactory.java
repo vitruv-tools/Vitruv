@@ -68,6 +68,10 @@ public class ChangeAdapterFactory extends AdapterFactoryImpl {
     protected ChangeSwitch<Adapter> modelSwitch =
         new ChangeSwitch<Adapter>() {
             @Override
+            public Adapter caseEChange(EChange object) {
+                return createEChangeAdapter();
+            }
+            @Override
             public Adapter caseEObjectChange(EObjectChange object) {
                 return createEObjectChangeAdapter();
             }
@@ -146,6 +150,20 @@ public class ChangeAdapterFactory extends AdapterFactoryImpl {
         return modelSwitch.doSwitch((EObject)target);
     }
 
+
+    /**
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.EChange <em>EChange</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.EChange
+     * @generated
+     */
+    public Adapter createEChangeAdapter() {
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.EObjectChange <em>EObject Change</em>}'.

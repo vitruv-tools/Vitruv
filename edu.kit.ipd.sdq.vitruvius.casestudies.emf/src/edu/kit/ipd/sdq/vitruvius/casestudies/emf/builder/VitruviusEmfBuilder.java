@@ -13,8 +13,8 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change.KIND;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emf.MonitoredEmfEditorImpl;
@@ -125,7 +125,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
      */
     private void importToVitruvius(final IResource iResource) {
         if (iResource.getName().endsWith(".java") || iResource.getName().endsWith(".repository")) {
-            final FileChange fileChange = new FileChange(KIND.CREATE);
+            final FileChange fileChange = new FileChange(FileChangeKind.CREATE);
             final VURI vuri = VURI.getInstance(iResource.getFullPath().toString());
             SyncManagerImpl.getSyncManagerInstance().synchronizeChange(fileChange, vuri);
         }
