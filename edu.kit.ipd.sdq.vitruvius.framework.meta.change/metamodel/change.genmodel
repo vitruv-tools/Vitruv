@@ -8,35 +8,48 @@
       disposableProviderFactory="true" ecorePackage="change.ecore#/">
     <genClasses image="false" ecoreClass="change.ecore#//EChange"/>
     <genClasses image="false" ecoreClass="change.ecore#//EObjectChange">
-      <genFeatures createChild="false" ecoreFeature="ecore:EReference change.ecore#//EObjectChange/changedEObject"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference change.ecore#//EObjectChange/changedEObject"/>
     </genClasses>
     <genClasses image="false" ecoreClass="change.ecore#//EFeatureChange">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference change.ecore#//EFeatureChange/changedFeatureType"/>
+      <genTypeParameters ecoreTypeParameter="change.ecore#//EFeatureChange/T"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference change.ecore#//EFeatureChange/affectedFeature"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference change.ecore#//EFeatureChange/affectedEObject"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="change.ecore#//EAttributeChange"/>
-    <genClasses image="false" ecoreClass="change.ecore#//EReferenceChange"/>
+    <genClasses image="false" ecoreClass="change.ecore#//EAttributeChange">
+      <genTypeParameters ecoreTypeParameter="change.ecore#//EAttributeChange/T"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="change.ecore#//EReferenceChange">
+      <genTypeParameters ecoreTypeParameter="change.ecore#//EReferenceChange/T"/>
+    </genClasses>
     <genClasses ecoreClass="change.ecore#//CreateEObject"/>
     <genClasses ecoreClass="change.ecore#//CreateNonRootEObject">
       <genTypeParameters ecoreTypeParameter="change.ecore#//CreateNonRootEObject/T"/>
+      <genTypeParameters ecoreTypeParameter="change.ecore#//CreateNonRootEObject/U"/>
     </genClasses>
     <genClasses ecoreClass="change.ecore#//CreateRootEObject"/>
     <genClasses image="false" ecoreClass="change.ecore#//UpdateEFeature">
       <genTypeParameters ecoreTypeParameter="change.ecore#//UpdateEFeature/T"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference change.ecore#//UpdateEFeature/newValue"/>
     </genClasses>
-    <genClasses ecoreClass="change.ecore#//UnsetEFeature"/>
+    <genClasses ecoreClass="change.ecore#//UnsetEFeature">
+      <genTypeParameters ecoreTypeParameter="change.ecore#//UnsetEFeature/T"/>
+    </genClasses>
     <genClasses ecoreClass="change.ecore#//UpdateEAttribute">
       <genTypeParameters ecoreTypeParameter="change.ecore#//UpdateEAttribute/T"/>
+      <genTypeParameters ecoreTypeParameter="change.ecore#//UpdateEAttribute/U"/>
     </genClasses>
     <genClasses ecoreClass="change.ecore#//UpdateEReference">
       <genTypeParameters ecoreTypeParameter="change.ecore#//UpdateEReference/T"/>
+      <genTypeParameters ecoreTypeParameter="change.ecore#//UpdateEReference/U"/>
     </genClasses>
     <genClasses ecoreClass="change.ecore#//UpdateEContainmentReference">
       <genTypeParameters ecoreTypeParameter="change.ecore#//UpdateEContainmentReference/T"/>
+      <genTypeParameters ecoreTypeParameter="change.ecore#//UpdateEContainmentReference/U"/>
     </genClasses>
     <genClasses ecoreClass="change.ecore#//DeleteEObject"/>
     <genClasses ecoreClass="change.ecore#//DeleteNonRootEObject">
       <genTypeParameters ecoreTypeParameter="change.ecore#//DeleteNonRootEObject/T"/>
+      <genTypeParameters ecoreTypeParameter="change.ecore#//DeleteNonRootEObject/U"/>
     </genClasses>
     <genClasses ecoreClass="change.ecore#//DeleteRootEObject"/>
   </genPackages>

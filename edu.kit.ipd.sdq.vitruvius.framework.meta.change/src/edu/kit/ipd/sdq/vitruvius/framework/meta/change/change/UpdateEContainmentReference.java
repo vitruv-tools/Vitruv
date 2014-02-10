@@ -1,0 +1,19 @@
+/**
+ */
+package edu.kit.ipd.sdq.vitruvius.framework.meta.change.change;
+
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
+
+/**
+ * <!-- begin-user-doc -->
+ * A representation of the model object '<em><b>Update EContainment Reference</b></em>'.
+ * <!-- end-user-doc -->
+ *
+ *
+ * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.ChangePackage#getUpdateEContainmentReference()
+ * @model
+ * @generated
+ */
+public interface UpdateEContainmentReference<T extends EObject, U extends EReference> extends UpdateEReference<T, U> {
+} // UpdateEContainmentReference

@@ -3,57 +3,104 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="change" nsURI="TODO" nsPrefix="change">
   <eClassifiers xsi:type="ecore:EClass" name="EChange" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="EObjectChange" abstract="true" eSuperTypes="#//EChange">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="changedEObject" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="changedEObject" lowerBound="1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EFeatureChange" abstract="true" eSuperTypes="#//EChange">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="changedFeatureType" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+    </eTypeParameters>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="affectedFeature" lowerBound="1">
+      <eGenericType eTypeParameter="#//EFeatureChange/T"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="affectedEObject" lowerBound="1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EAttributeChange" abstract="true" eSuperTypes="#//EFeatureChange"/>
-  <eClassifiers xsi:type="ecore:EClass" name="EReferenceChange" abstract="true" eSuperTypes="#//EFeatureChange"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EAttributeChange" abstract="true">
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="#//EFeatureChange">
+      <eTypeArguments eTypeParameter="#//EAttributeChange/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EReferenceChange" abstract="true">
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="#//EFeatureChange">
+      <eTypeArguments eTypeParameter="#//EReferenceChange/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CreateEObject" abstract="true" eSuperTypes="#//EObjectChange"/>
   <eClassifiers xsi:type="ecore:EClass" name="CreateNonRootEObject">
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     </eTypeParameters>
+    <eTypeParameters name="U">
+      <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
+    </eTypeParameters>
     <eGenericSuperTypes eClassifier="#//CreateEObject"/>
     <eGenericSuperTypes eClassifier="#//UpdateEContainmentReference">
       <eTypeArguments eTypeParameter="#//CreateNonRootEObject/T"/>
+      <eTypeArguments eTypeParameter="#//CreateNonRootEObject/U"/>
     </eGenericSuperTypes>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CreateRootEObject" eSuperTypes="#//CreateEObject"/>
-  <eClassifiers xsi:type="ecore:EClass" name="UpdateEFeature" abstract="true" eSuperTypes="#//EFeatureChange">
+  <eClassifiers xsi:type="ecore:EClass" name="UpdateEFeature" abstract="true">
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eTypeParameters>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="newValue">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="newValue" lowerBound="1">
       <eGenericType eTypeParameter="#//UpdateEFeature/T"/>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="UnsetEFeature" eSuperTypes="#//EFeatureChange"/>
+  <eClassifiers xsi:type="ecore:EClass" name="UnsetEFeature">
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="#//EFeatureChange">
+      <eTypeArguments eTypeParameter="#//UnsetEFeature/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UpdateEAttribute">
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eTypeParameters>
+    <eTypeParameters name="U">
+      <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
+    </eTypeParameters>
     <eGenericSuperTypes eClassifier="#//UpdateEFeature">
       <eTypeArguments eTypeParameter="#//UpdateEAttribute/T"/>
     </eGenericSuperTypes>
-    <eGenericSuperTypes eClassifier="#//EAttributeChange"/>
+    <eGenericSuperTypes eClassifier="#//EAttributeChange">
+      <eTypeArguments eTypeParameter="#//UpdateEAttribute/U"/>
+    </eGenericSuperTypes>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UpdateEReference">
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     </eTypeParameters>
+    <eTypeParameters name="U">
+      <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
+    </eTypeParameters>
     <eGenericSuperTypes eClassifier="#//UpdateEFeature">
       <eTypeArguments eTypeParameter="#//UpdateEReference/T"/>
     </eGenericSuperTypes>
-    <eGenericSuperTypes eClassifier="#//EReferenceChange"/>
+    <eGenericSuperTypes eClassifier="#//EReferenceChange">
+      <eTypeArguments eTypeParameter="#//UpdateEReference/U"/>
+    </eGenericSuperTypes>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UpdateEContainmentReference">
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     </eTypeParameters>
+    <eTypeParameters name="U">
+      <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
+    </eTypeParameters>
     <eGenericSuperTypes eClassifier="#//UpdateEReference">
       <eTypeArguments eTypeParameter="#//UpdateEContainmentReference/T"/>
+      <eTypeArguments eTypeParameter="#//UpdateEContainmentReference/U"/>
     </eGenericSuperTypes>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DeleteEObject" abstract="true" eSuperTypes="#//EObjectChange"/>
@@ -61,9 +108,13 @@
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     </eTypeParameters>
+    <eTypeParameters name="U">
+      <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
+    </eTypeParameters>
     <eGenericSuperTypes eClassifier="#//DeleteRootEObject"/>
     <eGenericSuperTypes eClassifier="#//UpdateEContainmentReference">
       <eTypeArguments eTypeParameter="#//DeleteNonRootEObject/T"/>
+      <eTypeArguments eTypeParameter="#//DeleteNonRootEObject/U"/>
     </eGenericSuperTypes>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DeleteRootEObject" eSuperTypes="#//DeleteEObject"/>
