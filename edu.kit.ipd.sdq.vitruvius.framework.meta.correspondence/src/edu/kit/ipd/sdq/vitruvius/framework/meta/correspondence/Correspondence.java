@@ -66,4 +66,12 @@ public interface Correspondence extends EObject {
 	 */
 	void setParent(Correspondence value);
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" lower="2" ordered="false"
+	 * @generated
+	 */
+	EList<EObject> getAllInvolvedEObjects();
+
 } // Correspondence

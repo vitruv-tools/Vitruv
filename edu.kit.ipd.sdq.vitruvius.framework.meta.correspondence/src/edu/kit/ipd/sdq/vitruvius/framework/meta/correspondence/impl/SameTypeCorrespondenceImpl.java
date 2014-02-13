@@ -6,6 +6,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePac
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -217,4 +219,16 @@ public abstract class SameTypeCorrespondenceImpl<T extends Object> extends Corre
 		return super.eIsSet(featureID);
 	}
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public EList<EObject> getAllInvolvedEObjects() {
+		BasicEList<EObject> involvedEObjects = new BasicEList<EObject>();
+		if (elementA instanceof EObject) {
+			involvedEObjects.add((EObject) elementA);
+		}
+	
+	}
 } //SameTypeCorrespondenceImpl
