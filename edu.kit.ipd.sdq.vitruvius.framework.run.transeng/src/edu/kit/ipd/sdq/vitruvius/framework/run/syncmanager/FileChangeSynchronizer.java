@@ -11,9 +11,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.ChangeFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.CreateRootEObject;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.DeleteNonRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.DeleteNonRootEObject;
 
 class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
 

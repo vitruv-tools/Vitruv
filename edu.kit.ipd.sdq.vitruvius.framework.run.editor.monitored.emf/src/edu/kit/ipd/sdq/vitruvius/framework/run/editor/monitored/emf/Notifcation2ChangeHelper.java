@@ -9,7 +9,7 @@ import org.eclipse.emf.ecore.EReference;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 
 abstract class Notification2ChangeHelper {
 

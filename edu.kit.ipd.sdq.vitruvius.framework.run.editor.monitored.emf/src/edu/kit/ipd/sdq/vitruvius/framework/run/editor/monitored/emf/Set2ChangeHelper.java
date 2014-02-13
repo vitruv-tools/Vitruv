@@ -8,9 +8,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.ChangeFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.UpdateEAttribute;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.UpdateEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEReference;
 
 public class Set2ChangeHelper extends Notification2ChangeHelper {
 

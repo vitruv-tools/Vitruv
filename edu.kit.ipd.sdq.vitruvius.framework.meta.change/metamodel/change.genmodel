@@ -4,7 +4,7 @@
     modelPluginID="edu.kit.ipd.sdq.vitruvius.framework.meta.change" modelName="Change"
     importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0" copyrightFields="false">
   <foreignModel>change.ecore</foreignModel>
-  <genPackages prefix="Change" basePackage="edu.kit.ipd.sdq.vitruvius.framework.meta.change"
+  <genPackages prefix="Change" basePackage="edu.kit.ipd.sdq.vitruvius.framework.meta"
       disposableProviderFactory="true" ecorePackage="change.ecore#/">
     <genClasses image="false" ecoreClass="change.ecore#//EChange"/>
     <genClasses image="false" ecoreClass="change.ecore#//EObjectChange">
@@ -17,7 +17,7 @@
     </genClasses>
     <genClasses image="false" ecoreClass="change.ecore#//EAttributeChange"/>
     <genClasses image="false" ecoreClass="change.ecore#//EReferenceChange"/>
-    <genClasses ecoreClass="change.ecore#//CreateEObject"/>
+    <genClasses image="false" ecoreClass="change.ecore#//CreateEObject"/>
     <genClasses ecoreClass="change.ecore#//CreateNonRootEObject">
       <genTypeParameters ecoreTypeParameter="change.ecore#//CreateNonRootEObject/T"/>
     </genClasses>
@@ -38,7 +38,7 @@
     <genClasses ecoreClass="change.ecore#//UpdateEContainmentReference">
       <genTypeParameters ecoreTypeParameter="change.ecore#//UpdateEContainmentReference/T"/>
     </genClasses>
-    <genClasses ecoreClass="change.ecore#//DeleteEObject"/>
+    <genClasses image="false" ecoreClass="change.ecore#//DeleteEObject"/>
     <genClasses ecoreClass="change.ecore#//DeleteNonRootEObject">
       <genTypeParameters ecoreTypeParameter="change.ecore#//DeleteNonRootEObject/T"/>
     </genClasses>
