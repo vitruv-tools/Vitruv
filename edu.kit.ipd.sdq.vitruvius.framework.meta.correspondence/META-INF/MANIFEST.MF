@@ -1,6 +1,15 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Correspondence Metamodel
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence
+Bundle-Name: %pluginName
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence;singleton:=true
 Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: .
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.util
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.ecore;visibility:=reexport
+Bundle-ActivationPolicy: lazy

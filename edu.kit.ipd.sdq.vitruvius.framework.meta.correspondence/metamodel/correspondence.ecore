@@ -2,45 +2,56 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="correspondence" nsURI="http://edu.kit.ipd.sdq.vitruvius/Correspondence/1.0"
     nsPrefix="correspondence">
+  <eClassifiers xsi:type="ecore:EClass" name="Correspondences">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="correspondences" upperBound="-1"
+        eType="#//Correspondence"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Correspondence" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dependentCorrespondences"
+        upperBound="-1" eType="#//Correspondence"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//Correspondence"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SameTypeCorrespondence" abstract="true"
+      eSuperTypes="#//Correspondence">
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eTypeParameters>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="dependentCorrespondences"
-        upperBound="-1" eOpposite="#//Correspondence/parent">
-      <eGenericType eClassifier="#//Correspondence">
-        <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
-      </eGenericType>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eOpposite="#//Correspondence/dependentCorrespondences">
-      <eGenericType eClassifier="#//Correspondence">
-        <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
-      </eGenericType>
-    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="elementA" lowerBound="1">
-      <eGenericType eTypeParameter="#//Correspondence/T"/>
+      <eGenericType eTypeParameter="#//SameTypeCorrespondence/T"/>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="elementB" lowerBound="1">
-      <eGenericType eTypeParameter="#//Correspondence/T"/>
+      <eGenericType eTypeParameter="#//SameTypeCorrespondence/T"/>
     </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EObjectCorrespondence">
-    <eGenericSuperTypes eClassifier="#//Correspondence">
+    <eGenericSuperTypes eClassifier="#//SameTypeCorrespondence">
       <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     </eGenericSuperTypes>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EFeatureCorrespondence" abstract="true">
-    <eTypeParameters name="T"/>
-    <eGenericSuperTypes eClassifier="#//Correspondence">
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="TFeature">
+      <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+    </eTypeParameters>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappedFeature" eType="#//EAttributeCorrespondence"/>
+    <eGenericSuperTypes eClassifier="#//SameTypeCorrespondence">
       <eTypeArguments eTypeParameter="#//EFeatureCorrespondence/T"/>
     </eGenericSuperTypes>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EAttributeCorrespondence">
     <eGenericSuperTypes eClassifier="#//EFeatureCorrespondence">
       <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
     </eGenericSuperTypes>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EReferenceCorrespondence" eSuperTypes="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EReferenceCorrespondence" abstract="true">
+    <eGenericSuperTypes eClassifier="#//EFeatureCorrespondence">
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+      <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EContainmentReferenceCorrespondence"
       eSuperTypes="#//EReferenceCorrespondence"/>
 </ecore:EPackage>
