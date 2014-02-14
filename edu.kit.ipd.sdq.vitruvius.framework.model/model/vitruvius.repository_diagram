@@ -132,6 +132,10 @@
           <element xmi:type="repository:OperationSignature" href="vitruvius.repository#_kIi6IGDfEeOVS519yHwWgw"/>
           <layoutConstraint xmi:type="notation:Location" xmi:id="_kIl9cWDfEeOVS519yHwWgw"/>
         </children>
+        <children xmi:type="notation:Node" xmi:id="_khBaIJVZEeOrffSQBflJnQ" type="3106">
+          <element xmi:type="repository:OperationSignature" href="vitruvius.repository#_kg3pIJVZEeOrffSQBflJnQ"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_khBaIZVZEeOrffSQBflJnQ"/>
+        </children>
         <styles xmi:type="notation:SortingStyle" xmi:id="_ddmB4mDbEeOVS519yHwWgw"/>
         <styles xmi:type="notation:FilteringStyle" xmi:id="_ddmB42DbEeOVS519yHwWgw"/>
       </children>

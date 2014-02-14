@@ -148,10 +148,14 @@
       <parameters__OperationSignature dataType__Parameter="_IeAiPWDeEeOVS519yHwWgw" parameterName="uri"/>
     </signatures__OperationInterface>
   </interfaces__Repository>
-  <interfaces__Repository xsi:type="repository:OperationInterface" id="_ddjloGDbEeOVS519yHwWgw" entityName="SyncTransformationProviding">
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_ddjloGDbEeOVS519yHwWgw" entityName="TransformationExecutingProviding">
     <signatures__OperationInterface id="_kIi6IGDfEeOVS519yHwWgw" entityName="getSyncTransformation">
       <parameters__OperationSignature dataType__Parameter="_IeAiPWDeEeOVS519yHwWgw" parameterName="mmURI1"/>
       <parameters__OperationSignature dataType__Parameter="_6Hs17WDbEeOVS519yHwWgw" parameterName="change"/>
+      <parameters__OperationSignature dataType__Parameter="_IeAiPWDeEeOVS519yHwWgw" parameterName="mmURI2"/>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_kg3pIJVZEeOrffSQBflJnQ" entityName="getTransformationExecuting">
+      <parameters__OperationSignature dataType__Parameter="_IeAiPWDeEeOVS519yHwWgw" parameterName="mmURI1"/>
       <parameters__OperationSignature dataType__Parameter="_IeAiPWDeEeOVS519yHwWgw" parameterName="mmURI2"/>
     </signatures__OperationInterface>
   </interfaces__Repository>
