@@ -229,6 +229,9 @@ public abstract class SameTypeCorrespondenceImpl<T extends Object> extends Corre
 		if (elementA instanceof EObject) {
 			involvedEObjects.add((EObject) elementA);
 		}
-	
+		if (elementB instanceof EObject) {
+			involvedEObjects.add((EObject) elementB);
+		}
+		return involvedEObjects;
 	}
 } //SameTypeCorrespondenceImpl
