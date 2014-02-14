@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Transformations for PCM2Java
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.xtend.lib,
@@ -12,5 +12,7 @@ Require-Bundle: org.eclipse.xtend.lib,
  de.uka.ipd.sdq.pcm;bundle-version="3.2.0",
  org.emftext.language.java;bundle-version="1.4.0",
  edu.kit.ipd.sdq.vitruvius.framework.meta.change;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.0.0"
+ edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence;bundle-version="1.0.0"
+Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations
 

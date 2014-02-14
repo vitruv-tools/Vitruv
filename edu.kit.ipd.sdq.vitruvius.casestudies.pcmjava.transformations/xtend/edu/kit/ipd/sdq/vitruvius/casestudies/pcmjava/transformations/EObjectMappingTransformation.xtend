@@ -3,8 +3,12 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 
 abstract class EObjectMappingTransformation {
+	
+	var protected CorrespondenceInstance correspondenceInstance
+	
 	def Class<?> getClassOfMappedEObject()
 	
 	def EObject addEObject(EObject eObject)
@@ -19,4 +23,8 @@ abstract class EObjectMappingTransformation {
 	
 	def EObject updateEContainmentReference(EObject eObject,
 		EReference afffectedEReference, EObject newValue)
+	
+	def void setCorrespondenceInstance(CorrespondenceInstance correspondenceInstance){
+		this.correspondenceInstance = correspondenceInstance
+	}
 }
