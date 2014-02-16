@@ -15,4 +15,7 @@ Require-Bundle: org.eclipse.xtend.lib,
  edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence;bundle-version="1.0.0"
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations
+Bundle-ClassPath: libs/reflections-0.9.9-RC1.jar,
+ .,
+ libs/
 

@@ -11,15 +11,29 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.Package
+import org.eclipse.emf.ecore.EStructuralFeature
+import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 class RepositoryMappingTransformation extends EObjectMappingTransformation {
-	
+
 	val private static final Logger logger = Logger.getLogger(RepositoryMappingTransformation.name)
-	
+
 	override getClassOfMappedEObject() {
 		return typeof(Repository)
 	}
-	
+
+	override void setCorrespondenceForFeatures() {
+		val nameAttributeCorrespondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
+		var repositoryNameAttribute = RepositoryFactory.eINSTANCE.createRepository.eClass.EAllAttributes.filter[attribute|
+			attribute.name.equalsIgnoreCase("entityName")].iterator.next
+		var packageNameAttribute = ContainersFactory.eINSTANCE.createPackage.eClass.EAllAttributes.filter[attribute|
+			attribute.name.equalsIgnoreCase("name")].iterator.next
+		nameAttributeCorrespondence.setElementA(repositoryNameAttribute)
+		nameAttributeCorrespondence.setElementB(packageNameAttribute);
+		correspondenceInstance.addCorrespondence(nameAttributeCorrespondence)
+	}
+
 	//TODO: write test cases + how will the models be saved?
 	override addEObject(EObject eObject) {
 		val Repository repository = eObject as Repository
@@ -31,35 +45,41 @@ class RepositoryMappingTransformation extends EObjectMappingTransformation {
 		correspondenceInstance.addCorrespondence(eObjectCorrespondence)
 		return jaMoPPPackage
 	}
-	
+
 	override removeEObject(EObject eObject) {
 		val Repository repository = eObject as Repository
+		//Remove corresponding package
+		val Package jaMoPPPackage = TransformationUtils.findCorrespondingEObjectIfUnique(correspondenceInstance, repository) as Package
+		EcoreUtil.remove(jaMoPPPackage)
+		//remove corresponding instance
+		correspondenceInstance.removeAllCorrespondingInstances(repository)
 		return null
 	}
-	
+
 	override updateEAttribute(EObject eObject, EAttribute affectedAttribute, Object newValue) {
 		val Repository repository = eObject as Repository
-		val Object structuralFeature = repository.eGet(affectedAttribute)
-		val Collection<Correspondence> correspondences = correspondenceInstance.getAllCorrespondences(repository)
-		if(0 == correspondences.size ){
-			logger.warn( "no correspondences found for attribute " + affectedAttribute 
-				+ ". Should not happen for EAttribute in object" + repository )
-			return null
-		}
-		for(Correspondence c : correspondences){
-			
-		}
+		val Object valueOfAttribute = repository.eGet(affectedAttribute)
+		val EStructuralFeature jaMoPPNameAttribute = TransformationUtils.
+			findCorrespondingEObjectIfUnique(correspondenceInstance, affectedAttribute) as EStructuralFeature
+		val Package jaMoPPPackage = TransformationUtils.findCorrespondingEObjectIfUnique(correspondenceInstance, eObject) as Package
+		jaMoPPPackage.eSet(jaMoPPNameAttribute, valueOfAttribute);
 		return null
 	}
-	
+
 	override updateEReference(EObject eObject, EReference affectedEReference, EObject newValue) {
-		val Repository repository = eObject as Repository
+		/*val Repository repository = eObject as Repository
+		val Object valueOfReferene = repository.eGet(affectedEReference)
+		val EStructuralFeature jaMoPPNameAttribute = TransformationUtils.
+			findCorrespondingEObjectIfUnique(correspondenceInstance, affectedEReference) as EStructuralFeature*/
+		//Not implemented (yet) for Repository(?)
 		return null
 	}
-	
+
 	override updateEContainmentReference(EObject eObject, EReference afffectedEReference, EObject newValue) {
 		val Repository repository = eObject as Repository
+
+		//Not implemented (yet) for Repository(?)
 		return null
 	}
-	
+
 }
