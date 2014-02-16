@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Test for Transformations
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.test.casestudies.pcmjava.transformations
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations;bundle-version="1.0.0",
+ org.junit,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence;bundle-version="1.0.0",
+ de.uka.ipd.sdq.pcm;bundle-version="3.2.0",
+ org.emftext.language.java;bundle-version="1.4.0"
