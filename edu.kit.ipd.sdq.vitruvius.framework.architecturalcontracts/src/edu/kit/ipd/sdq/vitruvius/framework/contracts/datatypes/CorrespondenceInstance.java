@@ -51,4 +51,13 @@ public class CorrespondenceInstance extends ModelInstance {
         }
 
     }
+
+    public void removeAllCorrespondingInstances(final EObject eObject) {
+        // TODO: Check if it is working
+        Set<Correspondence> correspondencesForEObj = this.eObject2CorrespondencesMap.get(eObject);
+        this.eObject2CorrespondencesMap.remove(eObject);
+        for (Correspondence correspondence : correspondencesForEObj) {
+            this.correspondences.getCorrespondences().remove(correspondence);
+        }
+    }
 }
