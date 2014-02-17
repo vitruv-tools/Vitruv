@@ -49,7 +49,7 @@ class RepositoryMappingTransformation extends EObjectMappingTransformation {
 	override removeEObject(EObject eObject) {
 		val Repository repository = eObject as Repository
 		//Remove corresponding package
-		val Package jaMoPPPackage = TransformationUtils.findCorrespondingEObjectIfUnique(correspondenceInstance, repository) as Package
+		val Package jaMoPPPackage = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(repository, Package)
 		EcoreUtil.remove(jaMoPPPackage)
 		//remove corresponding instance
 		correspondenceInstance.removeAllCorrespondingInstances(repository)
@@ -59,9 +59,8 @@ class RepositoryMappingTransformation extends EObjectMappingTransformation {
 	override updateEAttribute(EObject eObject, EAttribute affectedAttribute, Object newValue) {
 		val Repository repository = eObject as Repository
 		val Object valueOfAttribute = repository.eGet(affectedAttribute)
-		val EStructuralFeature jaMoPPNameAttribute = TransformationUtils.
-			findCorrespondingEObjectIfUnique(correspondenceInstance, affectedAttribute) as EStructuralFeature
-		val Package jaMoPPPackage = TransformationUtils.findCorrespondingEObjectIfUnique(correspondenceInstance, eObject) as Package
+		val EStructuralFeature jaMoPPNameAttribute = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(eObject, EStructuralFeature) 
+		val Package jaMoPPPackage = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(eObject, Package)
 		jaMoPPPackage.eSet(jaMoPPNameAttribute, valueOfAttribute);
 		return null
 	}

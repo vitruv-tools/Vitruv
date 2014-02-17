@@ -32,14 +32,12 @@ class OperationInterfaceMappingTransformation extends EObjectMappingTransformati
 		correspondingCompilationUnit.name = operationInterface.entityName + ".java"
 		correspondingCompilationUnit.classifiers.add(correspondingInterface)
 
-		// add compilation unit to package, which correspondent to the repository-package 
-		val containingPackage = TransformationUtils.findCorrespondingEObjectIfUnique(correspondenceInstance,
-			operationInterface.repository__Interface) as Package
+		// add compilation unit to package, which correspondent to the repository-package
+		val containingPackage = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(operationInterface.repository__Interface, Package)
 		containingPackage.compilationUnits.add(correspondingCompilationUnit)
 
 		//add new correspondence to correspondenceInstance
-		val parrentCorrespondence = TransformationUtils.
-			findParentCorrespondenceForEObject(correspondenceInstance, operationInterface.repository__Interface)
+		val parrentCorrespondence = correspondenceInstance.getCorrespondeceForEObjectIfUnique(operationInterface.repository__Interface);
 		val EObjectCorrespondence eObjectCorrespondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
 		eObjectCorrespondence.setElementA(operationInterface)
 		eObjectCorrespondence.setElementB(correspondingInterface)

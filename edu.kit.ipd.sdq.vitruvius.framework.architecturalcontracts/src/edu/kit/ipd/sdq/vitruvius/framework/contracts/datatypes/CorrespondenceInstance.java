@@ -83,6 +83,31 @@ public class CorrespondenceInstance extends ModelInstance {
         return correspondingEObjectsByType.iterator().next();
     }
 
+    public Set<Correspondence> claimCorrespondencesForEObject(final EObject eObject) {
+        if (!hasCorrespondenceObjects(eObject)) {
+            new HashSet<Correspondence>();
+        }
+        return this.eObject2CorrespondencesMap.claimValueForKey(eObject);
+    }
+
+    public boolean hasCorrespondenceObjects(final EObject eObject) {
+        return this.eObject2CorrespondencesMap.containsKey(eObject)
+                && this.eObject2CorrespondencesMap.get(eObject).size() > 0;
+    }
+
+    public Correspondence getCorrespondeceForEObjectIfUnique(final EObject eObject) {
+        if (!hasCorrespondenceObjects(eObject)) {
+            return null;
+        }
+        Set<Correspondence> objectCorrespondences = claimCorrespondencesForEObject(eObject);
+        if (1 != objectCorrespondences.size()) {
+            throw new RuntimeException("claimCorrespondingEObjectForTypeIfUnique failed: "
+                    + objectCorrespondences.size() + " corresponding objects found (expected 1)"
+                    + objectCorrespondences);
+        }
+        return objectCorrespondences.iterator().next();
+    }
+
     public void addCorrespondence(final Correspondence correspondence) {
         // add correspondence to model
         this.correspondences.getCorrespondences().add(correspondence);
