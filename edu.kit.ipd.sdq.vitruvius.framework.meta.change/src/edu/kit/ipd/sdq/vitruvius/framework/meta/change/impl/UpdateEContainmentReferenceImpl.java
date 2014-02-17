@@ -19,22 +19,22 @@ import org.eclipse.emf.ecore.EObject;
  */
 public class UpdateEContainmentReferenceImpl<T extends EObject> extends UpdateEReferenceImpl<T> implements UpdateEContainmentReference<T> {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected UpdateEContainmentReferenceImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return ChangePackage.Literals.UPDATE_ECONTAINMENT_REFERENCE;
-	}
+        return ChangePackage.Literals.UPDATE_ECONTAINMENT_REFERENCE;
+    }
 
 } //UpdateEContainmentReferenceImpl

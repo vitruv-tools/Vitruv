@@ -42,9 +42,9 @@
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eTypeParameters>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="newValue" lowerBound="1">
+    <eOperations name="getNewValue" lowerBound="1">
       <eGenericType eTypeParameter="#//UpdateEFeature/T"/>
-    </eStructuralFeatures>
+    </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UnsetEFeature">
     <eTypeParameters name="T">
@@ -58,6 +58,9 @@
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eTypeParameters>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="newValue" lowerBound="1">
+      <eGenericType eTypeParameter="#//UpdateEAttribute/T"/>
+    </eStructuralFeatures>
     <eGenericSuperTypes eClassifier="#//UpdateEFeature">
       <eTypeArguments eTypeParameter="#//UpdateEAttribute/T"/>
     </eGenericSuperTypes>
@@ -67,6 +70,9 @@
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     </eTypeParameters>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="newValue" lowerBound="1">
+      <eGenericType eTypeParameter="#//UpdateEReference/T"/>
+    </eStructuralFeatures>
     <eGenericSuperTypes eClassifier="#//UpdateEFeature">
       <eTypeArguments eTypeParameter="#//UpdateEReference/T"/>
     </eGenericSuperTypes>

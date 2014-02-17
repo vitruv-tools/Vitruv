@@ -28,129 +28,129 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public abstract class EObjectChangeImpl extends EChangeImpl implements EObjectChange {
 	/**
-	 * The cached value of the '{@link #getChangedEObject() <em>Changed EObject</em>}' reference.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getChangedEObject() <em>Changed EObject</em>}' reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getChangedEObject()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getChangedEObject()
+     * @generated
+     * @ordered
+     */
 	protected EObject changedEObject;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected EObjectChangeImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return ChangePackage.Literals.EOBJECT_CHANGE;
-	}
+        return ChangePackage.Literals.EOBJECT_CHANGE;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EObject getChangedEObject() {
-		if (changedEObject != null && changedEObject.eIsProxy()) {
-			InternalEObject oldChangedEObject = (InternalEObject)changedEObject;
-			changedEObject = eResolveProxy(oldChangedEObject);
-			if (changedEObject != oldChangedEObject) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ChangePackage.EOBJECT_CHANGE__CHANGED_EOBJECT, oldChangedEObject, changedEObject));
-			}
-		}
-		return changedEObject;
-	}
+        if (changedEObject != null && changedEObject.eIsProxy()) {
+            InternalEObject oldChangedEObject = (InternalEObject)changedEObject;
+            changedEObject = eResolveProxy(oldChangedEObject);
+            if (changedEObject != oldChangedEObject) {
+                if (eNotificationRequired())
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, ChangePackage.EOBJECT_CHANGE__CHANGED_EOBJECT, oldChangedEObject, changedEObject));
+            }
+        }
+        return changedEObject;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EObject basicGetChangedEObject() {
-		return changedEObject;
-	}
+        return changedEObject;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setChangedEObject(EObject newChangedEObject) {
-		EObject oldChangedEObject = changedEObject;
-		changedEObject = newChangedEObject;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ChangePackage.EOBJECT_CHANGE__CHANGED_EOBJECT, oldChangedEObject, changedEObject));
-	}
+        EObject oldChangedEObject = changedEObject;
+        changedEObject = newChangedEObject;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ChangePackage.EOBJECT_CHANGE__CHANGED_EOBJECT, oldChangedEObject, changedEObject));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case ChangePackage.EOBJECT_CHANGE__CHANGED_EOBJECT:
-				if (resolve) return getChangedEObject();
-				return basicGetChangedEObject();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+        switch (featureID) {
+            case ChangePackage.EOBJECT_CHANGE__CHANGED_EOBJECT:
+                if (resolve) return getChangedEObject();
+                return basicGetChangedEObject();
+        }
+        return super.eGet(featureID, resolve, coreType);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case ChangePackage.EOBJECT_CHANGE__CHANGED_EOBJECT:
-				setChangedEObject((EObject)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+        switch (featureID) {
+            case ChangePackage.EOBJECT_CHANGE__CHANGED_EOBJECT:
+                setChangedEObject((EObject)newValue);
+                return;
+        }
+        super.eSet(featureID, newValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eUnset(int featureID) {
-		switch (featureID) {
-			case ChangePackage.EOBJECT_CHANGE__CHANGED_EOBJECT:
-				setChangedEObject((EObject)null);
-				return;
-		}
-		super.eUnset(featureID);
-	}
+        switch (featureID) {
+            case ChangePackage.EOBJECT_CHANGE__CHANGED_EOBJECT:
+                setChangedEObject((EObject)null);
+                return;
+        }
+        super.eUnset(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case ChangePackage.EOBJECT_CHANGE__CHANGED_EOBJECT:
-				return changedEObject != null;
-		}
-		return super.eIsSet(featureID);
-	}
+        switch (featureID) {
+            case ChangePackage.EOBJECT_CHANGE__CHANGED_EOBJECT:
+                return changedEObject != null;
+        }
+        return super.eIsSet(featureID);
+    }
 
 } //EObjectChangeImpl

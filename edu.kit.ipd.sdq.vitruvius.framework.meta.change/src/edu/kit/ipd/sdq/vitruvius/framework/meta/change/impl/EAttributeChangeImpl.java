@@ -19,22 +19,33 @@ import org.eclipse.emf.ecore.EClass;
  */
 public abstract class EAttributeChangeImpl extends EFeatureChangeImpl<EAttribute> implements EAttributeChange {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected EAttributeChangeImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return ChangePackage.Literals.EATTRIBUTE_CHANGE;
-	}
+        return ChangePackage.Literals.EATTRIBUTE_CHANGE;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * This is specialized for the more specific type known in this context.
+     * @generated
+     */
+    @Override
+    public void setAffectedFeature(EAttribute newAffectedFeature) {
+        super.setAffectedFeature(newAffectedFeature);
+    }
 
 } //EAttributeChangeImpl

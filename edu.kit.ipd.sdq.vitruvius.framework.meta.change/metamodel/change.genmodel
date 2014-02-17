@@ -24,16 +24,18 @@
     <genClasses ecoreClass="change.ecore#//CreateRootEObject"/>
     <genClasses image="false" ecoreClass="change.ecore#//UpdateEFeature">
       <genTypeParameters ecoreTypeParameter="change.ecore#//UpdateEFeature/T"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference change.ecore#//UpdateEFeature/newValue"/>
+      <genOperations ecoreOperation="change.ecore#//UpdateEFeature/getNewValue"/>
     </genClasses>
     <genClasses ecoreClass="change.ecore#//UnsetEFeature">
       <genTypeParameters ecoreTypeParameter="change.ecore#//UnsetEFeature/T"/>
     </genClasses>
     <genClasses ecoreClass="change.ecore#//UpdateEAttribute">
       <genTypeParameters ecoreTypeParameter="change.ecore#//UpdateEAttribute/T"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//UpdateEAttribute/newValue"/>
     </genClasses>
     <genClasses ecoreClass="change.ecore#//UpdateEReference">
       <genTypeParameters ecoreTypeParameter="change.ecore#//UpdateEReference/T"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference change.ecore#//UpdateEReference/newValue"/>
     </genClasses>
     <genClasses ecoreClass="change.ecore#//UpdateEContainmentReference">
       <genTypeParameters ecoreTypeParameter="change.ecore#//UpdateEContainmentReference/T"/>

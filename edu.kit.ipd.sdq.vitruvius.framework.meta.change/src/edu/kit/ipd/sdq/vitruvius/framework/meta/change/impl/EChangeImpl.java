@@ -20,22 +20,22 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  */
 public abstract class EChangeImpl extends EObjectImpl implements EChange {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected EChangeImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return ChangePackage.Literals.ECHANGE;
-	}
+        return ChangePackage.Literals.ECHANGE;
+    }
 
 } //EChangeImpl

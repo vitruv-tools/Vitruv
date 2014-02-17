@@ -18,22 +18,22 @@ import org.eclipse.emf.ecore.EClass;
  */
 public class DeleteRootEObjectImpl extends DeleteEObjectImpl implements DeleteRootEObject {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected DeleteRootEObjectImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return ChangePackage.Literals.DELETE_ROOT_EOBJECT;
-	}
+        return ChangePackage.Literals.DELETE_ROOT_EOBJECT;
+    }
 
 } //DeleteRootEObjectImpl

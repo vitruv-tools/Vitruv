@@ -22,29 +22,29 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface EObjectChange extends EChange {
 	/**
-	 * Returns the value of the '<em><b>Changed EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Changed EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Changed EObject</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Changed EObject</em>' reference.
-	 * @see #setChangedEObject(EObject)
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangePackage#getEObjectChange_ChangedEObject()
-	 * @model required="true"
-	 * @generated
-	 */
+     * @return the value of the '<em>Changed EObject</em>' reference.
+     * @see #setChangedEObject(EObject)
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangePackage#getEObjectChange_ChangedEObject()
+     * @model required="true"
+     * @generated
+     */
 	EObject getChangedEObject();
 
 	/**
-	 * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.EObjectChange#getChangedEObject <em>Changed EObject</em>}' reference.
-	 * <!-- begin-user-doc -->
+     * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.EObjectChange#getChangedEObject <em>Changed EObject</em>}' reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Changed EObject</em>' reference.
-	 * @see #getChangedEObject()
-	 * @generated
-	 */
+     * @param value the new value of the '<em>Changed EObject</em>' reference.
+     * @see #getChangedEObject()
+     * @generated
+     */
 	void setChangedEObject(EObject value);
 
 } // EObjectChange

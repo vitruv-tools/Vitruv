@@ -19,22 +19,33 @@ import org.eclipse.emf.ecore.EReference;
  */
 public abstract class EReferenceChangeImpl extends EFeatureChangeImpl<EReference> implements EReferenceChange {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected EReferenceChangeImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return ChangePackage.Literals.EREFERENCE_CHANGE;
-	}
+        return ChangePackage.Literals.EREFERENCE_CHANGE;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * This is specialized for the more specific type known in this context.
+     * @generated
+     */
+    @Override
+    public void setAffectedFeature(EReference newAffectedFeature) {
+        super.setAffectedFeature(newAffectedFeature);
+    }
 
 } //EReferenceChangeImpl

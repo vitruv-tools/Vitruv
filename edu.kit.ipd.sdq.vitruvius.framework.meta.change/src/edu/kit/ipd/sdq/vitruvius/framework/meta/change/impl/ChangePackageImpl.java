@@ -21,8 +21,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEContainmentReferen
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEFeature;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEReference;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.ETypeParameter;
@@ -37,563 +39,579 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
  */
 public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private EClass eChangeEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private EClass eObjectChangeEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private EClass eFeatureChangeEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private EClass eAttributeChangeEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private EClass eReferenceChangeEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private EClass createEObjectEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private EClass createNonRootEObjectEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private EClass createRootEObjectEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private EClass updateEFeatureEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private EClass unsetEFeatureEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private EClass updateEAttributeEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private EClass updateEReferenceEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private EClass updateEContainmentReferenceEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private EClass deleteEObjectEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private EClass deleteNonRootEObjectEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private EClass deleteRootEObjectEClass = null;
 
 	/**
-	 * Creates an instance of the model <b>Package</b>, registered with
-	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
-	 * package URI value.
-	 * <p>Note: the correct way to create the package is via the static
-	 * factory method {@link #init init()}, which also performs
-	 * initialization of the package, or returns the registered package,
-	 * if one already exists.
-	 * <!-- begin-user-doc -->
+     * Creates an instance of the model <b>Package</b>, registered with
+     * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
+     * package URI value.
+     * <p>Note: the correct way to create the package is via the static
+     * factory method {@link #init init()}, which also performs
+     * initialization of the package, or returns the registered package,
+     * if one already exists.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.ecore.EPackage.Registry
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangePackage#eNS_URI
-	 * @see #init()
-	 * @generated
-	 */
+     * @see org.eclipse.emf.ecore.EPackage.Registry
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangePackage#eNS_URI
+     * @see #init()
+     * @generated
+     */
 	private ChangePackageImpl() {
-		super(eNS_URI, ChangeFactory.eINSTANCE);
-	}
+        super(eNS_URI, ChangeFactory.eINSTANCE);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private static boolean isInited = false;
 
 	/**
-	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-	 * 
-	 * <p>This method is used to initialize {@link ChangePackage#eINSTANCE} when that field is accessed.
-	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
-	 * <!-- begin-user-doc -->
+     * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
+     * 
+     * <p>This method is used to initialize {@link ChangePackage#eINSTANCE} when that field is accessed.
+     * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #eNS_URI
-	 * @see #createPackageContents()
-	 * @see #initializePackageContents()
-	 * @generated
-	 */
+     * @see #eNS_URI
+     * @see #createPackageContents()
+     * @see #initializePackageContents()
+     * @generated
+     */
 	public static ChangePackage init() {
-		if (isInited) return (ChangePackage)EPackage.Registry.INSTANCE.getEPackage(ChangePackage.eNS_URI);
+        if (isInited) return (ChangePackage)EPackage.Registry.INSTANCE.getEPackage(ChangePackage.eNS_URI);
 
-		// Obtain or create and register package
-		ChangePackageImpl theChangePackage = (ChangePackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof ChangePackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new ChangePackageImpl());
+        // Obtain or create and register package
+        ChangePackageImpl theChangePackage = (ChangePackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof ChangePackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new ChangePackageImpl());
 
-		isInited = true;
+        isInited = true;
 
-		// Create package meta-data objects
-		theChangePackage.createPackageContents();
+        // Create package meta-data objects
+        theChangePackage.createPackageContents();
 
-		// Initialize created meta-data
-		theChangePackage.initializePackageContents();
+        // Initialize created meta-data
+        theChangePackage.initializePackageContents();
 
-		// Mark meta-data to indicate it can't be changed
-		theChangePackage.freeze();
+        // Mark meta-data to indicate it can't be changed
+        theChangePackage.freeze();
 
   
-		// Update the registry and return the package
-		EPackage.Registry.INSTANCE.put(ChangePackage.eNS_URI, theChangePackage);
-		return theChangePackage;
-	}
+        // Update the registry and return the package
+        EPackage.Registry.INSTANCE.put(ChangePackage.eNS_URI, theChangePackage);
+        return theChangePackage;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EClass getEChange() {
-		return eChangeEClass;
-	}
+        return eChangeEClass;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EClass getEObjectChange() {
-		return eObjectChangeEClass;
-	}
+        return eObjectChangeEClass;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EReference getEObjectChange_ChangedEObject() {
-		return (EReference)eObjectChangeEClass.getEStructuralFeatures().get(0);
-	}
+        return (EReference)eObjectChangeEClass.getEStructuralFeatures().get(0);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EClass getEFeatureChange() {
-		return eFeatureChangeEClass;
-	}
+        return eFeatureChangeEClass;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EReference getEFeatureChange_AffectedFeature() {
-		return (EReference)eFeatureChangeEClass.getEStructuralFeatures().get(0);
-	}
+        return (EReference)eFeatureChangeEClass.getEStructuralFeatures().get(0);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EReference getEFeatureChange_AffectedEObject() {
-		return (EReference)eFeatureChangeEClass.getEStructuralFeatures().get(1);
-	}
+        return (EReference)eFeatureChangeEClass.getEStructuralFeatures().get(1);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EClass getEAttributeChange() {
-		return eAttributeChangeEClass;
-	}
+        return eAttributeChangeEClass;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EClass getEReferenceChange() {
-		return eReferenceChangeEClass;
-	}
+        return eReferenceChangeEClass;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EClass getCreateEObject() {
-		return createEObjectEClass;
-	}
+        return createEObjectEClass;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EClass getCreateNonRootEObject() {
-		return createNonRootEObjectEClass;
-	}
+        return createNonRootEObjectEClass;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EClass getCreateRootEObject() {
-		return createRootEObjectEClass;
-	}
+        return createRootEObjectEClass;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EClass getUpdateEFeature() {
-		return updateEFeatureEClass;
-	}
+        return updateEFeatureEClass;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getUpdateEFeature_NewValue() {
-		return (EReference)updateEFeatureEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EClass getUnsetEFeature() {
-		return unsetEFeatureEClass;
-	}
+        return unsetEFeatureEClass;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EClass getUpdateEAttribute() {
-		return updateEAttributeEClass;
-	}
+        return updateEAttributeEClass;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getUpdateEAttribute_NewValue() {
+        return (EAttribute)updateEAttributeEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EClass getUpdateEReference() {
-		return updateEReferenceEClass;
-	}
+        return updateEReferenceEClass;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getUpdateEReference_NewValue() {
+        return (EReference)updateEReferenceEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EClass getUpdateEContainmentReference() {
-		return updateEContainmentReferenceEClass;
-	}
+        return updateEContainmentReferenceEClass;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EClass getDeleteEObject() {
-		return deleteEObjectEClass;
-	}
+        return deleteEObjectEClass;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EClass getDeleteNonRootEObject() {
-		return deleteNonRootEObjectEClass;
-	}
+        return deleteNonRootEObjectEClass;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EClass getDeleteRootEObject() {
-		return deleteRootEObjectEClass;
-	}
+        return deleteRootEObjectEClass;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public ChangeFactory getChangeFactory() {
-		return (ChangeFactory)getEFactoryInstance();
-	}
+        return (ChangeFactory)getEFactoryInstance();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private boolean isCreated = false;
 
 	/**
-	 * Creates the meta-model objects for the package.  This method is
-	 * guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc -->
+     * Creates the meta-model objects for the package.  This method is
+     * guarded to have no affect on any invocation but its first.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void createPackageContents() {
-		if (isCreated) return;
-		isCreated = true;
+        if (isCreated) return;
+        isCreated = true;
 
-		// Create classes and their features
-		eChangeEClass = createEClass(ECHANGE);
+        // Create classes and their features
+        eChangeEClass = createEClass(ECHANGE);
 
-		eObjectChangeEClass = createEClass(EOBJECT_CHANGE);
-		createEReference(eObjectChangeEClass, EOBJECT_CHANGE__CHANGED_EOBJECT);
+        eObjectChangeEClass = createEClass(EOBJECT_CHANGE);
+        createEReference(eObjectChangeEClass, EOBJECT_CHANGE__CHANGED_EOBJECT);
 
-		eFeatureChangeEClass = createEClass(EFEATURE_CHANGE);
-		createEReference(eFeatureChangeEClass, EFEATURE_CHANGE__AFFECTED_FEATURE);
-		createEReference(eFeatureChangeEClass, EFEATURE_CHANGE__AFFECTED_EOBJECT);
+        eFeatureChangeEClass = createEClass(EFEATURE_CHANGE);
+        createEReference(eFeatureChangeEClass, EFEATURE_CHANGE__AFFECTED_FEATURE);
+        createEReference(eFeatureChangeEClass, EFEATURE_CHANGE__AFFECTED_EOBJECT);
 
-		eAttributeChangeEClass = createEClass(EATTRIBUTE_CHANGE);
+        eAttributeChangeEClass = createEClass(EATTRIBUTE_CHANGE);
 
-		eReferenceChangeEClass = createEClass(EREFERENCE_CHANGE);
+        eReferenceChangeEClass = createEClass(EREFERENCE_CHANGE);
 
-		createEObjectEClass = createEClass(CREATE_EOBJECT);
+        createEObjectEClass = createEClass(CREATE_EOBJECT);
 
-		createNonRootEObjectEClass = createEClass(CREATE_NON_ROOT_EOBJECT);
+        createNonRootEObjectEClass = createEClass(CREATE_NON_ROOT_EOBJECT);
 
-		createRootEObjectEClass = createEClass(CREATE_ROOT_EOBJECT);
+        createRootEObjectEClass = createEClass(CREATE_ROOT_EOBJECT);
 
-		updateEFeatureEClass = createEClass(UPDATE_EFEATURE);
-		createEReference(updateEFeatureEClass, UPDATE_EFEATURE__NEW_VALUE);
+        updateEFeatureEClass = createEClass(UPDATE_EFEATURE);
 
-		unsetEFeatureEClass = createEClass(UNSET_EFEATURE);
+        unsetEFeatureEClass = createEClass(UNSET_EFEATURE);
 
-		updateEAttributeEClass = createEClass(UPDATE_EATTRIBUTE);
+        updateEAttributeEClass = createEClass(UPDATE_EATTRIBUTE);
+        createEAttribute(updateEAttributeEClass, UPDATE_EATTRIBUTE__NEW_VALUE);
 
-		updateEReferenceEClass = createEClass(UPDATE_EREFERENCE);
+        updateEReferenceEClass = createEClass(UPDATE_EREFERENCE);
+        createEReference(updateEReferenceEClass, UPDATE_EREFERENCE__NEW_VALUE);
 
-		updateEContainmentReferenceEClass = createEClass(UPDATE_ECONTAINMENT_REFERENCE);
+        updateEContainmentReferenceEClass = createEClass(UPDATE_ECONTAINMENT_REFERENCE);
 
-		deleteEObjectEClass = createEClass(DELETE_EOBJECT);
+        deleteEObjectEClass = createEClass(DELETE_EOBJECT);
 
-		deleteNonRootEObjectEClass = createEClass(DELETE_NON_ROOT_EOBJECT);
+        deleteNonRootEObjectEClass = createEClass(DELETE_NON_ROOT_EOBJECT);
 
-		deleteRootEObjectEClass = createEClass(DELETE_ROOT_EOBJECT);
-	}
+        deleteRootEObjectEClass = createEClass(DELETE_ROOT_EOBJECT);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	private boolean isInitialized = false;
 
 	/**
-	 * Complete the initialization of the package and its meta-model.  This
-	 * method is guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc -->
+     * Complete the initialization of the package and its meta-model.  This
+     * method is guarded to have no affect on any invocation but its first.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void initializePackageContents() {
-		if (isInitialized) return;
-		isInitialized = true;
+        if (isInitialized) return;
+        isInitialized = true;
 
-		// Initialize package
-		setName(eNAME);
-		setNsPrefix(eNS_PREFIX);
-		setNsURI(eNS_URI);
+        // Initialize package
+        setName(eNAME);
+        setNsPrefix(eNS_PREFIX);
+        setNsURI(eNS_URI);
 
-		// Create type parameters
-		ETypeParameter eFeatureChangeEClass_T = addETypeParameter(eFeatureChangeEClass, "T");
-		ETypeParameter createNonRootEObjectEClass_T = addETypeParameter(createNonRootEObjectEClass, "T");
-		ETypeParameter updateEFeatureEClass_T = addETypeParameter(updateEFeatureEClass, "T");
-		ETypeParameter unsetEFeatureEClass_T = addETypeParameter(unsetEFeatureEClass, "T");
-		ETypeParameter updateEAttributeEClass_T = addETypeParameter(updateEAttributeEClass, "T");
-		ETypeParameter updateEReferenceEClass_T = addETypeParameter(updateEReferenceEClass, "T");
-		ETypeParameter updateEContainmentReferenceEClass_T = addETypeParameter(updateEContainmentReferenceEClass, "T");
-		ETypeParameter deleteNonRootEObjectEClass_T = addETypeParameter(deleteNonRootEObjectEClass, "T");
+        // Create type parameters
+        ETypeParameter eFeatureChangeEClass_T = addETypeParameter(eFeatureChangeEClass, "T");
+        ETypeParameter createNonRootEObjectEClass_T = addETypeParameter(createNonRootEObjectEClass, "T");
+        ETypeParameter updateEFeatureEClass_T = addETypeParameter(updateEFeatureEClass, "T");
+        ETypeParameter unsetEFeatureEClass_T = addETypeParameter(unsetEFeatureEClass, "T");
+        ETypeParameter updateEAttributeEClass_T = addETypeParameter(updateEAttributeEClass, "T");
+        ETypeParameter updateEReferenceEClass_T = addETypeParameter(updateEReferenceEClass, "T");
+        ETypeParameter updateEContainmentReferenceEClass_T = addETypeParameter(updateEContainmentReferenceEClass, "T");
+        ETypeParameter deleteNonRootEObjectEClass_T = addETypeParameter(deleteNonRootEObjectEClass, "T");
 
-		// Set bounds for type parameters
-		EGenericType g1 = createEGenericType(ecorePackage.getEStructuralFeature());
-		eFeatureChangeEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(ecorePackage.getEObject());
-		createNonRootEObjectEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(ecorePackage.getEJavaObject());
-		updateEFeatureEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(ecorePackage.getEStructuralFeature());
-		unsetEFeatureEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(ecorePackage.getEJavaObject());
-		updateEAttributeEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(ecorePackage.getEObject());
-		updateEReferenceEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(ecorePackage.getEObject());
-		updateEContainmentReferenceEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(ecorePackage.getEObject());
-		deleteNonRootEObjectEClass_T.getEBounds().add(g1);
+        // Set bounds for type parameters
+        EGenericType g1 = createEGenericType(ecorePackage.getEStructuralFeature());
+        eFeatureChangeEClass_T.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEObject());
+        createNonRootEObjectEClass_T.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEJavaObject());
+        updateEFeatureEClass_T.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEStructuralFeature());
+        unsetEFeatureEClass_T.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEJavaObject());
+        updateEAttributeEClass_T.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEObject());
+        updateEReferenceEClass_T.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEObject());
+        updateEContainmentReferenceEClass_T.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEObject());
+        deleteNonRootEObjectEClass_T.getEBounds().add(g1);
 
-		// Add supertypes to classes
-		eObjectChangeEClass.getESuperTypes().add(this.getEChange());
-		eFeatureChangeEClass.getESuperTypes().add(this.getEChange());
-		g1 = createEGenericType(this.getEFeatureChange());
-		EGenericType g2 = createEGenericType(ecorePackage.getEAttribute());
-		g1.getETypeArguments().add(g2);
-		eAttributeChangeEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getEFeatureChange());
-		g2 = createEGenericType(ecorePackage.getEReference());
-		g1.getETypeArguments().add(g2);
-		eReferenceChangeEClass.getEGenericSuperTypes().add(g1);
-		createEObjectEClass.getESuperTypes().add(this.getEObjectChange());
-		g1 = createEGenericType(this.getCreateEObject());
-		createNonRootEObjectEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getUpdateEContainmentReference());
-		g2 = createEGenericType(createNonRootEObjectEClass_T);
-		g1.getETypeArguments().add(g2);
-		createNonRootEObjectEClass.getEGenericSuperTypes().add(g1);
-		createRootEObjectEClass.getESuperTypes().add(this.getCreateEObject());
-		g1 = createEGenericType(this.getEFeatureChange());
-		g2 = createEGenericType(unsetEFeatureEClass_T);
-		g1.getETypeArguments().add(g2);
-		unsetEFeatureEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getUpdateEFeature());
-		g2 = createEGenericType(updateEAttributeEClass_T);
-		g1.getETypeArguments().add(g2);
-		updateEAttributeEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getEAttributeChange());
-		updateEAttributeEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getUpdateEFeature());
-		g2 = createEGenericType(updateEReferenceEClass_T);
-		g1.getETypeArguments().add(g2);
-		updateEReferenceEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getEReferenceChange());
-		updateEReferenceEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getUpdateEReference());
-		g2 = createEGenericType(updateEContainmentReferenceEClass_T);
-		g1.getETypeArguments().add(g2);
-		updateEContainmentReferenceEClass.getEGenericSuperTypes().add(g1);
-		deleteEObjectEClass.getESuperTypes().add(this.getEObjectChange());
-		g1 = createEGenericType(this.getDeleteRootEObject());
-		deleteNonRootEObjectEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getUpdateEContainmentReference());
-		g2 = createEGenericType(deleteNonRootEObjectEClass_T);
-		g1.getETypeArguments().add(g2);
-		deleteNonRootEObjectEClass.getEGenericSuperTypes().add(g1);
-		deleteRootEObjectEClass.getESuperTypes().add(this.getDeleteEObject());
+        // Add supertypes to classes
+        eObjectChangeEClass.getESuperTypes().add(this.getEChange());
+        eFeatureChangeEClass.getESuperTypes().add(this.getEChange());
+        g1 = createEGenericType(this.getEFeatureChange());
+        EGenericType g2 = createEGenericType(ecorePackage.getEAttribute());
+        g1.getETypeArguments().add(g2);
+        eAttributeChangeEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(this.getEFeatureChange());
+        g2 = createEGenericType(ecorePackage.getEReference());
+        g1.getETypeArguments().add(g2);
+        eReferenceChangeEClass.getEGenericSuperTypes().add(g1);
+        createEObjectEClass.getESuperTypes().add(this.getEObjectChange());
+        g1 = createEGenericType(this.getCreateEObject());
+        createNonRootEObjectEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(this.getUpdateEContainmentReference());
+        g2 = createEGenericType(createNonRootEObjectEClass_T);
+        g1.getETypeArguments().add(g2);
+        createNonRootEObjectEClass.getEGenericSuperTypes().add(g1);
+        createRootEObjectEClass.getESuperTypes().add(this.getCreateEObject());
+        g1 = createEGenericType(this.getEFeatureChange());
+        g2 = createEGenericType(unsetEFeatureEClass_T);
+        g1.getETypeArguments().add(g2);
+        unsetEFeatureEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(this.getUpdateEFeature());
+        g2 = createEGenericType(updateEAttributeEClass_T);
+        g1.getETypeArguments().add(g2);
+        updateEAttributeEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(this.getEAttributeChange());
+        updateEAttributeEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(this.getUpdateEFeature());
+        g2 = createEGenericType(updateEReferenceEClass_T);
+        g1.getETypeArguments().add(g2);
+        updateEReferenceEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(this.getEReferenceChange());
+        updateEReferenceEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(this.getUpdateEReference());
+        g2 = createEGenericType(updateEContainmentReferenceEClass_T);
+        g1.getETypeArguments().add(g2);
+        updateEContainmentReferenceEClass.getEGenericSuperTypes().add(g1);
+        deleteEObjectEClass.getESuperTypes().add(this.getEObjectChange());
+        g1 = createEGenericType(this.getDeleteRootEObject());
+        deleteNonRootEObjectEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(this.getUpdateEContainmentReference());
+        g2 = createEGenericType(deleteNonRootEObjectEClass_T);
+        g1.getETypeArguments().add(g2);
+        deleteNonRootEObjectEClass.getEGenericSuperTypes().add(g1);
+        deleteRootEObjectEClass.getESuperTypes().add(this.getDeleteEObject());
 
-		// Initialize classes and features; add operations and parameters
-		initEClass(eChangeEClass, EChange.class, "EChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        // Initialize classes and features; add operations and parameters
+        initEClass(eChangeEClass, EChange.class, "EChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(eObjectChangeEClass, EObjectChange.class, "EObjectChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getEObjectChange_ChangedEObject(), ecorePackage.getEObject(), null, "changedEObject", null, 1, 1, EObjectChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEClass(eObjectChangeEClass, EObjectChange.class, "EObjectChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEReference(getEObjectChange_ChangedEObject(), ecorePackage.getEObject(), null, "changedEObject", null, 1, 1, EObjectChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(eFeatureChangeEClass, EFeatureChange.class, "EFeatureChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		g1 = createEGenericType(eFeatureChangeEClass_T);
-		initEReference(getEFeatureChange_AffectedFeature(), g1, null, "affectedFeature", null, 1, 1, EFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEFeatureChange_AffectedEObject(), ecorePackage.getEObject(), null, "affectedEObject", null, 1, 1, EFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEClass(eFeatureChangeEClass, EFeatureChange.class, "EFeatureChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        g1 = createEGenericType(eFeatureChangeEClass_T);
+        initEReference(getEFeatureChange_AffectedFeature(), g1, null, "affectedFeature", null, 1, 1, EFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getEFeatureChange_AffectedEObject(), ecorePackage.getEObject(), null, "affectedEObject", null, 1, 1, EFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(eAttributeChangeEClass, EAttributeChange.class, "EAttributeChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(eAttributeChangeEClass, EAttributeChange.class, "EAttributeChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(eReferenceChangeEClass, EReferenceChange.class, "EReferenceChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(eReferenceChangeEClass, EReferenceChange.class, "EReferenceChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(createEObjectEClass, CreateEObject.class, "CreateEObject", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(createEObjectEClass, CreateEObject.class, "CreateEObject", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(createNonRootEObjectEClass, CreateNonRootEObject.class, "CreateNonRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(createNonRootEObjectEClass, CreateNonRootEObject.class, "CreateNonRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(createRootEObjectEClass, CreateRootEObject.class, "CreateRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(createRootEObjectEClass, CreateRootEObject.class, "CreateRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(updateEFeatureEClass, UpdateEFeature.class, "UpdateEFeature", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		g1 = createEGenericType(updateEFeatureEClass_T);
-		initEReference(getUpdateEFeature_NewValue(), g1, null, "newValue", null, 1, 1, UpdateEFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEClass(updateEFeatureEClass, UpdateEFeature.class, "UpdateEFeature", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(unsetEFeatureEClass, UnsetEFeature.class, "UnsetEFeature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        EOperation op = addEOperation(updateEFeatureEClass, null, "getNewValue", 1, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(updateEFeatureEClass_T);
+        initEOperation(op, g1);
 
-		initEClass(updateEAttributeEClass, UpdateEAttribute.class, "UpdateEAttribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(unsetEFeatureEClass, UnsetEFeature.class, "UnsetEFeature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(updateEReferenceEClass, UpdateEReference.class, "UpdateEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(updateEAttributeEClass, UpdateEAttribute.class, "UpdateEAttribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        g1 = createEGenericType(updateEAttributeEClass_T);
+        initEAttribute(getUpdateEAttribute_NewValue(), g1, "newValue", null, 1, 1, UpdateEAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(updateEContainmentReferenceEClass, UpdateEContainmentReference.class, "UpdateEContainmentReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(updateEReferenceEClass, UpdateEReference.class, "UpdateEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        g1 = createEGenericType(updateEReferenceEClass_T);
+        initEReference(getUpdateEReference_NewValue(), g1, null, "newValue", null, 1, 1, UpdateEReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(deleteEObjectEClass, DeleteEObject.class, "DeleteEObject", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(updateEContainmentReferenceEClass, UpdateEContainmentReference.class, "UpdateEContainmentReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(deleteNonRootEObjectEClass, DeleteNonRootEObject.class, "DeleteNonRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(deleteEObjectEClass, DeleteEObject.class, "DeleteEObject", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(deleteRootEObjectEClass, DeleteRootEObject.class, "DeleteRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(deleteNonRootEObjectEClass, DeleteNonRootEObject.class, "DeleteNonRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		// Create resource
-		createResource(eNS_URI);
-	}
+        initEClass(deleteRootEObjectEClass, DeleteRootEObject.class, "DeleteRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        // Create resource
+        createResource(eNS_URI);
+    }
 
 } //ChangePackageImpl

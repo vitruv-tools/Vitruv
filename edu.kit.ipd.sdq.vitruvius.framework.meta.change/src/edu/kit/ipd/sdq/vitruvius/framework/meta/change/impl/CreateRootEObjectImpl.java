@@ -18,22 +18,22 @@ import org.eclipse.emf.ecore.EClass;
  */
 public class CreateRootEObjectImpl extends CreateEObjectImpl implements CreateRootEObject {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected CreateRootEObjectImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return ChangePackage.Literals.CREATE_ROOT_EOBJECT;
-	}
+        return ChangePackage.Literals.CREATE_ROOT_EOBJECT;
+    }
 
 } //CreateRootEObjectImpl

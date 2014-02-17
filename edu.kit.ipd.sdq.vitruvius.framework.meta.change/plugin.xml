@@ -16,8 +16,8 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated change -->
       <package
-            uri="TODO"
-            class="edu.kit.ipd.sdq.vitruvius.framework.meta.change.change.ChangePackage"
+            uri="http://edu.kit.ipd.sdq.vitruvius/Change/1.0"
+            class="edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangePackage"
             genModel="metamodel/change.genmodel"/>
    </extension>
 
