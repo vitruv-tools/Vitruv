@@ -38,4 +38,15 @@ public abstract class EReferenceCorrespondenceImpl extends EFeatureCorrespondenc
 		return CorrespondencePackage.Literals.EREFERENCE_CORRESPONDENCE;
 	}
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
+	 * @generated
+	 */
+	@Override
+	public void setMappedFeature(EReference newMappedFeature) {
+		super.setMappedFeature(newMappedFeature);
+	}
+
 } //EReferenceCorrespondenceImpl

@@ -36,7 +36,7 @@ public abstract class EFeatureCorrespondenceImpl<T extends Object, TFeature exte
 	 * @generated
 	 * @ordered
 	 */
-	protected EAttributeCorrespondence mappedFeature;
+	protected TFeature mappedFeature;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -60,12 +60,35 @@ public abstract class EFeatureCorrespondenceImpl<T extends Object, TFeature exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
 	 * @generated
 	 */
-	public EAttributeCorrespondence getMappedFeature() {
+	@Override
+	public void setElementA(T newElementA) {
+		super.setElementA(newElementA);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
+	 * @generated
+	 */
+	@Override
+	public void setElementB(T newElementB) {
+		super.setElementB(newElementB);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	public TFeature getMappedFeature() {
 		if (mappedFeature != null && mappedFeature.eIsProxy()) {
 			InternalEObject oldMappedFeature = (InternalEObject)mappedFeature;
-			mappedFeature = (EAttributeCorrespondence)eResolveProxy(oldMappedFeature);
+			mappedFeature = (TFeature)eResolveProxy(oldMappedFeature);
 			if (mappedFeature != oldMappedFeature) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CorrespondencePackage.EFEATURE_CORRESPONDENCE__MAPPED_FEATURE, oldMappedFeature, mappedFeature));
@@ -79,7 +102,7 @@ public abstract class EFeatureCorrespondenceImpl<T extends Object, TFeature exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttributeCorrespondence basicGetMappedFeature() {
+	public TFeature basicGetMappedFeature() {
 		return mappedFeature;
 	}
 
@@ -88,8 +111,8 @@ public abstract class EFeatureCorrespondenceImpl<T extends Object, TFeature exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMappedFeature(EAttributeCorrespondence newMappedFeature) {
-		EAttributeCorrespondence oldMappedFeature = mappedFeature;
+	public void setMappedFeature(TFeature newMappedFeature) {
+		TFeature oldMappedFeature = mappedFeature;
 		mappedFeature = newMappedFeature;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.EFEATURE_CORRESPONDENCE__MAPPED_FEATURE, oldMappedFeature, mappedFeature));
@@ -115,11 +138,12 @@ public abstract class EFeatureCorrespondenceImpl<T extends Object, TFeature exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__MAPPED_FEATURE:
-				setMappedFeature((EAttributeCorrespondence)newValue);
+				setMappedFeature((TFeature)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -134,7 +158,7 @@ public abstract class EFeatureCorrespondenceImpl<T extends Object, TFeature exte
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__MAPPED_FEATURE:
-				setMappedFeature((EAttributeCorrespondence)null);
+				setMappedFeature((TFeature)null);
 				return;
 		}
 		super.eUnset(featureID);

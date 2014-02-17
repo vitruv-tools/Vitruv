@@ -30,12 +30,12 @@ public interface EFeatureCorrespondence<T extends Object, TFeature extends EStru
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Mapped Feature</em>' reference.
-	 * @see #setMappedFeature(EAttributeCorrespondence)
+	 * @see #setMappedFeature(EStructuralFeature)
 	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getEFeatureCorrespondence_MappedFeature()
 	 * @model
 	 * @generated
 	 */
-	EAttributeCorrespondence getMappedFeature();
+	TFeature getMappedFeature();
 
 	/**
 	 * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EFeatureCorrespondence#getMappedFeature <em>Mapped Feature</em>}' reference.
@@ -45,6 +45,6 @@ public interface EFeatureCorrespondence<T extends Object, TFeature extends EStru
 	 * @see #getMappedFeature()
 	 * @generated
 	 */
-	void setMappedFeature(EAttributeCorrespondence value);
+	void setMappedFeature(TFeature value);
 
 } // EFeatureCorrespondence

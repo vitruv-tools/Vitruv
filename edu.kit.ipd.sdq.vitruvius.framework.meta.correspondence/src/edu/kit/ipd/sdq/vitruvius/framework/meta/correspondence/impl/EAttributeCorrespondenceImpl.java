@@ -37,4 +37,15 @@ public class EAttributeCorrespondenceImpl extends EFeatureCorrespondenceImpl<Obj
 		return CorrespondencePackage.Literals.EATTRIBUTE_CORRESPONDENCE;
 	}
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
+	 * @generated
+	 */
+	@Override
+	public void setMappedFeature(EAttribute newMappedFeature) {
+		super.setMappedFeature(newMappedFeature);
+	}
+
 } //EAttributeCorrespondenceImpl

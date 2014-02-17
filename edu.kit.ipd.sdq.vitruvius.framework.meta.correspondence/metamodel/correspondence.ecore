@@ -37,7 +37,9 @@
     <eTypeParameters name="TFeature">
       <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
     </eTypeParameters>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="mappedFeature" eType="#//EAttributeCorrespondence"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappedFeature">
+      <eGenericType eTypeParameter="#//EFeatureCorrespondence/TFeature"/>
+    </eStructuralFeatures>
     <eGenericSuperTypes eClassifier="#//SameTypeCorrespondence">
       <eTypeArguments eTypeParameter="#//EFeatureCorrespondence/T"/>
     </eGenericSuperTypes>

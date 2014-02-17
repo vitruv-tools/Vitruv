@@ -397,7 +397,7 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		initEReference(getCorrespondence_DependentCorrespondences(), this.getCorrespondence(), null, "dependentCorrespondences", null, 0, -1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCorrespondence_Parent(), this.getCorrespondence(), null, "parent", null, 0, 1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		addEOperation(correspondenceEClass, theEcorePackage.getEObject(), "getAllInvolvedEObjects", 2, -1, IS_UNIQUE, !IS_ORDERED);
+		addEOperation(correspondenceEClass, ecorePackage.getEObject(), "getAllInvolvedObjects", 2, -1, IS_UNIQUE, !IS_ORDERED);
 
 		initEClass(sameTypeCorrespondenceEClass, SameTypeCorrespondence.class, "SameTypeCorrespondence", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		g1 = createEGenericType(sameTypeCorrespondenceEClass_T);
@@ -408,7 +408,8 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		initEClass(eObjectCorrespondenceEClass, EObjectCorrespondence.class, "EObjectCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(eFeatureCorrespondenceEClass, EFeatureCorrespondence.class, "EFeatureCorrespondence", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getEFeatureCorrespondence_MappedFeature(), this.getEAttributeCorrespondence(), null, "mappedFeature", null, 0, 1, EFeatureCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		g1 = createEGenericType(eFeatureCorrespondenceEClass_TFeature);
+		initEReference(getEFeatureCorrespondence_MappedFeature(), g1, null, "mappedFeature", null, 0, 1, EFeatureCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(eAttributeCorrespondenceEClass, EAttributeCorrespondence.class, "EAttributeCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

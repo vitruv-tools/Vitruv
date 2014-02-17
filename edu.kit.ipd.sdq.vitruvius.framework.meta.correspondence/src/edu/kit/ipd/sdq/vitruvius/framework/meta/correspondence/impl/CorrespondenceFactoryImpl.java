@@ -27,7 +27,7 @@ public class CorrespondenceFactoryImpl extends EFactoryImpl implements Correspon
 	 */
 	public static CorrespondenceFactory init() {
 		try {
-			CorrespondenceFactory theCorrespondenceFactory = (CorrespondenceFactory)EPackage.Registry.INSTANCE.getEFactory("http://edu.kit.ipd.sdq.vitruvius/Correspondence/1.0"); 
+			CorrespondenceFactory theCorrespondenceFactory = (CorrespondenceFactory)EPackage.Registry.INSTANCE.getEFactory(CorrespondencePackage.eNS_URI);
 			if (theCorrespondenceFactory != null) {
 				return theCorrespondenceFactory;
 			}
