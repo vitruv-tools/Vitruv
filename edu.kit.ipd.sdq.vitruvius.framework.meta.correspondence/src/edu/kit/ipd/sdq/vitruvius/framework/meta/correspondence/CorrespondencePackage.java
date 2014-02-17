@@ -2,7 +2,9 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -276,13 +278,13 @@ public interface CorrespondencePackage extends EPackage {
 	int EFEATURE_CORRESPONDENCE__ELEMENT_B = SAME_TYPE_CORRESPONDENCE__ELEMENT_B;
 
 	/**
-	 * The feature id for the '<em><b>Mapped Feature</b></em>' reference.
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EFEATURE_CORRESPONDENCE__MAPPED_FEATURE = SAME_TYPE_CORRESPONDENCE_FEATURE_COUNT + 0;
+	int EFEATURE_CORRESPONDENCE__TYPE = SAME_TYPE_CORRESPONDENCE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>EFeature Correspondence</em>' class.
@@ -340,13 +342,13 @@ public interface CorrespondencePackage extends EPackage {
 	int EATTRIBUTE_CORRESPONDENCE__ELEMENT_B = EFEATURE_CORRESPONDENCE__ELEMENT_B;
 
 	/**
-	 * The feature id for the '<em><b>Mapped Feature</b></em>' reference.
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EATTRIBUTE_CORRESPONDENCE__MAPPED_FEATURE = EFEATURE_CORRESPONDENCE__MAPPED_FEATURE;
+	int EATTRIBUTE_CORRESPONDENCE__TYPE = EFEATURE_CORRESPONDENCE__TYPE;
 
 	/**
 	 * The number of structural features of the '<em>EAttribute Correspondence</em>' class.
@@ -404,13 +406,13 @@ public interface CorrespondencePackage extends EPackage {
 	int EREFERENCE_CORRESPONDENCE__ELEMENT_B = EFEATURE_CORRESPONDENCE__ELEMENT_B;
 
 	/**
-	 * The feature id for the '<em><b>Mapped Feature</b></em>' reference.
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EREFERENCE_CORRESPONDENCE__MAPPED_FEATURE = EFEATURE_CORRESPONDENCE__MAPPED_FEATURE;
+	int EREFERENCE_CORRESPONDENCE__TYPE = EFEATURE_CORRESPONDENCE__TYPE;
 
 	/**
 	 * The number of structural features of the '<em>EReference Correspondence</em>' class.
@@ -468,13 +470,13 @@ public interface CorrespondencePackage extends EPackage {
 	int ECONTAINMENT_REFERENCE_CORRESPONDENCE__ELEMENT_B = EREFERENCE_CORRESPONDENCE__ELEMENT_B;
 
 	/**
-	 * The feature id for the '<em><b>Mapped Feature</b></em>' reference.
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ECONTAINMENT_REFERENCE_CORRESPONDENCE__MAPPED_FEATURE = EREFERENCE_CORRESPONDENCE__MAPPED_FEATURE;
+	int ECONTAINMENT_REFERENCE_CORRESPONDENCE__TYPE = EREFERENCE_CORRESPONDENCE__TYPE;
 
 	/**
 	 * The number of structural features of the '<em>EContainment Reference Correspondence</em>' class.
@@ -484,6 +486,200 @@ public interface CorrespondencePackage extends EPackage {
 	 * @ordered
 	 */
 	int ECONTAINMENT_REFERENCE_CORRESPONDENCE_FEATURE_COUNT = EREFERENCE_CORRESPONDENCE_FEATURE_COUNT + 0;
+
+
+	/**
+	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.PartialEFeatureCorrespondenceImpl <em>Partial EFeature Correspondence</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.PartialEFeatureCorrespondenceImpl
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.CorrespondencePackageImpl#getPartialEFeatureCorrespondence()
+	 * @generated
+	 */
+	int PARTIAL_EFEATURE_CORRESPONDENCE = 8;
+
+	/**
+	 * The number of structural features of the '<em>Partial EFeature Correspondence</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT = 0;
+
+	/**
+	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.PartialEAttributeCorrespondenceImpl <em>Partial EAttribute Correspondence</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.PartialEAttributeCorrespondenceImpl
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.CorrespondencePackageImpl#getPartialEAttributeCorrespondence()
+	 * @generated
+	 */
+	int PARTIAL_EATTRIBUTE_CORRESPONDENCE = 9;
+
+	/**
+	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Parent</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__PARENT = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Element A</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__ELEMENT_A = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Element B</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__ELEMENT_B = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__TYPE = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>Value A</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__VALUE_A = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '<em><b>Value B</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__VALUE_B = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 6;
+
+	/**
+	 * The number of structural features of the '<em>Partial EAttribute Correspondence</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARTIAL_EATTRIBUTE_CORRESPONDENCE_FEATURE_COUNT = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 7;
+
+	/**
+	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.PartialEReferenceCorrespondenceImpl <em>Partial EReference Correspondence</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.PartialEReferenceCorrespondenceImpl
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.CorrespondencePackageImpl#getPartialEReferenceCorrespondence()
+	 * @generated
+	 */
+	int PARTIAL_EREFERENCE_CORRESPONDENCE = 10;
+
+	/**
+	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARTIAL_EREFERENCE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Parent</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARTIAL_EREFERENCE_CORRESPONDENCE__PARENT = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Element A</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARTIAL_EREFERENCE_CORRESPONDENCE__ELEMENT_A = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Element B</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARTIAL_EREFERENCE_CORRESPONDENCE__ELEMENT_B = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARTIAL_EREFERENCE_CORRESPONDENCE__TYPE = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>Value A</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARTIAL_EREFERENCE_CORRESPONDENCE__VALUE_A = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '<em><b>Value B</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARTIAL_EREFERENCE_CORRESPONDENCE__VALUE_B = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 6;
+
+	/**
+	 * The number of structural features of the '<em>Partial EReference Correspondence</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARTIAL_EREFERENCE_CORRESPONDENCE_FEATURE_COUNT = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 7;
+
+	/**
+	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceType <em>Type</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceType
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.CorrespondencePackageImpl#getCorrespondenceType()
+	 * @generated
+	 */
+	int CORRESPONDENCE_TYPE = 11;
 
 
 	/**
@@ -592,15 +788,15 @@ public interface CorrespondencePackage extends EPackage {
 	EClass getEFeatureCorrespondence();
 
 	/**
-	 * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EFeatureCorrespondence#getMappedFeature <em>Mapped Feature</em>}'.
+	 * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EFeatureCorrespondence#getType <em>Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Mapped Feature</em>'.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EFeatureCorrespondence#getMappedFeature()
+	 * @return the meta object for the attribute '<em>Type</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EFeatureCorrespondence#getType()
 	 * @see #getEFeatureCorrespondence()
 	 * @generated
 	 */
-	EReference getEFeatureCorrespondence_MappedFeature();
+	EAttribute getEFeatureCorrespondence_Type();
 
 	/**
 	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EAttributeCorrespondence <em>EAttribute Correspondence</em>}'.
@@ -631,6 +827,90 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 */
 	EClass getEContainmentReferenceCorrespondence();
+
+	/**
+	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEFeatureCorrespondence <em>Partial EFeature Correspondence</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Partial EFeature Correspondence</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEFeatureCorrespondence
+	 * @generated
+	 */
+	EClass getPartialEFeatureCorrespondence();
+
+	/**
+	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEAttributeCorrespondence <em>Partial EAttribute Correspondence</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Partial EAttribute Correspondence</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEAttributeCorrespondence
+	 * @generated
+	 */
+	EClass getPartialEAttributeCorrespondence();
+
+	/**
+	 * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEAttributeCorrespondence#getValueA <em>Value A</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Value A</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEAttributeCorrespondence#getValueA()
+	 * @see #getPartialEAttributeCorrespondence()
+	 * @generated
+	 */
+	EAttribute getPartialEAttributeCorrespondence_ValueA();
+
+	/**
+	 * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEAttributeCorrespondence#getValueB <em>Value B</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Value B</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEAttributeCorrespondence#getValueB()
+	 * @see #getPartialEAttributeCorrespondence()
+	 * @generated
+	 */
+	EAttribute getPartialEAttributeCorrespondence_ValueB();
+
+	/**
+	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEReferenceCorrespondence <em>Partial EReference Correspondence</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Partial EReference Correspondence</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEReferenceCorrespondence
+	 * @generated
+	 */
+	EClass getPartialEReferenceCorrespondence();
+
+	/**
+	 * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEReferenceCorrespondence#getValueA <em>Value A</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Value A</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEReferenceCorrespondence#getValueA()
+	 * @see #getPartialEReferenceCorrespondence()
+	 * @generated
+	 */
+	EReference getPartialEReferenceCorrespondence_ValueA();
+
+	/**
+	 * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEReferenceCorrespondence#getValueB <em>Value B</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Value B</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEReferenceCorrespondence#getValueB()
+	 * @see #getPartialEReferenceCorrespondence()
+	 * @generated
+	 */
+	EReference getPartialEReferenceCorrespondence_ValueB();
+
+	/**
+	 * Returns the meta object for enum '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Type</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceType
+	 * @generated
+	 */
+	EEnum getCorrespondenceType();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -745,12 +1025,12 @@ public interface CorrespondencePackage extends EPackage {
 		EClass EFEATURE_CORRESPONDENCE = eINSTANCE.getEFeatureCorrespondence();
 
 		/**
-		 * The meta object literal for the '<em><b>Mapped Feature</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference EFEATURE_CORRESPONDENCE__MAPPED_FEATURE = eINSTANCE.getEFeatureCorrespondence_MappedFeature();
+		EAttribute EFEATURE_CORRESPONDENCE__TYPE = eINSTANCE.getEFeatureCorrespondence_Type();
 
 		/**
 		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.EAttributeCorrespondenceImpl <em>EAttribute Correspondence</em>}' class.
@@ -781,6 +1061,78 @@ public interface CorrespondencePackage extends EPackage {
 		 * @generated
 		 */
 		EClass ECONTAINMENT_REFERENCE_CORRESPONDENCE = eINSTANCE.getEContainmentReferenceCorrespondence();
+
+		/**
+		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.PartialEFeatureCorrespondenceImpl <em>Partial EFeature Correspondence</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.PartialEFeatureCorrespondenceImpl
+		 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.CorrespondencePackageImpl#getPartialEFeatureCorrespondence()
+		 * @generated
+		 */
+		EClass PARTIAL_EFEATURE_CORRESPONDENCE = eINSTANCE.getPartialEFeatureCorrespondence();
+
+		/**
+		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.PartialEAttributeCorrespondenceImpl <em>Partial EAttribute Correspondence</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.PartialEAttributeCorrespondenceImpl
+		 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.CorrespondencePackageImpl#getPartialEAttributeCorrespondence()
+		 * @generated
+		 */
+		EClass PARTIAL_EATTRIBUTE_CORRESPONDENCE = eINSTANCE.getPartialEAttributeCorrespondence();
+
+		/**
+		 * The meta object literal for the '<em><b>Value A</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PARTIAL_EATTRIBUTE_CORRESPONDENCE__VALUE_A = eINSTANCE.getPartialEAttributeCorrespondence_ValueA();
+
+		/**
+		 * The meta object literal for the '<em><b>Value B</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PARTIAL_EATTRIBUTE_CORRESPONDENCE__VALUE_B = eINSTANCE.getPartialEAttributeCorrespondence_ValueB();
+
+		/**
+		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.PartialEReferenceCorrespondenceImpl <em>Partial EReference Correspondence</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.PartialEReferenceCorrespondenceImpl
+		 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.CorrespondencePackageImpl#getPartialEReferenceCorrespondence()
+		 * @generated
+		 */
+		EClass PARTIAL_EREFERENCE_CORRESPONDENCE = eINSTANCE.getPartialEReferenceCorrespondence();
+
+		/**
+		 * The meta object literal for the '<em><b>Value A</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PARTIAL_EREFERENCE_CORRESPONDENCE__VALUE_A = eINSTANCE.getPartialEReferenceCorrespondence_ValueA();
+
+		/**
+		 * The meta object literal for the '<em><b>Value B</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PARTIAL_EREFERENCE_CORRESPONDENCE__VALUE_B = eINSTANCE.getPartialEReferenceCorrespondence_ValueB();
+
+		/**
+		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceType <em>Type</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceType
+		 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.CorrespondencePackageImpl#getCorrespondenceType()
+		 * @generated
+		 */
+		EEnum CORRESPONDENCE_TYPE = eINSTANCE.getCorrespondenceType();
 
 	}
 

@@ -3,6 +3,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceType;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EAttributeCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EFeatureCorrespondence;
 
@@ -21,23 +22,31 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.EFeatureCorrespondenceImpl#getMappedFeature <em>Mapped Feature</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.EFeatureCorrespondenceImpl#getType <em>Type</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public abstract class EFeatureCorrespondenceImpl<T extends Object, TFeature extends EStructuralFeature> extends SameTypeCorrespondenceImpl<T> implements EFeatureCorrespondence<T, TFeature> {
+public abstract class EFeatureCorrespondenceImpl<T extends EStructuralFeature> extends SameTypeCorrespondenceImpl<T> implements EFeatureCorrespondence<T> {
 	/**
-	 * The cached value of the '{@link #getMappedFeature() <em>Mapped Feature</em>}' reference.
+	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getMappedFeature()
+	 * @see #getType()
 	 * @generated
 	 * @ordered
 	 */
-	protected TFeature mappedFeature;
-
+	protected static final CorrespondenceType TYPE_EDEFAULT = CorrespondenceType.IDENTITY;
+	/**
+	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getType()
+	 * @generated
+	 * @ordered
+	 */
+	protected CorrespondenceType type = TYPE_EDEFAULT;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -84,17 +93,8 @@ public abstract class EFeatureCorrespondenceImpl<T extends Object, TFeature exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
-	public TFeature getMappedFeature() {
-		if (mappedFeature != null && mappedFeature.eIsProxy()) {
-			InternalEObject oldMappedFeature = (InternalEObject)mappedFeature;
-			mappedFeature = (TFeature)eResolveProxy(oldMappedFeature);
-			if (mappedFeature != oldMappedFeature) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CorrespondencePackage.EFEATURE_CORRESPONDENCE__MAPPED_FEATURE, oldMappedFeature, mappedFeature));
-			}
-		}
-		return mappedFeature;
+	public CorrespondenceType getType() {
+		return type;
 	}
 
 	/**
@@ -102,20 +102,11 @@ public abstract class EFeatureCorrespondenceImpl<T extends Object, TFeature exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public TFeature basicGetMappedFeature() {
-		return mappedFeature;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setMappedFeature(TFeature newMappedFeature) {
-		TFeature oldMappedFeature = mappedFeature;
-		mappedFeature = newMappedFeature;
+	public void setType(CorrespondenceType newType) {
+		CorrespondenceType oldType = type;
+		type = newType == null ? TYPE_EDEFAULT : newType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.EFEATURE_CORRESPONDENCE__MAPPED_FEATURE, oldMappedFeature, mappedFeature));
+			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.EFEATURE_CORRESPONDENCE__TYPE, oldType, type));
 	}
 
 	/**
@@ -126,9 +117,8 @@ public abstract class EFeatureCorrespondenceImpl<T extends Object, TFeature exte
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__MAPPED_FEATURE:
-				if (resolve) return getMappedFeature();
-				return basicGetMappedFeature();
+			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__TYPE:
+				return getType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -142,8 +132,8 @@ public abstract class EFeatureCorrespondenceImpl<T extends Object, TFeature exte
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__MAPPED_FEATURE:
-				setMappedFeature((TFeature)newValue);
+			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__TYPE:
+				setType((CorrespondenceType)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -157,8 +147,8 @@ public abstract class EFeatureCorrespondenceImpl<T extends Object, TFeature exte
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__MAPPED_FEATURE:
-				setMappedFeature((TFeature)null);
+			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__TYPE:
+				setType(TYPE_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -172,10 +162,26 @@ public abstract class EFeatureCorrespondenceImpl<T extends Object, TFeature exte
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__MAPPED_FEATURE:
-				return mappedFeature != null;
+			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__TYPE:
+				return type != TYPE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (type: ");
+		result.append(type);
+		result.append(')');
+		return result.toString();
 	}
 
 } //EFeatureCorrespondenceImpl

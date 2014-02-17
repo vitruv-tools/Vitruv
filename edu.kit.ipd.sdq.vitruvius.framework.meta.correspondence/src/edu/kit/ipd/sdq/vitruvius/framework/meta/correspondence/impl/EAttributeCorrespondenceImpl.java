@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class EAttributeCorrespondenceImpl extends EFeatureCorrespondenceImpl<Object, EAttribute> implements EAttributeCorrespondence {
+public class EAttributeCorrespondenceImpl extends EFeatureCorrespondenceImpl<EAttribute> implements EAttributeCorrespondence {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -35,17 +35,6 @@ public class EAttributeCorrespondenceImpl extends EFeatureCorrespondenceImpl<Obj
 	@Override
 	protected EClass eStaticClass() {
 		return CorrespondencePackage.Literals.EATTRIBUTE_CORRESPONDENCE;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * This is specialized for the more specific type known in this context.
-	 * @generated
-	 */
-	@Override
-	public void setMappedFeature(EAttribute newMappedFeature) {
-		super.setMappedFeature(newMappedFeature);
 	}
 
 } //EAttributeCorrespondenceImpl

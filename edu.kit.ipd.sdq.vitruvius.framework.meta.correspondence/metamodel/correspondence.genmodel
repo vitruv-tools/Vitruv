@@ -7,6 +7,10 @@
   <foreignModel>correspondence.ecore</foreignModel>
   <genPackages prefix="Correspondence" basePackage="edu.kit.ipd.sdq.vitruvius.framework.meta"
       disposableProviderFactory="true" ecorePackage="correspondence.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="correspondence.ecore#//CorrespondenceType">
+      <genEnumLiterals ecoreEnumLiteral="correspondence.ecore#//CorrespondenceType/identity"/>
+      <genEnumLiterals ecoreEnumLiteral="correspondence.ecore#//CorrespondenceType/bijection"/>
+    </genEnums>
     <genClasses ecoreClass="correspondence.ecore#//Correspondences">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondences/correspondences"/>
     </genClasses>
@@ -23,11 +27,31 @@
     <genClasses ecoreClass="correspondence.ecore#//EObjectCorrespondence"/>
     <genClasses image="false" ecoreClass="correspondence.ecore#//EFeatureCorrespondence">
       <genTypeParameters ecoreTypeParameter="correspondence.ecore#//EFeatureCorrespondence/T"/>
-      <genTypeParameters ecoreTypeParameter="correspondence.ecore#//EFeatureCorrespondence/TFeature"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//EFeatureCorrespondence/mappedFeature"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//EFeatureCorrespondence/type"/>
     </genClasses>
     <genClasses ecoreClass="correspondence.ecore#//EAttributeCorrespondence"/>
     <genClasses image="false" ecoreClass="correspondence.ecore#//EReferenceCorrespondence"/>
     <genClasses ecoreClass="correspondence.ecore#//EContainmentReferenceCorrespondence"/>
+    <genClasses image="false" ecoreClass="correspondence.ecore#//PartialEFeatureCorrespondence">
+      <genTypeParameters ecoreTypeParameter="correspondence.ecore#//PartialEFeatureCorrespondence/TValue"/>
+      <genOperations ecoreOperation="correspondence.ecore#//PartialEFeatureCorrespondence/getValueA"/>
+      <genOperations ecoreOperation="correspondence.ecore#//PartialEFeatureCorrespondence/setValueA">
+        <genParameters ecoreParameter="correspondence.ecore#//PartialEFeatureCorrespondence/setValueA/valueA"/>
+      </genOperations>
+      <genOperations ecoreOperation="correspondence.ecore#//PartialEFeatureCorrespondence/getValueB"/>
+      <genOperations ecoreOperation="correspondence.ecore#//PartialEFeatureCorrespondence/setValueB">
+        <genParameters ecoreParameter="correspondence.ecore#//PartialEFeatureCorrespondence/setValueB/valueB"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="correspondence.ecore#//PartialEAttributeCorrespondence">
+      <genTypeParameters ecoreTypeParameter="correspondence.ecore#//PartialEAttributeCorrespondence/TValue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//PartialEAttributeCorrespondence/valueA"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//PartialEAttributeCorrespondence/valueB"/>
+    </genClasses>
+    <genClasses ecoreClass="correspondence.ecore#//PartialEReferenceCorrespondence">
+      <genTypeParameters ecoreTypeParameter="correspondence.ecore#//PartialEReferenceCorrespondence/TValue"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//PartialEReferenceCorrespondence/valueA"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//PartialEReferenceCorrespondence/valueB"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

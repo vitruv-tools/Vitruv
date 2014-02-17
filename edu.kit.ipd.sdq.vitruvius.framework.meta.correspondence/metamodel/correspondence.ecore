@@ -15,6 +15,9 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SameTypeCorrespondence" abstract="true"
       eSuperTypes="#//Correspondence">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Metaclass for cases where an Object corresponds to another Object of the same metatype (i.e. both objects are either complex-typed EObjects or simple-typed EJavaObjects).&#xA;ElementA and elementB usually point to instances of different metaclasses but their common type T is not a problem as T will never be used more strictly than for the metatype."/>
+    </eAnnotations>
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eTypeParameters>
@@ -26,36 +29,93 @@
     </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EObjectCorrespondence">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Metaclass for cases where an eObject corresponds to another eObject.&#xA;The correspondence type is indirectly implied by the correspondences of the features of the eObjects."/>
+    </eAnnotations>
     <eGenericSuperTypes eClassifier="#//SameTypeCorrespondence">
       <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     </eGenericSuperTypes>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EFeatureCorrespondence" abstract="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Metaclass for cases where a complete feature of an eObject corresponds to a complete feature of another eObject and both features have the same type.&#xA;This means every value for the feature of the first eObject corresponds to a value for the feature of the second eObject and the other way round."/>
+    </eAnnotations>
     <eTypeParameters name="T">
-      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
-    </eTypeParameters>
-    <eTypeParameters name="TFeature">
       <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
     </eTypeParameters>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="mappedFeature">
-      <eGenericType eTypeParameter="#//EFeatureCorrespondence/TFeature"/>
-    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1" eType="#//CorrespondenceType"/>
     <eGenericSuperTypes eClassifier="#//SameTypeCorrespondence">
       <eTypeArguments eTypeParameter="#//EFeatureCorrespondence/T"/>
     </eGenericSuperTypes>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EAttributeCorrespondence">
     <eGenericSuperTypes eClassifier="#//EFeatureCorrespondence">
-      <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
       <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
     </eGenericSuperTypes>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EReferenceCorrespondence" abstract="true">
     <eGenericSuperTypes eClassifier="#//EFeatureCorrespondence">
-      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
       <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
     </eGenericSuperTypes>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EContainmentReferenceCorrespondence"
       eSuperTypes="#//EReferenceCorrespondence"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PartialEFeatureCorrespondence" abstract="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Metaclass for cases where a feature of an eObject corresponds partially to a feature of another eObject and both features have the same type.&#xA;This means that at most one value for the feature of the first eObject may but does not need to correspond to at most one value for the feature of the second eObject and the other way round."/>
+    </eAnnotations>
+    <eTypeParameters name="TValue">
+      <eBounds eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+    </eTypeParameters>
+    <eOperations name="getValueA" lowerBound="1">
+      <eGenericType eTypeParameter="#//PartialEFeatureCorrespondence/TValue"/>
+    </eOperations>
+    <eOperations name="setValueA" lowerBound="1">
+      <eParameters name="valueA" lowerBound="1">
+        <eGenericType eTypeParameter="#//PartialEFeatureCorrespondence/TValue"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="getValueB" lowerBound="1">
+      <eGenericType eTypeParameter="#//PartialEFeatureCorrespondence/TValue"/>
+    </eOperations>
+    <eOperations name="setValueB" lowerBound="1">
+      <eParameters name="valueB" lowerBound="1">
+        <eGenericType eTypeParameter="#//PartialEFeatureCorrespondence/TValue"/>
+      </eParameters>
+    </eOperations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PartialEAttributeCorrespondence">
+    <eTypeParameters name="TValue">
+      <eBounds eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+    </eTypeParameters>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueA" lowerBound="1">
+      <eGenericType eTypeParameter="#//PartialEAttributeCorrespondence/TValue"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueB" lowerBound="1">
+      <eGenericType eTypeParameter="#//PartialEAttributeCorrespondence/TValue"/>
+    </eStructuralFeatures>
+    <eGenericSuperTypes eClassifier="#//PartialEFeatureCorrespondence">
+      <eTypeArguments eTypeParameter="#//PartialEAttributeCorrespondence/TValue"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="#//EAttributeCorrespondence"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PartialEReferenceCorrespondence">
+    <eTypeParameters name="TValue">
+      <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    </eTypeParameters>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="valueA" lowerBound="1">
+      <eGenericType eTypeParameter="#//PartialEReferenceCorrespondence/TValue"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="valueB" lowerBound="1">
+      <eGenericType eTypeParameter="#//PartialEReferenceCorrespondence/TValue"/>
+    </eStructuralFeatures>
+    <eGenericSuperTypes eClassifier="#//PartialEFeatureCorrespondence">
+      <eTypeArguments eTypeParameter="#//PartialEReferenceCorrespondence/TValue"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="#//EReferenceCorrespondence"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="CorrespondenceType">
+    <eLiterals name="identity"/>
+    <eLiterals name="bijection" value="1" literal="bijection"/>
+  </eClassifiers>
 </ecore:EPackage>

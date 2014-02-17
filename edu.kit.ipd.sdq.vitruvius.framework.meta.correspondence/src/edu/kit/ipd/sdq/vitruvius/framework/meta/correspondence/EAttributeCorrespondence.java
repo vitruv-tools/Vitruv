@@ -11,8 +11,8 @@ import org.eclipse.emf.ecore.EAttribute;
  *
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getEAttributeCorrespondence()
- * @model superTypes="edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EFeatureCorrespondence<org.eclipse.emf.ecore.EJavaObject, org.eclipse.emf.ecore.EAttribute>"
+ * @model
  * @generated
  */
-public interface EAttributeCorrespondence extends EFeatureCorrespondence<Object, EAttribute> {
+public interface EAttributeCorrespondence extends EFeatureCorrespondence<EAttribute> {
 } // EAttributeCorrespondence

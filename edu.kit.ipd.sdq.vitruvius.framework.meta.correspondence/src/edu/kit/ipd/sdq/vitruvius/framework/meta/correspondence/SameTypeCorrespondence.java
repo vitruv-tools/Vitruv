@@ -9,6 +9,11 @@ import org.eclipse.emf.ecore.EObject;
  * A representation of the model object '<em><b>Same Type Correspondence</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * Metaclass for cases where an Object corresponds to another Object of the same metatype (i.e. both objects are either complex-typed EObjects or simple-typed EJavaObjects).
+ * ElementA and elementB usually point to instances of different metaclasses but their common type T is not a problem as T will never be used more strictly than for the metatype.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * <ul>

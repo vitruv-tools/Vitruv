@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.EReference;
  *
  * @generated
  */
-public abstract class EReferenceCorrespondenceImpl extends EFeatureCorrespondenceImpl<EObject, EReference> implements EReferenceCorrespondence {
+public abstract class EReferenceCorrespondenceImpl extends EFeatureCorrespondenceImpl<EReference> implements EReferenceCorrespondence {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -36,17 +36,6 @@ public abstract class EReferenceCorrespondenceImpl extends EFeatureCorrespondenc
 	@Override
 	protected EClass eStaticClass() {
 		return CorrespondencePackage.Literals.EREFERENCE_CORRESPONDENCE;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * This is specialized for the more specific type known in this context.
-	 * @generated
-	 */
-	@Override
-	public void setMappedFeature(EReference newMappedFeature) {
-		super.setMappedFeature(newMappedFeature);
 	}
 
 } //EReferenceCorrespondenceImpl

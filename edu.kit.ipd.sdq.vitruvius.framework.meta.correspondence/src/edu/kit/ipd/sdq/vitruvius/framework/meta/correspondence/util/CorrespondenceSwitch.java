@@ -95,7 +95,7 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 				return result;
 			}
 			case CorrespondencePackage.EFEATURE_CORRESPONDENCE: {
-				EFeatureCorrespondence<?, ?> eFeatureCorrespondence = (EFeatureCorrespondence<?, ?>)theEObject;
+				EFeatureCorrespondence<?> eFeatureCorrespondence = (EFeatureCorrespondence<?>)theEObject;
 				T1 result = caseEFeatureCorrespondence(eFeatureCorrespondence);
 				if (result == null) result = caseSameTypeCorrespondence(eFeatureCorrespondence);
 				if (result == null) result = caseCorrespondence(eFeatureCorrespondence);
@@ -127,6 +127,34 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseEFeatureCorrespondence(eContainmentReferenceCorrespondence);
 				if (result == null) result = caseSameTypeCorrespondence(eContainmentReferenceCorrespondence);
 				if (result == null) result = caseCorrespondence(eContainmentReferenceCorrespondence);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CorrespondencePackage.PARTIAL_EFEATURE_CORRESPONDENCE: {
+				PartialEFeatureCorrespondence<?> partialEFeatureCorrespondence = (PartialEFeatureCorrespondence<?>)theEObject;
+				T1 result = casePartialEFeatureCorrespondence(partialEFeatureCorrespondence);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE: {
+				PartialEAttributeCorrespondence<?> partialEAttributeCorrespondence = (PartialEAttributeCorrespondence<?>)theEObject;
+				T1 result = casePartialEAttributeCorrespondence(partialEAttributeCorrespondence);
+				if (result == null) result = casePartialEFeatureCorrespondence(partialEAttributeCorrespondence);
+				if (result == null) result = caseEAttributeCorrespondence(partialEAttributeCorrespondence);
+				if (result == null) result = caseEFeatureCorrespondence(partialEAttributeCorrespondence);
+				if (result == null) result = caseSameTypeCorrespondence(partialEAttributeCorrespondence);
+				if (result == null) result = caseCorrespondence(partialEAttributeCorrespondence);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE: {
+				PartialEReferenceCorrespondence<?> partialEReferenceCorrespondence = (PartialEReferenceCorrespondence<?>)theEObject;
+				T1 result = casePartialEReferenceCorrespondence(partialEReferenceCorrespondence);
+				if (result == null) result = casePartialEFeatureCorrespondence(partialEReferenceCorrespondence);
+				if (result == null) result = caseEReferenceCorrespondence(partialEReferenceCorrespondence);
+				if (result == null) result = caseEFeatureCorrespondence(partialEReferenceCorrespondence);
+				if (result == null) result = caseSameTypeCorrespondence(partialEReferenceCorrespondence);
+				if (result == null) result = caseCorrespondence(partialEReferenceCorrespondence);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -205,7 +233,7 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public <T extends Object, TFeature extends EStructuralFeature> T1 caseEFeatureCorrespondence(EFeatureCorrespondence<T, TFeature> object) {
+	public <T extends EStructuralFeature> T1 caseEFeatureCorrespondence(EFeatureCorrespondence<T> object) {
 		return null;
 	}
 
@@ -251,6 +279,51 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public T1 caseEContainmentReferenceCorrespondence(EContainmentReferenceCorrespondence object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Partial EFeature Correspondence</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Partial EFeature Correspondence</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <TValue extends Object> T1 casePartialEFeatureCorrespondence(PartialEFeatureCorrespondence<TValue> object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Partial EAttribute Correspondence</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Partial EAttribute Correspondence</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <TValue extends Object> T1 casePartialEAttributeCorrespondence(PartialEAttributeCorrespondence<TValue> object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Partial EReference Correspondence</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Partial EReference Correspondence</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <TValue extends EObject> T1 casePartialEReferenceCorrespondence(PartialEReferenceCorrespondence<TValue> object) {
 		return null;
 	}
 

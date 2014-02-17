@@ -15,5 +15,5 @@ import org.eclipse.emf.ecore.EReference;
  * @model abstract="true"
  * @generated
  */
-public interface EReferenceCorrespondence extends EFeatureCorrespondence<EObject, EReference> {
+public interface EReferenceCorrespondence extends EFeatureCorrespondence<EReference> {
 } // EReferenceCorrespondence

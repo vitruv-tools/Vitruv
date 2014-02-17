@@ -5,16 +5,23 @@ package edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceType;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondences;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EAttributeCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentReferenceCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EFeatureCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EReferenceCorrespondence;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEAttributeCorrespondence;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEFeatureCorrespondence;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEReferenceCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.ETypeParameter;
@@ -84,6 +91,34 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 	 * @generated
 	 */
 	private EClass eContainmentReferenceCorrespondenceEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass partialEFeatureCorrespondenceEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass partialEAttributeCorrespondenceEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass partialEReferenceCorrespondenceEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum correspondenceTypeEEnum = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -244,8 +279,8 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getEFeatureCorrespondence_MappedFeature() {
-		return (EReference)eFeatureCorrespondenceEClass.getEStructuralFeatures().get(0);
+	public EAttribute getEFeatureCorrespondence_Type() {
+		return (EAttribute)eFeatureCorrespondenceEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -273,6 +308,78 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 	 */
 	public EClass getEContainmentReferenceCorrespondence() {
 		return eContainmentReferenceCorrespondenceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getPartialEFeatureCorrespondence() {
+		return partialEFeatureCorrespondenceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getPartialEAttributeCorrespondence() {
+		return partialEAttributeCorrespondenceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPartialEAttributeCorrespondence_ValueA() {
+		return (EAttribute)partialEAttributeCorrespondenceEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPartialEAttributeCorrespondence_ValueB() {
+		return (EAttribute)partialEAttributeCorrespondenceEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getPartialEReferenceCorrespondence() {
+		return partialEReferenceCorrespondenceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getPartialEReferenceCorrespondence_ValueA() {
+		return (EReference)partialEReferenceCorrespondenceEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getPartialEReferenceCorrespondence_ValueB() {
+		return (EReference)partialEReferenceCorrespondenceEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EEnum getCorrespondenceType() {
+		return correspondenceTypeEEnum;
 	}
 
 	/**
@@ -317,13 +424,26 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		eObjectCorrespondenceEClass = createEClass(EOBJECT_CORRESPONDENCE);
 
 		eFeatureCorrespondenceEClass = createEClass(EFEATURE_CORRESPONDENCE);
-		createEReference(eFeatureCorrespondenceEClass, EFEATURE_CORRESPONDENCE__MAPPED_FEATURE);
+		createEAttribute(eFeatureCorrespondenceEClass, EFEATURE_CORRESPONDENCE__TYPE);
 
 		eAttributeCorrespondenceEClass = createEClass(EATTRIBUTE_CORRESPONDENCE);
 
 		eReferenceCorrespondenceEClass = createEClass(EREFERENCE_CORRESPONDENCE);
 
 		eContainmentReferenceCorrespondenceEClass = createEClass(ECONTAINMENT_REFERENCE_CORRESPONDENCE);
+
+		partialEFeatureCorrespondenceEClass = createEClass(PARTIAL_EFEATURE_CORRESPONDENCE);
+
+		partialEAttributeCorrespondenceEClass = createEClass(PARTIAL_EATTRIBUTE_CORRESPONDENCE);
+		createEAttribute(partialEAttributeCorrespondenceEClass, PARTIAL_EATTRIBUTE_CORRESPONDENCE__VALUE_A);
+		createEAttribute(partialEAttributeCorrespondenceEClass, PARTIAL_EATTRIBUTE_CORRESPONDENCE__VALUE_B);
+
+		partialEReferenceCorrespondenceEClass = createEClass(PARTIAL_EREFERENCE_CORRESPONDENCE);
+		createEReference(partialEReferenceCorrespondenceEClass, PARTIAL_EREFERENCE_CORRESPONDENCE__VALUE_A);
+		createEReference(partialEReferenceCorrespondenceEClass, PARTIAL_EREFERENCE_CORRESPONDENCE__VALUE_B);
+
+		// Create enums
+		correspondenceTypeEEnum = createEEnum(CORRESPONDENCE_TYPE);
 	}
 
 	/**
@@ -355,15 +475,21 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		// Create type parameters
 		ETypeParameter sameTypeCorrespondenceEClass_T = addETypeParameter(sameTypeCorrespondenceEClass, "T");
 		ETypeParameter eFeatureCorrespondenceEClass_T = addETypeParameter(eFeatureCorrespondenceEClass, "T");
-		ETypeParameter eFeatureCorrespondenceEClass_TFeature = addETypeParameter(eFeatureCorrespondenceEClass, "TFeature");
+		ETypeParameter partialEFeatureCorrespondenceEClass_TValue = addETypeParameter(partialEFeatureCorrespondenceEClass, "TValue");
+		ETypeParameter partialEAttributeCorrespondenceEClass_TValue = addETypeParameter(partialEAttributeCorrespondenceEClass, "TValue");
+		ETypeParameter partialEReferenceCorrespondenceEClass_TValue = addETypeParameter(partialEReferenceCorrespondenceEClass, "TValue");
 
 		// Set bounds for type parameters
 		EGenericType g1 = createEGenericType(ecorePackage.getEJavaObject());
 		sameTypeCorrespondenceEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(ecorePackage.getEJavaObject());
-		eFeatureCorrespondenceEClass_T.getEBounds().add(g1);
 		g1 = createEGenericType(ecorePackage.getEStructuralFeature());
-		eFeatureCorrespondenceEClass_TFeature.getEBounds().add(g1);
+		eFeatureCorrespondenceEClass_T.getEBounds().add(g1);
+		g1 = createEGenericType(theEcorePackage.getEJavaObject());
+		partialEFeatureCorrespondenceEClass_TValue.getEBounds().add(g1);
+		g1 = createEGenericType(theEcorePackage.getEJavaObject());
+		partialEAttributeCorrespondenceEClass_TValue.getEBounds().add(g1);
+		g1 = createEGenericType(ecorePackage.getEObject());
+		partialEReferenceCorrespondenceEClass_TValue.getEBounds().add(g1);
 
 		// Add supertypes to classes
 		sameTypeCorrespondenceEClass.getESuperTypes().add(this.getCorrespondence());
@@ -376,18 +502,26 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		g1.getETypeArguments().add(g2);
 		eFeatureCorrespondenceEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getEFeatureCorrespondence());
-		g2 = createEGenericType(ecorePackage.getEJavaObject());
-		g1.getETypeArguments().add(g2);
 		g2 = createEGenericType(ecorePackage.getEAttribute());
 		g1.getETypeArguments().add(g2);
 		eAttributeCorrespondenceEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getEFeatureCorrespondence());
-		g2 = createEGenericType(theEcorePackage.getEObject());
-		g1.getETypeArguments().add(g2);
 		g2 = createEGenericType(ecorePackage.getEReference());
 		g1.getETypeArguments().add(g2);
 		eReferenceCorrespondenceEClass.getEGenericSuperTypes().add(g1);
 		eContainmentReferenceCorrespondenceEClass.getESuperTypes().add(this.getEReferenceCorrespondence());
+		g1 = createEGenericType(this.getPartialEFeatureCorrespondence());
+		g2 = createEGenericType(partialEAttributeCorrespondenceEClass_TValue);
+		g1.getETypeArguments().add(g2);
+		partialEAttributeCorrespondenceEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(this.getEAttributeCorrespondence());
+		partialEAttributeCorrespondenceEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(this.getPartialEFeatureCorrespondence());
+		g2 = createEGenericType(partialEReferenceCorrespondenceEClass_TValue);
+		g1.getETypeArguments().add(g2);
+		partialEReferenceCorrespondenceEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(this.getEReferenceCorrespondence());
+		partialEReferenceCorrespondenceEClass.getEGenericSuperTypes().add(g1);
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(correspondencesEClass, Correspondences.class, "Correspondences", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -408,14 +542,48 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		initEClass(eObjectCorrespondenceEClass, EObjectCorrespondence.class, "EObjectCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(eFeatureCorrespondenceEClass, EFeatureCorrespondence.class, "EFeatureCorrespondence", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		g1 = createEGenericType(eFeatureCorrespondenceEClass_TFeature);
-		initEReference(getEFeatureCorrespondence_MappedFeature(), g1, null, "mappedFeature", null, 0, 1, EFeatureCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEFeatureCorrespondence_Type(), this.getCorrespondenceType(), "type", null, 1, 1, EFeatureCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(eAttributeCorrespondenceEClass, EAttributeCorrespondence.class, "EAttributeCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(eReferenceCorrespondenceEClass, EReferenceCorrespondence.class, "EReferenceCorrespondence", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(eContainmentReferenceCorrespondenceEClass, EContainmentReferenceCorrespondence.class, "EContainmentReferenceCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(partialEFeatureCorrespondenceEClass, PartialEFeatureCorrespondence.class, "PartialEFeatureCorrespondence", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		EOperation op = addEOperation(partialEFeatureCorrespondenceEClass, null, "getValueA", 1, 1, IS_UNIQUE, IS_ORDERED);
+		g1 = createEGenericType(partialEFeatureCorrespondenceEClass_TValue);
+		initEOperation(op, g1);
+
+		op = addEOperation(partialEFeatureCorrespondenceEClass, null, "setValueA", 1, 1, IS_UNIQUE, IS_ORDERED);
+		g1 = createEGenericType(partialEFeatureCorrespondenceEClass_TValue);
+		addEParameter(op, g1, "valueA", 1, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(partialEFeatureCorrespondenceEClass, null, "getValueB", 1, 1, IS_UNIQUE, IS_ORDERED);
+		g1 = createEGenericType(partialEFeatureCorrespondenceEClass_TValue);
+		initEOperation(op, g1);
+
+		op = addEOperation(partialEFeatureCorrespondenceEClass, null, "setValueB", 1, 1, IS_UNIQUE, IS_ORDERED);
+		g1 = createEGenericType(partialEFeatureCorrespondenceEClass_TValue);
+		addEParameter(op, g1, "valueB", 1, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(partialEAttributeCorrespondenceEClass, PartialEAttributeCorrespondence.class, "PartialEAttributeCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		g1 = createEGenericType(partialEAttributeCorrespondenceEClass_TValue);
+		initEAttribute(getPartialEAttributeCorrespondence_ValueA(), g1, "valueA", null, 1, 1, PartialEAttributeCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		g1 = createEGenericType(partialEAttributeCorrespondenceEClass_TValue);
+		initEAttribute(getPartialEAttributeCorrespondence_ValueB(), g1, "valueB", null, 1, 1, PartialEAttributeCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(partialEReferenceCorrespondenceEClass, PartialEReferenceCorrespondence.class, "PartialEReferenceCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		g1 = createEGenericType(partialEReferenceCorrespondenceEClass_TValue);
+		initEReference(getPartialEReferenceCorrespondence_ValueA(), g1, null, "valueA", null, 1, 1, PartialEReferenceCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		g1 = createEGenericType(partialEReferenceCorrespondenceEClass_TValue);
+		initEReference(getPartialEReferenceCorrespondence_ValueB(), g1, null, "valueB", null, 1, 1, PartialEReferenceCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		// Initialize enums and add enum literals
+		initEEnum(correspondenceTypeEEnum, CorrespondenceType.class, "CorrespondenceType");
+		addEEnumLiteral(correspondenceTypeEEnum, CorrespondenceType.IDENTITY);
+		addEEnumLiteral(correspondenceTypeEEnum, CorrespondenceType.BIJECTION);
 
 		// Create resource
 		createResource(eNS_URI);

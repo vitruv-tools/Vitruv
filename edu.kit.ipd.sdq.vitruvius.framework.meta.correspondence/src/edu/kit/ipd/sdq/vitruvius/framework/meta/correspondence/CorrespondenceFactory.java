@@ -3,6 +3,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence;
 
 import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -56,6 +57,24 @@ public interface CorrespondenceFactory extends EFactory {
 	 * @generated
 	 */
 	EContainmentReferenceCorrespondence createEContainmentReferenceCorrespondence();
+
+	/**
+	 * Returns a new object of class '<em>Partial EAttribute Correspondence</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Partial EAttribute Correspondence</em>'.
+	 * @generated
+	 */
+	<TValue extends Object> PartialEAttributeCorrespondence<TValue> createPartialEAttributeCorrespondence();
+
+	/**
+	 * Returns a new object of class '<em>Partial EReference Correspondence</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Partial EReference Correspondence</em>'.
+	 * @generated
+	 */
+	<TValue extends EObject> PartialEReferenceCorrespondence<TValue> createPartialEReferenceCorrespondence();
 
 	/**
 	 * Returns the package supported by this factory.
