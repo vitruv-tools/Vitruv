@@ -73,7 +73,7 @@ public class CorrespondenceInstance extends ModelInstance {
         return correspondingEObjectsByType;
     }
 
-    public <T> T claimCorrespondingEObjectForTypeIfUnique(final EObject eObject, final Class<T> type) {
+    public <T> T claimCorrespondingEObjectByTypeIfUnique(final EObject eObject, final Class<T> type) {
         Set<T> correspondingEObjectsByType = this.claimCorredpondingEObjectsByType(eObject, type);
         if (1 != correspondingEObjectsByType.size()) {
             throw new RuntimeException("claimCorrespondingEObjectForTypeIfUnique failed: "
