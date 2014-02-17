@@ -74,7 +74,7 @@ public class ChangeSynchronizerTest {
         final Repository repo = this.createAndSyncRepository();
         repo.setEntityName("TestNameChange");
 
-        final UpdateEAttribute<EObject> repoNameChange = ChangeFactory.eINSTANCE.createUpdateEAttribute();
+        final UpdateEAttribute<Object> repoNameChange = ChangeFactory.eINSTANCE.createUpdateEAttribute();
         repoNameChange.setAffectedEObject(repo);
         for (final EAttribute eAttribute : repo.eClass().getEAllAttributes()) {
             if (eAttribute.getName().equals("entityName")) {
@@ -82,6 +82,8 @@ public class ChangeSynchronizerTest {
                 break;
             }
         }
+        repoNameChange.setNewValue(repo.getEntityName());
+        System.out.println(repoNameChange.getNewValue());
         this.changeSynchronizer.synchronizeChange(repoNameChange);
     }
 

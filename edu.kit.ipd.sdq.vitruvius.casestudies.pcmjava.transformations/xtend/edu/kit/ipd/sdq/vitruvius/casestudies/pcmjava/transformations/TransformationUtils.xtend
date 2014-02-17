@@ -26,7 +26,7 @@ class TransformationUtils {
 		EcoreResourceBridge.saveEObjectAsOnlyContent(rootEObject, resource)
 	}
 
-	def static findCorrespondingEObject(CorrespondenceInstance correspondenceInstance, EObject eObject) {
+	def static Set<EObject> allInvolvedEObjects(CorrespondenceInstance correspondenceInstance, EObject eObject) {
 		val Set<Correspondence> correspondences = correspondenceInstance.getAllCorrespondences(eObject)
 		val Set<EObject> correspondingEObjects = new HashSet<EObject>()
 		for (correspondece : correspondences) {
@@ -47,7 +47,8 @@ class TransformationUtils {
 	}
 
 	def static <T> findCorrespondingEObjectByTypeIfUnique(CorrespondenceInstance correspondenceInstance, EObject eObject,
-		Object corresponsingType) {
+		Class<T> corresponsingType) {
+			
 		val EObject correspondingObject = findCorrespondingEObjectIfUnique(correspondenceInstance, eObject)
 		return correspondingObject.class.cast(corresponsingType)
 
