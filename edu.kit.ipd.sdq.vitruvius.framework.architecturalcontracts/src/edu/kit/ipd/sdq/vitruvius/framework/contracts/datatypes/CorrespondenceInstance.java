@@ -13,6 +13,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondences;
 
+// TODO move all methods that don't need direct instance variable access to some kind of util class
 public class CorrespondenceInstance extends ModelInstance {
     private Mapping mapping;
     private Correspondences correspondences;
@@ -66,8 +67,8 @@ public class CorrespondenceInstance extends ModelInstance {
         Set<EObject> correspondingEObjects = claimCorrespondingEObjects(eObject);
         Set<T> correspondingEObjectsByType = new HashSet<T>();
         for (EObject correspondingEObject : correspondingEObjects) {
-            if (correspondingEObject.getClass().cast(type) != null) {
-                correspondingEObjectsByType.add((T) correspondingEObject);
+            if (type.isInstance(correspondingEObject)) {
+                correspondingEObjectsByType.add(type.cast(correspondingEObject));
             }
         }
         return correspondingEObjectsByType;
@@ -141,5 +142,11 @@ public class CorrespondenceInstance extends ModelInstance {
         for (Correspondence correspondence : correspondencesForEObj) {
             this.correspondences.getCorrespondences().remove(correspondence);
         }
+    }
+
+    public Set<FeatureInstance> getCorrespondingFeatureInstances(final FeatureInstance featureInstance) {
+
+        return null;
+
     }
 }
