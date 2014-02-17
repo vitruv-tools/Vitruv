@@ -20,12 +20,15 @@ public class MetaRepositoryTest {
     @Test
     public void testAll() {
 
-        testAddMapping("MockupProject/metamodels/pcm_mockup.ecore", "MockupProject/metamodels/uml_mockup.ecore");
+        testAddMapping("MockupProject/metamodels/pcm_mockup.ecore", "pcm_mockup",
+                "MockupProject/metamodels/uml_mockup.ecore", "uml_mockup");
 
-        testAddViewType("MockupProject/metamodels/pcm_mockup.ecore", "MockupProject/metamodels/uml_mockup.ecore",
+        testAddViewType("MockupProject/metamodels/pcm_mockup.ecore", "pcm_mockup",
+                "MockupProject/metamodels/uml_mockup.ecore", "uml_mockup",
                 " MockupProject/viewtypes/pcm__uml_mockup.ecore");
 
-        testGetProjectInput("MockupProject/metamodels/pcm_mockup.ecore", "MockupProject/metamodels/uml_mockup.ecore",
+        testGetProjectInput("MockupProject/metamodels/pcm_mockup.ecore", "pcm_mockup",
+                "MockupProject/metamodels/uml_mockup.ecore", "uml_mockup",
                 " MockupProject/viewtypes/pcm__uml_mockup.ecore");
 
         // generiere VSUM plugins (jetzt erst mal hart verdrahtet)
@@ -39,24 +42,25 @@ public class MetaRepositoryTest {
         return metaRepository;
     }
 
-    public Metamodel testAddMetamodel(final MetaRepositoryImpl metaRepository, final VURI uri) {
-        Metamodel mm = new Metamodel(uri);
+    public Metamodel testAddMetamodel(final MetaRepositoryImpl metaRepository, final VURI uri, final String fileExt) {
+        Metamodel mm = new Metamodel(uri, fileExt);
         metaRepository.addMetamodel(mm);
         return mm;
     }
 
-    public void testAddMapping(final String uri1String, final String uri2String) {
+    public void testAddMapping(final String uri1String, final String fileExt1, final String uri2String,
+            final String fileExt2) {
         MetaRepositoryImpl metaRepository = testMetaRepository();
-        testAddMapping(metaRepository, uri1String, uri2String);
+        testAddMapping(metaRepository, uri1String, fileExt1, uri2String, fileExt2);
     }
 
-    public Pair<VURI, VURI> testAddMapping(final MetaRepositoryImpl metaRepository, final String uri1String,
-            final String uri2String) {
-        VURI uri1 = VURI.getInstance(uri1String);
-        Metamodel mm1 = testAddMetamodel(metaRepository, uri1);
+    public Pair<VURI, VURI> testAddMapping(final MetaRepositoryImpl metaRepository, final String mm1URIString,
+            final String fileExt1, final String mm2URIString, final String fileExt2) {
+        VURI uri1 = VURI.getInstance(mm1URIString);
+        Metamodel mm1 = testAddMetamodel(metaRepository, uri1, fileExt1);
 
-        VURI uri2 = VURI.getInstance(uri2String);
-        Metamodel mm2 = testAddMetamodel(metaRepository, uri2);
+        VURI uri2 = VURI.getInstance(mm2URIString);
+        Metamodel mm2 = testAddMetamodel(metaRepository, uri2, fileExt2);
 
         Mapping mapping = new Mapping(mm1, mm2);
         metaRepository.addMapping(mapping);
@@ -67,14 +71,15 @@ public class MetaRepositoryTest {
         return new Pair<VURI, VURI>(uri1, uri2);
     }
 
-    public void testAddViewType(final String uri1String, final String uri2String, final String viewTypeURIString) {
+    public void testAddViewType(final String uri1String, final String fileExt1, final String uri2String,
+            final String fileExt2, final String viewTypeURIString) {
         MetaRepositoryImpl metaRepository = testMetaRepository();
 
         VURI uri1 = VURI.getInstance(uri1String);
-        testAddMetamodel(metaRepository, uri1);
+        testAddMetamodel(metaRepository, uri1, fileExt1);
 
         VURI uri2 = VURI.getInstance(uri2String);
-        testAddMetamodel(metaRepository, uri2);
+        testAddMetamodel(metaRepository, uri2, fileExt2);
 
         testAddViewType(metaRepository, uri1, uri2, viewTypeURIString);
     }
@@ -92,10 +97,11 @@ public class MetaRepositoryTest {
         return viewTypeURI;
     }
 
-    private void testGetProjectInput(final String uri1String, final String uri2String, final String viewTypeURIString) {
+    private void testGetProjectInput(final String uri1String, final String fileExt1, final String uri2String,
+            final String fileExt2, final String viewTypeURIString) {
         MetaRepositoryImpl metaRepository = testMetaRepository();
 
-        Pair<VURI, VURI> mmURIs = testAddMapping(metaRepository, uri1String, uri2String);
+        Pair<VURI, VURI> mmURIs = testAddMapping(metaRepository, uri1String, fileExt1, uri2String, fileExt2);
 
         VURI uri1 = mmURIs.getFirst();
         VURI uri2 = mmURIs.getSecond();
