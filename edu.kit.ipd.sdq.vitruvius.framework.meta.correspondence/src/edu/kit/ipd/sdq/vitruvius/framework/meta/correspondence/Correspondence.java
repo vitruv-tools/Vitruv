@@ -72,6 +72,6 @@ public interface Correspondence extends EObject {
 	 * @model kind="operation" lower="2" ordered="false"
 	 * @generated
 	 */
-	EList<EObject> getAllInvolvedObjects();
+	EList<EObject> getAllInvolvedEObjects();
 
 } // Correspondence

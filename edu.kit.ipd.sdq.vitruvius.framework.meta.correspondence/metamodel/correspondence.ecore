@@ -7,7 +7,7 @@
         eType="#//Correspondence"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Correspondence" abstract="true">
-    <eOperations name="getAllInvolvedObjects" ordered="false" lowerBound="2" upperBound="-1"
+    <eOperations name="getAllInvolvedEObjects" ordered="false" lowerBound="2" upperBound="-1"
         eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="dependentCorrespondences"
         upperBound="-1" eType="#//Correspondence"/>
