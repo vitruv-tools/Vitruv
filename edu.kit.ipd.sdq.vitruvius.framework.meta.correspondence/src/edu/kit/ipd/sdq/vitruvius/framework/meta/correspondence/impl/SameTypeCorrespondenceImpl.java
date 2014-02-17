@@ -30,7 +30,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *
  * @generated
  */
-public abstract class SameTypeCorrespondenceImpl<T extends Object> extends CorrespondenceImpl implements SameTypeCorrespondence<T> {
+public abstract class SameTypeCorrespondenceImpl extends CorrespondenceImpl implements SameTypeCorrespondence {
 	/**
 	 * The cached value of the '{@link #getElementA() <em>Element A</em>}' reference.
 	 * <!-- begin-user-doc -->
@@ -39,7 +39,7 @@ public abstract class SameTypeCorrespondenceImpl<T extends Object> extends Corre
 	 * @generated
 	 * @ordered
 	 */
-	protected T elementA;
+	protected EObject elementA;
 
 	/**
 	 * The cached value of the '{@link #getElementB() <em>Element B</em>}' reference.
@@ -49,7 +49,7 @@ public abstract class SameTypeCorrespondenceImpl<T extends Object> extends Corre
 	 * @generated
 	 * @ordered
 	 */
-	protected T elementB;
+	protected EObject elementB;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -76,10 +76,10 @@ public abstract class SameTypeCorrespondenceImpl<T extends Object> extends Corre
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
-	public T getElementA() {
-		if (elementA != null && ((EObject)elementA).eIsProxy()) {
+	public EObject getElementA() {
+		if (elementA != null && elementA.eIsProxy()) {
 			InternalEObject oldElementA = (InternalEObject)elementA;
-			elementA = (T)eResolveProxy(oldElementA);
+			elementA = eResolveProxy(oldElementA);
 			if (elementA != oldElementA) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_A, oldElementA, elementA));
@@ -93,7 +93,7 @@ public abstract class SameTypeCorrespondenceImpl<T extends Object> extends Corre
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public T basicGetElementA() {
+	public EObject basicGetElementA() {
 		return elementA;
 	}
 
@@ -102,8 +102,8 @@ public abstract class SameTypeCorrespondenceImpl<T extends Object> extends Corre
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setElementA(T newElementA) {
-		T oldElementA = elementA;
+	public void setElementA(EObject newElementA) {
+		EObject oldElementA = elementA;
 		elementA = newElementA;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_A, oldElementA, elementA));
@@ -115,10 +115,10 @@ public abstract class SameTypeCorrespondenceImpl<T extends Object> extends Corre
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
-	public T getElementB() {
-		if (elementB != null && ((EObject)elementB).eIsProxy()) {
+	public EObject getElementB() {
+		if (elementB != null && elementB.eIsProxy()) {
 			InternalEObject oldElementB = (InternalEObject)elementB;
-			elementB = (T)eResolveProxy(oldElementB);
+			elementB = eResolveProxy(oldElementB);
 			if (elementB != oldElementB) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_B, oldElementB, elementB));
@@ -132,7 +132,7 @@ public abstract class SameTypeCorrespondenceImpl<T extends Object> extends Corre
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public T basicGetElementB() {
+	public EObject basicGetElementB() {
 		return elementB;
 	}
 
@@ -141,8 +141,8 @@ public abstract class SameTypeCorrespondenceImpl<T extends Object> extends Corre
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setElementB(T newElementB) {
-		T oldElementB = elementB;
+	public void setElementB(EObject newElementB) {
+		EObject oldElementB = elementB;
 		elementB = newElementB;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_B, oldElementB, elementB));
@@ -176,10 +176,10 @@ public abstract class SameTypeCorrespondenceImpl<T extends Object> extends Corre
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_A:
-				setElementA((T)newValue);
+				setElementA((EObject)newValue);
 				return;
 			case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_B:
-				setElementB((T)newValue);
+				setElementB((EObject)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -194,10 +194,10 @@ public abstract class SameTypeCorrespondenceImpl<T extends Object> extends Corre
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_A:
-				setElementA((T)null);
+				setElementA((EObject)null);
 				return;
 			case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_B:
-				setElementB((T)null);
+				setElementB((EObject)null);
 				return;
 		}
 		super.eUnset(featureID);

@@ -23,12 +23,14 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * The following features are implemented:
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.EFeatureCorrespondenceImpl#getType <em>Type</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.EFeatureCorrespondenceImpl#getFeatureA <em>Feature A</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.EFeatureCorrespondenceImpl#getFeatureB <em>Feature B</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public abstract class EFeatureCorrespondenceImpl<T extends EStructuralFeature> extends SameTypeCorrespondenceImpl<T> implements EFeatureCorrespondence<T> {
+public abstract class EFeatureCorrespondenceImpl<TFeature extends EStructuralFeature> extends SameTypeCorrespondenceImpl implements EFeatureCorrespondence<TFeature> {
 	/**
 	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -48,6 +50,24 @@ public abstract class EFeatureCorrespondenceImpl<T extends EStructuralFeature> e
 	 */
 	protected CorrespondenceType type = TYPE_EDEFAULT;
 	/**
+	 * The cached value of the '{@link #getFeatureA() <em>Feature A</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getFeatureA()
+	 * @generated
+	 * @ordered
+	 */
+	protected TFeature featureA;
+	/**
+	 * The cached value of the '{@link #getFeatureB() <em>Feature B</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getFeatureB()
+	 * @generated
+	 * @ordered
+	 */
+	protected TFeature featureB;
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -64,28 +84,6 @@ public abstract class EFeatureCorrespondenceImpl<T extends EStructuralFeature> e
 	@Override
 	protected EClass eStaticClass() {
 		return CorrespondencePackage.Literals.EFEATURE_CORRESPONDENCE;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * This is specialized for the more specific type known in this context.
-	 * @generated
-	 */
-	@Override
-	public void setElementA(T newElementA) {
-		super.setElementA(newElementA);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * This is specialized for the more specific type known in this context.
-	 * @generated
-	 */
-	@Override
-	public void setElementB(T newElementB) {
-		super.setElementB(newElementB);
 	}
 
 	/**
@@ -114,11 +112,71 @@ public abstract class EFeatureCorrespondenceImpl<T extends EStructuralFeature> e
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
+	public TFeature getFeatureA() {
+		if (featureA != null && featureA.eIsProxy()) {
+			InternalEObject oldFeatureA = (InternalEObject)featureA;
+			featureA = (TFeature)eResolveProxy(oldFeatureA);
+			if (featureA != oldFeatureA) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CorrespondencePackage.EFEATURE_CORRESPONDENCE__FEATURE_A, oldFeatureA, featureA));
+			}
+		}
+		return featureA;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public TFeature basicGetFeatureA() {
+		return featureA;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	public TFeature getFeatureB() {
+		if (featureB != null && featureB.eIsProxy()) {
+			InternalEObject oldFeatureB = (InternalEObject)featureB;
+			featureB = (TFeature)eResolveProxy(oldFeatureB);
+			if (featureB != oldFeatureB) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CorrespondencePackage.EFEATURE_CORRESPONDENCE__FEATURE_B, oldFeatureB, featureB));
+			}
+		}
+		return featureB;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public TFeature basicGetFeatureB() {
+		return featureB;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__TYPE:
 				return getType();
+			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__FEATURE_A:
+				if (resolve) return getFeatureA();
+				return basicGetFeatureA();
+			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__FEATURE_B:
+				if (resolve) return getFeatureB();
+				return basicGetFeatureB();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -164,6 +222,10 @@ public abstract class EFeatureCorrespondenceImpl<T extends EStructuralFeature> e
 		switch (featureID) {
 			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__TYPE:
 				return type != TYPE_EDEFAULT;
+			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__FEATURE_A:
+				return featureA != null;
+			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__FEATURE_B:
+				return featureB != null;
 		}
 		return super.eIsSet(featureID);
 	}

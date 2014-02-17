@@ -19,5 +19,5 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface EObjectCorrespondence extends SameTypeCorrespondence<EObject> {
+public interface EObjectCorrespondence extends SameTypeCorrespondence {
 } // EObjectCorrespondence

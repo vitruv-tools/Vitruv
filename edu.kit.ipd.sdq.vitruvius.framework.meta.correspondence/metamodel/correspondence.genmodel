@@ -20,14 +20,15 @@
       <genOperations ecoreOperation="correspondence.ecore#//Correspondence/getAllInvolvedEObjects"/>
     </genClasses>
     <genClasses image="false" ecoreClass="correspondence.ecore#//SameTypeCorrespondence">
-      <genTypeParameters ecoreTypeParameter="correspondence.ecore#//SameTypeCorrespondence/T"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//SameTypeCorrespondence/elementA"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//SameTypeCorrespondence/elementB"/>
     </genClasses>
     <genClasses ecoreClass="correspondence.ecore#//EObjectCorrespondence"/>
     <genClasses image="false" ecoreClass="correspondence.ecore#//EFeatureCorrespondence">
-      <genTypeParameters ecoreTypeParameter="correspondence.ecore#//EFeatureCorrespondence/T"/>
+      <genTypeParameters ecoreTypeParameter="correspondence.ecore#//EFeatureCorrespondence/TFeature"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//EFeatureCorrespondence/type"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference correspondence.ecore#//EFeatureCorrespondence/featureA"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference correspondence.ecore#//EFeatureCorrespondence/featureB"/>
     </genClasses>
     <genClasses ecoreClass="correspondence.ecore#//EAttributeCorrespondence"/>
     <genClasses image="false" ecoreClass="correspondence.ecore#//EReferenceCorrespondence"/>

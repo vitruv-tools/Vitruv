@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  * @generated
  */
-public class EObjectCorrespondenceImpl extends SameTypeCorrespondenceImpl<EObject> implements EObjectCorrespondence {
+public class EObjectCorrespondenceImpl extends SameTypeCorrespondenceImpl implements EObjectCorrespondence {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

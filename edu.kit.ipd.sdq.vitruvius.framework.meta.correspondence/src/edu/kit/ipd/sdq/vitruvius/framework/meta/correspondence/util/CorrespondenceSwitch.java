@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.util.Switch;
  * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage
  * @generated
  */
-public class CorrespondenceSwitch<T1> extends Switch<T1> {
+public class CorrespondenceSwitch<T> extends Switch<T> {
 	/**
 	 * The cached model package
 	 * <!-- begin-user-doc -->
@@ -65,30 +65,30 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	@Override
-	protected T1 doSwitch(int classifierID, EObject theEObject) {
+	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
 			case CorrespondencePackage.CORRESPONDENCES: {
 				Correspondences correspondences = (Correspondences)theEObject;
-				T1 result = caseCorrespondences(correspondences);
+				T result = caseCorrespondences(correspondences);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case CorrespondencePackage.CORRESPONDENCE: {
 				Correspondence correspondence = (Correspondence)theEObject;
-				T1 result = caseCorrespondence(correspondence);
+				T result = caseCorrespondence(correspondence);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE: {
-				SameTypeCorrespondence<?> sameTypeCorrespondence = (SameTypeCorrespondence<?>)theEObject;
-				T1 result = caseSameTypeCorrespondence(sameTypeCorrespondence);
+				SameTypeCorrespondence sameTypeCorrespondence = (SameTypeCorrespondence)theEObject;
+				T result = caseSameTypeCorrespondence(sameTypeCorrespondence);
 				if (result == null) result = caseCorrespondence(sameTypeCorrespondence);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case CorrespondencePackage.EOBJECT_CORRESPONDENCE: {
 				EObjectCorrespondence eObjectCorrespondence = (EObjectCorrespondence)theEObject;
-				T1 result = caseEObjectCorrespondence(eObjectCorrespondence);
+				T result = caseEObjectCorrespondence(eObjectCorrespondence);
 				if (result == null) result = caseSameTypeCorrespondence(eObjectCorrespondence);
 				if (result == null) result = caseCorrespondence(eObjectCorrespondence);
 				if (result == null) result = defaultCase(theEObject);
@@ -96,7 +96,7 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 			}
 			case CorrespondencePackage.EFEATURE_CORRESPONDENCE: {
 				EFeatureCorrespondence<?> eFeatureCorrespondence = (EFeatureCorrespondence<?>)theEObject;
-				T1 result = caseEFeatureCorrespondence(eFeatureCorrespondence);
+				T result = caseEFeatureCorrespondence(eFeatureCorrespondence);
 				if (result == null) result = caseSameTypeCorrespondence(eFeatureCorrespondence);
 				if (result == null) result = caseCorrespondence(eFeatureCorrespondence);
 				if (result == null) result = defaultCase(theEObject);
@@ -104,7 +104,7 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 			}
 			case CorrespondencePackage.EATTRIBUTE_CORRESPONDENCE: {
 				EAttributeCorrespondence eAttributeCorrespondence = (EAttributeCorrespondence)theEObject;
-				T1 result = caseEAttributeCorrespondence(eAttributeCorrespondence);
+				T result = caseEAttributeCorrespondence(eAttributeCorrespondence);
 				if (result == null) result = caseEFeatureCorrespondence(eAttributeCorrespondence);
 				if (result == null) result = caseSameTypeCorrespondence(eAttributeCorrespondence);
 				if (result == null) result = caseCorrespondence(eAttributeCorrespondence);
@@ -113,7 +113,7 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 			}
 			case CorrespondencePackage.EREFERENCE_CORRESPONDENCE: {
 				EReferenceCorrespondence eReferenceCorrespondence = (EReferenceCorrespondence)theEObject;
-				T1 result = caseEReferenceCorrespondence(eReferenceCorrespondence);
+				T result = caseEReferenceCorrespondence(eReferenceCorrespondence);
 				if (result == null) result = caseEFeatureCorrespondence(eReferenceCorrespondence);
 				if (result == null) result = caseSameTypeCorrespondence(eReferenceCorrespondence);
 				if (result == null) result = caseCorrespondence(eReferenceCorrespondence);
@@ -122,7 +122,7 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 			}
 			case CorrespondencePackage.ECONTAINMENT_REFERENCE_CORRESPONDENCE: {
 				EContainmentReferenceCorrespondence eContainmentReferenceCorrespondence = (EContainmentReferenceCorrespondence)theEObject;
-				T1 result = caseEContainmentReferenceCorrespondence(eContainmentReferenceCorrespondence);
+				T result = caseEContainmentReferenceCorrespondence(eContainmentReferenceCorrespondence);
 				if (result == null) result = caseEReferenceCorrespondence(eContainmentReferenceCorrespondence);
 				if (result == null) result = caseEFeatureCorrespondence(eContainmentReferenceCorrespondence);
 				if (result == null) result = caseSameTypeCorrespondence(eContainmentReferenceCorrespondence);
@@ -132,13 +132,13 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 			}
 			case CorrespondencePackage.PARTIAL_EFEATURE_CORRESPONDENCE: {
 				PartialEFeatureCorrespondence<?> partialEFeatureCorrespondence = (PartialEFeatureCorrespondence<?>)theEObject;
-				T1 result = casePartialEFeatureCorrespondence(partialEFeatureCorrespondence);
+				T result = casePartialEFeatureCorrespondence(partialEFeatureCorrespondence);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE: {
 				PartialEAttributeCorrespondence<?> partialEAttributeCorrespondence = (PartialEAttributeCorrespondence<?>)theEObject;
-				T1 result = casePartialEAttributeCorrespondence(partialEAttributeCorrespondence);
+				T result = casePartialEAttributeCorrespondence(partialEAttributeCorrespondence);
 				if (result == null) result = casePartialEFeatureCorrespondence(partialEAttributeCorrespondence);
 				if (result == null) result = caseEAttributeCorrespondence(partialEAttributeCorrespondence);
 				if (result == null) result = caseEFeatureCorrespondence(partialEAttributeCorrespondence);
@@ -149,7 +149,7 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 			}
 			case CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE: {
 				PartialEReferenceCorrespondence<?> partialEReferenceCorrespondence = (PartialEReferenceCorrespondence<?>)theEObject;
-				T1 result = casePartialEReferenceCorrespondence(partialEReferenceCorrespondence);
+				T result = casePartialEReferenceCorrespondence(partialEReferenceCorrespondence);
 				if (result == null) result = casePartialEFeatureCorrespondence(partialEReferenceCorrespondence);
 				if (result == null) result = caseEReferenceCorrespondence(partialEReferenceCorrespondence);
 				if (result == null) result = caseEFeatureCorrespondence(partialEReferenceCorrespondence);
@@ -173,7 +173,7 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T1 caseCorrespondences(Correspondences object) {
+	public T caseCorrespondences(Correspondences object) {
 		return null;
 	}
 
@@ -188,7 +188,7 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T1 caseCorrespondence(Correspondence object) {
+	public T caseCorrespondence(Correspondence object) {
 		return null;
 	}
 
@@ -203,7 +203,7 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public <T extends Object> T1 caseSameTypeCorrespondence(SameTypeCorrespondence<T> object) {
+	public T caseSameTypeCorrespondence(SameTypeCorrespondence object) {
 		return null;
 	}
 
@@ -218,7 +218,7 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T1 caseEObjectCorrespondence(EObjectCorrespondence object) {
+	public T caseEObjectCorrespondence(EObjectCorrespondence object) {
 		return null;
 	}
 
@@ -233,7 +233,7 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public <T extends EStructuralFeature> T1 caseEFeatureCorrespondence(EFeatureCorrespondence<T> object) {
+	public <TFeature extends EStructuralFeature> T caseEFeatureCorrespondence(EFeatureCorrespondence<TFeature> object) {
 		return null;
 	}
 
@@ -248,7 +248,7 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T1 caseEAttributeCorrespondence(EAttributeCorrespondence object) {
+	public T caseEAttributeCorrespondence(EAttributeCorrespondence object) {
 		return null;
 	}
 
@@ -263,7 +263,7 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T1 caseEReferenceCorrespondence(EReferenceCorrespondence object) {
+	public T caseEReferenceCorrespondence(EReferenceCorrespondence object) {
 		return null;
 	}
 
@@ -278,7 +278,7 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T1 caseEContainmentReferenceCorrespondence(EContainmentReferenceCorrespondence object) {
+	public T caseEContainmentReferenceCorrespondence(EContainmentReferenceCorrespondence object) {
 		return null;
 	}
 
@@ -293,7 +293,7 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public <TValue extends Object> T1 casePartialEFeatureCorrespondence(PartialEFeatureCorrespondence<TValue> object) {
+	public <TValue extends Object> T casePartialEFeatureCorrespondence(PartialEFeatureCorrespondence<TValue> object) {
 		return null;
 	}
 
@@ -308,7 +308,7 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public <TValue extends Object> T1 casePartialEAttributeCorrespondence(PartialEAttributeCorrespondence<TValue> object) {
+	public <TValue extends Object> T casePartialEAttributeCorrespondence(PartialEAttributeCorrespondence<TValue> object) {
 		return null;
 	}
 
@@ -323,7 +323,7 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public <TValue extends EObject> T1 casePartialEReferenceCorrespondence(PartialEReferenceCorrespondence<TValue> object) {
+	public <TValue extends EObject> T casePartialEReferenceCorrespondence(PartialEReferenceCorrespondence<TValue> object) {
 		return null;
 	}
 
@@ -339,7 +339,7 @@ public class CorrespondenceSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	@Override
-	public T1 defaultCase(EObject object) {
+	public T defaultCase(EObject object) {
 		return null;
 	}
 

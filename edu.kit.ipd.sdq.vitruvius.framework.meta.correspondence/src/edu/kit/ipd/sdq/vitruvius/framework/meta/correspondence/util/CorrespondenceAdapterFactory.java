@@ -77,7 +77,7 @@ public class CorrespondenceAdapterFactory extends AdapterFactoryImpl {
 				return createCorrespondenceAdapter();
 			}
 			@Override
-			public <T extends Object> Adapter caseSameTypeCorrespondence(SameTypeCorrespondence<T> object) {
+			public Adapter caseSameTypeCorrespondence(SameTypeCorrespondence object) {
 				return createSameTypeCorrespondenceAdapter();
 			}
 			@Override
@@ -85,7 +85,7 @@ public class CorrespondenceAdapterFactory extends AdapterFactoryImpl {
 				return createEObjectCorrespondenceAdapter();
 			}
 			@Override
-			public <T extends EStructuralFeature> Adapter caseEFeatureCorrespondence(EFeatureCorrespondence<T> object) {
+			public <TFeature extends EStructuralFeature> Adapter caseEFeatureCorrespondence(EFeatureCorrespondence<TFeature> object) {
 				return createEFeatureCorrespondenceAdapter();
 			}
 			@Override

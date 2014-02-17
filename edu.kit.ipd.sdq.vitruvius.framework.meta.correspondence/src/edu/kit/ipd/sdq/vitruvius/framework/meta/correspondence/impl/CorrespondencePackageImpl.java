@@ -288,6 +288,24 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getEFeatureCorrespondence_FeatureA() {
+		return (EReference)eFeatureCorrespondenceEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getEFeatureCorrespondence_FeatureB() {
+		return (EReference)eFeatureCorrespondenceEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getEAttributeCorrespondence() {
 		return eAttributeCorrespondenceEClass;
 	}
@@ -425,6 +443,8 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 
 		eFeatureCorrespondenceEClass = createEClass(EFEATURE_CORRESPONDENCE);
 		createEAttribute(eFeatureCorrespondenceEClass, EFEATURE_CORRESPONDENCE__TYPE);
+		createEReference(eFeatureCorrespondenceEClass, EFEATURE_CORRESPONDENCE__FEATURE_A);
+		createEReference(eFeatureCorrespondenceEClass, EFEATURE_CORRESPONDENCE__FEATURE_B);
 
 		eAttributeCorrespondenceEClass = createEClass(EATTRIBUTE_CORRESPONDENCE);
 
@@ -473,17 +493,14 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 
 		// Create type parameters
-		ETypeParameter sameTypeCorrespondenceEClass_T = addETypeParameter(sameTypeCorrespondenceEClass, "T");
-		ETypeParameter eFeatureCorrespondenceEClass_T = addETypeParameter(eFeatureCorrespondenceEClass, "T");
+		ETypeParameter eFeatureCorrespondenceEClass_TFeature = addETypeParameter(eFeatureCorrespondenceEClass, "TFeature");
 		ETypeParameter partialEFeatureCorrespondenceEClass_TValue = addETypeParameter(partialEFeatureCorrespondenceEClass, "TValue");
 		ETypeParameter partialEAttributeCorrespondenceEClass_TValue = addETypeParameter(partialEAttributeCorrespondenceEClass, "TValue");
 		ETypeParameter partialEReferenceCorrespondenceEClass_TValue = addETypeParameter(partialEReferenceCorrespondenceEClass, "TValue");
 
 		// Set bounds for type parameters
-		EGenericType g1 = createEGenericType(ecorePackage.getEJavaObject());
-		sameTypeCorrespondenceEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(ecorePackage.getEStructuralFeature());
-		eFeatureCorrespondenceEClass_T.getEBounds().add(g1);
+		EGenericType g1 = createEGenericType(ecorePackage.getEStructuralFeature());
+		eFeatureCorrespondenceEClass_TFeature.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEJavaObject());
 		partialEFeatureCorrespondenceEClass_TValue.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEJavaObject());
@@ -493,16 +510,10 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 
 		// Add supertypes to classes
 		sameTypeCorrespondenceEClass.getESuperTypes().add(this.getCorrespondence());
-		g1 = createEGenericType(this.getSameTypeCorrespondence());
-		EGenericType g2 = createEGenericType(ecorePackage.getEObject());
-		g1.getETypeArguments().add(g2);
-		eObjectCorrespondenceEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getSameTypeCorrespondence());
-		g2 = createEGenericType(eFeatureCorrespondenceEClass_T);
-		g1.getETypeArguments().add(g2);
-		eFeatureCorrespondenceEClass.getEGenericSuperTypes().add(g1);
+		eObjectCorrespondenceEClass.getESuperTypes().add(this.getSameTypeCorrespondence());
+		eFeatureCorrespondenceEClass.getESuperTypes().add(this.getSameTypeCorrespondence());
 		g1 = createEGenericType(this.getEFeatureCorrespondence());
-		g2 = createEGenericType(ecorePackage.getEAttribute());
+		EGenericType g2 = createEGenericType(ecorePackage.getEAttribute());
 		g1.getETypeArguments().add(g2);
 		eAttributeCorrespondenceEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getEFeatureCorrespondence());
@@ -534,15 +545,17 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		addEOperation(correspondenceEClass, ecorePackage.getEObject(), "getAllInvolvedEObjects", 2, -1, IS_UNIQUE, !IS_ORDERED);
 
 		initEClass(sameTypeCorrespondenceEClass, SameTypeCorrespondence.class, "SameTypeCorrespondence", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		g1 = createEGenericType(sameTypeCorrespondenceEClass_T);
-		initEReference(getSameTypeCorrespondence_ElementA(), g1, null, "elementA", null, 1, 1, SameTypeCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		g1 = createEGenericType(sameTypeCorrespondenceEClass_T);
-		initEReference(getSameTypeCorrespondence_ElementB(), g1, null, "elementB", null, 1, 1, SameTypeCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSameTypeCorrespondence_ElementA(), theEcorePackage.getEObject(), null, "elementA", null, 1, 1, SameTypeCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSameTypeCorrespondence_ElementB(), theEcorePackage.getEObject(), null, "elementB", null, 1, 1, SameTypeCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(eObjectCorrespondenceEClass, EObjectCorrespondence.class, "EObjectCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(eFeatureCorrespondenceEClass, EFeatureCorrespondence.class, "EFeatureCorrespondence", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getEFeatureCorrespondence_Type(), this.getCorrespondenceType(), "type", null, 1, 1, EFeatureCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		g1 = createEGenericType(eFeatureCorrespondenceEClass_TFeature);
+		initEReference(getEFeatureCorrespondence_FeatureA(), g1, null, "featureA", null, 1, 1, EFeatureCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		g1 = createEGenericType(eFeatureCorrespondenceEClass_TFeature);
+		initEReference(getEFeatureCorrespondence_FeatureB(), g1, null, "featureB", null, 1, 1, EFeatureCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(eAttributeCorrespondenceEClass, EAttributeCorrespondence.class, "EAttributeCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

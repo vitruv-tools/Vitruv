@@ -37,6 +37,8 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.PartialEAttributeCorrespondenceImpl#getElementA <em>Element A</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.PartialEAttributeCorrespondenceImpl#getElementB <em>Element B</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.PartialEAttributeCorrespondenceImpl#getType <em>Type</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.PartialEAttributeCorrespondenceImpl#getFeatureA <em>Feature A</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.PartialEAttributeCorrespondenceImpl#getFeatureB <em>Feature B</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.PartialEAttributeCorrespondenceImpl#getValueA <em>Value A</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.PartialEAttributeCorrespondenceImpl#getValueB <em>Value B</em>}</li>
  * </ul>
@@ -73,7 +75,7 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 	 * @generated
 	 * @ordered
 	 */
-	protected EAttribute elementA;
+	protected EObject elementA;
 
 	/**
 	 * The cached value of the '{@link #getElementB() <em>Element B</em>}' reference.
@@ -83,7 +85,7 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 	 * @generated
 	 * @ordered
 	 */
-	protected EAttribute elementB;
+	protected EObject elementB;
 
 	/**
 	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
@@ -104,6 +106,26 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 	 * @ordered
 	 */
 	protected CorrespondenceType type = TYPE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getFeatureA() <em>Feature A</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getFeatureA()
+	 * @generated
+	 * @ordered
+	 */
+	protected EAttribute featureA;
+
+	/**
+	 * The cached value of the '{@link #getFeatureB() <em>Feature B</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getFeatureB()
+	 * @generated
+	 * @ordered
+	 */
+	protected EAttribute featureB;
 
 	/**
 	 * The cached value of the '{@link #getValueA() <em>Value A</em>}' attribute.
@@ -199,10 +221,10 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getElementA() {
-		if (elementA != null && ((EObject)elementA).eIsProxy()) {
+	public EObject getElementA() {
+		if (elementA != null && elementA.eIsProxy()) {
 			InternalEObject oldElementA = (InternalEObject)elementA;
-			elementA = (EAttribute)eResolveProxy(oldElementA);
+			elementA = eResolveProxy(oldElementA);
 			if (elementA != oldElementA) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__ELEMENT_A, oldElementA, elementA));
@@ -216,7 +238,7 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute basicGetElementA() {
+	public EObject basicGetElementA() {
 		return elementA;
 	}
 
@@ -225,8 +247,8 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setElementA(EAttribute newElementA) {
-		EAttribute oldElementA = elementA;
+	public void setElementA(EObject newElementA) {
+		EObject oldElementA = elementA;
 		elementA = newElementA;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__ELEMENT_A, oldElementA, elementA));
@@ -237,10 +259,10 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getElementB() {
-		if (elementB != null && ((EObject)elementB).eIsProxy()) {
+	public EObject getElementB() {
+		if (elementB != null && elementB.eIsProxy()) {
 			InternalEObject oldElementB = (InternalEObject)elementB;
-			elementB = (EAttribute)eResolveProxy(oldElementB);
+			elementB = eResolveProxy(oldElementB);
 			if (elementB != oldElementB) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__ELEMENT_B, oldElementB, elementB));
@@ -254,7 +276,7 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute basicGetElementB() {
+	public EObject basicGetElementB() {
 		return elementB;
 	}
 
@@ -263,8 +285,8 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setElementB(EAttribute newElementB) {
-		EAttribute oldElementB = elementB;
+	public void setElementB(EObject newElementB) {
+		EObject oldElementB = elementB;
 		elementB = newElementB;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__ELEMENT_B, oldElementB, elementB));
@@ -289,6 +311,58 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 		type = newType == null ? TYPE_EDEFAULT : newType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__TYPE, oldType, type));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getFeatureA() {
+		if (featureA != null && featureA.eIsProxy()) {
+			InternalEObject oldFeatureA = (InternalEObject)featureA;
+			featureA = (EAttribute)eResolveProxy(oldFeatureA);
+			if (featureA != oldFeatureA) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__FEATURE_A, oldFeatureA, featureA));
+			}
+		}
+		return featureA;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute basicGetFeatureA() {
+		return featureA;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getFeatureB() {
+		if (featureB != null && featureB.eIsProxy()) {
+			InternalEObject oldFeatureB = (InternalEObject)featureB;
+			featureB = (EAttribute)eResolveProxy(oldFeatureB);
+			if (featureB != oldFeatureB) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__FEATURE_B, oldFeatureB, featureB));
+			}
+		}
+		return featureB;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute basicGetFeatureB() {
+		return featureB;
 	}
 
 	/**
@@ -365,6 +439,12 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 				return basicGetElementB();
 			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__TYPE:
 				return getType();
+			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__FEATURE_A:
+				if (resolve) return getFeatureA();
+				return basicGetFeatureA();
+			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__FEATURE_B:
+				if (resolve) return getFeatureB();
+				return basicGetFeatureB();
 			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__VALUE_A:
 				return getValueA();
 			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__VALUE_B:
@@ -390,10 +470,10 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 				setParent((Correspondence)newValue);
 				return;
 			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__ELEMENT_A:
-				setElementA((EAttribute)newValue);
+				setElementA((EObject)newValue);
 				return;
 			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__ELEMENT_B:
-				setElementB((EAttribute)newValue);
+				setElementB((EObject)newValue);
 				return;
 			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__TYPE:
 				setType((CorrespondenceType)newValue);
@@ -423,10 +503,10 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 				setParent((Correspondence)null);
 				return;
 			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__ELEMENT_A:
-				setElementA((EAttribute)null);
+				setElementA((EObject)null);
 				return;
 			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__ELEMENT_B:
-				setElementB((EAttribute)null);
+				setElementB((EObject)null);
 				return;
 			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__TYPE:
 				setType(TYPE_EDEFAULT);
@@ -459,6 +539,10 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 				return elementB != null;
 			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__TYPE:
 				return type != TYPE_EDEFAULT;
+			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__FEATURE_A:
+				return featureA != null;
+			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__FEATURE_B:
+				return featureB != null;
 			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__VALUE_A:
 				return valueA != null;
 			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__VALUE_B:
@@ -491,6 +575,8 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 		if (baseClass == EFeatureCorrespondence.class) {
 			switch (derivedFeatureID) {
 				case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__TYPE: return CorrespondencePackage.EFEATURE_CORRESPONDENCE__TYPE;
+				case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__FEATURE_A: return CorrespondencePackage.EFEATURE_CORRESPONDENCE__FEATURE_A;
+				case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__FEATURE_B: return CorrespondencePackage.EFEATURE_CORRESPONDENCE__FEATURE_B;
 				default: return -1;
 			}
 		}
@@ -526,6 +612,8 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 		if (baseClass == EFeatureCorrespondence.class) {
 			switch (baseFeatureID) {
 				case CorrespondencePackage.EFEATURE_CORRESPONDENCE__TYPE: return CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__TYPE;
+				case CorrespondencePackage.EFEATURE_CORRESPONDENCE__FEATURE_A: return CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__FEATURE_A;
+				case CorrespondencePackage.EFEATURE_CORRESPONDENCE__FEATURE_B: return CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__FEATURE_B;
 				default: return -1;
 			}
 		}

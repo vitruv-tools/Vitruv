@@ -23,10 +23,10 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getSameTypeCorrespondence()
- * @model abstract="true" TBounds="org.eclipse.emf.ecore.EJavaObject"
+ * @model abstract="true"
  * @generated
  */
-public interface SameTypeCorrespondence<T extends Object> extends Correspondence {
+public interface SameTypeCorrespondence extends Correspondence {
 	/**
 	 * Returns the value of the '<em><b>Element A</b></em>' reference.
 	 * <!-- begin-user-doc -->
@@ -36,12 +36,12 @@ public interface SameTypeCorrespondence<T extends Object> extends Correspondence
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Element A</em>' reference.
-	 * @see #setElementA(Object)
+	 * @see #setElementA(EObject)
 	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getSameTypeCorrespondence_ElementA()
-	 * @model kind="reference" required="true"
+	 * @model required="true"
 	 * @generated
 	 */
-	T getElementA();
+	EObject getElementA();
 
 	/**
 	 * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence#getElementA <em>Element A</em>}' reference.
@@ -51,7 +51,7 @@ public interface SameTypeCorrespondence<T extends Object> extends Correspondence
 	 * @see #getElementA()
 	 * @generated
 	 */
-	void setElementA(T value);
+	void setElementA(EObject value);
 
 	/**
 	 * Returns the value of the '<em><b>Element B</b></em>' reference.
@@ -62,12 +62,12 @@ public interface SameTypeCorrespondence<T extends Object> extends Correspondence
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Element B</em>' reference.
-	 * @see #setElementB(Object)
+	 * @see #setElementB(EObject)
 	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getSameTypeCorrespondence_ElementB()
-	 * @model kind="reference" required="true"
+	 * @model required="true"
 	 * @generated
 	 */
-	T getElementB();
+	EObject getElementB();
 
 	/**
 	 * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence#getElementB <em>Element B</em>}' reference.
@@ -77,6 +77,6 @@ public interface SameTypeCorrespondence<T extends Object> extends Correspondence
 	 * @see #getElementB()
 	 * @generated
 	 */
-	void setElementB(T value);
+	void setElementB(EObject value);
 
 } // SameTypeCorrespondence

@@ -18,35 +18,33 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Metaclass for cases where an Object corresponds to another Object of the same metatype (i.e. both objects are either complex-typed EObjects or simple-typed EJavaObjects).&#xA;ElementA and elementB usually point to instances of different metaclasses but their common type T is not a problem as T will never be used more strictly than for the metatype."/>
     </eAnnotations>
-    <eTypeParameters name="T">
-      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
-    </eTypeParameters>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="elementA" lowerBound="1">
-      <eGenericType eTypeParameter="#//SameTypeCorrespondence/T"/>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="elementB" lowerBound="1">
-      <eGenericType eTypeParameter="#//SameTypeCorrespondence/T"/>
-    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elementA" lowerBound="1"
+        eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elementB" lowerBound="1"
+        eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EObjectCorrespondence">
+  <eClassifiers xsi:type="ecore:EClass" name="EObjectCorrespondence" eSuperTypes="#//SameTypeCorrespondence">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Metaclass for cases where an eObject corresponds to another eObject.&#xA;The correspondence type is indirectly implied by the correspondences of the features of the eObjects."/>
     </eAnnotations>
-    <eGenericSuperTypes eClassifier="#//SameTypeCorrespondence">
-      <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
-    </eGenericSuperTypes>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EFeatureCorrespondence" abstract="true">
+  <eClassifiers xsi:type="ecore:EClass" name="EFeatureCorrespondence" abstract="true"
+      eSuperTypes="#//SameTypeCorrespondence">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Metaclass for cases where a complete feature of an eObject corresponds to a complete feature of another eObject and both features have the same type.&#xA;This means every value for the feature of the first eObject corresponds to a value for the feature of the second eObject and the other way round."/>
     </eAnnotations>
-    <eTypeParameters name="T">
+    <eTypeParameters name="TFeature">
       <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
     </eTypeParameters>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1" eType="#//CorrespondenceType"/>
-    <eGenericSuperTypes eClassifier="#//SameTypeCorrespondence">
-      <eTypeArguments eTypeParameter="#//EFeatureCorrespondence/T"/>
-    </eGenericSuperTypes>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureA" lowerBound="1"
+        changeable="false">
+      <eGenericType eTypeParameter="#//EFeatureCorrespondence/TFeature"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureB" lowerBound="1"
+        changeable="false">
+      <eGenericType eTypeParameter="#//EFeatureCorrespondence/TFeature"/>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EAttributeCorrespondence">
     <eGenericSuperTypes eClassifier="#//EFeatureCorrespondence">
