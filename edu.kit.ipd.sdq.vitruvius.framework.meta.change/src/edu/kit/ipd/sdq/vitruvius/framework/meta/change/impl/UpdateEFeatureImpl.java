@@ -42,8 +42,6 @@ public abstract class UpdateEFeatureImpl<T extends Object> extends EObjectImpl i
      * @generated NOT
      */
     @Override
-    public T getNewValue() {
-        throw new UnsupportedOperationException("getNewValue not implemented in UpdateEFeatureImpl");
-    }
+    public abstract T getNewValue();
 
 } // UpdateEFeatureImpl
