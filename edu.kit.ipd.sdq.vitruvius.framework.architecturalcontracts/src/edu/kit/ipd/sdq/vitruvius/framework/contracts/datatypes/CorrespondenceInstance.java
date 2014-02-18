@@ -178,6 +178,7 @@ public class CorrespondenceInstance extends ModelInstance {
         for (Correspondence correspondence : correspondencesForEObj) {
             this.correspondences.getCorrespondences().remove(correspondence);
         }
+        // FIXME: remove feature correspondences
     }
 
     public Set<FeatureInstance> getCorrespondingFeatureInstances(final EObject parentEObject,
