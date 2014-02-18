@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?>
+
+<target name="Running Platform" sequenceNumber="4">
+<locations>
+<location configuration="/home/kramerm/workspaces/vitruv/.metadata/.plugins/org.eclipse.pde.core/TEST WS ALL PLUGINS/" path="${eclipse_home}" type="Profile"/>
+</locations>
+<environment>
+<os>linux</os>
+<ws>gtk</ws>
+<arch>x86_64</arch>
+<nl>de_DE</nl>
+</environment>
+<launcherArgs>
+<vmArgs>-Dosgi.requiredJavaVersion=1.7 -XX:MaxPermSize=256m -Xms64m -Xmx1024m</vmArgs>
+</launcherArgs>
+</target>
