@@ -3,6 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -76,12 +77,8 @@ public class ChangeSynchronizerTest {
 
         final UpdateEAttribute<Object> repoNameChange = ChangeFactory.eINSTANCE.createUpdateEAttribute();
         repoNameChange.setAffectedEObject(repo);
-        for (final EAttribute eAttribute : repo.eClass().getEAllAttributes()) {
-            if (eAttribute.getName().equals("entityName")) {
-                repoNameChange.setAffectedFeature(eAttribute);
-                break;
-            }
-        }
+        EAttribute affectedFeature = (EAttribute) repo.eClass().getEStructuralFeature("entityName");
+        repoNameChange.setAffectedFeature(affectedFeature);
         repoNameChange.setNewValue(repo.getEntityName());
         System.out.println(repoNameChange.getNewValue());
         this.changeSynchronizer.synchronizeChange(repoNameChange);
