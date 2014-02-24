@@ -32,7 +32,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class UpdateEReferenceImpl<T extends EObject> extends UpdateEFeatureImpl<T> implements UpdateEReference<T> {
+public class UpdateEReferenceImpl<T extends Object> extends UpdateEFeatureImpl<T> implements UpdateEReference<T> {
 	/**
      * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
      * <!-- begin-user-doc -->
@@ -165,7 +165,7 @@ public class UpdateEReferenceImpl<T extends EObject> extends UpdateEFeatureImpl<
      */
     @SuppressWarnings("unchecked")
     public T getNewValue() {
-        if (newValue != null && newValue.eIsProxy()) {
+        if (newValue != null && ((EObject)newValue).eIsProxy()) {
             InternalEObject oldNewValue = (InternalEObject)newValue;
             newValue = (T)eResolveProxy(oldNewValue);
             if (newValue != oldNewValue) {

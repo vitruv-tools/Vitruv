@@ -11,8 +11,8 @@ import org.eclipse.emf.ecore.EObject;
  *
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangePackage#getCreateNonRootEObject()
- * @model
+ * @model TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
-public interface CreateNonRootEObject<T extends EObject> extends CreateEObject, UpdateEContainmentReference<T> {
+public interface CreateNonRootEObject<T extends Object> extends CreateEObject, UpdateEContainmentReference<T> {
 } // CreateNonRootEObject

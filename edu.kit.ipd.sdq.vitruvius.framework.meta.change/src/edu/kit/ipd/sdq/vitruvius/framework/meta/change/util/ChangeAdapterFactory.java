@@ -93,7 +93,7 @@ public class ChangeAdapterFactory extends AdapterFactoryImpl {
                 return createCreateEObjectAdapter();
             }
             @Override
-            public <T extends EObject> Adapter caseCreateNonRootEObject(CreateNonRootEObject<T> object) {
+            public <T extends Object> Adapter caseCreateNonRootEObject(CreateNonRootEObject<T> object) {
                 return createCreateNonRootEObjectAdapter();
             }
             @Override
@@ -113,11 +113,11 @@ public class ChangeAdapterFactory extends AdapterFactoryImpl {
                 return createUpdateEAttributeAdapter();
             }
             @Override
-            public <T extends EObject> Adapter caseUpdateEReference(UpdateEReference<T> object) {
+            public <T extends Object> Adapter caseUpdateEReference(UpdateEReference<T> object) {
                 return createUpdateEReferenceAdapter();
             }
             @Override
-            public <T extends EObject> Adapter caseUpdateEContainmentReference(UpdateEContainmentReference<T> object) {
+            public <T extends Object> Adapter caseUpdateEContainmentReference(UpdateEContainmentReference<T> object) {
                 return createUpdateEContainmentReferenceAdapter();
             }
             @Override
@@ -125,7 +125,7 @@ public class ChangeAdapterFactory extends AdapterFactoryImpl {
                 return createDeleteEObjectAdapter();
             }
             @Override
-            public <T extends EObject> Adapter caseDeleteNonRootEObject(DeleteNonRootEObject<T> object) {
+            public <T extends Object> Adapter caseDeleteNonRootEObject(DeleteNonRootEObject<T> object) {
                 return createDeleteNonRootEObjectAdapter();
             }
             @Override

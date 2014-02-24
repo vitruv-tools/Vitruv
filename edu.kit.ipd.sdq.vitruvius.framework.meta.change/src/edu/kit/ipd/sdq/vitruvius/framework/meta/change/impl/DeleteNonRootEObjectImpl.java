@@ -34,7 +34,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class DeleteNonRootEObjectImpl<T extends EObject> extends DeleteRootEObjectImpl implements DeleteNonRootEObject<T> {
+public class DeleteNonRootEObjectImpl<T extends Object> extends DeleteRootEObjectImpl implements DeleteNonRootEObject<T> {
 	/**
      * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
      * <!-- begin-user-doc -->
@@ -91,7 +91,7 @@ public class DeleteNonRootEObjectImpl<T extends EObject> extends DeleteRootEObje
      */
 	@SuppressWarnings("unchecked")
 	public T getNewValue() {
-        if (newValue != null && newValue.eIsProxy()) {
+        if (newValue != null && ((EObject)newValue).eIsProxy()) {
             InternalEObject oldNewValue = (InternalEObject)newValue;
             newValue = (T)eResolveProxy(oldNewValue);
             if (newValue != oldNewValue) {

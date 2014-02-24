@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  * @generated
  */
-public class UpdateEContainmentReferenceImpl<T extends EObject> extends UpdateEReferenceImpl<T> implements UpdateEContainmentReference<T> {
+public class UpdateEContainmentReferenceImpl<T extends Object> extends UpdateEReferenceImpl<T> implements UpdateEContainmentReference<T> {
 	/**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -35,6 +35,17 @@ public class UpdateEContainmentReferenceImpl<T extends EObject> extends UpdateER
 	@Override
 	protected EClass eStaticClass() {
         return ChangePackage.Literals.UPDATE_ECONTAINMENT_REFERENCE;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * This is specialized for the more specific type known in this context.
+     * @generated
+     */
+    @Override
+    public void setNewValue(T newNewValue) {
+        super.setNewValue(newNewValue);
     }
 
 } //UpdateEContainmentReferenceImpl

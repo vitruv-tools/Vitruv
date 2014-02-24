@@ -30,7 +30,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="CreateEObject" abstract="true" eSuperTypes="#//EObjectChange"/>
   <eClassifiers xsi:type="ecore:EClass" name="CreateNonRootEObject">
     <eTypeParameters name="T">
-      <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eTypeParameters>
     <eGenericSuperTypes eClassifier="#//CreateEObject"/>
     <eGenericSuperTypes eClassifier="#//UpdateEContainmentReference">
@@ -68,7 +68,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UpdateEReference">
     <eTypeParameters name="T">
-      <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eTypeParameters>
     <eStructuralFeatures xsi:type="ecore:EReference" name="newValue" lowerBound="1">
       <eGenericType eTypeParameter="#//UpdateEReference/T"/>
@@ -80,7 +80,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UpdateEContainmentReference">
     <eTypeParameters name="T">
-      <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eTypeParameters>
     <eGenericSuperTypes eClassifier="#//UpdateEReference">
       <eTypeArguments eTypeParameter="#//UpdateEContainmentReference/T"/>
@@ -89,7 +89,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="DeleteEObject" abstract="true" eSuperTypes="#//EObjectChange"/>
   <eClassifiers xsi:type="ecore:EClass" name="DeleteNonRootEObject">
     <eTypeParameters name="T">
-      <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eTypeParameters>
     <eGenericSuperTypes eClassifier="#//DeleteRootEObject"/>
     <eGenericSuperTypes eClassifier="#//UpdateEContainmentReference">

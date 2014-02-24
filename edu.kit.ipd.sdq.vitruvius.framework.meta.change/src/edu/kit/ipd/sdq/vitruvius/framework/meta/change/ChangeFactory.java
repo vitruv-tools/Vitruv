@@ -30,7 +30,7 @@ public interface ChangeFactory extends EFactory {
      * @return a new object of class '<em>Create Non Root EObject</em>'.
      * @generated
      */
-	<T extends EObject> CreateNonRootEObject<T> createCreateNonRootEObject();
+	<T extends Object> CreateNonRootEObject<T> createCreateNonRootEObject();
 
 	/**
      * Returns a new object of class '<em>Create Root EObject</em>'.
@@ -66,7 +66,7 @@ public interface ChangeFactory extends EFactory {
      * @return a new object of class '<em>Update EReference</em>'.
      * @generated
      */
-	<T extends EObject> UpdateEReference<T> createUpdateEReference();
+	<T extends Object> UpdateEReference<T> createUpdateEReference();
 
 	/**
      * Returns a new object of class '<em>Update EContainment Reference</em>'.
@@ -75,7 +75,7 @@ public interface ChangeFactory extends EFactory {
      * @return a new object of class '<em>Update EContainment Reference</em>'.
      * @generated
      */
-	<T extends EObject> UpdateEContainmentReference<T> createUpdateEContainmentReference();
+	<T extends Object> UpdateEContainmentReference<T> createUpdateEContainmentReference();
 
 	/**
      * Returns a new object of class '<em>Delete Non Root EObject</em>'.
@@ -84,7 +84,7 @@ public interface ChangeFactory extends EFactory {
      * @return a new object of class '<em>Delete Non Root EObject</em>'.
      * @generated
      */
-	<T extends EObject> DeleteNonRootEObject<T> createDeleteNonRootEObject();
+	<T extends Object> DeleteNonRootEObject<T> createDeleteNonRootEObject();
 
 	/**
      * Returns a new object of class '<em>Delete Root EObject</em>'.

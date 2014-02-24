@@ -17,10 +17,10 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangePackage#getUpdateEReference()
- * @model
+ * @model TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
-public interface UpdateEReference<T extends EObject> extends UpdateEFeature<T>, EReferenceChange {
+public interface UpdateEReference<T extends Object> extends UpdateEFeature<T>, EReferenceChange {
 
     /**
      * Returns the value of the '<em><b>New Value</b></em>' reference.
@@ -31,9 +31,9 @@ public interface UpdateEReference<T extends EObject> extends UpdateEFeature<T>, 
      * </p>
      * <!-- end-user-doc -->
      * @return the value of the '<em>New Value</em>' reference.
-     * @see #setNewValue(EObject)
+     * @see #setNewValue(Object)
      * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangePackage#getUpdateEReference_NewValue()
-     * @model required="true"
+     * @model kind="reference" required="true"
      * @generated
      */
     T getNewValue();

@@ -127,7 +127,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
         if (iResource.getName().endsWith(".java") || iResource.getName().endsWith(".repository")) {
             final FileChange fileChange = new FileChange(FileChangeKind.CREATE);
             final VURI vuri = VURI.getInstance(iResource.getFullPath().toString());
-            SyncManagerImpl.getSyncManagerInstance().synchronizeChange(fileChange, vuri);
+            // SyncManagerImpl.getSyncManagerInstance().synchronizeChange(fileChange, vuri);
         }
     }
 

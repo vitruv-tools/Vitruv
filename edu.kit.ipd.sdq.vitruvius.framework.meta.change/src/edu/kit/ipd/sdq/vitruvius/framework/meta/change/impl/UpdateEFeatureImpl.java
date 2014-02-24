@@ -13,13 +13,12 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEFeature;
  * <!-- end-user-doc -->
  * <p>
  * </p>
- * 
+ *
  * @generated
  */
 public abstract class UpdateEFeatureImpl<T extends Object> extends EObjectImpl implements UpdateEFeature<T> {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     protected UpdateEFeatureImpl() {
@@ -28,7 +27,6 @@ public abstract class UpdateEFeatureImpl<T extends Object> extends EObjectImpl i
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override

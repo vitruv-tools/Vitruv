@@ -139,6 +139,7 @@ public class SynchronisationTest {
      * repository model
      */
     private void createFileChange(final VURI vuri) {
+
         FileChange fileChange = new FileChange(FileChangeKind.CREATE);
         List<Change> changes = new ArrayList<Change>(1);
         changes.add(fileChange);

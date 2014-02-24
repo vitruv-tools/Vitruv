@@ -13,7 +13,11 @@ Require-Bundle: org.eclipse.xtend.lib,
  org.emftext.language.java;bundle-version="1.4.0",
  edu.kit.ipd.sdq.vitruvius.framework.meta.change;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence;bundle-version="1.0.0"
+ edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence;bundle-version="1.0.0",
+ org.emftext.refactoring.specification.interpreter,
+ org.eclipse.swt;bundle-version="3.102.0",
+ org.emftext.language.refactoring.rolemapping;bundle-version="0.9.1",
+ org.emftext.refactoring.registry.rolemapping;bundle-version="0.9.1"
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations
 Bundle-ClassPath: libs/reflections-0.9.9-RC1.jar,
  .,

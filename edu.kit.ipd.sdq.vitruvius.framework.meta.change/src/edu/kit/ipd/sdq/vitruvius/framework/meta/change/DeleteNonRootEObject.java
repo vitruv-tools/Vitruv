@@ -11,8 +11,8 @@ import org.eclipse.emf.ecore.EObject;
  *
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangePackage#getDeleteNonRootEObject()
- * @model
+ * @model TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
-public interface DeleteNonRootEObject<T extends EObject> extends DeleteRootEObject, UpdateEContainmentReference<T> {
+public interface DeleteNonRootEObject<T extends Object> extends DeleteRootEObject, UpdateEContainmentReference<T> {
 } // DeleteNonRootEObject

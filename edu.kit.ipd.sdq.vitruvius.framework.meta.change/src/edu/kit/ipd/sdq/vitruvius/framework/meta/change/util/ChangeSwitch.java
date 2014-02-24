@@ -316,7 +316,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-	public <T extends EObject> T1 caseCreateNonRootEObject(CreateNonRootEObject<T> object) {
+	public <T extends Object> T1 caseCreateNonRootEObject(CreateNonRootEObject<T> object) {
         return null;
     }
 
@@ -391,7 +391,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-	public <T extends EObject> T1 caseUpdateEReference(UpdateEReference<T> object) {
+	public <T extends Object> T1 caseUpdateEReference(UpdateEReference<T> object) {
         return null;
     }
 
@@ -406,7 +406,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-	public <T extends EObject> T1 caseUpdateEContainmentReference(UpdateEContainmentReference<T> object) {
+	public <T extends Object> T1 caseUpdateEContainmentReference(UpdateEContainmentReference<T> object) {
         return null;
     }
 
@@ -436,7 +436,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-	public <T extends EObject> T1 caseDeleteNonRootEObject(DeleteNonRootEObject<T> object) {
+	public <T extends Object> T1 caseDeleteNonRootEObject(DeleteNonRootEObject<T> object) {
         return null;
     }
 

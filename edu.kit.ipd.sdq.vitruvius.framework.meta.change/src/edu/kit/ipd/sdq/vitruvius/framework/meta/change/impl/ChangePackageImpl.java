@@ -502,7 +502,7 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         // Set bounds for type parameters
         EGenericType g1 = createEGenericType(ecorePackage.getEStructuralFeature());
         eFeatureChangeEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEObject());
+        g1 = createEGenericType(ecorePackage.getEJavaObject());
         createNonRootEObjectEClass_T.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEJavaObject());
         updateEFeatureEClass_T.getEBounds().add(g1);
@@ -510,11 +510,11 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         unsetEFeatureEClass_T.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEJavaObject());
         updateEAttributeEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEObject());
+        g1 = createEGenericType(ecorePackage.getEJavaObject());
         updateEReferenceEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEObject());
+        g1 = createEGenericType(ecorePackage.getEJavaObject());
         updateEContainmentReferenceEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEObject());
+        g1 = createEGenericType(ecorePackage.getEJavaObject());
         deleteNonRootEObjectEClass_T.getEBounds().add(g1);
 
         // Add supertypes to classes

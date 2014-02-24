@@ -75,7 +75,7 @@ public class ChangeFactoryImpl extends EFactoryImpl implements ChangeFactory {
 	 * <!-- end-user-doc -->
      * @generated
      */
-	public <T extends EObject> CreateNonRootEObject<T> createCreateNonRootEObject() {
+	public <T extends Object> CreateNonRootEObject<T> createCreateNonRootEObject() {
         CreateNonRootEObjectImpl<T> createNonRootEObject = new CreateNonRootEObjectImpl<T>();
         return createNonRootEObject;
     }
@@ -115,7 +115,7 @@ public class ChangeFactoryImpl extends EFactoryImpl implements ChangeFactory {
 	 * <!-- end-user-doc -->
      * @generated
      */
-	public <T extends EObject> UpdateEReference<T> createUpdateEReference() {
+	public <T extends Object> UpdateEReference<T> createUpdateEReference() {
         UpdateEReferenceImpl<T> updateEReference = new UpdateEReferenceImpl<T>();
         return updateEReference;
     }
@@ -125,7 +125,7 @@ public class ChangeFactoryImpl extends EFactoryImpl implements ChangeFactory {
 	 * <!-- end-user-doc -->
      * @generated
      */
-	public <T extends EObject> UpdateEContainmentReference<T> createUpdateEContainmentReference() {
+	public <T extends Object> UpdateEContainmentReference<T> createUpdateEContainmentReference() {
         UpdateEContainmentReferenceImpl<T> updateEContainmentReference = new UpdateEContainmentReferenceImpl<T>();
         return updateEContainmentReference;
     }
@@ -135,7 +135,7 @@ public class ChangeFactoryImpl extends EFactoryImpl implements ChangeFactory {
 	 * <!-- end-user-doc -->
      * @generated
      */
-	public <T extends EObject> DeleteNonRootEObject<T> createDeleteNonRootEObject() {
+	public <T extends Object> DeleteNonRootEObject<T> createDeleteNonRootEObject() {
         DeleteNonRootEObjectImpl<T> deleteNonRootEObject = new DeleteNonRootEObjectImpl<T>();
         return deleteNonRootEObject;
     }

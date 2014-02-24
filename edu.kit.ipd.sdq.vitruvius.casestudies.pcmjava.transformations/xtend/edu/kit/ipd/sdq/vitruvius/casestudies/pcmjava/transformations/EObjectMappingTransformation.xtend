@@ -4,8 +4,17 @@ import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableMap
+import org.eclipse.emf.ecore.EStructuralFeature
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableHashMap
 
 abstract class EObjectMappingTransformation {
+
+	var protected ClaimableMap<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap;
+	
+	new (){
+		featureCorrespondenceMap = new ClaimableHashMap<EStructuralFeature, EStructuralFeature>();
+	}
 
 	var protected CorrespondenceInstance correspondenceInstance
 
@@ -17,9 +26,9 @@ abstract class EObjectMappingTransformation {
 
 	def EObject updateEAttribute(EObject eObject, EAttribute affectedAttribute, Object newValue)
 
-	def EObject updateEReference(EObject eObject, EReference affectedEReference, EObject newValue)
+	def EObject updateEReference(EObject eObject, EReference affectedEReference, Object newValue)
 
-	def EObject updateEContainmentReference(EObject eObject, EReference afffectedEReference, EObject newValue)
+	def EObject updateEContainmentReference(EObject eObject, EReference afffectedEReference, Object newValue)
 	
 	def void setCorrespondenceForFeatures()
 
