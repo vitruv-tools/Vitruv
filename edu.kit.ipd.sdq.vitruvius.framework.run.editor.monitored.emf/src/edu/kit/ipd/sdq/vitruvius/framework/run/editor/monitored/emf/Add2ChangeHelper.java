@@ -7,6 +7,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangeFactory;
@@ -19,15 +20,14 @@ public class Add2ChangeHelper extends Notification2ChangeHelper {
 
     @Override
     void createChangeFromRefernceChangeNotification(final Notification notification, final List<Change> changeList) {
-        final CreateNonRootEObject<EObject> createdObject = ChangeFactory.eINSTANCE.createCreateNonRootEObject();
-        createdObject.setAffectedFeature((EReference) notification.getFeature());
-        // TODO check whether getNewValue returns an EList of all values of the reference
-        // if not then get the list and set the new value to the list
-        // else get the new object from the list and set the changed e object to it
-        createdObject.setNewValue((EObject) notification.getNewValue());
+        final CreateNonRootEObject<Object> createdObject = ChangeFactory.eINSTANCE.createCreateNonRootEObject();
         createdObject.setChangedEObject((EObject) notification.getNewValue());
-        createdObject.setAffectedEObject((EObject) notification.getNotifier());
-
+        // TODO use old value of affectedEObject as affectedEObject
+        final EObject affectedEObject = (EObject) notification.getNotifier();
+        createdObject.setAffectedEObject(affectedEObject);
+        final Object newFeatureValue = affectedEObject.eGet((EStructuralFeature) notification.getFeature());
+        createdObject.setNewValue(newFeatureValue);
+        createdObject.setAffectedFeature((EReference) notification.getFeature());
         this.addChangeToList(changeList, createdObject);
     }
 

@@ -6,6 +6,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangeFactory;
@@ -16,10 +17,11 @@ public class Set2ChangeHelper extends Notification2ChangeHelper {
 
     @Override
     void createChangeFromRefernceChangeNotification(final Notification notification, final List<Change> changeList) {
-        final UpdateEReference<EObject> setEReference = ChangeFactory.eINSTANCE.createUpdateEReference();
-        setEReference.setAffectedEObject((EObject) notification.getNotifier());
+        final UpdateEReference<Object> setEReference = ChangeFactory.eINSTANCE.createUpdateEReference();
+        final EObject affectedEObject = (EObject) notification.getNotifier();
+        setEReference.setAffectedEObject(affectedEObject);
         setEReference.setAffectedFeature((EReference) notification.getFeature());
-        setEReference.setNewValue((EObject) notification.getNewValue());
+        setEReference.setNewValue(affectedEObject.eGet((EStructuralFeature) notification.getFeature()));
         this.addChangeToList(changeList, setEReference);
     }
 

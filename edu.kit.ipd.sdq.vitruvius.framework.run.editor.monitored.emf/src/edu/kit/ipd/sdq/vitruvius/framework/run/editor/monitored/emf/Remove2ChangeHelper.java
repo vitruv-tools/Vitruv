@@ -6,6 +6,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangeFactory;
@@ -16,13 +17,15 @@ public class Remove2ChangeHelper extends Notification2ChangeHelper {
 
     @Override
     void createChangeFromRefernceChangeNotification(final Notification notification, final List<Change> changeList) {
-        final DeleteNonRootEObject<EObject> deleteNonRootEObject = ChangeFactory.eINSTANCE.createDeleteNonRootEObject();
+        final DeleteNonRootEObject<Object> deleteNonRootEObject = ChangeFactory.eINSTANCE.createDeleteNonRootEObject();
         // set deleted EObject
         deleteNonRootEObject.setChangedEObject((EObject) notification.getOldValue());
         // set affected Reference
-        deleteNonRootEObject.setAffectedEObject((EObject) notification.getNotifier());
+        final EObject affectedEObject = (EObject) notification.getNotifier();
+        deleteNonRootEObject.setAffectedEObject(affectedEObject);
         deleteNonRootEObject.setAffectedFeature((EReference) notification.getFeature());
-        deleteNonRootEObject.setNewValue((EObject) notification.getNewValue());
+        final Object newValue = affectedEObject.eGet((EStructuralFeature) notification.getFeature());
+        deleteNonRootEObject.setNewValue(newValue);
 
         this.addChangeToList(changeList, deleteNonRootEObject);
     }
