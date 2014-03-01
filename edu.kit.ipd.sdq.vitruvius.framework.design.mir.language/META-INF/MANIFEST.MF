@@ -1,0 +1,35 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: edu.kit.ipd.sdq.vitruvius.framework.design.mir.language
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.design.mir.language; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext;visibility:=reexport,
+ org.eclipse.xtext.xbase;resolution:=optional;visibility:=reexport,
+ org.eclipse.xtext.generator;resolution:=optional,
+ org.apache.commons.logging;bundle-version="1.0.4";resolution:=optional,
+ org.eclipse.emf.codegen.ecore;resolution:=optional,
+ org.eclipse.emf.mwe.utils;resolution:=optional,
+ org.eclipse.emf.mwe2.launch;resolution:=optional,
+ org.eclipse.xtext.util,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.common,
+ org.antlr.runtime,
+ org.eclipse.xtext.common.types,
+ org.eclipse.xtext.xbase.lib
+Import-Package: org.apache.log4j,
+ org.eclipse.xtext.xbase.lib
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: edu.kit.ipd.sdq.vitruvius.framework.design,
+ edu.kit.ipd.sdq.vitruvius.framework.design.services,
+ edu.kit.ipd.sdq.vitruvius.framework.design.mIR,
+ edu.kit.ipd.sdq.vitruvius.framework.design.mIR.impl,
+ edu.kit.ipd.sdq.vitruvius.framework.design.mIR.util,
+ edu.kit.ipd.sdq.vitruvius.framework.design.serializer,
+ edu.kit.ipd.sdq.vitruvius.framework.design.parser.antlr,
+ edu.kit.ipd.sdq.vitruvius.framework.design.parser.antlr.internal,
+ edu.kit.ipd.sdq.vitruvius.framework.design.validation,
+ edu.kit.ipd.sdq.vitruvius.framework.design.formatting,
+ edu.kit.ipd.sdq.vitruvius.framework.design.jvmmodel
+

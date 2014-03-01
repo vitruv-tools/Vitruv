@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/edu.kit.ipd.sdq.vitruvius.framework.design.mir.language/src-gen"
+    editDirectory="/edu.kit.ipd.sdq.vitruvius.framework.design.mir.language.edit/src"
+    editorDirectory="/edu.kit.ipd.sdq.vitruvius.framework.design.mir.language.editor/src"
+    modelPluginID="edu.kit.ipd.sdq.vitruvius.framework.design.mir.language" forceOverwrite="true"
+    modelName="MIR" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    complianceLevel="5.0" copyrightFields="false" editPluginID="edu.kit.ipd.sdq.vitruvius.framework.design.mir.language.edit"
+    editorPluginID="edu.kit.ipd.sdq.vitruvius.framework.design.mir.language.editor"
+    runtimeVersion="2.9" usedGenPackages="../../../org.eclipse.xtext.common.types/model/JavaVMTypes.genmodel#//types ../../../org.eclipse.xtext.xbase/model/Xbase.genmodel#//xbase ../../../org.eclipse.xtext.xbase/model/Xbase.genmodel#//xtype">
+  <genPackages prefix="MIR" basePackage="edu.kit.ipd.sdq.vitruvius.framework.design"
+      disposableProviderFactory="true" fileExtensions="mir" ecorePackage="MIR.ecore#/">
+    <genClasses ecoreClass="MIR.ecore#//Model">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Model/mmImports"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Model/javaImportSection"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Model/mappings"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Model/invariants"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Model/globalVariables"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Model/respones"/>
+    </genClasses>
+    <genClasses ecoreClass="MIR.ecore#//Import">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//Import/nsURI"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Import/mmNsPrefix"/>
+    </genClasses>
+    <genClasses ecoreClass="MIR.ecore#//MMNsPrefix">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//MMNsPrefix/nsPrefix"/>
+    </genClasses>
+    <genClasses ecoreClass="MIR.ecore#//Mapping"/>
+    <genClasses ecoreClass="MIR.ecore#//MappingBase">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//MappingBase/nameA"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//MappingBase/metaclassA"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//MappingBase/nameB"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//MappingBase/metaclassB"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//MappingBase/whens"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//MappingBase/withs"/>
+    </genClasses>
+    <genClasses ecoreClass="MIR.ecore#//When">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//When/xorExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="MIR.ecore#//With"/>
+    <genClasses ecoreClass="MIR.ecore#//Invariant">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//Invariant/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Invariant/parameters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Invariant/xorExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="MIR.ecore#//Parameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//Parameter/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//Parameter/metaclass"/>
+    </genClasses>
+    <genClasses ecoreClass="MIR.ecore#//GlobalVariable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//GlobalVariable/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//GlobalVariable/jvmTypeReference"/>
+    </genClasses>
+    <genClasses ecoreClass="MIR.ecore#//Response">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Response/operationRestriction"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Response/invariantRestriction"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//Response/xtendStmt"/>
+    </genClasses>
+    <genClasses ecoreClass="MIR.ecore#//OperationRestriction"/>
+    <genClasses ecoreClass="MIR.ecore#//FeatureOperationRestriction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//FeatureOperationRestriction/feature"/>
+    </genClasses>
+    <genClasses ecoreClass="MIR.ecore#//InvariantRestriction">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//InvariantRestriction/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//InvariantRestriction/parameters"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
