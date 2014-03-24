@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.edit;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: .
+Bundle-Activator: edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.provider.CorrespondenceEditPlugin$Implementation
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.provider
+Require-Bundle: org.eclipse.core.runtime,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence;visibility:=reexport,
+ org.eclipse.emf.edit;visibility:=reexport,
+ org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.emf.ecore.edit;visibility:=reexport
+Bundle-ActivationPolicy: lazy
