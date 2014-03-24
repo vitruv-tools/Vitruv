@@ -20,22 +20,22 @@ import org.eclipse.emf.ecore.EReference;
  */
 public abstract class EReferenceCorrespondenceImpl extends EFeatureCorrespondenceImpl<EReference> implements EReferenceCorrespondence {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected EReferenceCorrespondenceImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return CorrespondencePackage.Literals.EREFERENCE_CORRESPONDENCE;
-	}
+        return CorrespondencePackage.Literals.EREFERENCE_CORRESPONDENCE;
+    }
 
 } //EReferenceCorrespondenceImpl

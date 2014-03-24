@@ -32,192 +32,192 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  */
 public abstract class SameTypeCorrespondenceImpl extends CorrespondenceImpl implements SameTypeCorrespondence {
 	/**
-	 * The cached value of the '{@link #getElementA() <em>Element A</em>}' reference.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getElementA() <em>Element A</em>}' reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getElementA()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getElementA()
+     * @generated
+     * @ordered
+     */
 	protected EObject elementA;
 
 	/**
-	 * The cached value of the '{@link #getElementB() <em>Element B</em>}' reference.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getElementB() <em>Element B</em>}' reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getElementB()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getElementB()
+     * @generated
+     * @ordered
+     */
 	protected EObject elementB;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected SameTypeCorrespondenceImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return CorrespondencePackage.Literals.SAME_TYPE_CORRESPONDENCE;
-	}
+        return CorrespondencePackage.Literals.SAME_TYPE_CORRESPONDENCE;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@SuppressWarnings("unchecked")
 	public EObject getElementA() {
-		if (elementA != null && elementA.eIsProxy()) {
-			InternalEObject oldElementA = (InternalEObject)elementA;
-			elementA = eResolveProxy(oldElementA);
-			if (elementA != oldElementA) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_A, oldElementA, elementA));
-			}
-		}
-		return elementA;
-	}
+        if (elementA != null && elementA.eIsProxy()) {
+            InternalEObject oldElementA = (InternalEObject)elementA;
+            elementA = eResolveProxy(oldElementA);
+            if (elementA != oldElementA) {
+                if (eNotificationRequired())
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_A, oldElementA, elementA));
+            }
+        }
+        return elementA;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EObject basicGetElementA() {
-		return elementA;
-	}
+        return elementA;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setElementA(EObject newElementA) {
-		EObject oldElementA = elementA;
-		elementA = newElementA;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_A, oldElementA, elementA));
-	}
+        EObject oldElementA = elementA;
+        elementA = newElementA;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_A, oldElementA, elementA));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@SuppressWarnings("unchecked")
 	public EObject getElementB() {
-		if (elementB != null && elementB.eIsProxy()) {
-			InternalEObject oldElementB = (InternalEObject)elementB;
-			elementB = eResolveProxy(oldElementB);
-			if (elementB != oldElementB) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_B, oldElementB, elementB));
-			}
-		}
-		return elementB;
-	}
+        if (elementB != null && elementB.eIsProxy()) {
+            InternalEObject oldElementB = (InternalEObject)elementB;
+            elementB = eResolveProxy(oldElementB);
+            if (elementB != oldElementB) {
+                if (eNotificationRequired())
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_B, oldElementB, elementB));
+            }
+        }
+        return elementB;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EObject basicGetElementB() {
-		return elementB;
-	}
+        return elementB;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setElementB(EObject newElementB) {
-		EObject oldElementB = elementB;
-		elementB = newElementB;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_B, oldElementB, elementB));
-	}
+        EObject oldElementB = elementB;
+        elementB = newElementB;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_B, oldElementB, elementB));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_A:
-				if (resolve) return getElementA();
-				return basicGetElementA();
-			case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_B:
-				if (resolve) return getElementB();
-				return basicGetElementB();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+        switch (featureID) {
+            case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_A:
+                if (resolve) return getElementA();
+                return basicGetElementA();
+            case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_B:
+                if (resolve) return getElementB();
+                return basicGetElementB();
+        }
+        return super.eGet(featureID, resolve, coreType);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_A:
-				setElementA((EObject)newValue);
-				return;
-			case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_B:
-				setElementB((EObject)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+        switch (featureID) {
+            case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_A:
+                setElementA((EObject)newValue);
+                return;
+            case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_B:
+                setElementB((EObject)newValue);
+                return;
+        }
+        super.eSet(featureID, newValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eUnset(int featureID) {
-		switch (featureID) {
-			case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_A:
-				setElementA((EObject)null);
-				return;
-			case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_B:
-				setElementB((EObject)null);
-				return;
-		}
-		super.eUnset(featureID);
-	}
+        switch (featureID) {
+            case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_A:
+                setElementA((EObject)null);
+                return;
+            case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_B:
+                setElementB((EObject)null);
+                return;
+        }
+        super.eUnset(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_A:
-				return elementA != null;
-			case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_B:
-				return elementB != null;
-		}
-		return super.eIsSet(featureID);
-	}
+        switch (featureID) {
+            case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_A:
+                return elementA != null;
+            case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_B:
+                return elementB != null;
+        }
+        return super.eIsSet(featureID);
+    }
 
 	/**
 	 * <!-- begin-user-doc -->

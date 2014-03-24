@@ -36,93 +36,93 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  */
 public abstract class CorrespondenceImpl extends EObjectImpl implements Correspondence {
 	/**
-	 * The cached value of the '{@link #getDependentCorrespondences() <em>Dependent Correspondences</em>}' reference list.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getDependentCorrespondences() <em>Dependent Correspondences</em>}' reference list.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getDependentCorrespondences()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getDependentCorrespondences()
+     * @generated
+     * @ordered
+     */
 	protected EList<Correspondence> dependentCorrespondences;
 
 	/**
-	 * The cached value of the '{@link #getParent() <em>Parent</em>}' reference.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getParent() <em>Parent</em>}' reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getParent()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getParent()
+     * @generated
+     * @ordered
+     */
 	protected Correspondence parent;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected CorrespondenceImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return CorrespondencePackage.Literals.CORRESPONDENCE;
-	}
+        return CorrespondencePackage.Literals.CORRESPONDENCE;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EList<Correspondence> getDependentCorrespondences() {
-		if (dependentCorrespondences == null) {
-			dependentCorrespondences = new EObjectResolvingEList<Correspondence>(Correspondence.class, this, CorrespondencePackage.CORRESPONDENCE__DEPENDENT_CORRESPONDENCES);
-		}
-		return dependentCorrespondences;
-	}
+        if (dependentCorrespondences == null) {
+            dependentCorrespondences = new EObjectResolvingEList<Correspondence>(Correspondence.class, this, CorrespondencePackage.CORRESPONDENCE__DEPENDENT_CORRESPONDENCES);
+        }
+        return dependentCorrespondences;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public Correspondence getParent() {
-		if (parent != null && parent.eIsProxy()) {
-			InternalEObject oldParent = (InternalEObject)parent;
-			parent = (Correspondence)eResolveProxy(oldParent);
-			if (parent != oldParent) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CorrespondencePackage.CORRESPONDENCE__PARENT, oldParent, parent));
-			}
-		}
-		return parent;
-	}
+        if (parent != null && parent.eIsProxy()) {
+            InternalEObject oldParent = (InternalEObject)parent;
+            parent = (Correspondence)eResolveProxy(oldParent);
+            if (parent != oldParent) {
+                if (eNotificationRequired())
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, CorrespondencePackage.CORRESPONDENCE__PARENT, oldParent, parent));
+            }
+        }
+        return parent;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public Correspondence basicGetParent() {
-		return parent;
-	}
+        return parent;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setParent(Correspondence newParent) {
-		Correspondence oldParent = parent;
-		parent = newParent;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.CORRESPONDENCE__PARENT, oldParent, parent));
-	}
+        Correspondence oldParent = parent;
+        parent = newParent;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.CORRESPONDENCE__PARENT, oldParent, parent));
+    }
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -132,74 +132,74 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
 	public abstract EList<EObject> getAllInvolvedEObjects();
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case CorrespondencePackage.CORRESPONDENCE__DEPENDENT_CORRESPONDENCES:
-				return getDependentCorrespondences();
-			case CorrespondencePackage.CORRESPONDENCE__PARENT:
-				if (resolve) return getParent();
-				return basicGetParent();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+        switch (featureID) {
+            case CorrespondencePackage.CORRESPONDENCE__DEPENDENT_CORRESPONDENCES:
+                return getDependentCorrespondences();
+            case CorrespondencePackage.CORRESPONDENCE__PARENT:
+                if (resolve) return getParent();
+                return basicGetParent();
+        }
+        return super.eGet(featureID, resolve, coreType);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case CorrespondencePackage.CORRESPONDENCE__DEPENDENT_CORRESPONDENCES:
-				getDependentCorrespondences().clear();
-				getDependentCorrespondences().addAll((Collection<? extends Correspondence>)newValue);
-				return;
-			case CorrespondencePackage.CORRESPONDENCE__PARENT:
-				setParent((Correspondence)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+        switch (featureID) {
+            case CorrespondencePackage.CORRESPONDENCE__DEPENDENT_CORRESPONDENCES:
+                getDependentCorrespondences().clear();
+                getDependentCorrespondences().addAll((Collection<? extends Correspondence>)newValue);
+                return;
+            case CorrespondencePackage.CORRESPONDENCE__PARENT:
+                setParent((Correspondence)newValue);
+                return;
+        }
+        super.eSet(featureID, newValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eUnset(int featureID) {
-		switch (featureID) {
-			case CorrespondencePackage.CORRESPONDENCE__DEPENDENT_CORRESPONDENCES:
-				getDependentCorrespondences().clear();
-				return;
-			case CorrespondencePackage.CORRESPONDENCE__PARENT:
-				setParent((Correspondence)null);
-				return;
-		}
-		super.eUnset(featureID);
-	}
+        switch (featureID) {
+            case CorrespondencePackage.CORRESPONDENCE__DEPENDENT_CORRESPONDENCES:
+                getDependentCorrespondences().clear();
+                return;
+            case CorrespondencePackage.CORRESPONDENCE__PARENT:
+                setParent((Correspondence)null);
+                return;
+        }
+        super.eUnset(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case CorrespondencePackage.CORRESPONDENCE__DEPENDENT_CORRESPONDENCES:
-				return dependentCorrespondences != null && !dependentCorrespondences.isEmpty();
-			case CorrespondencePackage.CORRESPONDENCE__PARENT:
-				return parent != null;
-		}
-		return super.eIsSet(featureID);
-	}
+        switch (featureID) {
+            case CorrespondencePackage.CORRESPONDENCE__DEPENDENT_CORRESPONDENCES:
+                return dependentCorrespondences != null && !dependentCorrespondences.isEmpty();
+            case CorrespondencePackage.CORRESPONDENCE__PARENT:
+                return parent != null;
+        }
+        return super.eIsSet(featureID);
+    }
 
 } //CorrespondenceImpl

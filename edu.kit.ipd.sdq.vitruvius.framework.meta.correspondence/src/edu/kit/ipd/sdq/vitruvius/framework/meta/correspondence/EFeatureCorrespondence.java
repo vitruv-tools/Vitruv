@@ -29,62 +29,62 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  */
 public interface EFeatureCorrespondence<TFeature extends EStructuralFeature> extends SameTypeCorrespondence {
 	/**
-	 * Returns the value of the '<em><b>Type</b></em>' attribute.
-	 * The literals are from the enumeration {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceType}.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Type</b></em>' attribute.
+     * The literals are from the enumeration {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceType}.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Type</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Type</em>' attribute.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceType
-	 * @see #setType(CorrespondenceType)
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getEFeatureCorrespondence_Type()
-	 * @model required="true"
-	 * @generated
-	 */
+     * @return the value of the '<em>Type</em>' attribute.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceType
+     * @see #setType(CorrespondenceType)
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getEFeatureCorrespondence_Type()
+     * @model required="true"
+     * @generated
+     */
 	CorrespondenceType getType();
 
 	/**
-	 * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EFeatureCorrespondence#getType <em>Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EFeatureCorrespondence#getType <em>Type</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Type</em>' attribute.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceType
-	 * @see #getType()
-	 * @generated
-	 */
+     * @param value the new value of the '<em>Type</em>' attribute.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceType
+     * @see #getType()
+     * @generated
+     */
 	void setType(CorrespondenceType value);
 
 	/**
-	 * Returns the value of the '<em><b>Feature A</b></em>' reference.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Feature A</b></em>' reference.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Feature A</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Feature A</em>' reference.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getEFeatureCorrespondence_FeatureA()
-	 * @model required="true" changeable="false"
-	 * @generated
-	 */
+     * @return the value of the '<em>Feature A</em>' reference.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getEFeatureCorrespondence_FeatureA()
+     * @model required="true" changeable="false"
+     * @generated
+     */
 	TFeature getFeatureA();
 
 	/**
-	 * Returns the value of the '<em><b>Feature B</b></em>' reference.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Feature B</b></em>' reference.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Feature B</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Feature B</em>' reference.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getEFeatureCorrespondence_FeatureB()
-	 * @model required="true" changeable="false"
-	 * @generated
-	 */
+     * @return the value of the '<em>Feature B</em>' reference.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getEFeatureCorrespondence_FeatureB()
+     * @model required="true" changeable="false"
+     * @generated
+     */
 	TFeature getFeatureB();
 
 } // EFeatureCorrespondence

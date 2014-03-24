@@ -19,22 +19,22 @@ import org.eclipse.emf.ecore.EClass;
  */
 public class EAttributeCorrespondenceImpl extends EFeatureCorrespondenceImpl<EAttribute> implements EAttributeCorrespondence {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected EAttributeCorrespondenceImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return CorrespondencePackage.Literals.EATTRIBUTE_CORRESPONDENCE;
-	}
+        return CorrespondencePackage.Literals.EATTRIBUTE_CORRESPONDENCE;
+    }
 
 } //EAttributeCorrespondenceImpl
