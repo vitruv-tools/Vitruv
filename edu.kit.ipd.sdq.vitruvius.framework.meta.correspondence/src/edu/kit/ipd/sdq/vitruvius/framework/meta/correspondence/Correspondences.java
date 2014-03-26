@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Correspondences extends EObject {
 	/**
-     * Returns the value of the '<em><b>Correspondences</b></em>' reference list.
+     * Returns the value of the '<em><b>Correspondences</b></em>' containment reference list.
      * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence}.
      * <!-- begin-user-doc -->
 	 * <p>
@@ -32,9 +32,9 @@ public interface Correspondences extends EObject {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-     * @return the value of the '<em>Correspondences</em>' reference list.
+     * @return the value of the '<em>Correspondences</em>' containment reference list.
      * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getCorrespondences_Correspondences()
-     * @model
+     * @model containment="true"
      * @generated
      */
 	EList<Correspondence> getCorrespondences();

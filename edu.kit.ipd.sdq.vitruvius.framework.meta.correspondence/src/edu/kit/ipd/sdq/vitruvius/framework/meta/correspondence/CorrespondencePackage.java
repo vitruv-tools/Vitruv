@@ -67,7 +67,7 @@ public interface CorrespondencePackage extends EPackage {
 	int CORRESPONDENCES = 0;
 
 	/**
-     * The feature id for the '<em><b>Correspondences</b></em>' reference list.
+     * The feature id for the '<em><b>Correspondences</b></em>' containment reference list.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -801,10 +801,10 @@ public interface CorrespondencePackage extends EPackage {
 	EClass getCorrespondences();
 
 	/**
-     * Returns the meta object for the reference list '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondences#getCorrespondences <em>Correspondences</em>}'.
+     * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondences#getCorrespondences <em>Correspondences</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @return the meta object for the reference list '<em>Correspondences</em>'.
+     * @return the meta object for the containment reference list '<em>Correspondences</em>'.
      * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondences#getCorrespondences()
      * @see #getCorrespondences()
      * @generated
@@ -1075,7 +1075,7 @@ public interface CorrespondencePackage extends EPackage {
 		EClass CORRESPONDENCES = eINSTANCE.getCorrespondences();
 
 		/**
-         * The meta object literal for the '<em><b>Correspondences</b></em>' reference list feature.
+         * The meta object literal for the '<em><b>Correspondences</b></em>' containment reference list feature.
          * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
          * @generated
