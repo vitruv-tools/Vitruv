@@ -83,9 +83,12 @@ class OperationInterfaceMappingTransformation extends EObjectMappingTransformati
 	override updateEAttribute(EObject eObject, EAttribute affectedAttribute, Object newValue) {
 		val OperationInterface operationInterface = eObject as OperationInterface
 		val EStructuralFeature affectedInterfaceFeature = featureCorrespondenceMap.claimValueForKey(affectedAttribute)
-//		val jaMoPPInterfaceCompilationUnit = correspondenceInstance.
-//			claimCorrespondingEObjectByTypeIfUnique(operationInterface, CompilationUnit)
-		val Interface jaMoPPInterface = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(operationInterface, Interface)
+		
+		val jaMoPPInterfaceCompilationUnit = correspondenceInstance.
+			claimCorrespondingEObjectByTypeIfUnique(operationInterface, CompilationUnit)
+		jaMoPPInterfaceCompilationUnit.eSet(affectedInterfaceFeature, newValue + ".java")
+				val Interface jaMoPPInterface = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(operationInterface, Interface)
+		
 		val Map<String, RoleMapping> roleMappings = IRoleMappingRegistry.INSTANCE.
 			getRoleMappingsForUri(JavaPackage.eNS_URI);
 		jaMoPPInterface.eSet(affectedInterfaceFeature, newValue )
