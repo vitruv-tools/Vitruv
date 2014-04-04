@@ -1,7 +1,17 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
+import org.apache.log4j.Logger;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -27,6 +37,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEAttribute;
 
 public class ChangeSynchronizerTest {
+
+    private static Logger logger = Logger.getLogger(ChangeSynchronizerTest.class.getSimpleName());
 
     private ChangeSynchronizer changeSynchronizer;
     private ResourceSet resourceSet;
@@ -55,6 +67,7 @@ public class ChangeSynchronizerTest {
     @Test
     public void testAddRepository() {
         this.createAndSyncRepository();
+        this.moveCreatedFilesToPath("addRepository");
 
         // change name of root EObject
         // repo.setEntityName("TestSetName");
@@ -86,12 +99,14 @@ public class ChangeSynchronizerTest {
         repoNameChange.setNewValue(repo.getEntityName());
         System.out.println(repoNameChange.getNewValue());
         this.changeSynchronizer.synchronizeChange(repoNameChange);
+        this.moveCreatedFilesToPath("testRepositoryNameChange");
     }
 
     @Test
     public void testAddInterface() {
         final Repository repo = this.createAndSyncRepository();
         this.addInterfaceToReposiotry(repo);
+        this.moveCreatedFilesToPath("testAddInterface");
     }
 
     @Test
@@ -99,6 +114,13 @@ public class ChangeSynchronizerTest {
         final Repository repo = this.createAndSyncRepository();
         final OperationInterface opInterface = this.addInterfaceToReposiotry(repo);
         this.renameInterfaceAndSync(opInterface);
+        this.moveCreatedFilesToPath("testRenameInterface");
+    }
+
+    @Test
+    public void testAddBasicComponent() {
+        final Repository repo = this.createAndSyncRepository();
+        this.addBasicComponent(repo);
     }
 
     private void renameInterfaceAndSync(final OperationInterface opInterface) {
@@ -111,12 +133,6 @@ public class ChangeSynchronizerTest {
         final EObject eObject = this.changeSynchronizer.synchronizeChange(renameInterface);
         opInterface.setEntityName(newValue);
         this.saveEObjectIfCompilationUnit(eObject);
-    }
-
-    @Test
-    public void testAddBasicComponent() {
-        final Repository repo = this.createAndSyncRepository();
-        this.addBasicComponent(repo);
     }
 
     private BasicComponent addBasicComponent(final Repository repo) {
@@ -171,6 +187,31 @@ public class ChangeSynchronizerTest {
             resource.save(null);
         } catch (final IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Moves the created model and src folder files to a specific folder/path.
+     * 
+     * @param destinationPathAsString
+     *            destinationPath in test workspace
+     * @throws URISyntaxException
+     */
+    private void moveCreatedFilesToPath(final String destinationPathAsString) {
+        // IResource iResource = Wor
+        final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+        final IProject project = root.getProject("MockupProject");
+        final IResource member = project.findMember("src");
+        if (null == member) {
+            logger.warn("member not found moveCreatedFilesToPath will not work");
+            return;
+        }
+        final IPath destinationPath = new Path(destinationPathAsString);
+        try {
+            member.move(destinationPath, true, new NullProgressMonitor());
+        } catch (final CoreException e) {
+            logger.warn("Could not move src folder do destination folder " + destinationPathAsString + ": "
+                    + e.getMessage());
         }
     }
 }

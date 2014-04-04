@@ -11,4 +11,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations;bu
  edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence;bundle-version="1.0.0",
  de.uka.ipd.sdq.pcm;bundle-version="3.2.0",
  org.emftext.language.java;bundle-version="1.4.0",
- org.eclipse.ui.workbench
+ org.eclipse.ui.workbench,
+ org.eclipse.core.resources;bundle-version="3.8.100",
+ org.eclipse.equinox.registry,
+ org.apache.log4j;bundle-version="1.2.15"
