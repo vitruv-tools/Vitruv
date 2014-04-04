@@ -20,23 +20,23 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  */
 public abstract class PartialEFeatureCorrespondenceImpl<TValue extends Object> extends EObjectImpl implements PartialEFeatureCorrespondence<TValue> {
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	protected PartialEFeatureCorrespondenceImpl() {
-        super();
-    }
+		super();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	protected EClass eStaticClass() {
-        return CorrespondencePackage.Literals.PARTIAL_EFEATURE_CORRESPONDENCE;
-    }
+		return CorrespondencePackage.Literals.PARTIAL_EFEATURE_CORRESPONDENCE;
+	}
 
 	/**
 	 * <!-- begin-user-doc -->

@@ -20,8 +20,12 @@
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="elementA" lowerBound="1"
         eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementATUID" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="elementB" lowerBound="1"
         eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementBTUID" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EObjectCorrespondence" eSuperTypes="#//SameTypeCorrespondence">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -104,9 +108,13 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="valueA" lowerBound="1">
       <eGenericType eTypeParameter="#//PartialEReferenceCorrespondence/TValue"/>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueATUID" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="valueB" lowerBound="1">
       <eGenericType eTypeParameter="#//PartialEReferenceCorrespondence/TValue"/>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueBTUID" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eGenericSuperTypes eClassifier="#//PartialEFeatureCorrespondence">
       <eTypeArguments eTypeParameter="#//PartialEReferenceCorrespondence/TValue"/>
     </eGenericSuperTypes>

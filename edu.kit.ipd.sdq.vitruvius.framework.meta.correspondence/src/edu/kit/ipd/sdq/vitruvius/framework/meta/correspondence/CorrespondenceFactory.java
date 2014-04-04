@@ -15,74 +15,74 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface CorrespondenceFactory extends EFactory {
 	/**
-     * The singleton instance of the factory.
-     * <!-- begin-user-doc -->
+	 * The singleton instance of the factory.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	CorrespondenceFactory eINSTANCE = edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.CorrespondenceFactoryImpl.init();
 
 	/**
-     * Returns a new object of class '<em>Correspondences</em>'.
-     * <!-- begin-user-doc -->
+	 * Returns a new object of class '<em>Correspondences</em>'.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @return a new object of class '<em>Correspondences</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>Correspondences</em>'.
+	 * @generated
+	 */
 	Correspondences createCorrespondences();
 
 	/**
-     * Returns a new object of class '<em>EObject Correspondence</em>'.
-     * <!-- begin-user-doc -->
+	 * Returns a new object of class '<em>EObject Correspondence</em>'.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @return a new object of class '<em>EObject Correspondence</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>EObject Correspondence</em>'.
+	 * @generated
+	 */
 	EObjectCorrespondence createEObjectCorrespondence();
 
 	/**
-     * Returns a new object of class '<em>EAttribute Correspondence</em>'.
-     * <!-- begin-user-doc -->
+	 * Returns a new object of class '<em>EAttribute Correspondence</em>'.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @return a new object of class '<em>EAttribute Correspondence</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>EAttribute Correspondence</em>'.
+	 * @generated
+	 */
 	EAttributeCorrespondence createEAttributeCorrespondence();
 
 	/**
-     * Returns a new object of class '<em>EContainment Reference Correspondence</em>'.
-     * <!-- begin-user-doc -->
+	 * Returns a new object of class '<em>EContainment Reference Correspondence</em>'.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @return a new object of class '<em>EContainment Reference Correspondence</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>EContainment Reference Correspondence</em>'.
+	 * @generated
+	 */
 	EContainmentReferenceCorrespondence createEContainmentReferenceCorrespondence();
 
 	/**
-     * Returns a new object of class '<em>Partial EAttribute Correspondence</em>'.
-     * <!-- begin-user-doc -->
+	 * Returns a new object of class '<em>Partial EAttribute Correspondence</em>'.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @return a new object of class '<em>Partial EAttribute Correspondence</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>Partial EAttribute Correspondence</em>'.
+	 * @generated
+	 */
 	<TValue extends Object> PartialEAttributeCorrespondence<TValue> createPartialEAttributeCorrespondence();
 
 	/**
-     * Returns a new object of class '<em>Partial EReference Correspondence</em>'.
-     * <!-- begin-user-doc -->
+	 * Returns a new object of class '<em>Partial EReference Correspondence</em>'.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @return a new object of class '<em>Partial EReference Correspondence</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>Partial EReference Correspondence</em>'.
+	 * @generated
+	 */
 	<TValue extends EObject> PartialEReferenceCorrespondence<TValue> createPartialEReferenceCorrespondence();
 
 	/**
-     * Returns the package supported by this factory.
-     * <!-- begin-user-doc -->
+	 * Returns the package supported by this factory.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @return the package supported by this factory.
-     * @generated
-     */
+	 * @return the package supported by this factory.
+	 * @generated
+	 */
 	CorrespondencePackage getCorrespondencePackage();
 
 } //CorrespondenceFactory

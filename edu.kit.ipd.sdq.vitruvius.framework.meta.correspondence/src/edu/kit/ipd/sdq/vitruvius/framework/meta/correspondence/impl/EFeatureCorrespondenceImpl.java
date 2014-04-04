@@ -32,218 +32,218 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public abstract class EFeatureCorrespondenceImpl<TFeature extends EStructuralFeature> extends SameTypeCorrespondenceImpl implements EFeatureCorrespondence<TFeature> {
 	/**
-     * The default value of the '{@link #getType() <em>Type</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getType()
-     * @generated
-     * @ordered
-     */
+	 * @see #getType()
+	 * @generated
+	 * @ordered
+	 */
 	protected static final CorrespondenceType TYPE_EDEFAULT = CorrespondenceType.IDENTITY;
 	/**
-     * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getType()
-     * @generated
-     * @ordered
-     */
+	 * @see #getType()
+	 * @generated
+	 * @ordered
+	 */
 	protected CorrespondenceType type = TYPE_EDEFAULT;
 	/**
-     * The cached value of the '{@link #getFeatureA() <em>Feature A</em>}' reference.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getFeatureA() <em>Feature A</em>}' reference.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getFeatureA()
-     * @generated
-     * @ordered
-     */
+	 * @see #getFeatureA()
+	 * @generated
+	 * @ordered
+	 */
 	protected TFeature featureA;
 	/**
-     * The cached value of the '{@link #getFeatureB() <em>Feature B</em>}' reference.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getFeatureB() <em>Feature B</em>}' reference.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getFeatureB()
-     * @generated
-     * @ordered
-     */
+	 * @see #getFeatureB()
+	 * @generated
+	 * @ordered
+	 */
 	protected TFeature featureB;
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	protected EFeatureCorrespondenceImpl() {
-        super();
-    }
+		super();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	protected EClass eStaticClass() {
-        return CorrespondencePackage.Literals.EFEATURE_CORRESPONDENCE;
-    }
+		return CorrespondencePackage.Literals.EFEATURE_CORRESPONDENCE;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public CorrespondenceType getType() {
-        return type;
-    }
+		return type;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public void setType(CorrespondenceType newType) {
-        CorrespondenceType oldType = type;
-        type = newType == null ? TYPE_EDEFAULT : newType;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.EFEATURE_CORRESPONDENCE__TYPE, oldType, type));
-    }
+		CorrespondenceType oldType = type;
+		type = newType == null ? TYPE_EDEFAULT : newType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.EFEATURE_CORRESPONDENCE__TYPE, oldType, type));
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	public TFeature getFeatureA() {
-        if (featureA != null && featureA.eIsProxy()) {
-            InternalEObject oldFeatureA = (InternalEObject)featureA;
-            featureA = (TFeature)eResolveProxy(oldFeatureA);
-            if (featureA != oldFeatureA) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, CorrespondencePackage.EFEATURE_CORRESPONDENCE__FEATURE_A, oldFeatureA, featureA));
-            }
-        }
-        return featureA;
-    }
+		if (featureA != null && featureA.eIsProxy()) {
+			InternalEObject oldFeatureA = (InternalEObject)featureA;
+			featureA = (TFeature)eResolveProxy(oldFeatureA);
+			if (featureA != oldFeatureA) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CorrespondencePackage.EFEATURE_CORRESPONDENCE__FEATURE_A, oldFeatureA, featureA));
+			}
+		}
+		return featureA;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public TFeature basicGetFeatureA() {
-        return featureA;
-    }
+		return featureA;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	public TFeature getFeatureB() {
-        if (featureB != null && featureB.eIsProxy()) {
-            InternalEObject oldFeatureB = (InternalEObject)featureB;
-            featureB = (TFeature)eResolveProxy(oldFeatureB);
-            if (featureB != oldFeatureB) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, CorrespondencePackage.EFEATURE_CORRESPONDENCE__FEATURE_B, oldFeatureB, featureB));
-            }
-        }
-        return featureB;
-    }
+		if (featureB != null && featureB.eIsProxy()) {
+			InternalEObject oldFeatureB = (InternalEObject)featureB;
+			featureB = (TFeature)eResolveProxy(oldFeatureB);
+			if (featureB != oldFeatureB) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CorrespondencePackage.EFEATURE_CORRESPONDENCE__FEATURE_B, oldFeatureB, featureB));
+			}
+		}
+		return featureB;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public TFeature basicGetFeatureB() {
-        return featureB;
-    }
+		return featureB;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case CorrespondencePackage.EFEATURE_CORRESPONDENCE__TYPE:
-                return getType();
-            case CorrespondencePackage.EFEATURE_CORRESPONDENCE__FEATURE_A:
-                if (resolve) return getFeatureA();
-                return basicGetFeatureA();
-            case CorrespondencePackage.EFEATURE_CORRESPONDENCE__FEATURE_B:
-                if (resolve) return getFeatureB();
-                return basicGetFeatureB();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__TYPE:
+				return getType();
+			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__FEATURE_A:
+				if (resolve) return getFeatureA();
+				return basicGetFeatureA();
+			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__FEATURE_B:
+				if (resolve) return getFeatureB();
+				return basicGetFeatureB();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case CorrespondencePackage.EFEATURE_CORRESPONDENCE__TYPE:
-                setType((CorrespondenceType)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__TYPE:
+				setType((CorrespondenceType)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public void eUnset(int featureID) {
-        switch (featureID) {
-            case CorrespondencePackage.EFEATURE_CORRESPONDENCE__TYPE:
-                setType(TYPE_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__TYPE:
+				setType(TYPE_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case CorrespondencePackage.EFEATURE_CORRESPONDENCE__TYPE:
-                return type != TYPE_EDEFAULT;
-            case CorrespondencePackage.EFEATURE_CORRESPONDENCE__FEATURE_A:
-                return featureA != null;
-            case CorrespondencePackage.EFEATURE_CORRESPONDENCE__FEATURE_B:
-                return featureB != null;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__TYPE:
+				return type != TYPE_EDEFAULT;
+			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__FEATURE_A:
+				return featureA != null;
+			case CorrespondencePackage.EFEATURE_CORRESPONDENCE__FEATURE_B:
+				return featureB != null;
+		}
+		return super.eIsSet(featureID);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public String toString() {
-        if (eIsProxy()) return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (type: ");
-        result.append(type);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (type: ");
+		result.append(type);
+		result.append(')');
+		return result.toString();
+	}
 
 } //EFeatureCorrespondenceImpl

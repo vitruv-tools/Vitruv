@@ -21,7 +21,9 @@
     </genClasses>
     <genClasses image="false" ecoreClass="correspondence.ecore#//SameTypeCorrespondence">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//SameTypeCorrespondence/elementA"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//SameTypeCorrespondence/elementATUID"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//SameTypeCorrespondence/elementB"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//SameTypeCorrespondence/elementBTUID"/>
     </genClasses>
     <genClasses ecoreClass="correspondence.ecore#//EObjectCorrespondence"/>
     <genClasses image="false" ecoreClass="correspondence.ecore#//EFeatureCorrespondence">
@@ -52,7 +54,9 @@
     <genClasses ecoreClass="correspondence.ecore#//PartialEReferenceCorrespondence">
       <genTypeParameters ecoreTypeParameter="correspondence.ecore#//PartialEReferenceCorrespondence/TValue"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//PartialEReferenceCorrespondence/valueA"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//PartialEReferenceCorrespondence/valueATUID"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//PartialEReferenceCorrespondence/valueB"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//PartialEReferenceCorrespondence/valueBTUID"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

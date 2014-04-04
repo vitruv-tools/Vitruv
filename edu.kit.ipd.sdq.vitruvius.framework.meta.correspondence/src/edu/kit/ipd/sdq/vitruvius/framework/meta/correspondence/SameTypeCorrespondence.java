@@ -18,7 +18,9 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence#getElementA <em>Element A</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence#getElementATUID <em>Element ATUID</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence#getElementB <em>Element B</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence#getElementBTUID <em>Element BTUID</em>}</li>
  * </ul>
  * </p>
  *
@@ -28,55 +30,107 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface SameTypeCorrespondence extends Correspondence {
 	/**
-     * Returns the value of the '<em><b>Element A</b></em>' reference.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Element A</b></em>' reference.
+	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Element A</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-     * @return the value of the '<em>Element A</em>' reference.
-     * @see #setElementA(EObject)
-     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getSameTypeCorrespondence_ElementA()
-     * @model required="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Element A</em>' reference.
+	 * @see #setElementA(EObject)
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getSameTypeCorrespondence_ElementA()
+	 * @model required="true"
+	 * @generated
+	 */
 	EObject getElementA();
 
 	/**
-     * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence#getElementA <em>Element A</em>}' reference.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence#getElementA <em>Element A</em>}' reference.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Element A</em>' reference.
-     * @see #getElementA()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Element A</em>' reference.
+	 * @see #getElementA()
+	 * @generated
+	 */
 	void setElementA(EObject value);
 
 	/**
-     * Returns the value of the '<em><b>Element B</b></em>' reference.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Element ATUID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Element ATUID</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Element ATUID</em>' attribute.
+	 * @see #setElementATUID(String)
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getSameTypeCorrespondence_ElementATUID()
+	 * @model required="true"
+	 * @generated
+	 */
+	String getElementATUID();
+
+	/**
+	 * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence#getElementATUID <em>Element ATUID</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Element ATUID</em>' attribute.
+	 * @see #getElementATUID()
+	 * @generated
+	 */
+	void setElementATUID(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Element B</b></em>' reference.
+	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Element B</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-     * @return the value of the '<em>Element B</em>' reference.
-     * @see #setElementB(EObject)
-     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getSameTypeCorrespondence_ElementB()
-     * @model required="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Element B</em>' reference.
+	 * @see #setElementB(EObject)
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getSameTypeCorrespondence_ElementB()
+	 * @model required="true"
+	 * @generated
+	 */
 	EObject getElementB();
 
 	/**
-     * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence#getElementB <em>Element B</em>}' reference.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence#getElementB <em>Element B</em>}' reference.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Element B</em>' reference.
-     * @see #getElementB()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Element B</em>' reference.
+	 * @see #getElementB()
+	 * @generated
+	 */
 	void setElementB(EObject value);
+
+	/**
+	 * Returns the value of the '<em><b>Element BTUID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Element BTUID</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Element BTUID</em>' attribute.
+	 * @see #setElementBTUID(String)
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getSameTypeCorrespondence_ElementBTUID()
+	 * @model required="true"
+	 * @generated
+	 */
+	String getElementBTUID();
+
+	/**
+	 * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence#getElementBTUID <em>Element BTUID</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Element BTUID</em>' attribute.
+	 * @see #getElementBTUID()
+	 * @generated
+	 */
+	void setElementBTUID(String value);
 
 } // SameTypeCorrespondence

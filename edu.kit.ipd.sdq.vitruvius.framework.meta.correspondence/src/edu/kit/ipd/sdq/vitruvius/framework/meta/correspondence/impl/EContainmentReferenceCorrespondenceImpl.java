@@ -18,22 +18,22 @@ import org.eclipse.emf.ecore.EClass;
  */
 public class EContainmentReferenceCorrespondenceImpl extends EReferenceCorrespondenceImpl implements EContainmentReferenceCorrespondence {
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	protected EContainmentReferenceCorrespondenceImpl() {
-        super();
-    }
+		super();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	protected EClass eStaticClass() {
-        return CorrespondencePackage.Literals.ECONTAINMENT_REFERENCE_CORRESPONDENCE;
-    }
+		return CorrespondencePackage.Literals.ECONTAINMENT_REFERENCE_CORRESPONDENCE;
+	}
 
 } //EContainmentReferenceCorrespondenceImpl

@@ -19,22 +19,22 @@ import org.eclipse.emf.ecore.EObject;
  */
 public class EObjectCorrespondenceImpl extends SameTypeCorrespondenceImpl implements EObjectCorrespondence {
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	protected EObjectCorrespondenceImpl() {
-        super();
-    }
+		super();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	protected EClass eStaticClass() {
-        return CorrespondencePackage.Literals.EOBJECT_CORRESPONDENCE;
-    }
+		return CorrespondencePackage.Literals.EOBJECT_CORRESPONDENCE;
+	}
 
 } //EObjectCorrespondenceImpl
