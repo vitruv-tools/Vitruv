@@ -3,7 +3,9 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFBridge;
 
@@ -30,6 +32,18 @@ public class VURI implements Comparable<VURI> {
             INSTANCES.put(key, instance);
         }
         return instance;
+    }
+
+    public static VURI getInstance(final Resource resource) {
+        return getInstance(resource.getURI());
+    }
+
+    public static VURI getInstance(final URI uri) {
+        return getInstance(uri.toFileString());
+    }
+
+    public static VURI getInstance(final IResource iResource) {
+        return getInstance(iResource.getFullPath().toOSString());
     }
 
     @Override

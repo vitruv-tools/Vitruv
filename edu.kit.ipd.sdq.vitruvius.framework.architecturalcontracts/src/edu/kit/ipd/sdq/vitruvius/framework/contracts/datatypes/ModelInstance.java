@@ -18,7 +18,7 @@ public class ModelInstance extends AbstractURIHaving {
     }
 
     public VURI getMetamodeURI() {
-        if (this.resource.getContents().size() == 0) {
+        if (this.resource != null && this.resource.getContents().size() == 0) {
             throw new RuntimeException("Cannot get the metamodel URI for the model instance at the URI '" + getURI()
                     + "' because it has no root element!");
         }

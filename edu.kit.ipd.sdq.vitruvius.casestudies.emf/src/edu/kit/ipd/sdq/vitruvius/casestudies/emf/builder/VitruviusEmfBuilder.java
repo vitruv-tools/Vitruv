@@ -126,7 +126,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
     private void importToVitruvius(final IResource iResource) {
         if (iResource.getName().endsWith(".java") || iResource.getName().endsWith(".repository")) {
             final FileChange fileChange = new FileChange(FileChangeKind.CREATE);
-            final VURI vuri = VURI.getInstance(iResource.getFullPath().toString());
+            final VURI vuri = VURI.getInstance(iResource);
             // SyncManagerImpl.getSyncManagerInstance().synchronizeChange(fileChange, vuri);
         }
     }
@@ -144,7 +144,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
     }
 
     private void triggerSynchronisation(final IResource iResource) {
-        final VURI vuri = VURI.getInstance(EMFBridge.getEMFPlatformUriForIResource(iResource).toString());
+        final VURI vuri = VURI.getInstance(iResource);
         this.monitor.triggerSynchronisation(vuri);
 
     }

@@ -13,17 +13,19 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
     @Override
     public String getTUID(final EObject eObject) {
         if (eObject != null) {
+            VURI vuri = VURI.getInstance(eObject.eResource());
+            String uri = vuri.toString();
             EStructuralFeature idFeature = eObject.eClass().getEStructuralFeature("id");
             if (idFeature != null && idFeature instanceof EAttribute) {
                 EAttribute idAttribute = (EAttribute) idFeature;
                 EDataType eAttributeType = idAttribute.getEAttributeType();
                 EDataType eString = EcorePackage.eINSTANCE.getEString();
                 if (eString != null && eString.equals(eAttributeType)) {
-                    return (String) eObject.eGet(idFeature);
+                    return uri + EOBJECT_SEPERATOR + (String) eObject.eGet(idFeature);
                 }
                 EDataType eInt = EcorePackage.eINSTANCE.getEInt();
                 if (eInt != null && eString.equals(eAttributeType)) {
-                    return String.valueOf(eObject.eGet(idFeature));
+                    return uri + EOBJECT_SEPERATOR + String.valueOf(eObject.eGet(idFeature));
                 }
             }
         }

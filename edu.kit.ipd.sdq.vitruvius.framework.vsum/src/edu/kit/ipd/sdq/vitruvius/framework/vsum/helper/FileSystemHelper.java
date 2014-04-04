@@ -27,7 +27,7 @@ public class FileSystemHelper {
             fileName += uri.toString();
         }
         IFile correspondenceFile = correspondenceFolder.getFile(fileName);
-        return VURI.getInstance(correspondenceFile.getFullPath().toOSString());
+        return VURI.getInstance(correspondenceFile);
     }
 
     public static IProject createCorrespondenceProject() {
