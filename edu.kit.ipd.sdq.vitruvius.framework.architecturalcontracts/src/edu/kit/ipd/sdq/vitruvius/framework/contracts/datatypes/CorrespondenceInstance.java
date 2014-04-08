@@ -1,6 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
@@ -15,6 +17,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFac
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondences;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EFeatureCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 /**
@@ -29,10 +32,11 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespond
  * 
  */
 public class CorrespondenceInstance extends ModelInstance {
+
     private Mapping mapping;
     private Correspondences correspondences;
-    private ClaimableMap<EObject, Set<Correspondence>> eObject2CorrespondencesMap;
-    private ClaimableMap<EObject, Set<EObject>> eObject2CorrespondingEObjectsMap;
+    private ClaimableMap<String, Set<Correspondence>> tuid2CorrespondencesMap;
+    private ClaimableMap<String, Set<EObject>> tuid2CorrespondingEObjectsMap;
     private ClaimableMap<FeatureInstance, Set<FeatureInstance>> featureInstance2CorrespondingFIMap;
 
     public CorrespondenceInstance(final Mapping mapping, final VURI vuri, final Resource resource) {
@@ -40,10 +44,11 @@ public class CorrespondenceInstance extends ModelInstance {
         this.mapping = mapping;
         this.correspondences = CorrespondenceFactory.eINSTANCE.createCorrespondences();
         // TODO implement lazy loading for correspondences because they may get really big
-        this.eObject2CorrespondencesMap = new ClaimableHashMap<EObject, Set<Correspondence>>();
-        this.eObject2CorrespondingEObjectsMap = new ClaimableHashMap<EObject, Set<EObject>>();
+        this.tuid2CorrespondencesMap = new ClaimableHashMap<String, Set<Correspondence>>();
+        this.tuid2CorrespondingEObjectsMap = new ClaimableHashMap<String, Set<EObject>>();
         this.featureInstance2CorrespondingFIMap = new ClaimableHashMap<FeatureInstance, Set<FeatureInstance>>();
         // TODO implement loading of existing correspondences from resources (fill maps)
+        // TODO create TUIDs during loading of existing corresponding from resource
     }
 
     public Mapping getMapping() {
@@ -51,28 +56,31 @@ public class CorrespondenceInstance extends ModelInstance {
     }
 
     public boolean hasCorrespondences(final EObject eObject) {
-        return this.eObject2CorrespondencesMap.containsKey(eObject);
+        return this.tuid2CorrespondencesMap.containsKey(eObject);
     }
 
     public Set<Correspondence> claimAllCorrespondences(final EObject eObject) {
-        return this.eObject2CorrespondencesMap.claimValueForKey(eObject);
+        String tuid = getTUIDFromEObject(eObject);
+        return this.tuid2CorrespondencesMap.claimValueForKey(tuid);
     }
 
     public boolean hasCorrespondingEObjects(final EObject eObject) {
-        return this.eObject2CorrespondingEObjectsMap.containsKey(eObject);
+        return this.tuid2CorrespondingEObjectsMap.containsKey(eObject);
     }
 
     public Set<EObject> claimCorrespondingEObjects(final EObject eObject) {
-        return this.eObject2CorrespondingEObjectsMap.claimValueForKey(eObject);
+        String tuid = getTUIDFromEObject(eObject);
+        return this.tuid2CorrespondingEObjectsMap.claimValueForKey(tuid);
     }
 
     public boolean isCorrespondingEObjectUnique(final EObject eObject) {
-        return this.eObject2CorrespondingEObjectsMap.containsKey(eObject)
-                && 1 == this.eObject2CorrespondingEObjectsMap.get(eObject).size();
+        return this.tuid2CorrespondingEObjectsMap.containsKey(eObject)
+                && 1 == this.tuid2CorrespondingEObjectsMap.get(eObject).size();
     }
 
     public EObject claimCorrespondingEObjectIfUnique(final EObject eObject) {
-        Set<EObject> correspondingEObjects = this.eObject2CorrespondingEObjectsMap.claimValueForKey(eObject);
+        String tuid = getTUIDFromEObject(eObject);
+        Set<EObject> correspondingEObjects = this.tuid2CorrespondingEObjectsMap.claimValueForKey(tuid);
         if (1 != correspondingEObjects.size()) {
             throw new RuntimeException("claimCorrespondingEObjectIfUnique failed: " + correspondingEObjects.size()
                     + " corresponding objects found (expected 1)" + correspondingEObjects);
@@ -102,15 +110,16 @@ public class CorrespondenceInstance extends ModelInstance {
     }
 
     public Set<Correspondence> claimCorrespondencesForEObject(final EObject eObject) {
+        String tuid = getTUIDFromEObject(eObject);
         if (!hasCorrespondenceObjects(eObject)) {
-            new HashSet<Correspondence>();
+            this.tuid2CorrespondencesMap.put(tuid, new HashSet<Correspondence>());
         }
-        return this.eObject2CorrespondencesMap.claimValueForKey(eObject);
+        return this.tuid2CorrespondencesMap.claimValueForKey(tuid);
     }
 
     public boolean hasCorrespondenceObjects(final EObject eObject) {
-        return this.eObject2CorrespondencesMap.containsKey(eObject)
-                && this.eObject2CorrespondencesMap.get(eObject).size() > 0;
+        String tuid = getTUIDFromEObject(eObject);
+        return this.tuid2CorrespondencesMap.containsKey(tuid) && this.tuid2CorrespondencesMap.get(tuid).size() > 0;
     }
 
     public Correspondence getCorrespondeceForEObjectIfUnique(final EObject eObject) {
@@ -126,30 +135,36 @@ public class CorrespondenceInstance extends ModelInstance {
         return objectCorrespondences.iterator().next();
     }
 
-    public void addCorrespondence(final Correspondence correspondence) {
+    public void addSameTypeCorrespondence(final SameTypeCorrespondence correspondence) {
+        // add TUIDs
+        String tuidA = this.mapping.getMetamodelA().getTUID(correspondence.getElementA());
+        String tuidB = this.mapping.getMetamodelB().getTUID(correspondence.getElementB());
+        correspondence.setElementATUID(tuidA);
+        correspondence.setElementBTUID(tuidB);
         // add correspondence to model
         this.correspondences.getCorrespondences().add(correspondence);
         EList<EObject> allInvolvedEObjects = correspondence.getAllInvolvedEObjects();
+        List<String> allInvolvedTUIDs = getInvolvedTUIDs(allInvolvedEObjects);
         // add all involved eObjects to the sets for these objects in the map
-        for (EObject involvedEObject : allInvolvedEObjects) {
-            Set<Correspondence> correspondences = this.eObject2CorrespondencesMap.get(involvedEObject);
+        for (String involvedTUID : allInvolvedTUIDs) {
+            Set<Correspondence> correspondences = this.tuid2CorrespondencesMap.get(involvedTUID);
             if (correspondences == null) {
                 correspondences = new HashSet<Correspondence>();
-                this.eObject2CorrespondencesMap.put(involvedEObject, correspondences);
+                this.tuid2CorrespondencesMap.put(involvedTUID, correspondences);
             }
             if (!correspondences.contains(correspondence)) {
                 correspondences.add(correspondence);
             }
         }
         if (correspondence instanceof EObjectCorrespondence) {
-            for (EObject involvedEObject : allInvolvedEObjects) {
-                Set<EObject> correspondingEObjects = this.eObject2CorrespondingEObjectsMap.get(involvedEObject);
+            for (String involvedTUID : allInvolvedTUIDs) {
+                Set<EObject> correspondingEObjects = this.tuid2CorrespondingEObjectsMap.get(involvedTUID);
                 if (correspondingEObjects == null) {
                     correspondingEObjects = new HashSet<EObject>();
-                    this.eObject2CorrespondingEObjectsMap.put(involvedEObject, correspondingEObjects);
+                    this.tuid2CorrespondingEObjectsMap.put(involvedTUID, correspondingEObjects);
                 }
                 correspondingEObjects.addAll(allInvolvedEObjects);
-                correspondingEObjects.remove(involvedEObject);
+                correspondingEObjects.remove(involvedTUID);
             }
         } else if (correspondence instanceof EFeatureCorrespondence) {
             EFeatureCorrespondence<?> featureCorrespondence = (EFeatureCorrespondence<?>) correspondence;
@@ -173,8 +188,8 @@ public class CorrespondenceInstance extends ModelInstance {
 
     public void removeAllCorrespondingInstances(final EObject eObject) {
         // TODO: Check if it is working
-        Set<Correspondence> correspondencesForEObj = this.eObject2CorrespondencesMap.get(eObject);
-        this.eObject2CorrespondencesMap.remove(eObject);
+        Set<Correspondence> correspondencesForEObj = this.tuid2CorrespondencesMap.get(eObject);
+        this.tuid2CorrespondencesMap.remove(eObject);
         for (Correspondence correspondence : correspondencesForEObj) {
             this.correspondences.getCorrespondences().remove(correspondence);
         }
@@ -189,5 +204,21 @@ public class CorrespondenceInstance extends ModelInstance {
 
     public Set<FeatureInstance> getCorrespondingFeatureInstances(final FeatureInstance featureInstance) {
         return this.featureInstance2CorrespondingFIMap.get(featureInstance);
+    }
+
+    private List<String> getInvolvedTUIDs(final EList<EObject> allInvolvedEObjects) {
+        List<String> involvedTUIDs = new ArrayList<String>();
+        for (EObject involvedEObject : allInvolvedEObjects) {
+            String involvedTUID = getTUIDFromEObject(involvedEObject);
+            involvedTUIDs.add(involvedTUID);
+        }
+        return involvedTUIDs;
+    }
+
+    private String getTUIDFromEObject(final EObject eObject) {
+        if (this.mapping.getMetamodelA().getURI().toString().contains(eObject.eClass().getEPackage().getNsURI())) {
+            return this.mapping.getMetamodelA().getTUID(eObject);
+        }
+        return this.mapping.getMetamodelB().getTUID(eObject);
     }
 }

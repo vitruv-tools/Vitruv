@@ -25,5 +25,6 @@ Require-Bundle: org.junit,
  org.emftext.language.java,
  edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor;bundle-version="1.0.0",
  org.eclipse.core.runtime,
- org.eclipse.emf.ecore;visibility:=reexport
+ org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.core.resources;bundle-version="3.8.100"
 Bundle-ActivationPolicy: lazy

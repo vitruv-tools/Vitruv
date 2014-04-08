@@ -39,6 +39,9 @@ public class VURI implements Comparable<VURI> {
     }
 
     public static VURI getInstance(final URI uri) {
+        if (null == uri.toFileString()) {
+            return getInstance(uri.toString());
+        }
         return getInstance(uri.toFileString());
     }
 

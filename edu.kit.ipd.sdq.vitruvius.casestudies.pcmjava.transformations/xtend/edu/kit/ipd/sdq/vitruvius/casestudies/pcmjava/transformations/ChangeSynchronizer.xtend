@@ -14,8 +14,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEContainmentReferen
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEReference
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.emf.common.util.EList
 
 public class ChangeSynchronizer {
 

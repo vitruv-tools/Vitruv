@@ -60,13 +60,13 @@ class OperationInterfaceMappingTransformation extends EObjectMappingTransformati
 		eObjectCorrespondence.setElementA(operationInterface)
 		eObjectCorrespondence.setElementB(correspondingInterface)
 		eObjectCorrespondence.setParent(parrentCorrespondence)
-		correspondenceInstance.addCorrespondence(eObjectCorrespondence)
+		correspondenceInstance.addSameTypeCorrespondence(eObjectCorrespondence)
 		val EObjectCorrespondence eObjectCorrespondence4CompilationUnit = CorrespondenceFactory.eINSTANCE.
 			createEObjectCorrespondence
 		eObjectCorrespondence4CompilationUnit.setElementA(operationInterface)
 		eObjectCorrespondence4CompilationUnit.setElementB(correspondingCompilationUnit)
 		eObjectCorrespondence.setParent(parrentCorrespondence)
-		correspondenceInstance.addCorrespondence(eObjectCorrespondence4CompilationUnit)
+		correspondenceInstance.addSameTypeCorrespondence(eObjectCorrespondence4CompilationUnit)
 		return correspondingCompilationUnit
 	}
 

@@ -37,7 +37,7 @@ class RepositoryMappingTransformation extends EObjectMappingTransformation {
 		val EObjectCorrespondence eObjectCorrespondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
 		eObjectCorrespondence.setElementA(repository)
 		eObjectCorrespondence.setElementB(jaMoPPPackage)
-		correspondenceInstance.addCorrespondence(eObjectCorrespondence)
+		correspondenceInstance.addSameTypeCorrespondence(eObjectCorrespondence)
 		return jaMoPPPackage
 	}
 

@@ -14,4 +14,5 @@ Require-Bundle: org.eclipse.emf.ecore,
  org.eclipse.core.runtime,
  edu.kit.ipd.sdq.vitruvius.framework.meta.change,
  edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence,
- org.eclipse.ocl.ecore
+ org.eclipse.ocl.ecore,
+ org.apache.log4j;bundle-version="1.2.15"
