@@ -17,3 +17,4 @@ Require-Bundle: org.eclipse.core.runtime,
  edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava

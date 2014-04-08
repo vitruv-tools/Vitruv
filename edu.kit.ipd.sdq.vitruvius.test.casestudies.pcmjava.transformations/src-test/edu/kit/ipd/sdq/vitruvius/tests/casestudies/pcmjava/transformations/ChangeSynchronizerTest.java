@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.emftext.language.java.JavaFactory;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +27,7 @@ import de.uka.ipd.sdq.pcm.repository.BasicComponent;
 import de.uka.ipd.sdq.pcm.repository.OperationInterface;
 import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.JaMoPPTUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ChangeSynchronizer;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
@@ -48,10 +50,9 @@ public class ChangeSynchronizerTest {
         // init synchronizer
         this.changeSynchronizer = new ChangeSynchronizer();
         final Repository repFac = RepositoryFactory.eINSTANCE.createRepository();
-        final VURI pcmURI = VURI.getInstance("pcm");
-        final VURI jamoppURI = VURI.getInstance("jamopp");
-        final Metamodel pcm = new Metamodel(pcmURI, ".repository");
-        final Metamodel jamopp = new Metamodel(jamoppURI, ".java");
+        final Metamodel pcm = new Metamodel(VURI.getInstance(repFac.eClass().getEPackage().getNsURI()), "repository");
+        final Metamodel jamopp = new Metamodel(VURI.getInstance(JavaFactory.eINSTANCE.getJavaPackage().getNsURI()),
+                new JaMoPPTUIDCalculatorAndResolver(), "java");
         final Mapping mapping = new Mapping(pcm, jamopp);
         final VURI correspondenceInstanceURI = VURI.getInstance("/tmp/correspondence.xmi");
         this.resourceSet = new ResourceSetImpl();
@@ -166,7 +167,10 @@ public class ChangeSynchronizerTest {
     }
 
     private Repository createAndSyncRepository() {
+        final VURI repoVURI = VURI.getInstance("/tmp/repository.repository");
+        final Resource resource = this.resourceSet.createResource(repoVURI.getEMFUri());
         final Repository repo = RepositoryFactory.eINSTANCE.createRepository();
+        resource.getContents().add(repo);
         final CreateRootEObject createRootEObj = ChangeFactory.eINSTANCE.createCreateRootEObject();
         createRootEObj.setChangedEObject(repo);
         this.changeSynchronizer.synchronizeChange(createRootEObj);
