@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 
@@ -56,7 +58,8 @@ public class CorrespondenceInstance extends ModelInstance {
     }
 
     public boolean hasCorrespondences(final EObject eObject) {
-        return this.tuid2CorrespondencesMap.containsKey(eObject);
+        String tuid = getTUIDFromEObject(eObject);
+        return this.tuid2CorrespondencesMap.containsKey(tuid);
     }
 
     public Set<Correspondence> claimAllCorrespondences(final EObject eObject) {
@@ -65,7 +68,8 @@ public class CorrespondenceInstance extends ModelInstance {
     }
 
     public boolean hasCorrespondingEObjects(final EObject eObject) {
-        return this.tuid2CorrespondingEObjectsMap.containsKey(eObject);
+        String tuid = getTUIDFromEObject(eObject);
+        return this.tuid2CorrespondingEObjectsMap.containsKey(tuid);
     }
 
     public Set<EObject> claimCorrespondingEObjects(final EObject eObject) {
@@ -74,7 +78,8 @@ public class CorrespondenceInstance extends ModelInstance {
     }
 
     public boolean isCorrespondingEObjectUnique(final EObject eObject) {
-        return this.tuid2CorrespondingEObjectsMap.containsKey(eObject)
+        String tuid = getTUIDFromEObject(eObject);
+        return this.tuid2CorrespondingEObjectsMap.containsKey(tuid)
                 && 1 == this.tuid2CorrespondingEObjectsMap.get(eObject).size();
     }
 
@@ -216,7 +221,12 @@ public class CorrespondenceInstance extends ModelInstance {
     }
 
     private String getTUIDFromEObject(final EObject eObject) {
-        if (this.mapping.getMetamodelA().getURI().toString().contains(eObject.eClass().getEPackage().getNsURI())) {
+        String metamodelURI = this.mapping.getMetamodelA().getURI().toString();
+        EClass eClass = eObject.eClass();
+        EPackage ePackage = eClass.getEPackage();
+        String eObjectPackageURI = ePackage.getNsURI();
+
+        if (metamodelURI.contains(eObjectPackageURI)) {
             return this.mapping.getMetamodelA().getTUID(eObject);
         }
         return this.mapping.getMetamodelB().getTUID(eObject);
