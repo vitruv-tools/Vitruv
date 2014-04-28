@@ -42,8 +42,9 @@ public class MetaRepositoryTest {
         return metaRepository;
     }
 
-    public Metamodel testAddMetamodel(final MetaRepositoryImpl metaRepository, final VURI uri, final String fileExt) {
-        Metamodel mm = new Metamodel(uri, fileExt);
+    public Metamodel testAddMetamodel(final MetaRepositoryImpl metaRepository, final String nsURI, final VURI uri,
+            final String fileExt) {
+        Metamodel mm = new Metamodel(nsURI, uri, fileExt);
         metaRepository.addMetamodel(mm);
         return mm;
     }
@@ -57,10 +58,10 @@ public class MetaRepositoryTest {
     public Pair<VURI, VURI> testAddMapping(final MetaRepositoryImpl metaRepository, final String mm1URIString,
             final String fileExt1, final String mm2URIString, final String fileExt2) {
         VURI uri1 = VURI.getInstance(mm1URIString);
-        Metamodel mm1 = testAddMetamodel(metaRepository, uri1, fileExt1);
+        Metamodel mm1 = testAddMetamodel(metaRepository, mm1URIString, uri1, fileExt1);
 
         VURI uri2 = VURI.getInstance(mm2URIString);
-        Metamodel mm2 = testAddMetamodel(metaRepository, uri2, fileExt2);
+        Metamodel mm2 = testAddMetamodel(metaRepository, mm2URIString, uri2, fileExt2);
 
         Mapping mapping = new Mapping(mm1, mm2);
         metaRepository.addMapping(mapping);
@@ -76,10 +77,10 @@ public class MetaRepositoryTest {
         MetaRepositoryImpl metaRepository = testMetaRepository();
 
         VURI uri1 = VURI.getInstance(uri1String);
-        testAddMetamodel(metaRepository, uri1, fileExt1);
+        testAddMetamodel(metaRepository, uri1String, uri1, fileExt1);
 
         VURI uri2 = VURI.getInstance(uri2String);
-        testAddMetamodel(metaRepository, uri2, fileExt2);
+        testAddMetamodel(metaRepository, uri2String, uri2, fileExt2);
 
         testAddViewType(metaRepository, uri1, uri2, viewTypeURIString);
     }

@@ -99,7 +99,7 @@ public class SynchronisationTest {
         this.metaRepository = new MetaRepositoryImpl();
         VURI pcmMMUri = VURI.getInstance(PCM_MM_URI);
         // VURI jamoppMMUri = VURI.getInstance("");
-        Metamodel pcmMM = new Metamodel(pcmMMUri, "repository");
+        Metamodel pcmMM = new Metamodel(PCM_MM_URI, pcmMMUri, "repository");
         // Metamodel jamoppMM = new Metamodel(jamoppMMUri, "java");
         this.metaRepository.addMetamodel(pcmMM);
         // this.metaRepository.addMetamodel(jamoppMM);
