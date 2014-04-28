@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -41,6 +42,9 @@ public class CorrespondenceInstance extends ModelInstance {
     private ClaimableMap<String, Set<Correspondence>> tuid2CorrespondencesMap;
     private ClaimableMap<String, Set<EObject>> tuid2CorrespondingEObjectsMap;
     private ClaimableMap<FeatureInstance, Set<FeatureInstance>> featureInstance2CorrespondingFIMap;
+    // the following map (tuid2CorrespondenceSetsWithComprisedFeatureInstanceMap) is only used to
+    // correctly update the previous map (featureInstance2CorrespondingFIMap)
+    private ClaimableMap<String, Set<Set<FeatureInstance>>> tuid2CorrespondenceSetsWithComprisedFeatureInstanceMap;
 
     public CorrespondenceInstance(final Mapping mapping, final VURI vuri, final Resource resource) {
         super(vuri, resource);
@@ -50,6 +54,7 @@ public class CorrespondenceInstance extends ModelInstance {
         this.tuid2CorrespondencesMap = new ClaimableHashMap<String, Set<Correspondence>>();
         this.tuid2CorrespondingEObjectsMap = new ClaimableHashMap<String, Set<EObject>>();
         this.featureInstance2CorrespondingFIMap = new ClaimableHashMap<FeatureInstance, Set<FeatureInstance>>();
+        this.tuid2CorrespondenceSetsWithComprisedFeatureInstanceMap = new ClaimableHashMap<String, Set<Set<FeatureInstance>>>();
         // TODO implement loading of existing correspondences from resources (fill maps)
         // TODO create TUIDs during loading of existing corresponding from resource
     }
@@ -178,18 +183,37 @@ public class CorrespondenceInstance extends ModelInstance {
                     featureCorrespondence.getFeatureA());
             FeatureInstance featureInstanceB = FeatureInstance.getInstance(featureCorrespondence.getElementB(),
                     featureCorrespondence.getFeatureB());
-            Set<FeatureInstance> featureInstancesForA = this.featureInstance2CorrespondingFIMap.get(featureInstanceA);
-            if (featureInstancesForA == null) {
-                featureInstancesForA = new HashSet<FeatureInstance>();
+            Set<FeatureInstance> featureInstancesCorrespondingToFIA = this.featureInstance2CorrespondingFIMap
+                    .get(featureInstanceA);
+            if (featureInstancesCorrespondingToFIA == null) {
+                featureInstancesCorrespondingToFIA = new HashSet<FeatureInstance>();
+                this.featureInstance2CorrespondingFIMap.put(featureInstanceA, featureInstancesCorrespondingToFIA);
             }
-            featureInstancesForA.add(featureInstanceB);
-            Set<FeatureInstance> featureInstancesForB = this.featureInstance2CorrespondingFIMap.get(featureInstanceB);
-            if (featureInstancesForB == null) {
-                featureInstancesForB = new HashSet<FeatureInstance>();
+            featureInstancesCorrespondingToFIA.add(featureInstanceB);
+            storeFeatureInstancesForTUID(tuidB, featureInstancesCorrespondingToFIA);
+
+            Set<FeatureInstance> featureInstancesCorrespondingToFIB = this.featureInstance2CorrespondingFIMap
+                    .get(featureInstanceB);
+            if (featureInstancesCorrespondingToFIB == null) {
+                featureInstancesCorrespondingToFIB = new HashSet<FeatureInstance>();
+                this.featureInstance2CorrespondingFIMap.put(featureInstanceB, featureInstancesCorrespondingToFIB);
             }
-            featureInstancesForB.add(featureInstanceA);
+            featureInstancesCorrespondingToFIB.add(featureInstanceA);
+            // store the usage of a feature instance with a parent object that has the tuid tuidA
+            storeFeatureInstancesForTUID(tuidA, featureInstancesCorrespondingToFIB);
         }
 
+    }
+
+    private void storeFeatureInstancesForTUID(final String tuid,
+            final Set<FeatureInstance> correspondenceSetWithFIofTUID) {
+        Set<Set<FeatureInstance>> correspondeceSetsWithFIsOfTUID = this.tuid2CorrespondenceSetsWithComprisedFeatureInstanceMap
+                .get(tuid);
+        if (correspondeceSetsWithFIsOfTUID == null) {
+            correspondeceSetsWithFIsOfTUID = new HashSet<Set<FeatureInstance>>();
+            this.tuid2CorrespondenceSetsWithComprisedFeatureInstanceMap.put(tuid, correspondeceSetsWithFIsOfTUID);
+        }
+        correspondeceSetsWithFIsOfTUID.add(correspondenceSetWithFIofTUID);
     }
 
     public void removeAllCorrespondingInstances(final EObject eObject) {
@@ -221,5 +245,105 @@ public class CorrespondenceInstance extends ModelInstance {
         }
         logger.warn("EObject: '" + eObject + "' is neither an instance of MM1 nor an instance of MM2");
         return null;
+    }
+
+    public void update(final EObject oldEObject, final EObject newEObject) {
+        String oldTUID = getTUIDFromEObject(oldEObject);
+        String newTUID = getTUIDFromEObject(newEObject);
+        boolean sameTUID = oldTUID != null ? oldTUID.equals(newTUID) : newTUID == null;
+        updateTUID2CorrespondencesMap(oldEObject, newEObject, oldTUID, newTUID, sameTUID);
+
+        updateTUID2CorrespondingEObjectsMap(oldTUID, newTUID, sameTUID);
+
+        updateFeatureInstances(oldEObject, newEObject, oldTUID);
+    }
+
+    private void updateFeatureInstances(final EObject oldEObject, final EObject newEObject, String oldTUID) {
+        Collection<FeatureInstance> oldFeatureInstances = FeatureInstance.getAllInstances(oldEObject);
+
+        // WARNING: We assume that everybody that uses the FeatureInstance multiton wants to be
+        // informed of this update
+        FeatureInstance.update(oldEObject, newEObject);
+
+        for (FeatureInstance oldFeatureInstance : oldFeatureInstances) {
+            Set<FeatureInstance> correspondingFeatureInstances = this.featureInstance2CorrespondingFIMap
+                    .remove(oldFeatureInstance);
+            if (correspondingFeatureInstances != null) {
+                EStructuralFeature feature = oldFeatureInstance.getFeature();
+                FeatureInstance newFeatureInstance = FeatureInstance.getInstance(newEObject, feature);
+                this.featureInstance2CorrespondingFIMap.put(newFeatureInstance, correspondingFeatureInstances);
+            }
+        }
+
+        Set<Set<FeatureInstance>> correspondenceSetsWithFIofOldTUID = this.tuid2CorrespondenceSetsWithComprisedFeatureInstanceMap
+                .get(oldTUID);
+        for (Set<FeatureInstance> correspondenceSetWithFIofOldTUID : correspondenceSetsWithFIofOldTUID) {
+            for (FeatureInstance featureInstance : correspondenceSetWithFIofOldTUID) {
+                if (oldFeatureInstances.contains(featureInstance)) {
+                    // featureInstance belongs to oldTUID
+                    correspondenceSetWithFIofOldTUID.remove(featureInstance);
+                    EStructuralFeature feature = featureInstance.getFeature();
+                    FeatureInstance newFeatureInstance = FeatureInstance.getInstance(newEObject, feature);
+                    correspondenceSetWithFIofOldTUID.add(newFeatureInstance);
+                }
+            }
+        }
+    }
+
+    private void updateTUID2CorrespondingEObjectsMap(String oldTUID, String newTUID, boolean sameTUID) {
+        if (!sameTUID) {
+            Set<EObject> correspondingEObjects = this.tuid2CorrespondingEObjectsMap.remove(oldTUID);
+            this.tuid2CorrespondingEObjectsMap.put(newTUID, correspondingEObjects);
+        }
+    }
+
+    private void updateTUID2CorrespondencesMap(final EObject oldEObject, final EObject newEObject, String oldTUID,
+            String newTUID, boolean sameTUID) {
+        Set<Correspondence> correspondences = this.tuid2CorrespondencesMap.get(oldTUID);
+        for (Correspondence correspondence : correspondences) {
+            if (correspondence instanceof SameTypeCorrespondence) {
+                SameTypeCorrespondence stc = (SameTypeCorrespondence) correspondence;
+                if (oldTUID != null && oldTUID.equals(stc.getElementATUID())) {
+                    stc.setElementA(newEObject);
+                    if (!sameTUID) {
+                        stc.setElementATUID(newTUID);
+                    }
+
+                    // update incoming links in tuid2CorrespondingEObjectsMap
+                    String elementBTUID = stc.getElementBTUID();
+                    updateCorrespondingLinksForUpdatedEObject(oldEObject, newEObject, oldTUID, elementBTUID);
+                } else if (oldTUID != null && oldTUID.equals(stc.getElementBTUID())) {
+                    stc.setElementB(newEObject);
+                    if (!sameTUID) {
+                        stc.setElementBTUID(newTUID);
+                    }
+
+                    // update incoming links in tuid2CorrespondingEObjectsMap
+                    String elementATUID = stc.getElementATUID();
+                    updateCorrespondingLinksForUpdatedEObject(oldEObject, newEObject, oldTUID, elementATUID);
+
+                } else {
+                    throw new RuntimeException("None of the corresponding elements in '" + correspondence
+                            + "' has the TUID '" + oldTUID + "'!");
+                }
+                if (!sameTUID) {
+                    this.tuid2CorrespondencesMap.remove(oldTUID);
+                    this.tuid2CorrespondencesMap.put(newTUID, correspondences);
+                }
+            }
+            // TODO handle not same type correspondence case
+        }
+    }
+
+    private void updateCorrespondingLinksForUpdatedEObject(final EObject oldEObject, final EObject newEObject,
+            final String oldTUID, final String elementBTUID) {
+        Set<EObject> correspondingEObjects = this.tuid2CorrespondingEObjectsMap.get(elementBTUID);
+        for (EObject correspondingEObject : correspondingEObjects) {
+            String correspondingTUID = getTUIDFromEObject(correspondingEObject);
+            if (correspondingTUID != null && correspondingTUID.equals(oldTUID)) {
+                correspondingEObjects.remove(oldEObject);
+                correspondingEObjects.add(newEObject);
+            }
+        }
     }
 }
