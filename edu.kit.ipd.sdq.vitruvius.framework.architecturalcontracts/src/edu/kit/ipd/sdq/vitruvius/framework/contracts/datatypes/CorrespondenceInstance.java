@@ -1,14 +1,13 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 
@@ -34,6 +33,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespon
  * 
  */
 public class CorrespondenceInstance extends ModelInstance {
+
+    private static final Logger logger = Logger.getLogger(CorrespondenceInstance.class.getSimpleName());
 
     private Mapping mapping;
     private Correspondences correspondences;
@@ -149,7 +150,7 @@ public class CorrespondenceInstance extends ModelInstance {
         // add correspondence to model
         this.correspondences.getCorrespondences().add(correspondence);
         EList<EObject> allInvolvedEObjects = correspondence.getAllInvolvedEObjects();
-        List<String> allInvolvedTUIDs = getInvolvedTUIDs(allInvolvedEObjects);
+        List<String> allInvolvedTUIDs = Arrays.asList(tuidA, tuidB);
         // add all involved eObjects to the sets for these objects in the map
         for (String involvedTUID : allInvolvedTUIDs) {
             Set<Correspondence> correspondences = this.tuid2CorrespondencesMap.get(involvedTUID);
@@ -211,24 +212,14 @@ public class CorrespondenceInstance extends ModelInstance {
         return this.featureInstance2CorrespondingFIMap.get(featureInstance);
     }
 
-    private List<String> getInvolvedTUIDs(final EList<EObject> allInvolvedEObjects) {
-        List<String> involvedTUIDs = new ArrayList<String>();
-        for (EObject involvedEObject : allInvolvedEObjects) {
-            String involvedTUID = getTUIDFromEObject(involvedEObject);
-            involvedTUIDs.add(involvedTUID);
-        }
-        return involvedTUIDs;
-    }
-
     private String getTUIDFromEObject(final EObject eObject) {
-        String metamodelURI = this.mapping.getMetamodelA().getURI().toString();
-        EClass eClass = eObject.eClass();
-        EPackage ePackage = eClass.getEPackage();
-        String eObjectPackageURI = ePackage.getNsURI();
-
-        if (metamodelURI.contains(eObjectPackageURI)) {
+        if (this.mapping.getMetamodelA().hasMetaclassInstance(eObject)) {
             return this.mapping.getMetamodelA().getTUID(eObject);
         }
-        return this.mapping.getMetamodelB().getTUID(eObject);
+        if (this.mapping.getMetamodelB().hasMetaclassInstance(eObject)) {
+            return this.mapping.getMetamodelB().getTUID(eObject);
+        }
+        logger.warn("EObject: '" + eObject + "' is neither an instance of MM1 nor an instance of MM2");
+        return null;
     }
 }

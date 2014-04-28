@@ -50,8 +50,10 @@ public class ChangeSynchronizerTest {
         // init synchronizer
         this.changeSynchronizer = new ChangeSynchronizer();
         final Repository repFac = RepositoryFactory.eINSTANCE.createRepository();
-        final Metamodel pcm = new Metamodel(VURI.getInstance(repFac.eClass().getEPackage().getNsURI()), "repository");
-        final Metamodel jamopp = new Metamodel(VURI.getInstance(JavaFactory.eINSTANCE.getJavaPackage().getNsURI()),
+        final Metamodel pcm = new Metamodel(repFac.eClass().getEPackage().getNsURI(), VURI.getInstance(repFac.eClass()
+                .getEPackage().getNsURI()), "repository");
+        final Metamodel jamopp = new Metamodel(JavaFactory.eINSTANCE.getJavaPackage().getNsURI(),
+                VURI.getInstance(JavaFactory.eINSTANCE.getJavaPackage().getNsURI()),
                 new JaMoPPTUIDCalculatorAndResolver(), "java");
         final Mapping mapping = new Mapping(pcm, jamopp);
         final VURI correspondenceInstanceURI = VURI.getInstance("/tmp/correspondence.xmi");
