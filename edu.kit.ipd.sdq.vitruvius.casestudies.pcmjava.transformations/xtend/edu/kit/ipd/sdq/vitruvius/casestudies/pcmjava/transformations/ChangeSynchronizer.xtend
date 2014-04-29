@@ -100,10 +100,15 @@ public class ChangeSynchronizer {
 	}
 
 	def private fillTransformationMap() {
+		//PCM2JaMoPP
 		addMapping(new RepositoryMappingTransformation)
 		addMapping(new OperationInterfaceMappingTransformation)
 		addMapping(new BasicComponentMappingTransformation)
-
+		// ...
+		
+		//JaMoPP2PCM
+		//addMapping(new InterfaceMappingTransformation)
+		//...
 	//FIXME: use reflections instead of direct instantiation. The code below should do the trick, 
 	//however the dependencies of Reflections have to be added to the classpath/plugin.
 	/*val Reflections reflections = new Reflections(); 

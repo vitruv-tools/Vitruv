@@ -1,8 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.framework.synctransprovider;
 
-import org.emftext.language.java.JavaFactory;
-
-import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPTransformationExecuter;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.SyncTransformation;
@@ -14,10 +11,11 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableMap
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.Pair;
 
 /**
- * The class @SyncTransformationProviderImpl provides the interface @SyncTransformationProviding,
- * hence it enable users of the class to find the correct synchronisation Transformation for two
- * meta models. In the first iteration SyncTransformationProviderImpl directly knows the
- * syncTransformations instead of looking it up via an extension point mechanism.
+ * The class @SyncTransformationProviderImpl provides the interface
+ * @link(TransformationExecutingProviding) hence it enable users of the class to find the correct
+ * synchronisation Transformation for two meta models. In the first iteration
+ * SyncTransformationProviderImpl directly knows the syncTransformations instead of looking it up
+ * via an extension point mechanism.
  * 
  * @author Langhamm
  * 
@@ -29,10 +27,14 @@ public class SyncTransformationProviderImpl implements TransformationExecutingPr
 
     public SyncTransformationProviderImpl() {
         this.transformationExecuterMap = new ClaimableHashMap<Pair<VURI, VURI>, TransformationExecuting>();
-        VURI pcmMMVURI = VURI.getInstance(RepositoryFactory.eINSTANCE.getEPackage().getNsURI());
-        VURI jaMoPPVURI = VURI.getInstance(JavaFactory.eINSTANCE.getEPackage().getNsURI());
+        VURI pcmMMVURI = VURI.getInstance("");
+        VURI jaMoPPVURI = VURI.getInstance("");
         PCMJaMoPPTransformationExecuter pcmJaMoppTransformation = new PCMJaMoPPTransformationExecuter();
+        // JaMoPPPCMTransformationExecuter jamoppPCMTransformation = new
+        // JaMoPPPCMTransformationExecuter();
         this.transformationExecuterMap.put(new Pair<VURI, VURI>(pcmMMVURI, jaMoPPVURI), pcmJaMoppTransformation);
+        // this.transformationExecuterMap.put(new Pair<VURI, VURI>(jaMoPPVURI, pcmMMVURI),
+        // jamoppPCMTransformation);
     }
 
     @Override
