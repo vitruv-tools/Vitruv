@@ -20,7 +20,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.design.mir.manager.MIRManager;
 import edu.kit.ipd.sdq.vitruvius.framework.design.viewtype.manager.ViewTypeManagerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine.PropagationEngineImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.SyncTransformationProviderImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.TransformationExecutingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
 public class SyncManagerImpl implements ChangeSynchronizing {
@@ -80,7 +80,7 @@ public class SyncManagerImpl implements ChangeSynchronizing {
             MIRManager mirManager = new MIRManager();
             VSUMImpl vsum = new VSUMImpl(metaModelManager, viewTypeManager, mirManager, correspondenceProvider);
             // create syncTransformationProvider
-            SyncTransformationProviderImpl syncTransformationProvider = new SyncTransformationProviderImpl();
+            TransformationExecutingProvidingImpl syncTransformationProvider = new TransformationExecutingProvidingImpl();
             PropagationEngineImpl propagatingChange = new PropagationEngineImpl(syncTransformationProvider);
             // create syncManager
             syncManagerImplInstance = new SyncManagerImpl(vsum, propagatingChange, vsum);
