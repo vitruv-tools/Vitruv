@@ -4,7 +4,8 @@ Bundle-Name: Architectural Contracts of the Vitruvius Framework
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.contracts;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes,
+Export-Package: edu.kit.ipd.sdq.vitruvius.framework.contracts,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges,

@@ -9,6 +9,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.Pair;
 
 public interface TransformationExecuting {
+    /** The extension point ID. **/
+    String ID = "edu.kit.ipd.sdq.vitruvius.framework.transformationexecuting";
+
     void executeTransformation(Change change, ModelInstance sourceModel, CorrespondenceInstance correspondenceInstance);
 
     List<Pair<VURI, VURI>> getTransformableMetamodels();

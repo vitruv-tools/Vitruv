@@ -3,7 +3,7 @@
 <schema targetNamespace="edu.kit.ipd.sdq.vitruvius.framework.contracts" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="edu.kit.ipd.sdq.vitruvius.framework.contracts" id="edu.kit.ipd.sdq.vitruvius.framework.transformationexecuting" name="TransformationExecuting"/>
+         <meta.schema plugin="edu.kit.ipd.sdq.vitruvius.framework.contracts" id="edu.kit.ipd.sdq.vitruvius.framework.contracts.transformationexecuting" name="TransformationExecuting"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
