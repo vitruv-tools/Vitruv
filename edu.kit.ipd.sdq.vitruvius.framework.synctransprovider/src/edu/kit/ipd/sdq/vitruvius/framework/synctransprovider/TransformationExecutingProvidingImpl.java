@@ -1,10 +1,14 @@
 package edu.kit.ipd.sdq.vitruvius.framework.synctransprovider;
 
+import java.util.List;
+
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.SyncTransformation;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.TransformationExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.TransformationExecutingProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EclipseBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableMap;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.Pair;
@@ -28,25 +32,17 @@ public class TransformationExecutingProvidingImpl implements TransformationExecu
 
     public TransformationExecutingProvidingImpl() {
         this.transformationExecuterMap = new ClaimableHashMap<Pair<VURI, VURI>, TransformationExecuting>();
-
-        // List<CopierFactoryExt> copierFactories =
-        // GeKoBridge.getRegisteredExtensionsInDescPriority(CopierFactoryExt.ID,
-        // CopierFactoryExt.class);
-        //
-        // EObject currentCopyBaseEObject = null;
-        // for (final CopierFactoryExt copierFactory : copierFactories) {
-        // final EObject finalCurrentCopyBaseEObject = currentCopyBaseEObject;
-        // Callable<EObject> callable = new Callable<EObject>() {
-        // @Override
-        // public EObject call() {
-        // Copier copier = copierFactory.getCopier(wovenRoot, advice);
-        // return copier.copyAvElement(sourceAvElement, finalCurrentCopyBaseEObject,
-        // avEffectuation);
-        // }
-        // };
-        // currentCopyBaseEObject = EclipseBridge.callInProtectedMode(callable);
-        // }
-
+        List<TransformationExecuting> transformationExecutingList = EclipseBridge.getRegisteredExtensions(
+                TransformationExecuting.ID, VitruviusConstants.getExtensionPropertyName(),
+                TransformationExecuting.class);
+        for (final TransformationExecuting transformationExecuting : transformationExecutingList) {
+            // TODO if third party extensions are used call all extensions in protected mode
+            // EclipseBridge.callInProtectedMode(callable);
+            List<Pair<VURI, VURI>> transformableMetamodels = transformationExecuting.getTransformableMetamodels();
+            for (Pair<VURI, VURI> transformableMetamodel : transformableMetamodels) {
+                this.transformationExecuterMap.put(transformableMetamodel, transformationExecuting);
+            }
+        }
     }
 
     @Override
