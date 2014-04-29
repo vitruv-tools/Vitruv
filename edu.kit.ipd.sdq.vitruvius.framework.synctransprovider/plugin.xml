@@ -2,9 +2,9 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="edu.kit.ipd.sdq.vitruvius.framework.contracts.synctransformationproviding">
+         point="edu.kit.ipd.sdq.vitruvius.framework.contracts.TransformationExecutingProviding">
       <provides
-            provider="edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.SyncTransformationProviderImpl">
+            provider="edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.TransformationExecutingProvidingImpl">
       </provides>
    </extension>
 

@@ -12,20 +12,22 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.Pair;
 
 /**
  * The class @SyncTransformationProviderImpl provides the interface
+ * 
  * @link(TransformationExecutingProviding) hence it enable users of the class to find the correct
- * synchronisation Transformation for two meta models. In the first iteration
- * SyncTransformationProviderImpl directly knows the syncTransformations instead of looking it up
- * via an extension point mechanism.
+ *                                         synchronisation Transformation for two meta models. In
+ *                                         the first iteration SyncTransformationProviderImpl
+ *                                         directly knows the syncTransformations instead of looking
+ *                                         it up via an extension point mechanism.
  * 
  * @author Langhamm
  * 
  */
 
-public class SyncTransformationProviderImpl implements TransformationExecutingProviding {
+public class TransformationExecutingProvidingImpl implements TransformationExecutingProviding {
 
     private ClaimableMap<Pair<VURI, VURI>, TransformationExecuting> transformationExecuterMap;
 
-    public SyncTransformationProviderImpl() {
+    public TransformationExecutingProvidingImpl() {
         this.transformationExecuterMap = new ClaimableHashMap<Pair<VURI, VURI>, TransformationExecuting>();
         VURI pcmMMVURI = VURI.getInstance("");
         VURI jaMoPPVURI = VURI.getInstance("");
@@ -35,6 +37,25 @@ public class SyncTransformationProviderImpl implements TransformationExecutingPr
         this.transformationExecuterMap.put(new Pair<VURI, VURI>(pcmMMVURI, jaMoPPVURI), pcmJaMoppTransformation);
         // this.transformationExecuterMap.put(new Pair<VURI, VURI>(jaMoPPVURI, pcmMMVURI),
         // jamoppPCMTransformation);
+
+        // List<CopierFactoryExt> copierFactories =
+        // GeKoBridge.getRegisteredExtensionsInDescPriority(CopierFactoryExt.ID,
+        // CopierFactoryExt.class);
+        //
+        // EObject currentCopyBaseEObject = null;
+        // for (final CopierFactoryExt copierFactory : copierFactories) {
+        // final EObject finalCurrentCopyBaseEObject = currentCopyBaseEObject;
+        // Callable<EObject> callable = new Callable<EObject>() {
+        // @Override
+        // public EObject call() {
+        // Copier copier = copierFactory.getCopier(wovenRoot, advice);
+        // return copier.copyAvElement(sourceAvElement, finalCurrentCopyBaseEObject,
+        // avEffectuation);
+        // }
+        // };
+        // currentCopyBaseEObject = EclipseBridge.callInProtectedMode(callable);
+        // }
+
     }
 
     @Override
