@@ -7,6 +7,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
  de.uka.ipd.sdq.pcm,
  org.emftext.language.java;bundle-version="1.4.0",
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations,
  org.eclipse.core.resources
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.synctransprovider

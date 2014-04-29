@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.framework.synctransprovider;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPTransformationExecuter;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.SyncTransformation;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
@@ -29,14 +28,6 @@ public class TransformationExecutingProvidingImpl implements TransformationExecu
 
     public TransformationExecutingProvidingImpl() {
         this.transformationExecuterMap = new ClaimableHashMap<Pair<VURI, VURI>, TransformationExecuting>();
-        VURI pcmMMVURI = VURI.getInstance("");
-        VURI jaMoPPVURI = VURI.getInstance("");
-        PCMJaMoPPTransformationExecuter pcmJaMoppTransformation = new PCMJaMoPPTransformationExecuter();
-        // JaMoPPPCMTransformationExecuter jamoppPCMTransformation = new
-        // JaMoPPPCMTransformationExecuter();
-        this.transformationExecuterMap.put(new Pair<VURI, VURI>(pcmMMVURI, jaMoPPVURI), pcmJaMoppTransformation);
-        // this.transformationExecuterMap.put(new Pair<VURI, VURI>(jaMoPPVURI, pcmMMVURI),
-        // jamoppPCMTransformation);
 
         // List<CopierFactoryExt> copierFactories =
         // GeKoBridge.getRegisteredExtensionsInDescPriority(CopierFactoryExt.ID,
