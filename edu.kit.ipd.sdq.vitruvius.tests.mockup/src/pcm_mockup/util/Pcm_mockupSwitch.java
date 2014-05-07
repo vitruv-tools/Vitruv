@@ -69,12 +69,20 @@ public class Pcm_mockupSwitch<T> extends Switch<T> {
             case Pcm_mockupPackage.REPOSITORY: {
                 Repository repository = (Repository)theEObject;
                 T result = caseRepository(repository);
+                if (result == null) result = caseIdentifier(repository);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
             case Pcm_mockupPackage.INTERFACE: {
                 Interface interface_ = (Interface)theEObject;
                 T result = caseInterface(interface_);
+                if (result == null) result = caseIdentifier(interface_);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case Pcm_mockupPackage.IDENTIFIER: {
+                Identifier identifier = (Identifier)theEObject;
+                T result = caseIdentifier(identifier);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -109,6 +117,21 @@ public class Pcm_mockupSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseInterface(Interface object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Identifier</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Identifier</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseIdentifier(Identifier object) {
         return null;
     }
 

@@ -2,6 +2,7 @@
  */
 package pcm_mockup;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -66,33 +67,6 @@ public interface Pcm_mockupPackage extends EPackage {
     int REPOSITORY = 0;
 
     /**
-     * The feature id for the '<em><b>Interfaces</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPOSITORY__INTERFACES = 0;
-
-    /**
-     * The number of structural features of the '<em>Repository</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPOSITORY_FEATURE_COUNT = 1;
-
-    /**
-     * The number of operations of the '<em>Repository</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPOSITORY_OPERATION_COUNT = 0;
-
-    /**
      * The meta object id for the '{@link pcm_mockup.impl.InterfaceImpl <em>Interface</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -103,13 +77,95 @@ public interface Pcm_mockupPackage extends EPackage {
     int INTERFACE = 1;
 
     /**
+     * The meta object id for the '{@link pcm_mockup.impl.IdentifierImpl <em>Identifier</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see pcm_mockup.impl.IdentifierImpl
+     * @see pcm_mockup.impl.Pcm_mockupPackageImpl#getIdentifier()
+     * @generated
+     */
+    int IDENTIFIER = 2;
+
+    /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int IDENTIFIER__ID = 0;
+
+    /**
+     * The number of structural features of the '<em>Identifier</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int IDENTIFIER_FEATURE_COUNT = 1;
+
+    /**
+     * The number of operations of the '<em>Identifier</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int IDENTIFIER_OPERATION_COUNT = 0;
+
+    /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REPOSITORY__ID = IDENTIFIER__ID;
+
+    /**
+     * The feature id for the '<em><b>Interfaces</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REPOSITORY__INTERFACES = IDENTIFIER_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Repository</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REPOSITORY_FEATURE_COUNT = IDENTIFIER_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Repository</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REPOSITORY_OPERATION_COUNT = IDENTIFIER_OPERATION_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INTERFACE__ID = IDENTIFIER__ID;
+
+    /**
      * The number of structural features of the '<em>Interface</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int INTERFACE_FEATURE_COUNT = 0;
+    int INTERFACE_FEATURE_COUNT = IDENTIFIER_FEATURE_COUNT + 0;
 
     /**
      * The number of operations of the '<em>Interface</em>' class.
@@ -118,7 +174,7 @@ public interface Pcm_mockupPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INTERFACE_OPERATION_COUNT = 0;
+    int INTERFACE_OPERATION_COUNT = IDENTIFIER_OPERATION_COUNT + 0;
 
 
     /**
@@ -151,6 +207,27 @@ public interface Pcm_mockupPackage extends EPackage {
      * @generated
      */
     EClass getInterface();
+
+    /**
+     * Returns the meta object for class '{@link pcm_mockup.Identifier <em>Identifier</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Identifier</em>'.
+     * @see pcm_mockup.Identifier
+     * @generated
+     */
+    EClass getIdentifier();
+
+    /**
+     * Returns the meta object for the attribute '{@link pcm_mockup.Identifier#getId <em>Id</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Id</em>'.
+     * @see pcm_mockup.Identifier#getId()
+     * @see #getIdentifier()
+     * @generated
+     */
+    EAttribute getIdentifier_Id();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -202,6 +279,24 @@ public interface Pcm_mockupPackage extends EPackage {
          * @generated
          */
         EClass INTERFACE = eINSTANCE.getInterface();
+
+        /**
+         * The meta object literal for the '{@link pcm_mockup.impl.IdentifierImpl <em>Identifier</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see pcm_mockup.impl.IdentifierImpl
+         * @see pcm_mockup.impl.Pcm_mockupPackageImpl#getIdentifier()
+         * @generated
+         */
+        EClass IDENTIFIER = eINSTANCE.getIdentifier();
+
+        /**
+         * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute IDENTIFIER__ID = eINSTANCE.getIdentifier_Id();
 
     }
 

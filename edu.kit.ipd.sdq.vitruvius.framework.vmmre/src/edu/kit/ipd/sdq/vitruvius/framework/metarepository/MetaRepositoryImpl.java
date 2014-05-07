@@ -4,12 +4,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Invariants;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.MetamodelsReferring;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ProjectInput;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ViewType;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.InvariantProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MappingManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ProjectPreparing;
@@ -19,7 +21,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableCon
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableMap;
 
-public class MetaRepositoryImpl implements MetamodelManaging, ViewTypeManaging, MappingManaging, ProjectPreparing {
+public class MetaRepositoryImpl implements MetamodelManaging, ViewTypeManaging, MappingManaging, ProjectPreparing,
+        InvariantProviding {
 
     // FIXME either rename all gets in interfaces to claim... instead of get... or change
     // implementations so that they do
@@ -122,5 +125,11 @@ public class MetaRepositoryImpl implements MetamodelManaging, ViewTypeManaging, 
     public ProjectInput getProjectInput() {
         ProjectInput projectInput = new ProjectInput(this.uri2MetamodelMap, this.uri2ViewTypeMap, this.uris2MappingMap);
         return projectInput;
+    }
+
+    @Override
+    public Invariants getInvariants(final VURI mmURI) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

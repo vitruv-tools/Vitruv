@@ -100,6 +100,22 @@
     <providedRole_AssemblyConnector href="vitruvius.repository#_icBvoIHpEeODW91Frt3ceg"/>
     <requiredRole_AssemblyConnector href="vitruvius.repository#_lTGqcIHpEeODW91Frt3ceg"/>
   </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_YE8kMNX1EeOYN43yqJ5nEw" entityName="Connector VSUM &lt;VSUM> -> MetaRepository &lt;MetaRepository>" requiringAssemblyContext_AssemblyConnector="_ghlEYGDoEeOVS519yHwWgw" providingAssemblyContext_AssemblyConnector="_41NSQGDmEeOVS519yHwWgw">
+    <providedRole_AssemblyConnector href="vitruvius.repository#_Qr_ZoNX1EeOYN43yqJ5nEw"/>
+    <requiredRole_AssemblyConnector href="vitruvius.repository#_RX2aENX1EeOYN43yqJ5nEw"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_z9DTgNX1EeOYN43yqJ5nEw" entityName="Connector VSUM &lt;VSUM> -> MetaRepository &lt;MetaRepository>" requiringAssemblyContext_AssemblyConnector="_ghlEYGDoEeOVS519yHwWgw" providingAssemblyContext_AssemblyConnector="_41NSQGDmEeOVS519yHwWgw">
+    <providedRole_AssemblyConnector href="vitruvius.repository#_jK2hoNX1EeOYN43yqJ5nEw"/>
+    <requiredRole_AssemblyConnector href="vitruvius.repository#_lGg9ENX1EeOYN43yqJ5nEw"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_LSnqwNYBEeOYN43yqJ5nEw" entityName="Connector SyncManager &lt;SyncManager> -> VSUM &lt;VSUM>" requiringAssemblyContext_AssemblyConnector="_ymCIUGDoEeOVS519yHwWgw" providingAssemblyContext_AssemblyConnector="_ghlEYGDoEeOVS519yHwWgw">
+    <providedRole_AssemblyConnector href="vitruvius.repository#_VGo70NX8EeOYN43yqJ5nEw"/>
+    <requiredRole_AssemblyConnector href="vitruvius.repository#_Zj6YYNX8EeOYN43yqJ5nEw"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_Y96WENYBEeOYN43yqJ5nEw" entityName="Connector SyncManager &lt;SyncManager> -> MetaRepository &lt;MetaRepository>" requiringAssemblyContext_AssemblyConnector="_ymCIUGDoEeOVS519yHwWgw" providingAssemblyContext_AssemblyConnector="_41NSQGDmEeOVS519yHwWgw">
+    <providedRole_AssemblyConnector href="vitruvius.repository#_ri5wsNYAEeOYN43yqJ5nEw"/>
+    <requiredRole_AssemblyConnector href="vitruvius.repository#_q1WvMNX1EeOYN43yqJ5nEw"/>
+  </connectors__ComposedStructure>
   <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_gRCY4GDmEeOVS519yHwWgw" entityName="Provided_ModelExAndImporting">
     <providedInterface__OperationProvidedRole href="vitruvius.repository#_aEHkoGDbEeOVS519yHwWgw"/>
   </providedRoles_InterfaceProvidingEntity>

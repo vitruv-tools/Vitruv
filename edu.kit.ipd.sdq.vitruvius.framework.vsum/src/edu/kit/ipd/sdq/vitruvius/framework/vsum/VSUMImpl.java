@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Invariants;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
@@ -22,10 +23,11 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondencePr
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MappingManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ViewTypeManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.helper.FileSystemHelper;
 
-public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
+public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Validating {
 
     private static final Logger logger = Logger.getLogger(VSUMImpl.class.getSimpleName());
 
@@ -133,7 +135,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
     }
 
     @Override
-    public CorrespondenceInstance getCorrespondenceInstance(final VURI model1uri, final VURI model2uri) {
+    public CorrespondenceInstance getCorrespondenceInstanceOriginal(final VURI model1uri, final VURI model2uri) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -142,5 +144,30 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
     public Set<CorrespondenceInstance> getAllCorrespondenceInstances(final VURI model1uri) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public CorrespondenceInstance getCorrespondenceInstanceCopy(final VURI model1uri, final VURI model2uri) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public boolean validate(final Invariants invariants) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean validate(final ModelInstance modelInstance, final Invariants invariants) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean validate(final ModelInstance modelInstanceA, final ModelInstance modelInstanceB,
+            final Invariants invariants) {
+        // TODO Auto-generated method stub
+        return false;
     }
 }

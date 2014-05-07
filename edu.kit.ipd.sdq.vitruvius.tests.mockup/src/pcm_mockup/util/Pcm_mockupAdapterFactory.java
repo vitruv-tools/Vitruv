@@ -76,6 +76,10 @@ public class Pcm_mockupAdapterFactory extends AdapterFactoryImpl {
                 return createInterfaceAdapter();
             }
             @Override
+            public Adapter caseIdentifier(Identifier object) {
+                return createIdentifierAdapter();
+            }
+            @Override
             public Adapter defaultCase(EObject object) {
                 return createEObjectAdapter();
             }
@@ -120,6 +124,20 @@ public class Pcm_mockupAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createInterfaceAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link pcm_mockup.Identifier <em>Identifier</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see pcm_mockup.Identifier
+     * @generated
+     */
+    public Adapter createIdentifierAdapter() {
         return null;
     }
 

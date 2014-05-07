@@ -3,9 +3,6 @@
 package pcm_mockup.impl;
 
 import org.eclipse.emf.ecore.EClass;
-
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import pcm_mockup.Interface;
 import pcm_mockup.Pcm_mockupPackage;
 
@@ -18,7 +15,7 @@ import pcm_mockup.Pcm_mockupPackage;
  *
  * @generated
  */
-public class InterfaceImpl extends MinimalEObjectImpl.Container implements Interface {
+public class InterfaceImpl extends IdentifierImpl implements Interface {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

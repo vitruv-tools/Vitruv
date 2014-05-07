@@ -6,9 +6,10 @@
   </components__Repository>
   <components__Repository xsi:type="repository:CompositeComponent" id="_HVNmwGDhEeOVS519yHwWgw" entityName="MetaRepository">
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_aqJbIGDhEeOVS519yHwWgw" entityName="Provided_MetamodelManaging_MetaRepository" providedInterface__OperationProvidedRole="_XBlAsGDbEeOVS519yHwWgw"/>
-    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_bVoBEGDhEeOVS519yHwWgw" entityName="Provided_MappingManaging_MetaRepository" providedInterface__OperationProvidedRole="_VJVssGDbEeOVS519yHwWgw"/>
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_cPnkIGDhEeOVS519yHwWgw" entityName="Provided_ViewTypeManaging_MetaRepository" providedInterface__OperationProvidedRole="_u5PckGDfEeOVS519yHwWgw"/>
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_Xq8DgHx2EeOSj_S3DgbyHA" entityName="Provided_ProjectPreparing_MetaRepository" providedInterface__OperationProvidedRole="_WQiiEHx2EeOSj_S3DgbyHA"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_jK2hoNX1EeOYN43yqJ5nEw" entityName="Provided_MappingManaging_MetaRepository" providedInterface__OperationProvidedRole="_VJVssGDbEeOVS519yHwWgw"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_ri5wsNYAEeOYN43yqJ5nEw" entityName="Provided_InvariantProviding_MetaRepository" providedInterface__OperationProvidedRole="_I_7iUNX0EeOYN43yqJ5nEw"/>
   </components__Repository>
   <components__Repository xsi:type="repository:CompleteComponentType" id="_olt-IGDhEeOVS519yHwWgw" entityName="ExAndImporter">
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_soVfAGDhEeOVS519yHwWgw" entityName="Provided_ModelExAndImporting_ExAndImporter" providedInterface__OperationProvidedRole="_aEHkoGDbEeOVS519yHwWgw"/>
@@ -28,14 +29,17 @@
     <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_7EiNYGDiEeOVS519yHwWgw" entityName="Required_ModelProviding_SyncManager" requiredInterface__OperationRequiredRole="_cDEkoGDbEeOVS519yHwWgw"/>
     <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_76wqwGDiEeOVS519yHwWgw" entityName="Required_ChangePropagating_SyncManager" requiredInterface__OperationRequiredRole="_P2_CQGDbEeOVS519yHwWgw"/>
     <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_lTGqcIHpEeODW91Frt3ceg" entityName="Required_CorrespondenceProviding_SyncManager" requiredInterface__OperationRequiredRole="_XKWnEIHpEeODW91Frt3ceg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_q1WvMNX1EeOYN43yqJ5nEw" entityName="Required_InvariantManaging_SyncManager" requiredInterface__OperationRequiredRole="_I_7iUNX0EeOYN43yqJ5nEw"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_Zj6YYNX8EeOYN43yqJ5nEw" entityName="Required_Validating_SyncManager" requiredInterface__OperationRequiredRole="_Tf0H8NX8EeOYN43yqJ5nEw"/>
   </components__Repository>
   <components__Repository xsi:type="repository:CompositeComponent" id="_LFwOQGDjEeOVS519yHwWgw" entityName="VSUM">
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_WIdGsGDjEeOVS519yHwWgw" entityName="Provided_ModelProviding_VSUM" providedInterface__OperationProvidedRole="_cDEkoGDbEeOVS519yHwWgw"/>
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_icBvoIHpEeODW91Frt3ceg" entityName="Provided_CorrespondenceProviding_VSUM" providedInterface__OperationProvidedRole="_XKWnEIHpEeODW91Frt3ceg"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_VGo70NX8EeOYN43yqJ5nEw" entityName="Provided_Validating_VSUM" providedInterface__OperationProvidedRole="_Tf0H8NX8EeOYN43yqJ5nEw"/>
     <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_SJBcsGDjEeOVS519yHwWgw" entityName="Required_MetamodelManaging_VSUM" requiredInterface__OperationRequiredRole="_XBlAsGDbEeOVS519yHwWgw"/>
-    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_Sja5sGDjEeOVS519yHwWgw" entityName="Required_MappingManaging_VSUM" requiredInterface__OperationRequiredRole="_VJVssGDbEeOVS519yHwWgw"/>
     <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_S9lGIGDjEeOVS519yHwWgw" entityName="Required_CorrespondenceMMProviding_VSUM" requiredInterface__OperationRequiredRole="_SnSmsGDbEeOVS519yHwWgw"/>
     <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_UY-tIGDjEeOVS519yHwWgw" entityName="Required_ViewTypeManaging_VSUM" requiredInterface__OperationRequiredRole="_u5PckGDfEeOVS519yHwWgw"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_lGg9ENX1EeOYN43yqJ5nEw" entityName="Required_MappingManaging_VSUM" requiredInterface__OperationRequiredRole="_VJVssGDbEeOVS519yHwWgw"/>
   </components__Repository>
   <components__Repository xsi:type="repository:CompositeComponent" id="_fEEhYGDkEeOVS519yHwWgw" entityName="MIRGenerator">
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_OkTssGM8EeOuRbxDTXSxUQ" entityName="Provided_SyncTransformationGenerating_MIRGenerator" providedInterface__OperationProvidedRole="_FUqtUGM8EeOuRbxDTXSxUQ"/>
@@ -104,10 +108,7 @@
       <parameters__OperationSignature dataType__Parameter="_IeAiPWDeEeOVS519yHwWgw" parameterName="uri2"/>
     </signatures__OperationInterface>
   </interfaces__Repository>
-  <interfaces__Repository xsi:type="repository:OperationInterface" id="_VJVssGDbEeOVS519yHwWgw" entityName="MappingManaging">
-    <signatures__OperationInterface id="_xj0T0GDcEeOVS519yHwWgw" entityName="addMapping">
-      <parameters__OperationSignature dataType__Parameter="_CoRIzGDcEeOVS519yHwWgw" parameterName="mapping"/>
-    </signatures__OperationInterface>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_VJVssGDbEeOVS519yHwWgw" entityName="MappingProviding">
     <signatures__OperationInterface id="_HlQxwGDdEeOVS519yHwWgw" entityName="getMapping" returnType__OperationSignature="_CoRIzGDcEeOVS519yHwWgw">
       <parameters__OperationSignature dataType__Parameter="_IeAiPWDeEeOVS519yHwWgw" parameterName="uri1"/>
       <parameters__OperationSignature dataType__Parameter="_IeAiPWDeEeOVS519yHwWgw" parameterName="uri2"/>
@@ -167,7 +168,17 @@
       <parameters__OperationSignature dataType__Parameter="_IeAiPWDeEeOVS519yHwWgw" parameterName="uri"/>
     </signatures__OperationInterface>
   </interfaces__Repository>
-  <interfaces__Repository xsi:type="repository:OperationInterface" id="_tS0v0GM5EeOuRbxDTXSxUQ" entityName="MIRManaging" parentInterfaces__Interface="_VJVssGDbEeOVS519yHwWgw"/>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_tS0v0GM5EeOuRbxDTXSxUQ" entityName="MIRManaging" parentInterfaces__Interface="_VJVssGDbEeOVS519yHwWgw _I_7iUNX0EeOYN43yqJ5nEw _PZRqANX0EeOYN43yqJ5nEw">
+    <signatures__OperationInterface id="_Otvu0NX2EeOYN43yqJ5nEw" entityName="addMapping">
+      <parameters__OperationSignature dataType__Parameter="_CoRIzGDcEeOVS519yHwWgw" parameterName="mapping"/>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_RUcEQNX2EeOYN43yqJ5nEw" entityName="addInvariants">
+      <parameters__OperationSignature dataType__Parameter="_DEArndX2EeOYN43yqJ5nEw" parameterName="invariants"/>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_UeiowNX2EeOYN43yqJ5nEw" entityName="addResponses">
+      <parameters__OperationSignature dataType__Parameter="_Fma9_dX2EeOYN43yqJ5nEw" parameterName="responses"/>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_FUqtUGM8EeOuRbxDTXSxUQ" entityName="SyncTransformationGenerating"/>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_SkRrsHx2EeOSj_S3DgbyHA" entityName="ProjectGenerating">
     <signatures__OperationInterface id="_gplZgHx2EeOSj_S3DgbyHA" entityName="generateProject" returnType__OperationSignature="_dwu9HXx2EeOSj_S3DgbyHA">
@@ -177,12 +188,25 @@
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_WQiiEHx2EeOSj_S3DgbyHA" entityName="ProjectPreparing">
     <signatures__OperationInterface id="_pvU2AHx2EeOSj_S3DgbyHA" entityName="getProjectInput" returnType__OperationSignature="_Z-aiAXx2EeOSj_S3DgbyHA"/>
   </interfaces__Repository>
-  <interfaces__Repository xsi:type="repository:OperationInterface" id="_XKWnEIHpEeODW91Frt3ceg" entityName="CorrespondenceProviding">
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_XKWnEIHpEeODW91Frt3ceg" entityName="CorrespondenceProviding" parentInterfaces__Interface="_s6gBUNX2EeOYN43yqJ5nEw">
     <signatures__OperationInterface id="_YVzGgIHpEeODW91Frt3ceg" entityName="getCorrespondenceInstance" returnType__OperationSignature="_bWVfUoHpEeODW91Frt3ceg">
       <parameters__OperationSignature dataType__Parameter="_IeAiPWDeEeOVS519yHwWgw" parameterName="model1URI"/>
       <parameters__OperationSignature dataType__Parameter="_IeAiPWDeEeOVS519yHwWgw" parameterName="model2URI"/>
     </signatures__OperationInterface>
   </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_I_7iUNX0EeOYN43yqJ5nEw" entityName="InvariantProviding">
+    <signatures__OperationInterface id="_9xkhkNX1EeOYN43yqJ5nEw" entityName="getInvariants" returnType__OperationSignature="_DEArndX2EeOYN43yqJ5nEw"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_PZRqANX0EeOYN43yqJ5nEw" entityName="ResponseProviding">
+    <signatures__OperationInterface id="_K8C-0NX2EeOYN43yqJ5nEw" entityName="getResponses" returnType__OperationSignature="_Fma9_dX2EeOYN43yqJ5nEw"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_s6gBUNX2EeOYN43yqJ5nEw" entityName="CorrespondenceCopyProviding">
+    <signatures__OperationInterface id="_vWgJsNX2EeOYN43yqJ5nEw" entityName="getCorrespondenceInstanceCopy" returnType__OperationSignature="_AlHlTWDcEeOVS519yHwWgw">
+      <parameters__OperationSignature dataType__Parameter="_IeAiPWDeEeOVS519yHwWgw" parameterName="model1"/>
+      <parameters__OperationSignature dataType__Parameter="_IeAiPWDeEeOVS519yHwWgw" parameterName="model2"/>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_Tf0H8NX8EeOYN43yqJ5nEw" entityName="Validating"/>
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_6Hs17WDbEeOVS519yHwWgw" entityName="Change"/>
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_-xS3PWDbEeOVS519yHwWgw" entityName="CorrespondenceMM"/>
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_AlHlTWDcEeOVS519yHwWgw" entityName="CorrespondenceModelInstance"/>
@@ -196,4 +220,6 @@
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_Z-aiAXx2EeOSj_S3DgbyHA" entityName="ProjectInput"/>
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_dwu9HXx2EeOSj_S3DgbyHA" entityName="ProjectOutput"/>
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_bWVfUoHpEeODW91Frt3ceg" entityName="CorrespondenceInstance"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_DEArndX2EeOYN43yqJ5nEw" entityName="Invariants"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_Fma9_dX2EeOYN43yqJ5nEw" entityName="Responses"/>
 </repository:Repository>

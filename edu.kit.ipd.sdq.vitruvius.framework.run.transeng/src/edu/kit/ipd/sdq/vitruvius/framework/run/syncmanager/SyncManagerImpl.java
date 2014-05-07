@@ -13,7 +13,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePropagating;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.InvariantProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
 import edu.kit.ipd.sdq.vitruvius.framework.correspmmprovider.CorrespondenceMMProviderImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.design.metamodelmanager.MetamodelManagerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.design.mir.manager.MIRManager;
@@ -30,6 +32,8 @@ public class SyncManagerImpl implements ChangeSynchronizing {
     private final ModelProviding modelProviding;
     private final ChangePropagating changePropagating;
     private final CorrespondenceProviding correspondenceProviding;
+    private final InvariantProviding invariantProviding;
+    private final Validating validating;
 
     private Map<Class<?>, ConcreteChangeSynchronizer> changeSynchonizerMap;
 
@@ -37,7 +41,8 @@ public class SyncManagerImpl implements ChangeSynchronizing {
     private static MetaRepositoryImpl metaRepositoryImpl;
 
     private SyncManagerImpl(final ModelProviding modelProviding, final ChangePropagating changePropagating,
-            final CorrespondenceProviding correspondenceProviding) {
+            final CorrespondenceProviding correspondenceProviding, final InvariantProviding invariantProviding,
+            final Validating validating) {
         this.modelProviding = modelProviding;
         this.changePropagating = changePropagating;
         this.correspondenceProviding = correspondenceProviding;
@@ -45,6 +50,8 @@ public class SyncManagerImpl implements ChangeSynchronizing {
         this.changeSynchonizerMap.put(EMFModelChange.class, new EMFModelSynchronizer(modelProviding, this,
                 this.changePropagating, this.correspondenceProviding));
         this.changeSynchonizerMap.put(FileChange.class, new FileChangeSynchronizer(modelProviding, this));
+        this.invariantProviding = invariantProviding;
+        this.validating = validating;
     }
 
     @Override

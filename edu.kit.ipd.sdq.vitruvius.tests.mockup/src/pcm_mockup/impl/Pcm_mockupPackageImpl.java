@@ -2,12 +2,14 @@
  */
 package pcm_mockup.impl;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
+import pcm_mockup.Identifier;
 import pcm_mockup.Interface;
 import pcm_mockup.Pcm_mockupFactory;
 import pcm_mockup.Pcm_mockupPackage;
@@ -33,6 +35,13 @@ public class Pcm_mockupPackageImpl extends EPackageImpl implements Pcm_mockupPac
      * @generated
      */
     private EClass interfaceEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass identifierEClass = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -127,6 +136,24 @@ public class Pcm_mockupPackageImpl extends EPackageImpl implements Pcm_mockupPac
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getIdentifier() {
+        return identifierEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getIdentifier_Id() {
+        return (EAttribute)identifierEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public Pcm_mockupFactory getPcm_mockupFactory() {
         return (Pcm_mockupFactory)getEFactoryInstance();
     }
@@ -154,6 +181,9 @@ public class Pcm_mockupPackageImpl extends EPackageImpl implements Pcm_mockupPac
         createEReference(repositoryEClass, REPOSITORY__INTERFACES);
 
         interfaceEClass = createEClass(INTERFACE);
+
+        identifierEClass = createEClass(IDENTIFIER);
+        createEAttribute(identifierEClass, IDENTIFIER__ID);
     }
 
     /**
@@ -184,12 +214,17 @@ public class Pcm_mockupPackageImpl extends EPackageImpl implements Pcm_mockupPac
         // Set bounds for type parameters
 
         // Add supertypes to classes
+        repositoryEClass.getESuperTypes().add(this.getIdentifier());
+        interfaceEClass.getESuperTypes().add(this.getIdentifier());
 
         // Initialize classes, features, and operations; add parameters
         initEClass(repositoryEClass, Repository.class, "Repository", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getRepository_Interfaces(), this.getInterface(), null, "interfaces", null, 0, -1, Repository.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(interfaceEClass, Interface.class, "Interface", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        initEClass(identifierEClass, Identifier.class, "Identifier", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getIdentifier_Id(), ecorePackage.getEString(), "id", null, 1, 1, Identifier.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
         // Create resource
         createResource(eNS_URI);

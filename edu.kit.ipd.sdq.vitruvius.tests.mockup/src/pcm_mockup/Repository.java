@@ -4,8 +4,6 @@ package pcm_mockup;
 
 import org.eclipse.emf.common.util.EList;
 
-import org.eclipse.emf.ecore.EObject;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Repository</b></em>'.
@@ -22,7 +20,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface Repository extends EObject {
+public interface Repository extends Identifier {
     /**
      * Returns the value of the '<em><b>Interfaces</b></em>' containment reference list.
      * The list contents are of type {@link pcm_mockup.Interface}.
