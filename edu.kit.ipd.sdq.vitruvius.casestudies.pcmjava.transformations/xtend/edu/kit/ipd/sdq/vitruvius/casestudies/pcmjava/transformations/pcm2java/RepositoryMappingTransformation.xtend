@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java
 
 import de.uka.ipd.sdq.pcm.repository.Repository
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.Package
 
-class RepositoryMappingTransformation extends EObjectMappingTransformation {
+class RepositoryMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.EObjectMappingTransformation {
 
 	val private static final Logger logger = Logger.getLogger(RepositoryMappingTransformation.name)
 
@@ -22,9 +22,9 @@ class RepositoryMappingTransformation extends EObjectMappingTransformation {
 	}
 
 	override void setCorrespondenceForFeatures() {
-		var repositoryNameAttribute = RepositoryFactory.eINSTANCE.createRepository.eClass.EAllAttributes.filter[attribute|
+		var repositoryNameAttribute = RepositoryFactory.eINSTANCE.createRepository.eClass.getEAllAttributes.filter[attribute|
 			attribute.name.equalsIgnoreCase("entityName")].iterator.next
-		var packageNameAttribute = ContainersFactory.eINSTANCE.createPackage.eClass.EAllAttributes.filter[attribute|
+		var packageNameAttribute = ContainersFactory.eINSTANCE.createPackage.eClass.getEAllAttributes.filter[attribute|
 			attribute.name.equalsIgnoreCase("name")].iterator.next
 		featureCorrespondenceMap.put(repositoryNameAttribute, packageNameAttribute)
 	}

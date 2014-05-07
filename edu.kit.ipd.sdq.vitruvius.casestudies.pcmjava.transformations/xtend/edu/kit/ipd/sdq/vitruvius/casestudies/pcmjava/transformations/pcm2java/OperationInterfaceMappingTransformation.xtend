@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java
 
 import de.uka.ipd.sdq.pcm.repository.OperationInterface
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
@@ -23,16 +23,16 @@ import org.emftext.refactoring.interpreter.RefactorerFactory
 import org.emftext.refactoring.registry.rolemapping.IRoleMappingRegistry
 import org.modelrefactoring.jamopp.test.valueprovider.TestValueProviderFactory
 
-class OperationInterfaceMappingTransformation extends EObjectMappingTransformation {
+class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.EObjectMappingTransformation {
 
 	override Class<?> getClassOfMappedEObject() {
 		return typeof(OperationInterface)
 	}
 
 	override void setCorrespondenceForFeatures() {
-		var opInterfaceNameAttribute = RepositoryFactory.eINSTANCE.createOperationInterface.eClass.EAllAttributes.filter[attribute|
+		var opInterfaceNameAttribute = RepositoryFactory.eINSTANCE.createOperationInterface.eClass.getEAllAttributes.filter[attribute|
 			attribute.name.equalsIgnoreCase("entityName")].iterator.next
-		var interfaceNameAttribute = ClassifiersFactory.eINSTANCE.createInterface.eClass.EAllAttributes.filter[attribute|
+		var interfaceNameAttribute = ClassifiersFactory.eINSTANCE.createInterface.eClass.getEAllAttributes.filter[attribute|
 			attribute.name.equalsIgnoreCase("name")].iterator.next
 		featureCorrespondenceMap.put(opInterfaceNameAttribute, interfaceNameAttribute)
 	}

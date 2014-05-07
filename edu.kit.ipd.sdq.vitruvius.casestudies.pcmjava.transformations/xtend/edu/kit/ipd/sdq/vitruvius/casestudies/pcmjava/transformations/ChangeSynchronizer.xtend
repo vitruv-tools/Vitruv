@@ -1,5 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations
 
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.BasicComponentMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.OperationInterfaceMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.RepositoryMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableHashMap
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableMap
@@ -14,6 +18,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEContainmentReferen
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEReference
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.InterfaceMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.PackageMappingTransformation
 
 public class ChangeSynchronizer {
 
@@ -107,7 +113,9 @@ public class ChangeSynchronizer {
 		// ...
 		
 		//JaMoPP2PCM
-		//addMapping(new InterfaceMappingTransformation)
+		addMapping(new InterfaceMappingTransformation)
+		addMapping(new ClassMappingTransformation)
+		addMapping(new PackageMappingTransformation)
 		//...
 	//FIXME: use reflections instead of direct instantiation. The code below should do the trick, 
 	//however the dependencies of Reflections have to be added to the classpath/plugin.

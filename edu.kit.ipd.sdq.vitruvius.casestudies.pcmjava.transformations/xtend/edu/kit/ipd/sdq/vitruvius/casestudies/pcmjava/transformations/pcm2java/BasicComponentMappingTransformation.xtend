@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java
 
 import de.uka.ipd.sdq.pcm.repository.BasicComponent
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
@@ -15,7 +15,7 @@ import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.Package
 import org.emftext.language.java.modifiers.ModifiersFactory
 
-class BasicComponentMappingTransformation extends EObjectMappingTransformation {
+class BasicComponentMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.EObjectMappingTransformation {
 
 	override getClassOfMappedEObject() {
 		return BasicComponent
@@ -84,11 +84,11 @@ class BasicComponentMappingTransformation extends EObjectMappingTransformation {
 	}
 
 	override setCorrespondenceForFeatures() {
-		var basicComponentNameAttribute = RepositoryFactory.eINSTANCE.createBasicComponent.eClass.EAllAttributes.filter[attribute|
+		var basicComponentNameAttribute = RepositoryFactory.eINSTANCE.createBasicComponent.eClass.getEAllAttributes.filter[attribute|
 			attribute.name.equalsIgnoreCase("entityName")].iterator.next
-		var classNameAttribute = ClassifiersFactory.eINSTANCE.createClass.eClass.EAllAttributes.filter[attribute|
+		var classNameAttribute = ClassifiersFactory.eINSTANCE.createClass.eClass.getEAllAttributes.filter[attribute|
 			attribute.name.equalsIgnoreCase("name")].iterator.next
-		var packageNameAttribute = ContainersFactory.eINSTANCE.createPackage.eClass.EAllAttributes.filter[attribute|
+		var packageNameAttribute = ContainersFactory.eINSTANCE.createPackage.eClass.getEAllAttributes.filter[attribute|
 			attribute.name.equalsIgnoreCase("name")].iterator.next
 		featureCorrespondenceMap.put(basicComponentNameAttribute, classNameAttribute)
 		featureCorrespondenceMap.put(basicComponentNameAttribute, packageNameAttribute)
