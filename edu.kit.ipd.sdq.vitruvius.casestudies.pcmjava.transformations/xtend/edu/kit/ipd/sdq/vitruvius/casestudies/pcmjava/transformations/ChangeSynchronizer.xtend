@@ -118,7 +118,7 @@ public class ChangeSynchronizer {
 		addMapping(new PackageMappingTransformation)
 		//...
 	//FIXME: use reflections instead of direct instantiation. The code below should do the trick, 
-	//however the dependencies of Reflections have to be added to the classpath/plugin.
+	//however the dependencies of Reflections have to be added to the classpath/plugin, which is somehow not working.
 	/*val Reflections reflections = new Reflections(); 
 		val Set<String> transformationClasses = reflections.store.getSubTypesOf(typeof(EObjectMappingTransformation).name)
 		for(String transClassName : transformationClasses){

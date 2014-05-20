@@ -2,22 +2,28 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
 import de.uka.ipd.sdq.pcm.repository.OperationInterface
 import de.uka.ipd.sdq.pcm.repository.Repository
+import de.uka.ipd.sdq.pcm.repository.RepositoryComponent
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
+import de.uka.ipd.sdq.pcm.system.System
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.EObjectMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMUtils
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
-import java.util.List
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.classifiers.ClassifiersFactory
 import org.emftext.language.java.classifiers.Interface
-import org.emftext.language.java.containers.CompilationUnit
 import org.emftext.language.java.containers.Package
-import org.eclipse.emf.ecore.EStructuralFeature
+import org.emftext.language.java.containers.CompilationUnit
 
+/**
+ * Maps a JaMoPP interface to a PCM interface 
+ * Triggered when a CUD operation on JaMoPP interface is detected.
+ */
 class InterfaceMappingTransformation extends EObjectMappingTransformation {
 	
 	val private static final Logger logger = Logger.getLogger(InterfaceMappingTransformation.name)
@@ -30,15 +36,33 @@ class InterfaceMappingTransformation extends EObjectMappingTransformation {
 	 * Called when a Java-interface was added to the source code
 	 * Determines whether the interface is architecture relevant or not by 
 	 * a) checking whether it is in the package that corresponds to the repository package
-	 * b) asking the developer (not yet implmented)
+	 * b) asking the developer (not yet implemented)
 	 */
 	override addEObject(EObject eObject) {
 		val Interface jaMoPPInterface = eObject as Interface
-		val List<String> namespace = jaMoPPInterface.containingPackageName
-		val Package jaMoPPPackage = null
+		val Package jaMoPPPackage = JaMoPPPCMUtils::getContainingPackage(jaMoPPInterface, correspondenceInstance)
 		try{
-			val Repository repo = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(jaMoPPPackage, Repository)
-			
+			// get correspoding Object for Package--> it should be either a system, a component or the repository itself  
+			val pcmArtefact = correspondenceInstance.getCorrespondeceForEObjectIfUnique(jaMoPPPackage)
+			if(null == pcmArtefact){
+				// no corresponding artefact for Package
+				// if this is the case we currently we assume that the interface is not an architectural interface
+				// TODO: ask user whether it should be an architectural interface anyway 
+				return null
+			}
+			var Repository repo = null;
+			if(pcmArtefact instanceof Repository){
+				// if the corresponding object the repository itself: the interface is considered as architectural interface 
+				// and added to the repository 
+				repo = pcmArtefact as Repository
+			}else if(pcmArtefact instanceof RepositoryComponent || pcmArtefact instanceof System){
+				// TODO: if the interface is in a Component ask the developer whether it is architectural relevant
+				logger.info("pcmArtefact is instanceof RepositoryComponent. Assuming that the interface is not architectural relevant")
+				return null;	
+			}else {
+				logger.warn("pcmArtefact is not the repository or a component or a system. Should not happen. PCMArtefact: " + pcmArtefact)
+				return null;
+			}
 			var OperationInterface opInterface = RepositoryFactory.eINSTANCE.createOperationInterface
 			opInterface.setEntityName(jaMoPPInterface.name)
 			opInterface.setRepository__Interface(repo)

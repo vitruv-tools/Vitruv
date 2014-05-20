@@ -22,6 +22,7 @@ import org.emftext.refactoring.interpreter.IRefactorer
 import org.emftext.refactoring.interpreter.RefactorerFactory
 import org.emftext.refactoring.registry.rolemapping.IRoleMappingRegistry
 import org.modelrefactoring.jamopp.test.valueprovider.TestValueProviderFactory
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMNamespace
 
 class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.EObjectMappingTransformation {
 
@@ -31,9 +32,9 @@ class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.
 
 	override void setCorrespondenceForFeatures() {
 		var opInterfaceNameAttribute = RepositoryFactory.eINSTANCE.createOperationInterface.eClass.getEAllAttributes.filter[attribute|
-			attribute.name.equalsIgnoreCase("entityName")].iterator.next
+			attribute.name.equalsIgnoreCase(JaMoPPPCMNamespace::PCM_ATTRIBUTE_ENTITY_NAME)].iterator.next
 		var interfaceNameAttribute = ClassifiersFactory.eINSTANCE.createInterface.eClass.getEAllAttributes.filter[attribute|
-			attribute.name.equalsIgnoreCase("name")].iterator.next
+			attribute.name.equalsIgnoreCase(JaMoPPPCMNamespace::JAMOPP_ATTRIBUTE_NAME)].iterator.next
 		featureCorrespondenceMap.put(opInterfaceNameAttribute, interfaceNameAttribute)
 	}
 

@@ -14,6 +14,7 @@ import org.emftext.language.java.containers.CompilationUnit
 import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.Package
 import org.emftext.language.java.modifiers.ModifiersFactory
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMNamespace
 
 class BasicComponentMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.EObjectMappingTransformation {
 
@@ -73,6 +74,7 @@ class BasicComponentMappingTransformation extends edu.kit.ipd.sdq.vitruvius.case
 
 	override updateEAttribute(EObject eObject, EAttribute affectedAttribute, Object newValue) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		
 	}
 
 	override updateEReference(EObject eObject, EReference affectedEReference, Object newValue) {
@@ -85,11 +87,11 @@ class BasicComponentMappingTransformation extends edu.kit.ipd.sdq.vitruvius.case
 
 	override setCorrespondenceForFeatures() {
 		var basicComponentNameAttribute = RepositoryFactory.eINSTANCE.createBasicComponent.eClass.getEAllAttributes.filter[attribute|
-			attribute.name.equalsIgnoreCase("entityName")].iterator.next
+			attribute.name.equalsIgnoreCase(JaMoPPPCMNamespace::PCM_ATTRIBUTE_ENTITY_NAME)].iterator.next
 		var classNameAttribute = ClassifiersFactory.eINSTANCE.createClass.eClass.getEAllAttributes.filter[attribute|
-			attribute.name.equalsIgnoreCase("name")].iterator.next
+			attribute.name.equalsIgnoreCase(JaMoPPPCMNamespace::JAMOPP_ATTRIBUTE_NAME)].iterator.next
 		var packageNameAttribute = ContainersFactory.eINSTANCE.createPackage.eClass.getEAllAttributes.filter[attribute|
-			attribute.name.equalsIgnoreCase("name")].iterator.next
+			attribute.name.equalsIgnoreCase(JaMoPPPCMNamespace::JAMOPP_ATTRIBUTE_NAME)].iterator.next
 		featureCorrespondenceMap.put(basicComponentNameAttribute, classNameAttribute)
 		featureCorrespondenceMap.put(basicComponentNameAttribute, packageNameAttribute)
 	}

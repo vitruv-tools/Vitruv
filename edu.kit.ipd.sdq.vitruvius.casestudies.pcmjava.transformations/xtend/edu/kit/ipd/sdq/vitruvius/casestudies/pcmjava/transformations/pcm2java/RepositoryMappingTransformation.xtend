@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.Package
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMNamespace
 
 class RepositoryMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.EObjectMappingTransformation {
 
@@ -23,9 +24,9 @@ class RepositoryMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestud
 
 	override void setCorrespondenceForFeatures() {
 		var repositoryNameAttribute = RepositoryFactory.eINSTANCE.createRepository.eClass.getEAllAttributes.filter[attribute|
-			attribute.name.equalsIgnoreCase("entityName")].iterator.next
+			attribute.name.equalsIgnoreCase(JaMoPPPCMNamespace::PCM_ATTRIBUTE_ENTITY_NAME)].iterator.next
 		var packageNameAttribute = ContainersFactory.eINSTANCE.createPackage.eClass.getEAllAttributes.filter[attribute|
-			attribute.name.equalsIgnoreCase("name")].iterator.next
+			attribute.name.equalsIgnoreCase(JaMoPPPCMNamespace::JAMOPP_ATTRIBUTE_NAME)].iterator.next
 		featureCorrespondenceMap.put(repositoryNameAttribute, packageNameAttribute)
 	}
 
