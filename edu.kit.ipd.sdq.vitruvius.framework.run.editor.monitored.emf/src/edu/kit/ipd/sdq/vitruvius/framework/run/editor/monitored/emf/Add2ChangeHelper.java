@@ -7,7 +7,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangeFactory;
@@ -25,8 +24,7 @@ public class Add2ChangeHelper extends Notification2ChangeHelper {
         // TODO use old value of affectedEObject as affectedEObject
         final EObject affectedEObject = (EObject) notification.getNotifier();
         createdObject.setAffectedEObject(affectedEObject);
-        final Object newFeatureValue = affectedEObject.eGet((EStructuralFeature) notification.getFeature());
-        createdObject.setNewValue(newFeatureValue);
+        createdObject.setNewValue(notification.getNewValue());
         createdObject.setAffectedFeature((EReference) notification.getFeature());
         this.addChangeToList(changeList, createdObject);
     }
