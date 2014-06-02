@@ -11,7 +11,7 @@
          point="org.eclipse.ui.newWizards">
       <wizard
             category="edu.kit.ipd.sdq.vitruvius.casestudies.vitruvius_projects"
-            class="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.ui.NewPCMJavaProjectWizard"
+            class="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.ui.projectwizard.NewPCMJavaProjectWizard"
             finalPerspective="de.uka.ipd.sdq.pcmbench.perspectives.palladio"
             hasPages="true"
             id="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaWizard"
@@ -24,50 +24,100 @@
       </category>
    </extension>
    
-   <!--Extension point for project nature.
-   	   Note: Extension point for project builder is defined in
-   	   edu.kit.ipd.sdq.vitruvius.casestudies.emf for all casestudies using EMF based metamodels -->
-   <extension
-         id="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaProjectNature.ID"
-         name="PCM Java Projet Nature"
-         point="org.eclipse.core.resources.natures">
-      <runtime>
-         <run
-               class="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.ui.PCMJavaProjectNature">
-         </run>
-      </runtime>
-      <builder
-            id="edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emf.builder">
-      </builder>
-   </extension>
    
-    <extension point="org.eclipse.ui.menus">
-      <menuContribution locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu">
-         <command
-               commandId="edu.kit.ipd.sdq.vitruvius.casestudies.handlers.toggleNatureCommand"
-               label="Add/Remove Vitruvius Project Nature"
-               style="push">
-            <visibleWhen
+   <extension
+         id="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder.id"
+         point="org.eclipse.core.resources.builders">
+      <builder>
+         <run
+               class="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder">
+         </run>
+       </builder>
+   </extension>
+
+   <extension 
+   	        point="org.eclipse.ui.menus">
+	    <menuContribution
+	    	   allPopups="false"
+	    	   locationURI="popup:org.eclipse.ui.projectConfigure?after=additions">
+	        <command
+	        	commandId="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.addbuilder.commandId"
+	        	style="push">
+	        	<visibleWhen
                   checkEnabled="false">
-               <with
-                     variable="activeMenuSelection">
+               <and>
+                  <count
+                        value="1">
+                  </count>
                   <iterate
                         ifEmpty="false"
-                        operator="or">
+                        operator="and">
                      <adapt
                            type="org.eclipse.core.resources.IProject">
                      </adapt>
                   </iterate>
-               </with>
+                  <iterate>
+                     <not>
+                        <test
+                              forcePluginActivation="true"
+                              property="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.isEnabled">
+                        </test>
+                     </not>
+                  </iterate>
+               </and>
             </visibleWhen>
-         </command>
-      </menuContribution>
+	        </command>
+	        <command 
+	        	commandId="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.removebuilder.commandId"
+	         	style="push">
+	         	<visibleWhen
+                  checkEnabled="false">
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <adapt
+                           type="org.eclipse.core.resources.IProject">
+                     </adapt>
+                  </iterate>
+                  <iterate>
+                     <test
+                           forcePluginActivation="true"
+                           property="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.isEnabled">
+                     </test>
+                  </iterate>
+               </and>
+            </visibleWhen>
+	        </command>
+	    </menuContribution>
+	</extension>
+	
+	<extension point="org.eclipse.ui.commands">
+    	<command
+    		 defaultHandler="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaAddBuilder" 
+    		 id="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.addbuilder.commandId" 
+    		 name="Add PCM Java Builder">
+    	</command>
+	    <command
+	    	 defaultHandler="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaRemoveBuilder"
+	    	  id="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.removebuilder.commandId" 
+	    	  name="Remove PCM Java Builder">
+	    </command>
+	</extension>
+	
+	<extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaTestBuilderEnabled"
+            id="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder.id"
+            namespace="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder"
+            properties="isEnabled"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
-   <extension point="org.eclipse.ui.commands">
-      <command defaultHandler="edu.kit.ipd.sdq.vitruvius.casestudies.emf.AddRemoveEmfNatureHandler"
-      		   id="edu.kit.ipd.sdq.vitruvius.casestudies.handlers.toggleNatureCommand"
-      		   name="Toggle Vitruv PCM Java Project Nature">
-      </command>
-   </extension>
+   
   
 </plugin>

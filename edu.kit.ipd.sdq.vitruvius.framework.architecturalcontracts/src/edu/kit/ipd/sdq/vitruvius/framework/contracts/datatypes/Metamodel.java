@@ -1,5 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eclipse.emf.ecore.EObject;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.DefaultTUIDCalculatorAndResolver;
@@ -9,18 +13,27 @@ public class Metamodel extends AbstractURIHaving {
 
     private String[] fileExtensions;
     private TUIDCalculatorAndResolver tuidCalculatorAndResolver;
-    private String nsURI;
+    private Set<String> nsURIs;
 
     public Metamodel(final String nsURI, final VURI uri, final String... fileExtensions) {
-        this(nsURI, uri, new DefaultTUIDCalculatorAndResolver(), fileExtensions);
+        this(new HashSet<String>(Arrays.asList(nsURI)), uri, new DefaultTUIDCalculatorAndResolver(), fileExtensions);
     }
 
     public Metamodel(final String nsURI, final VURI uri, final TUIDCalculatorAndResolver tuidCalculatorAndResolver,
             final String... fileExtensions) {
+        this(new HashSet<String>(Arrays.asList(nsURI)), uri, tuidCalculatorAndResolver, fileExtensions);
+    }
+
+    public Metamodel(final Set<String> nsURIs, final VURI uri, final String... fileExtensions) {
+        this(nsURIs, uri, new DefaultTUIDCalculatorAndResolver(), fileExtensions);
+    }
+
+    public Metamodel(final Set<String> nsURIs, final VURI uri,
+            final TUIDCalculatorAndResolver tuidCalculatorAndResolver, final String... fileExtensions) {
         super(uri);
         this.fileExtensions = fileExtensions;
         this.tuidCalculatorAndResolver = tuidCalculatorAndResolver;
-        this.nsURI = nsURI;
+        this.nsURIs = nsURIs;
     }
 
     public String[] getFileExtensions() {
@@ -36,6 +49,6 @@ public class Metamodel extends AbstractURIHaving {
                 || null == eObject.eClass().getEPackage().getNsURI()) {
             return false;
         }
-        return eObject.eClass().getEPackage().getNsURI().startsWith(this.nsURI);
+        return this.nsURIs.contains(eObject.eClass().getEPackage().getNsURI());
     }
 }

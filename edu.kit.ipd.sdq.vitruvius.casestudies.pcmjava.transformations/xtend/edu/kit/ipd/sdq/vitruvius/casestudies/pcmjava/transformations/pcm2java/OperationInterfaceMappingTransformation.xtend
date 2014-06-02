@@ -56,7 +56,7 @@ class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.
 
 		//add new correspondence to correspondenceInstance
 		val parrentCorrespondence = correspondenceInstance.
-			getCorrespondeceForEObjectIfUnique(operationInterface.repository__Interface);
+			getCorrespondenceForEObjectIfUnique(operationInterface.repository__Interface);
 		val EObjectCorrespondence eObjectCorrespondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
 		eObjectCorrespondence.setElementA(operationInterface)
 		eObjectCorrespondence.setElementB(correspondingInterface)
@@ -68,7 +68,7 @@ class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.
 		eObjectCorrespondence4CompilationUnit.setElementB(correspondingCompilationUnit)
 		eObjectCorrespondence.setParent(parrentCorrespondence)
 		correspondenceInstance.addSameTypeCorrespondence(eObjectCorrespondence4CompilationUnit)
-		return correspondingCompilationUnit
+		return correspondingCompilationUnit.toArray
 	}
 
 	override removeEObject(EObject eObject) {
@@ -77,7 +77,7 @@ class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.
 		for (correspondingObject : correspondingObjects) {
 			EcoreUtil.remove(correspondingObject)
 		}
-		correspondenceInstance.removeAllCorrespondingInstances(operationInterface)
+		correspondenceInstance.removeAllDependingCorrespondences(operationInterface)
 		return null 
 	}
 
@@ -106,7 +106,7 @@ class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.
 		for( resourceToSave : refactorer.resourcesToSave){
 			resourceToSave.save(null)
 		}
-		return refactoredEObj
+		return refactoredEObj.toArray
 	}
 
 	override updateEReference(EObject eObject, EReference affectedEReference, Object newValue) {

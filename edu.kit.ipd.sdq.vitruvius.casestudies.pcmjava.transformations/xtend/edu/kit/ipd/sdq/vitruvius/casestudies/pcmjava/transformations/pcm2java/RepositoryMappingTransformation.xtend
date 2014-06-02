@@ -39,7 +39,7 @@ class RepositoryMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestud
 		eObjectCorrespondence.setElementA(repository)
 		eObjectCorrespondence.setElementB(jaMoPPPackage)
 		correspondenceInstance.addSameTypeCorrespondence(eObjectCorrespondence)
-		return jaMoPPPackage
+		return jaMoPPPackage.toArray()
 	}
 
 	override removeEObject(EObject eObject) {
@@ -48,7 +48,7 @@ class RepositoryMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestud
 		val Package jaMoPPPackage = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(repository, Package)
 		EcoreUtil.remove(jaMoPPPackage)
 		//remove corresponding instance
-		correspondenceInstance.removeAllCorrespondingInstances(repository)
+		correspondenceInstance.removeAllDependingCorrespondences(repository)
 		return null
 	}
 
@@ -58,7 +58,7 @@ class RepositoryMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestud
 		val EStructuralFeature jaMoPPNameAttribute = featureCorrespondenceMap.claimValueForKey(affectedAttribute) 
 		val Package jaMoPPPackage = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(repository, Package)
 		jaMoPPPackage.eSet(jaMoPPNameAttribute, newValue);
-		return jaMoPPPackage
+		return jaMoPPPackage.toArray()
 	}
 
 	override updateEReference(EObject eObject, EReference affectedEReference, Object newValue) {

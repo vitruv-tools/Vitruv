@@ -18,6 +18,12 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class AddBuilder extends AbstractHandler implements IHandler {
 
+    private final String builderId;
+
+    protected AddBuilder(final String builderId) {
+        this.builderId = builderId;
+    }
+
     @Override
     public Object execute(final ExecutionEvent event) {
         final IProject project = getProject(event);
@@ -25,14 +31,15 @@ public class AddBuilder extends AbstractHandler implements IHandler {
         if (project != null) {
             try {
                 // verify already registered builders
-                if (hasBuilder(project))
+                if (this.hasBuilder(project)) {
                     // already enabled
                     return null;
+                }
 
                 // add builder to project properties
-                IProjectDescription description = project.getDescription();
+                final IProjectDescription description = project.getDescription();
                 final ICommand buildCommand = description.newCommand();
-                buildCommand.setBuilderName(VitruviusEmfBuilder.VITRUVIUS_EMF_BUILDER_ID);
+                buildCommand.setBuilderName(this.builderId);
 
                 final List<ICommand> commands = new ArrayList<ICommand>();
                 commands.addAll(Arrays.asList(description.getBuildSpec()));
@@ -60,11 +67,12 @@ public class AddBuilder extends AbstractHandler implements IHandler {
         return null;
     }
 
-    public static final boolean hasBuilder(final IProject project) {
+    public final boolean hasBuilder(final IProject project) {
         try {
             for (final ICommand buildSpec : project.getDescription().getBuildSpec()) {
-                if (VitruviusEmfBuilder.VITRUVIUS_EMF_BUILDER_ID.equals(buildSpec.getBuilderName()))
+                if (this.builderId.equals(buildSpec.getBuilderName())) {
                     return true;
+                }
             }
         } catch (final CoreException e) {
         }

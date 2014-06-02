@@ -32,7 +32,7 @@ class EMFModelSynchronizer extends ConcreteChangeSynchronizer {
         ModelInstance sourceModel = this.modelProviding.getModelInstanceOriginal(sourceModelURI);
         Set<CorrespondenceInstance> correspondenceInstances = this.correspondenceProviding
                 .getAllCorrespondenceInstances(sourceModelURI);
-        if (null == correspondenceInstances) {
+        if (null == correspondenceInstances || 0 == correspondenceInstances.size()) {
             logger.info("No correspondenceInstance found for model: " + sourceModelURI
                     + ". Change not sychronized with any other model.");
             return;
@@ -40,7 +40,5 @@ class EMFModelSynchronizer extends ConcreteChangeSynchronizer {
         for (CorrespondenceInstance correspondenceInstance : correspondenceInstances) {
             this.changePropagating.propagateChange(change, sourceModel, correspondenceInstance);
         }
-
     }
-
 }

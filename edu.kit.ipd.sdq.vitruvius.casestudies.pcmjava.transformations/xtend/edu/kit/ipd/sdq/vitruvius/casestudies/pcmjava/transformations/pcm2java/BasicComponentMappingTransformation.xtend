@@ -15,8 +15,11 @@ import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.Package
 import org.emftext.language.java.modifiers.ModifiersFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMNamespace
+import org.apache.log4j.Logger
 
 class BasicComponentMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.EObjectMappingTransformation {
+	
+	val private static Logger logger = Logger.getLogger(BasicComponentMappingTransformation.simpleName)
 
 	override getClassOfMappedEObject() {
 		return BasicComponent
@@ -49,7 +52,7 @@ class BasicComponentMappingTransformation extends edu.kit.ipd.sdq.vitruvius.case
 		jaMoPPPackage.compilationUnits.add(jaMoPPCompilationUnit)
 		jaMoPPCompilationUnit.namespaces.addAll(jaMoPPPackage.namespaces)
 
-		val Correspondence parentCorrespondence = correspondenceInstance.getCorrespondeceForEObjectIfUnique(rootPackage)
+		val Correspondence parentCorrespondence = correspondenceInstance.getCorrespondenceForEObjectIfUnique(rootPackage)
 
 		//create correspondence for package and class (both are corresponding to the basic component)
 		val EObjectCorrespondence basicComponent2Package = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
@@ -65,7 +68,10 @@ class BasicComponentMappingTransformation extends edu.kit.ipd.sdq.vitruvius.case
 		basicComponent2CompilationUnit.setElementA(basicComponent)
 		basicComponent2CompilationUnit.setElementB(jaMoPPCompilationUnit)
 		basicComponent2CompilationUnit.setParent(parentCorrespondence)
-		return jaMoPPCompilationUnit;
+		correspondenceInstance.addSameTypeCorrespondence(basicComponent2Package)
+		correspondenceInstance.addSameTypeCorrespondence(basicComponent2CompilationUnit)
+		correspondenceInstance.addSameTypeCorrespondence(basicComponent2Class)
+		return jaMoPPCompilationUnit.toArray;
 	}
 
 	override removeEObject(EObject eObject) {
@@ -73,8 +79,18 @@ class BasicComponentMappingTransformation extends edu.kit.ipd.sdq.vitruvius.case
 	}
 
 	override updateEAttribute(EObject eObject, EAttribute affectedAttribute, Object newValue) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-		
+		if(!featureCorrespondenceMap.containsKey(affectedAttribute)){
+			logger.info("no feature correspondence found for affected Attribute: " + affectedAttribute)
+			return null
+		}
+		var correspondingEObjects = correspondenceInstance.getCorrespondingEObjects(eObject)
+		if(null == correspondingEObjects){
+			logger.info("No corresponding objects found for " + eObject)
+		}
+		for(EObject correspondingObject : correspondingEObjects){
+			correspondingObject.eClass.eSet(featureCorrespondenceMap.get(affectedAttribute), newValue)
+		}
+		return correspondingEObjects
 	}
 
 	override updateEReference(EObject eObject, EReference affectedEReference, Object newValue) {

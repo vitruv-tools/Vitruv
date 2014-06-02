@@ -41,9 +41,8 @@ class PackageMappingTransformation extends EObjectMappingTransformation {
 				logger.warn("more than one repositorys exists in correspondence model. Should not happen. " + repositorys)	
 			}
 			repository = repositorys.iterator.next
-		}
-		correspondenceRepositoryAlreadyExists = (null == repositorys || 0 == repositorys.size)
-		
+			correspondenceRepositoryAlreadyExists = true
+		}		
 	}
 	
 	/**
@@ -70,21 +69,23 @@ class PackageMappingTransformation extends EObjectMappingTransformation {
 			repository = RepositoryFactory.eINSTANCE.createRepository
 			repository.setEntityName(jaMoPPPackage.name)
 			var EObjectCorrespondence repo2Package = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-			repo2Package.setElementA(jaMoPPPackage)
-			repo2Package.setElementB(repository)
+			repo2Package.setElementA(repository)
+			repo2Package.setElementB(jaMoPPPackage)
 			correspondenceInstance.addSameTypeCorrespondence(repo2Package) 
 			correspondenceRepositoryAlreadyExists = true
-			return repository
+			return repository.toArray
 		}
 		// case i)
 		var BasicComponent basicComponent = RepositoryFactory.eINSTANCE.createBasicComponent
 		basicComponent.setEntityName(jaMoPPPackage.name)
 		basicComponent.setRepository__RepositoryComponent(repository)
+		repository.components__Repository.add(basicComponent)
 		var EObjectCorrespondence basicComponent2Package = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-		basicComponent2Package.setElementA(jaMoPPPackage)
-		basicComponent2Package.setElementB(basicComponent)
+		basicComponent2Package.setElementA(basicComponent)
+		basicComponent2Package.setElementB(jaMoPPPackage)
+		basicComponent2Package.setParent(correspondenceInstance.getCorrespondenceForEObjectIfUnique(repository))
 		correspondenceInstance.addSameTypeCorrespondence(basicComponent2Package)
-		return basicComponent
+		return basicComponent.toArray
 	}
 	
 	/**
@@ -94,10 +95,14 @@ class PackageMappingTransformation extends EObjectMappingTransformation {
 	 */
 	override removeEObject(EObject eObject) {
 		val Package jaMoPPPackage = eObject as Package
-		val correspondingObjects = correspondenceInstance.claimCorrespondingEObjects(jaMoPPPackage)
-		for(correspondingObject : correspondingObjects){
-			EcoreUtil.remove(correspondingObject)
-			correspondenceInstance.removeAllCorrespondingInstances(correspondingObject)
+		try{
+			val correspondingObjects = correspondenceInstance.claimCorrespondingEObjects(jaMoPPPackage)
+			for(correspondingObject : correspondingObjects){
+				EcoreUtil.remove(correspondingObject)
+				correspondenceInstance.removeAllDependingCorrespondences(correspondingObject)
+			}
+		}catch(RuntimeException rte){
+			logger.info(rte)
 		}
 		return null
 	}
@@ -116,21 +121,21 @@ class PackageMappingTransformation extends EObjectMappingTransformation {
 	}
 	
 	/**
-	 * should not be called for package
+	 * not needed for package
 	 */
 	override updateEReference(EObject eObject, EReference affectedEReference, Object newValue) {
-		throw new RuntimeException("updateEReference should not be called for " + 
-			PackageMappingTransformation.simpleName + " eObject: " + eObject
-		);
+//		throw new RuntimeException("updateEReference should not be called for " + 
+//			PackageMappingTransformation.simpleName + " eObject: " + eObject
+//		);
 	}
 	
 	/**
-	 * should not be called for package
+	 * not needed for package
 	 */
 	override updateEContainmentReference(EObject eObject, EReference afffectedEReference, Object newValue) {
-		throw new RuntimeException("updateEContainmentReference should not be called for " + 
-			PackageMappingTransformation.simpleName + " eObject: " + eObject
-		);
+//		throw new RuntimeException("updateEContainmentReference should not be called for " + 
+//			PackageMappingTransformation.simpleName + " eObject: " + eObject
+//		);
 	}
 	
 	override setCorrespondenceForFeatures() {

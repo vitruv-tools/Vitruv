@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.ui;
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.ui.projectwizard;
 
 import org.eclipse.jdt.internal.ui.wizards.JavaProjectWizard;
 import org.eclipse.jface.viewers.IStructuredSelection;

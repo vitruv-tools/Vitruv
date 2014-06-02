@@ -4,7 +4,6 @@ import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingRequiringEntity
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.EObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMNamespace
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMUtils
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
 import org.apache.log4j.Logger
@@ -16,6 +15,9 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.ClassifiersFactory
 import org.emftext.language.java.modifiers.Public
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMUtils
+import de.uka.ipd.sdq.pcm.repository.RepositoryComponent
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 
 /**
  * Maps a JaMoPP class to a PCM Components or System. 
@@ -50,10 +52,10 @@ class ClassMappingTransformation extends EObjectMappingTransformation {
 			return null;
 		}
 		//ii) + iv)
-		val jaMoPPPackage = JaMoPPPCMUtils.getContainingPackage(jaMoPPClass, correspondenceInstance)
+		val jaMoPPPackage = JaMoPPPCMUtils.getContainingPackageFromCorrespondenceInstance(jaMoPPClass, correspondenceInstance)
 		if(null == jaMoPPPackage){
-			//nothing to do - package not found
-			logger.warn("jaMoPPPackage is null for class - should not happen. Class: " + jaMoPPClass)
+			//nothing to do - no corresponding package found
+			logger.info("jaMoPPPackage is null for class" + jaMoPPClass)
 			return null
 		}
 		// get corresponding component or system (here we ask for InterfaceProvidingRequiringEntity cause components 
@@ -68,7 +70,7 @@ class ClassMappingTransformation extends EObjectMappingTransformation {
 		}
 		val hasClassCorrespondence = correspondencesForPCMCompOrSystem.
 				filter[correspondence| correspondence instanceof Class].size
-		if( 0 == hasClassCorrespondence){
+		if( 0 < hasClassCorrespondence){
 			//nothing to do --> component or system already has corresponding class
 			return null
 		}
@@ -83,23 +85,32 @@ class ClassMappingTransformation extends EObjectMappingTransformation {
 		
 		//last step: create corresponding for compilationUnit and for class 
 		if(isCorrespondingClass){
+			val parentCorrespondences = correspondenceInstance.getAllCorrespondences(pcmComponentOrSystem)
+			var Correspondence parentCorrespondence = null
+			if(null != parentCorrespondences){
+				parentCorrespondence = parentCorrespondences.iterator.next
+			}
 			val EObjectCorrespondence class2Component = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-			class2Component.setElementA(jaMoPPClass)
-			class2Component.setElementB(pcmComponentOrSystem) 
+			class2Component.setElementA(pcmComponentOrSystem)
+			class2Component.setElementB(jaMoPPClass) 
+			class2Component.setParent(parentCorrespondence)
 			val EObjectCorrespondence compilationUnit2Component = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-			compilationUnit2Component.setElementA(jaMoPPClass.containingCompilationUnit)
-			compilationUnit2Component.setElementB(pcmComponentOrSystem)
+			compilationUnit2Component.setElementA(pcmComponentOrSystem)
+			compilationUnit2Component.setElementB(jaMoPPClass.containingCompilationUnit)
+			compilationUnit2Component.setParent(parentCorrespondence)
+			compilationUnit2Component.dependentCorrespondences.add(class2Component)
+			class2Component.dependentCorrespondences.add(compilationUnit2Component)
 			correspondenceInstance.addSameTypeCorrespondence(class2Component)
 			correspondenceInstance.addSameTypeCorrespondence(compilationUnit2Component)
 		}
-		return pcmComponentOrSystem
+		return pcmComponentOrSystem.toArray()
 	}
 	
 	/**
 	 * Remove class: 
 	 * Check if class has corresponding elements and
 	 * Remove CorrespondingInstance for class and compilation unit
-	 * Also removes class and package and the component on PCM side.
+	 * Also removes basicComponent on PCM.
 	 * If the class is not the only class in the package ask the user whether to remove the component
 	 * and package and all classes 
 	 */
@@ -117,7 +128,7 @@ class ClassMappingTransformation extends EObjectMappingTransformation {
 				EcoreUtil.remove(jaMoPPClass.containingCompilationUnit)
 				correspondences.forEach[correspondingObj|EcoreUtil.remove(correspondingObj)]				
 			}
-			correspondenceInstance.removeAllCorrespondingInstances(jaMoPPClass)
+			correspondenceInstance.removeAllDependingCorrespondences(jaMoPPClass)
 		}	
 		return null
 	}
@@ -127,25 +138,31 @@ class ClassMappingTransformation extends EObjectMappingTransformation {
 	 */
 	override updateEAttribute(EObject eObject, EAttribute affectedAttribute, Object newValue) {
 		val EStructuralFeature affectedPCMFeature = featureCorrespondenceMap.claimValueForKey(affectedAttribute)
-		var correspondingPCMObjects = correspondenceInstance.getAllCorrespondences(eObject)
-		if(null != correspondingPCMObjects){
-			correspondingPCMObjects.forEach[pcmObject|pcmObject.eSet(affectedPCMFeature, newValue)]
+		var EObject ret = null
+		try{
+			var correspondingPCMObjects = correspondenceInstance.claimCorrespondingEObjectsByType(eObject, RepositoryComponent)
+			for(correspondingPCMObject : correspondingPCMObjects){
+				correspondingPCMObject.eSet(affectedPCMFeature, newValue)
+				ret = correspondingPCMObject
+			}
+		}catch(RuntimeException rt){
+			logger.trace(rt)
 		}
-		return null
+		return ret.toArray()
 	}
 	
 	/**
 	 * currently not needed (?) for Class
 	 */
 	override updateEReference(EObject eObject, EReference affectedEReference, Object newValue) {
-		throw new RuntimeException("updateEReference should not be called for " + ClassMappingTransformation.simpleName)
+		//throw new RuntimeException("updateEReference should not be called for " + ClassMappingTransformation.simpleName)
 	}
 	
 	/**
 	 * currently not needed (?) for Class
 	 */
 	override updateEContainmentReference(EObject eObject, EReference afffectedEReference, Object newValue) {
-		throw new RuntimeException("updateEContainmentReference should not be called for " + ClassMappingTransformation.simpleName)
+		//throw new RuntimeException("updateEContainmentReference should not be called for " + ClassMappingTransformation.simpleName)
 	}
 	
 	/**

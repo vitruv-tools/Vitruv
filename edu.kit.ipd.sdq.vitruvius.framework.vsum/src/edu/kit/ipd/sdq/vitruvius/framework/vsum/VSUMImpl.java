@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.framework.vsum;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -38,7 +38,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
 
     private final Map<VURI, ModelInstance> modelInstances;
     private final ResourceSet resourceSet;
-    private final Map<Metamodel, Collection<CorrespondenceInstance>> metamodel2CorrespondenceInstancesMap;
+    private final Map<Metamodel, Set<CorrespondenceInstance>> metamodel2CorrespondenceInstancesMap;
     private final Map<Mapping, CorrespondenceInstance> mapping2CorrespondenceInstanceMap;
 
     public VSUMImpl(final MetamodelManaging metamodelManaging, final ViewTypeManaging viewTypeManaging,
@@ -50,23 +50,26 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
 
         this.modelInstances = new HashMap<VURI, ModelInstance>();
         this.resourceSet = new ResourceSetImpl();
-        this.metamodel2CorrespondenceInstancesMap = new HashMap<Metamodel, Collection<CorrespondenceInstance>>();
+        this.metamodel2CorrespondenceInstancesMap = new HashMap<Metamodel, Set<CorrespondenceInstance>>();
         this.mapping2CorrespondenceInstanceMap = new HashMap<Mapping, CorrespondenceInstance>();
     }
 
     @Override
     public ModelInstance getModelInstanceCopy(final VURI uri) {
         // TODO Auto-generated method stub
+
         return null;
     }
 
-    @Override
-    /** Supports three cases:
-     *   1) get registered
-     *   2) create non-existing
-     *   3) get unregistered but existing that contains at most a root element without children.
-     *  But throws an exception if an instance that contains more than one element exists at the uri.
+    /**
+     * Supports three cases: 1) get registered 2) create non-existing 3) get unregistered but
+     * existing that contains at most a root element without children. But throws an exception if an
+     * instance that contains more than one element exists at the uri.
+     * 
+     * DECISION If we do not throw an exception (which can happen in 3) we always return a valid
+     * model. Hence the caller do not have to check whether the retrived model is null.
      */
+    @Override
     public ModelInstance getModelInstanceOriginal(final VURI modelURI) {
         ModelInstance modelInstance = this.modelInstances.get(modelURI);
         if (modelInstance == null) {
@@ -97,18 +100,17 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     }
 
     private void getOrCreateAllCorrespondenceInstances(final Metamodel metamodel) {
-        Collection<CorrespondenceInstance> correspondenceInstances = this.metamodel2CorrespondenceInstancesMap
-                .get(metamodel);
-        if (correspondenceInstances == null) {
+        Set<CorrespondenceInstance> correspondenceInstances = this.metamodel2CorrespondenceInstancesMap.get(metamodel);
+        if (correspondenceInstances == null || 0 == correspondenceInstances.size()) {
             correspondenceInstances = createAndRegisterAllCorrespondenceInstances(metamodel);
             this.metamodel2CorrespondenceInstancesMap.put(metamodel, correspondenceInstances);
         }
     }
 
-    private Collection<CorrespondenceInstance> createAndRegisterAllCorrespondenceInstances(final Metamodel metamodel) {
+    private Set<CorrespondenceInstance> createAndRegisterAllCorrespondenceInstances(final Metamodel metamodel) {
         Collection<Mapping> mappings = this.mappingManaging.getAllMappings(metamodel);
-        Collection<CorrespondenceInstance> correspondenceInstances = new ArrayList<CorrespondenceInstance>(
-                null == mappings ? 0 : mappings.size());
+        Set<CorrespondenceInstance> correspondenceInstances = new HashSet<CorrespondenceInstance>(null == mappings ? 0
+                : mappings.size());
         if (null == mappings) {
             logger.warn("mappings == null. No correspondence instace for MM: " + metamodel + " created."
                     + "Empty correspondence list will be returned");
@@ -134,16 +136,40 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         return null;
     }
 
+    /**
+     * Returns the correspondenceInstance for the metamodels of the given two model instances
+     * 
+     * @return the found correspondenceInstance or null if there is non
+     */
     @Override
     public CorrespondenceInstance getCorrespondenceInstanceOriginal(final VURI model1uri, final VURI model2uri) {
-        // TODO Auto-generated method stub
+        Metamodel metamodelA = this.metamodelManaging.getMetamodel(model1uri);
+        Metamodel metamodelB = this.metamodelManaging.getMetamodel(model2uri);
+        Mapping mappingA = new Mapping(metamodelA, metamodelB);
+        if (this.mapping2CorrespondenceInstanceMap.containsKey(mappingA)) {
+            return this.mapping2CorrespondenceInstanceMap.get(mappingA);
+        }
+        Mapping mappingB = new Mapping(metamodelB, metamodelA);
+        if (this.mapping2CorrespondenceInstanceMap.containsKey(mappingB)) {
+            return this.mapping2CorrespondenceInstanceMap.get(mappingB);
+        }
+        logger.warn("no mapping found for URI1: " + model1uri + " uri2: " + model2uri);
         return null;
     }
 
+    /**
+     * Returns all correspondences instances for a given VURI. null will be returned. We are not
+     * creating new CorrespondenceInstance here, cause we can not guess the linked model. The method
+     * {@link getCorrespondenceInstanceOriginal} must be called before to create the appropriate
+     * correspondence instance
+     * 
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
+     * @return set that contains all CorrespondenceInstances for the VURI or null if there is non
+     */
     @Override
     public Set<CorrespondenceInstance> getAllCorrespondenceInstances(final VURI model1uri) {
-        // TODO Auto-generated method stub
-        return null;
+        Metamodel metamodelForUri = this.metamodelManaging.getMetamodel(model1uri.getFileExtension());
+        return this.metamodel2CorrespondenceInstancesMap.get(metamodelForUri);
     }
 
     @Override

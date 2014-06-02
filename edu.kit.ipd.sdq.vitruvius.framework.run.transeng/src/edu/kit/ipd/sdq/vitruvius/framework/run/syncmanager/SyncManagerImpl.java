@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Invariants;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePropagating;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
@@ -18,7 +20,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
 import edu.kit.ipd.sdq.vitruvius.framework.correspmmprovider.CorrespondenceMMProviderImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.design.metamodelmanager.MetamodelManagerImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.design.mir.manager.MIRManager;
 import edu.kit.ipd.sdq.vitruvius.framework.design.viewtype.manager.ViewTypeManagerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine.PropagationEngineImpl;
@@ -37,6 +38,7 @@ public class SyncManagerImpl implements ChangeSynchronizing {
 
     private Map<Class<?>, ConcreteChangeSynchronizer> changeSynchonizerMap;
 
+    // FIXME: use correct instantiation instead of static instantiation
     private static SyncManagerImpl syncManagerImplInstance;
     private static MetaRepositoryImpl metaRepositoryImpl;
 
@@ -69,6 +71,10 @@ public class SyncManagerImpl implements ChangeSynchronizing {
             return;
         }
         this.changeSynchonizerMap.get(change.getClass()).synchronizeChange(change, sourceModelURI);
+        // TODO: Check invariants:
+        // Get invariants from Invariant providing
+        // Validate models with Validating
+        // TODO: Execute responses for violated invariants
     }
 
     public ModelProviding getModelProviding() {
@@ -84,13 +90,38 @@ public class SyncManagerImpl implements ChangeSynchronizing {
             MetamodelManagerImpl metaModelManager = new MetamodelManagerImpl(metaRepositoryImpl);
             ViewTypeManagerImpl viewTypeManager = new ViewTypeManagerImpl();
             CorrespondenceMMProviderImpl correspondenceProvider = new CorrespondenceMMProviderImpl();
-            MIRManager mirManager = new MIRManager();
-            VSUMImpl vsum = new VSUMImpl(metaModelManager, viewTypeManager, mirManager, correspondenceProvider);
+            VSUMImpl vsum = new VSUMImpl(metaModelManager, viewTypeManager, metaRepositoryImpl, correspondenceProvider);
             // create syncTransformationProvider
             TransformationExecutingProvidingImpl syncTransformationProvider = new TransformationExecutingProvidingImpl();
             PropagationEngineImpl propagatingChange = new PropagationEngineImpl(syncTransformationProvider);
+            // create dummy invariant and dummy validating providing
+            InvariantProviding iv = new InvariantProviding() {
+                @Override
+                public Invariants getInvariants(final VURI mmURI) {
+                    throw new RuntimeException("dummy of getInvariants called. Use real InvariantProviding");
+                }
+            };
+            Validating validating = new Validating() {
+
+                @Override
+                public boolean validate(final ModelInstance modelInstanceA, final ModelInstance modelInstanceB,
+                        final Invariants invariants) {
+                    throw new RuntimeException("dummy of Validating called. Use real InvariantProviding");
+                }
+
+                @Override
+                public boolean validate(final ModelInstance modelInstance, final Invariants invariants) {
+                    throw new RuntimeException("dummy of Validating called. Use real InvariantProviding");
+                }
+
+                @Override
+                public boolean validate(final Invariants invariants) {
+                    throw new RuntimeException("dummy of Validating called. Use real InvariantProviding");
+                }
+            };
+
             // create syncManager
-            syncManagerImplInstance = new SyncManagerImpl(vsum, propagatingChange, vsum);
+            syncManagerImplInstance = new SyncManagerImpl(vsum, propagatingChange, vsum, iv, validating);
         }
         return syncManagerImplInstance;
     }

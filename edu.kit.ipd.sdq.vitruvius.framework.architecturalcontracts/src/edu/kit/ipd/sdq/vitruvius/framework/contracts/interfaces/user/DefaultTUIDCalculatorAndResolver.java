@@ -23,8 +23,13 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
     public String getTUID(final EObject eObject) {
         if (eObject != null) {
             String uri = String.valueOf(TUIDIdentifier) + EOBJECT_SEPERATOR;
-            VURI vuri = VURI.getInstance(eObject.eResource());
-            uri += vuri.toString();
+            if (null != eObject.eResource()) {
+                VURI vuri = VURI.getInstance(eObject.eResource());
+                uri += vuri.toString();
+            } else {
+                logger.info("EObject " + eObject
+                        + " is not contained in a resource. Use id as only identifier for object.");
+            }
             String id = getValueOfIdFeature(eObject);
             if (null != id) {
                 return uri + EOBJECT_SEPERATOR + id;

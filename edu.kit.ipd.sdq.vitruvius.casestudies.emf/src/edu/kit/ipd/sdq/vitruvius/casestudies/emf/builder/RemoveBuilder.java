@@ -15,6 +15,12 @@ import org.eclipse.core.runtime.CoreException;
 
 public class RemoveBuilder extends AbstractHandler implements IHandler {
 
+    private final String builderId;
+
+    protected RemoveBuilder(final String builderId) {
+        this.builderId = builderId;
+    }
+
     @Override
     public Object execute(final ExecutionEvent event) throws ExecutionException {
         final IProject project = AddBuilder.getProject(event);
@@ -26,7 +32,7 @@ public class RemoveBuilder extends AbstractHandler implements IHandler {
                 commands.addAll(Arrays.asList(description.getBuildSpec()));
 
                 for (final ICommand buildSpec : description.getBuildSpec()) {
-                    if (VitruviusEmfBuilder.VITRUVIUS_EMF_BUILDER_ID.equals(buildSpec.getBuilderName())) {
+                    if (this.builderId.equals(buildSpec.getBuilderName())) {
                         // remove builder
                         commands.remove(buildSpec);
                     }

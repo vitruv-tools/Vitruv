@@ -6,7 +6,6 @@ import de.uka.ipd.sdq.pcm.repository.RepositoryComponent
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
 import de.uka.ipd.sdq.pcm.system.System
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.EObjectMappingTransformation
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMUtils
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
 import org.apache.log4j.Logger
@@ -19,6 +18,9 @@ import org.emftext.language.java.classifiers.ClassifiersFactory
 import org.emftext.language.java.classifiers.Interface
 import org.emftext.language.java.containers.Package
 import org.emftext.language.java.containers.CompilationUnit
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMUtils
+import java.util.Set
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 
 /**
  * Maps a JaMoPP interface to a PCM interface 
@@ -40,41 +42,51 @@ class InterfaceMappingTransformation extends EObjectMappingTransformation {
 	 */
 	override addEObject(EObject eObject) {
 		val Interface jaMoPPInterface = eObject as Interface
-		val Package jaMoPPPackage = JaMoPPPCMUtils::getContainingPackage(jaMoPPInterface, correspondenceInstance)
+		val Package jaMoPPPackage = JaMoPPPCMUtils::getContainingPackageFromCorrespondenceInstance(jaMoPPInterface, correspondenceInstance)
 		try{
 			// get correspoding Object for Package--> it should be either a system, a component or the repository itself  
-			val pcmArtefact = correspondenceInstance.getCorrespondeceForEObjectIfUnique(jaMoPPPackage)
-			if(null == pcmArtefact){
+			val Set<EObject> pcmArtefacts = correspondenceInstance.getCorrespondingEObjects(jaMoPPPackage)
+			if(null == pcmArtefacts || 0 == pcmArtefacts.size){
 				// no corresponding artefact for Package
 				// if this is the case we currently we assume that the interface is not an architectural interface
 				// TODO: ask user whether it should be an architectural interface anyway 
 				return null
 			}
 			var Repository repo = null;
-			if(pcmArtefact instanceof Repository){
-				// if the corresponding object the repository itself: the interface is considered as architectural interface 
+			if(0 < pcmArtefacts.filter[pcmArt|pcmArt instanceof Repository].size){
+				// if one of the corresponding objects is the repository itself: the interface is considered as architectural interface 
 				// and added to the repository 
-				repo = pcmArtefact as Repository
-			}else if(pcmArtefact instanceof RepositoryComponent || pcmArtefact instanceof System){
+				repo = pcmArtefacts.filter[pcmArt|pcmArt instanceof Repository].iterator.next as Repository
+			}else if( 0 < pcmArtefacts.filter[pcmArt|pcmArt instanceof RepositoryComponent].size || 0 < pcmArtefacts.filter[pcmArt|pcmArt instanceof System].size){
 				// TODO: if the interface is in a Component ask the developer whether it is architectural relevant
 				logger.info("pcmArtefact is instanceof RepositoryComponent. Assuming that the interface is not architectural relevant")
 				return null;	
 			}else {
-				logger.warn("pcmArtefact is not the repository or a component or a system. Should not happen. PCMArtefact: " + pcmArtefact)
+				logger.warn("pcmArtefact is not the repository or a component or a system. Should not happen. PCMArtefact: " + pcmArtefacts)
 				return null;
 			}
 			var OperationInterface opInterface = RepositoryFactory.eINSTANCE.createOperationInterface
 			opInterface.setEntityName(jaMoPPInterface.name)
 			opInterface.setRepository__Interface(repo)
-			
+			repo.interfaces__Repository.add(opInterface)
+			val parentCorrespondences = correspondenceInstance.getAllCorrespondences(repo)
+			var Correspondence parentCorrespondence = null
+			if(null != parentCorrespondences){
+				parentCorrespondence = parentCorrespondences.iterator.next
+			}
 			var EObjectCorrespondence interface2opInterfaceCorrespondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-			interface2opInterfaceCorrespondence.setElementA(jaMoPPInterface)
-			interface2opInterfaceCorrespondence.setElementB(opInterface)
-			correspondenceInstance.addSameTypeCorrespondence(interface2opInterfaceCorrespondence)
+			interface2opInterfaceCorrespondence.setElementA(opInterface)
+			interface2opInterfaceCorrespondence.setElementB(jaMoPPInterface)
+			interface2opInterfaceCorrespondence.setParent(parentCorrespondence)
 			var EObjectCorrespondence compilationUnit2opInterfaceCorrespondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-			compilationUnit2opInterfaceCorrespondence.setElementA(jaMoPPInterface.containingCompilationUnit)
-			compilationUnit2opInterfaceCorrespondence.setElementB(opInterface)
-			return opInterface 
+			compilationUnit2opInterfaceCorrespondence.setElementA(opInterface)
+			compilationUnit2opInterfaceCorrespondence.setElementB(jaMoPPInterface.containingCompilationUnit)
+			compilationUnit2opInterfaceCorrespondence.setParent(parentCorrespondence)
+			interface2opInterfaceCorrespondence.dependentCorrespondences.add(compilationUnit2opInterfaceCorrespondence)
+			compilationUnit2opInterfaceCorrespondence.dependentCorrespondences.add(interface2opInterfaceCorrespondence)
+			correspondenceInstance.addSameTypeCorrespondence(compilationUnit2opInterfaceCorrespondence)
+			correspondenceInstance.addSameTypeCorrespondence(interface2opInterfaceCorrespondence)
+			return opInterface.toArray()
 		}catch(Exception e ){
 			logger.info(e)
 		}
@@ -88,28 +100,39 @@ class InterfaceMappingTransformation extends EObjectMappingTransformation {
 	override removeEObject(EObject eObject) {
 		val Interface jaMoPPInterface = eObject as Interface
 		val CompilationUnit jaMoPPCompilationUnit = jaMoPPInterface.containingCompilationUnit
-		
-		var EObject correspondingOpInterface = correspondenceInstance.getCorrespondeceForEObjectIfUnique(jaMoPPInterface)
-		var EObject correspondingOpInterface2CompilationUnit = correspondenceInstance.getCorrespondeceForEObjectIfUnique(jaMoPPCompilationUnit)
-		if(null == correspondingOpInterface && null == correspondingOpInterface2CompilationUnit){
-			return null
+		try{
+			var EObject correspondingOpInterface = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(jaMoPPInterface, OperationInterface)
+			var EObject correspondingOpInterface2CompilationUnit = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(jaMoPPCompilationUnit, OperationInterface)
+			if(null == correspondingOpInterface && null == correspondingOpInterface2CompilationUnit){
+				return null
+			}
+			if(correspondingOpInterface != correspondingOpInterface2CompilationUnit){
+				logger.warn("corresponding interface " + correspondingOpInterface 
+					+ "is not the same interface as the interface corresponding to the compilation unit " + correspondingOpInterface2CompilationUnit )
+				return null
+			}
+			EcoreUtil.remove(correspondingOpInterface)
+			correspondenceInstance.removeAllDependingCorrespondences(jaMoPPInterface)
+		}catch(RuntimeException rte){
+			logger.info(rte)
 		}
-		if(correspondingOpInterface != correspondingOpInterface2CompilationUnit){
-			logger.warn("corresponding interface " + correspondingOpInterface 
-				+ "is not the same interface as the interface corresponding to the compilation unit " + correspondingOpInterface2CompilationUnit )
-			return null
-		}
-		EcoreUtil.remove(correspondingOpInterface)
-		correspondenceInstance.removeAllCorrespondingInstances(jaMoPPInterface)
-		return correspondingOpInterface
+		return null
 	}
 	
 	override updateEAttribute(EObject eObject, EAttribute affectedAttribute, Object newValue) {
 		val Interface jaMoPPInterface = eObject as Interface
-		var OperationInterface opInterface = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(jaMoPPInterface, OperationInterface)
-		val EStructuralFeature attribute = featureCorrespondenceMap.claimValueForKey(affectedAttribute)
-		opInterface.eSet(attribute, newValue)
-		return opInterface
+		var EObject ret = null
+		try{
+			val EStructuralFeature attribute = featureCorrespondenceMap.claimValueForKey(affectedAttribute)
+			var opInterfaces = correspondenceInstance.claimCorrespondingEObjectsByType(jaMoPPInterface, OperationInterface)
+			for(opInterface : opInterfaces){
+				opInterface.eSet(attribute, newValue)
+				ret = opInterface
+			}
+		}catch(RuntimeException rt){
+			logger.trace(rt)
+		}
+		return ret.toArray()
 	}
 	
 	override updateEReference(EObject eObject, EReference affectedEReference, Object newValue) {

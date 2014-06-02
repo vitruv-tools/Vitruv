@@ -11,6 +11,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableMap;
@@ -73,6 +74,11 @@ public class CorrespondenceInstance extends ModelInstance {
         return this.tuid2CorrespondencesMap.claimValueForKey(tuid);
     }
 
+    public Set<Correspondence> getAllCorrespondences(final EObject eObject) {
+        String tuid = getTUIDFromEObject(eObject);
+        return this.tuid2CorrespondencesMap.get(tuid);
+    }
+
     public boolean hasCorrespondingEObjects(final EObject eObject) {
         String tuid = getTUIDFromEObject(eObject);
         return this.tuid2CorrespondingEObjectsMap.containsKey(tuid);
@@ -81,6 +87,11 @@ public class CorrespondenceInstance extends ModelInstance {
     public Set<EObject> claimCorrespondingEObjects(final EObject eObject) {
         String tuid = getTUIDFromEObject(eObject);
         return this.tuid2CorrespondingEObjectsMap.claimValueForKey(tuid);
+    }
+
+    public Set<EObject> getCorrespondingEObjects(final EObject eObject) {
+        String tuid = getTUIDFromEObject(eObject);
+        return this.tuid2CorrespondingEObjectsMap.get(tuid);
     }
 
     public boolean isCorrespondingEObjectUnique(final EObject eObject) {
@@ -99,7 +110,7 @@ public class CorrespondenceInstance extends ModelInstance {
         return correspondingEObjects.iterator().next();
     }
 
-    public <T> Set<T> claimCorredpondingEObjectsByType(final EObject eObject, final Class<T> type) {
+    public <T> Set<T> claimCorrespondingEObjectsByType(final EObject eObject, final Class<T> type) {
         Set<EObject> correspondingEObjects = claimCorrespondingEObjects(eObject);
         Set<T> correspondingEObjectsByType = new HashSet<T>();
         for (EObject correspondingEObject : correspondingEObjects) {
@@ -110,8 +121,27 @@ public class CorrespondenceInstance extends ModelInstance {
         return correspondingEObjectsByType;
     }
 
+    public <T> Set<T> getAllEObjectCorrespondencesWithType(final Class<T> type) {
+        Set<T> correspondencesWithType = new HashSet<T>();
+        for (Correspondence correspondence : this.correspondences.getCorrespondences()) {
+            if (correspondence instanceof EObjectCorrespondence) {
+                EObjectCorrespondence eObjectCorrespondence = (EObjectCorrespondence) correspondence;
+                if (type.isInstance(eObjectCorrespondence.getElementA())) {
+                    @SuppressWarnings("unchecked")
+                    T t = (T) eObjectCorrespondence.getElementA();
+                    correspondencesWithType.add(t);
+                } else if (type.isInstance(eObjectCorrespondence.getElementB())) {
+                    @SuppressWarnings("unchecked")
+                    T t = (T) eObjectCorrespondence.getElementB();
+                    correspondencesWithType.add(t);
+                }
+            }
+        }
+        return correspondencesWithType;
+    }
+
     public <T> T claimCorrespondingEObjectByTypeIfUnique(final EObject eObject, final Class<T> type) {
-        Set<T> correspondingEObjectsByType = this.claimCorredpondingEObjectsByType(eObject, type);
+        Set<T> correspondingEObjectsByType = this.claimCorrespondingEObjectsByType(eObject, type);
         if (1 != correspondingEObjectsByType.size()) {
             throw new RuntimeException("claimCorrespondingEObjectForTypeIfUnique failed: "
                     + correspondingEObjectsByType.size() + " corresponding objects found (expected 1)"
@@ -133,7 +163,7 @@ public class CorrespondenceInstance extends ModelInstance {
         return this.tuid2CorrespondencesMap.containsKey(tuid) && this.tuid2CorrespondencesMap.get(tuid).size() > 0;
     }
 
-    public Correspondence getCorrespondeceForEObjectIfUnique(final EObject eObject) {
+    public Correspondence getCorrespondenceForEObjectIfUnique(final EObject eObject) {
         if (!hasCorrespondenceObjects(eObject)) {
             return null;
         }
@@ -216,14 +246,71 @@ public class CorrespondenceInstance extends ModelInstance {
         correspondeceSetsWithFIsOfTUID.add(correspondenceSetWithFIofTUID);
     }
 
-    public void removeAllCorrespondingInstances(final EObject eObject) {
+    /**
+     * Removes all correspondences containing this eObject. It also removes all
+     * child-correspondences of the correspondences containing the eObject.
+     * 
+     * @param eObject
+     *            from which all correspondences should be removed
+     */
+    public void removeAllDependingCorrespondences(final EObject eObject) {
         // TODO: Check if it is working
-        Set<Correspondence> correspondencesForEObj = this.tuid2CorrespondencesMap.get(eObject);
-        this.tuid2CorrespondencesMap.remove(eObject);
-        for (Correspondence correspondence : correspondencesForEObj) {
-            this.correspondences.getCorrespondences().remove(correspondence);
+        String tuid = getTUIDFromEObject(eObject);
+        Set<Correspondence> correspondencesForEObj = this.tuid2CorrespondencesMap.get(tuid);
+        if (null == correspondencesForEObj) {
+            return;
         }
+        this.tuid2CorrespondencesMap.remove(tuid);
+        for (Correspondence correspondence : correspondencesForEObj) {
+            removeCorrespondenceAndAllDependentCorrespondences(correspondence);
+        }
+
         // FIXME: remove feature correspondences
+    }
+
+    /**
+     * Removes correspondence and all child Correspondences of this correspondence
+     * 
+     * @param correspondence
+     */
+    public void removeCorrespondenceAndAllDependentCorrespondences(final Correspondence correspondence) {
+        Set<Correspondence> dependencyList = new HashSet<Correspondence>();
+        removeCorrespondenceAndAllDependentCorrespondences(correspondence, dependencyList);
+    }
+
+    /**
+     * Does the removing recursively. Marks all correspondences that will be deleted in a
+     * dependencyList --> Avoid stack overflow with correspondences that have a mutual dependency
+     * 
+     * @param correspondence
+     * @param dependencyList
+     */
+    private void removeCorrespondenceAndAllDependentCorrespondences(final Correspondence correspondence,
+            final Set<Correspondence> dependencyList) {
+        if (null == correspondence || null == correspondence.getDependentCorrespondences()) {
+            return;
+        }
+        dependencyList.add(correspondence);
+        for (Correspondence dependentCorrespondence : correspondence.getDependentCorrespondences()) {
+            if (null != dependentCorrespondence && !dependencyList.contains(dependentCorrespondence)) {
+                removeCorrespondenceFromMaps(dependentCorrespondence);
+                removeCorrespondenceAndAllDependentCorrespondences(dependentCorrespondence, dependencyList);
+            }
+        }
+        removeCorrespondenceFromMaps(correspondence);
+        EcoreUtil.remove(correspondence);
+    }
+
+    private void removeCorrespondenceFromMaps(final Correspondence possibleChildCorrespondence) {
+        if (possibleChildCorrespondence instanceof EObjectCorrespondence) {
+            EObjectCorrespondence eObjCorrespondence = (EObjectCorrespondence) possibleChildCorrespondence;
+            String elementATUID = getTUIDFromEObject(eObjCorrespondence.getElementA());
+            String elementBTUID = getTUIDFromEObject(eObjCorrespondence.getElementB());
+            this.tuid2CorrespondencesMap.remove(elementATUID);
+            this.tuid2CorrespondencesMap.remove(elementBTUID);
+            this.tuid2CorrespondingEObjectsMap.remove(elementATUID);
+            this.tuid2CorrespondingEObjectsMap.remove(elementBTUID);
+        }
     }
 
     public Set<FeatureInstance> getCorrespondingFeatureInstances(final EObject parentEObject,
@@ -243,7 +330,9 @@ public class CorrespondenceInstance extends ModelInstance {
         if (this.mapping.getMetamodelB().hasMetaclassInstance(eObject)) {
             return this.mapping.getMetamodelB().getTUID(eObject);
         }
-        logger.warn("EObject: '" + eObject + "' is neither an instance of MM1 nor an instance of MM2");
+        logger.warn("EObject: '" + eObject
+                + "' is neither an instance of MM1 nor an instance of MM2. NsURI of object: "
+                + eObject.eClass().getEPackage().getNsURI());
         return null;
     }
 
@@ -258,7 +347,7 @@ public class CorrespondenceInstance extends ModelInstance {
         updateFeatureInstances(oldEObject, newEObject, oldTUID);
     }
 
-    private void updateFeatureInstances(final EObject oldEObject, final EObject newEObject, String oldTUID) {
+    private void updateFeatureInstances(final EObject oldEObject, final EObject newEObject, final String oldTUID) {
         Collection<FeatureInstance> oldFeatureInstances = FeatureInstance.getAllInstances(oldEObject);
 
         // WARNING: We assume that everybody that uses the FeatureInstance multiton wants to be
@@ -290,15 +379,15 @@ public class CorrespondenceInstance extends ModelInstance {
         }
     }
 
-    private void updateTUID2CorrespondingEObjectsMap(String oldTUID, String newTUID, boolean sameTUID) {
+    private void updateTUID2CorrespondingEObjectsMap(final String oldTUID, final String newTUID, final boolean sameTUID) {
         if (!sameTUID) {
             Set<EObject> correspondingEObjects = this.tuid2CorrespondingEObjectsMap.remove(oldTUID);
             this.tuid2CorrespondingEObjectsMap.put(newTUID, correspondingEObjects);
         }
     }
 
-    private void updateTUID2CorrespondencesMap(final EObject oldEObject, final EObject newEObject, String oldTUID,
-            String newTUID, boolean sameTUID) {
+    private void updateTUID2CorrespondencesMap(final EObject oldEObject, final EObject newEObject,
+            final String oldTUID, final String newTUID, final boolean sameTUID) {
         Set<Correspondence> correspondences = this.tuid2CorrespondencesMap.get(oldTUID);
         for (Correspondence correspondence : correspondences) {
             if (correspondence instanceof SameTypeCorrespondence) {

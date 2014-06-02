@@ -44,22 +44,22 @@ public class ChangeSynchronizer {
 		syncChange(change)
 	}
 
-	def private dispatch EObject syncChange(EChange change) {
+	def private dispatch EObject[] syncChange(EChange change) {
 		logger.error("No syncChang method found for change " + change + ". Change not synchronized")
 		return null
 	}
 
-	def private dispatch syncChange(CreateRootEObject createRootEObject) {
+	def private dispatch EObject[] syncChange(CreateRootEObject createRootEObject) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(createRootEObject.changedEObject.class).
 			addEObject(createRootEObject.changedEObject)
 	}
 
-	def private dispatch EObject syncChange(DeleteRootEObject deleteRootEObject) {
+	def private dispatch EObject[] syncChange(DeleteRootEObject deleteRootEObject) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(deleteRootEObject.changedEObject.class).
 			removeEObject(deleteRootEObject.changedEObject)
 	}
 
-	def private dispatch EObject syncChange(CreateNonRootEObject<?> createNonRootEObject) {
+	def private dispatch EObject[] syncChange(CreateNonRootEObject<?> createNonRootEObject) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(createNonRootEObject.changedEObject.class)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(createNonRootEObject.affectedEObject.class)
 		val newNonRootObject = mappingTransformations.
@@ -71,36 +71,36 @@ public class ChangeSynchronizer {
 		return newNonRootObject
 	}
 
-	def private dispatch EObject syncChange(DeleteNonRootEObject<?> deleteNonRootEObject) {
+	def private dispatch EObject[] syncChange(DeleteNonRootEObject<?> deleteNonRootEObject) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(deleteNonRootEObject.changedEObject.class)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(deleteNonRootEObject.affectedEObject.class)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(deleteNonRootEObject.changedEObject.class).
-			addEObject(deleteNonRootEObject.changedEObject)
+			removeEObject(deleteNonRootEObject.changedEObject)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(deleteNonRootEObject.affectedEObject.class).
 			updateEReference(deleteNonRootEObject.affectedEObject, deleteNonRootEObject.affectedFeature,
 				deleteNonRootEObject.newValue)
 	}
 
-	def private dispatch EObject syncChange(UpdateEAttribute<?> updateEAttribute) {
+	def private dispatch EObject[] syncChange(UpdateEAttribute<?> updateEAttribute) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(updateEAttribute.affectedEObject.class).
 			updateEAttribute(updateEAttribute.affectedEObject, updateEAttribute.affectedFeature,
 				updateEAttribute.newValue)
 	}
 
-	def private dispatch EObject syncChange(UpdateEReference<?> updateEReference) {
+	def private dispatch EObject[] syncChange(UpdateEReference<?> updateEReference) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(updateEReference.affectedEObject.class).
 			updateEReference(updateEReference.affectedEObject, updateEReference.affectedFeature,
 				updateEReference.newValue)
 	}
 
-	def private dispatch EObject syncChange(UpdateEContainmentReference<?> updateEContainmentReference) {
+	def private dispatch EObject[] syncChange(UpdateEContainmentReference<?> updateEContainmentReference) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			updateEContainmentReference.affectedEObject.class).updateEContainmentReference(
 			updateEContainmentReference.affectedEObject, updateEContainmentReference.affectedFeature,
 			updateEContainmentReference.newValue)
 	}
 
-	def private dispatch EObject syncChange(UnsetEFeature<?> unsetEFeature) {
+	def private dispatch EObject[] syncChange(UnsetEFeature<?> unsetEFeature) {
 		logger.error("syncChange for UnsetEFeature<?> is not implemented yet...")
 		return null
 	}
@@ -136,7 +136,9 @@ public class ChangeSynchronizer {
 	}
 
 	def private addMapping(EObjectMappingTransformation transformation) {
-		transformation.setCorrespondenceInstance(correspondenceInstance)
+		if(null != correspondenceInstance){
+			transformation.setCorrespondenceInstance(correspondenceInstance)
+		}
 		mappingTransformations.putClaimingNullOrSameMapped(transformation.classOfMappedEObject, transformation)
 	}
 

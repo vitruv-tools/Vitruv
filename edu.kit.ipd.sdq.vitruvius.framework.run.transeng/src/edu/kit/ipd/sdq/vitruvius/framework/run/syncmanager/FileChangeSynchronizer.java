@@ -25,7 +25,7 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
 
     /**
      * If the change is a file created change then we create model instance in VSUM and start the
-     * synchronizeChange porcess for the root element in the new model.
+     * synchronizeChange process for the root element in the new model.
      * 
      * @param change
      *            The incoming change. It has to be an instanceof {@link FileChange} otherwise a
@@ -70,7 +70,7 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
         // CreateNonRootEObject<rootElement.getClass()> createRootObj =
         // ChangeFactory.eINSTANCE.createCreateNonRootEObject();
         CreateRootEObject createRootEObj = ChangeFactory.eINSTANCE.createCreateRootEObject();
-        // createRootEObj.setEObject(rootElement);
+        createRootEObj.setChangedEObject(rootElement);
         EMFModelChange rootAdd = new EMFModelChange(createRootEObj);
         this.changeSynchronizing.synchronizeChange(rootAdd, sourceModelURI);
     }

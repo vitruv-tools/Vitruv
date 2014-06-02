@@ -7,6 +7,11 @@ import org.eclipse.core.runtime.Platform;
 public class TestBuilderEnabled extends PropertyTester {
 
     private static final String IS_ENABLED = "isEnabled";
+    private final AddBuilder addBuilder;
+
+    protected TestBuilderEnabled(final AddBuilder addBuilder) {
+        this.addBuilder = addBuilder;
+    }
 
     @Override
     public boolean test(final Object receiver, final String property, final Object[] args, final Object expectedValue) {
@@ -14,8 +19,9 @@ public class TestBuilderEnabled extends PropertyTester {
         if (IS_ENABLED.equals(property)) {
             final IProject project = (IProject) Platform.getAdapterManager().getAdapter(receiver, IProject.class);
 
-            if (project != null)
-                return AddBuilder.hasBuilder(project);
+            if (project != null) {
+                return this.addBuilder.hasBuilder(project);
+            }
         }
 
         return false;
