@@ -2,20 +2,16 @@ package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatora
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.emftext.language.java.JavaPackage;
 import org.emftext.language.java.classifiers.Classifier;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.members.Member;
 import org.emftext.language.java.members.Method;
-import org.emftext.language.java.resource.java.mopp.JavaResourceFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,11 +28,7 @@ public class JaMoPPTUIDCalculatorAndResolverTest {
     public void setUp() throws Exception {
         this.jamoppTUIDCR = new JaMoPPTUIDCalculatorAndResolver();
 
-        // register JaMoPP package and factory globally
-        EPackage.Registry.INSTANCE.put(JavaPackage.eNS_URI, JavaPackage.eINSTANCE);
-        final Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
-        final Map<String, Object> m = reg.getExtensionToFactoryMap();
-        m.put("java", new JavaResourceFactory());
+        TestUtils.registerMetamodels();
 
         // create new ResourceSet
         final ResourceSet resSet = new ResourceSetImpl();

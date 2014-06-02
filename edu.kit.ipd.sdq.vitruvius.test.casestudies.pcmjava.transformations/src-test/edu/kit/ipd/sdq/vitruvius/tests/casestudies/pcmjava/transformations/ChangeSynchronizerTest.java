@@ -16,52 +16,34 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.emftext.language.java.JavaFactory;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
 import de.uka.ipd.sdq.pcm.repository.OperationInterface;
 import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.JaMoPPTUIDCalculatorAndResolver;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ChangeSynchronizer;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateNonRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEAttribute;
 
-public class ChangeSynchronizerTest {
+public class ChangeSynchronizerTest extends JaMoPPPCMTransformationTest {
 
     private static Logger logger = Logger.getLogger(ChangeSynchronizerTest.class.getSimpleName());
 
-    private ChangeSynchronizer changeSynchronizer;
-    private ResourceSet resourceSet;
+    @BeforeClass
+    public static void setUp() {
+        JaMoPPPCMTransformationTest.setUp();
+    }
 
+    @Override
     @Before
-    public void setUp() throws Exception {
-        // init synchronizer
-        this.changeSynchronizer = new ChangeSynchronizer();
-        final Repository repFac = RepositoryFactory.eINSTANCE.createRepository();
-        final Metamodel pcm = new Metamodel(repFac.eClass().getEPackage().getNsURI(), VURI.getInstance(repFac.eClass()
-                .getEPackage().getNsURI()), "repository");
-        final Metamodel jamopp = new Metamodel(JavaFactory.eINSTANCE.getJavaPackage().getNsURI(),
-                VURI.getInstance(JavaFactory.eINSTANCE.getJavaPackage().getNsURI()),
-                new JaMoPPTUIDCalculatorAndResolver(), "java");
-        final Mapping mapping = new Mapping(pcm, jamopp);
-        final VURI correspondenceInstanceURI = VURI.getInstance("/tmp/correspondence.xmi");
-        this.resourceSet = new ResourceSetImpl();
-        final Resource resource = this.resourceSet.createResource(correspondenceInstanceURI.getEMFUri());
-        final CorrespondenceInstance correspondenceInstance = new CorrespondenceInstance(mapping,
-                correspondenceInstanceURI, resource);
-        this.changeSynchronizer.setCorrespondenceInstance(correspondenceInstance);
+    public void createNewCorrespondenceInstance() {
+        super.createNewCorrespondenceInstance();
     }
 
     /**
@@ -71,23 +53,6 @@ public class ChangeSynchronizerTest {
     public void testAddRepository() {
         this.createAndSyncRepository();
         this.moveCreatedFilesToPath("addRepository");
-
-        // change name of root EObject
-        // repo.setEntityName("TestSetName");
-        // final UpdateEAttribute<Object> repoNameChange =
-        // ChangeFactory.eINSTANCE.createUpdateEAttribute();
-        // repoNameChange.setAffectedEObject(repo);
-        // final EStructuralFeature nameFeature = repo.eG
-        // repoNameChange.setAffectedFeature(nameFeature);
-        // repoNameChange.setNewValue(repo.getEntityName());
-
-        // create Interface in reopsitory
-
-        // change InterfaceName
-
-        // remove Interface
-
-        // remove root EObject
     }
 
     @Test
@@ -133,7 +98,7 @@ public class ChangeSynchronizerTest {
         renameInterface.setAffectedEObject(opInterface);
         renameInterface.setAffectedFeature((EAttribute) opInterface.eClass().getEStructuralFeature("entityName"));
         renameInterface.setNewValue(newValue);
-        final EObject eObject = this.changeSynchronizer.synchronizeChange(renameInterface);
+        final EObject[] eObject = this.changeSynchronizer.synchronizeChange(renameInterface);
         opInterface.setEntityName(newValue);
         this.saveEObjectIfCompilationUnit(eObject);
     }
@@ -148,7 +113,7 @@ public class ChangeSynchronizerTest {
         createBasicComponentChange.setAffectedFeature((EReference) repo.eClass().getEStructuralFeature(
                 "components__Repository"));
         createBasicComponentChange.setNewValue(basicComponent);
-        final EObject eObject = this.changeSynchronizer.synchronizeChange(createBasicComponentChange);
+        final EObject eObject[] = this.changeSynchronizer.synchronizeChange(createBasicComponentChange);
         this.saveEObjectIfCompilationUnit(eObject);
         return basicComponent;
     }
@@ -163,7 +128,7 @@ public class ChangeSynchronizerTest {
         createInterfaceChange.setAffectedFeature((EReference) repo.eClass().getEStructuralFeature(
                 "interfaces__Repository"));
         createInterfaceChange.setNewValue(opInterface);
-        final EObject eObject = this.changeSynchronizer.synchronizeChange(createInterfaceChange);
+        final EObject eObject[] = this.changeSynchronizer.synchronizeChange(createInterfaceChange);
         this.saveEObjectIfCompilationUnit(eObject);
         return opInterface;
     }
@@ -177,6 +142,12 @@ public class ChangeSynchronizerTest {
         createRootEObj.setChangedEObject(repo);
         this.changeSynchronizer.synchronizeChange(createRootEObj);
         return repo;
+    }
+
+    private void saveEObjectIfCompilationUnit(final EObject[] eObjects) {
+        for (final EObject eObj : eObjects) {
+            this.saveEObjectIfCompilationUnit(eObj);
+        }
     }
 
     private void saveEObjectIfCompilationUnit(final EObject eObject) {
