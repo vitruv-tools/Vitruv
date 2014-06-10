@@ -91,7 +91,7 @@
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eTypeParameters>
-    <eGenericSuperTypes eClassifier="#//DeleteRootEObject"/>
+    <eGenericSuperTypes eClassifier="#//DeleteEObject"/>
     <eGenericSuperTypes eClassifier="#//UpdateEContainmentReference">
       <eTypeArguments eTypeParameter="#//DeleteNonRootEObject/T"/>
     </eGenericSuperTypes>
