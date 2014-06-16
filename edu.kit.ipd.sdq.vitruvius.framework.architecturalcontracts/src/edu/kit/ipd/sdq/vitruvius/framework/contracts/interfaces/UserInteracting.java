@@ -1,15 +1,12 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
 
 public interface UserInteracting {
-    void interruptAndInform(String message);
+    void showMessage(UserInteractionType type, String message);
 
-    int selectFromMessage(String message, String... selectionDescriptions);
+    int selectFromMessage(UserInteractionType type, String message, String... selectionDescriptions);
 
-    int selectFromModel(String message, ModelInstance... modelInstances);
-
-    void addToInformationList(String message);
-
-    void removeFromInformationList(String message);
+    int selectFromModel(UserInteractionType type, String message, ModelInstance... modelInstances);
 }
