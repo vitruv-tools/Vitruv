@@ -1,5 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -28,17 +30,19 @@ class EMFModelSynchronizer extends ConcreteChangeSynchronizer {
     }
 
     @Override
-    public void synchronizeChange(final Change change, final VURI sourceModelURI) {
+    public Set<VURI> synchronizeChange(final Change change, final VURI sourceModelURI) {
         ModelInstance sourceModel = this.modelProviding.getModelInstanceOriginal(sourceModelURI);
         Set<CorrespondenceInstance> correspondenceInstances = this.correspondenceProviding
                 .getAllCorrespondenceInstances(sourceModelURI);
         if (null == correspondenceInstances || 0 == correspondenceInstances.size()) {
             logger.info("No correspondenceInstance found for model: " + sourceModelURI
                     + ". Change not sychronized with any other model.");
-            return;
+            return Collections.emptySet();
         }
+        Set<VURI> changedVURIs = new HashSet<VURI>();
         for (CorrespondenceInstance correspondenceInstance : correspondenceInstances) {
-            this.changePropagating.propagateChange(change, sourceModel, correspondenceInstance);
+            changedVURIs.addAll(this.changePropagating.propagateChange(change, sourceModel, correspondenceInstance));
         }
+        return changedVURIs;
     }
 }

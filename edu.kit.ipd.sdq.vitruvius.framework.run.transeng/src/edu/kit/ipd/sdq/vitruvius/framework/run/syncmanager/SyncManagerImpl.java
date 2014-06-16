@@ -1,8 +1,11 @@
 package edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -57,21 +60,23 @@ public class SyncManagerImpl implements ChangeSynchronizing {
     }
 
     @Override
-    public void synchronizeChanges(final List<Change> changes, final VURI sourceModelURI) {
+    public Set<VURI> synchronizeChanges(final List<Change> changes, final VURI sourceModelURI) {
+        Set<VURI> changedVURIs = new HashSet<VURI>();
         for (Change change : changes) {
-            synchronizeChange(change, sourceModelURI);
+            changedVURIs.addAll(synchronizeChange(change, sourceModelURI));
         }
+        return changedVURIs;
     }
 
     @Override
-    public void synchronizeChange(final Change change, final VURI sourceModelURI) {
+    public Set<VURI> synchronizeChange(final Change change, final VURI sourceModelURI) {
         if (!this.changeSynchonizerMap.containsKey(change.getClass())) {
             logger.warn("Could not find ChangeSynchronizer for change " + change.getClass().getSimpleName()
                     + ". Can not synchronize change in source model " + sourceModelURI.toString() + " not synchroized.");
-            return;
+            return Collections.emptySet();
         }
         // TODO: extend synchronizeChange: Should return changed EObjects/ChangedModels
-        this.changeSynchonizerMap.get(change.getClass()).synchronizeChange(change, sourceModelURI);
+        return this.changeSynchonizerMap.get(change.getClass()).synchronizeChange(change, sourceModelURI);
         // TODO: Check invariants:
         // Get invariants from Invariant providing
         // Validate models with Validating

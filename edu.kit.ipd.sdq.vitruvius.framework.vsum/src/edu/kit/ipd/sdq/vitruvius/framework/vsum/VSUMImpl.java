@@ -145,13 +145,13 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     public CorrespondenceInstance getCorrespondenceInstanceOriginal(final VURI model1uri, final VURI model2uri) {
         Metamodel metamodelA = this.metamodelManaging.getMetamodel(model1uri);
         Metamodel metamodelB = this.metamodelManaging.getMetamodel(model2uri);
-        Mapping mappingA = new Mapping(metamodelA, metamodelB);
-        if (this.mapping2CorrespondenceInstanceMap.containsKey(mappingA)) {
-            return this.mapping2CorrespondenceInstanceMap.get(mappingA);
+        Mapping mapping = this.mappingManaging.getMapping(metamodelA, metamodelB);
+        if (this.mapping2CorrespondenceInstanceMap.containsKey(mapping)) {
+            return this.mapping2CorrespondenceInstanceMap.get(mapping);
         }
-        Mapping mappingB = new Mapping(metamodelB, metamodelA);
-        if (this.mapping2CorrespondenceInstanceMap.containsKey(mappingB)) {
-            return this.mapping2CorrespondenceInstanceMap.get(mappingB);
+        mapping = this.mappingManaging.getMapping(metamodelB, metamodelA);
+        if (this.mapping2CorrespondenceInstanceMap.containsKey(mapping)) {
+            return this.mapping2CorrespondenceInstanceMap.get(mapping);
         }
         logger.warn("no mapping found for URI1: " + model1uri + " uri2: " + model2uri);
         return null;
@@ -195,5 +195,11 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
             final Invariants invariants) {
         // TODO Auto-generated method stub
         return false;
+    }
+
+    @Override
+    public void saveModelInstanceOriginal(final VURI vuri) {
+        // TODO Auto-generated method stub
+
     }
 }

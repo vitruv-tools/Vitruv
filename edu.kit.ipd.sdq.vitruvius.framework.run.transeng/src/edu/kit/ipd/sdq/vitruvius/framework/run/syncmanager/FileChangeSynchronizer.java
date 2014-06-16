@@ -1,5 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager;
 
+import java.util.Collections;
+import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -34,23 +37,21 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
      *            the model where the change occured
      */
     @Override
-    public void synchronizeChange(final Change change, final VURI sourceModelURI) {
+    public Set<VURI> synchronizeChange(final Change change, final VURI sourceModelURI) {
         FileChange fileChange = (FileChange) change;
         switch (fileChange.getFileChangeKind()) {
         case CREATE:
-            synchronizeFileCreated(sourceModelURI);
-            break;
+            return synchronizeFileCreated(sourceModelURI);
         case DELETE:
-            synchronizeFileDeleted(sourceModelURI);
-            break;
+            return synchronizeFileDeleted(sourceModelURI);
         default:
             logger.warn("No change action for kind: " + fileChange.getFileChangeKind() + ". Change "
                     + change.toString() + " in source model " + sourceModelURI.toString() + " not synchronized.");
-            break;
+            return Collections.emptySet();
         }
     }
 
-    private void synchronizeFileCreated(final VURI sourceModelURI) {
+    private Set<VURI> synchronizeFileCreated(final VURI sourceModelURI) {
         ModelInstance newModelInstance = this.modelProviding.getModelInstanceOriginal(sourceModelURI);
         Resource resource = newModelInstance.getResource();
         EObject rootElement = null;
@@ -63,7 +64,7 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
         } else { // resource.getContents().size() == null --> no element in newModelInstance
             logger.info("Empty model file created: " + sourceModelURI
                     + ". Synchronization for 'root element created' not triggerd.");
-            return;
+            return Collections.emptySet();
         }
         // FIXME: The type in CreateNonRootEObject should be the runtime class of rootElement.
         // Apparently this does not work. Maybe because the type of the generic class has to static?
@@ -72,10 +73,10 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
         CreateRootEObject createRootEObj = ChangeFactory.eINSTANCE.createCreateRootEObject();
         createRootEObj.setChangedEObject(rootElement);
         EMFModelChange rootAdd = new EMFModelChange(createRootEObj);
-        this.changeSynchronizing.synchronizeChange(rootAdd, sourceModelURI);
+        return this.changeSynchronizing.synchronizeChange(rootAdd, sourceModelURI);
     }
 
-    private void synchronizeFileDeleted(final VURI sourceModelURI) {
+    private Set<VURI> synchronizeFileDeleted(final VURI sourceModelURI) {
         ModelInstance oldModelInstance = this.modelProviding.getModelInstanceOriginal(sourceModelURI);
         Resource resource = oldModelInstance.getResource();
         if (0 < resource.getContents().size()) {
@@ -83,7 +84,8 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
             DeleteNonRootEObject<EObject> deleteRootObj = ChangeFactory.eINSTANCE.createDeleteNonRootEObject();
             deleteRootObj.setNewValue(rootElement);
             EMFModelChange rootDeleted = new EMFModelChange(deleteRootObj);
-            this.changeSynchronizing.synchronizeChange(rootDeleted, sourceModelURI);
+            return this.changeSynchronizing.synchronizeChange(rootDeleted, sourceModelURI);
         }
+        return Collections.emptySet();
     }
 }
