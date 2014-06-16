@@ -122,6 +122,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
      */
     private void importToVitruvius(final IResource iResource) {
         this.triggerFileChangeSynchronisation(iResource, FileChangeKind.CREATE);
+
     }
 
     /**

@@ -70,11 +70,12 @@ public class SyncManagerImpl implements ChangeSynchronizing {
                     + ". Can not synchronize change in source model " + sourceModelURI.toString() + " not synchroized.");
             return;
         }
+        // TODO: extend synchronizeChange: Should return changed EObjects/ChangedModels
         this.changeSynchonizerMap.get(change.getClass()).synchronizeChange(change, sourceModelURI);
         // TODO: Check invariants:
         // Get invariants from Invariant providing
         // Validate models with Validating
-        // TODO: Execute responses for violated invariants
+        // TODO: Execute responses for violated invariants --> Classified response actions
     }
 
     public ModelProviding getModelProviding() {
