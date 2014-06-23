@@ -18,21 +18,21 @@ public class FileSystemHelper {
     }
 
     public static VURI createCorrespondenceInstanceURI(final VURI[] mmURIs) {
-        IProject correspondenceProject = getCorrespondenceProject();
+        IProject correspondenceProject = getVSUMProject();
         IFolder correspondenceFolder = getCorrespondenceFolder(correspondenceProject);
         VURI[] copyOfMMURIs = Arrays.copyOf(mmURIs, mmURIs.length);
         Arrays.sort(copyOfMMURIs);
         String fileName = "";
         for (VURI uri : copyOfMMURIs) {
-            fileName += uri.toString();
+            fileName += uri.toString().hashCode();
         }
         IFile correspondenceFile = correspondenceFolder.getFile(fileName);
         return VURI.getInstance(correspondenceFile);
     }
 
-    public static IProject createCorrespondenceProject() {
+    public static IProject createVSUMProject() {
         try {
-            IProject project = getCorrespondenceProject();
+            IProject project = getVSUMProject();
             project.create(null);
             project.open(null);
             // IProjectDescription description = project.getDescription();
@@ -47,7 +47,7 @@ public class FileSystemHelper {
         }
     }
 
-    private static IProject getCorrespondenceProject() {
+    private static IProject getVSUMProject() {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         return root.getProject(VSUMConstants.VSUM_PROJECT_NAME);
     }
