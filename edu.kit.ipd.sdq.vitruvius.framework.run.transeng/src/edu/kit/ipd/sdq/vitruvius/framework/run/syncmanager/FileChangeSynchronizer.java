@@ -12,7 +12,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateRootEObject;
@@ -22,8 +21,9 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
 
     private static final Logger logger = Logger.getLogger(FileChangeSynchronizer.class.getSimpleName());
 
-    public FileChangeSynchronizer(final ModelProviding modelProviding, final ChangeSynchronizing changeSynchronizing) {
-        super(modelProviding, changeSynchronizing);
+    public FileChangeSynchronizer(final ModelProviding modelProviding,
+            final ConcreteChangeSynchronizer concreteChangeSynchronizer) {
+        super(modelProviding, concreteChangeSynchronizer);
     }
 
     /**
@@ -66,14 +66,10 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
                     + ". Synchronization for 'root element created' not triggerd.");
             return Collections.emptySet();
         }
-        // FIXME: The type in CreateNonRootEObject should be the runtime class of rootElement.
-        // Apparently this does not work. Maybe because the type of the generic class has to static?
-        // CreateNonRootEObject<rootElement.getClass()> createRootObj =
-        // ChangeFactory.eINSTANCE.createCreateNonRootEObject();
         CreateRootEObject createRootEObj = ChangeFactory.eINSTANCE.createCreateRootEObject();
         createRootEObj.setChangedEObject(rootElement);
         EMFModelChange rootAdd = new EMFModelChange(createRootEObj);
-        return this.changeSynchronizing.synchronizeChange(rootAdd, sourceModelURI);
+        return syncChange(rootAdd, sourceModelURI);
     }
 
     private Set<VURI> synchronizeFileDeleted(final VURI sourceModelURI) {
@@ -84,7 +80,7 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
             DeleteNonRootEObject<EObject> deleteRootObj = ChangeFactory.eINSTANCE.createDeleteNonRootEObject();
             deleteRootObj.setNewValue(rootElement);
             EMFModelChange rootDeleted = new EMFModelChange(deleteRootObj);
-            return this.changeSynchronizing.synchronizeChange(rootDeleted, sourceModelURI);
+            return syncChange(rootDeleted, sourceModelURI);
         }
         return Collections.emptySet();
     }

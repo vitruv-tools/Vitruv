@@ -24,7 +24,7 @@ class EMFModelSynchronizer extends ConcreteChangeSynchronizer {
 
     public EMFModelSynchronizer(final ModelProviding modelProviding, final ChangeSynchronizing changeSynchronizing,
             final ChangePropagating changePropagating, final CorrespondenceProviding correspondenceProviding) {
-        super(modelProviding, changeSynchronizing);
+        super(modelProviding);
         this.changePropagating = changePropagating;
         this.correspondenceProviding = correspondenceProviding;
     }

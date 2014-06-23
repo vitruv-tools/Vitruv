@@ -1,8 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -52,35 +50,38 @@ public class SyncManagerImpl implements ChangeSynchronizing {
         this.changePropagating = changePropagating;
         this.correspondenceProviding = correspondenceProviding;
         this.changeSynchonizerMap = new HashMap<Class<?>, ConcreteChangeSynchronizer>();
-        this.changeSynchonizerMap.put(EMFModelChange.class, new EMFModelSynchronizer(modelProviding, this,
-                this.changePropagating, this.correspondenceProviding));
-        this.changeSynchonizerMap.put(FileChange.class, new FileChangeSynchronizer(modelProviding, this));
+        EMFModelSynchronizer emfModelSynchronizer = new EMFModelSynchronizer(modelProviding, this,
+                this.changePropagating, this.correspondenceProviding);
+        this.changeSynchonizerMap.put(EMFModelChange.class, emfModelSynchronizer);
+        this.changeSynchonizerMap.put(FileChange.class,
+                new FileChangeSynchronizer(modelProviding, emfModelSynchronizer));
         this.invariantProviding = invariantProviding;
         this.validating = validating;
     }
 
     @Override
-    public Set<VURI> synchronizeChanges(final List<Change> changes, final VURI sourceModelURI) {
-        Set<VURI> changedVURIs = new HashSet<VURI>();
+    public void synchronizeChanges(final List<Change> changes, final VURI sourceModelURI) {
         for (Change change : changes) {
-            changedVURIs.addAll(synchronizeChange(change, sourceModelURI));
+            synchronizeChange(change, sourceModelURI);
         }
-        return changedVURIs;
     }
 
     @Override
-    public Set<VURI> synchronizeChange(final Change change, final VURI sourceModelURI) {
+    public void synchronizeChange(final Change change, final VURI sourceModelURI) {
         if (!this.changeSynchonizerMap.containsKey(change.getClass())) {
             logger.warn("Could not find ChangeSynchronizer for change " + change.getClass().getSimpleName()
                     + ". Can not synchronize change in source model " + sourceModelURI.toString() + " not synchroized.");
-            return Collections.emptySet();
         }
-        // TODO: extend synchronizeChange: Should return changed EObjects/ChangedModels
-        return this.changeSynchonizerMap.get(change.getClass()).synchronizeChange(change, sourceModelURI);
+        Set<VURI> changedVURIs = this.changeSynchonizerMap.get(change.getClass()).synchronizeChange(change,
+                sourceModelURI);
         // TODO: Check invariants:
         // Get invariants from Invariant providing
         // Validate models with Validating
         // TODO: Execute responses for violated invariants --> Classified response actions
+
+        for (VURI changedVURI : changedVURIs) {
+            this.modelProviding.saveModelInstanceOriginal(changedVURI);
+        }
     }
 
     public ModelProviding getModelProviding() {
