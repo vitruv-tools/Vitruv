@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils;
 
 import java.io.IOException;
-import java.util.Set;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -14,11 +13,13 @@ import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ChangeSynchronizer;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EcoreResourceBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateNonRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateRootEObject;
@@ -51,7 +52,7 @@ public class PCM2JaMoPPUtils {
     }
 
     public static Resource createResource(final String resourceName, final ResourceSet resourceSet) {
-        final URI uri = EMFBridge.createPlatformResourceURI("tests/" + resourceName);
+        final URI uri = EMFBridge.createPlatformResourceURI(resourceName);
         // final URI uri = URI.createPlatformResourceURI("test/" + resourceName, true);
         final Resource resource = resourceSet.createResource(uri);
         return resource;
@@ -59,7 +60,7 @@ public class PCM2JaMoPPUtils {
 
     public static ModelInstance createModelInstance(final String name, final ResourceSet resourceSet) {
         final Resource resource = createResource(name, resourceSet);
-        final VURI vuri = VURI.getInstance(resource);
+        final VURI vuri = VURI.getInstance(name);
         final ModelInstance modelInstance = new ModelInstance(vuri, resource);
         return modelInstance;
     }
@@ -79,16 +80,22 @@ public class PCM2JaMoPPUtils {
         return (EReference) eObject.eClass().getEStructuralFeature(featureName);
     }
 
-    public static void saveVURIs(final Set<VURI> vuris, final ResourceSet resourceSet) throws IOException {
-        for (final VURI vuri : vuris) {
+    public static void saveEMFChangeResult(final EMFChangeResult emfChangeResult, final ResourceSet resourceSet)
+            throws IOException {
+        for (final VURI vuri : emfChangeResult.getExistingVURIsToSave()) {
             saveVURI(vuri, resourceSet);
+        }
+        for (final Pair<EObject, VURI> eObjectVURIPair : emfChangeResult.getNewRootEObjectsToSave()) {
+            final Resource resource = resourceSet.createResource(eObjectVURIPair.getSecond().getEMFUri());
+            resource.getContents().add(eObjectVURIPair.getFirst());
+            EcoreResourceBridge.saveResource(resource);
         }
     }
 
-    public static void saveVURI(final VURI vuri, final ResourceSet resourceSet) throws IOException {
+    public static Resource saveVURI(final VURI vuri, final ResourceSet resourceSet) throws IOException {
         final Resource resource = resourceSet.createResource(vuri.getEMFUri());
         EcoreResourceBridge.saveResource(resource);
-        ;
+        return resource;
     }
 
 }

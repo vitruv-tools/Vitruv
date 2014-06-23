@@ -1,13 +1,12 @@
 package edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager;
 
-import java.util.Collections;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ChangeResult;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
@@ -37,7 +36,7 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
      *            the model where the change occured
      */
     @Override
-    public Set<VURI> synchronizeChange(final Change change, final VURI sourceModelURI) {
+    public ChangeResult synchronizeChange(final Change change, final VURI sourceModelURI) {
         FileChange fileChange = (FileChange) change;
         switch (fileChange.getFileChangeKind()) {
         case CREATE:
@@ -47,11 +46,11 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
         default:
             logger.warn("No change action for kind: " + fileChange.getFileChangeKind() + ". Change "
                     + change.toString() + " in source model " + sourceModelURI.toString() + " not synchronized.");
-            return Collections.emptySet();
+            return new EMFChangeResult();
         }
     }
 
-    private Set<VURI> synchronizeFileCreated(final VURI sourceModelURI) {
+    private ChangeResult synchronizeFileCreated(final VURI sourceModelURI) {
         ModelInstance newModelInstance = this.modelProviding.getModelInstanceOriginal(sourceModelURI);
         Resource resource = newModelInstance.getResource();
         EObject rootElement = null;
@@ -64,7 +63,7 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
         } else { // resource.getContents().size() == null --> no element in newModelInstance
             logger.info("Empty model file created: " + sourceModelURI
                     + ". Synchronization for 'root element created' not triggerd.");
-            return Collections.emptySet();
+            return new EMFChangeResult();
         }
         CreateRootEObject createRootEObj = ChangeFactory.eINSTANCE.createCreateRootEObject();
         createRootEObj.setChangedEObject(rootElement);
@@ -72,7 +71,7 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
         return syncChange(rootAdd, sourceModelURI);
     }
 
-    private Set<VURI> synchronizeFileDeleted(final VURI sourceModelURI) {
+    private ChangeResult synchronizeFileDeleted(final VURI sourceModelURI) {
         ModelInstance oldModelInstance = this.modelProviding.getModelInstanceOriginal(sourceModelURI);
         Resource resource = oldModelInstance.getResource();
         if (0 < resource.getContents().size()) {
@@ -82,6 +81,6 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
             EMFModelChange rootDeleted = new EMFModelChange(deleteRootObj);
             return syncChange(rootDeleted, sourceModelURI);
         }
-        return Collections.emptySet();
+        return new EMFChangeResult();
     }
 }

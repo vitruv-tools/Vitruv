@@ -15,6 +15,7 @@ import org.emftext.language.java.containers.CompilationUnit;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaNamespace;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
@@ -53,16 +54,17 @@ public class PCMJaMoPPTransformationExecuter implements TransformationExecuting 
      * @return set of changed VURIs
      */
     @Override
-    public Set<VURI> executeTransformation(final Change change, final ModelInstance sourceModel,
+    public EMFChangeResult executeTransformation(final Change change, final ModelInstance sourceModel,
             final CorrespondenceInstance correspondenceInstance) {
         final EMFModelChange emfModelChange = (EMFModelChange) change;
         this.changeSynchronizer.setCorrespondenceInstance(correspondenceInstance);
         final EObject[] changedEObjects = this.changeSynchronizer.synchronizeChange(emfModelChange.getEChange());
-        final Set<VURI> changedResources = new HashSet<VURI>(changedEObjects.length);
+        final Set<VURI> changedVURIs = new HashSet<VURI>(changedEObjects.length);
+        final Set<Pair<EObject, VURI>> newRootEObjectsVURIPairs = new HashSet<Pair<EObject, VURI>>();
         for (final EObject changedEObject : changedEObjects) {
             final Resource resource = changedEObject.eResource();
             if (null != resource) {
-                changedResources.add(VURI.getInstance(resource));
+                changedVURIs.add(VURI.getInstance(resource));
             } else {
                 if (changedEObject instanceof CompilationUnit) {
                     final CompilationUnit newCompUnit = (CompilationUnit) changedEObject;
@@ -73,11 +75,12 @@ public class PCMJaMoPPTransformationExecuter implements TransformationExecuting 
                     final String compUnitPath = newCompUnit.getNamespacesAsString().replace(".", "/").replace("$", "/")
                             + newCompUnit.getName().replace("$", ".");
                     final VURI cuVURI = VURI.getInstance(srcFolderPath + compUnitPath);
-                    changedResources.add(cuVURI);
+                    final Pair<EObject, VURI> newEObjectVURIPair = new Pair<EObject, VURI>(newCompUnit, cuVURI);
+                    newRootEObjectsVURIPairs.add(newEObjectVURIPair);
                 }
             }
         }
-        return changedResources;
+        return new EMFChangeResult(changedVURIs, newRootEObjectsVURIPairs);
     }
 
     @Override

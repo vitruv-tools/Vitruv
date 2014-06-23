@@ -3,11 +3,12 @@ package edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.eclipse.emf.ecore.EObject;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Invariants;
@@ -19,6 +20,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondencePr
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.InvariantProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.correspmmprovider.CorrespondenceMMProviderImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.design.metamodelmanager.MetamodelManagerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.design.viewtype.manager.ViewTypeManagerImpl;
@@ -72,15 +74,21 @@ public class SyncManagerImpl implements ChangeSynchronizing {
             logger.warn("Could not find ChangeSynchronizer for change " + change.getClass().getSimpleName()
                     + ". Can not synchronize change in source model " + sourceModelURI.toString() + " not synchroized.");
         }
-        Set<VURI> changedVURIs = this.changeSynchonizerMap.get(change.getClass()).synchronizeChange(change,
-                sourceModelURI);
+        EMFChangeResult emfChangeResult = (EMFChangeResult) this.changeSynchonizerMap.get(change.getClass())
+                .synchronizeChange(change, sourceModelURI);
         // TODO: Check invariants:
         // Get invariants from Invariant providing
         // Validate models with Validating
         // TODO: Execute responses for violated invariants --> Classified response actions
 
-        for (VURI changedVURI : changedVURIs) {
+        for (VURI changedVURI : emfChangeResult.getExistingVURIsToSave()) {
             this.modelProviding.saveModelInstanceOriginal(changedVURI);
+        }
+
+        for (Pair<EObject, VURI> createdEObjectVURIPair : emfChangeResult.getNewRootEObjectsToSave()) {
+            ModelInstance mi = this.modelProviding.getModelInstanceOriginal(createdEObjectVURIPair.getSecond());
+            mi.getResource().getContents().add(createdEObjectVURIPair.getFirst());
+            this.modelProviding.saveModelInstanceOriginal(mi.getURI());
         }
     }
 
