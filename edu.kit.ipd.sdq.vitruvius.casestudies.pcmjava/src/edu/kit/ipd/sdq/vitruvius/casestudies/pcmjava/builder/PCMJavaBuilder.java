@@ -19,8 +19,11 @@ import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 
 public class PCMJavaBuilder extends VitruviusEmfBuilder {
 
+    // private MonitoredEditor monitoredEditor;
+
     public PCMJavaBuilder() {
         super();
+
         final MetaRepositoryImpl metarepository = new MetaRepositoryImpl();
 
         final VURI pcmMMUri = VURI.getInstance(PCMJavaNamespace.PCM_METAMODEL_NAMESPACE);
@@ -42,6 +45,7 @@ public class PCMJavaBuilder extends VitruviusEmfBuilder {
         metarepository.addMapping(pcmJavaMapping);
         Set<String> monitoredFileTypes = new HashSet<String>(Arrays.asList(PCMJavaNamespace.REPOSITORY_FILE_EXTENSION,
                 PCMJavaNamespace.JAVA_FILE_EXTENSION));
+
         super.initializeBuilder(monitoredFileTypes, metarepository);
     }
 

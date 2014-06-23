@@ -19,7 +19,8 @@ Require-Bundle: org.eclipse.xtend.lib,
  org.emftext.language.refactoring.rolemapping;bundle-version="0.9.1",
  org.emftext.refactoring.registry.rolemapping;bundle-version="0.9.1",
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava,
- org.eclipse.core.resources;bundle-version="3.8.100"
+ org.eclipse.core.resources;bundle-version="3.8.100",
+ org.eclipse.core.runtime;bundle-version="3.9.0"
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations,
  org.modelrefactoring.jamopp.test.valueprovider
 Bundle-ClassPath: libs/reflections-0.9.9-RC1.jar,

@@ -1,5 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -32,9 +35,14 @@ public class JaMoPPPCMTransformationTest {
         final Repository repFac = RepositoryFactory.eINSTANCE.createRepository();
         final Metamodel pcm = new Metamodel(repFac.eClass().getEPackage().getNsURI(), VURI.getInstance(repFac.eClass()
                 .getEPackage().getNsURI()), "repository");
-        final Metamodel jamopp = new Metamodel(PCMJavaNamespace.JAMOPP_METAMODEL_NAMESPACE,
-                VURI.getInstance(PCMJavaNamespace.JAMOPP_METAMODEL_NAMESPACE), new JaMoPPTUIDCalculatorAndResolver(),
-                "java");
+
+        final VURI jaMoPPURI = VURI.getInstance(PCMJavaNamespace.JAMOPP_METAMODEL_NAMESPACE);
+        final Set<String> jamoppNSURIs = new HashSet<String>();
+        jamoppNSURIs.add(PCMJavaNamespace.JAMOPP_METAMODEL_NAMESPACE_URI);
+        jamoppNSURIs.add(PCMJavaNamespace.JAMPPP_METAMODEL_NAMESPACE_URI_CONTAINER);
+        final Metamodel jamopp = new Metamodel(jamoppNSURIs, jaMoPPURI, new JaMoPPTUIDCalculatorAndResolver(),
+                PCMJavaNamespace.JAVA_FILE_EXTENSION);
+
         mapping = new Mapping(pcm, jamopp);
         resourceSet = new ResourceSetImpl();
     }

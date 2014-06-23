@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.vsum;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,6 +26,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManagin
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ViewTypeManaging;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.helper.FileSystemHelper;
 
 public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Validating {
@@ -78,6 +80,23 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
             this.modelInstances.put(modelURI, modelInstance);
         }
         return modelInstance;
+    }
+
+    /**
+     * Saves the resource for the given vuri. If the VURI is not existing yet it will be created.
+     * 
+     * @param vuri
+     *            The VURI to save
+     */
+    @Override
+    public void saveModelInstanceOriginal(final VURI vuri) {
+        ModelInstance modelInstanceToSave = getModelInstanceOriginal(vuri);
+        Resource resourceToSave = modelInstanceToSave.getResource();
+        try {
+            EcoreResourceBridge.saveResource(resourceToSave);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not save VURI + " + vuri + ": " + e);
+        }
     }
 
     private ModelInstance getOrCreateUnregisteredModelInstance(final VURI modelURI) {
@@ -197,9 +216,4 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         return false;
     }
 
-    @Override
-    public void saveModelInstanceOriginal(final VURI vuri) {
-        // TODO Auto-generated method stub
-
-    }
 }

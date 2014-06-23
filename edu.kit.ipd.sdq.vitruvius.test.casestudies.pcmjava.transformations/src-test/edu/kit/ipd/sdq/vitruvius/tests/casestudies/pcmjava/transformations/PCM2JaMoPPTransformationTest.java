@@ -28,12 +28,12 @@ import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateNonRootEObject;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEAttribute;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPUtils;
 
-public class ChangeSynchronizerTest extends JaMoPPPCMTransformationTest {
+public class PCM2JaMoPPTransformationTest extends JaMoPPPCMTransformationTest {
 
-    private static Logger logger = Logger.getLogger(ChangeSynchronizerTest.class.getSimpleName());
+    private static Logger logger = Logger.getLogger(PCM2JaMoPPTransformationTest.class.getSimpleName());
 
     @BeforeClass
     public static void setUp() {
@@ -51,13 +51,13 @@ public class ChangeSynchronizerTest extends JaMoPPPCMTransformationTest {
      */
     @Test
     public void testAddRepository() {
-        this.createAndSyncRepository();
+        PCM2JaMoPPUtils.createAndSyncRepository(resourceSet, changeSynchronizer);
         this.moveCreatedFilesToPath("addRepository");
     }
 
     @Test
     public void testRepositoryNameChange() {
-        final Repository repo = this.createAndSyncRepository();
+        final Repository repo = PCM2JaMoPPUtils.createAndSyncRepository(resourceSet, changeSynchronizer);
         repo.setEntityName("TestNameChange");
 
         final UpdateEAttribute<Object> repoNameChange = ChangeFactory.eINSTANCE.createUpdateEAttribute();
@@ -72,14 +72,14 @@ public class ChangeSynchronizerTest extends JaMoPPPCMTransformationTest {
 
     @Test
     public void testAddInterface() {
-        final Repository repo = this.createAndSyncRepository();
+        final Repository repo = PCM2JaMoPPUtils.createAndSyncRepository(resourceSet, changeSynchronizer);
         this.addInterfaceToReposiotry(repo);
         this.moveCreatedFilesToPath("testAddInterface");
     }
 
     @Test
     public void testRenameInterface() {
-        final Repository repo = this.createAndSyncRepository();
+        final Repository repo = PCM2JaMoPPUtils.createAndSyncRepository(resourceSet, changeSynchronizer);
         final OperationInterface opInterface = this.addInterfaceToReposiotry(repo);
         this.renameInterfaceAndSync(opInterface);
         this.moveCreatedFilesToPath("testRenameInterface");
@@ -87,7 +87,7 @@ public class ChangeSynchronizerTest extends JaMoPPPCMTransformationTest {
 
     @Test
     public void testAddBasicComponent() {
-        final Repository repo = this.createAndSyncRepository();
+        final Repository repo = PCM2JaMoPPUtils.createAndSyncRepository(resourceSet, changeSynchronizer);
         this.addBasicComponent(repo);
     }
 
@@ -98,14 +98,13 @@ public class ChangeSynchronizerTest extends JaMoPPPCMTransformationTest {
         renameInterface.setAffectedEObject(opInterface);
         renameInterface.setAffectedFeature((EAttribute) opInterface.eClass().getEStructuralFeature("entityName"));
         renameInterface.setNewValue(newValue);
-        final EObject[] eObject = this.changeSynchronizer.synchronizeChange(renameInterface);
+        final EObject[] eObject = PCM2JaMoPPTransformationTest.changeSynchronizer.synchronizeChange(renameInterface);
         opInterface.setEntityName(newValue);
         this.saveEObjectIfCompilationUnit(eObject);
     }
 
     private BasicComponent addBasicComponent(final Repository repo) {
-        final BasicComponent basicComponent = RepositoryFactory.eINSTANCE.createBasicComponent();
-        basicComponent.setRepository__RepositoryComponent(repo);
+        final BasicComponent basicComponent = PCM2JaMoPPUtils.createBasicComponent(repo);
         final CreateNonRootEObject<EObject> createBasicComponentChange = ChangeFactory.eINSTANCE
                 .createCreateNonRootEObject();
         createBasicComponentChange.setChangedEObject(basicComponent);
@@ -113,7 +112,8 @@ public class ChangeSynchronizerTest extends JaMoPPPCMTransformationTest {
         createBasicComponentChange.setAffectedFeature((EReference) repo.eClass().getEStructuralFeature(
                 "components__Repository"));
         createBasicComponentChange.setNewValue(basicComponent);
-        final EObject eObject[] = this.changeSynchronizer.synchronizeChange(createBasicComponentChange);
+        final EObject eObject[] = PCM2JaMoPPTransformationTest.changeSynchronizer
+                .synchronizeChange(createBasicComponentChange);
         this.saveEObjectIfCompilationUnit(eObject);
         return basicComponent;
     }
@@ -128,20 +128,10 @@ public class ChangeSynchronizerTest extends JaMoPPPCMTransformationTest {
         createInterfaceChange.setAffectedFeature((EReference) repo.eClass().getEStructuralFeature(
                 "interfaces__Repository"));
         createInterfaceChange.setNewValue(opInterface);
-        final EObject eObject[] = this.changeSynchronizer.synchronizeChange(createInterfaceChange);
+        final EObject eObject[] = PCM2JaMoPPTransformationTest.changeSynchronizer
+                .synchronizeChange(createInterfaceChange);
         this.saveEObjectIfCompilationUnit(eObject);
         return opInterface;
-    }
-
-    private Repository createAndSyncRepository() {
-        final VURI repoVURI = VURI.getInstance("/tmp/repository.repository");
-        final Resource resource = this.resourceSet.createResource(repoVURI.getEMFUri());
-        final Repository repo = RepositoryFactory.eINSTANCE.createRepository();
-        resource.getContents().add(repo);
-        final CreateRootEObject createRootEObj = ChangeFactory.eINSTANCE.createCreateRootEObject();
-        createRootEObj.setChangedEObject(repo);
-        this.changeSynchronizer.synchronizeChange(createRootEObj);
-        return repo;
     }
 
     private void saveEObjectIfCompilationUnit(final EObject[] eObjects) {
@@ -158,7 +148,7 @@ public class ChangeSynchronizerTest extends JaMoPPPCMTransformationTest {
         String compilationUnitName = compilationUnit.getNamespacesAsString();
         compilationUnitName = compilationUnitName.replace(".", "/").replace("$", "/") + compilationUnit.getName();
         final VURI resourceURI = VURI.getInstance("MockupProject/src/" + compilationUnitName);
-        final Resource resource = this.resourceSet.createResource(resourceURI.getEMFUri());
+        final Resource resource = PCM2JaMoPPTransformationTest.resourceSet.createResource(resourceURI.getEMFUri());
         resource.getContents().add(compilationUnit);
         try {
             resource.save(null);
