@@ -17,6 +17,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.VitruviusConstants;
+
 /**
  * A utility class hiding details of the Eclipse Modeling Framework API for recurring tasks that are
  * not project-specific. Methods for Ecore metamodels, Ecore metamodel creation, Ecore metamodel
@@ -108,5 +110,14 @@ public final class EMFBridge {
 
     public static URI createPlatformResourceURI(final String pathAfterPlatformResource) {
         return URI.createPlatformResourceURI(pathAfterPlatformResource, true);
+    }
+
+    public static URI createURI(String uriString) {
+        if (uriString != null) {
+            if (!uriString.startsWith(VitruviusConstants.getPlatformResourcePrefix())) {
+                uriString = VitruviusConstants.getPlatformResourcePrefix() + uriString;
+            }
+        }
+        return URI.createURI(uriString);
     }
 }

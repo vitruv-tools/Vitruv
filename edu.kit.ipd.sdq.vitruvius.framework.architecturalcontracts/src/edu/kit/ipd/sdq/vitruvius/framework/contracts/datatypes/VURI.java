@@ -22,7 +22,7 @@ public class VURI implements Comparable<VURI> {
 
     /** Multiton classes should not have a public or default constructor. */
     private VURI(final String uriString) {
-        this.emfURI = EMFBridge.createPlatformResourceURI(uriString);
+        this.emfURI = EMFBridge.createURI(uriString);
     }
 
     public static synchronized VURI getInstance(final String key) {
