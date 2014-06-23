@@ -1,11 +1,13 @@
 package edu.kit.ipd.sdq.vitruvius.tests.mockup;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.junit.Test;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceMM;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
@@ -19,10 +21,12 @@ public class VSUMTest extends MetaRepositoryTest {
     @Override
     @Test
     public void testAll() {
+        String pcmURIString = "MockupProject/model/My.pcm_mockup";
         EObject pcmRoot = test("MockupProject/metamodel/pcm_mockup.ecore", "pcm_mockup",
-                "MockupProject/metamodel/uml_mockup.ecore", "uml_mockup", "MockupProject/model/My.pcm_mockup",
+                "MockupProject/metamodel/uml_mockup.ecore", "uml_mockup", pcmURIString,
                 "MockupProject/model/My.uml_mockup");
-        testTUIDCalculator(pcmRoot);
+        VURI vURI = testTUIDCalculator(pcmRoot);
+        assertEquals(vURI.toString(), VitruviusConstants.getPlatformResourcePrefix() + pcmURIString);
     }
 
     public EObject test(final String mm1URIString, final String fileExt1, final String mm2URIString,
@@ -52,11 +56,12 @@ public class VSUMTest extends MetaRepositoryTest {
         return root1;
     }
 
-    public void testTUIDCalculator(final EObject eObject) {
+    public VURI testTUIDCalculator(final EObject eObject) {
         TUIDCalculatorAndResolver defaultTUIDCalculatorAndResolver = new DefaultTUIDCalculatorAndResolver();
         String tuid = defaultTUIDCalculatorAndResolver.getTUID(eObject);
         assertNotNull(tuid);
         VURI vURI = defaultTUIDCalculatorAndResolver.getModelVURIContainingIdentifiedEObject(tuid);
         assertNotNull(vURI);
+        return vURI;
     }
 }
