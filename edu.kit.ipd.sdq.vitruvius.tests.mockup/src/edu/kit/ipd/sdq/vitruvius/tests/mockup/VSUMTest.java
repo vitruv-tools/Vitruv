@@ -17,7 +17,11 @@ public class VSUMTest extends MetaRepositoryTest {
     @Override
     @Test
     public void testAll() {
-        testMetaRepositoryVSUMAndModelInstancesCreation("/MockupProject/model/My.pcm_mockup");
+        createVSUM();
+    }
+
+    protected VSUMImpl createVSUM() {
+        return testMetaRepositoryVSUMAndModelInstancesCreation("/MockupProject/model/My.pcm_mockup");
     }
 
     public VSUMImpl testMetaRepositoryVSUMAndModelInstancesCreation(final String pcmURIString) {
