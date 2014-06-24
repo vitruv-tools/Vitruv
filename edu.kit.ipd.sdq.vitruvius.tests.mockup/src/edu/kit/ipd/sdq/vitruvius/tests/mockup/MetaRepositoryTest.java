@@ -17,11 +17,13 @@ import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 
 public class MetaRepositoryTest {
 
-    protected static final String PCM_MM_URI = "/MockupProject/metamodels/pcm_mockup.ecore";
-    protected static final String PCM_FILE_EXT = "pcm_mockup";
-    protected static final String UML_MM_URI = "/MockupProject/metamodels/uml_mockup.ecore";
+    static final String PROJECT_URI = "/MockupProject";
+    static final String PCM_FILE_EXT = "pcm_mockup";
+
+    protected static final String PCM_MM_URI = PROJECT_URI + "/metamodels/pcm_mockup.ecore";
+    protected static final String UML_MM_URI = PROJECT_URI + "/metamodels/uml_mockup.ecore";
     protected static final String UML_FILE_EXT = "uml_mockup";
-    protected static final String PCM_UML_VT_URI = "/MockupProject/viewtypes/pcm__uml_mockup.ecore";
+    protected static final String PCM_UML_VT_URI = PROJECT_URI + "/viewtypes/pcm__uml_mockup.ecore";
 
     @Test
     public void testAll() {

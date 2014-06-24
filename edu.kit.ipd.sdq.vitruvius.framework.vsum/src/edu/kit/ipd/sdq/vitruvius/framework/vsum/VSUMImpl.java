@@ -86,6 +86,10 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         return modelInstance;
     }
 
+    public boolean existsModelInstance(final VURI modelURI) {
+        return this.modelInstances.containsKey(modelURI);
+    }
+
     /**
      * Saves the resource for the given vuri. If the VURI is not existing yet it will be created.
      * 

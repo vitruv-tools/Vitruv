@@ -96,6 +96,7 @@ public class SyncManagerImpl implements ChangeSynchronizing {
         return this.modelProviding;
     }
 
+    // TODO: move code from this method to activator method of plugin
     public static synchronized SyncManagerImpl getSyncManagerInstance() {
         if (null == syncManagerImplInstance) {
             // create vsum
