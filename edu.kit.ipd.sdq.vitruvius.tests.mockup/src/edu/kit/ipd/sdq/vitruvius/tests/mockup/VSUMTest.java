@@ -20,19 +20,25 @@ public class VSUMTest extends MetaRepositoryTest {
         testMetaRepositoryVSUMAndModelInstancesCreation("/MockupProject/model/My.pcm_mockup");
     }
 
-    public EObject testMetaRepositoryVSUMAndModelInstancesCreation(final String pcmURIString) {
+    public VSUMImpl testMetaRepositoryVSUMAndModelInstancesCreation(final String pcmURIString) {
         return testMetaRepositoryVSUMAndModelInstancesCreation("/MockupProject/metamodel/pcm_mockup.ecore",
                 "pcm_mockup", "/MockupProject/metamodel/uml_mockup.ecore", "uml_mockup", pcmURIString,
                 "/MockupProject/model/My.uml_mockup");
     }
 
-    private EObject testMetaRepositoryVSUMAndModelInstancesCreation(final String mm1URIString, final String fileExt1,
+    private VSUMImpl testMetaRepositoryVSUMAndModelInstancesCreation(final String mm1URIString, final String fileExt1,
             final String mm2URIString, final String fileExt2, final String model1URIString, final String model2URIString) {
-        VSUMImpl vsum = testMetaRepositoryAndVSUMCreation(mm1URIString, fileExt1, mm2URIString, fileExt2);
-        return testModelInstances(model1URIString, model2URIString, vsum);
-    }
+        MetaRepositoryImpl metaRepository = testMetaRepository();
+        testAddMapping(metaRepository, mm1URIString, fileExt1, mm2URIString, fileExt2);
+        CorrespondenceMMProviding correspondenceMMproviding = new CorrespondenceMMProviding() {
+            @Override
+            public CorrespondenceMM getCorrespondenceMM(final VURI uriMM1, final VURI uriMM2) {
+                // nothing to be done as long as the correspondence mm stays generic
+                return null;
+            }
+        };
+        VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository, correspondenceMMproviding);
 
-    private EObject testModelInstances(final String model1URIString, final String model2URIString, final VSUMImpl vsum) {
         VURI model1URI = VURI.getInstance(model1URIString);
         VURI model2URI = VURI.getInstance(model2URIString);
         ModelInstance model1 = vsum.getModelInstanceOriginal(model1URI);
@@ -45,21 +51,7 @@ public class VSUMTest extends MetaRepositoryTest {
         assertNotNull(contents2);
         EObject root2 = contents2.get(0);
         assertNotNull(root2);
-        return root1;
-    }
 
-    private VSUMImpl testMetaRepositoryAndVSUMCreation(final String mm1URIString, final String fileExt1,
-            final String mm2URIString, final String fileExt2) {
-        MetaRepositoryImpl metaRepository = testMetaRepository();
-        testAddMapping(metaRepository, mm1URIString, fileExt1, mm2URIString, fileExt2);
-        CorrespondenceMMProviding correspondenceMMproviding = new CorrespondenceMMProviding() {
-            @Override
-            public CorrespondenceMM getCorrespondenceMM(final VURI uriMM1, final VURI uriMM2) {
-                // nothing to be done as long as the correspondence mm stays generic
-                return null;
-            }
-        };
-        VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository, correspondenceMMproviding);
         return vsum;
     }
 }
