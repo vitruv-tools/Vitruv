@@ -17,19 +17,20 @@ import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 
 public class MetaRepositoryTest {
 
+    protected static final String PCM_MM_URI = "/MockupProject/metamodels/pcm_mockup.ecore";
+    protected static final String PCM_FILE_EXT = "pcm_mockup";
+    protected static final String UML_MM_URI = "/MockupProject/metamodels/uml_mockup.ecore";
+    protected static final String UML_FILE_EXT = "uml_mockup";
+    protected static final String PCM_UML_VT_URI = "/MockupProject/viewtypes/pcm__uml_mockup.ecore";
+
     @Test
     public void testAll() {
 
-        testAddMapping("/MockupProject/metamodels/pcm_mockup.ecore", "pcm_mockup",
-                "/MockupProject/metamodels/uml_mockup.ecore", "uml_mockup");
+        testAddMapping(PCM_MM_URI, PCM_FILE_EXT, UML_MM_URI, UML_FILE_EXT);
 
-        testAddViewType("/MockupProject/metamodels/pcm_mockup.ecore", "pcm_mockup",
-                "/MockupProject/metamodels/uml_mockup.ecore", "uml_mockup",
-                "/MockupProject/viewtypes/pcm__uml_mockup.ecore");
+        testAddViewType(PCM_MM_URI, PCM_FILE_EXT, UML_MM_URI, UML_FILE_EXT, PCM_UML_VT_URI);
 
-        testGetProjectInput("/MockupProject/metamodels/pcm_mockup.ecore", "pcm_mockup",
-                "/MockupProject/metamodels/uml_mockup.ecore", "uml_mockup",
-                "/MockupProject/viewtypes/pcm__uml_mockup.ecore");
+        testGetProjectInput(PCM_MM_URI, PCM_FILE_EXT, UML_MM_URI, UML_FILE_EXT, PCM_UML_VT_URI);
 
         // generiere VSUM plugins (jetzt erst mal hart verdrahtet)
 

@@ -14,20 +14,18 @@ import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
 public class VSUMTest extends MetaRepositoryTest {
+    protected static final String PCM_INSTANCE_URI = "/MockupProject/model/My.pcm_mockup";
+    protected static final String UML_INSTANCE_URI = "/MockupProject/model/My.uml_mockup";
+
     @Override
     @Test
     public void testAll() {
-        createVSUM();
+        testMetaRepositoryVSUMAndModelInstancesCreation();
     }
 
-    protected VSUMImpl createVSUM() {
-        return testMetaRepositoryVSUMAndModelInstancesCreation("/MockupProject/model/My.pcm_mockup");
-    }
-
-    public VSUMImpl testMetaRepositoryVSUMAndModelInstancesCreation(final String pcmURIString) {
-        return testMetaRepositoryVSUMAndModelInstancesCreation("/MockupProject/metamodel/pcm_mockup.ecore",
-                "pcm_mockup", "/MockupProject/metamodel/uml_mockup.ecore", "uml_mockup", pcmURIString,
-                "/MockupProject/model/My.uml_mockup");
+    protected VSUMImpl testMetaRepositoryVSUMAndModelInstancesCreation() {
+        return testMetaRepositoryVSUMAndModelInstancesCreation(PCM_MM_URI, PCM_FILE_EXT, UML_MM_URI, UML_FILE_EXT,
+                PCM_INSTANCE_URI, UML_INSTANCE_URI);
     }
 
     private VSUMImpl testMetaRepositoryVSUMAndModelInstancesCreation(final String mm1URIString, final String fileExt1,

@@ -17,13 +17,12 @@ public class DefaultTUIDCalculatorTest extends VSUMTest {
     @Override
     @Test
     public void testAll() {
-        String pcmURIString = "/MockupProject/model/My.pcm_mockup";
-        VSUMImpl vsum = testMetaRepositoryVSUMAndModelInstancesCreation(pcmURIString);
-        VURI model1URI = VURI.getInstance(pcmURIString);
+        VSUMImpl vsum = testMetaRepositoryVSUMAndModelInstancesCreation();
+        VURI model1URI = VURI.getInstance(PCM_INSTANCE_URI);
         ModelInstance model1 = vsum.getModelInstanceOriginal(model1URI);
         EObject pcmRoot = model1.getResource().getContents().get(0);
         VURI vURI = testTUIDCalculator(pcmRoot);
-        assertEquals(vURI.toString(), VitruviusConstants.getPlatformResourcePrefix() + pcmURIString);
+        assertEquals(vURI.toString(), VitruviusConstants.getPlatformResourcePrefix() + PCM_INSTANCE_URI);
     }
 
     public VURI testTUIDCalculator(final EObject eObject) {
