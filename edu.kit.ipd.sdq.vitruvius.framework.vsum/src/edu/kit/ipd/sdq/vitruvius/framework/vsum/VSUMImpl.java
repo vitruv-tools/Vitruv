@@ -52,6 +52,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
 
         this.modelInstances = new HashMap<VURI, ModelInstance>();
         this.resourceSet = new ResourceSetImpl();
+        // FIXME fill metamodel and mapping map from correspondence folder in vitruvius.meta project
         this.metamodel2CorrespondenceInstancesMap = new HashMap<Metamodel, Set<CorrespondenceInstance>>();
         this.mapping2CorrespondenceInstanceMap = new HashMap<Mapping, CorrespondenceInstance>();
 

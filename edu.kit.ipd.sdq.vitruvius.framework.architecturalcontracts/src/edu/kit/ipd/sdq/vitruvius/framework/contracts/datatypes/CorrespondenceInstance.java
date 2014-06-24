@@ -67,12 +67,12 @@ public class CorrespondenceInstance extends ModelInstance {
                         + "' of the correspondence model '" + correspondencesVURI + "' is not correctly typed!");
             }
         }
+        // FIXME implement loading of existing correspondences from resources (fill maps)
+        // FIXME create TUIDs during loading of existing corresponding from resource
         this.tuid2CorrespondencesMap = new ClaimableHashMap<String, Set<Correspondence>>();
         this.tuid2CorrespondingEObjectsMap = new ClaimableHashMap<String, Set<EObject>>();
         this.featureInstance2CorrespondingFIMap = new ClaimableHashMap<FeatureInstance, Set<FeatureInstance>>();
         this.tuid2CorrespondenceSetsWithComprisedFeatureInstanceMap = new ClaimableHashMap<String, Set<Set<FeatureInstance>>>();
-        // TODO implement loading of existing correspondences from resources (fill maps)
-        // TODO create TUIDs during loading of existing corresponding from resource
     }
 
     public Mapping getMapping() {

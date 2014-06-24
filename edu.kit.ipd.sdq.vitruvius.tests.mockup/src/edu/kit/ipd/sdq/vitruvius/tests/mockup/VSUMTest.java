@@ -1,19 +1,15 @@
 package edu.kit.ipd.sdq.vitruvius.tests.mockup;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceMM;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceMMProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.DefaultTUIDCalculatorAndResolver;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
@@ -21,26 +17,22 @@ public class VSUMTest extends MetaRepositoryTest {
     @Override
     @Test
     public void testAll() {
-        String pcmURIString = "/MockupProject/model/My.pcm_mockup";
-        EObject pcmRoot = test("/MockupProject/metamodel/pcm_mockup.ecore", "pcm_mockup",
-                "/MockupProject/metamodel/uml_mockup.ecore", "uml_mockup", pcmURIString,
-                "/MockupProject/model/My.uml_mockup");
-        VURI vURI = testTUIDCalculator(pcmRoot);
-        assertEquals(vURI.toString(), VitruviusConstants.getPlatformResourcePrefix() + pcmURIString);
+        testMetaRepositoryVSUMAndModelInstancesCreation("/MockupProject/model/My.pcm_mockup");
     }
 
-    public EObject test(final String mm1URIString, final String fileExt1, final String mm2URIString,
-            final String fileExt2, final String model1URIString, final String model2URIString) {
-        MetaRepositoryImpl metaRepository = testMetaRepository();
-        testAddMapping(metaRepository, mm1URIString, fileExt1, mm2URIString, fileExt2);
-        CorrespondenceMMProviding correspondenceMMproviding = new CorrespondenceMMProviding() {
-            @Override
-            public CorrespondenceMM getCorrespondenceMM(final VURI uriMM1, final VURI uriMM2) {
-                // nothing to be done as long as the correspondence mm stays generic
-                return null;
-            }
-        };
-        VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository, correspondenceMMproviding);
+    public EObject testMetaRepositoryVSUMAndModelInstancesCreation(final String pcmURIString) {
+        return testMetaRepositoryVSUMAndModelInstancesCreation("/MockupProject/metamodel/pcm_mockup.ecore",
+                "pcm_mockup", "/MockupProject/metamodel/uml_mockup.ecore", "uml_mockup", pcmURIString,
+                "/MockupProject/model/My.uml_mockup");
+    }
+
+    private EObject testMetaRepositoryVSUMAndModelInstancesCreation(final String mm1URIString, final String fileExt1,
+            final String mm2URIString, final String fileExt2, final String model1URIString, final String model2URIString) {
+        VSUMImpl vsum = testMetaRepositoryAndVSUMCreation(mm1URIString, fileExt1, mm2URIString, fileExt2);
+        return testModelInstances(model1URIString, model2URIString, vsum);
+    }
+
+    private EObject testModelInstances(final String model1URIString, final String model2URIString, final VSUMImpl vsum) {
         VURI model1URI = VURI.getInstance(model1URIString);
         VURI model2URI = VURI.getInstance(model2URIString);
         ModelInstance model1 = vsum.getModelInstanceOriginal(model1URI);
@@ -56,12 +48,18 @@ public class VSUMTest extends MetaRepositoryTest {
         return root1;
     }
 
-    public VURI testTUIDCalculator(final EObject eObject) {
-        TUIDCalculatorAndResolver defaultTUIDCalculatorAndResolver = new DefaultTUIDCalculatorAndResolver();
-        String tuid = defaultTUIDCalculatorAndResolver.getTUID(eObject);
-        assertNotNull(tuid);
-        VURI vURI = defaultTUIDCalculatorAndResolver.getModelVURIContainingIdentifiedEObject(tuid);
-        assertNotNull(vURI);
-        return vURI;
+    private VSUMImpl testMetaRepositoryAndVSUMCreation(final String mm1URIString, final String fileExt1,
+            final String mm2URIString, final String fileExt2) {
+        MetaRepositoryImpl metaRepository = testMetaRepository();
+        testAddMapping(metaRepository, mm1URIString, fileExt1, mm2URIString, fileExt2);
+        CorrespondenceMMProviding correspondenceMMproviding = new CorrespondenceMMProviding() {
+            @Override
+            public CorrespondenceMM getCorrespondenceMM(final VURI uriMM1, final VURI uriMM2) {
+                // nothing to be done as long as the correspondence mm stays generic
+                return null;
+            }
+        };
+        VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository, correspondenceMMproviding);
+        return vsum;
     }
 }
