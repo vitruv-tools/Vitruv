@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.framework.vsum.helper;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -9,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
@@ -51,18 +51,23 @@ public class FileSystemHelper {
         return VURI.getInstance(correspondenceFile);
     }
 
-    public static void saveVSUMvURIsToFile(final Set<String> stringSet) {
+    public static void saveVSUMvURIsToFile(final Set<VURI> vuris) {
         String fileName = getVSUMMapFileName();
+        saveVURISetToFile(vuris, fileName);
+    }
+
+    private static void saveVURISetToFile(final Set<VURI> vuris, final String fileName) {
+        Set<String> stringSet = new HashSet<String>(vuris.size());
+        for (VURI vuri : vuris) {
+            stringSet.add(vuri.getEMFUri().toString());
+        }
         saveStringSetToFile(stringSet, fileName);
     }
 
     private static void saveStringSetToFile(final Set<String> stringSet, final String fileName) {
         try {
-            File f = new File(fileName);
-            if (!f.exists()) {
-                f.createNewFile();
-            }
-            FileOutputStream fileOutputStream = new FileOutputStream(f);
+            boolean append = true;
+            FileOutputStream fileOutputStream = new FileOutputStream(fileName, append);
             ObjectOutputStream oos = new ObjectOutputStream(fileOutputStream);
             oos.writeObject(stringSet);
             oos.flush();
@@ -72,19 +77,29 @@ public class FileSystemHelper {
         }
     }
 
-    public static Set<String> loadVSUMvURIsFromFile() {
+    public static Set<VURI> loadVSUMvURIsFromFile() {
         String fileName = getVSUMMapFileName();
-        return loadStringSetFromFile(fileName);
+        return loadVURISetFromFile(fileName);
+
     }
 
-    private static Set<String> loadStringSetFromFile(final String fileName) {
+    private static Set<VURI> loadVURISetFromFile(final String fileName) {
+        Set<String> stringSet = loadStringSetFromFile(fileName, String.class);
+        Set<VURI> vuris = new HashSet<VURI>(stringSet.size() * 2);
+        for (String str : stringSet) {
+            vuris.add(VURI.getInstance(str));
+        }
+        return vuris;
+    }
+
+    private static <T> Set<T> loadStringSetFromFile(final String fileName, final Class<T> clazz) {
         try {
             FileInputStream fileInputStream = new FileInputStream(fileName);
             ObjectInputStream ois = new ObjectInputStream(fileInputStream);
             Object obj = ois.readObject();
             ois.close();
-            Set<?> set = (Set<?>) obj;
-            Set<String> stringSet = (Set<String>) set;
+            @SuppressWarnings("unchecked")
+            Set<T> stringSet = (Set<T>) obj;
             return stringSet;
         } catch (FileNotFoundException e) {
             return Collections.emptySet();
@@ -112,12 +127,20 @@ public class FileSystemHelper {
             // IProjectDescription description = project.getDescription();
             // description.setNatureIds(new String[] { VITRUVIUSNATURE.ID });
             // project.setDescription(description, null);
-            IFolder correspondenceFolder = getCorrespondenceFolder(project);
-            correspondenceFolder.create(false, true, null);
+            createFolder(getCorrespondenceFolder(project));
+            createFolder(getVSMUFolder(project));
         } catch (CoreException e) {
             // soften
             throw new RuntimeException(e);
         }
+    }
+
+    private static IFolder getVSMUFolder(final IProject project) {
+        return project.getFolder(VSUMConstants.VSUM_FOLDER_NAME);
+    }
+
+    private static void createFolder(final IFolder folder) throws CoreException {
+        folder.create(false, true, null);
     }
 
     private static IFolder getCorrespondenceFolder(final IProject project) {
