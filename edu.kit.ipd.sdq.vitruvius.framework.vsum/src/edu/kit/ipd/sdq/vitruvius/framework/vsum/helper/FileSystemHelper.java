@@ -1,6 +1,14 @@
 package edu.kit.ipd.sdq.vitruvius.framework.vsum.helper;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -47,6 +55,46 @@ public class FileSystemHelper {
         }
     }
 
+    public static void saveVSUMvURIsToFile(final Set<String> stringSet) {
+        String fileName = getVSUMMapFileName();
+        saveStringSetToFile(stringSet, fileName);
+    }
+
+    private static void saveStringSetToFile(final Set<String> stringSet, final String fileName) {
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(fileName);
+            ObjectOutputStream oos = new ObjectOutputStream(fileOutputStream);
+            oos.writeObject(stringSet);
+            oos.flush();
+            oos.close();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not save map: " + stringSet + "to file " + fileName + e);
+        }
+    }
+
+    public static Set<String> loadVSUMvURIsFromFile() {
+        String fileName = getVSUMMapFileName();
+        return loadStringSetFromFile(fileName);
+    }
+
+    private static Set<String> loadStringSetFromFile(final String fileName) {
+        try {
+            FileInputStream fileInputStream = new FileInputStream(fileName);
+            ObjectInputStream ois = new ObjectInputStream(fileInputStream);
+            Object obj = ois.readObject();
+            ois.close();
+            Set<?> set = (Set<?>) obj;
+            Set<String> stringSet = (Set<String>) set;
+            return stringSet;
+        } catch (FileNotFoundException e) {
+            return Collections.emptySet();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static IProject getVSUMProject() {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         return root.getProject(VSUMConstants.VSUM_PROJECT_NAME);
@@ -55,6 +103,12 @@ public class FileSystemHelper {
     private static IFolder getCorrespondenceFolder(final IProject project) {
         IFolder correspondenceFolder = project.getFolder(VSUMConstants.CORRESPONDENCE_FOLDER_NAME);
         return correspondenceFolder;
+    }
+
+    private static String getVSUMMapFileName() {
+        IFile file = getVSUMProject().getFolder(VSUMConstants.VSUM_FOLDER_NAME).getFile(
+                VSUMConstants.VSUM_INSTANCES_FILE_NAME);
+        return file.getLocation().toOSString();
     }
 
 }

@@ -54,6 +54,8 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         this.resourceSet = new ResourceSetImpl();
         this.metamodel2CorrespondenceInstancesMap = new HashMap<Metamodel, Set<CorrespondenceInstance>>();
         this.mapping2CorrespondenceInstanceMap = new HashMap<Mapping, CorrespondenceInstance>();
+
+        loadModelInstances();
     }
 
     @Override
@@ -78,6 +80,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
             // case 2 or 3
             modelInstance = getOrCreateUnregisteredModelInstance(modelURI);
             this.modelInstances.put(modelURI, modelInstance);
+            saveModelInstances();
         }
         return modelInstance;
     }
@@ -110,11 +113,16 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     }
 
     private ModelInstance getOrCreateUnregisteredModelInstance(final VURI modelURI, final Metamodel metamodel) {
+        ModelInstance modelInstance = loadModelInstance(modelURI);
+        getOrCreateAllCorrespondenceInstances(metamodel);
+        return modelInstance;
+    }
+
+    private ModelInstance loadModelInstance(final VURI modelURI) {
         URI emfURI = modelURI.getEMFUri();
         boolean loadOnDemand = true;
         Resource modelResource = this.resourceSet.getResource(emfURI, loadOnDemand);
         ModelInstance modelInstance = new ModelInstance(modelURI, modelResource);
-        getOrCreateAllCorrespondenceInstances(metamodel);
         return modelInstance;
     }
 
@@ -214,6 +222,23 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
             final Invariants invariants) {
         // TODO Auto-generated method stub
         return false;
+    }
+
+    private void loadModelInstances() {
+        Set<String> uris = FileSystemHelper.loadVSUMvURIsFromFile();
+        for (String uri : uris) {
+            VURI vuri = VURI.getInstance(uri);
+            ModelInstance modelInstance = loadModelInstance(vuri);
+            this.modelInstances.put(vuri, modelInstance);
+        }
+    }
+
+    private void saveModelInstances() {
+        Set<String> stringSet = new HashSet<String>();
+        for (VURI vuri : this.modelInstances.keySet()) {
+            stringSet.add(vuri.getEMFUri().toString());
+        }
+        FileSystemHelper.saveVSUMvURIsToFile(stringSet);
     }
 
 }
