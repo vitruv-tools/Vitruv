@@ -24,7 +24,7 @@ public class FileSystemHelper {
         Arrays.sort(copyOfMMURIs);
         String fileName = "";
         for (VURI uri : copyOfMMURIs) {
-            fileName += uri.toString().hashCode();
+            fileName += uri.getLastSegment() + uri.toString().hashCode();
         }
         IFile correspondenceFile = correspondenceFolder.getFile(fileName);
         return VURI.getInstance(correspondenceFile);

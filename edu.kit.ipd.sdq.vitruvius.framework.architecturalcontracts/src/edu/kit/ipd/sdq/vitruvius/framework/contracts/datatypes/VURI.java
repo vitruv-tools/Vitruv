@@ -62,6 +62,11 @@ public class VURI implements Comparable<VURI> {
         return this.emfURI.fileExtension();
     }
 
+    public String getLastSegment() {
+        String lastSegment = this.emfURI.lastSegment();
+        return (lastSegment == null ? "" : lastSegment);
+    }
+
     @Override
     public int compareTo(final VURI otherVURI) {
         return this.emfURI.toString().compareTo(otherVURI.toString());
