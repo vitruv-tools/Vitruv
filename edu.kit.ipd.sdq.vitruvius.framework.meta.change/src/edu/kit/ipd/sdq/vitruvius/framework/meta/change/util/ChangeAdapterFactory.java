@@ -133,6 +133,18 @@ public class ChangeAdapterFactory extends AdapterFactoryImpl {
                 return createDeleteRootEObjectAdapter();
             }
             @Override
+            public <T extends EStructuralFeature> Adapter caseUpdateEList(UpdateEList<T> object) {
+                return createUpdateEListAdapter();
+            }
+            @Override
+            public <T extends EStructuralFeature> Adapter caseInsertInEList(InsertInEList<T> object) {
+                return createInsertInEListAdapter();
+            }
+            @Override
+            public <T extends EStructuralFeature> Adapter caseRemoveFromEList(RemoveFromEList<T> object) {
+                return createRemoveFromEListAdapter();
+            }
+            @Override
             public Adapter defaultCase(EObject object) {
                 return createEObjectAdapter();
             }
@@ -377,6 +389,48 @@ public class ChangeAdapterFactory extends AdapterFactoryImpl {
     }
 
 	/**
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEList <em>Update EList</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEList
+     * @generated
+     */
+    public Adapter createUpdateEListAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.InsertInEList <em>Insert In EList</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.InsertInEList
+     * @generated
+     */
+    public Adapter createInsertInEListAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.RemoveFromEList <em>Remove From EList</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.RemoveFromEList
+     * @generated
+     */
+    public Adapter createRemoveFromEListAdapter() {
+        return null;
+    }
+
+    /**
      * Creates a new adapter for the default case.
      * <!-- begin-user-doc -->
 	 * This default implementation returns null.

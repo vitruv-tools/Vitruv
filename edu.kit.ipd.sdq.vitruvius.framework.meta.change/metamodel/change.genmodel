@@ -20,6 +20,7 @@
     <genClasses image="false" ecoreClass="change.ecore#//CreateEObject"/>
     <genClasses ecoreClass="change.ecore#//CreateNonRootEObject">
       <genTypeParameters ecoreTypeParameter="change.ecore#//CreateNonRootEObject/T"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference change.ecore#//CreateNonRootEObject/listUpdate"/>
     </genClasses>
     <genClasses ecoreClass="change.ecore#//CreateRootEObject"/>
     <genClasses image="false" ecoreClass="change.ecore#//UpdateEFeature">
@@ -43,7 +44,20 @@
     <genClasses image="false" ecoreClass="change.ecore#//DeleteEObject"/>
     <genClasses ecoreClass="change.ecore#//DeleteNonRootEObject">
       <genTypeParameters ecoreTypeParameter="change.ecore#//DeleteNonRootEObject/T"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference change.ecore#//DeleteNonRootEObject/listUpdate"/>
     </genClasses>
     <genClasses ecoreClass="change.ecore#//DeleteRootEObject"/>
+    <genClasses image="false" ecoreClass="change.ecore#//UpdateEList">
+      <genTypeParameters ecoreTypeParameter="change.ecore#//UpdateEList/T"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//UpdateEList/index"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//UpdateEList/update"/>
+    </genClasses>
+    <genClasses ecoreClass="change.ecore#//InsertInEList">
+      <genTypeParameters ecoreTypeParameter="change.ecore#//InsertInEList/T"/>
+    </genClasses>
+    <genClasses ecoreClass="change.ecore#//RemoveFromEList">
+      <genTypeParameters ecoreTypeParameter="change.ecore#//RemoveFromEList/T"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//RemoveFromEList/removedObjectURIFragment"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

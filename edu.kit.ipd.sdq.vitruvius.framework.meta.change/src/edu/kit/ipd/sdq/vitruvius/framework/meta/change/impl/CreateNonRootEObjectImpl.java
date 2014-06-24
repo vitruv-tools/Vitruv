@@ -6,6 +6,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateNonRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EFeatureChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.InsertInEList;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEContainmentReference;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEFeature;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEReference;
@@ -29,6 +30,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.CreateNonRootEObjectImpl#getAffectedFeature <em>Affected Feature</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.CreateNonRootEObjectImpl#getAffectedEObject <em>Affected EObject</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.CreateNonRootEObjectImpl#getNewValue <em>New Value</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.CreateNonRootEObjectImpl#getListUpdate <em>List Update</em>}</li>
  * </ul>
  * </p>
  *
@@ -66,6 +68,16 @@ public class CreateNonRootEObjectImpl<T extends Object> extends CreateEObjectImp
 	protected T newValue;
 
 	/**
+     * The cached value of the '{@link #getListUpdate() <em>List Update</em>}' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getListUpdate()
+     * @generated
+     * @ordered
+     */
+    protected InsertInEList<EReference> listUpdate;
+
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -124,6 +136,45 @@ public class CreateNonRootEObjectImpl<T extends Object> extends CreateEObjectImp
     }
 
 	/**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @SuppressWarnings("unchecked")
+    public InsertInEList<EReference> getListUpdate() {
+        if (listUpdate != null && listUpdate.eIsProxy()) {
+            InternalEObject oldListUpdate = (InternalEObject)listUpdate;
+            listUpdate = (InsertInEList<EReference>)eResolveProxy(oldListUpdate);
+            if (listUpdate != oldListUpdate) {
+                if (eNotificationRequired())
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, ChangePackage.CREATE_NON_ROOT_EOBJECT__LIST_UPDATE, oldListUpdate, listUpdate));
+            }
+        }
+        return listUpdate;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public InsertInEList<EReference> basicGetListUpdate() {
+        return listUpdate;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setListUpdate(InsertInEList<EReference> newListUpdate) {
+        InsertInEList<EReference> oldListUpdate = listUpdate;
+        listUpdate = newListUpdate;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ChangePackage.CREATE_NON_ROOT_EOBJECT__LIST_UPDATE, oldListUpdate, listUpdate));
+    }
+
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -216,6 +267,9 @@ public class CreateNonRootEObjectImpl<T extends Object> extends CreateEObjectImp
             case ChangePackage.CREATE_NON_ROOT_EOBJECT__NEW_VALUE:
                 if (resolve) return getNewValue();
                 return basicGetNewValue();
+            case ChangePackage.CREATE_NON_ROOT_EOBJECT__LIST_UPDATE:
+                if (resolve) return getListUpdate();
+                return basicGetListUpdate();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -238,6 +292,9 @@ public class CreateNonRootEObjectImpl<T extends Object> extends CreateEObjectImp
             case ChangePackage.CREATE_NON_ROOT_EOBJECT__NEW_VALUE:
                 setNewValue((T)newValue);
                 return;
+            case ChangePackage.CREATE_NON_ROOT_EOBJECT__LIST_UPDATE:
+                setListUpdate((InsertInEList<EReference>)newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -259,6 +316,9 @@ public class CreateNonRootEObjectImpl<T extends Object> extends CreateEObjectImp
             case ChangePackage.CREATE_NON_ROOT_EOBJECT__NEW_VALUE:
                 setNewValue((T)null);
                 return;
+            case ChangePackage.CREATE_NON_ROOT_EOBJECT__LIST_UPDATE:
+                setListUpdate((InsertInEList<EReference>)null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -277,6 +337,8 @@ public class CreateNonRootEObjectImpl<T extends Object> extends CreateEObjectImp
                 return affectedEObject != null;
             case ChangePackage.CREATE_NON_ROOT_EOBJECT__NEW_VALUE:
                 return newValue != null;
+            case ChangePackage.CREATE_NON_ROOT_EOBJECT__LIST_UPDATE:
+                return listUpdate != null;
         }
         return super.eIsSet(featureID);
     }

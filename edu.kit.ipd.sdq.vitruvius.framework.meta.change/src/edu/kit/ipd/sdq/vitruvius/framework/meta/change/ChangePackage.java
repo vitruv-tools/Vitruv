@@ -288,13 +288,22 @@ public interface ChangePackage extends EPackage {
 	int CREATE_NON_ROOT_EOBJECT__NEW_VALUE = CREATE_EOBJECT_FEATURE_COUNT + 2;
 
 	/**
+     * The feature id for the '<em><b>List Update</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CREATE_NON_ROOT_EOBJECT__LIST_UPDATE = CREATE_EOBJECT_FEATURE_COUNT + 3;
+
+    /**
      * The number of structural features of the '<em>Create Non Root EObject</em>' class.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int CREATE_NON_ROOT_EOBJECT_FEATURE_COUNT = CREATE_EOBJECT_FEATURE_COUNT + 3;
+	int CREATE_NON_ROOT_EOBJECT_FEATURE_COUNT = CREATE_EOBJECT_FEATURE_COUNT + 4;
 
 	/**
      * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.CreateRootEObjectImpl <em>Create Root EObject</em>}' class.
@@ -557,24 +566,6 @@ public interface ChangePackage extends EPackage {
 	int DELETE_ROOT_EOBJECT = 15;
 
 	/**
-     * The feature id for the '<em><b>Changed EObject</b></em>' reference.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int DELETE_ROOT_EOBJECT__CHANGED_EOBJECT = DELETE_EOBJECT__CHANGED_EOBJECT;
-
-	/**
-     * The number of structural features of the '<em>Delete Root EObject</em>' class.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int DELETE_ROOT_EOBJECT_FEATURE_COUNT = DELETE_EOBJECT_FEATURE_COUNT + 0;
-
-	/**
      * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.DeleteNonRootEObjectImpl <em>Delete Non Root EObject</em>}' class.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -591,7 +582,7 @@ public interface ChangePackage extends EPackage {
      * @generated
      * @ordered
      */
-	int DELETE_NON_ROOT_EOBJECT__CHANGED_EOBJECT = DELETE_ROOT_EOBJECT__CHANGED_EOBJECT;
+	int DELETE_NON_ROOT_EOBJECT__CHANGED_EOBJECT = DELETE_EOBJECT__CHANGED_EOBJECT;
 
 	/**
      * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -600,7 +591,7 @@ public interface ChangePackage extends EPackage {
      * @generated
      * @ordered
      */
-	int DELETE_NON_ROOT_EOBJECT__AFFECTED_FEATURE = DELETE_ROOT_EOBJECT_FEATURE_COUNT + 0;
+	int DELETE_NON_ROOT_EOBJECT__AFFECTED_FEATURE = DELETE_EOBJECT_FEATURE_COUNT + 0;
 
 	/**
      * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -609,7 +600,7 @@ public interface ChangePackage extends EPackage {
      * @generated
      * @ordered
      */
-	int DELETE_NON_ROOT_EOBJECT__AFFECTED_EOBJECT = DELETE_ROOT_EOBJECT_FEATURE_COUNT + 1;
+	int DELETE_NON_ROOT_EOBJECT__AFFECTED_EOBJECT = DELETE_EOBJECT_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>New Value</b></em>' reference.
@@ -618,19 +609,219 @@ public interface ChangePackage extends EPackage {
      * @generated
      * @ordered
      */
-	int DELETE_NON_ROOT_EOBJECT__NEW_VALUE = DELETE_ROOT_EOBJECT_FEATURE_COUNT + 2;
+	int DELETE_NON_ROOT_EOBJECT__NEW_VALUE = DELETE_EOBJECT_FEATURE_COUNT + 2;
 
 	/**
+     * The feature id for the '<em><b>List Update</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DELETE_NON_ROOT_EOBJECT__LIST_UPDATE = DELETE_EOBJECT_FEATURE_COUNT + 3;
+
+    /**
      * The number of structural features of the '<em>Delete Non Root EObject</em>' class.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int DELETE_NON_ROOT_EOBJECT_FEATURE_COUNT = DELETE_ROOT_EOBJECT_FEATURE_COUNT + 3;
+	int DELETE_NON_ROOT_EOBJECT_FEATURE_COUNT = DELETE_EOBJECT_FEATURE_COUNT + 4;
 
+    /**
+     * The feature id for the '<em><b>Changed EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+	int DELETE_ROOT_EOBJECT__CHANGED_EOBJECT = DELETE_EOBJECT__CHANGED_EOBJECT;
 
-	/**
+    /**
+     * The number of structural features of the '<em>Delete Root EObject</em>' class.
+     * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+	int DELETE_ROOT_EOBJECT_FEATURE_COUNT = DELETE_EOBJECT_FEATURE_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.UpdateEListImpl <em>Update EList</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.UpdateEListImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.ChangePackageImpl#getUpdateEList()
+     * @generated
+     */
+    int UPDATE_ELIST = 16;
+
+    /**
+     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int UPDATE_ELIST__AFFECTED_FEATURE = EFEATURE_CHANGE__AFFECTED_FEATURE;
+
+    /**
+     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int UPDATE_ELIST__AFFECTED_EOBJECT = EFEATURE_CHANGE__AFFECTED_EOBJECT;
+
+    /**
+     * The feature id for the '<em><b>Index</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int UPDATE_ELIST__INDEX = EFEATURE_CHANGE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Update</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int UPDATE_ELIST__UPDATE = EFEATURE_CHANGE_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>Update EList</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int UPDATE_ELIST_FEATURE_COUNT = EFEATURE_CHANGE_FEATURE_COUNT + 2;
+
+    /**
+     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.InsertInEListImpl <em>Insert In EList</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.InsertInEListImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.ChangePackageImpl#getInsertInEList()
+     * @generated
+     */
+    int INSERT_IN_ELIST = 17;
+
+    /**
+     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INSERT_IN_ELIST__AFFECTED_FEATURE = UPDATE_ELIST__AFFECTED_FEATURE;
+
+    /**
+     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INSERT_IN_ELIST__AFFECTED_EOBJECT = UPDATE_ELIST__AFFECTED_EOBJECT;
+
+    /**
+     * The feature id for the '<em><b>Index</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INSERT_IN_ELIST__INDEX = UPDATE_ELIST__INDEX;
+
+    /**
+     * The feature id for the '<em><b>Update</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INSERT_IN_ELIST__UPDATE = UPDATE_ELIST__UPDATE;
+
+    /**
+     * The number of structural features of the '<em>Insert In EList</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INSERT_IN_ELIST_FEATURE_COUNT = UPDATE_ELIST_FEATURE_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.RemoveFromEListImpl <em>Remove From EList</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.RemoveFromEListImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.ChangePackageImpl#getRemoveFromEList()
+     * @generated
+     */
+    int REMOVE_FROM_ELIST = 18;
+
+    /**
+     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REMOVE_FROM_ELIST__AFFECTED_FEATURE = UPDATE_ELIST__AFFECTED_FEATURE;
+
+    /**
+     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REMOVE_FROM_ELIST__AFFECTED_EOBJECT = UPDATE_ELIST__AFFECTED_EOBJECT;
+
+    /**
+     * The feature id for the '<em><b>Index</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REMOVE_FROM_ELIST__INDEX = UPDATE_ELIST__INDEX;
+
+    /**
+     * The feature id for the '<em><b>Update</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REMOVE_FROM_ELIST__UPDATE = UPDATE_ELIST__UPDATE;
+
+    /**
+     * The feature id for the '<em><b>Removed Object URI Fragment</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REMOVE_FROM_ELIST__REMOVED_OBJECT_URI_FRAGMENT = UPDATE_ELIST_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Remove From EList</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REMOVE_FROM_ELIST_FEATURE_COUNT = UPDATE_ELIST_FEATURE_COUNT + 1;
+
+    /**
      * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange <em>EChange</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -734,6 +925,17 @@ public interface ChangePackage extends EPackage {
 	EClass getCreateNonRootEObject();
 
 	/**
+     * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateNonRootEObject#getListUpdate <em>List Update</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>List Update</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateNonRootEObject#getListUpdate()
+     * @see #getCreateNonRootEObject()
+     * @generated
+     */
+    EReference getCreateNonRootEObject_ListUpdate();
+
+    /**
      * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateRootEObject <em>Create Root EObject</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -836,6 +1038,17 @@ public interface ChangePackage extends EPackage {
 	EClass getDeleteNonRootEObject();
 
 	/**
+     * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.DeleteNonRootEObject#getListUpdate <em>List Update</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>List Update</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.DeleteNonRootEObject#getListUpdate()
+     * @see #getDeleteNonRootEObject()
+     * @generated
+     */
+    EReference getDeleteNonRootEObject_ListUpdate();
+
+    /**
      * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.DeleteRootEObject <em>Delete Root EObject</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -846,6 +1059,69 @@ public interface ChangePackage extends EPackage {
 	EClass getDeleteRootEObject();
 
 	/**
+     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEList <em>Update EList</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Update EList</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEList
+     * @generated
+     */
+    EClass getUpdateEList();
+
+    /**
+     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEList#getIndex <em>Index</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Index</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEList#getIndex()
+     * @see #getUpdateEList()
+     * @generated
+     */
+    EAttribute getUpdateEList_Index();
+
+    /**
+     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEList#getUpdate <em>Update</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Update</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEList#getUpdate()
+     * @see #getUpdateEList()
+     * @generated
+     */
+    EAttribute getUpdateEList_Update();
+
+    /**
+     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.InsertInEList <em>Insert In EList</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Insert In EList</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.InsertInEList
+     * @generated
+     */
+    EClass getInsertInEList();
+
+    /**
+     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.RemoveFromEList <em>Remove From EList</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Remove From EList</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.RemoveFromEList
+     * @generated
+     */
+    EClass getRemoveFromEList();
+
+    /**
+     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.RemoveFromEList#getRemovedObjectURIFragment <em>Removed Object URI Fragment</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Removed Object URI Fragment</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.RemoveFromEList#getRemovedObjectURIFragment()
+     * @see #getRemoveFromEList()
+     * @generated
+     */
+    EAttribute getRemoveFromEList_RemovedObjectURIFragment();
+
+    /**
      * Returns the factory that creates the instances of the model.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -962,6 +1238,14 @@ public interface ChangePackage extends EPackage {
 		EClass CREATE_NON_ROOT_EOBJECT = eINSTANCE.getCreateNonRootEObject();
 
 		/**
+         * The meta object literal for the '<em><b>List Update</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference CREATE_NON_ROOT_EOBJECT__LIST_UPDATE = eINSTANCE.getCreateNonRootEObject_ListUpdate();
+
+        /**
          * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.CreateRootEObjectImpl <em>Create Root EObject</em>}' class.
          * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1058,6 +1342,14 @@ public interface ChangePackage extends EPackage {
 		EClass DELETE_NON_ROOT_EOBJECT = eINSTANCE.getDeleteNonRootEObject();
 
 		/**
+         * The meta object literal for the '<em><b>List Update</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference DELETE_NON_ROOT_EOBJECT__LIST_UPDATE = eINSTANCE.getDeleteNonRootEObject_ListUpdate();
+
+        /**
          * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.DeleteRootEObjectImpl <em>Delete Root EObject</em>}' class.
          * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1066,6 +1358,60 @@ public interface ChangePackage extends EPackage {
          * @generated
          */
 		EClass DELETE_ROOT_EOBJECT = eINSTANCE.getDeleteRootEObject();
+
+        /**
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.UpdateEListImpl <em>Update EList</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.UpdateEListImpl
+         * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.ChangePackageImpl#getUpdateEList()
+         * @generated
+         */
+        EClass UPDATE_ELIST = eINSTANCE.getUpdateEList();
+
+        /**
+         * The meta object literal for the '<em><b>Index</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute UPDATE_ELIST__INDEX = eINSTANCE.getUpdateEList_Index();
+
+        /**
+         * The meta object literal for the '<em><b>Update</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute UPDATE_ELIST__UPDATE = eINSTANCE.getUpdateEList_Update();
+
+        /**
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.InsertInEListImpl <em>Insert In EList</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.InsertInEListImpl
+         * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.ChangePackageImpl#getInsertInEList()
+         * @generated
+         */
+        EClass INSERT_IN_ELIST = eINSTANCE.getInsertInEList();
+
+        /**
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.RemoveFromEListImpl <em>Remove From EList</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.RemoveFromEListImpl
+         * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.ChangePackageImpl#getRemoveFromEList()
+         * @generated
+         */
+        EClass REMOVE_FROM_ELIST = eINSTANCE.getRemoveFromEList();
+
+        /**
+         * The meta object literal for the '<em><b>Removed Object URI Fragment</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute REMOVE_FROM_ELIST__REMOVED_OBJECT_URI_FRAGMENT = eINSTANCE.getRemoveFromEList_RemovedObjectURIFragment();
 
 	}
 

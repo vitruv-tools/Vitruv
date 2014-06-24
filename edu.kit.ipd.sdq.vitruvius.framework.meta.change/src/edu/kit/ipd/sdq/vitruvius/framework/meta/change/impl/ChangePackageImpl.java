@@ -2,6 +2,15 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl;
 
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.ETypeParameter;
+import org.eclipse.emf.ecore.impl.EPackageImpl;
+
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateEObject;
@@ -15,21 +24,14 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EFeatureChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EObjectChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.InsertInEList;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.RemoveFromEList;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UnsetEFeature;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEAttribute;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEContainmentReference;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEFeature;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEList;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEReference;
-
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EGenericType;
-import org.eclipse.emf.ecore.EOperation;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.ETypeParameter;
-
-import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -151,6 +153,27 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
 	private EClass deleteRootEObjectEClass = null;
 
 	/**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass updateEListEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass insertInEListEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass removeFromEListEClass = null;
+
+    /**
      * Creates an instance of the model <b>Package</b>, registered with
      * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
      * package URI value.
@@ -303,6 +326,15 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
 
 	/**
      * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getCreateNonRootEObject_ListUpdate() {
+        return (EReference)createNonRootEObjectEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -393,6 +425,15 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
 
 	/**
      * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getDeleteNonRootEObject_ListUpdate() {
+        return (EReference)deleteNonRootEObjectEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -401,6 +442,60 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
     }
 
 	/**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getUpdateEList() {
+        return updateEListEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getUpdateEList_Index() {
+        return (EAttribute)updateEListEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getUpdateEList_Update() {
+        return (EAttribute)updateEListEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getInsertInEList() {
+        return insertInEListEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getRemoveFromEList() {
+        return removeFromEListEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getRemoveFromEList_RemovedObjectURIFragment() {
+        return (EAttribute)removeFromEListEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -444,6 +539,7 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         createEObjectEClass = createEClass(CREATE_EOBJECT);
 
         createNonRootEObjectEClass = createEClass(CREATE_NON_ROOT_EOBJECT);
+        createEReference(createNonRootEObjectEClass, CREATE_NON_ROOT_EOBJECT__LIST_UPDATE);
 
         createRootEObjectEClass = createEClass(CREATE_ROOT_EOBJECT);
 
@@ -462,8 +558,18 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         deleteEObjectEClass = createEClass(DELETE_EOBJECT);
 
         deleteNonRootEObjectEClass = createEClass(DELETE_NON_ROOT_EOBJECT);
+        createEReference(deleteNonRootEObjectEClass, DELETE_NON_ROOT_EOBJECT__LIST_UPDATE);
 
         deleteRootEObjectEClass = createEClass(DELETE_ROOT_EOBJECT);
+
+        updateEListEClass = createEClass(UPDATE_ELIST);
+        createEAttribute(updateEListEClass, UPDATE_ELIST__INDEX);
+        createEAttribute(updateEListEClass, UPDATE_ELIST__UPDATE);
+
+        insertInEListEClass = createEClass(INSERT_IN_ELIST);
+
+        removeFromEListEClass = createEClass(REMOVE_FROM_ELIST);
+        createEAttribute(removeFromEListEClass, REMOVE_FROM_ELIST__REMOVED_OBJECT_URI_FRAGMENT);
     }
 
 	/**
@@ -498,6 +604,9 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         ETypeParameter updateEReferenceEClass_T = addETypeParameter(updateEReferenceEClass, "T");
         ETypeParameter updateEContainmentReferenceEClass_T = addETypeParameter(updateEContainmentReferenceEClass, "T");
         ETypeParameter deleteNonRootEObjectEClass_T = addETypeParameter(deleteNonRootEObjectEClass, "T");
+        ETypeParameter updateEListEClass_T = addETypeParameter(updateEListEClass, "T");
+        ETypeParameter insertInEListEClass_T = addETypeParameter(insertInEListEClass, "T");
+        ETypeParameter removeFromEListEClass_T = addETypeParameter(removeFromEListEClass, "T");
 
         // Set bounds for type parameters
         EGenericType g1 = createEGenericType(ecorePackage.getEStructuralFeature());
@@ -516,6 +625,12 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         updateEContainmentReferenceEClass_T.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEJavaObject());
         deleteNonRootEObjectEClass_T.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEStructuralFeature());
+        updateEListEClass_T.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEStructuralFeature());
+        insertInEListEClass_T.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEStructuralFeature());
+        removeFromEListEClass_T.getEBounds().add(g1);
 
         // Add supertypes to classes
         eObjectChangeEClass.getESuperTypes().add(this.getEChange());
@@ -557,13 +672,25 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         g1.getETypeArguments().add(g2);
         updateEContainmentReferenceEClass.getEGenericSuperTypes().add(g1);
         deleteEObjectEClass.getESuperTypes().add(this.getEObjectChange());
-        g1 = createEGenericType(this.getDeleteRootEObject());
+        g1 = createEGenericType(this.getDeleteEObject());
         deleteNonRootEObjectEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(this.getUpdateEContainmentReference());
         g2 = createEGenericType(deleteNonRootEObjectEClass_T);
         g1.getETypeArguments().add(g2);
         deleteNonRootEObjectEClass.getEGenericSuperTypes().add(g1);
         deleteRootEObjectEClass.getESuperTypes().add(this.getDeleteEObject());
+        g1 = createEGenericType(this.getEFeatureChange());
+        g2 = createEGenericType(updateEListEClass_T);
+        g1.getETypeArguments().add(g2);
+        updateEListEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(this.getUpdateEList());
+        g2 = createEGenericType(insertInEListEClass_T);
+        g1.getETypeArguments().add(g2);
+        insertInEListEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(this.getUpdateEList());
+        g2 = createEGenericType(removeFromEListEClass_T);
+        g1.getETypeArguments().add(g2);
+        removeFromEListEClass.getEGenericSuperTypes().add(g1);
 
         // Initialize classes and features; add operations and parameters
         initEClass(eChangeEClass, EChange.class, "EChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -583,6 +710,10 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         initEClass(createEObjectEClass, CreateEObject.class, "CreateEObject", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         initEClass(createNonRootEObjectEClass, CreateNonRootEObject.class, "CreateNonRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        g1 = createEGenericType(this.getInsertInEList());
+        g2 = createEGenericType(ecorePackage.getEReference());
+        g1.getETypeArguments().add(g2);
+        initEReference(getCreateNonRootEObject_ListUpdate(), g1, null, "listUpdate", null, 1, 1, CreateNonRootEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(createRootEObjectEClass, CreateRootEObject.class, "CreateRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -607,8 +738,21 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         initEClass(deleteEObjectEClass, DeleteEObject.class, "DeleteEObject", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         initEClass(deleteNonRootEObjectEClass, DeleteNonRootEObject.class, "DeleteNonRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        g1 = createEGenericType(this.getRemoveFromEList());
+        g2 = createEGenericType(ecorePackage.getEReference());
+        g1.getETypeArguments().add(g2);
+        initEReference(getDeleteNonRootEObject_ListUpdate(), g1, null, "listUpdate", null, 1, 1, DeleteNonRootEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(deleteRootEObjectEClass, DeleteRootEObject.class, "DeleteRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        initEClass(updateEListEClass, UpdateEList.class, "UpdateEList", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getUpdateEList_Index(), ecorePackage.getEInt(), "index", "0", 1, 1, UpdateEList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getUpdateEList_Update(), ecorePackage.getEJavaObject(), "update", null, 0, 1, UpdateEList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(insertInEListEClass, InsertInEList.class, "InsertInEList", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        initEClass(removeFromEListEClass, RemoveFromEList.class, "RemoveFromEList", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getRemoveFromEList_RemovedObjectURIFragment(), ecorePackage.getEString(), "removedObjectURIFragment", "0", 1, 1, RemoveFromEList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Create resource
         createResource(eNS_URI);

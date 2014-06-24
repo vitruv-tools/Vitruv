@@ -190,11 +190,10 @@ public class ChangeSwitch<T1> extends Switch<T1> {
             case ChangePackage.DELETE_NON_ROOT_EOBJECT: {
                 DeleteNonRootEObject<?> deleteNonRootEObject = (DeleteNonRootEObject<?>)theEObject;
                 T1 result = caseDeleteNonRootEObject(deleteNonRootEObject);
-                if (result == null) result = caseDeleteRootEObject(deleteNonRootEObject);
-                if (result == null) result = caseUpdateEContainmentReference(deleteNonRootEObject);
                 if (result == null) result = caseDeleteEObject(deleteNonRootEObject);
-                if (result == null) result = caseUpdateEReference(deleteNonRootEObject);
+                if (result == null) result = caseUpdateEContainmentReference(deleteNonRootEObject);
                 if (result == null) result = caseEObjectChange(deleteNonRootEObject);
+                if (result == null) result = caseUpdateEReference(deleteNonRootEObject);
                 if (result == null) result = caseUpdateEFeature(deleteNonRootEObject);
                 if (result == null) result = caseEReferenceChange(deleteNonRootEObject);
                 if (result == null) result = caseEFeatureChange(deleteNonRootEObject);
@@ -208,6 +207,32 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 if (result == null) result = caseDeleteEObject(deleteRootEObject);
                 if (result == null) result = caseEObjectChange(deleteRootEObject);
                 if (result == null) result = caseEChange(deleteRootEObject);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case ChangePackage.UPDATE_ELIST: {
+                UpdateEList<?> updateEList = (UpdateEList<?>)theEObject;
+                T1 result = caseUpdateEList(updateEList);
+                if (result == null) result = caseEFeatureChange(updateEList);
+                if (result == null) result = caseEChange(updateEList);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case ChangePackage.INSERT_IN_ELIST: {
+                InsertInEList<?> insertInEList = (InsertInEList<?>)theEObject;
+                T1 result = caseInsertInEList(insertInEList);
+                if (result == null) result = caseUpdateEList(insertInEList);
+                if (result == null) result = caseEFeatureChange(insertInEList);
+                if (result == null) result = caseEChange(insertInEList);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case ChangePackage.REMOVE_FROM_ELIST: {
+                RemoveFromEList<?> removeFromEList = (RemoveFromEList<?>)theEObject;
+                T1 result = caseRemoveFromEList(removeFromEList);
+                if (result == null) result = caseUpdateEList(removeFromEList);
+                if (result == null) result = caseEFeatureChange(removeFromEList);
+                if (result == null) result = caseEChange(removeFromEList);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -456,6 +481,51 @@ public class ChangeSwitch<T1> extends Switch<T1> {
     }
 
 	/**
+     * Returns the result of interpreting the object as an instance of '<em>Update EList</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Update EList</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public <T extends EStructuralFeature> T1 caseUpdateEList(UpdateEList<T> object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Insert In EList</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Insert In EList</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public <T extends EStructuralFeature> T1 caseInsertInEList(InsertInEList<T> object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Remove From EList</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Remove From EList</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public <T extends EStructuralFeature> T1 caseRemoveFromEList(RemoveFromEList<T> object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
      * <!-- begin-user-doc -->
 	 * This implementation returns null;

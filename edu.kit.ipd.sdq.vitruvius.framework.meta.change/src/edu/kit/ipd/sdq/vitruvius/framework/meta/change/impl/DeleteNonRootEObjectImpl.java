@@ -6,12 +6,14 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.DeleteNonRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EFeatureChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.RemoveFromEList;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEContainmentReference;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEFeature;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEReference;
 
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -29,12 +31,13 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.DeleteNonRootEObjectImpl#getAffectedFeature <em>Affected Feature</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.DeleteNonRootEObjectImpl#getAffectedEObject <em>Affected EObject</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.DeleteNonRootEObjectImpl#getNewValue <em>New Value</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.DeleteNonRootEObjectImpl#getListUpdate <em>List Update</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class DeleteNonRootEObjectImpl<T extends Object> extends DeleteRootEObjectImpl implements DeleteNonRootEObject<T> {
+public class DeleteNonRootEObjectImpl<T extends Object> extends DeleteEObjectImpl implements DeleteNonRootEObject<T> {
 	/**
      * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
      * <!-- begin-user-doc -->
@@ -66,6 +69,16 @@ public class DeleteNonRootEObjectImpl<T extends Object> extends DeleteRootEObjec
 	protected T newValue;
 
 	/**
+     * The cached value of the '{@link #getListUpdate() <em>List Update</em>}' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getListUpdate()
+     * @generated
+     * @ordered
+     */
+    protected RemoveFromEList<EReference> listUpdate;
+
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -124,6 +137,45 @@ public class DeleteNonRootEObjectImpl<T extends Object> extends DeleteRootEObjec
     }
 
 	/**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @SuppressWarnings("unchecked")
+    public RemoveFromEList<EReference> getListUpdate() {
+        if (listUpdate != null && listUpdate.eIsProxy()) {
+            InternalEObject oldListUpdate = (InternalEObject)listUpdate;
+            listUpdate = (RemoveFromEList<EReference>)eResolveProxy(oldListUpdate);
+            if (listUpdate != oldListUpdate) {
+                if (eNotificationRequired())
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, ChangePackage.DELETE_NON_ROOT_EOBJECT__LIST_UPDATE, oldListUpdate, listUpdate));
+            }
+        }
+        return listUpdate;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public RemoveFromEList<EReference> basicGetListUpdate() {
+        return listUpdate;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setListUpdate(RemoveFromEList<EReference> newListUpdate) {
+        RemoveFromEList<EReference> oldListUpdate = listUpdate;
+        listUpdate = newListUpdate;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ChangePackage.DELETE_NON_ROOT_EOBJECT__LIST_UPDATE, oldListUpdate, listUpdate));
+    }
+
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -216,6 +268,9 @@ public class DeleteNonRootEObjectImpl<T extends Object> extends DeleteRootEObjec
             case ChangePackage.DELETE_NON_ROOT_EOBJECT__NEW_VALUE:
                 if (resolve) return getNewValue();
                 return basicGetNewValue();
+            case ChangePackage.DELETE_NON_ROOT_EOBJECT__LIST_UPDATE:
+                if (resolve) return getListUpdate();
+                return basicGetListUpdate();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -238,6 +293,9 @@ public class DeleteNonRootEObjectImpl<T extends Object> extends DeleteRootEObjec
             case ChangePackage.DELETE_NON_ROOT_EOBJECT__NEW_VALUE:
                 setNewValue((T)newValue);
                 return;
+            case ChangePackage.DELETE_NON_ROOT_EOBJECT__LIST_UPDATE:
+                setListUpdate((RemoveFromEList<EReference>)newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -259,6 +317,9 @@ public class DeleteNonRootEObjectImpl<T extends Object> extends DeleteRootEObjec
             case ChangePackage.DELETE_NON_ROOT_EOBJECT__NEW_VALUE:
                 setNewValue((T)null);
                 return;
+            case ChangePackage.DELETE_NON_ROOT_EOBJECT__LIST_UPDATE:
+                setListUpdate((RemoveFromEList<EReference>)null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -277,6 +338,8 @@ public class DeleteNonRootEObjectImpl<T extends Object> extends DeleteRootEObjec
                 return affectedEObject != null;
             case ChangePackage.DELETE_NON_ROOT_EOBJECT__NEW_VALUE:
                 return newValue != null;
+            case ChangePackage.DELETE_NON_ROOT_EOBJECT__LIST_UPDATE:
+                return listUpdate != null;
         }
         return super.eIsSet(featureID);
     }

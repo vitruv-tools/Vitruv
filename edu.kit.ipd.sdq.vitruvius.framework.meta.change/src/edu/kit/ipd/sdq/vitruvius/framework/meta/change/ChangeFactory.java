@@ -96,6 +96,24 @@ public interface ChangeFactory extends EFactory {
 	DeleteRootEObject createDeleteRootEObject();
 
 	/**
+     * Returns a new object of class '<em>Insert In EList</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Insert In EList</em>'.
+     * @generated
+     */
+    <T extends EStructuralFeature> InsertInEList<T> createInsertInEList();
+
+    /**
+     * Returns a new object of class '<em>Remove From EList</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Remove From EList</em>'.
+     * @generated
+     */
+    <T extends EStructuralFeature> RemoveFromEList<T> createRemoveFromEList();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

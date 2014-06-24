@@ -65,6 +65,8 @@ public class ChangeFactoryImpl extends EFactoryImpl implements ChangeFactory {
             case ChangePackage.UPDATE_ECONTAINMENT_REFERENCE: return createUpdateEContainmentReference();
             case ChangePackage.DELETE_NON_ROOT_EOBJECT: return createDeleteNonRootEObject();
             case ChangePackage.DELETE_ROOT_EOBJECT: return createDeleteRootEObject();
+            case ChangePackage.INSERT_IN_ELIST: return createInsertInEList();
+            case ChangePackage.REMOVE_FROM_ELIST: return createRemoveFromEList();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -151,6 +153,26 @@ public class ChangeFactoryImpl extends EFactoryImpl implements ChangeFactory {
     }
 
 	/**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public <T extends EStructuralFeature> InsertInEList<T> createInsertInEList() {
+        InsertInEListImpl<T> insertInEList = new InsertInEListImpl<T>();
+        return insertInEList;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public <T extends EStructuralFeature> RemoveFromEList<T> createRemoveFromEList() {
+        RemoveFromEListImpl<T> removeFromEList = new RemoveFromEListImpl<T>();
+        return removeFromEList;
+    }
+
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
