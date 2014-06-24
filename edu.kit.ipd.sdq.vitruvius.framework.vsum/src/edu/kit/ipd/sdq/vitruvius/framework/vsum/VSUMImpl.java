@@ -227,20 +227,15 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     }
 
     private void loadModelInstances() {
-        Set<String> uris = FileSystemHelper.loadVSUMvURIsFromFile();
-        for (String uri : uris) {
-            VURI vuri = VURI.getInstance(uri);
+        Set<VURI> vuris = FileSystemHelper.loadVSUMvURIsFromFile();
+        for (VURI vuri : vuris) {
             ModelInstance modelInstance = loadModelInstance(vuri);
             this.modelInstances.put(vuri, modelInstance);
         }
     }
 
     private void saveModelInstances() {
-        Set<String> stringSet = new HashSet<String>();
-        for (VURI vuri : this.modelInstances.keySet()) {
-            stringSet.add(vuri.getEMFUri().toString());
-        }
-        FileSystemHelper.saveVSUMvURIsToFile(stringSet);
+        FileSystemHelper.saveVSUMvURIsToFile(this.modelInstances.keySet());
     }
 
 }
