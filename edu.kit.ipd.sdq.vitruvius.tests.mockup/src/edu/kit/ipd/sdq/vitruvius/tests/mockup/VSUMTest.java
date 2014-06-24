@@ -24,12 +24,17 @@ public class VSUMTest extends MetaRepositoryTest {
     }
 
     protected VSUMImpl testMetaRepositoryVSUMAndModelInstancesCreation() {
-        return testMetaRepositoryVSUMAndModelInstancesCreation(PCM_MM_URI, PCM_FILE_EXT, UML_MM_URI, UML_FILE_EXT,
-                PCM_INSTANCE_URI, UML_INSTANCE_URI);
+        VSUMImpl vsum = testMetaRepositoryAndVSUMCreation();
+        testInstanceCreation(vsum);
+        return vsum;
     }
 
-    private VSUMImpl testMetaRepositoryVSUMAndModelInstancesCreation(final String mm1URIString, final String fileExt1,
-            final String mm2URIString, final String fileExt2, final String model1URIString, final String model2URIString) {
+    protected VSUMImpl testMetaRepositoryAndVSUMCreation() {
+        return testMetaRepositoryAndVSUMCreation(PCM_MM_URI, PCM_FILE_EXT, UML_MM_URI, UML_FILE_EXT);
+    }
+
+    private VSUMImpl testMetaRepositoryAndVSUMCreation(final String mm1URIString, final String fileExt1,
+            final String mm2URIString, final String fileExt2) {
         MetaRepositoryImpl metaRepository = testMetaRepository();
         testAddMapping(metaRepository, mm1URIString, fileExt1, mm2URIString, fileExt2);
         CorrespondenceMMProviding correspondenceMMproviding = new CorrespondenceMMProviding() {
@@ -40,7 +45,14 @@ public class VSUMTest extends MetaRepositoryTest {
             }
         };
         VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository, correspondenceMMproviding);
+        return vsum;
+    }
 
+    protected void testInstanceCreation(final VSUMImpl vsum) {
+        testInstanceCreation(PCM_INSTANCE_URI, UML_INSTANCE_URI, vsum);
+    }
+
+    private void testInstanceCreation(final String model1URIString, final String model2URIString, final VSUMImpl vsum) {
         VURI model1URI = VURI.getInstance(model1URIString);
         VURI model2URI = VURI.getInstance(model2URIString);
         ModelInstance model1 = vsum.getModelInstanceOriginal(model1URI);
@@ -53,7 +65,5 @@ public class VSUMTest extends MetaRepositoryTest {
         assertNotNull(contents2);
         EObject root2 = contents2.get(0);
         assertNotNull(root2);
-
-        return vsum;
     }
 }
