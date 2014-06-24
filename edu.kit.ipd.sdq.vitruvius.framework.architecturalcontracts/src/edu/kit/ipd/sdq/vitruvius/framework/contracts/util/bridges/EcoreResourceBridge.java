@@ -88,7 +88,8 @@ public final class EcoreResourceBridge {
 
     /**
      * Returns the root element of the content of the model at the given URI if it is unique
-     * (exactly one root element) and has the type of the given class.
+     * (exactly one root element) and has the type of the given class and throws a
+     * {@link java.lang.RuntimeException RuntimeException} otherwise
      * 
      * @param resource
      *            a resource

@@ -97,8 +97,29 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         Resource resourceToSave = modelInstanceToSave.getResource();
         try {
             EcoreResourceBridge.saveResource(resourceToSave);
+            saveAllChangedCorrespondences(modelInstanceToSave);
         } catch (IOException e) {
             throw new RuntimeException("Could not save VURI + " + vuri + ": " + e);
+        }
+    }
+
+    private void saveAllChangedCorrespondences(final ModelInstance modelInstanceToSave) {
+        VURI metamodeURI = modelInstanceToSave.getMetamodeURI();
+        Metamodel metamodel = this.metamodelManaging.getMetamodel(metamodeURI);
+        Set<CorrespondenceInstance> allCorrespondenceInstances = getOrCreateAllCorrespondenceInstances(metamodel);
+        for (CorrespondenceInstance correspondenceInstance : allCorrespondenceInstances) {
+            if (correspondenceInstance.changedAfterLastSave()) {
+                try {
+                    EcoreResourceBridge.saveResource(correspondenceInstance.getResource());
+                    correspondenceInstance.resetChangedAfterLastSave();
+                    // we do not need to save anything else in a correspondence instance because the
+                    // involved mapping is fix and everything else can be recomputed from the model
+                } catch (IOException e) {
+                    throw new RuntimeException("Could not save correspondence instance  + " + correspondenceInstance
+                            + " for the model instance " + modelInstanceToSave + ": " + e);
+                }
+
+            }
         }
     }
 
@@ -126,12 +147,13 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         return modelInstance;
     }
 
-    private void getOrCreateAllCorrespondenceInstances(final Metamodel metamodel) {
+    private Set<CorrespondenceInstance> getOrCreateAllCorrespondenceInstances(final Metamodel metamodel) {
         Set<CorrespondenceInstance> correspondenceInstances = this.metamodel2CorrespondenceInstancesMap.get(metamodel);
         if (correspondenceInstances == null || 0 == correspondenceInstances.size()) {
             correspondenceInstances = createAndRegisterAllCorrespondenceInstances(metamodel);
             this.metamodel2CorrespondenceInstancesMap.put(metamodel, correspondenceInstances);
         }
+        return correspondenceInstances;
     }
 
     private Set<CorrespondenceInstance> createAndRegisterAllCorrespondenceInstances(final Metamodel metamodel) {
@@ -148,10 +170,10 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
             if (correspondenceInstance == null) {
                 VURI[] mmURIs = mapping.getMetamodelURIs();
                 VURI correspondencesVURI = FileSystemHelper.getCorrespondencesVURI(mmURIs);
-                VURI correspondenceInstanceVURI = FileSystemHelper.getCorrespondenceInstanceVURI(mmURIs);
+                FileSystemHelper.saveCorrespondenceInstanceMMURIs(mmURIs);
                 Resource correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri());
                 correspondenceInstance = new CorrespondenceInstance(mapping, correspondencesVURI,
-                        correspondencesResource, correspondenceInstanceVURI);
+                        correspondencesResource);
                 this.mapping2CorrespondenceInstanceMap.put(mapping, correspondenceInstance);
             }
             correspondenceInstances.add(correspondenceInstance);

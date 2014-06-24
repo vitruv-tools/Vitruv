@@ -32,12 +32,19 @@ public class FileSystemHelper {
         return getCorrespondenceVURI(mmURIs, fileExt);
     }
 
-    public static VURI getCorrespondenceInstanceVURI(final VURI[] mmURIs) {
+    public static void saveCorrespondenceInstanceMMURIs(final VURI[] mmURIs) {
         String fileExt = VitruviusConstants.getCorrespondenceInstanceFileExt();
-        return getCorrespondenceVURI(mmURIs, fileExt);
+        IFile correspondenceInstanceIFile = getCorrespondenceIFile(mmURIs, fileExt);
+        Set<VURI> mmURIsSet = new HashSet<VURI>(Arrays.asList(mmURIs));
+        saveVURISetToFile(mmURIsSet, correspondenceInstanceIFile.getLocation().toOSString());
     }
 
     private static VURI getCorrespondenceVURI(final VURI[] mmURIs, final String fileExt) {
+        IFile correspondenceFile = getCorrespondenceIFile(mmURIs, fileExt);
+        return VURI.getInstance(correspondenceFile);
+    }
+
+    private static IFile getCorrespondenceIFile(final VURI[] mmURIs, final String fileExt) {
         IProject correspondenceProject = getVSUMProject();
         IFolder correspondenceFolder = getCorrespondenceFolder(correspondenceProject);
         VURI[] copyOfMMURIs = Arrays.copyOf(mmURIs, mmURIs.length);
@@ -48,7 +55,7 @@ public class FileSystemHelper {
         }
         fileName += fileExt;
         IFile correspondenceFile = correspondenceFolder.getFile(fileName);
-        return VURI.getInstance(correspondenceFile);
+        return correspondenceFile;
     }
 
     public static void saveVSUMvURIsToFile(final Set<VURI> vuris) {

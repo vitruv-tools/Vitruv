@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableMap;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
@@ -47,12 +48,25 @@ public class CorrespondenceInstance extends ModelInstance {
     // correctly update the previous map (featureInstance2CorrespondingFIMap)
     private ClaimableMap<String, Set<Set<FeatureInstance>>> tuid2CorrespondenceSetsWithComprisedFeatureInstanceMap;
 
+    private boolean changedAfterLastSave = false;
+
     public CorrespondenceInstance(final Mapping mapping, final VURI correspondencesVURI,
-            final Resource correspondencesResource, final VURI correspondenceInstanceVURI) {
+            final Resource correspondencesResource) {
         super(correspondencesVURI, correspondencesResource);
         this.mapping = mapping;
-        this.correspondences = CorrespondenceFactory.eINSTANCE.createCorrespondences();
         // TODO implement lazy loading for correspondences because they may get really big
+        EObject correspondences = EcoreResourceBridge.getResourceContentRootIfUnique(correspondencesResource);
+        if (correspondences == null) {
+            this.correspondences = CorrespondenceFactory.eINSTANCE.createCorrespondences();
+            correspondencesResource.getContents().add(this.correspondences);
+        } else {
+            if (correspondences instanceof Correspondences) {
+                this.correspondences = (Correspondences) correspondences;
+            } else {
+                throw new RuntimeException("The unique root object '" + correspondences
+                        + "' of the correspondence model '" + correspondencesVURI + "' is not correctly typed!");
+            }
+        }
         this.tuid2CorrespondencesMap = new ClaimableHashMap<String, Set<Correspondence>>();
         this.tuid2CorrespondingEObjectsMap = new ClaimableHashMap<String, Set<EObject>>();
         this.featureInstance2CorrespondingFIMap = new ClaimableHashMap<FeatureInstance, Set<FeatureInstance>>();
@@ -233,7 +247,19 @@ public class CorrespondenceInstance extends ModelInstance {
             // store the usage of a feature instance with a parent object that has the tuid tuidA
             storeFeatureInstancesForTUID(tuidA, featureInstancesCorrespondingToFIB);
         }
+        setChangeAfterLastSaveFlag();
+    }
 
+    private void setChangeAfterLastSaveFlag() {
+        this.changedAfterLastSave = true;
+    }
+
+    public boolean changedAfterLastSave() {
+        return this.changedAfterLastSave;
+    }
+
+    public void resetChangedAfterLastSave() {
+        this.changedAfterLastSave = false;
     }
 
     private void storeFeatureInstancesForTUID(final String tuid,
@@ -300,6 +326,7 @@ public class CorrespondenceInstance extends ModelInstance {
         }
         removeCorrespondenceFromMaps(correspondence);
         EcoreUtil.remove(correspondence);
+        setChangeAfterLastSaveFlag();
     }
 
     private void removeCorrespondenceFromMaps(final Correspondence possibleChildCorrespondence) {
@@ -378,6 +405,7 @@ public class CorrespondenceInstance extends ModelInstance {
                 }
             }
         }
+        setChangeAfterLastSaveFlag();
     }
 
     private void updateTUID2CorrespondingEObjectsMap(final String oldTUID, final String newTUID, final boolean sameTUID) {
