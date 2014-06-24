@@ -147,9 +147,11 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
             CorrespondenceInstance correspondenceInstance = this.mapping2CorrespondenceInstanceMap.get(mapping);
             if (correspondenceInstance == null) {
                 VURI[] mmURIs = mapping.getMetamodelURIs();
-                VURI correspondenceURI = FileSystemHelper.createCorrespondenceInstanceURI(mmURIs);
-                Resource correspondenceResource = this.resourceSet.createResource(correspondenceURI.getEMFUri());
-                correspondenceInstance = new CorrespondenceInstance(mapping, correspondenceURI, correspondenceResource);
+                VURI correspondencesVURI = FileSystemHelper.getCorrespondencesVURI(mmURIs);
+                VURI correspondenceInstanceVURI = FileSystemHelper.getCorrespondenceInstanceVURI(mmURIs);
+                Resource correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri());
+                correspondenceInstance = new CorrespondenceInstance(mapping, correspondencesVURI,
+                        correspondencesResource, correspondenceInstanceVURI);
                 this.mapping2CorrespondenceInstanceMap.put(mapping, correspondenceInstance);
             }
             correspondenceInstances.add(correspondenceInstance);

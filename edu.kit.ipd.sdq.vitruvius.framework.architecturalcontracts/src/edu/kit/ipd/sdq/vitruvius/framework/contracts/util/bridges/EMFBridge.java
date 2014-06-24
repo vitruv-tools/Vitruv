@@ -112,6 +112,13 @@ public final class EMFBridge {
         return URI.createPlatformResourceURI(pathAfterPlatformResource, true);
     }
 
+    /**
+     * Creates a URI from the passed uriString based on a possible prefix and adds the platform
+     * resource prefix if no prefix is specified.
+     * 
+     * @param uriString
+     * @return the new URI
+     */
     public static URI createURI(String uriString) {
         if (uriString != null) {
             if (!uriString.startsWith(VitruviusConstants.getPlatformResourcePrefix())) {

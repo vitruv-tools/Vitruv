@@ -47,8 +47,9 @@ public class CorrespondenceInstance extends ModelInstance {
     // correctly update the previous map (featureInstance2CorrespondingFIMap)
     private ClaimableMap<String, Set<Set<FeatureInstance>>> tuid2CorrespondenceSetsWithComprisedFeatureInstanceMap;
 
-    public CorrespondenceInstance(final Mapping mapping, final VURI vuri, final Resource resource) {
-        super(vuri, resource);
+    public CorrespondenceInstance(final Mapping mapping, final VURI correspondencesVURI,
+            final Resource correspondencesResource, final VURI correspondenceInstanceVURI) {
+        super(correspondencesVURI, correspondencesResource);
         this.mapping = mapping;
         this.correspondences = CorrespondenceFactory.eINSTANCE.createCorrespondences();
         // TODO implement lazy loading for correspondences because they may get really big

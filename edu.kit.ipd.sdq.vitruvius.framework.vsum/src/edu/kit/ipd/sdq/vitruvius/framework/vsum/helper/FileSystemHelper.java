@@ -18,6 +18,7 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMConstants;
 
@@ -26,15 +27,26 @@ public class FileSystemHelper {
     private FileSystemHelper() {
     }
 
-    public static VURI createCorrespondenceInstanceURI(final VURI[] mmURIs) {
+    public static VURI getCorrespondencesVURI(final VURI[] mmURIs) {
+        String fileExt = VitruviusConstants.getCorrespondencesFileExt();
+        return getCorrespondenceVURI(mmURIs, fileExt);
+    }
+
+    public static VURI getCorrespondenceInstanceVURI(final VURI[] mmURIs) {
+        String fileExt = VitruviusConstants.getCorrespondenceInstanceFileExt();
+        return getCorrespondenceVURI(mmURIs, fileExt);
+    }
+
+    private static VURI getCorrespondenceVURI(final VURI[] mmURIs, final String fileExt) {
         IProject correspondenceProject = getVSUMProject();
         IFolder correspondenceFolder = getCorrespondenceFolder(correspondenceProject);
         VURI[] copyOfMMURIs = Arrays.copyOf(mmURIs, mmURIs.length);
         Arrays.sort(copyOfMMURIs);
         String fileName = "";
         for (VURI uri : copyOfMMURIs) {
-            fileName += uri.getLastSegment() + uri.toString().hashCode();
+            fileName += uri.getLastSegment().replace('.', '_') + uri.toString().hashCode();
         }
+        fileName += fileExt;
         IFile correspondenceFile = correspondenceFolder.getFile(fileName);
         return VURI.getInstance(correspondenceFile);
     }
