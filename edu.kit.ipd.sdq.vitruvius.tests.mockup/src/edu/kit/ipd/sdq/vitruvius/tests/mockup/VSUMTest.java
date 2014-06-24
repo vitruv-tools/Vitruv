@@ -21,10 +21,10 @@ public class VSUMTest extends MetaRepositoryTest {
     @Override
     @Test
     public void testAll() {
-        String pcmURIString = "MockupProject/model/My.pcm_mockup";
-        EObject pcmRoot = test("MockupProject/metamodel/pcm_mockup.ecore", "pcm_mockup",
-                "MockupProject/metamodel/uml_mockup.ecore", "uml_mockup", pcmURIString,
-                "MockupProject/model/My.uml_mockup");
+        String pcmURIString = "/MockupProject/model/My.pcm_mockup";
+        EObject pcmRoot = test("/MockupProject/metamodel/pcm_mockup.ecore", "pcm_mockup",
+                "/MockupProject/metamodel/uml_mockup.ecore", "uml_mockup", pcmURIString,
+                "/MockupProject/model/My.uml_mockup");
         VURI vURI = testTUIDCalculator(pcmRoot);
         assertEquals(vURI.toString(), VitruviusConstants.getPlatformResourcePrefix() + pcmURIString);
     }

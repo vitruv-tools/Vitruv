@@ -20,16 +20,16 @@ public class MetaRepositoryTest {
     @Test
     public void testAll() {
 
-        testAddMapping("MockupProject/metamodels/pcm_mockup.ecore", "pcm_mockup",
-                "MockupProject/metamodels/uml_mockup.ecore", "uml_mockup");
+        testAddMapping("/MockupProject/metamodels/pcm_mockup.ecore", "pcm_mockup",
+                "/MockupProject/metamodels/uml_mockup.ecore", "uml_mockup");
 
-        testAddViewType("MockupProject/metamodels/pcm_mockup.ecore", "pcm_mockup",
-                "MockupProject/metamodels/uml_mockup.ecore", "uml_mockup",
-                " MockupProject/viewtypes/pcm__uml_mockup.ecore");
+        testAddViewType("/MockupProject/metamodels/pcm_mockup.ecore", "pcm_mockup",
+                "/MockupProject/metamodels/uml_mockup.ecore", "uml_mockup",
+                "/MockupProject/viewtypes/pcm__uml_mockup.ecore");
 
-        testGetProjectInput("MockupProject/metamodels/pcm_mockup.ecore", "pcm_mockup",
-                "MockupProject/metamodels/uml_mockup.ecore", "uml_mockup",
-                " MockupProject/viewtypes/pcm__uml_mockup.ecore");
+        testGetProjectInput("/MockupProject/metamodels/pcm_mockup.ecore", "pcm_mockup",
+                "/MockupProject/metamodels/uml_mockup.ecore", "uml_mockup",
+                "/MockupProject/viewtypes/pcm__uml_mockup.ecore");
 
         // generiere VSUM plugins (jetzt erst mal hart verdrahtet)
 
