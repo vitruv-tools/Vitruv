@@ -73,8 +73,9 @@ public class FileSystemHelper {
 
     private static void saveStringSetToFile(final Set<String> stringSet, final String fileName) {
         try {
-            boolean append = true;
-            FileOutputStream fileOutputStream = new FileOutputStream(fileName, append);
+            // TODO: this code could be optimozed in a way that it only appends the new strings to
+            // the file
+            FileOutputStream fileOutputStream = new FileOutputStream(fileName);
             ObjectOutputStream oos = new ObjectOutputStream(fileOutputStream);
             oos.writeObject(stringSet);
             oos.flush();

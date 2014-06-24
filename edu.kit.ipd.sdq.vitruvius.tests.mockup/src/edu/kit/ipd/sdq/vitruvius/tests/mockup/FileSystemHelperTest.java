@@ -22,7 +22,8 @@ public class FileSystemHelperTest {
     @Test
     public void testSaveAndLoadVURIs() {
         Set<VURI> vuris = new HashSet<VURI>();
-        for (int i = 0; i < 10; ++i) {
+        int nrOfVURIs = 1000;
+        for (int i = 0; i < nrOfVURIs; ++i) {
             vuris.add(VURI.getInstance("testInstance_" + i));
         }
         Set<String> stringSet = new HashSet<String>();
@@ -30,11 +31,20 @@ public class FileSystemHelperTest {
             stringSet.add(vuri.getEMFUri().toString());
         }
 
+        long start = System.currentTimeMillis();
         // save to disk
         FileSystemHelper.saveVSUMvURIsToFile(vuris);
+        long durationForSave = System.currentTimeMillis() - start;
+        long startLoad = System.currentTimeMillis();
         // load from Disk
         Set<VURI> loadedVURIs = FileSystemHelper.loadVSUMvURIsFromFile();
 
+        long durationForLoad = System.currentTimeMillis() - startLoad;
+        long durationForLoadAndSave = System.currentTimeMillis() - start;
+        String vuriCount = "" + nrOfVURIs + " VURIs: ";
+        System.out.println("Duration for save " + vuriCount + durationForSave);
+        System.out.println("Duration for load " + vuriCount + durationForLoad);
+        System.out.println("Duration for save and load " + vuriCount + durationForLoadAndSave);
         // compare
         assertEquals("Loaded VURIs must have the same size as saved VURIs", loadedVURIs.size(), vuris.size());
         Iterator<VURI> loadedVURIsIterator = loadedVURIs.iterator();
