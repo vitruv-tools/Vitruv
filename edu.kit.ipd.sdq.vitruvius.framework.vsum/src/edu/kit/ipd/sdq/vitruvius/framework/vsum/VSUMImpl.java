@@ -55,7 +55,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         this.metamodel2CorrespondenceInstancesMap = new HashMap<Metamodel, Set<CorrespondenceInstance>>();
         this.mapping2CorrespondenceInstanceMap = new HashMap<Mapping, CorrespondenceInstance>();
 
-        loadModelInstances();
+        loadVURIsOfVSMUModelInstances();
     }
 
     @Override
@@ -80,7 +80,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
             // case 2 or 3
             modelInstance = getOrCreateUnregisteredModelInstance(modelURI);
             this.modelInstances.put(modelURI, modelInstance);
-            saveModelInstances();
+            saveVURIsOfVSUMModelInstances();
         }
         return modelInstance;
     }
@@ -248,7 +248,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         return false;
     }
 
-    private void loadModelInstances() {
+    private void loadVURIsOfVSMUModelInstances() {
         Set<VURI> vuris = FileSystemHelper.loadVSUMvURIsFromFile();
         for (VURI vuri : vuris) {
             ModelInstance modelInstance = loadModelInstance(vuri);
@@ -256,7 +256,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         }
     }
 
-    private void saveModelInstances() {
+    private void saveVURIsOfVSUMModelInstances() {
         FileSystemHelper.saveVSUMvURIsToFile(this.modelInstances.keySet());
     }
 
