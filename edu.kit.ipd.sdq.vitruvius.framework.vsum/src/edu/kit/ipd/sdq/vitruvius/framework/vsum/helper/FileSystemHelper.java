@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.vsum.helper;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -38,23 +39,6 @@ public class FileSystemHelper {
         return VURI.getInstance(correspondenceFile);
     }
 
-    public static IProject createVSUMProject() {
-        try {
-            IProject project = getVSUMProject();
-            project.create(null);
-            project.open(null);
-            // IProjectDescription description = project.getDescription();
-            // description.setNatureIds(new String[] { VITRUVIUSNATURE.ID });
-            // project.setDescription(description, null);
-            IFolder correspondenceFolder = getCorrespondenceFolder(project);
-            correspondenceFolder.create(false, true, null);
-            return project;
-        } catch (CoreException e) {
-            // soften
-            throw new RuntimeException(e);
-        }
-    }
-
     public static void saveVSUMvURIsToFile(final Set<String> stringSet) {
         String fileName = getVSUMMapFileName();
         saveStringSetToFile(stringSet, fileName);
@@ -62,7 +46,11 @@ public class FileSystemHelper {
 
     private static void saveStringSetToFile(final Set<String> stringSet, final String fileName) {
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream(fileName);
+            File f = new File(fileName);
+            if (!f.exists()) {
+                f.createNewFile();
+            }
+            FileOutputStream fileOutputStream = new FileOutputStream(f);
             ObjectOutputStream oos = new ObjectOutputStream(fileOutputStream);
             oos.writeObject(stringSet);
             oos.flush();
@@ -97,7 +85,27 @@ public class FileSystemHelper {
 
     private static IProject getVSUMProject() {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        return root.getProject(VSUMConstants.VSUM_PROJECT_NAME);
+        IProject vsumProject = root.getProject(VSUMConstants.VSUM_PROJECT_NAME);
+        if (!vsumProject.exists()) {
+            createProject(vsumProject);
+        }
+        return vsumProject;
+
+    }
+
+    public static void createProject(final IProject project) {
+        try {
+            project.create(null);
+            project.open(null);
+            // IProjectDescription description = project.getDescription();
+            // description.setNatureIds(new String[] { VITRUVIUSNATURE.ID });
+            // project.setDescription(description, null);
+            IFolder correspondenceFolder = getCorrespondenceFolder(project);
+            correspondenceFolder.create(false, true, null);
+        } catch (CoreException e) {
+            // soften
+            throw new RuntimeException(e);
+        }
     }
 
     private static IFolder getCorrespondenceFolder(final IProject project) {
