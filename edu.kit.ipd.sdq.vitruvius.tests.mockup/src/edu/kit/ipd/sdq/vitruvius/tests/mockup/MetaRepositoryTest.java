@@ -3,6 +3,20 @@ package edu.kit.ipd.sdq.vitruvius.tests.mockup;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Date;
+
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
@@ -14,16 +28,28 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableCon
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableMap;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMConstants;
 
 public class MetaRepositoryTest {
 
-    static final String PROJECT_URI = "MockupProject";
-    static final String PCM_FILE_EXT = "pcm_mockup";
+    private static final Logger logger = Logger.getLogger(MetaRepositoryTest.class.getSimpleName());
+
+    public static final String PROJECT_URI = "MockupProject";
+    public static final String PCM_FILE_EXT = "pcm_mockup";
 
     protected static final String PCM_MM_URI = "http://edu.kit.ipd.sdq.vitruvius.examples.pcm_mockup";
     protected static final String UML_MM_URI = "http://edu.kit.ipd.sdq.vitruvius.examples.uml_mockup";
     protected static final String UML_FILE_EXT = "uml_mockup";
     protected static final String PCM_UML_VT_URI = "http://edu.kit.ipd.sdq.vitruvius.examples.pcm_uml_mockup_VT";
+
+    @BeforeClass
+    public static void beforeClass() {
+        // initialize Logger when not done yet
+        if (!Logger.getRootLogger().getAllAppenders().hasMoreElements()) {
+            Logger.getRootLogger().addAppender(new ConsoleAppender());
+            Logger.getRootLogger().setLevel(Level.ALL);
+        }
+    }
 
     @Test
     public void testAll() {
@@ -37,6 +63,21 @@ public class MetaRepositoryTest {
         // generiere VSUM plugins (jetzt erst mal hart verdrahtet)
 
         // TODO BBB KEEP ON WORKING HERE
+    }
+
+    @AfterClass
+    public static void tearDown() {
+        final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+        final IProject project = root.getProject(VSUMConstants.VSUM_PROJECT_NAME);
+        String timestamp = new Date(System.currentTimeMillis()).toString().replace(" ", "_");
+        IPath destinationPath = new Path("/" + VSUMConstants.VSUM_PROJECT_NAME + timestamp);
+        try {
+            project.open(new NullProgressMonitor());
+            project.move(destinationPath, true, new NullProgressMonitor());
+        } catch (CoreException e) {
+            logger.warn("Could not move " + VSUMConstants.VSUM_PROJECT_NAME + "project to folder. " + destinationPath
+                    + ". Reason: " + e);
+        }
     }
 
     public MetaRepositoryImpl testMetaRepository() {

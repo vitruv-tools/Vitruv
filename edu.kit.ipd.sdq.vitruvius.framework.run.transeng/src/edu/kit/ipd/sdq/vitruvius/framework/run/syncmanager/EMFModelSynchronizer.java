@@ -37,7 +37,7 @@ class EMFModelSynchronizer extends ConcreteChangeSynchronizer {
         if (null == correspondenceInstances || 0 == correspondenceInstances.size()) {
             logger.info("No correspondenceInstance found for model: " + sourceModelURI
                     + ". Change not sychronized with any other model.");
-            return new ChangeResult();
+            return new EMFChangeResult();
         }
         EMFChangeResult emfChangeResult = new EMFChangeResult();
         for (CorrespondenceInstance correspondenceInstance : correspondenceInstances) {

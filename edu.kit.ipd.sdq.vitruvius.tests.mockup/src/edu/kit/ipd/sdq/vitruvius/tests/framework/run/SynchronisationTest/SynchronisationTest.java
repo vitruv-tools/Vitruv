@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -18,7 +17,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.emftext.language.java.classifiers.Interface;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,21 +24,21 @@ import de.uka.ipd.sdq.pcm.repository.OperationInterface;
 import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
 import de.uka.ipd.sdq.pcm.util.PcmResourceFactoryImpl;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emf.MonitoredEmfEditorImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager.SyncManagerImpl;
+import edu.kit.ipd.sdq.vitruvius.tests.mockup.MetaRepositoryTest;
 
-public class SynchronisationTest {
+public class SynchronisationTest extends MetaRepositoryTest {
 
     private static final Logger logger = Logger.getLogger(SynchronisationTest.class.getSimpleName());
 
-    private static final String PROJECT_NAME = "MockupProject";
     private static final String MODEL_PATH = "testModels";
     private static final String MODEL_PATH_TMP = MODEL_PATH + "Tmp";
     private static final String PCM_REPOSITORY_FILE_NAME = MODEL_PATH + "/" + "pcmRepoTest.repository";
@@ -56,26 +54,21 @@ public class SynchronisationTest {
     @Before
     public void setUp() throws Exception {
         // set up syncManager, monitor and metaRepostitory
-        initializeMetaRepository();
+        this.metaRepository = PCMJavaUtils.createPCMJavaMetarepository();
         SyncManagerImpl.setMetaRepositoryImpl(this.metaRepository);
         this.syncManager = SyncManagerImpl.getSyncManagerInstance();
         this.monitor = new MonitoredEmfEditorImpl(this.syncManager, this.syncManager.getModelProviding());
         // create pcm model instance
         Repository repository = RepositoryFactory.eINSTANCE.createRepository();
         repository.setEntityName(PCM_REPOSITORY_NAME);
-        URI emfURI = URI.createFileURI(PROJECT_NAME + "/" + PCM_REPOSITORY_FILE_NAME);
-        this.sourceModelURI = VURI.getInstance(emfURI.toString());
-        // HACK: Set EMF URI in vuri to emfUri:
-        Field f = this.sourceModelURI.getClass().getDeclaredField("emfURI");
-        f.setAccessible(true);
-        f.set(this.sourceModelURI, emfURI);
+        this.sourceModelURI = VURI.getInstance(MetaRepositoryTest.PROJECT_URI + "/" + PCM_REPOSITORY_FILE_NAME);
 
         ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
                 .put("repository", new PcmResourceFactoryImpl());
         Resource resource = resourceSet.createResource(this.sourceModelURI.getEMFUri());
         if (null == resource) {
-            fail("Could not create resource with URI: " + emfURI.toString());
+            fail("Could not create resource with URI: " + this.sourceModelURI);
             return;
         }
         resource.getContents().add(repository);
@@ -90,19 +83,9 @@ public class SynchronisationTest {
             throw e;
         }
 
-        createFileChange(this.sourceModelURI);
+        createAndSyncFileChange(this.sourceModelURI);
         addContentAdapter(repository);
         createInterface(repository);
-    }
-
-    private void initializeMetaRepository() {
-        this.metaRepository = new MetaRepositoryImpl();
-        VURI pcmMMUri = VURI.getInstance(PCM_MM_URI);
-        // VURI jamoppMMUri = VURI.getInstance("");
-        Metamodel pcmMM = new Metamodel(PCM_MM_URI, pcmMMUri, "repository");
-        // Metamodel jamoppMM = new Metamodel(jamoppMMUri, "java");
-        this.metaRepository.addMetamodel(pcmMM);
-        // this.metaRepository.addMetamodel(jamoppMM);
     }
 
     /**
@@ -138,18 +121,12 @@ public class SynchronisationTest {
      * synchronize file create, which internally creates a emf change for creation of root object in
      * repository model
      */
-    private void createFileChange(final VURI vuri) {
+    private void createAndSyncFileChange(final VURI vuri) {
 
         FileChange fileChange = new FileChange(FileChangeKind.CREATE);
         List<Change> changes = new ArrayList<Change>(1);
         changes.add(fileChange);
         this.syncManager.synchronizeChanges(changes, vuri);
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        // TODO: move instances to modelInstanceName_tmp
-
     }
 
     /**
@@ -161,7 +138,7 @@ public class SynchronisationTest {
         // a java interface in the package "testRepository" should have been created
         String javaInterfaceLocation = "src/" + PCM_REPOSITORY_NAME + "/" + PCM_INTERFACE_CREATION_NAME + ".java";
         VURI interfaceVURI = VURI.getInstance(javaInterfaceLocation);
-        ModelInstance newInterface = this.syncManager.getModelProviding().getModelInstanceCopy(interfaceVURI);
+        ModelInstance newInterface = this.syncManager.getModelProviding().getModelInstanceOriginal(interfaceVURI);
 
         logger.debug(newInterface + " contains: " + newInterface.getResource().getContents());
         for (EObject eObj : newInterface.getResource().getContents()) {

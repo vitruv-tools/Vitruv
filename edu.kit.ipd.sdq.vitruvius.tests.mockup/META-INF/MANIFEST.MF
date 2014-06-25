@@ -28,5 +28,6 @@ Require-Bundle: org.junit,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.core.resources;bundle-version="3.8.100",
  org.eclipse.emf.common,
- edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence
+ edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava
 Bundle-ActivationPolicy: lazy

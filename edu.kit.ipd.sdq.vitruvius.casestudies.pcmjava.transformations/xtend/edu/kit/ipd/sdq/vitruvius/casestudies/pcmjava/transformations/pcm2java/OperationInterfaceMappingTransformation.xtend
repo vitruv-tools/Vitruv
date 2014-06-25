@@ -4,24 +4,16 @@ import de.uka.ipd.sdq.pcm.repository.OperationInterface
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
-import java.util.Map
-import org.eclipse.emf.common.util.BasicEList 
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.util.EcoreUtil
-import org.emftext.language.java.JavaPackage
 import org.emftext.language.java.classifiers.ClassifiersFactory
 import org.emftext.language.java.classifiers.Interface
 import org.emftext.language.java.containers.CompilationUnit
 import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.Package
-import org.emftext.language.refactoring.rolemapping.RoleMapping
-import org.emftext.refactoring.interpreter.IRefactorer
-import org.emftext.refactoring.interpreter.RefactorerFactory
-import org.emftext.refactoring.registry.rolemapping.IRoleMappingRegistry
-import org.modelrefactoring.jamopp.test.valueprovider.TestValueProviderFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMNamespace
 
 class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.EObjectMappingTransformation {
@@ -89,8 +81,12 @@ class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.
 			claimCorrespondingEObjectByTypeIfUnique(operationInterface, CompilationUnit)
 		jaMoPPInterfaceCompilationUnit.eSet(affectedInterfaceFeature, newValue + ".java")
 				val Interface jaMoPPInterface = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(operationInterface, Interface)
-		
-		val Map<String, RoleMapping> roleMappings = IRoleMappingRegistry.INSTANCE.
+	
+		var structuralFeature = super.featureCorrespondenceMap.get(affectedAttribute);
+		jaMoPPInterface.eSet(structuralFeature, newValue)
+		jaMoPPInterfaceCompilationUnit.eSet(structuralFeature, newValue)	
+		return #{jaMoPPInterface, jaMoPPInterfaceCompilationUnit}
+/* 		val Map<String, RoleMapping> roleMappings = IRoleMappingRegistry.INSTANCE.
 			getRoleMappingsForUri(JavaPackage.eNS_URI);
 		jaMoPPInterface.eSet(affectedInterfaceFeature, newValue )
 		val IRefactorer refactorer = RefactorerFactory.eINSTANCE.getRefactorer(jaMoPPInterface.eResource,
@@ -106,7 +102,7 @@ class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.
 		for( resourceToSave : refactorer.resourcesToSave){
 			resourceToSave.save(null)
 		}
-		return refactoredEObj.toArray
+		return refactoredEObj.toArray*/
 	}
 
 	override updateEReference(EObject eObject, EReference affectedEReference, Object newValue) {
