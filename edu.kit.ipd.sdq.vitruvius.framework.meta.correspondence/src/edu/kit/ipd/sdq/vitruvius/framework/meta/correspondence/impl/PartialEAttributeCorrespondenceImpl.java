@@ -14,6 +14,7 @@ import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -23,7 +24,10 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -50,7 +54,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  */
 public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends PartialEFeatureCorrespondenceImpl<TValue> implements PartialEAttributeCorrespondence<TValue> {
 	/**
-	 * The cached value of the '{@link #getDependentCorrespondences() <em>Dependent Correspondences</em>}' reference list.
+	 * The cached value of the '{@link #getDependentCorrespondences() <em>Dependent Correspondences</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getDependentCorrespondences()
@@ -58,16 +62,6 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 	 * @ordered
 	 */
 	protected EList<Correspondence> dependentCorrespondences;
-
-	/**
-	 * The cached value of the '{@link #getParent() <em>Parent</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getParent()
-	 * @generated
-	 * @ordered
-	 */
-	protected Correspondence parent;
 
 	/**
 	 * The cached value of the '{@link #getElementA() <em>Element A</em>}' reference.
@@ -215,7 +209,7 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 	 */
 	public EList<Correspondence> getDependentCorrespondences() {
 		if (dependentCorrespondences == null) {
-			dependentCorrespondences = new EObjectResolvingEList<Correspondence>(Correspondence.class, this, CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES);
+			dependentCorrespondences = new EObjectContainmentWithInverseEList<Correspondence>(Correspondence.class, this, CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES, CorrespondencePackage.CORRESPONDENCE__PARENT);
 		}
 		return dependentCorrespondences;
 	}
@@ -226,15 +220,8 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 	 * @generated
 	 */
 	public Correspondence getParent() {
-		if (parent != null && parent.eIsProxy()) {
-			InternalEObject oldParent = (InternalEObject)parent;
-			parent = (Correspondence)eResolveProxy(oldParent);
-			if (parent != oldParent) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__PARENT, oldParent, parent));
-			}
-		}
-		return parent;
+		if (eContainerFeatureID() != CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__PARENT) return null;
+		return (Correspondence)eInternalContainer();
 	}
 
 	/**
@@ -242,8 +229,9 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Correspondence basicGetParent() {
-		return parent;
+	public NotificationChain basicSetParent(Correspondence newParent, NotificationChain msgs) {
+		msgs = eBasicSetContainer((InternalEObject)newParent, CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__PARENT, msgs);
+		return msgs;
 	}
 
 	/**
@@ -252,10 +240,19 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 	 * @generated
 	 */
 	public void setParent(Correspondence newParent) {
-		Correspondence oldParent = parent;
-		parent = newParent;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__PARENT, oldParent, parent));
+		if (newParent != eInternalContainer() || (eContainerFeatureID() != CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__PARENT && newParent != null)) {
+			if (EcoreUtil.isAncestor(this, newParent))
+				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
+			NotificationChain msgs = null;
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			if (newParent != null)
+				msgs = ((InternalEObject)newParent).eInverseAdd(this, CorrespondencePackage.CORRESPONDENCE__DEPENDENT_CORRESPONDENCES, Correspondence.class, msgs);
+			msgs = basicSetParent(newParent, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__PARENT, newParent, newParent));
 	}
 
 	/**
@@ -507,14 +504,62 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getDependentCorrespondences()).basicAdd(otherEnd, msgs);
+			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__PARENT:
+				if (eInternalContainer() != null)
+					msgs = eBasicRemoveFromContainer(msgs);
+				return basicSetParent((Correspondence)otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES:
+				return ((InternalEList<?>)getDependentCorrespondences()).basicRemove(otherEnd, msgs);
+			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__PARENT:
+				return basicSetParent(null, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
+		switch (eContainerFeatureID()) {
+			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__PARENT:
+				return eInternalContainer().eInverseRemove(this, CorrespondencePackage.CORRESPONDENCE__DEPENDENT_CORRESPONDENCES, Correspondence.class, msgs);
+		}
+		return super.eBasicRemoveFromContainerFeature(msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES:
 				return getDependentCorrespondences();
 			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__PARENT:
-				if (resolve) return getParent();
-				return basicGetParent();
+				return getParent();
 			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__ELEMENT_A:
 				if (resolve) return getElementA();
 				return basicGetElementA();
@@ -632,7 +677,7 @@ public class PartialEAttributeCorrespondenceImpl<TValue extends Object> extends 
 			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES:
 				return dependentCorrespondences != null && !dependentCorrespondences.isEmpty();
 			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__PARENT:
-				return parent != null;
+				return getParent() != null;
 			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__ELEMENT_A:
 				return elementA != null;
 			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__ELEMENT_ATUID:

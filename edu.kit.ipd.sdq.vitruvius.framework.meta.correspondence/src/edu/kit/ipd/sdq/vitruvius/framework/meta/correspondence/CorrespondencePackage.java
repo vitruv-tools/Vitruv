@@ -95,7 +95,7 @@ public interface CorrespondencePackage extends EPackage {
 	int CORRESPONDENCE = 1;
 
 	/**
-	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' reference list.
+	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -104,7 +104,7 @@ public interface CorrespondencePackage extends EPackage {
 	int CORRESPONDENCE__DEPENDENT_CORRESPONDENCES = 0;
 
 	/**
-	 * The feature id for the '<em><b>Parent</b></em>' reference.
+	 * The feature id for the '<em><b>Parent</b></em>' container reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -132,7 +132,7 @@ public interface CorrespondencePackage extends EPackage {
 	int SAME_TYPE_CORRESPONDENCE = 2;
 
 	/**
-	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' reference list.
+	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -141,7 +141,7 @@ public interface CorrespondencePackage extends EPackage {
 	int SAME_TYPE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES = CORRESPONDENCE__DEPENDENT_CORRESPONDENCES;
 
 	/**
-	 * The feature id for the '<em><b>Parent</b></em>' reference.
+	 * The feature id for the '<em><b>Parent</b></em>' container reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -205,7 +205,7 @@ public interface CorrespondencePackage extends EPackage {
 	int EOBJECT_CORRESPONDENCE = 3;
 
 	/**
-	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' reference list.
+	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -214,7 +214,7 @@ public interface CorrespondencePackage extends EPackage {
 	int EOBJECT_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES = SAME_TYPE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES;
 
 	/**
-	 * The feature id for the '<em><b>Parent</b></em>' reference.
+	 * The feature id for the '<em><b>Parent</b></em>' container reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -278,7 +278,7 @@ public interface CorrespondencePackage extends EPackage {
 	int EFEATURE_CORRESPONDENCE = 4;
 
 	/**
-	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' reference list.
+	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -287,7 +287,7 @@ public interface CorrespondencePackage extends EPackage {
 	int EFEATURE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES = SAME_TYPE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES;
 
 	/**
-	 * The feature id for the '<em><b>Parent</b></em>' reference.
+	 * The feature id for the '<em><b>Parent</b></em>' container reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -378,7 +378,7 @@ public interface CorrespondencePackage extends EPackage {
 	int EATTRIBUTE_CORRESPONDENCE = 5;
 
 	/**
-	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' reference list.
+	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -387,7 +387,7 @@ public interface CorrespondencePackage extends EPackage {
 	int EATTRIBUTE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES = EFEATURE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES;
 
 	/**
-	 * The feature id for the '<em><b>Parent</b></em>' reference.
+	 * The feature id for the '<em><b>Parent</b></em>' container reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -478,7 +478,7 @@ public interface CorrespondencePackage extends EPackage {
 	int EREFERENCE_CORRESPONDENCE = 6;
 
 	/**
-	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' reference list.
+	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -487,7 +487,7 @@ public interface CorrespondencePackage extends EPackage {
 	int EREFERENCE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES = EFEATURE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES;
 
 	/**
-	 * The feature id for the '<em><b>Parent</b></em>' reference.
+	 * The feature id for the '<em><b>Parent</b></em>' container reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -578,7 +578,7 @@ public interface CorrespondencePackage extends EPackage {
 	int ECONTAINMENT_REFERENCE_CORRESPONDENCE = 7;
 
 	/**
-	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' reference list.
+	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -587,7 +587,7 @@ public interface CorrespondencePackage extends EPackage {
 	int ECONTAINMENT_REFERENCE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES = EREFERENCE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES;
 
 	/**
-	 * The feature id for the '<em><b>Parent</b></em>' reference.
+	 * The feature id for the '<em><b>Parent</b></em>' container reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -698,7 +698,7 @@ public interface CorrespondencePackage extends EPackage {
 	int PARTIAL_EATTRIBUTE_CORRESPONDENCE = 9;
 
 	/**
-	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' reference list.
+	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -707,7 +707,7 @@ public interface CorrespondencePackage extends EPackage {
 	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Parent</b></em>' reference.
+	 * The feature id for the '<em><b>Parent</b></em>' container reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -816,7 +816,7 @@ public interface CorrespondencePackage extends EPackage {
 	int PARTIAL_EREFERENCE_CORRESPONDENCE = 10;
 
 	/**
-	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' reference list.
+	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -825,7 +825,7 @@ public interface CorrespondencePackage extends EPackage {
 	int PARTIAL_EREFERENCE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Parent</b></em>' reference.
+	 * The feature id for the '<em><b>Parent</b></em>' container reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -984,10 +984,10 @@ public interface CorrespondencePackage extends EPackage {
 	EClass getCorrespondence();
 
 	/**
-	 * Returns the meta object for the reference list '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence#getDependentCorrespondences <em>Dependent Correspondences</em>}'.
+	 * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence#getDependentCorrespondences <em>Dependent Correspondences</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Dependent Correspondences</em>'.
+	 * @return the meta object for the containment reference list '<em>Dependent Correspondences</em>'.
 	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence#getDependentCorrespondences()
 	 * @see #getCorrespondence()
 	 * @generated
@@ -995,10 +995,10 @@ public interface CorrespondencePackage extends EPackage {
 	EReference getCorrespondence_DependentCorrespondences();
 
 	/**
-	 * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence#getParent <em>Parent</em>}'.
+	 * Returns the meta object for the container reference '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence#getParent <em>Parent</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Parent</em>'.
+	 * @return the meta object for the container reference '<em>Parent</em>'.
 	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence#getParent()
 	 * @see #getCorrespondence()
 	 * @generated
@@ -1299,7 +1299,7 @@ public interface CorrespondencePackage extends EPackage {
 		EClass CORRESPONDENCE = eINSTANCE.getCorrespondence();
 
 		/**
-		 * The meta object literal for the '<em><b>Dependent Correspondences</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>Dependent Correspondences</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -1307,7 +1307,7 @@ public interface CorrespondencePackage extends EPackage {
 		EReference CORRESPONDENCE__DEPENDENT_CORRESPONDENCES = eINSTANCE.getCorrespondence_DependentCorrespondences();
 
 		/**
-		 * The meta object literal for the '<em><b>Parent</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Parent</b></em>' container reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
