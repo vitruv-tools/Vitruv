@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -45,7 +46,7 @@ public final class EcoreResourceBridge {
      * @return the unique root element (if existing) otherwise {@code null}
      */
     public static EObject getResourceContentRootFromVURIIfUnique(final VURI vuri, final ResourceSet resourceSet) {
-        Resource emfResource = resourceSet.getResource(vuri.getEMFUri(), true);
+        Resource emfResource = loadResourceAtURI(vuri.getEMFUri(), resourceSet);
         return getResourceContentRootIfUnique(emfResource);
     }
 
@@ -149,4 +150,26 @@ public final class EcoreResourceBridge {
         resource.save(Collections.EMPTY_MAP);
         resource.setModified(true);
     }
+
+    public static Resource loadResourceAtURI(final URI resourceURI, final ResourceSet resourceSet) {
+        Resource resource = null;
+        try {
+            try {
+                resource = resourceSet.getResource(resourceURI, true);
+            } catch (org.eclipse.emf.common.util.WrappedException e) {
+                // swallow silently
+                e = null; // otherwise checkstyle complains: "Must have at least one statement."
+            }
+            if (resource == null) {
+                resource = resourceSet.createResource(resourceURI);
+            } else {
+                resource.load(Collections.emptyMap());
+            }
+        } catch (IOException e) {
+            // soften
+            throw new RuntimeException(e);
+        }
+        return resource;
+    }
+
 }

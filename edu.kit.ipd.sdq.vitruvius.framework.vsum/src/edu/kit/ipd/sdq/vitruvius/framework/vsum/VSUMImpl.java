@@ -146,8 +146,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
 
     private ModelInstance loadModelInstance(final VURI modelURI) {
         URI emfURI = modelURI.getEMFUri();
-        boolean loadOnDemand = true;
-        Resource modelResource = this.resourceSet.getResource(emfURI, loadOnDemand);
+        Resource modelResource = EcoreResourceBridge.loadResourceAtURI(emfURI, this.resourceSet);
         ModelInstance modelInstance = new ModelInstance(modelURI, modelResource);
         return modelInstance;
     }
