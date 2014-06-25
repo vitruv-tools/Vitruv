@@ -29,6 +29,17 @@ public class VURI implements Comparable<VURI> {
         VURI instance = INSTANCES.get(key);
         if (instance == null) {
             instance = new VURI(key);
+            String newKey = instance.toString();
+            VURI oldInstance = INSTANCES.get(newKey);
+            if (oldInstance != null) {
+                INSTANCES.put(key, oldInstance);
+                return oldInstance;
+            } else {
+                // we also have to map the actual string representation of the key after the vuri
+                // was
+                // created because a prefix may be prepended to the key while the VURI is created
+                INSTANCES.put(newKey, instance);
+            }
             INSTANCES.put(key, instance);
         }
         return instance;
