@@ -20,10 +20,10 @@ public class MetaRepositoryTest {
     static final String PROJECT_URI = "MockupProject";
     static final String PCM_FILE_EXT = "pcm_mockup";
 
-    protected static final String PCM_MM_URI = PROJECT_URI + "/metamodels/pcm_mockup.ecore";
-    protected static final String UML_MM_URI = PROJECT_URI + "/metamodels/uml_mockup.ecore";
+    protected static final String PCM_MM_URI = "http://edu.kit.ipd.sdq.vitruvius.examples.pcm_mockup";
+    protected static final String UML_MM_URI = "http://edu.kit.ipd.sdq.vitruvius.examples.uml_mockup";
     protected static final String UML_FILE_EXT = "uml_mockup";
-    protected static final String PCM_UML_VT_URI = PROJECT_URI + "/viewtypes/pcm__uml_mockup.ecore";
+    protected static final String PCM_UML_VT_URI = "http://edu.kit.ipd.sdq.vitruvius.examples.pcm_uml_mockup_VT";
 
     @Test
     public void testAll() {
