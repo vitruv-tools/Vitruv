@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pcm_mockup:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:pcm_mockup="http://edu.kit.ipd.sdq.vitruvius.examples.pcm_mockup" id="_TDH-ULwFEeO4-pFTlZLXSg">
-  <interfaces id="_TeAjgLwFEeO4-pFTlZLXSg"/>
+<pcm_mockup:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:pcm_mockup="http://edu.kit.ipd.sdq.vitruvius.examples.pcm_mockup" id="_r5CW0PxiEeO_U4GJ6Zitkg">
+  <interfaces id="_tAgfwPxjEeOD3p0i_uuRbQ"/>
+  <components id="_AeWN8PxjEeO_U4GJ6Zitkg"/>
 </pcm_mockup:Repository>
