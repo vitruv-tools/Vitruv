@@ -7,11 +7,21 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 
 public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolver {
 
     private static final Logger logger = Logger.getLogger(DefaultTUIDCalculatorAndResolver.class.getSimpleName());
+    private String nameOfIdFeature;
+
+    public DefaultTUIDCalculatorAndResolver() {
+        this(VitruviusConstants.getDefaultNameOfIdentifierFeature());
+    }
+
+    public DefaultTUIDCalculatorAndResolver(final String nameOfIDFeature) {
+        this.nameOfIdFeature = nameOfIDFeature;
+    }
 
     /**
      * class name is used as prefix for every UUID to determine wheather an TUID was createded using
@@ -70,7 +80,7 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
     }
 
     private String getValueOfIdFeature(final EObject eObject) {
-        EStructuralFeature idFeature = eObject.eClass().getEStructuralFeature("id");
+        EStructuralFeature idFeature = eObject.eClass().getEStructuralFeature(this.nameOfIdFeature);
         if (idFeature != null && idFeature instanceof EAttribute) {
             EAttribute idAttribute = (EAttribute) idFeature;
             EDataType eAttributeType = idAttribute.getEAttributeType();
