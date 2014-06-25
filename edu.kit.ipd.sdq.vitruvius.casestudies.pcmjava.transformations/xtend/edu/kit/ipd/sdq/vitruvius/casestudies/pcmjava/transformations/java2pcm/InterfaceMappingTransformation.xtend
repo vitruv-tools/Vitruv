@@ -101,8 +101,8 @@ class InterfaceMappingTransformation extends EObjectMappingTransformation {
 		val Interface jaMoPPInterface = eObject as Interface
 		val CompilationUnit jaMoPPCompilationUnit = jaMoPPInterface.containingCompilationUnit
 		try{
-			var EObject correspondingOpInterface = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(jaMoPPInterface, OperationInterface)
-			var EObject correspondingOpInterface2CompilationUnit = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(jaMoPPCompilationUnit, OperationInterface)
+			var EObject correspondingOpInterface = correspondenceInstance.claimUniqueCorrespondingEObjectByType(jaMoPPInterface, OperationInterface)
+			var EObject correspondingOpInterface2CompilationUnit = correspondenceInstance.claimUniqueCorrespondingEObjectByType(jaMoPPCompilationUnit, OperationInterface)
 			if(null == correspondingOpInterface && null == correspondingOpInterface2CompilationUnit){
 				return null
 			}

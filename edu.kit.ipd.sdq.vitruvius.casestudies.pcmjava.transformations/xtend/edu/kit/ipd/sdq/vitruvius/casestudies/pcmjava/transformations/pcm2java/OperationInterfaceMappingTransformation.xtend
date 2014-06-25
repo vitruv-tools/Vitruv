@@ -42,13 +42,13 @@ class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.
 
 		// add compilation unit to package, which correspondent to the repository-package
 		val containingPackage = correspondenceInstance.
-			claimCorrespondingEObjectByTypeIfUnique(operationInterface.repository__Interface, Package)
+			claimUniqueCorrespondingEObjectByType(operationInterface.repository__Interface, Package)
 		containingPackage.compilationUnits.add(correspondingCompilationUnit)
 		correspondingCompilationUnit.namespaces.addAll(containingPackage.namespaces)
 
 		//add new correspondence to correspondenceInstance
 		val parrentCorrespondence = correspondenceInstance.
-			getCorrespondenceForEObjectIfUnique(operationInterface.repository__Interface);
+			getUniqueCorrespondenceForEObject(operationInterface.repository__Interface);
 		val EObjectCorrespondence eObjectCorrespondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
 		eObjectCorrespondence.setElementA(operationInterface)
 		eObjectCorrespondence.setElementB(correspondingInterface)
@@ -78,9 +78,9 @@ class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.
 		val EStructuralFeature affectedInterfaceFeature = featureCorrespondenceMap.claimValueForKey(affectedAttribute)
 		
 		val jaMoPPInterfaceCompilationUnit = correspondenceInstance.
-			claimCorrespondingEObjectByTypeIfUnique(operationInterface, CompilationUnit)
+			claimUniqueCorrespondingEObjectByType(operationInterface, CompilationUnit)
 		jaMoPPInterfaceCompilationUnit.eSet(affectedInterfaceFeature, newValue + ".java")
-				val Interface jaMoPPInterface = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(operationInterface, Interface)
+				val Interface jaMoPPInterface = correspondenceInstance.claimUniqueCorrespondingEObjectByType(operationInterface, Interface)
 	
 		var structuralFeature = super.featureCorrespondenceMap.get(affectedAttribute);
 		jaMoPPInterface.eSet(structuralFeature, newValue)

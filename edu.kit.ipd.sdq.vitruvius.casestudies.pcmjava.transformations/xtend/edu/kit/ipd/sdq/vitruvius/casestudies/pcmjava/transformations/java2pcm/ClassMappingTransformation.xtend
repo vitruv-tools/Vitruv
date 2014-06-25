@@ -60,7 +60,7 @@ class ClassMappingTransformation extends EObjectMappingTransformation {
 		}
 		// get corresponding component or system (here we ask for InterfaceProvidingRequiringEntity cause components 
 		// and systems are both InterfaceProvidingRequiringEntitys) 
-		val pcmComponentOrSystem = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(jaMoPPPackage, InterfaceProvidingRequiringEntity)
+		val pcmComponentOrSystem = correspondenceInstance.claimUniqueCorrespondingEObjectByType(jaMoPPPackage, InterfaceProvidingRequiringEntity)
 		val correspondencesForPCMCompOrSystem = correspondenceInstance.getAllCorrespondences(pcmComponentOrSystem)
 		if(null == correspondencesForPCMCompOrSystem){
 			// TODO: package currently does not correspond to a PCM Component or system

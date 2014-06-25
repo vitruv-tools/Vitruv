@@ -30,7 +30,7 @@ class BasicComponentMappingTransformation extends edu.kit.ipd.sdq.vitruvius.case
 
 		// get root (aka repository) package
 		val Package rootPackage = correspondenceInstance.
-			claimCorrespondingEObjectByTypeIfUnique(basicComponent.repository__RepositoryComponent, Package)
+			claimUniqueCorrespondingEObjectByType(basicComponent.repository__RepositoryComponent, Package)
 
 		// create JaMoPP Package
 		val Package jaMoPPPackage = ContainersFactory.eINSTANCE.createPackage
@@ -52,7 +52,7 @@ class BasicComponentMappingTransformation extends edu.kit.ipd.sdq.vitruvius.case
 		jaMoPPPackage.compilationUnits.add(jaMoPPCompilationUnit)
 		jaMoPPCompilationUnit.namespaces.addAll(jaMoPPPackage.namespaces)
 
-		val Correspondence parentCorrespondence = correspondenceInstance.getCorrespondenceForEObjectIfUnique(rootPackage)
+		val Correspondence parentCorrespondence = correspondenceInstance.getUniqueCorrespondenceForEObject(rootPackage)
 
 		//create correspondence for package and class (both are corresponding to the basic component)
 		val EObjectCorrespondence basicComponent2Package = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence

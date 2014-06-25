@@ -45,7 +45,7 @@ class RepositoryMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestud
 	override removeEObject(EObject eObject) {
 		val Repository repository = eObject as Repository
 		//Remove corresponding package
-		val Package jaMoPPPackage = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(repository, Package)
+		val Package jaMoPPPackage = correspondenceInstance.claimUniqueCorrespondingEObjectByType(repository, Package)
 		EcoreUtil.remove(jaMoPPPackage)
 		//remove corresponding instance
 		correspondenceInstance.removeAllDependingCorrespondences(repository)
@@ -56,7 +56,7 @@ class RepositoryMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestud
 		val Repository repository = eObject as Repository
 		//val EStructuralFeature jaMoPPNameAttribute = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(affectedAttribute, EStructuralFeature)
 		val EStructuralFeature jaMoPPNameAttribute = featureCorrespondenceMap.claimValueForKey(affectedAttribute) 
-		val Package jaMoPPPackage = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(repository, Package)
+		val Package jaMoPPPackage = correspondenceInstance.claimUniqueCorrespondingEObjectByType(repository, Package)
 		jaMoPPPackage.eSet(jaMoPPNameAttribute, newValue);
 		return jaMoPPPackage.toArray()
 	}

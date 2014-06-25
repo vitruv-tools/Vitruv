@@ -94,11 +94,6 @@ public class CorrespondenceInstance extends ModelInstance {
         return this.tuid2CorrespondencesMap.get(tuid);
     }
 
-    public boolean hasCorrespondingEObjects(final EObject eObject) {
-        String tuid = getTUIDFromEObject(eObject);
-        return this.tuid2CorrespondingEObjectsMap.containsKey(tuid);
-    }
-
     public Set<EObject> claimCorrespondingEObjects(final EObject eObject) {
         String tuid = getTUIDFromEObject(eObject);
         return this.tuid2CorrespondingEObjectsMap.claimValueForKey(tuid);
@@ -109,13 +104,14 @@ public class CorrespondenceInstance extends ModelInstance {
         return this.tuid2CorrespondingEObjectsMap.get(tuid);
     }
 
+    @Deprecated
     public boolean isCorrespondingEObjectUnique(final EObject eObject) {
         String tuid = getTUIDFromEObject(eObject);
         return this.tuid2CorrespondingEObjectsMap.containsKey(tuid)
                 && 1 == this.tuid2CorrespondingEObjectsMap.get(eObject).size();
     }
 
-    public EObject claimCorrespondingEObjectIfUnique(final EObject eObject) {
+    public EObject claimUniqueCorrespondingEObject(final EObject eObject) {
         String tuid = getTUIDFromEObject(eObject);
         Set<EObject> correspondingEObjects = this.tuid2CorrespondingEObjectsMap.claimValueForKey(tuid);
         if (1 != correspondingEObjects.size()) {
@@ -136,26 +132,7 @@ public class CorrespondenceInstance extends ModelInstance {
         return correspondingEObjectsByType;
     }
 
-    public <T> Set<T> getAllEObjectCorrespondencesWithType(final Class<T> type) {
-        Set<T> correspondencesWithType = new HashSet<T>();
-        for (Correspondence correspondence : this.correspondences.getCorrespondences()) {
-            if (correspondence instanceof EObjectCorrespondence) {
-                EObjectCorrespondence eObjectCorrespondence = (EObjectCorrespondence) correspondence;
-                if (type.isInstance(eObjectCorrespondence.getElementA())) {
-                    @SuppressWarnings("unchecked")
-                    T t = (T) eObjectCorrespondence.getElementA();
-                    correspondencesWithType.add(t);
-                } else if (type.isInstance(eObjectCorrespondence.getElementB())) {
-                    @SuppressWarnings("unchecked")
-                    T t = (T) eObjectCorrespondence.getElementB();
-                    correspondencesWithType.add(t);
-                }
-            }
-        }
-        return correspondencesWithType;
-    }
-
-    public <T> T claimCorrespondingEObjectByTypeIfUnique(final EObject eObject, final Class<T> type) {
+    public <T> T claimUniqueCorrespondingEObjectByType(final EObject eObject, final Class<T> type) {
         Set<T> correspondingEObjectsByType = this.claimCorrespondingEObjectsByType(eObject, type);
         if (1 != correspondingEObjectsByType.size()) {
             throw new RuntimeException("claimCorrespondingEObjectForTypeIfUnique failed: "
@@ -165,21 +142,17 @@ public class CorrespondenceInstance extends ModelInstance {
         return correspondingEObjectsByType.iterator().next();
     }
 
+    // FIXME: claim
     public Set<Correspondence> claimCorrespondencesForEObject(final EObject eObject) {
         String tuid = getTUIDFromEObject(eObject);
-        if (!hasCorrespondenceObjects(eObject)) {
+        if (!hasCorrespondences(eObject)) {
             this.tuid2CorrespondencesMap.put(tuid, new HashSet<Correspondence>());
         }
         return this.tuid2CorrespondencesMap.claimValueForKey(tuid);
     }
 
-    public boolean hasCorrespondenceObjects(final EObject eObject) {
-        String tuid = getTUIDFromEObject(eObject);
-        return this.tuid2CorrespondencesMap.containsKey(tuid) && this.tuid2CorrespondencesMap.get(tuid).size() > 0;
-    }
-
-    public Correspondence getCorrespondenceForEObjectIfUnique(final EObject eObject) {
-        if (!hasCorrespondenceObjects(eObject)) {
+    public Correspondence getUniqueCorrespondenceForEObject(final EObject eObject) {
+        if (!hasCorrespondences(eObject)) {
             return null;
         }
         Set<Correspondence> objectCorrespondences = claimCorrespondencesForEObject(eObject);
