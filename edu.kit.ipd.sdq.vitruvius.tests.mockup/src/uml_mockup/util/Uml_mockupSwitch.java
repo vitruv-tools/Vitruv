@@ -66,15 +66,30 @@ public class Uml_mockupSwitch<T> extends Switch<T> {
     @Override
     protected T doSwitch(int classifierID, EObject theEObject) {
         switch (classifierID) {
+            case Uml_mockupPackage.IDENTIFIED: {
+                Identified identified = (Identified)theEObject;
+                T result = caseIdentified(identified);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
             case Uml_mockupPackage.UPACKAGE: {
                 UPackage uPackage = (UPackage)theEObject;
                 T result = caseUPackage(uPackage);
+                if (result == null) result = caseIdentified(uPackage);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
             case Uml_mockupPackage.INTERFACE: {
                 Interface interface_ = (Interface)theEObject;
                 T result = caseInterface(interface_);
+                if (result == null) result = caseIdentified(interface_);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case Uml_mockupPackage.UCLASS: {
+                UClass uClass = (UClass)theEObject;
+                T result = caseUClass(uClass);
+                if (result == null) result = caseIdentified(uClass);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -109,6 +124,36 @@ public class Uml_mockupSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseInterface(Interface object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>UClass</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>UClass</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseUClass(UClass object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Identified</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Identified</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseIdentified(Identified object) {
         return null;
     }
 

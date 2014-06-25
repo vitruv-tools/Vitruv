@@ -3,20 +3,14 @@
 package uml_mockup.impl;
 
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-
 import uml_mockup.Interface;
+import uml_mockup.UClass;
 import uml_mockup.UPackage;
 import uml_mockup.Uml_mockupPackage;
 
@@ -28,12 +22,13 @@ import uml_mockup.Uml_mockupPackage;
  * The following features are implemented:
  * <ul>
  *   <li>{@link uml_mockup.impl.UPackageImpl#getInterfaces <em>Interfaces</em>}</li>
+ *   <li>{@link uml_mockup.impl.UPackageImpl#getClasses <em>Classes</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class UPackageImpl extends MinimalEObjectImpl.Container implements UPackage {
+public class UPackageImpl extends IdentifiedImpl implements UPackage {
     /**
      * The cached value of the '{@link #getInterfaces() <em>Interfaces</em>}' containment reference list.
      * <!-- begin-user-doc -->
@@ -43,6 +38,16 @@ public class UPackageImpl extends MinimalEObjectImpl.Container implements UPacka
      * @ordered
      */
     protected EList<Interface> interfaces;
+
+    /**
+     * The cached value of the '{@link #getClasses() <em>Classes</em>}' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getClasses()
+     * @generated
+     * @ordered
+     */
+    protected EList<UClass> classes;
 
     /**
      * <!-- begin-user-doc -->
@@ -80,11 +85,25 @@ public class UPackageImpl extends MinimalEObjectImpl.Container implements UPacka
      * <!-- end-user-doc -->
      * @generated
      */
+    public EList<UClass> getClasses() {
+        if (classes == null) {
+            classes = new EObjectContainmentEList<UClass>(UClass.class, this, Uml_mockupPackage.UPACKAGE__CLASSES);
+        }
+        return classes;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case Uml_mockupPackage.UPACKAGE__INTERFACES:
                 return ((InternalEList<?>)getInterfaces()).basicRemove(otherEnd, msgs);
+            case Uml_mockupPackage.UPACKAGE__CLASSES:
+                return ((InternalEList<?>)getClasses()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -99,6 +118,8 @@ public class UPackageImpl extends MinimalEObjectImpl.Container implements UPacka
         switch (featureID) {
             case Uml_mockupPackage.UPACKAGE__INTERFACES:
                 return getInterfaces();
+            case Uml_mockupPackage.UPACKAGE__CLASSES:
+                return getClasses();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -116,6 +137,10 @@ public class UPackageImpl extends MinimalEObjectImpl.Container implements UPacka
                 getInterfaces().clear();
                 getInterfaces().addAll((Collection<? extends Interface>)newValue);
                 return;
+            case Uml_mockupPackage.UPACKAGE__CLASSES:
+                getClasses().clear();
+                getClasses().addAll((Collection<? extends UClass>)newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -131,6 +156,9 @@ public class UPackageImpl extends MinimalEObjectImpl.Container implements UPacka
             case Uml_mockupPackage.UPACKAGE__INTERFACES:
                 getInterfaces().clear();
                 return;
+            case Uml_mockupPackage.UPACKAGE__CLASSES:
+                getClasses().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -145,6 +173,8 @@ public class UPackageImpl extends MinimalEObjectImpl.Container implements UPacka
         switch (featureID) {
             case Uml_mockupPackage.UPACKAGE__INTERFACES:
                 return interfaces != null && !interfaces.isEmpty();
+            case Uml_mockupPackage.UPACKAGE__CLASSES:
+                return classes != null && !classes.isEmpty();
         }
         return super.eIsSet(featureID);
     }

@@ -8,22 +8,22 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import pcm_mockup.Identifier;
+import pcm_mockup.Identified;
 import pcm_mockup.Pcm_mockupPackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Identifier</b></em>'. <!--
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Identified</b></em>'. <!--
  * end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link pcm_mockup.impl.IdentifierImpl#getId <em>Id</em>}</li>
+ *   <li>{@link pcm_mockup.impl.IdentifiedImpl#getId <em>Id</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public abstract class IdentifierImpl extends MinimalEObjectImpl.Container implements Identifier {
+public abstract class IdentifiedImpl extends MinimalEObjectImpl.Container implements Identified {
     /**
      * The default value of the '{@link #getId() <em>Id</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -49,9 +49,9 @@ public abstract class IdentifierImpl extends MinimalEObjectImpl.Container implem
      * 
      * @generated NOT
      */
-    protected IdentifierImpl() {
+    protected IdentifiedImpl() {
         super();
-        this.id = EcoreUtil.generateUUID();
+        setId(EcoreUtil.generateUUID());
     }
 
     /**
@@ -60,7 +60,7 @@ public abstract class IdentifierImpl extends MinimalEObjectImpl.Container implem
      */
     @Override
     protected EClass eStaticClass() {
-        return Pcm_mockupPackage.Literals.IDENTIFIER;
+        return Pcm_mockupPackage.Literals.IDENTIFIED;
     }
 
     /**
@@ -81,7 +81,7 @@ public abstract class IdentifierImpl extends MinimalEObjectImpl.Container implem
         String oldId = id;
         id = newId;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Pcm_mockupPackage.IDENTIFIER__ID, oldId, id));
+            eNotify(new ENotificationImpl(this, Notification.SET, Pcm_mockupPackage.IDENTIFIED__ID, oldId, id));
     }
 
     /**
@@ -91,7 +91,7 @@ public abstract class IdentifierImpl extends MinimalEObjectImpl.Container implem
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case Pcm_mockupPackage.IDENTIFIER__ID:
+            case Pcm_mockupPackage.IDENTIFIED__ID:
                 return getId();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -104,7 +104,7 @@ public abstract class IdentifierImpl extends MinimalEObjectImpl.Container implem
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case Pcm_mockupPackage.IDENTIFIER__ID:
+            case Pcm_mockupPackage.IDENTIFIED__ID:
                 setId((String)newValue);
                 return;
         }
@@ -118,7 +118,7 @@ public abstract class IdentifierImpl extends MinimalEObjectImpl.Container implem
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case Pcm_mockupPackage.IDENTIFIER__ID:
+            case Pcm_mockupPackage.IDENTIFIED__ID:
                 setId(ID_EDEFAULT);
                 return;
         }
@@ -132,7 +132,7 @@ public abstract class IdentifierImpl extends MinimalEObjectImpl.Container implem
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case Pcm_mockupPackage.IDENTIFIER__ID:
+            case Pcm_mockupPackage.IDENTIFIED__ID:
                 return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
         }
         return super.eIsSet(featureID);
@@ -153,4 +153,4 @@ public abstract class IdentifierImpl extends MinimalEObjectImpl.Container implem
         return result.toString();
     }
 
-} // IdentifierImpl
+} // IdentifiedImpl

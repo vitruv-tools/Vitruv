@@ -68,12 +68,20 @@ public class Uml_mockupAdapterFactory extends AdapterFactoryImpl {
     protected Uml_mockupSwitch<Adapter> modelSwitch =
         new Uml_mockupSwitch<Adapter>() {
             @Override
+            public Adapter caseIdentified(Identified object) {
+                return createIdentifiedAdapter();
+            }
+            @Override
             public Adapter caseUPackage(UPackage object) {
                 return createUPackageAdapter();
             }
             @Override
             public Adapter caseInterface(Interface object) {
                 return createInterfaceAdapter();
+            }
+            @Override
+            public Adapter caseUClass(UClass object) {
+                return createUClassAdapter();
             }
             @Override
             public Adapter defaultCase(EObject object) {
@@ -120,6 +128,34 @@ public class Uml_mockupAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createInterfaceAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link uml_mockup.UClass <em>UClass</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see uml_mockup.UClass
+     * @generated
+     */
+    public Adapter createUClassAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link uml_mockup.Identified <em>Identified</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see uml_mockup.Identified
+     * @generated
+     */
+    public Adapter createIdentifiedAdapter() {
         return null;
     }
 

@@ -6,9 +6,14 @@
     operationReflection="true" importOrganizing="true">
   <foreignModel>uml_mockup.ecore</foreignModel>
   <genPackages prefix="Uml_mockup" disposableProviderFactory="true" ecorePackage="uml_mockup.ecore#/">
+    <genClasses image="false" ecoreClass="uml_mockup.ecore#//Identified">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute uml_mockup.ecore#//Identified/id"/>
+    </genClasses>
     <genClasses ecoreClass="uml_mockup.ecore#//UPackage">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference uml_mockup.ecore#//UPackage/interfaces"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference uml_mockup.ecore#//UPackage/interfaces"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference uml_mockup.ecore#//UPackage/classes"/>
     </genClasses>
     <genClasses ecoreClass="uml_mockup.ecore#//Interface"/>
+    <genClasses ecoreClass="uml_mockup.ecore#//UClass"/>
   </genPackages>
 </genmodel:GenModel>

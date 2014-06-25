@@ -68,6 +68,10 @@ public class Pcm_mockupAdapterFactory extends AdapterFactoryImpl {
     protected Pcm_mockupSwitch<Adapter> modelSwitch =
         new Pcm_mockupSwitch<Adapter>() {
             @Override
+            public Adapter caseIdentified(Identified object) {
+                return createIdentifiedAdapter();
+            }
+            @Override
             public Adapter caseRepository(Repository object) {
                 return createRepositoryAdapter();
             }
@@ -76,8 +80,8 @@ public class Pcm_mockupAdapterFactory extends AdapterFactoryImpl {
                 return createInterfaceAdapter();
             }
             @Override
-            public Adapter caseIdentifier(Identifier object) {
-                return createIdentifierAdapter();
+            public Adapter caseComponent(Component object) {
+                return createComponentAdapter();
             }
             @Override
             public Adapter defaultCase(EObject object) {
@@ -128,16 +132,30 @@ public class Pcm_mockupAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link pcm_mockup.Identifier <em>Identifier</em>}'.
+     * Creates a new adapter for an object of class '{@link pcm_mockup.Component <em>Component</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see pcm_mockup.Identifier
+     * @see pcm_mockup.Component
      * @generated
      */
-    public Adapter createIdentifierAdapter() {
+    public Adapter createComponentAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link pcm_mockup.Identified <em>Identified</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see pcm_mockup.Identified
+     * @generated
+     */
+    public Adapter createIdentifiedAdapter() {
         return null;
     }
 

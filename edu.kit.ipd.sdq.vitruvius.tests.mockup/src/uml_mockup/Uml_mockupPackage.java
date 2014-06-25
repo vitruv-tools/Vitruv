@@ -2,6 +2,7 @@
  */
 package uml_mockup;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -56,6 +57,43 @@ public interface Uml_mockupPackage extends EPackage {
     Uml_mockupPackage eINSTANCE = uml_mockup.impl.Uml_mockupPackageImpl.init();
 
     /**
+     * The meta object id for the '{@link uml_mockup.impl.IdentifiedImpl <em>Identified</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see uml_mockup.impl.IdentifiedImpl
+     * @see uml_mockup.impl.Uml_mockupPackageImpl#getIdentified()
+     * @generated
+     */
+    int IDENTIFIED = 0;
+
+    /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int IDENTIFIED__ID = 0;
+
+    /**
+     * The number of structural features of the '<em>Identified</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int IDENTIFIED_FEATURE_COUNT = 1;
+
+    /**
+     * The number of operations of the '<em>Identified</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int IDENTIFIED_OPERATION_COUNT = 0;
+
+    /**
      * The meta object id for the '{@link uml_mockup.impl.UPackageImpl <em>UPackage</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -63,7 +101,16 @@ public interface Uml_mockupPackage extends EPackage {
      * @see uml_mockup.impl.Uml_mockupPackageImpl#getUPackage()
      * @generated
      */
-    int UPACKAGE = 0;
+    int UPACKAGE = 1;
+
+    /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int UPACKAGE__ID = IDENTIFIED__ID;
 
     /**
      * The feature id for the '<em><b>Interfaces</b></em>' containment reference list.
@@ -72,7 +119,16 @@ public interface Uml_mockupPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int UPACKAGE__INTERFACES = 0;
+    int UPACKAGE__INTERFACES = IDENTIFIED_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Classes</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int UPACKAGE__CLASSES = IDENTIFIED_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>UPackage</em>' class.
@@ -81,7 +137,7 @@ public interface Uml_mockupPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int UPACKAGE_FEATURE_COUNT = 1;
+    int UPACKAGE_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>UPackage</em>' class.
@@ -90,7 +146,7 @@ public interface Uml_mockupPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int UPACKAGE_OPERATION_COUNT = 0;
+    int UPACKAGE_OPERATION_COUNT = IDENTIFIED_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link uml_mockup.impl.InterfaceImpl <em>Interface</em>}' class.
@@ -100,7 +156,16 @@ public interface Uml_mockupPackage extends EPackage {
      * @see uml_mockup.impl.Uml_mockupPackageImpl#getInterface()
      * @generated
      */
-    int INTERFACE = 1;
+    int INTERFACE = 2;
+
+    /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INTERFACE__ID = IDENTIFIED__ID;
 
     /**
      * The number of structural features of the '<em>Interface</em>' class.
@@ -109,7 +174,7 @@ public interface Uml_mockupPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INTERFACE_FEATURE_COUNT = 0;
+    int INTERFACE_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 0;
 
     /**
      * The number of operations of the '<em>Interface</em>' class.
@@ -118,8 +183,45 @@ public interface Uml_mockupPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INTERFACE_OPERATION_COUNT = 0;
+    int INTERFACE_OPERATION_COUNT = IDENTIFIED_OPERATION_COUNT + 0;
 
+
+    /**
+     * The meta object id for the '{@link uml_mockup.impl.UClassImpl <em>UClass</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see uml_mockup.impl.UClassImpl
+     * @see uml_mockup.impl.Uml_mockupPackageImpl#getUClass()
+     * @generated
+     */
+    int UCLASS = 3;
+
+    /**
+     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int UCLASS__ID = IDENTIFIED__ID;
+
+    /**
+     * The number of structural features of the '<em>UClass</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int UCLASS_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>UClass</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int UCLASS_OPERATION_COUNT = IDENTIFIED_OPERATION_COUNT + 0;
 
     /**
      * Returns the meta object for class '{@link uml_mockup.UPackage <em>UPackage</em>}'.
@@ -143,6 +245,17 @@ public interface Uml_mockupPackage extends EPackage {
     EReference getUPackage_Interfaces();
 
     /**
+     * Returns the meta object for the containment reference list '{@link uml_mockup.UPackage#getClasses <em>Classes</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Classes</em>'.
+     * @see uml_mockup.UPackage#getClasses()
+     * @see #getUPackage()
+     * @generated
+     */
+    EReference getUPackage_Classes();
+
+    /**
      * Returns the meta object for class '{@link uml_mockup.Interface <em>Interface</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -151,6 +264,37 @@ public interface Uml_mockupPackage extends EPackage {
      * @generated
      */
     EClass getInterface();
+
+    /**
+     * Returns the meta object for class '{@link uml_mockup.UClass <em>UClass</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>UClass</em>'.
+     * @see uml_mockup.UClass
+     * @generated
+     */
+    EClass getUClass();
+
+    /**
+     * Returns the meta object for class '{@link uml_mockup.Identified <em>Identified</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Identified</em>'.
+     * @see uml_mockup.Identified
+     * @generated
+     */
+    EClass getIdentified();
+
+    /**
+     * Returns the meta object for the attribute '{@link uml_mockup.Identified#getId <em>Id</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Id</em>'.
+     * @see uml_mockup.Identified#getId()
+     * @see #getIdentified()
+     * @generated
+     */
+    EAttribute getIdentified_Id();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -194,6 +338,14 @@ public interface Uml_mockupPackage extends EPackage {
         EReference UPACKAGE__INTERFACES = eINSTANCE.getUPackage_Interfaces();
 
         /**
+         * The meta object literal for the '<em><b>Classes</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference UPACKAGE__CLASSES = eINSTANCE.getUPackage_Classes();
+
+        /**
          * The meta object literal for the '{@link uml_mockup.impl.InterfaceImpl <em>Interface</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -202,6 +354,34 @@ public interface Uml_mockupPackage extends EPackage {
          * @generated
          */
         EClass INTERFACE = eINSTANCE.getInterface();
+
+        /**
+         * The meta object literal for the '{@link uml_mockup.impl.UClassImpl <em>UClass</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see uml_mockup.impl.UClassImpl
+         * @see uml_mockup.impl.Uml_mockupPackageImpl#getUClass()
+         * @generated
+         */
+        EClass UCLASS = eINSTANCE.getUClass();
+
+        /**
+         * The meta object literal for the '{@link uml_mockup.impl.IdentifiedImpl <em>Identified</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see uml_mockup.impl.IdentifiedImpl
+         * @see uml_mockup.impl.Uml_mockupPackageImpl#getIdentified()
+         * @generated
+         */
+        EClass IDENTIFIED = eINSTANCE.getIdentified();
+
+        /**
+         * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute IDENTIFIED__ID = eINSTANCE.getIdentified_Id();
 
     }
 

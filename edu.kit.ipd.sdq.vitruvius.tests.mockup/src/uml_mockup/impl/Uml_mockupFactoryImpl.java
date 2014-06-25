@@ -58,6 +58,7 @@ public class Uml_mockupFactoryImpl extends EFactoryImpl implements Uml_mockupFac
         switch (eClass.getClassifierID()) {
             case Uml_mockupPackage.UPACKAGE: return createUPackage();
             case Uml_mockupPackage.INTERFACE: return createInterface();
+            case Uml_mockupPackage.UCLASS: return createUClass();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -81,6 +82,16 @@ public class Uml_mockupFactoryImpl extends EFactoryImpl implements Uml_mockupFac
     public Interface createInterface() {
         InterfaceImpl interface_ = new InterfaceImpl();
         return interface_;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public UClass createUClass() {
+        UClassImpl uClass = new UClassImpl();
+        return uClass;
     }
 
     /**

@@ -3,9 +3,6 @@
 package uml_mockup.impl;
 
 import org.eclipse.emf.ecore.EClass;
-
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import uml_mockup.Interface;
 import uml_mockup.Uml_mockupPackage;
 
@@ -18,7 +15,7 @@ import uml_mockup.Uml_mockupPackage;
  *
  * @generated
  */
-public class InterfaceImpl extends MinimalEObjectImpl.Container implements Interface {
+public class InterfaceImpl extends IdentifiedImpl implements Interface {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

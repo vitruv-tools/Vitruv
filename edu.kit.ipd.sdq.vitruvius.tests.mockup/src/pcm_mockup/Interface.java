@@ -13,5 +13,5 @@ package pcm_mockup;
  * @model
  * @generated
  */
-public interface Interface extends Identifier {
+public interface Interface extends Identified {
 } // Interface

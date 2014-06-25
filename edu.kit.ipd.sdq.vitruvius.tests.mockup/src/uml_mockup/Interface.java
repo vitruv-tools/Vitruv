@@ -2,7 +2,6 @@
  */
 package uml_mockup;
 
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,5 +13,5 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface Interface extends EObject {
+public interface Interface extends Identified {
 } // Interface

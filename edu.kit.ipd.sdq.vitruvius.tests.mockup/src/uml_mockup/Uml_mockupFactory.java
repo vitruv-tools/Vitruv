@@ -40,6 +40,15 @@ public interface Uml_mockupFactory extends EFactory {
     Interface createInterface();
 
     /**
+     * Returns a new object of class '<em>UClass</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>UClass</em>'.
+     * @generated
+     */
+    UClass createUClass();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

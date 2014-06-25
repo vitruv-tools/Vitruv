@@ -58,6 +58,7 @@ public class Pcm_mockupFactoryImpl extends EFactoryImpl implements Pcm_mockupFac
         switch (eClass.getClassifierID()) {
             case Pcm_mockupPackage.REPOSITORY: return createRepository();
             case Pcm_mockupPackage.INTERFACE: return createInterface();
+            case Pcm_mockupPackage.COMPONENT: return createComponent();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -81,6 +82,16 @@ public class Pcm_mockupFactoryImpl extends EFactoryImpl implements Pcm_mockupFac
     public Interface createInterface() {
         InterfaceImpl interface_ = new InterfaceImpl();
         return interface_;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Component createComponent() {
+        ComponentImpl component = new ComponentImpl();
+        return component;
     }
 
     /**

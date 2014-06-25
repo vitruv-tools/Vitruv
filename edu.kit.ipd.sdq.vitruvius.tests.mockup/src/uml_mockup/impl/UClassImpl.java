@@ -1,27 +1,28 @@
 /**
  */
-package pcm_mockup.impl;
+package uml_mockup.impl;
 
 import org.eclipse.emf.ecore.EClass;
-import pcm_mockup.Interface;
-import pcm_mockup.Pcm_mockupPackage;
+
+import uml_mockup.UClass;
+import uml_mockup.Uml_mockupPackage;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Interface</b></em>'.
+ * An implementation of the model object '<em><b>UClass</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * </p>
  *
  * @generated
  */
-public class InterfaceImpl extends IdentifiedImpl implements Interface {
+public class UClassImpl extends IdentifiedImpl implements UClass {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    protected InterfaceImpl() {
+    protected UClassImpl() {
         super();
     }
 
@@ -32,7 +33,7 @@ public class InterfaceImpl extends IdentifiedImpl implements Interface {
      */
     @Override
     protected EClass eStaticClass() {
-        return Pcm_mockupPackage.Literals.INTERFACE;
+        return Uml_mockupPackage.Literals.UCLASS;
     }
 
-} //InterfaceImpl
+} //UClassImpl

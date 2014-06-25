@@ -13,6 +13,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * <ul>
  *   <li>{@link pcm_mockup.Repository#getInterfaces <em>Interfaces</em>}</li>
+ *   <li>{@link pcm_mockup.Repository#getComponents <em>Components</em>}</li>
  * </ul>
  * </p>
  *
@@ -20,7 +21,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface Repository extends Identifier {
+public interface Repository extends Identified {
     /**
      * Returns the value of the '<em><b>Interfaces</b></em>' containment reference list.
      * The list contents are of type {@link pcm_mockup.Interface}.
@@ -36,5 +37,21 @@ public interface Repository extends Identifier {
      * @generated
      */
     EList<Interface> getInterfaces();
+
+    /**
+     * Returns the value of the '<em><b>Components</b></em>' containment reference list.
+     * The list contents are of type {@link pcm_mockup.Component}.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Components</em>' containment reference list isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Components</em>' containment reference list.
+     * @see pcm_mockup.Pcm_mockupPackage#getRepository_Components()
+     * @model containment="true"
+     * @generated
+     */
+    EList<Component> getComponents();
 
 } // Repository
