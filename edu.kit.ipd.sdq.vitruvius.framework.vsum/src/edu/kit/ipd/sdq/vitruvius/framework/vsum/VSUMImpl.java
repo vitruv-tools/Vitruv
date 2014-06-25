@@ -192,14 +192,15 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     }
 
     /**
-     * Returns the correspondenceInstance for the metamodels of the given two model instances
+     * Returns the correspondenceInstance for the mapping from the metamodel at the first VURI to
+     * the metamodel at the second VURI or the other way round
      * 
-     * @return the found correspondenceInstance or null if there is non
+     * @return the found correspondenceInstance or null if there is none
      */
     @Override
-    public CorrespondenceInstance getCorrespondenceInstanceOriginal(final VURI model1uri, final VURI model2uri) {
-        Metamodel metamodelA = this.metamodelManaging.getMetamodel(model1uri);
-        Metamodel metamodelB = this.metamodelManaging.getMetamodel(model2uri);
+    public CorrespondenceInstance getCorrespondenceInstanceOriginal(final VURI mmAVURI, final VURI mmBVURI) {
+        Metamodel metamodelA = this.metamodelManaging.getMetamodel(mmAVURI);
+        Metamodel metamodelB = this.metamodelManaging.getMetamodel(mmBVURI);
         Mapping mapping = this.mappingManaging.getMapping(metamodelA, metamodelB);
         if (this.mapping2CorrespondenceInstanceMap.containsKey(mapping)) {
             return this.mapping2CorrespondenceInstanceMap.get(mapping);
@@ -208,7 +209,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         if (this.mapping2CorrespondenceInstanceMap.containsKey(mapping)) {
             return this.mapping2CorrespondenceInstanceMap.get(mapping);
         }
-        logger.warn("no mapping found for URI1: " + model1uri + " uri2: " + model2uri);
+        logger.warn("no mapping found from the metamodel at: " + mmAVURI + " to the metamodel at: " + mmBVURI);
         return null;
     }
 
