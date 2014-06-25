@@ -36,5 +36,12 @@ public class CorrespondenceTest extends VSUMTest {
         corresp.addSameTypeCorrespondence(repo2pkg);
         Set<Correspondence> allRepoCorresp = corresp.getAllCorrespondences(repo);
         assertTrue(allRepoCorresp.contains(repo2pkg));
+        Set<Correspondence> allPkgCorresp = corresp.getAllCorrespondences(pkg);
+        assertTrue(allPkgCorresp.contains(repo2pkg));
+        Set<Repository> allRepoTypeCorresp = corresp.getAllEObjectCorrespondencesWithType(Repository.class);
+        assertTrue(allRepoTypeCorresp.contains(repo2pkg));
+        Set<UPackage> allPkgTypeCorresp = corresp.getAllEObjectCorrespondencesWithType(UPackage.class);
+        assertTrue(allPkgTypeCorresp.contains(repo2pkg));
+        Correspondence correspondenceForEObjectIfUnique = corresp.getCorrespondenceForEObjectIfUnique(repo);
     }
 }

@@ -17,6 +17,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
@@ -51,7 +52,15 @@ public class FileSystemHelper {
         Arrays.sort(copyOfMMURIs);
         String fileName = "";
         for (VURI uri : copyOfMMURIs) {
-            fileName += uri.getLastSegment().replace('.', '_') + uri.toString().hashCode();
+
+            String authority = uri.getEMFUri().authority();
+            if (authority != null) {
+                int indexOfLastDot = authority.lastIndexOf('.');
+
+                fileName += authority.substring(indexOfLastDot + 1);
+
+            }
+            fileName += uri.toString().hashCode();
         }
         fileName += fileExt;
         IFile correspondenceFile = correspondenceFolder.getFile(fileName);
@@ -123,9 +132,21 @@ public class FileSystemHelper {
         IProject vsumProject = root.getProject(VSUMConstants.VSUM_PROJECT_NAME);
         if (!vsumProject.exists()) {
             createProject(vsumProject);
+        } else if (!vsumProject.isAccessible()) {
+            deleteAndRecreateProject(vsumProject);
         }
         return vsumProject;
 
+    }
+
+    private static void deleteAndRecreateProject(final IProject vsumProject) {
+        try {
+            vsumProject.delete(true, new NullProgressMonitor());
+            createProject(vsumProject);
+        } catch (CoreException e) {
+            // soften
+            throw new RuntimeException(e);
+        }
     }
 
     public static void createProject(final IProject project) {
