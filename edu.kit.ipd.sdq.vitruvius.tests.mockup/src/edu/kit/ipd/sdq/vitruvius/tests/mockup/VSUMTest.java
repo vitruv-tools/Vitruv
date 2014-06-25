@@ -14,8 +14,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
 public class VSUMTest extends MetaRepositoryTest {
-    protected static final String PCM_INSTANCE_URI = "/MockupProject/model/My.pcm_mockup";
-    protected static final String UML_INSTANCE_URI = "/MockupProject/model/My.uml_mockup";
+    protected static final String PCM_INSTANCE_URI = "MockupProject/model/My.pcm_mockup";
+    protected static final String UML_INSTANCE_URI = "MockupProject/model/My.uml_mockup";
 
     @Override
     @Test

@@ -9,5 +9,6 @@ public class CorrespondenceTest extends VSUMTest {
     @Test
     public void testAll() {
         VSUMImpl vsum = testMetaRepositoryVSUMAndModelInstancesCreation();
+        // FIXME AA KEEP ON WORKING HERE
     }
 }

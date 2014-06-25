@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts;
 public class VitruviusConstants {
 
     private static final String EXTENSION_PROPERTY_NAME = "provider";
-    private static final String PLATFORM_RESOURCE_PREFIX = "platform:/resource";
+    private static final String PLATFORM_RESOURCE_PREFIX = "platform:/resource/";
     private static final String CORRESPONDENCE_INSTANCE_FILE_EXT = ".correspondence_instance";
     private static final String CORRESPONDENCES_FILE_EXT = ".correspondence";
 

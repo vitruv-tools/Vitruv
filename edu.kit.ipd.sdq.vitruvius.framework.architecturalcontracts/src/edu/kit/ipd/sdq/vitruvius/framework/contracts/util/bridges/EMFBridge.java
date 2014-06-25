@@ -113,18 +113,23 @@ public final class EMFBridge {
     }
 
     /**
-     * Creates a URI from the passed uriString based on a possible prefix and adds the platform
-     * resource prefix if no prefix is specified.
+     * Creates a URI from the passed uriString by adding the platform resource prefix if no absolute
+     * web prefix (http://) and no absolute file prefix (/ or X:\) is specified.
      * 
      * @param uriString
      * @return the new URI
      */
     public static URI createURI(String uriString) {
-        if (uriString != null) {
-            if (!uriString.startsWith(VitruviusConstants.getPlatformResourcePrefix())) {
-                uriString = VitruviusConstants.getPlatformResourcePrefix() + uriString;
-            }
+        if (uriString != null && !uriString.startsWith(VitruviusConstants.getPlatformResourcePrefix())
+                && !uriString.startsWith("http://") && !uriString.startsWith("/")
+                && !startsWithWindowsDriveLetterColonBackslash(uriString)) {
+            uriString = VitruviusConstants.getPlatformResourcePrefix() + uriString;
         }
         return URI.createURI(uriString);
+    }
+
+    private static boolean startsWithWindowsDriveLetterColonBackslash(final String uriString) {
+        char firstChar = uriString.charAt(0);
+        return Character.isLetter(firstChar) && uriString.regionMatches(1, ":\\", 0, 2);
     }
 }

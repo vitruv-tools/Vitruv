@@ -17,7 +17,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 
 public class MetaRepositoryTest {
 
-    static final String PROJECT_URI = "/MockupProject";
+    static final String PROJECT_URI = "MockupProject";
     static final String PCM_FILE_EXT = "pcm_mockup";
 
     protected static final String PCM_MM_URI = PROJECT_URI + "/metamodels/pcm_mockup.ecore";
