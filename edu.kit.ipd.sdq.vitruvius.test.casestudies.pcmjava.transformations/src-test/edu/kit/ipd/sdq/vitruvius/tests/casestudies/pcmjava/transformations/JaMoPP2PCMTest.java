@@ -230,7 +230,7 @@ public class JaMoPP2PCMTest extends JaMoPPPCMTransformationTest {
         this.correspondenceInstance.removeAllDependingCorrespondences(this.mainPackage);
         EcoreUtil.delete(this.mainPackage);
         final Set<Object> allCorrespondences = this.correspondenceInstance
-                .getAllEObjectCorrespondencesWithType(Object.class);
+                .getAllEObjectsInCorrespondencesWithType(Object.class);
 
         assertTrue("Returned EObject is not null", null == eObject);
         assertTrue("Main packages still has correspondences",

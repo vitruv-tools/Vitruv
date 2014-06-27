@@ -33,7 +33,7 @@ class PackageMappingTransformation extends EObjectMappingTransformation {
 	 */
 	override void setCorrespondenceInstance(CorrespondenceInstance correspondenceInstance) {
 		super.setCorrespondenceInstance(correspondenceInstance)
-		val repositorys = correspondenceInstance.getAllEObjectCorrespondencesWithType(Repository)
+		val repositorys = correspondenceInstance.getAllEObjectsInCorrespondencesWithType(Repository)
 		if(null == repositorys || 0 == repositorys.size){
 			correspondenceRepositoryAlreadyExists = false
 		}else{
@@ -83,7 +83,7 @@ class PackageMappingTransformation extends EObjectMappingTransformation {
 		var EObjectCorrespondence basicComponent2Package = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
 		basicComponent2Package.setElementA(basicComponent)
 		basicComponent2Package.setElementB(jaMoPPPackage)
-		basicComponent2Package.setParent(correspondenceInstance.getCorrespondenceForEObjectIfUnique(repository))
+		basicComponent2Package.setParent(correspondenceInstance.getUniqueCorrespondenceForEObject(repository))
 		correspondenceInstance.addSameTypeCorrespondence(basicComponent2Package)
 		return basicComponent.toArray
 	}

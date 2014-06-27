@@ -19,7 +19,7 @@ class JaMoPPPCMUtils {
 			namespace = namespace + "."
 		}		
 		val finalNamespace = namespace
-		var Set<Package> packagesWithCorrespondences = correspondenceInstance.getAllEObjectCorrespondencesWithType(Package)
+		var Set<Package> packagesWithCorrespondences = correspondenceInstance.getAllEObjectsInCorrespondencesWithType(Package)
 		val packagesWithNamespace = packagesWithCorrespondences.filter[pack|finalNamespace.equals(pack.namespacesAsString)]
 		if(null != packagesWithNamespace && 0 < packagesWithNamespace.size && null != packagesWithNamespace.iterator.next){
 			return packagesWithNamespace.iterator.next

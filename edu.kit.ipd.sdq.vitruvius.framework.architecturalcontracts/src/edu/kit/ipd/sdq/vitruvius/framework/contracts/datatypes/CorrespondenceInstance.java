@@ -164,6 +164,25 @@ public class CorrespondenceInstance extends ModelInstance {
         return objectCorrespondences.iterator().next();
     }
 
+    public <T> Set<T> getAllEObjectsInCorrespondencesWithType(final Class<T> type) {
+        Set<T> correspondencesWithType = new HashSet<T>();
+        for (Correspondence correspondence : this.correspondences.getCorrespondences()) {
+            if (correspondence instanceof EObjectCorrespondence) {
+                EObjectCorrespondence eObjectCorrespondence = (EObjectCorrespondence) correspondence;
+                if (type.isInstance(eObjectCorrespondence.getElementA())) {
+                    @SuppressWarnings("unchecked")
+                    T t = (T) eObjectCorrespondence.getElementA();
+                    correspondencesWithType.add(t);
+                } else if (type.isInstance(eObjectCorrespondence.getElementB())) {
+                    @SuppressWarnings("unchecked")
+                    T t = (T) eObjectCorrespondence.getElementB();
+                    correspondencesWithType.add(t);
+                }
+            }
+        }
+        return correspondencesWithType;
+    }
+
     public void addSameTypeCorrespondence(final SameTypeCorrespondence correspondence) {
         // add TUIDs
         String tuidA = this.mapping.getMetamodelA().getTUID(correspondence.getElementA());
