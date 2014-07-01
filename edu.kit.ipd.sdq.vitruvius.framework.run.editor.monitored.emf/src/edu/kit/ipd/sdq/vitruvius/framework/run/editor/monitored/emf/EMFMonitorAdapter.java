@@ -45,7 +45,7 @@ class EMFMonitorAdapter extends EContentAdapter {
             return;
         }
         final EObject notifier = (EObject) notification.getNotifier();
-        final VURI vuri = VURI.getInstance(notifier.eResource().getURI().toPlatformString(true));
+        final VURI vuri = VURI.getInstance(notifier.eResource().getURI());
         if (!this.changes.containsKey(vuri)) {
             this.changes.put(vuri, new Vector<Change>());
         }
