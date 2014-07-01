@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
@@ -87,7 +88,10 @@ public class SyncManagerImpl implements ChangeSynchronizing {
 
         for (Pair<EObject, VURI> createdEObjectVURIPair : emfChangeResult.getNewRootEObjectsToSave()) {
             ModelInstance mi = this.modelProviding.getModelInstanceOriginal(createdEObjectVURIPair.getSecond());
-            mi.getResource().getContents().add(createdEObjectVURIPair.getFirst());
+            Resource resource = mi.getResource();
+            // clear the resource first
+            resource.getContents().clear();
+            resource.getContents().add(createdEObjectVURIPair.getFirst());
             this.modelProviding.saveModelInstanceOriginal(mi.getURI());
         }
     }

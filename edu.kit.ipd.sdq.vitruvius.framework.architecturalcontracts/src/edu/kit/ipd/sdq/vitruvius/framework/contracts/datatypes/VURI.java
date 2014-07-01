@@ -11,9 +11,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFBridge;
 
 /**
  * Implements the multiton design pattern.
- * 
+ *
  * @author kramerm
- * 
+ *
  */
 public class VURI implements Comparable<VURI> {
     private static final Map<String, VURI> INSTANCES = new HashMap<String, VURI>();
@@ -57,7 +57,16 @@ public class VURI implements Comparable<VURI> {
     }
 
     public static VURI getInstance(final IResource iResource) {
-        return getInstance(iResource.getFullPath().toOSString());
+        String[] keyStrSegments = iResource.getFullPath().segments();
+        StringBuilder keyString = new StringBuilder();
+        for (int i = 0; i < keyStrSegments.length; i++) {
+            if (i > 0) {
+                keyString.append("/");
+            }
+            keyString.append(keyStrSegments[i]);
+        }
+
+        return getInstance(keyString.toString());
     }
 
     @Override

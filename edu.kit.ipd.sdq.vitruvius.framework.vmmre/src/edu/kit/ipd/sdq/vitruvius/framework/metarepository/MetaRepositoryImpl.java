@@ -3,6 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.metarepository;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Invariants;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
@@ -47,8 +48,13 @@ public class MetaRepositoryImpl implements MetamodelManaging, ViewTypeManaging, 
 
     @Override
     public void addMetamodel(final Metamodel metamodel) {
-        VURI uri = metamodel.getURI();
-        this.uri2MetamodelMap.putClaimingNullOrSameMapped(uri, metamodel);
+        VURI mainMMuri = metamodel.getURI();
+        this.uri2MetamodelMap.putClaimingNullOrSameMapped(mainMMuri, metamodel);
+        Set<String> nsURIs = metamodel.getNsURIs();
+        for (String nsURI : nsURIs) {
+            VURI nsVURI = VURI.getInstance(nsURI);
+            this.uri2MetamodelMap.put(nsVURI, metamodel);
+        }
         String[] fileExtensions = metamodel.getFileExtensions();
         for (String fileExtension : fileExtensions) {
             Metamodel mappedMetamodel = this.fileExtension2MetamodelMap.get(fileExtension);

@@ -25,13 +25,14 @@ public class ModelInstance extends AbstractURIHaving {
             throw new RuntimeException("Cannot get the metamodel URI for the model instance at the URI '" + getURI()
                     + "' because it has no root element!");
         }
-        return VURI.getInstance(getResource().getContents().get(0).eClass().getEPackage().getNsURI().toString());
+        String rootEObjectNamespace = getUniqueRootEObject().eClass().getEPackage().getNsURI().toString();
+        return VURI.getInstance(rootEObjectNamespace);
     }
 
     /**
      * Returns the root element of the model instance if it is unique (exactly one root element) and
      * throws a {@link java.lang.RuntimeException RuntimeException} otherwise.
-     * 
+     *
      * @return the root element
      */
     public EObject getUniqueRootEObject() {
@@ -42,7 +43,7 @@ public class ModelInstance extends AbstractURIHaving {
      * Returns the root element of the model instance if it is unique (exactly one root element) and
      * has the type of the given class and throws a {@link java.lang.RuntimeException
      * RuntimeException} otherwise.
-     * 
+     *
      * @param rootElementClass
      *            the class of which the root element has to be an instance of
      * @return the root element

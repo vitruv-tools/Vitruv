@@ -31,9 +31,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespon
  * instance of a metaclass of the first metamodel of the containing correspondence instance. And
  * every elementB of a correspondence has to be an instance of a metaclass of the second metamodel
  * of the containing correspondence instance.
- * 
+ *
  * @author kramerm
- * 
+ *
  */
 public class CorrespondenceInstance extends ModelInstance {
 
@@ -268,7 +268,7 @@ public class CorrespondenceInstance extends ModelInstance {
     /**
      * Removes all correspondences containing this eObject. It also removes all
      * child-correspondences of the correspondences containing the eObject.
-     * 
+     *
      * @param eObject
      *            from which all correspondences should be removed
      */
@@ -289,7 +289,7 @@ public class CorrespondenceInstance extends ModelInstance {
 
     /**
      * Removes correspondence and all child Correspondences of this correspondence
-     * 
+     *
      * @param correspondence
      */
     public void removeCorrespondenceAndAllDependentCorrespondences(final Correspondence correspondence) {
@@ -300,7 +300,7 @@ public class CorrespondenceInstance extends ModelInstance {
     /**
      * Does the removing recursively. Marks all correspondences that will be deleted in a
      * dependencyList --> Avoid stack overflow with correspondences that have a mutual dependency
-     * 
+     *
      * @param correspondence
      * @param dependencyList
      */

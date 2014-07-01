@@ -43,12 +43,18 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     private final Map<Metamodel, Set<CorrespondenceInstance>> metamodel2CorrespondenceInstancesMap;
     private final Map<Mapping, CorrespondenceInstance> mapping2CorrespondenceInstanceMap;
 
+    private Map<String, String> saveCorrespondenceOptions;
+
     public VSUMImpl(final MetamodelManaging metamodelManaging, final ViewTypeManaging viewTypeManaging,
             final MappingManaging mappingManaging, final CorrespondenceMMProviding correspondenceMMproviding) {
         this.metamodelManaging = metamodelManaging;
         this.viewTypeManaging = viewTypeManaging;
         this.mappingManaging = mappingManaging;
         this.correspondenceMMproviding = correspondenceMMproviding;
+
+        this.saveCorrespondenceOptions = new HashMap<String, String>();
+        this.saveCorrespondenceOptions.put(VSUMConstants.OPTION_PROCESS_DANGLING_HREF,
+                VSUMConstants.OPTION_PROCESS_DANGLING_HREF_DISCARD);
 
         this.modelInstances = new HashMap<VURI, ModelInstance>();
         this.resourceSet = new ResourceSetImpl();
@@ -70,7 +76,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
      * Supports three cases: 1) get registered 2) create non-existing 3) get unregistered but
      * existing that contains at most a root element without children. But throws an exception if an
      * instance that contains more than one element exists at the uri.
-     * 
+     *
      * DECISION If we do not throw an exception (which can happen in 3) we always return a valid
      * model. Hence the caller do not have to check whether the retrived model is null.
      */
@@ -92,7 +98,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
 
     /**
      * Saves the resource for the given vuri. If the VURI is not existing yet it will be created.
-     * 
+     *
      * @param vuri
      *            The VURI to save
      */
@@ -115,7 +121,8 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         for (CorrespondenceInstance correspondenceInstance : allCorrespondenceInstances) {
             if (correspondenceInstance.changedAfterLastSave()) {
                 try {
-                    EcoreResourceBridge.saveResource(correspondenceInstance.getResource());
+                    EcoreResourceBridge.saveResource(correspondenceInstance.getResource(),
+                            this.saveCorrespondenceOptions);
                     correspondenceInstance.resetChangedAfterLastSave();
                     // we do not need to save anything else in a correspondence instance because the
                     // involved mapping is fix and everything else can be recomputed from the model
@@ -194,7 +201,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     /**
      * Returns the correspondenceInstance for the mapping from the metamodel at the first VURI to
      * the metamodel at the second VURI or the other way round
-     * 
+     *
      * @return the found correspondenceInstance or null if there is none
      */
     @Override
@@ -218,7 +225,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
      * creating new CorrespondenceInstance here, cause we can not guess the linked model. The method
      * {@link getCorrespondenceInstanceOriginal} must be called before to create the appropriate
      * correspondence instance
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
      * @return set that contains all CorrespondenceInstances for the VURI or null if there is non
      */

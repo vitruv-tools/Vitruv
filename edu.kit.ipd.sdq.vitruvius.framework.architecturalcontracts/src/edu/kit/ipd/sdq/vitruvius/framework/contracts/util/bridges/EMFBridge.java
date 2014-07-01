@@ -27,9 +27,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.VitruviusConstants;
  * <br/>
  * (Note that it is disputable whether this class conforms to the bridge pattern as we are currently
  * only providing one implementation and the "abstractions" can be regarded as low-level.)
- * 
+ *
  * @author Max E. Kramer
- * 
+ *
  * @see EcoreBridge
  * @see EcoreFactoryBridge
  * @see EcorePkgVariantsBridge
@@ -42,7 +42,7 @@ public final class EMFBridge {
 
     /**
      * Returns the path of an IResource
-     * 
+     *
      * @param iResource
      * @return
      */
@@ -53,7 +53,7 @@ public final class EMFBridge {
 
     /**
      * Creates and returns an EMF platform resource URI for the given Eclipse resource.
-     * 
+     *
      * @param iResource
      *            an Eclipse resource
      * @return a platform resource URI for the resource
@@ -64,7 +64,7 @@ public final class EMFBridge {
 
     /**
      * Creates and returns a new Eclipse path for the given EMF URI.
-     * 
+     *
      * @param uri
      *            an EMF URI
      * @return a new Eclipse path for the given URI
@@ -75,7 +75,7 @@ public final class EMFBridge {
 
     /**
      * Returns an Eclipse file for the given EMF URI.
-     * 
+     *
      * @param uri
      *            an EMF URI
      * @return an Eclipse file for the given URI
@@ -88,7 +88,7 @@ public final class EMFBridge {
     /**
      * Creates a new URI from the given URI by appending the given string to the file name of the
      * URI (i.e. before the dot "." and the file extension)
-     * 
+     *
      * @param uri
      *            an URI
      * @param toAppend
@@ -115,7 +115,7 @@ public final class EMFBridge {
     /**
      * Creates a URI from the passed uriString by adding the platform resource prefix if no absolute
      * web prefix (http://) and no absolute file prefix (/ or X:\) is specified.
-     * 
+     *
      * @param uriString
      * @return the new URI
      */

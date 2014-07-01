@@ -127,7 +127,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
 
     /**
      * Removes file from Vitruvius control by deleting its root element
-     * 
+     *
      * @param iResource
      *            resource to remove
      */

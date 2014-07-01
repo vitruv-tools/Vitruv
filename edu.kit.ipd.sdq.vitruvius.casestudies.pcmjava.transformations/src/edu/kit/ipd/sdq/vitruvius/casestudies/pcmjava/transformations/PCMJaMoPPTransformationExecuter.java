@@ -44,7 +44,7 @@ public class PCMJaMoPPTransformationExecuter implements TransformationExecuting 
 
     /**
      * Executes the Java2PCM and PCM2Java transformations and returns the changed VURIs
-     * 
+     *
      * @param change
      *            the occurred change
      * @param sourceModel
@@ -71,7 +71,10 @@ public class PCMJaMoPPTransformationExecuter implements TransformationExecuting 
                     final IFile fileSourceModel = EMFBridge.getIFileForEMFUri(sourceModel.getURI().getEMFUri());
                     final IProject projectSourceModel = fileSourceModel.getProject();
                     // TODO: use configured src-folder path instead of hardcoded "src"
-                    final String srcFolderPath = projectSourceModel.getFullPath().toString() + "/src/";
+                    String srcFolderPath = projectSourceModel.getFullPath().toString() + "/src/";
+                    if (srcFolderPath.startsWith("/")) {
+                        srcFolderPath = srcFolderPath.substring(1, srcFolderPath.length());
+                    }
                     final String compUnitPath = newCompUnit.getNamespacesAsString().replace(".", "/").replace("$", "/")
                             + newCompUnit.getName().replace("$", ".");
                     final VURI cuVURI = VURI.getInstance(srcFolderPath + compUnitPath);

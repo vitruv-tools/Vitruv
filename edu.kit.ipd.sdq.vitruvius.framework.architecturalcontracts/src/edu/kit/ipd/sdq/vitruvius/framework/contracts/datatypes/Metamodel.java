@@ -61,4 +61,8 @@ public class Metamodel extends AbstractURIHaving {
         }
         return this.nsURIs.contains(eObject.eClass().getEPackage().getNsURI());
     }
+
+    public Set<String> getNsURIs() {
+        return this.nsURIs;
+    }
 }

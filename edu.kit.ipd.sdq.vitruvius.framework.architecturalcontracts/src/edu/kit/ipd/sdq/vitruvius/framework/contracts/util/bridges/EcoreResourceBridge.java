@@ -13,6 +13,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.URI;
@@ -28,7 +29,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
  * <br/>
  * (Note that it is disputable whether this class conforms to the bridge pattern as we are currently
  * only providing one implementation and the "abstractions" can be regarded as low-level.)
- * 
+ *
  * @author Max E. Kramer
  */
 public final class EcoreResourceBridge {
@@ -39,7 +40,7 @@ public final class EcoreResourceBridge {
     /**
      * Returns the root element of the content of the given IResource if it is unique (exactly one
      * root element) and {@code null} otherwise.
-     * 
+     *
      * @see getResourceContentRootIfUnique
      * @param iResource
      *            a resource
@@ -53,7 +54,7 @@ public final class EcoreResourceBridge {
     /**
      * Returns the root element of the content of the given resource if it is unique (exactly one
      * root element) and {@code null} otherwise.
-     * 
+     *
      * @param resource
      *            a resource
      * @return the unique root element (if existing) otherwise {@code null}
@@ -70,7 +71,7 @@ public final class EcoreResourceBridge {
     /**
      * Returns the root element of the content of the given resource if it is unique (exactly one
      * root element) and throws a {@link java.lang.RuntimeException RuntimeException} otherwise.
-     * 
+     *
      * @param resource
      *            a resource
      * @param modelName
@@ -91,7 +92,7 @@ public final class EcoreResourceBridge {
      * Returns the root element of the content of the model at the given URI if it is unique
      * (exactly one root element) and has the type of the given class and throws a
      * {@link java.lang.RuntimeException RuntimeException} otherwise
-     * 
+     *
      * @param resource
      *            a resource
      * @param modelName
@@ -111,7 +112,7 @@ public final class EcoreResourceBridge {
 
     /**
      * Returns a set containing all contents of the given resource.
-     * 
+     *
      * @param resource
      *            a resource
      * @return a set containing all resource contents
@@ -124,7 +125,7 @@ public final class EcoreResourceBridge {
      * Saves the given eObject as the only content of the model at the given URI.<br/>
      * <br/>
      * <b>Attention</b>: If a resource already exists at the given URI it will be overwritten!
-     * 
+     *
      * @param eObject
      *            the new root element
      * @param resource
@@ -140,14 +141,26 @@ public final class EcoreResourceBridge {
 
     /**
      * Saves the given resource.
-     * 
+     *
      * @param resource
      *            the resource to be saved
      * @throws IOException
      *             if an error occurred during saving
      */
     public static void saveResource(final Resource resource) throws IOException {
-        resource.save(Collections.EMPTY_MAP);
+        saveResource(resource, Collections.<String, String> emptyMap());
+    }
+
+    /**
+     * Saves the given resource with the given options.
+     *
+     * @param resource
+     *            the resource to be saved
+     * @throws IOException
+     *             if an error occurred during saving
+     */
+    public static void saveResource(final Resource resource, final Map<String, String> saveOptions) throws IOException {
+        resource.save(saveOptions);
         resource.setModified(true);
     }
 
