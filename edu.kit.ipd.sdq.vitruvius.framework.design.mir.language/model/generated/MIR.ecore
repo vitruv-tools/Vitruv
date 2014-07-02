@@ -5,7 +5,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="Model">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mmImports" upperBound="-1"
         eType="#//Import" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="javaImportSection" eType="ecore:EClass ../../../org.eclipse.xtext.xbase/model/Xtype.ecore#//XImportSection"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="javaImportSection" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xtype.ecore#//XImportSection"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappings" upperBound="-1"
         eType="#//Mapping" containment="true"/>
@@ -36,7 +36,7 @@
         eType="#//With" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="When">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="xorExpression" eType="ecore:EClass ../../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="xorExpression" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="With"/>
@@ -44,7 +44,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
         eType="#//Parameter" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="xorExpression" eType="ecore:EClass ../../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="xorExpression" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Parameter">
@@ -53,7 +53,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GlobalVariable">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="jvmTypeReference" eType="ecore:EClass ../../../org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeReference"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jvmTypeReference" eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeReference"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Response">
