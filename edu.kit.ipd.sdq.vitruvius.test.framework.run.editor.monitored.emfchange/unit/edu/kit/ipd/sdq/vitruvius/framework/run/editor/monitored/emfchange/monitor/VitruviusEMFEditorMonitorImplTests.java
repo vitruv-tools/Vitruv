@@ -1,0 +1,255 @@
+package edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.monitor;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EcoreFactory;
+import org.eclipse.ui.IEditorPart;
+import org.junit.Before;
+import org.junit.Test;
+
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory.IEditorPartAdapter;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.ISynchronizingMonitoredEmfEditor;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.EclipseAdapterProvider;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.IEclipseAdapter;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.mocking.EclipseMock;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.mocking.EclipseMock.SaveEventKind;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.testmodels.Files;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.BasicTestCase;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.ChangeAssert;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.DefaultImplementations;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.EnsureExecuted;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.DefaultImplementations.TestChangeSynchronizing;
+
+public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
+    private EclipseMock eclipseMockCtrl;
+    private IEclipseAdapter eclipseUtils;
+    private IEditorPartAdapterFactory factory;
+
+    @Before
+    public void setUp() {
+        this.eclipseMockCtrl = new EclipseMock();
+        this.eclipseUtils = eclipseMockCtrl.getEclipseUtils();
+        EclipseAdapterProvider.getInstance().setProvidedEclipseAdapter(eclipseUtils);
+        this.factory = new DefaultEditorPartAdapterFactoryImpl(Files.ECORE_FILE_EXTENSION);
+    }
+
+    @Test
+    public void newEditorsAreRegistered() {
+        final URL modelURL = Files.EXAMPLEMODEL_ECORE;
+        final EnsureExecuted ensureExecuted = new EnsureExecuted();
+
+        IVitruviusAccessor va = new IVitruviusAccessor() {
+            @Override
+            public boolean isModelMonitored(VURI modelUri) {
+                assert modelUri == VURI.getInstance(modelURL.getFile());
+                ensureExecuted.markExecuted();
+                return true;
+            }
+        };
+
+        VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(
+                DefaultImplementations.EFFECTLESS_EXTERNAL_CHANGESYNC,
+                DefaultImplementations.DEFAULT_MODEL_COPY_PROVIDING, va);
+        syncMgr.initialize();
+
+        eclipseMockCtrl.openNewEMFTreeEditorPart(modelURL);
+
+        syncMgr.dispose();
+    }
+
+    private EObject getRootObject(IEditorPart adaptableEditor) {
+        IEditorPartAdapter adapter = this.factory.createAdapter(adaptableEditor);
+        return (EObject) adapter.getEditingDomain().getRoot(EcoreFactory.eINSTANCE.createEClass());
+    }
+
+    @Test
+    public void changesToAutomaticallyRegisteredEditorsAreSynchronized() {
+        TestChangeSynchronizing cs = TestChangeSynchronizing.createInstance();
+
+        VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory, cs,
+                DefaultImplementations.DEFAULT_MODEL_COPY_PROVIDING,
+                DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
+        syncMgr.initialize();
+
+        IEditorPart editorPart = eclipseMockCtrl.openNewEMFTreeEditorPart(Files.EXAMPLEMODEL_ECORE);
+        EPackage root = (EPackage) getRootObject(editorPart);
+        root.setName(root.getName() + "!");
+
+        eclipseMockCtrl.issueSaveEvent(SaveEventKind.SAVE);
+        syncMgr.triggerSynchronisation(VURI.getInstance(root.eResource()));
+
+        assert cs.getExecutionCount() == 1;
+        assert !cs.getLastChanges().isEmpty();
+        assert cs.getLastVURI() == VURI.getInstance(Files.EXAMPLEMODEL_ECORE.getFile());
+    }
+
+    @Test
+    public void changesToRefusedEditorsAreNotSynchronized() {
+        TestChangeSynchronizing cs = TestChangeSynchronizing.createInstance();
+
+        VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory, cs,
+                DefaultImplementations.DEFAULT_MODEL_COPY_PROVIDING,
+                DefaultImplementations.NONE_ACCEPTING_VITRUV_ACCESSOR);
+        syncMgr.initialize();
+
+        IEditorPart editorPart = eclipseMockCtrl.openNewEMFTreeEditorPart(Files.EXAMPLEMODEL_ECORE);
+        EPackage root = (EPackage) getRootObject(editorPart);
+        root.setName(root.getName() + "!");
+
+        eclipseMockCtrl.issueSaveEvent(SaveEventKind.SAVE);
+        syncMgr.triggerSynchronisation(VURI.getInstance(root.eResource()));
+
+        assert !cs.hasBeenExecuted();
+    }
+
+    @Test
+    public void changeListsAreJoinedWhenUserSavesMultipleTimesBeforeBuilding() {
+        TestChangeSynchronizing cs = TestChangeSynchronizing.createInstance();
+
+        VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory, cs,
+                DefaultImplementations.DEFAULT_MODEL_COPY_PROVIDING,
+                DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
+        syncMgr.initialize();
+
+        IEditorPart editorPart = eclipseMockCtrl.openNewEMFTreeEditorPart(Files.EXAMPLEMODEL_ECORE);
+        EPackage root = (EPackage) getRootObject(editorPart);
+        root.setName("!" + root.getName());
+
+        eclipseMockCtrl.issueSaveEvent(SaveEventKind.SAVE);
+
+        root.setNsPrefix("!" + root.getNsPrefix());
+
+        eclipseMockCtrl.issueSaveEvent(SaveEventKind.SAVE);
+
+        syncMgr.triggerSynchronisation(VURI.getInstance(root.eResource()));
+
+        assert cs.getExecutionCount() == 1 : "Got " + cs.getExecutionCount() + " syncs instead of 1.";
+        assert !cs.getLastChanges().isEmpty();
+        assert cs.hasBeenExecuted();
+        assert cs.getLastChanges().size() == 2 : "Got " + cs.getLastChanges().size() + " changes instead of 2.";
+    }
+
+    @Test
+    public void changeListsAreJoinedWhenMultipleModelInstancesAreEdited() {
+        TestChangeSynchronizing cs = TestChangeSynchronizing.createInstance();
+
+        VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory, cs,
+                DefaultImplementations.DEFAULT_MODEL_COPY_PROVIDING,
+                DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
+        syncMgr.initialize();
+
+        IEditorPart editorPart1 = eclipseMockCtrl.openNewEMFTreeEditorPart(Files.EXAMPLEMODEL_ECORE);
+        EPackage root1 = (EPackage) getRootObject(editorPart1);
+        String root1NewName = "!" + root1.getName();
+        root1.setName(root1NewName);
+        String root1NewPrefix = "!" + root1.getNsPrefix();
+        root1.setNsPrefix(root1NewPrefix);
+        eclipseMockCtrl.issueSaveEvent(SaveEventKind.SAVE);
+
+        IEditorPart editorPart2 = eclipseMockCtrl.openNewEMFTreeEditorPart(Files.EXAMPLEMODEL_ECORE);
+        EPackage root2 = (EPackage) getRootObject(editorPart2);
+        String root2NewName = "?" + root2.getName();
+        root2.setName(root2NewName);
+        eclipseMockCtrl.issueSaveEvent(SaveEventKind.SAVE);
+
+        syncMgr.triggerSynchronisation(VURI.getInstance(root1.eResource()));
+
+        assert cs.getExecutionCount() == 1 : "Got " + cs.getExecutionCount() + " syncs instead of 1.";
+        assert !cs.getLastChanges().isEmpty();
+        assert cs.hasBeenExecuted();
+        assert cs.getLastChanges().size() == 2 : "Got " + cs.getLastChanges().size() + " changes instead of 2.";
+
+        List<Change> changes = cs.getLastChanges();
+        UpdateEAttribute<?> attrChange = (UpdateEAttribute<?>) ((EMFModelChange) changes.get(0)).getEChange();
+        EObject root = attrChange.getAffectedEObject();
+        assert root instanceof EPackage;
+
+        System.err.println(root);
+
+        ChangeAssert.printChangeList(changes);
+        ChangeAssert.assertContainsAttributeChange(changes, root.eClass().getEStructuralFeature("name"), root2NewName);
+        ChangeAssert.assertContainsAttributeChange(changes, root.eClass().getEStructuralFeature("nsPrefix"),
+                root1NewPrefix);
+
+    }
+
+    @Test
+    public void modelCanBeMonitoredAfterEditorCreationWhenVitruviusDecidesItBecomesMonitorable() {
+        RoleChangingVitruviusAccessor va = new RoleChangingVitruviusAccessor();
+        va.setAcceptNone();
+
+        VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory,
+                DefaultImplementations.EFFECTLESS_EXTERNAL_CHANGESYNC,
+                DefaultImplementations.DEFAULT_MODEL_COPY_PROVIDING, va);
+        syncMgr.initialize();
+
+        eclipseMockCtrl.openNewEMFTreeEditorPart(Files.EXAMPLEMODEL_ECORE);
+        assert va.hasBeenExecuted();
+        assert va.getAcceptedModels().isEmpty();
+
+        va.setAcceptAll();
+        syncMgr.addModel(VURI.getInstance(Files.EXAMPLEMODEL_ECORE.getFile()));
+
+        assert va.getAcceptedModels().contains(VURI.getInstance(Files.EXAMPLEMODEL_ECORE.getFile()));
+    }
+
+    @Test
+    public void modelIsStoppedBeingMonitoredWhenVitruviusDecidesItBecomesNotMonitorable() {
+        VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory,
+                DefaultImplementations.EFFECTLESS_EXTERNAL_CHANGESYNC,
+                DefaultImplementations.DEFAULT_MODEL_COPY_PROVIDING,
+                DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
+        syncMgr.initialize();
+        ISynchronizingMonitoredEmfEditor listener = syncMgr.getChangeRecorderMonitor();
+
+        IEditorPart editorPart = eclipseMockCtrl.openNewEMFTreeEditorPart(Files.EXAMPLEMODEL_ECORE);
+
+        assert listener.isMonitoringEditor(editorPart);
+
+        syncMgr.removeModel(VURI.getInstance(Files.EXAMPLEMODEL_ECORE.getFile()));
+
+        assert !listener.isMonitoringEditor(editorPart);
+    }
+
+    private static class RoleChangingVitruviusAccessor implements IVitruviusAccessor {
+        boolean accepts = true;
+        boolean executed = false;
+        private final List<VURI> acceptedModels = new ArrayList<>();
+
+        @Override
+        public boolean isModelMonitored(VURI modelUri) {
+            executed = true;
+            if (accepts) {
+                acceptedModels.add(modelUri);
+            }
+            return accepts;
+        }
+
+        public void setAcceptAll() {
+            accepts = true;
+        }
+
+        public void setAcceptNone() {
+            accepts = false;
+        }
+
+        public boolean hasBeenExecuted() {
+            return executed;
+        }
+
+        public List<VURI> getAcceptedModels() {
+            return acceptedModels;
+        }
+
+    }
+}
