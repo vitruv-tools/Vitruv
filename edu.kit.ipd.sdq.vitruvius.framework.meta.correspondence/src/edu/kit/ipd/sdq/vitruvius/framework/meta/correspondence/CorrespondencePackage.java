@@ -667,7 +667,6 @@ public interface CorrespondencePackage extends EPackage {
 	 */
 	int ECONTAINMENT_REFERENCE_CORRESPONDENCE_FEATURE_COUNT = EREFERENCE_CORRESPONDENCE_FEATURE_COUNT + 0;
 
-
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.PartialEFeatureCorrespondenceImpl <em>Partial EFeature Correspondence</em>}' class.
 	 * <!-- begin-user-doc -->

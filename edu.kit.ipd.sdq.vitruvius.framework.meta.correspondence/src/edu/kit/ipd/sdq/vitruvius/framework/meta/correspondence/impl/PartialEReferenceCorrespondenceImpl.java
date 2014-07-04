@@ -13,8 +13,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespon
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
@@ -25,7 +25,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -467,6 +466,18 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public void setFeatureA(EReference newFeatureA) {
+		EReference oldFeatureA = featureA;
+		featureA = newFeatureA;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__FEATURE_A, oldFeatureA, featureA));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EReference getFeatureB() {
 		if (featureB != null && featureB.eIsProxy()) {
 			InternalEObject oldFeatureB = (InternalEObject)featureB;
@@ -486,6 +497,18 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 	 */
 	public EReference basicGetFeatureB() {
 		return featureB;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setFeatureB(EReference newFeatureB) {
+		EReference oldFeatureB = featureB;
+		featureB = newFeatureB;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__FEATURE_B, oldFeatureB, featureB));
 	}
 
 	/**
@@ -613,17 +636,6 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<EObject> getAllInvolvedEObjects() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
@@ -743,6 +755,12 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 			case CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__TYPE:
 				setType((CorrespondenceType)newValue);
 				return;
+			case CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__FEATURE_A:
+				setFeatureA((EReference)newValue);
+				return;
+			case CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__FEATURE_B:
+				setFeatureB((EReference)newValue);
+				return;
 			case CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__VALUE_A:
 				setValueA((TValue)newValue);
 				return;
@@ -787,6 +805,12 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 				return;
 			case CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__TYPE:
 				setType(TYPE_EDEFAULT);
+				return;
+			case CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__FEATURE_A:
+				setFeatureA((EReference)null);
+				return;
+			case CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__FEATURE_B:
+				setFeatureB((EReference)null);
 				return;
 			case CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__VALUE_A:
 				setValueA((TValue)null);

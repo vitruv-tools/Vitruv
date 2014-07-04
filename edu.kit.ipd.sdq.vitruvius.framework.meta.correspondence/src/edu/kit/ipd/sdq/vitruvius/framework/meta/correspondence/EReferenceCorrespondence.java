@@ -2,7 +2,6 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 
 /**

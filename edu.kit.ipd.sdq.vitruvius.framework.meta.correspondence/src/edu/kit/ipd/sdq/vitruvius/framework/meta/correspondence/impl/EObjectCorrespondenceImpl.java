@@ -6,7 +6,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePac
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->

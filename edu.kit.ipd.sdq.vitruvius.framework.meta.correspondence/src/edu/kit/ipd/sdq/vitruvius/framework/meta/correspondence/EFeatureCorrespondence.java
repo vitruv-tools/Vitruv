@@ -66,11 +66,22 @@ public interface EFeatureCorrespondence<TFeature extends EStructuralFeature> ext
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Feature A</em>' reference.
+	 * @see #setFeatureA(EStructuralFeature)
 	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getEFeatureCorrespondence_FeatureA()
-	 * @model required="true" changeable="false"
+	 * @model required="true"
 	 * @generated
 	 */
 	TFeature getFeatureA();
+
+	/**
+	 * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EFeatureCorrespondence#getFeatureA <em>Feature A</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Feature A</em>' reference.
+	 * @see #getFeatureA()
+	 * @generated
+	 */
+	void setFeatureA(TFeature value);
 
 	/**
 	 * Returns the value of the '<em><b>Feature B</b></em>' reference.
@@ -81,10 +92,21 @@ public interface EFeatureCorrespondence<TFeature extends EStructuralFeature> ext
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Feature B</em>' reference.
+	 * @see #setFeatureB(EStructuralFeature)
 	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getEFeatureCorrespondence_FeatureB()
-	 * @model required="true" changeable="false"
+	 * @model required="true"
 	 * @generated
 	 */
 	TFeature getFeatureB();
+
+	/**
+	 * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EFeatureCorrespondence#getFeatureB <em>Feature B</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Feature B</em>' reference.
+	 * @see #getFeatureB()
+	 * @generated
+	 */
+	void setFeatureB(TFeature value);
 
 } // EFeatureCorrespondence

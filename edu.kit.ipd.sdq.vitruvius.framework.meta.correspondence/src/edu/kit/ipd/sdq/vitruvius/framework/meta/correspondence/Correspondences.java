@@ -28,7 +28,7 @@ public interface Correspondences extends EObject {
 	 * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Correspondences</em>' reference list isn't clear,
+	 * If the meaning of the '<em>Correspondences</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->

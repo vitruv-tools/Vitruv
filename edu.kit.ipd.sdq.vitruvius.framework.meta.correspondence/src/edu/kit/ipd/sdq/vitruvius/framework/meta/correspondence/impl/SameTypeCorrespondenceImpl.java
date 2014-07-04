@@ -6,15 +6,12 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePac
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -117,7 +114,6 @@ public abstract class SameTypeCorrespondenceImpl extends CorrespondenceImpl impl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EObject getElementA() {
 		if (elementA != null && elementA.eIsProxy()) {
 			InternalEObject oldElementA = (InternalEObject)elementA;
@@ -177,7 +173,6 @@ public abstract class SameTypeCorrespondenceImpl extends CorrespondenceImpl impl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EObject getElementB() {
 		if (elementB != null && elementB.eIsProxy()) {
 			InternalEObject oldElementB = (InternalEObject)elementB;
@@ -259,7 +254,6 @@ public abstract class SameTypeCorrespondenceImpl extends CorrespondenceImpl impl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -341,19 +335,4 @@ public abstract class SameTypeCorrespondenceImpl extends CorrespondenceImpl impl
 		return result.toString();
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	public EList<EObject> getAllInvolvedEObjects() {
-		BasicEList<EObject> involvedEObjects = new BasicEList<EObject>();
-		if (elementA instanceof EObject) {
-			involvedEObjects.add((EObject) elementA);
-		}
-		if (elementB instanceof EObject) {
-			involvedEObjects.add((EObject) elementB);
-		}
-		return involvedEObjects;
-	}
 } //SameTypeCorrespondenceImpl

@@ -30,7 +30,7 @@ public interface Correspondence extends EObject {
 	 * It is bidirectional and its opposite is '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence#getParent <em>Parent</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Dependent Correspondences</em>' reference list isn't clear,
+	 * If the meaning of the '<em>Dependent Correspondences</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
@@ -47,7 +47,7 @@ public interface Correspondence extends EObject {
 	 * It is bidirectional and its opposite is '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence#getDependentCorrespondences <em>Dependent Correspondences</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Parent</em>' reference isn't clear,
+	 * If the meaning of the '<em>Parent</em>' container reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
@@ -69,13 +69,5 @@ public interface Correspondence extends EObject {
 	 * @generated
 	 */
 	void setParent(Correspondence value);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model kind="operation" lower="2" ordered="false"
-	 * @generated
-	 */
-	EList<EObject> getAllInvolvedEObjects();
 
 } // Correspondence

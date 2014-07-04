@@ -582,8 +582,6 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		initEReference(getCorrespondence_DependentCorrespondences(), this.getCorrespondence(), this.getCorrespondence_Parent(), "dependentCorrespondences", null, 0, -1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCorrespondence_Parent(), this.getCorrespondence(), this.getCorrespondence_DependentCorrespondences(), "parent", null, 0, 1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		addEOperation(correspondenceEClass, ecorePackage.getEObject(), "getAllInvolvedEObjects", 2, -1, IS_UNIQUE, !IS_ORDERED);
-
 		initEClass(sameTypeCorrespondenceEClass, SameTypeCorrespondence.class, "SameTypeCorrespondence", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getSameTypeCorrespondence_ElementA(), theEcorePackage.getEObject(), null, "elementA", null, 1, 1, SameTypeCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getSameTypeCorrespondence_ElementATUID(), ecorePackage.getEString(), "elementATUID", null, 1, 1, SameTypeCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -595,9 +593,9 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		initEClass(eFeatureCorrespondenceEClass, EFeatureCorrespondence.class, "EFeatureCorrespondence", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getEFeatureCorrespondence_Type(), this.getCorrespondenceType(), "type", null, 1, 1, EFeatureCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		g1 = createEGenericType(eFeatureCorrespondenceEClass_TFeature);
-		initEReference(getEFeatureCorrespondence_FeatureA(), g1, null, "featureA", null, 1, 1, EFeatureCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEFeatureCorrespondence_FeatureA(), g1, null, "featureA", null, 1, 1, EFeatureCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		g1 = createEGenericType(eFeatureCorrespondenceEClass_TFeature);
-		initEReference(getEFeatureCorrespondence_FeatureB(), g1, null, "featureB", null, 1, 1, EFeatureCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEFeatureCorrespondence_FeatureB(), g1, null, "featureB", null, 1, 1, EFeatureCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(eAttributeCorrespondenceEClass, EAttributeCorrespondence.class, "EAttributeCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

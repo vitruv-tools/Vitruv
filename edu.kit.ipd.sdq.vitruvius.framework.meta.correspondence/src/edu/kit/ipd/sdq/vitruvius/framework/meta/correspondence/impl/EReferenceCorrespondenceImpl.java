@@ -6,7 +6,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePac
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EReferenceCorrespondence;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 
 /**
@@ -36,6 +35,28 @@ public class EReferenceCorrespondenceImpl extends EFeatureCorrespondenceImpl<ERe
 	@Override
 	protected EClass eStaticClass() {
 		return CorrespondencePackage.Literals.EREFERENCE_CORRESPONDENCE;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
+	 * @generated
+	 */
+	@Override
+	public void setFeatureA(EReference newFeatureA) {
+		super.setFeatureA(newFeatureA);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
+	 * @generated
+	 */
+	@Override
+	public void setFeatureB(EReference newFeatureB) {
+		super.setFeatureB(newFeatureB);
 	}
 
 } //EReferenceCorrespondenceImpl
