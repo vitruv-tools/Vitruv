@@ -5,6 +5,6 @@ Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.metarepository;singleto
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
- org.eclipse.emf.ecore;bundle-version="2.10.0",
- org.eclipse.core.resources;bundle-version="3.9.0"
+ org.eclipse.emf.ecore,
+ org.eclipse.core.resources
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.metarepository
