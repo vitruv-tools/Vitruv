@@ -31,9 +31,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespon
  * instance of a metaclass of the first metamodel of the containing correspondence instance. And
  * every elementB of a correspondence has to be an instance of a metaclass of the second metamodel
  * of the containing correspondence instance.
- *
+ * 
  * @author kramerm
- *
+ * 
  */
 public class CorrespondenceInstance extends ModelInstance {
 
@@ -99,7 +99,7 @@ public class CorrespondenceInstance extends ModelInstance {
         return this.tuid2CorrespondingEObjectsMap.claimValueForKey(tuid);
     }
 
-    public Set<EObject> getCorrespondingEObjects(final EObject eObject) {
+    public Set<EObject> getAllCorrespondingEObjects(final EObject eObject) {
         String tuid = getTUIDFromEObject(eObject);
         return this.tuid2CorrespondingEObjectsMap.get(tuid);
     }
@@ -142,20 +142,22 @@ public class CorrespondenceInstance extends ModelInstance {
         return correspondingEObjectsByType.iterator().next();
     }
 
-    // FIXME: claim
-    public Set<Correspondence> claimCorrespondencesForEObject(final EObject eObject) {
-        String tuid = getTUIDFromEObject(eObject);
-        if (!hasCorrespondences(eObject)) {
-            this.tuid2CorrespondencesMap.put(tuid, new HashSet<Correspondence>());
-        }
-        return this.tuid2CorrespondencesMap.claimValueForKey(tuid);
-    }
-
-    public Correspondence getUniqueCorrespondenceForEObject(final EObject eObject) {
+    /**
+     * Returns the correspondence for the given eObject if it is unique, null if no correspondence
+     * exists and throws a {@link RuntimeException} if more than one correspondence exists.
+     * 
+     * @param eObject
+     * @return
+     */
+    public Correspondence claimUniqueOrNullCorrespondenceForEObject(final EObject eObject) {
         if (!hasCorrespondences(eObject)) {
             return null;
         }
-        Set<Correspondence> objectCorrespondences = claimCorrespondencesForEObject(eObject);
+        return claimUniqueCorrespondence(eObject);
+    }
+
+    public Correspondence claimUniqueCorrespondence(final EObject eObject) {
+        Set<Correspondence> objectCorrespondences = claimAllCorrespondences(eObject);
         if (1 != objectCorrespondences.size()) {
             throw new RuntimeException("claimCorrespondingEObjectForTypeIfUnique failed: "
                     + objectCorrespondences.size() + " corresponding objects found (expected 1)"
@@ -164,6 +166,13 @@ public class CorrespondenceInstance extends ModelInstance {
         return objectCorrespondences.iterator().next();
     }
 
+    /**
+     * Returns all eObjects that have some correspondence and are an instance of the given class.
+     * 
+     * @param type
+     *            the class for which instances should be returned
+     * @return a set containing all eObjects of the given type that have a correspondence
+     */
     public <T> Set<T> getAllEObjectsInCorrespondencesWithType(final Class<T> type) {
         Set<T> correspondencesWithType = new HashSet<T>();
         for (Correspondence correspondence : this.correspondences.getCorrespondences()) {
@@ -268,7 +277,7 @@ public class CorrespondenceInstance extends ModelInstance {
     /**
      * Removes all correspondences containing this eObject. It also removes all
      * child-correspondences of the correspondences containing the eObject.
-     *
+     * 
      * @param eObject
      *            from which all correspondences should be removed
      */
@@ -289,7 +298,7 @@ public class CorrespondenceInstance extends ModelInstance {
 
     /**
      * Removes correspondence and all child Correspondences of this correspondence
-     *
+     * 
      * @param correspondence
      */
     public void removeCorrespondenceAndAllDependentCorrespondences(final Correspondence correspondence) {
@@ -300,7 +309,7 @@ public class CorrespondenceInstance extends ModelInstance {
     /**
      * Does the removing recursively. Marks all correspondences that will be deleted in a
      * dependencyList --> Avoid stack overflow with correspondences that have a mutual dependency
-     *
+     * 
      * @param correspondence
      * @param dependencyList
      */
