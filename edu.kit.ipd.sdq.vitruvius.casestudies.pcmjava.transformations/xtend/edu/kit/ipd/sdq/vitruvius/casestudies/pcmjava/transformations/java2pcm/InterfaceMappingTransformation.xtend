@@ -45,7 +45,7 @@ class InterfaceMappingTransformation extends EObjectMappingTransformation {
 		val Package jaMoPPPackage = JaMoPPPCMUtils::getContainingPackageFromCorrespondenceInstance(jaMoPPInterface, correspondenceInstance)
 		try{
 			// get correspoding Object for Package--> it should be either a system, a component or the repository itself  
-			val Set<EObject> pcmArtefacts = correspondenceInstance.getCorrespondingEObjects(jaMoPPPackage)
+			val Set<EObject> pcmArtefacts = correspondenceInstance.getAllCorrespondingEObjects(jaMoPPPackage)
 			if(null == pcmArtefacts || 0 == pcmArtefacts.size){
 				// no corresponding artefact for Package
 				// if this is the case we currently we assume that the interface is not an architectural interface

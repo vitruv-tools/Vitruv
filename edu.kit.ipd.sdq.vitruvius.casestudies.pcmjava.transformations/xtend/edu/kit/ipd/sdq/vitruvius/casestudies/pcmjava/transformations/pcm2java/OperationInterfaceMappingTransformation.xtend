@@ -48,7 +48,7 @@ class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.
 
 		//add new correspondence to correspondenceInstance
 		val parrentCorrespondence = correspondenceInstance.
-			getUniqueCorrespondenceForEObject(operationInterface.repository__Interface);
+			claimUniqueOrNullCorrespondenceForEObject(operationInterface.repository__Interface);
 		val EObjectCorrespondence eObjectCorrespondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
 		eObjectCorrespondence.setElementA(operationInterface)
 		eObjectCorrespondence.setElementB(correspondingInterface)

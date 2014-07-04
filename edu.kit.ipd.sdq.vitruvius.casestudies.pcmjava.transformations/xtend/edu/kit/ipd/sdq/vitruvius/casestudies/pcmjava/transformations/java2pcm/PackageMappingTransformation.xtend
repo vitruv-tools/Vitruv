@@ -83,7 +83,7 @@ class PackageMappingTransformation extends EObjectMappingTransformation {
 		var EObjectCorrespondence basicComponent2Package = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
 		basicComponent2Package.setElementA(basicComponent)
 		basicComponent2Package.setElementB(jaMoPPPackage)
-		basicComponent2Package.setParent(correspondenceInstance.getUniqueCorrespondenceForEObject(repository))
+		basicComponent2Package.setParent(correspondenceInstance.claimUniqueOrNullCorrespondenceForEObject(repository))
 		correspondenceInstance.addSameTypeCorrespondence(basicComponent2Package)
 		return basicComponent.toArray
 	}

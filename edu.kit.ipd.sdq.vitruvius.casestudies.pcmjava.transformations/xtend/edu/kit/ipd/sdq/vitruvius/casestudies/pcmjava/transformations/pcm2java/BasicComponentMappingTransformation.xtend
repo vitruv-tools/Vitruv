@@ -52,7 +52,7 @@ class BasicComponentMappingTransformation extends edu.kit.ipd.sdq.vitruvius.case
 		jaMoPPPackage.compilationUnits.add(jaMoPPCompilationUnit)
 		jaMoPPCompilationUnit.namespaces.addAll(jaMoPPPackage.namespaces)
 
-		val Correspondence parentCorrespondence = correspondenceInstance.getUniqueCorrespondenceForEObject(rootPackage)
+		val Correspondence parentCorrespondence = correspondenceInstance.claimUniqueOrNullCorrespondenceForEObject(rootPackage)
 
 		//create correspondence for package and class (both are corresponding to the basic component)
 		val EObjectCorrespondence basicComponent2Package = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
@@ -83,7 +83,7 @@ class BasicComponentMappingTransformation extends edu.kit.ipd.sdq.vitruvius.case
 			logger.info("no feature correspondence found for affected Attribute: " + affectedAttribute)
 			return null
 		}
-		var correspondingEObjects = correspondenceInstance.getCorrespondingEObjects(eObject)
+		var correspondingEObjects = correspondenceInstance.getAllCorrespondingEObjects(eObject)
 		if(null == correspondingEObjects){
 			logger.info("No corresponding objects found for " + eObject)
 		}
