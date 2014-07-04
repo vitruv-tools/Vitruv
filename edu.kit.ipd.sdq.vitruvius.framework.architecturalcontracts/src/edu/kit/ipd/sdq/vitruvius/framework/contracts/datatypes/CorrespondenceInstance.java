@@ -83,7 +83,7 @@ public class CorrespondenceInstance extends ModelInstance {
         return this.tuid2CorrespondencesMap.containsKey(tuid);
     }
 
-    public Set<Correspondence> claimAllCorrespondences(final EObject eObject) {
+    public Set<Correspondence> claimCorrespondences(final EObject eObject) {
         String tuid = getTUIDFromEObject(eObject);
         return this.tuid2CorrespondencesMap.claimValueForKey(tuid);
     }
@@ -103,19 +103,12 @@ public class CorrespondenceInstance extends ModelInstance {
         return this.tuid2CorrespondingEObjectsMap.get(tuid);
     }
 
-    @Deprecated
-    public boolean isCorrespondingEObjectUnique(final EObject eObject) {
-        String tuid = getTUIDFromEObject(eObject);
-        return this.tuid2CorrespondingEObjectsMap.containsKey(tuid)
-                && 1 == this.tuid2CorrespondingEObjectsMap.get(eObject).size();
-    }
-
     public EObject claimUniqueCorrespondingEObject(final EObject eObject) {
         String tuid = getTUIDFromEObject(eObject);
         Set<EObject> correspondingEObjects = this.tuid2CorrespondingEObjectsMap.claimValueForKey(tuid);
-        if (1 != correspondingEObjects.size()) {
-            throw new RuntimeException("claimCorrespondingEObjectIfUnique failed: " + correspondingEObjects.size()
-                    + " corresponding objects found (expected 1)" + correspondingEObjects);
+        if (correspondingEObjects.size() != 1) {
+            throw new RuntimeException("The eObjects corresponding to '" + eObject + "' are not unique: "
+                    + correspondingEObjects);
         }
         return correspondingEObjects.iterator().next();
     }
@@ -156,10 +149,9 @@ public class CorrespondenceInstance extends ModelInstance {
     }
 
     public Correspondence claimUniqueCorrespondence(final EObject eObject) {
-        Set<Correspondence> objectCorrespondences = claimAllCorrespondences(eObject);
-        if (1 != objectCorrespondences.size()) {
-            throw new RuntimeException("claimCorrespondingEObjectForTypeIfUnique failed: "
-                    + objectCorrespondences.size() + " corresponding objects found (expected 1)"
+        Set<Correspondence> objectCorrespondences = claimCorrespondences(eObject);
+        if (objectCorrespondences.size() != 1) {
+            throw new RuntimeException("The correspondence for eObject '" + eObject + "' is not unique: "
                     + objectCorrespondences);
         }
         return objectCorrespondences.iterator().next();
@@ -283,13 +275,13 @@ public class CorrespondenceInstance extends ModelInstance {
     }
 
     /**
-     * Removes all correspondences containing this eObject. It also removes all
-     * child-correspondences of the correspondences containing the eObject.
+     * Removes all correspondences for the given eObject and all child-correspondences of these
+     * correspondences.
      * 
      * @param eObject
      *            from which all correspondences should be removed
      */
-    public void removeAllDependingCorrespondences(final EObject eObject) {
+    public void removeAllCorrespondences(final EObject eObject) {
         // TODO: Check if it is working
         String tuid = getTUIDFromEObject(eObject);
         Set<Correspondence> correspondencesForEObj = this.tuid2CorrespondencesMap.get(tuid);
@@ -350,14 +342,27 @@ public class CorrespondenceInstance extends ModelInstance {
         }
     }
 
-    public Set<FeatureInstance> getCorrespondingFeatureInstances(final EObject parentEObject,
+    public Set<FeatureInstance> getAllCorrespondingFeatureInstances(final EObject parentEObject,
             final EStructuralFeature feature) {
         FeatureInstance featureInstance = FeatureInstance.getInstance(parentEObject, feature);
-        return getCorrespondingFeatureInstances(featureInstance);
+        return getAllCorrespondingFeatureInstances(featureInstance);
     }
 
-    public Set<FeatureInstance> getCorrespondingFeatureInstances(final FeatureInstance featureInstance) {
+    public Set<FeatureInstance> getAllCorrespondingFeatureInstances(final FeatureInstance featureInstance) {
         return this.featureInstance2CorrespondingFIMap.get(featureInstance);
+    }
+
+    public Set<FeatureInstance> claimCorrespondingFeatureInstances(final FeatureInstance featureInstance) {
+        return this.featureInstance2CorrespondingFIMap.claimValueForKey(featureInstance);
+    }
+
+    public FeatureInstance claimUniqueCorrespondingFeatureInstance(final FeatureInstance featureInstance) {
+        Set<FeatureInstance> featureInstances = claimCorrespondingFeatureInstances(featureInstance);
+        if (featureInstances.size() != 1) {
+            throw new RuntimeException("The feature instance corresponding to '" + featureInstance
+                    + "' is not unique: " + featureInstances);
+        }
+        return featureInstances.iterator().next();
     }
 
     private String getTUIDFromEObject(final EObject eObject) {
