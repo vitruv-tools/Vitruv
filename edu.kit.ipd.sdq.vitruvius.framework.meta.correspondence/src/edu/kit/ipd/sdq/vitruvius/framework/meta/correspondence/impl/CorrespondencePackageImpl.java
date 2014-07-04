@@ -601,7 +601,7 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 
 		initEClass(eAttributeCorrespondenceEClass, EAttributeCorrespondence.class, "EAttributeCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(eReferenceCorrespondenceEClass, EReferenceCorrespondence.class, "EReferenceCorrespondence", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(eReferenceCorrespondenceEClass, EReferenceCorrespondence.class, "EReferenceCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(eContainmentReferenceCorrespondenceEClass, EContainmentReferenceCorrespondence.class, "EContainmentReferenceCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

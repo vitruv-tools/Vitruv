@@ -56,7 +56,7 @@
       <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
     </eGenericSuperTypes>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EReferenceCorrespondence" abstract="true">
+  <eClassifiers xsi:type="ecore:EClass" name="EReferenceCorrespondence">
     <eGenericSuperTypes eClassifier="#//EFeatureCorrespondence">
       <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
     </eGenericSuperTypes>

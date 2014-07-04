@@ -50,6 +50,15 @@ public interface CorrespondenceFactory extends EFactory {
 	EAttributeCorrespondence createEAttributeCorrespondence();
 
 	/**
+	 * Returns a new object of class '<em>EReference Correspondence</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>EReference Correspondence</em>'.
+	 * @generated
+	 */
+	EReferenceCorrespondence createEReferenceCorrespondence();
+
+	/**
 	 * Returns a new object of class '<em>EContainment Reference Correspondence</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -60,6 +60,7 @@ public class CorrespondenceFactoryImpl extends EFactoryImpl implements Correspon
 			case CorrespondencePackage.CORRESPONDENCES: return createCorrespondences();
 			case CorrespondencePackage.EOBJECT_CORRESPONDENCE: return createEObjectCorrespondence();
 			case CorrespondencePackage.EATTRIBUTE_CORRESPONDENCE: return createEAttributeCorrespondence();
+			case CorrespondencePackage.EREFERENCE_CORRESPONDENCE: return createEReferenceCorrespondence();
 			case CorrespondencePackage.ECONTAINMENT_REFERENCE_CORRESPONDENCE: return createEContainmentReferenceCorrespondence();
 			case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE: return createPartialEAttributeCorrespondence();
 			case CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE: return createPartialEReferenceCorrespondence();
@@ -126,6 +127,16 @@ public class CorrespondenceFactoryImpl extends EFactoryImpl implements Correspon
 	public EAttributeCorrespondence createEAttributeCorrespondence() {
 		EAttributeCorrespondenceImpl eAttributeCorrespondence = new EAttributeCorrespondenceImpl();
 		return eAttributeCorrespondence;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReferenceCorrespondence createEReferenceCorrespondence() {
+		EReferenceCorrespondenceImpl eReferenceCorrespondence = new EReferenceCorrespondenceImpl();
+		return eReferenceCorrespondence;
 	}
 
 	/**

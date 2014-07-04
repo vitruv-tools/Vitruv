@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.EReference;
  *
  * @generated
  */
-public abstract class EReferenceCorrespondenceImpl extends EFeatureCorrespondenceImpl<EReference> implements EReferenceCorrespondence {
+public class EReferenceCorrespondenceImpl extends EFeatureCorrespondenceImpl<EReference> implements EReferenceCorrespondence {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

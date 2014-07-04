@@ -12,7 +12,7 @@ import org.eclipse.emf.ecore.EReference;
  *
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getEReferenceCorrespondence()
- * @model abstract="true"
+ * @model
  * @generated
  */
 public interface EReferenceCorrespondence extends EFeatureCorrespondence<EReference> {
