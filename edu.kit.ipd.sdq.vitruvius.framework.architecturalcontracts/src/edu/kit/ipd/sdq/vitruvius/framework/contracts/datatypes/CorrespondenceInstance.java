@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -193,14 +192,16 @@ public class CorrespondenceInstance extends ModelInstance {
     }
 
     public void addSameTypeCorrespondence(final SameTypeCorrespondence correspondence) {
+        EObject elementA = correspondence.getElementA();
+        EObject elementB = correspondence.getElementB();
         // add TUIDs
-        String tuidA = this.mapping.getMetamodelA().getTUID(correspondence.getElementA());
-        String tuidB = this.mapping.getMetamodelB().getTUID(correspondence.getElementB());
+        String tuidA = this.mapping.getMetamodelA().getTUID(elementA);
+        String tuidB = this.mapping.getMetamodelB().getTUID(elementB);
         correspondence.setElementATUID(tuidA);
         correspondence.setElementBTUID(tuidB);
         // add correspondence to model
         this.correspondences.getCorrespondences().add(correspondence);
-        EList<EObject> allInvolvedEObjects = correspondence.getAllInvolvedEObjects();
+        List<EObject> allInvolvedEObjects = Arrays.asList(elementA, elementB);
         List<String> allInvolvedTUIDs = Arrays.asList(tuidA, tuidB);
         // add all involved eObjects to the sets for these objects in the map
         for (String involvedTUID : allInvolvedTUIDs) {
@@ -221,7 +222,14 @@ public class CorrespondenceInstance extends ModelInstance {
                     this.tuid2CorrespondingEObjectsMap.put(involvedTUID, correspondingEObjects);
                 }
                 correspondingEObjects.addAll(allInvolvedEObjects);
-                correspondingEObjects.remove(involvedTUID);
+                if (involvedTUID.equals(tuidA)) {
+                    correspondingEObjects.remove(elementA);
+                } else if (involvedTUID.equals(tuidB)) {
+                    correspondingEObjects.remove(elementB);
+                } else {
+                    throw new RuntimeException("allInvolvedEObjects ('" + allInvolvedEObjects
+                            + "' contained a TUID that is neither '" + tuidA + "' nor '" + tuidB + "'!");
+                }
             }
         } else if (correspondence instanceof EFeatureCorrespondence) {
             EFeatureCorrespondence<?> featureCorrespondence = (EFeatureCorrespondence<?>) correspondence;
