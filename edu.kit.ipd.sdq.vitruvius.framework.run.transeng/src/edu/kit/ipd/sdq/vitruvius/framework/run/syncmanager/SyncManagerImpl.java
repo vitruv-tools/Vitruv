@@ -46,7 +46,7 @@ public class SyncManagerImpl implements ChangeSynchronizing {
     private static SyncManagerImpl syncManagerImplInstance;
     private static MetaRepositoryImpl metaRepositoryImpl;
 
-    private SyncManagerImpl(final ModelProviding modelProviding, final ChangePropagating changePropagating,
+    public SyncManagerImpl(final ModelProviding modelProviding, final ChangePropagating changePropagating,
             final CorrespondenceProviding correspondenceProviding, final InvariantProviding invariantProviding,
             final Validating validating) {
         this.modelProviding = modelProviding;

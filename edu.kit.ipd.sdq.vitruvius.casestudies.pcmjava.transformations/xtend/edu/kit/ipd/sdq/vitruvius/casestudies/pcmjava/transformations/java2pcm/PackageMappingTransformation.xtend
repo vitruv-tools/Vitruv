@@ -99,7 +99,7 @@ class PackageMappingTransformation extends EObjectMappingTransformation {
 			val correspondingObjects = correspondenceInstance.claimCorrespondingEObjects(jaMoPPPackage)
 			for(correspondingObject : correspondingObjects){
 				EcoreUtil.remove(correspondingObject)
-				correspondenceInstance.removeAllDependingCorrespondences(correspondingObject)
+				correspondenceInstance.removeAllCorrespondences(correspondingObject)
 			}
 		}catch(RuntimeException rte){
 			logger.info(rte)

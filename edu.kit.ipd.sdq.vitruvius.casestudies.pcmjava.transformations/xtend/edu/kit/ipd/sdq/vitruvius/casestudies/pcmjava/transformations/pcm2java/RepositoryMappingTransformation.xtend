@@ -48,7 +48,7 @@ class RepositoryMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestud
 		val Package jaMoPPPackage = correspondenceInstance.claimUniqueCorrespondingEObjectByType(repository, Package)
 		EcoreUtil.remove(jaMoPPPackage)
 		//remove corresponding instance
-		correspondenceInstance.removeAllDependingCorrespondences(repository)
+		correspondenceInstance.removeAllCorrespondences(repository)
 		return null
 	}
 

@@ -69,7 +69,7 @@ class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.
 		for (correspondingObject : correspondingObjects) {
 			EcoreUtil.remove(correspondingObject)
 		}
-		correspondenceInstance.removeAllDependingCorrespondences(operationInterface)
+		correspondenceInstance.removeAllCorrespondences(operationInterface)
 		return null 
 	}
 

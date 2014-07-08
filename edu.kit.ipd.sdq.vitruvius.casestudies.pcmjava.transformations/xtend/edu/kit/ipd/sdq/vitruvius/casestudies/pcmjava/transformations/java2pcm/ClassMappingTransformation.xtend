@@ -128,7 +128,7 @@ class ClassMappingTransformation extends EObjectMappingTransformation {
 				EcoreUtil.remove(jaMoPPClass.containingCompilationUnit)
 				correspondences.forEach[correspondingObj|EcoreUtil.remove(correspondingObj)]				
 			}
-			correspondenceInstance.removeAllDependingCorrespondences(jaMoPPClass)
+			correspondenceInstance.removeAllCorrespondences(jaMoPPClass)
 		}	
 		return null
 	}

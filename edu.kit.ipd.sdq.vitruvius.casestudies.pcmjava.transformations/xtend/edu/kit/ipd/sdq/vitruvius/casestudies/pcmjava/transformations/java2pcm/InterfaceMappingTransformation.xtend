@@ -112,10 +112,10 @@ class InterfaceMappingTransformation extends EObjectMappingTransformation {
 				return null
 			}
 			EcoreUtil.remove(correspondingOpInterface)
-			correspondenceInstance.removeAllDependingCorrespondences(jaMoPPInterface)
+			correspondenceInstance.removeAllCorrespondences(jaMoPPInterface)
 		}catch(RuntimeException rte){
 			logger.info(rte)
-		}
+		} 
 		return null
 	}
 	

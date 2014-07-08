@@ -37,9 +37,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEAttribute;
 /**
  * Test for JaMoPP 2 PCM Curent Test cases: i) C Package a) package that corresponds to repository
  * b) package that corresponds to a basic component ii) C Class iii) C Interface
- * 
+ *
  * @author Langhamm
- * 
+ *
  */
 public class JaMoPP2PCMTest extends JaMoPPPCMTransformationTest {
 
@@ -210,7 +210,7 @@ public class JaMoPP2PCMTest extends JaMoPPPCMTransformationTest {
         deleteNonRootEObj.setAffectedFeature(null);
         deleteNonRootEObj.setNewValue(null);
         final EObject[] eObj = changeSynchronizer.synchronizeChange(deleteNonRootEObj);
-        this.correspondenceInstance.removeAllDependingCorrespondences(this.secondPackage);
+        this.correspondenceInstance.removeAllCorrespondences(this.secondPackage);
         EcoreUtil.delete(this.secondPackage);
 
         assertTrue("Returned EObject is not null", null == eObj);
@@ -227,7 +227,7 @@ public class JaMoPP2PCMTest extends JaMoPPPCMTransformationTest {
         final DeleteRootEObject deleteRoot = ChangeFactory.eINSTANCE.createDeleteRootEObject();
         deleteRoot.setChangedEObject(this.mainPackage);
         final EObject[] eObject = changeSynchronizer.synchronizeChange(deleteRoot);
-        this.correspondenceInstance.removeAllDependingCorrespondences(this.mainPackage);
+        this.correspondenceInstance.removeAllCorrespondences(this.mainPackage);
         EcoreUtil.delete(this.mainPackage);
         final Set<Object> allCorrespondences = this.correspondenceInstance
                 .getAllEObjectsInCorrespondencesWithType(Object.class);
