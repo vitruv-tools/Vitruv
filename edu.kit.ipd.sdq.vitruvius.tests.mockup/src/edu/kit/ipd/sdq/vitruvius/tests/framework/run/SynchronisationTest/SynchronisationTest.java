@@ -22,7 +22,6 @@ import org.emftext.language.java.classifiers.impl.ClassImpl;
 import org.emftext.language.java.classifiers.impl.InterfaceImpl;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
@@ -38,11 +37,15 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emf.MonitoredEmfEditorImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine.PropagationEngineImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager.SyncManagerImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.TransformationExecutingProvidingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver.TestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.mockup.MetaRepositoryTest;
+import edu.kit.ipd.sdq.vitruvius.tests.mockup.VSUMTest;
 
-public class SynchronisationTest extends MetaRepositoryTest {
+public class SynchronisationTest extends VSUMTest {
 
     private static final Logger logger = Logger.getLogger(SynchronisationTest.class.getSimpleName());
 
@@ -55,20 +58,21 @@ public class SynchronisationTest extends MetaRepositoryTest {
     private static final String PCM_MM_URI = "http://sdq.ipd.uka.de/PalladioComponentModel/5.0";
     private static final String PCM_INTERFACE_RENAME_NAME = "TestRenameInterface";
 
-    private static MonitoredEmfEditorImpl monitor;
-    private static SyncManagerImpl syncManager;
-    private static MetaRepositoryImpl metaRepository;
+    private MonitoredEmfEditorImpl monitor;
+    private SyncManagerImpl syncManager;
 
     private VURI sourceModelURI;
     private Repository repository;
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
+    @Before
+    public void setUpTest() throws Exception {
         // set up syncManager, monitor and metaRepostitory
-        metaRepository = PCMJavaUtils.createPCMJavaMetarepository();
-        SyncManagerImpl.setMetaRepositoryImpl(metaRepository);
-        syncManager = SyncManagerImpl.getSyncManagerInstance();
-        monitor = new MonitoredEmfEditorImpl(syncManager, syncManager.getModelProviding());
+        MetaRepositoryImpl metaRepository = PCMJavaUtils.createPCMJavaMetarepository();
+        VSUMImpl vsum = testVSUMCreation(metaRepository);
+        final TransformationExecutingProvidingImpl syncTransformationProvider = new TransformationExecutingProvidingImpl();
+        final PropagationEngineImpl propagatingChange = new PropagationEngineImpl(syncTransformationProvider);
+        this.syncManager = new SyncManagerImpl(vsum, propagatingChange, vsum, metaRepository, vsum);
+        this.monitor = new MonitoredEmfEditorImpl(this.syncManager, this.syncManager.getModelProviding());
     }
 
     /**
@@ -87,7 +91,7 @@ public class SynchronisationTest extends MetaRepositoryTest {
 
         ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-                .put("repository", new PcmResourceFactoryImpl());
+        .put("repository", new PcmResourceFactoryImpl());
         Resource resource = resourceSet.createResource(this.sourceModelURI.getEMFUri());
         if (null == resource) {
             fail("Could not create resource with URI: " + this.sourceModelURI);
@@ -226,11 +230,11 @@ public class SynchronisationTest extends MetaRepositoryTest {
      * @throws IllegalAccessException
      * @throws IllegalArgumentException
      */
-    private static void addContentAdapter(final EObject eObject) throws SecurityException, NoSuchFieldException,
-            IllegalArgumentException, IllegalAccessException {
-        Field f = monitor.getClass().getDeclaredField("emfMonitorAdapter");
+    private void addContentAdapter(final EObject eObject) throws SecurityException, NoSuchFieldException,
+    IllegalArgumentException, IllegalAccessException {
+        Field f = this.monitor.getClass().getDeclaredField("emfMonitorAdapter");
         f.setAccessible(true);
-        EContentAdapter contentAdapter = (EContentAdapter) f.get(monitor);
+        EContentAdapter contentAdapter = (EContentAdapter) f.get(this.monitor);
         eObject.eAdapters().add(contentAdapter);
     }
 
@@ -238,10 +242,10 @@ public class SynchronisationTest extends MetaRepositoryTest {
      * synchronize file create, which internally creates a emf change for creation of root object in
      * repository model
      */
-    private static void createAndSyncFileChange(final VURI vuri) {
+    private void createAndSyncFileChange(final VURI vuri) {
         FileChange fileChange = new FileChange(FileChangeKind.CREATE);
         List<Change> changes = new ArrayList<Change>(1);
         changes.add(fileChange);
-        syncManager.synchronizeChanges(changes, vuri);
+        this.syncManager.synchronizeChanges(changes, vuri);
     }
 }

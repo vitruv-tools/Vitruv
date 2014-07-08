@@ -10,19 +10,22 @@ import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 
 /**
  * Util class for the PCM Java case study
- * 
+ *
  * @author Langhamm
- * 
+ *
  */
 public class PCMJavaUtils {
 
+    /**
+     * Util classes should not have public constructor
+     */
     private PCMJavaUtils() {
 
     }
 
     /**
      * creates and returns the metarepository for the PCM and Java case study
-     * 
+     *
      * @return the PCMJava MetaRepository
      */
     public static MetaRepositoryImpl createPCMJavaMetarepository() {

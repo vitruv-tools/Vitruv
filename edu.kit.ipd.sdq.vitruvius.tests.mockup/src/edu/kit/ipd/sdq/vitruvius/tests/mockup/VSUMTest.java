@@ -37,6 +37,10 @@ public class VSUMTest extends MetaRepositoryTest {
             final String mm2URIString, final String fileExt2) {
         MetaRepositoryImpl metaRepository = testMetaRepository();
         testAddMapping(metaRepository, mm1URIString, fileExt1, mm2URIString, fileExt2);
+        return testVSUMCreation(metaRepository);
+    }
+
+    protected VSUMImpl testVSUMCreation(MetaRepositoryImpl metaRepository) {
         CorrespondenceMMProviding correspondenceMMproviding = new CorrespondenceMMProviding() {
             @Override
             public CorrespondenceMM getCorrespondenceMM(final VURI uriMM1, final VURI uriMM2) {
