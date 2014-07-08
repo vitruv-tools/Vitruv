@@ -1,17 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -29,6 +20,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateNonRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEAttribute;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver.TestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPUtils;
 
 public class PCM2JaMoPPTransformationTest extends JaMoPPPCMTransformationTest {
@@ -52,7 +44,7 @@ public class PCM2JaMoPPTransformationTest extends JaMoPPPCMTransformationTest {
     @Test
     public void testAddRepository() {
         PCM2JaMoPPUtils.createAndSyncRepository(resourceSet, changeSynchronizer);
-        this.moveCreatedFilesToPath("addRepository");
+        TestUtils.moveSrcFilesToPath("addRepository");
     }
 
     @Test
@@ -67,14 +59,14 @@ public class PCM2JaMoPPTransformationTest extends JaMoPPPCMTransformationTest {
         repoNameChange.setNewValue(repo.getEntityName());
         System.out.println(repoNameChange.getNewValue());
         this.changeSynchronizer.synchronizeChange(repoNameChange);
-        this.moveCreatedFilesToPath("testRepositoryNameChange");
+        TestUtils.moveSrcFilesToPath("testRepositoryNameChange");
     }
 
     @Test
     public void testAddInterface() {
         final Repository repo = PCM2JaMoPPUtils.createAndSyncRepository(resourceSet, changeSynchronizer);
         this.addInterfaceToReposiotry(repo);
-        this.moveCreatedFilesToPath("testAddInterface");
+        TestUtils.moveSrcFilesToPath("testAddInterface");
     }
 
     @Test
@@ -82,7 +74,7 @@ public class PCM2JaMoPPTransformationTest extends JaMoPPPCMTransformationTest {
         final Repository repo = PCM2JaMoPPUtils.createAndSyncRepository(resourceSet, changeSynchronizer);
         final OperationInterface opInterface = this.addInterfaceToReposiotry(repo);
         this.renameInterfaceAndSync(opInterface);
-        this.moveCreatedFilesToPath("testRenameInterface");
+        TestUtils.moveSrcFilesToPath("testRenameInterface");
     }
 
     @Test
@@ -154,31 +146,6 @@ public class PCM2JaMoPPTransformationTest extends JaMoPPPCMTransformationTest {
             resource.save(null);
         } catch (final IOException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Moves the created model and src folder files to a specific folder/path.
-     * 
-     * @param destinationPathAsString
-     *            destinationPath in test workspace
-     * @throws URISyntaxException
-     */
-    private void moveCreatedFilesToPath(final String destinationPathAsString) {
-        // IResource iResource = Wor
-        final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        final IProject project = root.getProject("MockupProject");
-        final IResource member = project.findMember("src");
-        if (null == member) {
-            logger.warn("member not found moveCreatedFilesToPath will not work");
-            return;
-        }
-        final IPath destinationPath = new Path(destinationPathAsString);
-        try {
-            member.move(destinationPath, true, new NullProgressMonitor());
-        } catch (final CoreException e) {
-            logger.warn("Could not move src folder do destination folder " + destinationPathAsString + ": "
-                    + e.getMessage());
         }
     }
 }
