@@ -21,6 +21,7 @@ import org.emftext.language.java.classifiers.Classifier;
 import org.emftext.language.java.classifiers.impl.ClassImpl;
 import org.emftext.language.java.classifiers.impl.InterfaceImpl;
 import org.emftext.language.java.containers.CompilationUnit;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -38,6 +39,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emf.MonitoredEmfEditorImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager.SyncManagerImpl;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver.TestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.mockup.MetaRepositoryTest;
 
 public class SynchronisationTest extends MetaRepositoryTest {
@@ -51,34 +53,47 @@ public class SynchronisationTest extends MetaRepositoryTest {
     private static final String PCM_INTERFACE_CREATION_NAME = "TestCreateInterface";
     private static final String PCM_REPOSITORY_CREATION_NAME = "TestCreateComponent";
     private static final String PCM_MM_URI = "http://sdq.ipd.uka.de/PalladioComponentModel/5.0";
+    private static final String PCM_INTERFACE_RENAME_NAME = "TestRenameInterface";
 
     private static MonitoredEmfEditorImpl monitor;
-    private static VURI sourceModelURI;
     private static SyncManagerImpl syncManager;
     private static MetaRepositoryImpl metaRepository;
-    private static Repository repository;
+
+    private VURI sourceModelURI;
+    private Repository repository;
 
     @BeforeClass
-    public static void setUp() throws Exception {
+    public static void setUpClass() throws Exception {
         // set up syncManager, monitor and metaRepostitory
         metaRepository = PCMJavaUtils.createPCMJavaMetarepository();
         SyncManagerImpl.setMetaRepositoryImpl(metaRepository);
         syncManager = SyncManagerImpl.getSyncManagerInstance();
         monitor = new MonitoredEmfEditorImpl(syncManager, syncManager.getModelProviding());
+    }
+
+    /**
+     * Set up SyncMangaer and metaRepository facility. The method also creates the repository and
+     * synchronizes the file change.
+     *
+     * @throws Exception
+     */
+    @Before
+    public void setUp() throws Exception {
+
         // create pcm model instance
-        repository = RepositoryFactory.eINSTANCE.createRepository();
-        repository.setEntityName(PCM_REPOSITORY_NAME);
-        sourceModelURI = VURI.getInstance(MetaRepositoryTest.PROJECT_URI + "/" + PCM_REPOSITORY_FILE_NAME);
+        this.repository = RepositoryFactory.eINSTANCE.createRepository();
+        this.repository.setEntityName(PCM_REPOSITORY_NAME);
+        this.sourceModelURI = VURI.getInstance(MetaRepositoryTest.PROJECT_URI + "/" + PCM_REPOSITORY_FILE_NAME);
 
         ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-        .put("repository", new PcmResourceFactoryImpl());
-        Resource resource = resourceSet.createResource(sourceModelURI.getEMFUri());
+                .put("repository", new PcmResourceFactoryImpl());
+        Resource resource = resourceSet.createResource(this.sourceModelURI.getEMFUri());
         if (null == resource) {
-            fail("Could not create resource with URI: " + sourceModelURI);
+            fail("Could not create resource with URI: " + this.sourceModelURI);
             return;
         }
-        resource.getContents().add(repository);
+        resource.getContents().add(this.repository);
         Map<Object, Object> options = new HashMap<Object, Object>();
         options.put(XMLResource.OPTION_ENCODING, "UTF-8");
         try {
@@ -90,49 +105,8 @@ public class SynchronisationTest extends MetaRepositoryTest {
             throw e;
         }
 
-        createAndSyncFileChange(sourceModelURI);
-        addContentAdapter(repository);
-        createInterface(repository);
-    }
-
-    /**
-     * create an OperaitonInterface
-     *
-     * @param repository
-     */
-    private static void createInterface(final Repository repository) {
-        OperationInterface opInterface = RepositoryFactory.eINSTANCE.createOperationInterface();
-        opInterface.setEntityName(PCM_INTERFACE_CREATION_NAME);
-        opInterface.setRepository__Interface(repository);
-    }
-
-    /**
-     * add monitor to root object of new file
-     *
-     * @param resource
-     *            resource containing the root EObject of the new file
-     * @throws NoSuchFieldException
-     * @throws SecurityException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     */
-    private static void addContentAdapter(final EObject eObject) throws SecurityException, NoSuchFieldException,
-    IllegalArgumentException, IllegalAccessException {
-        Field f = monitor.getClass().getDeclaredField("emfMonitorAdapter");
-        f.setAccessible(true);
-        EContentAdapter contentAdapter = (EContentAdapter) f.get(monitor);
-        eObject.eAdapters().add(contentAdapter);
-    }
-
-    /**
-     * synchronize file create, which internally creates a emf change for creation of root object in
-     * repository model
-     */
-    private static void createAndSyncFileChange(final VURI vuri) {
-        FileChange fileChange = new FileChange(FileChangeKind.CREATE);
-        List<Change> changes = new ArrayList<Change>(1);
-        changes.add(fileChange);
-        syncManager.synchronizeChanges(changes, vuri);
+        createAndSyncFileChange(this.sourceModelURI);
+        addContentAdapter(this.repository);
     }
 
     /**
@@ -140,35 +114,59 @@ public class SynchronisationTest extends MetaRepositoryTest {
      */
     @Test
     public void testSyncInterface() {
-        createInterface(repository);
+        createInterface(this.repository);
 
-        monitor.triggerSynchronisation(sourceModelURI);
+        this.monitor.triggerSynchronisation(this.sourceModelURI);
 
         // a java interface in the package "testRepository" should have been created
         String javaInterfaceLocation = getSrcPath() + PCM_REPOSITORY_NAME + "/" + PCM_INTERFACE_CREATION_NAME + ".java";
         VURI interfaceVURI = VURI.getInstance(javaInterfaceLocation);
-        ModelInstance newInterface = syncManager.getModelProviding().getModelInstanceOriginal(interfaceVURI);
+        ModelInstance newInterface = this.syncManager.getModelProviding().getModelInstanceOriginal(interfaceVURI);
         CompilationUnit cu = newInterface.getUniqueRootEObjectIfCorrectlyTyped(CompilationUnit.class);
         assertClassifierInJaMoPPCompilationUnit(cu, InterfaceImpl.class, PCM_INTERFACE_CREATION_NAME, true);
+        TestUtils.moveSrcFilesToPath("testSyncInterface");
     }
 
     @Test
     public void testSyncBasicComponent() {
-        createBasicComponent(repository);
+        createBasicComponent(this.repository);
 
-        monitor.triggerSynchronisation(sourceModelURI);
+        this.monitor.triggerSynchronisation(this.sourceModelURI);
 
         // a package and an interface should have been created in the package "testRepository
         String javaClassLocation = getSrcPath() + PCM_REPOSITORY_NAME + "/" + PCM_REPOSITORY_CREATION_NAME + "/"
                 + PCM_REPOSITORY_CREATION_NAME + "Impl" + ".java";
         VURI vuri = VURI.getInstance(javaClassLocation);
-        ModelInstance newClass = syncManager.getModelProviding().getModelInstanceOriginal(vuri);
+        ModelInstance newClass = this.syncManager.getModelProviding().getModelInstanceOriginal(vuri);
         CompilationUnit cu = newClass.getUniqueRootEObjectIfCorrectlyTyped(CompilationUnit.class);
         Classifier classifier = assertClassifierInJaMoPPCompilationUnit(cu, ClassImpl.class,
                 PCM_REPOSITORY_CREATION_NAME + "Impl", true);
         if (null != classifier) {
             assertNamespaceOfClassifier(classifier, PCM_REPOSITORY_NAME + "." + PCM_REPOSITORY_CREATION_NAME);
         }
+        TestUtils.moveSrcFilesToPath("testSyncBasicComponent");
+    }
+
+    @Test
+    public void testRenameInterface() {
+        OperationInterface oi = createInterface(this.repository);
+        this.monitor.triggerSynchronisation(this.sourceModelURI);
+
+        oi.setEntityName(PCM_INTERFACE_RENAME_NAME);
+        this.monitor.triggerSynchronisation(this.sourceModelURI);
+
+        // the compilaition unit should now have another name and the should also contain the
+        // interface with the new name
+        String newInterfaceLocation = getSrcPath() + PCM_REPOSITORY_NAME + "/" + PCM_INTERFACE_RENAME_NAME + ".java";
+        VURI newInterfaceLocationVURI = VURI.getInstance(newInterfaceLocation);
+        ModelInstance renamedInterface = this.syncManager.getModelProviding().getModelInstanceCopy(
+                newInterfaceLocationVURI);
+        CompilationUnit cu = renamedInterface.getUniqueRootEObjectIfCorrectlyTyped(CompilationUnit.class);
+        Classifier classifier = assertClassifierInJaMoPPCompilationUnit(cu, InterfaceImpl.class,
+                PCM_INTERFACE_RENAME_NAME, true);
+        logger.info("found classifier: " + classifier);
+        TestUtils.moveSrcFilesToPath("testRenameInterface");
+
     }
 
     private void assertNamespaceOfClassifier(final Classifier classifier, final String expectedNamespace) {
@@ -203,5 +201,47 @@ public class SynchronisationTest extends MetaRepositoryTest {
                     + " not found in CompilationUnit " + cu.getName());
         }
         return null;
+    }
+
+    /**
+     * create an OperaitonInterface
+     *
+     * @param repository
+     * @return
+     */
+    private static OperationInterface createInterface(final Repository repository) {
+        OperationInterface opInterface = RepositoryFactory.eINSTANCE.createOperationInterface();
+        opInterface.setEntityName(PCM_INTERFACE_CREATION_NAME);
+        opInterface.setRepository__Interface(repository);
+        return opInterface;
+    }
+
+    /**
+     * add monitor to root object of new file
+     *
+     * @param resource
+     *            resource containing the root EObject of the new file
+     * @throws NoSuchFieldException
+     * @throws SecurityException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     */
+    private static void addContentAdapter(final EObject eObject) throws SecurityException, NoSuchFieldException,
+            IllegalArgumentException, IllegalAccessException {
+        Field f = monitor.getClass().getDeclaredField("emfMonitorAdapter");
+        f.setAccessible(true);
+        EContentAdapter contentAdapter = (EContentAdapter) f.get(monitor);
+        eObject.eAdapters().add(contentAdapter);
+    }
+
+    /**
+     * synchronize file create, which internally creates a emf change for creation of root object in
+     * repository model
+     */
+    private static void createAndSyncFileChange(final VURI vuri) {
+        FileChange fileChange = new FileChange(FileChangeKind.CREATE);
+        List<Change> changes = new ArrayList<Change>(1);
+        changes.add(fileChange);
+        syncManager.synchronizeChanges(changes, vuri);
     }
 }
