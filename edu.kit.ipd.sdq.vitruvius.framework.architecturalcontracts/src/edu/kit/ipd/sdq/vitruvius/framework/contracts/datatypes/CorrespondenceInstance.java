@@ -78,34 +78,117 @@ public class CorrespondenceInstance extends ModelInstance {
         return this.mapping;
     }
 
+    /**
+     * Returns whether at least one object corresponds to the given object.
+     * 
+     * @param eObject
+     *            the object for which correspondences should be looked up
+     * @return # of corresponding objects > 0
+     */
     public boolean hasCorrespondences(final EObject eObject) {
         String tuid = getTUIDFromEObject(eObject);
-        return this.tuid2CorrespondencesMap.containsKey(tuid);
+        Set<Correspondence> correspondences = this.tuid2CorrespondencesMap.get(tuid);
+        return correspondences != null && correspondences.size() > 0;
     }
 
+    /**
+     * Returns the correspondences for the specified object and throws a
+     * {@link java.lang.RuntimeException} if no correspondence exists.
+     * 
+     * @param eObject
+     *            the object for which correspondences are to be returned
+     * @return the correspondences for the specified object
+     */
     public Set<Correspondence> claimCorrespondences(final EObject eObject) {
         String tuid = getTUIDFromEObject(eObject);
-        return this.tuid2CorrespondencesMap.claimValueForKey(tuid);
+        return claimCorrespondeceSetNotEmpty(eObject, tuid);
     }
 
+    private Set<Correspondence> claimCorrespondeceSetNotEmpty(final EObject eObject, final String tuid) {
+        Set<Correspondence> correspondences = this.tuid2CorrespondencesMap.claimValueForKey(tuid);
+        return claimCorrespondeceSetNotEmpty(eObject, tuid, correspondences);
+    }
+
+    private <T> Set<T> claimCorrespondeceSetNotEmpty(final EObject eObject, final String tuid,
+            final Set<T> correspondences) {
+        if (correspondences.size() > 0) {
+            return correspondences;
+        } else {
+            throw new RuntimeException("The eObject '" + eObject + "' is only mapped to an empty correspondence set: '"
+                    + correspondences + "'!");
+        }
+    }
+
+    /**
+     * Returns all correspondences for the specified object and an empty set if the object has no
+     * correspondences. Should never return {@link null}.
+     * 
+     * @param eObject
+     * @return all correspondences for the specified object and an empty set if the object has no
+     *         correspondences.
+     */
     public Set<Correspondence> getAllCorrespondences(final EObject eObject) {
         String tuid = getTUIDFromEObject(eObject);
-        return this.tuid2CorrespondencesMap.get(tuid);
+        return getOrCreateCorrespondenceSet(tuid);
     }
 
+    private Set<Correspondence> getOrCreateCorrespondenceSet(final String involvedTUID) {
+        Set<Correspondence> correspondences = this.tuid2CorrespondencesMap.get(involvedTUID);
+        if (correspondences == null) {
+            correspondences = new HashSet<Correspondence>();
+            this.tuid2CorrespondencesMap.put(involvedTUID, correspondences);
+        }
+        return correspondences;
+    }
+
+    /**
+     * Returns the corresponding objects for the specified object and throws a
+     * {@link java.lang.RuntimeException} if no correspondence exists.
+     * 
+     * @param eObject
+     *            the object for which corresponding objects are to be returned
+     * @return the corresponding objects for the specified object
+     */
     public Set<EObject> claimCorrespondingEObjects(final EObject eObject) {
         String tuid = getTUIDFromEObject(eObject);
-        return this.tuid2CorrespondingEObjectsMap.claimValueForKey(tuid);
+        Set<EObject> correspondingEObjects = this.tuid2CorrespondingEObjectsMap.claimValueForKey(tuid);
+        return claimCorrespondeceSetNotEmpty(eObject, tuid, correspondingEObjects);
     }
 
+    /**
+     * Returns all corresponding objects for the specified object and an empty set if the object has
+     * no correspondences. Should never return {@link null}.
+     * 
+     * @param eObject
+     *            the object for which corresponding objects are to be returned
+     * @return all corresponding objects for the specified object and an empty set if the object has
+     *         no correspondences.
+     */
     public Set<EObject> getAllCorrespondingEObjects(final EObject eObject) {
         String tuid = getTUIDFromEObject(eObject);
-        return this.tuid2CorrespondingEObjectsMap.get(tuid);
+        return getOrCreateCorrespondingEObjectsSet(tuid);
     }
 
+    private Set<EObject> getOrCreateCorrespondingEObjectsSet(final String tuid) {
+        Set<EObject> correspondingEObjects = this.tuid2CorrespondingEObjectsMap.get(tuid);
+        if (correspondingEObjects == null) {
+            correspondingEObjects = new HashSet<EObject>();
+            this.tuid2CorrespondingEObjectsMap.put(tuid, correspondingEObjects);
+        }
+        return correspondingEObjects;
+    }
+
+    /**
+     * Returns the corresponding object for the specified object if there is exactly one
+     * corresponding object and throws a {@link java.lang.RuntimeException} otherwise.
+     * 
+     * @param eObject
+     *            the object for which the corresponding object is to be returned
+     * @return the corresponding object for the specified object if there is exactly one
+     *         corresponding object
+     */
     public EObject claimUniqueCorrespondingEObject(final EObject eObject) {
-        String tuid = getTUIDFromEObject(eObject);
-        Set<EObject> correspondingEObjects = this.tuid2CorrespondingEObjectsMap.claimValueForKey(tuid);
+        Set<EObject> correspondingEObjects = claimCorrespondingEObjects(eObject);
         if (correspondingEObjects.size() != 1) {
             throw new RuntimeException("The eObjects corresponding to '" + eObject + "' are not unique: "
                     + correspondingEObjects);
@@ -113,6 +196,16 @@ public class CorrespondenceInstance extends ModelInstance {
         return correspondingEObjects.iterator().next();
     }
 
+    /**
+     * Returns the corresponding objects of the specified type for the specified object and throws a
+     * {@link java.lang.RuntimeException} if no correspondences of this type exist.
+     * 
+     * @param eObject
+     *            the object for which corresponding objects are to be returned
+     * @param type
+     *            the class of which instances are to be returned
+     * @return the corresponding objects of the specified type for the specified object
+     */
     public <T> Set<T> claimCorrespondingEObjectsByType(final EObject eObject, final Class<T> type) {
         Set<EObject> correspondingEObjects = claimCorrespondingEObjects(eObject);
         Set<T> correspondingEObjectsByType = new HashSet<T>();
@@ -121,11 +214,27 @@ public class CorrespondenceInstance extends ModelInstance {
                 correspondingEObjectsByType.add(type.cast(correspondingEObject));
             }
         }
+        if (correspondingEObjectsByType.size() == 0) {
+            throw new RuntimeException("There are no eObjects of type '" + type + "' that correspond to the eObject '"
+                    + eObject + "!");
+        }
         return correspondingEObjectsByType;
     }
 
+    /**
+     * Returns the corresponding object of the specified type for the specified object if there is
+     * exactly one corresponding object of this type and throws a {@link java.lang.RuntimeException}
+     * otherwise.
+     * 
+     * @param eObject
+     *            the object for which the corresponding object is to be returned
+     * @param type
+     *            the class of which an instance is to be returned
+     * @return the corresponding object of the specified type for the specified object if there is
+     *         exactly one corresponding object of this type
+     */
     public <T> T claimUniqueCorrespondingEObjectByType(final EObject eObject, final Class<T> type) {
-        Set<T> correspondingEObjectsByType = this.claimCorrespondingEObjectsByType(eObject, type);
+        Set<T> correspondingEObjectsByType = claimCorrespondingEObjectsByType(eObject, type);
         if (1 != correspondingEObjectsByType.size()) {
             throw new RuntimeException("claimCorrespondingEObjectForTypeIfUnique failed: "
                     + correspondingEObjectsByType.size() + " corresponding objects found (expected 1)"
@@ -135,11 +244,14 @@ public class CorrespondenceInstance extends ModelInstance {
     }
 
     /**
-     * Returns the correspondence for the given eObject if it is unique, null if no correspondence
-     * exists and throws a {@link RuntimeException} if more than one correspondence exists.
+     * Returns the correspondence for the given eObject if it is unique, or null if no
+     * correspondence exists and throws a {@link RuntimeException} if more than one correspondence
+     * exists.
      * 
      * @param eObject
-     * @return
+     *            the object for which the correspondence is to be returned
+     * @return the correspondence for the given eObject if it is unique, or null if no
+     *         correspondence exists
      */
     public Correspondence claimUniqueOrNullCorrespondenceForEObject(final EObject eObject) {
         if (!hasCorrespondences(eObject)) {
@@ -148,6 +260,14 @@ public class CorrespondenceInstance extends ModelInstance {
         return claimUniqueCorrespondence(eObject);
     }
 
+    /**
+     * Returns the correspondence for the given eObject if it is unique and throws a
+     * {@link RuntimeException} if there is not exactly one corresponding object.
+     * 
+     * @param eObject
+     *            the object for which the correspondence is to be returned
+     * @return the correspondence for the given eObject if there is exactly one corresponding object
+     */
     public Correspondence claimUniqueCorrespondence(final EObject eObject) {
         Set<Correspondence> objectCorrespondences = claimCorrespondences(eObject);
         if (objectCorrespondences.size() != 1) {
@@ -197,22 +317,14 @@ public class CorrespondenceInstance extends ModelInstance {
         List<String> allInvolvedTUIDs = Arrays.asList(tuidA, tuidB);
         // add all involved eObjects to the sets for these objects in the map
         for (String involvedTUID : allInvolvedTUIDs) {
-            Set<Correspondence> correspondences = this.tuid2CorrespondencesMap.get(involvedTUID);
-            if (correspondences == null) {
-                correspondences = new HashSet<Correspondence>();
-                this.tuid2CorrespondencesMap.put(involvedTUID, correspondences);
-            }
+            Set<Correspondence> correspondences = getOrCreateCorrespondenceSet(involvedTUID);
             if (!correspondences.contains(correspondence)) {
                 correspondences.add(correspondence);
             }
         }
         if (correspondence instanceof EObjectCorrespondence) {
             for (String involvedTUID : allInvolvedTUIDs) {
-                Set<EObject> correspondingEObjects = this.tuid2CorrespondingEObjectsMap.get(involvedTUID);
-                if (correspondingEObjects == null) {
-                    correspondingEObjects = new HashSet<EObject>();
-                    this.tuid2CorrespondingEObjectsMap.put(involvedTUID, correspondingEObjects);
-                }
+                Set<EObject> correspondingEObjects = getOrCreateCorrespondingEObjectsSet(involvedTUID);
                 correspondingEObjects.addAll(allInvolvedEObjects);
                 if (involvedTUID.equals(tuidA)) {
                     correspondingEObjects.remove(elementA);
