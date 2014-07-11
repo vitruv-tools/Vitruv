@@ -22,7 +22,9 @@ import org.emftext.language.java.classifiers.impl.ClassImpl;
 import org.emftext.language.java.classifiers.impl.InterfaceImpl;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestWatcher;
 
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
 import de.uka.ipd.sdq.pcm.repository.OperationInterface;
@@ -64,6 +66,12 @@ public class SynchronisationTest extends VSUMTest {
     private VURI sourceModelURI;
     private Repository repository;
 
+    /**
+     * Set up SyncMangaer and metaRepository facility. The method also creates the repository and
+     * synchronizes the file change.
+     *
+     * @throws Exception
+     */
     @Before
     public void setUpTest() throws Exception {
         // set up syncManager, monitor and metaRepostitory
@@ -73,16 +81,6 @@ public class SynchronisationTest extends VSUMTest {
         final PropagationEngineImpl propagatingChange = new PropagationEngineImpl(syncTransformationProvider);
         this.syncManager = new SyncManagerImpl(vsum, propagatingChange, vsum, metaRepository, vsum);
         this.monitor = new MonitoredEmfEditorImpl(this.syncManager, this.syncManager.getModelProviding());
-    }
-
-    /**
-     * Set up SyncMangaer and metaRepository facility. The method also creates the repository and
-     * synchronizes the file change.
-     *
-     * @throws Exception
-     */
-    @Before
-    public void setUp() throws Exception {
 
         // create pcm model instance
         this.repository = RepositoryFactory.eINSTANCE.createRepository();
@@ -114,6 +112,20 @@ public class SynchronisationTest extends VSUMTest {
     }
 
     /**
+     * Test watcher that moves src files (which are created during the previous test) to a own
+     * folder
+     */
+    @Rule
+    public TestWatcher watchmen = new TestWatcher() {
+        @Override
+        protected void finished(final org.junit.runner.Description description) {
+            String previousMethodName = description.getMethodName();
+            TestUtils.moveSrcFilesToPathWithTimestamp(previousMethodName);
+            TestUtils.moveVSUMProjectToOwnFolder(previousMethodName);
+        };
+    };
+
+    /**
      * Triggers the synchronisation of the model. Should synchronize the creation of the interface.
      */
     @Test
@@ -128,13 +140,11 @@ public class SynchronisationTest extends VSUMTest {
         ModelInstance newInterface = this.syncManager.getModelProviding().getModelInstanceOriginal(interfaceVURI);
         CompilationUnit cu = newInterface.getUniqueRootEObjectIfCorrectlyTyped(CompilationUnit.class);
         assertClassifierInJaMoPPCompilationUnit(cu, InterfaceImpl.class, PCM_INTERFACE_CREATION_NAME, true);
-        TestUtils.moveSrcFilesToPath("testSyncInterface");
     }
 
     @Test
     public void testSyncBasicComponent() {
         createBasicComponent(this.repository);
-
         this.monitor.triggerSynchronisation(this.sourceModelURI);
 
         // a package and an interface should have been created in the package "testRepository
@@ -148,7 +158,6 @@ public class SynchronisationTest extends VSUMTest {
         if (null != classifier) {
             assertNamespaceOfClassifier(classifier, PCM_REPOSITORY_NAME + "." + PCM_REPOSITORY_CREATION_NAME);
         }
-        TestUtils.moveSrcFilesToPath("testSyncBasicComponent");
     }
 
     @Test
@@ -163,14 +172,12 @@ public class SynchronisationTest extends VSUMTest {
         // interface with the new name
         String newInterfaceLocation = getSrcPath() + PCM_REPOSITORY_NAME + "/" + PCM_INTERFACE_RENAME_NAME + ".java";
         VURI newInterfaceLocationVURI = VURI.getInstance(newInterfaceLocation);
-        ModelInstance renamedInterface = this.syncManager.getModelProviding().getModelInstanceCopy(
+        ModelInstance renamedInterface = this.syncManager.getModelProviding().getModelInstanceOriginal(
                 newInterfaceLocationVURI);
         CompilationUnit cu = renamedInterface.getUniqueRootEObjectIfCorrectlyTyped(CompilationUnit.class);
         Classifier classifier = assertClassifierInJaMoPPCompilationUnit(cu, InterfaceImpl.class,
                 PCM_INTERFACE_RENAME_NAME, true);
         logger.info("found classifier: " + classifier);
-        TestUtils.moveSrcFilesToPath("testRenameInterface");
-
     }
 
     private void assertNamespaceOfClassifier(final Classifier classifier, final String expectedNamespace) {

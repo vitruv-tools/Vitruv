@@ -85,6 +85,7 @@ class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.
 		var structuralFeature = super.featureCorrespondenceMap.get(affectedAttribute);
 		jaMoPPInterface.eSet(structuralFeature, newValue)
 		jaMoPPInterfaceCompilationUnit.eSet(structuralFeature, newValue)	
+		//TODO: Code refactoring anstossen
 		return #{jaMoPPInterface, jaMoPPInterfaceCompilationUnit}
 /* 		val Map<String, RoleMapping> roleMappings = IRoleMappingRegistry.INSTANCE.
 			getRoleMappingsForUri(JavaPackage.eNS_URI);

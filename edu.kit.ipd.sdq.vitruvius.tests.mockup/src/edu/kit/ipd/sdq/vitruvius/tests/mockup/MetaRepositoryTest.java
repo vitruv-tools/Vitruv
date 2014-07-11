@@ -3,18 +3,9 @@ package edu.kit.ipd.sdq.vitruvius.tests.mockup;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.util.Date;
-
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -28,7 +19,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableCon
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableMap;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMConstants;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver.TestUtils;
 
 public class MetaRepositoryTest {
 
@@ -67,17 +58,7 @@ public class MetaRepositoryTest {
 
     @AfterClass
     public static void tearDown() {
-        final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        final IProject project = root.getProject(VSUMConstants.VSUM_PROJECT_NAME);
-        String timestamp = new Date(System.currentTimeMillis()).toString().replace(" ", "_");
-        IPath destinationPath = new Path("/" + VSUMConstants.VSUM_PROJECT_NAME + timestamp);
-        try {
-            project.open(new NullProgressMonitor());
-            project.move(destinationPath, true, new NullProgressMonitor());
-        } catch (CoreException e) {
-            logger.warn("Could not move " + VSUMConstants.VSUM_PROJECT_NAME + "project to folder. " + destinationPath
-                    + ". Reason: " + e);
-        }
+        TestUtils.moveVSUMProjectToOwnFolder();
     }
 
     public MetaRepositoryImpl testMetaRepository() {

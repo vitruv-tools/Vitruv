@@ -1,5 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emf;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -10,6 +12,7 @@ import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelCopyProviding;
@@ -61,6 +64,9 @@ public class MonitoredEmfEditorImpl extends AbstractMonitoredEditor implements I
             this.logger.info("No changes for key: " + vuri.getEMFUri().toString() + ".");
             return;
         }
-        this.changeSynchronizing.synchronizeChanges(this.emfMonitorAdapter.getChanges().get(vuri), vuri);
+        final List<Change> changes = this.emfMonitorAdapter.getChanges().get(vuri);
+        this.changeSynchronizing.synchronizeChanges(changes, vuri);
+        this.emfMonitorAdapter.removeChanges(vuri);
+
     }
 }

@@ -61,10 +61,15 @@ public class PCMJaMoPPTransformationExecuter implements TransformationExecuting 
         final EObject[] changedEObjects = this.changeSynchronizer.synchronizeChange(emfModelChange.getEChange());
         final Set<VURI> changedVURIs = new HashSet<VURI>(changedEObjects.length);
         final Set<Pair<EObject, VURI>> newRootEObjectsVURIPairs = new HashSet<Pair<EObject, VURI>>();
+        final Set<VURI> existingVURIsToDelete = new HashSet<VURI>();
         for (final EObject changedEObject : changedEObjects) {
             final Resource resource = changedEObject.eResource();
             if (null != resource) {
-                changedVURIs.add(VURI.getInstance(resource));
+                if (changedEObject instanceof CompilationUnit) {
+                    existingVURIsToDelete.add(VURI.getInstance(resource));
+                } else {
+                    changedVURIs.add(VURI.getInstance(resource));
+                }
             } else {
                 if (changedEObject instanceof CompilationUnit) {
                     final CompilationUnit newCompUnit = (CompilationUnit) changedEObject;
@@ -83,7 +88,8 @@ public class PCMJaMoPPTransformationExecuter implements TransformationExecuting 
                 }
             }
         }
-        return new EMFChangeResult(changedVURIs, newRootEObjectsVURIPairs);
+
+        return new EMFChangeResult(changedVURIs, newRootEObjectsVURIPairs, existingVURIsToDelete);
     }
 
     @Override

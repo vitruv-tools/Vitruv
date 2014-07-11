@@ -58,4 +58,8 @@ class EMFMonitorAdapter extends EContentAdapter {
         return this.changes;
     }
 
+    public void removeChanges(final VURI vuri) {
+        this.changes.remove(vuri);
+    }
+
 }
