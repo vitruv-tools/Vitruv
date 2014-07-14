@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver;
 
 import java.net.URISyntaxException;
+import java.util.Date;
 import java.util.Map;
 
 import org.apache.log4j.BasicConfigurator;
@@ -24,6 +25,7 @@ import org.emftext.language.java.resource.java.mopp.JavaResourceFactory;
 import de.uka.ipd.sdq.pcm.PcmPackage;
 import de.uka.ipd.sdq.pcm.util.PcmResourceFactoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage;
+import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMConstants;
 
 public abstract class TestUtils {
 
@@ -63,10 +65,22 @@ public abstract class TestUtils {
      *
      * @param destinationPathAsString
      *            destinationPath in test workspace
-     * @throws URISyntaxException
      */
     public static void moveSrcFilesToPath(final String destinationPathAsString) {
         moveFilesFromTo("src", destinationPathAsString);
+    }
+
+    /**
+     * Moves the created model and src folder files to a specific folder/path. Adds timestamp to
+     * destination path string
+     *
+     * @param destinationPathAsStringWithoutTimestamp
+     *            destination path in test workspace
+     */
+    public static void moveSrcFilesToPathWithTimestamp(final String destinationPathAsStringWithoutTimestamp) {
+        final String timestamp = new Date(System.currentTimeMillis()).toString().replace(" ", "_");
+        final String destPathWithTimestamp = destinationPathAsStringWithoutTimestamp + "_" + timestamp;
+        moveSrcFilesToPath(destPathWithTimestamp);
     }
 
     /**
@@ -82,7 +96,7 @@ public abstract class TestUtils {
         final IProject project = root.getProject("MockupProject");
         final IResource member = project.findMember(srcPath);
         if (null == member) {
-            logger.warn("member not found moveCreatedFilesToPath will not work");
+            logger.warn("Member ('" + srcPath + "') not found. Nothing to do in ‘moveCreatedFilesToPath‘");
             return;
         }
         final IPath destinationIPath = new Path(destinationPath);
@@ -93,4 +107,22 @@ public abstract class TestUtils {
         }
     }
 
+    public static void moveVSUMProjectToOwnFolder() {
+        moveVSUMProjectToOwnFolder("");
+    }
+
+    public static void moveVSUMProjectToOwnFolder(final String addtionalName) {
+        final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+        final IProject project = root.getProject(VSUMConstants.VSUM_PROJECT_NAME);
+        final String timestamp = new Date(System.currentTimeMillis()).toString().replace(" ", "_");
+        final IPath destinationPath = new Path("/" + VSUMConstants.VSUM_PROJECT_NAME + "_" + addtionalName + "_"
+                + timestamp);
+        try {
+            project.open(new NullProgressMonitor());
+            project.move(destinationPath, true, new NullProgressMonitor());
+        } catch (final CoreException e) {
+            logger.warn("Could not move " + VSUMConstants.VSUM_PROJECT_NAME + "project to folder. " + destinationPath
+                    + ". Reason: " + e);
+        }
+    }
 }

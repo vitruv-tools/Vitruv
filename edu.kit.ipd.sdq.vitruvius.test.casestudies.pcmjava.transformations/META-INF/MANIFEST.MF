@@ -19,5 +19,6 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations;bu
  org.eclipse.emf.ecore,
  org.eclipse.emf.common,
  org.emftext.language.java.resource.java,
- org.emftext.commons.antlr3_4_0;bundle-version="3.4.0"
+ org.emftext.commons.antlr3_4_0;bundle-version="3.4.0",
+ edu.kit.ipd.sdq.vitruvius.framework.vsum
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver
