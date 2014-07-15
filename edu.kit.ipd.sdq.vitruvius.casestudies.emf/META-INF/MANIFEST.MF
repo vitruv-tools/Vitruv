@@ -23,6 +23,8 @@ Require-Bundle: org.eclipse.core.resources,
  edu.kit.ipd.sdq.vitruvius.framework.correspmmprovider,
  edu.kit.ipd.sdq.vitruvius.framework.vsum,
  edu.kit.ipd.sdq.vitruvius.framework.synctransprovider,
- edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine
-Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder
+ edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine,
+ edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange
+Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder,
+ edu.kit.ipd.sdq.vitruvius.casestudies.emf.util
 

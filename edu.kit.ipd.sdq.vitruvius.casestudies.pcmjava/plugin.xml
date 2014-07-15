@@ -118,6 +118,12 @@
             type="java.lang.Object">
       </propertyTester>
    </extension>
+ <extension
+       point="org.eclipse.ui.startup">
+    <startup
+          class="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.BuildOnEclipseStartup">
+    </startup>
+ </extension>
    
   
 </plugin>
