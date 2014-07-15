@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pcm.repository:Repository xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pcm.repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" id="_Ls3VgHv_Edub45jJKtm_Dg" entityName="PrimitiveDataTypes" repositoryDescription="">
+  <dataTypes__Repository xsi:type="pcm.repository:PrimitiveDataType"/>
+  <dataTypes__Repository xsi:type="pcm.repository:PrimitiveDataType" type="STRING"/>
+  <dataTypes__Repository xsi:type="pcm.repository:PrimitiveDataType" type="BOOL"/>
+  <dataTypes__Repository xsi:type="pcm.repository:PrimitiveDataType" type="DOUBLE"/>
+  <dataTypes__Repository xsi:type="pcm.repository:PrimitiveDataType" type="CHAR"/>
+  <dataTypes__Repository xsi:type="pcm.repository:PrimitiveDataType" type="BYTE"/>
+</pcm.repository:Repository>

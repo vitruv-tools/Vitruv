@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" xmlns:seff="http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0" xmlns:stoex="http://sdq.ipd.uka.de/StochasticExpressions/2.2" id="_yQk9oIX1EdyWta7nHuXiHQ" entityName="middlewarerepository">
+  <components__Repository xsi:type="repository:BasicComponent" id="_26-3Q4X1EdyWta7nHuXiHQ" entityName="Glassfish J2EE Server">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_WQM_QIcKEdyZxaUslMevFQ" entityName="Provided_IMiddleware_Glassfish J2EE Server" providedInterface__OperationProvidedRole="_1luUhIX1EdyWta7nHuXiHQ"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_WQPbgIcKEdyZxaUslMevFQ" describedService__SEFF="_uweoubweovo79265497bc">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_WQTF4IcKEdyZxaUslMevFQ" successor_AbstractAction="_a3hIoIcKEdyZxaUslMevFQ"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_WQU7EIcKEdyZxaUslMevFQ" predecessor_AbstractAction="_PgW-gIeLEdy96K_wt3MxFg"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_a3hIoIcKEdyZxaUslMevFQ" predecessor_AbstractAction="_WQTF4IcKEdyZxaUslMevFQ" successor_AbstractAction="_PgW-gIeLEdy96K_wt3MxFg">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="stream.BYTESIZE"/>
+          <requiredResource_ParametricResourceDemand href="Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:SetVariableAction" id="_PgW-gIeLEdy96K_wt3MxFg" predecessor_AbstractAction="_a3hIoIcKEdyZxaUslMevFQ" successor_AbstractAction="_WQU7EIcKEdyZxaUslMevFQ">
+        <localVariableUsages_SetVariableAction>
+          <variableCharacterisation_VariableUsage type="BYTESIZE">
+            <specification_VariableCharacterisation specification="stream.BYTESIZE * 2"/>
+          </variableCharacterisation_VariableUsage>
+          <namedReference__VariableUsage xsi:type="stoex:VariableReference" referenceName="RETURN"/>
+        </localVariableUsages_SetVariableAction>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_WQViIIcKEdyZxaUslMevFQ" describedService__SEFF="_uweoubweovo7orfub065497bc">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_WQViIYcKEdyZxaUslMevFQ" successor_AbstractAction="_jjvR4IcKEdyZxaUslMevFQ"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_WQWJMIcKEdyZxaUslMevFQ" predecessor_AbstractAction="_osZMUIePEdyQ3uCQlnUoDQ"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_jjvR4IcKEdyZxaUslMevFQ" predecessor_AbstractAction="_WQViIYcKEdyZxaUslMevFQ" successor_AbstractAction="_osZMUIePEdyQ3uCQlnUoDQ">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="stream.BYTESIZE"/>
+          <requiredResource_ParametricResourceDemand href="Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:SetVariableAction" id="_osZMUIePEdyQ3uCQlnUoDQ" predecessor_AbstractAction="_jjvR4IcKEdyZxaUslMevFQ" successor_AbstractAction="_WQWJMIcKEdyZxaUslMevFQ">
+        <localVariableUsages_SetVariableAction>
+          <variableCharacterisation_VariableUsage type="BYTESIZE">
+            <specification_VariableCharacterisation specification="stream.BYTESIZE / 2"/>
+          </variableCharacterisation_VariableUsage>
+          <namedReference__VariableUsage xsi:type="stoex:VariableReference" referenceName="RETURN"/>
+        </localVariableUsages_SetVariableAction>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_KCce8Id4Edy96K_wt3MxFg" describedService__SEFF="_uweoubbu39tg265497bc">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_Ktr0UId4Edy96K_wt3MxFg" successor_AbstractAction="_P7umgId4Edy96K_wt3MxFg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_KttCcId4Edy96K_wt3MxFg" predecessor_AbstractAction="_Q6ulYId4Edy96K_wt3MxFg"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_P7umgId4Edy96K_wt3MxFg" predecessor_AbstractAction="_Ktr0UId4Edy96K_wt3MxFg" successor_AbstractAction="_Q6ulYId4Edy96K_wt3MxFg">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="DoublePDF[ (3.0500000000000004E-4; 0.00000000) (3.1500000000000007E-4; 0.00004000) (3.250000000000001E-4; 0.06844000) (3.35E-4; 0.59768000) (3.4500000000000004E-4; 0.21221000) (3.5500000000000006E-4; 0.07866000) (3.650000000000001E-4; 0.02875000) (3.75E-4; 0.01422000) ] / 2"/>
+          <requiredResource_ParametricResourceDemand href="Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:SetVariableAction" id="_Q6ulYId4Edy96K_wt3MxFg" entityName="resultSetter" predecessor_AbstractAction="_P7umgId4Edy96K_wt3MxFg" successor_AbstractAction="_KttCcId4Edy96K_wt3MxFg">
+        <localVariableUsages_SetVariableAction>
+          <variableCharacterisation_VariableUsage type="BYTESIZE">
+            <specification_VariableCharacterisation specification="ints.NUMBER_OF_ELEMENTS * 2"/>
+          </variableCharacterisation_VariableUsage>
+          <namedReference__VariableUsage xsi:type="stoex:VariableReference" referenceName="RETURN"/>
+        </localVariableUsages_SetVariableAction>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_LEt0QId4Edy96K_wt3MxFg" describedService__SEFF="_uweounboep9h4b32g97bc">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_Lf57cId4Edy96K_wt3MxFg" successor_AbstractAction="_8jeEcIePEdyQ3uCQlnUoDQ"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_Lf6igId4Edy96K_wt3MxFg" predecessor_AbstractAction="_8jeEcIePEdyQ3uCQlnUoDQ"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_8jeEcIePEdyQ3uCQlnUoDQ" predecessor_AbstractAction="_Lf57cId4Edy96K_wt3MxFg" successor_AbstractAction="_Lf6igId4Edy96K_wt3MxFg">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="DoublePDF[ (3.9500000000000006E-4; 0.00000000) (4.050000000000001E-4; 0.07065000) (4.1500000000000006E-4; 0.48902000) (4.250000000000001E-4; 0.19040000) (4.3500000000000006E-4; 0.08020000) (4.450000000000001E-4; 0.03977000) (4.5500000000000006E-4; 0.03577000) (4.650000000000001E-4; 0.02377000) (4.750000000000001E-4; 0.00955000) (4.8500000000000013E-4; 0.01400000) (4.95E-4; 0.01977000) (5.05E-4; 0.01333000) (5.15E-4; 0.01244000) (5.250000000000001E-4; 0.00133000) ] / 2"/>
+          <requiredResource_ParametricResourceDemand href="Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_J0oc8IvMEdy1W5zscXFO9A" describedService__SEFF="_bf297f29gfweovo79265497bc">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_KNVQ0IvMEdy1W5zscXFO9A" successor_AbstractAction="_UUgVIIvMEdy1W5zscXFO9A"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_KNV34IvMEdy1W5zscXFO9A" predecessor_AbstractAction="_VmQ38IvMEdy1W5zscXFO9A"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_UUgVIIvMEdy1W5zscXFO9A" predecessor_AbstractAction="_KNVQ0IvMEdy1W5zscXFO9A" successor_AbstractAction="_VmQ38IvMEdy1W5zscXFO9A">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="DoublePDF[ (3.9E-4; 0.00000000) (4.0E-4; 1.00000000) ]"/>
+          <requiredResource_ParametricResourceDemand href="Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:SetVariableAction" id="_VmQ38IvMEdy1W5zscXFO9A" predecessor_AbstractAction="_UUgVIIvMEdy1W5zscXFO9A" successor_AbstractAction="_KNV34IvMEdy1W5zscXFO9A">
+        <localVariableUsages_SetVariableAction>
+          <variableCharacterisation_VariableUsage type="BYTESIZE">
+            <specification_VariableCharacterisation specification="stream.BYTESIZE"/>
+          </variableCharacterisation_VariableUsage>
+          <namedReference__VariableUsage xsi:type="stoex:VariableReference" referenceName="RETURN"/>
+        </localVariableUsages_SetVariableAction>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_Kgy_YIvMEdy1W5zscXFO9A" describedService__SEFF="_uweojvbu20t33bc265497bc">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_KyRw8IvMEdy1W5zscXFO9A" successor_AbstractAction="_kqNYQIvMEdy1W5zscXFO9A"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_KyRw8YvMEdy1W5zscXFO9A" predecessor_AbstractAction="_lBZwQIvMEdy1W5zscXFO9A"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_kqNYQIvMEdy1W5zscXFO9A" predecessor_AbstractAction="_KyRw8IvMEdy1W5zscXFO9A" successor_AbstractAction="_lBZwQIvMEdy1W5zscXFO9A">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="DoublePDF[ (6.0E-4; 0.00000000) (6.2E-4; 0.80000000) (9.5E-4; 0.20000000) ]"/>
+          <requiredResource_ParametricResourceDemand href="Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:SetVariableAction" id="_lBZwQIvMEdy1W5zscXFO9A" predecessor_AbstractAction="_kqNYQIvMEdy1W5zscXFO9A" successor_AbstractAction="_KyRw8YvMEdy1W5zscXFO9A">
+        <localVariableUsages_SetVariableAction>
+          <variableCharacterisation_VariableUsage type="BYTESIZE">
+            <specification_VariableCharacterisation specification="stream.BYTESIZE"/>
+          </variableCharacterisation_VariableUsage>
+          <namedReference__VariableUsage xsi:type="stoex:VariableReference" referenceName="RETURN"/>
+        </localVariableUsages_SetVariableAction>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_1luUhIX1EdyWta7nHuXiHQ" entityName="IMiddleware">
+    <signatures__OperationInterface id="_uweoubweovo79265497bc" entityName="encrypt" returnType__OperationSignature="_RFaVYIcKEdyZxaUslMevFQ">
+      <parameters__OperationSignature dataType__Parameter="_RFaVYIcKEdyZxaUslMevFQ" parameterName="stream"/>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_uweoubweovo7orfub065497bc" entityName="decrypt" returnType__OperationSignature="_RFaVYIcKEdyZxaUslMevFQ">
+      <parameters__OperationSignature dataType__Parameter="_RFaVYIcKEdyZxaUslMevFQ" parameterName="stream"/>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_uweoubbu39tg265497bc" entityName="marshall" returnType__OperationSignature="_RFaVYIcKEdyZxaUslMevFQ">
+      <parameters__OperationSignature dataType__Parameter="_k7uFIIeREdyNZvea3K0QIQ" parameterName="ints"/>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_uweounboep9h4b32g97bc" entityName="demarshall">
+      <parameters__OperationSignature dataType__Parameter="_RFaVYIcKEdyZxaUslMevFQ" parameterName="stream"/>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_bf297f29gfweovo79265497bc" entityName="createCredentials" returnType__OperationSignature="_RFaVYIcKEdyZxaUslMevFQ">
+      <parameters__OperationSignature dataType__Parameter="_RFaVYIcKEdyZxaUslMevFQ" parameterName="stream"/>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_uweojvbu20t33bc265497bc" entityName="checkCredentials" returnType__OperationSignature="_RFaVYIcKEdyZxaUslMevFQ">
+      <parameters__OperationSignature dataType__Parameter="_RFaVYIcKEdyZxaUslMevFQ" parameterName="stream"/>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <dataTypes__Repository xsi:type="repository:CollectionDataType" id="_RFaVYIcKEdyZxaUslMevFQ" entityName="BYTEARRAY">
+    <innerType_CollectionDataType xsi:type="repository:PrimitiveDataType" href="PrimitiveTypes.repository#//@dataTypes__Repository.5"/>
+  </dataTypes__Repository>
+  <dataTypes__Repository xsi:type="repository:CollectionDataType" id="_k7uFIIeREdyNZvea3K0QIQ" entityName="INTARRAY">
+    <innerType_CollectionDataType xsi:type="repository:PrimitiveDataType" href="PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+  </dataTypes__Repository>
+</repository:Repository>

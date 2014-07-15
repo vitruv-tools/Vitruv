@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<featureconfig:Configuration xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:featureconfig="http://sdq.ipd.uka.de/FeatureConfig/2.0" name="Connector config">
+  <defaultConfig>
+    <confignode configState="ELIMINATED">
+      <origin href="Connector.featuremodel#_Gr9dw1LtEd-PyKAJbftYDw"/>
+    </confignode>
+    <confignode configState="ELIMINATED">
+      <origin href="Connector.featuremodel#_FKDmIFLtEd-PyKAJbftYDw"/>
+    </confignode>
+    <confignode configState="ELIMINATED">
+      <origin href="Connector.featuremodel#_2C0hRlLsEd-PyKAJbftYDw"/>
+    </confignode>
+    <confignode configState="ELIMINATED">
+      <origin href="Connector.featuremodel#_00S4oFLsEd-PyKAJbftYDw"/>
+    </confignode>
+    <confignode configState="ELIMINATED">
+      <origin href="Connector.featuremodel#_wTXEEFLsEd-PyKAJbftYDw"/>
+    </confignode>
+    <confignode configState="ELIMINATED">
+      <origin href="Connector.featuremodel#_BodHoFLtEd-PyKAJbftYDw"/>
+    </confignode>
+    <annotatedElement href="Connector.featuremodel#_igd78FLsEd-PyKAJbftYDw"/>
+  </defaultConfig>
+</featureconfig:Configuration>
