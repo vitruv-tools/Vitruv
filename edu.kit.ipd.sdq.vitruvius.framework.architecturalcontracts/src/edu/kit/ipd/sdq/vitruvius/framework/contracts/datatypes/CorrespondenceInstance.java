@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -304,6 +305,10 @@ public class CorrespondenceInstance extends ModelInstance {
     }
 
     public void addSameTypeCorrespondence(final SameTypeCorrespondence correspondence) {
+        addSameTypeCorrespondence(correspondence, null);
+    }
+
+    public void addSameTypeCorrespondence(final SameTypeCorrespondence correspondence, final Correspondence parent) {
         EObject elementA = correspondence.getElementA();
         EObject elementB = correspondence.getElementB();
         // add TUIDs
@@ -312,7 +317,13 @@ public class CorrespondenceInstance extends ModelInstance {
         correspondence.setElementATUID(tuidA);
         correspondence.setElementBTUID(tuidB);
         // add correspondence to model
-        this.correspondences.getCorrespondences().add(correspondence);
+        EList<Correspondence> correspondenceListForAddition;
+        if (parent == null) {
+            correspondenceListForAddition = this.correspondences.getCorrespondences();
+        } else {
+            correspondenceListForAddition = parent.getDependentCorrespondences();
+        }
+        correspondenceListForAddition.add(correspondence);
         List<EObject> allInvolvedEObjects = Arrays.asList(elementA, elementB);
         List<String> allInvolvedTUIDs = Arrays.asList(tuidA, tuidB);
         // add all involved eObjects to the sets for these objects in the map
