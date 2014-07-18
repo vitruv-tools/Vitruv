@@ -32,7 +32,7 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
     @Override
     public String getTUID(final EObject eObject) {
         if (eObject != null) {
-            String uri = String.valueOf(TUIDIdentifier) + EOBJECT_SEPERATOR;
+            String uri = String.valueOf(TUIDIdentifier) + VitruviusConstants.getTUIDSegmentSeperator();
             if (null != eObject.eResource()) {
                 VURI vuri = VURI.getInstance(eObject.eResource());
                 uri += vuri.toString();
@@ -42,7 +42,7 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
             }
             String id = getValueOfIdFeature(eObject);
             if (null != id) {
-                return uri + EOBJECT_SEPERATOR + id;
+                return uri + VitruviusConstants.getTUIDSegmentSeperator() + id;
             }
         }
         throw new RuntimeException("The DefaultTUIDCalculator cannot be used for the eObject '" + eObject + "'");
@@ -50,7 +50,7 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
 
     @Override
     public VURI getModelVURIContainingIdentifiedEObject(final String tuid) {
-        String[] tuidParts = tuid.split(EOBJECT_SEPERATOR);
+        String[] tuidParts = tuid.split(VitruviusConstants.getTUIDSegmentSeperator());
         checkTUID(tuidParts);
         String vuriKey = tuidParts[1];
         return VURI.getInstance(vuriKey);
@@ -58,7 +58,7 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
 
     @Override
     public EObject getIdentifiedEObjectWithinRootEObject(final EObject root, final String tuid) {
-        String[] tuidParts = tuid.split(EOBJECT_SEPERATOR);
+        String[] tuidParts = tuid.split(VitruviusConstants.getTUIDSegmentSeperator());
         checkTUID(tuidParts);
         String id = tuidParts[2];
         for (EObject eObject : root.eContents()) {
