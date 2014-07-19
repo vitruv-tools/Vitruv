@@ -65,7 +65,7 @@ class TransModelObjectCopier {
     }
 
     private EObject addCopyInContainer(EObject sourceObj, EObject targetContainer, int targetPosition) {
-        EStructuralFeature targetFeature = Utils.getStructuralFeatureInTargetContainer(targetContainer, sourceObj);
+        EStructuralFeature targetFeature = Util.getStructuralFeatureInTargetContainer(targetContainer, sourceObj);
 
         EClass newObjClass = sourceObj.eClass();
         EObject newObj = newObjClass.getEPackage().getEFactoryInstance().create(newObjClass);

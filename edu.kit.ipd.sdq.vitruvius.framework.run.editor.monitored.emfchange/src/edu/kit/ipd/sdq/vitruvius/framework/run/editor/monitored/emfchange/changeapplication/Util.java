@@ -6,11 +6,11 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
- * {@link Utils} contains various utility methods.
+ * {@link Util} contains various utility methods.
  */
-final class Utils {
+final class Util {
 
-    private Utils() {
+    private Util() {
     }
 
     /**

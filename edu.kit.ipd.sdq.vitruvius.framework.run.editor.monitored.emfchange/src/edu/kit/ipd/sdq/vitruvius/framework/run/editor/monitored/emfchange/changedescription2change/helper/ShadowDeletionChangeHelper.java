@@ -13,16 +13,36 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.DeleteNonRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.RemoveFromEList;
 
+/**
+ * {@link ShadowDeletionChangeHelper} determines whether a given deleted object causes implicit
+ * deletions and generates a corresponding list of changes.
+ */
 public class ShadowDeletionChangeHelper {
     private static final Logger LOGGER = Logger.getLogger(ShadowDeletionChangeHelper.class);
 
     private final List<EObject> additionalDetachedObjects = new ArrayList<>();
     private final Collection<EObject> detachedObjects;
 
+    /**
+     * Creates a new {@link ShadowDeletionChangeHelper} object.
+     * 
+     * @param detachedObjects
+     *            The set of objects currently known to be deleted.
+     */
     public ShadowDeletionChangeHelper(Collection<EObject> detachedObjects) {
         this.detachedObjects = detachedObjects;
     }
 
+    /**
+     * Get a list of {@link Change} objects reflecting the implicit delete operations caused by the
+     * deletion of <code>object</code>.
+     * 
+     * @param object
+     *            An EMF object.
+     * @return A list of {@link Change} objects reflecting the implicit delete operations caused by
+     *         the deletion of <code>object</code>. The list is ordered such that no deleted object
+     *         is referenced after its deletion.
+     */
     public List<Change> getShadowResolvingChanges(EObject object) {
         LOGGER.trace("Adding shadowed delete operations for " + object);
         List<Change> result = new ArrayList<Change>();
@@ -80,6 +100,9 @@ public class ShadowDeletionChangeHelper {
         changeCollector.add(EMFModelChangeFactory.createEMFModelChange(deleteChange));
     }
 
+    /**
+     * @return The list of objects additionally found to be detached from the model.
+     */
     public List<EObject> getAdditionalDetachedObjects() {
         return additionalDetachedObjects;
     }

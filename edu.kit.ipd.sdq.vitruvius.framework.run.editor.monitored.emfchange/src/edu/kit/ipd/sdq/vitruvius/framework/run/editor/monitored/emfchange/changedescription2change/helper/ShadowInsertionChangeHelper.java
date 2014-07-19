@@ -16,6 +16,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateNonRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.InsertInEList;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.MapUtils;
 
 /**
  * {@link ShadowInsertionChangeHelper} determines whether a given object has been inserted with
@@ -138,28 +139,28 @@ public final class ShadowInsertionChangeHelper {
         CreateNonRootEObject<EObject> change = EChangeFactory.createCreateNonRootObject(createdObject, ref,
                 referencedObj, referencedObj);
         change.setListUpdate(listUpdate);
-        Util.addToMap(createdObject, EMFModelChangeFactory.createEMFModelChange(change), target);
+        MapUtils.addToMap(createdObject, EMFModelChangeFactory.createEMFModelChange(change), target);
     }
 
     private static void insertUpdateChange(EObject createdObject, EObject referencedObj, EReference ref,
             Map<EObject, List<Change>> target) {
         LOGGER.trace("\tAdding update reference " + ref.getName() + " containing " + referencedObj);
         EChange change = EChangeFactory.createUpdateEReference(createdObject, ref, referencedObj);
-        Util.addToMap(createdObject, EMFModelChangeFactory.createEMFModelChange(change), target);
+        MapUtils.addToMap(createdObject, EMFModelChangeFactory.createEMFModelChange(change), target);
     }
 
     private static void insertListAddChange(EObject createdObject, EObject referencedObj, EReference ref,
             Map<EObject, List<Change>> target, int index) {
         LOGGER.trace("\tAdding list add in reference " + ref.getName() + " containing " + referencedObj);
         EChange insertChange = EChangeFactory.createInsertInEList(createdObject, ref, referencedObj, index);
-        Util.addToMap(createdObject, EMFModelChangeFactory.createEMFModelChange(insertChange), target);
+        MapUtils.addToMap(createdObject, EMFModelChangeFactory.createEMFModelChange(insertChange), target);
     }
 
     private static void insertAttributeChange(EObject createdObject, Object attributeObj, EAttribute attr,
             Map<EObject, List<Change>> target) {
         LOGGER.trace("\tAdding attribute change in " + attr.getName() + " to " + attributeObj);
         EChange updateAttrChange = EChangeFactory.createUpdateEAttribute(createdObject, attr, attributeObj);
-        Util.addToMap(createdObject, EMFModelChangeFactory.createEMFModelChange(updateAttrChange), target);
+        MapUtils.addToMap(createdObject, EMFModelChangeFactory.createEMFModelChange(updateAttrChange), target);
     }
 
     private void addAttributeChanges(EObject createdObject) {

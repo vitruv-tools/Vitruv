@@ -75,7 +75,7 @@ class ModelTranslator {
             return rootObject;
         } else {
             PathElement pe = path.remove(0);
-            EStructuralFeature targetFeature = Utils.getStructuralFeatureInTargetContainer(rootObject, pe.getObj());
+            EStructuralFeature targetFeature = Util.getStructuralFeatureInTargetContainer(rootObject, pe.getObj());
 
             EObject stepElement;
             if (targetFeature.isMany()) {

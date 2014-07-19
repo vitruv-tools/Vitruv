@@ -1,6 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,6 +35,29 @@ public final class MapUtils {
             map.put(key, new HashSet<V>());
         }
         map.get(key).add(value);
+    }
+
+    /**
+     * Adds a value to a map containing lists of values. If the map does not contain a list as the
+     * value for a given key, a new ArrayList gets associated with the key prior to inserting the
+     * value.
+     * 
+     * @param key
+     *            The key.
+     * @param value
+     *            The value.
+     * @param target
+     *            The target map.
+     * @param <K>
+     *            The key type.
+     * @param <V>
+     *            The value type.
+     */
+    public static <K, V> void addToMap(K key, V value, Map<K, List<V>> target) {
+        if (!target.containsKey(key)) {
+            target.put(key, new ArrayList<V>());
+        }
+        target.get(key).add(value);
     }
 
 }
