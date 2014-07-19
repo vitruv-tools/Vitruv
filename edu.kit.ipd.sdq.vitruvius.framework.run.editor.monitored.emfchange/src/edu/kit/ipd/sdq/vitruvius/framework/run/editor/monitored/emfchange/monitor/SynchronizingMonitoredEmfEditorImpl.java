@@ -222,7 +222,7 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
             ChangeDescription2ChangeConverter converter = new ChangeDescription2ChangeConverter();
             List<Change> changes = converter.getChanges(changeDescription);
 
-            VURI uri = VURI.getInstance(resource.getURI());
+            VURI uri = VURI.getInstance(resource);
             LOGGER.trace("Triggering synchronization for VURI " + uri.toString());
             changeSynchronizing.synchronizeChanges(changes, uri, resource);
         }
