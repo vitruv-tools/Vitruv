@@ -15,6 +15,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.changedescription2change.ChangeDescription2ChangeConverter;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.testmodels.Models;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.BasicTestCase;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.ChangeAssert;
 
 public abstract class AbstractChangeApplicatorTests<T extends EObject> extends BasicTestCase {
     private boolean hasRegisteredMetaModels = false;
@@ -80,12 +81,21 @@ public abstract class AbstractChangeApplicatorTests<T extends EObject> extends B
 
     protected void synchronizeChangesAndAssertEquality() {
         List<Change> changes = getChangesAndEndRecording();
-        System.err.println("number of changes: " + changes.size());
+        try {
+            ChangeAssert.assertContainsNoReferencesToPreviouslyDeletedObjects(changes);
+            ChangeAssert.assertContainsNoForwardReferences(changes);
 
-        ChangeApplicator applicator = new ChangeApplicator(sourceRes, changes);
-        applicator.applyChanges(targetRes);
+            System.err.println("number of changes: " + changes.size());
 
-        assertSourceAndTargetStructuralEquality();
+            ChangeApplicator applicator = new ChangeApplicator(sourceRes, changes);
+            applicator.applyChanges(targetRes);
+
+            assertSourceAndTargetStructuralEquality();
+        } catch (Exception e) {
+            System.err.println("Caught exception on change list:");
+            ChangeAssert.printChangeList(changes);
+            throw e;
+        }
         changeRecorder = new ChangeRecorder(sourceRes);
     }
 }

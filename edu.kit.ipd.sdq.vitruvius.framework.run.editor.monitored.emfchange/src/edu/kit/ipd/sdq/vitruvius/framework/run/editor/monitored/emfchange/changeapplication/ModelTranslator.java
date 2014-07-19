@@ -4,7 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -15,6 +17,7 @@ import org.eclipse.emf.ecore.resource.Resource;
  * respective position in the containments on the path from the root object to the queried object.
  */
 class ModelTranslator {
+    private static final Logger LOGGER = Logger.getLogger(ModelTranslator.class);
 
     private final Resource sourceResource;
     private final Resource targetResource;
@@ -102,7 +105,10 @@ class ModelTranslator {
         List<PathElement> pathToSource = getPathFromRootElement(sourceObj);
         pathToSource.remove(0); // remove root element from path
 
-        Resource matchingRes = targetResource.getResourceSet().getResource(sourceObj.eResource().getURI(), true);
+        LOGGER.trace("Looking up " + sourceObj);
+        assert sourceObj.eResource() != null;
+        URI matchingURI = sourceObj.eResource().getURI();
+        Resource matchingRes = targetResource.getResourceSet().getResource(matchingURI, true);
 
         try {
             EObject result = walkDownPath(matchingRes.getEObject(ROOT_ELEMENT_URI), pathToSource);

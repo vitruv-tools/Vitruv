@@ -128,10 +128,27 @@ public class ChangeApplicator {
          */
         private final Map<RemoveFromEList<?>, EObject> removalOp2RemovedObj = new HashMap<>();
 
+        /**
+         * The objects getting deleted when applying the change list.
+         */
+        private final Set<EObject> deletedEObjects = new HashSet<>();
+
         public ApplyingVisitor(Resource target, Collection<Change> sourceChanges) {
             this.translator = new ModelTranslator(source, target);
             this.objectCopier = new TransModelObjectCopier(translator);
             setupRemovedObjMap(target, sourceChanges);
+            setupDeletedObjSet(sourceChanges);
+        }
+
+        private void setupDeletedObjSet(Collection<Change> changes) {
+            for (Change c : changes) {
+                EMFModelChange modelC = (EMFModelChange) c;
+                if (modelC.getEChange() instanceof DeleteNonRootEObject<?>) {
+                    DeleteNonRootEObject<?> deleteChange = (DeleteNonRootEObject<?>) modelC.getEChange();
+                    LOGGER.trace("Detected deleted object: " + deleteChange.getChangedEObject());
+                    deletedEObjects.add(deleteChange.getChangedEObject());
+                }
+            }
         }
 
         /**
@@ -345,6 +362,11 @@ public class ChangeApplicator {
                     + it.getAffectedEObject());
             floatingRemovedObjects.remove(it.getChangedEObject());
 
+            if (deletedEObjects.contains(it.getAffectedEObject())) {
+                LOGGER.trace("\t- Dropping the change since the affected object itself gets deleted later on.");
+                return;
+            }
+
             if (it.getListUpdate() != null) {
                 visit(it.getListUpdate());
             } else {
@@ -357,6 +379,7 @@ public class ChangeApplicator {
             LOGGER.trace("Removing the object corresponding to " + it.getUpdate()
                     + " from the multiplicity-many feature " + it.getAffectedFeature().getName() + " in "
                     + it.getAffectedEObject());
+
             // Look up the target feature list
             EObject targetContainerObject = translator.lookupInTarget(it.getAffectedEObject());
 

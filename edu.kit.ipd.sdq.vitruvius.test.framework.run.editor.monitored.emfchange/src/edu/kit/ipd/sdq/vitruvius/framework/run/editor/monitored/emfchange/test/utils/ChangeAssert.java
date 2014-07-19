@@ -3,8 +3,11 @@ package edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.
 import static org.junit.Assert.fail;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
@@ -18,11 +21,14 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.InsertInEList;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.RemoveFromEList;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UnsetEFeature;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEList;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.CreateNonRootEObjectImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.DeleteNonRootEObjectImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.UpdateEAttributeImpl;
 
 public final class ChangeAssert {
+    private static final Logger LOGGER = Logger.getLogger(ChangeAssert.class);
+
     private ChangeAssert() {
     }
 
@@ -39,7 +45,9 @@ public final class ChangeAssert {
         }
     }
 
-    public static void assertChangeListSize(List<Change> changes, int expectedSize) {
+    public static void assertCorrectlyOrderedAndChangeListSize(List<Change> changes, int expectedSize) {
+        assertContainsNoForwardReferences(changes);
+        assertContainsNoReferencesToPreviouslyDeletedObjects(changes);
         if (changes.size() != expectedSize) {
             printChangeList(changes);
             fail("Got " + changes.size() + " changes, expected " + expectedSize);
@@ -159,5 +167,47 @@ public final class ChangeAssert {
 
         printChangeList(changes);
         fail("Could not find list change for object " + changedObject + " in " + feature.getName());
+    }
+
+    public static void assertContainsNoReferencesToPreviouslyDeletedObjects(List<Change> changeList) {
+        Set<Object> scannedDeletions = new HashSet<>();
+        for (Change c : changeList) {
+            EMFModelChange mc = (EMFModelChange) c;
+            EChange change = (EChange) mc.getEChange();
+            if (change instanceof EFeatureChange<?>) {
+                EFeatureChange<?> updateChange = (EFeatureChange<?>) change;
+                if (scannedDeletions.contains(updateChange.getAffectedEObject())) {
+                    LOGGER.fatal("Detected a pre-insertion update change to " + updateChange.getAffectedEObject()
+                            + " (" + updateChange + ")");
+                    fail("The change list contains a reference to a previously deleted object.");
+                }
+            }
+            if (change instanceof DeleteNonRootEObject<?>) {
+                DeleteNonRootEObject<?> deleteChange = (DeleteNonRootEObject<?>) change;
+                Object deletedObject = deleteChange.getChangedEObject();
+                scannedDeletions.add(deletedObject);
+            }
+        }
+    }
+
+    public static void assertContainsNoForwardReferences(List<Change> changeList) {
+        Set<Object> scannedAffectedObjects = new HashSet<>();
+        for (Change c : changeList) {
+            EMFModelChange mc = (EMFModelChange) c;
+            EChange change = (EChange) mc.getEChange();
+            if (change instanceof UpdateEReference<?>) {
+                UpdateEReference<?> updateChange = (UpdateEReference<?>) change;
+                scannedAffectedObjects.add(updateChange.getAffectedEObject());
+            }
+            if (change instanceof CreateNonRootEObject<?>) {
+                CreateNonRootEObject<?> createChange = (CreateNonRootEObject<?>) change;
+                Object createdObject = createChange.getChangedEObject();
+                if (scannedAffectedObjects.contains(createdObject)) {
+                    LOGGER.fatal("Detected a post-deletion update change to " + createdObject + " (" + createChange
+                            + ")");
+                    fail("The change list contains a reference to a previously deleted object.");
+                }
+            }
+        }
     }
 }

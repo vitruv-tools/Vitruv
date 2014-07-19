@@ -3,6 +3,8 @@ package edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.chang
 import java.net.URL;
 import java.util.List;
 
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EOperation;
@@ -32,7 +34,7 @@ public class ChangeDescription2ChangeConverterTestsShadowedOperations extends
         sourceRoot.getEClassifiers().add(newClass);
         List<Change> changes = getChangesAndEndRecording();
 
-        ChangeAssert.assertChangeListSize(changes, 2 * CHANGES_PER_CREATEREMOVE + 2 * CHANGES_PER_SET);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, 2 * CHANGES_PER_CREATEREMOVE + 2 * CHANGES_PER_SET);
         ChangeAssert.assertContainsAddChange(changes, newClass.eContainingFeature(), newClass);
         ChangeAssert.assertContainsAddChange(changes, shadowedOperation.eContainingFeature(), shadowedOperation);
         ChangeAssert.assertContainsAttributeChange(changes, shadowedOperation.eClass().getEStructuralFeature("name"),
@@ -56,8 +58,41 @@ public class ChangeDescription2ChangeConverterTestsShadowedOperations extends
         List<Change> changes = getChangesAndEndRecording();
 
         // The additional set operation is caused by an automatic update to eType in the operation.
-        ChangeAssert.assertChangeListSize(changes, 2 * CHANGES_PER_CREATEREMOVE + 1 * CHANGES_PER_SET);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, 2 * CHANGES_PER_CREATEREMOVE + 1 * CHANGES_PER_SET);
         ChangeAssert.assertContainsAddChange(changes, operation.eContainingFeature(), operation);
         ChangeAssert.assertContainsAddChange(changes, shadowedGenericType.eContainingFeature(), shadowedGenericType);
+    }
+
+    @Test
+    public void shadowedDeleteInMultiplicityMany() {
+        EClass exampleClass3 = (EClass) sourceRoot.getEClassifier("ExampleClass3");
+        EList<EAnnotation> annotations = exampleClass3.getEAnnotations();
+        sourceRoot.getEClassifiers().remove(exampleClass3);
+
+        List<Change> changes = getChangesAndEndRecording();
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, 4 * CHANGES_PER_CREATEREMOVE);
+        ChangeAssert.assertContainsRemoveChange(changes, sourceRoot.eClass().getEStructuralFeature("eClassifiers"),
+                exampleClass3);
+        for (EAnnotation annotation : annotations) {
+            ChangeAssert.assertContainsRemoveChange(changes,
+                    exampleClass3.eClass().getEStructuralFeature("eAnnotations"), annotation);
+        }
+    }
+
+    @Test
+    public void shadowedDeleteInMultiplicityOne() {
+        EClass exampleClass4 = (EClass) sourceRoot.getEClassifier("ExampleClass4");
+        EOperation operation = exampleClass4.getEOperations().get(0);
+        EGenericType removedGenericType = operation.getEGenericType();
+        exampleClass4.getEOperations().remove(operation);
+
+        List<Change> changes = getChangesAndEndRecording();
+
+        // The unset operation is caused by the set of ExampleClass4 operations being emptied.
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, 2 * CHANGES_PER_CREATEREMOVE + CHANGES_PER_UNSET);
+        ChangeAssert.assertContainsRemoveChange(changes, exampleClass4.eClass().getEStructuralFeature("eOperations"),
+                operation);
+        ChangeAssert.assertContainsRemoveChange(changes, operation.eClass().getEStructuralFeature("eGenericType"),
+                removedGenericType);
     }
 }

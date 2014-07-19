@@ -78,7 +78,7 @@ public class ChangeDescription2ChangeConverterTestsUsingAdvancedFeatures extends
         alc.getAttrList().clear();
 
         List<Change> changes = super.getChangesAndEndRecording();
-        ChangeAssert.assertChangeListSize(changes, CHANGES_PER_UNSET + originalSize * CHANGES_PER_LIST_ADD_DELOP);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, CHANGES_PER_UNSET + originalSize * CHANGES_PER_LIST_ADD_DELOP);
 
         Change lastChange = changes.remove(changes.size() - 1);
         assert ((EMFModelChange) lastChange).getEChange() instanceof UnsetEFeature<?>;
@@ -130,7 +130,7 @@ public class ChangeDescription2ChangeConverterTestsUsingAdvancedFeatures extends
 
         List<Change> changes = getChangesAndEndRecording();
 
-        ChangeAssert.assertChangeListSize(changes, CHANGES_PER_UNSET + oSz * CHANGES_PER_LIST_ADD_DELOP);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, CHANGES_PER_UNSET + oSz * CHANGES_PER_LIST_ADD_DELOP);
         for (EObject o : originalObjs) {
             ChangeAssert.assertContainsListChange(changes, rlc.eClass().getEStructuralFeature("nonContainmentRefList"),
                     o, rlc, 0, false);

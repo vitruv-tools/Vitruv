@@ -44,9 +44,6 @@ class ObjectDeletionResolvingPass implements IObjectChangePass {
             }
         }
 
-        // TODO: "Deep" deletion such that remove/insert of whole branches across
-        // ChangeRecorder-ing periods works.
-
         return result;
     }
 }

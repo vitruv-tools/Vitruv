@@ -99,15 +99,21 @@ public class ChangeDescription2ChangeConverter {
         IObjectChangePass shadowedCreateResolving = new ShadowInsertionResolvingPass(objsToAttach);
         IObjectChangePass forwardReferenceResolving = new ForwardReferenceResolvingPass(objsToAttach);
         IObjectChangePass objectDeletionResolving = new ObjectDeletionResolvingPass(objsToDetach);
+        ShadowDeletionResolvingPass shadowedDeleteResolving = new ShadowDeletionResolvingPass(objsToDetach);
 
-        List<IObjectChange> contChangesWithoutShadows = shadowedCreateResolving
-                .runPass(changes.getContainmentChanges());
+        List<IObjectChange> contChangesWithoutShadowInsertions = shadowedCreateResolving.runPass(changes
+                .getContainmentChanges());
+        List<IObjectChange> contChangesWithoutShadowOps = shadowedDeleteResolving
+                .runPass(contChangesWithoutShadowInsertions);
 
         // The shadow resolution pass may have added non-containment changes to its result.
         List<IObjectChange> otherChanges = new ArrayList<>(changes.getOtherChanges());
-        moveNonContainmentChanges(contChangesWithoutShadows, otherChanges);
+        moveNonContainmentChanges(contChangesWithoutShadowOps, otherChanges);
 
-        List<IObjectChange> resolvedContChanges = forwardReferenceResolving.runPass(contChangesWithoutShadows);
+        List<IObjectChange> resolvedContChanges = forwardReferenceResolving.runPass(contChangesWithoutShadowOps);
+        resolvedContChanges = objectDeletionResolving.runPass(resolvedContChanges);
+        resolvedContChanges.addAll(0, shadowedDeleteResolving.getAdditionalChangeOperations());
+
         List<IObjectChange> resolvedOrdinaryChanges = objectDeletionResolving.runPass(otherChanges);
 
         return new CategorizedChanges(resolvedContChanges, resolvedOrdinaryChanges);

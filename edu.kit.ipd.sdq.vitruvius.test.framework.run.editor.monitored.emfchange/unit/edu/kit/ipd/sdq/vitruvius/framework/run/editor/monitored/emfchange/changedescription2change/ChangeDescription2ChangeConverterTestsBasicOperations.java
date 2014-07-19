@@ -4,9 +4,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EGenericType;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EParameter;
@@ -35,16 +36,17 @@ public class ChangeDescription2ChangeConverterTestsBasicOperations extends
 
         List<Change> changes = getChangesAndEndRecording();
 
-        ChangeAssert.assertChangeListSize(changes, CHANGES_PER_CREATEREMOVE);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, CHANGES_PER_CREATEREMOVE);
         ChangeAssert.assertContainsAddChange(changes, sourceRoot.eClass().getEStructuralFeature("eClassifiers"),
                 newClass);
     }
 
     @Test
     public void singleDeleteInList() {
-        EObject removedClassifier = sourceRoot.getEClassifiers().remove(0);
+        EClassifier removedClassifier = sourceRoot.getEClassifier("EmptyClass");
+        sourceRoot.getEClassifiers().remove(removedClassifier);
         List<Change> changes = getChangesAndEndRecording();
-        ChangeAssert.assertChangeListSize(changes, CHANGES_PER_CREATEREMOVE);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, CHANGES_PER_CREATEREMOVE);
         ChangeAssert.assertContainsRemoveChange(changes, sourceRoot.eClass().getEStructuralFeature("eClassifiers"),
                 removedClassifier);
     }
@@ -57,7 +59,7 @@ public class ChangeDescription2ChangeConverterTestsBasicOperations extends
 
         List<Change> changes = getChangesAndEndRecording();
 
-        ChangeAssert.assertChangeListSize(changes, CHANGES_PER_SET);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, CHANGES_PER_SET);
         Change setChange = changes.get(0);
 
         assert setChange instanceof EMFModelChange;
@@ -82,7 +84,7 @@ public class ChangeDescription2ChangeConverterTestsBasicOperations extends
 
         List<Change> changes = getChangesAndEndRecording();
 
-        ChangeAssert.assertChangeListSize(changes, 3 * CHANGES_PER_CREATEREMOVE);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, 3 * CHANGES_PER_CREATEREMOVE);
         ChangeAssert.assertContainsAddChange(changes, sourceRoot.eClass().getEStructuralFeature("eClassifiers"),
                 newClass1);
         ChangeAssert.assertContainsAddChange(changes, sourceRoot.eClass().getEStructuralFeature("eClassifiers"),
@@ -93,16 +95,18 @@ public class ChangeDescription2ChangeConverterTestsBasicOperations extends
 
     @Test
     public void multipleDeleteInLists() {
-        EClass removedClassifier = (EClass) sourceRoot.getEClassifier("ExampleClass1");
-        EOperation removedOperation = removedClassifier.getEOperations().remove(0);
+        EClass removedClassifier = (EClass) sourceRoot.getEClassifier("ExampleClass3");
+        List<EAnnotation> removedAnnotations = new ArrayList<>(removedClassifier.getEAnnotations());
         sourceRoot.getEClassifiers().remove(removedClassifier);
 
         List<Change> changes = getChangesAndEndRecording();
-        ChangeAssert.assertChangeListSize(changes, 2 * CHANGES_PER_CREATEREMOVE);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, 4 * CHANGES_PER_CREATEREMOVE);
         ChangeAssert.assertContainsRemoveChange(changes, sourceRoot.eClass().getEStructuralFeature("eClassifiers"),
                 removedClassifier);
-        ChangeAssert.assertContainsRemoveChange(changes, removedClassifier.eClass()
-                .getEStructuralFeature("eOperations"), removedOperation);
+        for (EAnnotation annotation : removedAnnotations) {
+            ChangeAssert.assertContainsRemoveChange(changes,
+                    removedClassifier.eClass().getEStructuralFeature("eAnnotations"), annotation);
+        }
     }
 
     @Test
@@ -115,7 +119,7 @@ public class ChangeDescription2ChangeConverterTestsBasicOperations extends
 
         List<Change> changes = getChangesAndEndRecording();
 
-        ChangeAssert.assertChangeListSize(changes, 2 * CHANGES_PER_SET);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, 2 * CHANGES_PER_SET);
         ChangeAssert.assertContainsAttributeChange(changes, exampleClass1.eClass().getEStructuralFeature("name"),
                 newName);
         ChangeAssert.assertContainsAttributeChange(changes, exampleClass1.eClass().getEStructuralFeature("abstract"),
@@ -130,7 +134,7 @@ public class ChangeDescription2ChangeConverterTestsBasicOperations extends
         exampleClass1.getEOperations().add(2, o1);
 
         List<Change> changes = getChangesAndEndRecording();
-        ChangeAssert.assertChangeListSize(changes, CHANGES_PER_LIST_MOVE_OP);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, CHANGES_PER_LIST_MOVE_OP);
         ChangeAssert.assertContainsListChange(changes, exampleClass1.eClass().getEStructuralFeature("eOperations"), o1,
                 exampleClass1, 1, false);
         ChangeAssert.assertContainsListChange(changes, exampleClass1.eClass().getEStructuralFeature("eOperations"), o1,
@@ -145,7 +149,7 @@ public class ChangeDescription2ChangeConverterTestsBasicOperations extends
         classWithoutOperations.getEOperations().add(newOperation);
 
         List<Change> changes = getChangesAndEndRecording();
-        ChangeAssert.assertChangeListSize(changes, CHANGES_PER_CREATEREMOVE);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, CHANGES_PER_CREATEREMOVE);
         ChangeAssert.assertContainsAddChange(changes,
                 classWithoutOperations.eClass().getEStructuralFeature("eOperations"), newOperation);
         ChangeAssert.assertContainsListChange(changes,
@@ -155,20 +159,21 @@ public class ChangeDescription2ChangeConverterTestsBasicOperations extends
 
     @Test
     public void removeAllInReferenceList() {
-        EClass exampleClass1 = (EClass) sourceRoot.getEClassifier("ExampleClass1");
+        EClass exampleClass3 = (EClass) sourceRoot.getEClassifier("ExampleClass3");
 
-        List<EOperation> originalList = new ArrayList<>(exampleClass1.getEOperations());
+        List<EAnnotation> originalList = new ArrayList<>(exampleClass3.getEAnnotations());
 
-        while (!exampleClass1.getEOperations().isEmpty()) {
-            exampleClass1.getEOperations().remove(0);
+        while (!exampleClass3.getEAnnotations().isEmpty()) {
+            exampleClass3.getEAnnotations().remove(0);
         }
 
         List<Change> changes = getChangesAndEndRecording();
 
-        ChangeAssert.assertChangeListSize(changes, CHANGES_PER_UNSET + originalList.size() * CHANGES_PER_CREATEREMOVE);
-        for (EOperation op : originalList) {
-            ChangeAssert.assertContainsListChange(changes, exampleClass1.eClass().getEStructuralFeature("eOperations"),
-                    op, exampleClass1, 0, false);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, CHANGES_PER_UNSET + originalList.size()
+                * CHANGES_PER_CREATEREMOVE);
+        for (EAnnotation op : originalList) {
+            ChangeAssert.assertContainsListChange(changes,
+                    exampleClass3.eClass().getEStructuralFeature("eAnnotations"), op, exampleClass3, 0, false);
         }
     }
 
@@ -181,7 +186,8 @@ public class ChangeDescription2ChangeConverterTestsBasicOperations extends
         exampleClass2.getEOperations().add(0, o1);
 
         List<Change> changes = getChangesAndEndRecording();
-        ChangeAssert.assertChangeListSize(changes, 2 * CHANGES_PER_LIST_ADD_DELOP + 1 * CHANGES_PER_SET);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, 2 * CHANGES_PER_LIST_ADD_DELOP + 1
+                * CHANGES_PER_SET);
         ChangeAssert.assertContainsListChange(changes, exampleClass1.eClass().getEStructuralFeature("eOperations"), o1,
                 exampleClass1, 0, false);
         ChangeAssert.assertContainsListChange(changes, exampleClass2.eClass().getEStructuralFeature("eOperations"), o1,
@@ -194,7 +200,7 @@ public class ChangeDescription2ChangeConverterTestsBasicOperations extends
         exampleClass1.eUnset(exampleClass1.eClass().getEStructuralFeature("name"));
 
         List<Change> changes = getChangesAndEndRecording();
-        ChangeAssert.assertChangeListSize(changes, CHANGES_PER_UNSET);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, CHANGES_PER_UNSET);
         ChangeAssert.assertContainsUnsetChange(changes, exampleClass1.eClass().getEStructuralFeature("name"),
                 exampleClass1);
     }
@@ -215,7 +221,7 @@ public class ChangeDescription2ChangeConverterTestsBasicOperations extends
         newParam.setEGenericType(type);
 
         List<Change> changes = getChangesAndEndRecording();
-        ChangeAssert.assertChangeListSize(changes, 2 * CHANGES_PER_CREATEREMOVE);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, 2 * CHANGES_PER_CREATEREMOVE);
         ChangeAssert
                 .assertContainsAddChange(changes, operation.eClass().getEStructuralFeature("eParameters"), newParam);
         ChangeAssert.assertContainsAddChange(changes, newParam.eClass().getEStructuralFeature("eGenericType"), type);
@@ -239,7 +245,7 @@ public class ChangeDescription2ChangeConverterTestsBasicOperations extends
         param.setEGenericType(newType);
 
         List<Change> changes = getChangesAndEndRecording();
-        ChangeAssert.assertChangeListSize(changes, 2 * CHANGES_PER_CREATEREMOVE);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, 2 * CHANGES_PER_CREATEREMOVE);
         ChangeAssert.assertContainsRemoveChange(changes, param.eClass().getEStructuralFeature("eGenericType"), type);
         ChangeAssert.assertContainsAddChange(changes, param.eClass().getEStructuralFeature("eGenericType"), newType);
 
@@ -247,19 +253,19 @@ public class ChangeDescription2ChangeConverterTestsBasicOperations extends
 
     @Test
     public void singleUnsetContainmentReferenceFeature() {
-        EClass exampleClass2 = (EClass) sourceRoot.getEClassifier("ExampleClass2");
-        List<EOperation> originalOperations = new ArrayList<>(exampleClass2.getEAllOperations());
-        assert originalOperations.size() > 0;
+        EClass exampleClass3 = (EClass) sourceRoot.getEClassifier("ExampleClass3");
+        List<EAnnotation> originalAnnotations = new ArrayList<>(exampleClass3.getEAnnotations());
+        assert originalAnnotations.size() > 0;
 
-        exampleClass2.eUnset(exampleClass2.eClass().getEStructuralFeature("eOperations"));
+        exampleClass3.eUnset(exampleClass3.eClass().getEStructuralFeature("eAnnotations"));
 
         List<Change> changes = getChangesAndEndRecording();
-        ChangeAssert.assertChangeListSize(changes, CHANGES_PER_UNSET + 2 * CHANGES_PER_CREATEREMOVE);
-        ChangeAssert.assertContainsUnsetChange(changes, exampleClass2.eClass().getEStructuralFeature("eOperations"),
-                exampleClass2);
-        for (EOperation op : originalOperations) {
-            ChangeAssert.assertContainsRemoveChange(changes, exampleClass2.eClass()
-                    .getEStructuralFeature("eOperations"), op);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, CHANGES_PER_UNSET + 3 * CHANGES_PER_CREATEREMOVE);
+        ChangeAssert.assertContainsUnsetChange(changes, exampleClass3.eClass().getEStructuralFeature("eOperations"),
+                exampleClass3);
+        for (EAnnotation op : originalAnnotations) {
+            ChangeAssert.assertContainsRemoveChange(changes,
+                    exampleClass3.eClass().getEStructuralFeature("eAnnotations"), op);
         }
     }
 }

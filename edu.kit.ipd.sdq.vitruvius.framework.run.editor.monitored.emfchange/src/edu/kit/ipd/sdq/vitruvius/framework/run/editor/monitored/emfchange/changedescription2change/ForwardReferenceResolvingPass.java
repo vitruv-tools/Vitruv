@@ -31,11 +31,10 @@ class ForwardReferenceResolvingPass implements IObjectChangePass {
 
     @Override
     public List<IObjectChange> runPass(Collection<IObjectChange> changes) {
-        return resolveForwardReferences(changes, addedObjects);
+        return resolveForwardReferences(changes);
     }
 
-    private List<IObjectChange> resolveForwardReferences(Collection<IObjectChange> containmentChanges,
-            Collection<EObject> addedObjects) {
+    private List<IObjectChange> resolveForwardReferences(Collection<IObjectChange> containmentChanges) {
 
         // 0. Make changes accessible by changed object.
         Map<EObject, List<IObjectChange>> changesByChanged = Util.getAffectedObjectMap(containmentChanges);
@@ -59,8 +58,6 @@ class ForwardReferenceResolvingPass implements IObjectChangePass {
                 addableContainerObjects.addAll(containerMap.get(head));
                 addableContainerObjects.retainAll(containerMap.keySet()); // TODO: optimize
             }
-
-            assert !processedContainers.contains(head) : "Detected a circular containment";
             processedContainers.add(head);
         }
         assert processedContainers.size() == containerMap.keySet().size() : "Failed to process all containers";

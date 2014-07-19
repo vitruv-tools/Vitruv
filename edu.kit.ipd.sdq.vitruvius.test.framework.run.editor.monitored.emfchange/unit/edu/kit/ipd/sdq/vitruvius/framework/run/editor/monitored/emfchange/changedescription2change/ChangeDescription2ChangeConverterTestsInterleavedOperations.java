@@ -3,6 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.chang
 import java.net.URL;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EOperation;
@@ -24,21 +25,23 @@ public class ChangeDescription2ChangeConverterTestsInterleavedOperations extends
 
     @Test
     public void deleteThenCreateOther() {
-        EClass newClass1 = EcoreFactory.eINSTANCE.createEClass();
-        EClass newClass2 = EcoreFactory.eINSTANCE.createEClass();
+        EAnnotation newAnnot1 = EcoreFactory.eINSTANCE.createEAnnotation();
+        EAnnotation newAnnot2 = EcoreFactory.eINSTANCE.createEAnnotation();
 
-        EClassifier removedClassifier = sourceRoot.getEClassifiers().remove(0);
-        sourceRoot.getEClassifiers().add(newClass1);
-        sourceRoot.getEClassifiers().add(newClass2);
+        EClassifier exampleClass3 = sourceRoot.getEClassifier("ExampleClass3");
+        EAnnotation removedAnnotation = exampleClass3.getEAnnotations().remove(0);
+
+        exampleClass3.getEAnnotations().add(newAnnot1);
+        exampleClass3.getEAnnotations().add(newAnnot2);
 
         List<Change> changes = getChangesAndEndRecording();
-        ChangeAssert.assertChangeListSize(changes, 3 * CHANGES_PER_CREATEREMOVE);
-        ChangeAssert.assertContainsRemoveChange(changes, sourceRoot.eClass().getEStructuralFeature("eClassifiers"),
-                removedClassifier);
-        ChangeAssert.assertContainsAddChange(changes, sourceRoot.eClass().getEStructuralFeature("eClassifiers"),
-                newClass1);
-        ChangeAssert.assertContainsAddChange(changes, sourceRoot.eClass().getEStructuralFeature("eClassifiers"),
-                newClass2);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, 3 * CHANGES_PER_CREATEREMOVE);
+        ChangeAssert.assertContainsRemoveChange(changes, sourceRoot.eClass().getEStructuralFeature("eAnnotations"),
+                removedAnnotation);
+        ChangeAssert.assertContainsAddChange(changes, sourceRoot.eClass().getEStructuralFeature("eAnnotations"),
+                newAnnot1);
+        ChangeAssert.assertContainsAddChange(changes, sourceRoot.eClass().getEStructuralFeature("eAnnotations"),
+                newAnnot2);
     }
 
     @Test
@@ -56,7 +59,7 @@ public class ChangeDescription2ChangeConverterTestsInterleavedOperations extends
         targetClass.getEOperations().add(operation2);
 
         List<Change> changes = getChangesAndEndRecording();
-        ChangeAssert.assertChangeListSize(changes, 3 * CHANGES_PER_CREATEREMOVE + 2 * CHANGES_PER_SET);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, 3 * CHANGES_PER_CREATEREMOVE + 2 * CHANGES_PER_SET);
         ChangeAssert.assertContainsAddChange(changes, sourceRoot.eClass().getEStructuralFeature("eClassifiers"),
                 newClass);
         ChangeAssert
@@ -73,18 +76,21 @@ public class ChangeDescription2ChangeConverterTestsInterleavedOperations extends
 
     @Test
     public void interleavedSetAndDelete() {
-        EClass removedClassifier = (EClass) sourceRoot.getEClassifier("ExampleClass1");
-        EOperation removedOperation = removedClassifier.getEOperations().remove(0);
-        sourceRoot.setName("Foo");
-        sourceRoot.getEClassifiers().remove(removedClassifier);
-        sourceRoot.setNsPrefix("Bar");
+        EClass exampleClass3 = (EClass) sourceRoot.getEClassifier("ExampleClass3");
+        EAnnotation removedAnnotation1 = exampleClass3.getEAnnotations().get(0);
+        EAnnotation removedAnnotation2 = exampleClass3.getEAnnotations().get(1);
+
+        exampleClass3.setName("Foo");
+        exampleClass3.getEAnnotations().remove(removedAnnotation1);
+        exampleClass3.setAbstract(true);
+        exampleClass3.getEAnnotations().remove(removedAnnotation2);
 
         List<Change> changes = getChangesAndEndRecording();
-        ChangeAssert.assertChangeListSize(changes, 2 * CHANGES_PER_CREATEREMOVE + 2 * CHANGES_PER_SET);
-        ChangeAssert.assertContainsRemoveChange(changes, sourceRoot.eClass().getEStructuralFeature("eClassifiers"),
-                removedClassifier);
-        ChangeAssert.assertContainsRemoveChange(changes, removedClassifier.eClass()
-                .getEStructuralFeature("eOperations"), removedOperation);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, 2 * CHANGES_PER_CREATEREMOVE + 2 * CHANGES_PER_SET);
+        ChangeAssert.assertContainsRemoveChange(changes, sourceRoot.eClass().getEStructuralFeature("eAnnotations"),
+                removedAnnotation1);
+        ChangeAssert.assertContainsRemoveChange(changes, sourceRoot.eClass().getEStructuralFeature("eAnnotations"),
+                removedAnnotation2);
         ChangeAssert.assertAllAddRemoveBeforeSetAttribute(changes);
     }
 }
