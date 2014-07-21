@@ -161,6 +161,7 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
             @Override
             protected void onSavedResource(final ChangeDescription changeDescription) {
                 LOGGER.trace("Received change description " + changeDescription);
+                final List<List<Change>> changes = new ArrayList<>();
                 // The following code needs to be executed within the editor's
                 // context because even though it does not change the EMF model
                 // in the sense of equality, it does apply changes to the EMF
@@ -170,10 +171,12 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
                     @Override
                     public void run() {
                         changeDescription.applyAndReverse();
-                        triggerSynchronization(changeDescription, editorPart.getMonitoredResource());
+                        changes.add(getChangeList(changeDescription, editorPart.getMonitoredResource()));
                         changeDescription.applyAndReverse();
                     }
                 });
+                assert changes.size() == 1;
+                triggerSynchronization(changes.get(0), editorPart.getMonitoredResource());
             }
         };
 
@@ -213,15 +216,22 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
         editorManagementListenerMgr.dispose();
     }
 
-    private void triggerSynchronization(ChangeDescription changeDescription, Resource resource) {
+    private List<Change> getChangeList(ChangeDescription changeDescription, Resource resource) {
         if (changeDescription.getObjectChanges().isEmpty()) {
             LOGGER.debug("Not triggering synchronization for " + resource.getURI() + ": No changes detected.");
+            return new ArrayList<Change>();
         } else {
             LOGGER.debug("Triggering synchronization for change description " + changeDescription + " on resource "
                     + resource.getURI());
             ChangeDescription2ChangeConverter converter = new ChangeDescription2ChangeConverter();
-            List<Change> changes = converter.getChanges(changeDescription);
+            return converter.getChanges(changeDescription);
+        }
+    }
 
+    private void triggerSynchronization(List<Change> changes, Resource resource) {
+        if (changes.isEmpty()) {
+            LOGGER.debug("Not triggering synchronization for " + resource.getURI() + ": No changes detected.");
+        } else {
             VURI uri = VURI.getInstance(resource);
             LOGGER.trace("Triggering synchronization for VURI " + uri.toString());
             changeSynchronizing.synchronizeChanges(changes, uri, resource);
