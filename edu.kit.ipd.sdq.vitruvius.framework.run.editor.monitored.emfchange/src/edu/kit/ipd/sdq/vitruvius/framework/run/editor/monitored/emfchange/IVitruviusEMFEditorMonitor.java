@@ -55,7 +55,9 @@ public interface IVitruviusEMFEditorMonitor {
     }
 
     /**
-     * Synchronizes the collected changes for a given resource URI.
+     * Synchronizes the collected changes for a given resource URI. The resource's time stamp is
+     * recorded, with all subsequently registered changes up to that time stamp being automatically
+     * synchronized.
      * 
      * @param resourceURI
      *            The URI of the model whose changes are to be synchronized.

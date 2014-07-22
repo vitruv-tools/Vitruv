@@ -55,6 +55,8 @@ public interface IEditorPartAdapterFactory {
          * @param toBeExecuted
          *            A {@link Runnable} to be executed within the adapted editor's context.
          */
-        public void executeCommand(Runnable toBeExecuted);
+        public void executeCommand(Runnable toBeExecuted); // TODO: rename such that it is clear
+                                                           // that the Runnable must leave the EMF
+                                                           // models unaltered
     }
 }

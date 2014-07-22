@@ -19,16 +19,16 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEdito
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory.IEditorPartAdapter;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.ISynchronizingMonitoredEmfEditor;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
-import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.EclipseAdapterProvider;
-import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.IEclipseAdapter;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.mocking.EclipseMock;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.mocking.EclipseMock.SaveEventKind;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.testmodels.Files;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.BasicTestCase;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.ChangeAssert;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.DefaultImplementations;
-import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.EnsureExecuted;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.DefaultImplementations.TestChangeSynchronizing;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.EnsureExecuted;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.EclipseAdapterProvider;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.IEclipseAdapter;
 
 public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
     private EclipseMock eclipseMockCtrl;
@@ -60,6 +60,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(
                 DefaultImplementations.EFFECTLESS_EXTERNAL_CHANGESYNC,
                 DefaultImplementations.DEFAULT_MODEL_COPY_PROVIDING, va);
+        syncMgr.disableSynchronizationLagRecognition();
         syncMgr.initialize();
 
         eclipseMockCtrl.openNewEMFTreeEditorPart(modelURL);
@@ -79,6 +80,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory, cs,
                 DefaultImplementations.DEFAULT_MODEL_COPY_PROVIDING,
                 DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
+        syncMgr.disableSynchronizationLagRecognition();
         syncMgr.initialize();
 
         IEditorPart editorPart = eclipseMockCtrl.openNewEMFTreeEditorPart(Files.EXAMPLEMODEL_ECORE);
@@ -100,6 +102,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory, cs,
                 DefaultImplementations.DEFAULT_MODEL_COPY_PROVIDING,
                 DefaultImplementations.NONE_ACCEPTING_VITRUV_ACCESSOR);
+        syncMgr.disableSynchronizationLagRecognition();
         syncMgr.initialize();
 
         IEditorPart editorPart = eclipseMockCtrl.openNewEMFTreeEditorPart(Files.EXAMPLEMODEL_ECORE);
@@ -119,6 +122,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory, cs,
                 DefaultImplementations.DEFAULT_MODEL_COPY_PROVIDING,
                 DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
+        syncMgr.disableSynchronizationLagRecognition();
         syncMgr.initialize();
 
         IEditorPart editorPart = eclipseMockCtrl.openNewEMFTreeEditorPart(Files.EXAMPLEMODEL_ECORE);
@@ -146,6 +150,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory, cs,
                 DefaultImplementations.DEFAULT_MODEL_COPY_PROVIDING,
                 DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
+        syncMgr.disableSynchronizationLagRecognition();
         syncMgr.initialize();
 
         IEditorPart editorPart1 = eclipseMockCtrl.openNewEMFTreeEditorPart(Files.EXAMPLEMODEL_ECORE);
@@ -191,6 +196,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory,
                 DefaultImplementations.EFFECTLESS_EXTERNAL_CHANGESYNC,
                 DefaultImplementations.DEFAULT_MODEL_COPY_PROVIDING, va);
+        syncMgr.disableSynchronizationLagRecognition();
         syncMgr.initialize();
 
         eclipseMockCtrl.openNewEMFTreeEditorPart(Files.EXAMPLEMODEL_ECORE);
@@ -209,6 +215,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
                 DefaultImplementations.EFFECTLESS_EXTERNAL_CHANGESYNC,
                 DefaultImplementations.DEFAULT_MODEL_COPY_PROVIDING,
                 DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
+        syncMgr.disableSynchronizationLagRecognition();
         syncMgr.initialize();
         ISynchronizingMonitoredEmfEditor listener = syncMgr.getChangeRecorderMonitor();
 

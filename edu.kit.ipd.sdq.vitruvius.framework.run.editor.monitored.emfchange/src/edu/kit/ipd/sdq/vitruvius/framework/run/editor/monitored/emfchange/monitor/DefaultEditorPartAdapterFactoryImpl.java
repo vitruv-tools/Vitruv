@@ -179,6 +179,7 @@ public class DefaultEditorPartAdapterFactoryImpl implements IEditorPartAdapterFa
                     }
                 };
                 getEditingDomain().getCommandStack().execute(rc);
+                getEditingDomain().getCommandStack().undo();
             } else {
                 // EMF tree editors use regular editing domains, thus the
                 // Runnable can be executed directly.

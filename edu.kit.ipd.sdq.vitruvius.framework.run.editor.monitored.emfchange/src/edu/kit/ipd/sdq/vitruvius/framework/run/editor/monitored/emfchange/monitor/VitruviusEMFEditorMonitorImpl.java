@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ui.IEditorPart;
 
@@ -14,6 +15,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelCopyProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.EditorNotMonitorableException;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory.IEditorPartAdapter;
@@ -32,7 +34,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.
  * Whenever the user saves the model, the changes since the last save event rsp. the beginning of
  * the editing session are passed to the provided {@link ChangeSynchronizing} object.
  * 
- * TODO: Logging.
  */
 public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor {
 
@@ -56,6 +57,16 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
     private final Map<VURI, BufferModel> bufferModels;
 
     private final ChangeSynchronizing summaryChangeSynchronizing;
+
+    private final Map<VURI, Long> lastSynchronizationRequestTimestamps;
+
+    /**
+     * Setting this flag to <code>true</code> disables timestamp-based recognition of
+     * synchronization lags, i.e. situations when triggerSynchronization() is called for a file
+     * before all corresponding changes for that have been applied to that file up to the point of
+     * (file modification) time of calling triggerSynchronization().
+     */
+    private boolean isSynchronizationLagRecognitionDisabled = false;
 
     /** This object determines whether an adaptable IEditorPart is monitored. */
     private final IMonitoringDecider monitoringDecider = new IMonitoringDecider() {
@@ -87,6 +98,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
         this.editorPartAdapterFactory = factory;
         this.bufferModels = new HashMap<>();
         this.summaryChangeSynchronizing = changeSync;
+        this.lastSynchronizationRequestTimestamps = new HashMap<>();
     }
 
     /**
@@ -108,11 +120,30 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
         this(new DefaultEditorPartAdapterFactoryImpl(), changeSync, modelCopyProviding, vitruvAccessor);
     }
 
+    private boolean isPendingSynchronizationRequest(VURI resourceURI) {
+        if (isSynchronizationLagRecognitionDisabled) {
+            return false;
+        }
+
+        synchronized (lastSynchronizationRequestTimestamps) {
+            if (lastSynchronizationRequestTimestamps.containsKey(resourceURI)) {
+                IFile resourceFile = EMFBridge.getIFileForEMFUri(resourceURI.getEMFUri());
+                long currentSynchroTimestamp = resourceFile.getModificationStamp();
+                return currentSynchroTimestamp <= lastSynchronizationRequestTimestamps.get(resourceURI);
+            } else {
+                return false;
+            }
+        }
+    }
+
     private void appendChanges(List<Change> changes, VURI sourceModelURI, Resource changesOrigin) {
         if (!bufferModels.containsKey(sourceModelURI)) {
             throw new IllegalStateException("No buffer model exists for " + sourceModelURI);
         }
         bufferModels.get(sourceModelURI).incorporateChanges(changes, changesOrigin);
+        if (isPendingSynchronizationRequest(sourceModelURI)) {
+            triggerSynchronisation(sourceModelURI);
+        }
     }
 
     private ResourceChangeSynchronizing createInternalChangeSynchronizing() {
@@ -221,14 +252,45 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
         return this.changeRecorderMonitor;
     }
 
+    private void updateSynchronizationTimestamp(VURI resourceURI) {
+        if (isSynchronizationLagRecognitionDisabled) {
+            return;
+        }
+
+        long currentSynchroTimestamp;
+        IFile resourceFile;
+        synchronized (lastSynchronizationRequestTimestamps) {
+            resourceFile = EMFBridge.getIFileForEMFUri(resourceURI.getEMFUri());
+            currentSynchroTimestamp = resourceFile.getModificationStamp();
+            lastSynchronizationRequestTimestamps.put(resourceURI, currentSynchroTimestamp);
+
+        }
+        LOGGER.trace("Setting synchronization timestamp for " + resourceFile + " to " + currentSynchroTimestamp);
+    }
+
     @Override
     public void triggerSynchronisation(final VURI resourceURI) {
+        updateSynchronizationTimestamp(resourceURI);
         if (bufferModels.containsKey(resourceURI)) {
-            LOGGER.trace("Got changes for " + resourceURI + ", continuing synchronization.");
+            LOGGER.trace("Got a change buffer for " + resourceURI + ", continuing synchronization.");
             List<Change> changes = bufferModels.get(resourceURI).createBufferChangeSnapshot();
             summaryChangeSynchronizing.synchronizeChanges(changes, resourceURI);
         } else {
-            LOGGER.trace("No changes for " + resourceURI + ", aborting synchronization.");
+            LOGGER.trace("No change buffer for " + resourceURI + ", aborting synchronization.");
         }
+    }
+
+    /**
+     * Calling this method timestamp-based recognition of synchronization lags, i.e. situations when
+     * triggerSynchronization() is called for a file before all corresponding changes for that have
+     * been applied to that file up to the point of (file modification) time of calling
+     * triggerSynchronization().
+     * 
+     * This method should ONLY be called from single-threaded testing code.
+     */
+    protected void disableSynchronizationLagRecognition() {
+        LOGGER.warn("Disabling the timestamp-based recognition of synchronization lag. This is only okay"
+                + " in single-threaded testing environments.");
+        isSynchronizationLagRecognitionDisabled = true;
     }
 }
