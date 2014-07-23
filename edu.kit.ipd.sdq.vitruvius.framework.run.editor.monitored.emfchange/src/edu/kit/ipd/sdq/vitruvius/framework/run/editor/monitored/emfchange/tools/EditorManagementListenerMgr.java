@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPageListener;
 import org.eclipse.ui.IPartListener2;
@@ -20,6 +21,8 @@ import org.eclipse.ui.IWorkbenchWindow;
  * {@link IEditorManagementListener}s.
  */
 public class EditorManagementListenerMgr {
+
+    private static final Logger LOGGER = Logger.getLogger(EditorManagementListenerMgr.class);
 
     private final Map<IEditorManagementListener, IPartListener2> listeners = new HashMap<>();
     private final IEclipseAdapter eclipseAdapter = EclipseAdapterProvider.getInstance().getEclipseAdapter();
@@ -110,7 +113,12 @@ public class EditorManagementListenerMgr {
 
     private void disposeWindowListener(IWorkbenchWindow window) {
         IPageListener pageListener = workbenchWindowListeners.get(window);
-        window.removePageListener(pageListener);
+        try {
+            window.removePageListener(pageListener);
+        } catch (IllegalArgumentException e) {
+            LOGGER.trace("A workbench page listener could not be removed from a workbench window "
+                    + "since the listener was not present anymore.");
+        }
         workbenchWindowListeners.remove(window);
     }
 
