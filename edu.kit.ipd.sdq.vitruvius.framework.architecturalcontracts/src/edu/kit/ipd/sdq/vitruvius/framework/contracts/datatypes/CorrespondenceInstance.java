@@ -426,7 +426,13 @@ public class CorrespondenceInstance extends ModelInstance {
      */
     public void removeCorrespondenceAndAllDependentCorrespondences(final Correspondence correspondence) {
         Set<Correspondence> dependencyList = new HashSet<Correspondence>();
-        removeCorrespondenceAndAllDependentCorrespondences(correspondence, dependencyList);
+        Set<Correspondence> deletionList = new HashSet<Correspondence>();
+        markCorrespondenceAndAllDependentCorrespondences(correspondence, dependencyList, deletionList);
+        for (Correspondence markedCorrespondence : deletionList) {
+            removeCorrespondenceFromMaps(markedCorrespondence);
+            EcoreUtil.remove(markedCorrespondence);
+            setChangeAfterLastSaveFlag();
+        }
     }
 
     /**
@@ -435,9 +441,10 @@ public class CorrespondenceInstance extends ModelInstance {
      * 
      * @param correspondence
      * @param dependencyList
+     * @param deletionList
      */
-    private void removeCorrespondenceAndAllDependentCorrespondences(final Correspondence correspondence,
-            final Set<Correspondence> dependencyList) {
+    private void markCorrespondenceAndAllDependentCorrespondences(final Correspondence correspondence,
+            final Set<Correspondence> dependencyList, final Set<Correspondence> deletionList) {
         if (null == correspondence || null == correspondence.getDependentCorrespondences()) {
             return;
         }
@@ -445,12 +452,10 @@ public class CorrespondenceInstance extends ModelInstance {
         for (Correspondence dependentCorrespondence : correspondence.getDependentCorrespondences()) {
             if (null != dependentCorrespondence && !dependencyList.contains(dependentCorrespondence)) {
                 removeCorrespondenceFromMaps(dependentCorrespondence);
-                removeCorrespondenceAndAllDependentCorrespondences(dependentCorrespondence, dependencyList);
+                markCorrespondenceAndAllDependentCorrespondences(dependentCorrespondence, dependencyList, deletionList);
             }
         }
-        removeCorrespondenceFromMaps(correspondence);
-        EcoreUtil.remove(correspondence);
-        setChangeAfterLastSaveFlag();
+        deletionList.add(correspondence);
     }
 
     private void removeCorrespondenceFromMaps(final Correspondence possibleChildCorrespondence) {
