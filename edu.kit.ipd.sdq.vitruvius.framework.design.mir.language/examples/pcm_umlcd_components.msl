@@ -1,0 +1,119 @@
+/** 
+* BASIC COMPONENT <-> PKG AND CLASS
+*/
+// mappings
+map repo::BasicComponent to umlcd::Package { 
+   when nestingPackage.name = 'Repository' $\label{ln:nestPkgRestr}$
+   with entityName:String to name:String $\label{ln:pgk2compName}$
+}
+  
+map c:umlcd::Class to bc:repo::BasicComponent { $\label{ln:class2comp}$
+   when visibility = VisibilityKind::public $\label{ln:class2compPublic}$
+      && isAbstract = true
+      && package::Package corresponds bc $\label{ln:class2compIfPkgMapped}$
+   // interface realizations to provided roles
+   with interfaceRealization:InterfaceRealization. $\label{ln:class2compIReal2ProvRol}$
+contract:Interface as realizedI 
+      to providedRoles:ProvidedRole.
+providedInterface:Interface as providedI {
+      when realizedI corresponds providedI
+  	     ...
+      }
+  // operations to provided signatures
+  with ownedOperation:Operation $\label{ln:class2compOwnOp2PI.sig}$
+      to providedI.signatures:OperationSignature {
+  ...
+  // private associations to required roles
+  with association:Association
+    as reqAssoc
+      to requiredRoles.requiredInterface:Interface
+    as requiredI {
+    	when visibility = private
+        && reqAssoc.memberEnd::Property.type corresponds requiredI
+  }
+  // constructor parameters to required roles
+  within ownedOperation:Operation {
+    name = 'create' + c.name.toFirstUpper()
+    map ownedParameter:Parameter to requiredI
+      with ownedParameter.type:Type to requiredI
+      and name = requiredI.entityName
+  }
+} 
+  
+// invariants
+context repo:Repository
+inv uniqueComponentNames(c:repo::BasicComponent,
+			d:repo::BasicComponent):
+ self.components$\hspace{-0.2ex}$-$\hspace{-0.3ex}$>forAll(c,d | 
+ 	c <> d implies $\hspace{-0.6ex}$c.entityName <> d.entityName)  
+  
+// global variable
+var componentNameCount : Map<String,Integer>  
+  
+// responses
+on creation of class:umlcd::Class
+restore inv uniqueComponentNames(c:repo::BasicComponent,
+				d:repo::BasicComponent)
+by { 
+  var occurrences = componentNameCount.get(c.entityName)
+  occurrences = (occurrences == null) ? 2 : occurrences++
+  componentNameCount.put(c.entityName, occurrences)
+  class.name = c.entityName + occurrences + 'Comp'
+}
+ 
+ 
+ // further invariants
+ context repo:BasicComponent
+inv uniqueProvidedSignatures(s::repo:OperationSignature):
+  let sigs : Bag(
+    Tuple(returnType : repo::DataType, serviceName : String, parameters : Sequence(repo::DataType) ) 
+  ) = 
+  self.providedRoles->providedInterface->signatures->collect(sig : repo::OperationSignature |
+    Tuple{
+      returnType : repo::DataType = sig.returnType,
+      serviceName : String = sig.entityName,
+      parameters : Sequence(repo::DataType) = sig.parameters.dataType
+    }
+  )
+  in
+  sigs->isUnique(s|s)
+  
+  % TODO find a way to map a parameter in the constructor to a required role without mapping the complete constructor to anything!
+  
+  
+  
+mm hints for implementation
+==============================
+ ownedParameter is defined in BehavioralFeature
+ visibility is defined in NamedElement
+ isAbstract is defined in Classifier
+ ownedType is defined in Package
+ package is defined in Type and the opposite of Package.ownedType
+ interfaceRealization is defined in BehavioredClassifier
+ providedRoles is defined in InterfaceProvidingEntity
+ providedInterface is defined for ProvidedRole in the TechReport but not in the MM!
+ association is defined in Class
+ 
+ 
+OCL
+===
+name : Type
+ReturnType::methodName
+mm::pkg::Type
+ 
+ 
+details of kastel2 solution:
+============================
+
+a PCM-Repository is a 00-Package
+PCM-Interfaces of a PCM-Repository are public 00-Interfaces in the 00-Package of the repository => constaint1: PCM-Interface names must be unique per repository
+PCM-Signatures of PCM-Interfaces are 00-methods in the corresponding 00-Interface
+
+a PCM-Component of a PCM-Repository is a 00-Subpackage in the 00-Package of the repository => constraint2: PCM-Component names must be unique per repository
+	a PCM-Component is also a non-abstract, public 00-Class in the component 00-package
+a provided role of a PCM-Component is an implementation-relationship between the 00-Class corresponding to the component and the 00-interface corresponding to the PCM-Interface
+	a provided role of a PCM-Component is also the set of empty 00-method-bodies (in the corresponding 00-class) for all PCM-Signatures of the provided interface => constraint3: the intersection of all signatures of the interfaces of provided roles must be empty for every component (names or parameters or return types may be the same but never the combination of all these)
+a required role of a PCM-Component is a private, final field (in the corresponding 00-class) that is typed with the 00-interface of the required role
+	the set of all required roles of a PCM-Component is a public constructor of the corresponding 00-class that takes a parameter for every provided interface and sets the corresponding field
+
+  
