@@ -1,6 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.VitruviusConstants;
@@ -19,26 +21,19 @@ public class TUID {
     private ForwardHashedBackwardLinkedTree<String>.Segment lastSegment;
 
     /** Multiton classes should not have a public or default constructor. */
-    private TUID(final String[] splitTUIDString) {
-        this.lastSegment = SEGMENTS.add(splitTUIDString);
-    }
-
-    public TUID(final String[] splitTUIDString, final ForwardHashedBackwardLinkedTree<String>.Segment prefix) {
-        this.lastSegment = SEGMENTS.prepend(splitTUIDString, prefix);
+    private TUID(final List<String> splitTUIDString) {
+        this.lastSegment = SEGMENTS.addNewSegmentsWhereNecessary(splitTUIDString);
     }
 
     public static synchronized TUID getInstance(final String tuidString) {
         if (tuidString == null) {
             throw new RuntimeException("The null string is no TUID!");
         } else {
-            String[] splitTUIDString = split(tuidString);
+            List<String> splitTUIDString = split(tuidString);
             ForwardHashedBackwardLinkedTree<String>.Segment lastSegmentOrPrefix = SEGMENTS
                     .getMaximalPrefix(splitTUIDString);
             TUID instance;
-            if (lastSegmentOrPrefix == null) {
-                // neither the specified tuidString nor a prefix of it was mapped so far
-                instance = new TUID(splitTUIDString);
-            } else if (lastSegmentOrPrefix.toString().equals(tuidString)) {
+            if (lastSegmentOrPrefix != null && lastSegmentOrPrefix.toString().equals(tuidString)) {
                 // the complete specified tuidString was already mapped
                 instance = LAST_SEGMENT_2_TUID_INSTANCES_MAP.get(lastSegmentOrPrefix);
                 if (instance == null) {
@@ -47,27 +42,46 @@ public class TUID {
                 } else {
                     return instance;
                 }
-            } else {
-                // a real prefix of the specified tuidString was already mapped (but not the
-                // complete tuidString)
-                instance = new TUID(splitTUIDString, lastSegmentOrPrefix);
-            }
+            } // a real prefix of the specified tuidString or nothing was already mapped (but not
+              // the complete tuidString)
+            instance = new TUID(splitTUIDString);
             LAST_SEGMENT_2_TUID_INSTANCES_MAP.put(instance.getLastSegment(), instance);
             return instance;
         }
     }
 
-    private static String[] split(final String tuidString) {
+    private static List<String> split(final String tuidString) {
         String seperator = VitruviusConstants.getTUIDSegmentSeperator();
-        return tuidString.split(seperator);
+        // TODO replace this possibly ArrayList with a LinkList if performance is not sufficient
+        return Arrays.asList(tuidString.split(seperator));
     }
 
     protected ForwardHashedBackwardLinkedTree<String>.Segment getLastSegment() {
         return this.lastSegment;
     }
 
+    // If a package is renamed in Java, then only the paths of all contained classifiers are
+    // affected. The paths of subpackages are not affected but they are no longer subpackages.
+    // If a package is renamed in Java, then the depth of its path may change arbitrarily.
+    //
+    // If a folder is renamed, then the paths of all contained elements are affected but the depth
+    // may not change.
+    //
+    // If a package is moved in Java, then it may only be completely moved to another folder and
+    // subpackages are not affected. It is not possible to move subpackages to another package. It
+    // is however possible to move a package to a folder in which the package or a subpackage is
+    // already existing, then the packages are merged.
+    //
+    // If a folder is moved, then the paths of all contained elements are affected and the depth may
+    // change. If the destination folder already exists the containing elements of both folders are
+    // merged.
+
+    public void renameLastSegment(final String newLastSegmentString) {
+        SEGMENTS.changeSegmentValue(this.lastSegment, newLastSegmentString);
+    }
+
     @Override
     public String toString() {
-        return this.lastSegment.toString();
+        return this.lastSegment.toString(VitruviusConstants.getTUIDSegmentSeperator());
     }
 }
