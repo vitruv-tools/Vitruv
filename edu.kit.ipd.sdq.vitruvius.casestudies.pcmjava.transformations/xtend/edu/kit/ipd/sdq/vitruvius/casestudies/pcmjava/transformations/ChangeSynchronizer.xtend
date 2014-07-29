@@ -4,7 +4,6 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.Cl
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.BasicComponentMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.OperationInterfaceMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.RepositoryMappingTransformation
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableHashMap
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableMap
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateNonRootEObject
@@ -20,6 +19,8 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.InterfaceMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.PackageMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceImpl
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 
 public class ChangeSynchronizer {
 

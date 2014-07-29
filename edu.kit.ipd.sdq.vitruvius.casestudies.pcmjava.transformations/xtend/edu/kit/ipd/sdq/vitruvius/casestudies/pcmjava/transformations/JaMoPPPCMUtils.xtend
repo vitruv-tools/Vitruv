@@ -1,11 +1,11 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import java.util.Set
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.classifiers.Classifier
 import org.emftext.language.java.containers.Package
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 
 class JaMoPPPCMUtils {
 	private new(){}

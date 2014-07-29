@@ -13,6 +13,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.JaMoPPTUIDCalculatorAndReso
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ChangeSynchronizer;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
@@ -51,7 +52,7 @@ public class JaMoPPPCMTransformationTest {
         final VURI correspondenceInstanceURI = VURI.getInstance("/tmp/correspondenceInstance" + "_"
                 + nrOfCorrespondenceInstances++ + ".xmi");
         final Resource resource = resourceSet.createResource(correspondenceInstanceURI.getEMFUri());
-        this.correspondenceInstance = new CorrespondenceInstance(mapping, correspondenceInstanceURI, resource);
+        this.correspondenceInstance = new CorrespondenceInstanceImpl(mapping, correspondenceInstanceURI, resource);
         changeSynchronizer.setCorrespondenceInstance(this.correspondenceInstance);
 
     }

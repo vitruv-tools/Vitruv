@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.EObjectMappingTransformation
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
@@ -13,6 +12,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespond
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory
 import de.uka.ipd.sdq.pcm.repository.BasicComponent
 import org.apache.log4j.Logger
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 
 class PackageMappingTransformation extends EObjectMappingTransformation {
 	

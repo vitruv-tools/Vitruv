@@ -3,10 +3,10 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableMap
 import org.eclipse.emf.ecore.EStructuralFeature
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableHashMap
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 
 abstract class EObjectMappingTransformation {
 
