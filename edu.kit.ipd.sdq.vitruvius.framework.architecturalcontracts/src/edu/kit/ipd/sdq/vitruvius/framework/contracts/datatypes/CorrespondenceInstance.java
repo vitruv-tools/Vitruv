@@ -536,14 +536,16 @@ public class CorrespondenceInstance extends ModelInstance {
 
         Set<Set<FeatureInstance>> correspondenceSetsWithFIofOldTUID = this.tuid2CorrespondenceSetsWithComprisedFeatureInstanceMap
                 .get(oldTUID);
-        for (Set<FeatureInstance> correspondenceSetWithFIofOldTUID : correspondenceSetsWithFIofOldTUID) {
-            for (FeatureInstance featureInstance : correspondenceSetWithFIofOldTUID) {
-                if (oldFeatureInstances.contains(featureInstance)) {
-                    // featureInstance belongs to oldTUID
-                    correspondenceSetWithFIofOldTUID.remove(featureInstance);
-                    EStructuralFeature feature = featureInstance.getFeature();
-                    FeatureInstance newFeatureInstance = FeatureInstance.getInstance(newEObject, feature);
-                    correspondenceSetWithFIofOldTUID.add(newFeatureInstance);
+        if (correspondenceSetsWithFIofOldTUID != null) {
+            for (Set<FeatureInstance> correspondenceSetWithFIofOldTUID : correspondenceSetsWithFIofOldTUID) {
+                for (FeatureInstance featureInstance : correspondenceSetWithFIofOldTUID) {
+                    if (oldFeatureInstances.contains(featureInstance)) {
+                        // featureInstance belongs to oldTUID
+                        correspondenceSetWithFIofOldTUID.remove(featureInstance);
+                        EStructuralFeature feature = featureInstance.getFeature();
+                        FeatureInstance newFeatureInstance = FeatureInstance.getInstance(newEObject, feature);
+                        correspondenceSetWithFIofOldTUID.add(newFeatureInstance);
+                    }
                 }
             }
         }
