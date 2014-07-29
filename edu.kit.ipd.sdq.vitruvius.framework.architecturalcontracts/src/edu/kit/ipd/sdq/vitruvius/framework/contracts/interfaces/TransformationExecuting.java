@@ -13,7 +13,8 @@ public interface TransformationExecuting {
     /** The extension point ID. **/
     String ID = "edu.kit.ipd.sdq.vitruvius.framework.contracts.transformationexecuting";
 
-    EMFChangeResult executeTransformation(Change change, ModelInstance sourceModel, CorrespondenceInstance correspondenceInstance);
+    EMFChangeResult executeTransformation(Change change, ModelInstance sourceModel,
+            CorrespondenceInstance correspondenceInstance);
 
     List<Pair<VURI, VURI>> getTransformableMetamodels();
 }

@@ -17,9 +17,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MappingManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ProjectPreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ViewTypeManaging;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableConcatHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableConcatMap;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableHashMap;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableLexicographicalConcatHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableMap;
 
 public class MetaRepositoryImpl implements MetamodelManaging, ViewTypeManaging, MappingManaging, ProjectPreparing,
@@ -43,7 +43,7 @@ public class MetaRepositoryImpl implements MetamodelManaging, ViewTypeManaging, 
         this.uri2MetamodelMap = new ClaimableHashMap<VURI, Metamodel>();
         this.fileExtension2MetamodelMap = new HashMap<String, Metamodel>();
         this.uri2ViewTypeMap = new ClaimableHashMap<VURI, ViewType>();
-        this.uris2MappingMap = new ClaimableConcatHashMap<VURI, Mapping>();
+        this.uris2MappingMap = new ClaimableLexicographicalConcatHashMap<VURI, Mapping>();
     }
 
     @Override

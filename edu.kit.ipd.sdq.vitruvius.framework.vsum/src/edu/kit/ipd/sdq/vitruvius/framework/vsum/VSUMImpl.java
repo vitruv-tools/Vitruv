@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Invariants;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
@@ -184,7 +185,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
                 VURI correspondencesVURI = FileSystemHelper.getCorrespondencesVURI(mmURIs);
                 FileSystemHelper.saveCorrespondenceInstanceMMURIs(mmURIs);
                 Resource correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri());
-                correspondenceInstance = new CorrespondenceInstance(mapping, correspondencesVURI,
+                correspondenceInstance = new CorrespondenceInstanceImpl(mapping, correspondencesVURI,
                         correspondencesResource);
                 this.mapping2CorrespondenceInstanceMap.put(mapping, correspondenceInstance);
             }
