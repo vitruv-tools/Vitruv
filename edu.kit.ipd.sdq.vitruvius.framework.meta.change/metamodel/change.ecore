@@ -2,167 +2,314 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="change" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/1.0"
     nsPrefix="change">
+  <eAnnotations source="FIX ALL NS URIS"/>
   <eClassifiers xsi:type="ecore:EClass" name="EChange" abstract="true"/>
-  <eClassifiers xsi:type="ecore:EClass" name="EObjectChange" abstract="true" eSuperTypes="#//EChange">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="changedEObject" lowerBound="1"
-        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EFeatureChange" abstract="true" eSuperTypes="#//EChange">
-    <eTypeParameters name="T">
-      <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
-    </eTypeParameters>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="affectedFeature" lowerBound="1">
-      <eGenericType eTypeParameter="#//EFeatureChange/T"/>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="affectedEObject" lowerBound="1"
-        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="UpdateEFeature" abstract="true">
-    <eTypeParameters name="T">
-      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
-    </eTypeParameters>
-    <eOperations name="getNewValue" lowerBound="1">
-      <eGenericType eTypeParameter="#//UpdateEFeature/T"/>
-    </eOperations>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="UnsetEFeature">
-    <eTypeParameters name="T">
-      <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
-    </eTypeParameters>
-    <eGenericSuperTypes eClassifier="#//EFeatureChange">
-      <eTypeArguments eTypeParameter="#//UnsetEFeature/T"/>
-    </eGenericSuperTypes>
-  </eClassifiers>
-  <eSubpackages name="list" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/List/1.0">
-    <eClassifiers xsi:type="ecore:EClass" name="UpdateEList" abstract="true">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="index" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="0"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="InsertInEList" eSuperTypes="#//list/UpdateEList"/>
-    <eClassifiers xsi:type="ecore:EClass" name="ReplaceInEList" eSuperTypes="#//list/UpdateEList"/>
-    <eClassifiers xsi:type="ecore:EClass" name="RemoveFromEList" eSuperTypes="#//list/UpdateEList">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="removedObjectURIFragment"
-          lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-          defaultValueLiteral="0"/>
-    </eClassifiers>
-  </eSubpackages>
-  <eSubpackages name="attribute" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Attribute/1.0"
+  <eSubpackages name="feature" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Reference/Containment/Root/1.0"
       nsPrefix="">
-    <eClassifiers xsi:type="ecore:EClass" name="EAttributeChange" abstract="true">
-      <eGenericSuperTypes eClassifier="#//EFeatureChange">
+    <eClassifiers xsi:type="ecore:EClass" name="EFeatureChange" abstract="true" eSuperTypes="#//EChange">
+      <eTypeParameters name="T">
+        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+      </eTypeParameters>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="affectedFeature" lowerBound="1">
+        <eGenericType eTypeParameter="#//feature/EFeatureChange/T"/>
+      </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="affectedEObject" lowerBound="1"
+          eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UpdateEFeature" abstract="true">
+      <eTypeParameters name="T">
+        <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      </eTypeParameters>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldValue" lowerBound="1">
+        <eGenericType eTypeParameter="#//feature/UpdateEFeature/T"/>
+      </eStructuralFeatures>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UpdateMultiValuedEFeature" abstract="true">
+      <eTypeParameters name="T">
+        <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      </eTypeParameters>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UpdateSingleValuedEFeature" abstract="true">
+      <eTypeParameters name="T">
+        <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      </eTypeParameters>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UnsetEFeature">
+      <eTypeParameters name="T">
+        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+      </eTypeParameters>
+      <eGenericSuperTypes eClassifier="#//feature/EFeatureChange">
+        <eTypeArguments eTypeParameter="#//feature/UnsetEFeature/T"/>
+      </eGenericSuperTypes>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UnsetEAttribute">
+      <eGenericSuperTypes eClassifier="#//feature/UnsetEFeature">
+        <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
+      </eGenericSuperTypes>
+      <eGenericSuperTypes eClassifier="#//feature/EFeatureChange">
         <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
       </eGenericSuperTypes>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="UpdateSingleValuedEAttribute">
-      <eTypeParameters name="T">
-        <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
-      </eTypeParameters>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="newValue" lowerBound="1">
-        <eGenericType eTypeParameter="#//attribute/UpdateSingleValuedEAttribute/T"/>
-      </eStructuralFeatures>
-      <eGenericSuperTypes eClassifier="#//UpdateEFeature">
-        <eTypeArguments eTypeParameter="#//attribute/UpdateSingleValuedEAttribute/T"/>
+    <eClassifiers xsi:type="ecore:EClass" name="UnsetEReference">
+      <eGenericSuperTypes eClassifier="#//feature/UnsetEFeature">
+        <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
       </eGenericSuperTypes>
-      <eGenericSuperTypes eClassifier="#//attribute/EAttributeChange"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="MultiValuedEAttributeChange" abstract="true"
-        eSuperTypes="#//attribute/EAttributeChange"/>
-    <eClassifiers xsi:type="ecore:EClass" name="InsertAttributeValue">
-      <eTypeParameters name="T">
-        <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
-      </eTypeParameters>
-      <eGenericSuperTypes eClassifier="#//attribute/MultiValuedEAttributeChange"/>
-      <eGenericSuperTypes eClassifier="#//list/InsertInEList"/>
-      <eGenericSuperTypes eClassifier="#//UpdateEFeature">
-        <eTypeArguments eTypeParameter="#//attribute/InsertAttributeValue/T"/>
-      </eGenericSuperTypes>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="ReplaceAttributeValue">
-      <eTypeParameters name="T">
-        <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
-      </eTypeParameters>
-      <eGenericSuperTypes eClassifier="#//attribute/MultiValuedEAttributeChange"/>
-      <eGenericSuperTypes eClassifier="#//list/ReplaceInEList"/>
-      <eGenericSuperTypes eClassifier="#//UpdateEFeature">
-        <eTypeArguments eTypeParameter="#//attribute/ReplaceAttributeValue/T"/>
-      </eGenericSuperTypes>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="RemoveAttributeValue" eSuperTypes="#//attribute/MultiValuedEAttributeChange #//list/RemoveFromEList"/>
-  </eSubpackages>
-  <eSubpackages name="reference" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Reference/1.0">
-    <eClassifiers xsi:type="ecore:EClass" name="EReferenceChange" abstract="true">
-      <eGenericSuperTypes eClassifier="#//EFeatureChange">
+      <eGenericSuperTypes eClassifier="#//feature/EFeatureChange">
         <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
       </eGenericSuperTypes>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="UpdateEReference" abstract="true">
-      <eTypeParameters name="T">
-        <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
-      </eTypeParameters>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="newValue" lowerBound="1">
-        <eGenericType eTypeParameter="#//reference/UpdateEReference/T"/>
-      </eStructuralFeatures>
-      <eGenericSuperTypes eClassifier="#//UpdateEFeature">
-        <eTypeArguments eTypeParameter="#//reference/UpdateEReference/T"/>
-      </eGenericSuperTypes>
-      <eGenericSuperTypes eClassifier="#//reference/EReferenceChange"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="UpdateNonContainmentReference" abstract="true"
-        eSuperTypes="#//reference/UpdateEReference"/>
-    <eClassifiers xsi:type="ecore:EClass" name="InsertNonContainmentReference" eSuperTypes="#//reference/UpdateNonContainmentReference #//list/InsertInEList"/>
-    <eClassifiers xsi:type="ecore:EClass" name="ReplaceNonContainmentReference" eSuperTypes="#//reference/UpdateNonContainmentReference #//list/ReplaceInEList">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="EReference0" eType="#//list/ReplaceInEList"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="RemoveNonContainmentReference" eSuperTypes="#//reference/UpdateNonContainmentReference #//list/RemoveFromEList"/>
-    <eSubpackages name="containment" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Reference/Containment/1.0">
-      <eClassifiers xsi:type="ecore:EClass" name="UpdateEContainmentReference" abstract="true">
+    <eSubpackages name="list" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/List/1.0">
+      <eClassifiers xsi:type="ecore:EClass" name="UpdateEList" abstract="true">
         <eTypeParameters name="T">
           <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
         </eTypeParameters>
-        <eGenericSuperTypes eClassifier="#//reference/UpdateEReference">
-          <eTypeArguments eTypeParameter="#//reference/containment/UpdateEContainmentReference/T"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="index" lowerBound="1"
+            eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="0"/>
+        <eGenericSuperTypes eClassifier="#//feature/UpdateMultiValuedEFeature">
+          <eTypeArguments eTypeParameter="#//feature/list/UpdateEList/T"/>
         </eGenericSuperTypes>
       </eClassifiers>
-      <eClassifiers xsi:type="ecore:EClass" name="CreateEObject" abstract="true" eSuperTypes="#//EObjectChange"/>
-      <eClassifiers xsi:type="ecore:EClass" name="ReplaceEObject" abstract="true"
-          eSuperTypes="#//EObjectChange #//list/ReplaceInEList"/>
-      <eClassifiers xsi:type="ecore:EClass" name="DeleteEObject" abstract="true" eSuperTypes="#//EObjectChange"/>
-      <eClassifiers xsi:type="ecore:EClass" name="CreateNonRootEObject">
+      <eClassifiers xsi:type="ecore:EClass" name="InsertInEList">
         <eTypeParameters name="T">
           <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
         </eTypeParameters>
-        <eStructuralFeatures xsi:type="ecore:EReference" name="listUpdate" lowerBound="1">
-          <eGenericType eClassifier="#//list/InsertInEList">
-            <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
-          </eGenericType>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="newValue" lowerBound="1">
+          <eGenericType eTypeParameter="#//feature/list/InsertInEList/T"/>
         </eStructuralFeatures>
-        <eGenericSuperTypes eClassifier="#//reference/containment/CreateEObject"/>
-        <eGenericSuperTypes eClassifier="#//reference/containment/UpdateEContainmentReference">
-          <eTypeArguments eTypeParameter="#//reference/containment/CreateNonRootEObject/T"/>
+        <eGenericSuperTypes eClassifier="#//feature/list/UpdateEList">
+          <eTypeArguments eTypeParameter="#//feature/list/InsertInEList/T"/>
         </eGenericSuperTypes>
-        <eGenericSuperTypes eClassifier="#//list/InsertInEList"/>
       </eClassifiers>
-      <eClassifiers xsi:type="ecore:EClass" name="ReplaceNonRootEboject" eSuperTypes="#//list/ReplaceInEList #//reference/containment/ReplaceEObject"/>
-      <eClassifiers xsi:type="ecore:EClass" name="DeleteNonRootEObject">
+      <eClassifiers xsi:type="ecore:EClass" name="ReplaceInEList">
         <eTypeParameters name="T">
           <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
         </eTypeParameters>
-        <eStructuralFeatures xsi:type="ecore:EReference" name="listUpdate" lowerBound="1">
-          <eGenericType eClassifier="#//list/RemoveFromEList">
-            <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
-          </eGenericType>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="newValue" lowerBound="1">
+          <eGenericType eTypeParameter="#//feature/list/ReplaceInEList/T"/>
         </eStructuralFeatures>
-        <eGenericSuperTypes eClassifier="#//reference/containment/DeleteEObject"/>
-        <eGenericSuperTypes eClassifier="#//reference/containment/UpdateEContainmentReference">
-          <eTypeArguments eTypeParameter="#//reference/containment/DeleteNonRootEObject/T"/>
+        <eGenericSuperTypes eClassifier="#//feature/list/UpdateEList">
+          <eTypeArguments eTypeParameter="#//feature/list/InsertInEList/T"/>
         </eGenericSuperTypes>
-        <eGenericSuperTypes eClassifier="#//list/RemoveFromEList"/>
       </eClassifiers>
-      <eSubpackages name="root" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Reference/Containment/Root/1.0">
-        <eClassifiers xsi:type="ecore:EClass" name="CreateRootEObject" eSuperTypes="#//reference/containment/CreateEObject"/>
-        <eClassifiers xsi:type="ecore:EClass" name="ReplaceRootEObject" eSuperTypes="#//reference/containment/ReplaceEObject"/>
-        <eClassifiers xsi:type="ecore:EClass" name="DeleteRootEObject" eSuperTypes="#//reference/containment/DeleteEObject"/>
+      <eClassifiers xsi:type="ecore:EClass" name="RemoveFromEList">
+        <eTypeParameters name="T">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="removedObjectURIFragment"
+            lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+            defaultValueLiteral="0"/>
+        <eGenericSuperTypes eClassifier="#//feature/list/UpdateEList">
+          <eTypeArguments eTypeParameter="#//feature/list/InsertInEList/T"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+    </eSubpackages>
+    <eSubpackages name="attribute" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Attribute/1.0"
+        nsPrefix="">
+      <eClassifiers xsi:type="ecore:EClass" name="UpdateEAttribute" abstract="true">
+        <eTypeParameters name="T">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="#//feature/EFeatureChange">
+          <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/UpdateEFeature">
+          <eTypeArguments eTypeParameter="#//feature/attribute/UpdateEAttribute/T"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="UpdateSingleValuedEAttribute">
+        <eTypeParameters name="T">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="#//feature/UpdateSingleValuedEFeature">
+          <eTypeArguments eTypeParameter="#//feature/attribute/UpdateSingleValuedEAttribute/T"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/attribute/UpdateEAttribute">
+          <eTypeArguments eTypeParameter="#//feature/attribute/UpdateSingleValuedEAttribute/T"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="InsertAttributeValue">
+        <eTypeParameters name="T">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="#//feature/list/InsertInEList">
+          <eTypeArguments eTypeParameter="#//feature/attribute/InsertAttributeValue/T"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/attribute/UpdateEAttribute">
+          <eTypeArguments eTypeParameter="#//feature/attribute/UpdateSingleValuedEAttribute/T"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="ReplaceAttributeValue">
+        <eTypeParameters name="T">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="#//feature/list/ReplaceInEList">
+          <eTypeArguments eTypeParameter="#//feature/attribute/ReplaceAttributeValue/T"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/attribute/UpdateEAttribute">
+          <eTypeArguments eTypeParameter="#//feature/attribute/UpdateSingleValuedEAttribute/T"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="RemoveAttributeValue">
+        <eTypeParameters name="T">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="#//feature/list/RemoveFromEList">
+          <eTypeArguments eTypeParameter="#//feature/attribute/ReplaceAttributeValue/T"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/attribute/UpdateEAttribute">
+          <eTypeArguments eTypeParameter="#//feature/attribute/UpdateSingleValuedEAttribute/T"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+    </eSubpackages>
+    <eSubpackages name="reference" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Reference/1.0">
+      <eClassifiers xsi:type="ecore:EClass" name="UpdateEReference" abstract="true">
+        <eTypeParameters name="T">
+          <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="#//feature/EFeatureChange">
+          <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/UpdateEFeature">
+          <eTypeArguments eTypeParameter="#//feature/reference/UpdateEReference/T"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="UpdateNonContainmentEReference"
+          abstract="true">
+        <eTypeParameters name="T">
+          <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="#//feature/reference/UpdateEReference">
+          <eTypeArguments eTypeParameter="#//feature/reference/UpdateNonContainmentEReference/T"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="UpdateSingleValuedContainmentEReference">
+        <eTypeParameters name="T">
+          <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="#//feature/UpdateSingleValuedEFeature">
+          <eTypeArguments eTypeParameter="#//feature/reference/UpdateSingleValuedContainmentEReference/T"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/reference/UpdateNonContainmentEReference">
+          <eTypeArguments eTypeParameter="#//feature/reference/UpdateSingleValuedContainmentEReference/T"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="InsertNonContainmentEReference">
+        <eGenericSuperTypes eClassifier="#//feature/list/InsertInEList">
+          <eTypeArguments eTypeParameter="#//feature/attribute/InsertAttributeValue/T"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/reference/UpdateNonContainmentEReference"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="ReplaceNonContainmentEReference">
+        <eGenericSuperTypes eClassifier="#//feature/list/ReplaceInEList">
+          <eTypeArguments eTypeParameter="#//feature/attribute/InsertAttributeValue/T"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/reference/UpdateNonContainmentEReference"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="RemoveNonContainmentEReference">
+        <eGenericSuperTypes eClassifier="#//feature/list/RemoveFromEList">
+          <eTypeArguments eTypeParameter="#//feature/attribute/InsertAttributeValue/T"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/reference/UpdateNonContainmentEReference"/>
+      </eClassifiers>
+      <eSubpackages name="containment" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Reference/Containment/1.0">
+        <eClassifiers xsi:type="ecore:EClass" name="UpdateEContainmentEReference"
+            abstract="true">
+          <eTypeParameters name="T">
+            <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+          </eTypeParameters>
+          <eGenericSuperTypes eClassifier="#//feature/reference/UpdateEReference">
+            <eTypeArguments eTypeParameter="#//feature/reference/containment/UpdateEContainmentEReference/T"/>
+          </eGenericSuperTypes>
+        </eClassifiers>
+        <eClassifiers xsi:type="ecore:EClass"/>
+        <eClassifiers xsi:type="ecore:EClass" name="KEEPONWORKINGAFTERHERE"/>
+        <eClassifiers xsi:type="ecore:EClass" name="CreateNonRootEObject">
+          <eTypeParameters name="T">
+            <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+          </eTypeParameters>
+          <eStructuralFeatures xsi:type="ecore:EReference" name="listUpdate" lowerBound="1">
+            <eGenericType eClassifier="#//feature/list/InsertInEList">
+              <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
+            </eGenericType>
+          </eStructuralFeatures>
+          <eGenericSuperTypes eClassifier="#//object/CreateEObject"/>
+          <eGenericSuperTypes eClassifier="#//feature/reference/containment/UpdateEContainmentEReference">
+            <eTypeArguments eTypeParameter="#//feature/reference/containment/CreateNonRootEObject/T"/>
+          </eGenericSuperTypes>
+          <eGenericSuperTypes eClassifier="#//feature/list/InsertInEList"/>
+        </eClassifiers>
+        <eClassifiers xsi:type="ecore:EClass" name="ReplaceNonRootEboject" eSuperTypes="#//feature/list/ReplaceInEList #//object/ReplaceEObject"/>
+        <eClassifiers xsi:type="ecore:EClass" name="DeleteNonRootEObject">
+          <eTypeParameters name="T">
+            <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+          </eTypeParameters>
+          <eStructuralFeatures xsi:type="ecore:EReference" name="listUpdate" lowerBound="1">
+            <eGenericType eClassifier="#//feature/list/RemoveFromEList">
+              <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
+            </eGenericType>
+          </eStructuralFeatures>
+          <eGenericSuperTypes eClassifier="#//object/DeleteEObject"/>
+          <eGenericSuperTypes eClassifier="#//feature/reference/containment/UpdateEContainmentEReference">
+            <eTypeArguments eTypeParameter="#//feature/reference/containment/DeleteNonRootEObject/T"/>
+          </eGenericSuperTypes>
+          <eGenericSuperTypes eClassifier="#//feature/list/RemoveFromEList"/>
+        </eClassifiers>
       </eSubpackages>
     </eSubpackages>
+  </eSubpackages>
+  <eSubpackages name="object" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Reference/Containment/Root/1.0">
+    <eClassifiers xsi:type="ecore:EClass" name="EObjectChange" abstract="true" eSuperTypes="#//EChange">
+      <eTypeParameters name="T">
+        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      </eTypeParameters>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="changedEObject" lowerBound="1">
+        <eGenericType eTypeParameter="#//object/EObjectChange/T"/>
+      </eStructuralFeatures>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="CreateEObject" abstract="true">
+      <eTypeParameters name="T">
+        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      </eTypeParameters>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="newEObject" lowerBound="1">
+        <eGenericType eTypeParameter="#//object/CreateEObject/T"/>
+      </eStructuralFeatures>
+      <eGenericSuperTypes eClassifier="#//object/EObjectChange">
+        <eTypeArguments eTypeParameter="#//object/CreateEObject/T"/>
+      </eGenericSuperTypes>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ReplaceEObject" abstract="true">
+      <eTypeParameters name="T">
+        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      </eTypeParameters>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="newEObject" lowerBound="1">
+        <eGenericType eTypeParameter="#//object/CreateEObject/T"/>
+      </eStructuralFeatures>
+      <eGenericSuperTypes eClassifier="#//object/EObjectChange">
+        <eTypeArguments eTypeParameter="#//object/CreateEObject/T"/>
+      </eGenericSuperTypes>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="DeleteEObject" abstract="true">
+      <eTypeParameters name="T">
+        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      </eTypeParameters>
+      <eGenericSuperTypes eClassifier="#//object/EObjectChange">
+        <eTypeArguments eTypeParameter="#//object/CreateEObject/T"/>
+      </eGenericSuperTypes>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="CreateRootEObject" eSuperTypes="#//object/CreateEObject">
+      <eTypeParameters name="T">
+        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      </eTypeParameters>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="newValue" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ReplaceRootEObject" eSuperTypes="#//object/ReplaceEObject">
+      <eTypeParameters name="T">
+        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      </eTypeParameters>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="newValue" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="DeleteRootEObject" eSuperTypes="#//object/DeleteEObject"/>
   </eSubpackages>
 </ecore:EPackage>
