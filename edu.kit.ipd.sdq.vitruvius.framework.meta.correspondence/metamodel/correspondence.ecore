@@ -120,5 +120,8 @@
   <eClassifiers xsi:type="ecore:EEnum" name="CorrespondenceType">
     <eLiterals name="identity"/>
     <eLiterals name="bijection" value="1" literal="bijection"/>
+    <eLiterals name="unidirectional" value="2" literal="unidirectional"/>
+    <eLiterals name="constrained" value="3" literal="constrained"/>
+    <eLiterals name="unknown" value="4"/>
   </eClassifiers>
 </ecore:EPackage>

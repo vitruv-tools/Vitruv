@@ -639,6 +639,9 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		initEEnum(correspondenceTypeEEnum, CorrespondenceType.class, "CorrespondenceType");
 		addEEnumLiteral(correspondenceTypeEEnum, CorrespondenceType.IDENTITY);
 		addEEnumLiteral(correspondenceTypeEEnum, CorrespondenceType.BIJECTION);
+		addEEnumLiteral(correspondenceTypeEEnum, CorrespondenceType.UNIDIRECTIONAL);
+		addEEnumLiteral(correspondenceTypeEEnum, CorrespondenceType.CONSTRAINED);
+		addEEnumLiteral(correspondenceTypeEEnum, CorrespondenceType.UNKNOWN);
 
 		// Create resource
 		createResource(eNS_URI);

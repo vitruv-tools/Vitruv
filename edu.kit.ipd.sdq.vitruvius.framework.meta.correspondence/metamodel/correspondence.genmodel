@@ -10,6 +10,9 @@
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="correspondence.ecore#//CorrespondenceType">
       <genEnumLiterals ecoreEnumLiteral="correspondence.ecore#//CorrespondenceType/identity"/>
       <genEnumLiterals ecoreEnumLiteral="correspondence.ecore#//CorrespondenceType/bijection"/>
+      <genEnumLiterals ecoreEnumLiteral="correspondence.ecore#//CorrespondenceType/unidirectional"/>
+      <genEnumLiterals ecoreEnumLiteral="correspondence.ecore#//CorrespondenceType/constrained"/>
+      <genEnumLiterals ecoreEnumLiteral="correspondence.ecore#//CorrespondenceType/unknown"/>
     </genEnums>
     <genClasses ecoreClass="correspondence.ecore#//Correspondences">
       <genFeatures createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondences/correspondences"/>

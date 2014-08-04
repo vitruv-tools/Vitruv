@@ -36,7 +36,31 @@ public enum CorrespondenceType implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	BIJECTION(1, "bijection", "bijection");
+	BIJECTION(1, "bijection", "bijection"), /**
+	 * The '<em><b>Unidirectional</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #UNIDIRECTIONAL_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	UNIDIRECTIONAL(2, "unidirectional", "unidirectional"), /**
+	 * The '<em><b>Constrained</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #CONSTRAINED_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	CONSTRAINED(3, "constrained", "constrained"), /**
+	 * The '<em><b>Unknown</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #UNKNOWN_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	UNKNOWN(4, "unknown", "unknown");
 
 	/**
 	 * The '<em><b>Identity</b></em>' literal value.
@@ -69,6 +93,51 @@ public enum CorrespondenceType implements Enumerator {
 	public static final int BIJECTION_VALUE = 1;
 
 	/**
+	 * The '<em><b>Unidirectional</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of '<em><b>Unidirectional</b></em>' literal object isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @see #UNIDIRECTIONAL
+	 * @model name="unidirectional"
+	 * @generated
+	 * @ordered
+	 */
+	public static final int UNIDIRECTIONAL_VALUE = 2;
+
+	/**
+	 * The '<em><b>Constrained</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of '<em><b>Constrained</b></em>' literal object isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @see #CONSTRAINED
+	 * @model name="constrained"
+	 * @generated
+	 * @ordered
+	 */
+	public static final int CONSTRAINED_VALUE = 3;
+
+	/**
+	 * The '<em><b>Unknown</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of '<em><b>Unknown</b></em>' literal object isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @see #UNKNOWN
+	 * @model name="unknown"
+	 * @generated
+	 * @ordered
+	 */
+	public static final int UNKNOWN_VALUE = 4;
+
+	/**
 	 * An array of all the '<em><b>Type</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -78,6 +147,9 @@ public enum CorrespondenceType implements Enumerator {
 		new CorrespondenceType[] {
 			IDENTITY,
 			BIJECTION,
+			UNIDIRECTIONAL,
+			CONSTRAINED,
+			UNKNOWN,
 		};
 
 	/**
@@ -130,6 +202,9 @@ public enum CorrespondenceType implements Enumerator {
 		switch (value) {
 			case IDENTITY_VALUE: return IDENTITY;
 			case BIJECTION_VALUE: return BIJECTION;
+			case UNIDIRECTIONAL_VALUE: return UNIDIRECTIONAL;
+			case CONSTRAINED_VALUE: return CONSTRAINED;
+			case UNKNOWN_VALUE: return UNKNOWN;
 		}
 		return null;
 	}
