@@ -35,8 +35,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.ReplaceNonRootEObjectInListImpl#getOldValue <em>Old Value</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.ReplaceNonRootEObjectInListImpl#getIndex <em>Index</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.ReplaceNonRootEObjectInListImpl#getOldValue <em>Old Value</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.ReplaceNonRootEObjectInListImpl#getNewValue <em>New Value</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.ReplaceNonRootEObjectInListImpl#getAffectedFeature <em>Affected Feature</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.ReplaceNonRootEObjectInListImpl#getAffectedEObject <em>Affected EObject</em>}</li>
@@ -46,16 +46,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * @generated
  */
 public class ReplaceNonRootEObjectInListImpl<T extends EObject> extends ReplaceEObjectImpl<T> implements ReplaceNonRootEObjectInList<T> {
-	/**
-	 * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getOldValue()
-	 * @generated
-	 * @ordered
-	 */
-	protected T oldValue;
-
 	/**
 	 * The default value of the '{@link #getIndex() <em>Index</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -75,6 +65,16 @@ public class ReplaceNonRootEObjectInListImpl<T extends EObject> extends ReplaceE
 	 * @ordered
 	 */
 	protected int index = INDEX_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOldValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected T oldValue;
 
 	/**
 	 * The cached value of the '{@link #getNewValue() <em>New Value</em>}' attribute.
@@ -269,24 +269,13 @@ public class ReplaceNonRootEObjectInListImpl<T extends EObject> extends ReplaceE
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void EOperation0() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
-				return getOldValue();
 			case ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__INDEX:
 				return getIndex();
+			case ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
+				return getOldValue();
 			case ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__NEW_VALUE:
 				return getNewValue();
 			case ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE:
@@ -308,11 +297,11 @@ public class ReplaceNonRootEObjectInListImpl<T extends EObject> extends ReplaceE
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
-				setOldValue((T)newValue);
-				return;
 			case ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__INDEX:
 				setIndex((Integer)newValue);
+				return;
+			case ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
+				setOldValue((T)newValue);
 				return;
 			case ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__NEW_VALUE:
 				setNewValue((T)newValue);
@@ -335,11 +324,11 @@ public class ReplaceNonRootEObjectInListImpl<T extends EObject> extends ReplaceE
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
-				setOldValue((T)null);
-				return;
 			case ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__INDEX:
 				setIndex(INDEX_EDEFAULT);
+				return;
+			case ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
+				setOldValue((T)null);
 				return;
 			case ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__NEW_VALUE:
 				setNewValue((T)null);
@@ -362,10 +351,10 @@ public class ReplaceNonRootEObjectInListImpl<T extends EObject> extends ReplaceE
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
-				return oldValue != null;
 			case ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__INDEX:
 				return index != INDEX_EDEFAULT;
+			case ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
+				return oldValue != null;
 			case ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__NEW_VALUE:
 				return newValue != null;
 			case ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE:
@@ -385,7 +374,6 @@ public class ReplaceNonRootEObjectInListImpl<T extends EObject> extends ReplaceE
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == UpdateEFeature.class) {
 			switch (derivedFeatureID) {
-				case ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE: return FeaturePackage.UPDATE_EFEATURE__OLD_VALUE;
 				default: return -1;
 			}
 		}
@@ -402,6 +390,7 @@ public class ReplaceNonRootEObjectInListImpl<T extends EObject> extends ReplaceE
 		}
 		if (baseClass == ReplaceInEList.class) {
 			switch (derivedFeatureID) {
+				case ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE: return ListPackage.REPLACE_IN_ELIST__OLD_VALUE;
 				case ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__NEW_VALUE: return ListPackage.REPLACE_IN_ELIST__NEW_VALUE;
 				default: return -1;
 			}
@@ -435,7 +424,6 @@ public class ReplaceNonRootEObjectInListImpl<T extends EObject> extends ReplaceE
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == UpdateEFeature.class) {
 			switch (baseFeatureID) {
-				case FeaturePackage.UPDATE_EFEATURE__OLD_VALUE: return ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE;
 				default: return -1;
 			}
 		}
@@ -452,6 +440,7 @@ public class ReplaceNonRootEObjectInListImpl<T extends EObject> extends ReplaceE
 		}
 		if (baseClass == ReplaceInEList.class) {
 			switch (baseFeatureID) {
+				case ListPackage.REPLACE_IN_ELIST__OLD_VALUE: return ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE;
 				case ListPackage.REPLACE_IN_ELIST__NEW_VALUE: return ContainmentPackage.REPLACE_NON_ROOT_EOBJECT_IN_LIST__NEW_VALUE;
 				default: return -1;
 			}
@@ -486,10 +475,10 @@ public class ReplaceNonRootEObjectInListImpl<T extends EObject> extends ReplaceE
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (oldValue: ");
-		result.append(oldValue);
-		result.append(", index: ");
+		result.append(" (index: ");
 		result.append(index);
+		result.append(", oldValue: ");
+		result.append(oldValue);
 		result.append(", newValue: ");
 		result.append(newValue);
 		result.append(')');

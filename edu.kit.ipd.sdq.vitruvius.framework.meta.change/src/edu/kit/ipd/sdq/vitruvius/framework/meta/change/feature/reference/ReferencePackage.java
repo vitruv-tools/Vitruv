@@ -6,6 +6,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.FeaturePackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.ListPackage;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -142,15 +143,6 @@ public interface ReferencePackage extends EPackage {
 	int UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE = 2;
 
 	/**
-	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__OLD_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE__OLD_VALUE;
-
-	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -169,13 +161,31 @@ public interface ReferencePackage extends EPackage {
 	int UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__AFFECTED_EOBJECT = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__OLD_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>New Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__NEW_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Update Single Valued Non Containment EReference</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE_FEATURE_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 2;
+	int UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE_FEATURE_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.impl.InsertNonContainmentEReferenceImpl <em>Insert Non Containment EReference</em>}' class.
@@ -186,15 +196,6 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 */
 	int INSERT_NON_CONTAINMENT_EREFERENCE = 3;
-
-	/**
-	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_NON_CONTAINMENT_EREFERENCE__OLD_VALUE = ListPackage.INSERT_IN_ELIST__OLD_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -252,15 +253,6 @@ public interface ReferencePackage extends EPackage {
 	int REPLACE_NON_CONTAINMENT_EREFERENCE = 4;
 
 	/**
-	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_NON_CONTAINMENT_EREFERENCE__OLD_VALUE = ListPackage.REPLACE_IN_ELIST__OLD_VALUE;
-
-	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -268,6 +260,15 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_NON_CONTAINMENT_EREFERENCE__INDEX = ListPackage.REPLACE_IN_ELIST__INDEX;
+
+	/**
+	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_NON_CONTAINMENT_EREFERENCE__OLD_VALUE = ListPackage.REPLACE_IN_ELIST__OLD_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>New Value</b></em>' attribute.
@@ -316,15 +317,6 @@ public interface ReferencePackage extends EPackage {
 	int REMOVE_NON_CONTAINMENT_EREFERENCE = 5;
 
 	/**
-	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_NON_CONTAINMENT_EREFERENCE__OLD_VALUE = ListPackage.REMOVE_FROM_ELIST__OLD_VALUE;
-
-	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -341,6 +333,15 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_NON_CONTAINMENT_EREFERENCE__REMOVED_OBJECT_URI_FRAGMENT = ListPackage.REMOVE_FROM_ELIST__REMOVED_OBJECT_URI_FRAGMENT;
+
+	/**
+	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_NON_CONTAINMENT_EREFERENCE__OLD_VALUE = ListPackage.REMOVE_FROM_ELIST__OLD_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -378,15 +379,6 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 */
 	int PERMUTE_NON_CONTAINMENT_EREFERENCE_VALUES = 6;
-
-	/**
-	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PERMUTE_NON_CONTAINMENT_EREFERENCE_VALUES__OLD_VALUE = ListPackage.PERMUTE_ELIST__OLD_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>New Index For Element At</b></em>' attribute list.
@@ -454,6 +446,28 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 */
 	EClass getUpdateSingleValuedNonContainmentEReference();
+
+	/**
+	 * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.UpdateSingleValuedNonContainmentEReference#getOldValue <em>Old Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Old Value</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.UpdateSingleValuedNonContainmentEReference#getOldValue()
+	 * @see #getUpdateSingleValuedNonContainmentEReference()
+	 * @generated
+	 */
+	EAttribute getUpdateSingleValuedNonContainmentEReference_OldValue();
+
+	/**
+	 * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.UpdateSingleValuedNonContainmentEReference#getNewValue <em>New Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>New Value</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.UpdateSingleValuedNonContainmentEReference#getNewValue()
+	 * @see #getUpdateSingleValuedNonContainmentEReference()
+	 * @generated
+	 */
+	EAttribute getUpdateSingleValuedNonContainmentEReference_NewValue();
 
 	/**
 	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.InsertNonContainmentEReference <em>Insert Non Containment EReference</em>}'.
@@ -546,6 +560,22 @@ public interface ReferencePackage extends EPackage {
 		 * @generated
 		 */
 		EClass UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE = eINSTANCE.getUpdateSingleValuedNonContainmentEReference();
+
+		/**
+		 * The meta object literal for the '<em><b>Old Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__OLD_VALUE = eINSTANCE.getUpdateSingleValuedNonContainmentEReference_OldValue();
+
+		/**
+		 * The meta object literal for the '<em><b>New Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__NEW_VALUE = eINSTANCE.getUpdateSingleValuedNonContainmentEReference_NewValue();
 
 		/**
 		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.impl.InsertNonContainmentEReferenceImpl <em>Insert Non Containment EReference</em>}' class.

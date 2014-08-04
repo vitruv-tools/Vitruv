@@ -35,7 +35,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.CreateNonRootEObjectInListImpl#getOldValue <em>Old Value</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.CreateNonRootEObjectInListImpl#getIndex <em>Index</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.CreateNonRootEObjectInListImpl#getNewValue <em>New Value</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.CreateNonRootEObjectInListImpl#getAffectedFeature <em>Affected Feature</em>}</li>
@@ -46,16 +45,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * @generated
  */
 public class CreateNonRootEObjectInListImpl<T extends EObject> extends CreateEObjectImpl<T> implements CreateNonRootEObjectInList<T> {
-	/**
-	 * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getOldValue()
-	 * @generated
-	 * @ordered
-	 */
-	protected T oldValue;
-
 	/**
 	 * The default value of the '{@link #getIndex() <em>Index</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -123,27 +112,6 @@ public class CreateNonRootEObjectInListImpl<T extends EObject> extends CreateEOb
 	@Override
 	protected EClass eStaticClass() {
 		return ContainmentPackage.Literals.CREATE_NON_ROOT_EOBJECT_IN_LIST;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public T getOldValue() {
-		return oldValue;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setOldValue(T newOldValue) {
-		T oldOldValue = oldValue;
-		oldValue = newOldValue;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ContainmentPackage.CREATE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE, oldOldValue, oldValue));
 	}
 
 	/**
@@ -269,22 +237,9 @@ public class CreateNonRootEObjectInListImpl<T extends EObject> extends CreateEOb
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void EOperation0() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
-				return getOldValue();
 			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_IN_LIST__INDEX:
 				return getIndex();
 			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_IN_LIST__NEW_VALUE:
@@ -308,9 +263,6 @@ public class CreateNonRootEObjectInListImpl<T extends EObject> extends CreateEOb
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
-				setOldValue((T)newValue);
-				return;
 			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_IN_LIST__INDEX:
 				setIndex((Integer)newValue);
 				return;
@@ -335,9 +287,6 @@ public class CreateNonRootEObjectInListImpl<T extends EObject> extends CreateEOb
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
-				setOldValue((T)null);
-				return;
 			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_IN_LIST__INDEX:
 				setIndex(INDEX_EDEFAULT);
 				return;
@@ -362,8 +311,6 @@ public class CreateNonRootEObjectInListImpl<T extends EObject> extends CreateEOb
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
-				return oldValue != null;
 			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_IN_LIST__INDEX:
 				return index != INDEX_EDEFAULT;
 			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_IN_LIST__NEW_VALUE:
@@ -385,7 +332,6 @@ public class CreateNonRootEObjectInListImpl<T extends EObject> extends CreateEOb
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == UpdateEFeature.class) {
 			switch (derivedFeatureID) {
-				case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE: return FeaturePackage.UPDATE_EFEATURE__OLD_VALUE;
 				default: return -1;
 			}
 		}
@@ -435,7 +381,6 @@ public class CreateNonRootEObjectInListImpl<T extends EObject> extends CreateEOb
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == UpdateEFeature.class) {
 			switch (baseFeatureID) {
-				case FeaturePackage.UPDATE_EFEATURE__OLD_VALUE: return ContainmentPackage.CREATE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE;
 				default: return -1;
 			}
 		}
@@ -486,9 +431,7 @@ public class CreateNonRootEObjectInListImpl<T extends EObject> extends CreateEOb
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (oldValue: ");
-		result.append(oldValue);
-		result.append(", index: ");
+		result.append(" (index: ");
 		result.append(index);
 		result.append(", newValue: ");
 		result.append(newValue);

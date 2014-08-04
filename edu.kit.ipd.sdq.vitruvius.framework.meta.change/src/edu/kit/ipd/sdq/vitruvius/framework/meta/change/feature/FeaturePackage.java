@@ -105,22 +105,13 @@ public interface FeaturePackage extends EPackage {
 	int UPDATE_EFEATURE = 1;
 
 	/**
-	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_EFEATURE__OLD_VALUE = 0;
-
-	/**
 	 * The number of structural features of the '<em>Update EFeature</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UPDATE_EFEATURE_FEATURE_COUNT = 1;
+	int UPDATE_EFEATURE_FEATURE_COUNT = 0;
 
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.UpdateMultiValuedEFeatureImpl <em>Update Multi Valued EFeature</em>}' class.
@@ -131,15 +122,6 @@ public interface FeaturePackage extends EPackage {
 	 * @generated
 	 */
 	int UPDATE_MULTI_VALUED_EFEATURE = 2;
-
-	/**
-	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_MULTI_VALUED_EFEATURE__OLD_VALUE = UPDATE_EFEATURE__OLD_VALUE;
 
 	/**
 	 * The number of structural features of the '<em>Update Multi Valued EFeature</em>' class.
@@ -159,15 +141,6 @@ public interface FeaturePackage extends EPackage {
 	 * @generated
 	 */
 	int UPDATE_SINGLE_VALUED_EFEATURE = 3;
-
-	/**
-	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_SINGLE_VALUED_EFEATURE__OLD_VALUE = UPDATE_EFEATURE__OLD_VALUE;
 
 	/**
 	 * The number of structural features of the '<em>Update Single Valued EFeature</em>' class.
@@ -333,17 +306,6 @@ public interface FeaturePackage extends EPackage {
 	EClass getUpdateEFeature();
 
 	/**
-	 * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UpdateEFeature#getOldValue <em>Old Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Old Value</em>'.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UpdateEFeature#getOldValue()
-	 * @see #getUpdateEFeature()
-	 * @generated
-	 */
-	EAttribute getUpdateEFeature_OldValue();
-
-	/**
 	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UpdateMultiValuedEFeature <em>Update Multi Valued EFeature</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -450,14 +412,6 @@ public interface FeaturePackage extends EPackage {
 		 * @generated
 		 */
 		EClass UPDATE_EFEATURE = eINSTANCE.getUpdateEFeature();
-
-		/**
-		 * The meta object literal for the '<em><b>Old Value</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute UPDATE_EFEATURE__OLD_VALUE = eINSTANCE.getUpdateEFeature_OldValue();
 
 		/**
 		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.UpdateMultiValuedEFeatureImpl <em>Update Multi Valued EFeature</em>}' class.

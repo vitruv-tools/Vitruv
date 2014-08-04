@@ -80,6 +80,17 @@ public class RemoveNonContainmentEReferenceImpl<T extends EObject> extends Remov
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
+	 * @generated
+	 */
+	@Override
+	public void setOldValue(T newOldValue) {
+		super.setOldValue(newOldValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EReference getAffectedFeature() {
@@ -151,17 +162,6 @@ public class RemoveNonContainmentEReferenceImpl<T extends EObject> extends Remov
 		affectedEObject = newAffectedEObject;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void EOperation0() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
 	}
 
 	/**

@@ -105,22 +105,13 @@ public interface ObjectPackage extends EPackage {
 	int CREATE_EOBJECT__CHANGED_EOBJECT = EOBJECT_CHANGE__CHANGED_EOBJECT;
 
 	/**
-	 * The feature id for the '<em><b>New EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_EOBJECT__NEW_EOBJECT = EOBJECT_CHANGE_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Create EObject</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CREATE_EOBJECT_FEATURE_COUNT = EOBJECT_CHANGE_FEATURE_COUNT + 1;
+	int CREATE_EOBJECT_FEATURE_COUNT = EOBJECT_CHANGE_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.impl.ReplaceEObjectImpl <em>Replace EObject</em>}' class.
@@ -142,22 +133,13 @@ public interface ObjectPackage extends EPackage {
 	int REPLACE_EOBJECT__CHANGED_EOBJECT = EOBJECT_CHANGE__CHANGED_EOBJECT;
 
 	/**
-	 * The feature id for the '<em><b>New EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_EOBJECT__NEW_EOBJECT = EOBJECT_CHANGE_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Replace EObject</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_EOBJECT_FEATURE_COUNT = EOBJECT_CHANGE_FEATURE_COUNT + 1;
+	int REPLACE_EOBJECT_FEATURE_COUNT = EOBJECT_CHANGE_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.impl.DeleteEObjectImpl <em>Delete EObject</em>}' class.
@@ -207,15 +189,6 @@ public interface ObjectPackage extends EPackage {
 	int CREATE_ROOT_EOBJECT__CHANGED_EOBJECT = CREATE_EOBJECT__CHANGED_EOBJECT;
 
 	/**
-	 * The feature id for the '<em><b>New EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_ROOT_EOBJECT__NEW_EOBJECT = CREATE_EOBJECT__NEW_EOBJECT;
-
-	/**
 	 * The feature id for the '<em><b>New Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -253,15 +226,6 @@ public interface ObjectPackage extends EPackage {
 	int REPLACE_ROOT_EOBJECT__CHANGED_EOBJECT = REPLACE_EOBJECT__CHANGED_EOBJECT;
 
 	/**
-	 * The feature id for the '<em><b>New EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_ROOT_EOBJECT__NEW_EOBJECT = REPLACE_EOBJECT__NEW_EOBJECT;
-
-	/**
 	 * The feature id for the '<em><b>New Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -271,13 +235,22 @@ public interface ObjectPackage extends EPackage {
 	int REPLACE_ROOT_EOBJECT__NEW_VALUE = REPLACE_EOBJECT_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_ROOT_EOBJECT__OLD_VALUE = REPLACE_EOBJECT_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Replace Root EObject</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_ROOT_EOBJECT_FEATURE_COUNT = REPLACE_EOBJECT_FEATURE_COUNT + 1;
+	int REPLACE_ROOT_EOBJECT_FEATURE_COUNT = REPLACE_EOBJECT_FEATURE_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.impl.DeleteRootEObjectImpl <em>Delete Root EObject</em>}' class.
@@ -299,13 +272,22 @@ public interface ObjectPackage extends EPackage {
 	int DELETE_ROOT_EOBJECT__CHANGED_EOBJECT = DELETE_EOBJECT__CHANGED_EOBJECT;
 
 	/**
+	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_ROOT_EOBJECT__OLD_VALUE = DELETE_EOBJECT_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Delete Root EObject</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DELETE_ROOT_EOBJECT_FEATURE_COUNT = DELETE_EOBJECT_FEATURE_COUNT + 0;
+	int DELETE_ROOT_EOBJECT_FEATURE_COUNT = DELETE_EOBJECT_FEATURE_COUNT + 1;
 
 
 	/**
@@ -340,17 +322,6 @@ public interface ObjectPackage extends EPackage {
 	EClass getCreateEObject();
 
 	/**
-	 * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateEObject#getNewEObject <em>New EObject</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>New EObject</em>'.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateEObject#getNewEObject()
-	 * @see #getCreateEObject()
-	 * @generated
-	 */
-	EReference getCreateEObject_NewEObject();
-
-	/**
 	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceEObject <em>Replace EObject</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -359,17 +330,6 @@ public interface ObjectPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getReplaceEObject();
-
-	/**
-	 * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceEObject#getNewEObject <em>New EObject</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>New EObject</em>'.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceEObject#getNewEObject()
-	 * @see #getReplaceEObject()
-	 * @generated
-	 */
-	EReference getReplaceEObject_NewEObject();
 
 	/**
 	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteEObject <em>Delete EObject</em>}'.
@@ -424,6 +384,17 @@ public interface ObjectPackage extends EPackage {
 	EAttribute getReplaceRootEObject_NewValue();
 
 	/**
+	 * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceRootEObject#getOldValue <em>Old Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Old Value</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceRootEObject#getOldValue()
+	 * @see #getReplaceRootEObject()
+	 * @generated
+	 */
+	EAttribute getReplaceRootEObject_OldValue();
+
+	/**
 	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject <em>Delete Root EObject</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -432,6 +403,17 @@ public interface ObjectPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getDeleteRootEObject();
+
+	/**
+	 * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject#getOldValue <em>Old Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Old Value</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject#getOldValue()
+	 * @see #getDeleteRootEObject()
+	 * @generated
+	 */
+	EAttribute getDeleteRootEObject_OldValue();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -484,14 +466,6 @@ public interface ObjectPackage extends EPackage {
 		EClass CREATE_EOBJECT = eINSTANCE.getCreateEObject();
 
 		/**
-		 * The meta object literal for the '<em><b>New EObject</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference CREATE_EOBJECT__NEW_EOBJECT = eINSTANCE.getCreateEObject_NewEObject();
-
-		/**
 		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.impl.ReplaceEObjectImpl <em>Replace EObject</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -500,14 +474,6 @@ public interface ObjectPackage extends EPackage {
 		 * @generated
 		 */
 		EClass REPLACE_EOBJECT = eINSTANCE.getReplaceEObject();
-
-		/**
-		 * The meta object literal for the '<em><b>New EObject</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference REPLACE_EOBJECT__NEW_EOBJECT = eINSTANCE.getReplaceEObject_NewEObject();
 
 		/**
 		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.impl.DeleteEObjectImpl <em>Delete EObject</em>}' class.
@@ -556,6 +522,14 @@ public interface ObjectPackage extends EPackage {
 		EAttribute REPLACE_ROOT_EOBJECT__NEW_VALUE = eINSTANCE.getReplaceRootEObject_NewValue();
 
 		/**
+		 * The meta object literal for the '<em><b>Old Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute REPLACE_ROOT_EOBJECT__OLD_VALUE = eINSTANCE.getReplaceRootEObject_OldValue();
+
+		/**
 		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.impl.DeleteRootEObjectImpl <em>Delete Root EObject</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -564,6 +538,14 @@ public interface ObjectPackage extends EPackage {
 		 * @generated
 		 */
 		EClass DELETE_ROOT_EOBJECT = eINSTANCE.getDeleteRootEObject();
+
+		/**
+		 * The meta object literal for the '<em><b>Old Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DELETE_ROOT_EOBJECT__OLD_VALUE = eINSTANCE.getDeleteRootEObject_OldValue();
 
 	}
 

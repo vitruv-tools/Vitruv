@@ -29,10 +29,6 @@
       <styles xmi:type="notation:FilteringStyle" xmi:id="_8czK4xutEeSLyaPAzaQhig"/>
     </children>
     <children xmi:type="notation:Node" xmi:id="_8czx8ButEeSLyaPAzaQhig" type="5002">
-      <children xmi:type="notation:Node" xmi:id="_9057YBuvEeSLyaPAzaQhig" type="2002">
-        <element xmi:type="ecore:EOperation" href="change.ecore#//feature/EFeatureChange/EOperation0"/>
-        <layoutConstraint xmi:type="notation:Location" xmi:id="_9057YRuvEeSLyaPAzaQhig"/>
-      </children>
       <styles xmi:type="notation:DrawerStyle" xmi:id="_8czx8RutEeSLyaPAzaQhig"/>
       <styles xmi:type="notation:SortingStyle" xmi:id="_8czx8hutEeSLyaPAzaQhig"/>
       <styles xmi:type="notation:FilteringStyle" xmi:id="_8czx8xutEeSLyaPAzaQhig"/>

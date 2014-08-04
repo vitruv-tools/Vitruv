@@ -35,6 +35,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ObjectPackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.impl.ObjectPackageImpl;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
@@ -195,6 +196,24 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getUpdateSingleValuedEAttribute_OldValue() {
+		return (EAttribute)updateSingleValuedEAttributeEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getUpdateSingleValuedEAttribute_NewValue() {
+		return (EAttribute)updateSingleValuedEAttributeEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getInsertEAttributeValue() {
 		return insertEAttributeValueEClass;
 	}
@@ -257,6 +276,8 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		updateEAttributeEClass = createEClass(UPDATE_EATTRIBUTE);
 
 		updateSingleValuedEAttributeEClass = createEClass(UPDATE_SINGLE_VALUED_EATTRIBUTE);
+		createEAttribute(updateSingleValuedEAttributeEClass, UPDATE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE);
+		createEAttribute(updateSingleValuedEAttributeEClass, UPDATE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE);
 
 		insertEAttributeValueEClass = createEClass(INSERT_EATTRIBUTE_VALUE);
 
@@ -366,6 +387,10 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		initEClass(updateEAttributeEClass, UpdateEAttribute.class, "UpdateEAttribute", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(updateSingleValuedEAttributeEClass, UpdateSingleValuedEAttribute.class, "UpdateSingleValuedEAttribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		g1 = createEGenericType(updateSingleValuedEAttributeEClass_T);
+		initEAttribute(getUpdateSingleValuedEAttribute_OldValue(), g1, "oldValue", null, 1, 1, UpdateSingleValuedEAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		g1 = createEGenericType(updateSingleValuedEAttributeEClass_T);
+		initEAttribute(getUpdateSingleValuedEAttribute_NewValue(), g1, "newValue", null, 1, 1, UpdateSingleValuedEAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(insertEAttributeValueEClass, InsertEAttributeValue.class, "InsertEAttributeValue", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

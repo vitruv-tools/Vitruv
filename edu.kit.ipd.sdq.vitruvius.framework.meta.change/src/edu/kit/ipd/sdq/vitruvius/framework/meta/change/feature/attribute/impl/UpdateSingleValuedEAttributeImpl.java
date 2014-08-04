@@ -31,6 +31,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.impl.UpdateSingleValuedEAttributeImpl#getAffectedFeature <em>Affected Feature</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.impl.UpdateSingleValuedEAttributeImpl#getAffectedEObject <em>Affected EObject</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.impl.UpdateSingleValuedEAttributeImpl#getOldValue <em>Old Value</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.impl.UpdateSingleValuedEAttributeImpl#getNewValue <em>New Value</em>}</li>
  * </ul>
  * </p>
  *
@@ -56,6 +58,26 @@ public class UpdateSingleValuedEAttributeImpl<T extends Object> extends UpdateSi
 	 * @ordered
 	 */
 	protected EObject affectedEObject;
+
+	/**
+	 * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOldValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected T oldValue;
+
+	/**
+	 * The cached value of the '{@link #getNewValue() <em>New Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNewValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected T newValue;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -157,10 +179,41 @@ public class UpdateSingleValuedEAttributeImpl<T extends Object> extends UpdateSi
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void EOperation0() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+	public T getOldValue() {
+		return oldValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setOldValue(T newOldValue) {
+		T oldOldValue = oldValue;
+		oldValue = newOldValue;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AttributePackage.UPDATE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE, oldOldValue, oldValue));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public T getNewValue() {
+		return newValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setNewValue(T newNewValue) {
+		T oldNewValue = newValue;
+		newValue = newNewValue;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AttributePackage.UPDATE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE, oldNewValue, newValue));
 	}
 
 	/**
@@ -177,6 +230,10 @@ public class UpdateSingleValuedEAttributeImpl<T extends Object> extends UpdateSi
 			case AttributePackage.UPDATE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT:
 				if (resolve) return getAffectedEObject();
 				return basicGetAffectedEObject();
+			case AttributePackage.UPDATE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE:
+				return getOldValue();
+			case AttributePackage.UPDATE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE:
+				return getNewValue();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -186,6 +243,7 @@ public class UpdateSingleValuedEAttributeImpl<T extends Object> extends UpdateSi
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -194,6 +252,12 @@ public class UpdateSingleValuedEAttributeImpl<T extends Object> extends UpdateSi
 				return;
 			case AttributePackage.UPDATE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT:
 				setAffectedEObject((EObject)newValue);
+				return;
+			case AttributePackage.UPDATE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE:
+				setOldValue((T)newValue);
+				return;
+			case AttributePackage.UPDATE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE:
+				setNewValue((T)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -213,6 +277,12 @@ public class UpdateSingleValuedEAttributeImpl<T extends Object> extends UpdateSi
 			case AttributePackage.UPDATE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT:
 				setAffectedEObject((EObject)null);
 				return;
+			case AttributePackage.UPDATE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE:
+				setOldValue((T)null);
+				return;
+			case AttributePackage.UPDATE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE:
+				setNewValue((T)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -229,6 +299,10 @@ public class UpdateSingleValuedEAttributeImpl<T extends Object> extends UpdateSi
 				return affectedFeature != null;
 			case AttributePackage.UPDATE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT:
 				return affectedEObject != null;
+			case AttributePackage.UPDATE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE:
+				return oldValue != null;
+			case AttributePackage.UPDATE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE:
+				return newValue != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -285,6 +359,24 @@ public class UpdateSingleValuedEAttributeImpl<T extends Object> extends UpdateSi
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (oldValue: ");
+		result.append(oldValue);
+		result.append(", newValue: ");
+		result.append(newValue);
+		result.append(')');
+		return result.toString();
 	}
 
 } //UpdateSingleValuedEAttributeImpl

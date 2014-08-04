@@ -38,6 +38,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ObjectPackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.impl.ObjectPackageImpl;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
@@ -228,6 +229,15 @@ public class ContainmentPackageImpl extends EPackageImpl implements ContainmentP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getCreateNonRootEObjectSingle_NewValue() {
+		return (EAttribute)createNonRootEObjectSingleEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getReplaceNonRootEObjectSingle() {
 		return replaceNonRootEObjectSingleEClass;
 	}
@@ -237,8 +247,35 @@ public class ContainmentPackageImpl extends EPackageImpl implements ContainmentP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getReplaceNonRootEObjectSingle_OldValue() {
+		return (EAttribute)replaceNonRootEObjectSingleEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getReplaceNonRootEObjectSingle_NewValue() {
+		return (EAttribute)replaceNonRootEObjectSingleEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getDeleteNonRootEObjectSingle() {
 		return deleteNonRootEObjectSingleEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getDeleteNonRootEObjectSingle_OldValue() {
+		return (EAttribute)deleteNonRootEObjectSingleEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -310,10 +347,14 @@ public class ContainmentPackageImpl extends EPackageImpl implements ContainmentP
 		updateSingleValuedContainmentEReferenceEClass = createEClass(UPDATE_SINGLE_VALUED_CONTAINMENT_EREFERENCE);
 
 		createNonRootEObjectSingleEClass = createEClass(CREATE_NON_ROOT_EOBJECT_SINGLE);
+		createEAttribute(createNonRootEObjectSingleEClass, CREATE_NON_ROOT_EOBJECT_SINGLE__NEW_VALUE);
 
 		replaceNonRootEObjectSingleEClass = createEClass(REPLACE_NON_ROOT_EOBJECT_SINGLE);
+		createEAttribute(replaceNonRootEObjectSingleEClass, REPLACE_NON_ROOT_EOBJECT_SINGLE__OLD_VALUE);
+		createEAttribute(replaceNonRootEObjectSingleEClass, REPLACE_NON_ROOT_EOBJECT_SINGLE__NEW_VALUE);
 
 		deleteNonRootEObjectSingleEClass = createEClass(DELETE_NON_ROOT_EOBJECT_SINGLE);
+		createEAttribute(deleteNonRootEObjectSingleEClass, DELETE_NON_ROOT_EOBJECT_SINGLE__OLD_VALUE);
 
 		createNonRootEObjectInListEClass = createEClass(CREATE_NON_ROOT_EOBJECT_IN_LIST);
 
@@ -472,10 +513,18 @@ public class ContainmentPackageImpl extends EPackageImpl implements ContainmentP
 		initEClass(updateSingleValuedContainmentEReferenceEClass, UpdateSingleValuedContainmentEReference.class, "UpdateSingleValuedContainmentEReference", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(createNonRootEObjectSingleEClass, CreateNonRootEObjectSingle.class, "CreateNonRootEObjectSingle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		g1 = createEGenericType(createNonRootEObjectSingleEClass_T);
+		initEAttribute(getCreateNonRootEObjectSingle_NewValue(), g1, "newValue", null, 1, 1, CreateNonRootEObjectSingle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(replaceNonRootEObjectSingleEClass, ReplaceNonRootEObjectSingle.class, "ReplaceNonRootEObjectSingle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		g1 = createEGenericType(replaceNonRootEObjectSingleEClass_T);
+		initEAttribute(getReplaceNonRootEObjectSingle_OldValue(), g1, "oldValue", null, 1, 1, ReplaceNonRootEObjectSingle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		g1 = createEGenericType(replaceNonRootEObjectSingleEClass_T);
+		initEAttribute(getReplaceNonRootEObjectSingle_NewValue(), g1, "newValue", null, 1, 1, ReplaceNonRootEObjectSingle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(deleteNonRootEObjectSingleEClass, DeleteNonRootEObjectSingle.class, "DeleteNonRootEObjectSingle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		g1 = createEGenericType(deleteNonRootEObjectSingleEClass_T);
+		initEAttribute(getDeleteNonRootEObjectSingle_OldValue(), g1, "oldValue", null, 1, 1, DeleteNonRootEObjectSingle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(createNonRootEObjectInListEClass, CreateNonRootEObjectInList.class, "CreateNonRootEObjectInList", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

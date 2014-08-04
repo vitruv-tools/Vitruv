@@ -27,16 +27,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class CreateRootEObjectImpl<T extends EObject> extends CreateEObjectImpl<T> implements CreateRootEObject<T> {
 	/**
-	 * The default value of the '{@link #getNewValue() <em>New Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getNewValue()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final Object NEW_VALUE_EDEFAULT = null;
-
-	/**
 	 * The cached value of the '{@link #getNewValue() <em>New Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -44,7 +34,7 @@ public class CreateRootEObjectImpl<T extends EObject> extends CreateEObjectImpl<
 	 * @generated
 	 * @ordered
 	 */
-	protected Object newValue = NEW_VALUE_EDEFAULT;
+	protected T newValue;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -70,7 +60,7 @@ public class CreateRootEObjectImpl<T extends EObject> extends CreateEObjectImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Object getNewValue() {
+	public T getNewValue() {
 		return newValue;
 	}
 
@@ -79,8 +69,8 @@ public class CreateRootEObjectImpl<T extends EObject> extends CreateEObjectImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setNewValue(Object newNewValue) {
-		Object oldNewValue = newValue;
+	public void setNewValue(T newNewValue) {
+		T oldNewValue = newValue;
 		newValue = newNewValue;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ObjectPackage.CREATE_ROOT_EOBJECT__NEW_VALUE, oldNewValue, newValue));
@@ -105,11 +95,12 @@ public class CreateRootEObjectImpl<T extends EObject> extends CreateEObjectImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case ObjectPackage.CREATE_ROOT_EOBJECT__NEW_VALUE:
-				setNewValue(newValue);
+				setNewValue((T)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -124,7 +115,7 @@ public class CreateRootEObjectImpl<T extends EObject> extends CreateEObjectImpl<
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case ObjectPackage.CREATE_ROOT_EOBJECT__NEW_VALUE:
-				setNewValue(NEW_VALUE_EDEFAULT);
+				setNewValue((T)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -139,7 +130,7 @@ public class CreateRootEObjectImpl<T extends EObject> extends CreateEObjectImpl<
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case ObjectPackage.CREATE_ROOT_EOBJECT__NEW_VALUE:
-				return NEW_VALUE_EDEFAULT == null ? newValue != null : !NEW_VALUE_EDEFAULT.equals(newValue);
+				return newValue != null;
 		}
 		return super.eIsSet(featureID);
 	}

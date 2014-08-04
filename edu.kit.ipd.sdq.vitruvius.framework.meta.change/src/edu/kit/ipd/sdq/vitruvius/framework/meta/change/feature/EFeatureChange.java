@@ -77,12 +77,4 @@ public interface EFeatureChange<T extends EStructuralFeature> extends EChange {
 	 */
 	void setAffectedEObject(EObject value);
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model
-	 * @generated
-	 */
-	void EOperation0();
-
 } // EFeatureChange

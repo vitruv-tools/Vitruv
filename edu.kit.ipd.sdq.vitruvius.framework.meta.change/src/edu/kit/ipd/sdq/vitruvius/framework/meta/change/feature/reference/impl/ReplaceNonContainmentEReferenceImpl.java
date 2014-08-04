@@ -84,6 +84,17 @@ public class ReplaceNonContainmentEReferenceImpl<T extends EObject> extends Repl
 	 * @generated
 	 */
 	@Override
+	public void setOldValue(T newOldValue) {
+		super.setOldValue(newOldValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
+	 * @generated
+	 */
+	@Override
 	public void setNewValue(T newNewValue) {
 		super.setNewValue(newNewValue);
 	}
@@ -162,17 +173,6 @@ public class ReplaceNonContainmentEReferenceImpl<T extends EObject> extends Repl
 		affectedEObject = newAffectedEObject;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REPLACE_NON_CONTAINMENT_EREFERENCE__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void EOperation0() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
 	}
 
 	/**

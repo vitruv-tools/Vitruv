@@ -6,6 +6,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.FeaturePackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.ListPackage;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -105,15 +106,6 @@ public interface AttributePackage extends EPackage {
 	int UPDATE_SINGLE_VALUED_EATTRIBUTE = 1;
 
 	/**
-	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE__OLD_VALUE;
-
-	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -132,13 +124,31 @@ public interface AttributePackage extends EPackage {
 	int UPDATE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>New Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Update Single Valued EAttribute</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UPDATE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 2;
+	int UPDATE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.impl.InsertEAttributeValueImpl <em>Insert EAttribute Value</em>}' class.
@@ -149,15 +159,6 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 */
 	int INSERT_EATTRIBUTE_VALUE = 2;
-
-	/**
-	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EATTRIBUTE_VALUE__OLD_VALUE = ListPackage.INSERT_IN_ELIST__OLD_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -215,15 +216,6 @@ public interface AttributePackage extends EPackage {
 	int REPLACE_EATTRIBUTE_VALUE = 3;
 
 	/**
-	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_EATTRIBUTE_VALUE__OLD_VALUE = ListPackage.REPLACE_IN_ELIST__OLD_VALUE;
-
-	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -231,6 +223,15 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_EATTRIBUTE_VALUE__INDEX = ListPackage.REPLACE_IN_ELIST__INDEX;
+
+	/**
+	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_EATTRIBUTE_VALUE__OLD_VALUE = ListPackage.REPLACE_IN_ELIST__OLD_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>New Value</b></em>' attribute.
@@ -279,15 +280,6 @@ public interface AttributePackage extends EPackage {
 	int REMOVE_EATTRIBUTE_VALUE = 4;
 
 	/**
-	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EATTRIBUTE_VALUE__OLD_VALUE = ListPackage.REMOVE_FROM_ELIST__OLD_VALUE;
-
-	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -304,6 +296,15 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_EATTRIBUTE_VALUE__REMOVED_OBJECT_URI_FRAGMENT = ListPackage.REMOVE_FROM_ELIST__REMOVED_OBJECT_URI_FRAGMENT;
+
+	/**
+	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EATTRIBUTE_VALUE__OLD_VALUE = ListPackage.REMOVE_FROM_ELIST__OLD_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -341,15 +342,6 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 */
 	int PERMUTE_EATTRIBUTE_VALUES = 5;
-
-	/**
-	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PERMUTE_EATTRIBUTE_VALUES__OLD_VALUE = ListPackage.PERMUTE_ELIST__OLD_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>New Index For Element At</b></em>' attribute list.
@@ -407,6 +399,28 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 */
 	EClass getUpdateSingleValuedEAttribute();
+
+	/**
+	 * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute#getOldValue <em>Old Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Old Value</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute#getOldValue()
+	 * @see #getUpdateSingleValuedEAttribute()
+	 * @generated
+	 */
+	EAttribute getUpdateSingleValuedEAttribute_OldValue();
+
+	/**
+	 * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute#getNewValue <em>New Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>New Value</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute#getNewValue()
+	 * @see #getUpdateSingleValuedEAttribute()
+	 * @generated
+	 */
+	EAttribute getUpdateSingleValuedEAttribute_NewValue();
 
 	/**
 	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.InsertEAttributeValue <em>Insert EAttribute Value</em>}'.
@@ -489,6 +503,22 @@ public interface AttributePackage extends EPackage {
 		 * @generated
 		 */
 		EClass UPDATE_SINGLE_VALUED_EATTRIBUTE = eINSTANCE.getUpdateSingleValuedEAttribute();
+
+		/**
+		 * The meta object literal for the '<em><b>Old Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute UPDATE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE = eINSTANCE.getUpdateSingleValuedEAttribute_OldValue();
+
+		/**
+		 * The meta object literal for the '<em><b>New Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute UPDATE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE = eINSTANCE.getUpdateSingleValuedEAttribute_NewValue();
 
 		/**
 		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.impl.InsertEAttributeValueImpl <em>Insert EAttribute Value</em>}' class.

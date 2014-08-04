@@ -214,26 +214,8 @@ public class ObjectPackageImpl extends EPackageImpl implements ObjectPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getCreateEObject_NewEObject() {
-		return (EReference)createEObjectEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getReplaceEObject() {
 		return replaceEObjectEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getReplaceEObject_NewEObject() {
-		return (EReference)replaceEObjectEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -286,8 +268,26 @@ public class ObjectPackageImpl extends EPackageImpl implements ObjectPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getReplaceRootEObject_OldValue() {
+		return (EAttribute)replaceRootEObjectEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getDeleteRootEObject() {
 		return deleteRootEObjectEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getDeleteRootEObject_OldValue() {
+		return (EAttribute)deleteRootEObjectEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -322,10 +322,8 @@ public class ObjectPackageImpl extends EPackageImpl implements ObjectPackage {
 		createEReference(eObjectChangeEClass, EOBJECT_CHANGE__CHANGED_EOBJECT);
 
 		createEObjectEClass = createEClass(CREATE_EOBJECT);
-		createEReference(createEObjectEClass, CREATE_EOBJECT__NEW_EOBJECT);
 
 		replaceEObjectEClass = createEClass(REPLACE_EOBJECT);
-		createEReference(replaceEObjectEClass, REPLACE_EOBJECT__NEW_EOBJECT);
 
 		deleteEObjectEClass = createEClass(DELETE_EOBJECT);
 
@@ -334,8 +332,10 @@ public class ObjectPackageImpl extends EPackageImpl implements ObjectPackage {
 
 		replaceRootEObjectEClass = createEClass(REPLACE_ROOT_EOBJECT);
 		createEAttribute(replaceRootEObjectEClass, REPLACE_ROOT_EOBJECT__NEW_VALUE);
+		createEAttribute(replaceRootEObjectEClass, REPLACE_ROOT_EOBJECT__OLD_VALUE);
 
 		deleteRootEObjectEClass = createEClass(DELETE_ROOT_EOBJECT);
+		createEAttribute(deleteRootEObjectEClass, DELETE_ROOT_EOBJECT__OLD_VALUE);
 	}
 
 	/**
@@ -422,22 +422,24 @@ public class ObjectPackageImpl extends EPackageImpl implements ObjectPackage {
 		initEReference(getEObjectChange_ChangedEObject(), g1, null, "changedEObject", null, 1, 1, EObjectChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(createEObjectEClass, CreateEObject.class, "CreateEObject", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		g1 = createEGenericType(createEObjectEClass_T);
-		initEReference(getCreateEObject_NewEObject(), g1, null, "newEObject", null, 1, 1, CreateEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(replaceEObjectEClass, ReplaceEObject.class, "ReplaceEObject", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		g1 = createEGenericType(replaceEObjectEClass_T);
-		initEReference(getReplaceEObject_NewEObject(), g1, null, "newEObject", null, 1, 1, ReplaceEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(deleteEObjectEClass, DeleteEObject.class, "DeleteEObject", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(createRootEObjectEClass, CreateRootEObject.class, "CreateRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getCreateRootEObject_NewValue(), ecorePackage.getEJavaObject(), "newValue", null, 1, 1, CreateRootEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		g1 = createEGenericType(createRootEObjectEClass_T);
+		initEAttribute(getCreateRootEObject_NewValue(), g1, "newValue", null, 1, 1, CreateRootEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(replaceRootEObjectEClass, ReplaceRootEObject.class, "ReplaceRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getReplaceRootEObject_NewValue(), ecorePackage.getEJavaObject(), "newValue", null, 1, 1, ReplaceRootEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		g1 = createEGenericType(replaceRootEObjectEClass_T);
+		initEAttribute(getReplaceRootEObject_NewValue(), g1, "newValue", null, 1, 1, ReplaceRootEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		g1 = createEGenericType(replaceRootEObjectEClass_T);
+		initEAttribute(getReplaceRootEObject_OldValue(), g1, "oldValue", null, 1, 1, ReplaceRootEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(deleteRootEObjectEClass, DeleteRootEObject.class, "DeleteRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		g1 = createEGenericType(deleteRootEObjectEClass_T);
+		initEAttribute(getDeleteRootEObject_OldValue(), g1, "oldValue", null, 1, 1, DeleteRootEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 	}
 
 } //ObjectPackageImpl

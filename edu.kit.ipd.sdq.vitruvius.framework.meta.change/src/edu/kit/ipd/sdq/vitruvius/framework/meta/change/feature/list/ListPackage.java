@@ -67,15 +67,6 @@ public interface ListPackage extends EPackage {
 	int UPDATE_SINGLE_ELIST_ENTRY = 0;
 
 	/**
-	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_SINGLE_ELIST_ENTRY__OLD_VALUE = FeaturePackage.UPDATE_MULTI_VALUED_EFEATURE__OLD_VALUE;
-
-	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -102,15 +93,6 @@ public interface ListPackage extends EPackage {
 	 * @generated
 	 */
 	int INSERT_IN_ELIST = 1;
-
-	/**
-	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_IN_ELIST__OLD_VALUE = UPDATE_SINGLE_ELIST_ENTRY__OLD_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -150,15 +132,6 @@ public interface ListPackage extends EPackage {
 	int REPLACE_IN_ELIST = 2;
 
 	/**
-	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_IN_ELIST__OLD_VALUE = UPDATE_SINGLE_ELIST_ENTRY__OLD_VALUE;
-
-	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -168,13 +141,22 @@ public interface ListPackage extends EPackage {
 	int REPLACE_IN_ELIST__INDEX = UPDATE_SINGLE_ELIST_ENTRY__INDEX;
 
 	/**
+	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_IN_ELIST__OLD_VALUE = UPDATE_SINGLE_ELIST_ENTRY_FEATURE_COUNT + 0;
+
+	/**
 	 * The feature id for the '<em><b>New Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_IN_ELIST__NEW_VALUE = UPDATE_SINGLE_ELIST_ENTRY_FEATURE_COUNT + 0;
+	int REPLACE_IN_ELIST__NEW_VALUE = UPDATE_SINGLE_ELIST_ENTRY_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Replace In EList</em>' class.
@@ -183,7 +165,7 @@ public interface ListPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_IN_ELIST_FEATURE_COUNT = UPDATE_SINGLE_ELIST_ENTRY_FEATURE_COUNT + 1;
+	int REPLACE_IN_ELIST_FEATURE_COUNT = UPDATE_SINGLE_ELIST_ENTRY_FEATURE_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.impl.RemoveFromEListImpl <em>Remove From EList</em>}' class.
@@ -194,15 +176,6 @@ public interface ListPackage extends EPackage {
 	 * @generated
 	 */
 	int REMOVE_FROM_ELIST = 3;
-
-	/**
-	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_FROM_ELIST__OLD_VALUE = UPDATE_SINGLE_ELIST_ENTRY__OLD_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -223,13 +196,22 @@ public interface ListPackage extends EPackage {
 	int REMOVE_FROM_ELIST__REMOVED_OBJECT_URI_FRAGMENT = UPDATE_SINGLE_ELIST_ENTRY_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_FROM_ELIST__OLD_VALUE = UPDATE_SINGLE_ELIST_ENTRY_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Remove From EList</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_FROM_ELIST_FEATURE_COUNT = UPDATE_SINGLE_ELIST_ENTRY_FEATURE_COUNT + 1;
+	int REMOVE_FROM_ELIST_FEATURE_COUNT = UPDATE_SINGLE_ELIST_ENTRY_FEATURE_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.impl.PermuteEListImpl <em>Permute EList</em>}' class.
@@ -240,15 +222,6 @@ public interface ListPackage extends EPackage {
 	 * @generated
 	 */
 	int PERMUTE_ELIST = 4;
-
-	/**
-	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PERMUTE_ELIST__OLD_VALUE = FeaturePackage.UPDATE_MULTI_VALUED_EFEATURE__OLD_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>New Index For Element At</b></em>' attribute list.
@@ -322,6 +295,17 @@ public interface ListPackage extends EPackage {
 	EClass getReplaceInEList();
 
 	/**
+	 * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.ReplaceInEList#getOldValue <em>Old Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Old Value</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.ReplaceInEList#getOldValue()
+	 * @see #getReplaceInEList()
+	 * @generated
+	 */
+	EAttribute getReplaceInEList_OldValue();
+
+	/**
 	 * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.ReplaceInEList#getNewValue <em>New Value</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -352,6 +336,17 @@ public interface ListPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getRemoveFromEList_RemovedObjectURIFragment();
+
+	/**
+	 * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.RemoveFromEList#getOldValue <em>Old Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Old Value</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.RemoveFromEList#getOldValue()
+	 * @see #getRemoveFromEList()
+	 * @generated
+	 */
+	EAttribute getRemoveFromEList_OldValue();
 
 	/**
 	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.PermuteEList <em>Permute EList</em>}'.
@@ -443,6 +438,14 @@ public interface ListPackage extends EPackage {
 		EClass REPLACE_IN_ELIST = eINSTANCE.getReplaceInEList();
 
 		/**
+		 * The meta object literal for the '<em><b>Old Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute REPLACE_IN_ELIST__OLD_VALUE = eINSTANCE.getReplaceInEList_OldValue();
+
+		/**
 		 * The meta object literal for the '<em><b>New Value</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -467,6 +470,14 @@ public interface ListPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute REMOVE_FROM_ELIST__REMOVED_OBJECT_URI_FRAGMENT = eINSTANCE.getRemoveFromEList_RemovedObjectURIFragment();
+
+		/**
+		 * The meta object literal for the '<em><b>Old Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute REMOVE_FROM_ELIST__OLD_VALUE = eINSTANCE.getRemoveFromEList_OldValue();
 
 		/**
 		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.impl.PermuteEListImpl <em>Permute EList</em>}' class.

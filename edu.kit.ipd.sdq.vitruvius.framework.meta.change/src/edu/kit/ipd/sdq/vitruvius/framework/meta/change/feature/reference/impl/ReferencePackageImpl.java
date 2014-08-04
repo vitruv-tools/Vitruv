@@ -36,6 +36,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ObjectPackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.impl.ObjectPackageImpl;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
@@ -212,6 +213,24 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getUpdateSingleValuedNonContainmentEReference_OldValue() {
+		return (EAttribute)updateSingleValuedNonContainmentEReferenceEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getUpdateSingleValuedNonContainmentEReference_NewValue() {
+		return (EAttribute)updateSingleValuedNonContainmentEReferenceEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getInsertNonContainmentEReference() {
 		return insertNonContainmentEReferenceEClass;
 	}
@@ -276,6 +295,8 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		updateNonContainmentEReferenceEClass = createEClass(UPDATE_NON_CONTAINMENT_EREFERENCE);
 
 		updateSingleValuedNonContainmentEReferenceEClass = createEClass(UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE);
+		createEAttribute(updateSingleValuedNonContainmentEReferenceEClass, UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__OLD_VALUE);
+		createEAttribute(updateSingleValuedNonContainmentEReferenceEClass, UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__NEW_VALUE);
 
 		insertNonContainmentEReferenceEClass = createEClass(INSERT_NON_CONTAINMENT_EREFERENCE);
 
@@ -398,6 +419,10 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		initEClass(updateNonContainmentEReferenceEClass, UpdateNonContainmentEReference.class, "UpdateNonContainmentEReference", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(updateSingleValuedNonContainmentEReferenceEClass, UpdateSingleValuedNonContainmentEReference.class, "UpdateSingleValuedNonContainmentEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		g1 = createEGenericType(updateSingleValuedNonContainmentEReferenceEClass_T);
+		initEAttribute(getUpdateSingleValuedNonContainmentEReference_OldValue(), g1, "oldValue", null, 1, 1, UpdateSingleValuedNonContainmentEReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		g1 = createEGenericType(updateSingleValuedNonContainmentEReferenceEClass_T);
+		initEAttribute(getUpdateSingleValuedNonContainmentEReference_NewValue(), g1, "newValue", null, 1, 1, UpdateSingleValuedNonContainmentEReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(insertNonContainmentEReferenceEClass, InsertNonContainmentEReference.class, "InsertNonContainmentEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

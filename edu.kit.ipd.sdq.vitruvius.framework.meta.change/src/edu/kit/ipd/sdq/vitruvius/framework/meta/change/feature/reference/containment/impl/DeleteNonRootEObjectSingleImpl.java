@@ -32,25 +32,15 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.DeleteNonRootEObjectSingleImpl#getOldValue <em>Old Value</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.DeleteNonRootEObjectSingleImpl#getAffectedFeature <em>Affected Feature</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.DeleteNonRootEObjectSingleImpl#getAffectedEObject <em>Affected EObject</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.DeleteNonRootEObjectSingleImpl#getOldValue <em>Old Value</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
 public class DeleteNonRootEObjectSingleImpl<T extends EObject> extends DeleteEObjectImpl<T> implements DeleteNonRootEObjectSingle<T> {
-	/**
-	 * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getOldValue()
-	 * @generated
-	 * @ordered
-	 */
-	protected T oldValue;
-
 	/**
 	 * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
 	 * <!-- begin-user-doc -->
@@ -70,6 +60,16 @@ public class DeleteNonRootEObjectSingleImpl<T extends EObject> extends DeleteEOb
 	 * @ordered
 	 */
 	protected EObject affectedEObject;
+
+	/**
+	 * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOldValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected T oldValue;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -192,28 +192,17 @@ public class DeleteNonRootEObjectSingleImpl<T extends EObject> extends DeleteEOb
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void EOperation0() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_SINGLE__OLD_VALUE:
-				return getOldValue();
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_SINGLE__AFFECTED_FEATURE:
 				if (resolve) return getAffectedFeature();
 				return basicGetAffectedFeature();
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_SINGLE__AFFECTED_EOBJECT:
 				if (resolve) return getAffectedEObject();
 				return basicGetAffectedEObject();
+			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_SINGLE__OLD_VALUE:
+				return getOldValue();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -227,14 +216,14 @@ public class DeleteNonRootEObjectSingleImpl<T extends EObject> extends DeleteEOb
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_SINGLE__OLD_VALUE:
-				setOldValue((T)newValue);
-				return;
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_SINGLE__AFFECTED_FEATURE:
 				setAffectedFeature((EReference)newValue);
 				return;
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_SINGLE__AFFECTED_EOBJECT:
 				setAffectedEObject((EObject)newValue);
+				return;
+			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_SINGLE__OLD_VALUE:
+				setOldValue((T)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -248,14 +237,14 @@ public class DeleteNonRootEObjectSingleImpl<T extends EObject> extends DeleteEOb
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_SINGLE__OLD_VALUE:
-				setOldValue((T)null);
-				return;
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_SINGLE__AFFECTED_FEATURE:
 				setAffectedFeature((EReference)null);
 				return;
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_SINGLE__AFFECTED_EOBJECT:
 				setAffectedEObject((EObject)null);
+				return;
+			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_SINGLE__OLD_VALUE:
+				setOldValue((T)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -269,12 +258,12 @@ public class DeleteNonRootEObjectSingleImpl<T extends EObject> extends DeleteEOb
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_SINGLE__OLD_VALUE:
-				return oldValue != null;
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_SINGLE__AFFECTED_FEATURE:
 				return affectedFeature != null;
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_SINGLE__AFFECTED_EOBJECT:
 				return affectedEObject != null;
+			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_SINGLE__OLD_VALUE:
+				return oldValue != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -288,7 +277,6 @@ public class DeleteNonRootEObjectSingleImpl<T extends EObject> extends DeleteEOb
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == UpdateEFeature.class) {
 			switch (derivedFeatureID) {
-				case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_SINGLE__OLD_VALUE: return FeaturePackage.UPDATE_EFEATURE__OLD_VALUE;
 				default: return -1;
 			}
 		}
@@ -331,7 +319,6 @@ public class DeleteNonRootEObjectSingleImpl<T extends EObject> extends DeleteEOb
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == UpdateEFeature.class) {
 			switch (baseFeatureID) {
-				case FeaturePackage.UPDATE_EFEATURE__OLD_VALUE: return ContainmentPackage.DELETE_NON_ROOT_EOBJECT_SINGLE__OLD_VALUE;
 				default: return -1;
 			}
 		}

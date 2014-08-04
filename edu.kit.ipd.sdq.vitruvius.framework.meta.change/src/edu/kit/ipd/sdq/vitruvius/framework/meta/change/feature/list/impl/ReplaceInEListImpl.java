@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.impl.ReplaceInEListImpl#getOldValue <em>Old Value</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.impl.ReplaceInEListImpl#getNewValue <em>New Value</em>}</li>
  * </ul>
  * </p>
@@ -25,6 +26,15 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * @generated
  */
 public abstract class ReplaceInEListImpl<T extends Object> extends UpdateSingleEListEntryImpl<T> implements ReplaceInEList<T> {
+	/**
+	 * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOldValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected T oldValue;
 	/**
 	 * The cached value of the '{@link #getNewValue() <em>New Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -59,6 +69,27 @@ public abstract class ReplaceInEListImpl<T extends Object> extends UpdateSingleE
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public T getOldValue() {
+		return oldValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setOldValue(T newOldValue) {
+		T oldOldValue = oldValue;
+		oldValue = newOldValue;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ListPackage.REPLACE_IN_ELIST__OLD_VALUE, oldOldValue, oldValue));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public T getNewValue() {
 		return newValue;
 	}
@@ -83,6 +114,8 @@ public abstract class ReplaceInEListImpl<T extends Object> extends UpdateSingleE
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case ListPackage.REPLACE_IN_ELIST__OLD_VALUE:
+				return getOldValue();
 			case ListPackage.REPLACE_IN_ELIST__NEW_VALUE:
 				return getNewValue();
 		}
@@ -98,6 +131,9 @@ public abstract class ReplaceInEListImpl<T extends Object> extends UpdateSingleE
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case ListPackage.REPLACE_IN_ELIST__OLD_VALUE:
+				setOldValue((T)newValue);
+				return;
 			case ListPackage.REPLACE_IN_ELIST__NEW_VALUE:
 				setNewValue((T)newValue);
 				return;
@@ -113,6 +149,9 @@ public abstract class ReplaceInEListImpl<T extends Object> extends UpdateSingleE
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case ListPackage.REPLACE_IN_ELIST__OLD_VALUE:
+				setOldValue((T)null);
+				return;
 			case ListPackage.REPLACE_IN_ELIST__NEW_VALUE:
 				setNewValue((T)null);
 				return;
@@ -128,6 +167,8 @@ public abstract class ReplaceInEListImpl<T extends Object> extends UpdateSingleE
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case ListPackage.REPLACE_IN_ELIST__OLD_VALUE:
+				return oldValue != null;
 			case ListPackage.REPLACE_IN_ELIST__NEW_VALUE:
 				return newValue != null;
 		}
@@ -144,7 +185,9 @@ public abstract class ReplaceInEListImpl<T extends Object> extends UpdateSingleE
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (newValue: ");
+		result.append(" (oldValue: ");
+		result.append(oldValue);
+		result.append(", newValue: ");
 		result.append(newValue);
 		result.append(')');
 		return result.toString();

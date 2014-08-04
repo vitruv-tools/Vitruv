@@ -35,9 +35,9 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.DeleteNonRootEObjectInListImpl#getOldValue <em>Old Value</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.DeleteNonRootEObjectInListImpl#getIndex <em>Index</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.DeleteNonRootEObjectInListImpl#getRemovedObjectURIFragment <em>Removed Object URI Fragment</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.DeleteNonRootEObjectInListImpl#getOldValue <em>Old Value</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.DeleteNonRootEObjectInListImpl#getAffectedFeature <em>Affected Feature</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.DeleteNonRootEObjectInListImpl#getAffectedEObject <em>Affected EObject</em>}</li>
  * </ul>
@@ -46,16 +46,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * @generated
  */
 public class DeleteNonRootEObjectInListImpl<T extends EObject> extends DeleteEObjectImpl<T> implements DeleteNonRootEObjectInList<T> {
-	/**
-	 * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getOldValue()
-	 * @generated
-	 * @ordered
-	 */
-	protected T oldValue;
-
 	/**
 	 * The default value of the '{@link #getIndex() <em>Index</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -95,6 +85,16 @@ public class DeleteNonRootEObjectInListImpl<T extends EObject> extends DeleteEOb
 	 * @ordered
 	 */
 	protected String removedObjectURIFragment = REMOVED_OBJECT_URI_FRAGMENT_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOldValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected T oldValue;
 
 	/**
 	 * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
@@ -279,26 +279,15 @@ public class DeleteNonRootEObjectInListImpl<T extends EObject> extends DeleteEOb
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void EOperation0() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
-				return getOldValue();
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__INDEX:
 				return getIndex();
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__REMOVED_OBJECT_URI_FRAGMENT:
 				return getRemovedObjectURIFragment();
+			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
+				return getOldValue();
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE:
 				if (resolve) return getAffectedFeature();
 				return basicGetAffectedFeature();
@@ -318,14 +307,14 @@ public class DeleteNonRootEObjectInListImpl<T extends EObject> extends DeleteEOb
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
-				setOldValue((T)newValue);
-				return;
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__INDEX:
 				setIndex((Integer)newValue);
 				return;
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__REMOVED_OBJECT_URI_FRAGMENT:
 				setRemovedObjectURIFragment((String)newValue);
+				return;
+			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
+				setOldValue((T)newValue);
 				return;
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE:
 				setAffectedFeature((EReference)newValue);
@@ -345,14 +334,14 @@ public class DeleteNonRootEObjectInListImpl<T extends EObject> extends DeleteEOb
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
-				setOldValue((T)null);
-				return;
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__INDEX:
 				setIndex(INDEX_EDEFAULT);
 				return;
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__REMOVED_OBJECT_URI_FRAGMENT:
 				setRemovedObjectURIFragment(REMOVED_OBJECT_URI_FRAGMENT_EDEFAULT);
+				return;
+			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
+				setOldValue((T)null);
 				return;
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE:
 				setAffectedFeature((EReference)null);
@@ -372,12 +361,12 @@ public class DeleteNonRootEObjectInListImpl<T extends EObject> extends DeleteEOb
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
-				return oldValue != null;
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__INDEX:
 				return index != INDEX_EDEFAULT;
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__REMOVED_OBJECT_URI_FRAGMENT:
 				return REMOVED_OBJECT_URI_FRAGMENT_EDEFAULT == null ? removedObjectURIFragment != null : !REMOVED_OBJECT_URI_FRAGMENT_EDEFAULT.equals(removedObjectURIFragment);
+			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
+				return oldValue != null;
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE:
 				return affectedFeature != null;
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_EOBJECT:
@@ -395,7 +384,6 @@ public class DeleteNonRootEObjectInListImpl<T extends EObject> extends DeleteEOb
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == UpdateEFeature.class) {
 			switch (derivedFeatureID) {
-				case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE: return FeaturePackage.UPDATE_EFEATURE__OLD_VALUE;
 				default: return -1;
 			}
 		}
@@ -413,6 +401,7 @@ public class DeleteNonRootEObjectInListImpl<T extends EObject> extends DeleteEOb
 		if (baseClass == RemoveFromEList.class) {
 			switch (derivedFeatureID) {
 				case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__REMOVED_OBJECT_URI_FRAGMENT: return ListPackage.REMOVE_FROM_ELIST__REMOVED_OBJECT_URI_FRAGMENT;
+				case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE: return ListPackage.REMOVE_FROM_ELIST__OLD_VALUE;
 				default: return -1;
 			}
 		}
@@ -445,7 +434,6 @@ public class DeleteNonRootEObjectInListImpl<T extends EObject> extends DeleteEOb
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == UpdateEFeature.class) {
 			switch (baseFeatureID) {
-				case FeaturePackage.UPDATE_EFEATURE__OLD_VALUE: return ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE;
 				default: return -1;
 			}
 		}
@@ -463,6 +451,7 @@ public class DeleteNonRootEObjectInListImpl<T extends EObject> extends DeleteEOb
 		if (baseClass == RemoveFromEList.class) {
 			switch (baseFeatureID) {
 				case ListPackage.REMOVE_FROM_ELIST__REMOVED_OBJECT_URI_FRAGMENT: return ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__REMOVED_OBJECT_URI_FRAGMENT;
+				case ListPackage.REMOVE_FROM_ELIST__OLD_VALUE: return ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE;
 				default: return -1;
 			}
 		}
@@ -496,12 +485,12 @@ public class DeleteNonRootEObjectInListImpl<T extends EObject> extends DeleteEOb
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (oldValue: ");
-		result.append(oldValue);
-		result.append(", index: ");
+		result.append(" (index: ");
 		result.append(index);
 		result.append(", removedObjectURIFragment: ");
 		result.append(removedObjectURIFragment);
+		result.append(", oldValue: ");
+		result.append(oldValue);
 		result.append(')');
 		return result.toString();
 	}

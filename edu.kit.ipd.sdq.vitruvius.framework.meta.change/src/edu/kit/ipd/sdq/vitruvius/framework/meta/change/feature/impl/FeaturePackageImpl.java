@@ -223,15 +223,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getUpdateEFeature_OldValue() {
-		return (EAttribute)updateEFeatureEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getUpdateMultiValuedEFeature() {
 		return updateMultiValuedEFeatureEClass;
 	}
@@ -305,7 +296,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		createEReference(eFeatureChangeEClass, EFEATURE_CHANGE__AFFECTED_EOBJECT);
 
 		updateEFeatureEClass = createEClass(UPDATE_EFEATURE);
-		createEAttribute(updateEFeatureEClass, UPDATE_EFEATURE__OLD_VALUE);
 
 		updateMultiValuedEFeatureEClass = createEClass(UPDATE_MULTI_VALUED_EFEATURE);
 
@@ -400,11 +390,7 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		initEReference(getEFeatureChange_AffectedFeature(), g1, null, "affectedFeature", null, 1, 1, EFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEFeatureChange_AffectedEObject(), ecorePackage.getEObject(), null, "affectedEObject", null, 1, 1, EFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		addEOperation(eFeatureChangeEClass, null, "EOperation0", 0, 1, IS_UNIQUE, IS_ORDERED);
-
 		initEClass(updateEFeatureEClass, UpdateEFeature.class, "UpdateEFeature", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		g1 = createEGenericType(updateEFeatureEClass_T);
-		initEAttribute(getUpdateEFeature_OldValue(), g1, "oldValue", null, 1, 1, UpdateEFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(updateMultiValuedEFeatureEClass, UpdateMultiValuedEFeature.class, "UpdateMultiValuedEFeature", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

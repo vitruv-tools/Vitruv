@@ -30,12 +30,12 @@ public interface CreateRootEObject<T extends EObject> extends CreateEObject<T> {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>New Value</em>' attribute.
-	 * @see #setNewValue(Object)
+	 * @see #setNewValue(EObject)
 	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ObjectPackage#getCreateRootEObject_NewValue()
 	 * @model required="true"
 	 * @generated
 	 */
-	Object getNewValue();
+	T getNewValue();
 
 	/**
 	 * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject#getNewValue <em>New Value</em>}' attribute.
@@ -45,6 +45,6 @@ public interface CreateRootEObject<T extends EObject> extends CreateEObject<T> {
 	 * @see #getNewValue()
 	 * @generated
 	 */
-	void setNewValue(Object value);
+	void setNewValue(T value);
 
 } // CreateRootEObject

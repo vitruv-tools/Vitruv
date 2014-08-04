@@ -9,7 +9,6 @@
       <eTypeParameters name="T">
         <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
       </eTypeParameters>
-      <eOperations name="EOperation0"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="affectedFeature" lowerBound="1">
         <eGenericType eTypeParameter="#//feature/EFeatureChange/T"/>
       </eStructuralFeatures>
@@ -20,9 +19,6 @@
       <eTypeParameters name="T">
         <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
       </eTypeParameters>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldValue" lowerBound="1">
-        <eGenericType eTypeParameter="#//feature/UpdateEFeature/T"/>
-      </eStructuralFeatures>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="UpdateMultiValuedEFeature" abstract="true">
       <eTypeParameters name="T">
@@ -85,6 +81,9 @@
         <eTypeParameters name="T">
           <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
         </eTypeParameters>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldValue" lowerBound="1">
+          <eGenericType eTypeParameter="#//feature/list/ReplaceInEList/T"/>
+        </eStructuralFeatures>
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="newValue" lowerBound="1">
           <eGenericType eTypeParameter="#//feature/list/ReplaceInEList/T"/>
         </eStructuralFeatures>
@@ -99,6 +98,9 @@
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="removedObjectURIFragment"
             lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
             defaultValueLiteral="0"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldValue" lowerBound="1">
+          <eGenericType eTypeParameter="#//feature/list/RemoveFromEList/T"/>
+        </eStructuralFeatures>
         <eGenericSuperTypes eClassifier="#//feature/list/UpdateSingleEListEntry">
           <eTypeArguments eTypeParameter="#//feature/list/RemoveFromEList/T"/>
         </eGenericSuperTypes>
@@ -128,6 +130,12 @@
         <eTypeParameters name="T">
           <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
         </eTypeParameters>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldValue" lowerBound="1">
+          <eGenericType eTypeParameter="#//feature/attribute/UpdateSingleValuedEAttribute/T"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="newValue" lowerBound="1">
+          <eGenericType eTypeParameter="#//feature/attribute/UpdateSingleValuedEAttribute/T"/>
+        </eStructuralFeatures>
         <eGenericSuperTypes eClassifier="#//feature/UpdateSingleValuedEFeature">
           <eTypeArguments eTypeParameter="#//feature/attribute/UpdateSingleValuedEAttribute/T"/>
         </eGenericSuperTypes>
@@ -203,6 +211,12 @@
         <eTypeParameters name="T">
           <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
         </eTypeParameters>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldValue" lowerBound="1">
+          <eGenericType eTypeParameter="#//feature/reference/UpdateSingleValuedNonContainmentEReference/T"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="newValue" lowerBound="1">
+          <eGenericType eTypeParameter="#//feature/reference/UpdateSingleValuedNonContainmentEReference/T"/>
+        </eStructuralFeatures>
         <eGenericSuperTypes eClassifier="#//feature/UpdateSingleValuedEFeature">
           <eTypeArguments eTypeParameter="#//feature/reference/UpdateSingleValuedNonContainmentEReference/T"/>
         </eGenericSuperTypes>
@@ -280,6 +294,9 @@
           <eTypeParameters name="T">
             <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
           </eTypeParameters>
+          <eStructuralFeatures xsi:type="ecore:EAttribute" name="newValue" lowerBound="1">
+            <eGenericType eTypeParameter="#//feature/reference/containment/CreateNonRootEObjectSingle/T"/>
+          </eStructuralFeatures>
           <eGenericSuperTypes eClassifier="#//object/CreateEObject">
             <eTypeArguments eTypeParameter="#//feature/reference/containment/CreateNonRootEObjectSingle/T"/>
           </eGenericSuperTypes>
@@ -291,6 +308,12 @@
           <eTypeParameters name="T">
             <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
           </eTypeParameters>
+          <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldValue" lowerBound="1">
+            <eGenericType eTypeParameter="#//feature/reference/containment/ReplaceNonRootEObjectSingle/T"/>
+          </eStructuralFeatures>
+          <eStructuralFeatures xsi:type="ecore:EAttribute" name="newValue" lowerBound="1">
+            <eGenericType eTypeParameter="#//feature/reference/containment/ReplaceNonRootEObjectSingle/T"/>
+          </eStructuralFeatures>
           <eGenericSuperTypes eClassifier="#//object/ReplaceEObject">
             <eTypeArguments eTypeParameter="#//feature/reference/containment/ReplaceNonRootEObjectSingle/T"/>
           </eGenericSuperTypes>
@@ -302,6 +325,9 @@
           <eTypeParameters name="T">
             <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
           </eTypeParameters>
+          <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldValue" lowerBound="1">
+            <eGenericType eTypeParameter="#//feature/reference/containment/DeleteNonRootEObjectSingle/T"/>
+          </eStructuralFeatures>
           <eGenericSuperTypes eClassifier="#//object/DeleteEObject">
             <eTypeArguments eTypeParameter="#//feature/reference/containment/DeleteNonRootEObjectSingle/T"/>
           </eGenericSuperTypes>
@@ -379,9 +405,6 @@
       <eTypeParameters name="T">
         <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
       </eTypeParameters>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="newEObject" lowerBound="1">
-        <eGenericType eTypeParameter="#//object/CreateEObject/T"/>
-      </eStructuralFeatures>
       <eGenericSuperTypes eClassifier="#//object/EObjectChange">
         <eTypeArguments eTypeParameter="#//object/CreateEObject/T"/>
       </eGenericSuperTypes>
@@ -390,9 +413,6 @@
       <eTypeParameters name="T">
         <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
       </eTypeParameters>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="newEObject" lowerBound="1">
-        <eGenericType eTypeParameter="#//object/ReplaceEObject/T"/>
-      </eStructuralFeatures>
       <eGenericSuperTypes eClassifier="#//object/EObjectChange">
         <eTypeArguments eTypeParameter="#//object/ReplaceEObject/T"/>
       </eGenericSuperTypes>
@@ -409,8 +429,9 @@
       <eTypeParameters name="T">
         <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
       </eTypeParameters>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="newValue" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="newValue" lowerBound="1">
+        <eGenericType eTypeParameter="#//object/CreateRootEObject/T"/>
+      </eStructuralFeatures>
       <eGenericSuperTypes eClassifier="#//object/CreateEObject">
         <eTypeArguments eTypeParameter="#//object/CreateRootEObject/T"/>
       </eGenericSuperTypes>
@@ -419,8 +440,12 @@
       <eTypeParameters name="T">
         <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
       </eTypeParameters>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="newValue" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="newValue" lowerBound="1">
+        <eGenericType eTypeParameter="#//object/ReplaceRootEObject/T"/>
+      </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldValue" lowerBound="1">
+        <eGenericType eTypeParameter="#//object/ReplaceRootEObject/T"/>
+      </eStructuralFeatures>
       <eGenericSuperTypes eClassifier="#//object/ReplaceEObject">
         <eTypeArguments eTypeParameter="#//object/ReplaceRootEObject/T"/>
       </eGenericSuperTypes>
@@ -429,6 +454,9 @@
       <eTypeParameters name="T">
         <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
       </eTypeParameters>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldValue" lowerBound="1">
+        <eGenericType eTypeParameter="#//object/DeleteRootEObject/T"/>
+      </eStructuralFeatures>
       <eGenericSuperTypes eClassifier="#//object/DeleteEObject">
         <eTypeArguments eTypeParameter="#//object/DeleteRootEObject/T"/>
       </eGenericSuperTypes>

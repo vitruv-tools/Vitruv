@@ -32,6 +32,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.impl.UpdateSingleValuedNonContainmentEReferenceImpl#getAffectedFeature <em>Affected Feature</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.impl.UpdateSingleValuedNonContainmentEReferenceImpl#getAffectedEObject <em>Affected EObject</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.impl.UpdateSingleValuedNonContainmentEReferenceImpl#getOldValue <em>Old Value</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.impl.UpdateSingleValuedNonContainmentEReferenceImpl#getNewValue <em>New Value</em>}</li>
  * </ul>
  * </p>
  *
@@ -57,6 +59,26 @@ public class UpdateSingleValuedNonContainmentEReferenceImpl<T extends EObject> e
 	 * @ordered
 	 */
 	protected EObject affectedEObject;
+
+	/**
+	 * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOldValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected T oldValue;
+
+	/**
+	 * The cached value of the '{@link #getNewValue() <em>New Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNewValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected T newValue;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -158,10 +180,41 @@ public class UpdateSingleValuedNonContainmentEReferenceImpl<T extends EObject> e
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void EOperation0() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+	public T getOldValue() {
+		return oldValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setOldValue(T newOldValue) {
+		T oldOldValue = oldValue;
+		oldValue = newOldValue;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__OLD_VALUE, oldOldValue, oldValue));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public T getNewValue() {
+		return newValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setNewValue(T newNewValue) {
+		T oldNewValue = newValue;
+		newValue = newNewValue;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__NEW_VALUE, oldNewValue, newValue));
 	}
 
 	/**
@@ -178,6 +231,10 @@ public class UpdateSingleValuedNonContainmentEReferenceImpl<T extends EObject> e
 			case ReferencePackage.UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__AFFECTED_EOBJECT:
 				if (resolve) return getAffectedEObject();
 				return basicGetAffectedEObject();
+			case ReferencePackage.UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__OLD_VALUE:
+				return getOldValue();
+			case ReferencePackage.UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__NEW_VALUE:
+				return getNewValue();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -187,6 +244,7 @@ public class UpdateSingleValuedNonContainmentEReferenceImpl<T extends EObject> e
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -195,6 +253,12 @@ public class UpdateSingleValuedNonContainmentEReferenceImpl<T extends EObject> e
 				return;
 			case ReferencePackage.UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__AFFECTED_EOBJECT:
 				setAffectedEObject((EObject)newValue);
+				return;
+			case ReferencePackage.UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__OLD_VALUE:
+				setOldValue((T)newValue);
+				return;
+			case ReferencePackage.UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__NEW_VALUE:
+				setNewValue((T)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -214,6 +278,12 @@ public class UpdateSingleValuedNonContainmentEReferenceImpl<T extends EObject> e
 			case ReferencePackage.UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__AFFECTED_EOBJECT:
 				setAffectedEObject((EObject)null);
 				return;
+			case ReferencePackage.UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__OLD_VALUE:
+				setOldValue((T)null);
+				return;
+			case ReferencePackage.UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__NEW_VALUE:
+				setNewValue((T)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -230,6 +300,10 @@ public class UpdateSingleValuedNonContainmentEReferenceImpl<T extends EObject> e
 				return affectedFeature != null;
 			case ReferencePackage.UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__AFFECTED_EOBJECT:
 				return affectedEObject != null;
+			case ReferencePackage.UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__OLD_VALUE:
+				return oldValue != null;
+			case ReferencePackage.UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__NEW_VALUE:
+				return newValue != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -296,6 +370,24 @@ public class UpdateSingleValuedNonContainmentEReferenceImpl<T extends EObject> e
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (oldValue: ");
+		result.append(oldValue);
+		result.append(", newValue: ");
+		result.append(newValue);
+		result.append(')');
+		return result.toString();
 	}
 
 } //UpdateSingleValuedNonContainmentEReferenceImpl

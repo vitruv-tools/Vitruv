@@ -215,8 +215,17 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getReplaceInEList_NewValue() {
+	public EAttribute getReplaceInEList_OldValue() {
 		return (EAttribute)replaceInEListEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getReplaceInEList_NewValue() {
+		return (EAttribute)replaceInEListEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -235,6 +244,15 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 	 */
 	public EAttribute getRemoveFromEList_RemovedObjectURIFragment() {
 		return (EAttribute)removeFromEListEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getRemoveFromEList_OldValue() {
+		return (EAttribute)removeFromEListEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -290,10 +308,12 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 		createEAttribute(insertInEListEClass, INSERT_IN_ELIST__NEW_VALUE);
 
 		replaceInEListEClass = createEClass(REPLACE_IN_ELIST);
+		createEAttribute(replaceInEListEClass, REPLACE_IN_ELIST__OLD_VALUE);
 		createEAttribute(replaceInEListEClass, REPLACE_IN_ELIST__NEW_VALUE);
 
 		removeFromEListEClass = createEClass(REMOVE_FROM_ELIST);
 		createEAttribute(removeFromEListEClass, REMOVE_FROM_ELIST__REMOVED_OBJECT_URI_FRAGMENT);
+		createEAttribute(removeFromEListEClass, REMOVE_FROM_ELIST__OLD_VALUE);
 
 		permuteEListEClass = createEClass(PERMUTE_ELIST);
 		createEAttribute(permuteEListEClass, PERMUTE_ELIST__NEW_INDEX_FOR_ELEMENT_AT);
@@ -376,10 +396,14 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 
 		initEClass(replaceInEListEClass, ReplaceInEList.class, "ReplaceInEList", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		g1 = createEGenericType(replaceInEListEClass_T);
+		initEAttribute(getReplaceInEList_OldValue(), g1, "oldValue", null, 1, 1, ReplaceInEList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		g1 = createEGenericType(replaceInEListEClass_T);
 		initEAttribute(getReplaceInEList_NewValue(), g1, "newValue", null, 1, 1, ReplaceInEList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(removeFromEListEClass, RemoveFromEList.class, "RemoveFromEList", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getRemoveFromEList_RemovedObjectURIFragment(), ecorePackage.getEString(), "removedObjectURIFragment", "0", 1, 1, RemoveFromEList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		g1 = createEGenericType(removeFromEListEClass_T);
+		initEAttribute(getRemoveFromEList_OldValue(), g1, "oldValue", null, 1, 1, RemoveFromEList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(permuteEListEClass, PermuteEList.class, "PermuteEList", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getPermuteEList_NewIndexForElementAt(), ecorePackage.getEIntegerObject(), "newIndexForElementAt", null, 1, -1, PermuteEList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
