@@ -107,15 +107,11 @@
         <eTypeParameters name="T">
           <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
         </eTypeParameters>
-        <eStructuralFeatures xsi:type="ecore:EReference" name="old2NewIndexMap" lowerBound="1"
-            upperBound="-1" eType="#//feature/list/Integer2IntegerMapEntry"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="newIndexForElementAt"
+            lowerBound="1" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
         <eGenericSuperTypes eClassifier="#//feature/UpdateMultiValuedEFeature">
           <eTypeArguments eTypeParameter="#//feature/list/PermuteEList/T"/>
         </eGenericSuperTypes>
-      </eClassifiers>
-      <eClassifiers xsi:type="ecore:EClass" name="Integer2IntegerMapEntry" instanceClassName="java.util.Map$Entry">
-        <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
-        <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
       </eClassifiers>
     </eSubpackages>
     <eSubpackages name="attribute" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Feature/Attribute/1.0"
