@@ -8,7 +8,25 @@ Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.meta.change,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.impl,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.util,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.impl,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.util,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.util,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.impl,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.util,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.util,
  edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change.object,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.impl,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.util,
  edu.kit.ipd.sdq.vitruvius.framework.meta.change.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport
