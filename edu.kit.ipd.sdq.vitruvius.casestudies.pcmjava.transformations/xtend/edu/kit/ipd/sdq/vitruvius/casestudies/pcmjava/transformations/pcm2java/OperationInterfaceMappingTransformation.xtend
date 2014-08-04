@@ -15,6 +15,8 @@ import org.emftext.language.java.containers.CompilationUnit
 import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.Package
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMNamespace
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.TransformationUtils
 
 class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.EObjectMappingTransformation {
 
@@ -60,13 +62,14 @@ class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.
 		eObjectCorrespondence4CompilationUnit.setElementB(correspondingCompilationUnit)
 		eObjectCorrespondence.setParent(parrentCorrespondence)
 		correspondenceInstance.addSameTypeCorrespondence(eObjectCorrespondence4CompilationUnit)
-		return correspondingCompilationUnit.toArray
+		return TransformationUtils.createTransformationChangeResultForNewRootEObjects(correspondingCompilationUnit.toArray)
 	}
 
 	override removeEObject(EObject eObject) {
 		val OperationInterface operationInterface = eObject as OperationInterface
 		val correspondingObjects = correspondenceInstance.claimCorrespondingEObjects(operationInterface)
 		for (correspondingObject : correspondingObjects) {
+			//TODO: check wheather the CompilationUnit is deleted
 			EcoreUtil.remove(correspondingObject)
 		}
 		correspondenceInstance.removeAllCorrespondences(operationInterface)
@@ -79,14 +82,12 @@ class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.
 		
 		val jaMoPPInterfaceCompilationUnit = correspondenceInstance.
 			claimUniqueCorrespondingEObjectByType(operationInterface, CompilationUnit)
+		val oldCompilationUnit = EcoreUtil.copy(jaMoPPInterfaceCompilationUnit)
 		jaMoPPInterfaceCompilationUnit.eSet(affectedInterfaceFeature, newValue + ".java")
-				val Interface jaMoPPInterface = correspondenceInstance.claimUniqueCorrespondingEObjectByType(operationInterface, Interface)
-	
-		var structuralFeature = super.featureCorrespondenceMap.get(affectedAttribute);
-		jaMoPPInterface.eSet(structuralFeature, newValue)
-		jaMoPPInterfaceCompilationUnit.eSet(structuralFeature, newValue)	
+		val Interface jaMoPPInterface = correspondenceInstance.claimUniqueCorrespondingEObjectByType(operationInterface, Interface)
+		jaMoPPInterface.eSet(affectedInterfaceFeature, newValue)
 		//TODO: Code refactoring anstossen
-		return #{jaMoPPInterface, jaMoPPInterfaceCompilationUnit}
+		return TransformationUtils.createTransformationChangeResult(jaMoPPInterfaceCompilationUnit.toArray, oldCompilationUnit.toArray, null)
 /* 		val Map<String, RoleMapping> roleMappings = IRoleMappingRegistry.INSTANCE.
 			getRoleMappingsForUri(JavaPackage.eNS_URI);
 		jaMoPPInterface.eSet(affectedInterfaceFeature, newValue )

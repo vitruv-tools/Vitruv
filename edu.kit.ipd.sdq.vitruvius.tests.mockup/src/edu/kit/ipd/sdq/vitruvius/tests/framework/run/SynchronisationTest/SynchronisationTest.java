@@ -182,7 +182,7 @@ public class SynchronisationTest extends VSUMTest {
 
     private void assertNamespaceOfClassifier(final Classifier classifier, final String expectedNamespace) {
         String namespace = classifier.getContainingCompilationUnit().getNamespacesAsString();
-        if (namespace.endsWith(".")) {
+        if (namespace.endsWith(".") || namespace.endsWith("$")) {
             namespace = namespace.substring(0, namespace.length() - 1);
         }
         assertEquals("Namespace of classifier not equal expected namespace", expectedNamespace, namespace);

@@ -27,12 +27,14 @@ import org.junit.Test;
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
 import de.uka.ipd.sdq.pcm.repository.OperationInterface;
 import de.uka.ipd.sdq.pcm.repository.Repository;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateNonRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.DeleteNonRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.DeleteRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EObjectChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEAttribute;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPUtils;
 
 /**
  * Test for JaMoPP 2 PCM Curent Test cases: i) C Package a) package that corresponds to repository
@@ -160,9 +162,10 @@ public class JaMoPP2PCMTest extends JaMoPPPCMTransformationTest {
         updateEAttribute.setAffectedFeature(this.getNameAttribute(this.secondPackage));
         updateEAttribute.setNewValue(BASIC_COMPONENT_NAME + RENAME);
         this.secondPackage.setName(BASIC_COMPONENT_NAME + RENAME);
-        final EObject[] eObject = changeSynchronizer.synchronizeChange(updateEAttribute);
+        final TransformationChangeResult transformationChangeResult = changeSynchronizer
+                .synchronizeChange(updateEAttribute);
         assertTrue("Nothing should happen since the name of the component matches the name of the implementing class",
-                null == eObject);
+                PCM2JaMoPPUtils.isEmptyTransformationChangeResult(transformationChangeResult));
     }
 
     @Test
@@ -176,8 +179,11 @@ public class JaMoPP2PCMTest extends JaMoPPPCMTransformationTest {
         updateEAttribute.setAffectedEObject(classInSecondPackage);
         updateEAttribute.setAffectedFeature(this.getNameAttribute(classInSecondPackage));
         updateEAttribute.setNewValue(classInSecondPackage.getName() + RENAME);
-        final BasicComponent basicComponent = (BasicComponent) changeSynchronizer.synchronizeChange(updateEAttribute)[0];
+        final TransformationChangeResult transformationChangeResult = changeSynchronizer
+                .synchronizeChange(updateEAttribute);
         classInSecondPackage.setName(IMPLEMENTING_CLASS_NAME + RENAME);
+        final BasicComponent basicComponent = (BasicComponent) transformationChangeResult.getExistingObjectsToSave()
+                .toArray()[0];
         assertEquals("The BasicComponent should have the same name as the renamed class",
                 classInSecondPackage.getName(), basicComponent.getEntityName());
     }
@@ -192,7 +198,10 @@ public class JaMoPP2PCMTest extends JaMoPPPCMTransformationTest {
         updateEAttribute.setAffectedEObject(jaMoPPIf);
         updateEAttribute.setAffectedFeature(this.getNameAttribute(jaMoPPIf));
         updateEAttribute.setNewValue(jaMoPPIf.getName() + RENAME);
-        final OperationInterface opIf = (OperationInterface) changeSynchronizer.synchronizeChange(updateEAttribute)[0];
+        final TransformationChangeResult transformationChangeResult = changeSynchronizer
+                .synchronizeChange(updateEAttribute);
+        final OperationInterface opIf = (OperationInterface) transformationChangeResult.getExistingObjectsToSave()
+                .toArray()[0];
         jaMoPPIf.setName(INTERFACE_NAME + RENAME);
         assertEquals("The OperationInterface should have the same name as the renamed interface", jaMoPPIf.getName(),
                 opIf.getEntityName());
@@ -209,7 +218,10 @@ public class JaMoPP2PCMTest extends JaMoPPPCMTransformationTest {
         deleteNonRootEObj.setAffectedEObject(this.mainPackage);
         deleteNonRootEObj.setAffectedFeature(null);
         deleteNonRootEObj.setNewValue(null);
-        final EObject[] eObj = changeSynchronizer.synchronizeChange(deleteNonRootEObj);
+
+        final TransformationChangeResult transformationChangeResult = changeSynchronizer
+                .synchronizeChange(deleteNonRootEObj);
+        final EObject[] eObj = (EObject[]) transformationChangeResult.getExistingObjectsToSave().toArray();
         this.correspondenceInstance.removeAllCorrespondences(this.secondPackage);
         EcoreUtil.delete(this.secondPackage);
 
@@ -226,13 +238,15 @@ public class JaMoPP2PCMTest extends JaMoPPPCMTransformationTest {
 
         final DeleteRootEObject deleteRoot = ChangeFactory.eINSTANCE.createDeleteRootEObject();
         deleteRoot.setChangedEObject(this.mainPackage);
-        final EObject[] eObject = changeSynchronizer.synchronizeChange(deleteRoot);
+
+        final TransformationChangeResult transformationChangeResult = changeSynchronizer.synchronizeChange(deleteRoot);
         this.correspondenceInstance.removeAllCorrespondences(this.mainPackage);
         EcoreUtil.delete(this.mainPackage);
         final Set<Object> allCorrespondences = this.correspondenceInstance
                 .getAllEObjectsInCorrespondencesWithType(Object.class);
 
-        assertTrue("Returned EObject is not null", null == eObject);
+        assertTrue("Returned TransformationChangeResult is not null",
+                PCM2JaMoPPUtils.isEmptyTransformationChangeResult(transformationChangeResult));
         assertTrue("Main packages still has correspondences",
                 null == this.correspondenceInstance.getAllCorrespondences(this.mainPackage));
         assertTrue(
@@ -253,9 +267,11 @@ public class JaMoPP2PCMTest extends JaMoPPPCMTransformationTest {
         deleteClass.setAffectedEObject(this.secondPackage);
         deleteClass.setAffectedFeature(null);
         deleteClass.setNewValue(null);
-        final EObject[] eObject = changeSynchronizer.synchronizeChange(deleteClass);
+        final TransformationChangeResult transformationChangeResult = changeSynchronizer.synchronizeChange(deleteClass);
+        final EObject[] eObjectsToDelete = (EObject[]) transformationChangeResult.getExistingObjectsToDelete()
+                .toArray();
 
-        assertTrue("Returned EObject is not null", null == eObject);
+        assertTrue("eObjectsToDelete shuld be not 0", 0 < eObjectsToDelete.length);
         assertTrue("The class still has corresponding objects",
                 null == this.correspondenceInstance.getAllCorrespondences(classInSecondPackage));
         assertTrue("The compilation unit still has corresponding objects",
@@ -275,9 +291,11 @@ public class JaMoPP2PCMTest extends JaMoPPPCMTransformationTest {
         deleteInterface.setAffectedEObject(this.secondPackage);
         deleteInterface.setAffectedFeature(null);
         deleteInterface.setNewValue(null);
-        final EObject[] eObject = changeSynchronizer.synchronizeChange(deleteInterface);
+        final TransformationChangeResult transformationChangeResult = changeSynchronizer
+                .synchronizeChange(deleteInterface);
+        final EObject[] eObjects = (EObject[]) transformationChangeResult.getExistingObjectsToDelete().toArray();
 
-        assertTrue("Returned EObject is not null", null == eObject);
+        assertTrue("eObjectsToDelete shuld be not 0", 0 < eObjects.length);
         assertTrue("The interface still has corresponding objects",
                 null == this.correspondenceInstance.getAllCorrespondences(interfaceInMainPackage));
         assertTrue("The compilation unit still has corresponding objects",
@@ -291,7 +309,8 @@ public class JaMoPP2PCMTest extends JaMoPPPCMTransformationTest {
         logger.info("Namespace of new package: " + this.mainPackage.getNamespacesAsString());
         final EObjectChange eoc = ChangeFactory.eINSTANCE.createCreateRootEObject();
         eoc.setChangedEObject(this.mainPackage);
-        final EObject createdEObject = changeSynchronizer.synchronizeChange(eoc)[0];
+        final TransformationChangeResult transformationChangeResult = changeSynchronizer.synchronizeChange(eoc);
+        final EObject createdEObject = (EObject) transformationChangeResult.getExistingObjectsToSave().toArray()[0];
         final Repository repo = (Repository) createdEObject;
         return repo;
     }
@@ -303,7 +322,8 @@ public class JaMoPP2PCMTest extends JaMoPPPCMTransformationTest {
         this.secondPackage.getNamespaces().add(BASIC_COMPONENT_NAME);
         final EObjectChange eoc = ChangeFactory.eINSTANCE.createCreateRootEObject();
         eoc.setChangedEObject(this.secondPackage);
-        final EObject createdEObject = changeSynchronizer.synchronizeChange(eoc)[0];
+        final TransformationChangeResult transformationChangeResult = changeSynchronizer.synchronizeChange(eoc);
+        final EObject createdEObject = (EObject) transformationChangeResult.getExistingObjectsToSave().toArray()[0];
         final BasicComponent basicComp = (BasicComponent) createdEObject;
         return basicComp;
     }
@@ -328,7 +348,8 @@ public class JaMoPP2PCMTest extends JaMoPPPCMTransformationTest {
         eoc.setAffectedFeature((EReference) packageForClass.eClass().getEStructuralFeature(
                 ContainersPackage.PACKAGE__COMPILATION_UNITS));
         eoc.setNewValue(cu);
-        final EObject createdEObject = changeSynchronizer.synchronizeChange(eoc)[0];
+        final TransformationChangeResult transformationChangeResult = changeSynchronizer.synchronizeChange(eoc);
+        final EObject createdEObject = (EObject) transformationChangeResult.getExistingObjectsToSave().toArray()[0];
         return createdEObject;
     }
 
@@ -355,8 +376,9 @@ public class JaMoPP2PCMTest extends JaMoPPPCMTransformationTest {
         eoc.setAffectedFeature((EReference) pack.eClass().getEStructuralFeature(
                 ContainersPackage.PACKAGE__COMPILATION_UNITS));
         eoc.setNewValue(cu);
-        final EObject eObject = changeSynchronizer.synchronizeChange(eoc)[0];
-        return eObject;
+        final TransformationChangeResult transformationChangeResult = changeSynchronizer.synchronizeChange(eoc);
+        final EObject createdEObject = (EObject) transformationChangeResult.getExistingObjectsToSave().toArray()[0];
+        return createdEObject;
     }
 
     private EAttribute getNameAttribute(final NamedElement ne) {

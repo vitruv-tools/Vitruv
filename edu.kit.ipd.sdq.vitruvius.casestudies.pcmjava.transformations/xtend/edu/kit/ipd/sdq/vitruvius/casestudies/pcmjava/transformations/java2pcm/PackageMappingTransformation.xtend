@@ -1,18 +1,19 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
+import de.uka.ipd.sdq.pcm.repository.BasicComponent
+import de.uka.ipd.sdq.pcm.repository.Repository
+import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.EObjectMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.TransformationUtils
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
+import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.containers.Package
-import de.uka.ipd.sdq.pcm.repository.Repository
-import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory
-import de.uka.ipd.sdq.pcm.repository.BasicComponent
-import org.apache.log4j.Logger
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 
 class PackageMappingTransformation extends EObjectMappingTransformation {
 	
@@ -73,7 +74,7 @@ class PackageMappingTransformation extends EObjectMappingTransformation {
 			repo2Package.setElementB(jaMoPPPackage)
 			correspondenceInstance.addSameTypeCorrespondence(repo2Package) 
 			correspondenceRepositoryAlreadyExists = true
-			return repository.toArray
+			return TransformationUtils.createTransformationChangeResultForNewRootEObjects(repository.toArray)
 		}
 		// case i)
 		var BasicComponent basicComponent = RepositoryFactory.eINSTANCE.createBasicComponent
@@ -85,7 +86,7 @@ class PackageMappingTransformation extends EObjectMappingTransformation {
 		basicComponent2Package.setElementB(jaMoPPPackage)
 		basicComponent2Package.setParent(correspondenceInstance.claimUniqueOrNullCorrespondenceForEObject(repository))
 		correspondenceInstance.addSameTypeCorrespondence(basicComponent2Package)
-		return basicComponent.toArray
+		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(basicComponent.toArray)
 	}
 	
 	/**

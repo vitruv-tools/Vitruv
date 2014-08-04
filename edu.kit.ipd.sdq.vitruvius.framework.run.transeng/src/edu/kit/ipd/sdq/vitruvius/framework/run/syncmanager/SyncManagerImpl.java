@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,17 +71,31 @@ public class SyncManagerImpl implements ChangeSynchronizing {
         // Validate models with Validating
         // TODO: Execute responses for violated invariants --> Classified response actions
 
-        for (VURI changedVURI : emfChangeResult.getExistingVURIsToSave()) {
+        for (VURI changedVURI : emfChangeResult.getExistingObjectsToSave()) {
             this.modelProviding.saveModelInstanceOriginal(changedVURI);
         }
 
-        for (Pair<EObject, VURI> createdEObjectVURIPair : emfChangeResult.getNewRootEObjectsToSave()) {
+        for (Pair<EObject, VURI> createdEObjectVURIPair : emfChangeResult.getNewRootObjectsToSave()) {
             ModelInstance mi = this.modelProviding.getModelInstanceOriginal(createdEObjectVURIPair.getSecond());
             Resource resource = mi.getResource();
             // clear the resource first
             resource.getContents().clear();
             resource.getContents().add(createdEObjectVURIPair.getFirst());
             this.modelProviding.saveModelInstanceOriginal(mi.getURI());
+        }
+
+        // TODO: Check wheather we need a deleteModelInstanceOriginal in VSUM.
+        // Here we usually do not need it because we usually delete JaMoPP resource that are renamed
+        // Hence we do not need to remove the correspondence models etc.However the question is what
+        // happens if we delete, e.g. a PCM instance.
+        for (VURI vuriToDelete : emfChangeResult.getExistingObjectsToDelete()) {
+            ModelInstance mi = getModelProviding().getModelInstanceOriginal(vuriToDelete);
+            Resource resource = mi.getResource();
+            try {
+                resource.delete(null);
+            } catch (IOException e) {
+                throw new RuntimeException("Could not delete VURI: " + vuriToDelete + ". Exception: " + e);
+            }
         }
     }
 

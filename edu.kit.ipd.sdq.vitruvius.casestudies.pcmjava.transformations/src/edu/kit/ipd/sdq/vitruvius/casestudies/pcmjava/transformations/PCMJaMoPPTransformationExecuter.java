@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +18,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceIns
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.TransformationExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFBridge;
@@ -59,42 +59,59 @@ public class PCMJaMoPPTransformationExecuter implements TransformationExecuting 
             final CorrespondenceInstance correspondenceInstance) {
         final EMFModelChange emfModelChange = (EMFModelChange) change;
         this.changeSynchronizer.setCorrespondenceInstance(correspondenceInstance);
-        final EObject[] changedEObjects = this.changeSynchronizer.synchronizeChange(emfModelChange.getEChange());
-        final Set<VURI> changedVURIs = new HashSet<VURI>(changedEObjects.length);
-        final Set<Pair<EObject, VURI>> newRootEObjectsVURIPairs = new HashSet<Pair<EObject, VURI>>();
-        final Set<VURI> existingVURIsToDelete = new HashSet<VURI>();
-        for (final EObject changedEObject : changedEObjects) {
-            final Resource resource = changedEObject.eResource();
-            if (null != resource) {
-                if (changedEObject instanceof CompilationUnit) {
-                    existingVURIsToDelete.add(VURI.getInstance(resource));
-                } else {
-                    changedVURIs.add(VURI.getInstance(resource));
-                }
-            } else {
-                if (changedEObject instanceof CompilationUnit) {
-                    final CompilationUnit newCompUnit = (CompilationUnit) changedEObject;
-                    final IFile fileSourceModel = EMFBridge.getIFileForEMFUri(sourceModel.getURI().getEMFUri());
-                    final IProject projectSourceModel = fileSourceModel.getProject();
-                    // TODO: use configured src-folder path instead of hardcoded "src"
-                    String srcFolderPath = projectSourceModel.getFullPath().toString() + "/src/";
-                    if (srcFolderPath.startsWith("/")) {
-                        srcFolderPath = srcFolderPath.substring(1, srcFolderPath.length());
-                    }
-                    final String compUnitPath = newCompUnit.getNamespacesAsString().replace(".", "/").replace("$", "/")
-                            + newCompUnit.getName().replace("$", ".");
-                    final VURI cuVURI = VURI.getInstance(srcFolderPath + compUnitPath);
-                    final Pair<EObject, VURI> newEObjectVURIPair = new Pair<EObject, VURI>(newCompUnit, cuVURI);
-                    newRootEObjectsVURIPairs.add(newEObjectVURIPair);
-                }
-            }
-        }
 
-        return new EMFChangeResult(changedVURIs, newRootEObjectsVURIPairs, existingVURIsToDelete);
+        // execute actual Transformation
+        final TransformationChangeResult transformationChangeResult = this.changeSynchronizer
+                .synchronizeChange(emfModelChange.getEChange());
+
+        // Translate TransformationChangeResult to EMFChangeResult
+        final EMFChangeResult emfChangeResult = new EMFChangeResult();
+        this.handleEObjectsInTransformationChange(transformationChangeResult.getExistingObjectsToDelete(),
+                emfChangeResult.getExistingObjectsToDelete());
+        this.handleEObjectsInTransformationChange(transformationChangeResult.getExistingObjectsToSave(),
+                emfChangeResult.getExistingObjectsToSave());
+        this.handleNewRootEObjects(transformationChangeResult.getNewRootObjectsToSave(),
+                emfChangeResult.getNewRootObjectsToSave(), sourceModel);
+
+        return emfChangeResult;
     }
 
     @Override
     public List<Pair<VURI, VURI>> getTransformableMetamodels() {
         return this.pairList;
+    }
+
+    private void handleNewRootEObjects(final Set<EObject> newRootEObjectsToSave,
+            final Set<Pair<EObject, VURI>> newVURIsToSave, final ModelInstance sourceModel) {
+        for (final EObject newRootEObject : newRootEObjectsToSave) {
+            if (newRootEObject instanceof CompilationUnit) {
+                final CompilationUnit newCompUnit = (CompilationUnit) newRootEObject;
+                final IFile fileSourceModel = EMFBridge.getIFileForEMFUri(sourceModel.getURI().getEMFUri());
+                final IProject projectSourceModel = fileSourceModel.getProject();
+                // TODO: use configured src-folder path instead of hardcoded "src"
+                String srcFolderPath = projectSourceModel.getFullPath().toString() + "/src/";
+                if (srcFolderPath.startsWith("/")) {
+                    srcFolderPath = srcFolderPath.substring(1, srcFolderPath.length());
+                }
+                final String compUnitPath = newCompUnit.getNamespacesAsString().replace(".", "/").replace("$", "/")
+                        + newCompUnit.getName().replace("$", ".");
+                final VURI cuVURI = VURI.getInstance(srcFolderPath + compUnitPath);
+                final Pair<EObject, VURI> newEObjectVURIPair = new Pair<EObject, VURI>(newCompUnit, cuVURI);
+                newVURIsToSave.add(newEObjectVURIPair);
+            }
+        }
+    }
+
+    private void handleEObjectsInTransformationChange(final Set<EObject> eObjectsInTransformationChange,
+            final Set<VURI> vurisInEMFResultChange) {
+        for (final EObject eObject : eObjectsInTransformationChange) {
+            final Resource resource = eObject.eResource();
+            if (null == resource) {
+                logger.warn("Resource of EObject is null. Can not handle resource of eObject: " + eObject);
+                continue;
+            }
+            final VURI vuri = VURI.getInstance(resource);
+            vurisInEMFResultChange.add(vuri);
+        }
     }
 }

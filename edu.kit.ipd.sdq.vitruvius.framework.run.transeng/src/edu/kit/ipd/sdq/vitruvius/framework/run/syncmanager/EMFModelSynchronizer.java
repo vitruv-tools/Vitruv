@@ -43,7 +43,7 @@ class EMFModelSynchronizer extends ConcreteChangeSynchronizer {
         for (CorrespondenceInstance correspondenceInstance : correspondenceInstances) {
             ChangeResult currentChangeResult = this.changePropagating.propagateChange(change, sourceModel,
                     correspondenceInstance);
-            emfChangeResult.addEMFChangeResult((EMFChangeResult) currentChangeResult);
+            emfChangeResult.addChangeResult((EMFChangeResult) currentChangeResult);
         }
         return emfChangeResult;
     }

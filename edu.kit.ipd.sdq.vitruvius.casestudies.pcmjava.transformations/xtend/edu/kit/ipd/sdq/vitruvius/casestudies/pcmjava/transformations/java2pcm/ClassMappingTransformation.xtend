@@ -1,9 +1,13 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
 import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingRequiringEntity
+import de.uka.ipd.sdq.pcm.repository.RepositoryComponent
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.EObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMNamespace
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMUtils
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.TransformationUtils
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
 import org.apache.log4j.Logger
@@ -15,9 +19,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.ClassifiersFactory
 import org.emftext.language.java.modifiers.Public
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMUtils
-import de.uka.ipd.sdq.pcm.repository.RepositoryComponent
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 
 /**
  * Maps a JaMoPP class to a PCM Components or System. 
@@ -103,8 +104,9 @@ class ClassMappingTransformation extends EObjectMappingTransformation {
 			correspondenceInstance.addSameTypeCorrespondence(class2Component)
 			correspondenceInstance.addSameTypeCorrespondence(compilationUnit2Component)
 		}
-		return pcmComponentOrSystem.toArray()
+		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(pcmComponentOrSystem.toArray)
 	}
+
 	
 	/**
 	 * Remove class: 
@@ -148,8 +150,10 @@ class ClassMappingTransformation extends EObjectMappingTransformation {
 		}catch(RuntimeException rt){
 			logger.trace(rt)
 		}
-		return ret.toArray()
+		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(ret.toArray)
 	}
+	
+	
 	
 	/**
 	 * currently not needed (?) for Class
@@ -169,8 +173,8 @@ class ClassMappingTransformation extends EObjectMappingTransformation {
 	 * sets the name correspondece for JaMoPP-class names and PCM-entityName Attribut
 	 */
 	override setCorrespondenceForFeatures() { 
-		val classNameAttribute = JaMoPPPCMUtils::getAttributeByNameFromEObject( JaMoPPPCMNamespace.JAMOPP_ATTRIBUTE_NAME,  ClassifiersFactory.eINSTANCE.createClass)
-		val componentNameAttribute = JaMoPPPCMUtils::getAttributeByNameFromEObject( JaMoPPPCMNamespace.PCM_ATTRIBUTE_ENTITY_NAME, RepositoryFactory.eINSTANCE.createBasicComponent )
+		val classNameAttribute = TransformationUtils::getAttributeByNameFromEObject( JaMoPPPCMNamespace.JAMOPP_ATTRIBUTE_NAME,  ClassifiersFactory.eINSTANCE.createClass)
+		val componentNameAttribute = TransformationUtils::getAttributeByNameFromEObject( JaMoPPPCMNamespace.PCM_ATTRIBUTE_ENTITY_NAME, RepositoryFactory.eINSTANCE.createBasicComponent )
 		featureCorrespondenceMap.put(classNameAttribute, componentNameAttribute)
 	}
 	

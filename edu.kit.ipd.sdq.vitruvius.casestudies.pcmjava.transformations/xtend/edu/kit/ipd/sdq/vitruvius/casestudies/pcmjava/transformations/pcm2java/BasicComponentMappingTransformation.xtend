@@ -16,6 +16,8 @@ import org.emftext.language.java.containers.Package
 import org.emftext.language.java.modifiers.ModifiersFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMNamespace
 import org.apache.log4j.Logger
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.TransformationUtils
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
 
 class BasicComponentMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.EObjectMappingTransformation {
 	
@@ -71,7 +73,7 @@ class BasicComponentMappingTransformation extends edu.kit.ipd.sdq.vitruvius.case
 		correspondenceInstance.addSameTypeCorrespondence(basicComponent2Package)
 		correspondenceInstance.addSameTypeCorrespondence(basicComponent2CompilationUnit)
 		correspondenceInstance.addSameTypeCorrespondence(basicComponent2Class)
-		return jaMoPPCompilationUnit.toArray;
+		return TransformationUtils.createTransformationChangeResultForNewRootEObjects(jaMoPPCompilationUnit.toArray)
 	}
 
 	override removeEObject(EObject eObject) {
@@ -87,10 +89,21 @@ class BasicComponentMappingTransformation extends edu.kit.ipd.sdq.vitruvius.case
 		if(null == correspondingEObjects){
 			logger.info("No corresponding objects found for " + eObject)
 		}
+		var TransformationChangeResult transformationChangeResult = new TransformationChangeResult 
 		for(EObject correspondingObject : correspondingEObjects){
+			// compilationUnit was renamed: Delete old one and save new one
+			if(correspondingObject instanceof CompilationUnit){
+				transformationChangeResult.existingObjectsToDelete.add(correspondingObject)
+			}
 			correspondingObject.eClass.eSet(featureCorrespondenceMap.get(affectedAttribute), newValue)
+			if(correspondingObject instanceof CompilationUnit){
+				transformationChangeResult.newRootObjectsToSave.add(correspondingObject)
+			}else{
+				transformationChangeResult.existingObjectsToSave.add(correspondingObject)
+			}
 		}
-		return correspondingEObjects
+		
+		return transformationChangeResult
 	}
 
 	override updateEReference(EObject eObject, EReference affectedEReference, Object newValue) {

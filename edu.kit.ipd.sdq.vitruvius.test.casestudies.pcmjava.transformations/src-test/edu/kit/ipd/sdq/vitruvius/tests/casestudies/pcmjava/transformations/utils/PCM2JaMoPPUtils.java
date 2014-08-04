@@ -16,6 +16,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EcoreResourceBridge;
@@ -82,10 +83,10 @@ public class PCM2JaMoPPUtils {
 
     public static void saveEMFChangeResult(final EMFChangeResult emfChangeResult, final ResourceSet resourceSet)
             throws IOException {
-        for (final VURI vuri : emfChangeResult.getExistingVURIsToSave()) {
+        for (final VURI vuri : emfChangeResult.getExistingObjectsToSave()) {
             saveVURI(vuri, resourceSet);
         }
-        for (final Pair<EObject, VURI> eObjectVURIPair : emfChangeResult.getNewRootEObjectsToSave()) {
+        for (final Pair<EObject, VURI> eObjectVURIPair : emfChangeResult.getNewRootObjectsToSave()) {
             final Resource resource = resourceSet.createResource(eObjectVURIPair.getSecond().getEMFUri());
             resource.getContents().add(eObjectVURIPair.getFirst());
             EcoreResourceBridge.saveResource(resource);
@@ -96,6 +97,15 @@ public class PCM2JaMoPPUtils {
         final Resource resource = resourceSet.createResource(vuri.getEMFUri());
         EcoreResourceBridge.saveResource(resource);
         return resource;
+    }
+
+    public static boolean isEmptyTransformationChangeResult(final TransformationChangeResult transformationChangeResult) {
+        if (null == transformationChangeResult) {
+            return true;
+        }
+        return 0 == transformationChangeResult.getExistingObjectsToDelete().size()
+                && 0 == transformationChangeResult.getExistingObjectsToSave().size()
+                && 0 == transformationChangeResult.getNewRootObjectsToSave().size();
     }
 
 }

@@ -1,8 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations
 
 import java.util.Set
-import org.eclipse.emf.ecore.EAttribute
-import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.classifiers.Classifier
 import org.emftext.language.java.containers.Package
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
@@ -26,9 +24,4 @@ class JaMoPPPCMUtils {
 		}
 		return null;
 	}
-	
-	def static EAttribute getAttributeByNameFromEObject(String attributeName, EObject eObject) {
-		return eObject.eClass.EAllAttributes.filter[attribute|attribute.name.equalsIgnoreCase(attributeName)].iterator.next
-	}
-	
 }

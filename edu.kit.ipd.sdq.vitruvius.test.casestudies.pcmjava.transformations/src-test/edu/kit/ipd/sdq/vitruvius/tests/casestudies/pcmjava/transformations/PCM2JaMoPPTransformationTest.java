@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations;
 
 import java.io.IOException;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EAttribute;
@@ -16,6 +17,7 @@ import de.uka.ipd.sdq.pcm.repository.BasicComponent;
 import de.uka.ipd.sdq.pcm.repository.OperationInterface;
 import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateNonRootEObject;
@@ -90,9 +92,10 @@ public class PCM2JaMoPPTransformationTest extends JaMoPPPCMTransformationTest {
         renameInterface.setAffectedEObject(opInterface);
         renameInterface.setAffectedFeature((EAttribute) opInterface.eClass().getEStructuralFeature("entityName"));
         renameInterface.setNewValue(newValue);
-        final EObject[] eObject = PCM2JaMoPPTransformationTest.changeSynchronizer.synchronizeChange(renameInterface);
+        final TransformationChangeResult transformationChangeResult = PCM2JaMoPPTransformationTest.changeSynchronizer
+                .synchronizeChange(renameInterface);
         opInterface.setEntityName(newValue);
-        this.saveEObjectIfCompilationUnit(eObject);
+        this.saveEObjectIfCompilationUnit(transformationChangeResult.getNewRootObjectsToSave());
     }
 
     private BasicComponent addBasicComponent(final Repository repo) {
@@ -104,9 +107,9 @@ public class PCM2JaMoPPTransformationTest extends JaMoPPPCMTransformationTest {
         createBasicComponentChange.setAffectedFeature((EReference) repo.eClass().getEStructuralFeature(
                 "components__Repository"));
         createBasicComponentChange.setNewValue(basicComponent);
-        final EObject eObject[] = PCM2JaMoPPTransformationTest.changeSynchronizer
+        final TransformationChangeResult transformationChangeResult = PCM2JaMoPPTransformationTest.changeSynchronizer
                 .synchronizeChange(createBasicComponentChange);
-        this.saveEObjectIfCompilationUnit(eObject);
+        this.saveEObjectIfCompilationUnit(transformationChangeResult.getNewRootObjectsToSave());
         return basicComponent;
     }
 
@@ -120,13 +123,13 @@ public class PCM2JaMoPPTransformationTest extends JaMoPPPCMTransformationTest {
         createInterfaceChange.setAffectedFeature((EReference) repo.eClass().getEStructuralFeature(
                 "interfaces__Repository"));
         createInterfaceChange.setNewValue(opInterface);
-        final EObject eObject[] = PCM2JaMoPPTransformationTest.changeSynchronizer
+        final TransformationChangeResult transformationChangeResult = PCM2JaMoPPTransformationTest.changeSynchronizer
                 .synchronizeChange(createInterfaceChange);
-        this.saveEObjectIfCompilationUnit(eObject);
+        this.saveEObjectIfCompilationUnit(transformationChangeResult.getNewRootObjectsToSave());
         return opInterface;
     }
 
-    private void saveEObjectIfCompilationUnit(final EObject[] eObjects) {
+    private void saveEObjectIfCompilationUnit(final Set<EObject> eObjects) {
         for (final EObject eObj : eObjects) {
             this.saveEObjectIfCompilationUnit(eObj);
         }

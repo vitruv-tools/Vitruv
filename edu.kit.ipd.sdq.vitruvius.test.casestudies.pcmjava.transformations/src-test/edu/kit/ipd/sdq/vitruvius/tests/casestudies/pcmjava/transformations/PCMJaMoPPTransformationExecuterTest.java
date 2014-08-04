@@ -51,9 +51,9 @@ public class PCMJaMoPPTransformationExecuterTest extends JaMoPPPCMTransformation
         logger.info("changed VURIs: " + emfChangeResult);
 
         PCM2JaMoPPUtils.saveEMFChangeResult(emfChangeResult, resourceSet);
-        assertTrue("Existing VURIs to save should be 0", 0 == emfChangeResult.getExistingVURIsToSave().size());
-        assertTrue("New root EObjects to save should be 1", 1 == emfChangeResult.getNewRootEObjectsToSave().size());
-        final Pair<EObject, VURI> eObjectVURIPair = emfChangeResult.getNewRootEObjectsToSave().iterator().next();
+        assertTrue("Existing VURIs to save should be 0", 0 == emfChangeResult.getExistingObjectsToSave().size());
+        assertTrue("New root EObjects to save should be 1", 1 == emfChangeResult.getNewRootObjectsToSave().size());
+        final Pair<EObject, VURI> eObjectVURIPair = emfChangeResult.getNewRootObjectsToSave().iterator().next();
         assertTrue("The EObject in the emfChangeResult has to be a compilation unit",
                 eObjectVURIPair.getFirst() instanceof CompilationUnit);
         final CompilationUnit cu = (CompilationUnit) eObjectVURIPair.getFirst();

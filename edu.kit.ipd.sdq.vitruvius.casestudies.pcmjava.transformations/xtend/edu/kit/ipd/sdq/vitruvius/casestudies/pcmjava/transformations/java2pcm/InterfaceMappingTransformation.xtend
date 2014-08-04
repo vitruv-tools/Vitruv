@@ -21,6 +21,7 @@ import org.emftext.language.java.containers.CompilationUnit
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMUtils
 import java.util.Set
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.TransformationUtils
 
 /**
  * Maps a JaMoPP interface to a PCM interface 
@@ -86,7 +87,7 @@ class InterfaceMappingTransformation extends EObjectMappingTransformation {
 			compilationUnit2opInterfaceCorrespondence.dependentCorrespondences.add(interface2opInterfaceCorrespondence)
 			correspondenceInstance.addSameTypeCorrespondence(compilationUnit2opInterfaceCorrespondence)
 			correspondenceInstance.addSameTypeCorrespondence(interface2opInterfaceCorrespondence)
-			return opInterface.toArray()
+			return TransformationUtils.createTransformationChangeResultForEObjectsToSave(opInterface.toArray())
 		}catch(Exception e ){
 			logger.info(e)
 		}
@@ -132,7 +133,7 @@ class InterfaceMappingTransformation extends EObjectMappingTransformation {
 		}catch(RuntimeException rt){
 			logger.trace(rt)
 		}
-		return ret.toArray()
+		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(ret.toArray)
 	}
 	
 	override updateEReference(EObject eObject, EReference affectedEReference, Object newValue) {

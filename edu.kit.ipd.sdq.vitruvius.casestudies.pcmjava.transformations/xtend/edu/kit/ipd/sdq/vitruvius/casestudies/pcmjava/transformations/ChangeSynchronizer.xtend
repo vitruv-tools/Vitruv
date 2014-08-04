@@ -1,9 +1,12 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.InterfaceMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.PackageMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.BasicComponentMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.OperationInterfaceMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.RepositoryMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableHashMap
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableMap
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateNonRootEObject
@@ -16,9 +19,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEAttribute
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEContainmentReference
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEReference
 import org.apache.log4j.Logger
-import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.InterfaceMappingTransformation
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.PackageMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceImpl
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 
@@ -41,26 +41,26 @@ public class ChangeSynchronizer {
 		}
 	}
 
-	def public synchronizeChange(EChange change) {
+	def public TransformationChangeResult synchronizeChange(EChange change) {
 		syncChange(change)
 	}
 
-	def private dispatch EObject[] syncChange(EChange change) {
+	def private dispatch TransformationChangeResult syncChange(EChange change) {
 		logger.error("No syncChang method found for change " + change + ". Change not synchronized")
 		return null
 	}
 
-	def private dispatch EObject[] syncChange(CreateRootEObject createRootEObject) {
+	def private dispatch TransformationChangeResult syncChange(CreateRootEObject createRootEObject) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(createRootEObject.changedEObject.class).
 			addEObject(createRootEObject.changedEObject)
 	}
 
-	def private dispatch EObject[] syncChange(DeleteRootEObject deleteRootEObject) {
+	def private dispatch TransformationChangeResult syncChange(DeleteRootEObject deleteRootEObject) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(deleteRootEObject.changedEObject.class).
 			removeEObject(deleteRootEObject.changedEObject)
 	}
 
-	def private dispatch EObject[] syncChange(CreateNonRootEObject<?> createNonRootEObject) {
+	def private dispatch TransformationChangeResult syncChange(CreateNonRootEObject<?> createNonRootEObject) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(createNonRootEObject.changedEObject.class)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(createNonRootEObject.affectedEObject.class)
 		val newNonRootObject = mappingTransformations.
@@ -72,7 +72,7 @@ public class ChangeSynchronizer {
 		return newNonRootObject
 	}
 
-	def private dispatch EObject[] syncChange(DeleteNonRootEObject<?> deleteNonRootEObject) {
+	def private dispatch TransformationChangeResult syncChange(DeleteNonRootEObject<?> deleteNonRootEObject) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(deleteNonRootEObject.changedEObject.class)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(deleteNonRootEObject.affectedEObject.class)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(deleteNonRootEObject.changedEObject.class).
@@ -82,26 +82,26 @@ public class ChangeSynchronizer {
 				deleteNonRootEObject.newValue)
 	}
 
-	def private dispatch EObject[] syncChange(UpdateEAttribute<?> updateEAttribute) {
+	def private dispatch TransformationChangeResult syncChange(UpdateEAttribute<?> updateEAttribute) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(updateEAttribute.affectedEObject.class).
 			updateEAttribute(updateEAttribute.affectedEObject, updateEAttribute.affectedFeature,
 				updateEAttribute.newValue)
 	}
 
-	def private dispatch EObject[] syncChange(UpdateEReference<?> updateEReference) {
+	def private dispatch TransformationChangeResult syncChange(UpdateEReference<?> updateEReference) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(updateEReference.affectedEObject.class).
 			updateEReference(updateEReference.affectedEObject, updateEReference.affectedFeature,
 				updateEReference.newValue)
 	}
 
-	def private dispatch EObject[] syncChange(UpdateEContainmentReference<?> updateEContainmentReference) {
+	def private dispatch TransformationChangeResult syncChange(UpdateEContainmentReference<?> updateEContainmentReference) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			updateEContainmentReference.affectedEObject.class).updateEContainmentReference(
 			updateEContainmentReference.affectedEObject, updateEContainmentReference.affectedFeature,
 			updateEContainmentReference.newValue)
 	}
 
-	def private dispatch EObject[] syncChange(UnsetEFeature<?> unsetEFeature) {
+	def private dispatch TransformationChangeResult syncChange(UnsetEFeature<?> unsetEFeature) {
 		logger.error("syncChange for UnsetEFeature<?> is not implemented yet...")
 		return null
 	}

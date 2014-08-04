@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.Package
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMNamespace
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
 
 class RepositoryMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.EObjectMappingTransformation {
 
@@ -39,7 +40,8 @@ class RepositoryMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestud
 		eObjectCorrespondence.setElementA(repository)
 		eObjectCorrespondence.setElementB(jaMoPPPackage)
 		correspondenceInstance.addSameTypeCorrespondence(eObjectCorrespondence)
-		return jaMoPPPackage.toArray()
+		//we do not save packages --> return empty transformationChangeResult
+		return new TransformationChangeResult
 	}
 
 	override removeEObject(EObject eObject) {
@@ -49,7 +51,7 @@ class RepositoryMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestud
 		EcoreUtil.remove(jaMoPPPackage)
 		//remove corresponding instance
 		correspondenceInstance.removeAllCorrespondences(repository)
-		return null
+		return new TransformationChangeResult
 	}
 
 	override updateEAttribute(EObject eObject, EAttribute affectedAttribute, Object newValue) {
@@ -58,7 +60,8 @@ class RepositoryMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestud
 		val EStructuralFeature jaMoPPNameAttribute = featureCorrespondenceMap.claimValueForKey(affectedAttribute) 
 		val Package jaMoPPPackage = correspondenceInstance.claimUniqueCorrespondingEObjectByType(repository, Package)
 		jaMoPPPackage.eSet(jaMoPPNameAttribute, newValue);
-		return jaMoPPPackage.toArray()
+		//we do not save packages
+		return new TransformationChangeResult
 	}
 
 	override updateEReference(EObject eObject, EReference affectedEReference, Object newValue) {
