@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,10 @@ public class TUID {
     }
 
     public static synchronized TUID getInstance(final String tuidString) {
+        return getInstance(tuidString, false);
+    }
+
+    private static TUID getInstance(final String tuidString, final boolean recursively) {
         if (tuidString == null) {
             throw new RuntimeException("The null string is no TUID!");
         } else {
@@ -33,19 +38,31 @@ public class TUID {
             ForwardHashedBackwardLinkedTree<String>.Segment lastSegmentOrPrefix = SEGMENTS
                     .getMaximalPrefix(splitTUIDString);
             TUID instance;
-            if (lastSegmentOrPrefix != null && lastSegmentOrPrefix.toString().equals(tuidString)) {
+            if (lastSegmentOrPrefix != null
+                    && lastSegmentOrPrefix.toString(VitruviusConstants.getTUIDSegmentSeperator()).equals(tuidString)) {
                 // the complete specified tuidString was already mapped
                 instance = LAST_SEGMENT_2_TUID_INSTANCES_MAP.get(lastSegmentOrPrefix);
                 if (instance == null) {
-                    throw new RuntimeException("A TUID instance for the last segment '" + lastSegmentOrPrefix
-                            + "' should already have been mapped for the tuidString '" + tuidString + "'!");
+                    if (!recursively) {
+                        throw new RuntimeException("A TUID instance for the last segment '" + lastSegmentOrPrefix
+                                + "' should already have been mapped for the tuidString '" + tuidString + "'!");
+                    }
                 } else {
                     return instance;
                 }
             } // a real prefix of the specified tuidString or nothing was already mapped (but not
               // the complete tuidString)
             instance = new TUID(splitTUIDString);
-            LAST_SEGMENT_2_TUID_INSTANCES_MAP.put(instance.getLastSegment(), instance);
+            lastSegmentOrPrefix = instance.getLastSegment();
+            LAST_SEGMENT_2_TUID_INSTANCES_MAP.put(lastSegmentOrPrefix, instance);
+            // also create TUIDs for all prefixes of the specified tuidString and register them
+            Iterator<ForwardHashedBackwardLinkedTree<String>.Segment> segmentIterator = lastSegmentOrPrefix.iterator();
+            ForwardHashedBackwardLinkedTree<String>.Segment pivot;
+            while (segmentIterator.hasNext()) {
+                pivot = segmentIterator.next();
+                TUID subInstance = getInstance(pivot.toString(VitruviusConstants.getTUIDSegmentSeperator()), true);
+                LAST_SEGMENT_2_TUID_INSTANCES_MAP.put(subInstance.getLastSegment(), subInstance);
+            }
             return instance;
         }
     }

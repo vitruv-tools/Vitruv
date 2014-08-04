@@ -1,12 +1,13 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ForwardHashedBackwardLinkedTree<T> {
     private RecursiveMap<T, Segment> recursiveMap = new RecursiveHashMap<T, Segment>(new SegmentCreatorAndLinker());
 
-    public class Segment {
+    public class Segment implements Iterable<Segment> {
         private T value;
         private Segment ancestor;
 
@@ -50,6 +51,30 @@ public class ForwardHashedBackwardLinkedTree<T> {
                 getAncestor().toValueList(valueList);
             }
             valueList.add(this.value);
+        }
+
+        @Override
+        public Iterator<Segment> iterator() {
+
+            return new Iterator<Segment>() {
+                private Segment current = Segment.this;
+
+                @Override
+                public boolean hasNext() {
+                    return this.current.hasAncestor();
+                }
+
+                @Override
+                public Segment next() {
+                    return this.current = this.current.getAncestor();
+                }
+
+                @Override
+                public void remove() {
+                    throw new UnsupportedOperationException(
+                            "ForwardHashedBackwardLinkedTree<T>.Segment is not designed for deletion!");
+                }
+            };
         }
     }
 
