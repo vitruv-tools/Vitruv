@@ -1,6 +1,6 @@
 /**
  */
-package edu.kit.ipd.sdq.vitruvius.framework.meta.change;
+package edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list;
 
 import org.eclipse.emf.ecore.EFactory;
 
@@ -9,17 +9,17 @@ import org.eclipse.emf.ecore.EFactory;
  * The <b>Factory</b> for the model.
  * It provides a create method for each non-abstract class of the model.
  * <!-- end-user-doc -->
- * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangePackage
+ * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.ListPackage
  * @generated
  */
-public interface ChangeFactory extends EFactory {
+public interface ListFactory extends EFactory {
 	/**
 	 * The singleton instance of the factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	ChangeFactory eINSTANCE = edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.ChangeFactoryImpl.init();
+	ListFactory eINSTANCE = edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.impl.ListFactoryImpl.init();
 
 	/**
 	 * Returns the package supported by this factory.
@@ -28,6 +28,6 @@ public interface ChangeFactory extends EFactory {
 	 * @return the package supported by this factory.
 	 * @generated
 	 */
-	ChangePackage getChangePackage();
+	ListPackage getListPackage();
 
-} //ChangeFactory
+} //ListFactory
