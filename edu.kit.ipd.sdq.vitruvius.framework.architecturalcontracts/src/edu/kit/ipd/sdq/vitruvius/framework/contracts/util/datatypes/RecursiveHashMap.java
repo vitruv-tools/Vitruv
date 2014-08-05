@@ -107,20 +107,23 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
     @Override
     public void updateLeafKey(final V leafValue, final List<K> currentKeys, final K newLeafKey) {
         Iterator<K> currentKeysIterator = currentKeys.iterator();
+        // perform a special first loop iteration because getNextMap() cannot be called on null
         if (currentKeysIterator.hasNext()) {
             K pivotKey = currentKeysIterator.next();
             RecursiveMap<K, V> pivotMap = this;
             V pivotValue = pivotMap.get(pivotKey);
+            // no that getNextMap() can be called on pivotMap iterate over the loop
             while (currentKeysIterator.hasNext() && pivotValue != leafValue) {
-                // get the current map for the last key
-                pivotMap = pivotMap.getNextMap(pivotKey);
                 // get the current key
                 pivotKey = currentKeysIterator.next();
+                // get the current map for the current key
+                pivotMap = pivotMap.getNextMap(pivotKey);
                 // get the value for the current key
                 pivotValue = pivotMap.get(pivotKey);
             }
-            // check if we did not even enter the loop
+            // check the loop invariant
             if (pivotValue != null && pivotValue.equals(leafValue)) {
+                // check whether we really got until to the last key
                 K lastKey = currentKeys.get(currentKeys.size() - 1);
                 if (lastKey.equals(pivotKey)) {
                     pivotMap.replaceKey(pivotKey, newLeafKey);

@@ -8,10 +8,20 @@ public class ForwardHashedBackwardLinkedTree<T> {
     private RecursiveMap<T, Segment> recursiveMap = new RecursiveHashMap<T, Segment>(new SegmentCreatorAndLinker());
 
     public class Segment implements Iterable<Segment> {
+        // note the private fields and methods of this nested class Segment are accessibly in the
+        // nesting class ForwardHashedBackwardLinkedTree<T>
         private T value;
         private Segment ancestor;
 
         protected Segment(final T value) {
+            this.setValue(value);
+        }
+
+        private T getValue() {
+            return this.value;
+        }
+
+        private void setValue(final T value) {
             this.value = value;
         }
 
@@ -24,7 +34,7 @@ public class ForwardHashedBackwardLinkedTree<T> {
         }
 
         public boolean hasAncestor() {
-            return this.ancestor != null;
+            return this.getAncestor() != null;
         }
 
         @Override
@@ -34,9 +44,9 @@ public class ForwardHashedBackwardLinkedTree<T> {
 
         public String toString(final String separator) {
             if (!hasAncestor()) {
-                return "" + this.value; // avoid NPE for value.toString()
+                return "" + this.getValue(); // avoid NPE for value.toString()
             } else {
-                return this.ancestor.toString(separator) + separator + this.value;
+                return this.getAncestor().toString(separator) + separator + this.getValue();
             }
         }
 
@@ -50,7 +60,7 @@ public class ForwardHashedBackwardLinkedTree<T> {
             if (hasAncestor()) {
                 getAncestor().toValueList(valueList);
             }
-            valueList.add(this.value);
+            valueList.add(this.getValue());
         }
 
         @Override
@@ -152,5 +162,6 @@ public class ForwardHashedBackwardLinkedTree<T> {
         // instead of O(|treeDepth|)
         List<T> currentValueList = segmentToChange.toValueList();
         this.recursiveMap.updateLeafKey(segmentToChange, currentValueList, newSegmentValue);
+        segmentToChange.setValue(newSegmentValue);
     }
 }
