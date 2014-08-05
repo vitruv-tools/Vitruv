@@ -68,22 +68,13 @@ public interface ObjectPackage extends EPackage {
 	int EOBJECT_CHANGE = 0;
 
 	/**
-	 * The feature id for the '<em><b>Changed EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EOBJECT_CHANGE__CHANGED_EOBJECT = ChangePackage.ECHANGE_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>EObject Change</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_CHANGE_FEATURE_COUNT = ChangePackage.ECHANGE_FEATURE_COUNT + 1;
+	int EOBJECT_CHANGE_FEATURE_COUNT = ChangePackage.ECHANGE_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.impl.CreateEObjectImpl <em>Create EObject</em>}' class.
@@ -94,15 +85,6 @@ public interface ObjectPackage extends EPackage {
 	 * @generated
 	 */
 	int CREATE_EOBJECT = 1;
-
-	/**
-	 * The feature id for the '<em><b>Changed EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_EOBJECT__CHANGED_EOBJECT = EOBJECT_CHANGE__CHANGED_EOBJECT;
 
 	/**
 	 * The number of structural features of the '<em>Create EObject</em>' class.
@@ -124,15 +106,6 @@ public interface ObjectPackage extends EPackage {
 	int REPLACE_EOBJECT = 2;
 
 	/**
-	 * The feature id for the '<em><b>Changed EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_EOBJECT__CHANGED_EOBJECT = EOBJECT_CHANGE__CHANGED_EOBJECT;
-
-	/**
 	 * The number of structural features of the '<em>Replace EObject</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -152,15 +125,6 @@ public interface ObjectPackage extends EPackage {
 	int DELETE_EOBJECT = 3;
 
 	/**
-	 * The feature id for the '<em><b>Changed EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DELETE_EOBJECT__CHANGED_EOBJECT = EOBJECT_CHANGE__CHANGED_EOBJECT;
-
-	/**
 	 * The number of structural features of the '<em>Delete EObject</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -178,15 +142,6 @@ public interface ObjectPackage extends EPackage {
 	 * @generated
 	 */
 	int CREATE_ROOT_EOBJECT = 4;
-
-	/**
-	 * The feature id for the '<em><b>Changed EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_ROOT_EOBJECT__CHANGED_EOBJECT = CREATE_EOBJECT__CHANGED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>New Value</b></em>' attribute.
@@ -215,15 +170,6 @@ public interface ObjectPackage extends EPackage {
 	 * @generated
 	 */
 	int REPLACE_ROOT_EOBJECT = 5;
-
-	/**
-	 * The feature id for the '<em><b>Changed EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_ROOT_EOBJECT__CHANGED_EOBJECT = REPLACE_EOBJECT__CHANGED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>New Value</b></em>' attribute.
@@ -263,15 +209,6 @@ public interface ObjectPackage extends EPackage {
 	int DELETE_ROOT_EOBJECT = 6;
 
 	/**
-	 * The feature id for the '<em><b>Changed EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DELETE_ROOT_EOBJECT__CHANGED_EOBJECT = DELETE_EOBJECT__CHANGED_EOBJECT;
-
-	/**
 	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -299,17 +236,6 @@ public interface ObjectPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getEObjectChange();
-
-	/**
-	 * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.EObjectChange#getChangedEObject <em>Changed EObject</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Changed EObject</em>'.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.EObjectChange#getChangedEObject()
-	 * @see #getEObjectChange()
-	 * @generated
-	 */
-	EReference getEObjectChange_ChangedEObject();
 
 	/**
 	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateEObject <em>Create EObject</em>}'.
@@ -446,14 +372,6 @@ public interface ObjectPackage extends EPackage {
 		 * @generated
 		 */
 		EClass EOBJECT_CHANGE = eINSTANCE.getEObjectChange();
-
-		/**
-		 * The meta object literal for the '<em><b>Changed EObject</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference EOBJECT_CHANGE__CHANGED_EOBJECT = eINSTANCE.getEObjectChange_ChangedEObject();
 
 		/**
 		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.impl.CreateEObjectImpl <em>Create EObject</em>}' class.

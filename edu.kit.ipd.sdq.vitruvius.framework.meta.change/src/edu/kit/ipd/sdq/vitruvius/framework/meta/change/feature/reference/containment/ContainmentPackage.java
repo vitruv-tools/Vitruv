@@ -147,15 +147,6 @@ public interface ContainmentPackage extends EPackage {
 	int CREATE_NON_ROOT_EOBJECT_SINGLE = 2;
 
 	/**
-	 * The feature id for the '<em><b>Changed EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_NON_ROOT_EOBJECT_SINGLE__CHANGED_EOBJECT = ObjectPackage.CREATE_EOBJECT__CHANGED_EOBJECT;
-
-	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -200,15 +191,6 @@ public interface ContainmentPackage extends EPackage {
 	 * @generated
 	 */
 	int REPLACE_NON_ROOT_EOBJECT_SINGLE = 3;
-
-	/**
-	 * The feature id for the '<em><b>Changed EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_NON_ROOT_EOBJECT_SINGLE__CHANGED_EOBJECT = ObjectPackage.REPLACE_EOBJECT__CHANGED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -266,15 +248,6 @@ public interface ContainmentPackage extends EPackage {
 	int DELETE_NON_ROOT_EOBJECT_SINGLE = 4;
 
 	/**
-	 * The feature id for the '<em><b>Changed EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DELETE_NON_ROOT_EOBJECT_SINGLE__CHANGED_EOBJECT = ObjectPackage.DELETE_EOBJECT__CHANGED_EOBJECT;
-
-	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -319,15 +292,6 @@ public interface ContainmentPackage extends EPackage {
 	 * @generated
 	 */
 	int CREATE_NON_ROOT_EOBJECT_IN_LIST = 5;
-
-	/**
-	 * The feature id for the '<em><b>Changed EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_NON_ROOT_EOBJECT_IN_LIST__CHANGED_EOBJECT = ObjectPackage.CREATE_EOBJECT__CHANGED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -383,15 +347,6 @@ public interface ContainmentPackage extends EPackage {
 	 * @generated
 	 */
 	int REPLACE_NON_ROOT_EOBJECT_IN_LIST = 6;
-
-	/**
-	 * The feature id for the '<em><b>Changed EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_NON_ROOT_EOBJECT_IN_LIST__CHANGED_EOBJECT = ObjectPackage.REPLACE_EOBJECT__CHANGED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -456,15 +411,6 @@ public interface ContainmentPackage extends EPackage {
 	 * @generated
 	 */
 	int DELETE_NON_ROOT_EOBJECT_IN_LIST = 7;
-
-	/**
-	 * The feature id for the '<em><b>Changed EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DELETE_NON_ROOT_EOBJECT_IN_LIST__CHANGED_EOBJECT = ObjectPackage.DELETE_EOBJECT__CHANGED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.

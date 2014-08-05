@@ -143,8 +143,6 @@
         disposableProviderFactory="true" ecorePackage="change.ecore#//object">
       <genClasses image="false" ecoreClass="change.ecore#//object/EObjectChange">
         <genTypeParameters ecoreTypeParameter="change.ecore#//object/EObjectChange/T"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference change.ecore#//object/EObjectChange/changedEObject"/>
       </genClasses>
       <genClasses image="false" ecoreClass="change.ecore#//object/CreateEObject">
         <genTypeParameters ecoreTypeParameter="change.ecore#//object/CreateEObject/T"/>

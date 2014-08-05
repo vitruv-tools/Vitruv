@@ -196,15 +196,6 @@ public class ObjectPackageImpl extends EPackageImpl implements ObjectPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getEObjectChange_ChangedEObject() {
-		return (EReference)eObjectChangeEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getCreateEObject() {
 		return createEObjectEClass;
 	}
@@ -319,7 +310,6 @@ public class ObjectPackageImpl extends EPackageImpl implements ObjectPackage {
 
 		// Create classes and their features
 		eObjectChangeEClass = createEClass(EOBJECT_CHANGE);
-		createEReference(eObjectChangeEClass, EOBJECT_CHANGE__CHANGED_EOBJECT);
 
 		createEObjectEClass = createEClass(CREATE_EOBJECT);
 
@@ -418,8 +408,6 @@ public class ObjectPackageImpl extends EPackageImpl implements ObjectPackage {
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(eObjectChangeEClass, EObjectChange.class, "EObjectChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		g1 = createEGenericType(eObjectChangeEClass_T);
-		initEReference(getEObjectChange_ChangedEObject(), g1, null, "changedEObject", null, 1, 1, EObjectChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(createEObjectEClass, CreateEObject.class, "CreateEObject", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
