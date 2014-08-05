@@ -28,8 +28,20 @@
       <genClasses image="false" ecoreClass="change.ecore#//feature/UnsetEFeature">
         <genTypeParameters ecoreTypeParameter="change.ecore#//feature/UnsetEFeature/T"/>
       </genClasses>
-      <genClasses ecoreClass="change.ecore#//feature/UnsetEAttribute"/>
-      <genClasses ecoreClass="change.ecore#//feature/UnsetEReference"/>
+      <genClasses ecoreClass="change.ecore#//feature/UnsetEAttribute">
+        <genTypeParameters ecoreTypeParameter="change.ecore#//feature/UnsetEAttribute/T"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//feature/UnsetEAttribute/oldValue"/>
+      </genClasses>
+      <genClasses ecoreClass="change.ecore#//feature/UnsetEReference">
+        <genTypeParameters ecoreTypeParameter="change.ecore#//feature/UnsetEReference/T"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//feature/UnsetEReference/oldValue"/>
+      </genClasses>
+      <genClasses ecoreClass="change.ecore#//feature/UnsetNonContainmentEReference">
+        <genTypeParameters ecoreTypeParameter="change.ecore#//feature/UnsetNonContainmentEReference/T"/>
+      </genClasses>
+      <genClasses ecoreClass="change.ecore#//feature/UnsetContainmentEReference">
+        <genTypeParameters ecoreTypeParameter="change.ecore#//feature/UnsetContainmentEReference/T"/>
+      </genClasses>
       <nestedGenPackages prefix="List" basePackage="edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature"
           disposableProviderFactory="true" ecorePackage="change.ecore#//feature/list">
         <genClasses image="false" ecoreClass="change.ecore#//feature/list/UpdateSingleEListEntry">

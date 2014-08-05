@@ -217,13 +217,22 @@ public interface FeaturePackage extends EPackage {
 	int UNSET_EATTRIBUTE__AFFECTED_EOBJECT = UNSET_EFEATURE__AFFECTED_EOBJECT;
 
 	/**
+	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNSET_EATTRIBUTE__OLD_VALUE = UNSET_EFEATURE_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Unset EAttribute</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UNSET_EATTRIBUTE_FEATURE_COUNT = UNSET_EFEATURE_FEATURE_COUNT + 0;
+	int UNSET_EATTRIBUTE_FEATURE_COUNT = UNSET_EFEATURE_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.UnsetEReferenceImpl <em>Unset EReference</em>}' class.
@@ -254,13 +263,115 @@ public interface FeaturePackage extends EPackage {
 	int UNSET_EREFERENCE__AFFECTED_EOBJECT = UNSET_EFEATURE__AFFECTED_EOBJECT;
 
 	/**
+	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNSET_EREFERENCE__OLD_VALUE = UNSET_EFEATURE_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Unset EReference</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UNSET_EREFERENCE_FEATURE_COUNT = UNSET_EFEATURE_FEATURE_COUNT + 0;
+	int UNSET_EREFERENCE_FEATURE_COUNT = UNSET_EFEATURE_FEATURE_COUNT + 1;
+
+
+	/**
+	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.UnsetNonContainmentEReferenceImpl <em>Unset Non Containment EReference</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.UnsetNonContainmentEReferenceImpl
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.FeaturePackageImpl#getUnsetNonContainmentEReference()
+	 * @generated
+	 */
+	int UNSET_NON_CONTAINMENT_EREFERENCE = 7;
+
+	/**
+	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNSET_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE = UNSET_EREFERENCE__AFFECTED_FEATURE;
+
+	/**
+	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNSET_NON_CONTAINMENT_EREFERENCE__AFFECTED_EOBJECT = UNSET_EREFERENCE__AFFECTED_EOBJECT;
+
+	/**
+	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNSET_NON_CONTAINMENT_EREFERENCE__OLD_VALUE = UNSET_EREFERENCE__OLD_VALUE;
+
+	/**
+	 * The number of structural features of the '<em>Unset Non Containment EReference</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNSET_NON_CONTAINMENT_EREFERENCE_FEATURE_COUNT = UNSET_EREFERENCE_FEATURE_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.UnsetContainmentEReferenceImpl <em>Unset Containment EReference</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.UnsetContainmentEReferenceImpl
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.FeaturePackageImpl#getUnsetContainmentEReference()
+	 * @generated
+	 */
+	int UNSET_CONTAINMENT_EREFERENCE = 8;
+
+	/**
+	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNSET_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE = UNSET_EREFERENCE__AFFECTED_FEATURE;
+
+	/**
+	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNSET_CONTAINMENT_EREFERENCE__AFFECTED_EOBJECT = UNSET_EREFERENCE__AFFECTED_EOBJECT;
+
+	/**
+	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNSET_CONTAINMENT_EREFERENCE__OLD_VALUE = UNSET_EREFERENCE__OLD_VALUE;
+
+	/**
+	 * The number of structural features of the '<em>Unset Containment EReference</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNSET_CONTAINMENT_EREFERENCE_FEATURE_COUNT = UNSET_EREFERENCE_FEATURE_COUNT + 0;
 
 
 	/**
@@ -346,6 +457,17 @@ public interface FeaturePackage extends EPackage {
 	EClass getUnsetEAttribute();
 
 	/**
+	 * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetEAttribute#getOldValue <em>Old Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Old Value</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetEAttribute#getOldValue()
+	 * @see #getUnsetEAttribute()
+	 * @generated
+	 */
+	EAttribute getUnsetEAttribute_OldValue();
+
+	/**
 	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetEReference <em>Unset EReference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -354,6 +476,37 @@ public interface FeaturePackage extends EPackage {
 	 * @generated
 	 */
 	EClass getUnsetEReference();
+
+	/**
+	 * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetEReference#getOldValue <em>Old Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Old Value</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetEReference#getOldValue()
+	 * @see #getUnsetEReference()
+	 * @generated
+	 */
+	EAttribute getUnsetEReference_OldValue();
+
+	/**
+	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetNonContainmentEReference <em>Unset Non Containment EReference</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Unset Non Containment EReference</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetNonContainmentEReference
+	 * @generated
+	 */
+	EClass getUnsetNonContainmentEReference();
+
+	/**
+	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetContainmentEReference <em>Unset Containment EReference</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Unset Containment EReference</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetContainmentEReference
+	 * @generated
+	 */
+	EClass getUnsetContainmentEReference();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -454,6 +607,14 @@ public interface FeaturePackage extends EPackage {
 		EClass UNSET_EATTRIBUTE = eINSTANCE.getUnsetEAttribute();
 
 		/**
+		 * The meta object literal for the '<em><b>Old Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute UNSET_EATTRIBUTE__OLD_VALUE = eINSTANCE.getUnsetEAttribute_OldValue();
+
+		/**
 		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.UnsetEReferenceImpl <em>Unset EReference</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -462,6 +623,34 @@ public interface FeaturePackage extends EPackage {
 		 * @generated
 		 */
 		EClass UNSET_EREFERENCE = eINSTANCE.getUnsetEReference();
+
+		/**
+		 * The meta object literal for the '<em><b>Old Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute UNSET_EREFERENCE__OLD_VALUE = eINSTANCE.getUnsetEReference_OldValue();
+
+		/**
+		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.UnsetNonContainmentEReferenceImpl <em>Unset Non Containment EReference</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.UnsetNonContainmentEReferenceImpl
+		 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.FeaturePackageImpl#getUnsetNonContainmentEReference()
+		 * @generated
+		 */
+		EClass UNSET_NON_CONTAINMENT_EREFERENCE = eINSTANCE.getUnsetNonContainmentEReference();
+
+		/**
+		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.UnsetContainmentEReferenceImpl <em>Unset Containment EReference</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.UnsetContainmentEReferenceImpl
+		 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.FeaturePackageImpl#getUnsetContainmentEReference()
+		 * @generated
+		 */
+		EClass UNSET_CONTAINMENT_EREFERENCE = eINSTANCE.getUnsetContainmentEReference();
 
 	}
 

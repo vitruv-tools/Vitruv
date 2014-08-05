@@ -91,12 +91,20 @@ public class FeatureAdapterFactory extends AdapterFactoryImpl {
 				return createUnsetEFeatureAdapter();
 			}
 			@Override
-			public Adapter caseUnsetEAttribute(UnsetEAttribute object) {
+			public <T extends Object> Adapter caseUnsetEAttribute(UnsetEAttribute<T> object) {
 				return createUnsetEAttributeAdapter();
 			}
 			@Override
-			public Adapter caseUnsetEReference(UnsetEReference object) {
+			public <T extends EObject> Adapter caseUnsetEReference(UnsetEReference<T> object) {
 				return createUnsetEReferenceAdapter();
+			}
+			@Override
+			public <T extends EObject> Adapter caseUnsetNonContainmentEReference(UnsetNonContainmentEReference<T> object) {
+				return createUnsetNonContainmentEReferenceAdapter();
+			}
+			@Override
+			public <T extends EObject> Adapter caseUnsetContainmentEReference(UnsetContainmentEReference<T> object) {
+				return createUnsetContainmentEReferenceAdapter();
 			}
 			@Override
 			public Adapter caseEChange(EChange object) {
@@ -217,6 +225,34 @@ public class FeatureAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createUnsetEReferenceAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetNonContainmentEReference <em>Unset Non Containment EReference</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetNonContainmentEReference
+	 * @generated
+	 */
+	public Adapter createUnsetNonContainmentEReferenceAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetContainmentEReference <em>Unset Containment EReference</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetContainmentEReference
+	 * @generated
+	 */
+	public Adapter createUnsetContainmentEReferenceAdapter() {
 		return null;
 	}
 

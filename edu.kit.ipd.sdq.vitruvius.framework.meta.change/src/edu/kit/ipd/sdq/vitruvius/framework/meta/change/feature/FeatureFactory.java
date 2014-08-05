@@ -3,6 +3,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature;
 
 import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,16 +29,25 @@ public interface FeatureFactory extends EFactory {
 	 * @return a new object of class '<em>Unset EAttribute</em>'.
 	 * @generated
 	 */
-	UnsetEAttribute createUnsetEAttribute();
+	<T extends Object> UnsetEAttribute<T> createUnsetEAttribute();
 
 	/**
-	 * Returns a new object of class '<em>Unset EReference</em>'.
+	 * Returns a new object of class '<em>Unset Non Containment EReference</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Unset EReference</em>'.
+	 * @return a new object of class '<em>Unset Non Containment EReference</em>'.
 	 * @generated
 	 */
-	UnsetEReference createUnsetEReference();
+	<T extends EObject> UnsetNonContainmentEReference<T> createUnsetNonContainmentEReference();
+
+	/**
+	 * Returns a new object of class '<em>Unset Containment EReference</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Unset Containment EReference</em>'.
+	 * @generated
+	 */
+	<T extends EObject> UnsetContainmentEReference<T> createUnsetContainmentEReference();
 
 	/**
 	 * Returns the package supported by this factory.

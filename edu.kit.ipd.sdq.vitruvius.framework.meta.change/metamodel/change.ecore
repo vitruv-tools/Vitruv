@@ -45,13 +45,41 @@
       </eGenericSuperTypes>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="UnsetEAttribute">
+      <eTypeParameters name="T">
+        <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      </eTypeParameters>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldValue" lowerBound="1">
+        <eGenericType eTypeParameter="#//feature/UnsetEAttribute/T"/>
+      </eStructuralFeatures>
       <eGenericSuperTypes eClassifier="#//feature/UnsetEFeature">
         <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
       </eGenericSuperTypes>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="UnsetEReference">
+    <eClassifiers xsi:type="ecore:EClass" name="UnsetEReference" abstract="true">
+      <eTypeParameters name="T">
+        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      </eTypeParameters>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldValue" lowerBound="1">
+        <eGenericType eTypeParameter="#//feature/UnsetEReference/T"/>
+      </eStructuralFeatures>
       <eGenericSuperTypes eClassifier="#//feature/UnsetEFeature">
         <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
+      </eGenericSuperTypes>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UnsetNonContainmentEReference">
+      <eTypeParameters name="T">
+        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      </eTypeParameters>
+      <eGenericSuperTypes eClassifier="#//feature/UnsetEReference">
+        <eTypeArguments eTypeParameter="#//feature/UnsetNonContainmentEReference/T"/>
+      </eGenericSuperTypes>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UnsetContainmentEReference">
+      <eTypeParameters name="T">
+        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      </eTypeParameters>
+      <eGenericSuperTypes eClassifier="#//feature/UnsetEReference">
+        <eTypeArguments eTypeParameter="#//feature/UnsetContainmentEReference/T"/>
       </eGenericSuperTypes>
     </eClassifiers>
     <eSubpackages name="list" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Feature/List/1.0"

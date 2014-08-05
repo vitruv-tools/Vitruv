@@ -105,7 +105,7 @@ public class FeatureSwitch<T1> extends Switch<T1> {
 				return result;
 			}
 			case FeaturePackage.UNSET_EATTRIBUTE: {
-				UnsetEAttribute unsetEAttribute = (UnsetEAttribute)theEObject;
+				UnsetEAttribute<?> unsetEAttribute = (UnsetEAttribute<?>)theEObject;
 				T1 result = caseUnsetEAttribute(unsetEAttribute);
 				if (result == null) result = caseUnsetEFeature(unsetEAttribute);
 				if (result == null) result = caseEFeatureChange(unsetEAttribute);
@@ -114,11 +114,31 @@ public class FeatureSwitch<T1> extends Switch<T1> {
 				return result;
 			}
 			case FeaturePackage.UNSET_EREFERENCE: {
-				UnsetEReference unsetEReference = (UnsetEReference)theEObject;
+				UnsetEReference<?> unsetEReference = (UnsetEReference<?>)theEObject;
 				T1 result = caseUnsetEReference(unsetEReference);
 				if (result == null) result = caseUnsetEFeature(unsetEReference);
 				if (result == null) result = caseEFeatureChange(unsetEReference);
 				if (result == null) result = caseEChange(unsetEReference);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case FeaturePackage.UNSET_NON_CONTAINMENT_EREFERENCE: {
+				UnsetNonContainmentEReference<?> unsetNonContainmentEReference = (UnsetNonContainmentEReference<?>)theEObject;
+				T1 result = caseUnsetNonContainmentEReference(unsetNonContainmentEReference);
+				if (result == null) result = caseUnsetEReference(unsetNonContainmentEReference);
+				if (result == null) result = caseUnsetEFeature(unsetNonContainmentEReference);
+				if (result == null) result = caseEFeatureChange(unsetNonContainmentEReference);
+				if (result == null) result = caseEChange(unsetNonContainmentEReference);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case FeaturePackage.UNSET_CONTAINMENT_EREFERENCE: {
+				UnsetContainmentEReference<?> unsetContainmentEReference = (UnsetContainmentEReference<?>)theEObject;
+				T1 result = caseUnsetContainmentEReference(unsetContainmentEReference);
+				if (result == null) result = caseUnsetEReference(unsetContainmentEReference);
+				if (result == null) result = caseUnsetEFeature(unsetContainmentEReference);
+				if (result == null) result = caseEFeatureChange(unsetContainmentEReference);
+				if (result == null) result = caseEChange(unsetContainmentEReference);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -212,7 +232,7 @@ public class FeatureSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T1 caseUnsetEAttribute(UnsetEAttribute object) {
+	public <T extends Object> T1 caseUnsetEAttribute(UnsetEAttribute<T> object) {
 		return null;
 	}
 
@@ -227,7 +247,37 @@ public class FeatureSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T1 caseUnsetEReference(UnsetEReference object) {
+	public <T extends EObject> T1 caseUnsetEReference(UnsetEReference<T> object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Unset Non Containment EReference</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Unset Non Containment EReference</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <T extends EObject> T1 caseUnsetNonContainmentEReference(UnsetNonContainmentEReference<T> object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Unset Containment EReference</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Unset Containment EReference</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <T extends EObject> T1 caseUnsetContainmentEReference(UnsetContainmentEReference<T> object) {
 		return null;
 	}
 

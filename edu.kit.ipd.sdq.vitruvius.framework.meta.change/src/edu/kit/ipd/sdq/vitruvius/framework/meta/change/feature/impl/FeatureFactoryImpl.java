@@ -57,7 +57,8 @@ public class FeatureFactoryImpl extends EFactoryImpl implements FeatureFactory {
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case FeaturePackage.UNSET_EATTRIBUTE: return createUnsetEAttribute();
-			case FeaturePackage.UNSET_EREFERENCE: return createUnsetEReference();
+			case FeaturePackage.UNSET_NON_CONTAINMENT_EREFERENCE: return createUnsetNonContainmentEReference();
+			case FeaturePackage.UNSET_CONTAINMENT_EREFERENCE: return createUnsetContainmentEReference();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -68,8 +69,8 @@ public class FeatureFactoryImpl extends EFactoryImpl implements FeatureFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public UnsetEAttribute createUnsetEAttribute() {
-		UnsetEAttributeImpl unsetEAttribute = new UnsetEAttributeImpl();
+	public <T extends Object> UnsetEAttribute<T> createUnsetEAttribute() {
+		UnsetEAttributeImpl<T> unsetEAttribute = new UnsetEAttributeImpl<T>();
 		return unsetEAttribute;
 	}
 
@@ -78,9 +79,19 @@ public class FeatureFactoryImpl extends EFactoryImpl implements FeatureFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public UnsetEReference createUnsetEReference() {
-		UnsetEReferenceImpl unsetEReference = new UnsetEReferenceImpl();
-		return unsetEReference;
+	public <T extends EObject> UnsetNonContainmentEReference<T> createUnsetNonContainmentEReference() {
+		UnsetNonContainmentEReferenceImpl<T> unsetNonContainmentEReference = new UnsetNonContainmentEReferenceImpl<T>();
+		return unsetNonContainmentEReference;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public <T extends EObject> UnsetContainmentEReference<T> createUnsetContainmentEReference() {
+		UnsetContainmentEReferenceImpl<T> unsetContainmentEReference = new UnsetContainmentEReferenceImpl<T>();
+		return unsetContainmentEReference;
 	}
 
 	/**
