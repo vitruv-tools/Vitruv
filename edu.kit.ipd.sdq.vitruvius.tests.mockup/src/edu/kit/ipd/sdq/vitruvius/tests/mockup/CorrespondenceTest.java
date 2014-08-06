@@ -63,10 +63,7 @@ public class CorrespondenceTest extends VSUMTest {
 
     private EObjectCorrespondence testAllClaimersAndGettersForEObjectCorrespondences(final Repository repo,
             final UPackage pkg, final CorrespondenceInstance corresp) {
-        EObjectCorrespondence repo2pkg = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence();
-        repo2pkg.setElementA(repo);
-        repo2pkg.setElementB(pkg);
-        corresp.addSameTypeCorrespondence(repo2pkg);
+        Correspondence repo2pkg = corresp.addSameTypeCorrespondence(repo, pkg);
 
         // claimAllCorrespondence is already indirectly tested via claimUniqueCorrespondence
         Correspondence uniqueRepoCorrespondence = corresp.claimUniqueCorrespondence(repo);
@@ -107,7 +104,7 @@ public class CorrespondenceTest extends VSUMTest {
         assertEquals(allCorrespForPkg.size(), 1);
         assertTrue(allCorrespForPkg.contains(repo));
 
-        return repo2pkg;
+        return (EObjectCorrespondence) repo2pkg;
     }
 
     private Pair<FeatureInstance, FeatureInstance> testAllClaimersAndGettersForFeatureCorrespondences(
@@ -162,12 +159,12 @@ public class CorrespondenceTest extends VSUMTest {
         List<uml_mockup.Interface> pkgInterfaces = pkg.getInterfaces();
         assertEquals(pkgInterfaces.size(), 1);
         uml_mockup.Interface pkgInterface = pkgInterfaces.get(0);
-        EObjectCorrespondence repoIface2PkgIface = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence();
-        repoIface2PkgIface.setElementA(repoInterface);
-        repoIface2PkgIface.setElementB(pkgInterface);
-        corresp.addSameTypeCorrespondence(repoIface2PkgIface);
+        // add correspondence
+        corresp.addSameTypeCorrespondence(repoInterface, pkgInterface);
 
+        // remove correspondence
         corresp.removeAllCorrespondences(repoInterface);
+        // check wheather it is removed
         Set<Correspondence> repoInterfaceCorresp = corresp.getAllCorrespondences(repoInterface);
         assertTrue(repoInterfaceCorresp.isEmpty());
         Set<Correspondence> pkgInterfaceCorresp = corresp.getAllCorrespondences(pkgInterface);
