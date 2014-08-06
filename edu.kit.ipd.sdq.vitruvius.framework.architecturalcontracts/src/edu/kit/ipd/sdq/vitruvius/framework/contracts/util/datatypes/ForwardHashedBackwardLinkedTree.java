@@ -95,7 +95,9 @@ public class ForwardHashedBackwardLinkedTree<T> {
         public Segment createNewValueForKey(final T key, final Segment valueForNextKey) {
             if (key != null) {
                 Segment newSegment = new Segment(key);
-                linkSubsequentValuesIfNecessary(newSegment, valueForNextKey);
+                if (valueForNextKey != null) {
+                    linkSubsequentValuesIfNecessary(newSegment, valueForNextKey);
+                }
                 return newSegment;
             } else {
                 throw new IllegalArgumentException("Cannot create a new value for the null key and the '"
@@ -117,7 +119,10 @@ public class ForwardHashedBackwardLinkedTree<T> {
 
         private void linkSubsequentValues(final Segment firstValue, final Segment secondValue,
                 final boolean overrideExistingAncestor) {
-            if (secondValue != null) {
+            if (secondValue == null || firstValue == null) {
+                throw new IllegalArgumentException("Cannot link the second value '" + secondValue
+                        + "' to the first value '" + firstValue + "' to make it a predecessor!");
+            } else {
                 if (overrideExistingAncestor || !secondValue.hasAncestor()) {
                     secondValue.setAncestor(firstValue);
                 } else {
@@ -167,15 +172,6 @@ public class ForwardHashedBackwardLinkedTree<T> {
     public Segment addNewSegmentsWhereNecessary(final List<T> segmentValues) {
         this.recursiveMap.putWhereNecessary(segmentValues);
         return this.recursiveMap.getLastValue(segmentValues);
-    }
-
-    public void changeSegmentValue(final Segment segmentToChange, final T newSegmentValue) {
-        // TODO If this is not fast enough because of deep trees, then add a link from segments to
-        // the RecursiveMap that they are contained in and use it to change the value in O(1)
-        // instead of O(|treeDepth|)
-        List<T> currentValueList = segmentToChange.toValueList();
-        this.recursiveMap.updateLeafKey(segmentToChange, currentValueList, newSegmentValue);
-        segmentToChange.setValue(newSegmentValue);
     }
 
     public Collection<Segment> mergeSegmentIntoAnother(final Segment origin, final Segment destination) {

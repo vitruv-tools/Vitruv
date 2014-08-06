@@ -18,6 +18,7 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
     private ValueCreatorAndLinker<K, V> valueCreatorAndLinker;
 
     public RecursiveHashMap(final ValueCreatorAndLinker<K, V> valueCreatorAndLinker) {
+        this.key2NextRecursiveMapMap = new HashMap<K, RecursiveMap<K, V>>();
         this.key2ValueMap = new HashMap<K, V>();
         this.valueCreatorAndLinker = valueCreatorAndLinker;
     }
@@ -27,7 +28,7 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
         K firstKey = getFirstKeyToPutOrGet(keys, "put");
         V valueForSecondKey = null;
         if (keys.size() > 1) {
-            RecursiveMap<K, V> recursiveMapForFirstKey = getValueAndLazilyCreateMapMapIfNecessary(firstKey);
+            RecursiveMap<K, V> recursiveMapForFirstKey = this.key2NextRecursiveMapMap.get(firstKey);
             if (recursiveMapForFirstKey == null) {
                 recursiveMapForFirstKey = new RecursiveHashMap<K, V>(this.valueCreatorAndLinker);
                 this.key2NextRecursiveMapMap.put(firstKey, recursiveMapForFirstKey);
@@ -41,22 +42,17 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
             valueForFirstKey = this.valueCreatorAndLinker.createNewValueForKey(firstKey, valueForSecondKey);
             this.key2ValueMap.put(firstKey, valueForFirstKey);
         } else {
-            this.valueCreatorAndLinker.linkSubsequentValuesIfNecessary(valueForFirstKey, valueForSecondKey);
+            if (valueForSecondKey != null) {
+                this.valueCreatorAndLinker.linkSubsequentValuesIfNecessary(valueForFirstKey, valueForSecondKey);
+            }
         }
         return valueForFirstKey;
-    }
-
-    private RecursiveMap<K, V> getValueAndLazilyCreateMapMapIfNecessary(final K key) {
-        if (this.key2NextRecursiveMapMap == null) {
-            this.key2NextRecursiveMapMap = new HashMap<K, RecursiveMap<K, V>>();
-        }
-        return this.key2NextRecursiveMapMap.get(key);
     }
 
     @Override
     public List<V> getValuesAsLongAsPossible(final List<K> keys) {
         K firstKey = getFirstKeyToPutOrGet(keys, "get");
-        RecursiveMap<K, V> recursiveMapForFirstKey = getValueAndLazilyCreateMapMapIfNecessary(firstKey);
+        RecursiveMap<K, V> recursiveMapForFirstKey = this.key2NextRecursiveMapMap.get(firstKey);
         V valueForFirstKey = this.key2ValueMap.get(firstKey);
         if (valueForFirstKey == null) {
             if (recursiveMapForFirstKey == null) {
@@ -211,10 +207,15 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
     @Override
     public Collection<V> addToNextMap(final K key, final V value, final RecursiveMap<K, V> mapToAdd) {
         RecursiveMap<K, V> mapForKey = this.key2NextRecursiveMapMap.get(key);
-        if (mapForKey != null && mapToAdd != null) {
-            return mapForKey.addToThisMap(value, mapToAdd);
+        if (mapForKey == null) {
+            if (mapToAdd == null) {
+                return Collections.emptyList();
+            } else {
+                mapForKey = new RecursiveHashMap<K, V>(this.valueCreatorAndLinker);
+                this.key2NextRecursiveMapMap.put(key, mapForKey);
+            }
         }
-        return Collections.emptyList();
+        return mapForKey.addToThisMap(value, mapToAdd);
     }
 
     @Override
@@ -238,6 +239,7 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
             V valueToAdd = key2ValueToAdd.getValue();
             V valueForKey = this.key2ValueMap.get(nextKeyToAdd);
             if (valueForKey == null) {
+                valueForKey = valueToAdd;
                 this.key2ValueMap.put(nextKeyToAdd, valueToAdd);
             } else {
                 RecursiveMap<K, V> mapForNextKey = this.key2NextRecursiveMapMap.get(nextKeyToAdd);

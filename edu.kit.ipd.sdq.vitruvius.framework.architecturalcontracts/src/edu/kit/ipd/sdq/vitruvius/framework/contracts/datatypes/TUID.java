@@ -98,14 +98,20 @@ public class TUID {
     // merged. => moveLastSegment
 
     public void renameLastSegment(final String newLastSegmentString) {
-        boolean containsSeparator = newLastSegmentString.indexOf(VitruviusConstants.getTUIDSegmentSeperator()) != -1;
+        String segmentSeperator = VitruviusConstants.getTUIDSegmentSeperator();
+        boolean containsSeparator = newLastSegmentString.indexOf(segmentSeperator) != -1;
         if (!containsSeparator) {
-            SEGMENTS.changeSegmentValue(this.lastSegment, newLastSegmentString);
+            ForwardHashedBackwardLinkedTree<String>.Segment ancestor = this.lastSegment.iterator().next();
+            String destinationTUIDString = "";
+            if (ancestor != null) {
+                destinationTUIDString = ancestor.toString(segmentSeperator) + segmentSeperator;
+            }
+            destinationTUIDString += newLastSegmentString;
+            moveLastSegment(destinationTUIDString);
         } else {
             throw new IllegalArgumentException("The last segment '" + this.lastSegment + "' of the TUID '" + this
                     + "' cannot be renamed to '" + newLastSegmentString
-                    + "' because this String contains the TUID separator '"
-                    + VitruviusConstants.getTUIDSegmentSeperator() + "'!");
+                    + "' because this String contains the TUID separator '" + segmentSeperator + "'!");
         }
     }
 

@@ -78,6 +78,8 @@ public class TUIDTest {
         assertEquals(s1prefix, tuid1prefix.toString());
         String s1prefixr = "p2";
         tuid1prefix.renameLastSegment(s1prefixr);
+        System.out.println("**** BEGIN FIRST OPERATION ****\n" + TUID.toStrings()
+                + "\n**** END FIRST OPERATION ****\n\n");
         assertEquals(s1prefixr, tuid1prefix.toString());
         String s1r = s1prefixr + sep + "s";
         assertEquals(s1r, tuid1.toString());
@@ -89,22 +91,20 @@ public class TUIDTest {
         assertEquals(s7r, tuid7.toString());
         String s8r = s1prefixr + sep + "t";
         assertEquals(s8r, tuid8.toString());
-        System.out.println("**** BEGIN FIRST OPERATION ****\n" + TUID.toStrings()
-                + "\n**** END FIRST OPERATION ****\n\n");
         assertTrue(TUID.validate());
 
         /**********************************************/
         /** second operation (rename folder s to s2) **/
         /**********************************************/
         tuid1.renameLastSegment("s2");
+        System.out.println("**** BEGIN SECOND OPERATION ****\n" + TUID.toStrings()
+                + "\n**** END SECOND OPERATION ****\n\n");
         String s1rr = "p2" + sep + "s2";
         assertEquals(s1rr, tuid1.toString());
         String s2rr = s1rr + sep + "c.i";
         assertEquals(s2rr, tuid2.toString());
         String s7rr = s2rr + sep + "a";
         assertEquals(s7rr, tuid7.toString());
-        System.out.println("**** BEGIN SECOND OPERATION ****\n" + TUID.toStrings()
-                + "\n**** END SECOND OPERATION ****\n\n");
         assertTrue(TUID.validate());
 
         /***********************************************************/
@@ -112,12 +112,12 @@ public class TUIDTest {
         /***********************************************************/
         TUID tuid4prefix = TUID.getInstance(s4prefix);
         tuid4prefix.moveLastSegment(s5prefix);
+        System.out.println("**** BEGIN THIRD OPERATION ****\n" + TUID.toStrings()
+                + "\n**** END THIRD OPERATION ****\n\n\n");
         assertEquals(s5prefix, tuid4prefix.toString());
         String s4rrr = s5prefix + sep + "e" + sep + "a";
         assertEquals(s4rrr, tuid4.toString());
         assertEquals(s5, tuid5.toString());
-        System.out.println("**** BEGIN THIRD OPERATION ****\n" + TUID.toStrings()
-                + "\n**** END THIRD OPERATION ****\n\n\n");
         assertTrue(TUID.validate());
 
         /*************************************************/
@@ -125,11 +125,11 @@ public class TUIDTest {
         /*************************************************/
         String s2rrrr = s1rr + sep + "ci";
         tuid2.renameLastSegment("ci");
+        System.out.println("**** BEGIN FOURTH OPERATION ****\n" + TUID.toStrings()
+                + "\n**** END FOURTH OPERATION ****\n\n");
         assertEquals(s2rrrr, tuid2.toString());
         String s7rrrr = s2rrrr + sep + "a";
         assertEquals(s7rrrr, tuid7.toString());
-        System.out.println("**** BEGIN FOURTH OPERATION ****\n" + TUID.toStrings()
-                + "\n**** END FOURTH OPERATION ****\n\n");
         assertTrue(TUID.validate());
 
         /*********************************************/
@@ -137,6 +137,8 @@ public class TUIDTest {
         /*********************************************/
         String s1prefixrrrrr = "q";
         tuid1prefix.renameLastSegment(s1prefixrrrrr);
+        System.out.println("**** BEGIN FIFTH OPERATION ****\n" + TUID.toStrings()
+                + "\n**** END FIFTH OPERATION ****\n\n");
         String s1rrrrr = s1prefixrrrrr + sep + "s2";
         assertEquals(s1rrrrr, tuid1.toString());
         String s2rrrrr = s1rrrrr + sep + "ci";
@@ -153,8 +155,6 @@ public class TUIDTest {
         // unchanged TUIDs
         assertEquals(s5, tuid5.toString());
         assertEquals(s6, tuid6.toString());
-        System.out.println("**** BEGIN FIFTH OPERATION ****\n" + TUID.toStrings()
-                + "\n**** END FIFTH OPERATION ****\n\n");
         assertTrue(TUID.validate());
 
         /***************************************************************/
@@ -163,6 +163,8 @@ public class TUIDTest {
         TUID tuid5prefix = TUID.getInstance(s5prefix);
         String s5prefixrrrrrr = s9 + sep + "u";
         tuid5prefix.moveLastSegment(s5prefixrrrrrr);
+        System.out.println("**** BEGIN SIXTH OPERATION ****\n" + TUID.toStrings()
+                + "\n**** END SIXTH OPERATION ****\n\n");
         assertEquals(s5prefixrrrrrr, tuid5prefix.toString());
         String s4rrrrrr = s5prefixrrrrrr + "e" + "a";
         assertEquals(s4rrrrrr, tuid4.toString());
@@ -173,8 +175,6 @@ public class TUIDTest {
 
         // unchanged TUID
         assertEquals(s9, tuid9.toString());
-        System.out.println("**** BEGIN SIXTH OPERATION ****\n" + TUID.toStrings()
-                + "\n**** END SIXTH OPERATION ****\n\n");
         assertTrue(TUID.validate());
     }
 }
