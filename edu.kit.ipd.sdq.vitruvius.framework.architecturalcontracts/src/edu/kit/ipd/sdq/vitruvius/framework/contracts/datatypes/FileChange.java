@@ -19,7 +19,7 @@ public class FileChange extends Change implements URIHaving {
     }
 
     @Override
-    public edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI getURI() {
+    public VURI getURI() {
         return this.vuri;
     }
 

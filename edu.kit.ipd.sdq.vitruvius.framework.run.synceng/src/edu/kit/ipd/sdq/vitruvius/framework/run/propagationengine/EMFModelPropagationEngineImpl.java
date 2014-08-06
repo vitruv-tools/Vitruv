@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ChangeResult;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePropagating;
@@ -22,10 +23,23 @@ public class EMFModelPropagationEngineImpl implements ChangePropagating {
 
     @Override
     public ChangeResult propagateChange(final Change change, final CorrespondenceInstance correspondenceInstance) {
+        EMFModelChange emfModelChange = (EMFModelChange) change;
+        return getTransformationExecuting(correspondenceInstance).executeTransformation(emfModelChange,
+                correspondenceInstance);
+    }
+
+    @Override
+    public ChangeResult propagateChange(final CompositeChange compositeChange,
+            final CorrespondenceInstance correspondenceInstance) {
+        return getTransformationExecuting(correspondenceInstance).executeTransformation(compositeChange,
+                correspondenceInstance);
+    }
+
+    public EMFModelTransformationExecuting getTransformationExecuting(
+            final CorrespondenceInstance correspondenceInstance) {
         EMFModelTransformationExecuting transformationExecuting = this.transformationExecutingProviding
                 .getTransformationExecuting(correspondenceInstance.getMapping().getMetamodelA().getURI(),
                         correspondenceInstance.getMapping().getMetamodelB().getURI());
-        EMFModelChange emfModelChange = (EMFModelChange) change;
-        return transformationExecuting.executeTransformation(emfModelChange, correspondenceInstance);
+        return transformationExecuting;
     }
 }

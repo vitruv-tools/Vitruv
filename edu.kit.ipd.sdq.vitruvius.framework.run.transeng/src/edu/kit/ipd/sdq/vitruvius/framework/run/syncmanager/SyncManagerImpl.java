@@ -48,6 +48,8 @@ public class SyncManagerImpl implements ChangeSynchronizing {
         this.changeSynchonizerMap.put(EMFModelChange.class, emfModelSynchronizer);
         this.changeSynchonizerMap.put(FileChange.class,
                 new FileChangeSynchronizer(modelProviding, emfModelSynchronizer));
+        this.changeSynchonizerMap.put(CompositeChange.class, new CompositeChangeSynchronizer(modelProviding,
+                this.changePropagating, this.correspondenceProviding));
         this.invariantProviding = invariantProviding;
         this.validating = validating;
     }
@@ -57,11 +59,6 @@ public class SyncManagerImpl implements ChangeSynchronizing {
         for (Change change : changes) {
             synchronizeChange(change);
         }
-    }
-
-    @Override
-    public void synchronizeChange(final CompositeChange compositeChange) {
-        synchronizeChanges(compositeChange.getChanges());
     }
 
     @Override
