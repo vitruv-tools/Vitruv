@@ -18,6 +18,8 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.Pa
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.BasicComponentMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.OperationInterfaceMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.RepositoryMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
@@ -85,6 +87,18 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
         this.handleNewRootEObjects(transformationChangeResult.getNewRootObjectsToSave(),
                 emfChangeResult.getNewRootObjectsToSave(), emfModelChange.getURI());
 
+        return emfChangeResult;
+    }
+
+    @Override
+    public EMFChangeResult executeTransformation(final CompositeChange compositeChange,
+            final CorrespondenceInstance correspondenceInstance) {
+        final EMFChangeResult emfChangeResult = new EMFChangeResult();
+        for (final Change change : compositeChange.getChanges()) {
+            final EMFChangeResult currentResult = this.executeTransformation((EMFModelChange) change,
+                    correspondenceInstance);
+            emfChangeResult.addChangeResult(currentResult);
+        }
         return emfChangeResult;
     }
 
