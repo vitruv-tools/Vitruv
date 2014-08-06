@@ -79,26 +79,52 @@ public class TUID {
 
     // If a package is renamed in Java, then only the paths of all contained classifiers are
     // affected. The paths of subpackages are not affected but they are no longer subpackages.
-    // If a package is renamed in Java, then the depth of its path may change arbitrarily.
+    // If a package is renamed in Java, then the depth of its path may change arbitrarily. =>
+    // renameLastSegment
     //
     // If a folder is renamed, then the paths of all contained elements are affected but the depth
-    // may not change.
+    // may not change. => renameLastSegment
     //
     // If a package is moved in Java, then it may only be completely moved to another folder and
     // subpackages are not affected. It is not possible to move subpackages to another package. It
     // is however possible to move a package to a folder in which the package or a subpackage is
-    // already existing, then the packages are merged.
+    // already existing, then the packages are merged. => moveLastSegment
     //
     // If a folder is moved, then the paths of all contained elements are affected and the depth may
     // change. If the destination folder already exists the containing elements of both folders are
-    // merged.
+    // merged. => moveLastSegment
 
     public void renameLastSegment(final String newLastSegmentString) {
-        SEGMENTS.changeSegmentValue(this.lastSegment, newLastSegmentString);
+        boolean containsSeparator = newLastSegmentString.indexOf(VitruviusConstants.getTUIDSegmentSeperator()) != -1;
+        if (!containsSeparator) {
+            SEGMENTS.changeSegmentValue(this.lastSegment, newLastSegmentString);
+        } else {
+            throw new IllegalArgumentException("The last segment '" + this.lastSegment + "' of the TUID '" + this
+                    + "' cannot be renamed to '" + newLastSegmentString
+                    + "' because this String contains the TUID separator '"
+                    + VitruviusConstants.getTUIDSegmentSeperator() + "'!");
+        }
+    }
+
+    public void moveLastSegment(final String fullDestinationTUIDString) {
+        TUID fullDestinationTUID = getInstance(fullDestinationTUIDString);
+        moveLastSegment(fullDestinationTUID);
+    }
+
+    public void moveLastSegment(final TUID fullDestinationTUID) {
+        SEGMENTS.mergeSegmentIntoAnother(this.lastSegment, fullDestinationTUID.lastSegment);
+        // remove the entry for the old last segment
+        // as a result new requests for the common TUID will return the destination TUID object
+        LAST_SEGMENT_2_TUID_INSTANCES_MAP.remove(this.lastSegment);
+        this.lastSegment = fullDestinationTUID.lastSegment;
     }
 
     @Override
     public String toString() {
         return this.lastSegment.toString(VitruviusConstants.getTUIDSegmentSeperator());
+    }
+
+    public static String toStrings() {
+        return SEGMENTS.toString() + "\n" + LAST_SEGMENT_2_TUID_INSTANCES_MAP.toString();
     }
 }

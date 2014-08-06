@@ -104,11 +104,23 @@ public class ForwardHashedBackwardLinkedTree<T> {
 
         @Override
         public void linkSubsequentValuesIfNecessary(final Segment firstValue, final Segment secondValue) {
+            boolean overrideExistingAncestor = false;
+            linkSubsequentValues(firstValue, secondValue, overrideExistingAncestor);
+        }
+
+        @Override
+        public void linkSubsequentValuesAndOverride(final Segment firstValue, final Segment secondValue) {
+            boolean overrideExistingAncestor = true;
+            linkSubsequentValues(firstValue, secondValue, overrideExistingAncestor);
+        }
+
+        private void linkSubsequentValues(final Segment firstValue, final Segment secondValue,
+                final boolean overrideExistingAncestor) {
             if (secondValue != null) {
-                if (!secondValue.hasAncestor()) {
+                if (overrideExistingAncestor || !secondValue.hasAncestor()) {
                     secondValue.setAncestor(firstValue);
                 } else {
-                    if (secondValue.getAncestor() != firstValue) {
+                    if (!overrideExistingAncestor && secondValue.getAncestor() != firstValue) {
                         throw new IllegalStateException("The segment '" + secondValue
                                 + "' cannot be linked to the previous segment '" + firstValue
                                 + "' because it is already linked to '" + secondValue.getAncestor() + "'!");
@@ -163,5 +175,16 @@ public class ForwardHashedBackwardLinkedTree<T> {
         List<T> currentValueList = segmentToChange.toValueList();
         this.recursiveMap.updateLeafKey(segmentToChange, currentValueList, newSegmentValue);
         segmentToChange.setValue(newSegmentValue);
+    }
+
+    public void mergeSegmentIntoAnother(final Segment origin, final Segment destination) {
+        List<T> originValueList = origin.toValueList();
+        List<T> destinationValueList = destination.toValueList();
+        this.recursiveMap.mergeLeafIntoAnother(origin, originValueList, destination, destinationValueList);
+    }
+
+    @Override
+    public String toString() {
+        return this.recursiveMap.toString();
     }
 }

@@ -1,19 +1,22 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
     private Map<K, RecursiveMap<K, V>> key2NextRecursiveMapMap;
     private Map<K, V> key2ValueMap;
-    private ValueCreatorAndLinker<K, V> valueCreator;
+    private ValueCreatorAndLinker<K, V> valueCreatorAndLinker;
 
-    public RecursiveHashMap(final ValueCreatorAndLinker<K, V> valueCreator) {
+    public RecursiveHashMap(final ValueCreatorAndLinker<K, V> valueCreatorAndLinker) {
         this.key2ValueMap = new HashMap<K, V>();
-        this.valueCreator = valueCreator;
+        this.valueCreatorAndLinker = valueCreatorAndLinker;
     }
 
     @Override
@@ -23,7 +26,7 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
         if (keys.size() > 1) {
             RecursiveMap<K, V> recursiveMapForFirstKey = getValueAndLazilyCreateMapMapIfNecessary(firstKey);
             if (recursiveMapForFirstKey == null) {
-                recursiveMapForFirstKey = new RecursiveHashMap<K, V>(this.valueCreator);
+                recursiveMapForFirstKey = new RecursiveHashMap<K, V>(this.valueCreatorAndLinker);
                 this.key2NextRecursiveMapMap.put(firstKey, recursiveMapForFirstKey);
             }
             // first, put the last n-1 keys recursively where needed
@@ -32,10 +35,10 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
         // second, put the first key if needed
         V valueForFirstKey = this.key2ValueMap.get(firstKey);
         if (valueForFirstKey == null) {
-            valueForFirstKey = this.valueCreator.createNewValueForKey(firstKey, valueForSecondKey);
+            valueForFirstKey = this.valueCreatorAndLinker.createNewValueForKey(firstKey, valueForSecondKey);
             this.key2ValueMap.put(firstKey, valueForFirstKey);
         } else {
-            this.valueCreator.linkSubsequentValuesIfNecessary(valueForFirstKey, valueForSecondKey);
+            this.valueCreatorAndLinker.linkSubsequentValuesIfNecessary(valueForFirstKey, valueForSecondKey);
         }
         return valueForFirstKey;
     }
@@ -105,19 +108,36 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
     }
 
     @Override
+    public RecursiveMap<K, V> getNextMap(final K key) {
+        return this.key2NextRecursiveMapMap.get(key);
+    }
+
+    @Override
+    public V get(final K key) {
+        return this.key2ValueMap.get(key);
+    }
+
+    @Override
     public void updateLeafKey(final V leafValue, final List<K> currentKeys, final K newLeafKey) {
+        Pair<RecursiveMap<K, V>, K> mapAndKeyForLeaf = getMapAndKeyForLeaf(leafValue, currentKeys);
+        RecursiveMap<K, V> mapForLeaf = mapAndKeyForLeaf.getFirst();
+        K oldLeafKey = mapAndKeyForLeaf.getSecond();
+        mapForLeaf.replaceKey(oldLeafKey, newLeafKey);
+    }
+
+    private Pair<RecursiveMap<K, V>, K> getMapAndKeyForLeaf(final V leafValue, final List<K> currentKeys) {
         Iterator<K> currentKeysIterator = currentKeys.iterator();
         // perform a special first loop iteration because getNextMap() cannot be called on null
         if (currentKeysIterator.hasNext()) {
             K pivotKey = currentKeysIterator.next();
             RecursiveMap<K, V> pivotMap = this;
             V pivotValue = pivotMap.get(pivotKey);
-            // no that getNextMap() can be called on pivotMap iterate over the loop
+            // now that getNextMap() can be called on pivotMap iterate over the loop
             while (currentKeysIterator.hasNext() && pivotValue != leafValue) {
-                // get the current key
-                pivotKey = currentKeysIterator.next();
-                // get the current map for the current key
+                // first get the current map using the last key
                 pivotMap = pivotMap.getNextMap(pivotKey);
+                // now update the key to the current key
+                pivotKey = currentKeysIterator.next();
                 // get the value for the current key
                 pivotValue = pivotMap.get(pivotKey);
             }
@@ -126,7 +146,7 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
                 // check whether we really got until to the last key
                 K lastKey = currentKeys.get(currentKeys.size() - 1);
                 if (lastKey.equals(pivotKey)) {
-                    pivotMap.replaceKey(pivotKey, newLeafKey);
+                    return new Pair<RecursiveMap<K, V>, K>(pivotMap, pivotKey);
                 } else {
                     throw new IllegalArgumentException("The key '" + lastKey
                             + "' is not the last key in the key list '" + currentKeys + "'!");
@@ -136,19 +156,29 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
                         + "' is not a leaf for the tree induced by the keys '" + currentKeys + "'!");
             }
         } else {
-            throw new IllegalArgumentException("Cannot update the leaf key for the empty key list '" + currentKeys
-                    + "'!");
+            throw new IllegalArgumentException("Cannot find a leaf key for the empty key list '" + currentKeys + "'!");
         }
     }
 
     @Override
-    public RecursiveMap<K, V> getNextMap(final K key) {
-        return this.key2NextRecursiveMapMap.get(key);
-    }
-
-    @Override
-    public V get(final K key) {
-        return this.key2ValueMap.get(key);
+    public void mergeLeafIntoAnother(final V originLeaf, final List<K> originValueList, final V destinationLeaf,
+            final List<K> destinationValueList) {
+        Pair<RecursiveMap<K, V>, K> mapAndKeyForOriginLeaf = getMapAndKeyForLeaf(originLeaf, originValueList);
+        RecursiveMap<K, V> mapForOriginLeaf = mapAndKeyForOriginLeaf.getFirst();
+        K originKey = mapAndKeyForOriginLeaf.getSecond();
+        Pair<RecursiveMap<K, V>, V> removedRecursiveMapAndLeaf = mapForOriginLeaf.remove(originKey);
+        RecursiveMap<K, V> removedRecursiveMap = removedRecursiveMapAndLeaf.getFirst();
+        V removedLeaf = removedRecursiveMapAndLeaf.getSecond();
+        if (originLeaf == removedLeaf) {
+            Pair<RecursiveMap<K, V>, K> mapAndKeyForDestinationLeaf = getMapAndKeyForLeaf(destinationLeaf,
+                    destinationValueList);
+            RecursiveMap<K, V> mapForDestinationLeaf = mapAndKeyForDestinationLeaf.getFirst();
+            K destinationKey = mapAndKeyForDestinationLeaf.getSecond();
+            mapForDestinationLeaf.addToNextMap(destinationKey, destinationLeaf, removedRecursiveMap);
+        } else {
+            throw new IllegalStateException("mapForOriginLeaf '" + mapForOriginLeaf + "' did not contain '"
+                    + originLeaf + "' but '" + removedLeaf + "!");
+        }
     }
 
     @Override
@@ -166,5 +196,84 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
                     + "' in the " + this.getClass().getSimpleName()
                     + " because it is neither mapped to a next map nor a value!");
         }
+    }
+
+    @Override
+    public Pair<RecursiveMap<K, V>, V> remove(final K key) {
+        RecursiveMap<K, V> removedRecursiveMap = this.key2NextRecursiveMapMap.remove(key);
+        V removedValue = this.key2ValueMap.remove(key);
+        return new Pair<RecursiveMap<K, V>, V>(removedRecursiveMap, removedValue);
+    }
+
+    @Override
+    public RecursiveMap<K, V> addToNextMap(final K key, final V value, final RecursiveMap<K, V> mapToAdd) {
+        RecursiveMap<K, V> mapForKey = this.key2NextRecursiveMapMap.get(key);
+        if (mapForKey != null && mapToAdd != null) {
+            mapForKey.addToThisMap(value, mapToAdd);
+        }
+        return mapForKey;
+    }
+
+    @Override
+    public void addToThisMap(final V lastValue, final RecursiveMap<K, V> mapToAdd) {
+        Pair<Set<Map.Entry<K, RecursiveMap<K, V>>>, Set<Map.Entry<K, V>>> entrySets = mapToAdd.entrySets();
+        Set<Entry<K, RecursiveMap<K, V>>> nextMapsToAdd = entrySets.getFirst();
+        Set<Entry<K, V>> key2ValuesToAdd = entrySets.getSecond();
+        for (Entry<K, RecursiveMap<K, V>> nextMapToAdd : nextMapsToAdd) {
+            K nextKey = nextMapToAdd.getKey();
+            RecursiveMap<K, V> value = nextMapToAdd.getValue();
+            RecursiveMap<K, V> nextMapForKey = this.key2NextRecursiveMapMap.get(nextKey);
+            if (nextMapForKey == null) {
+                this.key2NextRecursiveMapMap.put(nextKey, value);
+            } else {
+                nextMapForKey.addToThisMap(lastValue, value);
+            }
+        }
+        for (Entry<K, V> key2ValueToAdd : key2ValuesToAdd) {
+            K nextKeyToAdd = key2ValueToAdd.getKey();
+            V valueToAdd = key2ValueToAdd.getValue();
+            V valueForKey = this.key2ValueMap.get(nextKeyToAdd);
+            if (valueForKey == null) {
+                this.key2ValueMap.put(nextKeyToAdd, valueToAdd);
+            } else {
+                RecursiveMap<K, V> mapForNextKey = this.key2NextRecursiveMapMap.get(nextKeyToAdd);
+                Collection<V> leafValues = mapForNextKey.leafValues();
+                for (V leafValue : leafValues) {
+                    this.valueCreatorAndLinker.linkSubsequentValuesAndOverride(valueToAdd, leafValue);
+                }
+            }
+            this.valueCreatorAndLinker.linkSubsequentValuesAndOverride(lastValue, valueToAdd);
+        }
+    }
+
+    @Override
+    public Pair<Set<Entry<K, RecursiveMap<K, V>>>, Set<Entry<K, V>>> entrySets() {
+        Set<Entry<K, RecursiveMap<K, V>>> nextMapsEntrySet = this.key2NextRecursiveMapMap.entrySet();
+        Set<Entry<K, V>> key2ValueEntrySet = this.key2ValueMap.entrySet();
+        return new Pair<Set<Entry<K, RecursiveMap<K, V>>>, Set<Entry<K, V>>>(nextMapsEntrySet, key2ValueEntrySet);
+    }
+
+    @Override
+    public Collection<V> leafValues() {
+        return this.key2ValueMap.values();
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        Set<Entry<K, RecursiveMap<K, V>>> nextMapEntrySet = this.key2NextRecursiveMapMap.entrySet();
+        for (Entry<K, RecursiveMap<K, V>> nextMapEntry : nextMapEntrySet) {
+            K key = nextMapEntry.getKey();
+            sb.append(key + " ");
+            String s;
+            V value = this.key2ValueMap.get(key);
+            if (value == null) {
+                s = "->";
+            } else {
+                s = "=>" + value;
+            }
+
+        }
+        return sb.toString();
     }
 }
