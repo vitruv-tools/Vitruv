@@ -130,7 +130,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_VpQjcaqIEeO0Y_Bm6YU6sw" fontColor="4210752" fontName="Lucida Grande" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
     <element xmi:type="ecore:EClass" href="correspondence.ecore#//EContainmentReferenceCorrespondence"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_VpQjcqqIEeO0Y_Bm6YU6sw" x="25" y="511"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_VpQjcqqIEeO0Y_Bm6YU6sw" x="10" y="510"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_VpSYoKqIEeO0Y_Bm6YU6sw" type="1001">
     <children xmi:type="notation:Node" xmi:id="_VpS_sKqIEeO0Y_Bm6YU6sw" type="4001"/>
@@ -140,22 +140,6 @@
       <styles xmi:type="notation:FilteringStyle" xmi:id="_VpTmw6qIEeO0Y_Bm6YU6sw"/>
     </children>
     <children xmi:type="notation:Node" xmi:id="_VpUN0KqIEeO0Y_Bm6YU6sw" type="5002">
-      <children xmi:type="notation:Node" xmi:id="_VpU04KqIEeO0Y_Bm6YU6sw" type="2002">
-        <element xmi:type="ecore:EOperation" href="correspondence.ecore#//PartialEFeatureCorrespondence/getValueA"/>
-        <layoutConstraint xmi:type="notation:Location" xmi:id="_VpU04aqIEeO0Y_Bm6YU6sw"/>
-      </children>
-      <children xmi:type="notation:Node" xmi:id="_VpU04qqIEeO0Y_Bm6YU6sw" type="2002">
-        <element xmi:type="ecore:EOperation" href="correspondence.ecore#//PartialEFeatureCorrespondence/setValueA"/>
-        <layoutConstraint xmi:type="notation:Location" xmi:id="_VpU046qIEeO0Y_Bm6YU6sw"/>
-      </children>
-      <children xmi:type="notation:Node" xmi:id="_VpVb8KqIEeO0Y_Bm6YU6sw" type="2002">
-        <element xmi:type="ecore:EOperation" href="correspondence.ecore#//PartialEFeatureCorrespondence/getValueB"/>
-        <layoutConstraint xmi:type="notation:Location" xmi:id="_VpVb8aqIEeO0Y_Bm6YU6sw"/>
-      </children>
-      <children xmi:type="notation:Node" xmi:id="_VpWDAKqIEeO0Y_Bm6YU6sw" type="2002">
-        <element xmi:type="ecore:EOperation" href="correspondence.ecore#//PartialEFeatureCorrespondence/setValueB"/>
-        <layoutConstraint xmi:type="notation:Location" xmi:id="_VpWDAaqIEeO0Y_Bm6YU6sw"/>
-      </children>
       <styles xmi:type="notation:DrawerStyle" xmi:id="_VpUN0aqIEeO0Y_Bm6YU6sw"/>
       <styles xmi:type="notation:SortingStyle" xmi:id="_VpUN0qqIEeO0Y_Bm6YU6sw"/>
       <styles xmi:type="notation:FilteringStyle" xmi:id="_VpUN06qIEeO0Y_Bm6YU6sw"/>

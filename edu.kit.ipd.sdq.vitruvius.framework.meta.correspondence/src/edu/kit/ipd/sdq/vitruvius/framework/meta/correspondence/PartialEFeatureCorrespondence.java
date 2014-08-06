@@ -20,36 +20,4 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface PartialEFeatureCorrespondence<TValue extends Object> extends EObject {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model kind="operation" required="true"
-	 * @generated
-	 */
-	TValue getValueA();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model valueARequired="true"
-	 * @generated
-	 */
-	void setValueA(TValue valueA);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model kind="operation" required="true"
-	 * @generated
-	 */
-	TValue getValueB();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model valueBRequired="true"
-	 * @generated
-	 */
-	void setValueB(TValue valueB);
-
 } // PartialEFeatureCorrespondence

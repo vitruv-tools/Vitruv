@@ -36,7 +36,9 @@ public enum CorrespondenceType implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	BIJECTION(1, "bijection", "bijection"), /**
+	BIJECTION(1, "bijection", "bijection"),
+
+	/**
 	 * The '<em><b>Unidirectional</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -44,7 +46,9 @@ public enum CorrespondenceType implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	UNIDIRECTIONAL(2, "unidirectional", "unidirectional"), /**
+	UNIDIRECTIONAL(2, "unidirectional", "unidirectional"),
+
+	/**
 	 * The '<em><b>Constrained</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -52,7 +56,9 @@ public enum CorrespondenceType implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	CONSTRAINED(3, "constrained", "constrained"), /**
+	CONSTRAINED(3, "constrained", "constrained"),
+
+	/**
 	 * The '<em><b>Unknown</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

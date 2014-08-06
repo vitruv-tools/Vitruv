@@ -17,12 +17,8 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Metaclass for cases where an Object corresponds to another Object of the same metatype (i.e. both objects are either complex-typed EObjects or simple-typed EJavaObjects).&#xA;ElementA and elementB usually point to instances of different metaclasses but their common type T is not a problem as T will never be used more strictly than for the metatype."/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="elementA" lowerBound="1"
-        eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementATUID" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="elementB" lowerBound="1"
-        eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementBTUID" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
@@ -66,22 +62,6 @@
     <eTypeParameters name="TValue">
       <eBounds eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
     </eTypeParameters>
-    <eOperations name="getValueA" lowerBound="1">
-      <eGenericType eTypeParameter="#//PartialEFeatureCorrespondence/TValue"/>
-    </eOperations>
-    <eOperations name="setValueA" lowerBound="1">
-      <eParameters name="valueA" lowerBound="1">
-        <eGenericType eTypeParameter="#//PartialEFeatureCorrespondence/TValue"/>
-      </eParameters>
-    </eOperations>
-    <eOperations name="getValueB" lowerBound="1">
-      <eGenericType eTypeParameter="#//PartialEFeatureCorrespondence/TValue"/>
-    </eOperations>
-    <eOperations name="setValueB" lowerBound="1">
-      <eParameters name="valueB" lowerBound="1">
-        <eGenericType eTypeParameter="#//PartialEFeatureCorrespondence/TValue"/>
-      </eParameters>
-    </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PartialEAttributeCorrespondence">
     <eTypeParameters name="TValue">
@@ -102,14 +82,8 @@
     <eTypeParameters name="TValue">
       <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     </eTypeParameters>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="valueA" lowerBound="1">
-      <eGenericType eTypeParameter="#//PartialEReferenceCorrespondence/TValue"/>
-    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueATUID" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="valueB" lowerBound="1">
-      <eGenericType eTypeParameter="#//PartialEReferenceCorrespondence/TValue"/>
-    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueBTUID" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eGenericSuperTypes eClassifier="#//PartialEFeatureCorrespondence">
