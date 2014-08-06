@@ -4,8 +4,7 @@ Bundle-Name: Test for Transformations
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.test.casestudies.pcmjava.transformations
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations;bundle-version="1.0.0",
- org.junit,
+Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.framework.meta.change;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence;bundle-version="1.0.0",
@@ -20,5 +19,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations;bu
  org.eclipse.emf.common,
  org.emftext.language.java.resource.java,
  org.emftext.commons.antlr3_4_0;bundle-version="3.4.0",
- edu.kit.ipd.sdq.vitruvius.framework.vsum
+ edu.kit.ipd.sdq.vitruvius.framework.vsum,
+ edu.kit.ipd.sdq.vitruvius.framework.transformationexecuter,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations;bundle-version="1.0.0"
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver
