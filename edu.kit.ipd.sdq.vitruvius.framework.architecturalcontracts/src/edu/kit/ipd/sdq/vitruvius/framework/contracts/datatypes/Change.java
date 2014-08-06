@@ -1,11 +1,10 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
 /**
- * base class for all changes
+ * base interface for all changes
  * 
  * @author Langhamm, Kramerm
  * 
  */
-public class Change {
-
+public abstract class Change {
 }
