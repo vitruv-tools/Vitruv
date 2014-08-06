@@ -6,7 +6,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.SyncTransformation;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.TransformationExecuting;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.TransformationExecutingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EclipseBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableHashMap;
@@ -28,14 +28,14 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.Pair;
 
 public class TransformationExecutingProvidingImpl implements TransformationExecutingProviding {
 
-    private ClaimableMap<Pair<VURI, VURI>, TransformationExecuting> transformationExecuterMap;
+    private ClaimableMap<Pair<VURI, VURI>, EMFModelTransformationExecuting> transformationExecuterMap;
 
     public TransformationExecutingProvidingImpl() {
-        this.transformationExecuterMap = new ClaimableHashMap<Pair<VURI, VURI>, TransformationExecuting>();
-        List<TransformationExecuting> transformationExecutingList = EclipseBridge.getRegisteredExtensions(
-                TransformationExecuting.ID, VitruviusConstants.getExtensionPropertyName(),
-                TransformationExecuting.class);
-        for (final TransformationExecuting transformationExecuting : transformationExecutingList) {
+        this.transformationExecuterMap = new ClaimableHashMap<Pair<VURI, VURI>, EMFModelTransformationExecuting>();
+        List<EMFModelTransformationExecuting> transformationExecutingList = EclipseBridge.getRegisteredExtensions(
+                EMFModelTransformationExecuting.ID, VitruviusConstants.getExtensionPropertyName(),
+                EMFModelTransformationExecuting.class);
+        for (final EMFModelTransformationExecuting transformationExecuting : transformationExecutingList) {
             // TODO if third party extensions are used call all extensions in protected mode
             // EclipseBridge.callInProtectedMode(callable);
             List<Pair<VURI, VURI>> transformableMetamodels = transformationExecuting.getTransformableMetamodels();
@@ -51,7 +51,7 @@ public class TransformationExecutingProvidingImpl implements TransformationExecu
     }
 
     @Override
-    public TransformationExecuting getTransformationExecuting(final VURI mmURI1, final VURI mmURI2) {
+    public EMFModelTransformationExecuting getTransformationExecuting(final VURI mmURI1, final VURI mmURI2) {
         Pair<VURI, VURI> vuriPair = new Pair<VURI, VURI>(mmURI1, mmURI2);
         return this.transformationExecuterMap.claimValueForKey(vuriPair);
     }

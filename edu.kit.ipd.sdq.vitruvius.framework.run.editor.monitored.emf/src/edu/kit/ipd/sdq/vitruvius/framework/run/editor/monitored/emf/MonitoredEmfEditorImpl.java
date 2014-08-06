@@ -65,7 +65,7 @@ public class MonitoredEmfEditorImpl extends AbstractMonitoredEditor implements I
             return;
         }
         final List<Change> changes = this.emfMonitorAdapter.getChanges().get(vuri);
-        this.changeSynchronizing.synchronizeChanges(changes, vuri);
+        this.changeSynchronizing.synchronizeChanges(changes);
         this.emfMonitorAdapter.removeChanges(vuri);
 
     }

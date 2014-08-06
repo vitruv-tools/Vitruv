@@ -39,7 +39,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emf.MonitoredEmfEditorImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine.PropagationEngineImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine.EMFModelPropagationEngineImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager.SyncManagerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.TransformationExecutingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
@@ -78,7 +78,7 @@ public class SynchronisationTest extends VSUMTest {
         MetaRepositoryImpl metaRepository = PCMJavaUtils.createPCMJavaMetarepository();
         VSUMImpl vsum = testVSUMCreation(metaRepository);
         final TransformationExecutingProvidingImpl syncTransformationProvider = new TransformationExecutingProvidingImpl();
-        final PropagationEngineImpl propagatingChange = new PropagationEngineImpl(syncTransformationProvider);
+        final EMFModelPropagationEngineImpl propagatingChange = new EMFModelPropagationEngineImpl(syncTransformationProvider);
         this.syncManager = new SyncManagerImpl(vsum, propagatingChange, vsum, metaRepository, vsum);
         this.monitor = new MonitoredEmfEditorImpl(this.syncManager, this.syncManager.getModelProviding());
 
@@ -89,7 +89,7 @@ public class SynchronisationTest extends VSUMTest {
 
         ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-        .put("repository", new PcmResourceFactoryImpl());
+                .put("repository", new PcmResourceFactoryImpl());
         Resource resource = resourceSet.createResource(this.sourceModelURI.getEMFUri());
         if (null == resource) {
             fail("Could not create resource with URI: " + this.sourceModelURI);
@@ -238,7 +238,7 @@ public class SynchronisationTest extends VSUMTest {
      * @throws IllegalArgumentException
      */
     private void addContentAdapter(final EObject eObject) throws SecurityException, NoSuchFieldException,
-    IllegalArgumentException, IllegalAccessException {
+            IllegalArgumentException, IllegalAccessException {
         Field f = this.monitor.getClass().getDeclaredField("emfMonitorAdapter");
         f.setAccessible(true);
         EContentAdapter contentAdapter = (EContentAdapter) f.get(this.monitor);
@@ -250,9 +250,9 @@ public class SynchronisationTest extends VSUMTest {
      * repository model
      */
     private void createAndSyncFileChange(final VURI vuri) {
-        FileChange fileChange = new FileChange(FileChangeKind.CREATE);
+        FileChange fileChange = new FileChange(FileChangeKind.CREATE, vuri);
         List<Change> changes = new ArrayList<Change>(1);
         changes.add(fileChange);
-        this.syncManager.synchronizeChanges(changes, vuri);
+        this.syncManager.synchronizeChanges(changes);
     }
 }

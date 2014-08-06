@@ -5,27 +5,27 @@ import org.apache.log4j.Logger;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePropagating;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.TransformationExecuting;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.TransformationExecutingProviding;
 
-public class PropagationEngineImpl implements ChangePropagating {
+public class EMFModelPropagationEngineImpl implements ChangePropagating {
 
-    private static final Logger logger = Logger.getLogger(PropagationEngineImpl.class.getSimpleName());
+    private static final Logger logger = Logger.getLogger(EMFModelPropagationEngineImpl.class.getSimpleName());
 
     private final TransformationExecutingProviding transformationExecutingProviding;
 
-    public PropagationEngineImpl(final TransformationExecutingProviding syncTransformationProviding) {
+    public EMFModelPropagationEngineImpl(final TransformationExecutingProviding syncTransformationProviding) {
         this.transformationExecutingProviding = syncTransformationProviding;
     }
 
     @Override
-    public ChangeResult propagateChange(final Change change, final ModelInstance sourceModel,
-            final CorrespondenceInstance correspondenceInstance) {
-        TransformationExecuting transformationExecuting = this.transformationExecutingProviding
+    public ChangeResult propagateChange(final Change change, final CorrespondenceInstance correspondenceInstance) {
+        EMFModelTransformationExecuting transformationExecuting = this.transformationExecutingProviding
                 .getTransformationExecuting(correspondenceInstance.getMapping().getMetamodelA().getURI(),
                         correspondenceInstance.getMapping().getMetamodelB().getURI());
-        return transformationExecuting.executeTransformation(change, sourceModel, correspondenceInstance);
+        EMFModelChange emfModelChange = (EMFModelChange) change;
+        return transformationExecuting.executeTransformation(emfModelChange, correspondenceInstance);
     }
 }

@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
@@ -52,20 +53,25 @@ public class SyncManagerImpl implements ChangeSynchronizing {
     }
 
     @Override
-    public void synchronizeChanges(final List<Change> changes, final VURI sourceModelURI) {
+    public void synchronizeChanges(final List<Change> changes) {
         for (Change change : changes) {
-            synchronizeChange(change, sourceModelURI);
+            synchronizeChange(change);
         }
     }
 
     @Override
-    public void synchronizeChange(final Change change, final VURI sourceModelURI) {
+    public void synchronizeChange(final CompositeChange compositeChange) {
+        synchronizeChanges(compositeChange.getChanges());
+    }
+
+    @Override
+    public void synchronizeChange(final Change change) {
         if (!this.changeSynchonizerMap.containsKey(change.getClass())) {
             logger.warn("Could not find ChangeSynchronizer for change " + change.getClass().getSimpleName()
-                    + ". Can not synchronize change in source model " + sourceModelURI.toString() + " not synchroized.");
+                    + ". Can not synchronize change " + change);
         }
         EMFChangeResult emfChangeResult = (EMFChangeResult) this.changeSynchonizerMap.get(change.getClass())
-                .synchronizeChange(change, sourceModelURI);
+                .synchronizeChange(change);
         // TODO: Check invariants:
         // Get invariants from Invariant providing
         // Validate models with Validating

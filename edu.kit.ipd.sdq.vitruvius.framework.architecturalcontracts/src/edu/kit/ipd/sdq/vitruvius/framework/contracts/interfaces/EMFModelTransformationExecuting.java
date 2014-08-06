@@ -2,19 +2,17 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces;
 
 import java.util.List;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.Pair;
 
-public interface TransformationExecuting {
+public interface EMFModelTransformationExecuting {
     /** The extension point ID. **/
     String ID = "edu.kit.ipd.sdq.vitruvius.framework.contracts.transformationexecuting";
 
-    EMFChangeResult executeTransformation(Change change, ModelInstance sourceModel,
-            CorrespondenceInstance correspondenceInstance);
+    EMFChangeResult executeTransformation(EMFModelChange change, CorrespondenceInstance correspondenceInstance);
 
     List<Pair<VURI, VURI>> getTransformableMetamodels();
 }

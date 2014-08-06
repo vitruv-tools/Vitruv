@@ -9,5 +9,5 @@ public interface TransformationExecutingProviding {
     @Deprecated
     public SyncTransformation getSyncTransformation(VURI mmURI1, Change change, VURI mmURI2);
 
-    public TransformationExecuting getTransformationExecuting(VURI mmURI1, VURI mmURI2);
+    public EMFModelTransformationExecuting getTransformationExecuting(VURI mmURI1, VURI mmURI2);
 }

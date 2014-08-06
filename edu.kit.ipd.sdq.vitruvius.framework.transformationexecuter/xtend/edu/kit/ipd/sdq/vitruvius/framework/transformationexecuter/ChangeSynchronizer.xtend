@@ -60,7 +60,11 @@ public class ChangeSynchronizer {
 	def private updateTUID(EChange change) {
 		if(change instanceof EFeatureChange<?>){
 			val EFeatureChange<?> eFeatureChange = change as EFeatureChange<?>
-			correspondenceInstance.update(eFeatureChange.oldAffectedEObject, eFeatureChange.newAffectedEObject)
+			val EObject oldAffectedEObject = eFeatureChange.oldAffectedEObject
+			val EObject newAffectedEObject = eFeatureChange.newAffectedEObject
+			if(null != oldAffectedEObject && null != newAffectedEObject){
+				correspondenceInstance.update(oldAffectedEObject, newAffectedEObject)
+			}			
 		}
 	}
 

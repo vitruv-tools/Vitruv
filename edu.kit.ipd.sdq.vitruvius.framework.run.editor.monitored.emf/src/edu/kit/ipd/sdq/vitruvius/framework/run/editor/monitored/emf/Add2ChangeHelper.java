@@ -9,9 +9,11 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangeFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateNonRootEObject;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.AttributeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
 
 public class Add2ChangeHelper extends Notification2ChangeHelper {
 
@@ -19,26 +21,30 @@ public class Add2ChangeHelper extends Notification2ChangeHelper {
 
     @Override
     void createChangeFromRefernceChangeNotification(final Notification notification, final List<Change> changeList) {
-        final CreateNonRootEObject<Object> createdObject = ChangeFactory.eINSTANCE.createCreateNonRootEObject();
-        createdObject.setChangedEObject((EObject) notification.getNewValue());
+        final CreateNonRootEObjectInList<EObject> createdObject = ContainmentFactory.eINSTANCE
+                .createCreateNonRootEObjectInList();
+        createdObject.setNewValue((EObject) notification.getNewValue());
         // TODO use old value of affectedEObject as affectedEObject
         final EObject affectedEObject = (EObject) notification.getNotifier();
-        createdObject.setAffectedEObject(affectedEObject);
-        createdObject.setNewValue(notification.getNewValue());
+        createdObject.setNewAffectedEObject(affectedEObject);
+        createdObject.setNewValue((EObject) notification.getNewValue());
         createdObject.setAffectedFeature((EReference) notification.getFeature());
-        this.addChangeToList(changeList, createdObject);
+        createdObject.setIndex(notification.getPosition());
+        this.addChangeToList(changeList, createdObject, VURI.getInstance(affectedEObject.eResource()));
     }
 
     @Override
     void createChangeFromAttributeChangeNotification(final Notification notification, final List<Change> changeList) {
         logger.warn("createChangeFromAttributeChangeNotification in Add2ChangeHelper called. "
                 + "Check if the call is correct for notification " + notification);
-        final UpdateEAttribute<Object> updateAttribute = ChangeFactory.eINSTANCE.createUpdateEAttribute();
-        updateAttribute.setAffectedEObject((EObject) notification.getNotifier());
+        final UpdateSingleValuedEAttribute<EObject> updateAttribute = AttributeFactory.eINSTANCE
+                .createUpdateSingleValuedEAttribute();
+        final EObject notifier = (EObject) notification.getNotifier();
+        updateAttribute.setNewAffectedEObject(notifier);
         updateAttribute.setAffectedFeature((EAttribute) notification.getFeature());
-        updateAttribute.setNewValue(notification.getNewValue());
+        updateAttribute.setNewValue((EObject) notification.getNewValue());
 
-        this.addChangeToList(changeList, updateAttribute);
+        this.addChangeToList(changeList, updateAttribute, VURI.getInstance(notifier.eResource()));
     }
 
 }

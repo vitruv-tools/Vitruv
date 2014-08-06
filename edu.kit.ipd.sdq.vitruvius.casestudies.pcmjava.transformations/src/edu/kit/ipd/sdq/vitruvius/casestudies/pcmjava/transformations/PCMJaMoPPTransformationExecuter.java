@@ -12,19 +12,23 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.emftext.language.java.containers.CompilationUnit;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaNamespace;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.InterfaceMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.PackageMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.BasicComponentMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.OperationInterfaceMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.RepositoryMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.TransformationExecuting;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.transformationexecuter.ChangeSynchronizer;
 
-public class PCMJaMoPPTransformationExecuter implements TransformationExecuting {
+public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationExecuting {
 
     private static final Logger logger = Logger.getLogger(PCMJaMoPPTransformationExecuter.class.getSimpleName());
 
@@ -34,6 +38,7 @@ public class PCMJaMoPPTransformationExecuter implements TransformationExecuting 
 
     public PCMJaMoPPTransformationExecuter() {
         this.changeSynchronizer = new ChangeSynchronizer();
+        this.initializeChangeSynchronizer();
         final VURI pcmVURI = VURI.getInstance(PCMJavaNamespace.PCM_METAMODEL_NAMESPACE);
         final VURI jaMoPPVURI = VURI.getInstance(PCMJavaNamespace.JAMOPP_METAMODEL_NAMESPACE);
         final Pair<VURI, VURI> pcm2JaMoPP = new Pair<VURI, VURI>(pcmVURI, jaMoPPVURI);
@@ -43,21 +48,28 @@ public class PCMJaMoPPTransformationExecuter implements TransformationExecuting 
         this.pairList.add(pcm2JaMoPP);
     }
 
+    private void initializeChangeSynchronizer() {
+        this.changeSynchronizer.addMapping(new ClassMappingTransformation());
+        this.changeSynchronizer.addMapping(new InterfaceMappingTransformation());
+        this.changeSynchronizer.addMapping(new PackageMappingTransformation());
+        this.changeSynchronizer.addMapping(new BasicComponentMappingTransformation());
+        this.changeSynchronizer.addMapping(new OperationInterfaceMappingTransformation());
+        this.changeSynchronizer.addMapping(new RepositoryMappingTransformation());
+    }
+
     /**
      * Executes the Java2PCM and PCM2Java transformations and returns the changed VURIs
      *
      * @param change
      *            the occurred change
-     * @param sourceModel
-     *            the source model where the change occurred
      * @param correspondenceInstance
      *            the correspondence model
      * @return set of changed VURIs
      */
     @Override
-    public EMFChangeResult executeTransformation(final Change change, final ModelInstance sourceModel,
+    public EMFChangeResult executeTransformation(final EMFModelChange change,
             final CorrespondenceInstance correspondenceInstance) {
-        final EMFModelChange emfModelChange = (EMFModelChange) change;
+        final EMFModelChange emfModelChange = change;
         this.changeSynchronizer.setCorrespondenceInstance(correspondenceInstance);
 
         // execute actual Transformation
@@ -71,7 +83,7 @@ public class PCMJaMoPPTransformationExecuter implements TransformationExecuting 
         this.handleEObjectsInTransformationChange(transformationChangeResult.getExistingObjectsToSave(),
                 emfChangeResult.getExistingObjectsToSave());
         this.handleNewRootEObjects(transformationChangeResult.getNewRootObjectsToSave(),
-                emfChangeResult.getNewRootObjectsToSave(), sourceModel);
+                emfChangeResult.getNewRootObjectsToSave(), emfModelChange.getURI());
 
         return emfChangeResult;
     }
@@ -82,11 +94,11 @@ public class PCMJaMoPPTransformationExecuter implements TransformationExecuting 
     }
 
     private void handleNewRootEObjects(final Set<EObject> newRootEObjectsToSave,
-            final Set<Pair<EObject, VURI>> newVURIsToSave, final ModelInstance sourceModel) {
+            final Set<Pair<EObject, VURI>> newVURIsToSave, final VURI sourceModelVURI) {
         for (final EObject newRootEObject : newRootEObjectsToSave) {
             if (newRootEObject instanceof CompilationUnit) {
                 final CompilationUnit newCompUnit = (CompilationUnit) newRootEObject;
-                final IFile fileSourceModel = EMFBridge.getIFileForEMFUri(sourceModel.getURI().getEMFUri());
+                final IFile fileSourceModel = EMFBridge.getIFileForEMFUri(sourceModelVURI.getEMFUri());
                 final IProject projectSourceModel = fileSourceModel.getProject();
                 // TODO: use configured src-folder path instead of hardcoded "src"
                 String srcFolderPath = projectSourceModel.getFullPath().toString() + "/src/";

@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.EReference;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 
 abstract class Notification2ChangeHelper {
@@ -35,8 +36,8 @@ abstract class Notification2ChangeHelper {
     abstract void createChangeFromAttributeChangeNotification(final Notification notification,
             final List<Change> changeList);
 
-    protected void addChangeToList(final List<Change> changeList, final EChange eChange) {
-        final EMFModelChange emfModelChange = new EMFModelChange(eChange);
+    protected void addChangeToList(final List<Change> changeList, final EChange eChange, final VURI vuri) {
+        final EMFModelChange emfModelChange = new EMFModelChange(eChange, vuri);
         changeList.add(emfModelChange);
     }
 }

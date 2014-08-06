@@ -19,9 +19,10 @@ import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangeFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateNonRootEObject;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.AttributeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver.TestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPUtils;
 
@@ -54,13 +55,14 @@ public class PCM2JaMoPPTransformationTest extends JaMoPPPCMTransformationTest {
         final Repository repo = PCM2JaMoPPUtils.createAndSyncRepository(resourceSet, changeSynchronizer);
         repo.setEntityName("TestNameChange");
 
-        final UpdateEAttribute<Object> repoNameChange = ChangeFactory.eINSTANCE.createUpdateEAttribute();
-        repoNameChange.setAffectedEObject(repo);
+        final UpdateSingleValuedEAttribute<Object> repoNameChange = AttributeFactory.eINSTANCE
+                .createUpdateSingleValuedEAttribute();
+        repoNameChange.setOldAffectedEObject(repo);
         final EAttribute affectedFeature = (EAttribute) repo.eClass().getEStructuralFeature("entityName");
         repoNameChange.setAffectedFeature(affectedFeature);
         repoNameChange.setNewValue(repo.getEntityName());
         System.out.println(repoNameChange.getNewValue());
-        this.changeSynchronizer.synchronizeChange(repoNameChange);
+        changeSynchronizer.synchronizeChange(repoNameChange);
         TestUtils.moveSrcFilesToPath("testRepositoryNameChange");
     }
 
@@ -88,8 +90,9 @@ public class PCM2JaMoPPTransformationTest extends JaMoPPPCMTransformationTest {
     private void renameInterfaceAndSync(final OperationInterface opInterface) {
 
         final String newValue = "TestRenameInterface";
-        final UpdateEAttribute<Object> renameInterface = ChangeFactory.eINSTANCE.createUpdateEAttribute();
-        renameInterface.setAffectedEObject(opInterface);
+        final UpdateSingleValuedEAttribute<Object> renameInterface = AttributeFactory.eINSTANCE
+                .createUpdateSingleValuedEAttribute();
+        renameInterface.setOldAffectedEObject(opInterface);
         renameInterface.setAffectedFeature((EAttribute) opInterface.eClass().getEStructuralFeature("entityName"));
         renameInterface.setNewValue(newValue);
         final TransformationChangeResult transformationChangeResult = PCM2JaMoPPTransformationTest.changeSynchronizer
@@ -100,10 +103,10 @@ public class PCM2JaMoPPTransformationTest extends JaMoPPPCMTransformationTest {
 
     private BasicComponent addBasicComponent(final Repository repo) {
         final BasicComponent basicComponent = PCM2JaMoPPUtils.createBasicComponent(repo);
-        final CreateNonRootEObject<EObject> createBasicComponentChange = ChangeFactory.eINSTANCE
-                .createCreateNonRootEObject();
-        createBasicComponentChange.setChangedEObject(basicComponent);
-        createBasicComponentChange.setAffectedEObject(repo);
+        final CreateNonRootEObjectInList<EObject> createBasicComponentChange = ContainmentFactory.eINSTANCE
+                .createCreateNonRootEObjectInList();
+        createBasicComponentChange.setNewValue(basicComponent);
+        createBasicComponentChange.setOldAffectedEObject(repo);
         createBasicComponentChange.setAffectedFeature((EReference) repo.eClass().getEStructuralFeature(
                 "components__Repository"));
         createBasicComponentChange.setNewValue(basicComponent);
@@ -116,10 +119,10 @@ public class PCM2JaMoPPTransformationTest extends JaMoPPPCMTransformationTest {
     private OperationInterface addInterfaceToReposiotry(final Repository repo) {
         final OperationInterface opInterface = RepositoryFactory.eINSTANCE.createOperationInterface();
         opInterface.setRepository__Interface(repo);
-        final CreateNonRootEObject<EObject> createInterfaceChange = ChangeFactory.eINSTANCE
-                .createCreateNonRootEObject();
-        createInterfaceChange.setChangedEObject(opInterface);
-        createInterfaceChange.setAffectedEObject(repo);
+        final CreateNonRootEObjectInList<EObject> createInterfaceChange = ContainmentFactory.eINSTANCE
+                .createCreateNonRootEObjectInList();
+        createInterfaceChange.setNewValue(opInterface);
+        createInterfaceChange.setOldAffectedEObject(repo);
         createInterfaceChange.setAffectedFeature((EReference) repo.eClass().getEStructuralFeature(
                 "interfaces__Repository"));
         createInterfaceChange.setNewValue(opInterface);

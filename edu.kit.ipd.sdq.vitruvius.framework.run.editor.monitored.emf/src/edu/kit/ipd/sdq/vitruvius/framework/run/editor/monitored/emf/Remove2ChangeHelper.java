@@ -9,34 +9,39 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangeFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.DeleteNonRootEObject;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.AttributeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.RemoveEAttributeValue;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectInList;
 
 public class Remove2ChangeHelper extends Notification2ChangeHelper {
 
     @Override
     void createChangeFromRefernceChangeNotification(final Notification notification, final List<Change> changeList) {
-        final DeleteNonRootEObject<Object> deleteNonRootEObject = ChangeFactory.eINSTANCE.createDeleteNonRootEObject();
+        final DeleteNonRootEObjectInList<EObject> deleteNonRootEObject = ContainmentFactory.eINSTANCE
+                .createDeleteNonRootEObjectInList();
+        final EObject oldValue = (EObject) notification.getOldValue();
         // set deleted EObject
-        deleteNonRootEObject.setChangedEObject((EObject) notification.getOldValue());
+        deleteNonRootEObject.setOldValue(oldValue);
         // set affected Reference
         final EObject affectedEObject = (EObject) notification.getNotifier();
-        deleteNonRootEObject.setAffectedEObject(affectedEObject);
+        deleteNonRootEObject.setNewAffectedEObject(affectedEObject);
         deleteNonRootEObject.setAffectedFeature((EReference) notification.getFeature());
         final Object newValue = affectedEObject.eGet((EStructuralFeature) notification.getFeature());
-        deleteNonRootEObject.setNewValue(newValue);
-
-        this.addChangeToList(changeList, deleteNonRootEObject);
+        deleteNonRootEObject.setOldValue((EObject) newValue);
+        deleteNonRootEObject.setIndex(notification.getPosition());
+        this.addChangeToList(changeList, deleteNonRootEObject, VURI.getInstance(oldValue.eResource()));
     }
 
     @Override
     void createChangeFromAttributeChangeNotification(final Notification notification, final List<Change> changeList) {
-        final UpdateEAttribute<Object> removeEAttribute = ChangeFactory.eINSTANCE.createUpdateEAttribute();
-        removeEAttribute.setAffectedEObject((EObject) notification.getNotifier());
+        final RemoveEAttributeValue<Object> removeEAttribute = AttributeFactory.eINSTANCE.createRemoveEAttributeValue();
+        final EObject notifier = (EObject) notification.getNotifier();
+        removeEAttribute.setNewAffectedEObject(notifier);
         removeEAttribute.setAffectedFeature((EAttribute) notification.getFeature());
-        removeEAttribute.setNewValue(notification.getNewValue());
-        this.addChangeToList(changeList, removeEAttribute);
+        removeEAttribute.setOldValue(notification.getNewValue());
+        this.addChangeToList(changeList, removeEAttribute, VURI.getInstance(notifier.eResource()));
     }
 
 }

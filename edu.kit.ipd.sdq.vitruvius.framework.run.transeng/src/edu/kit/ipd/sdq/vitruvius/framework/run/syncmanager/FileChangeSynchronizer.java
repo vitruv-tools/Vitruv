@@ -32,12 +32,11 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
      * @param change
      *            The incoming change. It has to be an instanceof {@link FileChange} otherwise a
      *            class cast exception will occur.
-     * @param sourceModelURI
-     *            the model where the change occured
      */
     @Override
-    public ChangeResult synchronizeChange(final Change change, final VURI sourceModelURI) {
+    public ChangeResult synchronizeChange(final Change change) {
         FileChange fileChange = (FileChange) change;
+        VURI sourceModelURI = fileChange.getURI();
         switch (fileChange.getFileChangeKind()) {
         case CREATE:
             return synchronizeFileCreated(sourceModelURI);
@@ -67,8 +66,8 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
         }
         CreateRootEObject<EObject> createRootEObj = ObjectFactory.eINSTANCE.createCreateRootEObject();
         createRootEObj.setNewValue(rootElement);
-        EMFModelChange rootAdd = new EMFModelChange(createRootEObj);
-        return syncChange(rootAdd, sourceModelURI);
+        EMFModelChange rootAdd = new EMFModelChange(createRootEObj, sourceModelURI);
+        return syncChange(rootAdd);
     }
 
     private ChangeResult synchronizeFileDeleted(final VURI sourceModelURI) {
@@ -78,8 +77,8 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
             EObject rootElement = resource.getContents().get(0);
             DeleteRootEObject<EObject> deleteRootObj = ObjectFactory.eINSTANCE.createDeleteRootEObject();
             deleteRootObj.setOldValue(rootElement);
-            EMFModelChange rootDeleted = new EMFModelChange(deleteRootObj);
-            return syncChange(rootDeleted, sourceModelURI);
+            EMFModelChange rootDeleted = new EMFModelChange(deleteRootObj, sourceModelURI);
+            return syncChange(rootDeleted);
         }
         return new EMFChangeResult();
     }

@@ -8,7 +8,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePropagating;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
@@ -30,8 +30,9 @@ class EMFModelSynchronizer extends ConcreteChangeSynchronizer {
     }
 
     @Override
-    public ChangeResult synchronizeChange(final Change change, final VURI sourceModelURI) {
-        ModelInstance sourceModel = this.modelProviding.getModelInstanceOriginal(sourceModelURI);
+    public ChangeResult synchronizeChange(final Change change) {
+        EMFModelChange emfModelChange = (EMFModelChange) change;
+        VURI sourceModelURI = emfModelChange.getURI();
         Set<CorrespondenceInstance> correspondenceInstances = this.correspondenceProviding
                 .getAllCorrespondenceInstances(sourceModelURI);
         if (null == correspondenceInstances || 0 == correspondenceInstances.size()) {
@@ -41,8 +42,7 @@ class EMFModelSynchronizer extends ConcreteChangeSynchronizer {
         }
         EMFChangeResult emfChangeResult = new EMFChangeResult();
         for (CorrespondenceInstance correspondenceInstance : correspondenceInstances) {
-            ChangeResult currentChangeResult = this.changePropagating.propagateChange(change, sourceModel,
-                    correspondenceInstance);
+            ChangeResult currentChangeResult = this.changePropagating.propagateChange(change, correspondenceInstance);
             emfChangeResult.addChangeResult((EMFChangeResult) currentChangeResult);
         }
         return emfChangeResult;

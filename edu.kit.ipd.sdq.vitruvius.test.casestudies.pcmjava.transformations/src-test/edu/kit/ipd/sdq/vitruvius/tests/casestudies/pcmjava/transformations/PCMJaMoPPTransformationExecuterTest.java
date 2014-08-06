@@ -15,8 +15,8 @@ import org.junit.Test;
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
 import de.uka.ipd.sdq.pcm.repository.Repository;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPTransformationExecuter;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.Pair;
@@ -44,9 +44,10 @@ public class PCMJaMoPPTransformationExecuterTest extends JaMoPPPCMTransformation
         final ModelInstance pcmModelInstance = PCM2JaMoPPUtils.createModelInstance(
                 "MockupProject/test/testRepository.repository", resourceSet);
         final BasicComponent basicComponent = PCM2JaMoPPUtils.createBasicComponent(repo);
-        final Change change = PCM2JaMoPPUtils.createCreateChange(basicComponent, repo, "components__Repository");
+        final EMFModelChange change = PCM2JaMoPPUtils.createCreateChange(basicComponent, repo, repo,
+                "components__Repository");
 
-        final EMFChangeResult emfChangeResult = pcmJaMoPPTransformation.executeTransformation(change, pcmModelInstance,
+        final EMFChangeResult emfChangeResult = pcmJaMoPPTransformation.executeTransformation(change,
                 super.correspondenceInstance);
         logger.info("changed VURIs: " + emfChangeResult);
 

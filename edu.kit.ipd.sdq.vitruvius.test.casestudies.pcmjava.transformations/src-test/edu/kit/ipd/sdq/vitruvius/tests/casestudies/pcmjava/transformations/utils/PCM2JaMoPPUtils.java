@@ -11,8 +11,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
 import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ChangeSynchronizer;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
@@ -21,9 +19,11 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.Pair;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangeFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateNonRootEObject;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ObjectFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.transformationexecuter.ChangeSynchronizer;
 
 public class PCM2JaMoPPUtils {
     private PCM2JaMoPPUtils() {
@@ -35,8 +35,8 @@ public class PCM2JaMoPPUtils {
         final Resource resource = resourceSet.createResource(repoVURI.getEMFUri());
         final Repository repo = RepositoryFactory.eINSTANCE.createRepository();
         resource.getContents().add(repo);
-        final CreateRootEObject createRootEObj = ChangeFactory.eINSTANCE.createCreateRootEObject();
-        createRootEObj.setChangedEObject(repo);
+        final CreateRootEObject<EObject> createRootEObj = ObjectFactory.eINSTANCE.createCreateRootEObject();
+        createRootEObj.setNewValue(repo);
         changeSynchronizer.synchronizeChange(createRootEObj);
         return repo;
     }
@@ -66,14 +66,17 @@ public class PCM2JaMoPPUtils {
         return modelInstance;
     }
 
-    public static Change createCreateChange(final EObject changedEObject, final EObject affectedEObject,
-            final String featureName) {
-        final CreateNonRootEObject<EObject> createChange = ChangeFactory.eINSTANCE.createCreateNonRootEObject();
-        createChange.setChangedEObject(changedEObject);
-        createChange.setAffectedEObject(affectedEObject);
-        createChange.setAffectedFeature(getEReferenceByName(affectedEObject, featureName));
+    public static EMFModelChange createCreateChange(final EObject changedEObject, final EObject newAffectedEObject,
+            final EObject oldAffectedEObject, final String featureName) {
+        final CreateNonRootEObjectInList<EObject> createChange = ContainmentFactory.eINSTANCE
+                .createCreateNonRootEObjectInList();
         createChange.setNewValue(changedEObject);
-        final EMFModelChange emfModelChange = new EMFModelChange(createChange);
+        createChange.setNewAffectedEObject(newAffectedEObject);
+        createChange.setOldAffectedEObject(oldAffectedEObject);
+        createChange.setAffectedFeature(getEReferenceByName(newAffectedEObject, featureName));
+        createChange.setNewValue(changedEObject);
+        final EMFModelChange emfModelChange = new EMFModelChange(createChange, VURI.getInstance(oldAffectedEObject
+                .eResource()));
         return emfModelChange;
     }
 
