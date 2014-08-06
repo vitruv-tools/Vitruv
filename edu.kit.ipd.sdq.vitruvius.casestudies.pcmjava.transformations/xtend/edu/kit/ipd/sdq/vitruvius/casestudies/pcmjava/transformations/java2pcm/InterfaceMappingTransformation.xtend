@@ -10,7 +10,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMUt
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
-import edu.kit.ipd.sdq.vitruvius.framework.transformationexecuter.TransformationUtils
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.Set
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
@@ -86,26 +86,15 @@ class InterfaceMappingTransformation extends JaMoPPPCMMappingTransformationBase 
 		if(newCorrespondingEObjects.nullOrEmpty){
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
-		val opInterface = newCorrespondingEObjects.get(0)
-		val jaMoPPInterface = newValue as Interface
-		val parentCorrespondences = correspondenceInstance.getAllCorrespondences(newValue)
+		val parentCorrespondences = correspondenceInstance.getAllCorrespondences(affectedEObject)
 		var Correspondence parentCorrespondence = null
 		if(null != parentCorrespondences){
 			parentCorrespondence = parentCorrespondences.iterator.next
 		}
-		var EObjectCorrespondence interface2opInterfaceCorrespondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-		interface2opInterfaceCorrespondence.setElementA(opInterface)
-		interface2opInterfaceCorrespondence.setElementB(jaMoPPInterface)
-		interface2opInterfaceCorrespondence.setParent(parentCorrespondence)
-		var EObjectCorrespondence compilationUnit2opInterfaceCorrespondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-		compilationUnit2opInterfaceCorrespondence.setElementA(opInterface)
-		compilationUnit2opInterfaceCorrespondence.setElementB(jaMoPPInterface.containingCompilationUnit)
-		compilationUnit2opInterfaceCorrespondence.setParent(parentCorrespondence)
-		interface2opInterfaceCorrespondence.dependentCorrespondences.add(compilationUnit2opInterfaceCorrespondence)
-		compilationUnit2opInterfaceCorrespondence.dependentCorrespondences.add(interface2opInterfaceCorrespondence)
-		correspondenceInstance.addSameTypeCorrespondence(compilationUnit2opInterfaceCorrespondence)
-		correspondenceInstance.addSameTypeCorrespondence(interface2opInterfaceCorrespondence)
-		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(opInterface.toArray())
+		for(eObject : newCorrespondingEObjects){
+			correspondenceInstance.addSameTypeCorrespondence(newValue, eObject, parentCorrespondence);
+		}
+		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(newCorrespondingEObjects)
 	}
 	
 	/**

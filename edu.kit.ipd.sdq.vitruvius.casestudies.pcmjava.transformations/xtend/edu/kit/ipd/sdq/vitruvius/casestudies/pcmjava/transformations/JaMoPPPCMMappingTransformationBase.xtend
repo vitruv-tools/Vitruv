@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations
 
-import edu.kit.ipd.sdq.vitruvius.framework.transformationexecuter.EObjectMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EObjectMappingTransformation
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EAttribute

@@ -4,10 +4,7 @@ import de.uka.ipd.sdq.pcm.repository.Repository
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMMappingTransformationBase
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMNamespace
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
-import edu.kit.ipd.sdq.vitruvius.framework.transformationexecuter.TransformationUtils
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
@@ -46,10 +43,7 @@ class RepositoryMappingTransformation extends JaMoPPPCMMappingTransformationBase
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
 		for(correspondingEObject : newCorrespondingEObjects){
-			val EObjectCorrespondence eObjectCorrespondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-			eObjectCorrespondence.setElementA(newRootEObject)
-			eObjectCorrespondence.setElementB(correspondingEObject)
-			correspondenceInstance.addSameTypeCorrespondence(eObjectCorrespondence)	
+			correspondenceInstance.addSameTypeCorrespondence(newRootEObject, correspondingEObject)
 		}
 		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(newCorrespondingEObjects)
 	}
@@ -83,8 +77,12 @@ class RepositoryMappingTransformation extends JaMoPPPCMMappingTransformationBase
 	}
 	
 	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
-		logger.warn("method createNonRootEObjectSingle should not be called for " + RepositoryMappingTransformation.simpleName + " transformation")
-		return null
+		val parrentCorrespondence = correspondenceInstance.
+			claimUniqueOrNullCorrespondenceForEObject(affectedEObject);
+		for(jaMoPPElement : newCorrespondingEObjects){
+			correspondenceInstance.addSameTypeCorrespondence(newValue, jaMoPPElement, parrentCorrespondence)
+		}
+		return TransformationUtils.createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects)
 	}
 	
 	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue, EObject[] newCorrespondingEObjects) {

@@ -9,7 +9,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMUt
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
-import edu.kit.ipd.sdq.vitruvius.framework.transformationexecuter.TransformationUtils
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import java.util.HashSet
 import java.util.Set
@@ -104,34 +104,12 @@ class ClassMappingTransformation extends JaMoPPPCMMappingTransformationBase {
 	}
 
 	/**
-	 * called after createEObject is called
-	 * creates the correspondences and returns the TransformationChangeResult object containing the PCM element that should be saved
+	 * called when a child object (e.g. a Method) is added to the class
+	 * Creates the correspondences and returns the TransformationChangeResult object containing the PCM element that should be saved
 	 */	
 	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
-		val newClass = newValue as Class
-		val compilationUnit = newClass.containingCompilationUnit
-		if(newCorrespondingEObjects.nullOrEmpty){
-			//nothing todo --> return emtpy TransformationChangeResult
-			return TransformationUtils.createEmptyTransformationChangeResult
-		}
-		val parentCorrespondences = correspondenceInstance.getAllCorrespondences(newValue)
-		var Correspondence parentCorrespondence = null
-		if(null != parentCorrespondences){
-			parentCorrespondence = parentCorrespondences.iterator.next
-		}
-		val EObjectCorrespondence class2Component = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-		class2Component.setElementA(newCorrespondingEObjects.get(0))
-		class2Component.setElementB(newClass) 
-		class2Component.setParent(parentCorrespondence)
-		val EObjectCorrespondence compilationUnit2Component = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-		compilationUnit2Component.setElementA(newCorrespondingEObjects.get(0))
-		compilationUnit2Component.setElementB(compilationUnit)
-		compilationUnit2Component.setParent(parentCorrespondence)
-		compilationUnit2Component.dependentCorrespondences.add(class2Component)
-		class2Component.dependentCorrespondences.add(compilationUnit2Component)
-		correspondenceInstance.addSameTypeCorrespondence(class2Component)
-		correspondenceInstance.addSameTypeCorrespondence(compilationUnit2Component)
-		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(newCorrespondingEObjects)
+		//TODO: implement code here
+		return null
 	}
 
 	

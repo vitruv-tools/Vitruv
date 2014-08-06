@@ -4,21 +4,20 @@ import de.uka.ipd.sdq.pcm.repository.OperationInterface
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMMappingTransformationBase
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMNamespace
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
-import edu.kit.ipd.sdq.vitruvius.framework.transformationexecuter.TransformationUtils
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
+import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.classifiers.ClassifiersFactory
 import org.emftext.language.java.classifiers.Interface
 import org.emftext.language.java.containers.CompilationUnit
 import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.Package
-import org.apache.log4j.Logger
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
 
 class OperationInterfaceMappingTransformation extends JaMoPPPCMMappingTransformationBase {
 
@@ -56,18 +55,7 @@ class OperationInterfaceMappingTransformation extends JaMoPPPCMMappingTransforma
 	}
 
 	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
-		//add new correspondence to correspondenceInstance
-		val operationInterface = newValue as OperationInterface
-		val parrentCorrespondence = correspondenceInstance.
-			claimUniqueOrNullCorrespondenceForEObject(operationInterface.repository__Interface);
-		for(correspondingEObject : newCorrespondingEObjects){
-			val EObjectCorrespondence eObjectCorrespondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-			eObjectCorrespondence.setElementA(operationInterface)
-			eObjectCorrespondence.setElementB(correspondingEObject)
-			eObjectCorrespondence.setParent(parrentCorrespondence)
-			correspondenceInstance.addSameTypeCorrespondence(eObjectCorrespondence)			
-		}
-		return TransformationUtils.createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects)
+		return null;
 	}
 
 	override removeEObject(EObject eObject) {

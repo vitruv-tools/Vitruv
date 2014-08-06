@@ -7,7 +7,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMMa
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
-import edu.kit.ipd.sdq.vitruvius.framework.transformationexecuter.TransformationUtils
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
@@ -85,11 +85,7 @@ class PackageMappingTransformation extends JaMoPPPCMMappingTransformationBase {
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
 		for(pcmElement : newCorrespondingEObjects){
-			var EObjectCorrespondence eObjectCorrespondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-			eObjectCorrespondence.setElementA(pcmElement)
-			eObjectCorrespondence.setElementB(newRootEObject)
-			eObjectCorrespondence.setParent(correspondenceInstance.claimUniqueOrNullCorrespondenceForEObject(repository))
-			correspondenceInstance.addSameTypeCorrespondence(eObjectCorrespondence)
+			correspondenceInstance.addSameTypeCorrespondence(pcmElement, newRootEObject)
 		}
 		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(newCorrespondingEObjects)
 	}

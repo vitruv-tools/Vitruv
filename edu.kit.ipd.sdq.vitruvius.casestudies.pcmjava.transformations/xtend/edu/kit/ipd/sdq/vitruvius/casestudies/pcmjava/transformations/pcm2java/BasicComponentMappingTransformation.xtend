@@ -8,7 +8,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationCha
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
-import edu.kit.ipd.sdq.vitruvius.framework.transformationexecuter.TransformationUtils
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
@@ -69,11 +69,7 @@ class BasicComponentMappingTransformation extends JaMoPPPCMMappingTransformation
 		val Correspondence parentCorrespondence = correspondenceInstance.claimUniqueOrNullCorrespondenceForEObject(rootPackage)
 
 		for(jaMoPPElement : newCorrespondingEObjects){
-			val EObjectCorrespondence basicComponent2Package = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-			basicComponent2Package.setElementA(basicComponent)
-			basicComponent2Package.setElementB(jaMoPPElement)
-			basicComponent2Package.setParent(parentCorrespondence)
-			correspondenceInstance.addSameTypeCorrespondence(basicComponent2Package)
+			correspondenceInstance.addSameTypeCorrespondence(basicComponent, jaMoPPElement, parentCorrespondence)
 		}
 		return TransformationUtils.createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects)
 	}
