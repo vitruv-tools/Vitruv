@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.tests.mockup;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -12,23 +13,23 @@ public class TUIDTest {
     @Test
     public void test() {
         String sep = VitruviusConstants.getTUIDSegmentSeperator();
-        // 1: p#s -> p2#s --> p2#s2 -----> q#s2
-        // 2: p#s#c.i -> p2#s#c.i --> p2#s2#c.i ----> p2#s2#ci -----> q#s2#ci
-        // 3: p#t#d -> p2#t#d -----> q#t#d
-        // !!! 4: q#t#e#a ---> q#u#e#a ------> q#u#e#a
-        // 5: q#u#f ------> r#u#f
-        // 6: q#u#e ------> r#u#e
-        // 7: p#s#c.i#a -> p2#s#c.i#a --> p2#s2#c.i#a ----> p2#s2#ci#a -----> q#s2#ci#a
-        // 8: p#t -> p2#t -----> q#t
+        // 1: p#s ..... -> p2#s ..... 2-> p2#s2 .............................. 5-> q#s2
+        // 2: p#s#c.i . -> p2#s#c.i . 2-> p2#s2#c.i ........... 4-> p2#s2#ci.. 5-> q#s2#ci
+        // 3: p#t#d ... -> p2#t#d ............................................ 5-> q#t#d
+        // 4: q#t#e#a ............................. 3-> q#u#e#a ....................... 6-> r#u#e#a
+        // 5: q#u#f ................................................................... 6-> r#u#f
+        // 6: q#u#e ................................................................... 6-> r#u#e
+        // 7: p#s#c.i#a -> p2#s#c.i#a 2-> p2#s2#c.i#a ......... 4-> p2#s2#ci#a 5-> q#s2#ci#a
+        // 8: p#t ..... -> p2#t .............................................. 5-> q#t
         // 9: r
         // legend:
         // -> = after first operation (rename folder p to p2)
-        // --> = after second operation (rename folder s to s2)
-        // ---> after third operation (move folder, package, or file t to existing folder,
+        // 2-> = after second operation (rename folder s to s2)
+        // 3-> after third operation (move folder, package, or file t to existing folder,
         // package, or file u = merge)
-        // ----> after fourth operation (rename package c.i to ci)
-        // -----> after fifth operation (rename folder p2 to q)
-        // ------> after sixth operation (move folder u in q to u in r = no merge)
+        // 4-> after fourth operation (rename package c.i to ci)
+        // 5-> after fifth operation (rename folder p2 to q)
+        // 6-> after sixth operation (move folder u in q to u in r = no merge)
 
         /**************************/
         /** BEGIN INITIALIZATION **/
@@ -63,6 +64,9 @@ public class TUIDTest {
         String s9 = "r";
         TUID tuid9 = TUID.getInstance(s9);
         assertEquals(s9, tuid9.toString());
+        System.out
+                .println("**** BEGIN INITIALIZATION ****\n" + TUID.toStrings() + "\n**** END INITIALIZATION ****\n\n");
+        assertTrue(TUID.validate());
         /************************/
         /** END INITIALIZATION **/
         /************************/
@@ -85,6 +89,9 @@ public class TUIDTest {
         assertEquals(s7r, tuid7.toString());
         String s8r = s1prefixr + sep + "t";
         assertEquals(s8r, tuid8.toString());
+        System.out.println("**** BEGIN FIRST OPERATION ****\n" + TUID.toStrings()
+                + "\n**** END FIRST OPERATION ****\n\n");
+        assertTrue(TUID.validate());
 
         /**********************************************/
         /** second operation (rename folder s to s2) **/
@@ -96,6 +103,9 @@ public class TUIDTest {
         assertEquals(s2rr, tuid2.toString());
         String s7rr = s2rr + sep + "a";
         assertEquals(s7rr, tuid7.toString());
+        System.out.println("**** BEGIN SECOND OPERATION ****\n" + TUID.toStrings()
+                + "\n**** END SECOND OPERATION ****\n\n");
+        assertTrue(TUID.validate());
 
         /***********************************************************/
         /** third operation (move t to existing folder u = merge) **/
@@ -106,6 +116,9 @@ public class TUIDTest {
         String s4rrr = s5prefix + sep + "e" + sep + "a";
         assertEquals(s4rrr, tuid4.toString());
         assertEquals(s5, tuid5.toString());
+        System.out.println("**** BEGIN THIRD OPERATION ****\n" + TUID.toStrings()
+                + "\n**** END THIRD OPERATION ****\n\n\n");
+        assertTrue(TUID.validate());
 
         /*************************************************/
         /** fourth operation (rename package c.i to ci) **/
@@ -115,6 +128,9 @@ public class TUIDTest {
         assertEquals(s2rrrr, tuid2.toString());
         String s7rrrr = s2rrrr + sep + "a";
         assertEquals(s7rrrr, tuid7.toString());
+        System.out.println("**** BEGIN FOURTH OPERATION ****\n" + TUID.toStrings()
+                + "\n**** END FOURTH OPERATION ****\n\n");
+        assertTrue(TUID.validate());
 
         /*********************************************/
         /** fifth operation (rename folder p2 to q) **/
@@ -137,6 +153,10 @@ public class TUIDTest {
         // unchanged TUIDs
         assertEquals(s5, tuid5.toString());
         assertEquals(s6, tuid6.toString());
+        System.out.println("**** BEGIN FIFTH OPERATION ****\n" + TUID.toStrings()
+                + "\n**** END FIFTH OPERATION ****\n\n");
+        assertTrue(TUID.validate());
+
         /***************************************************************/
         /** sixth operation (move folder u in q to u in r = no merge) **/
         /***************************************************************/
@@ -144,6 +164,8 @@ public class TUIDTest {
         String s5prefixrrrrrr = s9 + sep + "u";
         tuid5prefix.moveLastSegment(s5prefixrrrrrr);
         assertEquals(s5prefixrrrrrr, tuid5prefix.toString());
+        String s4rrrrrr = s5prefixrrrrrr + "e" + "a";
+        assertEquals(s4rrrrrr, tuid4.toString());
         String s5rrrrrr = s5prefixrrrrrr + sep + "f";
         assertEquals(s5rrrrrr, tuid5.toString());
         String s6rrrrrr = s5prefixrrrrrr + sep + "e";
@@ -151,5 +173,8 @@ public class TUIDTest {
 
         // unchanged TUID
         assertEquals(s9, tuid9.toString());
+        System.out.println("**** BEGIN SIXTH OPERATION ****\n" + TUID.toStrings()
+                + "\n**** END SIXTH OPERATION ****\n\n");
+        assertTrue(TUID.validate());
     }
 }

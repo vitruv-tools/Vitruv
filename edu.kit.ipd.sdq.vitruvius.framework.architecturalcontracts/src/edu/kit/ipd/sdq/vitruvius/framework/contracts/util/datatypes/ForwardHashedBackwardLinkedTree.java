@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -177,14 +178,18 @@ public class ForwardHashedBackwardLinkedTree<T> {
         segmentToChange.setValue(newSegmentValue);
     }
 
-    public void mergeSegmentIntoAnother(final Segment origin, final Segment destination) {
+    public Collection<Segment> mergeSegmentIntoAnother(final Segment origin, final Segment destination) {
         List<T> originValueList = origin.toValueList();
         List<T> destinationValueList = destination.toValueList();
-        this.recursiveMap.mergeLeafIntoAnother(origin, originValueList, destination, destinationValueList);
+        return this.recursiveMap.mergeLeafIntoAnother(origin, originValueList, destination, destinationValueList);
     }
 
     @Override
     public String toString() {
         return this.recursiveMap.toString();
+    }
+
+    public Collection<Segment> values() {
+        return this.recursiveMap.values();
     }
 }

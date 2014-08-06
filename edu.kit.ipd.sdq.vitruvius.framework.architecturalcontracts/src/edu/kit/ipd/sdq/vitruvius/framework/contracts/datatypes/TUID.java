@@ -1,10 +1,13 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ForwardHashedBackwardLinkedTree;
@@ -112,9 +115,14 @@ public class TUID {
     }
 
     public void moveLastSegment(final TUID fullDestinationTUID) {
-        SEGMENTS.mergeSegmentIntoAnother(this.lastSegment, fullDestinationTUID.lastSegment);
-        // remove the entry for the old last segment
-        // as a result new requests for the common TUID will return the destination TUID object
+        Collection<ForwardHashedBackwardLinkedTree<String>.Segment> obsoleteSegments = SEGMENTS
+                .mergeSegmentIntoAnother(this.lastSegment, fullDestinationTUID.lastSegment);
+        // remove the entry for all old last segments that have the destinationTUID as real prefix
+        // as a result new requests for these TUIDs will return the TUIDs that have the destination
+        // path as pefix
+        for (ForwardHashedBackwardLinkedTree<String>.Segment obsoleteSegment : obsoleteSegments) {
+            LAST_SEGMENT_2_TUID_INSTANCES_MAP.remove(obsoleteSegment);
+        }
         LAST_SEGMENT_2_TUID_INSTANCES_MAP.remove(this.lastSegment);
         this.lastSegment = fullDestinationTUID.lastSegment;
     }
@@ -125,6 +133,30 @@ public class TUID {
     }
 
     public static String toStrings() {
-        return SEGMENTS.toString() + "\n" + LAST_SEGMENT_2_TUID_INSTANCES_MAP.toString();
+        return "TUID segments:\n" + SEGMENTS.toString() + "lastSegment2TUIDMap:\n"
+                + LAST_SEGMENT_2_TUID_INSTANCES_MAP.toString();
+    }
+
+    public static boolean validate() {
+        Set<String> treedTUIDStrings = new HashSet<String>();
+        Collection<ForwardHashedBackwardLinkedTree<String>.Segment> segments = SEGMENTS.values();
+        for (ForwardHashedBackwardLinkedTree<String>.Segment segment : segments) {
+            String tuidString = segment.toString(VitruviusConstants.getTUIDSegmentSeperator());
+            treedTUIDStrings.add(tuidString);
+        }
+        Collection<TUID> tuids = LAST_SEGMENT_2_TUID_INSTANCES_MAP.values();
+        if (treedTUIDStrings.size() != tuids.size()) {
+            throw new IllegalStateException(treedTUIDStrings.size() + " TUIDs are in the segment tree ("
+                    + treedTUIDStrings + ") but " + tuids.size() + " are mapped by their last segments (" + tuids
+                    + ")!");
+        }
+        for (TUID tuid : tuids) {
+            String tuidString = tuid.toString();
+            if (!treedTUIDStrings.contains(tuidString)) {
+                throw new IllegalStateException("The TUID '" + tuidString
+                        + "' is mapped by its last segment but not in the tree!");
+            }
+        }
+        return true;
     }
 }

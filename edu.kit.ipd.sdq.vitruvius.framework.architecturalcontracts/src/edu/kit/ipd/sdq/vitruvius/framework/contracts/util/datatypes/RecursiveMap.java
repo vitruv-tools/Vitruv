@@ -19,7 +19,17 @@ public interface RecursiveMap<K, V> {
 
     void updateLeafKey(V leafValue, List<K> currentKeys, K newLeafKey);
 
-    void mergeLeafIntoAnother(V originLeaf, List<K> originValueList, V destinationLeaf, List<K> destinationValueList);
+    /**
+     * 
+     * @param originLeaf
+     * @param originValueList
+     * @param destinationLeaf
+     * @param destinationValueList
+     * @return all values of the specified map that became obsolete because they existed already in
+     *         this map
+     */
+    Collection<V> mergeLeafIntoAnother(V originLeaf, List<K> originValueList, V destinationLeaf,
+            List<K> destinationValueList);
 
     RecursiveMap<K, V> getNextMap(K key);
 
@@ -30,26 +40,34 @@ public interface RecursiveMap<K, V> {
     Pair<RecursiveMap<K, V>, V> remove(K key);
 
     /**
-     * Adds all entries of the specified map to the next map for the specified key and returns this
-     * next map with old and new entries.
+     * Adds all entries of the specified map to the next map for the specified key and returns all
+     * values of the specified map that became obsolete because they existed already in this map.
      * 
      * @param key
      *            a key for which entries are to be added
      * @param recursiveMap
      *            a recursive maps with entries to be added
-     * @return the next map for the specified key with old and new entries
+     * @return all values of the specified map that became obsolete because they existed already in
+     *         this map
      */
-    RecursiveMap<K, V> addToNextMap(K key, V value, RecursiveMap<K, V> recursiveMap);
+    Collection<V> addToNextMap(K key, V value, RecursiveMap<K, V> recursiveMap);
 
     /**
-     * Adds all entries of the specified map to this map.
+     * Adds all entries of the specified map to this map and returns all values of the specified map
+     * that became obsolete because they existed already in this map.
      * 
      * @param recursiveMap
      *            a recursive maps with entries to be added
+     * @return all values of the specified map that became obsolete because they existed already in
+     *         this map
      */
-    void addToThisMap(V value, RecursiveMap<K, V> recursiveMap);
+    Collection<V> addToThisMap(V lastValue, RecursiveMap<K, V> mapToAdd);
 
     Pair<Set<Entry<K, RecursiveMap<K, V>>>, Set<Entry<K, V>>> entrySets();
 
     Collection<V> leafValues();
+
+    String toString(Integer offset);
+
+    Collection<V> values();
 }
