@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Transformationexecuter
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.transformationexecuter
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.0.0",
@@ -10,5 +10,5 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.
  org.eclipse.xtend.lib,
  com.google.guava,
  org.eclipse.xtext.xbase.lib
-Export-Package: edu.kit.ipd.sdq.vitruvius.framework.transformationexecuter
+Export-Package: edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter
 

@@ -20,6 +20,6 @@ Require-Bundle: org.junit,
  org.emftext.language.java.resource.java,
  org.emftext.commons.antlr3_4_0;bundle-version="3.4.0",
  edu.kit.ipd.sdq.vitruvius.framework.vsum,
- edu.kit.ipd.sdq.vitruvius.framework.transformationexecuter,
+ edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations;bundle-version="1.0.0"
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver

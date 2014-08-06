@@ -95,6 +95,12 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
             final CorrespondenceInstance correspondenceInstance) {
         final EMFChangeResult emfChangeResult = new EMFChangeResult();
         for (final Change change : compositeChange.getChanges()) {
+            // handle CompositeChanges in CompositeChanges
+            if (change instanceof CompositeChange) {
+                emfChangeResult.addChangeResult(this.executeTransformation((EMFModelChange) change,
+                        correspondenceInstance));
+                continue;
+            }
             final EMFChangeResult currentResult = this.executeTransformation((EMFModelChange) change,
                     correspondenceInstance);
             emfChangeResult.addChangeResult(currentResult);

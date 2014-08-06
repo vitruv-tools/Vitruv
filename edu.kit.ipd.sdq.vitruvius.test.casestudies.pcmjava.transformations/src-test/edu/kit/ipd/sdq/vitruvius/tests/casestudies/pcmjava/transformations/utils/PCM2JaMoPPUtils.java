@@ -23,7 +23,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.contain
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ObjectFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.transformationexecuter.ChangeSynchronizer;
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.ChangeSynchronizer;
 
 public class PCM2JaMoPPUtils {
     private PCM2JaMoPPUtils() {

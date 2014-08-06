@@ -50,8 +50,8 @@ public class CompositeChangeSynchronizer extends ConcreteChangeSynchronizer {
 
     /**
      * checks whether a composite Change is valid In our implementation a composite change is valid
-     * iff i) it contains only EMFModelChanges ii) all changes occured in the same source meta model
-     * iii) it contains at least one change
+     * iff i) it contains only EMFModelChanges and CompositeChanges ii) all changes occured in the
+     * same source meta model iii) it contains at least one change
      *
      * @param compositeChange
      */
@@ -63,6 +63,10 @@ public class CompositeChangeSynchronizer extends ConcreteChangeSynchronizer {
         EMFModelChange emfModelChange;
         String fileExtension = null;
         for (Change change : compositeChange.getChanges()) {
+            if (change instanceof CompositeChange) {
+                validateCompositeChange((CompositeChange) change);
+                continue;
+            }
             if (false == change instanceof EMFModelChange) {
                 throw new RuntimeException("composite change is not valid, because the change (" + change
                         + ") is no EMFModelChange.");

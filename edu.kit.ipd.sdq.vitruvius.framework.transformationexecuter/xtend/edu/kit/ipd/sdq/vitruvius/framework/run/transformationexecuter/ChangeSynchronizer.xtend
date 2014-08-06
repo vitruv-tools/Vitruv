@@ -1,10 +1,11 @@
-package edu.kit.ipd.sdq.vitruvius.framework.transformationexecuter
+package edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableHashMap
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableMap
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetContainmentEReference
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetEAttribute
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetEFeature
@@ -31,7 +32,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceRootEObject
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange
 
 public class ChangeSynchronizer { 
 
