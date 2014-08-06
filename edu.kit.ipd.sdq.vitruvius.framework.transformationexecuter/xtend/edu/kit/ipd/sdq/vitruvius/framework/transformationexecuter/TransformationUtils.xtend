@@ -35,7 +35,12 @@ class TransformationUtils {
 		createTransformationChangeResult(null, eObjectsToDelete, null)
 	}
 	
+	def public static TransformationChangeResult createEmptyTransformationChangeResult(){
+		return createTransformationChangeResult(null, null, null)
+	}
+	
 	def public static EAttribute getAttributeByNameFromEObject(String attributeName, EObject eObject) {
 		return eObject.eClass.getEAllAttributes.filter[attribute|attribute.name.equalsIgnoreCase(attributeName)].iterator.next
 	}
+	
 }

@@ -53,6 +53,10 @@ public class TransformationUtils {
     return TransformationUtils.createTransformationChangeResult(null, eObjectsToDelete, null);
   }
   
+  public static TransformationChangeResult createEmptyTransformationChangeResult() {
+    return TransformationUtils.createTransformationChangeResult(null, null, null);
+  }
+  
   public static EAttribute getAttributeByNameFromEObject(final String attributeName, final EObject eObject) {
     EClass _eClass = eObject.eClass();
     EList<EAttribute> _eAllAttributes = _eClass.getEAllAttributes();

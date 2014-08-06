@@ -6,6 +6,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationCha
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableMap;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetContainmentEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetEAttribute;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetEFeature;
@@ -61,7 +62,18 @@ public class ChangeSynchronizer {
   }
   
   public TransformationChangeResult synchronizeChange(final EChange change) {
-    return this.syncChange(change);
+    final TransformationChangeResult transformationChangeResult = this.syncChange(change);
+    this.updateTUID(change);
+    return transformationChangeResult;
+  }
+  
+  private void updateTUID(final EChange change) {
+    if ((change instanceof EFeatureChange<?>)) {
+      final EFeatureChange<?> eFeatureChange = ((EFeatureChange<?>) change);
+      EObject _oldAffectedEObject = eFeatureChange.getOldAffectedEObject();
+      EObject _newAffectedEObject = eFeatureChange.getNewAffectedEObject();
+      this.correspondenceInstance.update(_oldAffectedEObject, _newAffectedEObject);
+    }
   }
   
   private TransformationChangeResult _syncChange(final EChange change) {
@@ -132,22 +144,22 @@ public class ChangeSynchronizer {
       EObject _newValue = createNonRootEObjectInList.getNewValue();
       Class<? extends EObject> _class = _newValue.getClass();
       this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class);
-      EObject _affectedEObject = createNonRootEObjectInList.getAffectedEObject();
-      Class<? extends EObject> _class_1 = _affectedEObject.getClass();
+      EObject _oldAffectedEObject = createNonRootEObjectInList.getOldAffectedEObject();
+      Class<? extends EObject> _class_1 = _oldAffectedEObject.getClass();
       this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_1);
       EObject _newValue_1 = createNonRootEObjectInList.getNewValue();
       Class<? extends EObject> _class_2 = _newValue_1.getClass();
       EObjectMappingTransformation _claimForMappedClassOrImplementingInterface = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_2);
       EObject _newValue_2 = createNonRootEObjectInList.getNewValue();
       final EObject[] createdEObjects = _claimForMappedClassOrImplementingInterface.createEObject(_newValue_2);
-      EObject _affectedEObject_1 = createNonRootEObjectInList.getAffectedEObject();
-      Class<? extends EObject> _class_3 = _affectedEObject_1.getClass();
+      EObject _oldAffectedEObject_1 = createNonRootEObjectInList.getOldAffectedEObject();
+      Class<? extends EObject> _class_3 = _oldAffectedEObject_1.getClass();
       EObjectMappingTransformation _claimForMappedClassOrImplementingInterface_1 = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_3);
-      EObject _affectedEObject_2 = createNonRootEObjectInList.getAffectedEObject();
+      EObject _oldAffectedEObject_2 = createNonRootEObjectInList.getOldAffectedEObject();
       EReference _affectedFeature = createNonRootEObjectInList.getAffectedFeature();
       EObject _newValue_3 = createNonRootEObjectInList.getNewValue();
       int _index = createNonRootEObjectInList.getIndex();
-      _xblockexpression = _claimForMappedClassOrImplementingInterface_1.createNonRootEObjectInList(_affectedEObject_2, _affectedFeature, _newValue_3, _index, createdEObjects);
+      _xblockexpression = _claimForMappedClassOrImplementingInterface_1.createNonRootEObjectInList(_oldAffectedEObject_2, _affectedFeature, _newValue_3, _index, createdEObjects);
     }
     return _xblockexpression;
   }
@@ -158,22 +170,22 @@ public class ChangeSynchronizer {
       EObject _oldValue = deleteNonRootEObjectInList.getOldValue();
       Class<? extends EObject> _class = _oldValue.getClass();
       this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class);
-      EObject _affectedEObject = deleteNonRootEObjectInList.getAffectedEObject();
-      Class<? extends EObject> _class_1 = _affectedEObject.getClass();
+      EObject _oldAffectedEObject = deleteNonRootEObjectInList.getOldAffectedEObject();
+      Class<? extends EObject> _class_1 = _oldAffectedEObject.getClass();
       this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_1);
       EObject _oldValue_1 = deleteNonRootEObjectInList.getOldValue();
       Class<? extends EObject> _class_2 = _oldValue_1.getClass();
       EObjectMappingTransformation _claimForMappedClassOrImplementingInterface = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_2);
       EObject _oldValue_2 = deleteNonRootEObjectInList.getOldValue();
       final EObject[] eObjectsToDelete = _claimForMappedClassOrImplementingInterface.removeEObject(_oldValue_2);
-      EObject _affectedEObject_1 = deleteNonRootEObjectInList.getAffectedEObject();
-      Class<? extends EObject> _class_3 = _affectedEObject_1.getClass();
+      EObject _oldAffectedEObject_1 = deleteNonRootEObjectInList.getOldAffectedEObject();
+      Class<? extends EObject> _class_3 = _oldAffectedEObject_1.getClass();
       EObjectMappingTransformation _claimForMappedClassOrImplementingInterface_1 = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_3);
-      EObject _affectedEObject_2 = deleteNonRootEObjectInList.getAffectedEObject();
+      EObject _oldAffectedEObject_2 = deleteNonRootEObjectInList.getOldAffectedEObject();
       EReference _affectedFeature = deleteNonRootEObjectInList.getAffectedFeature();
       EObject _oldValue_3 = deleteNonRootEObjectInList.getOldValue();
       int _index = deleteNonRootEObjectInList.getIndex();
-      _xblockexpression = _claimForMappedClassOrImplementingInterface_1.deleteNonRootEObjectInList(_affectedEObject_2, _affectedFeature, _oldValue_3, _index, eObjectsToDelete);
+      _xblockexpression = _claimForMappedClassOrImplementingInterface_1.deleteNonRootEObjectInList(_oldAffectedEObject_2, _affectedFeature, _oldValue_3, _index, eObjectsToDelete);
     }
     return _xblockexpression;
   }
@@ -187,28 +199,28 @@ public class ChangeSynchronizer {
       EObject _oldValue = replaceNonRootEObjectInList.getOldValue();
       Class<? extends EObject> _class_1 = _oldValue.getClass();
       this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_1);
-      EObject _affectedEObject = replaceNonRootEObjectInList.getAffectedEObject();
-      Class<? extends EObject> _class_2 = _affectedEObject.getClass();
+      EObject _oldAffectedEObject = replaceNonRootEObjectInList.getOldAffectedEObject();
+      Class<? extends EObject> _class_2 = _oldAffectedEObject.getClass();
       this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_2);
       EObject _oldValue_1 = replaceNonRootEObjectInList.getOldValue();
       Class<? extends EObject> _class_3 = _oldValue_1.getClass();
       EObjectMappingTransformation _claimForMappedClassOrImplementingInterface = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_3);
-      EObject _affectedEObject_1 = replaceNonRootEObjectInList.getAffectedEObject();
-      final EObject[] eObjectsToDelete = _claimForMappedClassOrImplementingInterface.removeEObject(_affectedEObject_1);
+      EObject _oldAffectedEObject_1 = replaceNonRootEObjectInList.getOldAffectedEObject();
+      final EObject[] eObjectsToDelete = _claimForMappedClassOrImplementingInterface.removeEObject(_oldAffectedEObject_1);
       EObject _newValue_1 = replaceNonRootEObjectInList.getNewValue();
       Class<? extends EObject> _class_4 = _newValue_1.getClass();
       EObjectMappingTransformation _claimForMappedClassOrImplementingInterface_1 = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_4);
-      EObject _affectedEObject_2 = replaceNonRootEObjectInList.getAffectedEObject();
-      final EObject[] createdEObjects = _claimForMappedClassOrImplementingInterface_1.createEObject(_affectedEObject_2);
+      EObject _oldAffectedEObject_2 = replaceNonRootEObjectInList.getOldAffectedEObject();
+      final EObject[] createdEObjects = _claimForMappedClassOrImplementingInterface_1.createEObject(_oldAffectedEObject_2);
       EObject _newValue_2 = replaceNonRootEObjectInList.getNewValue();
       Class<? extends EObject> _class_5 = _newValue_2.getClass();
       EObjectMappingTransformation _claimForMappedClassOrImplementingInterface_2 = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_5);
-      EObject _affectedEObject_3 = replaceNonRootEObjectInList.getAffectedEObject();
+      EObject _oldAffectedEObject_3 = replaceNonRootEObjectInList.getOldAffectedEObject();
       EReference _affectedFeature = replaceNonRootEObjectInList.getAffectedFeature();
       EObject _oldValue_2 = replaceNonRootEObjectInList.getOldValue();
       EObject _newValue_3 = replaceNonRootEObjectInList.getNewValue();
       int _index = replaceNonRootEObjectInList.getIndex();
-      _xblockexpression = _claimForMappedClassOrImplementingInterface_2.replaceNonRootEObjectInList(_affectedEObject_3, _affectedFeature, _oldValue_2, _newValue_3, _index, eObjectsToDelete, createdEObjects);
+      _xblockexpression = _claimForMappedClassOrImplementingInterface_2.replaceNonRootEObjectInList(_oldAffectedEObject_3, _affectedFeature, _oldValue_2, _newValue_3, _index, eObjectsToDelete, createdEObjects);
     }
     return _xblockexpression;
   }
@@ -219,21 +231,21 @@ public class ChangeSynchronizer {
       EObject _newValue = createNonRootEObjectSingle.getNewValue();
       Class<? extends EObject> _class = _newValue.getClass();
       this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class);
-      EObject _affectedEObject = createNonRootEObjectSingle.getAffectedEObject();
-      Class<? extends EObject> _class_1 = _affectedEObject.getClass();
+      EObject _oldAffectedEObject = createNonRootEObjectSingle.getOldAffectedEObject();
+      Class<? extends EObject> _class_1 = _oldAffectedEObject.getClass();
       this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_1);
       EObject _newValue_1 = createNonRootEObjectSingle.getNewValue();
       Class<? extends EObject> _class_2 = _newValue_1.getClass();
       EObjectMappingTransformation _claimForMappedClassOrImplementingInterface = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_2);
       EObject _newValue_2 = createNonRootEObjectSingle.getNewValue();
       final EObject[] createdEObjects = _claimForMappedClassOrImplementingInterface.createEObject(_newValue_2);
-      EObject _affectedEObject_1 = createNonRootEObjectSingle.getAffectedEObject();
-      Class<? extends EObject> _class_3 = _affectedEObject_1.getClass();
+      EObject _oldAffectedEObject_1 = createNonRootEObjectSingle.getOldAffectedEObject();
+      Class<? extends EObject> _class_3 = _oldAffectedEObject_1.getClass();
       EObjectMappingTransformation _claimForMappedClassOrImplementingInterface_1 = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_3);
-      EObject _affectedEObject_2 = createNonRootEObjectSingle.getAffectedEObject();
+      EObject _oldAffectedEObject_2 = createNonRootEObjectSingle.getOldAffectedEObject();
       EReference _affectedFeature = createNonRootEObjectSingle.getAffectedFeature();
       EObject _newValue_3 = createNonRootEObjectSingle.getNewValue();
-      _xblockexpression = _claimForMappedClassOrImplementingInterface_1.createNonRootEObjectSingle(_affectedEObject_2, _affectedFeature, _newValue_3, createdEObjects);
+      _xblockexpression = _claimForMappedClassOrImplementingInterface_1.createNonRootEObjectSingle(_oldAffectedEObject_2, _affectedFeature, _newValue_3, createdEObjects);
     }
     return _xblockexpression;
   }
@@ -244,21 +256,21 @@ public class ChangeSynchronizer {
       EObject _oldValue = deleteNonRootEObjectSingle.getOldValue();
       Class<? extends EObject> _class = _oldValue.getClass();
       this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class);
-      EObject _affectedEObject = deleteNonRootEObjectSingle.getAffectedEObject();
-      Class<? extends EObject> _class_1 = _affectedEObject.getClass();
+      EObject _oldAffectedEObject = deleteNonRootEObjectSingle.getOldAffectedEObject();
+      Class<? extends EObject> _class_1 = _oldAffectedEObject.getClass();
       this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_1);
       EObject _oldValue_1 = deleteNonRootEObjectSingle.getOldValue();
       Class<? extends EObject> _class_2 = _oldValue_1.getClass();
       EObjectMappingTransformation _claimForMappedClassOrImplementingInterface = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_2);
       EObject _oldValue_2 = deleteNonRootEObjectSingle.getOldValue();
       final EObject[] eObjectsToDelete = _claimForMappedClassOrImplementingInterface.removeEObject(_oldValue_2);
-      EObject _affectedEObject_1 = deleteNonRootEObjectSingle.getAffectedEObject();
-      Class<? extends EObject> _class_3 = _affectedEObject_1.getClass();
+      EObject _oldAffectedEObject_1 = deleteNonRootEObjectSingle.getOldAffectedEObject();
+      Class<? extends EObject> _class_3 = _oldAffectedEObject_1.getClass();
       EObjectMappingTransformation _claimForMappedClassOrImplementingInterface_1 = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_3);
-      EObject _affectedEObject_2 = deleteNonRootEObjectSingle.getAffectedEObject();
+      EObject _oldAffectedEObject_2 = deleteNonRootEObjectSingle.getOldAffectedEObject();
       EReference _affectedFeature = deleteNonRootEObjectSingle.getAffectedFeature();
       EObject _oldValue_3 = deleteNonRootEObjectSingle.getOldValue();
-      _xblockexpression = _claimForMappedClassOrImplementingInterface_1.deleteNonRootEObjectSingle(_affectedEObject_2, _affectedFeature, _oldValue_3, eObjectsToDelete);
+      _xblockexpression = _claimForMappedClassOrImplementingInterface_1.deleteNonRootEObjectSingle(_oldAffectedEObject_2, _affectedFeature, _oldValue_3, eObjectsToDelete);
     }
     return _xblockexpression;
   }
@@ -272,169 +284,169 @@ public class ChangeSynchronizer {
       EObject _oldValue = replaceNonRootEObjectSingle.getOldValue();
       Class<? extends EObject> _class_1 = _oldValue.getClass();
       this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_1);
-      EObject _affectedEObject = replaceNonRootEObjectSingle.getAffectedEObject();
-      Class<? extends EObject> _class_2 = _affectedEObject.getClass();
+      EObject _oldAffectedEObject = replaceNonRootEObjectSingle.getOldAffectedEObject();
+      Class<? extends EObject> _class_2 = _oldAffectedEObject.getClass();
       this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_2);
       EObject _oldValue_1 = replaceNonRootEObjectSingle.getOldValue();
       Class<? extends EObject> _class_3 = _oldValue_1.getClass();
       EObjectMappingTransformation _claimForMappedClassOrImplementingInterface = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_3);
-      EObject _affectedEObject_1 = replaceNonRootEObjectSingle.getAffectedEObject();
-      final EObject[] createdEObjects = _claimForMappedClassOrImplementingInterface.removeEObject(_affectedEObject_1);
+      EObject _oldAffectedEObject_1 = replaceNonRootEObjectSingle.getOldAffectedEObject();
+      final EObject[] createdEObjects = _claimForMappedClassOrImplementingInterface.removeEObject(_oldAffectedEObject_1);
       EObject _newValue_1 = replaceNonRootEObjectSingle.getNewValue();
       Class<? extends EObject> _class_4 = _newValue_1.getClass();
       EObjectMappingTransformation _claimForMappedClassOrImplementingInterface_1 = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_4);
-      EObject _affectedEObject_2 = replaceNonRootEObjectSingle.getAffectedEObject();
-      final EObject[] eObjectsToDelete = _claimForMappedClassOrImplementingInterface_1.createEObject(_affectedEObject_2);
+      EObject _oldAffectedEObject_2 = replaceNonRootEObjectSingle.getOldAffectedEObject();
+      final EObject[] eObjectsToDelete = _claimForMappedClassOrImplementingInterface_1.createEObject(_oldAffectedEObject_2);
       EObject _newValue_2 = replaceNonRootEObjectSingle.getNewValue();
       Class<? extends EObject> _class_5 = _newValue_2.getClass();
       EObjectMappingTransformation _claimForMappedClassOrImplementingInterface_2 = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_5);
-      EObject _affectedEObject_3 = replaceNonRootEObjectSingle.getAffectedEObject();
+      EObject _oldAffectedEObject_3 = replaceNonRootEObjectSingle.getOldAffectedEObject();
       EReference _affectedFeature = replaceNonRootEObjectSingle.getAffectedFeature();
       EObject _oldValue_2 = replaceNonRootEObjectSingle.getOldValue();
       EObject _newValue_3 = replaceNonRootEObjectSingle.getNewValue();
-      _xblockexpression = _claimForMappedClassOrImplementingInterface_2.replaceNonRootEObjectSingle(_affectedEObject_3, _affectedFeature, _oldValue_2, _newValue_3, eObjectsToDelete, createdEObjects);
+      _xblockexpression = _claimForMappedClassOrImplementingInterface_2.replaceNonRootEObjectSingle(_oldAffectedEObject_3, _affectedFeature, _oldValue_2, _newValue_3, eObjectsToDelete, createdEObjects);
     }
     return _xblockexpression;
   }
   
   private TransformationChangeResult _syncChange(final PermuteContainmentEReferenceValues<?> permuteContainmentEReferenceValues) {
-    EObject _affectedEObject = permuteContainmentEReferenceValues.getAffectedEObject();
-    Class<? extends EObject> _class = _affectedEObject.getClass();
+    EObject _oldAffectedEObject = permuteContainmentEReferenceValues.getOldAffectedEObject();
+    Class<? extends EObject> _class = _oldAffectedEObject.getClass();
     EObjectMappingTransformation _claimForMappedClassOrImplementingInterface = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class);
-    EObject _affectedEObject_1 = permuteContainmentEReferenceValues.getAffectedEObject();
+    EObject _oldAffectedEObject_1 = permuteContainmentEReferenceValues.getOldAffectedEObject();
     EReference _affectedFeature = permuteContainmentEReferenceValues.getAffectedFeature();
     EList<Integer> _newIndexForElementAt = permuteContainmentEReferenceValues.getNewIndexForElementAt();
-    return _claimForMappedClassOrImplementingInterface.permuteContainmentEReferenceValues(_affectedEObject_1, _affectedFeature, _newIndexForElementAt);
+    return _claimForMappedClassOrImplementingInterface.permuteContainmentEReferenceValues(_oldAffectedEObject_1, _affectedFeature, _newIndexForElementAt);
   }
   
   private TransformationChangeResult _syncChange(final InsertNonContainmentEReference<?> insertNonContaimentEReference) {
-    EObject _affectedEObject = insertNonContaimentEReference.getAffectedEObject();
-    Class<? extends EObject> _class = _affectedEObject.getClass();
+    EObject _oldAffectedEObject = insertNonContaimentEReference.getOldAffectedEObject();
+    Class<? extends EObject> _class = _oldAffectedEObject.getClass();
     EObjectMappingTransformation _claimForMappedClassOrImplementingInterface = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class);
-    EObject _affectedEObject_1 = insertNonContaimentEReference.getAffectedEObject();
+    EObject _oldAffectedEObject_1 = insertNonContaimentEReference.getOldAffectedEObject();
     EReference _affectedFeature = insertNonContaimentEReference.getAffectedFeature();
     EObject _newValue = insertNonContaimentEReference.getNewValue();
     int _index = insertNonContaimentEReference.getIndex();
-    return _claimForMappedClassOrImplementingInterface.insertNonContaimentEReference(_affectedEObject_1, _affectedFeature, _newValue, _index);
+    return _claimForMappedClassOrImplementingInterface.insertNonContaimentEReference(_oldAffectedEObject_1, _affectedFeature, _newValue, _index);
   }
   
   private TransformationChangeResult _syncChange(final RemoveNonContainmentEReference<?> removeNonContainmentEReference) {
-    EObject _affectedEObject = removeNonContainmentEReference.getAffectedEObject();
-    Class<? extends EObject> _class = _affectedEObject.getClass();
+    EObject _oldAffectedEObject = removeNonContainmentEReference.getOldAffectedEObject();
+    Class<? extends EObject> _class = _oldAffectedEObject.getClass();
     EObjectMappingTransformation _claimForMappedClassOrImplementingInterface = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class);
-    EObject _affectedEObject_1 = removeNonContainmentEReference.getAffectedEObject();
+    EObject _oldAffectedEObject_1 = removeNonContainmentEReference.getOldAffectedEObject();
     EReference _affectedFeature = removeNonContainmentEReference.getAffectedFeature();
     EObject _oldValue = removeNonContainmentEReference.getOldValue();
     int _index = removeNonContainmentEReference.getIndex();
-    return _claimForMappedClassOrImplementingInterface.removeNonContainmentEReference(_affectedEObject_1, _affectedFeature, _oldValue, _index);
+    return _claimForMappedClassOrImplementingInterface.removeNonContainmentEReference(_oldAffectedEObject_1, _affectedFeature, _oldValue, _index);
   }
   
   private TransformationChangeResult _syncChange(final ReplaceNonContainmentEReference<?> replaceNonContainmentEReference) {
-    EObject _affectedEObject = replaceNonContainmentEReference.getAffectedEObject();
-    Class<? extends EObject> _class = _affectedEObject.getClass();
+    EObject _oldAffectedEObject = replaceNonContainmentEReference.getOldAffectedEObject();
+    Class<? extends EObject> _class = _oldAffectedEObject.getClass();
     EObjectMappingTransformation _claimForMappedClassOrImplementingInterface = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class);
-    EObject _affectedEObject_1 = replaceNonContainmentEReference.getAffectedEObject();
+    EObject _oldAffectedEObject_1 = replaceNonContainmentEReference.getOldAffectedEObject();
     EReference _affectedFeature = replaceNonContainmentEReference.getAffectedFeature();
     EObject _oldValue = replaceNonContainmentEReference.getOldValue();
     EObject _newValue = replaceNonContainmentEReference.getNewValue();
     int _index = replaceNonContainmentEReference.getIndex();
-    return _claimForMappedClassOrImplementingInterface.replaceNonContainmentEReference(_affectedEObject_1, _affectedFeature, _oldValue, _newValue, _index);
+    return _claimForMappedClassOrImplementingInterface.replaceNonContainmentEReference(_oldAffectedEObject_1, _affectedFeature, _oldValue, _newValue, _index);
   }
   
   private TransformationChangeResult _syncChange(final PermuteNonContainmentEReferenceValues<?> permuteNonContainmentEReferenceValues) {
-    EObject _affectedEObject = permuteNonContainmentEReferenceValues.getAffectedEObject();
-    Class<? extends EObject> _class = _affectedEObject.getClass();
+    EObject _oldAffectedEObject = permuteNonContainmentEReferenceValues.getOldAffectedEObject();
+    Class<? extends EObject> _class = _oldAffectedEObject.getClass();
     EObjectMappingTransformation _claimForMappedClassOrImplementingInterface = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class);
-    EObject _affectedEObject_1 = permuteNonContainmentEReferenceValues.getAffectedEObject();
+    EObject _oldAffectedEObject_1 = permuteNonContainmentEReferenceValues.getOldAffectedEObject();
     EReference _affectedFeature = permuteNonContainmentEReferenceValues.getAffectedFeature();
     EList<Integer> _newIndexForElementAt = permuteNonContainmentEReferenceValues.getNewIndexForElementAt();
-    return _claimForMappedClassOrImplementingInterface.permuteNonContainmentEReferenceValues(_affectedEObject_1, _affectedFeature, _newIndexForElementAt);
+    return _claimForMappedClassOrImplementingInterface.permuteNonContainmentEReferenceValues(_oldAffectedEObject_1, _affectedFeature, _newIndexForElementAt);
   }
   
   private TransformationChangeResult _syncChange(final UpdateSingleValuedNonContainmentEReference<?> updateSingleValuedNonContainmentEReference) {
-    EObject _affectedEObject = updateSingleValuedNonContainmentEReference.getAffectedEObject();
-    Class<? extends EObject> _class = _affectedEObject.getClass();
+    EObject _oldAffectedEObject = updateSingleValuedNonContainmentEReference.getOldAffectedEObject();
+    Class<? extends EObject> _class = _oldAffectedEObject.getClass();
     EObjectMappingTransformation _claimForMappedClassOrImplementingInterface = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class);
-    EObject _affectedEObject_1 = updateSingleValuedNonContainmentEReference.getAffectedEObject();
+    EObject _oldAffectedEObject_1 = updateSingleValuedNonContainmentEReference.getOldAffectedEObject();
     EReference _affectedFeature = updateSingleValuedNonContainmentEReference.getAffectedFeature();
     EObject _oldValue = updateSingleValuedNonContainmentEReference.getOldValue();
     EObject _newValue = updateSingleValuedNonContainmentEReference.getNewValue();
-    return _claimForMappedClassOrImplementingInterface.updateSingleValuedNonContainmentEReference(_affectedEObject_1, _affectedFeature, _oldValue, _newValue);
+    return _claimForMappedClassOrImplementingInterface.updateSingleValuedNonContainmentEReference(_oldAffectedEObject_1, _affectedFeature, _oldValue, _newValue);
   }
   
   private TransformationChangeResult _syncChange(final UpdateSingleValuedEAttribute<?> updateSingleValuedEAttribute) {
-    EObject _affectedEObject = updateSingleValuedEAttribute.getAffectedEObject();
-    Class<? extends EObject> _class = _affectedEObject.getClass();
+    EObject _oldAffectedEObject = updateSingleValuedEAttribute.getOldAffectedEObject();
+    Class<? extends EObject> _class = _oldAffectedEObject.getClass();
     EObjectMappingTransformation _claimForMappedClassOrImplementingInterface = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class);
-    EObject _affectedEObject_1 = updateSingleValuedEAttribute.getAffectedEObject();
+    EObject _oldAffectedEObject_1 = updateSingleValuedEAttribute.getOldAffectedEObject();
     EAttribute _affectedFeature = updateSingleValuedEAttribute.getAffectedFeature();
     Object _oldValue = updateSingleValuedEAttribute.getOldValue();
     Object _newValue = updateSingleValuedEAttribute.getNewValue();
-    return _claimForMappedClassOrImplementingInterface.updateSingleValuedEAttribute(_affectedEObject_1, _affectedFeature, _oldValue, _newValue);
+    return _claimForMappedClassOrImplementingInterface.updateSingleValuedEAttribute(_oldAffectedEObject_1, _affectedFeature, _oldValue, _newValue);
   }
   
   private TransformationChangeResult _syncChange(final InsertEAttributeValue<?> insertEAttributeValue) {
-    EObject _affectedEObject = insertEAttributeValue.getAffectedEObject();
-    Class<? extends EObject> _class = _affectedEObject.getClass();
+    EObject _oldAffectedEObject = insertEAttributeValue.getOldAffectedEObject();
+    Class<? extends EObject> _class = _oldAffectedEObject.getClass();
     EObjectMappingTransformation _claimForMappedClassOrImplementingInterface = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class);
-    EObject _affectedEObject_1 = insertEAttributeValue.getAffectedEObject();
+    EObject _oldAffectedEObject_1 = insertEAttributeValue.getOldAffectedEObject();
     EAttribute _affectedFeature = insertEAttributeValue.getAffectedFeature();
     Object _newValue = insertEAttributeValue.getNewValue();
     int _index = insertEAttributeValue.getIndex();
-    return _claimForMappedClassOrImplementingInterface.insertEAttributeValue(_affectedEObject_1, _affectedFeature, _newValue, _index);
+    return _claimForMappedClassOrImplementingInterface.insertEAttributeValue(_oldAffectedEObject_1, _affectedFeature, _newValue, _index);
   }
   
   private TransformationChangeResult _syncChange(final RemoveEAttributeValue<?> removeEAttributeValue) {
-    EObject _affectedEObject = removeEAttributeValue.getAffectedEObject();
-    Class<? extends EObject> _class = _affectedEObject.getClass();
+    EObject _oldAffectedEObject = removeEAttributeValue.getOldAffectedEObject();
+    Class<? extends EObject> _class = _oldAffectedEObject.getClass();
     EObjectMappingTransformation _claimForMappedClassOrImplementingInterface = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class);
-    EObject _affectedEObject_1 = removeEAttributeValue.getAffectedEObject();
+    EObject _oldAffectedEObject_1 = removeEAttributeValue.getOldAffectedEObject();
     EAttribute _affectedFeature = removeEAttributeValue.getAffectedFeature();
     Object _oldValue = removeEAttributeValue.getOldValue();
     int _index = removeEAttributeValue.getIndex();
-    return _claimForMappedClassOrImplementingInterface.removeEAttributeValue(_affectedEObject_1, _affectedFeature, _oldValue, _index);
+    return _claimForMappedClassOrImplementingInterface.removeEAttributeValue(_oldAffectedEObject_1, _affectedFeature, _oldValue, _index);
   }
   
   private TransformationChangeResult _syncChange(final ReplaceEAttributeValue<?> replaceEAttributeValue) {
-    EObject _affectedEObject = replaceEAttributeValue.getAffectedEObject();
-    Class<? extends EObject> _class = _affectedEObject.getClass();
+    EObject _oldAffectedEObject = replaceEAttributeValue.getOldAffectedEObject();
+    Class<? extends EObject> _class = _oldAffectedEObject.getClass();
     EObjectMappingTransformation _claimForMappedClassOrImplementingInterface = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class);
-    EObject _affectedEObject_1 = replaceEAttributeValue.getAffectedEObject();
+    EObject _oldAffectedEObject_1 = replaceEAttributeValue.getOldAffectedEObject();
     EAttribute _affectedFeature = replaceEAttributeValue.getAffectedFeature();
     Object _oldValue = replaceEAttributeValue.getOldValue();
     Object _newValue = replaceEAttributeValue.getNewValue();
     int _index = replaceEAttributeValue.getIndex();
-    return _claimForMappedClassOrImplementingInterface.replaceEAttributeValue(_affectedEObject_1, _affectedFeature, _oldValue, _newValue, _index);
+    return _claimForMappedClassOrImplementingInterface.replaceEAttributeValue(_oldAffectedEObject_1, _affectedFeature, _oldValue, _newValue, _index);
   }
   
   private TransformationChangeResult _syncChange(final PermuteEAttributeValues<?> permuteEAttributeValues) {
-    EObject _affectedEObject = permuteEAttributeValues.getAffectedEObject();
-    Class<? extends EObject> _class = _affectedEObject.getClass();
+    EObject _oldAffectedEObject = permuteEAttributeValues.getOldAffectedEObject();
+    Class<? extends EObject> _class = _oldAffectedEObject.getClass();
     EObjectMappingTransformation _claimForMappedClassOrImplementingInterface = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class);
-    EObject _affectedEObject_1 = permuteEAttributeValues.getAffectedEObject();
+    EObject _oldAffectedEObject_1 = permuteEAttributeValues.getOldAffectedEObject();
     EAttribute _affectedFeature = permuteEAttributeValues.getAffectedFeature();
     EList<Integer> _newIndexForElementAt = permuteEAttributeValues.getNewIndexForElementAt();
-    return _claimForMappedClassOrImplementingInterface.permuteEAttributeValues(_affectedEObject_1, _affectedFeature, _newIndexForElementAt);
+    return _claimForMappedClassOrImplementingInterface.permuteEAttributeValues(_oldAffectedEObject_1, _affectedFeature, _newIndexForElementAt);
   }
   
   private TransformationChangeResult _syncChange(final UnsetEAttribute<?> unsetEAttribute) {
-    EObject _affectedEObject = unsetEAttribute.getAffectedEObject();
-    Class<? extends EObject> _class = _affectedEObject.getClass();
+    EObject _oldAffectedEObject = unsetEAttribute.getOldAffectedEObject();
+    Class<? extends EObject> _class = _oldAffectedEObject.getClass();
     EObjectMappingTransformation _claimForMappedClassOrImplementingInterface = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class);
-    EObject _affectedEObject_1 = unsetEAttribute.getAffectedEObject();
+    EObject _oldAffectedEObject_1 = unsetEAttribute.getOldAffectedEObject();
     EAttribute _affectedFeature = unsetEAttribute.getAffectedFeature();
     Object _oldValue = unsetEAttribute.getOldValue();
-    return _claimForMappedClassOrImplementingInterface.unsetEAttribute(_affectedEObject_1, _affectedFeature, _oldValue);
+    return _claimForMappedClassOrImplementingInterface.unsetEAttribute(_oldAffectedEObject_1, _affectedFeature, _oldValue);
   }
   
   private TransformationChangeResult _syncChange(final UnsetNonContainmentEReference<?> unsetNonContainmentEReference) {
-    EObject _affectedEObject = unsetNonContainmentEReference.getAffectedEObject();
-    Class<? extends EObject> _class = _affectedEObject.getClass();
+    EObject _oldAffectedEObject = unsetNonContainmentEReference.getOldAffectedEObject();
+    Class<? extends EObject> _class = _oldAffectedEObject.getClass();
     EObjectMappingTransformation _claimForMappedClassOrImplementingInterface = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class);
-    EObject _affectedEObject_1 = unsetNonContainmentEReference.getAffectedEObject();
+    EObject _oldAffectedEObject_1 = unsetNonContainmentEReference.getOldAffectedEObject();
     EReference _affectedFeature = unsetNonContainmentEReference.getAffectedFeature();
     EObject _oldValue = unsetNonContainmentEReference.getOldValue();
-    return _claimForMappedClassOrImplementingInterface.unsetNonContainmentEReference(_affectedEObject_1, _affectedFeature, _oldValue);
+    return _claimForMappedClassOrImplementingInterface.unsetNonContainmentEReference(_oldAffectedEObject_1, _affectedFeature, _oldValue);
   }
   
   private TransformationChangeResult _syncChange(final UnsetContainmentEReference<?> unsetContainmentEReference) {
@@ -445,13 +457,13 @@ public class ChangeSynchronizer {
       EObjectMappingTransformation _claimForMappedClassOrImplementingInterface = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class);
       EObject _oldValue_1 = unsetContainmentEReference.getOldValue();
       final EObject[] eObjectsToDelete = _claimForMappedClassOrImplementingInterface.removeEObject(_oldValue_1);
-      EObject _affectedEObject = unsetContainmentEReference.getAffectedEObject();
-      Class<? extends EObject> _class_1 = _affectedEObject.getClass();
+      EObject _oldAffectedEObject = unsetContainmentEReference.getOldAffectedEObject();
+      Class<? extends EObject> _class_1 = _oldAffectedEObject.getClass();
       EObjectMappingTransformation _claimForMappedClassOrImplementingInterface_1 = this.claimForMappedClassOrImplementingInterface(this.mappingTransformations, _class_1);
-      EObject _affectedEObject_1 = unsetContainmentEReference.getAffectedEObject();
+      EObject _oldAffectedEObject_1 = unsetContainmentEReference.getOldAffectedEObject();
       EReference _affectedFeature = unsetContainmentEReference.getAffectedFeature();
       EObject _oldValue_2 = unsetContainmentEReference.getOldValue();
-      _xblockexpression = _claimForMappedClassOrImplementingInterface_1.unsetContainmentEReference(_affectedEObject_1, _affectedFeature, _oldValue_2, eObjectsToDelete);
+      _xblockexpression = _claimForMappedClassOrImplementingInterface_1.unsetContainmentEReference(_oldAffectedEObject_1, _affectedFeature, _oldValue_2, eObjectsToDelete);
     }
     return _xblockexpression;
   }
