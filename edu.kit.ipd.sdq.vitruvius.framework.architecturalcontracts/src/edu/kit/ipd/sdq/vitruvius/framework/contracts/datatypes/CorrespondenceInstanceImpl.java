@@ -31,9 +31,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespon
  * instance of a metaclass of the first metamodel of the containing correspondence instance. And
  * every elementB of a correspondence has to be an instance of a metaclass of the second metamodel
  * of the containing correspondence instance.
- * 
+ *
  * @author kramerm
- * 
+ *
  */
 public class CorrespondenceInstanceImpl extends ModelInstance implements CorrespondenceInstance {
 
@@ -302,7 +302,9 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
      */
     @Override
     public void addSameTypeCorrespondence(final SameTypeCorrespondence correspondence) {
-        addSameTypeCorrespondence(correspondence, null);
+        // do not move the correspondence if it already has a parent, otherwise null will be passed
+        // and the called method will add it to the first level
+        addSameTypeCorrespondence(correspondence, correspondence.getParent());
     }
 
     /*
@@ -325,6 +327,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         // add correspondence to model
         EList<Correspondence> correspondenceListForAddition;
         if (parent == null) {
+            // add the correspondence on the first level if no parent was specified
             correspondenceListForAddition = this.correspondences.getCorrespondences();
         } else {
             correspondenceListForAddition = parent.getDependentCorrespondences();
@@ -461,7 +464,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     /**
      * Does the removing recursively. Marks all correspondences that will be deleted in a
      * dependencyList --> Avoid stack overflow with correspondences that have a mutual dependency
-     * 
+     *
      * @param correspondence
      * @param dependencyList
      * @param deletionList
