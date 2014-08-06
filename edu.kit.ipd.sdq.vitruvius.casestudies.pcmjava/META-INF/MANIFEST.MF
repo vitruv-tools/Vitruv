@@ -16,7 +16,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.emftext.language.java;bundle-version="1.4.0",
  edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.0.0",
  org.eclipse.core.expressions;bundle-version="3.4.500",
- edu.kit.ipd.sdq.vitruvius.framework.metarepository
+ edu.kit.ipd.sdq.vitruvius.framework.metarepository,
+ ChangeClassification,
+ MonitoredEditor;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava

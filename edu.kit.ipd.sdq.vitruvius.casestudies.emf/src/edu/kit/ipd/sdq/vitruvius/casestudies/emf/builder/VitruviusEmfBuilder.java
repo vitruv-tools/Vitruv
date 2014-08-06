@@ -42,7 +42,8 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
     private Set<String> monitoredFileTypes;
     private IVitruviusEMFEditorMonitor monitor;
     private final VitruviusEMFDeltaVisitor vitruviusEMFDeltaVisitor;
-    private ChangeSynchronizing changeSynchronizing;
+    protected ChangeSynchronizing changeSynchronizing;
+    protected ModelProviding modelProviding;
 
     private final IResourceDeltaProviding resourceDeltaProviding;
     private final IProjectProviding projectProviding;
@@ -92,7 +93,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
 
     protected void initializeBuilder(final Set<String> monitoredFileTypes, final MetaRepositoryImpl metaRepository) {
         this.monitoredFileTypes = monitoredFileTypes;
-        final ModelProviding mp = this.createChangeSynchronizing(metaRepository);
+        this.modelProviding = this.createChangeSynchronizing(metaRepository);
 
         final IVitruviusAccessor vitruviusAcc = this.createVitruviusAccessor();
         final IEditorPartAdapterFactory epaFactory = new DefaultEditorPartAdapterFactoryImpl(monitoredFileTypes);
@@ -110,7 +111,8 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
                 correspondenceProvider);
         // create syncTransformationProvider
         final TransformationExecutingProvidingImpl syncTransformationProvider = new TransformationExecutingProvidingImpl();
-        final EMFModelPropagationEngineImpl propagatingChange = new EMFModelPropagationEngineImpl(syncTransformationProvider);
+        final EMFModelPropagationEngineImpl propagatingChange = new EMFModelPropagationEngineImpl(
+                syncTransformationProvider);
 
         final SyncManagerImpl smi = new SyncManagerImpl(vsum, propagatingChange, vsum, metaRepositoryImpl, vsum);
         // create syncManager
@@ -147,7 +149,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
     class VitruviusEMFDeltaVisitor implements IResourceDeltaVisitor {
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.core.resources.IResourceDeltaVisitor#visit(org.eclipse.core.resources.
          * IResourceDelta)
          */
@@ -189,7 +191,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.core.internal.events.InternalBuilder#build(int, java.util.Map,
      * org.eclipse.core.runtime.IProgressMonitor)
      */
