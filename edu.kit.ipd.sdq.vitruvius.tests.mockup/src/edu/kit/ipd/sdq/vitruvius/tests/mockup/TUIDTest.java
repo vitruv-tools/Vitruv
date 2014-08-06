@@ -166,7 +166,7 @@ public class TUIDTest {
         System.out.println("**** BEGIN SIXTH OPERATION ****\n" + TUID.toStrings()
                 + "\n**** END SIXTH OPERATION ****\n\n");
         assertEquals(s5prefixrrrrrr, tuid5prefix.toString());
-        String s4rrrrrr = s5prefixrrrrrr + "e" + "a";
+        String s4rrrrrr = s5prefixrrrrrr + sep + "e" + sep + "a";
         assertEquals(s4rrrrrr, tuid4.toString());
         String s5rrrrrr = s5prefixrrrrrr + sep + "f";
         assertEquals(s5rrrrrr, tuid5.toString());
