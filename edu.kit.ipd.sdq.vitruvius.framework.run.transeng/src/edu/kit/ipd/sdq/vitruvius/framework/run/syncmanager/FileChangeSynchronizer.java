@@ -12,9 +12,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangeFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateRootEObject;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.DeleteNonRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ObjectFactory;
 
 class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
 
@@ -28,7 +28,7 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
     /**
      * If the change is a file created change then we create model instance in VSUM and start the
      * synchronizeChange process for the root element in the new model.
-     * 
+     *
      * @param change
      *            The incoming change. It has to be an instanceof {@link FileChange} otherwise a
      *            class cast exception will occur.
@@ -65,8 +65,8 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
                     + ". Synchronization for 'root element created' not triggerd.");
             return new EMFChangeResult();
         }
-        CreateRootEObject createRootEObj = ChangeFactory.eINSTANCE.createCreateRootEObject();
-        createRootEObj.setChangedEObject(rootElement);
+        CreateRootEObject<EObject> createRootEObj = ObjectFactory.eINSTANCE.createCreateRootEObject();
+        createRootEObj.setNewValue(rootElement);
         EMFModelChange rootAdd = new EMFModelChange(createRootEObj);
         return syncChange(rootAdd, sourceModelURI);
     }
@@ -76,8 +76,8 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
         Resource resource = oldModelInstance.getResource();
         if (0 < resource.getContents().size()) {
             EObject rootElement = resource.getContents().get(0);
-            DeleteNonRootEObject<EObject> deleteRootObj = ChangeFactory.eINSTANCE.createDeleteNonRootEObject();
-            deleteRootObj.setNewValue(rootElement);
+            DeleteRootEObject<EObject> deleteRootObj = ObjectFactory.eINSTANCE.createDeleteRootEObject();
+            deleteRootObj.setOldValue(rootElement);
             EMFModelChange rootDeleted = new EMFModelChange(deleteRootObj);
             return syncChange(rootDeleted, sourceModelURI);
         }
