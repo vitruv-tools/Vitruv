@@ -3,11 +3,11 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 import de.uka.ipd.sdq.pcm.repository.BasicComponent
 import de.uka.ipd.sdq.pcm.repository.Repository
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.EObjectMappingTransformation
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.TransformationUtils
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMMappingTransformationBase
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
+import edu.kit.ipd.sdq.vitruvius.framework.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
@@ -15,7 +15,7 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.containers.Package
 
-class PackageMappingTransformation extends EObjectMappingTransformation {
+class PackageMappingTransformation extends JaMoPPPCMMappingTransformationBase {
 	
 	private static val Logger logger = Logger.getLogger(PackageMappingTransformation.simpleName)
 	
@@ -63,30 +63,39 @@ class PackageMappingTransformation extends EObjectMappingTransformation {
 	 * Packages that are not architectural relevant can not be created.
 	 * Packages that represent a system or a composite component have to be created using the PCM
 	 */
-	override addEObject(EObject eObject) {
+	override createEObject(EObject eObject) {
 		val Package jaMoPPPackage = eObject as Package
 		if(!correspondenceRepositoryAlreadyExists){
 			// iv) first package is created --> it is the corresponding package to the repository
 			repository = RepositoryFactory.eINSTANCE.createRepository
 			repository.setEntityName(jaMoPPPackage.name)
-			var EObjectCorrespondence repo2Package = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-			repo2Package.setElementA(repository)
-			repo2Package.setElementB(jaMoPPPackage)
-			correspondenceInstance.addSameTypeCorrespondence(repo2Package) 
 			correspondenceRepositoryAlreadyExists = true
-			return TransformationUtils.createTransformationChangeResultForNewRootEObjects(repository.toArray)
+			return repository.toArray
 		}
 		// case i)
 		var BasicComponent basicComponent = RepositoryFactory.eINSTANCE.createBasicComponent
 		basicComponent.setEntityName(jaMoPPPackage.name)
 		basicComponent.setRepository__RepositoryComponent(repository)
 		repository.components__Repository.add(basicComponent)
-		var EObjectCorrespondence basicComponent2Package = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-		basicComponent2Package.setElementA(basicComponent)
-		basicComponent2Package.setElementB(jaMoPPPackage)
-		basicComponent2Package.setParent(correspondenceInstance.claimUniqueOrNullCorrespondenceForEObject(repository))
-		correspondenceInstance.addSameTypeCorrespondence(basicComponent2Package)
-		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(basicComponent.toArray)
+		return basicComponent.toArray
+	}
+	
+	override createRootEObject(EObject newRootEObject, EObject[] newCorrespondingEObjects) {
+		if(newCorrespondingEObjects.nullOrEmpty){
+			return TransformationUtils.createEmptyTransformationChangeResult
+		}
+		for(pcmElement : newCorrespondingEObjects){
+			var EObjectCorrespondence eObjectCorrespondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
+			eObjectCorrespondence.setElementA(pcmElement)
+			eObjectCorrespondence.setElementB(newRootEObject)
+			eObjectCorrespondence.setParent(correspondenceInstance.claimUniqueOrNullCorrespondenceForEObject(repository))
+			correspondenceInstance.addSameTypeCorrespondence(eObjectCorrespondence)
+		}
+		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(newCorrespondingEObjects)
+	}
+	
+	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
+		return createRootEObject(newValue, newCorrespondingEObjects)
 	}
 	
 	/**
@@ -107,46 +116,28 @@ class PackageMappingTransformation extends EObjectMappingTransformation {
 		}
 		return null
 	}
+
+	override deleteRootEObject(EObject oldRootEObject, EObject[] oldCorrespondingEObjectsToDelete) {
+		return TransformationUtils.createEmptyTransformationChangeResult
+	}
+
+	override deleteNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
+		return TransformationUtils.createEmptyTransformationChangeResult
+	}
 	
-	override updateEAttribute(EObject eObject, EAttribute affectedAttribute, Object newValue) {
+	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue, Object newValue) {
 		// we do not have any corresponding features because the name of the Component corresponds to the 
 		// name of the class not the interface
-		/*val Package jaMoPPPackage = eObject as Package
-		val correspondingEObjects = correspondenceInstance.claimCorrespondingEObjects(jaMoPPPackage)
-		val EStructuralFeature esf = featureCorrespondenceMap.claimValueForKey(affectedAttribute)
-		for(correspondingEObject : correspondingEObjects){
-			correspondingEObject.eSet(esf, newValue)
-		}
-		return correspondingEObjects.iterator.next*/
-		return null
-	}
-	
-	/**
-	 * not needed for package
-	 */
-	override updateEReference(EObject eObject, EReference affectedEReference, Object newValue) {
-//		throw new RuntimeException("updateEReference should not be called for " + 
-//			PackageMappingTransformation.simpleName + " eObject: " + eObject
-//		);
-	}
-	
-	/**
-	 * not needed for package
-	 */
-	override updateEContainmentReference(EObject eObject, EReference afffectedEReference, Object newValue) {
-//		throw new RuntimeException("updateEContainmentReference should not be called for " + 
-//			PackageMappingTransformation.simpleName + " eObject: " + eObject
-//		);
+		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 	
 	override setCorrespondenceForFeatures() {
 		// we do not have any corresponding features because the name of the Component corresponds to the 
 		// name of the class not the interface
-		/*var packageNameAttribute = ContainersFactory.eINSTANCE.createPackage.eClass.getEAllAttributes.filter[attribute|
-			attribute.name.equalsIgnoreCase(JaMoPPPCMNamespace.JAMOPP_ATTRIBUTE_NAME)].iterator.next
-		var opInterfaceNameAttribute = RepositoryFactory.eINSTANCE.createOperationInterface.eClass.getEAllAttributes.filter[attribute|
-			attribute.name.equalsIgnoreCase(JaMoPPPCMNamespace.PCM_ATTRIBUTE_ENTITY_NAME)].iterator.next
-		featureCorrespondenceMap.put(packageNameAttribute, opInterfaceNameAttribute)*/
+	}
+	
+	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue, EObject[] newCorrespondingEObjects) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
 }

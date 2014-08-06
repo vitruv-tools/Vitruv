@@ -14,7 +14,6 @@ import org.emftext.language.java.containers.CompilationUnit;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaNamespace;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
@@ -23,6 +22,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.TransformationExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.Pair;
+import edu.kit.ipd.sdq.vitruvius.framework.transformationexecuter.ChangeSynchronizer;
 
 public class PCMJaMoPPTransformationExecuter implements TransformationExecuting {
 
@@ -98,7 +98,7 @@ public class PCMJaMoPPTransformationExecuter implements TransformationExecuting 
                 final VURI cuVURI = VURI.getInstance(srcFolderPath + compUnitPath);
                 final Pair<EObject, VURI> newEObjectVURIPair = new Pair<EObject, VURI>(newCompUnit, cuVURI);
                 newVURIsToSave.add(newEObjectVURIPair);
-            }
+            }// TODO: Else if instanceof Repository
         }
     }
 

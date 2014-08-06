@@ -2,36 +2,39 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java
 
 import de.uka.ipd.sdq.pcm.repository.BasicComponent
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMMappingTransformationBase
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMNamespace
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
+import edu.kit.ipd.sdq.vitruvius.framework.transformationexecuter.TransformationUtils
+import java.util.ArrayList
+import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.ClassifiersFactory
 import org.emftext.language.java.containers.CompilationUnit
 import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.Package
 import org.emftext.language.java.modifiers.ModifiersFactory
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMNamespace
-import org.apache.log4j.Logger
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.TransformationUtils
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
 
-class BasicComponentMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.EObjectMappingTransformation {
+class BasicComponentMappingTransformation extends JaMoPPPCMMappingTransformationBase {
 	
 	val private static Logger logger = Logger.getLogger(BasicComponentMappingTransformation.simpleName)
-
+	
 	override getClassOfMappedEObject() {
 		return BasicComponent
 	}
 
-	override addEObject(EObject eObject) {
+	override createEObject(EObject eObject) {
 		val BasicComponent basicComponent = eObject as BasicComponent
 
 		// get root (aka repository) package
-		val Package rootPackage = correspondenceInstance.
+		val Package rootPackage = correspondenceInstance. 
 			claimUniqueCorrespondingEObjectByType(basicComponent.repository__RepositoryComponent, Package)
 
 		// create JaMoPP Package
@@ -54,64 +57,78 @@ class BasicComponentMappingTransformation extends edu.kit.ipd.sdq.vitruvius.case
 		jaMoPPPackage.compilationUnits.add(jaMoPPCompilationUnit)
 		jaMoPPCompilationUnit.namespaces.addAll(jaMoPPPackage.namespaces)
 
+		return #[jaMoPPPackage, jaMoPPCompilationUnit, jaMoPPClass];
+	}
+	
+	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
+		val BasicComponent basicComponent = newValue as BasicComponent
+
+		// get root (aka repository) package
+		val Package rootPackage = correspondenceInstance. 
+			claimUniqueCorrespondingEObjectByType(basicComponent.repository__RepositoryComponent, Package)
 		val Correspondence parentCorrespondence = correspondenceInstance.claimUniqueOrNullCorrespondenceForEObject(rootPackage)
 
-		//create correspondence for package and class (both are corresponding to the basic component)
-		val EObjectCorrespondence basicComponent2Package = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-		basicComponent2Package.setElementA(basicComponent)
-		basicComponent2Package.setElementB(jaMoPPPackage)
-		basicComponent2Package.setParent(parentCorrespondence)
-		val EObjectCorrespondence basicComponent2Class = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-		basicComponent2Class.setElementA(basicComponent)
-		basicComponent2Class.setElementB(jaMoPPClass)
-		basicComponent2Class.setParent(parentCorrespondence)
-		val EObjectCorrespondence basicComponent2CompilationUnit = CorrespondenceFactory.eINSTANCE.
-			createEObjectCorrespondence
-		basicComponent2CompilationUnit.setElementA(basicComponent)
-		basicComponent2CompilationUnit.setElementB(jaMoPPCompilationUnit)
-		basicComponent2CompilationUnit.setParent(parentCorrespondence)
-		correspondenceInstance.addSameTypeCorrespondence(basicComponent2Package)
-		correspondenceInstance.addSameTypeCorrespondence(basicComponent2CompilationUnit)
-		correspondenceInstance.addSameTypeCorrespondence(basicComponent2Class)
-		return TransformationUtils.createTransformationChangeResultForNewRootEObjects(jaMoPPCompilationUnit.toArray)
+		for(jaMoPPElement : newCorrespondingEObjects){
+			val EObjectCorrespondence basicComponent2Package = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
+			basicComponent2Package.setElementA(basicComponent)
+			basicComponent2Package.setElementB(jaMoPPElement)
+			basicComponent2Package.setParent(parentCorrespondence)
+			correspondenceInstance.addSameTypeCorrespondence(basicComponent2Package)
+		}
+		return TransformationUtils.createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects)
 	}
+	
 
 	override removeEObject(EObject eObject) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		val correspondences = correspondenceInstance.getAllCorrespondences(eObject);
+		val correspondingEObjects = correspondenceInstance.getAllCorrespondingEObjects(eObject)
+		var eObjectsToDelete = new ArrayList<EObject>()
+		if(!correspondences.nullOrEmpty ){
+			eObjectsToDelete.addAll(correspondences)
+		}
+		if(!correspondingEObjects.nullOrEmpty){
+			eObjectsToDelete.addAll(correspondingEObjects)
+		}
+		return eObjectsToDelete
+	}
+	
+	override deleteNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
+		if(oldCorrespondingEObjectsToDelete.nullOrEmpty){
+			return TransformationUtils.createEmptyTransformationChangeResult
+		}
+		oldCorrespondingEObjectsToDelete.forEach[eObject|EcoreUtil.delete(eObject)]
+		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 
-	override updateEAttribute(EObject eObject, EAttribute affectedAttribute, Object newValue) {
+	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue, Object newValue) {
 		if(!featureCorrespondenceMap.containsKey(affectedAttribute)){
 			logger.info("no feature correspondence found for affected Attribute: " + affectedAttribute)
-			return null
+			return TransformationUtils.createEmptyTransformationChangeResult
 		}
 		var correspondingEObjects = correspondenceInstance.getAllCorrespondingEObjects(eObject)
 		if(null == correspondingEObjects){
 			logger.info("No corresponding objects found for " + eObject)
 		}
-		var TransformationChangeResult transformationChangeResult = new TransformationChangeResult 
+		var TransformationChangeResult transformationChangeResult = new TransformationChangeResult
+		/**
+		 * update TUIDs after rename the elements
+		 */ 
 		for(EObject correspondingObject : correspondingEObjects){
 			// compilationUnit was renamed: Delete old one and save new one
+			val oldObject = EcoreUtil.copy(correspondingObject)
 			if(correspondingObject instanceof CompilationUnit){
-				transformationChangeResult.existingObjectsToDelete.add(correspondingObject)
+				transformationChangeResult.existingObjectsToDelete.add(oldObject)
 			}
 			correspondingObject.eClass.eSet(featureCorrespondenceMap.get(affectedAttribute), newValue)
+			correspondenceInstance.update(oldObject, correspondingObject)
 			if(correspondingObject instanceof CompilationUnit){
 				transformationChangeResult.newRootObjectsToSave.add(correspondingObject)
-			}else{
-				transformationChangeResult.existingObjectsToSave.add(correspondingObject)
 			}
+//			else{
+//				transformationChangeResult.existingObjectsToSave.add(correspondingObject)
+//			}
 		}
-		
 		return transformationChangeResult
-	}
-
-	override updateEReference(EObject eObject, EReference affectedEReference, Object newValue) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-
-	override updateEContainmentReference(EObject eObject, EReference afffectedEReference, Object newValue) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
 	override setCorrespondenceForFeatures() {
@@ -124,5 +141,9 @@ class BasicComponentMappingTransformation extends edu.kit.ipd.sdq.vitruvius.case
 		featureCorrespondenceMap.put(basicComponentNameAttribute, classNameAttribute)
 		featureCorrespondenceMap.put(basicComponentNameAttribute, packageNameAttribute)
 	}
-
+	
+	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue, EObject[] newCorrespondingEObjects) {
+		logger.warn("method should not be called for BasicComponentMappingTransformation transformation")
+		return null
+	}
 }

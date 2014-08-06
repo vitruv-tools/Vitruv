@@ -17,7 +17,8 @@ Require-Bundle: org.eclipse.xtend.lib,
  org.eclipse.swt;bundle-version="3.102.0",
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava,
  org.eclipse.core.resources;bundle-version="3.8.100",
- org.eclipse.core.runtime;bundle-version="3.9.0"
+ org.eclipse.core.runtime;bundle-version="3.9.0",
+ edu.kit.ipd.sdq.vitruvius.framework.transformationexecuter
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations,
  org.modelrefactoring.jamopp.test.valueprovider
 Bundle-ClassPath: libs/reflections-0.9.9-RC1.jar,

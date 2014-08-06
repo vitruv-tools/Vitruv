@@ -5,9 +5,13 @@ import de.uka.ipd.sdq.pcm.repository.Repository
 import de.uka.ipd.sdq.pcm.repository.RepositoryComponent
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
 import de.uka.ipd.sdq.pcm.system.System
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.EObjectMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMMappingTransformationBase
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMUtils
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
+import edu.kit.ipd.sdq.vitruvius.framework.transformationexecuter.TransformationUtils
+import java.util.Set
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
@@ -16,22 +20,18 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.classifiers.ClassifiersFactory
 import org.emftext.language.java.classifiers.Interface
-import org.emftext.language.java.containers.Package
 import org.emftext.language.java.containers.CompilationUnit
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMUtils
-import java.util.Set
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.TransformationUtils
+import org.emftext.language.java.containers.Package
 
 /**
  * Maps a JaMoPP interface to a PCM interface 
  * Triggered when a CUD operation on JaMoPP interface is detected.
  */
-class InterfaceMappingTransformation extends EObjectMappingTransformation {
+class InterfaceMappingTransformation extends JaMoPPPCMMappingTransformationBase {
 	
 	val private static final Logger logger = Logger.getLogger(InterfaceMappingTransformation.name)
 	
-	override getClassOfMappedEObject() {
+	override getClassOfMappedEObject() { 
 		return Interface
 	}
 	
@@ -41,7 +41,7 @@ class InterfaceMappingTransformation extends EObjectMappingTransformation {
 	 * a) checking whether it is in the package that corresponds to the repository package
 	 * b) asking the developer (not yet implemented)
 	 */
-	override addEObject(EObject eObject) {
+	override createEObject(EObject eObject) {
 		val Interface jaMoPPInterface = eObject as Interface
 		val Package jaMoPPPackage = JaMoPPPCMUtils::getContainingPackageFromCorrespondenceInstance(jaMoPPInterface, correspondenceInstance)
 		try{
@@ -75,23 +75,37 @@ class InterfaceMappingTransformation extends EObjectMappingTransformation {
 			if(null != parentCorrespondences){
 				parentCorrespondence = parentCorrespondences.iterator.next
 			}
-			var EObjectCorrespondence interface2opInterfaceCorrespondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-			interface2opInterfaceCorrespondence.setElementA(opInterface)
-			interface2opInterfaceCorrespondence.setElementB(jaMoPPInterface)
-			interface2opInterfaceCorrespondence.setParent(parentCorrespondence)
-			var EObjectCorrespondence compilationUnit2opInterfaceCorrespondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-			compilationUnit2opInterfaceCorrespondence.setElementA(opInterface)
-			compilationUnit2opInterfaceCorrespondence.setElementB(jaMoPPInterface.containingCompilationUnit)
-			compilationUnit2opInterfaceCorrespondence.setParent(parentCorrespondence)
-			interface2opInterfaceCorrespondence.dependentCorrespondences.add(compilationUnit2opInterfaceCorrespondence)
-			compilationUnit2opInterfaceCorrespondence.dependentCorrespondences.add(interface2opInterfaceCorrespondence)
-			correspondenceInstance.addSameTypeCorrespondence(compilationUnit2opInterfaceCorrespondence)
-			correspondenceInstance.addSameTypeCorrespondence(interface2opInterfaceCorrespondence)
-			return TransformationUtils.createTransformationChangeResultForEObjectsToSave(opInterface.toArray())
+			return opInterface.toArray
 		}catch(Exception e ){
 			logger.info(e)
 		}
 		return null;		
+	}
+	
+	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
+		if(newCorrespondingEObjects.nullOrEmpty){
+			return TransformationUtils.createEmptyTransformationChangeResult
+		}
+		val opInterface = newCorrespondingEObjects.get(0)
+		val jaMoPPInterface = newValue as Interface
+		val parentCorrespondences = correspondenceInstance.getAllCorrespondences(newValue)
+		var Correspondence parentCorrespondence = null
+		if(null != parentCorrespondences){
+			parentCorrespondence = parentCorrespondences.iterator.next
+		}
+		var EObjectCorrespondence interface2opInterfaceCorrespondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
+		interface2opInterfaceCorrespondence.setElementA(opInterface)
+		interface2opInterfaceCorrespondence.setElementB(jaMoPPInterface)
+		interface2opInterfaceCorrespondence.setParent(parentCorrespondence)
+		var EObjectCorrespondence compilationUnit2opInterfaceCorrespondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
+		compilationUnit2opInterfaceCorrespondence.setElementA(opInterface)
+		compilationUnit2opInterfaceCorrespondence.setElementB(jaMoPPInterface.containingCompilationUnit)
+		compilationUnit2opInterfaceCorrespondence.setParent(parentCorrespondence)
+		interface2opInterfaceCorrespondence.dependentCorrespondences.add(compilationUnit2opInterfaceCorrespondence)
+		compilationUnit2opInterfaceCorrespondence.dependentCorrespondences.add(interface2opInterfaceCorrespondence)
+		correspondenceInstance.addSameTypeCorrespondence(compilationUnit2opInterfaceCorrespondence)
+		correspondenceInstance.addSameTypeCorrespondence(interface2opInterfaceCorrespondence)
+		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(opInterface.toArray())
 	}
 	
 	/**
@@ -120,7 +134,16 @@ class InterfaceMappingTransformation extends EObjectMappingTransformation {
 		return null
 	}
 	
-	override updateEAttribute(EObject eObject, EAttribute affectedAttribute, Object newValue) {
+	/**
+	 * we do not really need the method deleteNonRootEObjectInList in InterfaceMappingTransformation because the deletion of the 
+	 * object has already be done in removeEObject.
+	 * We just return an empty TransformationChangeResult 
+	 */
+	override deleteNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
+		return TransformationUtils.createEmptyTransformationChangeResult
+	}
+	
+	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue, Object newValue) {
 		val Interface jaMoPPInterface = eObject as Interface
 		var EObject ret = null
 		try{
@@ -136,18 +159,6 @@ class InterfaceMappingTransformation extends EObjectMappingTransformation {
 		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(ret.toArray)
 	}
 	
-	override updateEReference(EObject eObject, EReference affectedEReference, Object newValue) {
-		logger.warn("updateEReference called in class " + this.class.simpleName + " with parameters: EObject" +
-			eObject + " AffectedERefernece" + affectedEReference + " newValue=" + newValue + ". Should not happen...")
-		return null 
-	}
-	
-	override updateEContainmentReference(EObject eObject, EReference affectedEReference, Object newValue) {
-		logger.warn("updateEContainmentReference called in class " + this.class.simpleName + " with parameters: EObject" +
-			eObject + " affectedEReference" + affectedEReference + " newValue=" + newValue + ". Should not happen...")
-		return null 
-	}
-	
 	override setCorrespondenceForFeatures() {
 		var interfaceNameAttribute = ClassifiersFactory.eINSTANCE.createInterface.eClass.getEAllAttributes.filter[attribute|
 			attribute.name.equalsIgnoreCase("name")].iterator.next
@@ -155,5 +166,10 @@ class InterfaceMappingTransformation extends EObjectMappingTransformation {
 			attribute.name.equalsIgnoreCase("entityName")].iterator.next
 		featureCorrespondenceMap.put(interfaceNameAttribute, opInterfaceNameAttribute)
 	}
-	
+
+	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue, EObject[] newCorrespondingEObjects) {
+		logger.warn("method createNonRootEObjectSingle should not be called for " + InterfaceMappingTransformation.simpleName + " transformation")
+		return null
+	}
+
 }

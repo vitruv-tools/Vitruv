@@ -3,13 +3,16 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingRequiringEntity
 import de.uka.ipd.sdq.pcm.repository.RepositoryComponent
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.EObjectMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMMappingTransformationBase
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMUtils
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.TransformationUtils
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
+import edu.kit.ipd.sdq.vitruvius.framework.transformationexecuter.TransformationUtils
+import java.util.ArrayList
+import java.util.HashSet
+import java.util.Set
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
@@ -24,12 +27,21 @@ import org.emftext.language.java.modifiers.Public
  * Maps a JaMoPP class to a PCM Components or System. 
  * Triggered when a CUD operation on JaMoPP class is detected.
  */
-class ClassMappingTransformation extends EObjectMappingTransformation {
+class ClassMappingTransformation extends JaMoPPPCMMappingTransformationBase {
 	
 	private static val Logger logger = Logger.getLogger(ClassMappingTransformation.simpleName)
 	
-	override getClassOfMappedEObject() {
+	override getClassOfMappedEObject() { 
 		return Class
+	}
+	
+	/**
+	 * sets the name correspondece for JaMoPP-class names and PCM-entityName Attribut
+	 */
+	override setCorrespondenceForFeatures() { 
+		val classNameAttribute = TransformationUtils::getAttributeByNameFromEObject(JaMoPPPCMNamespace.JAMOPP_ATTRIBUTE_NAME,  ClassifiersFactory.eINSTANCE.createClass)
+		val componentNameAttribute = TransformationUtils::getAttributeByNameFromEObject(JaMoPPPCMNamespace.PCM_ATTRIBUTE_ENTITY_NAME, RepositoryFactory.eINSTANCE.createBasicComponent )
+		featureCorrespondenceMap.put(classNameAttribute, componentNameAttribute)
 	}
 	
 	/**
@@ -44,7 +56,7 @@ class ClassMappingTransformation extends EObjectMappingTransformation {
 	 * 		v) a) the class name contians the name of the package,or 
 	 * 		v) b) the user says it is the implementing class 
 	 */
-	override addEObject(EObject eObject) {
+	override createEObject(EObject eObject) {
 		val jaMoPPClass = eObject as Class
 		// i) + iii)
 		val hasPublicAnnotation = jaMoPPClass.annotationsAndModifiers.filter[aam|aam instanceof Public].size 
@@ -84,27 +96,42 @@ class ClassMappingTransformation extends EObjectMappingTransformation {
 			isCorrespondingClass =  true
 		}//TODO: v) b) else if (askuser)
 		
-		//last step: create corresponding for compilationUnit and for class 
+		//the corresponding instance should be created in the next method that is called by the framework
 		if(isCorrespondingClass){
-			val parentCorrespondences = correspondenceInstance.getAllCorrespondences(pcmComponentOrSystem)
-			var Correspondence parentCorrespondence = null
-			if(null != parentCorrespondences){
-				parentCorrespondence = parentCorrespondences.iterator.next
-			}
-			val EObjectCorrespondence class2Component = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-			class2Component.setElementA(pcmComponentOrSystem)
-			class2Component.setElementB(jaMoPPClass) 
-			class2Component.setParent(parentCorrespondence)
-			val EObjectCorrespondence compilationUnit2Component = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-			compilationUnit2Component.setElementA(pcmComponentOrSystem)
-			compilationUnit2Component.setElementB(jaMoPPClass.containingCompilationUnit)
-			compilationUnit2Component.setParent(parentCorrespondence)
-			compilationUnit2Component.dependentCorrespondences.add(class2Component)
-			class2Component.dependentCorrespondences.add(compilationUnit2Component)
-			correspondenceInstance.addSameTypeCorrespondence(class2Component)
-			correspondenceInstance.addSameTypeCorrespondence(compilationUnit2Component)
+			return pcmComponentOrSystem.toArray
+		} 
+		return null
+	}
+
+	/**
+	 * called after createEObject is called
+	 * creates the correspondences and returns the TransformationChangeResult object containing the PCM element that should be saved
+	 */	
+	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
+		val newClass = newValue as Class
+		val compilationUnit = newClass.containingCompilationUnit
+		if(newCorrespondingEObjects.nullOrEmpty){
+			//nothing todo --> return emtpy TransformationChangeResult
+			return TransformationUtils.createEmptyTransformationChangeResult
 		}
-		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(pcmComponentOrSystem.toArray)
+		val parentCorrespondences = correspondenceInstance.getAllCorrespondences(newValue)
+		var Correspondence parentCorrespondence = null
+		if(null != parentCorrespondences){
+			parentCorrespondence = parentCorrespondences.iterator.next
+		}
+		val EObjectCorrespondence class2Component = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
+		class2Component.setElementA(newCorrespondingEObjects.get(0))
+		class2Component.setElementB(newClass) 
+		class2Component.setParent(parentCorrespondence)
+		val EObjectCorrespondence compilationUnit2Component = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
+		compilationUnit2Component.setElementA(newCorrespondingEObjects.get(0))
+		compilationUnit2Component.setElementB(compilationUnit)
+		compilationUnit2Component.setParent(parentCorrespondence)
+		compilationUnit2Component.dependentCorrespondences.add(class2Component)
+		class2Component.dependentCorrespondences.add(compilationUnit2Component)
+		correspondenceInstance.addSameTypeCorrespondence(class2Component)
+		correspondenceInstance.addSameTypeCorrespondence(compilationUnit2Component)
+		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(newCorrespondingEObjects)
 	}
 
 	
@@ -118,64 +145,55 @@ class ClassMappingTransformation extends EObjectMappingTransformation {
 	 */
 	override removeEObject(EObject eObject) {
 		val jaMoPPClass = eObject as Class
-		val correspondences = correspondenceInstance.getAllCorrespondences(eObject);
+		val correspondences = correspondenceInstance.getAllCorrespondences(jaMoPPClass);
+		var eObjectsToDelete = new ArrayList<EObject>()
 		if(null != correspondences && 0 < correspondences.size ){
 			val classifiersInSamePackage = jaMoPPClass.containingCompilationUnit.classifiersInSamePackage
 			if(null != classifiersInSamePackage && 1 < classifiersInSamePackage.size){
 				//TODO: ask user whether to remove also this classifiers
 				var boolean removeAllClassifiers = false;
 				if(removeAllClassifiers){
-					classifiersInSamePackage.forEach[classifier|EcoreUtil.remove(classifier.containingCompilationUnit)]
+					eObjectsToDelete.addAll(classifiersInSamePackage)
 				}
-				EcoreUtil.remove(jaMoPPClass.containingCompilationUnit)
-				correspondences.forEach[correspondingObj|EcoreUtil.remove(correspondingObj)]				
+				eObjectsToDelete.add(jaMoPPClass.containingCompilationUnit)
+				correspondences.forEach[correspondingObj|EcoreUtil.remove(correspondingObj)]
+				eObjectsToDelete.addAll(correspondences)				
 			}
 			correspondenceInstance.removeAllCorrespondences(jaMoPPClass)
 		}	
 		return null
 	}
+
+	/**
+	 * we do not really need the method deleteNonRootEObjectInList in InterfaceMappingTransformation because the deletion of the 
+	 * object has already be done in removeEObject.
+	 * We just return an empty TransformationChangeResult 
+	 */
+	override deleteNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
+		return TransformationUtils.createEmptyTransformationChangeResult
+	}
 	
 	/**
 	 * if the class is renamed rename the corresponding objects on PCM side 
 	 */
-	override updateEAttribute(EObject eObject, EAttribute affectedAttribute, Object newValue) {
+	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue, Object newValue) {
 		val EStructuralFeature affectedPCMFeature = featureCorrespondenceMap.claimValueForKey(affectedAttribute)
-		var EObject ret = null
+		var Set<EObject> ret = new HashSet<EObject>()
 		try{
-			var correspondingPCMObjects = correspondenceInstance.claimCorrespondingEObjectsByType(eObject, RepositoryComponent)
+			var correspondingPCMObjects = correspondenceInstance.claimCorrespondingEObjectsByType(affectedEObject, RepositoryComponent)
 			for(correspondingPCMObject : correspondingPCMObjects){
 				correspondingPCMObject.eSet(affectedPCMFeature, newValue)
-				ret = correspondingPCMObject
+				ret.add(correspondingPCMObject)				
 			}
 		}catch(RuntimeException rt){
 			logger.trace(rt)
 		}
-		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(ret.toArray)
+		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(ret)
 	}
 	
-	
-	
-	/**
-	 * currently not needed (?) for Class
-	 */
-	override updateEReference(EObject eObject, EReference affectedEReference, Object newValue) {
-		//throw new RuntimeException("updateEReference should not be called for " + ClassMappingTransformation.simpleName)
-	}
-	
-	/**
-	 * currently not needed (?) for Class
-	 */
-	override updateEContainmentReference(EObject eObject, EReference afffectedEReference, Object newValue) {
-		//throw new RuntimeException("updateEContainmentReference should not be called for " + ClassMappingTransformation.simpleName)
-	}
-	
-	/**
-	 * sets the name correspondece for JaMoPP-class names and PCM-entityName Attribut
-	 */
-	override setCorrespondenceForFeatures() { 
-		val classNameAttribute = TransformationUtils::getAttributeByNameFromEObject( JaMoPPPCMNamespace.JAMOPP_ATTRIBUTE_NAME,  ClassifiersFactory.eINSTANCE.createClass)
-		val componentNameAttribute = TransformationUtils::getAttributeByNameFromEObject( JaMoPPPCMNamespace.PCM_ATTRIBUTE_ENTITY_NAME, RepositoryFactory.eINSTANCE.createBasicComponent )
-		featureCorrespondenceMap.put(classNameAttribute, componentNameAttribute)
+	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue, EObject[] newCorrespondingEObjects) {
+		logger.warn("method should not be called for ClassMappingTransformation transformation")
+		return null
 	}
 	
 }

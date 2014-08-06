@@ -2,8 +2,11 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java
 
 import de.uka.ipd.sdq.pcm.repository.OperationInterface
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMMappingTransformationBase
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMNamespace
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
+import edu.kit.ipd.sdq.vitruvius.framework.transformationexecuter.TransformationUtils
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
@@ -14,11 +17,12 @@ import org.emftext.language.java.classifiers.Interface
 import org.emftext.language.java.containers.CompilationUnit
 import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.Package
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMNamespace
+import org.apache.log4j.Logger
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.TransformationUtils
 
-class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.EObjectMappingTransformation {
+class OperationInterfaceMappingTransformation extends JaMoPPPCMMappingTransformationBase {
+
+	val private static Logger logger = Logger.getLogger(OperationInterfaceMappingTransformation.simpleName)
 
 	override Class<?> getClassOfMappedEObject() {
 		return typeof(OperationInterface)
@@ -29,10 +33,10 @@ class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.
 			attribute.name.equalsIgnoreCase(JaMoPPPCMNamespace::PCM_ATTRIBUTE_ENTITY_NAME)].iterator.next
 		var interfaceNameAttribute = ClassifiersFactory.eINSTANCE.createInterface.eClass.getEAllAttributes.filter[attribute|
 			attribute.name.equalsIgnoreCase(JaMoPPPCMNamespace::JAMOPP_ATTRIBUTE_NAME)].iterator.next
-		featureCorrespondenceMap.put(opInterfaceNameAttribute, interfaceNameAttribute)
+		featureCorrespondenceMap.put(opInterfaceNameAttribute, interfaceNameAttribute) 
 	}
 
-	override addEObject(EObject eObject) {
+	override createEObject(EObject eObject) {
 		val OperationInterface operationInterface = eObject as OperationInterface
 
 		// create Interface and compilation unit that contains the java interface
@@ -48,21 +52,22 @@ class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.
 		containingPackage.compilationUnits.add(correspondingCompilationUnit)
 		correspondingCompilationUnit.namespaces.addAll(containingPackage.namespaces)
 
+		return #[correspondingInterface, correspondingCompilationUnit]
+	}
+
+	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
 		//add new correspondence to correspondenceInstance
+		val operationInterface = newValue as OperationInterface
 		val parrentCorrespondence = correspondenceInstance.
 			claimUniqueOrNullCorrespondenceForEObject(operationInterface.repository__Interface);
-		val EObjectCorrespondence eObjectCorrespondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
-		eObjectCorrespondence.setElementA(operationInterface)
-		eObjectCorrespondence.setElementB(correspondingInterface)
-		eObjectCorrespondence.setParent(parrentCorrespondence)
-		correspondenceInstance.addSameTypeCorrespondence(eObjectCorrespondence)
-		val EObjectCorrespondence eObjectCorrespondence4CompilationUnit = CorrespondenceFactory.eINSTANCE.
-			createEObjectCorrespondence
-		eObjectCorrespondence4CompilationUnit.setElementA(operationInterface)
-		eObjectCorrespondence4CompilationUnit.setElementB(correspondingCompilationUnit)
-		eObjectCorrespondence.setParent(parrentCorrespondence)
-		correspondenceInstance.addSameTypeCorrespondence(eObjectCorrespondence4CompilationUnit)
-		return TransformationUtils.createTransformationChangeResultForNewRootEObjects(correspondingCompilationUnit.toArray)
+		for(correspondingEObject : newCorrespondingEObjects){
+			val EObjectCorrespondence eObjectCorrespondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence
+			eObjectCorrespondence.setElementA(operationInterface)
+			eObjectCorrespondence.setElementB(correspondingEObject)
+			eObjectCorrespondence.setParent(parrentCorrespondence)
+			correspondenceInstance.addSameTypeCorrespondence(eObjectCorrespondence)			
+		}
+		return TransformationUtils.createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects)
 	}
 
 	override removeEObject(EObject eObject) {
@@ -75,19 +80,40 @@ class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.
 		correspondenceInstance.removeAllCorrespondences(operationInterface)
 		return null 
 	}
+	
+	override deleteNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
+		return TransformationUtils.createEmptyTransformationChangeResult
+	}
 
-	override updateEAttribute(EObject eObject, EAttribute affectedAttribute, Object newValue) {
-		val OperationInterface operationInterface = eObject as OperationInterface
-		val EStructuralFeature affectedInterfaceFeature = featureCorrespondenceMap.claimValueForKey(affectedAttribute)
+	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue, Object newValue) {
+		if(!featureCorrespondenceMap.containsKey(affectedAttribute)){
+			logger.info("no feature correspondence found for affected Attribute: " + affectedAttribute)
+			return TransformationUtils.createEmptyTransformationChangeResult
+		}
+		var correspondingEObjects = correspondenceInstance.getAllCorrespondingEObjects(eObject)
+		if(null == correspondingEObjects){
+			logger.info("No corresponding objects found for " + eObject)
+			return TransformationUtils.createEmptyTransformationChangeResult
+		}
 		
-		val jaMoPPInterfaceCompilationUnit = correspondenceInstance.
-			claimUniqueCorrespondingEObjectByType(operationInterface, CompilationUnit)
-		val oldCompilationUnit = EcoreUtil.copy(jaMoPPInterfaceCompilationUnit)
-		jaMoPPInterfaceCompilationUnit.eSet(affectedInterfaceFeature, newValue + ".java")
-		val Interface jaMoPPInterface = correspondenceInstance.claimUniqueCorrespondingEObjectByType(operationInterface, Interface)
-		jaMoPPInterface.eSet(affectedInterfaceFeature, newValue)
+		var transformationChangeResult = new TransformationChangeResult
+		for(EObject correspondingObject : correspondingEObjects){
+			// compilationUnit was renamed: Delete old one and save new one
+			val oldObject = EcoreUtil.copy(correspondingObject)
+			if(correspondingObject instanceof CompilationUnit){
+				transformationChangeResult.existingObjectsToDelete.add(oldObject)
+			}
+			correspondingObject.eClass.eSet(featureCorrespondenceMap.get(affectedAttribute), newValue)
+			correspondenceInstance.update(oldObject, correspondingObject)
+			if(correspondingObject instanceof CompilationUnit){
+				transformationChangeResult.newRootObjectsToSave.add(correspondingObject)
+			}
+//			else{
+//				transformationChangeResult.existingObjectsToSave.add(correspondingObject)
+//			}
+		}
 		//TODO: Code refactoring anstossen
-		return TransformationUtils.createTransformationChangeResult(jaMoPPInterfaceCompilationUnit.toArray, oldCompilationUnit.toArray, null)
+		return transformationChangeResult		
 /* 		val Map<String, RoleMapping> roleMappings = IRoleMappingRegistry.INSTANCE.
 			getRoleMappingsForUri(JavaPackage.eNS_URI);
 		jaMoPPInterface.eSet(affectedInterfaceFeature, newValue )
@@ -107,14 +133,10 @@ class OperationInterfaceMappingTransformation extends edu.kit.ipd.sdq.vitruvius.
 		return refactoredEObj.toArray*/
 	}
 
-	override updateEReference(EObject eObject, EReference affectedEReference, Object newValue) {
-		val OperationInterface operationInterface = eObject as OperationInterface
-		return null
-	} 
-
-	override updateEContainmentReference(EObject eObject, EReference afffectedEReference, Object newValue) {
-
+	
+	
+	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue, EObject[] newCorrespondingEObjects) {
+		logger.warn("method createNonRootEObjectSingle should not be called for " + OperationInterfaceMappingTransformation.simpleName + " transformation")
 		return null
 	}
-
 }
