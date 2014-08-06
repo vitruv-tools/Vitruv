@@ -12,7 +12,9 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="affectedFeature" lowerBound="1">
         <eGenericType eTypeParameter="#//feature/EFeatureChange/T"/>
       </eStructuralFeatures>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="affectedEObject" lowerBound="1"
+      <eStructuralFeatures xsi:type="ecore:EReference" name="oldAffectedEObject" lowerBound="1"
+          eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="newAffectedEObject" lowerBound="1"
           eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="UpdateEFeature" abstract="true">

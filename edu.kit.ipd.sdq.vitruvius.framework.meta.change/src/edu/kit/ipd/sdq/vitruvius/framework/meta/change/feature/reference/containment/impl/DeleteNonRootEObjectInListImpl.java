@@ -39,7 +39,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.DeleteNonRootEObjectInListImpl#getRemovedObjectURIFragment <em>Removed Object URI Fragment</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.DeleteNonRootEObjectInListImpl#getOldValue <em>Old Value</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.DeleteNonRootEObjectInListImpl#getAffectedFeature <em>Affected Feature</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.DeleteNonRootEObjectInListImpl#getAffectedEObject <em>Affected EObject</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.DeleteNonRootEObjectInListImpl#getOldAffectedEObject <em>Old Affected EObject</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.DeleteNonRootEObjectInListImpl#getNewAffectedEObject <em>New Affected EObject</em>}</li>
  * </ul>
  * </p>
  *
@@ -107,14 +108,24 @@ public class DeleteNonRootEObjectInListImpl<T extends EObject> extends DeleteEOb
 	protected EReference affectedFeature;
 
 	/**
-	 * The cached value of the '{@link #getAffectedEObject() <em>Affected EObject</em>}' reference.
+	 * The cached value of the '{@link #getOldAffectedEObject() <em>Old Affected EObject</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getAffectedEObject()
+	 * @see #getOldAffectedEObject()
 	 * @generated
 	 * @ordered
 	 */
-	protected EObject affectedEObject;
+	protected EObject oldAffectedEObject;
+
+	/**
+	 * The cached value of the '{@link #getNewAffectedEObject() <em>New Affected EObject</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNewAffectedEObject()
+	 * @generated
+	 * @ordered
+	 */
+	protected EObject newAffectedEObject;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -241,16 +252,16 @@ public class DeleteNonRootEObjectInListImpl<T extends EObject> extends DeleteEOb
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EObject getAffectedEObject() {
-		if (affectedEObject != null && affectedEObject.eIsProxy()) {
-			InternalEObject oldAffectedEObject = (InternalEObject)affectedEObject;
-			affectedEObject = eResolveProxy(oldAffectedEObject);
-			if (affectedEObject != oldAffectedEObject) {
+	public EObject getOldAffectedEObject() {
+		if (oldAffectedEObject != null && oldAffectedEObject.eIsProxy()) {
+			InternalEObject oldOldAffectedEObject = (InternalEObject)oldAffectedEObject;
+			oldAffectedEObject = eResolveProxy(oldOldAffectedEObject);
+			if (oldAffectedEObject != oldOldAffectedEObject) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT, oldOldAffectedEObject, oldAffectedEObject));
 			}
 		}
-		return affectedEObject;
+		return oldAffectedEObject;
 	}
 
 	/**
@@ -258,8 +269,8 @@ public class DeleteNonRootEObjectInListImpl<T extends EObject> extends DeleteEOb
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EObject basicGetAffectedEObject() {
-		return affectedEObject;
+	public EObject basicGetOldAffectedEObject() {
+		return oldAffectedEObject;
 	}
 
 	/**
@@ -267,11 +278,49 @@ public class DeleteNonRootEObjectInListImpl<T extends EObject> extends DeleteEOb
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setAffectedEObject(EObject newAffectedEObject) {
-		EObject oldAffectedEObject = affectedEObject;
-		affectedEObject = newAffectedEObject;
+	public void setOldAffectedEObject(EObject newOldAffectedEObject) {
+		EObject oldOldAffectedEObject = oldAffectedEObject;
+		oldAffectedEObject = newOldAffectedEObject;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
+			eNotify(new ENotificationImpl(this, Notification.SET, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT, oldOldAffectedEObject, oldAffectedEObject));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EObject getNewAffectedEObject() {
+		if (newAffectedEObject != null && newAffectedEObject.eIsProxy()) {
+			InternalEObject oldNewAffectedEObject = (InternalEObject)newAffectedEObject;
+			newAffectedEObject = eResolveProxy(oldNewAffectedEObject);
+			if (newAffectedEObject != oldNewAffectedEObject) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT, oldNewAffectedEObject, newAffectedEObject));
+			}
+		}
+		return newAffectedEObject;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EObject basicGetNewAffectedEObject() {
+		return newAffectedEObject;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setNewAffectedEObject(EObject newNewAffectedEObject) {
+		EObject oldNewAffectedEObject = newAffectedEObject;
+		newAffectedEObject = newNewAffectedEObject;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT, oldNewAffectedEObject, newAffectedEObject));
 	}
 
 	/**
@@ -291,9 +340,12 @@ public class DeleteNonRootEObjectInListImpl<T extends EObject> extends DeleteEOb
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE:
 				if (resolve) return getAffectedFeature();
 				return basicGetAffectedFeature();
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_EOBJECT:
-				if (resolve) return getAffectedEObject();
-				return basicGetAffectedEObject();
+			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT:
+				if (resolve) return getOldAffectedEObject();
+				return basicGetOldAffectedEObject();
+			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT:
+				if (resolve) return getNewAffectedEObject();
+				return basicGetNewAffectedEObject();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -319,8 +371,11 @@ public class DeleteNonRootEObjectInListImpl<T extends EObject> extends DeleteEOb
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE:
 				setAffectedFeature((EReference)newValue);
 				return;
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_EOBJECT:
-				setAffectedEObject((EObject)newValue);
+			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT:
+				setOldAffectedEObject((EObject)newValue);
+				return;
+			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT:
+				setNewAffectedEObject((EObject)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -346,8 +401,11 @@ public class DeleteNonRootEObjectInListImpl<T extends EObject> extends DeleteEOb
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE:
 				setAffectedFeature((EReference)null);
 				return;
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_EOBJECT:
-				setAffectedEObject((EObject)null);
+			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT:
+				setOldAffectedEObject((EObject)null);
+				return;
+			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT:
+				setNewAffectedEObject((EObject)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -369,8 +427,10 @@ public class DeleteNonRootEObjectInListImpl<T extends EObject> extends DeleteEOb
 				return oldValue != null;
 			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE:
 				return affectedFeature != null;
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_EOBJECT:
-				return affectedEObject != null;
+			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT:
+				return oldAffectedEObject != null;
+			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT:
+				return newAffectedEObject != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -408,7 +468,8 @@ public class DeleteNonRootEObjectInListImpl<T extends EObject> extends DeleteEOb
 		if (baseClass == EFeatureChange.class) {
 			switch (derivedFeatureID) {
 				case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE;
-				case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT;
+				case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__OLD_AFFECTED_EOBJECT;
+				case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__NEW_AFFECTED_EOBJECT;
 				default: return -1;
 			}
 		}
@@ -458,7 +519,8 @@ public class DeleteNonRootEObjectInListImpl<T extends EObject> extends DeleteEOb
 		if (baseClass == EFeatureChange.class) {
 			switch (baseFeatureID) {
 				case FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE: return ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE;
-				case FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT: return ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_EOBJECT;
+				case FeaturePackage.EFEATURE_CHANGE__OLD_AFFECTED_EOBJECT: return ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT;
+				case FeaturePackage.EFEATURE_CHANGE__NEW_AFFECTED_EOBJECT: return ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT;
 				default: return -1;
 			}
 		}

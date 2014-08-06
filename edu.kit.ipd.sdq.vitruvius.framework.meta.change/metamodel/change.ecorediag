@@ -911,20 +911,6 @@
     <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_9dmgkhutEeSLyaPAzaQhig" id="(0.24369747899159663,0.0)"/>
     <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_9dnHoButEeSLyaPAzaQhig" id="(0.4962962962962963,1.0)"/>
   </edges>
-  <edges xmi:type="notation:Edge" xmi:id="_9cz2YButEeSLyaPAzaQhig" type="3002" source="_8csdMButEeSLyaPAzaQhig" target="_9bpYwButEeSLyaPAzaQhig">
-    <children xmi:type="notation:Node" xmi:id="_9c0dcButEeSLyaPAzaQhig" type="4011">
-      <layoutConstraint xmi:type="notation:Location" xmi:id="_9c0dcRutEeSLyaPAzaQhig" x="-10" y="-10"/>
-    </children>
-    <children xmi:type="notation:Node" xmi:id="_9c0dchutEeSLyaPAzaQhig" type="4012">
-      <layoutConstraint xmi:type="notation:Location" xmi:id="_9c0dcxutEeSLyaPAzaQhig" x="10" y="10"/>
-    </children>
-    <styles xmi:type="notation:ConnectorStyle" xmi:id="_9cz2YRutEeSLyaPAzaQhig" lineColor="4210752"/>
-    <styles xmi:type="notation:FontStyle" xmi:id="_9cz2YhutEeSLyaPAzaQhig" fontColor="4210752" fontName="Ubuntu" fontHeight="10"/>
-    <element xmi:type="ecore:EReference" href="change.ecore#//feature/EFeatureChange/affectedEObject"/>
-    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_9cz2YxutEeSLyaPAzaQhig" points="[0, 0, 0, 78]$[0, -78, 0, 0]"/>
-    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_9dmgkButEeSLyaPAzaQhig" id="(0.9915966386554622,0.5384615384615384)"/>
-    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_9dmgkRutEeSLyaPAzaQhig" id="(0.5,1.0)"/>
-  </edges>
   <edges xmi:type="notation:Edge" xmi:id="_9c1EgButEeSLyaPAzaQhig" type="3003" source="_9btDIhutEeSLyaPAzaQhig" target="_8csdMButEeSLyaPAzaQhig">
     <styles xmi:type="notation:ConnectorStyle" xmi:id="_9c1EgRutEeSLyaPAzaQhig" routing="Rectilinear" lineColor="4210752"/>
     <styles xmi:type="notation:FontStyle" xmi:id="_9c1EghutEeSLyaPAzaQhig" fontName="Ubuntu"/>
@@ -1272,5 +1258,32 @@
     <styles xmi:type="notation:FontStyle" xmi:id="_7GnC4hyQEeSn9LqxigSzJw" fontName="Ubuntu"/>
     <element xsi:nil="true"/>
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_7GnC4xyQEeSn9LqxigSzJw" points="[0, 1, -29, -136]$[26, 123, -3, -14]"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_8H1DgB05EeSQV85ItxG-_Q" type="3002" source="_8csdMButEeSLyaPAzaQhig" target="_9bpYwButEeSLyaPAzaQhig">
+    <children xmi:type="notation:Node" xmi:id="_8H4G0B05EeSQV85ItxG-_Q" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_8H4G0R05EeSQV85ItxG-_Q" x="-14" y="-23"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_8H4G0h05EeSQV85ItxG-_Q" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_8H4G0x05EeSQV85ItxG-_Q" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_8H1DgR05EeSQV85ItxG-_Q" lineColor="4210752"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_8H1Dgh05EeSQV85ItxG-_Q" fontColor="4210752" fontName="Ubuntu" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="change.ecore#//feature/EFeatureChange/oldAffectedEObject"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_8H1Dgx05EeSQV85ItxG-_Q" points="[29, 4, -358, -41]$[437, 46, 50, 1]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_8H6jEB05EeSQV85ItxG-_Q" id="(0.9159663865546218,0.27586206896551724)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="__JHqQB05EeSQV85ItxG-_Q" id="(0.0196078431372549,0.175)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_8-MDwB05EeSQV85ItxG-_Q" type="3002" source="_8csdMButEeSLyaPAzaQhig" target="_9bpYwButEeSLyaPAzaQhig">
+    <children xmi:type="notation:Node" xmi:id="_8-MDxB05EeSQV85ItxG-_Q" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_8-MDxR05EeSQV85ItxG-_Q" x="-86" y="25"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_8-MDxh05EeSQV85ItxG-_Q" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_8-MDxx05EeSQV85ItxG-_Q" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_8-MDwR05EeSQV85ItxG-_Q" lineColor="4210752"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_8-MDwh05EeSQV85ItxG-_Q" fontColor="4210752" fontName="Ubuntu" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="change.ecore#//feature/EFeatureChange/newAffectedEObject"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_8-MDwx05EeSQV85ItxG-_Q" points="[59, 8, -325, -50]$[367, 55, -17, -3]"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_8-OgAB05EeSQV85ItxG-_Q" id="(0.17647058823529413,0.825)"/>
   </edges>
 </notation:Diagram>

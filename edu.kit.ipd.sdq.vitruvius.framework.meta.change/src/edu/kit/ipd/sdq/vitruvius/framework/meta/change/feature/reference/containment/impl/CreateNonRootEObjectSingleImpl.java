@@ -33,7 +33,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * The following features are implemented:
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.CreateNonRootEObjectSingleImpl#getAffectedFeature <em>Affected Feature</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.CreateNonRootEObjectSingleImpl#getAffectedEObject <em>Affected EObject</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.CreateNonRootEObjectSingleImpl#getOldAffectedEObject <em>Old Affected EObject</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.CreateNonRootEObjectSingleImpl#getNewAffectedEObject <em>New Affected EObject</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.CreateNonRootEObjectSingleImpl#getNewValue <em>New Value</em>}</li>
  * </ul>
  * </p>
@@ -52,14 +53,24 @@ public class CreateNonRootEObjectSingleImpl<T extends EObject> extends CreateEOb
 	protected EReference affectedFeature;
 
 	/**
-	 * The cached value of the '{@link #getAffectedEObject() <em>Affected EObject</em>}' reference.
+	 * The cached value of the '{@link #getOldAffectedEObject() <em>Old Affected EObject</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getAffectedEObject()
+	 * @see #getOldAffectedEObject()
 	 * @generated
 	 * @ordered
 	 */
-	protected EObject affectedEObject;
+	protected EObject oldAffectedEObject;
+
+	/**
+	 * The cached value of the '{@link #getNewAffectedEObject() <em>New Affected EObject</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNewAffectedEObject()
+	 * @generated
+	 * @ordered
+	 */
+	protected EObject newAffectedEObject;
 
 	/**
 	 * The cached value of the '{@link #getNewValue() <em>New Value</em>}' attribute.
@@ -133,16 +144,16 @@ public class CreateNonRootEObjectSingleImpl<T extends EObject> extends CreateEOb
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EObject getAffectedEObject() {
-		if (affectedEObject != null && affectedEObject.eIsProxy()) {
-			InternalEObject oldAffectedEObject = (InternalEObject)affectedEObject;
-			affectedEObject = eResolveProxy(oldAffectedEObject);
-			if (affectedEObject != oldAffectedEObject) {
+	public EObject getOldAffectedEObject() {
+		if (oldAffectedEObject != null && oldAffectedEObject.eIsProxy()) {
+			InternalEObject oldOldAffectedEObject = (InternalEObject)oldAffectedEObject;
+			oldAffectedEObject = eResolveProxy(oldOldAffectedEObject);
+			if (oldAffectedEObject != oldOldAffectedEObject) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__OLD_AFFECTED_EOBJECT, oldOldAffectedEObject, oldAffectedEObject));
 			}
 		}
-		return affectedEObject;
+		return oldAffectedEObject;
 	}
 
 	/**
@@ -150,8 +161,8 @@ public class CreateNonRootEObjectSingleImpl<T extends EObject> extends CreateEOb
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EObject basicGetAffectedEObject() {
-		return affectedEObject;
+	public EObject basicGetOldAffectedEObject() {
+		return oldAffectedEObject;
 	}
 
 	/**
@@ -159,11 +170,49 @@ public class CreateNonRootEObjectSingleImpl<T extends EObject> extends CreateEOb
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setAffectedEObject(EObject newAffectedEObject) {
-		EObject oldAffectedEObject = affectedEObject;
-		affectedEObject = newAffectedEObject;
+	public void setOldAffectedEObject(EObject newOldAffectedEObject) {
+		EObject oldOldAffectedEObject = oldAffectedEObject;
+		oldAffectedEObject = newOldAffectedEObject;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
+			eNotify(new ENotificationImpl(this, Notification.SET, ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__OLD_AFFECTED_EOBJECT, oldOldAffectedEObject, oldAffectedEObject));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EObject getNewAffectedEObject() {
+		if (newAffectedEObject != null && newAffectedEObject.eIsProxy()) {
+			InternalEObject oldNewAffectedEObject = (InternalEObject)newAffectedEObject;
+			newAffectedEObject = eResolveProxy(oldNewAffectedEObject);
+			if (newAffectedEObject != oldNewAffectedEObject) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__NEW_AFFECTED_EOBJECT, oldNewAffectedEObject, newAffectedEObject));
+			}
+		}
+		return newAffectedEObject;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EObject basicGetNewAffectedEObject() {
+		return newAffectedEObject;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setNewAffectedEObject(EObject newNewAffectedEObject) {
+		EObject oldNewAffectedEObject = newAffectedEObject;
+		newAffectedEObject = newNewAffectedEObject;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__NEW_AFFECTED_EOBJECT, oldNewAffectedEObject, newAffectedEObject));
 	}
 
 	/**
@@ -198,9 +247,12 @@ public class CreateNonRootEObjectSingleImpl<T extends EObject> extends CreateEOb
 			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__AFFECTED_FEATURE:
 				if (resolve) return getAffectedFeature();
 				return basicGetAffectedFeature();
-			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__AFFECTED_EOBJECT:
-				if (resolve) return getAffectedEObject();
-				return basicGetAffectedEObject();
+			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__OLD_AFFECTED_EOBJECT:
+				if (resolve) return getOldAffectedEObject();
+				return basicGetOldAffectedEObject();
+			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__NEW_AFFECTED_EOBJECT:
+				if (resolve) return getNewAffectedEObject();
+				return basicGetNewAffectedEObject();
 			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__NEW_VALUE:
 				return getNewValue();
 		}
@@ -219,8 +271,11 @@ public class CreateNonRootEObjectSingleImpl<T extends EObject> extends CreateEOb
 			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__AFFECTED_FEATURE:
 				setAffectedFeature((EReference)newValue);
 				return;
-			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__AFFECTED_EOBJECT:
-				setAffectedEObject((EObject)newValue);
+			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__OLD_AFFECTED_EOBJECT:
+				setOldAffectedEObject((EObject)newValue);
+				return;
+			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__NEW_AFFECTED_EOBJECT:
+				setNewAffectedEObject((EObject)newValue);
 				return;
 			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__NEW_VALUE:
 				setNewValue((T)newValue);
@@ -240,8 +295,11 @@ public class CreateNonRootEObjectSingleImpl<T extends EObject> extends CreateEOb
 			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__AFFECTED_FEATURE:
 				setAffectedFeature((EReference)null);
 				return;
-			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__AFFECTED_EOBJECT:
-				setAffectedEObject((EObject)null);
+			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__OLD_AFFECTED_EOBJECT:
+				setOldAffectedEObject((EObject)null);
+				return;
+			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__NEW_AFFECTED_EOBJECT:
+				setNewAffectedEObject((EObject)null);
 				return;
 			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__NEW_VALUE:
 				setNewValue((T)null);
@@ -260,8 +318,10 @@ public class CreateNonRootEObjectSingleImpl<T extends EObject> extends CreateEOb
 		switch (featureID) {
 			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__AFFECTED_FEATURE:
 				return affectedFeature != null;
-			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__AFFECTED_EOBJECT:
-				return affectedEObject != null;
+			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__OLD_AFFECTED_EOBJECT:
+				return oldAffectedEObject != null;
+			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__NEW_AFFECTED_EOBJECT:
+				return newAffectedEObject != null;
 			case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__NEW_VALUE:
 				return newValue != null;
 		}
@@ -288,7 +348,8 @@ public class CreateNonRootEObjectSingleImpl<T extends EObject> extends CreateEOb
 		if (baseClass == EFeatureChange.class) {
 			switch (derivedFeatureID) {
 				case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__AFFECTED_FEATURE: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE;
-				case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT;
+				case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__OLD_AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__OLD_AFFECTED_EOBJECT;
+				case ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__NEW_AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__NEW_AFFECTED_EOBJECT;
 				default: return -1;
 			}
 		}
@@ -330,7 +391,8 @@ public class CreateNonRootEObjectSingleImpl<T extends EObject> extends CreateEOb
 		if (baseClass == EFeatureChange.class) {
 			switch (baseFeatureID) {
 				case FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE: return ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__AFFECTED_FEATURE;
-				case FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT: return ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__AFFECTED_EOBJECT;
+				case FeaturePackage.EFEATURE_CHANGE__OLD_AFFECTED_EOBJECT: return ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__OLD_AFFECTED_EOBJECT;
+				case FeaturePackage.EFEATURE_CHANGE__NEW_AFFECTED_EOBJECT: return ContainmentPackage.CREATE_NON_ROOT_EOBJECT_SINGLE__NEW_AFFECTED_EOBJECT;
 				default: return -1;
 			}
 		}

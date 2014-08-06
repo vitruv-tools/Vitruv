@@ -14,7 +14,9 @@
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference change.ecore#//feature/EFeatureChange/affectedFeature"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference change.ecore#//feature/EFeatureChange/affectedEObject"/>
+            ecoreFeature="ecore:EReference change.ecore#//feature/EFeatureChange/oldAffectedEObject"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference change.ecore#//feature/EFeatureChange/newAffectedEObject"/>
       </genClasses>
       <genClasses image="false" ecoreClass="change.ecore#//feature/UpdateEFeature">
         <genTypeParameters ecoreTypeParameter="change.ecore#//feature/UpdateEFeature/T"/>

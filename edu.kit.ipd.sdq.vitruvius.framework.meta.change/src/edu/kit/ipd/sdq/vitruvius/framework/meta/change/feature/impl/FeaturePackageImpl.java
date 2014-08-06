@@ -221,8 +221,17 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getEFeatureChange_AffectedEObject() {
+	public EReference getEFeatureChange_OldAffectedEObject() {
 		return (EReference)eFeatureChangeEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getEFeatureChange_NewAffectedEObject() {
+		return (EReference)eFeatureChangeEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -345,7 +354,8 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		// Create classes and their features
 		eFeatureChangeEClass = createEClass(EFEATURE_CHANGE);
 		createEReference(eFeatureChangeEClass, EFEATURE_CHANGE__AFFECTED_FEATURE);
-		createEReference(eFeatureChangeEClass, EFEATURE_CHANGE__AFFECTED_EOBJECT);
+		createEReference(eFeatureChangeEClass, EFEATURE_CHANGE__OLD_AFFECTED_EOBJECT);
+		createEReference(eFeatureChangeEClass, EFEATURE_CHANGE__NEW_AFFECTED_EOBJECT);
 
 		updateEFeatureEClass = createEClass(UPDATE_EFEATURE);
 
@@ -466,7 +476,8 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		initEClass(eFeatureChangeEClass, EFeatureChange.class, "EFeatureChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		g1 = createEGenericType(eFeatureChangeEClass_T);
 		initEReference(getEFeatureChange_AffectedFeature(), g1, null, "affectedFeature", null, 1, 1, EFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEFeatureChange_AffectedEObject(), ecorePackage.getEObject(), null, "affectedEObject", null, 1, 1, EFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEFeatureChange_OldAffectedEObject(), ecorePackage.getEObject(), null, "oldAffectedEObject", null, 1, 1, EFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEFeatureChange_NewAffectedEObject(), ecorePackage.getEObject(), null, "newAffectedEObject", null, 1, 1, EFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(updateEFeatureEClass, UpdateEFeature.class, "UpdateEFeature", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

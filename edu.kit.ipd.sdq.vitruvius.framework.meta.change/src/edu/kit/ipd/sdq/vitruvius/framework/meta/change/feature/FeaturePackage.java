@@ -77,13 +77,22 @@ public interface FeaturePackage extends EPackage {
 	int EFEATURE_CHANGE__AFFECTED_FEATURE = ChangePackage.ECHANGE_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+	 * The feature id for the '<em><b>Old Affected EObject</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EFEATURE_CHANGE__AFFECTED_EOBJECT = ChangePackage.ECHANGE_FEATURE_COUNT + 1;
+	int EFEATURE_CHANGE__OLD_AFFECTED_EOBJECT = ChangePackage.ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>New Affected EObject</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EFEATURE_CHANGE__NEW_AFFECTED_EOBJECT = ChangePackage.ECHANGE_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>EFeature Change</em>' class.
@@ -92,7 +101,7 @@ public interface FeaturePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EFEATURE_CHANGE_FEATURE_COUNT = ChangePackage.ECHANGE_FEATURE_COUNT + 2;
+	int EFEATURE_CHANGE_FEATURE_COUNT = ChangePackage.ECHANGE_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.UpdateEFeatureImpl <em>Update EFeature</em>}' class.
@@ -171,13 +180,22 @@ public interface FeaturePackage extends EPackage {
 	int UNSET_EFEATURE__AFFECTED_FEATURE = EFEATURE_CHANGE__AFFECTED_FEATURE;
 
 	/**
-	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+	 * The feature id for the '<em><b>Old Affected EObject</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UNSET_EFEATURE__AFFECTED_EOBJECT = EFEATURE_CHANGE__AFFECTED_EOBJECT;
+	int UNSET_EFEATURE__OLD_AFFECTED_EOBJECT = EFEATURE_CHANGE__OLD_AFFECTED_EOBJECT;
+
+	/**
+	 * The feature id for the '<em><b>New Affected EObject</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNSET_EFEATURE__NEW_AFFECTED_EOBJECT = EFEATURE_CHANGE__NEW_AFFECTED_EOBJECT;
 
 	/**
 	 * The number of structural features of the '<em>Unset EFeature</em>' class.
@@ -208,13 +226,22 @@ public interface FeaturePackage extends EPackage {
 	int UNSET_EATTRIBUTE__AFFECTED_FEATURE = UNSET_EFEATURE__AFFECTED_FEATURE;
 
 	/**
-	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+	 * The feature id for the '<em><b>Old Affected EObject</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UNSET_EATTRIBUTE__AFFECTED_EOBJECT = UNSET_EFEATURE__AFFECTED_EOBJECT;
+	int UNSET_EATTRIBUTE__OLD_AFFECTED_EOBJECT = UNSET_EFEATURE__OLD_AFFECTED_EOBJECT;
+
+	/**
+	 * The feature id for the '<em><b>New Affected EObject</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNSET_EATTRIBUTE__NEW_AFFECTED_EOBJECT = UNSET_EFEATURE__NEW_AFFECTED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
@@ -254,13 +281,22 @@ public interface FeaturePackage extends EPackage {
 	int UNSET_EREFERENCE__AFFECTED_FEATURE = UNSET_EFEATURE__AFFECTED_FEATURE;
 
 	/**
-	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+	 * The feature id for the '<em><b>Old Affected EObject</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UNSET_EREFERENCE__AFFECTED_EOBJECT = UNSET_EFEATURE__AFFECTED_EOBJECT;
+	int UNSET_EREFERENCE__OLD_AFFECTED_EOBJECT = UNSET_EFEATURE__OLD_AFFECTED_EOBJECT;
+
+	/**
+	 * The feature id for the '<em><b>New Affected EObject</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNSET_EREFERENCE__NEW_AFFECTED_EOBJECT = UNSET_EFEATURE__NEW_AFFECTED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
@@ -301,13 +337,22 @@ public interface FeaturePackage extends EPackage {
 	int UNSET_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE = UNSET_EREFERENCE__AFFECTED_FEATURE;
 
 	/**
-	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+	 * The feature id for the '<em><b>Old Affected EObject</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UNSET_NON_CONTAINMENT_EREFERENCE__AFFECTED_EOBJECT = UNSET_EREFERENCE__AFFECTED_EOBJECT;
+	int UNSET_NON_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT = UNSET_EREFERENCE__OLD_AFFECTED_EOBJECT;
+
+	/**
+	 * The feature id for the '<em><b>New Affected EObject</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNSET_NON_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT = UNSET_EREFERENCE__NEW_AFFECTED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
@@ -347,13 +392,22 @@ public interface FeaturePackage extends EPackage {
 	int UNSET_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE = UNSET_EREFERENCE__AFFECTED_FEATURE;
 
 	/**
-	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+	 * The feature id for the '<em><b>Old Affected EObject</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UNSET_CONTAINMENT_EREFERENCE__AFFECTED_EOBJECT = UNSET_EREFERENCE__AFFECTED_EOBJECT;
+	int UNSET_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT = UNSET_EREFERENCE__OLD_AFFECTED_EOBJECT;
+
+	/**
+	 * The feature id for the '<em><b>New Affected EObject</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNSET_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT = UNSET_EREFERENCE__NEW_AFFECTED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
@@ -396,15 +450,26 @@ public interface FeaturePackage extends EPackage {
 	EReference getEFeatureChange_AffectedFeature();
 
 	/**
-	 * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange#getAffectedEObject <em>Affected EObject</em>}'.
+	 * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange#getOldAffectedEObject <em>Old Affected EObject</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Affected EObject</em>'.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange#getAffectedEObject()
+	 * @return the meta object for the reference '<em>Old Affected EObject</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange#getOldAffectedEObject()
 	 * @see #getEFeatureChange()
 	 * @generated
 	 */
-	EReference getEFeatureChange_AffectedEObject();
+	EReference getEFeatureChange_OldAffectedEObject();
+
+	/**
+	 * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange#getNewAffectedEObject <em>New Affected EObject</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>New Affected EObject</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange#getNewAffectedEObject()
+	 * @see #getEFeatureChange()
+	 * @generated
+	 */
+	EReference getEFeatureChange_NewAffectedEObject();
 
 	/**
 	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UpdateEFeature <em>Update EFeature</em>}'.
@@ -549,12 +614,20 @@ public interface FeaturePackage extends EPackage {
 		EReference EFEATURE_CHANGE__AFFECTED_FEATURE = eINSTANCE.getEFeatureChange_AffectedFeature();
 
 		/**
-		 * The meta object literal for the '<em><b>Affected EObject</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Old Affected EObject</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference EFEATURE_CHANGE__AFFECTED_EOBJECT = eINSTANCE.getEFeatureChange_AffectedEObject();
+		EReference EFEATURE_CHANGE__OLD_AFFECTED_EOBJECT = eINSTANCE.getEFeatureChange_OldAffectedEObject();
+
+		/**
+		 * The meta object literal for the '<em><b>New Affected EObject</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference EFEATURE_CHANGE__NEW_AFFECTED_EOBJECT = eINSTANCE.getEFeatureChange_NewAffectedEObject();
 
 		/**
 		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.UpdateEFeatureImpl <em>Update EFeature</em>}' class.

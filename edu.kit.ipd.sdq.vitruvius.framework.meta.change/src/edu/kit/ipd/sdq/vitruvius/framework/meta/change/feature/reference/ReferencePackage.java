@@ -78,13 +78,22 @@ public interface ReferencePackage extends EPackage {
 	int UPDATE_EREFERENCE__AFFECTED_FEATURE = FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE;
 
 	/**
-	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+	 * The feature id for the '<em><b>Old Affected EObject</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UPDATE_EREFERENCE__AFFECTED_EOBJECT = FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT;
+	int UPDATE_EREFERENCE__OLD_AFFECTED_EOBJECT = FeaturePackage.EFEATURE_CHANGE__OLD_AFFECTED_EOBJECT;
+
+	/**
+	 * The feature id for the '<em><b>New Affected EObject</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_EREFERENCE__NEW_AFFECTED_EOBJECT = FeaturePackage.EFEATURE_CHANGE__NEW_AFFECTED_EOBJECT;
 
 	/**
 	 * The number of structural features of the '<em>Update EReference</em>' class.
@@ -115,13 +124,22 @@ public interface ReferencePackage extends EPackage {
 	int UPDATE_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE = UPDATE_EREFERENCE__AFFECTED_FEATURE;
 
 	/**
-	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+	 * The feature id for the '<em><b>Old Affected EObject</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UPDATE_NON_CONTAINMENT_EREFERENCE__AFFECTED_EOBJECT = UPDATE_EREFERENCE__AFFECTED_EOBJECT;
+	int UPDATE_NON_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT = UPDATE_EREFERENCE__OLD_AFFECTED_EOBJECT;
+
+	/**
+	 * The feature id for the '<em><b>New Affected EObject</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_NON_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT = UPDATE_EREFERENCE__NEW_AFFECTED_EOBJECT;
 
 	/**
 	 * The number of structural features of the '<em>Update Non Containment EReference</em>' class.
@@ -152,13 +170,22 @@ public interface ReferencePackage extends EPackage {
 	int UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+	 * The feature id for the '<em><b>Old Affected EObject</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__AFFECTED_EOBJECT = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 1;
+	int UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>New Affected EObject</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
@@ -167,7 +194,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__OLD_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 2;
+	int UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__OLD_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>New Value</b></em>' attribute.
@@ -176,7 +203,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__NEW_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 3;
+	int UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE__NEW_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Update Single Valued Non Containment EReference</em>' class.
@@ -185,7 +212,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE_FEATURE_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 4;
+	int UPDATE_SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE_FEATURE_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.impl.InsertNonContainmentEReferenceImpl <em>Insert Non Containment EReference</em>}' class.
@@ -225,13 +252,22 @@ public interface ReferencePackage extends EPackage {
 	int INSERT_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE = ListPackage.INSERT_IN_ELIST_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+	 * The feature id for the '<em><b>Old Affected EObject</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_NON_CONTAINMENT_EREFERENCE__AFFECTED_EOBJECT = ListPackage.INSERT_IN_ELIST_FEATURE_COUNT + 1;
+	int INSERT_NON_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT = ListPackage.INSERT_IN_ELIST_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>New Affected EObject</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_NON_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT = ListPackage.INSERT_IN_ELIST_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Insert Non Containment EReference</em>' class.
@@ -240,7 +276,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_NON_CONTAINMENT_EREFERENCE_FEATURE_COUNT = ListPackage.INSERT_IN_ELIST_FEATURE_COUNT + 2;
+	int INSERT_NON_CONTAINMENT_EREFERENCE_FEATURE_COUNT = ListPackage.INSERT_IN_ELIST_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.impl.ReplaceNonContainmentEReferenceImpl <em>Replace Non Containment EReference</em>}' class.
@@ -289,13 +325,22 @@ public interface ReferencePackage extends EPackage {
 	int REPLACE_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE = ListPackage.REPLACE_IN_ELIST_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+	 * The feature id for the '<em><b>Old Affected EObject</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_NON_CONTAINMENT_EREFERENCE__AFFECTED_EOBJECT = ListPackage.REPLACE_IN_ELIST_FEATURE_COUNT + 1;
+	int REPLACE_NON_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT = ListPackage.REPLACE_IN_ELIST_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>New Affected EObject</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_NON_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT = ListPackage.REPLACE_IN_ELIST_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Replace Non Containment EReference</em>' class.
@@ -304,7 +349,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_NON_CONTAINMENT_EREFERENCE_FEATURE_COUNT = ListPackage.REPLACE_IN_ELIST_FEATURE_COUNT + 2;
+	int REPLACE_NON_CONTAINMENT_EREFERENCE_FEATURE_COUNT = ListPackage.REPLACE_IN_ELIST_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.impl.RemoveNonContainmentEReferenceImpl <em>Remove Non Containment EReference</em>}' class.
@@ -353,13 +398,22 @@ public interface ReferencePackage extends EPackage {
 	int REMOVE_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE = ListPackage.REMOVE_FROM_ELIST_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+	 * The feature id for the '<em><b>Old Affected EObject</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_NON_CONTAINMENT_EREFERENCE__AFFECTED_EOBJECT = ListPackage.REMOVE_FROM_ELIST_FEATURE_COUNT + 1;
+	int REMOVE_NON_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT = ListPackage.REMOVE_FROM_ELIST_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>New Affected EObject</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_NON_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT = ListPackage.REMOVE_FROM_ELIST_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Remove Non Containment EReference</em>' class.
@@ -368,7 +422,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_NON_CONTAINMENT_EREFERENCE_FEATURE_COUNT = ListPackage.REMOVE_FROM_ELIST_FEATURE_COUNT + 2;
+	int REMOVE_NON_CONTAINMENT_EREFERENCE_FEATURE_COUNT = ListPackage.REMOVE_FROM_ELIST_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.impl.PermuteNonContainmentEReferenceValuesImpl <em>Permute Non Containment EReference Values</em>}' class.
@@ -399,13 +453,22 @@ public interface ReferencePackage extends EPackage {
 	int PERMUTE_NON_CONTAINMENT_EREFERENCE_VALUES__AFFECTED_FEATURE = ListPackage.PERMUTE_ELIST_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+	 * The feature id for the '<em><b>Old Affected EObject</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PERMUTE_NON_CONTAINMENT_EREFERENCE_VALUES__AFFECTED_EOBJECT = ListPackage.PERMUTE_ELIST_FEATURE_COUNT + 1;
+	int PERMUTE_NON_CONTAINMENT_EREFERENCE_VALUES__OLD_AFFECTED_EOBJECT = ListPackage.PERMUTE_ELIST_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>New Affected EObject</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PERMUTE_NON_CONTAINMENT_EREFERENCE_VALUES__NEW_AFFECTED_EOBJECT = ListPackage.PERMUTE_ELIST_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Permute Non Containment EReference Values</em>' class.
@@ -414,7 +477,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PERMUTE_NON_CONTAINMENT_EREFERENCE_VALUES_FEATURE_COUNT = ListPackage.PERMUTE_ELIST_FEATURE_COUNT + 2;
+	int PERMUTE_NON_CONTAINMENT_EREFERENCE_VALUES_FEATURE_COUNT = ListPackage.PERMUTE_ELIST_FEATURE_COUNT + 3;
 
 
 	/**
