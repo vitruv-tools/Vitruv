@@ -116,14 +116,6 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
         return this.key2ValueMap.get(key);
     }
 
-    @Override
-    public void updateLeafKey(final V leafValue, final List<K> currentKeys, final K newLeafKey) {
-        Pair<RecursiveMap<K, V>, K> mapAndKeyForLeaf = getMapAndKeyForLeaf(leafValue, currentKeys);
-        RecursiveMap<K, V> mapForLeaf = mapAndKeyForLeaf.getFirst();
-        K oldLeafKey = mapAndKeyForLeaf.getSecond();
-        mapForLeaf.replaceKey(oldLeafKey, newLeafKey);
-    }
-
     private Pair<RecursiveMap<K, V>, K> getMapAndKeyForLeaf(final V leafValue, final List<K> currentKeys) {
         Iterator<K> currentKeysIterator = currentKeys.iterator();
         // perform a special first loop iteration because getNextMap() cannot be called on null
@@ -268,15 +260,7 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
 
     @Override
     public String toString() {
-        return toString(0);
-    }
-
-    @Override
-    public String toString(final Integer offset) {
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < offset; i++) {
-            sb.append(" ");
-        }
         Set<Entry<K, RecursiveMap<K, V>>> nextMapEntrySet = this.key2NextRecursiveMapMap.entrySet();
         List<Entry<K, RecursiveMap<K, V>>> nextMapEntryList = new ArrayList<Entry<K, RecursiveMap<K, V>>>(
                 nextMapEntrySet);
@@ -301,7 +285,7 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
                 s = "=(" + value + ")";
             }
             RecursiveMap<K, V> nextMap = nextMapEntry.getValue();
-            sb.append(s + nextMap.toString(offset));
+            sb.append(s + nextMap.toString());
         }
         Set<Entry<K, V>> key2ValueEntrySet = this.key2ValueMap.entrySet();
         for (Entry<K, V> key2ValueEntry : key2ValueEntrySet) {
@@ -311,16 +295,15 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
                 sb.append("_(" + value + ")\n");
             }
         }
-        // offset = offset + 1;
         return sb.toString();
     }
 
     @Override
-    public Collection<V> values() {
+    public Collection<V> allValues() {
         Collection<V> values = new ArrayList<V>();
         Collection<RecursiveMap<K, V>> nextMaps = this.key2NextRecursiveMapMap.values();
         for (RecursiveMap<K, V> nextMap : nextMaps) {
-            values.addAll(nextMap.values());
+            values.addAll(nextMap.allValues());
         }
         values.addAll(this.key2ValueMap.values());
         return values;

@@ -13,7 +13,36 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ForwardHashedBackwardLinkedTree;
 
 /**
- * Implements the multiton design pattern.
+ * A class for Temporarily Unique IDentifiers (TUIDs) that internally uses a
+ * {@link ForwardHashedBackwardLinkedTree} to ensure that depending TUIDs are indirectly changed,
+ * i.e. a call to toString() always returns the current TUID based on the links to its predecessors.
+ * Implements the multiton design pattern to ensure that there exists only one TUID instance per
+ * String key.<br/>
+ * <br/>
+ * 
+ * Helpful thoughts for TUID modifications in file systems and Java projects:<br/>
+ * <br/>
+ * If a package is renamed in Java, then only the paths of all contained classifiers are affected.
+ * The paths of subpackages are not affected but they are no longer subpackages. If a package is
+ * renamed in Java, then the depth of its path may change arbitrarily. In such cases
+ * {@link #renameLastSegment(String)} should be called. <br/>
+ * <br/>
+ * 
+ * If a folder is renamed, then the paths of all contained elements are affected but the depth may
+ * not change. In such cases {@link #renameLastSegment(String)} should be called. <br/>
+ * <br/>
+ * 
+ * If a package is moved in Java, then it may only be completely moved to another folder and
+ * subpackages are not affected. It is not possible to move subpackages to another package. It is
+ * however possible to move a package to a folder in which the package or a subpackage is already
+ * existing, then the packages are merged. In such cases {@link #moveLastSegment(String)} should be
+ * called. <br/>
+ * <br/>
+ * 
+ * If a folder is moved, then the paths of all contained elements are affected and the depth may
+ * change. If the destination folder already exists the containing elements of both folders are
+ * merged. In such cases {@link #moveLastSegment(String)} should be called. <br/>
+ * <br/>
  * 
  * @author kramerm
  * 
@@ -29,13 +58,19 @@ public class TUID {
         this.lastSegment = SEGMENTS.addNewSegmentsWhereNecessary(splitTUIDString);
     }
 
+    /**
+     * Returns the unique TUID (instance) for the specified tuidString (key).
+     * 
+     * @param tuidString
+     * @return the unique TUID for the specified tuidString
+     */
     public static synchronized TUID getInstance(final String tuidString) {
         return getInstance(tuidString, false);
     }
 
     private static TUID getInstance(final String tuidString, final boolean recursively) {
         if (tuidString == null) {
-            throw new RuntimeException("The null string is no TUID!");
+            throw new IllegalArgumentException("The null string is no TUID!");
         } else {
             List<String> splitTUIDString = split(tuidString);
             ForwardHashedBackwardLinkedTree<String>.Segment lastSegmentOrPrefix = SEGMENTS
@@ -47,7 +82,7 @@ public class TUID {
                 instance = LAST_SEGMENT_2_TUID_INSTANCES_MAP.get(lastSegmentOrPrefix);
                 if (instance == null) {
                     if (!recursively) {
-                        throw new RuntimeException("A TUID instance for the last segment '" + lastSegmentOrPrefix
+                        throw new IllegalStateException("A TUID instance for the last segment '" + lastSegmentOrPrefix
                                 + "' should already have been mapped for the tuidString '" + tuidString + "'!");
                     }
                 } else {
@@ -76,27 +111,26 @@ public class TUID {
         return Arrays.asList(tuidString.split(seperator));
     }
 
-    protected ForwardHashedBackwardLinkedTree<String>.Segment getLastSegment() {
+    private ForwardHashedBackwardLinkedTree<String>.Segment getLastSegment() {
         return this.lastSegment;
     }
 
-    // If a package is renamed in Java, then only the paths of all contained classifiers are
-    // affected. The paths of subpackages are not affected but they are no longer subpackages.
-    // If a package is renamed in Java, then the depth of its path may change arbitrarily. =>
-    // renameLastSegment
-    //
-    // If a folder is renamed, then the paths of all contained elements are affected but the depth
-    // may not change. => renameLastSegment
-    //
-    // If a package is moved in Java, then it may only be completely moved to another folder and
-    // subpackages are not affected. It is not possible to move subpackages to another package. It
-    // is however possible to move a package to a folder in which the package or a subpackage is
-    // already existing, then the packages are merged. => moveLastSegment
-    //
-    // If a folder is moved, then the paths of all contained elements are affected and the depth may
-    // change. If the destination folder already exists the containing elements of both folders are
-    // merged. => moveLastSegment
-
+    /**
+     * Renames the <b>last</b> segment of this TUID instance to the specified
+     * {@link newLastSegmentString}. If an instance for the resulting TUID already exists, then all
+     * depending TUIDs of this instance and the destination instance are merged (as if
+     * {@link #moveLastSegment(String)} would have been called).<br/>
+     * <br/>
+     * 
+     * If an infix segment of a TUID should be changed (e.g. a#tochange#b) this method has to be
+     * called on the TUID instance that ends with the segment to change (a#tochange).
+     * 
+     * @param newLastSegmentString
+     *            the new name for the last segment
+     * @throws an
+     *             {@link IllegalArgumentException} if the specified {@link newLastSegmentString}
+     *             contains the TUID separator
+     */
     public void renameLastSegment(final String newLastSegmentString) {
         String segmentSeperator = VitruviusConstants.getTUIDSegmentSeperator();
         boolean containsSeparator = newLastSegmentString.indexOf(segmentSeperator) != -1;
@@ -115,11 +149,27 @@ public class TUID {
         }
     }
 
+    /**
+     * Moves the last segment of this TUID instance to the specified destination. If the destination
+     * already exists, then all depending TUIDs of this instance and the destination instance are
+     * merged. If the specified destination is identical to
+     * 
+     * @param fullDestinationTUIDString
+     *            the full TUID string of the move destination
+     */
     public void moveLastSegment(final String fullDestinationTUIDString) {
         TUID fullDestinationTUID = getInstance(fullDestinationTUIDString);
         moveLastSegment(fullDestinationTUID);
     }
 
+    /**
+     * Moves the last segment of this TUID instance to the specified destination. If the destination
+     * already exists, then all depending TUIDs of this instance and the destination instance are
+     * merged. If the specified destination is identical to
+     * 
+     * @param fullDestinationTUID
+     *            the full TUID of the move destination
+     */
     public void moveLastSegment(final TUID fullDestinationTUID) {
         Collection<ForwardHashedBackwardLinkedTree<String>.Segment> obsoleteSegments = SEGMENTS
                 .mergeSegmentIntoAnother(this.lastSegment, fullDestinationTUID.lastSegment);
@@ -138,11 +188,25 @@ public class TUID {
         return this.lastSegment.toString(VitruviusConstants.getTUIDSegmentSeperator());
     }
 
+    /**
+     * Returns a String representation of all registered TUID instances.
+     * 
+     * @return a String representation of all registered TUID instances
+     */
     public static String toStrings() {
         return "TUID segments:\n" + SEGMENTS.toString() + "lastSegment2TUIDMap:\n"
                 + LAST_SEGMENT_2_TUID_INSTANCES_MAP.toString();
     }
 
+    /**
+     * Returns whether the TUID instance is valid in the sense that all TUID instances that are
+     * contained in the forward (tree) registry are also contained in the backward (link) registry
+     * and vice-versa.
+     * 
+     * @return whether the TUID instance is valid
+     * @throws a
+     *             {@link IllegalStateException} if the TUID instance is not valid
+     */
     public static boolean validate() {
         Set<String> treedTUIDStrings = new HashSet<String>();
         Collection<ForwardHashedBackwardLinkedTree<String>.Segment> segments = SEGMENTS.values();
