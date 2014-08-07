@@ -5,8 +5,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.VitruviusConstants;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 
 public class TUIDTest {
 
