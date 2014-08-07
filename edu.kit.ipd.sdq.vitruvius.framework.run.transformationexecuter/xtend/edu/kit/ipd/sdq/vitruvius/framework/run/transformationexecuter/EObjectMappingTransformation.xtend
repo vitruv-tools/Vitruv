@@ -2,13 +2,13 @@ package edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableHashMap
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableMap
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
+import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
-import org.eclipse.emf.common.util.EList
 
 abstract class EObjectMappingTransformation {
 

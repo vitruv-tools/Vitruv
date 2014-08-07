@@ -2,8 +2,6 @@ package edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableHashMap
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableMap
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetContainmentEReference
@@ -30,6 +28,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.contain
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 

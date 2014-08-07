@@ -16,14 +16,14 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFBridge;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EcoreResourceBridge;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ObjectFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.ChangeSynchronizer;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 public class PCM2JaMoPPUtils {
     private PCM2JaMoPPUtils() {

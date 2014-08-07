@@ -26,9 +26,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFBridge;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.ChangeSynchronizer;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationExecuting {
 

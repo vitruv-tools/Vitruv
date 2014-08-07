@@ -9,6 +9,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.
  org.apache.log4j;bundle-version="1.2.15",
  org.eclipse.xtend.lib,
  com.google.guava,
- org.eclipse.xtext.xbase.lib
+ org.eclipse.xtext.xbase.lib,
+ edu.kit.ipd.sdq.vitruvius.framework.util;bundle-version="1.0.0"
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter
 
