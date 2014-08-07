@@ -4,6 +4,8 @@ package edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.*;
 
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
@@ -79,6 +81,8 @@ public class CorrespondenceFactoryImpl extends EFactoryImpl implements Correspon
 		switch (eDataType.getClassifierID()) {
 			case CorrespondencePackage.CORRESPONDENCE_TYPE:
 				return createCorrespondenceTypeFromString(eDataType, initialValue);
+			case CorrespondencePackage.TUID:
+				return createTUIDFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -94,6 +98,8 @@ public class CorrespondenceFactoryImpl extends EFactoryImpl implements Correspon
 		switch (eDataType.getClassifierID()) {
 			case CorrespondencePackage.CORRESPONDENCE_TYPE:
 				return convertCorrespondenceTypeToString(eDataType, instanceValue);
+			case CorrespondencePackage.TUID:
+				return convertTUIDToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -187,6 +193,24 @@ public class CorrespondenceFactoryImpl extends EFactoryImpl implements Correspon
 	 */
 	public String convertCorrespondenceTypeToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public TUID createTUIDFromString(EDataType eDataType, String initialValue) {
+		return (TUID)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertTUIDToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
 	}
 
 	/**

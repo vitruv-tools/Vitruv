@@ -2,16 +2,16 @@ package edu.kit.ipd.sdq.vitruvius.framework.synctransprovider;
 
 import java.util.List;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.SyncTransformation;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.TransformationExecutingProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EclipseBridge;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableHashMap;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableMap;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.Pair;
+import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 /**
  * The class @SyncTransformationProviderImpl provides the interface

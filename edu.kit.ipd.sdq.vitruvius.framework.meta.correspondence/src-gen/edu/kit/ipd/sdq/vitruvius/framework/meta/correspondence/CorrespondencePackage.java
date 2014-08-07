@@ -4,6 +4,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -788,6 +789,16 @@ public interface CorrespondencePackage extends EPackage {
 	 */
 	int CORRESPONDENCE_TYPE = 11;
 
+	/**
+	 * The meta object id for the '<em>TUID</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.CorrespondencePackageImpl#getTUID()
+	 * @generated
+	 */
+	int TUID = 12;
+
 
 	/**
 	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondences <em>Correspondences</em>}'.
@@ -1042,6 +1053,17 @@ public interface CorrespondencePackage extends EPackage {
 	EEnum getCorrespondenceType();
 
 	/**
+	 * Returns the meta object for data type '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID <em>TUID</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>TUID</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
+	 * @model instanceClass="edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID"
+	 * @generated
+	 */
+	EDataType getTUID();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1278,6 +1300,16 @@ public interface CorrespondencePackage extends EPackage {
 		 * @generated
 		 */
 		EEnum CORRESPONDENCE_TYPE = eINSTANCE.getCorrespondenceType();
+
+		/**
+		 * The meta object literal for the '<em>TUID</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
+		 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.CorrespondencePackageImpl#getTUID()
+		 * @generated
+		 */
+		EDataType TUID = eINSTANCE.getTUID();
 
 	}
 

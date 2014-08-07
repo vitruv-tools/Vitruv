@@ -205,7 +205,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_VpdXwaqIEeO0Y_Bm6YU6sw" fontColor="4210752" fontName="Lucida Grande" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
     <element xmi:type="ecore:EEnum" href="correspondence.ecore#//CorrespondenceType"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_VpdXwqqIEeO0Y_Bm6YU6sw" x="486" y="18" height="140"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_VpdXwqqIEeO0Y_Bm6YU6sw" x="495" y="20" height="140"/>
   </children>
   <styles xmi:type="notation:DiagramStyle" xmi:id="_Vmkb0aqIEeO0Y_Bm6YU6sw"/>
   <element xmi:type="ecore:EPackage" href="correspondence.ecore#/"/>

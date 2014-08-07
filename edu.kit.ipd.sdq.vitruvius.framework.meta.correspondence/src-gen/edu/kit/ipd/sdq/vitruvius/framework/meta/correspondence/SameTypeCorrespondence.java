@@ -2,6 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence;
 
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 
 /**
  * <!-- begin-user-doc -->
@@ -35,12 +36,12 @@ public interface SameTypeCorrespondence extends Correspondence {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Element ATUID</em>' attribute.
-	 * @see #setElementATUID(String)
+	 * @see #setElementATUID(TUID)
 	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getSameTypeCorrespondence_ElementATUID()
-	 * @model required="true"
+	 * @model dataType="edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.TUID" required="true"
 	 * @generated
 	 */
-	String getElementATUID();
+	TUID getElementATUID();
 
 	/**
 	 * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence#getElementATUID <em>Element ATUID</em>}' attribute.
@@ -50,7 +51,7 @@ public interface SameTypeCorrespondence extends Correspondence {
 	 * @see #getElementATUID()
 	 * @generated
 	 */
-	void setElementATUID(String value);
+	void setElementATUID(TUID value);
 
 	/**
 	 * Returns the value of the '<em><b>Element BTUID</b></em>' attribute.
@@ -61,12 +62,12 @@ public interface SameTypeCorrespondence extends Correspondence {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Element BTUID</em>' attribute.
-	 * @see #setElementBTUID(String)
+	 * @see #setElementBTUID(TUID)
 	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getSameTypeCorrespondence_ElementBTUID()
-	 * @model required="true"
+	 * @model dataType="edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.TUID" required="true"
 	 * @generated
 	 */
-	String getElementBTUID();
+	TUID getElementBTUID();
 
 	/**
 	 * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence#getElementBTUID <em>Element BTUID</em>}' attribute.
@@ -76,6 +77,6 @@ public interface SameTypeCorrespondence extends Correspondence {
 	 * @see #getElementBTUID()
 	 * @generated
 	 */
-	void setElementBTUID(String value);
+	void setElementBTUID(TUID value);
 
 } // SameTypeCorrespondence

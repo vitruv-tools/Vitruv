@@ -10,6 +10,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EReferenceCorresp
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEReferenceCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
 
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
+
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -68,7 +70,7 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String ELEMENT_ATUID_EDEFAULT = null;
+	protected static final TUID ELEMENT_ATUID_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getElementATUID() <em>Element ATUID</em>}' attribute.
@@ -78,7 +80,7 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 	 * @generated
 	 * @ordered
 	 */
-	protected String elementATUID = ELEMENT_ATUID_EDEFAULT;
+	protected TUID elementATUID = ELEMENT_ATUID_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getElementBTUID() <em>Element BTUID</em>}' attribute.
@@ -88,7 +90,7 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String ELEMENT_BTUID_EDEFAULT = null;
+	protected static final TUID ELEMENT_BTUID_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getElementBTUID() <em>Element BTUID</em>}' attribute.
@@ -98,7 +100,7 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 	 * @generated
 	 * @ordered
 	 */
-	protected String elementBTUID = ELEMENT_BTUID_EDEFAULT;
+	protected TUID elementBTUID = ELEMENT_BTUID_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
@@ -148,7 +150,7 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String VALUE_ATUID_EDEFAULT = null;
+	protected static final TUID VALUE_ATUID_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getValueATUID() <em>Value ATUID</em>}' attribute.
@@ -158,7 +160,7 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 	 * @generated
 	 * @ordered
 	 */
-	protected String valueATUID = VALUE_ATUID_EDEFAULT;
+	protected TUID valueATUID = VALUE_ATUID_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getValueBTUID() <em>Value BTUID</em>}' attribute.
@@ -168,7 +170,7 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String VALUE_BTUID_EDEFAULT = null;
+	protected static final TUID VALUE_BTUID_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getValueBTUID() <em>Value BTUID</em>}' attribute.
@@ -178,7 +180,7 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 	 * @generated
 	 * @ordered
 	 */
-	protected String valueBTUID = VALUE_BTUID_EDEFAULT;
+	protected TUID valueBTUID = VALUE_BTUID_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -257,7 +259,7 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getElementATUID() {
+	public TUID getElementATUID() {
 		return elementATUID;
 	}
 
@@ -266,8 +268,8 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setElementATUID(String newElementATUID) {
-		String oldElementATUID = elementATUID;
+	public void setElementATUID(TUID newElementATUID) {
+		TUID oldElementATUID = elementATUID;
 		elementATUID = newElementATUID;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__ELEMENT_ATUID, oldElementATUID, elementATUID));
@@ -278,7 +280,7 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getElementBTUID() {
+	public TUID getElementBTUID() {
 		return elementBTUID;
 	}
 
@@ -287,8 +289,8 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setElementBTUID(String newElementBTUID) {
-		String oldElementBTUID = elementBTUID;
+	public void setElementBTUID(TUID newElementBTUID) {
+		TUID oldElementBTUID = elementBTUID;
 		elementBTUID = newElementBTUID;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__ELEMENT_BTUID, oldElementBTUID, elementBTUID));
@@ -396,7 +398,7 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getValueATUID() {
+	public TUID getValueATUID() {
 		return valueATUID;
 	}
 
@@ -405,8 +407,8 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setValueATUID(String newValueATUID) {
-		String oldValueATUID = valueATUID;
+	public void setValueATUID(TUID newValueATUID) {
+		TUID oldValueATUID = valueATUID;
 		valueATUID = newValueATUID;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__VALUE_ATUID, oldValueATUID, valueATUID));
@@ -417,7 +419,7 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getValueBTUID() {
+	public TUID getValueBTUID() {
 		return valueBTUID;
 	}
 
@@ -426,8 +428,8 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setValueBTUID(String newValueBTUID) {
-		String oldValueBTUID = valueBTUID;
+	public void setValueBTUID(TUID newValueBTUID) {
+		TUID oldValueBTUID = valueBTUID;
 		valueBTUID = newValueBTUID;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__VALUE_BTUID, oldValueBTUID, valueBTUID));
@@ -531,10 +533,10 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 				setParent((Correspondence)newValue);
 				return;
 			case CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__ELEMENT_ATUID:
-				setElementATUID((String)newValue);
+				setElementATUID((TUID)newValue);
 				return;
 			case CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__ELEMENT_BTUID:
-				setElementBTUID((String)newValue);
+				setElementBTUID((TUID)newValue);
 				return;
 			case CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__TYPE:
 				setType((CorrespondenceType)newValue);
@@ -546,10 +548,10 @@ public class PartialEReferenceCorrespondenceImpl<TValue extends EObject> extends
 				setFeatureB((EReference)newValue);
 				return;
 			case CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__VALUE_ATUID:
-				setValueATUID((String)newValue);
+				setValueATUID((TUID)newValue);
 				return;
 			case CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__VALUE_BTUID:
-				setValueBTUID((String)newValue);
+				setValueBTUID((TUID)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

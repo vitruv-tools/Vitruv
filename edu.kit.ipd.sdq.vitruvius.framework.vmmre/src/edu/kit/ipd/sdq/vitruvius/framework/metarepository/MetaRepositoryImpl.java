@@ -17,10 +17,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MappingManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ProjectPreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ViewTypeManaging;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableConcatMap;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableHashMap;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableLexicographicalConcatHashMap;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableMap;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableConcatMap;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableLexicographicalConcatHashMap;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
 
 public class MetaRepositoryImpl implements MetamodelManaging, ViewTypeManaging, MappingManaging, ProjectPreparing,
         InvariantProviding {

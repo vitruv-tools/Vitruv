@@ -6,5 +6,6 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
  org.apache.log4j;bundle-version="1.2.15",
- edu.kit.ipd.sdq.vitruvius.framework.meta.change
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change,
+ edu.kit.ipd.sdq.vitruvius.framework.util
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine

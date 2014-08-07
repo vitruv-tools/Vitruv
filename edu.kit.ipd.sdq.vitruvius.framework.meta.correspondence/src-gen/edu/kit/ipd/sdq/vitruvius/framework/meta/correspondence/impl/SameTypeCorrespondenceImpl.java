@@ -5,6 +5,8 @@ package edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
 
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
+
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
@@ -34,7 +36,7 @@ public abstract class SameTypeCorrespondenceImpl extends CorrespondenceImpl impl
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String ELEMENT_ATUID_EDEFAULT = null;
+	protected static final TUID ELEMENT_ATUID_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getElementATUID() <em>Element ATUID</em>}' attribute.
@@ -44,7 +46,7 @@ public abstract class SameTypeCorrespondenceImpl extends CorrespondenceImpl impl
 	 * @generated
 	 * @ordered
 	 */
-	protected String elementATUID = ELEMENT_ATUID_EDEFAULT;
+	protected TUID elementATUID = ELEMENT_ATUID_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getElementBTUID() <em>Element BTUID</em>}' attribute.
@@ -54,7 +56,7 @@ public abstract class SameTypeCorrespondenceImpl extends CorrespondenceImpl impl
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String ELEMENT_BTUID_EDEFAULT = null;
+	protected static final TUID ELEMENT_BTUID_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getElementBTUID() <em>Element BTUID</em>}' attribute.
@@ -64,7 +66,7 @@ public abstract class SameTypeCorrespondenceImpl extends CorrespondenceImpl impl
 	 * @generated
 	 * @ordered
 	 */
-	protected String elementBTUID = ELEMENT_BTUID_EDEFAULT;
+	protected TUID elementBTUID = ELEMENT_BTUID_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -90,7 +92,7 @@ public abstract class SameTypeCorrespondenceImpl extends CorrespondenceImpl impl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getElementATUID() {
+	public TUID getElementATUID() {
 		return elementATUID;
 	}
 
@@ -99,8 +101,8 @@ public abstract class SameTypeCorrespondenceImpl extends CorrespondenceImpl impl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setElementATUID(String newElementATUID) {
-		String oldElementATUID = elementATUID;
+	public void setElementATUID(TUID newElementATUID) {
+		TUID oldElementATUID = elementATUID;
 		elementATUID = newElementATUID;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_ATUID, oldElementATUID, elementATUID));
@@ -111,7 +113,7 @@ public abstract class SameTypeCorrespondenceImpl extends CorrespondenceImpl impl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getElementBTUID() {
+	public TUID getElementBTUID() {
 		return elementBTUID;
 	}
 
@@ -120,8 +122,8 @@ public abstract class SameTypeCorrespondenceImpl extends CorrespondenceImpl impl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setElementBTUID(String newElementBTUID) {
-		String oldElementBTUID = elementBTUID;
+	public void setElementBTUID(TUID newElementBTUID) {
+		TUID oldElementBTUID = elementBTUID;
 		elementBTUID = newElementBTUID;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_BTUID, oldElementBTUID, elementBTUID));
@@ -152,10 +154,10 @@ public abstract class SameTypeCorrespondenceImpl extends CorrespondenceImpl impl
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_ATUID:
-				setElementATUID((String)newValue);
+				setElementATUID((TUID)newValue);
 				return;
 			case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_BTUID:
-				setElementBTUID((String)newValue);
+				setElementBTUID((TUID)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

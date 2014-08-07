@@ -19,6 +19,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespon
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
@@ -118,6 +119,13 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 	 * @generated
 	 */
 	private EEnum correspondenceTypeEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType tuidEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -404,6 +412,15 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EDataType getTUID() {
+		return tuidEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public CorrespondenceFactory getCorrespondenceFactory() {
 		return (CorrespondenceFactory)getEFactoryInstance();
 	}
@@ -463,6 +480,9 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 
 		// Create enums
 		correspondenceTypeEEnum = createEEnum(CORRESPONDENCE_TYPE);
+
+		// Create data types
+		tuidEDataType = createEDataType(TUID);
 	}
 
 	/**
@@ -542,8 +562,8 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		initEReference(getCorrespondence_Parent(), this.getCorrespondence(), this.getCorrespondence_DependentCorrespondences(), "parent", null, 0, 1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(sameTypeCorrespondenceEClass, SameTypeCorrespondence.class, "SameTypeCorrespondence", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getSameTypeCorrespondence_ElementATUID(), ecorePackage.getEString(), "elementATUID", null, 1, 1, SameTypeCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getSameTypeCorrespondence_ElementBTUID(), ecorePackage.getEString(), "elementBTUID", null, 1, 1, SameTypeCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSameTypeCorrespondence_ElementATUID(), this.getTUID(), "elementATUID", null, 1, 1, SameTypeCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSameTypeCorrespondence_ElementBTUID(), this.getTUID(), "elementBTUID", null, 1, 1, SameTypeCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(eObjectCorrespondenceEClass, EObjectCorrespondence.class, "EObjectCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -569,8 +589,8 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		initEAttribute(getPartialEAttributeCorrespondence_ValueB(), g1, "valueB", null, 1, 1, PartialEAttributeCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(partialEReferenceCorrespondenceEClass, PartialEReferenceCorrespondence.class, "PartialEReferenceCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getPartialEReferenceCorrespondence_ValueATUID(), ecorePackage.getEString(), "valueATUID", null, 1, 1, PartialEReferenceCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getPartialEReferenceCorrespondence_ValueBTUID(), ecorePackage.getEString(), "valueBTUID", null, 1, 1, PartialEReferenceCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPartialEReferenceCorrespondence_ValueATUID(), this.getTUID(), "valueATUID", null, 1, 1, PartialEReferenceCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPartialEReferenceCorrespondence_ValueBTUID(), this.getTUID(), "valueBTUID", null, 1, 1, PartialEReferenceCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(correspondenceTypeEEnum, CorrespondenceType.class, "CorrespondenceType");
@@ -579,6 +599,9 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		addEEnumLiteral(correspondenceTypeEEnum, CorrespondenceType.UNIDIRECTIONAL);
 		addEEnumLiteral(correspondenceTypeEEnum, CorrespondenceType.CONSTRAINED);
 		addEEnumLiteral(correspondenceTypeEEnum, CorrespondenceType.UNKNOWN);
+
+		// Initialize data types
+		initEDataType(tuidEDataType, edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID.class, "TUID", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

@@ -15,9 +15,9 @@ import org.emftext.language.java.types.NamespaceClassifierReference;
 import org.emftext.language.java.types.PrimitiveType;
 import org.emftext.language.java.types.TypeReference;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TUIDCalculatorAndResolver;
+import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 
 public class JaMoPPTUIDCalculatorAndResolver implements TUIDCalculatorAndResolver {
 
@@ -64,7 +64,8 @@ public class JaMoPPTUIDCalculatorAndResolver implements TUIDCalculatorAndResolve
         }
         String identifier = tuid.substring(tuidRootObj.length(), tuid.length());
         if (identifier.startsWith(VitruviusConstants.getTUIDSegmentSeperator())) {
-            identifier = identifier.substring(VitruviusConstants.getTUIDSegmentSeperator().length(), identifier.length());
+            identifier = identifier.substring(VitruviusConstants.getTUIDSegmentSeperator().length(),
+                    identifier.length());
         }
         String[] ids = identifier.split(VitruviusConstants.getTUIDSegmentSeperator());
         if (root instanceof CompilationUnit) {

@@ -28,7 +28,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManagin
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ViewTypeManaging;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EcoreResourceBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.helper.FileSystemHelper;
 
 public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Validating {
@@ -228,7 +228,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
      * {@link getCorrespondenceInstanceOriginal} must be called before to create the appropriate
      * correspondence instance
      * 
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.CorrespondenceInstance
      * @return set that contains all CorrespondenceInstances for the VURI or null if there is non
      */
     @Override

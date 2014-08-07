@@ -18,9 +18,9 @@
       <details key="documentation" value="Metaclass for cases where an Object corresponds to another Object of the same metatype (i.e. both objects are either complex-typed EObjects or simple-typed EJavaObjects).&#xA;ElementA and elementB usually point to instances of different metaclasses but their common type T is not a problem as T will never be used more strictly than for the metatype."/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementATUID" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        eType="#//TUID"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementBTUID" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        eType="#//TUID"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EObjectCorrespondence" eSuperTypes="#//SameTypeCorrespondence">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -83,9 +83,9 @@
       <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     </eTypeParameters>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueATUID" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        eType="#//TUID"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueBTUID" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        eType="#//TUID"/>
     <eGenericSuperTypes eClassifier="#//PartialEFeatureCorrespondence">
       <eTypeArguments eTypeParameter="#//PartialEReferenceCorrespondence/TValue"/>
     </eGenericSuperTypes>
@@ -98,4 +98,5 @@
     <eLiterals name="constrained" value="3" literal="constrained"/>
     <eLiterals name="unknown" value="4"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="TUID" instanceClassName="edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID"/>
 </ecore:EPackage>

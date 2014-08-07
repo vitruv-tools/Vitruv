@@ -22,7 +22,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondencePr
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.InvariantProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.Pair;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 public class SyncManagerImpl implements ChangeSynchronizing {
 

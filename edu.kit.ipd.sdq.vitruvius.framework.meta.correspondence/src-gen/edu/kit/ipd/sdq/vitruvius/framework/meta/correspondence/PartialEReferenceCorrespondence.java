@@ -2,6 +2,8 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence;
 
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -31,12 +33,12 @@ public interface PartialEReferenceCorrespondence<TValue extends EObject> extends
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Value ATUID</em>' attribute.
-	 * @see #setValueATUID(String)
+	 * @see #setValueATUID(TUID)
 	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getPartialEReferenceCorrespondence_ValueATUID()
-	 * @model required="true"
+	 * @model dataType="edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.TUID" required="true"
 	 * @generated
 	 */
-	String getValueATUID();
+	TUID getValueATUID();
 
 	/**
 	 * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEReferenceCorrespondence#getValueATUID <em>Value ATUID</em>}' attribute.
@@ -46,7 +48,7 @@ public interface PartialEReferenceCorrespondence<TValue extends EObject> extends
 	 * @see #getValueATUID()
 	 * @generated
 	 */
-	void setValueATUID(String value);
+	void setValueATUID(TUID value);
 
 	/**
 	 * Returns the value of the '<em><b>Value BTUID</b></em>' attribute.
@@ -57,12 +59,12 @@ public interface PartialEReferenceCorrespondence<TValue extends EObject> extends
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Value BTUID</em>' attribute.
-	 * @see #setValueBTUID(String)
+	 * @see #setValueBTUID(TUID)
 	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getPartialEReferenceCorrespondence_ValueBTUID()
-	 * @model required="true"
+	 * @model dataType="edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.TUID" required="true"
 	 * @generated
 	 */
-	String getValueBTUID();
+	TUID getValueBTUID();
 
 	/**
 	 * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEReferenceCorrespondence#getValueBTUID <em>Value BTUID</em>}' attribute.
@@ -72,6 +74,6 @@ public interface PartialEReferenceCorrespondence<TValue extends EObject> extends
 	 * @see #getValueBTUID()
 	 * @generated
 	 */
-	void setValueBTUID(String value);
+	void setValueBTUID(TUID value);
 
 } // PartialEReferenceCorrespondence

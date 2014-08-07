@@ -52,7 +52,7 @@ public class CompositeChangeSynchronizer extends ConcreteChangeSynchronizer {
      * checks whether a composite Change is valid In our implementation a composite change is valid
      * iff i) it contains only EMFModelChanges and CompositeChanges ii) all changes occured in the
      * same source meta model iii) it contains at least one change
-     *
+     * 
      * @param compositeChange
      */
     private void validateCompositeChange(final CompositeChange compositeChange) {
