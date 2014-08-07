@@ -7,8 +7,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 
 public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolver {
 

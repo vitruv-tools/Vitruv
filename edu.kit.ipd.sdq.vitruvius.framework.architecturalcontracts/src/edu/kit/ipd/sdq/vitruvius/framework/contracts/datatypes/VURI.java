@@ -7,13 +7,13 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 
 /**
  * Implements the multiton design pattern.
- *
+ * 
  * @author kramerm
- *
+ * 
  */
 public class VURI implements Comparable<VURI> {
     private static final Map<String, VURI> INSTANCES = new HashMap<String, VURI>();

@@ -13,15 +13,15 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EcoreResourceBridge;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableHashMap;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.ClaimableMap;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondences;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EFeatureCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 /**
@@ -31,9 +31,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespon
  * instance of a metaclass of the first metamodel of the containing correspondence instance. And
  * every elementB of a correspondence has to be an instance of a metaclass of the second metamodel
  * of the containing correspondence instance.
- *
+ * 
  * @author kramerm
- *
+ * 
  */
 public class CorrespondenceInstanceImpl extends ModelInstance implements CorrespondenceInstance {
 
@@ -302,9 +302,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
      */
     @Override
     public void addSameTypeCorrespondence(final SameTypeCorrespondence correspondence) {
-        // do not move the correspondence if it already has a parent, otherwise null will be passed
-        // and the called method will add it to the first level
-        addSameTypeCorrespondence(correspondence, correspondence.getParent());
+        addSameTypeCorrespondence(correspondence, null);
     }
 
     /*
@@ -327,7 +325,6 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         // add correspondence to model
         EList<Correspondence> correspondenceListForAddition;
         if (parent == null) {
-            // add the correspondence on the first level if no parent was specified
             correspondenceListForAddition = this.correspondences.getCorrespondences();
         } else {
             correspondenceListForAddition = parent.getDependentCorrespondences();
@@ -464,7 +461,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     /**
      * Does the removing recursively. Marks all correspondences that will be deleted in a
      * dependencyList --> Avoid stack overflow with correspondences that have a mutual dependency
-     *
+     * 
      * @param correspondence
      * @param dependencyList
      * @param deletionList
