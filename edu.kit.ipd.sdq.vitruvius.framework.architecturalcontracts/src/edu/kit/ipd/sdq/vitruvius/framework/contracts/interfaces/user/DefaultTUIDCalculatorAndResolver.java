@@ -24,13 +24,13 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
     }
 
     /**
-     * class name is used as prefix for every UUID to determine wheather an TUID was createded using
+     * class name is used as prefix for every UUID to determine whether an TUID was created using
      * this class
      */
     private static final String TUIDIdentifier = DefaultTUIDCalculatorAndResolver.class.getSimpleName();
 
     @Override
-    public String getTUID(final EObject eObject) {
+    public String calculateTUIDFromEObject(final EObject eObject) {
         if (eObject != null) {
             String uri = String.valueOf(TUIDIdentifier) + VitruviusConstants.getTUIDSegmentSeperator();
             if (null != eObject.eResource()) {
@@ -57,7 +57,7 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
     }
 
     @Override
-    public EObject getIdentifiedEObjectWithinRootEObject(final EObject root, final String tuid) {
+    public EObject resolveEObjectFromRootAndFullTUID(final EObject root, final String tuid) {
         String[] tuidParts = tuid.split(VitruviusConstants.getTUIDSegmentSeperator());
         checkTUID(tuidParts);
         String id = tuidParts[2];
@@ -71,12 +71,33 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
     }
 
     private void checkTUID(final String[] tuidParts) {
+        boolean claim = true;
+        isValidTUID(tuidParts, claim);
+    }
+
+    @Override
+    public boolean isValidTUID(final String tuid) {
+        String[] tuidParts = tuid.split(VitruviusConstants.getTUIDSegmentSeperator());
+        boolean claim = false;
+        return isValidTUID(tuidParts, claim);
+    }
+
+    private boolean isValidTUID(final String[] tuidParts, final boolean claim) {
         if (0 == tuidParts.length) {
-            throw new RuntimeException("Can not parse TUID: " + tuidParts);
+            if (claim) {
+                throw new RuntimeException("Cannot parse TUID: " + tuidParts);
+            } else {
+                return false;
+            }
         }
         if (!tuidParts[0].equals(String.valueOf(TUIDIdentifier))) {
-            throw new RuntimeException("TUID " + tuidParts + " was not created using " + TUIDIdentifier);
+            if (claim) {
+                throw new RuntimeException("TUID " + tuidParts + " was not created using " + TUIDIdentifier);
+            } else {
+                return false;
+            }
         }
+        return true;
     }
 
     private String getValueOfIdFeature(final EObject eObject) {
@@ -95,5 +116,4 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
         }
         return null;
     }
-
 }

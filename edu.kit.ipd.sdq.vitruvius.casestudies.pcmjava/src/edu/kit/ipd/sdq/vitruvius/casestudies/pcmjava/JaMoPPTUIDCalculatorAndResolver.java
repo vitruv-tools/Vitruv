@@ -25,7 +25,7 @@ public class JaMoPPTUIDCalculatorAndResolver implements TUIDCalculatorAndResolve
     private static final String TUIDIdentifier = JaMoPPTUIDCalculatorAndResolver.class.getSimpleName();
 
     @Override
-    public String getTUID(final EObject eObject) {
+    public String calculateTUIDFromEObject(final EObject eObject) {
         String tuid = TUIDIdentifier + VitruviusConstants.getTUIDSegmentSeperator();
         if (eObject instanceof Package) {
             return getTUIDFromPackage((Package) eObject);
@@ -55,9 +55,9 @@ public class JaMoPPTUIDCalculatorAndResolver implements TUIDCalculatorAndResolve
     }
 
     @Override
-    public EObject getIdentifiedEObjectWithinRootEObject(final EObject root, final String extTuid) {
+    public EObject resolveEObjectFromRootAndFullTUID(final EObject root, final String extTuid) {
         String tuid = checkTUID(extTuid);
-        String tuidRootObj = getTUID(root);
+        String tuidRootObj = calculateTUIDFromEObject(root);
         if (!tuid.startsWith(tuidRootObj)) {
             logger.warn("TUID " + tuid + " is not in EObject " + root);
             return null;
@@ -206,5 +206,10 @@ public class JaMoPPTUIDCalculatorAndResolver implements TUIDCalculatorAndResolve
 
     private String getNameFromClassifierReference(final ClassifierReference classifierReference) {
         return classifierReference.getTarget().getName();
+    }
+
+    @Override
+    public boolean isValidTUID(final String tuid) {
+        return tuid.startsWith(TUIDIdentifier);
     }
 }

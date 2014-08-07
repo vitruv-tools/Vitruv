@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 
 public interface CorrespondenceInstance {
 
@@ -133,6 +134,10 @@ public interface CorrespondenceInstance {
      */
     public <T> Set<T> getAllEObjectsInCorrespondencesWithType(Class<T> type);
 
+    public Correspondence addSameTypeCorrespondence(EObject elementA, EObject elementB);
+
+    public Correspondence addSameTypeCorrespondence(EObject elementA, EObject elementB, Correspondence parent);
+
     public void addSameTypeCorrespondence(SameTypeCorrespondence correspondence);
 
     public void addSameTypeCorrespondence(SameTypeCorrespondence correspondence, Correspondence parent);
@@ -167,4 +172,9 @@ public interface CorrespondenceInstance {
 
     public void update(EObject oldEObject, EObject newEObject);
 
+    public EObject resolveEObjectFromTUID(final TUID tuid);
+
+    public Set<EObject> resolveEObjectsFromTUIDs(final Set<TUID> tuid);
+
+    public TUID calculateTUIDFromEObject(final EObject eObject);
 }

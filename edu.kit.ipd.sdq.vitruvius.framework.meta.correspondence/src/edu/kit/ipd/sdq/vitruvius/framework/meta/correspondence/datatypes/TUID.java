@@ -114,6 +114,10 @@ public class TUID {
     private ForwardHashedBackwardLinkedTree<String>.Segment getLastSegment() {
         return this.lastSegment;
     }
+    
+    public String getMinimalSuffix() {
+    	return getLastSegment().toString();
+    }
 
     /**
      * Renames the <b>last</b> segment of this TUID instance to the specified
@@ -228,5 +232,14 @@ public class TUID {
             }
         }
         return true;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+    	if (obj == null) {
+    		return false;
+    	} else {
+    		return this.toString().equals(obj.toString());
+    	}
     }
 }

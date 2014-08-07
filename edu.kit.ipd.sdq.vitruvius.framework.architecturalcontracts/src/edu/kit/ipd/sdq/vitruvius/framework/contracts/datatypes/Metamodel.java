@@ -50,8 +50,16 @@ public class Metamodel extends AbstractURIHaving {
         return this.fileExtensions;
     }
 
-    public String getTUID(final EObject eObject) {
-        return this.tuidCalculatorAndResolver.getTUID(eObject);
+    public String calculateTUIDFromEObject(final EObject eObject) {
+        return this.tuidCalculatorAndResolver.calculateTUIDFromEObject(eObject);
+    }
+
+    public VURI getModelVURIContainingIdentifiedEObject(final String tuid) {
+        return this.tuidCalculatorAndResolver.getModelVURIContainingIdentifiedEObject(tuid);
+    }
+
+    public EObject resolveEObjectFromRootAndFullTUID(final EObject root, final String tuid) {
+        return this.tuidCalculatorAndResolver.resolveEObjectFromRootAndFullTUID(root, tuid);
     }
 
     public boolean hasMetaclassInstance(final EObject eObject) {
@@ -60,6 +68,10 @@ public class Metamodel extends AbstractURIHaving {
             return false;
         }
         return this.nsURIs.contains(eObject.eClass().getEPackage().getNsURI());
+    }
+
+    public boolean hasTUID(final String tuid) {
+        return this.tuidCalculatorAndResolver.isValidTUID(tuid);
     }
 
     public Set<String> getNsURIs() {

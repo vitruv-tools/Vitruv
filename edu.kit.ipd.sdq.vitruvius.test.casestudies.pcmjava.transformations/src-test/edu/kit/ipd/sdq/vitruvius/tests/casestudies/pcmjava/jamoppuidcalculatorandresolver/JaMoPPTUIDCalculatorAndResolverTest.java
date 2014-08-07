@@ -47,12 +47,12 @@ public class JaMoPPTUIDCalculatorAndResolverTest {
     @Test
     public void testGetTUID() {
         final CompilationUnit cu = (CompilationUnit) this.rootJaMoPP;
-        System.out.println("TUID for comilationUnit '" + cu.getName() + "': " + this.jamoppTUIDCR.getTUID(cu));
+        System.out.println("TUID for comilationUnit '" + cu.getName() + "': " + this.jamoppTUIDCR.calculateTUIDFromEObject(cu));
         for (final Classifier classifier : cu.getClassifiers()) {
             System.out.println("TUID for classifier '" + classifier.getName() + "': "
-                    + this.jamoppTUIDCR.getTUID(classifier));
+                    + this.jamoppTUIDCR.calculateTUIDFromEObject(classifier));
             for (final Member member : classifier.getAllMembers(null)) {
-                System.out.println("TUID for member '" + member.toString() + "': " + this.jamoppTUIDCR.getTUID(member));
+                System.out.println("TUID for member '" + member.toString() + "': " + this.jamoppTUIDCR.calculateTUIDFromEObject(member));
             }
         }
     }
@@ -61,14 +61,14 @@ public class JaMoPPTUIDCalculatorAndResolverTest {
     public void testGetIdentifiedEObject() {
         // create TUIDs from JaMoPP root
         final CompilationUnit cu = (CompilationUnit) this.rootJaMoPP;
-        final String tuidCu = this.jamoppTUIDCR.getTUID(cu);
+        final String tuidCu = this.jamoppTUIDCR.calculateTUIDFromEObject(cu);
         final List<String> classifierTuids = new ArrayList<String>();
         final List<String> methodTuids = new ArrayList<String>(16);
         for (final Classifier classifier : cu.getClassifiers()) {
-            classifierTuids.add(this.jamoppTUIDCR.getTUID(classifier));
+            classifierTuids.add(this.jamoppTUIDCR.calculateTUIDFromEObject(classifier));
             for (final Member member : classifier.getAllMembers(cu)) {
                 if (member instanceof Method) {
-                    methodTuids.add(this.jamoppTUIDCR.getTUID(member));
+                    methodTuids.add(this.jamoppTUIDCR.calculateTUIDFromEObject(member));
                 }
             }
         }
@@ -81,16 +81,16 @@ public class JaMoPPTUIDCalculatorAndResolverTest {
         // find TUIDs in new java file
         final VURI vuri = this.jamoppTUIDCR.getModelVURIContainingIdentifiedEObject(tuidCu);
         System.out.println(vuri);
-        final EObject newCompilationUnit = this.jamoppTUIDCR.getIdentifiedEObjectWithinRootEObject(newRootEObject,
+        final EObject newCompilationUnit = this.jamoppTUIDCR.resolveEObjectFromRootAndFullTUID(newRootEObject,
                 tuidCu);
         System.out.println("New Compilation unit: " + newCompilationUnit);
         for (final String classifierTuid : classifierTuids) {
             System.out.println("Classifier for classifier with tuid " + classifierTuid + ": "
-                    + this.jamoppTUIDCR.getIdentifiedEObjectWithinRootEObject(newRootEObject, classifierTuid));
+                    + this.jamoppTUIDCR.resolveEObjectFromRootAndFullTUID(newRootEObject, classifierTuid));
         }
         for (final String methodTuid : methodTuids) {
             System.out.println("Method for method with tuid " + methodTuid + ": "
-                    + this.jamoppTUIDCR.getIdentifiedEObjectWithinRootEObject(newRootEObject, methodTuid));
+                    + this.jamoppTUIDCR.resolveEObjectFromRootAndFullTUID(newRootEObject, methodTuid));
         }
 
     }

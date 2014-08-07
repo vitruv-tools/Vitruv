@@ -26,6 +26,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFac
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceType;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentReferenceCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
@@ -112,8 +113,10 @@ public class CorrespondenceTest extends VSUMTest {
             final EObjectCorrespondence repo2pkg) {
         EContainmentReferenceCorrespondence repoIfaceCRef2PkgIfaceCRef = CorrespondenceFactory.eINSTANCE
                 .createEContainmentReferenceCorrespondence();
-        repoIfaceCRef2PkgIfaceCRef.setElementA(repo);
-        repoIfaceCRef2PkgIfaceCRef.setElementB(pkg);
+        TUID repoTUID = corresp.calculateTUIDFromEObject(repo);
+        repoIfaceCRef2PkgIfaceCRef.setElementATUID(repoTUID);
+        TUID pkgTUID = corresp.calculateTUIDFromEObject(pkg);
+        repoIfaceCRef2PkgIfaceCRef.setElementBTUID(pkgTUID);
         EStructuralFeature repoIfaceCRef = repo.eClass().getEStructuralFeature(interfaceCRefName);
         assertTrue(repoIfaceCRef instanceof EReference);
         repoIfaceCRef2PkgIfaceCRef.setFeatureA((EReference) repoIfaceCRef);
