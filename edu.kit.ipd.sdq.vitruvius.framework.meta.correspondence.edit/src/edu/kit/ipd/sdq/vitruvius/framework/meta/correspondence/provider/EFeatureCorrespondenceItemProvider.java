@@ -30,13 +30,7 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * @generated
  */
 public class EFeatureCorrespondenceItemProvider
-    extends SameTypeCorrespondenceItemProvider
-    implements
-        IEditingDomainItemProvider,
-        IStructuredItemContentProvider,
-        ITreeItemContentProvider,
-        IItemLabelProvider,
-        IItemPropertySource {
+    extends SameTypeCorrespondenceItemProvider {
     /**
      * This constructs an instance from a factory and a notifier.
      * <!-- begin-user-doc -->
@@ -139,8 +133,7 @@ public class EFeatureCorrespondenceItemProvider
      */
     @Override
     public String getText(Object object) {
-        CorrespondenceType labelValue = ((EFeatureCorrespondence<?>)object).getType();
-        String label = labelValue == null ? null : labelValue.toString();
+        String label = ((EFeatureCorrespondence<?>)object).getElementATUID();
         return label == null || label.length() == 0 ?
             getString("_UI_EFeatureCorrespondence_type") :
             getString("_UI_EFeatureCorrespondence_type") + " " + label;

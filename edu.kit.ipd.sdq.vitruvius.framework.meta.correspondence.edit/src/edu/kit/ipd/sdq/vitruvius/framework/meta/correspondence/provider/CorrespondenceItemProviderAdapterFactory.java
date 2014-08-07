@@ -141,6 +141,29 @@ public class CorrespondenceItemProviderAdapterFactory extends CorrespondenceAdap
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EReferenceCorrespondence} instances.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    protected EReferenceCorrespondenceItemProvider eReferenceCorrespondenceItemProvider;
+
+    /**
+     * This creates an adapter for a {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EReferenceCorrespondence}.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @Override
+    public Adapter createEReferenceCorrespondenceAdapter() {
+        if (eReferenceCorrespondenceItemProvider == null) {
+            eReferenceCorrespondenceItemProvider = new EReferenceCorrespondenceItemProvider(this);
+        }
+
+        return eReferenceCorrespondenceItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentReferenceCorrespondence} instances.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -311,6 +334,7 @@ public class CorrespondenceItemProviderAdapterFactory extends CorrespondenceAdap
         if (correspondencesItemProvider != null) correspondencesItemProvider.dispose();
         if (eObjectCorrespondenceItemProvider != null) eObjectCorrespondenceItemProvider.dispose();
         if (eAttributeCorrespondenceItemProvider != null) eAttributeCorrespondenceItemProvider.dispose();
+        if (eReferenceCorrespondenceItemProvider != null) eReferenceCorrespondenceItemProvider.dispose();
         if (eContainmentReferenceCorrespondenceItemProvider != null) eContainmentReferenceCorrespondenceItemProvider.dispose();
         if (partialEAttributeCorrespondenceItemProvider != null) partialEAttributeCorrespondenceItemProvider.dispose();
         if (partialEReferenceCorrespondenceItemProvider != null) partialEReferenceCorrespondenceItemProvider.dispose();

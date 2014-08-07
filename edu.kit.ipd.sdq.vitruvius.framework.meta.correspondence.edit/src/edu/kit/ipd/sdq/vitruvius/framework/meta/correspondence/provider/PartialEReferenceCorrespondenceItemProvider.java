@@ -30,13 +30,7 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * @generated
  */
 public class PartialEReferenceCorrespondenceItemProvider
-    extends PartialEFeatureCorrespondenceItemProvider
-    implements
-        IEditingDomainItemProvider,
-        IStructuredItemContentProvider,
-        ITreeItemContentProvider,
-        IItemLabelProvider,
-        IItemPropertySource {
+    extends PartialEFeatureCorrespondenceItemProvider {
     /**
      * This constructs an instance from a factory and a notifier.
      * <!-- begin-user-doc -->
@@ -60,13 +54,13 @@ public class PartialEReferenceCorrespondenceItemProvider
 
             addDependentCorrespondencesPropertyDescriptor(object);
             addParentPropertyDescriptor(object);
-            addElementAPropertyDescriptor(object);
-            addElementBPropertyDescriptor(object);
+            addElementATUIDPropertyDescriptor(object);
+            addElementBTUIDPropertyDescriptor(object);
             addTypePropertyDescriptor(object);
             addFeatureAPropertyDescriptor(object);
             addFeatureBPropertyDescriptor(object);
-            addValueAPropertyDescriptor(object);
-            addValueBPropertyDescriptor(object);
+            addValueATUIDPropertyDescriptor(object);
+            addValueBTUIDPropertyDescriptor(object);
         }
         return itemPropertyDescriptors;
     }
@@ -116,45 +110,45 @@ public class PartialEReferenceCorrespondenceItemProvider
     }
 
     /**
-     * This adds a property descriptor for the Element A feature.
+     * This adds a property descriptor for the Element ATUID feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    protected void addElementAPropertyDescriptor(Object object) {
+    protected void addElementATUIDPropertyDescriptor(Object object) {
         itemPropertyDescriptors.add
             (createItemPropertyDescriptor
                 (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
                  getResourceLocator(),
-                 getString("_UI_SameTypeCorrespondence_elementA_feature"),
-                 getString("_UI_PropertyDescriptor_description", "_UI_SameTypeCorrespondence_elementA_feature", "_UI_SameTypeCorrespondence_type"),
-                 CorrespondencePackage.Literals.SAME_TYPE_CORRESPONDENCE__ELEMENT_A,
+                 getString("_UI_SameTypeCorrespondence_elementATUID_feature"),
+                 getString("_UI_PropertyDescriptor_description", "_UI_SameTypeCorrespondence_elementATUID_feature", "_UI_SameTypeCorrespondence_type"),
+                 CorrespondencePackage.Literals.SAME_TYPE_CORRESPONDENCE__ELEMENT_ATUID,
                  true,
                  false,
-                 true,
-                 null,
+                 false,
+                 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
                  null,
                  null));
     }
 
     /**
-     * This adds a property descriptor for the Element B feature.
+     * This adds a property descriptor for the Element BTUID feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    protected void addElementBPropertyDescriptor(Object object) {
+    protected void addElementBTUIDPropertyDescriptor(Object object) {
         itemPropertyDescriptors.add
             (createItemPropertyDescriptor
                 (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
                  getResourceLocator(),
-                 getString("_UI_SameTypeCorrespondence_elementB_feature"),
-                 getString("_UI_PropertyDescriptor_description", "_UI_SameTypeCorrespondence_elementB_feature", "_UI_SameTypeCorrespondence_type"),
-                 CorrespondencePackage.Literals.SAME_TYPE_CORRESPONDENCE__ELEMENT_B,
+                 getString("_UI_SameTypeCorrespondence_elementBTUID_feature"),
+                 getString("_UI_PropertyDescriptor_description", "_UI_SameTypeCorrespondence_elementBTUID_feature", "_UI_SameTypeCorrespondence_type"),
+                 CorrespondencePackage.Literals.SAME_TYPE_CORRESPONDENCE__ELEMENT_BTUID,
                  true,
                  false,
-                 true,
-                 null,
+                 false,
+                 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
                  null,
                  null));
     }
@@ -226,45 +220,45 @@ public class PartialEReferenceCorrespondenceItemProvider
     }
 
     /**
-     * This adds a property descriptor for the Value A feature.
+     * This adds a property descriptor for the Value ATUID feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    protected void addValueAPropertyDescriptor(Object object) {
+    protected void addValueATUIDPropertyDescriptor(Object object) {
         itemPropertyDescriptors.add
             (createItemPropertyDescriptor
                 (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
                  getResourceLocator(),
-                 getString("_UI_PartialEReferenceCorrespondence_valueA_feature"),
-                 getString("_UI_PropertyDescriptor_description", "_UI_PartialEReferenceCorrespondence_valueA_feature", "_UI_PartialEReferenceCorrespondence_type"),
-                 CorrespondencePackage.Literals.PARTIAL_EREFERENCE_CORRESPONDENCE__VALUE_A,
+                 getString("_UI_PartialEReferenceCorrespondence_valueATUID_feature"),
+                 getString("_UI_PropertyDescriptor_description", "_UI_PartialEReferenceCorrespondence_valueATUID_feature", "_UI_PartialEReferenceCorrespondence_type"),
+                 CorrespondencePackage.Literals.PARTIAL_EREFERENCE_CORRESPONDENCE__VALUE_ATUID,
                  true,
                  false,
-                 true,
-                 null,
+                 false,
+                 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
                  null,
                  null));
     }
 
     /**
-     * This adds a property descriptor for the Value B feature.
+     * This adds a property descriptor for the Value BTUID feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    protected void addValueBPropertyDescriptor(Object object) {
+    protected void addValueBTUIDPropertyDescriptor(Object object) {
         itemPropertyDescriptors.add
             (createItemPropertyDescriptor
                 (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
                  getResourceLocator(),
-                 getString("_UI_PartialEReferenceCorrespondence_valueB_feature"),
-                 getString("_UI_PropertyDescriptor_description", "_UI_PartialEReferenceCorrespondence_valueB_feature", "_UI_PartialEReferenceCorrespondence_type"),
-                 CorrespondencePackage.Literals.PARTIAL_EREFERENCE_CORRESPONDENCE__VALUE_B,
+                 getString("_UI_PartialEReferenceCorrespondence_valueBTUID_feature"),
+                 getString("_UI_PropertyDescriptor_description", "_UI_PartialEReferenceCorrespondence_valueBTUID_feature", "_UI_PartialEReferenceCorrespondence_type"),
+                 CorrespondencePackage.Literals.PARTIAL_EREFERENCE_CORRESPONDENCE__VALUE_BTUID,
                  true,
                  false,
-                 true,
-                 null,
+                 false,
+                 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
                  null,
                  null));
     }
@@ -288,8 +282,7 @@ public class PartialEReferenceCorrespondenceItemProvider
      */
     @Override
     public String getText(Object object) {
-        CorrespondenceType labelValue = ((PartialEReferenceCorrespondence<?>)object).getType();
-        String label = labelValue == null ? null : labelValue.toString();
+        String label = ((PartialEReferenceCorrespondence<?>)object).getElementATUID();
         return label == null || label.length() == 0 ?
             getString("_UI_PartialEReferenceCorrespondence_type") :
             getString("_UI_PartialEReferenceCorrespondence_type") + " " + label;
@@ -307,7 +300,11 @@ public class PartialEReferenceCorrespondenceItemProvider
         updateChildren(notification);
 
         switch (notification.getFeatureID(PartialEReferenceCorrespondence.class)) {
+            case CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__ELEMENT_ATUID:
+            case CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__ELEMENT_BTUID:
             case CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__TYPE:
+            case CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__VALUE_ATUID:
+            case CorrespondencePackage.PARTIAL_EREFERENCE_CORRESPONDENCE__VALUE_BTUID:
                 fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

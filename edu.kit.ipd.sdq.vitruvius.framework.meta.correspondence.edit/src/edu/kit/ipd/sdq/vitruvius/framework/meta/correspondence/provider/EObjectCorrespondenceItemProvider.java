@@ -3,6 +3,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.provider;
 
 
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,13 +24,7 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
  * @generated
  */
 public class EObjectCorrespondenceItemProvider
-    extends SameTypeCorrespondenceItemProvider
-    implements
-        IEditingDomainItemProvider,
-        IStructuredItemContentProvider,
-        ITreeItemContentProvider,
-        IItemLabelProvider,
-        IItemPropertySource {
+    extends SameTypeCorrespondenceItemProvider {
     /**
      * This constructs an instance from a factory and a notifier.
      * <!-- begin-user-doc -->
@@ -74,7 +69,10 @@ public class EObjectCorrespondenceItemProvider
      */
     @Override
     public String getText(Object object) {
-        return getString("_UI_EObjectCorrespondence_type");
+        String label = ((EObjectCorrespondence)object).getElementATUID();
+        return label == null || label.length() == 0 ?
+            getString("_UI_EObjectCorrespondence_type") :
+            getString("_UI_EObjectCorrespondence_type") + " " + label;
     }
 
     /**

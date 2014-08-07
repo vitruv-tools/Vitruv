@@ -30,13 +30,7 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * @generated
  */
 public class PartialEAttributeCorrespondenceItemProvider
-    extends PartialEFeatureCorrespondenceItemProvider
-    implements
-        IEditingDomainItemProvider,
-        IStructuredItemContentProvider,
-        ITreeItemContentProvider,
-        IItemLabelProvider,
-        IItemPropertySource {
+    extends PartialEFeatureCorrespondenceItemProvider {
     /**
      * This constructs an instance from a factory and a notifier.
      * <!-- begin-user-doc -->
@@ -60,8 +54,8 @@ public class PartialEAttributeCorrespondenceItemProvider
 
             addDependentCorrespondencesPropertyDescriptor(object);
             addParentPropertyDescriptor(object);
-            addElementAPropertyDescriptor(object);
-            addElementBPropertyDescriptor(object);
+            addElementATUIDPropertyDescriptor(object);
+            addElementBTUIDPropertyDescriptor(object);
             addTypePropertyDescriptor(object);
             addFeatureAPropertyDescriptor(object);
             addFeatureBPropertyDescriptor(object);
@@ -116,45 +110,45 @@ public class PartialEAttributeCorrespondenceItemProvider
     }
 
     /**
-     * This adds a property descriptor for the Element A feature.
+     * This adds a property descriptor for the Element ATUID feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    protected void addElementAPropertyDescriptor(Object object) {
+    protected void addElementATUIDPropertyDescriptor(Object object) {
         itemPropertyDescriptors.add
             (createItemPropertyDescriptor
                 (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
                  getResourceLocator(),
-                 getString("_UI_SameTypeCorrespondence_elementA_feature"),
-                 getString("_UI_PropertyDescriptor_description", "_UI_SameTypeCorrespondence_elementA_feature", "_UI_SameTypeCorrespondence_type"),
-                 CorrespondencePackage.Literals.SAME_TYPE_CORRESPONDENCE__ELEMENT_A,
+                 getString("_UI_SameTypeCorrespondence_elementATUID_feature"),
+                 getString("_UI_PropertyDescriptor_description", "_UI_SameTypeCorrespondence_elementATUID_feature", "_UI_SameTypeCorrespondence_type"),
+                 CorrespondencePackage.Literals.SAME_TYPE_CORRESPONDENCE__ELEMENT_ATUID,
                  true,
                  false,
-                 true,
-                 null,
+                 false,
+                 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
                  null,
                  null));
     }
 
     /**
-     * This adds a property descriptor for the Element B feature.
+     * This adds a property descriptor for the Element BTUID feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    protected void addElementBPropertyDescriptor(Object object) {
+    protected void addElementBTUIDPropertyDescriptor(Object object) {
         itemPropertyDescriptors.add
             (createItemPropertyDescriptor
                 (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
                  getResourceLocator(),
-                 getString("_UI_SameTypeCorrespondence_elementB_feature"),
-                 getString("_UI_PropertyDescriptor_description", "_UI_SameTypeCorrespondence_elementB_feature", "_UI_SameTypeCorrespondence_type"),
-                 CorrespondencePackage.Literals.SAME_TYPE_CORRESPONDENCE__ELEMENT_B,
+                 getString("_UI_SameTypeCorrespondence_elementBTUID_feature"),
+                 getString("_UI_PropertyDescriptor_description", "_UI_SameTypeCorrespondence_elementBTUID_feature", "_UI_SameTypeCorrespondence_type"),
+                 CorrespondencePackage.Literals.SAME_TYPE_CORRESPONDENCE__ELEMENT_BTUID,
                  true,
                  false,
-                 true,
-                 null,
+                 false,
+                 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
                  null,
                  null));
     }
@@ -288,8 +282,7 @@ public class PartialEAttributeCorrespondenceItemProvider
      */
     @Override
     public String getText(Object object) {
-        CorrespondenceType labelValue = ((PartialEAttributeCorrespondence<?>)object).getType();
-        String label = labelValue == null ? null : labelValue.toString();
+        String label = ((PartialEAttributeCorrespondence<?>)object).getElementATUID();
         return label == null || label.length() == 0 ?
             getString("_UI_PartialEAttributeCorrespondence_type") :
             getString("_UI_PartialEAttributeCorrespondence_type") + " " + label;
@@ -307,6 +300,8 @@ public class PartialEAttributeCorrespondenceItemProvider
         updateChildren(notification);
 
         switch (notification.getFeatureID(PartialEAttributeCorrespondence.class)) {
+            case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__ELEMENT_ATUID:
+            case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__ELEMENT_BTUID:
             case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__TYPE:
             case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__VALUE_A:
             case CorrespondencePackage.PARTIAL_EATTRIBUTE_CORRESPONDENCE__VALUE_B:

@@ -26,13 +26,7 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
  * @generated
  */
 public class EAttributeCorrespondenceItemProvider
-    extends EFeatureCorrespondenceItemProvider
-    implements
-        IEditingDomainItemProvider,
-        IStructuredItemContentProvider,
-        ITreeItemContentProvider,
-        IItemLabelProvider,
-        IItemPropertySource {
+    extends EFeatureCorrespondenceItemProvider {
     /**
      * This constructs an instance from a factory and a notifier.
      * <!-- begin-user-doc -->
@@ -77,8 +71,7 @@ public class EAttributeCorrespondenceItemProvider
      */
     @Override
     public String getText(Object object) {
-        CorrespondenceType labelValue = ((EAttributeCorrespondence)object).getType();
-        String label = labelValue == null ? null : labelValue.toString();
+        String label = ((EAttributeCorrespondence)object).getElementATUID();
         return label == null || label.length() == 0 ?
             getString("_UI_EAttributeCorrespondence_type") :
             getString("_UI_EAttributeCorrespondence_type") + " " + label;

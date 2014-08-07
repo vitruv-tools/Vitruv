@@ -5,6 +5,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.provider;
 
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage;
 
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,6 +19,8 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
  * This is the item provider adapter for a {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence} object.
@@ -26,13 +29,7 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
  * @generated
  */
 public class SameTypeCorrespondenceItemProvider
-    extends CorrespondenceItemProvider
-    implements
-        IEditingDomainItemProvider,
-        IStructuredItemContentProvider,
-        ITreeItemContentProvider,
-        IItemLabelProvider,
-        IItemPropertySource {
+    extends CorrespondenceItemProvider {
     /**
      * This constructs an instance from a factory and a notifier.
      * <!-- begin-user-doc -->
@@ -54,52 +51,52 @@ public class SameTypeCorrespondenceItemProvider
         if (itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            addElementAPropertyDescriptor(object);
-            addElementBPropertyDescriptor(object);
+            addElementATUIDPropertyDescriptor(object);
+            addElementBTUIDPropertyDescriptor(object);
         }
         return itemPropertyDescriptors;
     }
 
     /**
-     * This adds a property descriptor for the Element A feature.
+     * This adds a property descriptor for the Element ATUID feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    protected void addElementAPropertyDescriptor(Object object) {
+    protected void addElementATUIDPropertyDescriptor(Object object) {
         itemPropertyDescriptors.add
             (createItemPropertyDescriptor
                 (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
                  getResourceLocator(),
-                 getString("_UI_SameTypeCorrespondence_elementA_feature"),
-                 getString("_UI_PropertyDescriptor_description", "_UI_SameTypeCorrespondence_elementA_feature", "_UI_SameTypeCorrespondence_type"),
-                 CorrespondencePackage.Literals.SAME_TYPE_CORRESPONDENCE__ELEMENT_A,
+                 getString("_UI_SameTypeCorrespondence_elementATUID_feature"),
+                 getString("_UI_PropertyDescriptor_description", "_UI_SameTypeCorrespondence_elementATUID_feature", "_UI_SameTypeCorrespondence_type"),
+                 CorrespondencePackage.Literals.SAME_TYPE_CORRESPONDENCE__ELEMENT_ATUID,
                  true,
                  false,
-                 true,
-                 null,
+                 false,
+                 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
                  null,
                  null));
     }
 
     /**
-     * This adds a property descriptor for the Element B feature.
+     * This adds a property descriptor for the Element BTUID feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    protected void addElementBPropertyDescriptor(Object object) {
+    protected void addElementBTUIDPropertyDescriptor(Object object) {
         itemPropertyDescriptors.add
             (createItemPropertyDescriptor
                 (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
                  getResourceLocator(),
-                 getString("_UI_SameTypeCorrespondence_elementB_feature"),
-                 getString("_UI_PropertyDescriptor_description", "_UI_SameTypeCorrespondence_elementB_feature", "_UI_SameTypeCorrespondence_type"),
-                 CorrespondencePackage.Literals.SAME_TYPE_CORRESPONDENCE__ELEMENT_B,
+                 getString("_UI_SameTypeCorrespondence_elementBTUID_feature"),
+                 getString("_UI_PropertyDescriptor_description", "_UI_SameTypeCorrespondence_elementBTUID_feature", "_UI_SameTypeCorrespondence_type"),
+                 CorrespondencePackage.Literals.SAME_TYPE_CORRESPONDENCE__ELEMENT_BTUID,
                  true,
                  false,
-                 true,
-                 null,
+                 false,
+                 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
                  null,
                  null));
     }
@@ -112,7 +109,10 @@ public class SameTypeCorrespondenceItemProvider
      */
     @Override
     public String getText(Object object) {
-        return getString("_UI_SameTypeCorrespondence_type");
+        String label = ((SameTypeCorrespondence)object).getElementATUID();
+        return label == null || label.length() == 0 ?
+            getString("_UI_SameTypeCorrespondence_type") :
+            getString("_UI_SameTypeCorrespondence_type") + " " + label;
     }
 
     /**
@@ -125,6 +125,13 @@ public class SameTypeCorrespondenceItemProvider
     @Override
     public void notifyChanged(Notification notification) {
         updateChildren(notification);
+
+        switch (notification.getFeatureID(SameTypeCorrespondence.class)) {
+            case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_ATUID:
+            case CorrespondencePackage.SAME_TYPE_CORRESPONDENCE__ELEMENT_BTUID:
+                fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
+        }
         super.notifyChanged(notification);
     }
 
