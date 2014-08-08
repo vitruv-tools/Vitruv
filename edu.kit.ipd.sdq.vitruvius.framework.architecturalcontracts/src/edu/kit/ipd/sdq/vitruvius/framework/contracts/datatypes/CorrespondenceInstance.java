@@ -181,7 +181,18 @@ public interface CorrespondenceInstance {
      * SWAPS a and b if necessary!
      */
     public EContainmentReferenceCorrespondence createAndAddEContainmentReferenceCorrespondence(EObject a, EObject b,
-            Correspondence parent, EReference referenceFeatureA, EReference referenceFeatureB);
+            EReference referenceFeatureA, EReference referenceFeatureB);
+
+    /**
+     * SWAPS a and b if necessary!
+     */
+    public EContainmentReferenceCorrespondence createAndAddEContainmentReferenceCorrespondence(EObject a, EObject b,
+            EReference referenceFeatureA, EReference referenceFeatureB, Correspondence parent);
+
+    /**
+     * SWAPS a and b if necessary!
+     */
+    public EObjectCorrespondence createAndAddEObjectCorrespondence(EObject a, EObject b);
 
     /**
      * SWAPS a and b if necessary!

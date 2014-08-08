@@ -741,14 +741,25 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     @Override
     public EContainmentReferenceCorrespondence createAndAddEContainmentReferenceCorrespondence(final EObject a,
-            final EObject b, final Correspondence parent, final EReference referenceFeatureA,
-            final EReference referenceFeatureB) {
+            final EObject b, final EReference referenceFeatureA, final EReference referenceFeatureB) {
+        return createAndAddEContainmentReferenceCorrespondence(a, b, referenceFeatureA, referenceFeatureB, null);
+    }
+
+    @Override
+    public EContainmentReferenceCorrespondence createAndAddEContainmentReferenceCorrespondence(final EObject a,
+            final EObject b, final EReference referenceFeatureA, final EReference referenceFeatureB,
+            final Correspondence parent) {
         EContainmentReferenceCorrespondence correspondence = CorrespondenceFactory.eINSTANCE
                 .createEContainmentReferenceCorrespondence();
         setSameTypeCorrespondenceFeatures(correspondence, a, b, parent);
         correspondence.setFeatureA(referenceFeatureA);
         correspondence.setFeatureB(referenceFeatureB);
         return correspondence;
+    }
+
+    @Override
+    public EObjectCorrespondence createAndAddEObjectCorrespondence(final EObject a, final EObject b) {
+        return createAndAddEObjectCorrespondence(a, b, null);
     }
 
     @Override

@@ -61,7 +61,7 @@ public class CorrespondenceTest extends VSUMTest {
 
     private EObjectCorrespondence testAllClaimersAndGettersForEObjectCorrespondences(final Repository repo,
             final UPackage pkg, final CorrespondenceInstance corresp) {
-        Correspondence repo2pkg = corresp.createAndAddEObjectCorrespondence(repo, pkg, null);
+        Correspondence repo2pkg = corresp.createAndAddEObjectCorrespondence(repo, pkg);
 
         // claimAllCorrespondence is already indirectly tested via claimUniqueCorrespondence
         Correspondence uniqueRepoCorrespondence = corresp.claimUniqueCorrespondence(repo);
@@ -116,7 +116,7 @@ public class CorrespondenceTest extends VSUMTest {
         EReference pkgIfaceCRef = (EReference) pkgIfaceCFeat;
         // repoIfaceCRef2PkgIfaceCRef.setType(CorrespondenceType.BIJECTION);
         EContainmentReferenceCorrespondence repoIfaceCRef2PkgIfaceCRef = corresp
-                .createAndAddEContainmentReferenceCorrespondence(repo, pkg, repo2pkg, repoIfaceCRef, pkgIfaceCRef);
+                .createAndAddEContainmentReferenceCorrespondence(repo, pkg, repoIfaceCRef, pkgIfaceCRef, repo2pkg);
 
         FeatureInstance repoIfaceFI = FeatureInstance.getInstance(repo, repoIfaceCRef);
         FeatureInstance pkgIfaceFI = FeatureInstance.getInstance(pkg, pkgIfaceCRef);
@@ -153,7 +153,7 @@ public class CorrespondenceTest extends VSUMTest {
         assertEquals(pkgInterfaces.size(), 1);
         uml_mockup.Interface pkgInterface = pkgInterfaces.get(0);
         // add correspondence
-        corresp.createAndAddEObjectCorrespondence(repoInterface, pkgInterface, null);
+        corresp.createAndAddEObjectCorrespondence(repoInterface, pkgInterface);
 
         // remove correspondence
         corresp.removeAllCorrespondences(repoInterface);
