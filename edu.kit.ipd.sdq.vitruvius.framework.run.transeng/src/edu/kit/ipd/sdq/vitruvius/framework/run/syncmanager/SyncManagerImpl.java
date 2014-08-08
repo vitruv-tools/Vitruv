@@ -79,7 +79,7 @@ public class SyncManagerImpl implements ChangeSynchronizing {
         }
 
         for (Pair<EObject, VURI> createdEObjectVURIPair : emfChangeResult.getNewRootObjectsToSave()) {
-            ModelInstance mi = this.modelProviding.getModelInstanceOriginal(createdEObjectVURIPair.getSecond());
+            ModelInstance mi = this.modelProviding.getAndLoadModelInstanceOriginal(createdEObjectVURIPair.getSecond());
             Resource resource = mi.getResource();
             // clear the resource first
             resource.getContents().clear();
@@ -92,7 +92,7 @@ public class SyncManagerImpl implements ChangeSynchronizing {
         // Hence we do not need to remove the correspondence models etc.However the question is what
         // happens if we delete, e.g. a PCM instance.
         for (VURI vuriToDelete : emfChangeResult.getExistingObjectsToDelete()) {
-            ModelInstance mi = getModelProviding().getModelInstanceOriginal(vuriToDelete);
+            ModelInstance mi = getModelProviding().getAndLoadModelInstanceOriginal(vuriToDelete);
             Resource resource = mi.getResource();
             try {
                 resource.delete(null);

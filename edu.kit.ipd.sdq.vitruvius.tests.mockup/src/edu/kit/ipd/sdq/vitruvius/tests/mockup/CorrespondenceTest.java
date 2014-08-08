@@ -36,8 +36,8 @@ public class CorrespondenceTest extends VSUMTest {
         VSUMImpl vsum = testMetaRepositoryVSUMAndModelInstancesCreation();
         VURI pcmVURI = VURI.getInstance(PCM_INSTANCE_URI);
         VURI umlVURI = VURI.getInstance(UML_INSTANCE_URI);
-        ModelInstance pcmInstance = vsum.getModelInstanceOriginal(pcmVURI);
-        ModelInstance umlInstance = vsum.getModelInstanceOriginal(umlVURI);
+        ModelInstance pcmInstance = vsum.getAndLoadModelInstanceOriginal(pcmVURI);
+        ModelInstance umlInstance = vsum.getAndLoadModelInstanceOriginal(umlVURI);
         Repository repo = pcmInstance.getUniqueRootEObjectIfCorrectlyTyped(Repository.class);
         UPackage pkg = umlInstance.getUniqueRootEObjectIfCorrectlyTyped(UPackage.class);
         VURI pcmMMVURI = VURI.getInstance(PCM_MM_URI);

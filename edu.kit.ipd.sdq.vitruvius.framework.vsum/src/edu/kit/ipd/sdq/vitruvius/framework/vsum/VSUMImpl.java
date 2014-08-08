@@ -83,7 +83,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
      * model. Hence the caller do not have to check whether the retrived model is null.
      */
     @Override
-    public ModelInstance getModelInstanceOriginal(final VURI modelURI) {
+    public ModelInstance getAndLoadModelInstanceOriginal(final VURI modelURI) {
         ModelInstance modelInstance = this.modelInstances.get(modelURI);
         if (modelInstance == null) {
             // case 2 or 3
@@ -91,6 +91,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
             this.modelInstances.put(modelURI, modelInstance);
             saveVURIsOfVSUMModelInstances();
         }
+        modelInstance.load();
         return modelInstance;
     }
 
@@ -106,7 +107,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
      */
     @Override
     public void saveModelInstanceOriginal(final VURI vuri) {
-        ModelInstance modelInstanceToSave = getModelInstanceOriginal(vuri);
+        ModelInstance modelInstanceToSave = getAndLoadModelInstanceOriginal(vuri);
         Resource resourceToSave = modelInstanceToSave.getResource();
         try {
             EcoreResourceBridge.saveResource(resourceToSave);

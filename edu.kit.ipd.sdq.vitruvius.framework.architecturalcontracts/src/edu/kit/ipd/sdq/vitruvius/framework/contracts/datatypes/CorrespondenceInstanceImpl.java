@@ -328,7 +328,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
                     + this.mapping.getMetamodelA() + " nor " + this.mapping.getMetamodelB());
         } else {
             VURI vuri = metamodel.getModelVURIContainingIdentifiedEObject(tuidString);
-            EObject rootEObject = this.modelProviding.getModelInstanceOriginal(vuri).getUniqueRootEObject();
+            EObject rootEObject = this.modelProviding.getAndLoadModelInstanceOriginal(vuri).getUniqueRootEObject();
             return this.mapping.getMetamodelA().resolveEObjectFromRootAndFullTUID(rootEObject, tuidString);
         }
     }

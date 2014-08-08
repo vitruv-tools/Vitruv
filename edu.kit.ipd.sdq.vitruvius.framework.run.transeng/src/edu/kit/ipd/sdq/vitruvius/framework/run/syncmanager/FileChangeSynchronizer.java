@@ -50,7 +50,7 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
     }
 
     private ChangeResult synchronizeFileCreated(final VURI sourceModelURI) {
-        ModelInstance newModelInstance = this.modelProviding.getModelInstanceOriginal(sourceModelURI);
+        ModelInstance newModelInstance = this.modelProviding.getAndLoadModelInstanceOriginal(sourceModelURI);
         Resource resource = newModelInstance.getResource();
         EObject rootElement = null;
         if (1 == resource.getContents().size()) {
@@ -71,7 +71,7 @@ class FileChangeSynchronizer extends ConcreteChangeSynchronizer {
     }
 
     private ChangeResult synchronizeFileDeleted(final VURI sourceModelURI) {
-        ModelInstance oldModelInstance = this.modelProviding.getModelInstanceOriginal(sourceModelURI);
+        ModelInstance oldModelInstance = this.modelProviding.getAndLoadModelInstanceOriginal(sourceModelURI);
         Resource resource = oldModelInstance.getResource();
         if (0 < resource.getContents().size()) {
             EObject rootElement = resource.getContents().get(0);

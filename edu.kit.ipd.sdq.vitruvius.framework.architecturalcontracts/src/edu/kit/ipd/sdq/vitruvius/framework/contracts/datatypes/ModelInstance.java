@@ -1,5 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
+import java.io.IOException;
+import java.util.Collections;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
@@ -51,5 +54,14 @@ public class ModelInstance extends AbstractURIHaving {
     public <T extends EObject> T getUniqueRootEObjectIfCorrectlyTyped(final Class<T> rootElementClass) {
         return EcoreResourceBridge.getUniqueContentRootIfCorrectlyTyped(this.resource, getURI().toString(),
                 rootElementClass);
+    }
+
+    public void load() {
+        try {
+            this.resource.load(Collections.emptyMap());
+        } catch (IOException e) {
+            // soften
+            throw new RuntimeException(e);
+        }
     }
 }

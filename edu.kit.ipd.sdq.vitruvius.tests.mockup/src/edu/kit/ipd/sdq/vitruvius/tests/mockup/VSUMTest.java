@@ -40,7 +40,7 @@ public class VSUMTest extends MetaRepositoryTest {
         return testVSUMCreation(metaRepository);
     }
 
-    protected VSUMImpl testVSUMCreation(MetaRepositoryImpl metaRepository) {
+    protected VSUMImpl testVSUMCreation(final MetaRepositoryImpl metaRepository) {
         CorrespondenceMMProviding correspondenceMMproviding = new CorrespondenceMMProviding() {
             @Override
             public CorrespondenceMM getCorrespondenceMM(final VURI uriMM1, final VURI uriMM2) {
@@ -59,8 +59,8 @@ public class VSUMTest extends MetaRepositoryTest {
     private void testInstanceCreation(final String model1URIString, final String model2URIString, final VSUMImpl vsum) {
         VURI model1URI = VURI.getInstance(model1URIString);
         VURI model2URI = VURI.getInstance(model2URIString);
-        ModelInstance model1 = vsum.getModelInstanceOriginal(model1URI);
-        ModelInstance model2 = vsum.getModelInstanceOriginal(model2URI);
+        ModelInstance model1 = vsum.getAndLoadModelInstanceOriginal(model1URI);
+        ModelInstance model2 = vsum.getAndLoadModelInstanceOriginal(model2URI);
         EList<EObject> contents1 = model1.getResource().getContents();
         assertNotNull(contents1);
         EObject root1 = contents1.get(0);

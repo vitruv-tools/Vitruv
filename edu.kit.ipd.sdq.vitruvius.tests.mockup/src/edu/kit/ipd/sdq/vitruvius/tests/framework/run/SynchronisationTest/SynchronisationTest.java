@@ -137,7 +137,7 @@ public class SynchronisationTest extends VSUMTest {
         // a java interface in the package "testRepository" should have been created
         String javaInterfaceLocation = getSrcPath() + PCM_REPOSITORY_NAME + "/" + PCM_INTERFACE_CREATION_NAME + ".java";
         VURI interfaceVURI = VURI.getInstance(javaInterfaceLocation);
-        ModelInstance newInterface = this.syncManager.getModelProviding().getModelInstanceOriginal(interfaceVURI);
+        ModelInstance newInterface = this.syncManager.getModelProviding().getAndLoadModelInstanceOriginal(interfaceVURI);
         CompilationUnit cu = newInterface.getUniqueRootEObjectIfCorrectlyTyped(CompilationUnit.class);
         assertClassifierInJaMoPPCompilationUnit(cu, InterfaceImpl.class, PCM_INTERFACE_CREATION_NAME, true);
     }
@@ -151,7 +151,7 @@ public class SynchronisationTest extends VSUMTest {
         String javaClassLocation = getSrcPath() + PCM_REPOSITORY_NAME + "/" + PCM_REPOSITORY_CREATION_NAME + "/"
                 + PCM_REPOSITORY_CREATION_NAME + "Impl" + ".java";
         VURI vuri = VURI.getInstance(javaClassLocation);
-        ModelInstance newClass = this.syncManager.getModelProviding().getModelInstanceOriginal(vuri);
+        ModelInstance newClass = this.syncManager.getModelProviding().getAndLoadModelInstanceOriginal(vuri);
         CompilationUnit cu = newClass.getUniqueRootEObjectIfCorrectlyTyped(CompilationUnit.class);
         Classifier classifier = assertClassifierInJaMoPPCompilationUnit(cu, ClassImpl.class,
                 PCM_REPOSITORY_CREATION_NAME + "Impl", true);
@@ -172,7 +172,7 @@ public class SynchronisationTest extends VSUMTest {
         // interface with the new name
         String newInterfaceLocation = getSrcPath() + PCM_REPOSITORY_NAME + "/" + PCM_INTERFACE_RENAME_NAME + ".java";
         VURI newInterfaceLocationVURI = VURI.getInstance(newInterfaceLocation);
-        ModelInstance renamedInterface = this.syncManager.getModelProviding().getModelInstanceOriginal(
+        ModelInstance renamedInterface = this.syncManager.getModelProviding().getAndLoadModelInstanceOriginal(
                 newInterfaceLocationVURI);
         CompilationUnit cu = renamedInterface.getUniqueRootEObjectIfCorrectlyTyped(CompilationUnit.class);
         Classifier classifier = assertClassifierInJaMoPPCompilationUnit(cu, InterfaceImpl.class,
