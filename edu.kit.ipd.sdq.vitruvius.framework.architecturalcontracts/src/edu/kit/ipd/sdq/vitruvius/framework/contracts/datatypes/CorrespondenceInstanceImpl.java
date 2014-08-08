@@ -9,6 +9,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -17,6 +18,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondences;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentReferenceCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EFeatureCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
@@ -718,16 +720,43 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         }
     }
 
-    @Override
-    public Correspondence addSameTypeCorrespondence(final EObject elementA, final EObject elementB) {
-        // TODO Auto-generated method stub
-        return null;
+    private void setCorrespondenceFeatures(final Correspondence correspondence, final Correspondence parent) {
+        correspondence.setParent(parent);
+    }
+
+    private void setSameTypeCorrespondenceFeatures(final SameTypeCorrespondence correspondence, EObject a, EObject b,
+            final Correspondence parent) {
+        setCorrespondenceFeatures(correspondence, parent);
+        if (this.mapping.getMetamodelA().hasMetaclassInstance(b)) {
+            // swap
+            EObject tmp = a;
+            a = b;
+            b = tmp;
+        }
+        TUID tuidA = calculateTUIDFromEObject(a);
+        correspondence.setElementATUID(tuidA);
+        TUID tuidB = calculateTUIDFromEObject(b);
+        correspondence.setElementATUID(tuidB);
     }
 
     @Override
-    public Correspondence addSameTypeCorrespondence(final EObject elementA, final EObject elementB,
+    public EContainmentReferenceCorrespondence createAndAddEContainmentReferenceCorrespondence(final EObject a,
+            final EObject b, final Correspondence parent, final EReference referenceFeatureA,
+            final EReference referenceFeatureB) {
+        EContainmentReferenceCorrespondence correspondence = CorrespondenceFactory.eINSTANCE
+                .createEContainmentReferenceCorrespondence();
+        setSameTypeCorrespondenceFeatures(correspondence, a, b, parent);
+        correspondence.setFeatureA(referenceFeatureA);
+        correspondence.setFeatureB(referenceFeatureB);
+        return correspondence;
+    }
+
+    @Override
+    public EObjectCorrespondence createAndAddEObjectCorrespondence(final EObject a, final EObject b,
             final Correspondence parent) {
-        // TODO Auto-generated method stub
-        return null;
+        EObjectCorrespondence correspondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence();
+        setSameTypeCorrespondenceFeatures(correspondence, a, b, parent);
+        addSameTypeCorrespondence(correspondence);
+        return correspondence;
     }
 }

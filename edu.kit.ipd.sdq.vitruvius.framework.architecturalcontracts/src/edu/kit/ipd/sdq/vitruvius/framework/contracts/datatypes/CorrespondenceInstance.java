@@ -3,10 +3,13 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentReferenceCorrespondence;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 
@@ -134,10 +137,6 @@ public interface CorrespondenceInstance {
      */
     public <T> Set<T> getAllEObjectsInCorrespondencesWithType(Class<T> type);
 
-    public Correspondence addSameTypeCorrespondence(EObject elementA, EObject elementB);
-
-    public Correspondence addSameTypeCorrespondence(EObject elementA, EObject elementB, Correspondence parent);
-
     public void addSameTypeCorrespondence(SameTypeCorrespondence correspondence);
 
     public void addSameTypeCorrespondence(SameTypeCorrespondence correspondence, Correspondence parent);
@@ -177,4 +176,15 @@ public interface CorrespondenceInstance {
     public Set<EObject> resolveEObjectsFromTUIDs(final Set<TUID> tuid);
 
     public TUID calculateTUIDFromEObject(final EObject eObject);
+
+    /**
+     * SWAPS a and b if necessary!
+     */
+    public EContainmentReferenceCorrespondence createAndAddEContainmentReferenceCorrespondence(EObject a, EObject b,
+            Correspondence parent, EReference referenceFeatureA, EReference referenceFeatureB);
+
+    /**
+     * SWAPS a and b if necessary!
+     */
+    public EObjectCorrespondence createAndAddEObjectCorrespondence(EObject a, EObject b, Correspondence parent);
 }

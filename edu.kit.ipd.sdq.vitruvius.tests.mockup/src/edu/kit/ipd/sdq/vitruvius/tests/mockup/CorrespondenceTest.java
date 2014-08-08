@@ -22,11 +22,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FeatureInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceType;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentReferenceCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
@@ -64,7 +61,7 @@ public class CorrespondenceTest extends VSUMTest {
 
     private EObjectCorrespondence testAllClaimersAndGettersForEObjectCorrespondences(final Repository repo,
             final UPackage pkg, final CorrespondenceInstance corresp) {
-        Correspondence repo2pkg = corresp.addSameTypeCorrespondence(repo, pkg);
+        Correspondence repo2pkg = corresp.createAndAddEObjectCorrespondence(repo, pkg, null);
 
         // claimAllCorrespondence is already indirectly tested via claimUniqueCorrespondence
         Correspondence uniqueRepoCorrespondence = corresp.claimUniqueCorrespondence(repo);
@@ -111,22 +108,15 @@ public class CorrespondenceTest extends VSUMTest {
     private Pair<FeatureInstance, FeatureInstance> testAllClaimersAndGettersForFeatureCorrespondences(
             final Repository repo, final UPackage pkg, final CorrespondenceInstance corresp,
             final EObjectCorrespondence repo2pkg) {
-        EContainmentReferenceCorrespondence repoIfaceCRef2PkgIfaceCRef = CorrespondenceFactory.eINSTANCE
-                .createEContainmentReferenceCorrespondence();
-        TUID repoTUID = corresp.calculateTUIDFromEObject(repo);
-        repoIfaceCRef2PkgIfaceCRef.setElementATUID(repoTUID);
-        TUID pkgTUID = corresp.calculateTUIDFromEObject(pkg);
-        repoIfaceCRef2PkgIfaceCRef.setElementBTUID(pkgTUID);
-        EStructuralFeature repoIfaceCRef = repo.eClass().getEStructuralFeature(interfaceCRefName);
-        assertTrue(repoIfaceCRef instanceof EReference);
-        repoIfaceCRef2PkgIfaceCRef.setFeatureA((EReference) repoIfaceCRef);
-        EStructuralFeature pkgIfaceCRef = pkg.eClass().getEStructuralFeature(interfaceCRefName);
-        assertTrue(pkgIfaceCRef instanceof EReference);
-        repoIfaceCRef2PkgIfaceCRef.setFeatureB((EReference) pkgIfaceCRef);
-        repoIfaceCRef2PkgIfaceCRef.setParent(repo2pkg);
-        repoIfaceCRef2PkgIfaceCRef.setType(CorrespondenceType.BIJECTION);
-
-        corresp.addSameTypeCorrespondence(repoIfaceCRef2PkgIfaceCRef);
+        EStructuralFeature repoIfaceCFeat = repo.eClass().getEStructuralFeature(interfaceCRefName);
+        assertTrue(repoIfaceCFeat instanceof EReference);
+        EReference repoIfaceCRef = (EReference) repoIfaceCFeat;
+        EStructuralFeature pkgIfaceCFeat = pkg.eClass().getEStructuralFeature(interfaceCRefName);
+        assertTrue(pkgIfaceCFeat instanceof EReference);
+        EReference pkgIfaceCRef = (EReference) pkgIfaceCFeat;
+        // repoIfaceCRef2PkgIfaceCRef.setType(CorrespondenceType.BIJECTION);
+        EContainmentReferenceCorrespondence repoIfaceCRef2PkgIfaceCRef = corresp
+                .createAndAddEContainmentReferenceCorrespondence(repo, pkg, repo2pkg, repoIfaceCRef, pkgIfaceCRef);
 
         FeatureInstance repoIfaceFI = FeatureInstance.getInstance(repo, repoIfaceCRef);
         FeatureInstance pkgIfaceFI = FeatureInstance.getInstance(pkg, pkgIfaceCRef);
@@ -163,7 +153,7 @@ public class CorrespondenceTest extends VSUMTest {
         assertEquals(pkgInterfaces.size(), 1);
         uml_mockup.Interface pkgInterface = pkgInterfaces.get(0);
         // add correspondence
-        corresp.addSameTypeCorrespondence(repoInterface, pkgInterface);
+        corresp.createAndAddEObjectCorrespondence(repoInterface, pkgInterface, null);
 
         // remove correspondence
         corresp.removeAllCorrespondences(repoInterface);
