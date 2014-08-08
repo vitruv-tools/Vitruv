@@ -754,6 +754,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         setSameTypeCorrespondenceFeatures(correspondence, a, b, parent);
         correspondence.setFeatureA(referenceFeatureA);
         correspondence.setFeatureB(referenceFeatureB);
+        addSameTypeCorrespondence(correspondence, parent);
         return correspondence;
     }
 
