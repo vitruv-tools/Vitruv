@@ -14,6 +14,7 @@ import org.emftext.language.java.containers.CompilationUnit;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.InterfaceMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ModifierMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.PackageMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.BasicComponentMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.OperationInterfaceMappingTransformation;
@@ -57,11 +58,12 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
         this.changeSynchronizer.addMapping(new BasicComponentMappingTransformation());
         this.changeSynchronizer.addMapping(new OperationInterfaceMappingTransformation());
         this.changeSynchronizer.addMapping(new RepositoryMappingTransformation());
+        this.changeSynchronizer.addMapping(new ModifierMappingTransformation());
     }
 
     /**
      * Executes the Java2PCM and PCM2Java transformations and returns the changed VURIs
-     *
+     * 
      * @param change
      *            the occurred change
      * @param correspondenceInstance

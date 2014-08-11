@@ -240,6 +240,21 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
      * (non-Javadoc)
      * 
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
+     * getCorrespondingEObjectsByType(org.eclipse.emf.ecore.EObject, java.lang.Class)
+     */
+    @Override
+    public <T> Set<T> getCorrespondingEObjectsByType(final EObject eObject, final Class<T> type) {
+        try {
+            return claimCorrespondingEObjectsByType(eObject, type);
+        } catch (RuntimeException e) {
+            return null;
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
      * claimUniqueCorrespondingEObjectByType(org.eclipse.emf.ecore.EObject, java.lang.Class)
      */
     @Override

@@ -198,4 +198,6 @@ public interface CorrespondenceInstance {
      * SWAPS a and b if necessary!
      */
     public EObjectCorrespondence createAndAddEObjectCorrespondence(EObject a, EObject b, Correspondence parent);
+
+    public <T> Set<T> getCorrespondingEObjectsByType(EObject eObject, Class<T> type);
 }
