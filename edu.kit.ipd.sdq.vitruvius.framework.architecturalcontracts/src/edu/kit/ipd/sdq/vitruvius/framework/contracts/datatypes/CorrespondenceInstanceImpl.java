@@ -736,7 +736,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         TUID tuidA = calculateTUIDFromEObject(a);
         correspondence.setElementATUID(tuidA);
         TUID tuidB = calculateTUIDFromEObject(b);
-        correspondence.setElementATUID(tuidB);
+        correspondence.setElementBTUID(tuidB);
     }
 
     @Override
