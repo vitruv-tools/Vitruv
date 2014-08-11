@@ -10,9 +10,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 
 /**
  * Util class for the PCM Java case study
- *
+ * 
  * @author Langhamm
- *
+ * 
  */
 public class PCMJavaUtils {
 
@@ -25,7 +25,7 @@ public class PCMJavaUtils {
 
     /**
      * creates and returns the metarepository for the PCM and Java case study
-     *
+     * 
      * @return the PCMJava MetaRepository
      */
     public static MetaRepositoryImpl createPCMJavaMetarepository() {
@@ -40,8 +40,9 @@ public class PCMJavaUtils {
 
         final VURI jaMoPPURI = VURI.getInstance(PCMJavaNamespace.JAMOPP_METAMODEL_NAMESPACE);
         final Set<String> jamoppNSURIs = new HashSet<String>();
-        jamoppNSURIs.add(PCMJavaNamespace.JAMOPP_METAMODEL_NAMESPACE_URI);
-        jamoppNSURIs.add(PCMJavaNamespace.JAMPPP_METAMODEL_NAMESPACE_URI_CONTAINER);
+        for (String nsuri : PCMJavaNamespace.JAMOPP_METAMODEL_NAMESPACE_URIS) {
+            jamoppNSURIs.add(nsuri);
+        }
         final Metamodel jaMoPPMM = new Metamodel(jamoppNSURIs, jaMoPPURI, new JaMoPPTUIDCalculatorAndResolver(),
                 PCMJavaNamespace.JAVA_FILE_EXTENSION);
         metarepository.addMetamodel(jaMoPPMM);

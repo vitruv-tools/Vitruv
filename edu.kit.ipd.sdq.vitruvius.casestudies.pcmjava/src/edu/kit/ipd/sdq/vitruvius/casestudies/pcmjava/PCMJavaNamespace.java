@@ -14,8 +14,13 @@ public class PCMJavaNamespace {
     // URIs for metamodels
     public static final String PCM_METAMODEL_NAMESPACE_URI = PCM_METAMODEL_NAMESPACE;
     public static final String PCM_METAMODEL_NAMESPACE_URI_REPOSITORY = "http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0";
-    public static final String JAMOPP_METAMODEL_NAMESPACE_URI = JAMOPP_METAMODEL_NAMESPACE;
-    public static final String JAMPPP_METAMODEL_NAMESPACE_URI_CONTAINER = "http://www.emftext.org/java/containers";
+    public static final String[] JAMOPP_METAMODEL_NAMESPACE_URIS = { "http://www.emftext.org/java",
+            "http://www.emftext.org/java/containers", "http://www.emftext.org/java/classifiers",
+            "http://www.emftext.org/java/expressions", "http://www.emftext.org/java/literals",
+            "http://www.emftext.org/java/members", "http://www.emftext.org/java/modifiers",
+            "http://www.emftext.org/java/operators", "http://www.emftext.org/java/references",
+            "http://www.emftext.org/java/statements", "http://www.emftext.org/java/types",
+            "http://www.emftext.org/java/imports", "http://www.emftext.org/java/parameters" };
 
     // file extensions
     public static final String REPOSITORY_FILE_EXTENSION = "repository";

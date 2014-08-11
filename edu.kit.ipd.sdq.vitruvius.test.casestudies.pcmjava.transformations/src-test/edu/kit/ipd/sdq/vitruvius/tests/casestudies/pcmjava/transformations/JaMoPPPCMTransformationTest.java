@@ -51,8 +51,9 @@ public class JaMoPPPCMTransformationTest {
 
         final VURI jaMoPPURI = VURI.getInstance(PCMJavaNamespace.JAMOPP_METAMODEL_NAMESPACE);
         final Set<String> jamoppNSURIs = new HashSet<String>();
-        jamoppNSURIs.add(PCMJavaNamespace.JAMOPP_METAMODEL_NAMESPACE_URI);
-        jamoppNSURIs.add(PCMJavaNamespace.JAMPPP_METAMODEL_NAMESPACE_URI_CONTAINER);
+        for (String nsuri : PCMJavaNamespace.JAMOPP_METAMODEL_NAMESPACE_URIS) {
+            jamoppNSURIs.add(nsuri);
+        }
         final Metamodel jamopp = new Metamodel(jamoppNSURIs, jaMoPPURI, new JaMoPPTUIDCalculatorAndResolver(),
                 PCMJavaNamespace.JAVA_FILE_EXTENSION);
 

@@ -329,7 +329,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         } else {
             VURI vuri = metamodel.getModelVURIContainingIdentifiedEObject(tuidString);
             EObject rootEObject = this.modelProviding.getAndLoadModelInstanceOriginal(vuri).getUniqueRootEObject();
-            return this.mapping.getMetamodelA().resolveEObjectFromRootAndFullTUID(rootEObject, tuidString);
+            return metamodel.resolveEObjectFromRootAndFullTUID(rootEObject, tuidString);
         }
     }
 
@@ -667,6 +667,9 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     private void updateTUID2CorrespondingEObjectsMap(final TUID oldTUID, final TUID newTUID, final boolean sameTUID) {
         if (!sameTUID) {
             Set<TUID> correspondingTUIDs = this.tuid2CorrespondingTUIDsMap.remove(oldTUID);
+            if (null == correspondingTUIDs) {
+                return;
+            }
             this.tuid2CorrespondingTUIDsMap.put(newTUID, correspondingTUIDs);
         }
     }
@@ -674,6 +677,8 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     private void updateTUID2CorrespondencesMap(final EObject oldEObject, final EObject newEObject, final TUID oldTUID,
             final TUID newTUID, final boolean sameTUID) {
         Set<Correspondence> correspondences = this.tuid2CorrespondencesMap.get(oldTUID);
+        if (correspondences == null)
+            return;
         for (Correspondence correspondence : correspondences) {
             if (correspondence instanceof SameTypeCorrespondence) {
                 SameTypeCorrespondence stc = (SameTypeCorrespondence) correspondence;

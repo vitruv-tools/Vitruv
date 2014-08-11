@@ -161,7 +161,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         return modelInstance;
     }
 
-    private Set<CorrespondenceInstance> getOrCreateAllCorrespondenceInstances(final Metamodel metamodel) {
+    public Set<CorrespondenceInstance> getOrCreateAllCorrespondenceInstances(final Metamodel metamodel) {
         Set<CorrespondenceInstance> correspondenceInstances = this.metamodel2CorrespondenceInstancesMap.get(metamodel);
         if (correspondenceInstances == null || 0 == correspondenceInstances.size()) {
             correspondenceInstances = createAndRegisterAllCorrespondenceInstances(metamodel);

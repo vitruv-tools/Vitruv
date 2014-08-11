@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.emftext.language.java.classifiers.Classifier;
 import org.emftext.language.java.containers.CompilationUnit;
@@ -28,15 +29,16 @@ public class JaMoPPTUIDCalculatorAndResolver implements TUIDCalculatorAndResolve
     public String calculateTUIDFromEObject(final EObject eObject) {
         String tuid = TUIDIdentifier + VitruviusConstants.getTUIDSegmentSeperator();
         if (eObject instanceof Package) {
-            return getTUIDFromPackage((Package) eObject);
+            tuid += getTUIDFromPackage((Package) eObject);
         } else if (eObject instanceof CompilationUnit) {
-            return getTUIDFromCompilationUnit((CompilationUnit) eObject);
+            tuid += getTUIDFromCompilationUnit((CompilationUnit) eObject);
         } else if (eObject instanceof Classifier) {
-            return getTUIDFromClassifier((Classifier) eObject);
+            tuid += getTUIDFromClassifier((Classifier) eObject);
         } else if (eObject instanceof Member) {
-            return getTUIDFromMember((Member) eObject);
+            tuid += getTUIDFromMember((Member) eObject);
+        } else {
+            logger.warn("no TUID building mechanism found for eObject: " + eObject);
         }
-        logger.warn("no TUID building mechanism found for eObject: " + eObject);
         return tuid;
     }
 
@@ -45,12 +47,13 @@ public class JaMoPPTUIDCalculatorAndResolver implements TUIDCalculatorAndResolve
         String tuid = checkTUID(extTuid);
         String[] ids = tuid.split(VitruviusConstants.getTUIDSegmentSeperator());
         String vuriKey = ids[0];
-        vuriKey = vuriKey.substring(0, vuriKey.lastIndexOf("$"));
-        vuriKey = vuriKey.replace(".", "/");
-        if (1 < ids.length) {
-            vuriKey += "/" + ids[1];
-        }
         return VURI.getInstance(vuriKey);
+        // vuriKey = vuriKey.substring(0, vuriKey.lastIndexOf("$"));
+        // vuriKey = vuriKey.replace(".", "/");
+        // if (1 < ids.length) {
+        // vuriKey += "/" + ids[1];
+        // }
+        // return VURI.getInstance(vuriKey);
 
     }
 
@@ -58,11 +61,11 @@ public class JaMoPPTUIDCalculatorAndResolver implements TUIDCalculatorAndResolve
     public EObject resolveEObjectFromRootAndFullTUID(final EObject root, final String extTuid) {
         String tuid = checkTUID(extTuid);
         String tuidRootObj = calculateTUIDFromEObject(root);
-        if (!tuid.startsWith(tuidRootObj)) {
+        if (!extTuid.startsWith(tuidRootObj)) {
             logger.warn("TUID " + tuid + " is not in EObject " + root);
             return null;
         }
-        String identifier = tuid.substring(tuidRootObj.length(), tuid.length());
+        String identifier = extTuid.substring(tuidRootObj.length(), extTuid.length());
         if (identifier.startsWith(VitruviusConstants.getTUIDSegmentSeperator())) {
             identifier = identifier.substring(VitruviusConstants.getTUIDSegmentSeperator().length(),
                     identifier.length());
@@ -145,21 +148,27 @@ public class JaMoPPTUIDCalculatorAndResolver implements TUIDCalculatorAndResolve
     }
 
     private String getTUIDFromCompilationUnit(final CompilationUnit compilationUnit) {
-        String className = null;
-        /**
-         * if compilation.getName == null (which can happen) we use the name of the first classifier
-         * in the compilation unit as name. If there are no classifiers in the compilation unit we
-         * use <null> as name
-         */
-        if (null != compilationUnit.getName()) {
-            className = compilationUnit.getName();
-        } else if (0 != compilationUnit.getClassifiers().size()) {
-            className = compilationUnit.getClassifiers().get(0).getName() + ".java";
-        } else {
-            logger.warn("Could not determine a name for compilation unit: " + compilationUnit);
-        }
+        URI uri = compilationUnit.eResource().getURI();
 
-        return compilationUnit.getNamespacesAsString() + VitruviusConstants.getTUIDSegmentSeperator() + className;
+        return uri.toString();
+        //
+        // String className = null;
+        // /**
+        // * if compilation.getName == null (which can happen) we use the name of the first
+        // classifier
+        // * in the compilation unit as name. If there are no classifiers in the compilation unit we
+        // * use <null> as name
+        // */
+        // if (null != compilationUnit.getName()) {
+        // className = compilationUnit.getName();
+        // } else if (0 != compilationUnit.getClassifiers().size()) {
+        // className = compilationUnit.getClassifiers().get(0).getName() + ".java";
+        // } else {
+        // logger.warn("Could not determine a name for compilation unit: " + compilationUnit);
+        // }
+        //
+        // return compilationUnit.getNamespacesAsString() +
+        // VitruviusConstants.getTUIDSegmentSeperator() + className;
     }
 
     private String getTUIDFromClassifier(final Classifier classifier) {
