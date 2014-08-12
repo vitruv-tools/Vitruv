@@ -9,8 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
+
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ForwardHashedBackwardLinkedTree;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ForwardHashedBackwardLinkedTree.Segment;
 
 /**
  * A class for Temporarily Unique IDentifiers (TUIDs) that internally uses a
@@ -115,6 +118,10 @@ public class TUID {
         return this.lastSegment;
     }
     
+    /**
+     * Returns the minimal suffix of the TUID, i.e. a String representation of the last segment.
+     * @return
+     */
     public String getMinimalSuffix() {
     	return getLastSegment().toString();
     }
@@ -186,6 +193,42 @@ public class TUID {
         LAST_SEGMENT_2_TUID_INSTANCES_MAP.remove(this.lastSegment);
         this.lastSegment = fullDestinationTUID.lastSegment;
     }
+    
+    public void updateSingleSegment(final TUID newTUID) {
+    	String oldTUIDString = toString();
+    	List<String> oldSplit = split(oldTUIDString);
+    	String newTUIDString = newTUID.toString();
+    	List<String> newSplit = split(newTUIDString);
+		int oldSize = oldSplit.size();
+		int newSize = newSplit.size();
+		int minimalLength = Math.min(oldSize, newSize);
+		if (minimalLength < 1)
+			{
+    			throw new IllegalArgumentException("Cannot update the empty TUID " + this + "!");
+    		}
+		int i = 0;
+    	for (; i < minimalLength; i++) {
+    		if (!oldSplit.get(i).equals(newSplit.get(i))) {
+    			break;
+    		}
+    	}
+    	i--;
+    	if (minimalLength >= i + 2) {
+        	for (int j = i + 2; j < minimalLength; j++) {
+        		if (!oldSplit.get(j).equals(newSplit.get(j))) {
+        			throw new IllegalArgumentException("Cannot update the TUID " + this + " because the new TUID " + newTUID + " differs in more than one segment!");
+        		}
+        	}
+    	}
+    	if (minimalLength >= i + 1) {
+    		String newLastSegment = newSplit.get(i + 1);
+    		List<String> sharedPrefixList = oldSplit.subList(0, i + 2);
+    		String sharedPrefix = StringUtils.join(sharedPrefixList, VitruviusConstants.getTUIDSegmentSeperator());
+    		TUID sharedPrefixTUID = getInstance(sharedPrefix);
+    		sharedPrefixTUID.renameLastSegment(newLastSegment);
+    		// enjoy the side-effect of TUID: the right segment of this and newTUID will be changed too
+    	}
+    }
 
     @Override
     public String toString() {
@@ -242,4 +285,6 @@ public class TUID {
     		return this.toString().equals(obj.toString());
     	}
     }
+
+    // FIXME generate or write new hashCode (also for last segment)
 }

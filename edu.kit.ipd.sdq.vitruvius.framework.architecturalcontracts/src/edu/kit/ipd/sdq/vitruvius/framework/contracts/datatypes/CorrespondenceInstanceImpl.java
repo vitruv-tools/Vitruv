@@ -642,6 +642,9 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         updateTUID2CorrespondingEObjectsMap(oldTUID, newTUID, sameTUID);
 
         updateFeatureInstances(oldEObject, newEObject, oldTUID);
+
+        // update the TUID only at last because of the side-effect on all other TUIDs
+        oldTUID.updateSingleSegment(newTUID);
     }
 
     private void updateFeatureInstances(final EObject oldEObject, final EObject newEObject, final TUID oldTUID) {
