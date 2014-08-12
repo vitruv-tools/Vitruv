@@ -30,17 +30,17 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
-import org.apache.log4j.Logger
-import org.eclipse.emf.ecore.EObject
 import java.util.Deque
 import java.util.LinkedList
+import org.apache.log4j.Logger
+import org.eclipse.emf.ecore.EObject
 
 public class ChangeSynchronizer {
 
 	val private static final Logger logger = Logger.getLogger(ChangeSynchronizer.simpleName)
 
 	val private ClaimableMap<Class<?>, EObjectMappingTransformation> mappingTransformations
-	var private CorrespondenceInstance correspondenceInstance
+	var protected CorrespondenceInstance correspondenceInstance
 
 	new() {
 		mappingTransformations = new ClaimableHashMap<Class<?>, EObjectMappingTransformation>()
@@ -59,7 +59,7 @@ public class ChangeSynchronizer {
 		return transformationChangeResult
 	}
 
-	def private updateTUID(EChange change) {
+	def protected updateTUID(EChange change) {
 		if (change instanceof EFeatureChange<?>) {
 			val EFeatureChange<?> eFeatureChange = change as EFeatureChange<?>
 			val EObject oldAffectedEObject = eFeatureChange.oldAffectedEObject
@@ -191,7 +191,7 @@ public class ChangeSynchronizer {
 		val EObject[] eObjectsToDelete = mappingTransformations.
 			claimForMappedClassOrImplementingInterface(replaceNonRootEObjectSingle.newValue.class).
 			createEObject(replaceNonRootEObjectSingle.oldAffectedEObject)
-		mappingTransformations.claimForMappedClassOrImplementingInterface(replaceNonRootEObjectSingle.newValue.class).
+		mappingTransformations.claimForMappedClassOrImplementingInterface(replaceNonRootEObjectSingle.oldAffectedEObject.class).
 			replaceNonRootEObjectSingle(replaceNonRootEObjectSingle.oldAffectedEObject,
 				replaceNonRootEObjectSingle.affectedFeature, replaceNonRootEObjectSingle.oldValue,
 				replaceNonRootEObjectSingle.newValue, eObjectsToDelete, createdEObjects)
