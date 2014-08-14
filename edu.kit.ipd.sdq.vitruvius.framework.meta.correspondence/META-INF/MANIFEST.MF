@@ -14,5 +14,6 @@ Export-Package: edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence,
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- org.apache.commons.lang;bundle-version="2.6.0"
+ org.apache.commons.lang;bundle-version="2.6.0",
+ com.google.guava;bundle-version="15.0.0"
 Bundle-ActivationPolicy: lazy

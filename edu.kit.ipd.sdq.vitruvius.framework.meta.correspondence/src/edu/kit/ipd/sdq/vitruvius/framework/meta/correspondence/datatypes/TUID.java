@@ -11,6 +11,8 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.google.common.base.Strings;
+
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ForwardHashedBackwardLinkedTree;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ForwardHashedBackwardLinkedTree.Segment;
@@ -194,7 +196,61 @@ public class TUID {
         this.lastSegment = fullDestinationTUID.lastSegment;
     }
     
+    private int findCommonPrefixSegmentCount(final TUID otherTUID) {
+        String thisTUIDString = this.toString();
+        String otherTUIDString = otherTUID.toString();
+        String commonPrefix = Strings.commonPrefix(thisTUIDString, otherTUIDString);
+        String[] commonPrefixSegments = commonPrefix.split(VitruviusConstants.getTUIDSegmentSeperator());
+        return Math.max(0, commonPrefixSegments.length - 1);
+    }
+    
+    private int findCommonSuffixSegmentCount(final TUID otherTUID) {
+        String thisTUIDString = this.toString();
+        String otherTUIDString = otherTUID.toString();
+        String commonSuffix = Strings.commonSuffix(thisTUIDString, otherTUIDString);
+        String[] commonPrefixSegments = commonSuffix.split(VitruviusConstants.getTUIDSegmentSeperator());
+        return Math.max(0, commonPrefixSegments.length - 1);
+    }
+    
+    private static String[] getSegments(TUID tuid) {
+        return tuid.toString().split(VitruviusConstants.getTUIDSegmentSeperator());
+    }
+    
+    private int getSegmentCount() {
+        return getSegments(this).length;
+    }
+    
+    private void updateSingleSegmentTry(final TUID newTUID) {
+        int oldSegmentCount = getSegmentCount();
+        int newSegmentCount = newTUID.getSegmentCount();
+        
+        if (oldSegmentCount != newSegmentCount) {
+            throw new IllegalArgumentException("Cannot update the TUID " + this + " because the new TUID " + newTUID + " has a different number of segments!");
+        }
+        
+        int commonPrefixSegmentsCount = findCommonPrefixSegmentCount(newTUID);
+        int commonSuffixSegmentsCount = findCommonSuffixSegmentCount(newTUID);
+        int commonSegmentsCount = commonPrefixSegmentsCount + commonSuffixSegmentsCount;
+        
+        if (commonSegmentsCount + 1 != oldSegmentCount || commonSegmentsCount == 0) {
+            throw new IllegalArgumentException("Cannot update the TUID " + this + " because the new TUID " + newTUID + " differs in more than one segment!");
+        }
+        
+
+        String[] thisSegments = getSegments(this);
+        String[] newSegments = getSegments(newTUID);
+        String[] commonPrefixWithOldLastSegment = Arrays.copyOfRange(thisSegments, 0, commonPrefixSegmentsCount + 1);
+        TUID tuidWithOldLastSegment = TUID.getInstance(StringUtils.join(commonPrefixWithOldLastSegment, VitruviusConstants.getTUIDSegmentSeperator()));
+        tuidWithOldLastSegment.renameLastSegment(newSegments[commonPrefixSegmentsCount]);
+        // enjoy the side-effect of TUID: the right segment of this and newTUID will be changed too
+    }
+    
     public void updateSingleSegment(final TUID newTUID) {
+
+        // this method performs a correct calculation of the tuid to
+        // update, but there is an internal bug in RecursiveHashMap...
+        //updateSingleSegmentTry(newTUID);
+        
     	String oldTUIDString = toString();
     	List<String> oldSplit = split(oldTUIDString);
     	String newTUIDString = newTUID.toString();
