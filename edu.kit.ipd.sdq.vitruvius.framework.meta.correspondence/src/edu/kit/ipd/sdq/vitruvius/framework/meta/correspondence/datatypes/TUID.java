@@ -220,7 +220,7 @@ public class TUID {
         return getSegments(this).length;
     }
     
-    private void updateSingleSegmentTry(final TUID newTUID) {
+    public void updateSingleSegment(final TUID newTUID) {
         int oldSegmentCount = getSegmentCount();
         int newSegmentCount = newTUID.getSegmentCount();
         
@@ -243,47 +243,6 @@ public class TUID {
         TUID tuidWithOldLastSegment = TUID.getInstance(StringUtils.join(commonPrefixWithOldLastSegment, VitruviusConstants.getTUIDSegmentSeperator()));
         tuidWithOldLastSegment.renameLastSegment(newSegments[commonPrefixSegmentsCount]);
         // enjoy the side-effect of TUID: the right segment of this and newTUID will be changed too
-    }
-    
-    public void updateSingleSegment(final TUID newTUID) {
-
-        // this method performs a correct calculation of the tuid to
-        // update, but there is an internal bug in RecursiveHashMap...
-        //updateSingleSegmentTry(newTUID);
-        
-    	String oldTUIDString = toString();
-    	List<String> oldSplit = split(oldTUIDString);
-    	String newTUIDString = newTUID.toString();
-    	List<String> newSplit = split(newTUIDString);
-		int oldSize = oldSplit.size();
-		int newSize = newSplit.size();
-		int minimalLength = Math.min(oldSize, newSize);
-		if (minimalLength < 1)
-			{
-    			throw new IllegalArgumentException("Cannot update the empty TUID " + this + "!");
-    		}
-		int i = 0;
-    	for (; i < minimalLength; i++) {
-    		if (!oldSplit.get(i).equals(newSplit.get(i))) {
-    			break;
-    		}
-    	}
-    	i--;
-    	if (minimalLength >= i + 2) {
-        	for (int j = i + 2; j < minimalLength; j++) {
-        		if (!oldSplit.get(j).equals(newSplit.get(j))) {
-        			throw new IllegalArgumentException("Cannot update the TUID " + this + " because the new TUID " + newTUID + " differs in more than one segment!");
-        		}
-        	}
-    	}
-    	if (minimalLength >= i + 1) {
-    		String newLastSegment = newSplit.get(i + 1);
-    		List<String> sharedPrefixList = oldSplit.subList(0, i + 2);
-    		String sharedPrefix = StringUtils.join(sharedPrefixList, VitruviusConstants.getTUIDSegmentSeperator());
-    		TUID sharedPrefixTUID = getInstance(sharedPrefix);
-    		sharedPrefixTUID.renameLastSegment(newLastSegment);
-    		// enjoy the side-effect of TUID: the right segment of this and newTUID will be changed too
-    	}
     }
 
     @Override
