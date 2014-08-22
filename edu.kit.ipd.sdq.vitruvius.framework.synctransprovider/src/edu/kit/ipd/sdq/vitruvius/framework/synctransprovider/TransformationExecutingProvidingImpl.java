@@ -28,7 +28,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 public class TransformationExecutingProvidingImpl implements TransformationExecutingProviding {
 
-    private ClaimableMap<Pair<VURI, VURI>, EMFModelTransformationExecuting> transformationExecuterMap;
+    protected ClaimableMap<Pair<VURI, VURI>, EMFModelTransformationExecuting> transformationExecuterMap;
 
     public TransformationExecutingProvidingImpl() {
         this.transformationExecuterMap = new ClaimableHashMap<Pair<VURI, VURI>, EMFModelTransformationExecuting>();
