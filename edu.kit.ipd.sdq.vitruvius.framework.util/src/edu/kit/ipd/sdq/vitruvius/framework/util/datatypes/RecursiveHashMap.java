@@ -236,12 +236,12 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
             } else {
                 RecursiveMap<K, V> mapForNextKey = this.key2NextRecursiveMapMap.get(nextKeyToAdd);
                 if (mapForNextKey != null) {
-                Collection<V> leafValues = mapForNextKey.leafValues();
-                for (V leafValue : leafValues) {
-                    this.valueCreatorAndLinker.linkSubsequentValuesAndOverride(valueForKey, leafValue);
+                    Collection<V> leafValues = mapForNextKey.leafValues();
+                    for (V leafValue : leafValues) {
+                        this.valueCreatorAndLinker.linkSubsequentValuesAndOverride(valueForKey, leafValue);
+                    }
                 }
                 obsoleteValues.add(valueToAdd);
-                }
             }
             this.valueCreatorAndLinker.linkSubsequentValuesAndOverride(lastValue, valueForKey);
         }

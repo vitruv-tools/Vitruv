@@ -220,7 +220,7 @@ public class TUID {
         return getSegments(this).length;
     }
     
-    public void updateSingleSegment(final TUID newTUID) {
+    private int getCommonPrefixSegmentsCountForUpdate(final TUID newTUID) {
         int oldSegmentCount = getSegmentCount();
         int newSegmentCount = newTUID.getSegmentCount();
         
@@ -236,6 +236,28 @@ public class TUID {
             throw new IllegalArgumentException("Cannot update the TUID " + this + " because the new TUID " + newTUID + " differs in more than one segment!");
         }
         
+        return commonPrefixSegmentsCount;
+    }
+    
+    private static TUID getSlicedTUID(TUID tuid, int numberOfSegments) {
+        String[] segments = getSegments(tuid);
+        String[] segmentsSlice = Arrays.copyOfRange(segments, 0, numberOfSegments);
+        TUID slicedTUID = TUID.getInstance(StringUtils.join(segmentsSlice, VitruviusConstants.getTUIDSegmentSeperator()));
+        return slicedTUID;
+    }
+    
+    public TUID getOldTUIDForUpdate(final TUID newTUID) {
+        int commonPrefixSegmentsCount = getCommonPrefixSegmentsCountForUpdate(newTUID);
+        return getSlicedTUID(this, commonPrefixSegmentsCount + 1);
+    }
+    
+    public TUID getNewTUIDForUpdate(final TUID newTUID) {
+        int commonPrefixSegmentsCount = getCommonPrefixSegmentsCountForUpdate(newTUID);
+        return getSlicedTUID(newTUID, commonPrefixSegmentsCount + 1);
+    }
+    
+    public void updateSingleSegment(final TUID newTUID) {
+        int commonPrefixSegmentsCount = getCommonPrefixSegmentsCountForUpdate(newTUID);
 
         String[] thisSegments = getSegments(this);
         String[] newSegments = getSegments(newTUID);
@@ -291,15 +313,21 @@ public class TUID {
         }
         return true;
     }
-    
+
+    @Override
+    public int hashCode() {
+        return 31 + lastSegment.hashCode();
+    }
+
     @Override
     public boolean equals(Object obj) {
-    	if (obj == null) {
-    		return false;
-    	} else {
-    		return this.toString().equals(obj.toString());
-    	}
+        if (obj == null || !(obj instanceof TUID)) {
+            return false;
+        }
+        return lastSegment == ((TUID)obj).lastSegment;
     }
+
+    
 
     // FIXME generate or write new hashCode (also for last segment)
 }

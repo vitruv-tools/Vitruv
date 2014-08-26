@@ -35,9 +35,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
  * instance of a metaclass of the first metamodel of the containing correspondence instance. And
  * every elementB of a correspondence has to be an instance of a metaclass of the second metamodel
  * of the containing correspondence instance.
- * 
+ *
  * @author kramerm
- * 
+ *
  */
 public class CorrespondenceInstanceImpl extends ModelInstance implements CorrespondenceInstance {
 
@@ -519,7 +519,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     /**
      * Does the removing recursively. Marks all correspondences that will be deleted in a
      * dependencyList --> Avoid stack overflow with correspondences that have a mutual dependency
-     * 
+     *
      * @param correspondence
      * @param dependencyList
      * @param deletionList
@@ -636,16 +636,34 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     public void update(final EObject oldEObject, final EObject newEObject) {
         TUID oldTUID = calculateTUIDFromEObject(oldEObject);
         TUID newTUID = calculateTUIDFromEObject(newEObject);
-        boolean sameTUID = oldTUID != null ? oldTUID.equals(newTUID) : newTUID == null;
-        updateTUID2CorrespondencesMap(oldEObject, newEObject, oldTUID, newTUID, sameTUID);
 
-        updateTUID2CorrespondingEObjectsMap(oldTUID, newTUID, sameTUID);
+        TUID oldTUIDUpdate = oldTUID.getOldTUIDForUpdate(newTUID);
+        TUID newTUIDUpdate = oldTUID.getNewTUIDForUpdate(newTUID);
+        boolean sameTUID = oldTUIDUpdate != null ? oldTUIDUpdate.equals(newTUIDUpdate) : newTUIDUpdate == null;
 
-        updateFeatureInstances(oldEObject, newEObject, oldTUID);
+        updateTUID2CorrespondencesMap(oldEObject, newEObject, oldTUIDUpdate, newTUIDUpdate, sameTUID);
+        updateTUID2CorrespondingEObjectsMap(oldTUIDUpdate, newTUIDUpdate, sameTUID);
+        updateFeatureInstances(oldEObject, newEObject, oldTUIDUpdate);
 
         // update the TUID only at last because of the side-effect on all other TUIDs
-        oldTUID.updateSingleSegment(newTUID);
+        oldTUIDUpdate.updateSingleSegment(newTUIDUpdate);
+
+        // dumpCorrespondences();
     }
+
+    // private void dumpCorrespondences() {
+    // System.out.println("tuid2CorrespondencesMap keys");
+    // for (TUID key : this.tuid2CorrespondencesMap.keySet()) {
+    // System.out.println("\t" + key);
+    // }
+    // System.out.println("tuid2CorrespondingTUIDsMap");
+    // for (TUID key : this.tuid2CorrespondingTUIDsMap.keySet()) {
+    // System.out.println("\t" + key);
+    // for (TUID value : this.tuid2CorrespondingTUIDsMap.get(key)) {
+    // System.out.println("\t\t" + value);
+    // }
+    // }
+    // }
 
     private void updateFeatureInstances(final EObject oldEObject, final EObject newEObject, final TUID oldTUID) {
         Collection<FeatureInstance> oldFeatureInstances = FeatureInstance.getAllInstances(oldEObject);
