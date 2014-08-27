@@ -636,12 +636,17 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     public void update(final EObject oldEObject, final EObject newEObject) {
         TUID oldTUID = calculateTUIDFromEObject(oldEObject);
         TUID newTUID = calculateTUIDFromEObject(newEObject);
+        boolean sameTUID = oldTUID != null ? oldTUID.equals(newTUID) : newTUID == null;
+
+        if (sameTUID) {
+            // TODO Think about feature instances when they work again
+            return;
+        }
 
         TUID oldTUIDUpdate = oldTUID.getOldTUIDForUpdate(newTUID);
         TUID newTUIDUpdate = oldTUID.getNewTUIDForUpdate(newTUID);
-        boolean sameTUID = oldTUIDUpdate != null ? oldTUIDUpdate.equals(newTUIDUpdate) : newTUIDUpdate == null;
 
-        updateTUID2CorrespondencesMap(oldEObject, newEObject, oldTUIDUpdate, newTUIDUpdate, sameTUID);
+        updateTUID2CorrespondencesMap(oldTUIDUpdate, newTUIDUpdate, sameTUID);
         updateTUID2CorrespondingEObjectsMap(oldTUIDUpdate, newTUIDUpdate, sameTUID);
         updateFeatureInstances(oldEObject, newEObject, oldTUIDUpdate);
 
@@ -710,8 +715,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         }
     }
 
-    private void updateTUID2CorrespondencesMap(final EObject oldEObject, final EObject newEObject, final TUID oldTUID,
-            final TUID newTUID, final boolean sameTUID) {
+    private void updateTUID2CorrespondencesMap(final TUID oldTUID, final TUID newTUID, final boolean sameTUID) {
         Set<Correspondence> correspondences = this.tuid2CorrespondencesMap.get(oldTUID);
         if (correspondences == null)
             return;
