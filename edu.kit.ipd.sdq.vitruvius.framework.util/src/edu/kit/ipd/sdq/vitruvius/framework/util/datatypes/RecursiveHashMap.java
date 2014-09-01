@@ -165,7 +165,7 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
                     destinationValueList);
             RecursiveMap<K, V> mapForDestinationLeaf = mapAndKeyForDestinationLeaf.getFirst();
             K destinationKey = mapAndKeyForDestinationLeaf.getSecond();
-            return mapForDestinationLeaf.addToNextMap(destinationKey, destinationLeaf, removedRecursiveMap);
+            return mapForDestinationLeaf.mergeNextMap(destinationKey, destinationLeaf, removedRecursiveMap);
         } else {
             throw new IllegalStateException("mapForOriginLeaf '" + mapForOriginLeaf + "' did not contain '"
                     + originLeaf + "' but '" + removedLeaf + "!");
@@ -197,7 +197,7 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
     }
 
     @Override
-    public Collection<V> addToNextMap(final K key, final V value, final RecursiveMap<K, V> mapToAdd) {
+    public Collection<V> mergeNextMap(final K key, final V value, final RecursiveMap<K, V> mapToAdd) {
         RecursiveMap<K, V> mapForKey = this.key2NextRecursiveMapMap.get(key);
         if (mapForKey == null) {
             if (mapToAdd == null) {
@@ -207,43 +207,45 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
                 this.key2NextRecursiveMapMap.put(key, mapForKey);
             }
         }
-        return mapForKey.addToThisMap(value, mapToAdd);
+        return mapForKey.mergeMaps(value, mapToAdd);
     }
 
     @Override
-    public Collection<V> addToThisMap(final V lastValue, final RecursiveMap<K, V> mapToAdd) {
+    public Collection<V> mergeMaps(V previousValue, final RecursiveMap<K, V> mapToAdd) {
         final Collection<V> obsoleteValues = new LinkedList<V>();
         Pair<Set<Map.Entry<K, RecursiveMap<K, V>>>, Set<Map.Entry<K, V>>> entrySets = mapToAdd.entrySets();
-        Set<Entry<K, RecursiveMap<K, V>>> nextMapsToAdd = entrySets.getFirst();
-        Set<Entry<K, V>> key2ValuesToAdd = entrySets.getSecond();
-        for (Entry<K, RecursiveMap<K, V>> nextMapToAdd : nextMapsToAdd) {
-            K nextKey = nextMapToAdd.getKey();
-            RecursiveMap<K, V> value = nextMapToAdd.getValue();
-            RecursiveMap<K, V> nextMapForKey = this.key2NextRecursiveMapMap.get(nextKey);
-            if (nextMapForKey == null) {
-                this.key2NextRecursiveMapMap.put(nextKey, value);
+        Set<Entry<K, RecursiveMap<K, V>>> nextMapsToAddEntries = entrySets.getFirst();
+        Set<Entry<K, V>> key2ValuesToAddEntries = entrySets.getSecond();
+        for (Entry<K, RecursiveMap<K, V>> nextMapToAddEntry : nextMapsToAddEntries) {
+            K nextKey = nextMapToAddEntry.getKey();
+            RecursiveMap<K, V> nextMapToAdd = nextMapToAddEntry.getValue();
+            RecursiveMap<K, V> currentMapForNextKey = this.key2NextRecursiveMapMap.get(nextKey);
+            if (currentMapForNextKey == null) {
+                this.key2NextRecursiveMapMap.put(nextKey, nextMapToAdd);
             } else {
-                obsoleteValues.addAll(nextMapForKey.addToThisMap(lastValue, value));
+            	// recursion in next map layer
+            	previousValue = this.key2ValueMap.get(nextKey);
+                obsoleteValues.addAll(currentMapForNextKey.mergeMaps(previousValue, nextMapToAdd));
             }
         }
-        for (Entry<K, V> key2ValueToAdd : key2ValuesToAdd) {
-            K nextKeyToAdd = key2ValueToAdd.getKey();
-            V valueToAdd = key2ValueToAdd.getValue();
-            V valueForKey = this.key2ValueMap.get(nextKeyToAdd);
-            if (valueForKey == null) {
-                valueForKey = valueToAdd;
-                this.key2ValueMap.put(nextKeyToAdd, valueToAdd);
+        for (Entry<K, V> key2ValueToAddEntry : key2ValuesToAddEntries) {
+            K nextKeyToAdd = key2ValueToAddEntry.getKey();
+            V nextValueToAdd = key2ValueToAddEntry.getValue();
+            V currentValueForNextKey = this.key2ValueMap.get(nextKeyToAdd);
+            if (currentValueForNextKey == null) {
+                currentValueForNextKey = nextValueToAdd;
+                this.key2ValueMap.put(nextKeyToAdd, nextValueToAdd);
             } else {
-                RecursiveMap<K, V> mapForNextKey = this.key2NextRecursiveMapMap.get(nextKeyToAdd);
-                if (mapForNextKey != null) {
-                    Collection<V> leafValues = mapForNextKey.leafValues();
+                RecursiveMap<K, V> currentMapForNextKey = this.key2NextRecursiveMapMap.get(nextKeyToAdd);
+                if (currentMapForNextKey != null) {
+                    Collection<V> leafValues = currentMapForNextKey.leafValues();
                     for (V leafValue : leafValues) {
-                        this.valueCreatorAndLinker.linkSubsequentValuesAndOverride(valueForKey, leafValue);
+                        this.valueCreatorAndLinker.linkSubsequentValuesAndOverride(currentValueForNextKey, leafValue);
                     }
                 }
-                obsoleteValues.add(valueToAdd);
+                obsoleteValues.add(nextValueToAdd);
             }
-            this.valueCreatorAndLinker.linkSubsequentValuesAndOverride(lastValue, valueForKey);
+            this.valueCreatorAndLinker.linkSubsequentValuesAndOverride(previousValue, currentValueForNextKey);
         }
         return obsoleteValues;
     }

@@ -110,7 +110,7 @@ public interface RecursiveMap<K, V> {
      * @return all values of the specified map that became obsolete because they existed already in
      *         this map
      */
-    Collection<V> addToNextMap(K key, V value, RecursiveMap<K, V> recursiveMap);
+    Collection<V> mergeNextMap(K key, V value, RecursiveMap<K, V> recursiveMap);
 
     /**
      * Adds all entries of the specified map to this map and returns all values of the specified map
@@ -121,7 +121,7 @@ public interface RecursiveMap<K, V> {
      * @return all values of the specified map that became obsolete because they existed already in
      *         this map
      */
-    Collection<V> addToThisMap(V lastValue, RecursiveMap<K, V> mapToAdd);
+    Collection<V> mergeMaps(V lastValue, RecursiveMap<K, V> mapToAdd);
 
     /**
      * Returns a set containing all entries of keys that are recursively mapped to another map and a
