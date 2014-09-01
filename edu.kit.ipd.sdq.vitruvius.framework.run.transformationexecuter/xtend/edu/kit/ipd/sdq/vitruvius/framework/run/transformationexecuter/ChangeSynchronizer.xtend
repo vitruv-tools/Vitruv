@@ -143,7 +143,7 @@ public class ChangeSynchronizer {
 		val EObject[] createdEObjects = mappingTransformations.
 			claimForMappedClassOrImplementingInterface(replaceNonRootEObjectInList.newValue.class).
 			createEObject(replaceNonRootEObjectInList.oldAffectedEObject)
-		mappingTransformations.claimForMappedClassOrImplementingInterface(replaceNonRootEObjectInList.newValue.class).
+		mappingTransformations.claimForMappedClassOrImplementingInterface(replaceNonRootEObjectInList.oldAffectedEObject.class).
 			replaceNonRootEObjectInList(replaceNonRootEObjectInList.oldAffectedEObject,
 				replaceNonRootEObjectInList.affectedFeature, replaceNonRootEObjectInList.oldValue,
 				replaceNonRootEObjectInList.newValue, replaceNonRootEObjectInList.index, eObjectsToDelete,
