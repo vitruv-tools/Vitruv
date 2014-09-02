@@ -15,7 +15,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelCopyProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.EditorNotMonitorableException;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory.IEditorPartAdapter;
@@ -26,6 +25,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.ISynch
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitruviusEMFEditorMonitor;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.EclipseAdapterProvider;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.IEclipseAdapter;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 
 /**
  * A simple implementation of {@link IVitruviusEMFEditorMonitor} using an {@link IVitruviusAccessor}
