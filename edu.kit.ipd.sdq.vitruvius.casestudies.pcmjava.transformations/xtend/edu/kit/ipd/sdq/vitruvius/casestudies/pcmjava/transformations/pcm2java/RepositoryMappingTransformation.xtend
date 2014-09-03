@@ -43,7 +43,7 @@ class RepositoryMappingTransformation extends JaMoPPPCMMappingTransformationBase
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
 		for(correspondingEObject : newCorrespondingEObjects){
-			correspondenceInstance.addSameTypeCorrespondence(newRootEObject, correspondingEObject)
+			correspondenceInstance.createAndAddEObjectCorrespondence(newRootEObject, correspondingEObject)
 		}
 		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(newCorrespondingEObjects)
 	}
@@ -80,7 +80,7 @@ class RepositoryMappingTransformation extends JaMoPPPCMMappingTransformationBase
 		val parrentCorrespondence = correspondenceInstance.
 			claimUniqueOrNullCorrespondenceForEObject(affectedEObject);
 		for(jaMoPPElement : newCorrespondingEObjects){
-			correspondenceInstance.addSameTypeCorrespondence(newValue, jaMoPPElement, parrentCorrespondence)
+			correspondenceInstance.createAndAddEObjectCorrespondence(newValue, jaMoPPElement, parrentCorrespondence)
 		}
 		return TransformationUtils.createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects)
 	}

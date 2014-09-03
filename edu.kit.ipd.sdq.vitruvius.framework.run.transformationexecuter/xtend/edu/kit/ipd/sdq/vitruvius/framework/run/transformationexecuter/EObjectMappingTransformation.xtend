@@ -96,6 +96,10 @@ abstract class EObjectMappingTransformation {
 		}
 	}
 	
+	/**
+	 * Utility function that wraps a single EObject into an array. 
+	 * Is defined here to enable calls like eObject.toArray
+	 */
 	def protected toArray(EObject eObject){
 		if(null == eObject){
 			return null

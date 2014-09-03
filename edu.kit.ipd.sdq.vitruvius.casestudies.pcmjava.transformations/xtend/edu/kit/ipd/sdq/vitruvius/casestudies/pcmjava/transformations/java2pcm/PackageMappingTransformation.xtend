@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.containers.Package
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence
 
 class PackageMappingTransformation extends JaMoPPPCMMappingTransformationBase {
 	
@@ -85,7 +86,7 @@ class PackageMappingTransformation extends JaMoPPPCMMappingTransformationBase {
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
 		for(pcmElement : newCorrespondingEObjects){
-			correspondenceInstance.addSameTypeCorrespondence(pcmElement, newRootEObject)
+			correspondenceInstance.createAndAddEObjectCorrespondence(pcmElement, newRootEObject)
 		}
 		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(newCorrespondingEObjects)
 	}

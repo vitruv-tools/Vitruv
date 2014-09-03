@@ -8,8 +8,7 @@ import org.eclipse.emf.ecore.EReference
 import org.emftext.language.java.modifiers.Modifier
 
 /**
- * Maps a JaMoPP class to a PCM Components or System. 
- * Triggered when a CUD operation on JaMoPP class is detected.
+ * Triggered when a CUD operation on a Modifier is detected.
  */
 class ModifierMappingTransformation extends JaMoPPPCMMappingTransformationBase {
 	

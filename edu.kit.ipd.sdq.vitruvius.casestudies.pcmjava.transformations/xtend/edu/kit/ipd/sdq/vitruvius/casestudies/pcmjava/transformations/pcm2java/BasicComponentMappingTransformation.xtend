@@ -67,7 +67,7 @@ class BasicComponentMappingTransformation extends JaMoPPPCMMappingTransformation
 		val Correspondence parentCorrespondence = correspondenceInstance.claimUniqueOrNullCorrespondenceForEObject(rootPackage)
 
 		for(jaMoPPElement : newCorrespondingEObjects){
-			correspondenceInstance.addSameTypeCorrespondence(basicComponent, jaMoPPElement, parentCorrespondence)
+			correspondenceInstance.createAndAddEObjectCorrespondence(basicComponent, jaMoPPElement, parentCorrespondence)
 		}
 		return TransformationUtils.createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects)
 	}

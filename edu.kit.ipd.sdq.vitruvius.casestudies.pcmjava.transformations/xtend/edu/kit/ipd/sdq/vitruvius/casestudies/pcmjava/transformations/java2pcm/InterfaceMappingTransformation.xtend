@@ -8,8 +8,6 @@ import de.uka.ipd.sdq.pcm.system.System
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMMappingTransformationBase
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMUtils
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.Set
 import org.apache.log4j.Logger
@@ -86,13 +84,14 @@ class InterfaceMappingTransformation extends JaMoPPPCMMappingTransformationBase 
 		if(newCorrespondingEObjects.nullOrEmpty){
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
+		val Interface jaMoPPIf = newValue as Interface
 		val parentCorrespondences = correspondenceInstance.getAllCorrespondences(affectedEObject)
 		var Correspondence parentCorrespondence = null
 		if(null != parentCorrespondences){
 			parentCorrespondence = parentCorrespondences.iterator.next
 		}
-		for(eObject : newCorrespondingEObjects){
-			correspondenceInstance.addSameTypeCorrespondence(newValue, eObject, parentCorrespondence);
+		for(newCorrespondingEObject : newCorrespondingEObjects){
+			correspondenceInstance.createAndAddEObjectCorrespondence(newCorrespondingEObject, jaMoPPIf, parentCorrespondence) 
 		}
 		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(newCorrespondingEObjects)
 	}
