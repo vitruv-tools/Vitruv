@@ -15,6 +15,8 @@ import org.junit.Test;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.testmodels.Files;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.ChangeAssert;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.ChangeAssert.ListChangeKind;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.ChangeAssert.StructuralChangeKind;
 
 public class ChangeDescription2ChangeConverterTestsShadowedOperations extends
         AbstractChangeDescription2ChangeConverterTests<EPackage> {
@@ -34,17 +36,18 @@ public class ChangeDescription2ChangeConverterTestsShadowedOperations extends
         sourceRoot.getEClassifiers().add(newClass);
         List<Change> changes = getChangesAndEndRecording();
 
-        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, 2 * CHANGES_PER_CREATEREMOVE + 2 * CHANGES_PER_SET);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, 2 * CHANGES_PER_CREATEREMOVE + 2
+                * CHANGES_PER_SET);
         ChangeAssert.assertContainsAddChange(changes, newClass.eContainingFeature(), newClass);
         ChangeAssert.assertContainsAddChange(changes, shadowedOperation.eContainingFeature(), shadowedOperation);
-        ChangeAssert.assertContainsAttributeChange(changes, shadowedOperation.eClass().getEStructuralFeature("name"),
-                "ShadowedOperation");
-        ChangeAssert.assertContainsAttributeChange(changes, newClass.eClass().getEStructuralFeature("name"),
-                "ShadowedAddClass");
+        ChangeAssert.assertContainsSingleValuedAttributeChange(changes, shadowedOperation.eClass()
+                .getEStructuralFeature("name"), "ShadowedOperation");
+        ChangeAssert.assertContainsSingleValuedAttributeChange(changes,
+                newClass.eClass().getEStructuralFeature("name"), "ShadowedAddClass");
         ChangeAssert.assertContainsListChange(changes, newClass.eContainingFeature(), newClass, newClass.eContainer(),
-                sourceRoot.getEClassifiers().size() - 1, true);
+                sourceRoot.getEClassifiers().size() - 1, ListChangeKind.ADD, StructuralChangeKind.CONTAINMENT);
         ChangeAssert.assertContainsListChange(changes, shadowedOperation.eContainingFeature(), shadowedOperation,
-                shadowedOperation.eContainer(), 0, true);
+                shadowedOperation.eContainer(), 0, ListChangeKind.ADD, StructuralChangeKind.CONTAINMENT);
     }
 
     @Test
@@ -58,7 +61,8 @@ public class ChangeDescription2ChangeConverterTestsShadowedOperations extends
         List<Change> changes = getChangesAndEndRecording();
 
         // The additional set operation is caused by an automatic update to eType in the operation.
-        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, 2 * CHANGES_PER_CREATEREMOVE + 1 * CHANGES_PER_SET);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, 2 * CHANGES_PER_CREATEREMOVE + 1
+                * CHANGES_PER_SET);
         ChangeAssert.assertContainsAddChange(changes, operation.eContainingFeature(), operation);
         ChangeAssert.assertContainsAddChange(changes, shadowedGenericType.eContainingFeature(), shadowedGenericType);
     }

@@ -34,4 +34,11 @@ final class Util {
         }
         return targetFeature;
     }
+
+    public static void setFeature(EObject object, String featureName, Object newValue) {
+        EStructuralFeature affectedFeature = object.eClass().getEStructuralFeature(featureName);
+        assert affectedFeature != null : "Could not find feature " + featureName + " in " + object.eClass();
+
+        object.eSet(affectedFeature, newValue);
+    }
 }

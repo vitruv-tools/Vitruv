@@ -24,11 +24,11 @@ public class DefaultImplementations {
 
     public static final ChangeSynchronizing EFFECTLESS_EXTERNAL_CHANGESYNC = new ChangeSynchronizing() {
         @Override
-        public void synchronizeChanges(List<Change> changes, VURI sourceModelURI) {
+        public void synchronizeChanges(List<Change> changes) {
         }
 
         @Override
-        public void synchronizeChange(Change change, VURI sourceModelURI) {
+        public void synchronizeChange(Change change) {
         }
     };
 
@@ -88,13 +88,13 @@ public class DefaultImplementations {
         }
 
         @Override
-        public void synchronizeChanges(List<Change> changes, VURI sourceModelURI) {
-            synchronizeChanges(changes, sourceModelURI, null);
+        public void synchronizeChanges(List<Change> changes) {
+            synchronizeChanges(changes, null, null);
         }
 
         @Override
-        public void synchronizeChange(Change change, VURI sourceModelURI) {
-            synchronizeChanges(Collections.singletonList(change), sourceModelURI);
+        public void synchronizeChange(Change change) {
+            synchronizeChanges(Collections.singletonList(change));
         }
     }
 }

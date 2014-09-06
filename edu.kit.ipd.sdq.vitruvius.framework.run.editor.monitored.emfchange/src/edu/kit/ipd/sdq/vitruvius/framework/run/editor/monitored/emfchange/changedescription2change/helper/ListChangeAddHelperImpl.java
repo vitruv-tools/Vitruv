@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.changedescription2change.helper;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -9,56 +10,92 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.change.FeatureChange;
 import org.eclipse.emf.ecore.change.ListChange;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateNonRootEObject;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.InsertInEList;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.AttributeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.InsertEAttributeValue;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.InsertNonContainmentEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.ReferenceFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.UpdateEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.InsertNonRootEObjectInContainmentList;
 
 /**
  * {@link ListChangeAddHelperImpl} translates additions to many-multiplicity features to the
- * corresponding {@link Change} objects. If a containment reference is updated for an object among
- * the attached objects of the whole set of changes, a {@link CreateNonRootEObject} change is
- * created containing an {@link InsertInEList} change; otherwise, just an {@link InsertInEList}
- * change is created.
+ * corresponding {@link EChange} objects.
  */
 class ListChangeAddHelperImpl implements IListChangeTranslationHelper {
     private static final Logger LOGGER = Logger.getLogger(ListChangeAddHelperImpl.class);
 
-    @Override
-    public void addReferenceChange(EObject affectedObject, FeatureChange fc, ListChange lc, List<Change> target,
-            List<EObject> addedObjects, List<EObject> orphanedObjects) {
-        LOGGER.trace("Processing reference add list change " + lc);
-        LOGGER.trace("\tReference values: " + lc.getReferenceValues());
+    private UpdateEReference<EObject> createContainmentCreateChange(EObject addedObject, EReference feature, int index) {
+        LOGGER.trace("\tFeature " + feature.getName() + " is containment and the added object is new.");
+        CreateNonRootEObjectInList<EObject> createChange = ContainmentFactory.eINSTANCE
+                .createCreateNonRootEObjectInList();
+        createChange.setNewValue(addedObject);
+        createChange.setIndex(index);
+        return createChange;
+    }
 
-        int i = 0;
-        for (EObject obj : lc.getReferenceValues()) {
-            LOGGER.trace("\tProcessing: " + obj);
-            EReference referenceFeature = (EReference) fc.getFeature();
-            InsertInEList<EReference> insertChange = EChangeFactory.createInsertInEList(affectedObject,
-                    referenceFeature, obj, lc.getIndex() + i);
-            i++;
+    private UpdateEReference<EObject> createContainmentInsertChange(EObject addedObject, EReference feature, int index) {
+        LOGGER.trace("\tFeature " + feature.getName() + " is containment and the added object is not new.");
+        InsertNonRootEObjectInContainmentList<EObject> insertChange = ContainmentFactory.eINSTANCE
+                .createInsertNonRootEObjectInContainmentList();
+        insertChange.setNewValue(addedObject);
+        insertChange.setIndex(index);
+        return insertChange;
+    }
 
-            if (referenceFeature.isContainment() && addedObjects.contains(obj)) {
-                LOGGER.trace("\tFeature " + referenceFeature.getName() + " is containment and the added object is new.");
-                CreateNonRootEObject<EObject> createChange = EChangeFactory.createCreateNonRootObject(affectedObject,
-                        referenceFeature, obj, fc.getReferenceValue());
-                createChange.setListUpdate(insertChange);
-                target.add(EMFModelChangeFactory.createEMFModelChange(createChange));
+    private UpdateEReference<EObject> createNonContainmentChange(EObject addedObject, EReference feature, int index) {
+        InsertNonContainmentEReference<EObject> insertChange = ReferenceFactory.eINSTANCE
+                .createInsertNonContainmentEReference();
+        insertChange.setNewValue(addedObject);
+        insertChange.setIndex(index);
+        return insertChange;
+    }
+
+    private UpdateEReference<EObject> createAddChange(Collection<EObject> createdObjects, EObject addedObject,
+            EReference feature, int index) {
+        if (feature.isContainment()) {
+            if (createdObjects.contains(addedObject)) {
+                // The object has been created.
+                return createContainmentCreateChange(addedObject, feature, index);
             } else {
-                target.add(EMFModelChangeFactory.createEMFModelChange(insertChange));
+                // The object just gets moved between containments.
+                return createContainmentInsertChange(addedObject, feature, index);
             }
+        } else {
+            return createNonContainmentChange(addedObject, feature, index);
         }
     }
 
     @Override
-    public void addAttributeChange(EObject affectedObject, FeatureChange fc, ListChange lc, List<Change> target,
+    public void addReferenceChange(EObject affectedObject, FeatureChange fc, ListChange lc, List<EChange> target,
+            List<EObject> addedObjects, List<EObject> orphanedObjects) {
+        LOGGER.trace("Processing reference add list change " + lc);
+        LOGGER.trace("\tReference values: " + lc.getReferenceValues());
+
+        int i = lc.getIndex();
+        for (EObject obj : lc.getReferenceValues()) {
+            LOGGER.trace("\tProcessing: " + obj);
+            UpdateEReference<EObject> update = createAddChange(addedObjects, obj, (EReference) fc.getFeature(), i);
+            InitializeEChange.setupUpdateEReference(update, affectedObject, (EReference) fc.getFeature());
+            target.add(update);
+            i++;
+        }
+    }
+
+    @Override
+    public void addAttributeChange(EObject affectedObject, FeatureChange fc, ListChange lc, List<EChange> target,
             List<EObject> addedObjects, List<EObject> orphanedObjects) {
         LOGGER.trace("Processing attribute add list change " + lc);
         EAttribute attrFeature = (EAttribute) fc.getFeature();
 
         for (Object obj : lc.getValues()) {
-            InsertInEList<EAttribute> insertChange = EChangeFactory.createInsertInEList(affectedObject, attrFeature,
-                    obj, lc.getIndex());
-            target.add(EMFModelChangeFactory.createEMFModelChange(insertChange));
+            InsertEAttributeValue<Object> insertChange = AttributeFactory.eINSTANCE.createInsertEAttributeValue();
+            insertChange.setIndex(lc.getIndex());
+            insertChange.setNewValue(obj);
+            InitializeEChange.setupUpdateEAttribute(insertChange, affectedObject, attrFeature);
+            target.add(insertChange);
         }
     }
 

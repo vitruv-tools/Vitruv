@@ -15,11 +15,10 @@ import org.eclipse.emf.ecore.EcoreFactory;
 import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.UpdateEAttributeImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.testmodels.Files;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.ChangeAssert;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.ChangeAssert.ListChangeKind;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.ChangeAssert.StructuralChangeKind;
 
 public class ChangeDescription2ChangeConverterTestsBasicOperations extends
         AbstractChangeDescription2ChangeConverterTests<EPackage> {
@@ -60,15 +59,8 @@ public class ChangeDescription2ChangeConverterTestsBasicOperations extends
         List<Change> changes = getChangesAndEndRecording();
 
         ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, CHANGES_PER_SET);
-        Change setChange = changes.get(0);
-
-        assert setChange instanceof EMFModelChange;
-        EChange innerChange = ((EMFModelChange) setChange).getEChange();
-
-        assert innerChange instanceof UpdateEAttributeImpl<?>;
-        UpdateEAttributeImpl<?> attrChange = (UpdateEAttributeImpl<?>) innerChange;
-
-        assert attrChange.getNewValue().equals(newName);
+        ChangeAssert.assertContainsSingleValuedAttributeChange(changes,
+                exampleClass1.eClass().getEStructuralFeature("name"), newName);
     }
 
     @Test
@@ -120,10 +112,10 @@ public class ChangeDescription2ChangeConverterTestsBasicOperations extends
         List<Change> changes = getChangesAndEndRecording();
 
         ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, 2 * CHANGES_PER_SET);
-        ChangeAssert.assertContainsAttributeChange(changes, exampleClass1.eClass().getEStructuralFeature("name"),
-                newName);
-        ChangeAssert.assertContainsAttributeChange(changes, exampleClass1.eClass().getEStructuralFeature("abstract"),
-                newAbstract);
+        ChangeAssert.assertContainsSingleValuedAttributeChange(changes,
+                exampleClass1.eClass().getEStructuralFeature("name"), newName);
+        ChangeAssert.assertContainsSingleValuedAttributeChange(changes,
+                exampleClass1.eClass().getEStructuralFeature("abstract"), newAbstract);
     }
 
     @Test
@@ -136,9 +128,9 @@ public class ChangeDescription2ChangeConverterTestsBasicOperations extends
         List<Change> changes = getChangesAndEndRecording();
         ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, CHANGES_PER_LIST_MOVE_OP);
         ChangeAssert.assertContainsListChange(changes, exampleClass1.eClass().getEStructuralFeature("eOperations"), o1,
-                exampleClass1, 1, false);
+                exampleClass1, 1, ListChangeKind.REMOVE, StructuralChangeKind.CONTAINMENT);
         ChangeAssert.assertContainsListChange(changes, exampleClass1.eClass().getEStructuralFeature("eOperations"), o1,
-                exampleClass1, 2, true);
+                exampleClass1, 2, ListChangeKind.ADD, StructuralChangeKind.CONTAINMENT);
     }
 
     @Test
@@ -154,7 +146,7 @@ public class ChangeDescription2ChangeConverterTestsBasicOperations extends
                 classWithoutOperations.eClass().getEStructuralFeature("eOperations"), newOperation);
         ChangeAssert.assertContainsListChange(changes,
                 classWithoutOperations.eClass().getEStructuralFeature("eOperations"), newOperation,
-                classWithoutOperations, 0, true);
+                classWithoutOperations, 0, ListChangeKind.ADD, StructuralChangeKind.CONTAINMENT);
     }
 
     @Test
@@ -173,7 +165,8 @@ public class ChangeDescription2ChangeConverterTestsBasicOperations extends
                 * CHANGES_PER_CREATEREMOVE);
         for (EAnnotation op : originalList) {
             ChangeAssert.assertContainsListChange(changes,
-                    exampleClass3.eClass().getEStructuralFeature("eAnnotations"), op, exampleClass3, 0, false);
+                    exampleClass3.eClass().getEStructuralFeature("eAnnotations"), op, exampleClass3, 0,
+                    ListChangeKind.REMOVE, StructuralChangeKind.CONTAINMENT);
         }
     }
 
@@ -189,9 +182,9 @@ public class ChangeDescription2ChangeConverterTestsBasicOperations extends
         ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, 2 * CHANGES_PER_LIST_ADD_DELOP + 1
                 * CHANGES_PER_SET);
         ChangeAssert.assertContainsListChange(changes, exampleClass1.eClass().getEStructuralFeature("eOperations"), o1,
-                exampleClass1, 0, false);
+                exampleClass1, 0, ListChangeKind.REMOVE, StructuralChangeKind.CONTAINMENT);
         ChangeAssert.assertContainsListChange(changes, exampleClass2.eClass().getEStructuralFeature("eOperations"), o1,
-                exampleClass2, 0, true);
+                exampleClass2, 0, ListChangeKind.ADD, StructuralChangeKind.CONTAINMENT);
     }
 
     @Test
@@ -226,7 +219,7 @@ public class ChangeDescription2ChangeConverterTestsBasicOperations extends
                 .assertContainsAddChange(changes, operation.eClass().getEStructuralFeature("eParameters"), newParam);
         ChangeAssert.assertContainsAddChange(changes, newParam.eClass().getEStructuralFeature("eGenericType"), type);
         ChangeAssert.assertContainsListChange(changes, operation.eClass().getEStructuralFeature("eParameters"),
-                newParam, operation, 0, true);
+                newParam, operation, 0, ListChangeKind.ADD, StructuralChangeKind.CONTAINMENT);
     }
 
     @Test

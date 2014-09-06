@@ -12,22 +12,27 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateNonRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.InsertInEList;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.AttributeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.InsertNonContainmentEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.ReferenceFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.UpdateSingleValuedNonContainmentEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectSingle;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.MapUtils;
 
 /**
  * {@link ShadowInsertionChangeHelper} determines whether a given object has been inserted with
- * changes preceding the insertion, i.e. shadowed changes, and is able to create the {@link Change}
+ * changes preceding the insertion, i.e. shadowed changes, and is able to create the {@link EChange}
  * objects corresponding to the shadowed changes.
  */
 public final class ShadowInsertionChangeHelper {
     private static final Logger LOGGER = Logger.getLogger(ShadowInsertionChangeHelper.class);
 
-    private Map<EObject, List<Change>> containmentChangesCollector;
-    private Map<EObject, List<Change>> nonContainmentChangesCollector;
+    private Map<EObject, List<EChange>> containmentChangesCollector;
+    private Map<EObject, List<EChange>> nonContainmentChangesCollector;
     private Collection<EObject> attachedObjectsCollector;
 
     /**
@@ -36,7 +41,7 @@ public final class ShadowInsertionChangeHelper {
      * @param collector
      *            The containment-related result collecting map.
      */
-    public void setContainmentChangeCollector(Map<EObject, List<Change>> collector) {
+    public void setContainmentChangeCollector(Map<EObject, List<EChange>> collector) {
         containmentChangesCollector = collector;
     }
 
@@ -46,7 +51,7 @@ public final class ShadowInsertionChangeHelper {
      * @param collector
      *            The non-containment-related result collecting map.
      */
-    public void setNonContainmentChangeCollector(Map<EObject, List<Change>> collector) {
+    public void setNonContainmentChangeCollector(Map<EObject, List<EChange>> collector) {
         nonContainmentChangesCollector = collector;
     }
 
@@ -116,7 +121,7 @@ public final class ShadowInsertionChangeHelper {
     }
 
     /**
-     * Recursively adds {@link Change} objects representing shadowed changes in
+     * Recursively adds {@link EChange} objects representing shadowed changes in
      * <code>createdObject</code>.
      * 
      * @param createdObject
@@ -128,39 +133,57 @@ public final class ShadowInsertionChangeHelper {
     }
 
     private static void insertCreateChange(EObject createdObject, EObject referencedObj, EReference ref,
-            Map<EObject, List<Change>> target) {
-        insertCreateChange(createdObject, referencedObj, ref, target, null);
+            Map<EObject, List<EChange>> target) {
+        CreateNonRootEObjectSingle<EObject> update = ContainmentFactory.eINSTANCE.createCreateNonRootEObjectSingle();
+        InitializeEChange.setupUpdateEReference(update, createdObject, ref);
+        InitializeEChange.setupCreateNonRootEObjectSingle(update, referencedObj);
+        MapUtils.addToMap(createdObject, update, target);
     }
 
     private static void insertCreateChange(EObject createdObject, EObject referencedObj, EReference ref,
-            Map<EObject, List<Change>> target, InsertInEList<EReference> listUpdate) {
+            Map<EObject, List<EChange>> target, int index) {
         LOGGER.trace("\tAdding create change for reference " + ref.getName() + " containing " + referencedObj + " in "
                 + referencedObj.eContainer());
-        CreateNonRootEObject<EObject> change = EChangeFactory.createCreateNonRootObject(createdObject, ref,
-                referencedObj, referencedObj);
-        change.setListUpdate(listUpdate);
-        MapUtils.addToMap(createdObject, EMFModelChangeFactory.createEMFModelChange(change), target);
+        CreateNonRootEObjectInList<EObject> update = ContainmentFactory.eINSTANCE.createCreateNonRootEObjectInList();
+        InitializeEChange.setupUpdateEReference(update, createdObject, ref);
+        InitializeEChange.setupInsertInEList(update, referencedObj, index);
+        MapUtils.addToMap(createdObject, update, target);
     }
 
-    private static void insertUpdateChange(EObject createdObject, EObject referencedObj, EReference ref,
-            Map<EObject, List<Change>> target) {
+    private static void insertUpdateEReferenceChange(EObject createdObject, EObject referencedObj, EReference ref,
+            Map<EObject, List<EChange>> target) {
         LOGGER.trace("\tAdding update reference " + ref.getName() + " containing " + referencedObj);
-        EChange change = EChangeFactory.createUpdateEReference(createdObject, ref, referencedObj);
-        MapUtils.addToMap(createdObject, EMFModelChangeFactory.createEMFModelChange(change), target);
+
+        UpdateSingleValuedNonContainmentEReference<EObject> update = ReferenceFactory.eINSTANCE
+                .createUpdateSingleValuedNonContainmentEReference();
+        InitializeEChange.setupUpdateEReference(update, createdObject, ref);
+        // TODO (Maybe): EChange object set up with an explicit null reference.
+        InitializeEChange.setupUpdateSingleValuedNonContainmentEReference(update, null, referencedObj);
+
+        MapUtils.addToMap(createdObject, update, target);
     }
 
     private static void insertListAddChange(EObject createdObject, EObject referencedObj, EReference ref,
-            Map<EObject, List<Change>> target, int index) {
+            Map<EObject, List<EChange>> target, int index) {
         LOGGER.trace("\tAdding list add in reference " + ref.getName() + " containing " + referencedObj);
-        EChange insertChange = EChangeFactory.createInsertInEList(createdObject, ref, referencedObj, index);
-        MapUtils.addToMap(createdObject, EMFModelChangeFactory.createEMFModelChange(insertChange), target);
+
+        InsertNonContainmentEReference<EObject> update = ReferenceFactory.eINSTANCE
+                .createInsertNonContainmentEReference();
+        InitializeEChange.setupUpdateEReference(update, createdObject, ref);
+        InitializeEChange.setupInsertInEList(update, referencedObj, index);
+        MapUtils.addToMap(createdObject, update, target);
     }
 
-    private static void insertAttributeChange(EObject createdObject, Object attributeObj, EAttribute attr,
-            Map<EObject, List<Change>> target) {
+    private static void insertUpdateEAttributeChange(EObject createdObject, Object attributeObj, EAttribute attr,
+            Map<EObject, List<EChange>> target) {
         LOGGER.trace("\tAdding attribute change in " + attr.getName() + " to " + attributeObj);
-        EChange updateAttrChange = EChangeFactory.createUpdateEAttribute(createdObject, attr, attributeObj);
-        MapUtils.addToMap(createdObject, EMFModelChangeFactory.createEMFModelChange(updateAttrChange), target);
+
+        UpdateSingleValuedEAttribute<Object> update = AttributeFactory.eINSTANCE.createUpdateSingleValuedEAttribute();
+        InitializeEChange.setupUpdateEAttribute(update, createdObject, attr);
+        // TODO (Maybe): EChange object set up with an explicit null reference.
+        InitializeEChange.setupUpdateSingleValuedEAttribute(update, null, attributeObj);
+
+        MapUtils.addToMap(createdObject, update, target);
     }
 
     private void addAttributeChanges(EObject createdObject) {
@@ -168,7 +191,7 @@ public final class ShadowInsertionChangeHelper {
 
         for (EAttribute attribute : createdObject.eClass().getEAllAttributes()) {
             if (isRelevantFeature(attribute, createdObject) && hasNondefaultValue(attribute, createdObject)) {
-                insertAttributeChange(createdObject, createdObject.eGet(attribute), attribute,
+                insertUpdateEAttributeChange(createdObject, createdObject.eGet(attribute), attribute,
                         nonContainmentChangesCollector);
             }
         }
@@ -193,7 +216,7 @@ public final class ShadowInsertionChangeHelper {
     }
 
     private void addReferenceChangeForMultiplicityMany(EReference ref, EObject affectedObject) {
-        Map<EObject, List<Change>> target = ref.isContainment() ? containmentChangesCollector
+        Map<EObject, List<EChange>> target = ref.isContainment() ? containmentChangesCollector
                 : nonContainmentChangesCollector;
 
         EList<?> refList = (EList<?>) affectedObject.eGet(ref);
@@ -203,9 +226,7 @@ public final class ShadowInsertionChangeHelper {
             EObject referencedObj = (EObject) refListIt.next();
 
             if (ref.isContainment()) {
-                InsertInEList<EReference> insertChange = EChangeFactory.createInsertInEList(affectedObject, ref,
-                        referencedObj, i);
-                insertCreateChange(affectedObject, referencedObj, ref, target, insertChange);
+                insertCreateChange(affectedObject, referencedObj, ref, target, i);
                 addShadowResolvingChanges(referencedObj);
                 attachedObjectsCollector.add(referencedObj);
             } else {
@@ -215,7 +236,7 @@ public final class ShadowInsertionChangeHelper {
     }
 
     private void addReferenceChangeForMultiplicityOne(EReference ref, EObject affectedObject) {
-        Map<EObject, List<Change>> target = ref.isContainment() ? containmentChangesCollector
+        Map<EObject, List<EChange>> target = ref.isContainment() ? containmentChangesCollector
                 : nonContainmentChangesCollector;
         EObject referencedObj = (EObject) affectedObject.eGet(ref);
 
@@ -223,7 +244,7 @@ public final class ShadowInsertionChangeHelper {
             insertCreateChange(affectedObject, referencedObj, ref, target);
             addShadowResolvingChanges(referencedObj);
         } else {
-            insertUpdateChange(affectedObject, referencedObj, ref, target);
+            insertUpdateEReferenceChange(affectedObject, referencedObj, ref, target);
         }
     }
 }

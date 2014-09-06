@@ -7,19 +7,19 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.change.FeatureChange;
 import org.eclipse.emf.ecore.change.ListChange;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 
 /**
  * {@link ListFeatureChangeTranslationHelperImpl} is used for {@link FeatureChange} objects
  * containing {@link ListChange}s. It categorizes the list-related changes by {@link ListChangeKind}
  * and uses the translation helpers provided by the corresponding {@link ListChangeKind} object to
- * produce the appropriate {@link Change} objects.
+ * produce the appropriate {@link EChange} objects.
  */
 class ListFeatureChangeTranslationHelperImpl extends AbstractChangeTranslationHelper {
     private static final Logger LOGGER = Logger.getLogger(ListFeatureChangeTranslationHelperImpl.class);
 
     @Override
-    public void addReferenceChange(EObject affectedObject, FeatureChange fc, List<Change> target,
+    public void addReferenceChange(EObject affectedObject, FeatureChange fc, List<EChange> target,
             List<EObject> addedObjects, List<EObject> orphanedObjects) {
         LOGGER.trace("Processing add/remove reference feature change " + fc + " with " + fc.getListChanges().size()
                 + " list changes");
@@ -30,7 +30,7 @@ class ListFeatureChangeTranslationHelperImpl extends AbstractChangeTranslationHe
     }
 
     @Override
-    public void addAttributeChange(EObject affectedObject, FeatureChange fc, List<Change> target,
+    public void addAttributeChange(EObject affectedObject, FeatureChange fc, List<EChange> target,
             List<EObject> addedObjects, List<EObject> orphanedObjects) {
         LOGGER.trace("Processing add/remove attribute feature change " + fc + " with " + fc.getListChanges().size()
                 + " list changes");

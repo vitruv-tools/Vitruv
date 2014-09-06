@@ -6,11 +6,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.change.FeatureChange;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 
 /**
  * {@link IObjectChange} represents changes to {@link EObject EObjects}. Changes can either be
- * represented by a single {@link FeatureChange} or by a list of {@link Change} objects.
  */
 interface IObjectChange {
 
@@ -65,11 +64,11 @@ interface IObjectChange {
     }
 
     /**
-     * {@link EChangeCompoundObjectChange} represents a list of {@link Change} changes.
+     * {@link EChangeCompoundObjectChange} represents a list of {@link EChange} changes.
      */
     class EChangeCompoundObjectChange implements IObjectChange {
         private final EObject affectedObject;
-        private final List<Change> changes;
+        private final List<EChange> changes;
         private final boolean isContainmentChange;
 
         /**
@@ -78,11 +77,11 @@ interface IObjectChange {
          * @param affectedObject
          *            The {@link EObject} affected by the contained changes.
          * @param changes
-         *            The list of represented {@link Change} changes.
+         *            The list of represented {@link EChange} changes.
          * @param isContainmentChange
          *            <code>true</code> iff the changes affect a containment reference.
          */
-        public EChangeCompoundObjectChange(EObject affectedObject, List<Change> changes, boolean isContainmentChange) {
+        public EChangeCompoundObjectChange(EObject affectedObject, List<EChange> changes, boolean isContainmentChange) {
             super();
             this.affectedObject = affectedObject;
             this.changes = changes;
@@ -105,9 +104,9 @@ interface IObjectChange {
         }
 
         /**
-         * @return The represented list of {@link Change} changes.
+         * @return The represented list of {@link EChange} changes.
          */
-        public List<Change> getChanges() {
+        public List<EChange> getChanges() {
             return this.changes;
         }
 

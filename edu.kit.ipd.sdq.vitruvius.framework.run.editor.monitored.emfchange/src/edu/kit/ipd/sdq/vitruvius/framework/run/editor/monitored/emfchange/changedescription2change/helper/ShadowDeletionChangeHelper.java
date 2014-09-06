@@ -9,15 +9,16 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.DeleteNonRootEObject;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.RemoveFromEList;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectSingle;
 
 /**
  * {@link ShadowDeletionChangeHelper} determines whether a given deleted object causes implicit
  * deletions and generates a corresponding list of changes.
  */
-public class ShadowDeletionChangeHelper {
+public final class ShadowDeletionChangeHelper {
     private static final Logger LOGGER = Logger.getLogger(ShadowDeletionChangeHelper.class);
 
     private final List<EObject> additionalDetachedObjects = new ArrayList<>();
@@ -34,23 +35,23 @@ public class ShadowDeletionChangeHelper {
     }
 
     /**
-     * Get a list of {@link Change} objects reflecting the implicit delete operations caused by the
+     * Get a list of {@link EChange} objects reflecting the implicit delete operations caused by the
      * deletion of <code>object</code>.
      * 
      * @param object
      *            An EMF object.
-     * @return A list of {@link Change} objects reflecting the implicit delete operations caused by
+     * @return A list of {@link EChange} objects reflecting the implicit delete operations caused by
      *         the deletion of <code>object</code>. The list is ordered such that no deleted object
      *         is referenced after its deletion.
      */
-    public List<Change> getShadowResolvingChanges(EObject object) {
+    public List<EChange> getShadowResolvingChanges(EObject object) {
         LOGGER.trace("Adding shadowed delete operations for " + object);
-        List<Change> result = new ArrayList<Change>();
+        List<EChange> result = new ArrayList<>();
         addShadowResolvingChanges(object, result);
         return result;
     }
 
-    private void addShadowResolvingChanges(EObject object, List<Change> changeCollector) {
+    private void addShadowResolvingChanges(EObject object, List<EChange> changeCollector) {
         for (EReference feature : object.eClass().getEAllReferences()) {
             // eIsSet does not work here since it does not return true for eGenericType features
             // in EOperation objects. This may be a bug in EMF.
@@ -65,8 +66,9 @@ public class ShadowDeletionChangeHelper {
         }
     }
 
-    private void processMultiplicityManyFeature(EObject object, EReference feature, List<Change> changeCollector) {
-        EList<?> children = (EList<?>) object.eGet(feature);
+    private void processMultiplicityManyFeature(EObject affectedObject, EReference affectedFeature,
+            List<EChange> changeCollector) {
+        EList<?> children = (EList<?>) affectedObject.eGet(affectedFeature);
         for (Object childObj : children) {
             if (detachedObjects.contains(childObj)) {
                 continue;
@@ -74,30 +76,33 @@ public class ShadowDeletionChangeHelper {
 
             EObject child = (EObject) childObj;
 
-            DeleteNonRootEObject<EObject> deleteChange = EChangeFactory.createDeleteNonRootObject(object, feature,
-                    child, null);
-            RemoveFromEList<EReference> listChange = EChangeFactory.createRemoveFromEList(object, feature, child, 0);
-            deleteChange.setListUpdate(listChange);
+            DeleteNonRootEObjectInList<EObject> deleteChange = ContainmentFactory.eINSTANCE
+                    .createDeleteNonRootEObjectInList();
+            InitializeEChange.setupUpdateEReference(deleteChange, affectedObject, affectedFeature);
+            InitializeEChange.setupRemoveFromEList(deleteChange, child, 0);
 
             additionalDetachedObjects.add(child);
             addShadowResolvingChanges(child, changeCollector);
-            LOGGER.trace("\tAdding synthesized delete change for " + child + ", contained in " + object);
-            changeCollector.add(EMFModelChangeFactory.createEMFModelChange(deleteChange));
+            LOGGER.trace("\tAdding synthesized delete change for " + child + ", contained in " + affectedObject);
+            changeCollector.add(deleteChange);
         }
     }
 
-    private void processMultiplicityOneFeature(EObject object, EReference feature, List<Change> changeCollector) {
+    private void processMultiplicityOneFeature(EObject object, EReference feature, List<EChange> changeCollector) {
         EObject child = (EObject) object.eGet(feature);
         if (child == null || detachedObjects.contains(child)) {
             return;
         }
-        DeleteNonRootEObject<EObject> deleteChange = EChangeFactory.createDeleteNonRootObject(object, feature, child,
-                null);
+
+        DeleteNonRootEObjectSingle<EObject> deleteChange = ContainmentFactory.eINSTANCE
+                .createDeleteNonRootEObjectSingle();
+        InitializeEChange.setupUpdateEReference(deleteChange, object, feature);
+        deleteChange.setOldValue(child);
 
         additionalDetachedObjects.add(object);
         addShadowResolvingChanges(child, changeCollector);
         LOGGER.trace("\tAdding synthesized delete change for " + child + ", contained in " + object);
-        changeCollector.add(EMFModelChangeFactory.createEMFModelChange(deleteChange));
+        changeCollector.add(deleteChange);
     }
 
     /**

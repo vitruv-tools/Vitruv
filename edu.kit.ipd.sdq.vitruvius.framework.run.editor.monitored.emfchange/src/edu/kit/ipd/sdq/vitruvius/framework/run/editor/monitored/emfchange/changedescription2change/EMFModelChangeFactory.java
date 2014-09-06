@@ -1,6 +1,7 @@
-package edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.changedescription2change.helper;
+package edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.changedescription2change;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 
 /**
@@ -17,9 +18,13 @@ final class EMFModelChangeFactory {
      * 
      * @param change
      *            The model change to be represented by the new object.
+     * 
+     * @param uri
+     *            The model's URI.
+     * 
      * @return The created {@link EMFModelChange} object.
      */
-    public static EMFModelChange createEMFModelChange(EChange change) {
-        return new EMFModelChange(change);
+    public static EMFModelChange createEMFModelChange(EChange change, VURI uri) {
+        return new EMFModelChange(change, uri);
     }
 }

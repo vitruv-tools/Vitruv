@@ -66,9 +66,9 @@ public class ChangeDescription2ChangeConverterTestsInterleavedOperations extends
                 .assertContainsAddChange(changes, newClass.eClass().getEStructuralFeature("eOperations"), operation);
         ChangeAssert.assertContainsAddChange(changes, targetClass.eClass().getEStructuralFeature("eOperations"),
                 operation2);
-        ChangeAssert.assertContainsAttributeChange(changes, newClass.eClass().getEStructuralFeature("abstract"),
+        ChangeAssert.assertContainsSingleValuedAttributeChange(changes, newClass.eClass().getEStructuralFeature("abstract"),
                 newClass.isAbstract());
-        ChangeAssert.assertContainsAttributeChange(changes, operation.eClass().getEStructuralFeature("unique"),
+        ChangeAssert.assertContainsSingleValuedAttributeChange(changes, operation.eClass().getEStructuralFeature("unique"),
                 operation.isUnique());
 
         ChangeAssert.assertAllAddRemoveBeforeSetAttribute(changes);

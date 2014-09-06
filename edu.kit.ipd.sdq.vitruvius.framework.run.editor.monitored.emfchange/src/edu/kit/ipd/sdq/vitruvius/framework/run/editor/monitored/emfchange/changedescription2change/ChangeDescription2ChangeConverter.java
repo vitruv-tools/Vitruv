@@ -14,6 +14,8 @@ import org.eclipse.emf.ecore.change.ChangeDescription;
 import org.eclipse.emf.ecore.change.FeatureChange;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.changedescription2change.IObjectChange.EChangeCompoundObjectChange;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.changedescription2change.IObjectChange.FeatureChangeObjectChange;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.changedescription2change.IObjectChange.ObjectChangeVisitor;
@@ -61,12 +63,31 @@ public class ChangeDescription2ChangeConverter {
      * 
      */
     public List<Change> getChanges(ChangeDescription cd) {
+        return getChanges(cd, null);
+    }
+
+    /**
+     * Nondestructively converts the given {@link ChangeDescription} <code>cd</code> object to a
+     * list of {@link Change} objects.
+     * 
+     * Although the model to which <code>cd</code> pertains remains unchanged in the senses of both
+     * identity and equality, it may be temporarily modified by this method.
+     * 
+     * @param cd
+     *            A {@link ChangeDescription} obtained from a ChangeRecorder.
+     * @param uri
+     *            The VURI to which <i>cd</i> pertains.
+     * @return The corresponding {@link List} of {@link Change} objects.
+     * 
+     */
+    public List<Change> getChanges(ChangeDescription cd, VURI uri) {
         List<EObject> objsToAttach = new ArrayList<>(cd.getObjectsToAttach());
 
         CategorizedChanges catChanges = getCategorizedObjectChanges(cd.getObjectChanges());
         CategorizedChanges preprocessedChanges = preprocessChanges(catChanges, objsToAttach, cd.getObjectsToDetach());
 
-        return convertToEChange(preprocessedChanges, objsToAttach, cd.getObjectsToDetach());
+        List<EChange> echanges = convertToEChange(preprocessedChanges, objsToAttach, cd.getObjectsToDetach());
+        return encloseObjectsInChange(echanges, uri);
     }
 
     private void moveNonContainmentChanges(Collection<IObjectChange> changes, Collection<IObjectChange> target) {
@@ -119,16 +140,16 @@ public class ChangeDescription2ChangeConverter {
         return new CategorizedChanges(resolvedContChanges, resolvedOrdinaryChanges);
     }
 
-    private List<Change> convertToEChange(final CategorizedChanges changes, final List<EObject> addedObjects,
+    private List<EChange> convertToEChange(final CategorizedChanges changes, final List<EObject> addedObjects,
             final List<EObject> orphanedObjects) {
-        List<Change> result = convertToEChange(changes.getContainmentChanges(), addedObjects, orphanedObjects);
+        List<EChange> result = convertToEChange(changes.getContainmentChanges(), addedObjects, orphanedObjects);
         result.addAll(convertToEChange(changes.getOtherChanges(), addedObjects, orphanedObjects));
         return result;
     }
 
-    private List<Change> convertToEChange(final List<IObjectChange> objectChanges, final List<EObject> addedObjects,
+    private List<EChange> convertToEChange(final List<IObjectChange> objectChanges, final List<EObject> addedObjects,
             final List<EObject> orphanedObjects) {
-        final List<Change> result = new ArrayList<Change>();
+        final List<EChange> result = new ArrayList<>();
 
         for (IObjectChange oc : objectChanges) {
             oc.accept(new ObjectChangeVisitor() {
@@ -152,6 +173,14 @@ public class ChangeDescription2ChangeConverter {
                 }
             });
 
+        }
+        return result;
+    }
+
+    private List<Change> encloseObjectsInChange(List<EChange> eChanges, VURI uri) {
+        List<Change> result = new ArrayList<>();
+        for (EChange e : eChanges) {
+            result.add(EMFModelChangeFactory.createEMFModelChange(e, uri));
         }
         return result;
     }

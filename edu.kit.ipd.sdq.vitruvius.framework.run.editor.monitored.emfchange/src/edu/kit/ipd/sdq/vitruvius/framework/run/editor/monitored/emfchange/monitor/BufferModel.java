@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.changeapplication.ChangeApplicator;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.changedescription2change.ChangeDescription2ChangeConverter;
 
@@ -25,6 +26,7 @@ class BufferModel {
     private ChangeRecorder bufferInstanceChangeRecorder;
 
     private boolean isDisposed = true;
+    private final VURI modelResourceURI;
 
     /**
      * Constructs a new {@link BufferModel} instance.
@@ -37,6 +39,7 @@ class BufferModel {
      */
     public BufferModel(Resource modelToBeBuffered) {
         this.bufferResource = setupResource(modelToBeBuffered);
+        this.modelResourceURI = VURI.getInstance(modelToBeBuffered);
         reInitialize();
     }
 
@@ -100,7 +103,7 @@ class BufferModel {
         bufferInstanceChangeRecorder = new ChangeRecorder(bufferResource);
         ChangeDescription2ChangeConverter changeConverter = new ChangeDescription2ChangeConverter();
         cd.applyAndReverse();
-        List<Change> changes = changeConverter.getChanges(cd);
+        List<Change> changes = changeConverter.getChanges(cd, modelResourceURI);
         cd.applyAndReverse();
         return changes;
     }

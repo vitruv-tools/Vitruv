@@ -274,7 +274,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
         if (bufferModels.containsKey(resourceURI)) {
             LOGGER.trace("Got a change buffer for " + resourceURI + ", continuing synchronization.");
             List<Change> changes = bufferModels.get(resourceURI).createBufferChangeSnapshot();
-            summaryChangeSynchronizing.synchronizeChanges(changes, resourceURI);
+            summaryChangeSynchronizing.synchronizeChanges(changes);
         } else {
             LOGGER.trace("No change buffer for " + resourceURI + ", aborting synchronization.");
         }

@@ -13,10 +13,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.change.ListChange;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateNonRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectSingle;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.changedescription2change.IObjectChange.EChangeCompoundObjectChange;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.changedescription2change.IObjectChange.FeatureChangeObjectChange;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.changedescription2change.IObjectChange.ObjectChangeVisitor;
@@ -61,8 +60,8 @@ final class Util {
         return false;
     }
 
-    private static void collectContainers(FeatureChangeObjectChange change, Map<EObject, Set<EObject>> resultCollector,
-            Collection<EObject> remainingObjects) {
+    private static void collectContainments(FeatureChangeObjectChange change,
+            Map<EObject, Set<EObject>> resultCollector, Collection<EObject> remainingObjects) {
         if (!isContainmentReferenceChange(change)) {
             return;
         }
@@ -89,18 +88,31 @@ final class Util {
         }
     }
 
-    private static void collectContainers(EChangeCompoundObjectChange change,
+    private static void collectContainments(EChangeCompoundObjectChange change,
             Map<EObject, Set<EObject>> resultCollector, Collection<EObject> remainingObjects) {
-        for (Change emfChange : change.getChanges()) {
-            EChange eChange = ((EMFModelChange) emfChange).getEChange();
-            if (eChange instanceof CreateNonRootEObject<?>) {
-                CreateNonRootEObject<?> createChange = (CreateNonRootEObject<?>) eChange;
-                if (createChange.getAffectedFeature().isContainment()
-                        && remainingObjects.contains(createChange.getChangedEObject())) {
-                    MapUtils.addToSetMap(createChange.getAffectedEObject(), createChange.getChangedEObject(),
-                            resultCollector);
-                    remainingObjects.remove(createChange.getChangedEObject());
-                }
+
+        for (EChange eChange : change.getChanges()) {
+            EReference affectedFeature;
+            EObject createdObject;
+            EObject affectedObject;
+
+            if (eChange instanceof CreateNonRootEObjectInList<?>) {
+                CreateNonRootEObjectInList<?> listChange = (CreateNonRootEObjectInList<?>) eChange;
+                affectedFeature = listChange.getAffectedFeature();
+                createdObject = listChange.getNewValue();
+                affectedObject = listChange.getNewAffectedEObject();
+            } else if (eChange instanceof CreateNonRootEObjectSingle<?>) {
+                CreateNonRootEObjectSingle<?> singleChange = (CreateNonRootEObjectSingle<?>) eChange;
+                affectedFeature = singleChange.getAffectedFeature();
+                createdObject = singleChange.getNewValue();
+                affectedObject = singleChange.getNewAffectedEObject();
+            } else {
+                continue;
+            }
+
+            if (affectedFeature.isContainment() && remainingObjects.contains(createdObject)) {
+                MapUtils.addToSetMap(affectedObject, createdObject, resultCollector);
+                remainingObjects.remove(createdObject);
             }
         }
     }
@@ -116,11 +128,11 @@ final class Util {
      * @return A map associating each object in <code>objects</code> with the set of objects it
      *         contains which are referenced as updates in <code>contChanges</code>.
      */
-    public static Map<EObject, Set<EObject>> getContainers(Collection<EObject> objects,
+    public static Map<EObject, Set<EObject>> getContainments(Collection<EObject> objects,
             Collection<IObjectChange> contChanges) {
         final Map<EObject, Set<EObject>> result = new HashMap<>();
 
-        // The set of objects for which no container has been found yet.
+        // The set of objects for which no containment has been found yet.
         final Set<EObject> remainingObjects = new HashSet<>(objects);
 
         for (IObjectChange o : contChanges) {
@@ -132,12 +144,12 @@ final class Util {
 
                 @Override
                 public void visit(FeatureChangeObjectChange change) {
-                    collectContainers(change, result, remainingObjects);
+                    collectContainments(change, result, remainingObjects);
                 }
 
                 @Override
                 public void visit(EChangeCompoundObjectChange change) {
-                    collectContainers(change, result, remainingObjects);
+                    collectContainments(change, result, remainingObjects);
                 }
             });
         }

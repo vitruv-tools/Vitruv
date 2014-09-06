@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.changedescription2change.IObjectChange.EChangeCompoundObjectChange;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.changedescription2change.helper.ShadowInsertionChangeHelper;
 
@@ -41,14 +41,14 @@ class ShadowInsertionResolvingPass implements IObjectChangePass {
         this.attachedObjects = attachedObjects;
     }
 
-    private IObjectChange createObjectChange(EObject affectedObject, List<Change> eChanges, boolean isContainmentChange) {
+    private IObjectChange createObjectChange(EObject affectedObject, List<EChange> eChanges, boolean isContainmentChange) {
         return new EChangeCompoundObjectChange(affectedObject, eChanges, isContainmentChange);
     }
 
     private void handleShadowInsertion(EObject attachedObject, List<EObject> newAttachedObjectsCollector,
             List<IObjectChange> resultCollector) {
-        Map<EObject, List<Change>> containmentChanges = new HashMap<>();
-        Map<EObject, List<Change>> nonContainmentChanges = new HashMap<>();
+        Map<EObject, List<EChange>> containmentChanges = new HashMap<>();
+        Map<EObject, List<EChange>> nonContainmentChanges = new HashMap<>();
 
         ShadowInsertionChangeHelper helper = new ShadowInsertionChangeHelper();
         helper.setAttachedObjectCollector(newAttachedObjectsCollector);

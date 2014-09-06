@@ -77,10 +77,9 @@ public class ChangeApplicatorTestsUsingEcore extends AbstractChangeApplicatorTes
 
         sourceRoot.getEClassifiers().add(1, newClass1);
         sourceRoot.getEClassifiers().add(1, newClass2);
-        EClassifier classifier = sourceRoot.getEClassifier("ExampleClass1");
+        EClassifier classifier = sourceRoot.getEClassifier("ExampleClass2");
         sourceRoot.getEClassifiers().remove(classifier);
         sourceRoot.getEClassifiers().add(newClass3);
-        classifier = sourceRoot.getEClassifier("ExampleClass2");
 
         synchronizeChangesAndAssertEquality();
     }
@@ -92,6 +91,7 @@ public class ChangeApplicatorTestsUsingEcore extends AbstractChangeApplicatorTes
 
         EOperation o1 = exampleClass1.getEOperations().remove(0);
         exampleClass2.getEOperations().add(0, o1);
+        System.err.println(o1.getName());
 
         synchronizeChangesAndAssertEquality();
     }

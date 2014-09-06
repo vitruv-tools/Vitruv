@@ -11,8 +11,9 @@ import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.RemoveFromEList;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UnsetEFeature;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetEFeature;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.RemoveFromEList;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.emfmodels.advancedfeatures.AttributeListContaining;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.emfmodels.advancedfeatures.DummyData;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.emfmodels.advancedfeatures.ReferenceListContaining;
@@ -20,6 +21,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.e
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.testmodels.Files;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.testmodels.Metamodels;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.ChangeAssert;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.ChangeAssert.ListChangeKind;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.ChangeAssert.StructuralChangeKind;
 
 public class ChangeDescription2ChangeConverterTestsUsingAdvancedFeatures extends
         AbstractChangeDescription2ChangeConverterTests<RootContainer> {
@@ -49,8 +52,10 @@ public class ChangeDescription2ChangeConverterTestsUsingAdvancedFeatures extends
         assert changes.size() == 2 * CHANGES_PER_LIST_ADD_DELOP : "Got " + changes.size() + " changes instead of " + 2
                 * CHANGES_PER_LIST_ADD_DELOP;
         EStructuralFeature changedAttribute = alc.eClass().getEStructuralFeature("attrList");
-        ChangeAssert.assertContainsListChange(changes, changedAttribute, attr1, alc, originalSize, true);
-        ChangeAssert.assertContainsListChange(changes, changedAttribute, attr2, alc, originalSize, true);
+        ChangeAssert.assertContainsListChange(changes, changedAttribute, attr1, alc, originalSize, ListChangeKind.ADD,
+                StructuralChangeKind.ORDINARY);
+        ChangeAssert.assertContainsListChange(changes, changedAttribute, attr2, alc, originalSize, ListChangeKind.ADD,
+                StructuralChangeKind.ORDINARY);
     }
 
     @Test
@@ -65,9 +70,10 @@ public class ChangeDescription2ChangeConverterTestsUsingAdvancedFeatures extends
                 * CHANGES_PER_LIST_ADD_DELOP;
         EStructuralFeature changedAttribute = alc.eClass().getEStructuralFeature("attrList");
 
-        ChangeAssert.assertContainsListChange(changes, changedAttribute, null, alc, 0, false);
-        ChangeAssert
-                .assertContainsListChange(changes, changedAttribute, null, alc, alc.getAttrList().size() + 1, false);
+        ChangeAssert.assertContainsListChange(changes, changedAttribute, null, alc, 0, ListChangeKind.REMOVE,
+                StructuralChangeKind.ORDINARY);
+        ChangeAssert.assertContainsListChange(changes, changedAttribute, null, alc, alc.getAttrList().size() + 1,
+                ListChangeKind.REMOVE, StructuralChangeKind.ORDINARY);
     }
 
     @Test
@@ -78,20 +84,22 @@ public class ChangeDescription2ChangeConverterTestsUsingAdvancedFeatures extends
         alc.getAttrList().clear();
 
         List<Change> changes = super.getChangesAndEndRecording();
-        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, CHANGES_PER_UNSET + originalSize * CHANGES_PER_LIST_ADD_DELOP);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, CHANGES_PER_UNSET + originalSize
+                * CHANGES_PER_LIST_ADD_DELOP);
 
         Change lastChange = changes.remove(changes.size() - 1);
         assert ((EMFModelChange) lastChange).getEChange() instanceof UnsetEFeature<?>;
         UnsetEFeature<?> unsetChange = (UnsetEFeature<?>) ((EMFModelChange) lastChange).getEChange();
-        assert unsetChange.getAffectedEObject() == sourceRoot.getAttributeListContaining();
+
+        assert ((EFeatureChange<?>) unsetChange).getNewAffectedEObject() == sourceRoot.getAttributeListContaining();
         assert unsetChange.getAffectedFeature() == alc.eClass().getEStructuralFeature("attrList");
 
         for (Change c : changes) {
             assert ((EMFModelChange) c).getEChange() instanceof RemoveFromEList<?>;
             RemoveFromEList<?> change = (RemoveFromEList<?>) ((EMFModelChange) c).getEChange();
             assert change.getIndex() == 0;
-            assert change.getAffectedEObject() == alc;
-            assert change.getAffectedFeature() == alc.eClass().getEStructuralFeature("attrList");
+            assert ((EFeatureChange<?>) change).getNewAffectedEObject() == alc;
+            assert ((EFeatureChange<?>) change).getAffectedFeature() == alc.eClass().getEStructuralFeature("attrList");
         }
     }
 
@@ -106,7 +114,7 @@ public class ChangeDescription2ChangeConverterTestsUsingAdvancedFeatures extends
         assert changes.size() == CHANGES_PER_LIST_ADD_DELOP : "Got " + changes.size() + " changes instead of "
                 + CHANGES_PER_LIST_ADD_DELOP;
         ChangeAssert.assertContainsListChange(changes, rlc.eClass().getEStructuralFeature("nonContainmentRefList"),
-                dd1, rlc, rlc.getNonContainmentRefList().size() - 1, true);
+                dd1, rlc, rlc.getNonContainmentRefList().size() - 1, ListChangeKind.ADD, StructuralChangeKind.ORDINARY);
     }
 
     @Test
@@ -118,7 +126,7 @@ public class ChangeDescription2ChangeConverterTestsUsingAdvancedFeatures extends
         assert changes.size() == CHANGES_PER_LIST_ADD_DELOP : "Got " + changes.size() + " changes instead of "
                 + CHANGES_PER_LIST_ADD_DELOP;
         ChangeAssert.assertContainsListChange(changes, rlc.eClass().getEStructuralFeature("nonContainmentRefList"),
-                dd0, rlc, 0, false);
+                dd0, rlc, 0, ListChangeKind.REMOVE, StructuralChangeKind.ORDINARY);
     }
 
     @Test
@@ -130,10 +138,11 @@ public class ChangeDescription2ChangeConverterTestsUsingAdvancedFeatures extends
 
         List<Change> changes = getChangesAndEndRecording();
 
-        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, CHANGES_PER_UNSET + oSz * CHANGES_PER_LIST_ADD_DELOP);
+        ChangeAssert.assertCorrectlyOrderedAndChangeListSize(changes, CHANGES_PER_UNSET + oSz
+                * CHANGES_PER_LIST_ADD_DELOP);
         for (EObject o : originalObjs) {
             ChangeAssert.assertContainsListChange(changes, rlc.eClass().getEStructuralFeature("nonContainmentRefList"),
-                    o, rlc, 0, false);
+                    o, rlc, 0, ListChangeKind.REMOVE, StructuralChangeKind.ORDINARY);
         }
     }
 

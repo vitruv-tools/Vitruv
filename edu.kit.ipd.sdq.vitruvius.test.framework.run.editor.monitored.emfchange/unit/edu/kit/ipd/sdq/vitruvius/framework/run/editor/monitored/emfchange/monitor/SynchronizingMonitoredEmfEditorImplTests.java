@@ -17,13 +17,11 @@ import org.junit.Test;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory.IEditorPartAdapter;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IMonitoringDecider;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.ISynchronizingMonitoredEmfEditor.ResourceChangeSynchronizing;
-import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.EclipseAdapterProvider;
-import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.IEclipseAdapter;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.mocking.EclipseMock;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.mocking.EclipseMock.SaveEventKind;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.testmodels.Files;
@@ -31,6 +29,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.u
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.DefaultImplementations;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.EnsureExecuted;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.EnsureNotExecuted;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.EclipseAdapterProvider;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.IEclipseAdapter;
 
 public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
     private EclipseMock eclipseCtrl;
@@ -234,8 +234,8 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
 
                 assert changes.size() == 1;
                 EMFModelChange emfChange = (EMFModelChange) changes.get(0);
-                assert emfChange.getEChange() instanceof UpdateEAttribute<?>;
-                UpdateEAttribute<?> updateAttr = (UpdateEAttribute<?>) emfChange.getEChange();
+                assert emfChange.getEChange() instanceof EFeatureChange<?>;
+                EFeatureChange<?> updateAttr = (EFeatureChange<?>) emfChange.getEChange();
 
                 assert updateAttr.getAffectedFeature().getName().equals("nsPrefix") : "Unexpected feature change on "
                         + updateAttr.getAffectedFeature().getName();

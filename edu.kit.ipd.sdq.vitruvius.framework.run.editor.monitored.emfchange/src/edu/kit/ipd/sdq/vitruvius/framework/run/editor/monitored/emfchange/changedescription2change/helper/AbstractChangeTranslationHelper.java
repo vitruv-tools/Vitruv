@@ -7,7 +7,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.change.FeatureChange;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 
 /**
  * {@link AbstractChangeTranslationHelper} classifies changes into {@link EReference}-related and
@@ -16,7 +16,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 abstract class AbstractChangeTranslationHelper implements IChangeTranslationHelper {
 
     @Override
-    public void addChange(EObject affectedObject, FeatureChange fc, List<Change> target, List<EObject> addedObjects,
+    public void addChange(EObject affectedObject, FeatureChange fc, List<EChange> target, List<EObject> addedObjects,
             List<EObject> orphanedObjects) {
         if (fc.getFeature() instanceof EReference) {
             addReferenceChange(affectedObject, fc, target, addedObjects, orphanedObjects);
@@ -29,7 +29,7 @@ abstract class AbstractChangeTranslationHelper implements IChangeTranslationHelp
     }
 
     /**
-     * Converts an {@link EReference}-related {@link FeatureChange} to its {@link Change}
+     * Converts an {@link EReference}-related {@link FeatureChange} to its {@link EChange}
      * representation.
      * 
      * @param affectedObject
@@ -45,11 +45,11 @@ abstract class AbstractChangeTranslationHelper implements IChangeTranslationHelp
      *            The set of {@link EObject EObjects} which are detached from the model instance by
      *            the changes currently being processed (i.e., not only by <code>fc</code>).
      */
-    public abstract void addReferenceChange(EObject affectedObject, FeatureChange fc, List<Change> target,
+    public abstract void addReferenceChange(EObject affectedObject, FeatureChange fc, List<EChange> target,
             List<EObject> addedObjects, List<EObject> orphanedObjects);
 
     /**
-     * Converts an {@link EAttribute}-related {@link FeatureChange} to its {@link Change}
+     * Converts an {@link EAttribute}-related {@link FeatureChange} to its {@link EChange}
      * representation.
      * 
      * @param affectedObject
@@ -65,7 +65,7 @@ abstract class AbstractChangeTranslationHelper implements IChangeTranslationHelp
      *            The set of {@link EObject EObjects} which are detached from the model instance by
      *            the changes currently being processed (i.e., not only by <code>fc</code>).
      */
-    public abstract void addAttributeChange(EObject affectedObject, FeatureChange fc, List<Change> target,
+    public abstract void addAttributeChange(EObject affectedObject, FeatureChange fc, List<EChange> target,
             List<EObject> attachedObjects, List<EObject> detachedObjects);
 
 }

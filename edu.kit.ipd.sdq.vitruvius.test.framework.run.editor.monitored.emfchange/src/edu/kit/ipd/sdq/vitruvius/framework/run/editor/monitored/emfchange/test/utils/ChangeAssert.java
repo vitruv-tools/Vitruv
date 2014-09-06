@@ -13,23 +13,34 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.CreateNonRootEObject;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.DeleteNonRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EFeatureChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.InsertInEList;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.RemoveFromEList;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UnsetEFeature;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEList;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.UpdateEReference;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.CreateNonRootEObjectImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.DeleteNonRootEObjectImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.UpdateEAttributeImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetEFeature;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.InsertInEList;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.RemoveFromEList;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.ReplaceInEList;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.UpdateEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentPackage;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectSingle;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectSingle;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteEObject;
 
 public final class ChangeAssert {
     private static final Logger LOGGER = Logger.getLogger(ChangeAssert.class);
 
     private ChangeAssert() {
+    }
+
+    public enum ListChangeKind {
+        ADD, REMOVE
+    }
+
+    public enum StructuralChangeKind {
+        CONTAINMENT, ORDINARY
     }
 
     public static void printChangeList(Collection<Change> changes) {
@@ -39,7 +50,7 @@ public final class ChangeAssert {
             System.err.println("\t" + change);
             if (change instanceof EFeatureChange<?>) {
                 EFeatureChange<?> fc = (EFeatureChange<?>) change;
-                System.err.println("\t\tAffected: " + fc.getAffectedEObject());
+                System.err.println("\t\tAffected: " + fc.getNewAffectedEObject());
                 System.err.println("\t\tIn feature: " + fc.getAffectedFeature());
             }
         }
@@ -54,14 +65,14 @@ public final class ChangeAssert {
         }
     }
 
-    public static void assertContainsAttributeChange(Collection<Change> changes, EStructuralFeature feature,
-            Object newValue) {
+    public static void assertContainsSingleValuedAttributeChange(Collection<Change> changes,
+            EStructuralFeature feature, Object newValue) {
         assert feature != null;
 
         for (Change c : changes) {
             EChange innerChange = ((EMFModelChange) c).getEChange();
-            if (innerChange instanceof UpdateEAttributeImpl<?>) {
-                UpdateEAttributeImpl<?> attrChange = (UpdateEAttributeImpl<?>) innerChange;
+            if (innerChange instanceof UpdateSingleValuedEAttribute<?>) {
+                UpdateSingleValuedEAttribute<?> attrChange = (UpdateSingleValuedEAttribute<?>) innerChange;
                 if (attrChange.getNewValue().equals(newValue) && attrChange.getAffectedFeature() == feature) {
                     return;
                 }
@@ -77,9 +88,14 @@ public final class ChangeAssert {
 
         for (Change c : changes) {
             EChange innerChange = ((EMFModelChange) c).getEChange();
-            if (innerChange instanceof CreateNonRootEObjectImpl<?>) {
-                CreateNonRootEObjectImpl<?> attrChange = (CreateNonRootEObjectImpl<?>) innerChange;
-                if (attrChange.getChangedEObject() == addedObject && attrChange.getAffectedFeature() == feature) {
+            if (innerChange instanceof CreateNonRootEObjectSingle<?>) {
+                CreateNonRootEObjectSingle<?> attrChange = (CreateNonRootEObjectSingle<?>) innerChange;
+                if (attrChange.getNewValue() == addedObject && attrChange.getAffectedFeature() == feature) {
+                    return;
+                }
+            } else if (innerChange instanceof CreateNonRootEObjectInList<?>) {
+                CreateNonRootEObjectInList<?> addChange = (CreateNonRootEObjectInList<?>) innerChange;
+                if (addChange.getNewValue() == addedObject && addChange.getAffectedFeature() == feature) {
                     return;
                 }
             }
@@ -94,7 +110,7 @@ public final class ChangeAssert {
             assert cc instanceof EMFModelChange;
             EChange c = ((EMFModelChange) cc).getEChange();
 
-            if (c instanceof CreateNonRootEObject<?> || c instanceof DeleteNonRootEObject<?>) {
+            if (c instanceof CreateEObject<?> || c instanceof DeleteEObject<?>) {
                 assert !observedARChange : "Detected add/remove change after attribute/reference change!";
             } else {
                 if (!(c instanceof InsertInEList<?> || c instanceof RemoveFromEList<?>)) {
@@ -110,9 +126,14 @@ public final class ChangeAssert {
 
         for (Change c : changes) {
             EChange innerChange = ((EMFModelChange) c).getEChange();
-            if (innerChange instanceof DeleteNonRootEObjectImpl<?>) {
-                DeleteNonRootEObjectImpl<?> attrChange = (DeleteNonRootEObjectImpl<?>) innerChange;
-                if (attrChange.getChangedEObject() == removedObject && attrChange.getAffectedFeature() == feature) {
+            if (innerChange instanceof DeleteNonRootEObjectSingle<?>) {
+                DeleteNonRootEObjectSingle<?> attrChange = (DeleteNonRootEObjectSingle<?>) innerChange;
+                if (attrChange.getOldValue() == removedObject && attrChange.getAffectedFeature() == feature) {
+                    return;
+                }
+            } else if (innerChange instanceof DeleteNonRootEObjectInList<?>) {
+                DeleteNonRootEObjectInList<?> remChange = (DeleteNonRootEObjectInList<?>) innerChange;
+                if (remChange.getOldValue() == removedObject && remChange.getAffectedFeature() == feature) {
                     return;
                 }
             }
@@ -129,7 +150,8 @@ public final class ChangeAssert {
             EChange innerChange = ((EMFModelChange) c).getEChange();
             if (innerChange instanceof UnsetEFeature<?>) {
                 UnsetEFeature<?> unsetFeature = (UnsetEFeature<?>) innerChange;
-                if (unsetFeature.getAffectedEObject() == affectedObject && unsetFeature.getAffectedFeature() == feature) {
+                if (unsetFeature.getNewAffectedEObject() == affectedObject
+                        && unsetFeature.getAffectedFeature() == feature) {
                     return;
                 }
             }
@@ -137,30 +159,49 @@ public final class ChangeAssert {
     }
 
     public static void assertContainsListChange(Collection<Change> changes, EStructuralFeature feature,
-            Object changedObject, EObject parentObject, int index, boolean isAdd) {
+            Object changedObject, EObject parentObject, int index, ListChangeKind operationKind,
+            StructuralChangeKind changeKind) {
         assert feature != null;
 
-        for (Change c : changes) {
-            EChange innerChange = ((EMFModelChange) c).getEChange();
+        for (Change outerChange : changes) {
+            EChange c = ((EMFModelChange) outerChange).getEChange();
 
-            EChange candidate = innerChange;
-            if (innerChange instanceof CreateNonRootEObject<?>) {
-                CreateNonRootEObject<?> createChange = (CreateNonRootEObject<?>) innerChange;
-                if (createChange.getListUpdate() != null) {
-                    candidate = createChange.getListUpdate();
+            if ((changeKind == StructuralChangeKind.CONTAINMENT && c.eClass().getEPackage() != ContainmentPackage.eINSTANCE)
+                    || (changeKind == StructuralChangeKind.ORDINARY && c.eClass().getEPackage() == ContainmentPackage.eINSTANCE)) {
+                continue;
+            }
+
+            if (c instanceof EFeatureChange<?>) {
+                EFeatureChange<?> featureChange = (EFeatureChange<?>) c;
+                if (featureChange.getAffectedFeature() != feature
+                        || featureChange.getNewAffectedEObject() != parentObject) {
+                    continue;
                 }
-            } else if (innerChange instanceof DeleteNonRootEObject<?>) {
-                DeleteNonRootEObject<?> deleteChange = (DeleteNonRootEObject<?>) innerChange;
-                if (deleteChange.getListUpdate() != null) {
-                    candidate = deleteChange.getListUpdate();
+            } else {
+                continue;
+            }
+
+            if (c instanceof InsertInEList<?> && operationKind == ListChangeKind.ADD) {
+                InsertInEList<?> change = (InsertInEList<?>) c;
+                if (change.getNewValue() == changedObject && change.getIndex() == index) {
+                    return;
                 }
             }
 
-            if ((isAdd && candidate instanceof InsertInEList<?>) || (!isAdd && candidate instanceof RemoveFromEList<?>)) {
-                UpdateEList<?> attrChange = (UpdateEList<?>) candidate;
-                if (attrChange.getUpdate() == changedObject && attrChange.getAffectedFeature() == feature
-                        && attrChange.getIndex() == index && attrChange.getAffectedEObject() == parentObject) {
+            if (c instanceof RemoveFromEList<?> && operationKind == ListChangeKind.REMOVE) {
+                RemoveFromEList<?> change = (RemoveFromEList<?>) c;
+                if (change.getOldValue() == changedObject && change.getIndex() == index) {
                     return;
+                }
+            }
+
+            if (c instanceof ReplaceInEList<?>) {
+                ReplaceInEList<?> change = (ReplaceInEList<?>) c;
+                if (change.getIndex() == index) {
+                    if ((operationKind == ListChangeKind.ADD && change.getNewValue() == changedObject)
+                            || (operationKind == ListChangeKind.REMOVE && change.getOldValue() == changedObject)) {
+                        return;
+                    }
                 }
             }
         }
@@ -176,15 +217,19 @@ public final class ChangeAssert {
             EChange change = (EChange) mc.getEChange();
             if (change instanceof EFeatureChange<?>) {
                 EFeatureChange<?> updateChange = (EFeatureChange<?>) change;
-                if (scannedDeletions.contains(updateChange.getAffectedEObject())) {
-                    LOGGER.fatal("Detected a pre-insertion update change to " + updateChange.getAffectedEObject()
+                if (scannedDeletions.contains(updateChange.getNewAffectedEObject())) {
+                    LOGGER.fatal("Detected a pre-insertion update change to " + updateChange.getNewAffectedEObject()
                             + " (" + updateChange + ")");
                     fail("The change list contains a reference to a previously deleted object.");
                 }
             }
-            if (change instanceof DeleteNonRootEObject<?>) {
-                DeleteNonRootEObject<?> deleteChange = (DeleteNonRootEObject<?>) change;
-                Object deletedObject = deleteChange.getChangedEObject();
+            if (change instanceof DeleteNonRootEObjectSingle<?>) {
+                DeleteNonRootEObjectSingle<?> deleteChange = (DeleteNonRootEObjectSingle<?>) change;
+                Object deletedObject = deleteChange.getOldValue();
+                scannedDeletions.add(deletedObject);
+            } else if (change instanceof DeleteNonRootEObjectInList<?>) {
+                DeleteNonRootEObjectInList<?> deleteChange = (DeleteNonRootEObjectInList<?>) change;
+                Object deletedObject = deleteChange.getOldValue();
                 scannedDeletions.add(deletedObject);
             }
         }
@@ -197,16 +242,25 @@ public final class ChangeAssert {
             EChange change = (EChange) mc.getEChange();
             if (change instanceof UpdateEReference<?>) {
                 UpdateEReference<?> updateChange = (UpdateEReference<?>) change;
-                scannedAffectedObjects.add(updateChange.getAffectedEObject());
+                scannedAffectedObjects.add(updateChange.getNewAffectedEObject());
             }
-            if (change instanceof CreateNonRootEObject<?>) {
-                CreateNonRootEObject<?> createChange = (CreateNonRootEObject<?>) change;
-                Object createdObject = createChange.getChangedEObject();
+
+            if (change instanceof CreateEObject<?>) {
+                EObject createdObject = null;
+
+                if (change instanceof CreateNonRootEObjectInList<?>) {
+                    createdObject = ((CreateNonRootEObjectInList<?>) change).getNewValue();
+                } else if (change instanceof CreateNonRootEObjectSingle<?>) {
+                    createdObject = ((CreateNonRootEObjectSingle<?>) change).getNewValue();
+                } else {
+                    throw new UnsupportedOperationException("Unrecognized create operation: " + change);
+                }
+
                 if (scannedAffectedObjects.contains(createdObject)) {
-                    LOGGER.fatal("Detected a post-deletion update change to " + createdObject + " (" + createChange
-                            + ")");
+                    LOGGER.fatal("Detected a post-deletion update change to " + createdObject + " (" + change + ")");
                     fail("The change list contains a reference to a previously deleted object.");
                 }
+
             }
         }
     }

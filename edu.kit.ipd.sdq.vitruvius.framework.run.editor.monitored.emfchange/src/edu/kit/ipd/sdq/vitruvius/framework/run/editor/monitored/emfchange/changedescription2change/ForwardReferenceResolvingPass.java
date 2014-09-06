@@ -40,7 +40,7 @@ class ForwardReferenceResolvingPass implements IObjectChangePass {
         Map<EObject, List<IObjectChange>> changesByChanged = Util.getAffectedObjectMap(containmentChanges);
 
         // 1. Gather containers of new objects.
-        Map<EObject, Set<EObject>> containerMap = Util.getContainers(addedObjects, containmentChanges);
+        Map<EObject, Set<EObject>> containerMap = Util.getContainments(addedObjects, containmentChanges);
 
         // 2. Collect already-existing containments of new objects.
         List<EObject> addableContainerObjects = new ArrayList<EObject>(containerMap.keySet());

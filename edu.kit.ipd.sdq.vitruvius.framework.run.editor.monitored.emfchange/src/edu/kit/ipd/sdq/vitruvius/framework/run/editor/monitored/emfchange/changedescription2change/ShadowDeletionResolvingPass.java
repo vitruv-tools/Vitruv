@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.changedescription2change.IObjectChange.EChangeCompoundObjectChange;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.changedescription2change.helper.ShadowDeletionChangeHelper;
 
@@ -16,7 +16,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.change
  * gettable list. The list of change operations passed to {@link #runPass(Collection)} remains
  * unchanged.
  */
-public class ShadowDeletionResolvingPass implements IObjectChangePass {
+class ShadowDeletionResolvingPass implements IObjectChangePass {
 
     private final Collection<EObject> detachedObjects;
     private final Collection<IObjectChange> additionalChangeOperations;
@@ -32,7 +32,7 @@ public class ShadowDeletionResolvingPass implements IObjectChangePass {
         this.additionalChangeOperations = new HashSet<>();
     }
 
-    private IObjectChange createObjectChange(EObject affectedObject, List<Change> eChanges) {
+    private IObjectChange createObjectChange(EObject affectedObject, List<EChange> eChanges) {
         return new EChangeCompoundObjectChange(affectedObject, eChanges, true);
     }
 
@@ -43,7 +43,7 @@ public class ShadowDeletionResolvingPass implements IObjectChangePass {
         ShadowDeletionChangeHelper helper = new ShadowDeletionChangeHelper(detachedObjects);
 
         for (EObject detachedObj : detachedObjects) {
-            List<Change> additionalChanges = helper.getShadowResolvingChanges(detachedObj);
+            List<EChange> additionalChanges = helper.getShadowResolvingChanges(detachedObj);
             additionalChangeOperations.add(createObjectChange(detachedObj, additionalChanges));
         }
 
