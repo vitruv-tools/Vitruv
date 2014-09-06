@@ -48,513 +48,513 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class DeleteNonRootEObjectInListImpl<T extends EObject> extends DeleteEObjectImpl<T> implements DeleteNonRootEObjectInList<T> {
 	/**
-	 * The default value of the '{@link #getIndex() <em>Index</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The default value of the '{@link #getIndex() <em>Index</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIndex()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getIndex()
+     * @generated
+     * @ordered
+     */
 	protected static final int INDEX_EDEFAULT = 0;
 
 	/**
-	 * The cached value of the '{@link #getIndex() <em>Index</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getIndex() <em>Index</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIndex()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getIndex()
+     * @generated
+     * @ordered
+     */
 	protected int index = INDEX_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getRemovedObjectURIFragment() <em>Removed Object URI Fragment</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The default value of the '{@link #getRemovedObjectURIFragment() <em>Removed Object URI Fragment</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getRemovedObjectURIFragment()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getRemovedObjectURIFragment()
+     * @generated
+     * @ordered
+     */
 	protected static final String REMOVED_OBJECT_URI_FRAGMENT_EDEFAULT = "0";
 
 	/**
-	 * The cached value of the '{@link #getRemovedObjectURIFragment() <em>Removed Object URI Fragment</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getRemovedObjectURIFragment() <em>Removed Object URI Fragment</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getRemovedObjectURIFragment()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getRemovedObjectURIFragment()
+     * @generated
+     * @ordered
+     */
 	protected String removedObjectURIFragment = REMOVED_OBJECT_URI_FRAGMENT_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getOldValue()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getOldValue()
+     * @generated
+     * @ordered
+     */
 	protected T oldValue;
 
 	/**
-	 * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getAffectedFeature()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getAffectedFeature()
+     * @generated
+     * @ordered
+     */
 	protected EReference affectedFeature;
 
 	/**
-	 * The cached value of the '{@link #getOldAffectedEObject() <em>Old Affected EObject</em>}' reference.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getOldAffectedEObject() <em>Old Affected EObject</em>}' reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getOldAffectedEObject()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getOldAffectedEObject()
+     * @generated
+     * @ordered
+     */
 	protected EObject oldAffectedEObject;
 
 	/**
-	 * The cached value of the '{@link #getNewAffectedEObject() <em>New Affected EObject</em>}' reference.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getNewAffectedEObject() <em>New Affected EObject</em>}' reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getNewAffectedEObject()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getNewAffectedEObject()
+     * @generated
+     * @ordered
+     */
 	protected EObject newAffectedEObject;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected DeleteNonRootEObjectInListImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return ContainmentPackage.Literals.DELETE_NON_ROOT_EOBJECT_IN_LIST;
-	}
+        return ContainmentPackage.Literals.DELETE_NON_ROOT_EOBJECT_IN_LIST;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public T getOldValue() {
-		return oldValue;
-	}
+        return oldValue;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setOldValue(T newOldValue) {
-		T oldOldValue = oldValue;
-		oldValue = newOldValue;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE, oldOldValue, oldValue));
-	}
+        T oldOldValue = oldValue;
+        oldValue = newOldValue;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE, oldOldValue, oldValue));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public int getIndex() {
-		return index;
-	}
+        return index;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setIndex(int newIndex) {
-		int oldIndex = index;
-		index = newIndex;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__INDEX, oldIndex, index));
-	}
+        int oldIndex = index;
+        index = newIndex;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__INDEX, oldIndex, index));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String getRemovedObjectURIFragment() {
-		return removedObjectURIFragment;
-	}
+        return removedObjectURIFragment;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setRemovedObjectURIFragment(String newRemovedObjectURIFragment) {
-		String oldRemovedObjectURIFragment = removedObjectURIFragment;
-		removedObjectURIFragment = newRemovedObjectURIFragment;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__REMOVED_OBJECT_URI_FRAGMENT, oldRemovedObjectURIFragment, removedObjectURIFragment));
-	}
+        String oldRemovedObjectURIFragment = removedObjectURIFragment;
+        removedObjectURIFragment = newRemovedObjectURIFragment;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__REMOVED_OBJECT_URI_FRAGMENT, oldRemovedObjectURIFragment, removedObjectURIFragment));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EReference getAffectedFeature() {
-		if (affectedFeature != null && affectedFeature.eIsProxy()) {
-			InternalEObject oldAffectedFeature = (InternalEObject)affectedFeature;
-			affectedFeature = (EReference)eResolveProxy(oldAffectedFeature);
-			if (affectedFeature != oldAffectedFeature) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
-			}
-		}
-		return affectedFeature;
-	}
+        if (affectedFeature != null && affectedFeature.eIsProxy()) {
+            InternalEObject oldAffectedFeature = (InternalEObject)affectedFeature;
+            affectedFeature = (EReference)eResolveProxy(oldAffectedFeature);
+            if (affectedFeature != oldAffectedFeature) {
+                if (eNotificationRequired())
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
+            }
+        }
+        return affectedFeature;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EReference basicGetAffectedFeature() {
-		return affectedFeature;
-	}
+        return affectedFeature;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setAffectedFeature(EReference newAffectedFeature) {
-		EReference oldAffectedFeature = affectedFeature;
-		affectedFeature = newAffectedFeature;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
-	}
+        EReference oldAffectedFeature = affectedFeature;
+        affectedFeature = newAffectedFeature;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EObject getOldAffectedEObject() {
-		if (oldAffectedEObject != null && oldAffectedEObject.eIsProxy()) {
-			InternalEObject oldOldAffectedEObject = (InternalEObject)oldAffectedEObject;
-			oldAffectedEObject = eResolveProxy(oldOldAffectedEObject);
-			if (oldAffectedEObject != oldOldAffectedEObject) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT, oldOldAffectedEObject, oldAffectedEObject));
-			}
-		}
-		return oldAffectedEObject;
-	}
+        if (oldAffectedEObject != null && oldAffectedEObject.eIsProxy()) {
+            InternalEObject oldOldAffectedEObject = (InternalEObject)oldAffectedEObject;
+            oldAffectedEObject = eResolveProxy(oldOldAffectedEObject);
+            if (oldAffectedEObject != oldOldAffectedEObject) {
+                if (eNotificationRequired())
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT, oldOldAffectedEObject, oldAffectedEObject));
+            }
+        }
+        return oldAffectedEObject;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EObject basicGetOldAffectedEObject() {
-		return oldAffectedEObject;
-	}
+        return oldAffectedEObject;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setOldAffectedEObject(EObject newOldAffectedEObject) {
-		EObject oldOldAffectedEObject = oldAffectedEObject;
-		oldAffectedEObject = newOldAffectedEObject;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT, oldOldAffectedEObject, oldAffectedEObject));
-	}
+        EObject oldOldAffectedEObject = oldAffectedEObject;
+        oldAffectedEObject = newOldAffectedEObject;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT, oldOldAffectedEObject, oldAffectedEObject));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EObject getNewAffectedEObject() {
-		if (newAffectedEObject != null && newAffectedEObject.eIsProxy()) {
-			InternalEObject oldNewAffectedEObject = (InternalEObject)newAffectedEObject;
-			newAffectedEObject = eResolveProxy(oldNewAffectedEObject);
-			if (newAffectedEObject != oldNewAffectedEObject) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT, oldNewAffectedEObject, newAffectedEObject));
-			}
-		}
-		return newAffectedEObject;
-	}
+        if (newAffectedEObject != null && newAffectedEObject.eIsProxy()) {
+            InternalEObject oldNewAffectedEObject = (InternalEObject)newAffectedEObject;
+            newAffectedEObject = eResolveProxy(oldNewAffectedEObject);
+            if (newAffectedEObject != oldNewAffectedEObject) {
+                if (eNotificationRequired())
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT, oldNewAffectedEObject, newAffectedEObject));
+            }
+        }
+        return newAffectedEObject;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EObject basicGetNewAffectedEObject() {
-		return newAffectedEObject;
-	}
+        return newAffectedEObject;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setNewAffectedEObject(EObject newNewAffectedEObject) {
-		EObject oldNewAffectedEObject = newAffectedEObject;
-		newAffectedEObject = newNewAffectedEObject;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT, oldNewAffectedEObject, newAffectedEObject));
-	}
+        EObject oldNewAffectedEObject = newAffectedEObject;
+        newAffectedEObject = newNewAffectedEObject;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT, oldNewAffectedEObject, newAffectedEObject));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__INDEX:
-				return getIndex();
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__REMOVED_OBJECT_URI_FRAGMENT:
-				return getRemovedObjectURIFragment();
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
-				return getOldValue();
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE:
-				if (resolve) return getAffectedFeature();
-				return basicGetAffectedFeature();
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT:
-				if (resolve) return getOldAffectedEObject();
-				return basicGetOldAffectedEObject();
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT:
-				if (resolve) return getNewAffectedEObject();
-				return basicGetNewAffectedEObject();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+        switch (featureID) {
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__INDEX:
+                return getIndex();
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__REMOVED_OBJECT_URI_FRAGMENT:
+                return getRemovedObjectURIFragment();
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
+                return getOldValue();
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE:
+                if (resolve) return getAffectedFeature();
+                return basicGetAffectedFeature();
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT:
+                if (resolve) return getOldAffectedEObject();
+                return basicGetOldAffectedEObject();
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT:
+                if (resolve) return getNewAffectedEObject();
+                return basicGetNewAffectedEObject();
+        }
+        return super.eGet(featureID, resolve, coreType);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__INDEX:
-				setIndex((Integer)newValue);
-				return;
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__REMOVED_OBJECT_URI_FRAGMENT:
-				setRemovedObjectURIFragment((String)newValue);
-				return;
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
-				setOldValue((T)newValue);
-				return;
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE:
-				setAffectedFeature((EReference)newValue);
-				return;
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT:
-				setOldAffectedEObject((EObject)newValue);
-				return;
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT:
-				setNewAffectedEObject((EObject)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+        switch (featureID) {
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__INDEX:
+                setIndex((Integer)newValue);
+                return;
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__REMOVED_OBJECT_URI_FRAGMENT:
+                setRemovedObjectURIFragment((String)newValue);
+                return;
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
+                setOldValue((T)newValue);
+                return;
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE:
+                setAffectedFeature((EReference)newValue);
+                return;
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT:
+                setOldAffectedEObject((EObject)newValue);
+                return;
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT:
+                setNewAffectedEObject((EObject)newValue);
+                return;
+        }
+        super.eSet(featureID, newValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eUnset(int featureID) {
-		switch (featureID) {
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__INDEX:
-				setIndex(INDEX_EDEFAULT);
-				return;
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__REMOVED_OBJECT_URI_FRAGMENT:
-				setRemovedObjectURIFragment(REMOVED_OBJECT_URI_FRAGMENT_EDEFAULT);
-				return;
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
-				setOldValue((T)null);
-				return;
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE:
-				setAffectedFeature((EReference)null);
-				return;
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT:
-				setOldAffectedEObject((EObject)null);
-				return;
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT:
-				setNewAffectedEObject((EObject)null);
-				return;
-		}
-		super.eUnset(featureID);
-	}
+        switch (featureID) {
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__INDEX:
+                setIndex(INDEX_EDEFAULT);
+                return;
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__REMOVED_OBJECT_URI_FRAGMENT:
+                setRemovedObjectURIFragment(REMOVED_OBJECT_URI_FRAGMENT_EDEFAULT);
+                return;
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
+                setOldValue((T)null);
+                return;
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE:
+                setAffectedFeature((EReference)null);
+                return;
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT:
+                setOldAffectedEObject((EObject)null);
+                return;
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT:
+                setNewAffectedEObject((EObject)null);
+                return;
+        }
+        super.eUnset(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__INDEX:
-				return index != INDEX_EDEFAULT;
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__REMOVED_OBJECT_URI_FRAGMENT:
-				return REMOVED_OBJECT_URI_FRAGMENT_EDEFAULT == null ? removedObjectURIFragment != null : !REMOVED_OBJECT_URI_FRAGMENT_EDEFAULT.equals(removedObjectURIFragment);
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
-				return oldValue != null;
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE:
-				return affectedFeature != null;
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT:
-				return oldAffectedEObject != null;
-			case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT:
-				return newAffectedEObject != null;
-		}
-		return super.eIsSet(featureID);
-	}
+        switch (featureID) {
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__INDEX:
+                return index != INDEX_EDEFAULT;
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__REMOVED_OBJECT_URI_FRAGMENT:
+                return REMOVED_OBJECT_URI_FRAGMENT_EDEFAULT == null ? removedObjectURIFragment != null : !REMOVED_OBJECT_URI_FRAGMENT_EDEFAULT.equals(removedObjectURIFragment);
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE:
+                return oldValue != null;
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE:
+                return affectedFeature != null;
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT:
+                return oldAffectedEObject != null;
+            case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT:
+                return newAffectedEObject != null;
+        }
+        return super.eIsSet(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == UpdateEFeature.class) {
-			switch (derivedFeatureID) {
-				default: return -1;
-			}
-		}
-		if (baseClass == UpdateMultiValuedEFeature.class) {
-			switch (derivedFeatureID) {
-				default: return -1;
-			}
-		}
-		if (baseClass == UpdateSingleEListEntry.class) {
-			switch (derivedFeatureID) {
-				case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__INDEX: return ListPackage.UPDATE_SINGLE_ELIST_ENTRY__INDEX;
-				default: return -1;
-			}
-		}
-		if (baseClass == RemoveFromEList.class) {
-			switch (derivedFeatureID) {
-				case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__REMOVED_OBJECT_URI_FRAGMENT: return ListPackage.REMOVE_FROM_ELIST__REMOVED_OBJECT_URI_FRAGMENT;
-				case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE: return ListPackage.REMOVE_FROM_ELIST__OLD_VALUE;
-				default: return -1;
-			}
-		}
-		if (baseClass == EFeatureChange.class) {
-			switch (derivedFeatureID) {
-				case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE;
-				case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__OLD_AFFECTED_EOBJECT;
-				case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__NEW_AFFECTED_EOBJECT;
-				default: return -1;
-			}
-		}
-		if (baseClass == UpdateEReference.class) {
-			switch (derivedFeatureID) {
-				default: return -1;
-			}
-		}
-		if (baseClass == UpdateContainmentEReference.class) {
-			switch (derivedFeatureID) {
-				default: return -1;
-			}
-		}
-		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-	}
+        if (baseClass == UpdateEFeature.class) {
+            switch (derivedFeatureID) {
+                default: return -1;
+            }
+        }
+        if (baseClass == UpdateMultiValuedEFeature.class) {
+            switch (derivedFeatureID) {
+                default: return -1;
+            }
+        }
+        if (baseClass == UpdateSingleEListEntry.class) {
+            switch (derivedFeatureID) {
+                case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__INDEX: return ListPackage.UPDATE_SINGLE_ELIST_ENTRY__INDEX;
+                default: return -1;
+            }
+        }
+        if (baseClass == RemoveFromEList.class) {
+            switch (derivedFeatureID) {
+                case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__REMOVED_OBJECT_URI_FRAGMENT: return ListPackage.REMOVE_FROM_ELIST__REMOVED_OBJECT_URI_FRAGMENT;
+                case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE: return ListPackage.REMOVE_FROM_ELIST__OLD_VALUE;
+                default: return -1;
+            }
+        }
+        if (baseClass == EFeatureChange.class) {
+            switch (derivedFeatureID) {
+                case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE;
+                case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__OLD_AFFECTED_EOBJECT;
+                case ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__NEW_AFFECTED_EOBJECT;
+                default: return -1;
+            }
+        }
+        if (baseClass == UpdateEReference.class) {
+            switch (derivedFeatureID) {
+                default: return -1;
+            }
+        }
+        if (baseClass == UpdateContainmentEReference.class) {
+            switch (derivedFeatureID) {
+                default: return -1;
+            }
+        }
+        return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == UpdateEFeature.class) {
-			switch (baseFeatureID) {
-				default: return -1;
-			}
-		}
-		if (baseClass == UpdateMultiValuedEFeature.class) {
-			switch (baseFeatureID) {
-				default: return -1;
-			}
-		}
-		if (baseClass == UpdateSingleEListEntry.class) {
-			switch (baseFeatureID) {
-				case ListPackage.UPDATE_SINGLE_ELIST_ENTRY__INDEX: return ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__INDEX;
-				default: return -1;
-			}
-		}
-		if (baseClass == RemoveFromEList.class) {
-			switch (baseFeatureID) {
-				case ListPackage.REMOVE_FROM_ELIST__REMOVED_OBJECT_URI_FRAGMENT: return ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__REMOVED_OBJECT_URI_FRAGMENT;
-				case ListPackage.REMOVE_FROM_ELIST__OLD_VALUE: return ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE;
-				default: return -1;
-			}
-		}
-		if (baseClass == EFeatureChange.class) {
-			switch (baseFeatureID) {
-				case FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE: return ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE;
-				case FeaturePackage.EFEATURE_CHANGE__OLD_AFFECTED_EOBJECT: return ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT;
-				case FeaturePackage.EFEATURE_CHANGE__NEW_AFFECTED_EOBJECT: return ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT;
-				default: return -1;
-			}
-		}
-		if (baseClass == UpdateEReference.class) {
-			switch (baseFeatureID) {
-				default: return -1;
-			}
-		}
-		if (baseClass == UpdateContainmentEReference.class) {
-			switch (baseFeatureID) {
-				default: return -1;
-			}
-		}
-		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
-	}
+        if (baseClass == UpdateEFeature.class) {
+            switch (baseFeatureID) {
+                default: return -1;
+            }
+        }
+        if (baseClass == UpdateMultiValuedEFeature.class) {
+            switch (baseFeatureID) {
+                default: return -1;
+            }
+        }
+        if (baseClass == UpdateSingleEListEntry.class) {
+            switch (baseFeatureID) {
+                case ListPackage.UPDATE_SINGLE_ELIST_ENTRY__INDEX: return ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__INDEX;
+                default: return -1;
+            }
+        }
+        if (baseClass == RemoveFromEList.class) {
+            switch (baseFeatureID) {
+                case ListPackage.REMOVE_FROM_ELIST__REMOVED_OBJECT_URI_FRAGMENT: return ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__REMOVED_OBJECT_URI_FRAGMENT;
+                case ListPackage.REMOVE_FROM_ELIST__OLD_VALUE: return ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_VALUE;
+                default: return -1;
+            }
+        }
+        if (baseClass == EFeatureChange.class) {
+            switch (baseFeatureID) {
+                case FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE: return ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__AFFECTED_FEATURE;
+                case FeaturePackage.EFEATURE_CHANGE__OLD_AFFECTED_EOBJECT: return ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__OLD_AFFECTED_EOBJECT;
+                case FeaturePackage.EFEATURE_CHANGE__NEW_AFFECTED_EOBJECT: return ContainmentPackage.DELETE_NON_ROOT_EOBJECT_IN_LIST__NEW_AFFECTED_EOBJECT;
+                default: return -1;
+            }
+        }
+        if (baseClass == UpdateEReference.class) {
+            switch (baseFeatureID) {
+                default: return -1;
+            }
+        }
+        if (baseClass == UpdateContainmentEReference.class) {
+            switch (baseFeatureID) {
+                default: return -1;
+            }
+        }
+        return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+        if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (index: ");
-		result.append(index);
-		result.append(", removedObjectURIFragment: ");
-		result.append(removedObjectURIFragment);
-		result.append(", oldValue: ");
-		result.append(oldValue);
-		result.append(')');
-		return result.toString();
-	}
+        StringBuffer result = new StringBuffer(super.toString());
+        result.append(" (index: ");
+        result.append(index);
+        result.append(", removedObjectURIFragment: ");
+        result.append(removedObjectURIFragment);
+        result.append(", oldValue: ");
+        result.append(oldValue);
+        result.append(')');
+        return result.toString();
+    }
 
 } //DeleteNonRootEObjectInListImpl

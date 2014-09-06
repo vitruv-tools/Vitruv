@@ -19,22 +19,22 @@ import org.eclipse.emf.ecore.EObject;
  */
 public abstract class DeleteEObjectImpl<T extends EObject> extends EObjectChangeImpl<T> implements DeleteEObject<T> {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected DeleteEObjectImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return ObjectPackage.Literals.DELETE_EOBJECT;
-	}
+        return ObjectPackage.Literals.DELETE_EOBJECT;
+    }
 
 } //DeleteEObjectImpl

@@ -21,22 +21,22 @@ import org.eclipse.emf.ecore.EObject;
  */
 public abstract class UpdateContainmentEReferenceImpl<T extends EObject> extends UpdateEReferenceImpl<T> implements UpdateContainmentEReference<T> {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected UpdateContainmentEReferenceImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return ContainmentPackage.Literals.UPDATE_CONTAINMENT_EREFERENCE;
-	}
+        return ContainmentPackage.Literals.UPDATE_CONTAINMENT_EREFERENCE;
+    }
 
 } //UpdateContainmentEReferenceImpl

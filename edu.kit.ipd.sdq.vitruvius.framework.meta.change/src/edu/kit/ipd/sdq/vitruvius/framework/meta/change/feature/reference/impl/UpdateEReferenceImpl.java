@@ -22,33 +22,33 @@ import org.eclipse.emf.ecore.EReference;
  */
 public abstract class UpdateEReferenceImpl<T extends EObject> extends EFeatureChangeImpl<EReference> implements UpdateEReference<T> {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected UpdateEReferenceImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return ReferencePackage.Literals.UPDATE_EREFERENCE;
-	}
+        return ReferencePackage.Literals.UPDATE_EREFERENCE;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * This is specialized for the more specific type known in this context.
-	 * @generated
-	 */
+     * This is specialized for the more specific type known in this context.
+     * @generated
+     */
 	@Override
 	public void setAffectedFeature(EReference newAffectedFeature) {
-		super.setAffectedFeature(newAffectedFeature);
-	}
+        super.setAffectedFeature(newAffectedFeature);
+    }
 
 } //UpdateEReferenceImpl

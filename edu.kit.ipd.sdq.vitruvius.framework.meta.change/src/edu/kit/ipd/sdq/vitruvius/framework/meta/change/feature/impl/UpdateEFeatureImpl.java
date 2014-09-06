@@ -23,22 +23,22 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  */
 public abstract class UpdateEFeatureImpl<T extends Object> extends EObjectImpl implements UpdateEFeature<T> {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected UpdateEFeatureImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return FeaturePackage.Literals.UPDATE_EFEATURE;
-	}
+        return FeaturePackage.Literals.UPDATE_EFEATURE;
+    }
 
 } //UpdateEFeatureImpl

@@ -14,20 +14,20 @@ import org.eclipse.emf.ecore.EFactory;
  */
 public interface ChangeFactory extends EFactory {
 	/**
-	 * The singleton instance of the factory.
-	 * <!-- begin-user-doc -->
+     * The singleton instance of the factory.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	ChangeFactory eINSTANCE = edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.ChangeFactoryImpl.init();
 
 	/**
-	 * Returns the package supported by this factory.
-	 * <!-- begin-user-doc -->
+     * Returns the package supported by this factory.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the package supported by this factory.
-	 * @generated
-	 */
+     * @return the package supported by this factory.
+     * @generated
+     */
 	ChangePackage getChangePackage();
 
 } //ChangeFactory

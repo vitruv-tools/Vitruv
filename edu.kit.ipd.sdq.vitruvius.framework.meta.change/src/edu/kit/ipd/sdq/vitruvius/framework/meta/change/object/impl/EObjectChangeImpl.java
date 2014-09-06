@@ -26,22 +26,22 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public abstract class EObjectChangeImpl<T extends EObject> extends EChangeImpl implements EObjectChange<T> {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected EObjectChangeImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return ObjectPackage.Literals.EOBJECT_CHANGE;
-	}
+        return ObjectPackage.Literals.EOBJECT_CHANGE;
+    }
 
 } //EObjectChangeImpl

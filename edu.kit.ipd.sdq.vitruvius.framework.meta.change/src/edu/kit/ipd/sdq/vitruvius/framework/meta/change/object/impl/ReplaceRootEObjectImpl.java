@@ -28,171 +28,171 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class ReplaceRootEObjectImpl<T extends EObject> extends ReplaceEObjectImpl<T> implements ReplaceRootEObject<T> {
 	/**
-	 * The cached value of the '{@link #getNewValue() <em>New Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getNewValue() <em>New Value</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getNewValue()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getNewValue()
+     * @generated
+     * @ordered
+     */
 	protected T newValue;
 
 	/**
-	 * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getOldValue()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getOldValue()
+     * @generated
+     * @ordered
+     */
 	protected T oldValue;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected ReplaceRootEObjectImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return ObjectPackage.Literals.REPLACE_ROOT_EOBJECT;
-	}
+        return ObjectPackage.Literals.REPLACE_ROOT_EOBJECT;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public T getNewValue() {
-		return newValue;
-	}
+        return newValue;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setNewValue(T newNewValue) {
-		T oldNewValue = newValue;
-		newValue = newNewValue;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ObjectPackage.REPLACE_ROOT_EOBJECT__NEW_VALUE, oldNewValue, newValue));
-	}
+        T oldNewValue = newValue;
+        newValue = newNewValue;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ObjectPackage.REPLACE_ROOT_EOBJECT__NEW_VALUE, oldNewValue, newValue));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public T getOldValue() {
-		return oldValue;
-	}
+        return oldValue;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setOldValue(T newOldValue) {
-		T oldOldValue = oldValue;
-		oldValue = newOldValue;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ObjectPackage.REPLACE_ROOT_EOBJECT__OLD_VALUE, oldOldValue, oldValue));
-	}
+        T oldOldValue = oldValue;
+        oldValue = newOldValue;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ObjectPackage.REPLACE_ROOT_EOBJECT__OLD_VALUE, oldOldValue, oldValue));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case ObjectPackage.REPLACE_ROOT_EOBJECT__NEW_VALUE:
-				return getNewValue();
-			case ObjectPackage.REPLACE_ROOT_EOBJECT__OLD_VALUE:
-				return getOldValue();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+        switch (featureID) {
+            case ObjectPackage.REPLACE_ROOT_EOBJECT__NEW_VALUE:
+                return getNewValue();
+            case ObjectPackage.REPLACE_ROOT_EOBJECT__OLD_VALUE:
+                return getOldValue();
+        }
+        return super.eGet(featureID, resolve, coreType);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case ObjectPackage.REPLACE_ROOT_EOBJECT__NEW_VALUE:
-				setNewValue((T)newValue);
-				return;
-			case ObjectPackage.REPLACE_ROOT_EOBJECT__OLD_VALUE:
-				setOldValue((T)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+        switch (featureID) {
+            case ObjectPackage.REPLACE_ROOT_EOBJECT__NEW_VALUE:
+                setNewValue((T)newValue);
+                return;
+            case ObjectPackage.REPLACE_ROOT_EOBJECT__OLD_VALUE:
+                setOldValue((T)newValue);
+                return;
+        }
+        super.eSet(featureID, newValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eUnset(int featureID) {
-		switch (featureID) {
-			case ObjectPackage.REPLACE_ROOT_EOBJECT__NEW_VALUE:
-				setNewValue((T)null);
-				return;
-			case ObjectPackage.REPLACE_ROOT_EOBJECT__OLD_VALUE:
-				setOldValue((T)null);
-				return;
-		}
-		super.eUnset(featureID);
-	}
+        switch (featureID) {
+            case ObjectPackage.REPLACE_ROOT_EOBJECT__NEW_VALUE:
+                setNewValue((T)null);
+                return;
+            case ObjectPackage.REPLACE_ROOT_EOBJECT__OLD_VALUE:
+                setOldValue((T)null);
+                return;
+        }
+        super.eUnset(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case ObjectPackage.REPLACE_ROOT_EOBJECT__NEW_VALUE:
-				return newValue != null;
-			case ObjectPackage.REPLACE_ROOT_EOBJECT__OLD_VALUE:
-				return oldValue != null;
-		}
-		return super.eIsSet(featureID);
-	}
+        switch (featureID) {
+            case ObjectPackage.REPLACE_ROOT_EOBJECT__NEW_VALUE:
+                return newValue != null;
+            case ObjectPackage.REPLACE_ROOT_EOBJECT__OLD_VALUE:
+                return oldValue != null;
+        }
+        return super.eIsSet(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+        if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (newValue: ");
-		result.append(newValue);
-		result.append(", oldValue: ");
-		result.append(oldValue);
-		result.append(')');
-		return result.toString();
-	}
+        StringBuffer result = new StringBuffer(super.toString());
+        result.append(" (newValue: ");
+        result.append(newValue);
+        result.append(", oldValue: ");
+        result.append(oldValue);
+        result.append(')');
+        return result.toString();
+    }
 
 } //ReplaceRootEObjectImpl

@@ -24,22 +24,22 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public abstract class CreateEObjectImpl<T extends EObject> extends EObjectChangeImpl<T> implements CreateEObject<T> {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected CreateEObjectImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return ObjectPackage.Literals.CREATE_EOBJECT;
-	}
+        return ObjectPackage.Literals.CREATE_EOBJECT;
+    }
 
 } //CreateEObjectImpl

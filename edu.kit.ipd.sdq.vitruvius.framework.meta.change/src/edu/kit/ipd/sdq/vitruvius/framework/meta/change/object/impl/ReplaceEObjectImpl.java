@@ -24,22 +24,22 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public abstract class ReplaceEObjectImpl<T extends EObject> extends EObjectChangeImpl<T> implements ReplaceEObject<T> {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected ReplaceEObjectImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return ObjectPackage.Literals.REPLACE_EOBJECT;
-	}
+        return ObjectPackage.Literals.REPLACE_EOBJECT;
+    }
 
 } //ReplaceEObjectImpl

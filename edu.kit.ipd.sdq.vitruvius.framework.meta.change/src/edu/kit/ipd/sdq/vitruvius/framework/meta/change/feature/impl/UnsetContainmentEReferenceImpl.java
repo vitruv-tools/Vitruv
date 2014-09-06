@@ -19,33 +19,33 @@ import org.eclipse.emf.ecore.EObject;
  */
 public class UnsetContainmentEReferenceImpl<T extends EObject> extends UnsetEReferenceImpl<T> implements UnsetContainmentEReference<T> {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected UnsetContainmentEReferenceImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return FeaturePackage.Literals.UNSET_CONTAINMENT_EREFERENCE;
-	}
+        return FeaturePackage.Literals.UNSET_CONTAINMENT_EREFERENCE;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * This is specialized for the more specific type known in this context.
-	 * @generated
-	 */
+     * This is specialized for the more specific type known in this context.
+     * @generated
+     */
 	@Override
 	public void setOldValue(T newOldValue) {
-		super.setOldValue(newOldValue);
-	}
+        super.setOldValue(newOldValue);
+    }
 
 } //UnsetContainmentEReferenceImpl

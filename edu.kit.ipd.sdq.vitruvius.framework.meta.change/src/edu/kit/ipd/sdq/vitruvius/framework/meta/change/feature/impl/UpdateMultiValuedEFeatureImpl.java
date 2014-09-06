@@ -18,22 +18,22 @@ import org.eclipse.emf.ecore.EClass;
  */
 public abstract class UpdateMultiValuedEFeatureImpl<T extends Object> extends UpdateEFeatureImpl<T> implements UpdateMultiValuedEFeature<T> {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected UpdateMultiValuedEFeatureImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return FeaturePackage.Literals.UPDATE_MULTI_VALUED_EFEATURE;
-	}
+        return FeaturePackage.Literals.UPDATE_MULTI_VALUED_EFEATURE;
+    }
 
 } //UpdateMultiValuedEFeatureImpl

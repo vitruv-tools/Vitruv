@@ -40,324 +40,324 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class RemoveNonContainmentEReferenceImpl<T extends EObject> extends RemoveFromEListImpl<T> implements RemoveNonContainmentEReference<T> {
 	/**
-	 * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getAffectedFeature()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getAffectedFeature()
+     * @generated
+     * @ordered
+     */
 	protected EReference affectedFeature;
 
 	/**
-	 * The cached value of the '{@link #getOldAffectedEObject() <em>Old Affected EObject</em>}' reference.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getOldAffectedEObject() <em>Old Affected EObject</em>}' reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getOldAffectedEObject()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getOldAffectedEObject()
+     * @generated
+     * @ordered
+     */
 	protected EObject oldAffectedEObject;
 
 	/**
-	 * The cached value of the '{@link #getNewAffectedEObject() <em>New Affected EObject</em>}' reference.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getNewAffectedEObject() <em>New Affected EObject</em>}' reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getNewAffectedEObject()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getNewAffectedEObject()
+     * @generated
+     * @ordered
+     */
 	protected EObject newAffectedEObject;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected RemoveNonContainmentEReferenceImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return ReferencePackage.Literals.REMOVE_NON_CONTAINMENT_EREFERENCE;
-	}
+        return ReferencePackage.Literals.REMOVE_NON_CONTAINMENT_EREFERENCE;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * This is specialized for the more specific type known in this context.
-	 * @generated
-	 */
+     * This is specialized for the more specific type known in this context.
+     * @generated
+     */
 	@Override
 	public void setOldValue(T newOldValue) {
-		super.setOldValue(newOldValue);
-	}
+        super.setOldValue(newOldValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EReference getAffectedFeature() {
-		if (affectedFeature != null && affectedFeature.eIsProxy()) {
-			InternalEObject oldAffectedFeature = (InternalEObject)affectedFeature;
-			affectedFeature = (EReference)eResolveProxy(oldAffectedFeature);
-			if (affectedFeature != oldAffectedFeature) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
-			}
-		}
-		return affectedFeature;
-	}
+        if (affectedFeature != null && affectedFeature.eIsProxy()) {
+            InternalEObject oldAffectedFeature = (InternalEObject)affectedFeature;
+            affectedFeature = (EReference)eResolveProxy(oldAffectedFeature);
+            if (affectedFeature != oldAffectedFeature) {
+                if (eNotificationRequired())
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
+            }
+        }
+        return affectedFeature;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EReference basicGetAffectedFeature() {
-		return affectedFeature;
-	}
+        return affectedFeature;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setAffectedFeature(EReference newAffectedFeature) {
-		EReference oldAffectedFeature = affectedFeature;
-		affectedFeature = newAffectedFeature;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
-	}
+        EReference oldAffectedFeature = affectedFeature;
+        affectedFeature = newAffectedFeature;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EObject getOldAffectedEObject() {
-		if (oldAffectedEObject != null && oldAffectedEObject.eIsProxy()) {
-			InternalEObject oldOldAffectedEObject = (InternalEObject)oldAffectedEObject;
-			oldAffectedEObject = eResolveProxy(oldOldAffectedEObject);
-			if (oldAffectedEObject != oldOldAffectedEObject) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT, oldOldAffectedEObject, oldAffectedEObject));
-			}
-		}
-		return oldAffectedEObject;
-	}
+        if (oldAffectedEObject != null && oldAffectedEObject.eIsProxy()) {
+            InternalEObject oldOldAffectedEObject = (InternalEObject)oldAffectedEObject;
+            oldAffectedEObject = eResolveProxy(oldOldAffectedEObject);
+            if (oldAffectedEObject != oldOldAffectedEObject) {
+                if (eNotificationRequired())
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT, oldOldAffectedEObject, oldAffectedEObject));
+            }
+        }
+        return oldAffectedEObject;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EObject basicGetOldAffectedEObject() {
-		return oldAffectedEObject;
-	}
+        return oldAffectedEObject;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setOldAffectedEObject(EObject newOldAffectedEObject) {
-		EObject oldOldAffectedEObject = oldAffectedEObject;
-		oldAffectedEObject = newOldAffectedEObject;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT, oldOldAffectedEObject, oldAffectedEObject));
-	}
+        EObject oldOldAffectedEObject = oldAffectedEObject;
+        oldAffectedEObject = newOldAffectedEObject;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT, oldOldAffectedEObject, oldAffectedEObject));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EObject getNewAffectedEObject() {
-		if (newAffectedEObject != null && newAffectedEObject.eIsProxy()) {
-			InternalEObject oldNewAffectedEObject = (InternalEObject)newAffectedEObject;
-			newAffectedEObject = eResolveProxy(oldNewAffectedEObject);
-			if (newAffectedEObject != oldNewAffectedEObject) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT, oldNewAffectedEObject, newAffectedEObject));
-			}
-		}
-		return newAffectedEObject;
-	}
+        if (newAffectedEObject != null && newAffectedEObject.eIsProxy()) {
+            InternalEObject oldNewAffectedEObject = (InternalEObject)newAffectedEObject;
+            newAffectedEObject = eResolveProxy(oldNewAffectedEObject);
+            if (newAffectedEObject != oldNewAffectedEObject) {
+                if (eNotificationRequired())
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT, oldNewAffectedEObject, newAffectedEObject));
+            }
+        }
+        return newAffectedEObject;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public EObject basicGetNewAffectedEObject() {
-		return newAffectedEObject;
-	}
+        return newAffectedEObject;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setNewAffectedEObject(EObject newNewAffectedEObject) {
-		EObject oldNewAffectedEObject = newAffectedEObject;
-		newAffectedEObject = newNewAffectedEObject;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT, oldNewAffectedEObject, newAffectedEObject));
-	}
+        EObject oldNewAffectedEObject = newAffectedEObject;
+        newAffectedEObject = newNewAffectedEObject;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT, oldNewAffectedEObject, newAffectedEObject));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE:
-				if (resolve) return getAffectedFeature();
-				return basicGetAffectedFeature();
-			case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT:
-				if (resolve) return getOldAffectedEObject();
-				return basicGetOldAffectedEObject();
-			case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT:
-				if (resolve) return getNewAffectedEObject();
-				return basicGetNewAffectedEObject();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+        switch (featureID) {
+            case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE:
+                if (resolve) return getAffectedFeature();
+                return basicGetAffectedFeature();
+            case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT:
+                if (resolve) return getOldAffectedEObject();
+                return basicGetOldAffectedEObject();
+            case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT:
+                if (resolve) return getNewAffectedEObject();
+                return basicGetNewAffectedEObject();
+        }
+        return super.eGet(featureID, resolve, coreType);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE:
-				setAffectedFeature((EReference)newValue);
-				return;
-			case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT:
-				setOldAffectedEObject((EObject)newValue);
-				return;
-			case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT:
-				setNewAffectedEObject((EObject)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+        switch (featureID) {
+            case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE:
+                setAffectedFeature((EReference)newValue);
+                return;
+            case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT:
+                setOldAffectedEObject((EObject)newValue);
+                return;
+            case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT:
+                setNewAffectedEObject((EObject)newValue);
+                return;
+        }
+        super.eSet(featureID, newValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eUnset(int featureID) {
-		switch (featureID) {
-			case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE:
-				setAffectedFeature((EReference)null);
-				return;
-			case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT:
-				setOldAffectedEObject((EObject)null);
-				return;
-			case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT:
-				setNewAffectedEObject((EObject)null);
-				return;
-		}
-		super.eUnset(featureID);
-	}
+        switch (featureID) {
+            case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE:
+                setAffectedFeature((EReference)null);
+                return;
+            case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT:
+                setOldAffectedEObject((EObject)null);
+                return;
+            case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT:
+                setNewAffectedEObject((EObject)null);
+                return;
+        }
+        super.eUnset(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE:
-				return affectedFeature != null;
-			case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT:
-				return oldAffectedEObject != null;
-			case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT:
-				return newAffectedEObject != null;
-		}
-		return super.eIsSet(featureID);
-	}
+        switch (featureID) {
+            case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE:
+                return affectedFeature != null;
+            case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT:
+                return oldAffectedEObject != null;
+            case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT:
+                return newAffectedEObject != null;
+        }
+        return super.eIsSet(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == EChange.class) {
-			switch (derivedFeatureID) {
-				default: return -1;
-			}
-		}
-		if (baseClass == EFeatureChange.class) {
-			switch (derivedFeatureID) {
-				case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE;
-				case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__OLD_AFFECTED_EOBJECT;
-				case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__NEW_AFFECTED_EOBJECT;
-				default: return -1;
-			}
-		}
-		if (baseClass == UpdateEReference.class) {
-			switch (derivedFeatureID) {
-				default: return -1;
-			}
-		}
-		if (baseClass == UpdateNonContainmentEReference.class) {
-			switch (derivedFeatureID) {
-				default: return -1;
-			}
-		}
-		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-	}
+        if (baseClass == EChange.class) {
+            switch (derivedFeatureID) {
+                default: return -1;
+            }
+        }
+        if (baseClass == EFeatureChange.class) {
+            switch (derivedFeatureID) {
+                case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE;
+                case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__OLD_AFFECTED_EOBJECT;
+                case ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__NEW_AFFECTED_EOBJECT;
+                default: return -1;
+            }
+        }
+        if (baseClass == UpdateEReference.class) {
+            switch (derivedFeatureID) {
+                default: return -1;
+            }
+        }
+        if (baseClass == UpdateNonContainmentEReference.class) {
+            switch (derivedFeatureID) {
+                default: return -1;
+            }
+        }
+        return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == EChange.class) {
-			switch (baseFeatureID) {
-				default: return -1;
-			}
-		}
-		if (baseClass == EFeatureChange.class) {
-			switch (baseFeatureID) {
-				case FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE: return ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE;
-				case FeaturePackage.EFEATURE_CHANGE__OLD_AFFECTED_EOBJECT: return ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT;
-				case FeaturePackage.EFEATURE_CHANGE__NEW_AFFECTED_EOBJECT: return ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT;
-				default: return -1;
-			}
-		}
-		if (baseClass == UpdateEReference.class) {
-			switch (baseFeatureID) {
-				default: return -1;
-			}
-		}
-		if (baseClass == UpdateNonContainmentEReference.class) {
-			switch (baseFeatureID) {
-				default: return -1;
-			}
-		}
-		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
-	}
+        if (baseClass == EChange.class) {
+            switch (baseFeatureID) {
+                default: return -1;
+            }
+        }
+        if (baseClass == EFeatureChange.class) {
+            switch (baseFeatureID) {
+                case FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE: return ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__AFFECTED_FEATURE;
+                case FeaturePackage.EFEATURE_CHANGE__OLD_AFFECTED_EOBJECT: return ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__OLD_AFFECTED_EOBJECT;
+                case FeaturePackage.EFEATURE_CHANGE__NEW_AFFECTED_EOBJECT: return ReferencePackage.REMOVE_NON_CONTAINMENT_EREFERENCE__NEW_AFFECTED_EOBJECT;
+                default: return -1;
+            }
+        }
+        if (baseClass == UpdateEReference.class) {
+            switch (baseFeatureID) {
+                default: return -1;
+            }
+        }
+        if (baseClass == UpdateNonContainmentEReference.class) {
+            switch (baseFeatureID) {
+                default: return -1;
+            }
+        }
+        return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+    }
 
 } //RemoveNonContainmentEReferenceImpl

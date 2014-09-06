@@ -418,6 +418,28 @@
             <eTypeArguments eTypeParameter="#//feature/reference/containment/PermuteContainmentEReferenceValues/T"/>
           </eGenericSuperTypes>
         </eClassifiers>
+        <eClassifiers xsi:type="ecore:EClass" name="InsertNonRootEObjectInContainmentList">
+          <eTypeParameters name="T">
+            <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+          </eTypeParameters>
+          <eGenericSuperTypes eClassifier="#//feature/list/InsertInEList">
+            <eTypeArguments eTypeParameter="#//feature/reference/containment/InsertNonRootEObjectInContainmentList/T"/>
+          </eGenericSuperTypes>
+          <eGenericSuperTypes eClassifier="#//feature/reference/containment/UpdateContainmentEReference">
+            <eTypeArguments eTypeParameter="#//feature/reference/containment/InsertNonRootEObjectInContainmentList/T"/>
+          </eGenericSuperTypes>
+        </eClassifiers>
+        <eClassifiers xsi:type="ecore:EClass" name="RemoveNonRootEObjectFromContainmentList">
+          <eTypeParameters name="T">
+            <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+          </eTypeParameters>
+          <eGenericSuperTypes eClassifier="#//feature/list/RemoveFromEList">
+            <eTypeArguments eTypeParameter="#//feature/reference/containment/RemoveNonRootEObjectFromContainmentList/T"/>
+          </eGenericSuperTypes>
+          <eGenericSuperTypes eClassifier="#//feature/reference/containment/UpdateContainmentEReference">
+            <eTypeArguments eTypeParameter="#//feature/reference/containment/RemoveNonRootEObjectFromContainmentList/T"/>
+          </eGenericSuperTypes>
+        </eClassifiers>
       </eSubpackages>
     </eSubpackages>
   </eSubpackages>

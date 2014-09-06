@@ -27,214 +27,214 @@ import org.eclipse.emf.ecore.util.Switch;
  */
 public class ListSwitch<T1> extends Switch<T1> {
 	/**
-	 * The cached model package
-	 * <!-- begin-user-doc -->
+     * The cached model package
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected static ListPackage modelPackage;
 
 	/**
-	 * Creates an instance of the switch.
-	 * <!-- begin-user-doc -->
+     * Creates an instance of the switch.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public ListSwitch() {
-		if (modelPackage == null) {
-			modelPackage = ListPackage.eINSTANCE;
-		}
-	}
+        if (modelPackage == null) {
+            modelPackage = ListPackage.eINSTANCE;
+        }
+    }
 
 	/**
-	 * Checks whether this is a switch for the given package.
-	 * <!-- begin-user-doc -->
+     * Checks whether this is a switch for the given package.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @parameter ePackage the package in question.
-	 * @return whether this is a switch for the given package.
-	 * @generated
-	 */
+     * @parameter ePackage the package in question.
+     * @return whether this is a switch for the given package.
+     * @generated
+     */
 	@Override
 	protected boolean isSwitchFor(EPackage ePackage) {
-		return ePackage == modelPackage;
-	}
+        return ePackage == modelPackage;
+    }
 
 	/**
-	 * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
-	 * <!-- begin-user-doc -->
+     * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the first non-null result returned by a <code>caseXXX</code> call.
-	 * @generated
-	 */
+     * @return the first non-null result returned by a <code>caseXXX</code> call.
+     * @generated
+     */
 	@Override
 	protected T1 doSwitch(int classifierID, EObject theEObject) {
-		switch (classifierID) {
-			case ListPackage.UPDATE_SINGLE_ELIST_ENTRY: {
-				UpdateSingleEListEntry<?> updateSingleEListEntry = (UpdateSingleEListEntry<?>)theEObject;
-				T1 result = caseUpdateSingleEListEntry(updateSingleEListEntry);
-				if (result == null) result = caseUpdateMultiValuedEFeature(updateSingleEListEntry);
-				if (result == null) result = caseUpdateEFeature(updateSingleEListEntry);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case ListPackage.INSERT_IN_ELIST: {
-				InsertInEList<?> insertInEList = (InsertInEList<?>)theEObject;
-				T1 result = caseInsertInEList(insertInEList);
-				if (result == null) result = caseUpdateSingleEListEntry(insertInEList);
-				if (result == null) result = caseUpdateMultiValuedEFeature(insertInEList);
-				if (result == null) result = caseUpdateEFeature(insertInEList);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case ListPackage.REPLACE_IN_ELIST: {
-				ReplaceInEList<?> replaceInEList = (ReplaceInEList<?>)theEObject;
-				T1 result = caseReplaceInEList(replaceInEList);
-				if (result == null) result = caseUpdateSingleEListEntry(replaceInEList);
-				if (result == null) result = caseUpdateMultiValuedEFeature(replaceInEList);
-				if (result == null) result = caseUpdateEFeature(replaceInEList);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case ListPackage.REMOVE_FROM_ELIST: {
-				RemoveFromEList<?> removeFromEList = (RemoveFromEList<?>)theEObject;
-				T1 result = caseRemoveFromEList(removeFromEList);
-				if (result == null) result = caseUpdateSingleEListEntry(removeFromEList);
-				if (result == null) result = caseUpdateMultiValuedEFeature(removeFromEList);
-				if (result == null) result = caseUpdateEFeature(removeFromEList);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case ListPackage.PERMUTE_ELIST: {
-				PermuteEList<?> permuteEList = (PermuteEList<?>)theEObject;
-				T1 result = casePermuteEList(permuteEList);
-				if (result == null) result = caseUpdateMultiValuedEFeature(permuteEList);
-				if (result == null) result = caseUpdateEFeature(permuteEList);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			default: return defaultCase(theEObject);
-		}
-	}
+        switch (classifierID) {
+            case ListPackage.UPDATE_SINGLE_ELIST_ENTRY: {
+                UpdateSingleEListEntry<?> updateSingleEListEntry = (UpdateSingleEListEntry<?>)theEObject;
+                T1 result = caseUpdateSingleEListEntry(updateSingleEListEntry);
+                if (result == null) result = caseUpdateMultiValuedEFeature(updateSingleEListEntry);
+                if (result == null) result = caseUpdateEFeature(updateSingleEListEntry);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case ListPackage.INSERT_IN_ELIST: {
+                InsertInEList<?> insertInEList = (InsertInEList<?>)theEObject;
+                T1 result = caseInsertInEList(insertInEList);
+                if (result == null) result = caseUpdateSingleEListEntry(insertInEList);
+                if (result == null) result = caseUpdateMultiValuedEFeature(insertInEList);
+                if (result == null) result = caseUpdateEFeature(insertInEList);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case ListPackage.REPLACE_IN_ELIST: {
+                ReplaceInEList<?> replaceInEList = (ReplaceInEList<?>)theEObject;
+                T1 result = caseReplaceInEList(replaceInEList);
+                if (result == null) result = caseUpdateSingleEListEntry(replaceInEList);
+                if (result == null) result = caseUpdateMultiValuedEFeature(replaceInEList);
+                if (result == null) result = caseUpdateEFeature(replaceInEList);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case ListPackage.REMOVE_FROM_ELIST: {
+                RemoveFromEList<?> removeFromEList = (RemoveFromEList<?>)theEObject;
+                T1 result = caseRemoveFromEList(removeFromEList);
+                if (result == null) result = caseUpdateSingleEListEntry(removeFromEList);
+                if (result == null) result = caseUpdateMultiValuedEFeature(removeFromEList);
+                if (result == null) result = caseUpdateEFeature(removeFromEList);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case ListPackage.PERMUTE_ELIST: {
+                PermuteEList<?> permuteEList = (PermuteEList<?>)theEObject;
+                T1 result = casePermuteEList(permuteEList);
+                if (result == null) result = caseUpdateMultiValuedEFeature(permuteEList);
+                if (result == null) result = caseUpdateEFeature(permuteEList);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            default: return defaultCase(theEObject);
+        }
+    }
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Update Single EList Entry</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns the result of interpreting the object as an instance of '<em>Update Single EList Entry</em>'.
+     * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Update Single EList Entry</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Update Single EList Entry</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
 	public <T extends Object> T1 caseUpdateSingleEListEntry(UpdateSingleEListEntry<T> object) {
-		return null;
-	}
+        return null;
+    }
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Insert In EList</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns the result of interpreting the object as an instance of '<em>Insert In EList</em>'.
+     * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Insert In EList</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Insert In EList</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
 	public <T extends Object> T1 caseInsertInEList(InsertInEList<T> object) {
-		return null;
-	}
+        return null;
+    }
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Replace In EList</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns the result of interpreting the object as an instance of '<em>Replace In EList</em>'.
+     * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Replace In EList</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Replace In EList</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
 	public <T extends Object> T1 caseReplaceInEList(ReplaceInEList<T> object) {
-		return null;
-	}
+        return null;
+    }
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Remove From EList</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns the result of interpreting the object as an instance of '<em>Remove From EList</em>'.
+     * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Remove From EList</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Remove From EList</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
 	public <T extends Object> T1 caseRemoveFromEList(RemoveFromEList<T> object) {
-		return null;
-	}
+        return null;
+    }
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Permute EList</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns the result of interpreting the object as an instance of '<em>Permute EList</em>'.
+     * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Permute EList</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Permute EList</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
 	public <T extends Object> T1 casePermuteEList(PermuteEList<T> object) {
-		return null;
-	}
+        return null;
+    }
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Update EFeature</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns the result of interpreting the object as an instance of '<em>Update EFeature</em>'.
+     * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Update EFeature</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Update EFeature</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
 	public <T extends Object> T1 caseUpdateEFeature(UpdateEFeature<T> object) {
-		return null;
-	}
+        return null;
+    }
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Update Multi Valued EFeature</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns the result of interpreting the object as an instance of '<em>Update Multi Valued EFeature</em>'.
+     * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Update Multi Valued EFeature</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Update Multi Valued EFeature</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
 	public <T extends Object> T1 caseUpdateMultiValuedEFeature(UpdateMultiValuedEFeature<T> object) {
-		return null;
-	}
+        return null;
+    }
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
+     * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch, but this is the last case anyway.
 	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
-	 * @generated
-	 */
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject)
+     * @generated
+     */
 	@Override
 	public T1 defaultCase(EObject object) {
-		return null;
-	}
+        return null;
+    }
 
 } //ListSwitch

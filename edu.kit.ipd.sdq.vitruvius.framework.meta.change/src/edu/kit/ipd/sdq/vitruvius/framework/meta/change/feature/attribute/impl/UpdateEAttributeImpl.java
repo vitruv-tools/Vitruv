@@ -21,33 +21,33 @@ import org.eclipse.emf.ecore.EClass;
  */
 public abstract class UpdateEAttributeImpl<T extends Object> extends EFeatureChangeImpl<EAttribute> implements UpdateEAttribute<T> {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected UpdateEAttributeImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return AttributePackage.Literals.UPDATE_EATTRIBUTE;
-	}
+        return AttributePackage.Literals.UPDATE_EATTRIBUTE;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * This is specialized for the more specific type known in this context.
-	 * @generated
-	 */
+     * This is specialized for the more specific type known in this context.
+     * @generated
+     */
 	@Override
 	public void setAffectedFeature(EAttribute newAffectedFeature) {
-		super.setAffectedFeature(newAffectedFeature);
-	}
+        super.setAffectedFeature(newAffectedFeature);
+    }
 
 } //UpdateEAttributeImpl

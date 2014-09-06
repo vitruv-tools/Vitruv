@@ -150,6 +150,12 @@
           <genClasses ecoreClass="change.ecore#//feature/reference/containment/PermuteContainmentEReferenceValues">
             <genTypeParameters ecoreTypeParameter="change.ecore#//feature/reference/containment/PermuteContainmentEReferenceValues/T"/>
           </genClasses>
+          <genClasses ecoreClass="change.ecore#//feature/reference/containment/InsertNonRootEObjectInContainmentList">
+            <genTypeParameters ecoreTypeParameter="change.ecore#//feature/reference/containment/InsertNonRootEObjectInContainmentList/T"/>
+          </genClasses>
+          <genClasses ecoreClass="change.ecore#//feature/reference/containment/RemoveNonRootEObjectFromContainmentList">
+            <genTypeParameters ecoreTypeParameter="change.ecore#//feature/reference/containment/RemoveNonRootEObjectFromContainmentList/T"/>
+          </genClasses>
         </nestedGenPackages>
       </nestedGenPackages>
     </nestedGenPackages>

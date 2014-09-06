@@ -23,226 +23,226 @@ import org.eclipse.emf.ecore.EObject;
  */
 public class ObjectAdapterFactory extends AdapterFactoryImpl {
 	/**
-	 * The cached model package.
-	 * <!-- begin-user-doc -->
+     * The cached model package.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected static ObjectPackage modelPackage;
 
 	/**
-	 * Creates an instance of the adapter factory.
-	 * <!-- begin-user-doc -->
+     * Creates an instance of the adapter factory.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public ObjectAdapterFactory() {
-		if (modelPackage == null) {
-			modelPackage = ObjectPackage.eINSTANCE;
-		}
-	}
+        if (modelPackage == null) {
+            modelPackage = ObjectPackage.eINSTANCE;
+        }
+    }
 
 	/**
-	 * Returns whether this factory is applicable for the type of the object.
-	 * <!-- begin-user-doc -->
+     * Returns whether this factory is applicable for the type of the object.
+     * <!-- begin-user-doc -->
 	 * This implementation returns <code>true</code> if the object is either the model's package or is an instance object of the model.
 	 * <!-- end-user-doc -->
-	 * @return whether this factory is applicable for the type of the object.
-	 * @generated
-	 */
+     * @return whether this factory is applicable for the type of the object.
+     * @generated
+     */
 	@Override
 	public boolean isFactoryForType(Object object) {
-		if (object == modelPackage) {
-			return true;
-		}
-		if (object instanceof EObject) {
-			return ((EObject)object).eClass().getEPackage() == modelPackage;
-		}
-		return false;
-	}
+        if (object == modelPackage) {
+            return true;
+        }
+        if (object instanceof EObject) {
+            return ((EObject)object).eClass().getEPackage() == modelPackage;
+        }
+        return false;
+    }
 
 	/**
-	 * The switch that delegates to the <code>createXXX</code> methods.
-	 * <!-- begin-user-doc -->
+     * The switch that delegates to the <code>createXXX</code> methods.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected ObjectSwitch<Adapter> modelSwitch =
 		new ObjectSwitch<Adapter>() {
-			@Override
-			public <T extends EObject> Adapter caseEObjectChange(EObjectChange<T> object) {
-				return createEObjectChangeAdapter();
-			}
-			@Override
-			public <T extends EObject> Adapter caseCreateEObject(CreateEObject<T> object) {
-				return createCreateEObjectAdapter();
-			}
-			@Override
-			public <T extends EObject> Adapter caseReplaceEObject(ReplaceEObject<T> object) {
-				return createReplaceEObjectAdapter();
-			}
-			@Override
-			public <T extends EObject> Adapter caseDeleteEObject(DeleteEObject<T> object) {
-				return createDeleteEObjectAdapter();
-			}
-			@Override
-			public <T extends EObject> Adapter caseCreateRootEObject(CreateRootEObject<T> object) {
-				return createCreateRootEObjectAdapter();
-			}
-			@Override
-			public <T extends EObject> Adapter caseReplaceRootEObject(ReplaceRootEObject<T> object) {
-				return createReplaceRootEObjectAdapter();
-			}
-			@Override
-			public <T extends EObject> Adapter caseDeleteRootEObject(DeleteRootEObject<T> object) {
-				return createDeleteRootEObjectAdapter();
-			}
-			@Override
-			public Adapter caseEChange(EChange object) {
-				return createEChangeAdapter();
-			}
-			@Override
-			public Adapter defaultCase(EObject object) {
-				return createEObjectAdapter();
-			}
-		};
+            @Override
+            public <T extends EObject> Adapter caseEObjectChange(EObjectChange<T> object) {
+                return createEObjectChangeAdapter();
+            }
+            @Override
+            public <T extends EObject> Adapter caseCreateEObject(CreateEObject<T> object) {
+                return createCreateEObjectAdapter();
+            }
+            @Override
+            public <T extends EObject> Adapter caseReplaceEObject(ReplaceEObject<T> object) {
+                return createReplaceEObjectAdapter();
+            }
+            @Override
+            public <T extends EObject> Adapter caseDeleteEObject(DeleteEObject<T> object) {
+                return createDeleteEObjectAdapter();
+            }
+            @Override
+            public <T extends EObject> Adapter caseCreateRootEObject(CreateRootEObject<T> object) {
+                return createCreateRootEObjectAdapter();
+            }
+            @Override
+            public <T extends EObject> Adapter caseReplaceRootEObject(ReplaceRootEObject<T> object) {
+                return createReplaceRootEObjectAdapter();
+            }
+            @Override
+            public <T extends EObject> Adapter caseDeleteRootEObject(DeleteRootEObject<T> object) {
+                return createDeleteRootEObjectAdapter();
+            }
+            @Override
+            public Adapter caseEChange(EChange object) {
+                return createEChangeAdapter();
+            }
+            @Override
+            public Adapter defaultCase(EObject object) {
+                return createEObjectAdapter();
+            }
+        };
 
 	/**
-	 * Creates an adapter for the <code>target</code>.
-	 * <!-- begin-user-doc -->
+     * Creates an adapter for the <code>target</code>.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param target the object to adapt.
-	 * @return the adapter for the <code>target</code>.
-	 * @generated
-	 */
+     * @param target the object to adapt.
+     * @return the adapter for the <code>target</code>.
+     * @generated
+     */
 	@Override
 	public Adapter createAdapter(Notifier target) {
-		return modelSwitch.doSwitch((EObject)target);
-	}
+        return modelSwitch.doSwitch((EObject)target);
+    }
 
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.EObjectChange <em>EObject Change</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.EObjectChange <em>EObject Change</em>}'.
+     * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.EObjectChange
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.EObjectChange
+     * @generated
+     */
 	public Adapter createEObjectChangeAdapter() {
-		return null;
-	}
+        return null;
+    }
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateEObject <em>Create EObject</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateEObject <em>Create EObject</em>}'.
+     * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateEObject
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateEObject
+     * @generated
+     */
 	public Adapter createCreateEObjectAdapter() {
-		return null;
-	}
+        return null;
+    }
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceEObject <em>Replace EObject</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceEObject <em>Replace EObject</em>}'.
+     * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceEObject
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceEObject
+     * @generated
+     */
 	public Adapter createReplaceEObjectAdapter() {
-		return null;
-	}
+        return null;
+    }
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteEObject <em>Delete EObject</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteEObject <em>Delete EObject</em>}'.
+     * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteEObject
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteEObject
+     * @generated
+     */
 	public Adapter createDeleteEObjectAdapter() {
-		return null;
-	}
+        return null;
+    }
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject <em>Create Root EObject</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject <em>Create Root EObject</em>}'.
+     * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject
+     * @generated
+     */
 	public Adapter createCreateRootEObjectAdapter() {
-		return null;
-	}
+        return null;
+    }
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceRootEObject <em>Replace Root EObject</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceRootEObject <em>Replace Root EObject</em>}'.
+     * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceRootEObject
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceRootEObject
+     * @generated
+     */
 	public Adapter createReplaceRootEObjectAdapter() {
-		return null;
-	}
+        return null;
+    }
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject <em>Delete Root EObject</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject <em>Delete Root EObject</em>}'.
+     * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject
+     * @generated
+     */
 	public Adapter createDeleteRootEObjectAdapter() {
-		return null;
-	}
+        return null;
+    }
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange <em>EChange</em>}'.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange <em>EChange</em>}'.
+     * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
+     * @generated
+     */
 	public Adapter createEChangeAdapter() {
-		return null;
-	}
+        return null;
+    }
 
 	/**
-	 * Creates a new adapter for the default case.
-	 * <!-- begin-user-doc -->
+     * Creates a new adapter for the default case.
+     * <!-- begin-user-doc -->
 	 * This default implementation returns null.
 	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @generated
-	 */
+     * @return the new adapter.
+     * @generated
+     */
 	public Adapter createEObjectAdapter() {
-		return null;
-	}
+        return null;
+    }
 
 } //ObjectAdapterFactory

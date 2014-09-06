@@ -20,120 +20,120 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
  */
 public class AttributeFactoryImpl extends EFactoryImpl implements AttributeFactory {
 	/**
-	 * Creates the default factory implementation.
-	 * <!-- begin-user-doc -->
+     * Creates the default factory implementation.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public static AttributeFactory init() {
-		try {
-			AttributeFactory theAttributeFactory = (AttributeFactory)EPackage.Registry.INSTANCE.getEFactory(AttributePackage.eNS_URI);
-			if (theAttributeFactory != null) {
-				return theAttributeFactory;
-			}
-		}
-		catch (Exception exception) {
-			EcorePlugin.INSTANCE.log(exception);
-		}
-		return new AttributeFactoryImpl();
-	}
+        try {
+            AttributeFactory theAttributeFactory = (AttributeFactory)EPackage.Registry.INSTANCE.getEFactory(AttributePackage.eNS_URI);
+            if (theAttributeFactory != null) {
+                return theAttributeFactory;
+            }
+        }
+        catch (Exception exception) {
+            EcorePlugin.INSTANCE.log(exception);
+        }
+        return new AttributeFactoryImpl();
+    }
 
 	/**
-	 * Creates an instance of the factory.
-	 * <!-- begin-user-doc -->
+     * Creates an instance of the factory.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public AttributeFactoryImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public EObject create(EClass eClass) {
-		switch (eClass.getClassifierID()) {
-			case AttributePackage.UPDATE_SINGLE_VALUED_EATTRIBUTE: return createUpdateSingleValuedEAttribute();
-			case AttributePackage.INSERT_EATTRIBUTE_VALUE: return createInsertEAttributeValue();
-			case AttributePackage.REPLACE_EATTRIBUTE_VALUE: return createReplaceEAttributeValue();
-			case AttributePackage.REMOVE_EATTRIBUTE_VALUE: return createRemoveEAttributeValue();
-			case AttributePackage.PERMUTE_EATTRIBUTE_VALUES: return createPermuteEAttributeValues();
-			default:
-				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
-		}
-	}
+        switch (eClass.getClassifierID()) {
+            case AttributePackage.UPDATE_SINGLE_VALUED_EATTRIBUTE: return createUpdateSingleValuedEAttribute();
+            case AttributePackage.INSERT_EATTRIBUTE_VALUE: return createInsertEAttributeValue();
+            case AttributePackage.REPLACE_EATTRIBUTE_VALUE: return createReplaceEAttributeValue();
+            case AttributePackage.REMOVE_EATTRIBUTE_VALUE: return createRemoveEAttributeValue();
+            case AttributePackage.PERMUTE_EATTRIBUTE_VALUES: return createPermuteEAttributeValues();
+            default:
+                throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+        }
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public <T extends Object> UpdateSingleValuedEAttribute<T> createUpdateSingleValuedEAttribute() {
-		UpdateSingleValuedEAttributeImpl<T> updateSingleValuedEAttribute = new UpdateSingleValuedEAttributeImpl<T>();
-		return updateSingleValuedEAttribute;
-	}
+        UpdateSingleValuedEAttributeImpl<T> updateSingleValuedEAttribute = new UpdateSingleValuedEAttributeImpl<T>();
+        return updateSingleValuedEAttribute;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public <T extends Object> InsertEAttributeValue<T> createInsertEAttributeValue() {
-		InsertEAttributeValueImpl<T> insertEAttributeValue = new InsertEAttributeValueImpl<T>();
-		return insertEAttributeValue;
-	}
+        InsertEAttributeValueImpl<T> insertEAttributeValue = new InsertEAttributeValueImpl<T>();
+        return insertEAttributeValue;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public <T extends Object> ReplaceEAttributeValue<T> createReplaceEAttributeValue() {
-		ReplaceEAttributeValueImpl<T> replaceEAttributeValue = new ReplaceEAttributeValueImpl<T>();
-		return replaceEAttributeValue;
-	}
+        ReplaceEAttributeValueImpl<T> replaceEAttributeValue = new ReplaceEAttributeValueImpl<T>();
+        return replaceEAttributeValue;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public <T extends Object> RemoveEAttributeValue<T> createRemoveEAttributeValue() {
-		RemoveEAttributeValueImpl<T> removeEAttributeValue = new RemoveEAttributeValueImpl<T>();
-		return removeEAttributeValue;
-	}
+        RemoveEAttributeValueImpl<T> removeEAttributeValue = new RemoveEAttributeValueImpl<T>();
+        return removeEAttributeValue;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public <T extends Object> PermuteEAttributeValues<T> createPermuteEAttributeValues() {
-		PermuteEAttributeValuesImpl<T> permuteEAttributeValues = new PermuteEAttributeValuesImpl<T>();
-		return permuteEAttributeValues;
-	}
+        PermuteEAttributeValuesImpl<T> permuteEAttributeValues = new PermuteEAttributeValuesImpl<T>();
+        return permuteEAttributeValues;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public AttributePackage getAttributePackage() {
-		return (AttributePackage)getEPackage();
-	}
+        return (AttributePackage)getEPackage();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @deprecated
-	 * @generated
-	 */
+     * @deprecated
+     * @generated
+     */
 	@Deprecated
 	public static AttributePackage getPackage() {
-		return AttributePackage.eINSTANCE;
-	}
+        return AttributePackage.eINSTANCE;
+    }
 
 } //AttributeFactoryImpl

@@ -26,128 +26,128 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public abstract class UnsetEReferenceImpl<T extends EObject> extends UnsetEFeatureImpl<EReference> implements UnsetEReference<T> {
 	/**
-	 * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getOldValue()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getOldValue()
+     * @generated
+     * @ordered
+     */
 	protected T oldValue;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected UnsetEReferenceImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return FeaturePackage.Literals.UNSET_EREFERENCE;
-	}
+        return FeaturePackage.Literals.UNSET_EREFERENCE;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public T getOldValue() {
-		return oldValue;
-	}
+        return oldValue;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setOldValue(T newOldValue) {
-		T oldOldValue = oldValue;
-		oldValue = newOldValue;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, FeaturePackage.UNSET_EREFERENCE__OLD_VALUE, oldOldValue, oldValue));
-	}
+        T oldOldValue = oldValue;
+        oldValue = newOldValue;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, FeaturePackage.UNSET_EREFERENCE__OLD_VALUE, oldOldValue, oldValue));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case FeaturePackage.UNSET_EREFERENCE__OLD_VALUE:
-				return getOldValue();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+        switch (featureID) {
+            case FeaturePackage.UNSET_EREFERENCE__OLD_VALUE:
+                return getOldValue();
+        }
+        return super.eGet(featureID, resolve, coreType);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case FeaturePackage.UNSET_EREFERENCE__OLD_VALUE:
-				setOldValue((T)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+        switch (featureID) {
+            case FeaturePackage.UNSET_EREFERENCE__OLD_VALUE:
+                setOldValue((T)newValue);
+                return;
+        }
+        super.eSet(featureID, newValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eUnset(int featureID) {
-		switch (featureID) {
-			case FeaturePackage.UNSET_EREFERENCE__OLD_VALUE:
-				setOldValue((T)null);
-				return;
-		}
-		super.eUnset(featureID);
-	}
+        switch (featureID) {
+            case FeaturePackage.UNSET_EREFERENCE__OLD_VALUE:
+                setOldValue((T)null);
+                return;
+        }
+        super.eUnset(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case FeaturePackage.UNSET_EREFERENCE__OLD_VALUE:
-				return oldValue != null;
-		}
-		return super.eIsSet(featureID);
-	}
+        switch (featureID) {
+            case FeaturePackage.UNSET_EREFERENCE__OLD_VALUE:
+                return oldValue != null;
+        }
+        return super.eIsSet(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+        if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (oldValue: ");
-		result.append(oldValue);
-		result.append(')');
-		return result.toString();
-	}
+        StringBuffer result = new StringBuffer(super.toString());
+        result.append(" (oldValue: ");
+        result.append(oldValue);
+        result.append(')');
+        return result.toString();
+    }
 
 } //UnsetEReferenceImpl

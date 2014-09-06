@@ -14,65 +14,65 @@ import org.eclipse.emf.ecore.EFactory;
  */
 public interface AttributeFactory extends EFactory {
 	/**
-	 * The singleton instance of the factory.
-	 * <!-- begin-user-doc -->
+     * The singleton instance of the factory.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	AttributeFactory eINSTANCE = edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.impl.AttributeFactoryImpl.init();
 
 	/**
-	 * Returns a new object of class '<em>Update Single Valued EAttribute</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns a new object of class '<em>Update Single Valued EAttribute</em>'.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Update Single Valued EAttribute</em>'.
-	 * @generated
-	 */
+     * @return a new object of class '<em>Update Single Valued EAttribute</em>'.
+     * @generated
+     */
 	<T extends Object> UpdateSingleValuedEAttribute<T> createUpdateSingleValuedEAttribute();
 
 	/**
-	 * Returns a new object of class '<em>Insert EAttribute Value</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns a new object of class '<em>Insert EAttribute Value</em>'.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Insert EAttribute Value</em>'.
-	 * @generated
-	 */
+     * @return a new object of class '<em>Insert EAttribute Value</em>'.
+     * @generated
+     */
 	<T extends Object> InsertEAttributeValue<T> createInsertEAttributeValue();
 
 	/**
-	 * Returns a new object of class '<em>Replace EAttribute Value</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns a new object of class '<em>Replace EAttribute Value</em>'.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Replace EAttribute Value</em>'.
-	 * @generated
-	 */
+     * @return a new object of class '<em>Replace EAttribute Value</em>'.
+     * @generated
+     */
 	<T extends Object> ReplaceEAttributeValue<T> createReplaceEAttributeValue();
 
 	/**
-	 * Returns a new object of class '<em>Remove EAttribute Value</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns a new object of class '<em>Remove EAttribute Value</em>'.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Remove EAttribute Value</em>'.
-	 * @generated
-	 */
+     * @return a new object of class '<em>Remove EAttribute Value</em>'.
+     * @generated
+     */
 	<T extends Object> RemoveEAttributeValue<T> createRemoveEAttributeValue();
 
 	/**
-	 * Returns a new object of class '<em>Permute EAttribute Values</em>'.
-	 * <!-- begin-user-doc -->
+     * Returns a new object of class '<em>Permute EAttribute Values</em>'.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Permute EAttribute Values</em>'.
-	 * @generated
-	 */
+     * @return a new object of class '<em>Permute EAttribute Values</em>'.
+     * @generated
+     */
 	<T extends Object> PermuteEAttributeValues<T> createPermuteEAttributeValues();
 
 	/**
-	 * Returns the package supported by this factory.
-	 * <!-- begin-user-doc -->
+     * Returns the package supported by this factory.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the package supported by this factory.
-	 * @generated
-	 */
+     * @return the package supported by this factory.
+     * @generated
+     */
 	AttributePackage getAttributePackage();
 
 } //AttributeFactory

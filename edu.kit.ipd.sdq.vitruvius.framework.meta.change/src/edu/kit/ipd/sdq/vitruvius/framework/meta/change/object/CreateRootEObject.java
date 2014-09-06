@@ -22,29 +22,29 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface CreateRootEObject<T extends EObject> extends CreateEObject<T> {
 	/**
-	 * Returns the value of the '<em><b>New Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>New Value</b></em>' attribute.
+     * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>New Value</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>New Value</em>' attribute.
-	 * @see #setNewValue(EObject)
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ObjectPackage#getCreateRootEObject_NewValue()
-	 * @model required="true"
-	 * @generated
-	 */
+     * @return the value of the '<em>New Value</em>' attribute.
+     * @see #setNewValue(EObject)
+     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ObjectPackage#getCreateRootEObject_NewValue()
+     * @model required="true"
+     * @generated
+     */
 	T getNewValue();
 
 	/**
-	 * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject#getNewValue <em>New Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject#getNewValue <em>New Value</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>New Value</em>' attribute.
-	 * @see #getNewValue()
-	 * @generated
-	 */
+     * @param value the new value of the '<em>New Value</em>' attribute.
+     * @see #getNewValue()
+     * @generated
+     */
 	void setNewValue(T value);
 
 } // CreateRootEObject

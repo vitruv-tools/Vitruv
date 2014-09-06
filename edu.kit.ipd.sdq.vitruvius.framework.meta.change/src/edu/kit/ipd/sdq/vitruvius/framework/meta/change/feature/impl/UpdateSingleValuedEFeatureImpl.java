@@ -18,22 +18,22 @@ import org.eclipse.emf.ecore.EClass;
  */
 public abstract class UpdateSingleValuedEFeatureImpl<T extends Object> extends UpdateEFeatureImpl<T> implements UpdateSingleValuedEFeature<T> {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected UpdateSingleValuedEFeatureImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return FeaturePackage.Literals.UPDATE_SINGLE_VALUED_EFEATURE;
-	}
+        return FeaturePackage.Literals.UPDATE_SINGLE_VALUED_EFEATURE;
+    }
 
 } //UpdateSingleValuedEFeatureImpl

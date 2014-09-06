@@ -19,22 +19,22 @@ import org.eclipse.emf.ecore.EObject;
  */
 public abstract class UpdateNonContainmentEReferenceImpl<T extends EObject> extends UpdateEReferenceImpl<T> implements UpdateNonContainmentEReference<T> {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected UpdateNonContainmentEReferenceImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return ReferencePackage.Literals.UPDATE_NON_CONTAINMENT_EREFERENCE;
-	}
+        return ReferencePackage.Literals.UPDATE_NON_CONTAINMENT_EREFERENCE;
+    }
 
 } //UpdateNonContainmentEReferenceImpl

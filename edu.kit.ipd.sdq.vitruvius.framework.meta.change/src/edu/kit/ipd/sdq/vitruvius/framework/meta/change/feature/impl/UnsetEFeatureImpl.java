@@ -19,22 +19,22 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  */
 public abstract class UnsetEFeatureImpl<T extends EStructuralFeature> extends EFeatureChangeImpl<T> implements UnsetEFeature<T> {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected UnsetEFeatureImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return FeaturePackage.Literals.UNSET_EFEATURE;
-	}
+        return FeaturePackage.Literals.UNSET_EFEATURE;
+    }
 
 } //UnsetEFeatureImpl
