@@ -214,10 +214,7 @@ public class TUID {
         String commonSuffix = Strings.commonSuffix(thisTUIDString, otherTUIDString);
         String[] commonPrefixSegments = commonSuffix.split(VitruviusConstants.getTUIDSegmentSeperator());
         int commonSuffixSegmentCount = commonPrefixSegments.length;
-        if (!commonSuffix.startsWith(VitruviusConstants.getTUIDSegmentSeperator())) {
-            --commonSuffixSegmentCount;
-        }
-        return Math.max(0, commonSuffixSegmentCount);
+        return Math.max(0, commonSuffixSegmentCount - 1);
     }
     
     private static String[] getSegments(TUID tuid) {
