@@ -224,8 +224,8 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
                 this.key2NextRecursiveMapMap.put(nextKey, nextMapToAdd);
             } else {
             	// recursion in next map layer
-            	previousValue = this.key2ValueMap.get(nextKey);
-                obsoleteValues.addAll(currentMapForNextKey.mergeMaps(previousValue, nextMapToAdd));
+            	V newPreviousValue = this.key2ValueMap.get(nextKey);
+                obsoleteValues.addAll(currentMapForNextKey.mergeMaps(newPreviousValue, nextMapToAdd));
             }
         }
         for (Entry<K, V> key2ValueToAddEntry : key2ValuesToAddEntries) {
