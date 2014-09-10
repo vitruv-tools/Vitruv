@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.tests.mockup;
 
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,6 +10,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.helper.FileSystemHelper;
 
 public class FileSystemHelperTest {
+
+    private static final Logger logger = Logger.getLogger(FileSystemHelperTest.class.getSimpleName());
 
     @Before
     public void setUp() throws Exception {
@@ -30,9 +33,9 @@ public class FileSystemHelperTest {
         long durationForLoad = System.currentTimeMillis() - startLoad;
         long durationForLoadAndSave = System.currentTimeMillis() - start;
         String vuriCount = "" + nrOfVURIs + " VURIs: ";
-        System.out.println("Duration for save " + vuriCount + durationForSave);
-        System.out.println("Duration for load " + vuriCount + durationForLoad);
-        System.out.println("Duration for save and load " + vuriCount + durationForLoadAndSave);
+        logger.info("Duration for save " + vuriCount + durationForSave);
+        logger.info("Duration for load " + vuriCount + durationForLoad);
+        logger.info("Duration for save and load " + vuriCount + durationForLoadAndSave);
         // compare
         PersistentTestUtil.assertEqualsSets(vuris, loadedVURIs);
     }

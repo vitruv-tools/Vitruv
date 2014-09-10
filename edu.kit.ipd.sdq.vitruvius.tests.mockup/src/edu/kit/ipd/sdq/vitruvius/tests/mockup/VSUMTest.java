@@ -6,12 +6,11 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceMM;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceMMProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
+import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 public class VSUMTest extends MetaRepositoryTest {
     protected static final String PCM_INSTANCE_URI = "MockupProject/model/My.pcm_mockup";
@@ -41,14 +40,7 @@ public class VSUMTest extends MetaRepositoryTest {
     }
 
     protected VSUMImpl testVSUMCreation(final MetaRepositoryImpl metaRepository) {
-        CorrespondenceMMProviding correspondenceMMproviding = new CorrespondenceMMProviding() {
-            @Override
-            public CorrespondenceMM getCorrespondenceMM(final VURI uriMM1, final VURI uriMM2) {
-                // nothing to be done as long as the correspondence mm stays generic
-                return null;
-            }
-        };
-        VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository, correspondenceMMproviding);
+        VSUMImpl vsum = TestUtil.createVSUM(metaRepository);
         return vsum;
     }
 

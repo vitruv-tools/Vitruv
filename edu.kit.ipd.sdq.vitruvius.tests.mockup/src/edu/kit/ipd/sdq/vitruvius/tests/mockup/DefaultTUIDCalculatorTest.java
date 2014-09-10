@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.tests.mockup;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.eclipse.emf.ecore.EObject;
 import org.junit.Test;
@@ -36,10 +37,13 @@ public class DefaultTUIDCalculatorTest extends VSUMTest {
     public EObject testTUIDCalculator(final EObject rootEObject, final EObject eObject, final String expectedTUID) {
         TUIDCalculatorAndResolver defaultTUIDCalculatorAndResolver = new DefaultTUIDCalculatorAndResolver();
         String tuid = defaultTUIDCalculatorAndResolver.calculateTUIDFromEObject(eObject);
-        assertEquals(tuid, expectedTUID);
+        // Calculated TUID contains more than just the UUID itself. It also contains the resource
+        // and the class name that was used to create the TUID. Hence, we just compare with contains
+        // instead of equals
+        assertNotNull("Calculated TUID is null", tuid);
+        assertTrue("Calculated TUID does not contain expected TUID", tuid.contains(expectedTUID));
         String tuidSuffix = TUID.getInstance(tuid).getMinimalSuffix();
-        assertNotNull(tuid);
-        assertNotNull(tuidSuffix);
+        assertNotNull("TUID Suffix is null", tuidSuffix);
         EObject resolvedEObject = defaultTUIDCalculatorAndResolver.resolveEObjectFromRootAndFullTUID(rootEObject,
                 tuidSuffix);
         assertNotNull(resolvedEObject);

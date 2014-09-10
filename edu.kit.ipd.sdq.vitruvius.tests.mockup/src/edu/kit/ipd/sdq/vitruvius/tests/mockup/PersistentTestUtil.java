@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import pcm_mockup.Pcm_mockupFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
+import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 public class PersistentTestUtil {
     private PersistentTestUtil() {
@@ -24,7 +25,7 @@ public class PersistentTestUtil {
     public static Set<VURI> createDummyVURIs(final int nrOfVURIs) {
         Set<VURI> vuris = new HashSet<VURI>();
         for (int i = 0; i < nrOfVURIs; ++i) {
-            vuris.add(VURI.getInstance(MetaRepositoryTest.PROJECT_URI + "/dummyInstances/testInstance_" + i + "."
+            vuris.add(VURI.getInstance(TestUtil.PROJECT_URI + "/dummyInstances/testInstance_" + i + "."
                     + MetaRepositoryTest.PCM_FILE_EXT));
         }
         return vuris;

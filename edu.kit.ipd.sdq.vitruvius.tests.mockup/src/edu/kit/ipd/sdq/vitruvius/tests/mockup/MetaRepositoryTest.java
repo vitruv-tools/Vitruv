@@ -19,13 +19,12 @@ import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableConcatMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver.TestUtils;
+import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 public class MetaRepositoryTest {
 
     private static final Logger logger = Logger.getLogger(MetaRepositoryTest.class.getSimpleName());
 
-    public static final String PROJECT_URI = "MockupProject";
     public static final String PCM_FILE_EXT = "pcm_mockup";
 
     protected static final String PCM_MM_URI = "http://edu.kit.ipd.sdq.vitruvius.examples.pcm_mockup";
@@ -58,7 +57,7 @@ public class MetaRepositoryTest {
 
     @AfterClass
     public static void tearDown() {
-        TestUtils.moveVSUMProjectToOwnFolder();
+        TestUtil.moveVSUMProjectToOwnFolder();
     }
 
     public MetaRepositoryImpl testMetaRepository() {
@@ -69,7 +68,7 @@ public class MetaRepositoryTest {
 
     public Metamodel testAddMetamodel(final MetaRepositoryImpl metaRepository, final String nsURI, final VURI uri,
             final String fileExt) {
-        Metamodel mm = new Metamodel(nsURI, uri, fileExt);
+        Metamodel mm = TestUtil.createMetamodel(nsURI, uri, fileExt);
         metaRepository.addMetamodel(mm);
         return mm;
     }
@@ -82,14 +81,12 @@ public class MetaRepositoryTest {
 
     public Pair<VURI, VURI> testAddMapping(final MetaRepositoryImpl metaRepository, final String mm1URIString,
             final String fileExt1, final String mm2URIString, final String fileExt2) {
-        VURI uri1 = VURI.getInstance(mm1URIString);
-        Metamodel mm1 = testAddMetamodel(metaRepository, mm1URIString, uri1, fileExt1);
 
-        VURI uri2 = VURI.getInstance(mm2URIString);
-        Metamodel mm2 = testAddMetamodel(metaRepository, mm2URIString, uri2, fileExt2);
+        Mapping mapping = TestUtil.addMappingToRepository(metaRepository, mm1URIString, fileExt1, mm2URIString,
+                fileExt2);
 
-        Mapping mapping = new Mapping(mm1, mm2);
-        metaRepository.addMapping(mapping);
+        VURI uri1 = mapping.getMetamodelA().getURI();
+        VURI uri2 = mapping.getMetamodelB().getURI();
 
         Mapping mapping2 = metaRepository.getMapping(uri1, uri2);
         assertEquals(mapping, mapping2);

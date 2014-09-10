@@ -39,8 +39,8 @@ class TransformationUtils {
 		return createTransformationChangeResult(null, null, null)
 	}
 	
-	def public static EAttribute getAttributeByNameFromEObject(String attributeName, EObject eObject) {
-		return eObject.eClass.getEAllAttributes.filter[attribute|attribute.name.equalsIgnoreCase(attributeName)].iterator.next
+	def public static EAttribute getFeatureByNameFromEObject(String featureName, EObject eObject) {
+		return eObject.eClass.getEAllAttributes.filter[attribute|attribute.name.equals(featureName)].iterator.next
 	}
 	
 }

@@ -10,9 +10,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 
 /**
  * Util class for the PCM Java case study
- * 
+ *
  * @author Langhamm
- * 
+ *
  */
 public class PCMJavaUtils {
 
@@ -25,26 +25,26 @@ public class PCMJavaUtils {
 
     /**
      * creates and returns the metarepository for the PCM and Java case study
-     * 
+     *
      * @return the PCMJava MetaRepository
      */
     public static MetaRepositoryImpl createPCMJavaMetarepository() {
         final MetaRepositoryImpl metarepository = new MetaRepositoryImpl();
 
-        final VURI pcmMMUri = VURI.getInstance(PCMJavaNamespace.PCM_METAMODEL_NAMESPACE);
+        final VURI pcmMMUri = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
         final Set<String> pcmNSUris = new HashSet<String>();
-        pcmNSUris.add(PCMJavaNamespace.PCM_METAMODEL_NAMESPACE_URI);
-        pcmNSUris.add(PCMJavaNamespace.PCM_METAMODEL_NAMESPACE_URI_REPOSITORY);
-        final Metamodel pcmMM = new Metamodel(pcmNSUris, pcmMMUri, PCMJavaNamespace.REPOSITORY_FILE_EXTENSION);
+        pcmNSUris.add(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE_URI);
+        pcmNSUris.add(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE_URI_REPOSITORY);
+        final Metamodel pcmMM = new Metamodel(pcmNSUris, pcmMMUri, PCMJaMoPPNamespace.PCM.REPOSITORY_FILE_EXTENSION);
         metarepository.addMetamodel(pcmMM);
 
-        final VURI jaMoPPURI = VURI.getInstance(PCMJavaNamespace.JAMOPP_METAMODEL_NAMESPACE);
+        final VURI jaMoPPURI = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE);
         final Set<String> jamoppNSURIs = new HashSet<String>();
-        for (String nsuri : PCMJavaNamespace.JAMOPP_METAMODEL_NAMESPACE_URIS) {
+        for (String nsuri : PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE_URIS) {
             jamoppNSURIs.add(nsuri);
         }
         final Metamodel jaMoPPMM = new Metamodel(jamoppNSURIs, jaMoPPURI, new JaMoPPTUIDCalculatorAndResolver(),
-                PCMJavaNamespace.JAVA_FILE_EXTENSION);
+                PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION);
         metarepository.addMetamodel(jaMoPPMM);
 
         final Mapping pcmJavaMapping = new Mapping(pcmMM, jaMoPPMM);

@@ -11,7 +11,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.VitruviusEmfBuilder;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaNamespace;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.MonitoredEditor;
@@ -26,8 +26,8 @@ public class PCMJavaBuilder extends VitruviusEmfBuilder {
         super();
         logger.trace("PCMJavaBuilder is ALIVE");
         final MetaRepositoryImpl metarepository = PCMJavaUtils.createPCMJavaMetarepository();
-        Set<String> monitoredFileTypes = new HashSet<String>(Arrays.asList(PCMJavaNamespace.REPOSITORY_FILE_EXTENSION,
-                PCMJavaNamespace.JAVA_FILE_EXTENSION));
+        Set<String> monitoredFileTypes = new HashSet<String>(Arrays.asList(
+                PCMJaMoPPNamespace.PCM.REPOSITORY_FILE_EXTENSION, PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION));
         super.initializeBuilder(monitoredFileTypes, metarepository);
     }
 

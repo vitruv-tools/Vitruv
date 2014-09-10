@@ -14,17 +14,21 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
 
     private static final Logger logger = Logger.getLogger(DefaultTUIDCalculatorAndResolver.class.getSimpleName());
     private String nameOfIdFeature;
+    private String fileExtensionsAsString;
 
-    public DefaultTUIDCalculatorAndResolver() {
-        this(VitruviusConstants.getDefaultNameOfIdentifierFeature());
+    public DefaultTUIDCalculatorAndResolver(final String... fileExtensions) {
+        this(VitruviusConstants.getDefaultNameOfIdentifierFeature(), fileExtensions);
     }
 
-    public DefaultTUIDCalculatorAndResolver(final String nameOfIDFeature) {
+    public DefaultTUIDCalculatorAndResolver(final String nameOfIDFeature, final String... fileExtensions) {
         this.nameOfIdFeature = nameOfIDFeature;
+        for (String fileExtension : fileExtensions) {
+            this.fileExtensionsAsString = fileExtension + "_";
+        }
     }
 
     /**
-     * class name is used as prefix for every UUID to determine whether an TUID was created using
+     * class name is used as prefix for every TUID to determine whether an TUID was created using
      * this class
      */
     private static final String TUIDIdentifier = DefaultTUIDCalculatorAndResolver.class.getSimpleName();
@@ -33,6 +37,7 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
     public String calculateTUIDFromEObject(final EObject eObject) {
         if (eObject != null) {
             String uri = String.valueOf(TUIDIdentifier) + VitruviusConstants.getTUIDSegmentSeperator();
+            uri = uri + this.fileExtensionsAsString + VitruviusConstants.getTUIDSegmentSeperator();
             if (null != eObject.eResource()) {
                 VURI vuri = VURI.getInstance(eObject.eResource());
                 uri += vuri.toString();
@@ -52,7 +57,7 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
     public VURI getModelVURIContainingIdentifiedEObject(final String tuid) {
         String[] tuidParts = tuid.split(VitruviusConstants.getTUIDSegmentSeperator());
         checkTUID(tuidParts);
-        String vuriKey = tuidParts[1];
+        String vuriKey = tuidParts[2];
         return VURI.getInstance(vuriKey);
     }
 
@@ -60,12 +65,18 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
     public EObject resolveEObjectFromRootAndFullTUID(final EObject root, final String tuid) {
         String[] tuidParts = tuid.split(VitruviusConstants.getTUIDSegmentSeperator());
         checkTUID(tuidParts);
-        String id = tuidParts[2];
+        String id = tuidParts[3];
+        // check if the tuid is part of the root contents:
         for (EObject eObject : root.eContents()) {
             if (id.equals(getValueOfIdFeature(eObject))) {
                 return eObject;
             }
         }
+        // it is not in the contents. check if its the root object itself:
+        if (id.equals(getValueOfIdFeature(root))) {
+            return root;
+        }
+        // no - nothing found
         logger.warn("EObject with tuid: " + tuid + " not found within root EObject " + root);
         return null;
     }
@@ -75,6 +86,11 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
         isValidTUID(tuidParts, claim);
     }
 
+    /**
+     * Returns whether a TUID is valid for this specific TUIDCalculatorAndResolver. In case of
+     * DefaultTUIDCalculatorAndResolver a tuid is valid iff 1.) the TUID was created using the class
+     * TUIDCalculatorAndResolver and 2)
+     */
     @Override
     public boolean isValidTUID(final String tuid) {
         String[] tuidParts = tuid.split(VitruviusConstants.getTUIDSegmentSeperator());
@@ -83,14 +99,16 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
     }
 
     private boolean isValidTUID(final String[] tuidParts, final boolean claim) {
-        if (0 == tuidParts.length) {
+        if (2 > tuidParts.length) {
             if (claim) {
                 throw new RuntimeException("Cannot parse TUID: " + tuidParts);
             } else {
                 return false;
             }
         }
-        if (!tuidParts[0].equals(String.valueOf(TUIDIdentifier))) {
+        boolean sameIdentifier = tuidParts[0].equals(TUIDIdentifier);
+        boolean responsibleForFileExtensions = tuidParts[1].equals(this.fileExtensionsAsString);
+        if (!(sameIdentifier && responsibleForFileExtensions)) {
             if (claim) {
                 throw new RuntimeException("TUID " + tuidParts + " was not created using " + TUIDIdentifier);
             } else {

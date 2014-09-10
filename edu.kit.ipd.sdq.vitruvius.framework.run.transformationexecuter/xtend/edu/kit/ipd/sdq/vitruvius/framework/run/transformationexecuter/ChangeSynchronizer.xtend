@@ -34,6 +34,7 @@ import java.util.Deque
 import java.util.LinkedList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 
 public class ChangeSynchronizer {
 
@@ -50,6 +51,12 @@ public class ChangeSynchronizer {
 		this.correspondenceInstance = correspondenceInstance
 		for (mappingTransformation : mappingTransformations.values) {
 			mappingTransformation.setCorrespondenceInstance(correspondenceInstance)
+		}
+	}
+	
+	def setUserInteracting(UserInteracting userInteracting){
+		for(mappingTransformations:mappingTransformations.values){
+			mappingTransformations.setUserInteracting(userInteracting)
 		}
 	}
 
