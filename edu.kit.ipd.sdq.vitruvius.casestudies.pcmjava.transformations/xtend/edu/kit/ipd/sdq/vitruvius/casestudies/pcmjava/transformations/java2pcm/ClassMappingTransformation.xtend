@@ -3,12 +3,11 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingRequiringEntity
 import de.uka.ipd.sdq.pcm.repository.RepositoryComponent
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMMappingTransformationBase
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMNamespace
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMUtils
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
+import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import java.util.HashSet
@@ -21,19 +20,16 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.ClassifiersFactory
+import org.emftext.language.java.classifiers.ConcreteClassifier
+import org.emftext.language.java.modifiers.Modifier
 import org.emftext.language.java.modifiers.Public
 import org.emftext.language.java.modifiers.impl.PublicImpl
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
-import org.emftext.language.java.classifiers.ConcreteClassifier
-import org.eclipse.emf.common.util.EList
-import org.emftext.language.java.modifiers.Modifier
 
 /**
  * Maps a JaMoPP class to a PCM Components or System. 
  * Triggered when a CUD operation on JaMoPP class is detected.
  */
-class ClassMappingTransformation extends JaMoPPPCMMappingTransformationBase {
+class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	private static val Logger logger = Logger.getLogger(ClassMappingTransformation.simpleName)
 
@@ -45,10 +41,10 @@ class ClassMappingTransformation extends JaMoPPPCMMappingTransformationBase {
 	 * sets the name correspondece for JaMoPP-class names and PCM-entityName Attribut
 	 */
 	override setCorrespondenceForFeatures() {
-		val classNameAttribute = TransformationUtils::getAttributeByNameFromEObject(
-			JaMoPPPCMNamespace.JAMOPP_ATTRIBUTE_NAME, ClassifiersFactory.eINSTANCE.createClass)
-		val componentNameAttribute = TransformationUtils::getAttributeByNameFromEObject(
-			JaMoPPPCMNamespace.PCM_ATTRIBUTE_ENTITY_NAME, RepositoryFactory.eINSTANCE.createBasicComponent)
+		val classNameAttribute = TransformationUtils::getFeatureByNameFromEObject(
+			PCMJaMoPPNamespace.JaMoPP::JAMOPP_ATTRIBUTE_NAME, ClassifiersFactory.eINSTANCE.createClass)
+		val componentNameAttribute = TransformationUtils::getFeatureByNameFromEObject(
+			PCMJaMoPPNamespace.PCM::PCM_ATTRIBUTE_ENTITY_NAME, RepositoryFactory.eINSTANCE.createBasicComponent)
 		featureCorrespondenceMap.put(classNameAttribute, componentNameAttribute)
 	}
 
@@ -174,7 +170,7 @@ class ClassMappingTransformation extends JaMoPPPCMMappingTransformationBase {
 		var EObject eObjectToSave = null
 		val affectedClass = affectedEObject as ConcreteClassifier
 		if (!components.nullOrEmpty &&
-			JaMoPPPCMNamespace.JAMOPP_ANNOTATIONS_AND_MODIFIERS_REFERENCE_NAME.equals(affectedReference.name) &&
+			PCMJaMoPPNamespace.JaMoPP.JAMOPP_ANNOTATIONS_AND_MODIFIERS_REFERENCE_NAME.equals(affectedReference.name) &&
 			(oldValue instanceof PublicImpl)) {
 			val component = components.get(0)
 			val userInteractor = new UserInteractor()

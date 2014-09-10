@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.emftext.language.java.containers.CompilationUnit;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaNamespace;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.InterfaceMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ModifierMappingTransformation;
@@ -27,6 +27,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor;
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.ChangeSynchronizer;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
@@ -42,8 +44,8 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
     public PCMJaMoPPTransformationExecuter() {
         this.changeSynchronizer = new ChangeSynchronizer();
         this.initializeChangeSynchronizer();
-        final VURI pcmVURI = VURI.getInstance(PCMJavaNamespace.PCM_METAMODEL_NAMESPACE);
-        final VURI jaMoPPVURI = VURI.getInstance(PCMJavaNamespace.JAMOPP_METAMODEL_NAMESPACE);
+        final VURI pcmVURI = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
+        final VURI jaMoPPVURI = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE);
         final Pair<VURI, VURI> pcm2JaMoPP = new Pair<VURI, VURI>(pcmVURI, jaMoPPVURI);
         final Pair<VURI, VURI> jamopp2PCM = new Pair<VURI, VURI>(jaMoPPVURI, jaMoPPVURI);
         this.pairList = new ArrayList<Pair<VURI, VURI>>();
@@ -52,6 +54,7 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
     }
 
     private void initializeChangeSynchronizer() {
+        final UserInteracting userInteracting = new UserInteractor();
         this.changeSynchronizer.addMapping(new ClassMappingTransformation());
         this.changeSynchronizer.addMapping(new InterfaceMappingTransformation());
         this.changeSynchronizer.addMapping(new PackageMappingTransformation());
@@ -59,11 +62,13 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
         this.changeSynchronizer.addMapping(new OperationInterfaceMappingTransformation());
         this.changeSynchronizer.addMapping(new RepositoryMappingTransformation());
         this.changeSynchronizer.addMapping(new ModifierMappingTransformation());
+
+        this.changeSynchronizer.setUserInteracting(userInteracting);
     }
 
     /**
      * Executes the Java2PCM and PCM2Java transformations and returns the changed VURIs
-     * 
+     *
      * @param change
      *            the occurred change
      * @param correspondenceInstance

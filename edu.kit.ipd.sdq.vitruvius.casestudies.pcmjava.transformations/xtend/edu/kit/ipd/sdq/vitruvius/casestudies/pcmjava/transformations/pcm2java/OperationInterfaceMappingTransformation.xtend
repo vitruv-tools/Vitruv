@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java
 
 import de.uka.ipd.sdq.pcm.repository.OperationInterface
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMMappingTransformationBase
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.Set
 import org.apache.log4j.Logger
@@ -14,10 +14,9 @@ import org.emftext.language.java.classifiers.Interface
 import org.emftext.language.java.containers.CompilationUnit
 import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.Package
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
 import org.emftext.language.java.members.InterfaceMethod
 
-class OperationInterfaceMappingTransformation extends JaMoPPPCMMappingTransformationBase {
+class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	val private static Logger logger = Logger.getLogger(OperationInterfaceMappingTransformation.simpleName)
 
@@ -53,29 +52,35 @@ class OperationInterfaceMappingTransformation extends JaMoPPPCMMappingTransforma
 	 * Add Method (which is in newCorrespondingEObjects) to the Interface corresponding to the OperationInterface 
 	 */
 	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue,
-			int index, EObject[] newMethods) {
-		if(newMethods.nullOrEmpty || (false == newMethods.forall[method| method instanceof InterfaceMethod])){
-			throw new RuntimeException("unexpeceted value in newMethods parameter " + newMethods.size + " (expected 1):" + newMethods)
+		int index, EObject[] newMethods) {
+		if (newMethods.nullOrEmpty || (false == newMethods.forall[method|method instanceof InterfaceMethod])) {
+			throw new RuntimeException(
+				"unexpeceted value in newMethods parameter " + newMethods.size + " (expected 1):" + newMethods)
 		}
-		val Interface jaMoPPIf = correspondenceInstance.getCorrespondingEObjectsByType(affectedEObject, Interface).get(0)
-		for(eObject : newMethods){
+		val Interface jaMoPPIf = correspondenceInstance.getCorrespondingEObjectsByType(affectedEObject, Interface).
+			get(0)
+		val parrentCorrespondence = correspondenceInstance.getAllCorrespondences(affectedEObject).get(0)
+		for (eObject : newMethods) {
 			val InterfaceMethod newMethod = eObject as InterfaceMethod;
 			jaMoPPIf.methods.add(index, newMethod);
+			correspondenceInstance.createAndAddEObjectCorrespondence(newValue, newMethod, parrentCorrespondence)
 		}
 		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(jaMoPPIf.toArray)
 	}
-	
+
 	/**
 	 * called when a signature was removed.
 	 * Remove method from corresponding interface
 	 */
 	override deleteNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue,
 		int index, EObject[] oldMethods) {
-		if(oldMethods.nullOrEmpty || (false == oldMethods.forall[method|method instanceof InterfaceMethod])){
-			throw new RuntimeException("unexpeceted value in oldMethods parameter " + oldMethods.size + " (expected 1):" + oldMethods)
+		if (oldMethods.nullOrEmpty || (false == oldMethods.forall[method|method instanceof InterfaceMethod])) {
+			throw new RuntimeException(
+				"unexpeceted value in oldMethods parameter " + oldMethods.size + " (expected 1):" + oldMethods)
 		}
-		val Interface jaMoPPIf = correspondenceInstance.getCorrespondingEObjectsByType(affectedEObject, Interface).get(0)
-		for(eObject : oldMethods){
+		val Interface jaMoPPIf = correspondenceInstance.getCorrespondingEObjectsByType(affectedEObject, Interface).
+			get(0)
+		for (eObject : oldMethods) {
 			val InterfaceMethod oldMethod = eObject as InterfaceMethod;
 			jaMoPPIf.methods.remove(oldMethod)
 		}

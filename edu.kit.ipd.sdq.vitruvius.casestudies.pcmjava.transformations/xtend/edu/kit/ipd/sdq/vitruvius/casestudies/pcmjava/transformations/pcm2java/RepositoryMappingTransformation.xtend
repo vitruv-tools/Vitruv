@@ -2,8 +2,8 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java
 
 import de.uka.ipd.sdq.pcm.repository.Repository
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMMappingTransformationBase
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMNamespace
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.Package
 
-class RepositoryMappingTransformation extends JaMoPPPCMMappingTransformationBase {
+class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	val private static final Logger logger = Logger.getLogger(RepositoryMappingTransformation.name)
 
@@ -24,10 +24,10 @@ class RepositoryMappingTransformation extends JaMoPPPCMMappingTransformationBase
 
 	override void setCorrespondenceForFeatures() {
 		var repositoryNameAttribute = RepositoryFactory.eINSTANCE.createRepository.eClass.getEAllAttributes.filter[attribute|
-			attribute.name.equalsIgnoreCase(JaMoPPPCMNamespace::PCM_ATTRIBUTE_ENTITY_NAME)].iterator.next
+			attribute.name.equalsIgnoreCase(PCMJaMoPPNamespace.PCM::PCM_ATTRIBUTE_ENTITY_NAME)].iterator.next
 		var packageNameAttribute = ContainersFactory.eINSTANCE.createPackage.eClass.getEAllAttributes.filter[attribute|
-			attribute.name.equalsIgnoreCase(JaMoPPPCMNamespace::JAMOPP_ATTRIBUTE_NAME)].iterator.next
-		featureCorrespondenceMap.put(repositoryNameAttribute, packageNameAttribute) 
+			attribute.name.equalsIgnoreCase(PCMJaMoPPNamespace.JaMoPP::JAMOPP_ATTRIBUTE_NAME)].iterator.next
+		featureCorrespondenceMap.put(repositoryNameAttribute, packageNameAttribute)
 	}
 
 	override createEObject(EObject eObject) {
@@ -39,10 +39,10 @@ class RepositoryMappingTransformation extends JaMoPPPCMMappingTransformationBase
 	}
 
 	override createRootEObject(EObject newRootEObject, EObject[] newCorrespondingEObjects) {
-		if(newCorrespondingEObjects.nullOrEmpty){
+		if (newCorrespondingEObjects.nullOrEmpty) {
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
-		for(correspondingEObject : newCorrespondingEObjects){
+		for (correspondingEObject : newCorrespondingEObjects) {
 			correspondenceInstance.createAndAddEObjectCorrespondence(newRootEObject, correspondingEObject)
 		}
 		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(newCorrespondingEObjects)
@@ -50,44 +50,55 @@ class RepositoryMappingTransformation extends JaMoPPPCMMappingTransformationBase
 
 	override removeEObject(EObject eObject) {
 		val Repository repository = eObject as Repository
+
 		//Remove corresponding package
 		val Package jaMoPPPackage = correspondenceInstance.claimUniqueCorrespondingEObjectByType(repository, Package)
 		EcoreUtil.remove(jaMoPPPackage)
+
 		//remove corresponding instance
 		correspondenceInstance.removeAllCorrespondences(repository)
 		return null
 	}
-	
+
 	override deleteRootEObject(EObject oldRootEObject, EObject[] oldCorrespondingEObjectsToDelete) {
 		return TransformationUtils.createEmptyTransformationChangeResult
 	}
-	
-	override deleteNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
+
+	override deleteNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue,
+		int index, EObject[] oldCorrespondingEObjectsToDelete) {
+
+		//FIXME: add useful code here
 		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 
-	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue, Object newValue) {
+	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
+		Object newValue) {
 		val Repository repository = eObject as Repository
+
 		//val EStructuralFeature jaMoPPNameAttribute = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(affectedAttribute, EStructuralFeature)
-		val EStructuralFeature jaMoPPNameAttribute = featureCorrespondenceMap.claimValueForKey(affectedAttribute) 
+		val EStructuralFeature jaMoPPNameAttribute = featureCorrespondenceMap.claimValueForKey(affectedAttribute)
 		val Package jaMoPPPackage = correspondenceInstance.claimUniqueCorrespondingEObjectByType(repository, Package)
 		jaMoPPPackage.eSet(jaMoPPNameAttribute, newValue);
+
 		//we do not save packages
 		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(jaMoPPPackage.toArray)
 	}
-	
-	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
-		val parrentCorrespondence = correspondenceInstance.
-			claimUniqueOrNullCorrespondenceForEObject(affectedEObject);
-		for(jaMoPPElement : newCorrespondingEObjects){
+
+	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue,
+		int index, EObject[] newCorrespondingEObjects) {
+		val parrentCorrespondence = correspondenceInstance.claimUniqueOrNullCorrespondenceForEObject(affectedEObject);
+		for (jaMoPPElement : newCorrespondingEObjects) {
 			correspondenceInstance.createAndAddEObjectCorrespondence(newValue, jaMoPPElement, parrentCorrespondence)
 		}
 		return TransformationUtils.createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects)
 	}
-	
-	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue, EObject[] newCorrespondingEObjects) {
-		logger.warn("method createNonRootEObjectSingle should not be called for " + RepositoryMappingTransformation.simpleName + " transformation")
+
+	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue,
+		EObject[] newCorrespondingEObjects) {
+		logger.warn(
+			"method createNonRootEObjectSingle should not be called for " + RepositoryMappingTransformation.simpleName +
+				" transformation")
 		return null
 	}
-	
+
 }

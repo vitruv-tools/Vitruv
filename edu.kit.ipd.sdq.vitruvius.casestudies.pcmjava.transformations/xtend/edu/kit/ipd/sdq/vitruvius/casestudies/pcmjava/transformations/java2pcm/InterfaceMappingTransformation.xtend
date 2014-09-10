@@ -5,9 +5,9 @@ import de.uka.ipd.sdq.pcm.repository.Repository
 import de.uka.ipd.sdq.pcm.repository.RepositoryComponent
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
 import de.uka.ipd.sdq.pcm.system.System
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMMappingTransformationBase
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMUtils
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.Set
 import org.apache.log4j.Logger
@@ -25,7 +25,7 @@ import org.emftext.language.java.containers.Package
  * Maps a JaMoPP interface to a PCM interface 
  * Triggered when a CUD operation on JaMoPP interface is detected.
  */
-class InterfaceMappingTransformation extends JaMoPPPCMMappingTransformationBase {
+class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 	
 	val private static final Logger logger = Logger.getLogger(InterfaceMappingTransformation.name)
 	

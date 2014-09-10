@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMMappingTransformationBase
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
@@ -10,7 +10,7 @@ import org.emftext.language.java.modifiers.Modifier
 /**
  * Triggered when a CUD operation on a Modifier is detected.
  */
-class ModifierMappingTransformation extends JaMoPPPCMMappingTransformationBase {
+class ModifierMappingTransformation extends EmptyEObjectMappingTransformation {
 	
 	private static val Logger logger = Logger.getLogger(ModifierMappingTransformation.simpleName)
 	

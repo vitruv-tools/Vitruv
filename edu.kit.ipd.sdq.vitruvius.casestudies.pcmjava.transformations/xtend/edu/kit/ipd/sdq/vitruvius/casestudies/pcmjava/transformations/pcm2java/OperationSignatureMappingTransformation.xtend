@@ -1,18 +1,20 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java
 
 import de.uka.ipd.sdq.pcm.repository.OperationSignature
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMMappingTransformationBase
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.Set
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.members.InterfaceMethod
 import org.emftext.language.java.members.MembersFactory
+import org.emftext.language.java.parameters.Parameter
 import org.emftext.language.java.types.TypesFactory
 
-class OperationSignatureMappingTransformation extends JaMoPPPCMMappingTransformationBase {
+class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	private static val Logger logger = Logger.getLogger(OperationSignatureMappingTransformation.simpleName)
 
@@ -51,29 +53,37 @@ class OperationSignatureMappingTransformation extends JaMoPPPCMMappingTransforma
 	}
 
 	/**
-	 * called when a parameter or a return type is added
+	 * called when a parameter was added
 	 */
 	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue,
-		int index, EObject[] newCorrespondingEObjects) {
-
-		//TODO: add code here
-		return null
+		int index, EObject[] newCorrespondingParameter) {
+		val Set<InterfaceMethod> jaMoPPIfMethods = correspondenceInstance.
+			getCorrespondingEObjectsByType(affectedEObject, InterfaceMethod)
+		if (jaMoPPIfMethods.nullOrEmpty) {
+			logger.warn(
+				"No corresponding InterfaceMethod was found for OperationSignature: " + affectedEObject +
+					" Returning empty transformation result")
+			return TransformationUtils.createEmptyTransformationChangeResult
+		}
+		val parrentCorrespondence = correspondenceInstance.getAllCorrespondences(affectedEObject)
+		for (interfaceMethod : jaMoPPIfMethods) {
+			interfaceMethod.parameters.add(index, newCorrespondingParameter.get(0) as Parameter)
+			correspondenceInstance.createAndAddEObjectCorrespondence(newValue, newCorrespondingParameter.get(0),
+				parrentCorrespondence.get(0))
+		}
+		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(jaMoPPIfMethods)
 	}
 
 	/**
-	 * called when a parameter  or a return type is removed
+	 * called when a parameter was removed
 	 */
 	override deleteNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue,
 		int index, EObject[] oldCorrespondingEObjectsToDelete) {
-
-		//TODO: add code here
-		return null
-	}
-
-	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue,
-		EObject[] newCorrespondingEObjects) {
-		logger.warn("createNonRootEObjectSingle should not be called here")
-		return null
+		val jaMoPPIfMethod = correspondenceInstance.getAllCorrespondingEObjects(affectedEObject)
+		for (correspondingEObject : oldCorrespondingEObjectsToDelete) {
+			EcoreUtil.delete(correspondingEObject, true)
+		}
+		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(jaMoPPIfMethod)
 	}
 
 	/**
