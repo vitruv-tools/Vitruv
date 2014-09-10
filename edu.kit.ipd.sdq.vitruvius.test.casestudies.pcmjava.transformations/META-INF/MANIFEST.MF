@@ -22,5 +22,13 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.framework.vsum,
  edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations,
- edu.kit.ipd.sdq.vitruvius.framework.util
+ edu.kit.ipd.sdq.vitruvius.framework.util,
+ edu.kit.ipd.sdq.vitruvius.tests.jamopppcm.util,
+ edu.kit.ipd.sdq.vitruvius.tests.util;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emf,
+ edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager,
+ edu.kit.ipd.sdq.vitruvius.framework.metarepository,
+ edu.kit.ipd.sdq.vitruvius.framework.synctransprovider,
+ edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine,
+ edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor;bundle-version="1.0.0"
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver

@@ -17,6 +17,7 @@ import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.JaMoPPTUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.tests.jamopppcm.util.JaMoPPPCMTestUtil;
 
 public class JaMoPPTUIDCalculatorAndResolverTest {
 
@@ -28,7 +29,7 @@ public class JaMoPPTUIDCalculatorAndResolverTest {
     public void setUp() throws Exception {
         this.jamoppTUIDCR = new JaMoPPTUIDCalculatorAndResolver();
 
-        TestUtils.registerMetamodels();
+        JaMoPPPCMTestUtil.registerMetamodels();
 
         // create new ResourceSet
         final ResourceSet resSet = new ResourceSetImpl();
@@ -47,12 +48,14 @@ public class JaMoPPTUIDCalculatorAndResolverTest {
     @Test
     public void testGetTUID() {
         final CompilationUnit cu = (CompilationUnit) this.rootJaMoPP;
-        System.out.println("TUID for comilationUnit '" + cu.getName() + "': " + this.jamoppTUIDCR.calculateTUIDFromEObject(cu));
+        System.out.println("TUID for comilationUnit '" + cu.getName() + "': "
+                + this.jamoppTUIDCR.calculateTUIDFromEObject(cu));
         for (final Classifier classifier : cu.getClassifiers()) {
             System.out.println("TUID for classifier '" + classifier.getName() + "': "
                     + this.jamoppTUIDCR.calculateTUIDFromEObject(classifier));
             for (final Member member : classifier.getAllMembers(null)) {
-                System.out.println("TUID for member '" + member.toString() + "': " + this.jamoppTUIDCR.calculateTUIDFromEObject(member));
+                System.out.println("TUID for member '" + member.toString() + "': "
+                        + this.jamoppTUIDCR.calculateTUIDFromEObject(member));
             }
         }
     }
@@ -81,8 +84,7 @@ public class JaMoPPTUIDCalculatorAndResolverTest {
         // find TUIDs in new java file
         final VURI vuri = this.jamoppTUIDCR.getModelVURIContainingIdentifiedEObject(tuidCu);
         System.out.println(vuri);
-        final EObject newCompilationUnit = this.jamoppTUIDCR.resolveEObjectFromRootAndFullTUID(newRootEObject,
-                tuidCu);
+        final EObject newCompilationUnit = this.jamoppTUIDCR.resolveEObjectFromRootAndFullTUID(newRootEObject, tuidCu);
         System.out.println("New Compilation unit: " + newCompilationUnit);
         for (final String classifierTuid : classifierTuids) {
             System.out.println("Classifier for classifier with tuid " + classifierTuid + ": "

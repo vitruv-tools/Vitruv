@@ -23,8 +23,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.Attribu
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver.TestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPUtils;
+import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 public class PCM2JaMoPPTransformationTest extends JaMoPPPCMTransformationTest {
 
@@ -47,7 +47,7 @@ public class PCM2JaMoPPTransformationTest extends JaMoPPPCMTransformationTest {
     @Test
     public void testAddRepository() {
         PCM2JaMoPPUtils.createAndSyncRepository(resourceSet, changeSynchronizer);
-        TestUtils.moveSrcFilesToPath("addRepository");
+        TestUtil.moveSrcFilesFromMockupProjectToPath("addRepository");
     }
 
     @Test
@@ -63,14 +63,14 @@ public class PCM2JaMoPPTransformationTest extends JaMoPPPCMTransformationTest {
         repoNameChange.setNewValue(repo.getEntityName());
         System.out.println(repoNameChange.getNewValue());
         changeSynchronizer.synchronizeChange(repoNameChange);
-        TestUtils.moveSrcFilesToPath("testRepositoryNameChange");
+        TestUtil.moveSrcFilesFromMockupProjectToPath("testRepositoryNameChange");
     }
 
     @Test
     public void testAddInterface() {
         final Repository repo = PCM2JaMoPPUtils.createAndSyncRepository(resourceSet, changeSynchronizer);
         this.addInterfaceToReposiotry(repo);
-        TestUtils.moveSrcFilesToPath("testAddInterface");
+        TestUtil.moveSrcFilesFromMockupProjectToPath("testAddInterface");
     }
 
     @Test
@@ -78,7 +78,7 @@ public class PCM2JaMoPPTransformationTest extends JaMoPPPCMTransformationTest {
         final Repository repo = PCM2JaMoPPUtils.createAndSyncRepository(resourceSet, changeSynchronizer);
         final OperationInterface opInterface = this.addInterfaceToReposiotry(repo);
         this.renameInterfaceAndSync(opInterface);
-        TestUtils.moveSrcFilesToPath("testRenameInterface");
+        TestUtil.moveSrcFilesFromMockupProjectToPath("testRenameInterface");
     }
 
     @Test
