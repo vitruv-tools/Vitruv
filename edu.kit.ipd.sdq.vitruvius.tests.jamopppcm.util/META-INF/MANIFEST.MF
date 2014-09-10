@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JaMoPP PCM Util
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.jamopppcm.util
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: edu.kit.ipd.sdq.vitruvius.tests.util;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.framework.metarepository,
+ edu.kit.ipd.sdq.vitruvius.framework.vsum,
+ org.apache.log4j,
+ org.eclipse.emf.ecore,
+ org.emftext.language.java,
+ org.emftext.language.java.resource.java,
+ de.uka.ipd.sdq.pcm,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence,
+ org.eclipse.emf.ecore.xmi,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava
+Export-Package: edu.kit.ipd.sdq.vitruvius.tests.jamopppcm.util
