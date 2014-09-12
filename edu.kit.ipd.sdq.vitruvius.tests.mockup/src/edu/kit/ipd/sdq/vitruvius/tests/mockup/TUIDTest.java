@@ -1,12 +1,16 @@
 package edu.kit.ipd.sdq.vitruvius.tests.mockup;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TUIDTest {
 
@@ -177,4 +181,32 @@ public class TUIDTest {
         assertEquals(s9, tuid9.toString());
         assertTrue(TUID.validate());
     }
+
+    @Test
+    public void testUpdateSingleSegmentTargetContainsLeafes() {
+        String[] input = new String[] { "prefix#b", "prefix#b#c", "prefix#b#c#d", "prefix#b#c2#d" };
+        String[] expected = new String[] { "prefix#b", "prefix#b#c2", "prefix#b#c2#d", "prefix#b#c2#d" };
+
+        // construct TUIDs
+        List<TUID> tuids = new ArrayList<TUID>();
+        for (String tuidString : input) {
+            tuids.add(TUID.getInstance(tuidString));
+        }
+
+        // rename TUIDs
+        TUID oldTUID = TUID.getInstance("prefix#b#c");
+        TUID newTUID = TUID.getInstance("prefix#b#c2");
+        oldTUID.updateSingleSegment(newTUID);
+
+        // validate TUID
+        assertTrue(TUID.validate());
+
+        // check renaming
+        String[] actual = new String[tuids.size()];
+        for (int i = 0; i < tuids.size(); ++i) {
+            actual[i] = tuids.get(i).toString();
+        }
+        assertArrayEquals(expected, actual);
+    }
+
 }
