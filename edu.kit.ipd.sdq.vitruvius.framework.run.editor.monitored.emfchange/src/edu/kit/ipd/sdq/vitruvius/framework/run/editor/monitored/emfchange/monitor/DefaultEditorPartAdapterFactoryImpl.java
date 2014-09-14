@@ -79,7 +79,7 @@ public class DefaultEditorPartAdapterFactoryImpl implements IEditorPartAdapterFa
      */
     protected boolean isProvidingAResource(IEditorPartAdapter adapter) {
         try {
-            adapter.getMonitoredResource();
+            adapter.getEditedModelResource();
             return true;
         } catch (NoSuchElementException e) {
             return false;
@@ -138,7 +138,7 @@ public class DefaultEditorPartAdapterFactoryImpl implements IEditorPartAdapterFa
         }
 
         @Override
-        public Resource getMonitoredResource() {
+        public Resource getEditedModelResource() {
             Resource result = null;
 
             for (Resource r : getEditingDomain().getResourceSet().getResources()) {

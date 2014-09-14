@@ -57,7 +57,7 @@ public class DefaultEditorPartAdapterFactoryImplTests extends BasicTestCase {
     public void EMFTreeEditorAdapterProperties() throws URISyntaxException {
         IEditorPart emfEditor = eclipseMock.openNewEMFTreeEditorPart(Files.EXAMPLEMODEL_ECORE);
         IEditorPartAdapter adapter = factory.createAdapter(emfEditor);
-        assert TestUtils.isURIEqual(adapter.getMonitoredResource().getURI(), Files.EXAMPLEMODEL_ECORE);
+        assert TestUtils.isURIEqual(adapter.getEditedModelResource().getURI(), Files.EXAMPLEMODEL_ECORE);
         assert adapter.getEditingDomain() != null;
         assert adapter.getEditorPart() == emfEditor;
     }
@@ -83,7 +83,7 @@ public class DefaultEditorPartAdapterFactoryImplTests extends BasicTestCase {
         IEditorPart gmfEditor = eclipseMock.openNewEMFDiagramEditorPart(Files.EXAMPLEMODEL_ECORE,
                 Files.EXAMPLEMODEL_ECOREDIAG);
         IEditorPartAdapter adapter = factory.createAdapter(gmfEditor);
-        assert TestUtils.isURIEqual(adapter.getMonitoredResource().getURI(), Files.EXAMPLEMODEL_ECORE);
+        assert TestUtils.isURIEqual(adapter.getEditedModelResource().getURI(), Files.EXAMPLEMODEL_ECORE);
         assert adapter.getEditingDomain() != null;
         assert adapter.getEditorPart() == gmfEditor;
     }

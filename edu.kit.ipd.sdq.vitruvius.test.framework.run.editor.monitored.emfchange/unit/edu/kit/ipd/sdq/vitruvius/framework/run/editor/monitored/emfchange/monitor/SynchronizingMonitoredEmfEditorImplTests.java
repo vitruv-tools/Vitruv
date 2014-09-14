@@ -129,7 +129,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
 
     @Test
     public void saveEventsCauseSyncForCurrentEditor() {
-        Resource res = this.editorPartAdapter.getMonitoredResource();
+        Resource res = this.editorPartAdapter.getEditedModelResource();
         final VURI resVURI = VURI.getInstance(res);
 
         final EnsureExecuted ensureExecuted = new EnsureExecuted();
@@ -178,7 +178,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
 
     @Test
     public void saveEventsCauseNoSyncWhenOtherEditorIsSaved() {
-        Resource res = this.editorPartAdapter.getMonitoredResource();
+        Resource res = this.editorPartAdapter.getEditedModelResource();
         final VURI resVURI = VURI.getInstance(res);
 
         final EnsureNotExecuted ensureNotExecuted = new EnsureNotExecuted();
@@ -221,7 +221,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
 
     @Test
     public void resourceReloadCausesChangesToBeCleared() throws IOException {
-        Resource res = this.editorPartAdapter.getMonitoredResource();
+        Resource res = this.editorPartAdapter.getEditedModelResource();
         final VURI resVURI = VURI.getInstance(res);
 
         final EnsureExecuted ensureExecuted = new EnsureExecuted();
@@ -249,11 +249,11 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
         EPackage rootObj = (EPackage) this.editorPartAdapter.getEditingDomain().getRoot(DUMMY_EOBJECT);
         rootObj.setName(rootObj.getName() + "!");
 
-        this.editorPartAdapter.getMonitoredResource().unload();
-        this.editorPartAdapter.getMonitoredResource().load(Collections.EMPTY_MAP);
+        this.editorPartAdapter.getEditedModelResource().unload();
+        this.editorPartAdapter.getEditedModelResource().load(Collections.EMPTY_MAP);
 
         System.out.println(".");
-        rootObj = (EPackage) this.editorPartAdapter.getMonitoredResource().getContents().get(0);
+        rootObj = (EPackage) this.editorPartAdapter.getEditedModelResource().getContents().get(0);
         rootObj.setNsPrefix("!" + rootObj.getNsPrefix());
 
         eclipseCtrl.issueSaveEvent(SaveEventKind.SAVE);

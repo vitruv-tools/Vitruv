@@ -53,7 +53,7 @@ public final class MapUtils {
      * @param <V>
      *            The value type.
      */
-    public static <K, V> void addToMap(K key, V value, Map<K, List<V>> target) {
+    public static <K, V> void addToListMap(K key, V value, Map<K, List<V>> target) {
         if (!target.containsKey(key)) {
             target.put(key, new ArrayList<V>());
         }

@@ -1,12 +1,11 @@
 package edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.monitor;
 
+import java.util.Collection;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelCopyProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IMonitoringDecider;
-import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.ISynchronizingMonitoredEmfEditor;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitruviusEMFEditorMonitor;
-import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.ISynchronizingMonitoredEmfEditor.ResourceChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 
 /**
@@ -50,22 +49,11 @@ public class EMFEditorMonitorFactory {
         return new VitruviusEMFEditorMonitorImpl(changeSync, modelCopyProviding, vitruvAccessor);
     }
 
-    /**
-     * Creates a new {@link ISynchronizingMonitoredEmfEditor} instance.
-     * 
-     * @param changeSynchronizing
-     *            The Vitruvius {@link ChangeSynchronizing} object receiving change synchronization
-     *            calls.
-     * @param editorPartAdapterFact
-     *            The {@link IEditorPartAdapterFactory} used to adapt Eclipse editors.
-     * @param monitoringDecider
-     *            An {@link IMonitoringDecider} object telling the new instance which editors need
-     *            to be monitored.
-     * @return The new {@link ISynchronizingMonitoredEmfEditor} instance.
-     */
-    public ISynchronizingMonitoredEmfEditor createSynchronizingMonitoredEmfEditor(
-            ResourceChangeSynchronizing changeSynchronizing, IEditorPartAdapterFactory editorPartAdapterFact,
-            IMonitoringDecider monitoringDecider) {
-        return new SynchronizingMonitoredEmfEditorImpl(changeSynchronizing, editorPartAdapterFact, monitoringDecider);
+    public IEditorPartAdapterFactory createDefaultEditorPartAdapterFactory(Collection<String> acceptedFileSuffixes) {
+        return new DefaultEditorPartAdapterFactoryImpl(acceptedFileSuffixes);
+    }
+
+    public IEditorPartAdapterFactory createDefaultEditorPartAdapterFactory() {
+        return new DefaultEditorPartAdapterFactoryImpl();
     }
 }

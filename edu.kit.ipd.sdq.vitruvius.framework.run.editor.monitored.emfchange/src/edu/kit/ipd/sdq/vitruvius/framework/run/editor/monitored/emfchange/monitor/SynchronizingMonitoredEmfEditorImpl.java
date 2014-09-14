@@ -171,12 +171,12 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
                     @Override
                     public void run() {
                         changeDescription.applyAndReverse();
-                        changes.add(getChangeList(changeDescription, editorPart.getMonitoredResource()));
+                        changes.add(getChangeList(changeDescription, editorPart.getEditedModelResource()));
                         changeDescription.applyAndReverse();
                     }
                 });
                 assert changes.size() == 1;
-                triggerSynchronization(changes.get(0), editorPart.getMonitoredResource());
+                triggerSynchronization(changes.get(0), editorPart.getEditedModelResource());
             }
         };
 

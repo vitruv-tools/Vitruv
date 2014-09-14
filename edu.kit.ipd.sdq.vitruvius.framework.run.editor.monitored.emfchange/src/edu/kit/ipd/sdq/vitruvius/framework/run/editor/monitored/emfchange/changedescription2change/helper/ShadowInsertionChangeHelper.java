@@ -137,7 +137,7 @@ public final class ShadowInsertionChangeHelper {
         CreateNonRootEObjectSingle<EObject> update = ContainmentFactory.eINSTANCE.createCreateNonRootEObjectSingle();
         InitializeEChange.setupUpdateEReference(update, createdObject, ref);
         InitializeEChange.setupCreateNonRootEObjectSingle(update, referencedObj);
-        MapUtils.addToMap(createdObject, update, target);
+        MapUtils.addToListMap(createdObject, update, target);
     }
 
     private static void insertCreateChange(EObject createdObject, EObject referencedObj, EReference ref,
@@ -147,7 +147,7 @@ public final class ShadowInsertionChangeHelper {
         CreateNonRootEObjectInList<EObject> update = ContainmentFactory.eINSTANCE.createCreateNonRootEObjectInList();
         InitializeEChange.setupUpdateEReference(update, createdObject, ref);
         InitializeEChange.setupInsertInEList(update, referencedObj, index);
-        MapUtils.addToMap(createdObject, update, target);
+        MapUtils.addToListMap(createdObject, update, target);
     }
 
     private static void insertUpdateEReferenceChange(EObject createdObject, EObject referencedObj, EReference ref,
@@ -160,7 +160,7 @@ public final class ShadowInsertionChangeHelper {
         // TODO (Maybe): EChange object set up with an explicit null reference.
         InitializeEChange.setupUpdateSingleValuedNonContainmentEReference(update, null, referencedObj);
 
-        MapUtils.addToMap(createdObject, update, target);
+        MapUtils.addToListMap(createdObject, update, target);
     }
 
     private static void insertListAddChange(EObject createdObject, EObject referencedObj, EReference ref,
@@ -171,7 +171,7 @@ public final class ShadowInsertionChangeHelper {
                 .createInsertNonContainmentEReference();
         InitializeEChange.setupUpdateEReference(update, createdObject, ref);
         InitializeEChange.setupInsertInEList(update, referencedObj, index);
-        MapUtils.addToMap(createdObject, update, target);
+        MapUtils.addToListMap(createdObject, update, target);
     }
 
     private static void insertUpdateEAttributeChange(EObject createdObject, Object attributeObj, EAttribute attr,
@@ -183,7 +183,7 @@ public final class ShadowInsertionChangeHelper {
         // TODO (Maybe): EChange object set up with an explicit null reference.
         InitializeEChange.setupUpdateSingleValuedEAttribute(update, null, attributeObj);
 
-        MapUtils.addToMap(createdObject, update, target);
+        MapUtils.addToListMap(createdObject, update, target);
     }
 
     private void addAttributeChanges(EObject createdObject) {

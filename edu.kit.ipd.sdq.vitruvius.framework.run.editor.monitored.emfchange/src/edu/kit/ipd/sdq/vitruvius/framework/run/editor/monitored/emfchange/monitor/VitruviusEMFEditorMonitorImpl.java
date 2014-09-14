@@ -72,7 +72,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
     private final IMonitoringDecider monitoringDecider = new IMonitoringDecider() {
         @Override
         public boolean isMonitoringEnabled(IEditorPartAdapter editor) {
-            return isMonitoredVitruviusResource(editor.getMonitoredResource());
+            return isMonitoredVitruviusResource(editor.getEditedModelResource());
         }
     };
 
@@ -231,7 +231,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
         for (IEditorPart part : activeEditors) {
             try {
                 IEditorPartAdapter partAdapter = this.editorPartAdapterFactory.createAdapter(part);
-                VURI partVURI = VURI.getInstance(partAdapter.getMonitoredResource());
+                VURI partVURI = VURI.getInstance(partAdapter.getEditedModelResource());
                 if (partVURI == searchURI) {
                     result.add(part);
                 }

@@ -57,7 +57,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
      *            be monitored.
      */
     public EMFModelChangeRecordingEditorSaveListener(IEditorPartAdapter editorAdapter) {
-        this.targetResource = editorAdapter.getMonitoredResource();
+        this.targetResource = editorAdapter.getEditedModelResource();
         this.saveActionListenerManager = new SaveEventListenerMgr();
         saveActionListenerManager.restrictSaveActionsToEditorPart(editorAdapter.getEditorPart());
         LOGGER.trace("Constructed a listener for an editor of type " + editorAdapter.getClass().getCanonicalName()

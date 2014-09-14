@@ -40,7 +40,7 @@ public interface IEditorPartAdapterFactory {
          * 
          * @return The adapted editor's EMF model {@link Resource}.
          */
-        public Resource getMonitoredResource();
+        public Resource getEditedModelResource();
 
         /**
          * Retrieves the adapted editor's {@link IEditorPart} instance.

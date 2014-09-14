@@ -122,22 +122,22 @@ public class ChangeDescription2ChangeConverter {
         IObjectChangePass objectDeletionResolving = new ObjectDeletionResolvingPass(objsToDetach);
         ShadowDeletionResolvingPass shadowedDeleteResolving = new ShadowDeletionResolvingPass(objsToDetach);
 
-        List<IObjectChange> contChangesWithoutShadowInsertions = shadowedCreateResolving.runPass(changes
+        List<IObjectChange> containmentChangeResolvingTrack = shadowedCreateResolving.runPass(changes
                 .getContainmentChanges());
-        List<IObjectChange> contChangesWithoutShadowOps = shadowedDeleteResolving
-                .runPass(contChangesWithoutShadowInsertions);
 
         // The shadow resolution pass may have added non-containment changes to its result.
-        List<IObjectChange> otherChanges = new ArrayList<>(changes.getOtherChanges());
-        moveNonContainmentChanges(contChangesWithoutShadowOps, otherChanges);
+        List<IObjectChange> nonContainmentChangeResolvingTrack = new ArrayList<>(changes.getOtherChanges());
+        moveNonContainmentChanges(containmentChangeResolvingTrack, nonContainmentChangeResolvingTrack);
 
-        List<IObjectChange> resolvedContChanges = forwardReferenceResolving.runPass(contChangesWithoutShadowOps);
-        resolvedContChanges = objectDeletionResolving.runPass(resolvedContChanges);
-        resolvedContChanges.addAll(0, shadowedDeleteResolving.getAdditionalChangeOperations());
+        containmentChangeResolvingTrack = forwardReferenceResolving.runPass(containmentChangeResolvingTrack);
+        containmentChangeResolvingTrack = objectDeletionResolving.runPass(containmentChangeResolvingTrack);
 
-        List<IObjectChange> resolvedOrdinaryChanges = objectDeletionResolving.runPass(otherChanges);
+        List<IObjectChange> contChangesWithoutShadowOps = shadowedDeleteResolving
+                .runPass(containmentChangeResolvingTrack);
 
-        return new CategorizedChanges(resolvedContChanges, resolvedOrdinaryChanges);
+        nonContainmentChangeResolvingTrack = objectDeletionResolving.runPass(nonContainmentChangeResolvingTrack);
+
+        return new CategorizedChanges(contChangesWithoutShadowOps, nonContainmentChangeResolvingTrack);
     }
 
     private List<EChange> convertToEChange(final CategorizedChanges changes, final List<EObject> addedObjects,
