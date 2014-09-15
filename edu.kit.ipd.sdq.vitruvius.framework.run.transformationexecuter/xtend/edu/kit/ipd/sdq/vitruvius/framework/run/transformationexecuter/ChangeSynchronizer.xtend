@@ -72,7 +72,7 @@ public class ChangeSynchronizer {
 			val EObject oldAffectedEObject = eFeatureChange.oldAffectedEObject
 			val EObject newAffectedEObject = eFeatureChange.newAffectedEObject
 			if (null != oldAffectedEObject && null != newAffectedEObject) {
-				correspondenceInstance.update(oldAffectedEObject, newAffectedEObject)
+				CorrespondenceUtils.updateCorrespondence(correspondenceInstance, oldAffectedEObject, newAffectedEObject)
 			}
 		}
 	}
