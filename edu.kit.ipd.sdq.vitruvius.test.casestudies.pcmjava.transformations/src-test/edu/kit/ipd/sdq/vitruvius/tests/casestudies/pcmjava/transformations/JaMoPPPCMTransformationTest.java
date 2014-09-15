@@ -4,6 +4,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.InterfaceMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.PackageMappingTransformation;
@@ -15,13 +16,14 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceIns
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.ChangeSynchronizer;
 import edu.kit.ipd.sdq.vitruvius.tests.jamopppcm.util.JaMoPPPCMTestUtil;
+import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 public class JaMoPPPCMTransformationTest {
 
     private static int nrOfCorrespondenceInstances;
-    private static Mapping mapping;
 
     protected static ChangeSynchronizer changeSynchronizer;
     protected static ResourceSet resourceSet;
@@ -55,13 +57,16 @@ public class JaMoPPPCMTransformationTest {
     }
 
     protected void createNewCorrespondenceInstance() {
-        final ModelProviding modelProviding = JaMoPPPCMTestUtil.createJaMoPPPCMVSUM();
+        final MetaRepositoryImpl pcmJamoppMetaRepo = JaMoPPPCMTestUtil.createJaMoPPPCMMetaRepository();
+        final VURI pcmVURI = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE_URI);
+        final VURI jaMoPPURI = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE);
+        final Mapping mapping = pcmJamoppMetaRepo.getMapping(new VURI[] { pcmVURI, jaMoPPURI });
+        final ModelProviding modelProviding = TestUtil.createVSUM(pcmJamoppMetaRepo);
         final VURI correspondenceInstanceURI = VURI.getInstance("/tmp/correspondenceInstance" + "_"
                 + nrOfCorrespondenceInstances++ + ".xmi");
         final Resource resource = resourceSet.createResource(correspondenceInstanceURI.getEMFUri());
         this.correspondenceInstance = new CorrespondenceInstanceImpl(mapping, modelProviding,
                 correspondenceInstanceURI, resource);
         changeSynchronizer.setCorrespondenceInstance(this.correspondenceInstance);
-
     }
 }

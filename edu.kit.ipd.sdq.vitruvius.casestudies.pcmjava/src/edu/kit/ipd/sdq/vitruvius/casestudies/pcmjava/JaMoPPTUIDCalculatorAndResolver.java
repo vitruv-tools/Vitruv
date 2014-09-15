@@ -6,6 +6,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.emftext.language.java.classifiers.Classifier;
 import org.emftext.language.java.containers.CompilationUnit;
+import org.emftext.language.java.containers.JavaRoot;
 import org.emftext.language.java.containers.Package;
 import org.emftext.language.java.members.Field;
 import org.emftext.language.java.members.Member;
@@ -88,7 +89,7 @@ public class JaMoPPTUIDCalculatorAndResolver implements TUIDCalculatorAndResolve
     }
 
     private EObject findEObjectsInPacakge(final Package pack, final String[] ids) {
-        if (0 == ids.length) {
+        if (0 == ids.length || ids[0].isEmpty()) {
             return pack;
         }
         for (CompilationUnit cu : pack.getCompilationUnits()) {
@@ -144,13 +145,14 @@ public class JaMoPPTUIDCalculatorAndResolver implements TUIDCalculatorAndResolve
     }
 
     private String getTUIDFromPackage(final Package jaMoPPPackage) {
-        return jaMoPPPackage.getNamespacesAsString();
+        if (null == jaMoPPPackage.eResource()) {
+            return jaMoPPPackage.getNamespacesAsString() + jaMoPPPackage.getName();
+        }
+        return getTUIDFromJavaRoot(jaMoPPPackage);
     }
 
     private String getTUIDFromCompilationUnit(final CompilationUnit compilationUnit) {
-        URI uri = compilationUnit.eResource().getURI();
-
-        return uri.toString();
+        return getTUIDFromJavaRoot(compilationUnit);
         //
         // String className = null;
         // /**
@@ -169,6 +171,11 @@ public class JaMoPPTUIDCalculatorAndResolver implements TUIDCalculatorAndResolve
         //
         // return compilationUnit.getNamespacesAsString() +
         // VitruviusConstants.getTUIDSegmentSeperator() + className;
+    }
+
+    private String getTUIDFromJavaRoot(final JavaRoot javaRoot) {
+        URI uri = javaRoot.eResource().getURI();
+        return uri.toString();
     }
 
     private String getTUIDFromClassifier(final Classifier classifier) {

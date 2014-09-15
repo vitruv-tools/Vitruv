@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.classifiers.ClassifiersFactory
 import org.emftext.language.java.containers.CompilationUnit
+import org.emftext.language.java.containers.JavaRoot
 import org.emftext.language.java.types.Boolean
 import org.emftext.language.java.types.Byte
 import org.emftext.language.java.types.Char
@@ -54,22 +55,22 @@ abstract class PCM2JaMoPPUtils {
 		val EStructuralFeature eStructuralFeature = featureCorrespondenceMap.claimValueForKey(affectedFeature)
 		var transformationChangeResult = new TransformationChangeResult
 
-		// we need to know whether a CompilationUnit is affected. Reason: if a CompilationUnit is changed
-		// we have to delete the old one and save the new one. However, if more than one changes in the same Compilation Unit
-		// occur we would recreate the old CompilationUnit if we save it. 
-		val boolean compilationUnitAffected = correspondingEObjects.exists[eObject|eObject instanceof CompilationUnit]
+		// we need to know whether a JavaRoot is affected. Reason: if a JavaRoot (aka. Compilation Unit or Package) is changed
+		// we have to delete the old one and save the new one. However, if more than one changes in the same JavaRoot
+		// occur we would recreate the old JavaRoot if we save it. 
+		val boolean javaRootAffected = correspondingEObjects.exists[eObject|eObject instanceof JavaRoot]
 		for (EObject correspondingObject : correspondingEObjects) {
 			val oldObject = EcoreUtil.copy(correspondingObject)
 
 			// compilationUnit was renamed: Delete old one and save new one
-			if (correspondingObject instanceof CompilationUnit) {
+			if (correspondingObject instanceof JavaRoot) {
 				transformationChangeResult.existingObjectsToDelete.add(oldObject)
 			}
 			correspondingObject.eClass.eSet(eStructuralFeature, newValue)
 			correspondenceInstance.update(oldObject, correspondingObject)
-			if (correspondingObject instanceof CompilationUnit) {
+			if (correspondingObject instanceof JavaRoot) {
 				transformationChangeResult.newRootObjectsToSave.add(correspondingObject)
-			} else if (!compilationUnitAffected) {
+			} else if (!javaRootAffected) {
 				transformationChangeResult.existingObjectsToSave.add(correspondingObject)
 			}
 		}

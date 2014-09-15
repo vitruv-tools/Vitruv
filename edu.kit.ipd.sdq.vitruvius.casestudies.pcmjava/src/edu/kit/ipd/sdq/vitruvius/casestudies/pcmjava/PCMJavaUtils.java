@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,9 +41,7 @@ public class PCMJavaUtils {
 
         final VURI jaMoPPURI = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE);
         final Set<String> jamoppNSURIs = new HashSet<String>();
-        for (String nsuri : PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE_URIS) {
-            jamoppNSURIs.add(nsuri);
-        }
+        jamoppNSURIs.addAll(Arrays.asList(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE_URIS));
         final Metamodel jaMoPPMM = new Metamodel(jamoppNSURIs, jaMoPPURI, new JaMoPPTUIDCalculatorAndResolver(),
                 PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION);
         metarepository.addMetamodel(jaMoPPMM);

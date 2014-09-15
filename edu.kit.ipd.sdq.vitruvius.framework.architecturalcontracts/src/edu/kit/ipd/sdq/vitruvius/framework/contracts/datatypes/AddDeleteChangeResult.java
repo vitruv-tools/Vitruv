@@ -3,11 +3,17 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.emf.ecore.EObject;
+
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Quadruple;
+
 /**
  * Class for add/delete/change changes. existingObjectsToSave: objects that are changed
  * newRootObjectsToSave: new Objects that should be saved existingObjectsToDelete: objects that
- * should be deleted
- * 
+ * should be deleted. The class i also used to hold new/changed/deleted correspondences that are
+ * created/updated/deleted in the actual transformation.
+ *
  * @author Langhamm
  *
  * @param <T>
@@ -18,15 +24,29 @@ import java.util.Set;
  *            Eobjects should be saved
  */
 public class AddDeleteChangeResult<T, U> extends ChangeResult {
+
     private Set<T> existingObjectsToSave;
     private Set<U> newRootObjectsToSave;
     private Set<T> existingObjectsToDelete;
 
+    Set<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>> existingCorrespondencesToUpdate;
+    Set<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>> newCorrespondences;
+    Set<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>> correspondencesToDelete;
+
+    protected void addExistingObjectToSave(final T toSave) {
+        this.existingObjectsToSave.add(toSave);
+    }
+
+    protected void addNewObjectToSave(final U newToSave) {
+        this.newRootObjectsToSave.add(newToSave);
+    }
+
+    protected void addExistingObjectToDelete(final T toDelete) {
+        this.existingObjectsToDelete.add(toDelete);
+    }
+
     public AddDeleteChangeResult() {
-        super();
-        this.existingObjectsToSave = new HashSet<T>();
-        this.newRootObjectsToSave = new HashSet<U>();
-        this.existingObjectsToDelete = new HashSet<T>();
+        this(new HashSet<T>(), new HashSet<U>(), new HashSet<T>());
     }
 
     public AddDeleteChangeResult(final Set<T> existingObjectsToSave, final Set<U> newRootObjectsToSave,
@@ -35,6 +55,15 @@ public class AddDeleteChangeResult<T, U> extends ChangeResult {
         this.existingObjectsToSave = existingObjectsToSave;
         this.newRootObjectsToSave = newRootObjectsToSave;
         this.existingObjectsToDelete = existingObjectsToDelete;
+        this.existingCorrespondencesToUpdate = new HashSet<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>>();
+        this.newCorrespondences = new HashSet<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>>();
+        this.correspondencesToDelete = new HashSet<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>>();
+    }
+
+    public void addCorrespondenceChanges(final AddDeleteChangeResult<?, ?> changeResult) {
+        this.correspondencesToDelete.addAll(changeResult.correspondencesToDelete);
+        this.existingCorrespondencesToUpdate.addAll(changeResult.existingCorrespondencesToUpdate);
+        this.newCorrespondences.addAll(changeResult.newCorrespondences);
     }
 
     public Set<T> getExistingObjectsToSave() {
@@ -49,6 +78,7 @@ public class AddDeleteChangeResult<T, U> extends ChangeResult {
         this.existingObjectsToSave.addAll(addDeleteChangeResult.existingObjectsToSave);
         this.newRootObjectsToSave.addAll(addDeleteChangeResult.newRootObjectsToSave);
         this.existingObjectsToDelete.addAll(addDeleteChangeResult.existingObjectsToDelete);
+        addCorrespondenceChanges(addDeleteChangeResult);
     }
 
     public Set<T> getExistingObjectsToDelete() {
@@ -57,5 +87,36 @@ public class AddDeleteChangeResult<T, U> extends ChangeResult {
 
     public void setExistingObjectsToDelete(final Set<T> existingObjectsToDelete) {
         this.existingObjectsToDelete = existingObjectsToDelete;
+    }
+
+    public void addNewCorrespondence(final CorrespondenceInstance correspondenceInstance, final EObject elementA,
+            final EObject elementB, final Correspondence parrentCorrespondence) {
+        this.newCorrespondences.add(new Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>(
+                correspondenceInstance, elementA, elementB, parrentCorrespondence));
+    }
+
+    public void addCorrespondenceToDelete(final CorrespondenceInstance correspondenceInstance, final EObject elementA,
+            final EObject elementB, final Correspondence correspondence) {
+        this.correspondencesToDelete.add(new Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>(
+                correspondenceInstance, elementA, elementB, correspondence));
+    }
+
+    public void addCorrespondenceToUpdate(final CorrespondenceInstance correspondenceInstance, final EObject elementA,
+            final EObject elementB, final Correspondence correspondence) {
+        this.existingCorrespondencesToUpdate
+                .add(new Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>(correspondenceInstance,
+                        elementA, elementB, correspondence));
+    }
+
+    public Set<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>> getNewCorrespondences() {
+        return this.newCorrespondences;
+    }
+
+    public Set<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>> getCorrespondencesToDelete() {
+        return this.correspondencesToDelete;
+    }
+
+    public Set<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>> getCorrespondencesToUpdate() {
+        return this.existingCorrespondencesToUpdate;
     }
 }

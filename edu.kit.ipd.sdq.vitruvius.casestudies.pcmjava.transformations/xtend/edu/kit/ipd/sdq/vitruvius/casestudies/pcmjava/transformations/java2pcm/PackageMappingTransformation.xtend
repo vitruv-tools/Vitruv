@@ -85,7 +85,7 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 		for(pcmElement : newCorrespondingEObjects){
 			correspondenceInstance.createAndAddEObjectCorrespondence(pcmElement, newRootEObject)
 		}
-		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(newCorrespondingEObjects)
+		return TransformationUtils.createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects)
 	}
 	
 	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {

@@ -14,7 +14,7 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
 
     private static final Logger logger = Logger.getLogger(DefaultTUIDCalculatorAndResolver.class.getSimpleName());
     private String nameOfIdFeature;
-    private String fileExtensionsAsString;
+    private String fileExtensionsAsString = new String();
 
     public DefaultTUIDCalculatorAndResolver(final String... fileExtensions) {
         this(VitruviusConstants.getDefaultNameOfIdentifierFeature(), fileExtensions);
@@ -37,7 +37,11 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
     public String calculateTUIDFromEObject(final EObject eObject) {
         if (eObject != null) {
             String uri = String.valueOf(TUIDIdentifier) + VitruviusConstants.getTUIDSegmentSeperator();
-            uri = uri + this.fileExtensionsAsString + VitruviusConstants.getTUIDSegmentSeperator();
+            if (null == this.fileExtensionsAsString) {
+                uri = uri + VitruviusConstants.getTUIDSegmentSeperator();
+            } else {
+                uri = uri + this.fileExtensionsAsString + VitruviusConstants.getTUIDSegmentSeperator();
+            }
             if (null != eObject.eResource()) {
                 VURI vuri = VURI.getInstance(eObject.eResource());
                 uri += vuri.toString();

@@ -14,6 +14,7 @@ import org.emftext.language.java.resource.java.mopp.JavaResourceFactory;
 import de.uka.ipd.sdq.pcm.PcmPackage;
 import de.uka.ipd.sdq.pcm.util.PcmResourceFactoryImpl;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
@@ -72,9 +73,6 @@ public final class JaMoPPPCMTestUtil {
      * @return
      */
     public static MetaRepositoryImpl createJaMoPPPCMMetaRepository() {
-        final MetaRepositoryImpl pcmJaMoPPMetaRepository = TestUtil.createMetaRepositoryWithMapping(
-                PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE, PCMJaMoPPNamespace.PCM.REPOSITORY_FILE_EXTENSION,
-                PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE, PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION);
-        return pcmJaMoPPMetaRepository;
+        return PCMJavaUtils.createPCMJavaMetarepository();
     }
 }

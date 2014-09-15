@@ -34,7 +34,6 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 		val Repository repository = eObject as Repository
 		val Package jaMoPPPackage = ContainersFactory.eINSTANCE.createPackage
 		jaMoPPPackage.name = repository.entityName
-		jaMoPPPackage.namespaces.add(jaMoPPPackage.name)
 		return jaMoPPPackage.toArray
 	}
 
@@ -42,10 +41,11 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 		if (newCorrespondingEObjects.nullOrEmpty) {
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
+		val transResult= TransformationUtils.createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects)
 		for (correspondingEObject : newCorrespondingEObjects) {
-			correspondenceInstance.createAndAddEObjectCorrespondence(newRootEObject, correspondingEObject)
+			transResult.addNewCorrespondence(correspondenceInstance, newRootEObject, correspondingEObject, null)
 		}
-		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(newCorrespondingEObjects)
+		return transResult
 	}
 
 	override removeEObject(EObject eObject) {
@@ -87,10 +87,11 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue,
 		int index, EObject[] newCorrespondingEObjects) {
 		val parrentCorrespondence = correspondenceInstance.claimUniqueOrNullCorrespondenceForEObject(affectedEObject);
+		val transformationResult = TransformationUtils.createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects)
 		for (jaMoPPElement : newCorrespondingEObjects) {
-			correspondenceInstance.createAndAddEObjectCorrespondence(newValue, jaMoPPElement, parrentCorrespondence)
+			transformationResult.addNewCorrespondence(correspondenceInstance, newValue, jaMoPPElement, parrentCorrespondence)
 		}
-		return TransformationUtils.createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects)
+		return transformationResult
 	}
 
 	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue,

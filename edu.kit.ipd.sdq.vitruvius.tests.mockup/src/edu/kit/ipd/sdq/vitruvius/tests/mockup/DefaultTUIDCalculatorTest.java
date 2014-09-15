@@ -36,16 +36,17 @@ public class DefaultTUIDCalculatorTest extends VSUMTest {
 
     public EObject testTUIDCalculator(final EObject rootEObject, final EObject eObject, final String expectedTUID) {
         TUIDCalculatorAndResolver defaultTUIDCalculatorAndResolver = new DefaultTUIDCalculatorAndResolver();
-        String tuid = defaultTUIDCalculatorAndResolver.calculateTUIDFromEObject(eObject);
+        String calculatedTuid = defaultTUIDCalculatorAndResolver.calculateTUIDFromEObject(eObject);
         // Calculated TUID contains more than just the UUID itself. It also contains the resource
         // and the class name that was used to create the TUID. Hence, we just compare with contains
         // instead of equals
-        assertNotNull("Calculated TUID is null", tuid);
-        assertTrue("Calculated TUID does not contain expected TUID", tuid.contains(expectedTUID));
-        String tuidSuffix = TUID.getInstance(tuid).getMinimalSuffix();
-        assertNotNull("TUID Suffix is null", tuidSuffix);
+        assertNotNull("Calculated TUID is null", calculatedTuid);
+        assertTrue("Calculated TUID does not contain expected TUID", calculatedTuid.contains(expectedTUID));
+        TUID tuid = TUID.getInstance(calculatedTuid);
+        String tuidString = tuid.toString();
+        assertNotNull("TUID string is null", tuidString);
         EObject resolvedEObject = defaultTUIDCalculatorAndResolver.resolveEObjectFromRootAndFullTUID(rootEObject,
-                tuidSuffix);
+                tuidString);
         assertNotNull(resolvedEObject);
         return resolvedEObject;
     }

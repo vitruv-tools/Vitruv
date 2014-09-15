@@ -38,7 +38,7 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 		val Package jaMoPPPackage = ContainersFactory.eINSTANCE.createPackage
 		jaMoPPPackage.name = basicComponent.entityName
 		jaMoPPPackage.namespaces.addAll(rootPackage.namespaces)
-		jaMoPPPackage.namespaces.add(jaMoPPPackage.name)
+		jaMoPPPackage.namespaces.add(rootPackage.name)
 
 		//create JaMoPP compilation unit and JaMoPP class 
 		val Class jaMoPPClass = ClassifiersFactory.eINSTANCE.createClass
@@ -53,6 +53,8 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 		// add compilation unit to package		
 		jaMoPPPackage.compilationUnits.add(jaMoPPCompilationUnit)
 		jaMoPPCompilationUnit.namespaces.addAll(jaMoPPPackage.namespaces)
+		jaMoPPCompilationUnit.namespaces.add(jaMoPPPackage.name)
+		jaMoPPPackage.compilationUnits.add(jaMoPPCompilationUnit)
 
 		return #[jaMoPPPackage, jaMoPPCompilationUnit, jaMoPPClass];
 	}
@@ -67,10 +69,11 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 		val Correspondence parentCorrespondence = correspondenceInstance.
 			claimUniqueOrNullCorrespondenceForEObject(rootPackage)
 
+		val transformationResult =TransformationUtils.createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects) 
 		for (jaMoPPElement : newCorrespondingEObjects) {
-			correspondenceInstance.createAndAddEObjectCorrespondence(basicComponent, jaMoPPElement, parentCorrespondence)
+			transformationResult.addNewCorrespondence(correspondenceInstance, basicComponent, jaMoPPElement, parentCorrespondence)
 		}
-		return TransformationUtils.createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects)
+		return transformationResult
 	}
 
 	override removeEObject(EObject eObject) {

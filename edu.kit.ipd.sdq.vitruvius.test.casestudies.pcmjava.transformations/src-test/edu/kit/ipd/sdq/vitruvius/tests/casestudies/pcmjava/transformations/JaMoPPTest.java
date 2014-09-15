@@ -22,16 +22,16 @@ public class JaMoPPTest {
 
     @Before
     public void setUp() throws Exception {
-    }
-
-    @Test
-    public void testJaMoPPRename() throws IOException {
         // register JaMoPP package and factory globally
         EPackage.Registry.INSTANCE.put(JavaPackage.eNS_URI, JavaPackage.eINSTANCE);
         final Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
         final Map<String, Object> m = reg.getExtensionToFactoryMap();
         m.put("java", new JavaResourceFactory());
+        m.put("", new JavaResourceFactory());
+    }
 
+    @Test
+    public void testJaMoPPRename() throws IOException {
         final Package jaMoPPPackage = ContainersFactory.eINSTANCE.createPackage();
         final Interface jaMoPPInterface = ClassifiersFactory.eINSTANCE.createInterface();
         jaMoPPInterface.setName("TestJava");
@@ -52,6 +52,20 @@ public class JaMoPPTest {
         uri = URI.createFileURI(uriStr);
         resource = resourceSet.createResource(uri);
         resource.getContents().add(jaMoPPCompilationUnit);
+        resource.save(null);
+    }
+
+    @Test
+    public void testJaMoPPPackage() throws Exception {
+        final Package jaMoPPPackage = ContainersFactory.eINSTANCE.createPackage();
+        jaMoPPPackage.setName("testpackageName");
+        final ResourceSet resourceSet = new ResourceSetImpl();
+        final String srcPath = "src-tmp/";
+        String packageName = jaMoPPPackage.getNamespacesAsString() + jaMoPPPackage.getName();
+        packageName = packageName.replace(".", "/");
+        final URI uri = URI.createFileURI(srcPath + packageName + "/package-info.java");
+        final Resource resource = resourceSet.createResource(uri);
+        resource.getContents().add(jaMoPPPackage);
         resource.save(null);
     }
 }

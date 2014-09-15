@@ -9,7 +9,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.emftext.language.java.containers.CompilationUnit;
+import org.emftext.language.java.containers.JavaRoot;
+import org.emftext.language.java.containers.Package;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMappingTransformation;
@@ -94,6 +95,8 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
         this.handleNewRootEObjects(transformationChangeResult.getNewRootObjectsToSave(),
                 emfChangeResult.getNewRootObjectsToSave(), emfModelChange.getURI());
 
+        emfChangeResult.addCorrespondenceChanges(transformationChangeResult);
+
         return emfChangeResult;
     }
 
@@ -123,8 +126,8 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
     private void handleNewRootEObjects(final Set<EObject> newRootEObjectsToSave,
             final Set<Pair<EObject, VURI>> newVURIsToSave, final VURI sourceModelVURI) {
         for (final EObject newRootEObject : newRootEObjectsToSave) {
-            if (newRootEObject instanceof CompilationUnit) {
-                final CompilationUnit newCompUnit = (CompilationUnit) newRootEObject;
+            if (newRootEObject instanceof JavaRoot) {
+                final JavaRoot newJavaRoot = (JavaRoot) newRootEObject;
                 final IFile fileSourceModel = EMFBridge.getIFileForEMFUri(sourceModelVURI.getEMFUri());
                 final IProject projectSourceModel = fileSourceModel.getProject();
                 // TODO: use configured src-folder path instead of hardcoded "src"
@@ -132,12 +135,15 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
                 if (srcFolderPath.startsWith("/")) {
                     srcFolderPath = srcFolderPath.substring(1, srcFolderPath.length());
                 }
-                final String compUnitPath = newCompUnit.getNamespacesAsString().replace(".", "/").replace("$", "/")
-                        + newCompUnit.getName().replace("$", ".");
-                final VURI cuVURI = VURI.getInstance(srcFolderPath + compUnitPath);
-                final Pair<EObject, VURI> newEObjectVURIPair = new Pair<EObject, VURI>(newCompUnit, cuVURI);
+                String javaRootPath = newJavaRoot.getNamespacesAsString().replace(".", "/").replace("$", "/")
+                        + newJavaRoot.getName().replace("$", ".");
+                if (newJavaRoot instanceof Package) {
+                    javaRootPath = javaRootPath + "/package-info.java";
+                }
+                final VURI cuVURI = VURI.getInstance(srcFolderPath + javaRootPath);
+                final Pair<EObject, VURI> newEObjectVURIPair = new Pair<EObject, VURI>(newJavaRoot, cuVURI);
                 newVURIsToSave.add(newEObjectVURIPair);
-            }// TODO: Else if instanceof Repository
+            } // TODO: Else if instanceof Repository
         }
     }
 

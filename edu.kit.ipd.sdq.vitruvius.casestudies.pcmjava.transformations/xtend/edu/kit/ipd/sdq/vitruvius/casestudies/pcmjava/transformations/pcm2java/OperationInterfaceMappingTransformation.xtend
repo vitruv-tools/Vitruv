@@ -60,12 +60,13 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 		val Interface jaMoPPIf = correspondenceInstance.getCorrespondingEObjectsByType(affectedEObject, Interface).
 			get(0)
 		val parrentCorrespondence = correspondenceInstance.getAllCorrespondences(affectedEObject).get(0)
+		val transformationResult = TransformationUtils.createTransformationChangeResultForEObjectsToSave(jaMoPPIf.toArray) 
 		for (eObject : newMethods) {
 			val InterfaceMethod newMethod = eObject as InterfaceMethod;
 			jaMoPPIf.methods.add(index, newMethod);
-			correspondenceInstance.createAndAddEObjectCorrespondence(newValue, newMethod, parrentCorrespondence)
+			transformationResult.addNewCorrespondence(correspondenceInstance, newValue, newMethod, parrentCorrespondence)
 		}
-		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(jaMoPPIf.toArray)
+		return transformationResult
 	}
 
 	/**

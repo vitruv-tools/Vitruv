@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
@@ -11,6 +12,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
@@ -22,7 +24,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondencePr
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.InvariantProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Quadruple;
 
 public class SyncManagerImpl implements ChangeSynchronizing {
 
@@ -99,6 +103,36 @@ public class SyncManagerImpl implements ChangeSynchronizing {
             } catch (IOException e) {
                 throw new RuntimeException("Could not delete VURI: " + vuriToDelete + ". Exception: " + e);
             }
+        }
+
+        // update correspondenceInstances
+        removeOldCorrespondences(emfChangeResult.getCorrespondencesToDelete());
+        addNewCorrespondences(emfChangeResult.getNewCorrespondences());
+        updateExistingCorrespondence(emfChangeResult.getCorrespondencesToUpdate());
+    }
+
+    private void removeOldCorrespondences(
+            final Set<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>> correspondencesToDelete) {
+        for (final Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence> quadruple : correspondencesToDelete) {
+            CorrespondenceInstance correspondenceInstance = quadruple.getFirst();
+            correspondenceInstance.removeCorrespondenceAndAllDependentCorrespondences(quadruple.getFourth());
+        }
+    }
+
+    private void addNewCorrespondences(
+            final Set<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>> newCorrespondences) {
+        for (final Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence> quadruple : newCorrespondences) {
+            CorrespondenceInstance correspondenceInstance = quadruple.getFirst();
+            correspondenceInstance.createAndAddEObjectCorrespondence(quadruple.getSecond(), quadruple.getThird(),
+                    quadruple.getFourth());
+        }
+    }
+
+    private void updateExistingCorrespondence(
+            final Set<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>> correspondencesToUpdate) {
+        for (final Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence> quadruple : correspondencesToUpdate) {
+            CorrespondenceInstance correspondenceInstance = quadruple.getFirst();
+            correspondenceInstance.update(quadruple.getSecond(), quadruple.getThird());
         }
     }
 

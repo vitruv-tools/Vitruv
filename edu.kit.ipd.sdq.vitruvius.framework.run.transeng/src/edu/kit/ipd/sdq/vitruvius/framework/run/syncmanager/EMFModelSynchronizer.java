@@ -40,11 +40,11 @@ class EMFModelSynchronizer extends ConcreteChangeSynchronizer {
                     + ". Change not sychronized with any other model.");
             return new EMFChangeResult();
         }
-        EMFChangeResult emfChangeResult = new EMFChangeResult();
+        EMFChangeResult globalEMFChangeResult = new EMFChangeResult();
         for (CorrespondenceInstance correspondenceInstance : correspondenceInstances) {
             ChangeResult currentChangeResult = this.changePropagating.propagateChange(change, correspondenceInstance);
-            emfChangeResult.addChangeResult((EMFChangeResult) currentChangeResult);
+            globalEMFChangeResult.addChangeResult((EMFChangeResult) currentChangeResult);
         }
-        return emfChangeResult;
+        return globalEMFChangeResult;
     }
 }
