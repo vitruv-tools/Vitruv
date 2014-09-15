@@ -228,4 +228,10 @@ public class JaMoPPTUIDCalculatorAndResolver implements TUIDCalculatorAndResolve
     public boolean isValidTUID(final String tuid) {
         return tuid.startsWith(TUIDIdentifier);
     }
+
+    @Override
+    public String calculateTUIDFromEObject(final EObject eObject, final EObject virtualRootObject, final String prefix) {
+        throw new UnsupportedOperationException(
+                "Calculating a TUID with a given prefix is not supported at the moment.");
+    }
 }

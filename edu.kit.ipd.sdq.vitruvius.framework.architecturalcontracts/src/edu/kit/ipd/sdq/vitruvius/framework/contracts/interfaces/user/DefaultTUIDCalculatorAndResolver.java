@@ -58,6 +58,12 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
     }
 
     @Override
+    public String calculateTUIDFromEObject(final EObject eObject, final EObject virtualRootObject, final String prefix) {
+        throw new UnsupportedOperationException("The " + DefaultTUIDCalculatorAndResolver.class.getSimpleName()
+                + " is not able to process a prefix during the TUID calculation.");
+    }
+
+    @Override
     public VURI getModelVURIContainingIdentifiedEObject(final String tuid) {
         String[] tuidParts = tuid.split(VitruviusConstants.getTUIDSegmentSeperator());
         checkTUID(tuidParts);
@@ -138,4 +144,5 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
         }
         return null;
     }
+
 }

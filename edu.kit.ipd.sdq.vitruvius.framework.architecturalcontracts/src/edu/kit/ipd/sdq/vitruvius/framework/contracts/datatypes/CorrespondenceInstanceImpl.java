@@ -83,7 +83,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#getMapping()
      */
@@ -94,7 +94,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#hasCorrespondences
      * (org.eclipse.emf.ecore.EObject)
@@ -108,7 +108,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
      * claimCorrespondences(org.eclipse.emf.ecore.EObject)
      */
@@ -135,7 +135,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
      * getAllCorrespondences(org.eclipse.emf.ecore.EObject)
      */
@@ -156,7 +156,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
      * claimCorrespondingEObjects(org.eclipse.emf.ecore.EObject)
      */
@@ -179,7 +179,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
      * getAllCorrespondingEObjects(org.eclipse.emf.ecore.EObject)
      */
@@ -200,7 +200,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
      * claimUniqueCorrespondingEObject(org.eclipse.emf.ecore.EObject)
      */
@@ -216,7 +216,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
      * claimCorrespondingEObjectsByType(org.eclipse.emf.ecore.EObject, java.lang.Class)
      */
@@ -238,7 +238,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
      * getCorrespondingEObjectsByType(org.eclipse.emf.ecore.EObject, java.lang.Class)
      */
@@ -253,7 +253,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
      * claimUniqueCorrespondingEObjectByType(org.eclipse.emf.ecore.EObject, java.lang.Class)
      */
@@ -270,7 +270,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
      * claimUniqueOrNullCorrespondenceForEObject(org.eclipse.emf.ecore.EObject)
      */
@@ -284,7 +284,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
      * claimUniqueCorrespondence(org.eclipse.emf.ecore.EObject)
      */
@@ -300,7 +300,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
      * getAllEObjectsInCorrespondencesWithType(java.lang.Class)
      */
@@ -350,7 +350,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
      * addSameTypeCorrespondence
      * (edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence)
@@ -362,7 +362,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
      * addSameTypeCorrespondence
      * (edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence,
@@ -445,7 +445,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
      * changedAfterLastSave()
      */
@@ -456,7 +456,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
      * resetChangedAfterLastSave()
      */
@@ -477,7 +477,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
      * removeAllCorrespondences(org.eclipse.emf.ecore.EObject)
      */
@@ -499,7 +499,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
      * removeCorrespondenceAndAllDependentCorrespondences
      * (edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence)
@@ -553,7 +553,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
      * getAllCorrespondingFeatureInstances(org.eclipse.emf.ecore.EObject,
      * org.eclipse.emf.ecore.EStructuralFeature)
@@ -567,7 +567,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
      * getAllCorrespondingFeatureInstances
      * (edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FeatureInstance)
@@ -579,7 +579,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
      * claimCorrespondingFeatureInstances
      * (edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FeatureInstance)
@@ -591,7 +591,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
      * claimUniqueCorrespondingFeatureInstance
      * (edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FeatureInstance)
@@ -627,7 +627,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#update(org
      * .eclipse.emf.ecore.EObject, org.eclipse.emf.ecore.EObject)
@@ -636,10 +636,23 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     public void update(final EObject oldEObject, final EObject newEObject) {
         TUID oldTUID = calculateTUIDFromEObject(oldEObject);
         TUID newTUID = calculateTUIDFromEObject(newEObject);
-        boolean sameTUID = oldTUID != null ? oldTUID.equals(newTUID) : newTUID == null;
+        update(oldTUID, newTUID);
+    }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#update(edu
+     * .kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID,
+     * edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID)
+     */
+    @Override
+    public void update(final TUID oldTUID, final TUID newTUID) {
+        // TODO Think about feature instances when they work again
+
+        boolean sameTUID = oldTUID != null ? oldTUID.equals(newTUID) : newTUID == null;
         if (sameTUID) {
-            // TODO Think about feature instances when they work again
             return;
         }
 
@@ -648,27 +661,11 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
         updateTUID2CorrespondencesMap(oldTUIDUpdate, newTUIDUpdate, sameTUID);
         updateTUID2CorrespondingEObjectsMap(oldTUIDUpdate, newTUIDUpdate, sameTUID);
-        updateFeatureInstances(oldEObject, newEObject, oldTUIDUpdate);
+        // updateFeatureInstances(oldEObject, newEObject, oldTUIDUpdate);
 
         // update the TUID only at last because of the side-effect on all other TUIDs
         oldTUIDUpdate.updateSingleSegment(newTUIDUpdate);
-
-        // dumpCorrespondences();
     }
-
-    // private void dumpCorrespondences() {
-    // System.out.println("tuid2CorrespondencesMap keys");
-    // for (TUID key : this.tuid2CorrespondencesMap.keySet()) {
-    // System.out.println("\t" + key);
-    // }
-    // System.out.println("tuid2CorrespondingTUIDsMap");
-    // for (TUID key : this.tuid2CorrespondingTUIDsMap.keySet()) {
-    // System.out.println("\t" + key);
-    // for (TUID value : this.tuid2CorrespondingTUIDsMap.get(key)) {
-    // System.out.println("\t\t" + value);
-    // }
-    // }
-    // }
 
     private void updateFeatureInstances(final EObject oldEObject, final EObject newEObject, final TUID oldTUID) {
         Collection<FeatureInstance> oldFeatureInstances = FeatureInstance.getAllInstances(oldEObject);
@@ -816,4 +813,5 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         addSameTypeCorrespondence(correspondence);
         return correspondence;
     }
+
 }
