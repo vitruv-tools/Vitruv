@@ -225,7 +225,7 @@ public class ForwardHashedBackwardLinkedTree<T> {
      * @return all direct and indirect successor segments that became obsolete because they existed
      *         already at the destination
      */
-    public Collection<Segment> mergeSegmentIntoAnother(final Segment origin, final Segment destination) {
+    public Collection<Pair<Segment, Segment>> mergeSegmentIntoAnother(final Segment origin, final Segment destination) {
         List<T> originValueList = origin.toValueList();
         List<T> destinationValueList = destination.toValueList();
         return this.recursiveMap.mergeLeafIntoAnother(origin, originValueList, destination, destinationValueList);

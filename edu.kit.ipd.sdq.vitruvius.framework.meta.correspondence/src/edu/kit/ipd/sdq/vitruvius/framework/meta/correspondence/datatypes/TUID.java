@@ -16,6 +16,7 @@ import com.google.common.base.Strings;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ForwardHashedBackwardLinkedTree;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ForwardHashedBackwardLinkedTree.Segment;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 /**
  * A class for Temporarily Unique IDentifiers (TUIDs) that internally uses a
@@ -184,16 +185,18 @@ public class TUID {
      *            the full TUID of the move destination
      */
     public void moveLastSegment(final TUID fullDestinationTUID) {
-        Collection<ForwardHashedBackwardLinkedTree<String>.Segment> obsoleteSegments = SEGMENTS
+        Collection<Pair<ForwardHashedBackwardLinkedTree<String>.Segment,ForwardHashedBackwardLinkedTree<String>.Segment>> updatedSegmentPairs = SEGMENTS
                 .mergeSegmentIntoAnother(this.lastSegment, fullDestinationTUID.lastSegment);
         // remove the entry for all old last segments that have the destinationTUID as real prefix
         // as a result new requests for these TUIDs will return the TUIDs that have the destination
         // path as pefix
-        for (ForwardHashedBackwardLinkedTree<String>.Segment obsoleteSegment : obsoleteSegments) {
-            LAST_SEGMENT_2_TUID_INSTANCES_MAP.remove(obsoleteSegment);
+        for (Pair<ForwardHashedBackwardLinkedTree<String>.Segment,ForwardHashedBackwardLinkedTree<String>.Segment> updatedSegmentPair : updatedSegmentPairs) {
+        	Segment oldSegment = updatedSegmentPair.getFirst();
+            Segment newSegment = updatedSegmentPair.getSecond();
+            TUID tuid = LAST_SEGMENT_2_TUID_INSTANCES_MAP.get(oldSegment);
+            tuid.lastSegment = newSegment;
+            LAST_SEGMENT_2_TUID_INSTANCES_MAP.remove(oldSegment);
         }
-        LAST_SEGMENT_2_TUID_INSTANCES_MAP.remove(this.lastSegment);
-        this.lastSegment = fullDestinationTUID.lastSegment;
     }
     
     private int findCommonPrefixSegmentCount(final TUID otherTUID) {

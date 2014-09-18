@@ -152,7 +152,7 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
     }
 
     @Override
-    public Collection<V> mergeLeafIntoAnother(final V originLeaf, final List<K> originValueList,
+    public Collection<Pair<V,V>> mergeLeafIntoAnother(final V originLeaf, final List<K> originValueList,
             final V destinationLeaf, final List<K> destinationValueList) {
         Pair<RecursiveMap<K, V>, K> mapAndKeyForOriginLeaf = getMapAndKeyForLeaf(originLeaf, originValueList);
         RecursiveMap<K, V> mapForOriginLeaf = mapAndKeyForOriginLeaf.getFirst();
@@ -165,7 +165,9 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
                     destinationValueList);
             RecursiveMap<K, V> mapForDestinationLeaf = mapAndKeyForDestinationLeaf.getFirst();
             K destinationKey = mapAndKeyForDestinationLeaf.getSecond();
-            return mapForDestinationLeaf.mergeNextMap(destinationKey, destinationLeaf, removedRecursiveMap);
+            Collection<Pair<V,V>> updatedValues = mapForDestinationLeaf.mergeNextMap(destinationKey, destinationLeaf, removedRecursiveMap);
+            updatedValues.add(new Pair<V,V>(removedLeaf,destinationLeaf));
+            return updatedValues;
         } else {
             throw new IllegalStateException("mapForOriginLeaf '" + mapForOriginLeaf + "' did not contain '"
                     + originLeaf + "' but '" + removedLeaf + "!");
@@ -197,7 +199,7 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
     }
 
     @Override
-    public Collection<V> mergeNextMap(final K key, final V value, final RecursiveMap<K, V> mapToAdd) {
+    public Collection<Pair<V,V>> mergeNextMap(final K key, final V value, final RecursiveMap<K, V> mapToAdd) {
         RecursiveMap<K, V> mapForKey = this.key2NextRecursiveMapMap.get(key);
         if (mapForKey == null) {
             if (mapToAdd == null) {
@@ -211,8 +213,8 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
     }
 
     @Override
-    public Collection<V> mergeMaps(V previousValue, final RecursiveMap<K, V> mapToAdd) {
-        final Collection<V> obsoleteValues = new LinkedList<V>();
+    public Collection<Pair<V,V>> mergeMaps(V previousValue, final RecursiveMap<K, V> mapToAdd) {
+        final Collection<Pair<V,V>> updatedValues = new LinkedList<Pair<V,V>>();
         Pair<Set<Map.Entry<K, RecursiveMap<K, V>>>, Set<Map.Entry<K, V>>> entrySets = mapToAdd.entrySets();
         Set<Entry<K, RecursiveMap<K, V>>> nextMapsToAddEntries = entrySets.getFirst();
         Set<Entry<K, V>> key2ValuesToAddEntries = entrySets.getSecond();
@@ -225,7 +227,7 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
             } else {
             	// recursion in next map layer
             	V newPreviousValue = this.key2ValueMap.get(nextKey);
-                obsoleteValues.addAll(currentMapForNextKey.mergeMaps(newPreviousValue, nextMapToAdd));
+                updatedValues.addAll(currentMapForNextKey.mergeMaps(newPreviousValue, nextMapToAdd));
             }
         }
         for (Entry<K, V> key2ValueToAddEntry : key2ValuesToAddEntries) {
@@ -243,11 +245,11 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
                         this.valueCreatorAndLinker.linkSubsequentValuesAndOverride(currentValueForNextKey, leafValue);
                     }
                 }
-                obsoleteValues.add(nextValueToAdd);
+                updatedValues.add(new Pair<V,V>(nextValueToAdd,currentValueForNextKey));
             }
             this.valueCreatorAndLinker.linkSubsequentValuesAndOverride(previousValue, currentValueForNextKey);
         }
-        return obsoleteValues;
+        return updatedValues;
     }
 
     @Override
