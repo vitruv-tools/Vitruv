@@ -103,7 +103,7 @@ public class JaMoPPTUIDCalculatorAndResolver implements TUIDCalculatorAndResolve
     }
 
     private EObject findEObjectInCompilationUnit(final CompilationUnit cu, final String[] ids) {
-        if (0 == ids.length) {
+        if (0 == ids.length || (1 == ids.length && ids[0].isEmpty())) {
             return cu;
         }
         Classifier classifier = cu.getContainedClassifier(ids[0]);
@@ -174,6 +174,10 @@ public class JaMoPPTUIDCalculatorAndResolver implements TUIDCalculatorAndResolve
     }
 
     private String getTUIDFromJavaRoot(final JavaRoot javaRoot) {
+        if (null == javaRoot || null == javaRoot.eResource()) {
+            logger.error("Could not get TUID from javaRoot " + javaRoot + " because it is not contained in a resource");
+            return "";
+        }
         URI uri = javaRoot.eResource().getURI();
         return uri.toString();
     }

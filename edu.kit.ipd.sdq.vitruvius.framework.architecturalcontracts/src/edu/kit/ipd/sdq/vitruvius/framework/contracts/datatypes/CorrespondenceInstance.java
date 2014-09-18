@@ -169,7 +169,31 @@ public interface CorrespondenceInstance {
 
     public FeatureInstance claimUniqueCorrespondingFeatureInstance(FeatureInstance featureInstance);
 
+    /**
+     * updates the TUID of an EObject
+     *
+     * @param oldEObject
+     *            the old EObject
+     * @param newEObject
+     *            the new EObject
+     */
     public void update(EObject oldEObject, EObject newEObject);
+
+    /**
+     * Updates the old TUID with the TUID of the EObject. This method can be used when the TUID of
+     * the old Object is known and the old Object can not be passed to the update(EObject, EObject)
+     * method. However, this requires that the user a) is able to calculate TUIDs, and b) is aware
+     * of TUIDs.
+     *
+     * Note: The oldTUIDString has to be created with the same TUIDCalculator and resolver that is
+     * used for the newEObject
+     *
+     * @param oldTUID
+     *            the old TUID
+     * @param newEObject
+     *            the new EObject
+     */
+    public void update(TUID oldTUID, EObject newEObject);
 
     public void update(TUID oldTUID, TUID newTUID);
 
@@ -202,4 +226,5 @@ public interface CorrespondenceInstance {
     public EObjectCorrespondence createAndAddEObjectCorrespondence(EObject a, EObject b, Correspondence parent);
 
     public <T> Set<T> getCorrespondingEObjectsByType(EObject eObject, Class<T> type);
+
 }

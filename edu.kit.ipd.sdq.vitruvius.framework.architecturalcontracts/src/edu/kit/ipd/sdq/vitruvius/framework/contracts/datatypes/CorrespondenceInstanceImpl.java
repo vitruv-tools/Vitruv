@@ -635,6 +635,11 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     @Override
     public void update(final EObject oldEObject, final EObject newEObject) {
         TUID oldTUID = calculateTUIDFromEObject(oldEObject);
+        this.update(oldTUID, newEObject);
+    }
+
+    @Override
+    public void update(final TUID oldTUID, final EObject newEObject) {
         TUID newTUID = calculateTUIDFromEObject(newEObject);
         update(oldTUID, newTUID);
     }
@@ -661,6 +666,8 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
         updateTUID2CorrespondencesMap(oldTUIDUpdate, newTUIDUpdate, sameTUID);
         updateTUID2CorrespondingEObjectsMap(oldTUIDUpdate, newTUIDUpdate, sameTUID);
+        // FIXME AAA MAX reactivate feature instance stuff without EObject
+        // updateFeatureInstances(oldTUID, newTUID, oldTUIDUpdate);
         // updateFeatureInstances(oldEObject, newEObject, oldTUIDUpdate);
 
         // update the TUID only at last because of the side-effect on all other TUIDs

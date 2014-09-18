@@ -56,4 +56,12 @@ public class Quadruple<A, B, C, D> extends Triple<A, B, C> {
     public D getFourth() {
         return this.fourth;
     }
+
+    @Override
+    public int hashCode() {
+        final int firstSecondAndThird = super.hashCode();
+        final int fourth = this.getFourth() == null ? 0 : this.getFourth().hashCode();
+
+        return firstSecondAndThird + (2 * 2 * 37 * fourth);
+    }
 }

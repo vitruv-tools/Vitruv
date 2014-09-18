@@ -118,7 +118,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
                 this.vsum);
         // create syncManager
         this.changeSynchronizing = smi;
-        return smi.getModelProviding();
+        return this.vsum;
     }
 
     private IVitruviusAccessor createVitruviusAccessor() {
@@ -150,7 +150,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
     class VitruviusEMFDeltaVisitor implements IResourceDeltaVisitor {
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.core.resources.IResourceDeltaVisitor#visit(org.eclipse.core.resources.
          * IResourceDelta)
          */
@@ -192,7 +192,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.core.internal.events.InternalBuilder#build(int, java.util.Map,
      * org.eclipse.core.runtime.IProgressMonitor)
      */
@@ -240,7 +240,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
 
     /**
      * Removes file from Vitruvius control by deleting its root element
-     * 
+     *
      * @param iResource
      *            resource to remove
      */

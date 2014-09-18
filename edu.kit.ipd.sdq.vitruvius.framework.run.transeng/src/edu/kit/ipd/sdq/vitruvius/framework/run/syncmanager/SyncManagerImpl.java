@@ -25,6 +25,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.InvariantProvidi
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Quadruple;
 
@@ -91,12 +92,17 @@ public class SyncManagerImpl implements ChangeSynchronizing {
             this.modelProviding.saveModelInstanceOriginal(mi.getURI());
         }
 
+        // update correspondenceInstances
+        removeOldCorrespondences(emfChangeResult.getCorrespondencesToDelete());
+        addNewCorrespondences(emfChangeResult.getNewCorrespondences());
+        updateExistingCorrespondence(emfChangeResult.getCorrespondencesToUpdate());
+
         // TODO: Check wheather we need a deleteModelInstanceOriginal in VSUM.
         // Here we usually do not need it because we usually delete JaMoPP resource that are renamed
         // Hence we do not need to remove the correspondence models etc.However the question is what
         // happens if we delete, e.g. a PCM instance.
         for (VURI vuriToDelete : emfChangeResult.getExistingObjectsToDelete()) {
-            ModelInstance mi = getModelProviding().getAndLoadModelInstanceOriginal(vuriToDelete);
+            ModelInstance mi = this.modelProviding.getAndLoadModelInstanceOriginal(vuriToDelete);
             Resource resource = mi.getResource();
             try {
                 resource.delete(null);
@@ -105,10 +111,6 @@ public class SyncManagerImpl implements ChangeSynchronizing {
             }
         }
 
-        // update correspondenceInstances
-        removeOldCorrespondences(emfChangeResult.getCorrespondencesToDelete());
-        addNewCorrespondences(emfChangeResult.getNewCorrespondences());
-        updateExistingCorrespondence(emfChangeResult.getCorrespondencesToUpdate());
     }
 
     private void removeOldCorrespondences(
@@ -129,14 +131,10 @@ public class SyncManagerImpl implements ChangeSynchronizing {
     }
 
     private void updateExistingCorrespondence(
-            final Set<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>> correspondencesToUpdate) {
-        for (final Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence> quadruple : correspondencesToUpdate) {
+            final Set<Quadruple<CorrespondenceInstance, TUID, EObject, Correspondence>> correspondencesToUpdate) {
+        for (final Quadruple<CorrespondenceInstance, TUID, EObject, Correspondence> quadruple : correspondencesToUpdate) {
             CorrespondenceInstance correspondenceInstance = quadruple.getFirst();
             correspondenceInstance.update(quadruple.getSecond(), quadruple.getThird());
         }
-    }
-
-    public ModelProviding getModelProviding() {
-        return this.modelProviding;
     }
 }

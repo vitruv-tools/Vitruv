@@ -88,9 +88,9 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
 
         // Translate TransformationChangeResult to EMFChangeResult
         final EMFChangeResult emfChangeResult = new EMFChangeResult();
-        this.handleEObjectsInTransformationChange(transformationChangeResult.getExistingObjectsToDelete(),
+        this.handleEObjectsToDeleteInTransformationChange(transformationChangeResult.getExistingObjectsToDelete(),
                 emfChangeResult.getExistingObjectsToDelete());
-        this.handleEObjectsInTransformationChange(transformationChangeResult.getExistingObjectsToSave(),
+        this.handleEObjectsToSaveInTransformationChange(transformationChangeResult.getExistingObjectsToSave(),
                 emfChangeResult.getExistingObjectsToSave());
         this.handleNewRootEObjects(transformationChangeResult.getNewRootObjectsToSave(),
                 emfChangeResult.getNewRootObjectsToSave(), emfModelChange.getURI());
@@ -147,16 +147,22 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
         }
     }
 
-    private void handleEObjectsInTransformationChange(final Set<EObject> eObjectsInTransformationChange,
+    private void handleEObjectsToSaveInTransformationChange(final Set<EObject> eObjectsInTransformationChange,
             final Set<VURI> vurisInEMFResultChange) {
         for (final EObject eObject : eObjectsInTransformationChange) {
             final Resource resource = eObject.eResource();
             if (null == resource) {
-                logger.warn("Resource of EObject is null. Can not handle resource of eObject: " + eObject);
+                logger.warn("Resource of EObject is null. Can not save resource of eObject: " + eObject);
                 continue;
             }
             final VURI vuri = VURI.getInstance(resource);
             vurisInEMFResultChange.add(vuri);
         }
+    }
+
+    private void handleEObjectsToDeleteInTransformationChange(
+            final Set<VURI> existingObjectsToDeleteeInTransformationChangeResult,
+            final Set<VURI> existingObjectsToDeleteInEMFChangeResult) {
+        existingObjectsToDeleteInEMFChangeResult.addAll(existingObjectsToDeleteeInTransformationChangeResult);
     }
 }

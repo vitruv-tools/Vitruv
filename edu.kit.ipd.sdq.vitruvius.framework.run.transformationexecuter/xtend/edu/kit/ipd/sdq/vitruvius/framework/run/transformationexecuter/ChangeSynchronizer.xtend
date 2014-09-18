@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter
+package edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter 
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
@@ -62,11 +62,11 @@ public class ChangeSynchronizer {
 
 	def public TransformationChangeResult synchronizeChange(EChange change) {
 		val transformationChangeResult = syncChange(change)
-		updateTUID(change)
+		transformationChangeResult.updateTUIDOfAffectedEObjectInEChange(change)
 		return transformationChangeResult
 	}
 
-	def protected updateTUID(EChange change) {
+	def protected updateTUIDOfAffectedEObjectInEChange(TransformationChangeResult tcr, EChange change) {
 		if (change instanceof EFeatureChange<?>) {
 			val EFeatureChange<?> eFeatureChange = change as EFeatureChange<?>
 			val EObject oldAffectedEObject = eFeatureChange.oldAffectedEObject

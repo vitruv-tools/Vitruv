@@ -51,4 +51,12 @@ public class Triple<A, B, C> extends Pair<A, B> {
     public C getThird() {
         return this.third;
     }
+
+    @Override
+    public int hashCode() {
+        final int firstAndSecond = super.hashCode();
+        final int third = this.getThird() == null ? 0 : this.getThird().hashCode();
+
+        return firstAndSecond + (2 * 37 * third);
+    }
 }

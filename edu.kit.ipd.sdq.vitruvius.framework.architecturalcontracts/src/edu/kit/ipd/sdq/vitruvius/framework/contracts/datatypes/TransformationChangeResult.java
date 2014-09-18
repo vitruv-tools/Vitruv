@@ -13,14 +13,14 @@ import org.eclipse.emf.ecore.EObject;
  * @author Langhamm
  *
  */
-public class TransformationChangeResult extends AddDeleteChangeResult<EObject, EObject> {
+public class TransformationChangeResult extends AddDeleteChangeResult<EObject, EObject, VURI> {
 
     public TransformationChangeResult() {
         super();
     }
 
     public TransformationChangeResult(final Set<EObject> existingEObjectsToSave, final Set<EObject> newEObjects,
-            final Set<EObject> existingEObjectsIsToDelete) {
+            final Set<VURI> existingEObjectsIsToDelete) {
         super(existingEObjectsToSave, newEObjects, existingEObjectsIsToDelete);
     }
 }

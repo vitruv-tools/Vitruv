@@ -6,7 +6,7 @@ import org.eclipse.emf.ecore.EObject;
 
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
-public class EMFChangeResult extends AddDeleteChangeResult<VURI, Pair<EObject, VURI>> {
+public class EMFChangeResult extends AddDeleteChangeResult<VURI, Pair<EObject, VURI>, VURI> {
 
     public EMFChangeResult() {
         super();

@@ -45,7 +45,7 @@ public final class EcoreResourceBridge {
      * @return the unique root element (if existing) otherwise {@code null}
      */
     public static EObject getResourceContentRootFromVURIIfUnique(final URI uri, final ResourceSet resourceSet) {
-        Resource emfResource = loadResourceAtURI(uri, resourceSet);
+        final Resource emfResource = loadResourceAtURI(uri, resourceSet);
         return getResourceContentRootIfUnique(emfResource);
     }
 
@@ -58,7 +58,7 @@ public final class EcoreResourceBridge {
      * @return the unique root element (if existing) otherwise {@code null}
      */
     public static EObject getResourceContentRootIfUnique(final Resource resource) {
-        List<EObject> resourceContents = resource.getContents();
+        final List<EObject> resourceContents = resource.getContents();
         if (resourceContents.size() == 1) {
             return resourceContents.get(0);
         } else {
@@ -77,7 +77,7 @@ public final class EcoreResourceBridge {
      * @return the root content element of the given resource
      */
     public static EObject getUniqueContentRoot(final Resource resource, final String modelName) {
-        EObject uniqueResourceContentRootElement = getResourceContentRootIfUnique(resource);
+        final EObject uniqueResourceContentRootElement = getResourceContentRootIfUnique(resource);
         if (uniqueResourceContentRootElement != null) {
             return uniqueResourceContentRootElement;
         } else {
@@ -103,7 +103,7 @@ public final class EcoreResourceBridge {
      */
     public static <T extends EObject> T getUniqueContentRootIfCorrectlyTyped(final Resource resource,
             final String modelName, final Class<T> rootElementClass) {
-        EObject rootElement = getUniqueContentRoot(resource, modelName);
+        final EObject rootElement = getUniqueContentRoot(resource, modelName);
         return JavaBridge.dynamicCast(rootElement, rootElementClass, "root element '" + rootElement + "' of the "
                 + modelName + " '" + resource + "'");
     }
@@ -176,7 +176,7 @@ public final class EcoreResourceBridge {
             } else {
                 resource.load(Collections.emptyMap());
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             // soften
             throw new RuntimeException(e);
         }

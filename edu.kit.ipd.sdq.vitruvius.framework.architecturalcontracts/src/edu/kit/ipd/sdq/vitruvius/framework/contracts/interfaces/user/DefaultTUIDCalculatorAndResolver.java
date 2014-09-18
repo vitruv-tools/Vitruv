@@ -1,11 +1,13 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user;
 
 import org.apache.log4j.Logger;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
@@ -77,16 +79,23 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
         checkTUID(tuidParts);
         String id = tuidParts[3];
         // check if the tuid is part of the root contents:
-        for (EObject eObject : root.eContents()) {
+        TreeIterator<EObject> iter = EcoreUtil.getAllContents(root, true);
+        while (iter.hasNext()) {
+            EObject eObject = iter.next();
             if (id.equals(getValueOfIdFeature(eObject))) {
                 return eObject;
             }
         }
+        // for (EObject eObject : root.eContents()) {
+        // if (id.equals(getValueOfIdFeature(eObject))) {
+        // return eObject;
+        // }
+        // }
         // it is not in the contents. check if its the root object itself:
         if (id.equals(getValueOfIdFeature(root))) {
             return root;
         }
-        // no - nothing found
+        // EObject not found
         logger.warn("EObject with tuid: " + tuid + " not found within root EObject " + root);
         return null;
     }

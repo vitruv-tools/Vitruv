@@ -4,15 +4,15 @@ import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
 import java.util.Map
 import java.util.Set
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
-import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.classifiers.ClassifiersFactory
-import org.emftext.language.java.containers.CompilationUnit
 import org.emftext.language.java.containers.JavaRoot
 import org.emftext.language.java.types.Boolean
 import org.emftext.language.java.types.Byte
@@ -60,18 +60,22 @@ abstract class PCM2JaMoPPUtils {
 		// occur we would recreate the old JavaRoot if we save it. 
 		val boolean javaRootAffected = correspondingEObjects.exists[eObject|eObject instanceof JavaRoot]
 		for (EObject correspondingObject : correspondingEObjects) {
-			val oldObject = EcoreUtil.copy(correspondingObject)
-
-			// compilationUnit was renamed: Delete old one and save new one
-			if (correspondingObject instanceof JavaRoot) {
-				transformationChangeResult.existingObjectsToDelete.add(oldObject)
-			}
-			correspondingObject.eClass.eSet(eStructuralFeature, newValue)
-			correspondenceInstance.update(oldObject, correspondingObject)
-			if (correspondingObject instanceof JavaRoot) {
-				transformationChangeResult.newRootObjectsToSave.add(correspondingObject)
-			} else if (!javaRootAffected) {
-				transformationChangeResult.existingObjectsToSave.add(correspondingObject)
+			if (null == correspondingObject) {
+				logger.error("corresponding object is null!")
+			} else {
+				val TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(correspondingObject)
+				correspondingObject.eSet(eStructuralFeature, newValue)
+				transformationChangeResult.addCorrespondenceToUpdate(correspondenceInstance, oldTUID,
+					correspondingObject, null)
+				if (javaRootAffected) {
+					val VURI oldVURI = VURI.getInstance(correspondingObject.eResource.URI)
+					transformationChangeResult.existingObjectsToDelete.add(oldVURI)
+					if (correspondingObject instanceof JavaRoot) {
+						transformationChangeResult.newRootObjectsToSave.add(correspondingObject)
+					}
+				} else {
+					transformationChangeResult.existingObjectsToSave.add(correspondingObject)
+				}
 			}
 		}
 		transformationChangeResult

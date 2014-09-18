@@ -3,13 +3,14 @@ package edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 
 class TransformationUtils {
 	private new(){
 	}
 	
 	def public static TransformationChangeResult createTransformationChangeResult(EObject[] newRootObjectsToSave, 
-			EObject[] objectsToDelete, EObject[] existingObjectsToSave){
+			VURI[] objectsToDelete, EObject[] existingObjectsToSave){
 		var transformationChangeResult = new TransformationChangeResult()
 		if(null != newRootObjectsToSave){
 			transformationChangeResult.newRootObjectsToSave.addAll(newRootObjectsToSave)
@@ -31,7 +32,7 @@ class TransformationUtils {
 		createTransformationChangeResult(null, null, eObjectsToSave)
 	}
 	
-	def public static TransformationChangeResult createTransformationChangeResultForEObjectsToDelete(EObject[] eObjectsToDelete){
+	def public static TransformationChangeResult createTransformationChangeResultForEObjectsToDelete(VURI[] eObjectsToDelete){
 		createTransformationChangeResult(null, eObjectsToDelete, null)
 	}
 	

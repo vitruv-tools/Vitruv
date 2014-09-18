@@ -1,9 +1,13 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java
 
+import com.google.common.collect.Sets
 import de.uka.ipd.sdq.pcm.repository.BasicComponent
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
@@ -11,6 +15,7 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.ClassifiersFactory
@@ -69,9 +74,11 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 		val Correspondence parentCorrespondence = correspondenceInstance.
 			claimUniqueOrNullCorrespondenceForEObject(rootPackage)
 
-		val transformationResult =TransformationUtils.createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects) 
+		val transformationResult = TransformationUtils.
+			createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects)
 		for (jaMoPPElement : newCorrespondingEObjects) {
-			transformationResult.addNewCorrespondence(correspondenceInstance, basicComponent, jaMoPPElement, parentCorrespondence)
+			transformationResult.addNewCorrespondence(correspondenceInstance, basicComponent, jaMoPPElement,
+				parentCorrespondence)
 		}
 		return transformationResult
 	}
@@ -105,8 +112,24 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 		if (affectedEObjects.nullOrEmpty) {
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
-		return PCM2JaMoPPUtils.updateNameAttribute(affectedEObjects, newValue, affectedAttribute,
-			featureCorrespondenceMap, correspondenceInstance)
+		val CompilationUnit cu = affectedEObjects.filter(typeof(CompilationUnit)).get(0)
+		val Iterable<EObject> noCompilationUnits = affectedEObjects.filter(
+			affectedObject|false == affectedObject instanceof CompilationUnit)
+		val TransformationChangeResult tcr = PCM2JaMoPPUtils.updateNameAttribute(Sets.newHashSet(noCompilationUnits),
+			newValue, affectedAttribute, featureCorrespondenceMap, correspondenceInstance)
+		cu.handleCompilationUnitNameChange(affectedAttribute, newValue, tcr)
+		return tcr
+	}
+
+	def void handleCompilationUnitNameChange(CompilationUnit compilationUnit, EStructuralFeature affectedFeature,
+		Object newValue, TransformationChangeResult transformationChangeResult) {
+		val TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(compilationUnit)
+		compilationUnit.name = newValue.toString() + "." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION
+		compilationUnit.namespaces.set(compilationUnit.namespaces.size - 1, newValue.toString)
+		transformationChangeResult.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, compilationUnit, null)
+		val VURI oldVURI = VURI.getInstance(compilationUnit.eResource.URI)
+		transformationChangeResult.existingObjectsToDelete.add(oldVURI)
+		transformationChangeResult.newRootObjectsToSave.add(compilationUnit)
 	}
 
 	override setCorrespondenceForFeatures() {
