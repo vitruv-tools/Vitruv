@@ -120,10 +120,14 @@ public final class EMFBridge {
      * @return the new URI
      */
     public static URI createURI(String uriString) {
-        if (uriString != null && !uriString.startsWith(VitruviusConstants.getPlatformResourcePrefix())
-                && !uriString.startsWith("http://") && !uriString.startsWith("/")
-                && !startsWithWindowsDriveLetterColonBackslash(uriString)) {
-            uriString = VitruviusConstants.getPlatformResourcePrefix() + uriString;
+        if (uriString != null) {
+            if (!uriString.startsWith(VitruviusConstants.getPlatformResourcePrefix())) {
+                if (startsWithWindowsDriveLetterColonBackslash(uriString) || uriString.startsWith("/")) {
+                    return URI.createFileURI(uriString);
+                } else if (!uriString.startsWith("http://")) {
+                    uriString = VitruviusConstants.getPlatformResourcePrefix() + uriString;
+                }
+            }
         }
         return URI.createURI(uriString);
     }

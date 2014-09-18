@@ -1,16 +1,18 @@
 package edu.kit.ipd.sdq.vitruvius.tests.mockup;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang.SystemUtils;
+import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class VURITest {
 
@@ -60,17 +62,28 @@ public class VURITest {
     }
 
     @Test
-    public void testWindowsAbsolutePathKey() {
-        String testWindowsAbsolutePath = "C:\\Test\\bla";
-        VURI vuri = testWithKey(testWindowsAbsolutePath);
-        ensureEquals(testWindowsAbsolutePath.toLowerCase(), vuri.getEMFUri().toString().toLowerCase());
+    public void testPlatformDependentAbsolutePathKey() {
+        // creating file URIs is platform specific so we can not write a test for another operating
+        // system than the one which runs the Java VM
+        String absolutePath = "/Test/bla";
+        if (SystemUtils.IS_OS_WINDOWS) {
+            absolutePath = "C:\\Test\\bla";
+        }
+        VURI vuri = testWithKey(absolutePath);
+        ensureEquals(absolutePath.toLowerCase(), vuri.getEMFUri().toFileString().toLowerCase());
     }
 
     @Test
-    public void testUnixAbsolutePathKey() {
-        String testUnixAbsolutePath = "/Test/bla";
-        VURI vuri = testWithKey(testUnixAbsolutePath);
-        ensureEquals(testUnixAbsolutePath, vuri.getEMFUri().toString());
+    public void testPlatformDependentAbsolutePathUri() {
+        // creating file URIs is platform specific so we can not write a test for another operating
+        // system than the one which runs the Java VM
+        String absolutePath = "/Test/bla";
+        if (SystemUtils.IS_OS_WINDOWS) {
+            absolutePath = "C:\\Test\\bla";
+        }
+        URI absolutePathUri = URI.createFileURI(absolutePath);
+        VURI absolutePathVURI = VURI.getInstance(absolutePathUri);
+        assertEquals(absolutePathUri, absolutePathVURI.getEMFUri());
     }
 
     private VURI testWithKey(final String testKeyWithPlatformRes) {

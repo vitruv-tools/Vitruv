@@ -31,5 +31,6 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
- edu.kit.ipd.sdq.vitruvius.tests.util
+ edu.kit.ipd.sdq.vitruvius.tests.util,
+ org.apache.commons.lang;bundle-version="2.6.0"
 Bundle-ActivationPolicy: lazy
