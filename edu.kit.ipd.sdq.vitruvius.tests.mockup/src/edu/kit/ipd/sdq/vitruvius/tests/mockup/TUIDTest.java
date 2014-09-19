@@ -69,7 +69,7 @@ public class TUIDTest {
         TUID tuid9 = TUID.getInstance(s9);
         assertEquals(s9, tuid9.toString());
         System.out
-                .println("**** BEGIN INITIALIZATION ****\n" + TUID.toStrings() + "\n**** END INITIALIZATION ****\n\n");
+        .println("**** BEGIN INITIALIZATION ****\n" + TUID.toStrings() + "\n**** END INITIALIZATION ****\n\n");
         assertTrue(TUID.validate());
         /************************/
         /** END INITIALIZATION **/
@@ -183,7 +183,7 @@ public class TUIDTest {
     }
 
     @Test
-    public void testUpdateSingleSegmentTargetContainsLeafes() {
+    public void testUpdateSingleSegmentTargetContainsChildren() {
         String[] input = new String[] { "prefix#b", "prefix#b#c", "prefix#b#c#d", "prefix#b#c2#d" };
         String[] expected = new String[] { "prefix#b", "prefix#b#c2", "prefix#b#c2#d", "prefix#b#c2#d" };
 
@@ -209,4 +209,30 @@ public class TUIDTest {
         assertArrayEquals(expected, actual);
     }
 
+    @Test
+    public void testUpdateSingleSegmentTargetContainsNoChildren() {
+        String[] input = new String[] { "prefix2#a", "prefix2#a#b", "prefix2#a#c" };
+        String[] expected = new String[] { "prefix2#a", "prefix2#a#c", "prefix2#a#c" };
+
+        // construct TUIDs
+        List<TUID> tuids = new ArrayList<TUID>();
+        for (String tuidString : input) {
+            tuids.add(TUID.getInstance(tuidString));
+        }
+
+        // rename TUIDs
+        TUID oldTUID = TUID.getInstance("prefix2#a#b");
+        TUID newTUID = TUID.getInstance("prefix2#a#c");
+        oldTUID.updateSingleSegment(newTUID);
+
+        // validate TUID
+        assertTrue(TUID.validate());
+
+        // check renaming
+        String[] actual = new String[tuids.size()];
+        for (int i = 0; i < tuids.size(); ++i) {
+            actual[i] = tuids.get(i).toString();
+        }
+        assertArrayEquals(expected, actual);
+    }
 }

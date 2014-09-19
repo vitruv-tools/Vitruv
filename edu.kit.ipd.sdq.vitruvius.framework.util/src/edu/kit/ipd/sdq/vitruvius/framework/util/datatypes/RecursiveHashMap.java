@@ -203,7 +203,9 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
         RecursiveMap<K, V> mapForKey = this.key2NextRecursiveMapMap.get(key);
         if (mapForKey == null) {
             if (mapToAdd == null) {
-                return Collections.emptyList();
+                // do not return the unmodifiable Collections.emptyList() because segments might be
+                // prepended, what would cause an UnsupportedOperationException
+                return new LinkedList<Pair<V,V>>();
             } else {
                 mapForKey = new RecursiveHashMap<K, V>(this.valueCreatorAndLinker);
                 this.key2NextRecursiveMapMap.put(key, mapForKey);
