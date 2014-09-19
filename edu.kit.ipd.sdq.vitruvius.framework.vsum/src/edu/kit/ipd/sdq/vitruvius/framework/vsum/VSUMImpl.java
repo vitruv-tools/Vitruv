@@ -191,13 +191,18 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
                 VURI correspondencesVURI = FileSystemHelper.getCorrespondencesVURI(mmURIs);
                 FileSystemHelper.saveCorrespondenceInstanceMMURIs(mmURIs);
                 Resource correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri());
-                correspondenceInstance = new CorrespondenceInstanceImpl(mapping, this, correspondencesVURI,
+                correspondenceInstance = createCorrespondenceInstance(mapping, correspondencesVURI,
                         correspondencesResource);
                 this.mapping2CorrespondenceInstanceMap.put(mapping, correspondenceInstance);
             }
             correspondenceInstances.add(correspondenceInstance);
         }
         return correspondenceInstances;
+    }
+
+    protected CorrespondenceInstance createCorrespondenceInstance(final Mapping mapping,
+            final VURI correspondencesVURI, final Resource correspondencesResource) {
+        return new CorrespondenceInstanceImpl(mapping, this, correspondencesVURI, correspondencesResource);
     }
 
     // @Override

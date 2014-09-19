@@ -43,11 +43,11 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     private static final Logger logger = Logger.getLogger(CorrespondenceInstanceImpl.class.getSimpleName());
 
-    private Mapping mapping;
-    private ModelProviding modelProviding;
-    private Correspondences correspondences;
-    private ClaimableMap<TUID, Set<Correspondence>> tuid2CorrespondencesMap;
-    private ClaimableMap<TUID, Set<TUID>> tuid2CorrespondingTUIDsMap;
+    private final Mapping mapping;
+    private final ModelProviding modelProviding;
+    private final Correspondences correspondences;
+    protected final ClaimableMap<TUID, Set<Correspondence>> tuid2CorrespondencesMap;
+    protected final ClaimableMap<TUID, Set<TUID>> tuid2CorrespondingTUIDsMap;
     private ClaimableMap<FeatureInstance, Set<FeatureInstance>> featureInstance2CorrespondingFIMap;
     // the following map (tuid2CorrespondenceSetsWithComprisedFeatureInstanceMap) is only used to
     // correctly update the previous map (featureInstance2CorrespondingFIMap)
@@ -756,15 +756,15 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     private void updateCorrespondingLinksForUpdatedTUID(final TUID newTUID, final TUID oldTUID, final TUID elementBTUID) {
         Set<TUID> correspondingTUIDs = this.tuid2CorrespondingTUIDsMap.get(elementBTUID);
-        TUID objectWithOldTUID = null;
+        TUID oldCorrespondingTUID = null;
         for (TUID correspondingTUID : correspondingTUIDs) {
             if (correspondingTUID != null && correspondingTUID.equals(oldTUID)) {
                 // mark for replacement
-                objectWithOldTUID = correspondingTUID;
+                oldCorrespondingTUID = correspondingTUID;
             }
         }
-        if (objectWithOldTUID != null) {
-            correspondingTUIDs.remove(objectWithOldTUID);
+        if (oldCorrespondingTUID != null) {
+            correspondingTUIDs.remove(oldCorrespondingTUID);
             correspondingTUIDs.add(newTUID);
         }
     }
@@ -817,7 +817,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
             final Correspondence parent) {
         EObjectCorrespondence correspondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence();
         setSameTypeCorrespondenceFeatures(correspondence, a, b, parent);
-        addSameTypeCorrespondence(correspondence);
+        addSameTypeCorrespondence(correspondence, parent);
         return correspondence;
     }
 
