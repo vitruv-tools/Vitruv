@@ -62,7 +62,9 @@ public class ChangeSynchronizer {
 
 	def public TransformationChangeResult synchronizeChange(EChange change) {
 		val transformationChangeResult = syncChange(change)
-		transformationChangeResult.updateTUIDOfAffectedEObjectInEChange(change)
+		if (!transformationChangeResult.transformationAborted) {
+			transformationChangeResult.updateTUIDOfAffectedEObjectInEChange(change)
+		}
 		return transformationChangeResult
 	}
 

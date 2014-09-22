@@ -15,12 +15,24 @@ import org.eclipse.emf.ecore.EObject;
  */
 public class TransformationChangeResult extends AddDeleteChangeResult<EObject, EObject, VURI> {
 
+    private boolean transformationIsAborted;
+
     public TransformationChangeResult() {
         super();
     }
 
     public TransformationChangeResult(final Set<EObject> existingEObjectsToSave, final Set<EObject> newEObjects,
             final Set<VURI> existingEObjectsIsToDelete) {
+        this(existingEObjectsToSave, newEObjects, existingEObjectsIsToDelete, false);
+    }
+
+    public TransformationChangeResult(final Set<EObject> existingEObjectsToSave, final Set<EObject> newEObjects,
+            final Set<VURI> existingEObjectsIsToDelete, final boolean transformationIsAborted) {
         super(existingEObjectsToSave, newEObjects, existingEObjectsIsToDelete);
+        this.transformationIsAborted = transformationIsAborted;
+    }
+
+    public boolean isTransformationAborted() {
+        return this.transformationIsAborted;
     }
 }
