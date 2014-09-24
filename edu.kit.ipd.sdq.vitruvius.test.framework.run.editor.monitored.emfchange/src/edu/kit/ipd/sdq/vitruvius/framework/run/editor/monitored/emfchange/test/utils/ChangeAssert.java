@@ -134,6 +134,12 @@ public final class ChangeAssert {
             } else if (innerChange instanceof DeleteNonRootEObjectInList<?>) {
                 DeleteNonRootEObjectInList<?> remChange = (DeleteNonRootEObjectInList<?>) innerChange;
                 if (remChange.getOldValue() == removedObject && remChange.getAffectedFeature() == feature) {
+                    EStructuralFeature removedObjURIFragmentFeature = remChange.eClass().getEStructuralFeature(
+                            "removedObjectURIFragment");
+                    if (removedObjURIFragmentFeature.getDefaultValue() != null) {
+                        assert !removedObjURIFragmentFeature.getDefaultValue().equals(
+                                remChange.getRemovedObjectURIFragment()) : "The deleted object's URI fragment was not set.";
+                    }
                     return;
                 }
             }
