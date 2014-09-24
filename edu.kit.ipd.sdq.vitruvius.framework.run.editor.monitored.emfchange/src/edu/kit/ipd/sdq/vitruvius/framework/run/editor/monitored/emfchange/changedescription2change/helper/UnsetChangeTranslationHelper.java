@@ -46,8 +46,7 @@ class UnsetChangeTranslationHelper implements IChangeTranslationHelper {
                 DeleteNonRootEObjectInList<EObject> deleteChange = ContainmentFactory.eINSTANCE
                         .createDeleteNonRootEObjectInList();
                 InitializeEChange.setupUpdateEReference(deleteChange, affectedObject, referenceFeature);
-                deleteChange.setOldValue((EObject) remObj);
-                deleteChange.setIndex(0);
+                InitializeEChange.setupRemoveFromEList(deleteChange, (EObject) remObj, 0);
                 target.add(deleteChange);
             } else {
                 RemoveNonContainmentEReference<EObject> deleteChange = ReferenceFactory.eINSTANCE
