@@ -30,5 +30,10 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.framework.metarepository,
  edu.kit.ipd.sdq.vitruvius.framework.synctransprovider,
  edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine,
- edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor;bundle-version="1.0.0"
+ edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange,
+ edu.kit.ipd.sdq.vitruvius.casestudies.emf,
+ org.eclipse.emf.edit,
+ org.eclipse.ui.ide,
+ edu.kit.ipd.sdq.vitruvius.test.framework.run.editor.monitored.emfchange
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver
