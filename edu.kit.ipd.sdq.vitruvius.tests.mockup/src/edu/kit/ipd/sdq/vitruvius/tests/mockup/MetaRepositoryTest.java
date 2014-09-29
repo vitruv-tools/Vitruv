@@ -3,8 +3,6 @@ package edu.kit.ipd.sdq.vitruvius.tests.mockup;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -35,10 +33,7 @@ public class MetaRepositoryTest {
     @BeforeClass
     public static void beforeClass() {
         // initialize Logger when not done yet
-        if (!Logger.getRootLogger().getAllAppenders().hasMoreElements()) {
-            Logger.getRootLogger().addAppender(new ConsoleAppender());
-            Logger.getRootLogger().setLevel(Level.ALL);
-        }
+        TestUtil.initializeLogger();
     }
 
     @Test

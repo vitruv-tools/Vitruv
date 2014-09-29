@@ -35,5 +35,7 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.casestudies.emf,
  org.eclipse.emf.edit,
  org.eclipse.ui.ide,
- edu.kit.ipd.sdq.vitruvius.test.framework.run.editor.monitored.emfchange
+ edu.kit.ipd.sdq.vitruvius.test.framework.run.editor.monitored.emfchange,
+ edu.kit.ipd.sdq.vitruvius.casestudies.utils.jamopp,
+ org.eclipse.emf.emfstore.common
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver

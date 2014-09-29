@@ -69,7 +69,7 @@ public class TUIDTest {
         TUID tuid9 = TUID.getInstance(s9);
         assertEquals(s9, tuid9.toString());
         System.out
-        .println("**** BEGIN INITIALIZATION ****\n" + TUID.toStrings() + "\n**** END INITIALIZATION ****\n\n");
+                .println("**** BEGIN INITIALIZATION ****\n" + TUID.toStrings() + "\n**** END INITIALIZATION ****\n\n");
         assertTrue(TUID.validate());
         /************************/
         /** END INITIALIZATION **/
@@ -184,9 +184,18 @@ public class TUIDTest {
 
     @Test
     public void testUpdateSingleSegmentTargetContainsChildren() {
+        boolean useUpdateMultipleSegmentsMethod = false;
+        testUpdateSingleSegment(useUpdateMultipleSegmentsMethod);
+    }
+
+    public void testUpdateSingleSegment(final boolean useUpdateMultipleSegmentsMethod) {
         String[] input = new String[] { "prefix#b", "prefix#b#c", "prefix#b#c#d", "prefix#b#c2#d" };
         String[] expected = new String[] { "prefix#b", "prefix#b#c2", "prefix#b#c2#d", "prefix#b#c2#d" };
+        testUpdateSegment(input, expected, "prefix#b#c", "prefix#b#c2", useUpdateMultipleSegmentsMethod);
+    }
 
+    private void testUpdateSegment(final String[] input, final String[] expected, final String oldTUIDString,
+            final String newTUIDString, final boolean updateMultipleSegments) {
         // construct TUIDs
         List<TUID> tuids = new ArrayList<TUID>();
         for (String tuidString : input) {
@@ -194,9 +203,13 @@ public class TUIDTest {
         }
 
         // rename TUIDs
-        TUID oldTUID = TUID.getInstance("prefix#b#c");
-        TUID newTUID = TUID.getInstance("prefix#b#c2");
-        oldTUID.updateSingleSegment(newTUID);
+        TUID oldTUID = TUID.getInstance(oldTUIDString);
+        TUID newTUID = TUID.getInstance(newTUIDString);
+        if (updateMultipleSegments) {
+            oldTUID.updateMultipleSegments(newTUID);
+        } else {
+            oldTUID.updateSingleSegment(newTUID);
+        }
 
         // validate TUID
         assertTrue(TUID.validate());
@@ -207,6 +220,21 @@ public class TUIDTest {
             actual[i] = tuids.get(i).toString();
         }
         assertArrayEquals(expected, actual);
+
+    }
+
+    @Test
+    public void testMultipleSegmentChange() {
+        String[] input = new String[] { "prefix#b", "prefix#b#c", "prefix#b#c#d", "prefix#b#c2#d" };
+        String[] expected = new String[] { "prefix#b2", "prefix#b2#c2", "prefix#b2#c2#d", "prefix#b2#c2#d" };
+        boolean updateMultipleSegments = true;
+        testUpdateSegment(input, expected, "prefix#b#c", "prefix#b2#c2", updateMultipleSegments);
+    }
+
+    @Test
+    public void testUpdateSingleSegmentUsingMultipleSegmentChange() {
+        boolean useUpdateMultipleSegmentsMethod = true;
+        testUpdateSingleSegment(useUpdateMultipleSegmentsMethod);
     }
 
     @Test
