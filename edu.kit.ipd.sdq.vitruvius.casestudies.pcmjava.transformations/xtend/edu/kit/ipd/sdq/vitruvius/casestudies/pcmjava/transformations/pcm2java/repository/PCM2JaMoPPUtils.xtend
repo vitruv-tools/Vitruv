@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
@@ -12,6 +12,7 @@ import java.util.Set
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.resource.Resource
 import org.emftext.language.java.classifiers.ClassifiersFactory
 import org.emftext.language.java.containers.JavaRoot
 import org.emftext.language.java.types.Boolean
@@ -55,27 +56,23 @@ abstract class PCM2JaMoPPUtils {
 		val EStructuralFeature eStructuralFeature = featureCorrespondenceMap.claimValueForKey(affectedFeature)
 		var transformationChangeResult = new TransformationChangeResult
 
-		// we need to know whether a JavaRoot is affected. Reason: if a JavaRoot (aka. Compilation Unit or Package) is changed
-		// we have to delete the old one and save the new one. However, if more than one changes in the same JavaRoot
-		// occur we would recreate the old JavaRoot if we save it. 
 		val boolean javaRootAffected = correspondingEObjects.exists[eObject|eObject instanceof JavaRoot]
+		if (javaRootAffected) {
+			logger.error("The method updateNameattribut is not able to rename java root objects")
+		}
 		for (EObject correspondingObject : correspondingEObjects) {
-			if (null == correspondingObject) {
-				logger.error("corresponding object is null!")
+			val Resource resource = correspondingObject.eResource
+			val boolean isProxy = correspondingObject.eIsProxy
+			if (null == correspondingObject || null == correspondingObject.eResource) {
+				logger.error(
+					"corresponding object is null or correspondingObject is not contained in a resource!: " +
+						correspondingObject + " (object.isProxy=" + isProxy + ")")
 			} else {
 				val TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(correspondingObject)
 				correspondingObject.eSet(eStructuralFeature, newValue)
 				transformationChangeResult.addCorrespondenceToUpdate(correspondenceInstance, oldTUID,
 					correspondingObject, null)
-				if (javaRootAffected) {
-					val VURI oldVURI = VURI.getInstance(correspondingObject.eResource.URI)
-					transformationChangeResult.existingObjectsToDelete.add(oldVURI)
-					if (correspondingObject instanceof JavaRoot) {
-						transformationChangeResult.newRootObjectsToSave.add(correspondingObject)
-					}
-				} else {
-					transformationChangeResult.existingObjectsToSave.add(correspondingObject)
-				}
+				//transformationChangeResult.existingObjectsToSave.add(correspondingObject)
 			}
 		}
 		transformationChangeResult

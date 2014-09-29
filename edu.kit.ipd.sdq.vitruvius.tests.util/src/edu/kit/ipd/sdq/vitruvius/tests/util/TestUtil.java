@@ -3,6 +3,8 @@ package edu.kit.ipd.sdq.vitruvius.tests.util;
 import java.net.URISyntaxException;
 import java.util.Date;
 
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -32,6 +34,7 @@ public final class TestUtil {
 
     private static final Logger logger = Logger.getLogger(TestUtil.class.getSimpleName());
     public static final String PROJECT_URI = "MockupProject";
+    public static final int WAITING_TIME_FOR_SYNCHRONIZATION = 1000;
 
     /**
      * Utility classes should not have a public constructor
@@ -60,7 +63,7 @@ public final class TestUtil {
 
     /**
      * creates a metarepository and adds mappings to it.
-     * 
+     *
      * @param mm1URIString
      * @param fileExt1
      * @param mm2URIString
@@ -127,6 +130,15 @@ public final class TestUtil {
     }
 
     /**
+     * moves created model fodlder
+     *
+     * @param destPathWithTimestamp
+     */
+    public static void moveModelFilesFromProjectToPath(final String destPathWithTimestamp) {
+        moveFilesFromMockupProjectTo("model", destPathWithTimestamp);
+    }
+
+    /**
      * Moves the created model and src folder files to a specific folder/path. Adds time stamp to
      * destination path string
      *
@@ -135,9 +147,20 @@ public final class TestUtil {
      */
     public static void moveSrcFilesFromMockupProjectToPathWithTimestamp(
             final String destinationPathAsStringWithoutTimestamp) {
+        final String destPathWithTimestamp = getStringWithTimestamp(destinationPathAsStringWithoutTimestamp);
+        moveSrcFilesFromMockupProjectToPath(destPathWithTimestamp);
+    }
+
+    public static String getStringWithTimestamp(final String destinationPathAsStringWithoutTimestamp) {
         final String timestamp = new Date(System.currentTimeMillis()).toString().replace(" ", "_");
         final String destPathWithTimestamp = destinationPathAsStringWithoutTimestamp + "_" + timestamp;
-        moveSrcFilesFromMockupProjectToPath(destPathWithTimestamp);
+        return destPathWithTimestamp;
+    }
+
+    public static void moveModelFilesFromMockupProjectToPathWithTimestamp(
+            final String destinationPathAsStringWithoutTimeStamp) {
+        final String destPathWithTimestamp = getStringWithTimestamp(destinationPathAsStringWithoutTimeStamp);
+        moveModelFilesFromProjectToPath(destPathWithTimestamp);
     }
 
     /**
@@ -182,7 +205,7 @@ public final class TestUtil {
      * moves the VSUM Project to a own folder with empty name to include in VSUM project folder
      */
     public static void moveVSUMProjectToOwnFolder() {
-        moveVSUMProjectToOwnFolder("");
+        moveVSUMProjectToOwnFolderWithTimepstamp("");
     }
 
     /**
@@ -191,7 +214,7 @@ public final class TestUtil {
      * @param addtionalName
      *            name that will be included in to VSUM project folder
      */
-    public static void moveVSUMProjectToOwnFolder(final String addtionalName) {
+    public static void moveVSUMProjectToOwnFolderWithTimepstamp(final String addtionalName) {
         final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         final IProject project = root.getProject(VSUMConstants.VSUM_PROJECT_NAME);
         final String timestamp = new Date(System.currentTimeMillis()).toString().replace(" ", "_");
@@ -204,5 +227,37 @@ public final class TestUtil {
             logger.warn("Could not move " + VSUMConstants.VSUM_PROJECT_NAME + "project to folder. " + destinationPath
                     + ". Reason: " + e);
         }
+    }
+
+    /**
+     * init logger for test purposes
+     */
+    public static void initializeLogger() {
+        if (!Logger.getRootLogger().getAllAppenders().hasMoreElements()) {
+            Logger.getRootLogger().addAppender(new ConsoleAppender());
+            Logger.getRootLogger().setLevel(Level.ALL);
+        }
+    }
+
+    public static void waitForSynchronization(final int waitingTimeForSynchronization) {
+        try {
+            Thread.sleep(waitingTimeForSynchronization);
+        } catch (final InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public static void waitForSynchronization() {
+        TestUtil.waitForSynchronization(WAITING_TIME_FOR_SYNCHRONIZATION);
+    }
+
+    public static <T> T getFieldFromClass(final Class<?> classWithField, final String fieldName, final Object instance)
+            throws Throwable {
+        final java.lang.reflect.Field field = classWithField.getDeclaredField(fieldName);
+        field.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        final T t = (T) field.get(instance);
+        return t;
     }
 }

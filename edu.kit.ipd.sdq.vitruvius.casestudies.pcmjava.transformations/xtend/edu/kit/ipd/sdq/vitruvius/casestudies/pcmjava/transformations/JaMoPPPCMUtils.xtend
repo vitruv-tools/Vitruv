@@ -8,6 +8,7 @@ import java.util.Set
 import org.emftext.language.java.classifiers.Classifier
 import org.emftext.language.java.containers.CompilationUnit
 import org.emftext.language.java.containers.Package
+import org.emftext.language.java.containers.JavaRoot
 
 class JaMoPPPCMUtils {
 	private new() {
@@ -35,11 +36,20 @@ class JaMoPPPCMUtils {
 	}
 
 	def static CompilationUnit createCompilationUnit(String name, String content) {
+		return createJavaRoot(name, content) as CompilationUnit
+	}
+	
+	def static Package createPackage(String namespace){
+		val String content = '''package «namespace»;'''
+		return createJavaRoot("package-info", content) as Package
+	}
+	
+	def static JavaRoot createJavaRoot(String name, String content){
 		val JaMoPPParser jaMoPPParser = new JaMoPPParser
 		val inStream = new ByteArrayInputStream(content.bytes)
-		val cu = jaMoPPParser.parseCompilationUnitFromInputStream(VURI.getInstance(name + ".java").EMFUri, inStream)
-		cu.name = name + ".java"
-		return cu
+		val javaRoot = jaMoPPParser.parseCompilationUnitFromInputStream(VURI.getInstance(name + ".java").EMFUri, inStream)
+		javaRoot.name = name + ".java"
+		return javaRoot
 	}
 
 }

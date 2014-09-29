@@ -11,6 +11,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
 import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
@@ -18,33 +19,38 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationCha
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ObjectFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.ChangeSynchronizer;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
+import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 public class PCM2JaMoPPUtils {
+
+    public static final String REPOSITORY_NAME = "testRepository";
+    public static final String BASIC_COMPONENT_NAME = "TestBasicComponent";
+    public static final String IMPLEMENTING_CLASS_NAME = BASIC_COMPONENT_NAME + "Impl";
+    public static final String INTERFACE_NAME = "TestInterface";
+    public static final String RENAME = "Rename";
+
     private PCM2JaMoPPUtils() {
     }
 
-    public static Repository createAndSyncRepository(final ResourceSet resourceSet,
-            final ChangeSynchronizer changeSynchronizer) {
-        final VURI repoVURI = VURI.getInstance("/tmp/repository.repository");
+    public static Repository createRepository(final ResourceSet resourceSet, final String repositoryName)
+            throws IOException {
+        final VURI repoVURI = VURI.getInstance(TestUtil.PROJECT_URI + "/model/" + repositoryName + "."
+                + PCMJaMoPPNamespace.PCM.REPOSITORY_FILE_EXTENSION);
         final Resource resource = resourceSet.createResource(repoVURI.getEMFUri());
         final Repository repo = RepositoryFactory.eINSTANCE.createRepository();
+        repo.setEntityName(repositoryName);
         resource.getContents().add(repo);
-        final CreateRootEObject<EObject> createRootEObj = ObjectFactory.eINSTANCE.createCreateRootEObject();
-        createRootEObj.setNewValue(repo);
-        changeSynchronizer.synchronizeChange(createRootEObj);
+        EcoreResourceBridge.saveResource(resource);
         return repo;
     }
 
     public static BasicComponent createBasicComponent(final Repository repo) {
         final BasicComponent basicComponent = RepositoryFactory.eINSTANCE.createBasicComponent();
         basicComponent.setRepository__RepositoryComponent(repo);
-        basicComponent.setEntityName("TestBasicComponent");
+        basicComponent.setEntityName(BASIC_COMPONENT_NAME);
         return basicComponent;
     }
 

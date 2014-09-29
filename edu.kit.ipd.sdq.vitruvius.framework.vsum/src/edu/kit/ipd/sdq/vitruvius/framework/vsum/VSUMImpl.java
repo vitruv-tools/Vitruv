@@ -84,18 +84,25 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
      */
     @Override
     public ModelInstance getAndLoadModelInstanceOriginal(final VURI modelURI) {
+        ModelInstance modelInstance = getModelInstanceOriginal(modelURI);
+        try {
+            boolean forceLoadByDoingUnloadBeforeLoad = true;
+            modelInstance.load(forceLoadByDoingUnloadBeforeLoad);
+        } catch (RuntimeException re) {
+            // could not load model instance --> this should only be the case when the model is not
+            // Existing yet
+            logger.info("Exception during loading of model instance " + modelInstance + " occured: " + re);
+        }
+        return modelInstance;
+    }
+
+    public ModelInstance getModelInstanceOriginal(final VURI modelURI) {
         ModelInstance modelInstance = this.modelInstances.get(modelURI);
         if (modelInstance == null) {
             // case 2 or 3
             modelInstance = getOrCreateUnregisteredModelInstance(modelURI);
             this.modelInstances.put(modelURI, modelInstance);
             saveVURIsOfVSUMModelInstances();
-        }
-        try {
-            modelInstance.load();
-        } catch (RuntimeException re) {
-            // could not load model instance --> this should only be the case when the model is not
-            // Existing yet
         }
         return modelInstance;
     }
@@ -112,7 +119,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
      */
     @Override
     public void saveModelInstanceOriginal(final VURI vuri) {
-        ModelInstance modelInstanceToSave = getAndLoadModelInstanceOriginal(vuri);
+        ModelInstance modelInstanceToSave = getModelInstanceOriginal(vuri);
         Resource resourceToSave = modelInstanceToSave.getResource();
         try {
             EcoreResourceBridge.saveResource(resourceToSave);

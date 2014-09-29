@@ -28,6 +28,10 @@ public class AddBuilder extends AbstractHandler implements IHandler {
     public Object execute(final ExecutionEvent event) {
         final IProject project = getProject(event);
 
+        return this.addBuilderToProject(project);
+    }
+
+    public Object addBuilderToProject(final IProject project) {
         if (project != null) {
             try {
                 // verify already registered builders
@@ -67,7 +71,7 @@ public class AddBuilder extends AbstractHandler implements IHandler {
         return null;
     }
 
-    public final boolean hasBuilder(final IProject project) {
+    public boolean hasBuilder(final IProject project) {
         try {
             for (final ICommand buildSpec : project.getDescription().getBuildSpec()) {
                 if (this.builderId.equals(buildSpec.getBuilderName())) {

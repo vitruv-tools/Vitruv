@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
 import com.google.common.collect.Sets
 import de.uka.ipd.sdq.pcm.repository.BasicComponent
@@ -21,6 +21,7 @@ import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.ClassifiersFactory
 import org.emftext.language.java.containers.CompilationUnit
 import org.emftext.language.java.containers.ContainersFactory
+import org.emftext.language.java.containers.JavaRoot
 import org.emftext.language.java.containers.Package
 import org.emftext.language.java.modifiers.ModifiersFactory
 
@@ -112,23 +113,41 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 		if (affectedEObjects.nullOrEmpty) {
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
-		val CompilationUnit cu = affectedEObjects.filter(typeof(CompilationUnit)).get(0)
-		val Iterable<EObject> noCompilationUnits = affectedEObjects.filter(
-			affectedObject|false == affectedObject instanceof CompilationUnit)
-		val TransformationChangeResult tcr = PCM2JaMoPPUtils.updateNameAttribute(Sets.newHashSet(noCompilationUnits),
+		val Iterable<EObject> noJavaRootObjects = affectedEObjects.filter(
+			affectedObject|false == affectedObject instanceof JavaRoot)
+		val TransformationChangeResult tcr = PCM2JaMoPPUtils.updateNameAttribute(Sets.newHashSet(noJavaRootObjects),
 			newValue, affectedAttribute, featureCorrespondenceMap, correspondenceInstance)
-		cu.handleCompilationUnitNameChange(affectedAttribute, newValue, tcr)
+			
+		val jaMoPPPackages = affectedEObjects.filter(typeof(Package))
+		if (!jaMoPPPackages.nullOrEmpty) {
+			val Package jaMoPPPackage = jaMoPPPackages.get(0)
+			jaMoPPPackage.name = newValue.toString()
+		}
+		
+		val cus = affectedEObjects.filter(typeof(CompilationUnit))
+		if(!cus.nullOrEmpty){
+			val CompilationUnit cu = cus.get(0)
+			handleCompilationUnitNameChange(cu, affectedAttribute, newValue, tcr)
+		}
 		return tcr
 	}
 
 	def void handleCompilationUnitNameChange(CompilationUnit compilationUnit, EStructuralFeature affectedFeature,
 		Object newValue, TransformationChangeResult transformationChangeResult) {
+		var proxy = compilationUnit.eIsProxy
+		if (proxy) {
+			EcoreUtil.resolveAll(compilationUnit)
+		}
+		proxy = compilationUnit.eIsProxy
 		val TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(compilationUnit)
-		compilationUnit.name = newValue.toString() + "." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION
-		compilationUnit.namespaces.set(compilationUnit.namespaces.size - 1, newValue.toString)
+		compilationUnit.name = newValue.toString() + "Impl." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION
+		
+		if (null != compilationUnit.eResource) {
+			val VURI oldVURI = VURI.getInstance(compilationUnit.eResource.getURI)
+			transformationChangeResult.existingObjectsToDelete.add(oldVURI)
+		}
 		transformationChangeResult.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, compilationUnit, null)
-		val VURI oldVURI = VURI.getInstance(compilationUnit.eResource.URI)
-		transformationChangeResult.existingObjectsToDelete.add(oldVURI)
+
 		transformationChangeResult.newRootObjectsToSave.add(compilationUnit)
 	}
 

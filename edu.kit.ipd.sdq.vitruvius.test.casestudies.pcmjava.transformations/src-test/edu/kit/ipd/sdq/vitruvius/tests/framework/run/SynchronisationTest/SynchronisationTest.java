@@ -4,18 +4,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.emftext.language.java.classifiers.Classifier;
 import org.emftext.language.java.classifiers.impl.ClassImpl;
@@ -31,13 +28,18 @@ import de.uka.ipd.sdq.pcm.repository.OperationInterface;
 import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
 import de.uka.ipd.sdq.pcm.util.PcmResourceFactoryImpl;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emf.MonitoredEmfEditorImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitruviusEMFEditorMonitor;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.monitor.DefaultEditorPartAdapterFactoryImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.monitor.EMFEditorMonitorFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine.EMFModelPropagationEngineImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager.SyncManagerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.TransformationExecutingProvidingImpl;
@@ -56,8 +58,9 @@ public class SynchronisationTest {
     private static final String PCM_REPOSITORY_CREATION_NAME = "TestCreateComponent";
     private static final String PCM_INTERFACE_RENAME_NAME = "TestRenameInterface";
 
-    private MonitoredEmfEditorImpl monitor;
+    private IVitruviusEMFEditorMonitor monitor;
     private SyncManagerImpl syncManager;
+    private VSUMImpl vsum;
 
     private VURI sourceModelURI;
     private Repository repository;
@@ -72,12 +75,24 @@ public class SynchronisationTest {
     public void setUpTest() throws Exception {
         // set up syncManager, monitor and metaRepostitory
         final MetaRepositoryImpl metaRepository = JaMoPPPCMTestUtil.createJaMoPPPCMMetaRepository();
-        final VSUMImpl vsum = TestUtil.createVSUM(metaRepository);
+        this.vsum = TestUtil.createVSUM(metaRepository);
         final TransformationExecutingProvidingImpl syncTransformationProvider = new TransformationExecutingProvidingImpl();
         final EMFModelPropagationEngineImpl propagatingChange = new EMFModelPropagationEngineImpl(
                 syncTransformationProvider);
-        this.syncManager = new SyncManagerImpl(vsum, propagatingChange, vsum, metaRepository, vsum);
-        this.monitor = new MonitoredEmfEditorImpl(this.syncManager, this.syncManager.getModelProviding());
+        this.syncManager = new SyncManagerImpl(this.vsum, propagatingChange, this.vsum, metaRepository, this.vsum);
+
+        final EMFEditorMonitorFactory monitorFactory = new EMFEditorMonitorFactory();
+        final IEditorPartAdapterFactory epaFactory = new DefaultEditorPartAdapterFactoryImpl(
+                PCMJaMoPPNamespace.PCM.REPOSITORY_FILE_EXTENSION);
+        final IVitruviusAccessor vitruvAccessor = new IVitruviusAccessor() {
+            @Override
+            public boolean isModelMonitored(final VURI modelUri) {
+                return true;
+            }
+        };
+        this.monitor = monitorFactory.createVitruviusModelEditorSyncMgr(epaFactory, this.syncManager, null /* TODO */,
+                vitruvAccessor);
+        this.monitor.initialize();
 
         // create pcm model instance
         this.repository = RepositoryFactory.eINSTANCE.createRepository();
@@ -86,7 +101,7 @@ public class SynchronisationTest {
 
         final ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-                .put("repository", new PcmResourceFactoryImpl());
+        .put("repository", new PcmResourceFactoryImpl());
         final Resource resource = resourceSet.createResource(this.sourceModelURI.getEMFUri());
         if (null == resource) {
             fail("Could not create resource with URI: " + this.sourceModelURI);
@@ -105,7 +120,7 @@ public class SynchronisationTest {
         }
 
         this.createAndSyncFileChange(this.sourceModelURI);
-        this.addContentAdapter(this.repository);
+        this.monitor.addModel(this.sourceModelURI);
     }
 
     /**
@@ -118,7 +133,7 @@ public class SynchronisationTest {
         protected void finished(final org.junit.runner.Description description) {
             final String previousMethodName = description.getMethodName();
             TestUtil.moveSrcFilesFromMockupProjectToPathWithTimestamp(previousMethodName);
-            TestUtil.moveVSUMProjectToOwnFolder(previousMethodName);
+            TestUtil.moveVSUMProjectToOwnFolderWithTimepstamp(previousMethodName);
         };
     };
 
@@ -135,8 +150,7 @@ public class SynchronisationTest {
         final String javaInterfaceLocation = this.getSrcPath() + PCM_REPOSITORY_NAME + "/"
                 + PCM_INTERFACE_CREATION_NAME + ".java";
         final VURI interfaceVURI = VURI.getInstance(javaInterfaceLocation);
-        final ModelInstance newInterface = this.syncManager.getModelProviding().getAndLoadModelInstanceOriginal(
-                interfaceVURI);
+        final ModelInstance newInterface = this.vsum.getAndLoadModelInstanceOriginal(interfaceVURI);
         final CompilationUnit cu = newInterface.getUniqueRootEObjectIfCorrectlyTyped(CompilationUnit.class);
         this.assertClassifierInJaMoPPCompilationUnit(cu, InterfaceImpl.class, PCM_INTERFACE_CREATION_NAME, true);
     }
@@ -150,7 +164,7 @@ public class SynchronisationTest {
         final String javaClassLocation = this.getSrcPath() + PCM_REPOSITORY_NAME + "/" + PCM_REPOSITORY_CREATION_NAME
                 + "/" + PCM_REPOSITORY_CREATION_NAME + "Impl" + ".java";
         final VURI vuri = VURI.getInstance(javaClassLocation);
-        final ModelInstance newClass = this.syncManager.getModelProviding().getAndLoadModelInstanceOriginal(vuri);
+        final ModelInstance newClass = this.vsum.getAndLoadModelInstanceOriginal(vuri);
         final CompilationUnit cu = newClass.getUniqueRootEObjectIfCorrectlyTyped(CompilationUnit.class);
         final Classifier classifier = this.assertClassifierInJaMoPPCompilationUnit(cu, ClassImpl.class,
                 PCM_REPOSITORY_CREATION_NAME + "Impl", true);
@@ -172,8 +186,7 @@ public class SynchronisationTest {
         final String newInterfaceLocation = this.getSrcPath() + PCM_REPOSITORY_NAME + "/" + PCM_INTERFACE_RENAME_NAME
                 + ".java";
         final VURI newInterfaceLocationVURI = VURI.getInstance(newInterfaceLocation);
-        final ModelInstance renamedInterface = this.syncManager.getModelProviding().getAndLoadModelInstanceOriginal(
-                newInterfaceLocationVURI);
+        final ModelInstance renamedInterface = this.vsum.getAndLoadModelInstanceOriginal(newInterfaceLocationVURI);
         final CompilationUnit cu = renamedInterface.getUniqueRootEObjectIfCorrectlyTyped(CompilationUnit.class);
         final Classifier classifier = this.assertClassifierInJaMoPPCompilationUnit(cu, InterfaceImpl.class,
                 PCM_INTERFACE_RENAME_NAME, true);
@@ -225,24 +238,6 @@ public class SynchronisationTest {
         opInterface.setEntityName(PCM_INTERFACE_CREATION_NAME);
         opInterface.setRepository__Interface(repository);
         return opInterface;
-    }
-
-    /**
-     * add monitor to root object of new file
-     *
-     * @param resource
-     *            resource containing the root EObject of the new file
-     * @throws NoSuchFieldException
-     * @throws SecurityException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     */
-    private void addContentAdapter(final EObject eObject) throws SecurityException, NoSuchFieldException,
-            IllegalArgumentException, IllegalAccessException {
-        final Field f = this.monitor.getClass().getDeclaredField("emfMonitorAdapter");
-        f.setAccessible(true);
-        final EContentAdapter contentAdapter = (EContentAdapter) f.get(this.monitor);
-        eObject.eAdapters().add(contentAdapter);
     }
 
     /**

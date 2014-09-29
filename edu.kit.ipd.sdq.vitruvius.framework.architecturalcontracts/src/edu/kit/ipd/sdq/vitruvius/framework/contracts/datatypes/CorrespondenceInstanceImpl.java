@@ -344,7 +344,11 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         } else {
             VURI vuri = metamodel.getModelVURIContainingIdentifiedEObject(tuidString);
             EObject rootEObject = this.modelProviding.getAndLoadModelInstanceOriginal(vuri).getUniqueRootEObject();
-            return metamodel.resolveEObjectFromRootAndFullTUID(rootEObject, tuidString);
+            EObject resolvedEobject = metamodel.resolveEObjectFromRootAndFullTUID(rootEObject, tuidString);
+            if (resolvedEobject.eIsProxy()) {
+                EcoreUtil.resolve(resolvedEobject, getResource());
+            }
+            return resolvedEobject;
         }
     }
 
@@ -670,8 +674,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         // updateFeatureInstances(oldTUID, newTUID, oldTUIDUpdate);
         // updateFeatureInstances(oldEObject, newEObject, oldTUIDUpdate);
 
-        // update the TUID only at last because of the side-effect on all other TUIDs
-        oldTUIDUpdate.updateSingleSegment(newTUIDUpdate);
+        oldTUIDUpdate.updateMultipleSegments(newTUIDUpdate);
     }
 
     private void updateFeatureInstances(final EObject oldEObject, final EObject newEObject, final TUID oldTUID) {

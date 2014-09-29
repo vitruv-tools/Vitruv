@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import edu.kit.ipd.sdq.vitruvius.casestudies.utils.jamopp.JaMoPPTUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;

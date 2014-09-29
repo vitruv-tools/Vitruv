@@ -35,7 +35,7 @@ public class ModelInstance extends AbstractURIHaving {
     /**
      * Returns the root element of the model instance if it is unique (exactly one root element) and
      * throws a {@link java.lang.RuntimeException RuntimeException} otherwise.
-     * 
+     *
      * @return the root element
      */
     public EObject getUniqueRootEObject() {
@@ -46,7 +46,7 @@ public class ModelInstance extends AbstractURIHaving {
      * Returns the root element of the model instance if it is unique (exactly one root element) and
      * has the type of the given class and throws a {@link java.lang.RuntimeException
      * RuntimeException} otherwise.
-     * 
+     *
      * @param rootElementClass
      *            the class of which the root element has to be an instance of
      * @return the root element
@@ -56,8 +56,21 @@ public class ModelInstance extends AbstractURIHaving {
                 rootElementClass);
     }
 
-    public void load() {
+    /**
+     * Loads the resource into memory. The load can be forced by setting
+     * forceLoadByDoingUnloadBeforeLoad to true, which means that te resource will be unloaded
+     * before we load it again. Note: If forceLoadByDoingUnloadBeforeLoad is set to true the model
+     * is reloaded from the disk. This means there have to be a file at the specific URI that can be
+     * loaded.
+     *
+     * @param forceLoadByDoingUnloadBeforeLoad
+     *            whether the resource should be unloaded before loading it.
+     */
+    public void load(final boolean forceLoadByDoingUnloadBeforeLoad) {
         try {
+            if (forceLoadByDoingUnloadBeforeLoad) {
+                this.resource.unload();
+            }
             this.resource.load(Collections.emptyMap());
         } catch (IOException e) {
             // soften

@@ -150,7 +150,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
     class VitruviusEMFDeltaVisitor implements IResourceDeltaVisitor {
         /*
          * (non-Javadoc)
-         *
+         * 
          * @see org.eclipse.core.resources.IResourceDeltaVisitor#visit(org.eclipse.core.resources.
          * IResourceDelta)
          */
@@ -170,8 +170,8 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
                     VitruviusEmfBuilder.this.removeFromVitruvius(iResource);
                     break;
                 case IResourceDelta.CHANGED:
-                    LOGGER.debug("Resource changed: " + iResource);
-                    VitruviusEmfBuilder.this.triggerSynchronisation(iResource);
+                    // LOGGER.debug("Resource changed: " + iResource);
+                    // VitruviusEmfBuilder.this.triggerSynchronisation(iResource);
                     break;
                 default:
                     LOGGER.debug("No action for change kind: '" + delta.getKind() + "' executed.");
@@ -192,7 +192,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.eclipse.core.internal.events.InternalBuilder#build(int, java.util.Map,
      * org.eclipse.core.runtime.IProgressMonitor)
      */

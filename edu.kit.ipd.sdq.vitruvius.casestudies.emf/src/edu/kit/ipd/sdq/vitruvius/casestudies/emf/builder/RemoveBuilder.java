@@ -25,6 +25,10 @@ public class RemoveBuilder extends AbstractHandler implements IHandler {
     public Object execute(final ExecutionEvent event) throws ExecutionException {
         final IProject project = AddBuilder.getProject(event);
 
+        return removeBuilderFromProject(project);
+    }
+
+    public Object removeBuilderFromProject(final IProject project) {
         if (project != null) {
             try {
                 final IProjectDescription description = project.getDescription();

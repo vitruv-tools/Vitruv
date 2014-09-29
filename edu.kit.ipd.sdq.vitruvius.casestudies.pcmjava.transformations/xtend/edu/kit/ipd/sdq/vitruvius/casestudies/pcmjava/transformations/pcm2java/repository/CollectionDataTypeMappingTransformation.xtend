@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
 import de.uka.ipd.sdq.pcm.repository.CollectionDataType
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMUtils
@@ -11,7 +11,7 @@ import java.util.HashSet
 import java.util.List
 import java.util.Set
 import org.eclipse.emf.ecore.EObject
-import org.emftext.language.java.types.TypeReference
+import org.eclipse.emf.ecore.EReference
 import org.reflections.Reflections
 
 class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransformation {
@@ -33,7 +33,13 @@ class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransfo
 	 */
 	override createEObject(EObject eObject) {
 		val CollectionDataType cdt = eObject as CollectionDataType
-		val jaMoPPInnerDataType = correspondenceInstance.getAllCorrespondingEObjects(cdt.innerType_CollectionDataType)
+		var String jaMoPPInnerDataTypeName = "?"
+		if (null != cdt.innerType_CollectionDataType) {
+			val jaMoPPInnerDataType = correspondenceInstance.
+				claimUniqueCorrespondingEObjectByType(cdt.innerType_CollectionDataType,
+					org.emftext.language.java.classifiers.Class)
+			jaMoPPInnerDataTypeName = jaMoPPInnerDataType.name
+		}
 
 		//i) ask whether to create a new class
 		val String selectClasOrNoClass = "Would you like to create a own class for the CollectionDataType named '" +
@@ -57,28 +63,27 @@ class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransfo
 		val int selectedType = userInteracting.selectFromMessage(UserInteractionType.MODAL, selectTypeMsg,
 			collectionDataTypeNames)
 		val Class<? extends Collection> selectedClass = collectionDataTypes.get(selectedType)
-		val TypeReference collectionDataTypeReference = createTypeReferenceToCollection(selectedClass,
-			jaMoPPInnerDataType)
 		var ret = new ArrayList<EObject>()
 		if (createOwnClass) {
-			val String content = "package " + "datatypes" + "\n"
-			"import" + selectedClass.package.name + "." + selectedClass.simpleName + ";\n"
-			"public class " + cdt.entityName + " extends " + selectedClass.simpleName + "<" + jaMoPPInnerDataType + ">" +
-				" {\n" + "\n\n" + "}"
+			val String content = '''package «».datatypes
+			   import «selectedClass.package.name».«selectedClass.simpleName»
+			   
+			   public class «cdt.entityName» extends «selectedClass.simpleName»<«jaMoPPInnerDataTypeName»>{
+			   	
+			   }
+			   
+			'''
 			val cu = JaMoPPPCMUtils.createCompilationUnit(cdt.entityName, content)
 			val classifier = cu.classifiers.get(0)
 			return #[cu, classifier]
 		} else {
+			//TODO
+			return #[]
 		}
-		return ret
 	}
 
-	def TypeReference createTypeReferenceToCollection(Class<? extends Collection> nameOfTypeReference,
-		EObject[] innerJaMoPPType) {
-
-		return null
-	}
-
+	
+	
 	def Set<Class<? extends Collection>> removeAbstractClasses(Set<Class<? extends Collection>> collectionDataTypes) {
 		val Set<Class<? extends Collection>> nonAbstractCollections = new HashSet<Class<? extends Collection>>
 		for (currentClass : collectionDataTypes) {
@@ -87,6 +92,12 @@ class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransfo
 			}
 		}
 		return nonAbstractCollections
+	}
+
+	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
+		EObject oldValue, EObject newValue) {
+		//TODO: implement behaviour for change of innerdataType
+		return null
 	}
 
 }

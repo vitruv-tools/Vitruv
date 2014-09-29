@@ -6,7 +6,8 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes
 Require-Bundle: org.eclipse.emf.ecore,
  org.eclipse.core.resources,
  org.eclipse.core.runtime,
@@ -14,4 +15,5 @@ Require-Bundle: org.eclipse.emf.ecore,
  org.eclipse.ocl.ecore,
  org.apache.log4j,
  edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence,
- edu.kit.ipd.sdq.vitruvius.framework.util
+ edu.kit.ipd.sdq.vitruvius.framework.util,
+ org.apache.commons.lang;bundle-version="2.6.0"

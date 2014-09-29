@@ -86,11 +86,6 @@ public class DefaultTUIDCalculatorAndResolver implements TUIDCalculatorAndResolv
                 return eObject;
             }
         }
-        // for (EObject eObject : root.eContents()) {
-        // if (id.equals(getValueOfIdFeature(eObject))) {
-        // return eObject;
-        // }
-        // }
         // it is not in the contents. check if its the root object itself:
         if (id.equals(getValueOfIdFeature(root))) {
             return root;

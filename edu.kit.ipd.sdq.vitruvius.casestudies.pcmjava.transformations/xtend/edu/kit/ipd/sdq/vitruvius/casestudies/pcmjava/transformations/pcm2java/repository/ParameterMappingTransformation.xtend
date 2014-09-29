@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
 import de.uka.ipd.sdq.pcm.repository.Parameter
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
@@ -98,8 +98,8 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 			PCMJaMoPPNamespace.PCM.PCM_PARAMETER_ATTRIBUTE_PARAMETER_NAME,
 			PCMJaMoPPNamespace.JaMoPP.JAMOPP_ATTRIBUTE_NAME, featureCorrespondenceMap)
 		PCM2JaMoPPUtils.addCorrespondenceToFeatureCorrespondenceMap(
-			PCMJaMoPPNamespace.PCM.PCM_PARAMETER_ATTRIBUTE_DATA_TYPE, PCMJaMoPPNamespace.JaMoPP.JAMOPP_PARAMETER_ATTRIBUTE_TYPE_REFERENCE,
-			featureCorrespondenceMap)
+			PCMJaMoPPNamespace.PCM.PCM_PARAMETER_ATTRIBUTE_DATA_TYPE,
+			PCMJaMoPPNamespace.JaMoPP.JAMOPP_PARAMETER_ATTRIBUTE_TYPE_REFERENCE, featureCorrespondenceMap)
 	}
 
 }
