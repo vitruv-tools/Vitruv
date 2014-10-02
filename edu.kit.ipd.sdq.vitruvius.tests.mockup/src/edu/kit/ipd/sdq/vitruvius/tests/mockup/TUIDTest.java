@@ -69,7 +69,7 @@ public class TUIDTest {
         TUID tuid9 = TUID.getInstance(s9);
         assertEquals(s9, tuid9.toString());
         System.out
-                .println("**** BEGIN INITIALIZATION ****\n" + TUID.toStrings() + "\n**** END INITIALIZATION ****\n\n");
+        .println("**** BEGIN INITIALIZATION ****\n" + TUID.toStrings() + "\n**** END INITIALIZATION ****\n\n");
         assertTrue(TUID.validate());
         /************************/
         /** END INITIALIZATION **/
@@ -225,10 +225,12 @@ public class TUIDTest {
 
     @Test
     public void testMultipleSegmentChange() {
-        String[] input = new String[] { "prefix#b", "prefix#b#c", "prefix#b#c#d", "prefix#b#c2#d" };
-        String[] expected = new String[] { "prefix#b2", "prefix#b2#c2", "prefix#b2#c2#d", "prefix#b2#c2#d" };
+        String[] input = new String[] { "pre#fix#b#suffix", "pre#fix#b#c#suffix", "pre#fix#b#c#d#suffix",
+        "pre#fix#b#c2#d#suffix" };
+        String[] expected = new String[] { "pre#fix#b2#suffix", "pre#fix#b2#c2#suffix2", "pre#fix#b2#c2#d#suffix",
+        "pre#fix#b2#c2#d#suffix" };
         boolean updateMultipleSegments = true;
-        testUpdateSegment(input, expected, "prefix#b#c", "prefix#b2#c2", updateMultipleSegments);
+        testUpdateSegment(input, expected, "pre#fix#b#c#suffix", "pre#fix#b2#c2#suffix2", updateMultipleSegments);
     }
 
     @Test
