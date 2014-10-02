@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
 import de.uka.ipd.sdq.pcm.repository.Parameter
+import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
@@ -9,6 +10,7 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.EStructuralFeature
 import org.emftext.language.java.parameters.OrdinaryParameter
 import org.emftext.language.java.parameters.ParametersFactory
 import org.emftext.language.java.types.TypeReference
@@ -29,9 +31,15 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 		val Parameter parameter = eObject as Parameter
 		var OrdinaryParameter jaMoPPParam = ParametersFactory.eINSTANCE.createOrdinaryParameter
 		jaMoPPParam.setName(parameter.parameterName)
-		val TypeReference typeReference = correspondenceInstance.
-			getCorrespondingEObjectsByType(parameter.dataType__Parameter, TypeReference).get(0)
-		jaMoPPParam.setTypeReference(typeReference)
+		val typeReferences = correspondenceInstance.getCorrespondingEObjectsByType(parameter.dataType__Parameter,
+			TypeReference)
+		if (null == typeReferences) {
+			logger.warn(
+				"No corresponding for data type " + parameter.dataType__Parameter +
+					" found. Can not create correspondence for the parameter " + parameter)
+			return #[]
+		}
+		jaMoPPParam.setTypeReference(typeReferences.get(0))
 		return jaMoPPParam.toArray;
 	}
 
@@ -57,8 +65,9 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
 		if (affectedAttribute.name.equals(PCMJaMoPPNamespace.PCM.PCM_PARAMETER_ATTRIBUTE_PARAMETER_NAME)) {
+			val boolean markFilesOfChangedEObjectsAsFilesToSave = true
 			return PCM2JaMoPPUtils.updateNameAttribute(correspondingObjects, newValue, affectedAttribute,
-				featureCorrespondenceMap, correspondenceInstance)
+				featureCorrespondenceMap, correspondenceInstance, markFilesOfChangedEObjectsAsFilesToSave)
 		}
 	}
 
@@ -91,15 +100,17 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 	}
 
 	/**
-	 * add name correspondence and type correspondence
+	 * add type Correspondence
 	 */
+	//TODO: check whether it is possible to add correspondence also for parameter name
 	override setCorrespondenceForFeatures() {
-		PCM2JaMoPPUtils.addCorrespondenceToFeatureCorrespondenceMap(
-			PCMJaMoPPNamespace.PCM.PCM_PARAMETER_ATTRIBUTE_PARAMETER_NAME,
-			PCMJaMoPPNamespace.JaMoPP.JAMOPP_ATTRIBUTE_NAME, featureCorrespondenceMap)
-		PCM2JaMoPPUtils.addCorrespondenceToFeatureCorrespondenceMap(
-			PCMJaMoPPNamespace.PCM.PCM_PARAMETER_ATTRIBUTE_DATA_TYPE,
-			PCMJaMoPPNamespace.JaMoPP.JAMOPP_PARAMETER_ATTRIBUTE_TYPE_REFERENCE, featureCorrespondenceMap)
+		val pcmDummyParam = RepositoryFactory.eINSTANCE.createParameter
+		val jaMoPPDummyParam = ParametersFactory.eINSTANCE.createOrdinaryParameter
+		val EStructuralFeature pcmDataTypeAttribute = TransformationUtils.
+			getReferenceByNameFromEObject(PCMJaMoPPNamespace.PCM.PCM_PARAMETER_ATTRIBUTE_DATA_TYPE, pcmDummyParam);
+		val jaMoPPTypeReference = TransformationUtils.getReferenceByNameFromEObject(
+			PCMJaMoPPNamespace.JaMoPP.JAMOPP_PARAMETER_ATTRIBUTE_TYPE_REFERENCE, jaMoPPDummyParam)
+		featureCorrespondenceMap.put(pcmDataTypeAttribute, jaMoPPTypeReference)
 	}
 
 }

@@ -18,7 +18,10 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.In
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ModifierMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.PackageMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.BasicComponentMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.CollectionDataTypeMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.OperationInterfaceMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.OperationSignatureMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.ParameterMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.RepositoryMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
@@ -56,14 +59,21 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
 
     private void initializeChangeSynchronizer() {
         final UserInteracting userInteracting = new UserInteractor();
-        this.changeSynchronizer.addMapping(new ClassMappingTransformation());
-        this.changeSynchronizer.addMapping(new InterfaceMappingTransformation());
-        this.changeSynchronizer.addMapping(new PackageMappingTransformation());
+        // PCM2JaMoPP
+        this.changeSynchronizer.addMapping(new RepositoryMappingTransformation());
         this.changeSynchronizer.addMapping(new BasicComponentMappingTransformation());
         this.changeSynchronizer.addMapping(new OperationInterfaceMappingTransformation());
-        this.changeSynchronizer.addMapping(new RepositoryMappingTransformation());
-        this.changeSynchronizer.addMapping(new ModifierMappingTransformation());
+        this.changeSynchronizer.addMapping(new OperationSignatureMappingTransformation());
+        this.changeSynchronizer.addMapping(new ParameterMappingTransformation());
+        this.changeSynchronizer.addMapping(new CollectionDataTypeMappingTransformation());
+        // this.changeSynchronizer.addMapping(new CompositeDataTypeMappingTransformation());
 
+        // JaMoPP2PCM
+        this.changeSynchronizer.addMapping(new PackageMappingTransformation());
+        this.changeSynchronizer.addMapping(new ClassMappingTransformation());
+        this.changeSynchronizer.addMapping(new InterfaceMappingTransformation());
+        this.changeSynchronizer.addMapping(new ModifierMappingTransformation());
+        // set userInteractor
         this.changeSynchronizer.setUserInteracting(userInteracting);
     }
 

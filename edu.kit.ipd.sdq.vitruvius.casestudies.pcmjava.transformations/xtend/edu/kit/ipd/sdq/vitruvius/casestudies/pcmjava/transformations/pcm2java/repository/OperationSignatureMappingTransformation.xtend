@@ -19,7 +19,7 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 	private static val Logger logger = Logger.getLogger(OperationSignatureMappingTransformation.simpleName)
 
 	override getClassOfMappedEObject() {
-		return OperationSignatureMappingTransformation
+		return OperationSignature
 	}
 
 	/**
@@ -57,6 +57,9 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 	 */
 	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue,
 		int index, EObject[] newCorrespondingParameter) {
+		if(newCorrespondingParameter.nullOrEmpty){
+			return TransformationUtils.createEmptyTransformationChangeResult
+		}
 		val Set<InterfaceMethod> jaMoPPIfMethods = correspondenceInstance.
 			getCorrespondingEObjectsByType(affectedEObject, InterfaceMethod)
 		if (jaMoPPIfMethods.nullOrEmpty) {
@@ -97,8 +100,9 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 		if (correspondingEObjects.nullOrEmpty) {
 			return TransformationUtils.createEmptyTransformationChangeResult;
 		}
+		val boolean markFilesOfChangedEObjectsAsFilesToSave = true;
 		return PCM2JaMoPPUtils.updateNameAttribute(correspondingEObjects, newValue, affectedAttribute,
-			featureCorrespondenceMap, correspondenceInstance)
+			featureCorrespondenceMap, correspondenceInstance, markFilesOfChangedEObjectsAsFilesToSave)
 	}
 
 	/**

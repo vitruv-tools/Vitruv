@@ -59,16 +59,12 @@ public class ModelInstance extends AbstractURIHaving {
     /**
      * Loads the resource into memory. The load can be forced by setting
      * forceLoadByDoingUnloadBeforeLoad to true, which means that te resource will be unloaded
-     * before we load it again. Note: If forceLoadByDoingUnloadBeforeLoad is set to true the model
-     * is reloaded from the disk. This means there have to be a file at the specific URI that can be
-     * loaded.
+     * before we load it again. Note: Unload will only be done when the resourse was modified
      *
-     * @param forceLoadByDoingUnloadBeforeLoad
-     *            whether the resource should be unloaded before loading it.
      */
-    public void load(final boolean forceLoadByDoingUnloadBeforeLoad) {
+    public void load() {
         try {
-            if (forceLoadByDoingUnloadBeforeLoad) {
+            if (this.resource.isModified()) {
                 this.resource.unload();
             }
             this.resource.load(Collections.emptyMap());

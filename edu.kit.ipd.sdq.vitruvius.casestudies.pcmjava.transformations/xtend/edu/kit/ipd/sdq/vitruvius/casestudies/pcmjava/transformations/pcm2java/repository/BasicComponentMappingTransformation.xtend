@@ -24,6 +24,8 @@ import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.JavaRoot
 import org.emftext.language.java.containers.Package
 import org.emftext.language.java.modifiers.ModifiersFactory
+import org.emftext.language.java.classifiers.Classifier
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 
 class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -36,10 +38,15 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 	override createEObject(EObject eObject) {
 		val BasicComponent basicComponent = eObject as BasicComponent
 
-		// get root (aka repository) package
-		val Package rootPackage = correspondenceInstance.
-			claimUniqueCorrespondingEObjectByType(basicComponent.repository__RepositoryComponent, Package)
-
+		// get root package (aka repository) 
+		val packages = correspondenceInstance.
+			getCorrespondingEObjectsByType(basicComponent.repository__RepositoryComponent, Package)
+		var Package rootPackage = null
+		for(package : packages){
+			if(package.name.equalsIgnoreCase(basicComponent.repository__RepositoryComponent.entityName)){
+				rootPackage = package
+			}
+		}
 		// create JaMoPP Package
 		val Package jaMoPPPackage = ContainersFactory.eINSTANCE.createPackage
 		jaMoPPPackage.name = basicComponent.entityName
@@ -106,6 +113,13 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 
+	/**
+	 * Called when a basic component is renamed. Following things are done in order to preserve conistency:
+	 * 1) remove old package-info.java file and adds a new one in the new package
+	 * 2) remove old compilation unit and move it to the new package with the new name + Impl
+	 * 3) rename the classifier in the compilaiton unit accordingly
+	 * 
+	 */
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(eObject, affectedAttribute,
@@ -113,42 +127,19 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 		if (affectedEObjects.nullOrEmpty) {
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
-		val Iterable<EObject> noJavaRootObjects = affectedEObjects.filter(
-			affectedObject|false == affectedObject instanceof JavaRoot)
-		val TransformationChangeResult tcr = PCM2JaMoPPUtils.updateNameAttribute(Sets.newHashSet(noJavaRootObjects),
-			newValue, affectedAttribute, featureCorrespondenceMap, correspondenceInstance)
-			
+		val tcr = new TransformationChangeResult
 		val jaMoPPPackages = affectedEObjects.filter(typeof(Package))
 		if (!jaMoPPPackages.nullOrEmpty) {
 			val Package jaMoPPPackage = jaMoPPPackages.get(0)
-			jaMoPPPackage.name = newValue.toString()
+			PCM2JaMoPPUtils.handleJavaRootNameChange(jaMoPPPackage, affectedAttribute, newValue, tcr, correspondenceInstance, true)
 		}
 		
 		val cus = affectedEObjects.filter(typeof(CompilationUnit))
 		if(!cus.nullOrEmpty){
 			val CompilationUnit cu = cus.get(0)
-			handleCompilationUnitNameChange(cu, affectedAttribute, newValue, tcr)
+			PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, tcr, correspondenceInstance, true)
 		}
 		return tcr
-	}
-
-	def void handleCompilationUnitNameChange(CompilationUnit compilationUnit, EStructuralFeature affectedFeature,
-		Object newValue, TransformationChangeResult transformationChangeResult) {
-		var proxy = compilationUnit.eIsProxy
-		if (proxy) {
-			EcoreUtil.resolveAll(compilationUnit)
-		}
-		proxy = compilationUnit.eIsProxy
-		val TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(compilationUnit)
-		compilationUnit.name = newValue.toString() + "Impl." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION
-		
-		if (null != compilationUnit.eResource) {
-			val VURI oldVURI = VURI.getInstance(compilationUnit.eResource.getURI)
-			transformationChangeResult.existingObjectsToDelete.add(oldVURI)
-		}
-		transformationChangeResult.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, compilationUnit, null)
-
-		transformationChangeResult.newRootObjectsToSave.add(compilationUnit)
 	}
 
 	override setCorrespondenceForFeatures() {

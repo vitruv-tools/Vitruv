@@ -41,9 +41,9 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 	 * sets the name correspondece for JaMoPP-class names and PCM-entityName Attribut
 	 */
 	override setCorrespondenceForFeatures() {
-		val classNameAttribute = TransformationUtils::getFeatureByNameFromEObject(
+		val classNameAttribute = TransformationUtils::getAttributeByNameFromEObject(
 			PCMJaMoPPNamespace.JaMoPP::JAMOPP_ATTRIBUTE_NAME, ClassifiersFactory.eINSTANCE.createClass)
-		val componentNameAttribute = TransformationUtils::getFeatureByNameFromEObject(
+		val componentNameAttribute = TransformationUtils::getAttributeByNameFromEObject(
 			PCMJaMoPPNamespace.PCM::PCM_ATTRIBUTE_ENTITY_NAME, RepositoryFactory.eINSTANCE.createBasicComponent)
 		featureCorrespondenceMap.put(classNameAttribute, componentNameAttribute)
 	}

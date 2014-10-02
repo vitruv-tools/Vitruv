@@ -31,6 +31,8 @@ public class PCM2JaMoPPUtils {
     public static final String IMPLEMENTING_CLASS_NAME = BASIC_COMPONENT_NAME + "Impl";
     public static final String INTERFACE_NAME = "TestInterface";
     public static final String RENAME = "Rename";
+    public static final String OPERATION_SIGNATURE_1_NAME = "TestOperationSignature1";
+    public static final String PARAMETER_NAME = "TestParameterName";
 
     private PCM2JaMoPPUtils() {
     }

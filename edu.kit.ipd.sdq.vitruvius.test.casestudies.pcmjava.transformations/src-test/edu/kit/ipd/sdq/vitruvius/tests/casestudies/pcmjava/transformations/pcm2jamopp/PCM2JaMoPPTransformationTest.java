@@ -16,10 +16,20 @@ import org.emftext.language.java.classifiers.Interface;
 import org.emftext.language.java.commons.NamedElement;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.containers.Package;
+import org.emftext.language.java.members.InterfaceMethod;
+import org.emftext.language.java.types.TypeReference;
 import org.junit.Test;
 
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
+import de.uka.ipd.sdq.pcm.repository.CollectionDataType;
+import de.uka.ipd.sdq.pcm.repository.CompositeDataType;
+import de.uka.ipd.sdq.pcm.repository.DataType;
 import de.uka.ipd.sdq.pcm.repository.OperationInterface;
+import de.uka.ipd.sdq.pcm.repository.OperationSignature;
+import de.uka.ipd.sdq.pcm.repository.Parameter;
+import de.uka.ipd.sdq.pcm.repository.ParameterModifier;
+import de.uka.ipd.sdq.pcm.repository.PrimitiveDataType;
+import de.uka.ipd.sdq.pcm.repository.PrimitiveTypeEnum;
 import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
@@ -41,11 +51,33 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
     public void testAddRepository() throws Throwable {
         final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPUtils.REPOSITORY_NAME);
 
-        final Package jaMoPPPackage = this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(repo,
-                Package.class);
+        this.assertRepositoryCorrespondences(repo);
+    }
 
-        assertEquals("name of JaMoPP Package does not match changed repository name", jaMoPPPackage.getName(),
-                repo.getEntityName());
+    private void assertRepositoryCorrespondences(final Repository repo) throws Throwable {
+        if (null == this.getCorrespondenceInstance()) {
+            fail("correspondence instance is still null - no transformation was executed.");
+            return;
+        }
+        final Set<Package> jaMoPPPackages = this.getCorrespondenceInstance().getCorrespondingEObjectsByType(repo,
+                Package.class);
+        boolean foundRepositoryPackage = false;
+        boolean foundDatatypesPackage = false;
+        boolean foundContractsPackage = false;
+        for (final Package pack : jaMoPPPackages) {
+            if (pack.getName().equals(repo.getEntityName())) {
+                foundRepositoryPackage = true;
+            }
+            if (pack.getName().equals("contracts")) {
+                foundContractsPackage = true;
+            }
+            if (pack.getName().equals("datatypes")) {
+                foundDatatypesPackage = true;
+            }
+        }
+        assertTrue("No correspondeing repository package found", foundRepositoryPackage);
+        assertTrue("No correspondeing datatype package found", foundDatatypesPackage);
+        assertTrue("No correspondeing contracts package found", foundContractsPackage);
     }
 
     @Test
@@ -59,14 +91,7 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
         super.triggerSynchronization(VURI.getInstance(repo.eResource()));
 
         // check
-        if (null == this.getCorrespondenceInstance()) {
-            fail("correspondence instance is still null - no transformation was executed.");
-            return;
-        }
-        final Package jaMoPPPackage = this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(repo,
-                Package.class);
-        assertEquals("name of JaMoPP Package does not match changed repository name", jaMoPPPackage.getName(),
-                repo.getEntityName());
+        this.assertRepositoryCorrespondences(repo);
     }
 
     @Test
@@ -85,6 +110,7 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
         OperationInterface opInterface = this.addInterfaceToReposiotryAndSync(repo, PCM2JaMoPPUtils.INTERFACE_NAME);
 
         opInterface = this.renameInterfaceAndSync(opInterface);
+        super.triggerSynchronization(VURI.getInstance(opInterface.eResource()));
 
         this.assertOperationInterfaceCorrespondences(opInterface);
     }
@@ -104,8 +130,55 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
         final BasicComponent basicComponent = this.addBasicComponentAndSync(repo);
 
         basicComponent.setEntityName(PCM2JaMoPPUtils.BASIC_COMPONENT_NAME + PCM2JaMoPPUtils.RENAME);
+        this.triggerSynchronization(VURI.getInstance(repo.eResource()));
 
         this.assertBasicComponentCorrespondences(basicComponent);
+    }
+
+    @Test
+    public void testAddOperationSignature() throws Throwable {
+        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPUtils.REPOSITORY_NAME);
+        final OperationInterface opInterface = this.addInterfaceToReposiotryAndSync(repo,
+                PCM2JaMoPPUtils.INTERFACE_NAME);
+
+        final OperationSignature opSig = this.createAndSyncOperationSignature(repo, opInterface);
+
+        this.assertOperationSignatureCorrespondence(opSig);
+    }
+
+    @Test
+    public void testRenameOperationSignature() throws Throwable {
+        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPUtils.REPOSITORY_NAME);
+        final OperationInterface opInterface = this.addInterfaceToReposiotryAndSync(repo,
+                PCM2JaMoPPUtils.INTERFACE_NAME);
+        final OperationSignature opSig = this.createAndSyncOperationSignature(repo, opInterface);
+
+        opSig.setEntityName(PCM2JaMoPPUtils.OPERATION_SIGNATURE_1_NAME + PCM2JaMoPPUtils.RENAME);
+        super.triggerSynchronization(VURI.getInstance(repo.eResource()));
+
+        this.assertOperationSignatureCorrespondence(opSig);
+    }
+
+    @Test
+    public void testAddParameter() throws Throwable {
+        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPUtils.REPOSITORY_NAME);
+        final OperationInterface opInterface = this.addInterfaceToReposiotryAndSync(repo,
+                PCM2JaMoPPUtils.INTERFACE_NAME);
+        final OperationSignature opSig = this.createAndSyncOperationSignature(repo, opInterface);
+
+        final Parameter param = this.addAndSyncParameterToSignature(repo, opSig);
+
+        this.assertParameterCorrespondences(param);
+    }
+
+    @Test
+    public void testChangeParameterName() throws Throwable {
+        fail("not yet implemented");
+    }
+
+    @Test
+    public void testChangeParameterType() throws Throwable {
+        fail("not yet implemented");
     }
 
     @SuppressWarnings("unchecked")
@@ -119,24 +192,68 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
 
     }
 
+    /**
+     * assert that the parameter type has a correspondence to the type of the parameter in the
+     * JaMoPP model
+     */
+    private void assertParameterCorrespondences(final Parameter param) throws Throwable {
+        this.assertDataTypeCorrespondence(param.getDataType__Parameter());
+    }
+
+    private void assertDataTypeCorrespondence(final DataType dataType) throws Throwable {
+        if (dataType instanceof CollectionDataType) {
+            final CollectionDataType cdt = (CollectionDataType) dataType;
+            this.assertSingleCorrespondence(cdt, TypeReference.class, cdt.getEntityName());
+        } else if (dataType instanceof CompositeDataType) {
+            final CompositeDataType cdt = (CompositeDataType) dataType;
+            this.assertSingleCorrespondence(cdt, TypeReference.class, cdt.getEntityName());
+        } else if (dataType instanceof PrimitiveDataType) {
+            assertTrue("No correspondence exists for DataType " + dataType, 0 < this.getCorrespondenceInstance()
+                    .getAllCorrespondingEObjects(dataType).size());
+        }
+
+    }
+
     private <T> void assertCorrespondnecesAndCompareNames(
             final de.uka.ipd.sdq.pcm.core.entity.NamedElement pcmNamedElement, final int expectedSize,
             final java.lang.Class<? extends EObject>[] expectedClasses, final String[] expectedNames) throws Throwable {
         final Set<EObject> correspondences = this.getCorrespondenceInstance().claimCorrespondingEObjects(
                 pcmNamedElement);
-        assertTrue("correspondences.size should be " + expectedSize, correspondences.size() == expectedSize);
+        assertEquals("correspondences.size should be " + expectedSize, expectedSize, correspondences.size());
         for (int i = 0; i < expectedClasses.length; i++) {
             final java.lang.Class<? extends EObject> expectedClass = expectedClasses[i];
             final EObject correspondingEObject = this.getCorrespondenceInstance()
                     .claimUniqueCorrespondingEObjectByType(pcmNamedElement, expectedClass);
-            if (false == correspondingEObject.getClass().isInstance(expectedClass)) {
+            if (!expectedClass.isInstance(correspondingEObject)) {
                 fail("Corresponding EObject " + correspondingEObject + " is not an instance of " + expectedClass);
             }
             final NamedElement jaMoPPElement = (NamedElement) correspondingEObject;
-            assertEquals(jaMoPPElement.getClass().getSimpleName() + " " + jaMoPPElement.getName() + " does not match "
-                    + pcmNamedElement.getClass().getSimpleName() + " name " + pcmNamedElement.getEntityName(),
-                    pcmNamedElement.getEntityName(), jaMoPPElement.getName());
+            assertTrue("The '" + jaMoPPElement.getClass().getSimpleName() + "' with name '" + jaMoPPElement.getName()
+                    + "' does not contain " + "the '" + pcmNamedElement.getClass().getSimpleName() + "' with name "
+                    + pcmNamedElement.getEntityName(), jaMoPPElement.getName()
+                    .contains(pcmNamedElement.getEntityName()));
         }
+    }
+
+    private void assertOperationSignatureCorrespondence(final OperationSignature opSig) throws Throwable {
+        this.assertSingleCorrespondence(opSig, InterfaceMethod.class, opSig.getEntityName());
+    }
+
+    private OperationSignature createAndSyncOperationSignature(final Repository repo,
+            final OperationInterface opInterface) throws IOException {
+        final OperationSignature opSig = RepositoryFactory.eINSTANCE.createOperationSignature();
+        opSig.setEntityName(PCM2JaMoPPUtils.OPERATION_SIGNATURE_1_NAME);
+        opSig.setInterface__OperationSignature(opInterface);
+        EcoreResourceBridge.saveResource(repo.eResource());
+        super.triggerSynchronization(VURI.getInstance(repo.eResource()));
+        return opSig;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void assertSingleCorrespondence(final de.uka.ipd.sdq.pcm.core.entity.NamedElement pcmNamedElement,
+            final java.lang.Class<? extends EObject> expectedClass, final String expectedName) throws Throwable {
+        this.assertCorrespondnecesAndCompareNames(pcmNamedElement, 1, new java.lang.Class[] { expectedClass },
+                new String[] { expectedName });
     }
 
     @SuppressWarnings("unchecked")
@@ -176,5 +293,19 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
         this.changeRecorder.beginRecording(Collections.singletonList(repo));
         super.synchronizeFileChange(FileChangeKind.CREATE, VURI.getInstance(repo.eResource()));
         return repo;
+    }
+
+    private Parameter addAndSyncParameterToSignature(final Repository repo, final OperationSignature opSig) {
+        final Parameter param = RepositoryFactory.eINSTANCE.createParameter();
+        param.setParameterName(PCM2JaMoPPUtils.PARAMETER_NAME);
+        final PrimitiveDataType dataType = RepositoryFactory.eINSTANCE.createPrimitiveDataType();
+        dataType.setType(PrimitiveTypeEnum.INT);
+        param.setDataType__Parameter(dataType);
+        param.setModifier__Parameter(ParameterModifier.IN);
+        param.setOperationSignature__Parameter(opSig);
+        opSig.getParameters__OperationSignature().add(param);
+        final VURI vuri = VURI.getInstance(repo.eResource());
+        super.triggerSynchronization(vuri);
+        return param;
     }
 }

@@ -3,8 +3,6 @@ package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.emftext.language.java.containers.CompilationUnit;
@@ -15,7 +13,6 @@ import de.uka.ipd.sdq.pcm.repository.Repository;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPTransformationExecuter;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.PCMJaMoPPTransformationTestBase;
@@ -26,18 +23,15 @@ public class PCMJaMoPPTransformationExecuterTest extends PCMJaMoPPTransformation
     private static final Logger logger = Logger.getLogger(PCMJaMoPPTransformationExecuterTest.class.getSimpleName());
 
     @Test
-    public void testCreateNewResourceInPCM2JaMoPPTransformation() throws IOException {
+    public void testCreateNewResourceInPCM2JaMoPPTransformation() throws Throwable {
         final PCMJaMoPPTransformationExecuter pcmJaMoPPTransformation = new PCMJaMoPPTransformationExecuter();
-        final Repository repo = PCM2JaMoPPUtils.createAndSyncRepository(this.resourceSet,
-                PCM2JaMoPPUtils.REPOSITORY_NAME);
-        final ModelInstance pcmModelInstance = PCM2JaMoPPUtils.createModelInstance(
-                "MockupProject/test/testRepository.repository", this.resourceSet);
+        final Repository repo = PCM2JaMoPPUtils.createRepository(this.resourceSet, PCM2JaMoPPUtils.REPOSITORY_NAME);
         final BasicComponent basicComponent = PCM2JaMoPPUtils.createBasicComponent(repo);
         final EMFModelChange change = PCM2JaMoPPUtils.createCreateChange(basicComponent, repo, repo,
                 "components__Repository");
 
         final EMFChangeResult emfChangeResult = pcmJaMoPPTransformation.executeTransformation(change,
-                super.correspondenceInstance);
+                super.getCorrespondenceInstance());
         logger.info("changed VURIs: " + emfChangeResult);
 
         PCM2JaMoPPUtils.saveEMFChangeResult(emfChangeResult, this.resourceSet);

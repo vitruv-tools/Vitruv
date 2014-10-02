@@ -86,8 +86,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     public ModelInstance getAndLoadModelInstanceOriginal(final VURI modelURI) {
         ModelInstance modelInstance = getModelInstanceOriginal(modelURI);
         try {
-            boolean forceLoadByDoingUnloadBeforeLoad = true;
-            modelInstance.load(forceLoadByDoingUnloadBeforeLoad);
+            modelInstance.load();
         } catch (RuntimeException re) {
             // could not load model instance --> this should only be the case when the model is not
             // Existing yet

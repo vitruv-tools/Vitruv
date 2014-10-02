@@ -1,5 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.util.Map;
 
@@ -14,7 +16,10 @@ import org.emftext.language.java.classifiers.Interface;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.containers.ContainersFactory;
 import org.emftext.language.java.containers.Package;
+import org.emftext.language.java.members.InterfaceMethod;
+import org.emftext.language.java.members.MembersFactory;
 import org.emftext.language.java.resource.java.mopp.JavaResourceFactory;
+import org.emftext.language.java.types.TypesFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -67,5 +72,28 @@ public class JaMoPPTest {
         final Resource resource = resourceSet.createResource(uri);
         resource.getContents().add(jaMoPPPackage);
         resource.save(null);
+    }
+
+    @Test
+    public void testAddInterfaceMethod() throws IOException {
+        final CompilationUnit cu = ContainersFactory.eINSTANCE.createCompilationUnit();
+        cu.setName("TestAddInterfaceMethod.java");
+        final Interface jaIf = ClassifiersFactory.eINSTANCE.createInterface();
+        jaIf.setName("TestAddInterfaceMethod");
+        cu.getClassifiers().add(jaIf);
+        final ResourceSet rs = new ResourceSetImpl();
+        final String srcPath = "src-tmp/";
+        final String cuName = srcPath + cu.getName();
+        final URI uri = URI.createFileURI(cuName);
+        final Resource resource = rs.createResource(uri);
+        // resource.save(null);
+        final InterfaceMethod ifMethod = MembersFactory.eINSTANCE.createInterfaceMethod();
+        ifMethod.setName("testMethod");
+        ifMethod.setTypeReference(TypesFactory.eINSTANCE.createVoid());
+        resource.getContents().add(cu);
+        resource.save(null);
+        jaIf.getMembers().add(ifMethod);
+        resource.save(null);
+        assertTrue("Resource of interface method is null", null != ifMethod.eResource());
     }
 }

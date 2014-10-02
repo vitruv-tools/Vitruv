@@ -58,25 +58,26 @@ class JaMoPPTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResol
 	}
 
 	private def dispatch calculateIndividualTUID(CompilationUnit compilationUnit) {
-		var String className = null;
-
-		/**
-         * if compilation.getName == null (which can happen) we use the name of the first classifier
-         * in the compilation unit as name. If there are no classifiers in the compilation unit we
-         * use <null> as name
-         */
-		if (null != compilationUnit.getName()) {
-			className = compilationUnit.getName();
-		} else if (0 != compilationUnit.getClassifiers().size()) {
-			className = compilationUnit.getClassifiers().get(0).getName() + ".java";
-		} else {
-			logger.warn("Could not determine a name for compilation unit: " + compilationUnit);
-		}
-		val boolean alreadyContainsNamespace = (1 < StringUtils.countMatches(className, "."));
-		if(alreadyContainsNamespace){
-			return className;
-		}
-		return getNamespaceAsString(compilationUnit) + "." + className;
+		return ""
+//		var String className = null;
+//
+//		/**
+//         * if compilation.getName == null (which can happen) we use the name of the first classifier
+//         * in the compilation unit as name. If there are no classifiers in the compilation unit we
+//         * use <null> as name
+//         */
+//		if (null != compilationUnit.getName()) {
+//			className = compilationUnit.getName();
+//		} else if (0 != compilationUnit.getClassifiers().size()) {
+//			className = compilationUnit.getClassifiers().get(0).getName() + ".java";
+//		} else {
+//			logger.warn("Could not determine a name for compilation unit: " + compilationUnit);
+//		}
+//		val boolean alreadyContainsNamespace = (1 < StringUtils.countMatches(className, "."));
+//		if(alreadyContainsNamespace){
+//			return className;
+//		}
+//		return getNamespaceAsString(compilationUnit) + "." + className;
 	}
 
 	private def dispatch calculateIndividualTUID(Classifier classifier) {

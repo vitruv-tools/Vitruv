@@ -4,6 +4,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationCha
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import org.eclipse.emf.ecore.EReference
 
 class TransformationUtils {
 	private new(){
@@ -40,8 +41,11 @@ class TransformationUtils {
 		return createTransformationChangeResult(null, null, null)
 	}
 	
-	def public static EAttribute getFeatureByNameFromEObject(String featureName, EObject eObject) {
-		return eObject.eClass.getEAllAttributes.filter[attribute|attribute.name.equals(featureName)].iterator.next
+	def public static EAttribute getAttributeByNameFromEObject(String attributeName, EObject eObject) {
+		return eObject.eClass.getEAllAttributes.filter[attribute|attribute.name.equals(attributeName)].iterator.next
 	}
 	
+	def public static EReference getReferenceByNameFromEObject(String referenceName, EObject eObject) {
+		return eObject.eClass.EAllReferences.filter[reference|reference.name.equals(referenceName)].iterator.next
+	}
 }

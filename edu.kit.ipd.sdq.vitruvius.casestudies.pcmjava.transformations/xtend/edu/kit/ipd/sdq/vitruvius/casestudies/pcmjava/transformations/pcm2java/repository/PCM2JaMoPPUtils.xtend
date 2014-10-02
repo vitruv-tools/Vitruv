@@ -13,7 +13,9 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.Resource
+import org.emftext.language.java.classifiers.Classifier
 import org.emftext.language.java.classifiers.ClassifiersFactory
+import org.emftext.language.java.containers.CompilationUnit
 import org.emftext.language.java.containers.JavaRoot
 import org.emftext.language.java.types.Boolean
 import org.emftext.language.java.types.Byte
@@ -51,7 +53,7 @@ abstract class PCM2JaMoPPUtils {
 		Object newValue,
 		EStructuralFeature affectedFeature,
 		ClaimableMap<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap,
-		CorrespondenceInstance correspondenceInstance
+		CorrespondenceInstance correspondenceInstance, boolean markFilesOfChangedEObjectsAsFilesToSave
 	) {
 		val EStructuralFeature eStructuralFeature = featureCorrespondenceMap.claimValueForKey(affectedFeature)
 		var transformationChangeResult = new TransformationChangeResult
@@ -61,18 +63,18 @@ abstract class PCM2JaMoPPUtils {
 			logger.error("The method updateNameattribut is not able to rename java root objects")
 		}
 		for (EObject correspondingObject : correspondingEObjects) {
-			val Resource resource = correspondingObject.eResource
-			val boolean isProxy = correspondingObject.eIsProxy
 			if (null == correspondingObject || null == correspondingObject.eResource) {
 				logger.error(
 					"corresponding object is null or correspondingObject is not contained in a resource!: " +
-						correspondingObject + " (object.isProxy=" + isProxy + ")")
+						correspondingObject + " (object.isProxy=" + correspondingObject.eIsProxy + ")")
 			} else {
 				val TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(correspondingObject)
 				correspondingObject.eSet(eStructuralFeature, newValue)
 				transformationChangeResult.addCorrespondenceToUpdate(correspondenceInstance, oldTUID,
 					correspondingObject, null)
-				//transformationChangeResult.existingObjectsToSave.add(correspondingObject)
+			    if(markFilesOfChangedEObjectsAsFilesToSave){
+					transformationChangeResult.existingObjectsToSave.add(correspondingObject)
+				}
 			}
 		}
 		transformationChangeResult
@@ -142,5 +144,41 @@ abstract class PCM2JaMoPPUtils {
 		namespaceClassifierReference.classifierReferences.add(classifierReference)
 		namespaceClassifierReference.namespaces.addAll(namespace.split("."))
 		return namespaceClassifierReference
+	}
+
+	def public static void handleClassifierNameChange(Classifier classifier, Object newValue,
+		TransformationChangeResult tcr, CorrespondenceInstance correspondenceInstance) {
+		val TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(classifier)
+		classifier.name = newValue.toString
+		if(classifier instanceof org.emftext.language.java.classifiers.Class){
+			classifier.name = classifier.name + "Impl"
+		}
+		tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, classifier, null)
+	}
+
+	def public static void handleJavaRootNameChange(JavaRoot javaRoot, EStructuralFeature affectedFeature,
+		Object newValue, TransformationChangeResult transformationChangeResult,
+		CorrespondenceInstance correspondenceInstance, boolean changeNamespanceIfCompilationUnit) { 
+		val TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(javaRoot)
+
+		//change name
+		var String newName = newValue.toString
+		if (javaRoot instanceof CompilationUnit) {
+			if (changeNamespanceIfCompilationUnit) {
+				//change package if compilation unit and change new Name
+				javaRoot.namespaces.remove(javaRoot.namespaces.size - 1)
+				javaRoot.namespaces.add(newValue.toString)
+				newName = newName + "Impl"
+			}
+			newName = newName + "." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION
+			handleClassifierNameChange(javaRoot.classifiers.get(0), newValue, transformationChangeResult,
+				correspondenceInstance)
+		}
+		javaRoot.name = newName;
+
+		val VURI oldVURI = VURI.getInstance(javaRoot.eResource.getURI)
+		transformationChangeResult.existingObjectsToDelete.add(oldVURI)
+		transformationChangeResult.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, javaRoot, null)
+		transformationChangeResult.newRootObjectsToSave.add(javaRoot)
 	}
 }

@@ -13,6 +13,15 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.Package
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
+import de.uka.ipd.sdq.pcm.repository.RepositoryComponent
+import de.uka.ipd.sdq.pcm.repository.Interface
+import de.uka.ipd.sdq.pcm.repository.DataType
+import java.util.Set
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
+import org.emftext.language.java.containers.JavaRoot
 
 class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -30,18 +39,32 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 		featureCorrespondenceMap.put(repositoryNameAttribute, packageNameAttribute)
 	}
 
+	/**
+	 * called when a repository is created
+	 * creates following corresponding objects
+	 * 1) main-package for repository
+	 * 2) contracts package for interfaces in main-package
+	 * 3) datatypes package for datatypes in main-package
+	 */
 	override createEObject(EObject eObject) {
 		val Repository repository = eObject as Repository
 		val Package jaMoPPPackage = ContainersFactory.eINSTANCE.createPackage
 		jaMoPPPackage.name = repository.entityName
-		return jaMoPPPackage.toArray
+		val Package contractsPackage = ContainersFactory.eINSTANCE.createPackage
+		contractsPackage.namespaces.add(jaMoPPPackage.name)
+		contractsPackage.name = "contracts"
+		val Package datatypesPackage = ContainersFactory.eINSTANCE.createPackage
+		datatypesPackage.namespaces.add(jaMoPPPackage.name)
+		datatypesPackage.name = "datatypes"
+		return #[jaMoPPPackage, contractsPackage, datatypesPackage]
 	}
 
 	override createRootEObject(EObject newRootEObject, EObject[] newCorrespondingEObjects) {
 		if (newCorrespondingEObjects.nullOrEmpty) {
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
-		val transResult= TransformationUtils.createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects)
+		val transResult = TransformationUtils.
+			createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects)
 		for (correspondingEObject : newCorrespondingEObjects) {
 			transResult.addNewCorrespondence(correspondenceInstance, newRootEObject, correspondingEObject, null)
 		}
@@ -51,9 +74,11 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 	override removeEObject(EObject eObject) {
 		val Repository repository = eObject as Repository
 
-		//Remove corresponding package
-		val Package jaMoPPPackage = correspondenceInstance.claimUniqueCorrespondingEObjectByType(repository, Package)
-		EcoreUtil.remove(jaMoPPPackage)
+		//Remove corresponding packages
+		val jaMoPPPackages = correspondenceInstance.getCorrespondingEObjectsByType(repository, Package)
+		for (jaMoPPPackage : jaMoPPPackages) {
+			EcoreUtil.remove(jaMoPPPackage)
+		}
 
 		//remove corresponding instance
 		correspondenceInstance.removeAllCorrespondences(repository)
@@ -74,24 +99,74 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
 		val Repository repository = eObject as Repository
+		val correspondingObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(repository, affectedAttribute, featureCorrespondenceMap, correspondenceInstance) 
+		if (correspondingObjects.nullOrEmpty) {
+			return TransformationUtils.createEmptyTransformationChangeResult
+		}
 
 		//val EStructuralFeature jaMoPPNameAttribute = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(affectedAttribute, EStructuralFeature)
 		val EStructuralFeature jaMoPPNameAttribute = featureCorrespondenceMap.claimValueForKey(affectedAttribute)
-		val Package jaMoPPPackage = correspondenceInstance.claimUniqueCorrespondingEObjectByType(repository, Package)
-		jaMoPPPackage.eSet(jaMoPPNameAttribute, newValue);
-
-		//we do not save packages
-		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(jaMoPPPackage.toArray)
+		val jaMoPPPackages = correspondingObjects.filter(typeof(Package))
+		val jaMoPPPackage = jaMoPPPackages.filter[pack|!pack.name.equals("contracts") && !pack.name.equals("datatypes")].
+			get(0)
+		if (jaMoPPPackage == null) {
+			logger.warn("No Package found that maps to repository: " + repository)
+			return TransformationUtils.createEmptyTransformationChangeResult
+		}
+		
+		val tcr = new TransformationChangeResult
+		PCM2JaMoPPUtils.handleJavaRootNameChange(jaMoPPPackage, affectedAttribute, newValue, tcr, correspondenceInstance, false)
+		return tcr
 	}
 
 	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue,
 		int index, EObject[] newCorrespondingEObjects) {
-		val parrentCorrespondence = correspondenceInstance.claimUniqueOrNullCorrespondenceForEObject(affectedEObject);
-		val transformationResult = TransformationUtils.createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects)
+		val Iterable<EObjectCorrespondence> correspondenceCandidates = correspondenceInstance.
+			getAllCorrespondences(affectedEObject).filter(typeof(EObjectCorrespondence))
+		val transformationResult = TransformationUtils.
+			createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects.filter(typeof(JavaRoot)))
 		for (jaMoPPElement : newCorrespondingEObjects) {
-			transformationResult.addNewCorrespondence(correspondenceInstance, newValue, jaMoPPElement, parrentCorrespondence)
+			val parrentCorrespondence = getParrentCorrespondence(newValue, correspondenceCandidates)
+			transformationResult.addNewCorrespondence(correspondenceInstance, newValue, jaMoPPElement,
+				parrentCorrespondence)
 		}
 		return transformationResult
+	}
+
+	def dispatch getParrentCorrespondence(EObject object, Iterable<EObjectCorrespondence> correspondences) {
+		return null
+	}
+
+	def dispatch getParrentCorrespondence(RepositoryComponent component, Iterable<EObjectCorrespondence> correspondences) {
+		for (correspondence : correspondences) {
+			if (correspondence.elementATUID.equals(
+				correspondenceInstance.calculateTUIDFromEObject(component.repository__RepositoryComponent)) || correspondence.
+				elementBTUID.equals(
+					correspondenceInstance.calculateTUIDFromEObject(component.repository__RepositoryComponent))) {
+				return correspondence
+			}
+		}
+		return null;
+	}
+
+	// package with name "contracts"
+	def dispatch getParrentCorrespondence(Interface pcmIf, Iterable<EObjectCorrespondence> correspondences) {
+		return findPackageWithName("contracts", correspondences)
+	}
+
+	//package with name "datatypes"
+	def dispatch getParrentCorrespondence(DataType dataType, Iterable<EObjectCorrespondence> correspondences) {
+		findPackageWithName("datatypes", correspondences)
+	}
+
+	def findPackageWithName(String packageName, Iterable<EObjectCorrespondence> correspondences) {
+		for (correspondence : correspondences) {
+			if (correspondence.elementATUID.toString.contains(packageName) ||
+				correspondence.elementBTUID.toString.contains(packageName)) {
+				return correspondence
+			}
+		}
+		correspondences.get(0)
 	}
 
 	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue,
