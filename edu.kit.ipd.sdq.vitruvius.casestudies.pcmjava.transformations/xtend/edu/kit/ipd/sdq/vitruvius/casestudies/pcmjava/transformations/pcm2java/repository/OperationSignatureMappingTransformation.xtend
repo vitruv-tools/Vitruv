@@ -13,6 +13,11 @@ import org.emftext.language.java.members.InterfaceMethod
 import org.emftext.language.java.members.MembersFactory
 import org.emftext.language.java.parameters.Parameter
 import org.emftext.language.java.types.TypesFactory
+import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
+import de.uka.ipd.sdq.pcm.repository.PrimitiveDataType
+import de.uka.ipd.sdq.pcm.repository.DataType
+import org.emftext.language.java.types.TypeReference
 
 class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -57,7 +62,7 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 	 */
 	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue,
 		int index, EObject[] newCorrespondingParameter) {
-		if(newCorrespondingParameter.nullOrEmpty){
+		if (newCorrespondingParameter.nullOrEmpty) {
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
 		val Set<InterfaceMethod> jaMoPPIfMethods = correspondenceInstance.
@@ -69,12 +74,14 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
 		val parrentCorrespondence = correspondenceInstance.getAllCorrespondences(affectedEObject)
+		val tcr = TransformationUtils.createTransformationChangeResultForEObjectsToSave(jaMoPPIfMethods)
 		for (interfaceMethod : jaMoPPIfMethods) {
 			interfaceMethod.parameters.add(index, newCorrespondingParameter.get(0) as Parameter)
-			correspondenceInstance.createAndAddEObjectCorrespondence(newValue, newCorrespondingParameter.get(0),
+
+			tcr.addNewCorrespondence(correspondenceInstance, newValue, newCorrespondingParameter.get(0),
 				parrentCorrespondence.get(0))
 		}
-		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(jaMoPPIfMethods)
+		return tcr
 	}
 
 	/**
@@ -106,10 +113,35 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 	}
 
 	/**
+	 * called when the return type changed
+	 */
+	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
+		EObject oldValue, EObject newValue) {
+		val Set<EObject> correspondingEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(affectedEObject, affectedReference, featureCorrespondenceMap, correspondenceInstance)
+		if(correspondingEObjects.nullOrEmpty || (false == newValue instanceof DataType)){
+			return TransformationUtils.createEmptyTransformationChangeResult
+		}
+		val InterfaceMethod correspondingInterfaceMethod = correspondenceInstance.claimUniqueCorrespondingEObjectByType(affectedEObject, InterfaceMethod)
+		val TypeReference newTypeReference = DataTypeCorrespondenceHelper.claimUniqueCorrespondingJaMoPPDataType(newValue as DataType, correspondenceInstance)
+		val oldTUID = correspondenceInstance.calculateTUIDFromEObject(correspondingInterfaceMethod)
+		correspondingInterfaceMethod.typeReference = newTypeReference;
+		val tcr = TransformationUtils.createTransformationChangeResultForEObjectsToSave(correspondingInterfaceMethod.toArray)
+		tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, correspondingInterfaceMethod, null)
+		return tcr
+	}
+
+	/**
 	 * set correspondence for the name attribute
 	 */
 	override setCorrespondenceForFeatures() {
 		PCM2JaMoPPUtils.addEntityName2NameCorrespondence(featureCorrespondenceMap)
+		val OperationSignature pcmDummyOpSig = RepositoryFactory.eINSTANCE.createOperationSignature
+		val InterfaceMethod jaMoPPDummyInterfaceMethod = MembersFactory.eINSTANCE.createInterfaceMethod
+		val EReference pcmOpSigDataTypeReference = TransformationUtils.
+			getReferenceByNameFromEObject(PCMJaMoPPNamespace.PCM.PCM_OPERATION_SIGNATURE_RETURN_TYPE, pcmDummyOpSig)
+		val EReference jaMoPPInterfaceMethodTypeReference = TransformationUtils.
+			getReferenceByNameFromEObject(PCMJaMoPPNamespace.JaMoPP.JAMOPP_PARAMETER_ATTRIBUTE_TYPE_REFERENCE,
+				jaMoPPDummyInterfaceMethod)
+		featureCorrespondenceMap.put(pcmOpSigDataTypeReference, jaMoPPInterfaceMethodTypeReference)
 	}
-
 }

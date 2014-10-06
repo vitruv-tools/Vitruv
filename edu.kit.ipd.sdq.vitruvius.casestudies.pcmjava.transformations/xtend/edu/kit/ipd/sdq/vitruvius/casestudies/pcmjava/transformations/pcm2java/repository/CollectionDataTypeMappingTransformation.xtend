@@ -28,17 +28,16 @@ class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransfo
 	 * Called when a new CollectionDataType is created
 	 * Options for user:
 	 * 	i) create Collection class in data types package
-	 *  ii) just remember that it is a collection data type and map it internally to a)list, b)collection c)set
-	 * In both cases: ask user whether it should be mapped to a list, a collection or a set 
+	 *  ii) just remember that it is a collection data type and map it internally to selected class
+	 * In both cases: ask user whether it should be mapped to a which Collection clas 
 	 */
 	override createEObject(EObject eObject) {
 		val CollectionDataType cdt = eObject as CollectionDataType
 		var String jaMoPPInnerDataTypeName = "?"
 		if (null != cdt.innerType_CollectionDataType) {
-			val jaMoPPInnerDataType = correspondenceInstance.
-				claimUniqueCorrespondingEObjectByType(cdt.innerType_CollectionDataType,
-					org.emftext.language.java.classifiers.Class)
-			jaMoPPInnerDataTypeName = jaMoPPInnerDataType.name
+			val jaMoPPInnerDataType = DataTypeCorrespondenceHelper.
+				claimUniqueCorrespondingJaMoPPDataType(cdt.innerType_CollectionDataType, correspondenceInstance)
+			
 		}
 
 		//i) ask whether to create a new class
@@ -65,8 +64,7 @@ class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransfo
 		val Class<? extends Collection> selectedClass = collectionDataTypes.get(selectedType)
 		var ret = new ArrayList<EObject>()
 		if (createOwnClass) {
-			val String content = '''package «».datatypes
-			   import «selectedClass.package.name».«selectedClass.simpleName»
+			val String content = '''import «selectedClass.package.name».«selectedClass.simpleName»
 			   
 			   public class «cdt.entityName» extends «selectedClass.simpleName»<«jaMoPPInnerDataTypeName»>{
 			   	
@@ -77,13 +75,11 @@ class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransfo
 			val classifier = cu.classifiers.get(0)
 			return #[cu, classifier]
 		} else {
+			throw new UnsupportedOperationException("Not creating a class for collection data type is currently not supported")
 			//TODO
-			return #[]
 		}
 	}
 
-	
-	
 	def Set<Class<? extends Collection>> removeAbstractClasses(Set<Class<? extends Collection>> collectionDataTypes) {
 		val Set<Class<? extends Collection>> nonAbstractCollections = new HashSet<Class<? extends Collection>>
 		for (currentClass : collectionDataTypes) {
@@ -96,6 +92,7 @@ class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransfo
 
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject newValue) {
+
 		//TODO: implement behaviour for change of innerdataType
 		return null
 	}

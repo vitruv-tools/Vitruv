@@ -19,6 +19,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.Mo
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.PackageMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.BasicComponentMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.CollectionDataTypeMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.CompositeDataTypeMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.OperationInterfaceMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.OperationSignatureMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.ParameterMappingTransformation;
@@ -66,7 +67,7 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
         this.changeSynchronizer.addMapping(new OperationSignatureMappingTransformation());
         this.changeSynchronizer.addMapping(new ParameterMappingTransformation());
         this.changeSynchronizer.addMapping(new CollectionDataTypeMappingTransformation());
-        // this.changeSynchronizer.addMapping(new CompositeDataTypeMappingTransformation());
+        this.changeSynchronizer.addMapping(new CompositeDataTypeMappingTransformation());
 
         // JaMoPP2PCM
         this.changeSynchronizer.addMapping(new PackageMappingTransformation());

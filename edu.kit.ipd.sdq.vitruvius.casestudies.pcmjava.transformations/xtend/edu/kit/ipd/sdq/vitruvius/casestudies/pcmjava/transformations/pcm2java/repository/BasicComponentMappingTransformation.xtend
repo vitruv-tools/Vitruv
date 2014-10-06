@@ -1,13 +1,11 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
-import com.google.common.collect.Sets
 import de.uka.ipd.sdq.pcm.repository.BasicComponent
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
@@ -15,17 +13,13 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.ClassifiersFactory
 import org.emftext.language.java.containers.CompilationUnit
 import org.emftext.language.java.containers.ContainersFactory
-import org.emftext.language.java.containers.JavaRoot
 import org.emftext.language.java.containers.Package
 import org.emftext.language.java.modifiers.ModifiersFactory
-import org.emftext.language.java.classifiers.Classifier
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 
 class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -38,15 +32,9 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 	override createEObject(EObject eObject) {
 		val BasicComponent basicComponent = eObject as BasicComponent
 
-		// get root package (aka repository) 
-		val packages = correspondenceInstance.
-			getCorrespondingEObjectsByType(basicComponent.repository__RepositoryComponent, Package)
-		var Package rootPackage = null
-		for(package : packages){
-			if(package.name.equalsIgnoreCase(basicComponent.repository__RepositoryComponent.entityName)){
-				rootPackage = package
-			}
-		}
+		var Package rootPackage = JaMoPPPCMUtils.findCorrespondingPackageByName(basicComponent.repository__RepositoryComponent.entityName,
+			correspondenceInstance, basicComponent.repository__RepositoryComponent)
+
 		// create JaMoPP Package
 		val Package jaMoPPPackage = ContainersFactory.eINSTANCE.createPackage
 		jaMoPPPackage.name = basicComponent.entityName
@@ -131,11 +119,12 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 		val jaMoPPPackages = affectedEObjects.filter(typeof(Package))
 		if (!jaMoPPPackages.nullOrEmpty) {
 			val Package jaMoPPPackage = jaMoPPPackages.get(0)
-			PCM2JaMoPPUtils.handleJavaRootNameChange(jaMoPPPackage, affectedAttribute, newValue, tcr, correspondenceInstance, true)
+			PCM2JaMoPPUtils.handleJavaRootNameChange(jaMoPPPackage, affectedAttribute, newValue, tcr,
+				correspondenceInstance, true)
 		}
-		
+
 		val cus = affectedEObjects.filter(typeof(CompilationUnit))
-		if(!cus.nullOrEmpty){
+		if (!cus.nullOrEmpty) {
 			val CompilationUnit cu = cus.get(0)
 			PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, tcr, correspondenceInstance, true)
 		}

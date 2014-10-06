@@ -46,7 +46,7 @@ public class PCMJaMoPPNamespace {
         public static String PCM_ATTRIBUTE_ENTITY_NAME = "entityName";
         public static String PCM_PARAMETER_ATTRIBUTE_PARAMETER_NAME = "parameterName";
         public static String PCM_PARAMETER_ATTRIBUTE_DATA_TYPE = "dataType__Parameter";
-
+        public static String PCM_OPERATION_SIGNATURE_RETURN_TYPE = "returnType__OperationSignature";
     }
 
 }

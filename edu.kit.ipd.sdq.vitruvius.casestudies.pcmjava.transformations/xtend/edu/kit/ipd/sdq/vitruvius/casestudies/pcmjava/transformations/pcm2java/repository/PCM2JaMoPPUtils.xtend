@@ -142,7 +142,9 @@ abstract class PCM2JaMoPPUtils {
 		classifierReference.setTarget(classifier)
 		val namespaceClassifierReference = TypesFactory.eINSTANCE.createNamespaceClassifierReference
 		namespaceClassifierReference.classifierReferences.add(classifierReference)
-		namespaceClassifierReference.namespaces.addAll(namespace.split("."))
+		if(!namespace.empty){
+			namespaceClassifierReference.namespaces.addAll(namespace.split("."))
+		}
 		return namespaceClassifierReference
 	}
 
