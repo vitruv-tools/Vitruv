@@ -57,6 +57,33 @@ public class ModelInstance extends AbstractURIHaving {
     }
 
     /**
+     * Returns the root element of the model instance if it is the only one with a compatible type.
+     * It is NOT necessary to have exactly one root element as long as only one of these element
+     * matches the given type. If there is not exactly one such element a
+     * {@link java.lang.RuntimeException RuntimeException} is thrown.
+     *
+     * @param rootElementClass
+     *            the class of which the root element has to be an instance of
+     * @return the root element
+     */
+    @SuppressWarnings("unchecked")
+    public <T extends EObject> T getUniqueTypedRootEObject(final Class<T> rootElementClass) {
+        T typedRootObject = null;
+        for (EObject rootObject : this.resource.getContents()) {
+            if (rootElementClass.isInstance(rootObject)) {
+                if (typedRootObject != null) {
+                    throw new RuntimeException("There are more than one root objects, which match the given type.");
+                }
+                typedRootObject = (T) rootObject;
+            }
+        }
+        if (typedRootObject == null) {
+            throw new RuntimeException("The resource does not contain a correctly typed root element.");
+        }
+        return typedRootObject;
+    }
+
+    /**
      * Loads the resource into memory. The load can be forced by setting
      * forceLoadByDoingUnloadBeforeLoad to true, which means that te resource will be unloaded
      * before we load it again. Note: Unload will only be done when the resourse was modified
