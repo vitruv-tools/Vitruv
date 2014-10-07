@@ -10,6 +10,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 /**
  * Base class for TUID calculators and resolvers. It handles the default parts of the TUID like
  * generator identifier and URI inclusion for TUID calculation and resolution.
+ *
+ * @author Stephan Seifermann
+ *
  */
 public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAndResolver {
 

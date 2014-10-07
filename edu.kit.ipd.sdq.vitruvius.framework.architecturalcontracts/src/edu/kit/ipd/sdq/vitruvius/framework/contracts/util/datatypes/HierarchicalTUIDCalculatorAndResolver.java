@@ -18,6 +18,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
  *
  * @param <T>
  *            The type of the meta-models's root object.
+ *
+ * @author Stephan Seifermann
+ *
  */
 public abstract class HierarchicalTUIDCalculatorAndResolver<T extends EObject> extends TUIDCalculatorAndResolverBase {
 
@@ -169,7 +172,7 @@ public abstract class HierarchicalTUIDCalculatorAndResolver<T extends EObject> e
      * Calculates the individual ID for the given object.
      *
      * @param obj
-     *            The object for the ID caluclation.
+     *            The object for the ID calculation.
      * @return The individual ID.
      * @throws IllegalArgumentException
      *             If there is no TUID calculation mechanism for this particular type of EObject.
