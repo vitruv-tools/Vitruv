@@ -107,7 +107,59 @@ public final class EcoreResourceBridge {
         return JavaBridge.dynamicCast(rootElement, rootElementClass, "root element '" + rootElement + "' of the "
                 + modelName + " '" + resource + "'");
     }
+    
+    /**
+     * Returns the root element of the model instance if it is the only one with a compatible type.
+     * It is NOT necessary to have exactly one root element as long as only one of these element
+     * matches the given type. If there is not exactly one such element a
+     * {@link java.lang.RuntimeException RuntimeException} is thrown.
+     *
+     * @param resource
+     *            a resource
+     * @param modelName
+     *            the name of the model represented by this resource (for logging and error output)
+     * @param rootElementClass
+     *            the class of which the root element has to be an instance of
+     * @param <T>
+     *            the type of the root element
+     * @return the root element
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends EObject> T getUniqueTypedRootEObject(final Resource resource,
+            final String modelName, final Class<T> rootElementClass) {
+        T typedRootObject = null;
+        for (EObject rootObject : resource.getContents()) {
+            if (rootElementClass.isInstance(rootObject)) {
+                if (typedRootObject != null) {
+                    throw new RuntimeException("There are more than one root objects in " + modelName + ", which match the given type.");
+                }
+                typedRootObject = (T) rootObject;
+            }
+        }
+        if (typedRootObject == null) {
+            throw new RuntimeException("The resource " + modelName + " does not contain a correctly typed root element.");
+        }
+        return typedRootObject;
+    }
 
+    /**
+     * Returns the root element of the model instance, which is the first one. It is NOT necessary
+     * to have exactly one root element. If there is not at least one root element a
+     * {@link java.lang.RuntimeException RuntimeException} is thrown.
+     *
+     * @param resource
+     *            a resource
+     * @param modelName
+     *            the name of the model represented by this resource (for logging and error output)
+     * @return the root element
+     */
+    public static EObject getFirstRootEObject(final Resource resource, final String modelName) {
+        if (resource.getContents().size() < 1) {
+            throw new RuntimeException("The resource " + modelName + " does not contain a root element.");
+        }
+        return resource.getContents().get(0);
+    }
+    
     /**
      * Returns a set containing all contents of the given resource.
      *
@@ -176,6 +228,7 @@ public final class EcoreResourceBridge {
             } else {
                 resource.load(Collections.emptyMap());
             }
+            resource.setURI(resourceURI);
         } catch (final IOException e) {
             // soften
             throw new RuntimeException(e);

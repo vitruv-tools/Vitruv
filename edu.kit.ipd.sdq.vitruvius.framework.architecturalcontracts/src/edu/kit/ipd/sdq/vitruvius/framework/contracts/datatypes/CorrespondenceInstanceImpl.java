@@ -345,7 +345,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
                     + this.mapping.getMetamodelA() + " nor " + this.mapping.getMetamodelB());
         } else {
             VURI vuri = metamodel.getModelVURIContainingIdentifiedEObject(tuidString);
-            EObject rootEObject = this.modelProviding.getAndLoadModelInstanceOriginal(vuri).getUniqueRootEObject();
+            EObject rootEObject = this.modelProviding.getAndLoadModelInstanceOriginal(vuri).getFirstRootEObject();
             EObject resolvedEobject = metamodel.resolveEObjectFromRootAndFullTUID(rootEObject, tuidString);
             if (resolvedEobject.eIsProxy()) {
                 EcoreUtil.resolve(resolvedEobject, getResource());

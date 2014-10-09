@@ -3,12 +3,14 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 import java.io.IOException;
 import java.util.Collections;
 
+import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 
 public class ModelInstance extends AbstractURIHaving {
+    private static final Logger LOGGER = Logger.getLogger(ModelInstance.class.getSimpleName());
     private Resource resource;
 
     public ModelInstance(final VURI uri, final Resource resource) {
@@ -28,7 +30,13 @@ public class ModelInstance extends AbstractURIHaving {
             throw new RuntimeException("Cannot get the metamodel URI for the model instance at the URI '" + getURI()
                     + "' because it has no root element!");
         }
-        String rootEObjectNamespace = getUniqueRootEObject().eClass().getEPackage().getNsURI().toString();
+        String rootEObjectNamespace;
+        try {
+            rootEObjectNamespace = getUniqueRootEObject().eClass().getEPackage().getNsURI().toString();
+        } catch (RuntimeException e) {
+            LOGGER.warn("A unique root object could not be determined. Trying the first root object instead.");
+            rootEObjectNamespace = getFirstRootEObject().eClass().getEPackage().getNsURI().toString();
+        }
         return VURI.getInstance(rootEObjectNamespace);
     }
 
@@ -40,6 +48,17 @@ public class ModelInstance extends AbstractURIHaving {
      */
     public EObject getUniqueRootEObject() {
         return EcoreResourceBridge.getUniqueContentRoot(this.resource, getURI().toString());
+    }
+
+    /**
+     * Returns the root element of the model instance, which occurs first (depending on the order in
+     * the resource) and throws a {@link java.lang.RuntimeException RuntimeException} if there is no
+     * root element.
+     *
+     * @return the root element
+     */
+    public EObject getFirstRootEObject() {
+        return EcoreResourceBridge.getFirstRootEObject(this.resource, getURI().toString());
     }
 
     /**
@@ -66,21 +85,8 @@ public class ModelInstance extends AbstractURIHaving {
      *            the class of which the root element has to be an instance of
      * @return the root element
      */
-    @SuppressWarnings("unchecked")
     public <T extends EObject> T getUniqueTypedRootEObject(final Class<T> rootElementClass) {
-        T typedRootObject = null;
-        for (EObject rootObject : this.resource.getContents()) {
-            if (rootElementClass.isInstance(rootObject)) {
-                if (typedRootObject != null) {
-                    throw new RuntimeException("There are more than one root objects, which match the given type.");
-                }
-                typedRootObject = (T) rootObject;
-            }
-        }
-        if (typedRootObject == null) {
-            throw new RuntimeException("The resource does not contain a correctly typed root element.");
-        }
-        return typedRootObject;
+        return EcoreResourceBridge.getUniqueTypedRootEObject(this.resource, getURI().toString(), rootElementClass);
     }
 
     /**
