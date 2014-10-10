@@ -215,6 +215,10 @@ public final class EcoreResourceBridge {
     }
 
     public static Resource loadResourceAtURI(final URI resourceURI, final ResourceSet resourceSet) {
+        return loadResourceAtURI(resourceURI, resourceSet, Collections.emptyMap());
+    }
+    
+    public static Resource loadResourceAtURI(final URI resourceURI, final ResourceSet resourceSet, Map<Object, Object> loadOptions) {
         Resource resource = null;
         try {
             try {
@@ -226,7 +230,7 @@ public final class EcoreResourceBridge {
             if (resource == null) {
                 resource = resourceSet.createResource(resourceURI);
             } else {
-                resource.load(Collections.emptyMap());
+                resource.load(loadOptions);
             }
             resource.setURI(resourceURI);
         } catch (final IOException e) {
