@@ -32,14 +32,18 @@ public class PCMJavaUtils {
      */
     public static MetaRepositoryImpl createPCMJavaMetarepository() {
         final MetaRepositoryImpl metarepository = new MetaRepositoryImpl();
-
+        // PCM
         final VURI pcmMMUri = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
         final Set<String> pcmNSUris = new HashSet<String>();
         pcmNSUris.add(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE_URI);
         pcmNSUris.add(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE_URI_REPOSITORY);
-        final Metamodel pcmMM = new Metamodel(pcmNSUris, pcmMMUri, PCMJaMoPPNamespace.PCM.REPOSITORY_FILE_EXTENSION);
+        pcmNSUris.add(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE_URI_SYSTEM);
+        String[] fileExtensions = new String[2];
+        fileExtensions[0] = PCMJaMoPPNamespace.PCM.REPOSITORY_FILE_EXTENSION;
+        fileExtensions[1] = PCMJaMoPPNamespace.PCM.SYSTEM_FILE_EXTENSION;
+        final Metamodel pcmMM = new Metamodel(pcmNSUris, pcmMMUri, fileExtensions);
         metarepository.addMetamodel(pcmMM);
-
+        // JaMoPP
         final VURI jaMoPPURI = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE);
         final Set<String> jamoppNSURIs = new HashSet<String>();
         jamoppNSURIs.addAll(Arrays.asList(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE_URIS));

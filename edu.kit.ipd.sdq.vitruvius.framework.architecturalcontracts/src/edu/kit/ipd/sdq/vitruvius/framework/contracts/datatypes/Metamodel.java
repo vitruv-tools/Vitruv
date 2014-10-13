@@ -20,22 +20,22 @@ public class Metamodel extends AbstractURIHaving {
     private Map<Object, Object> defaultSaveOptions;
 
     public Metamodel(final String nsURI, final VURI uri, final String... fileExtensions) {
-        this(new HashSet<String>(Arrays.asList(nsURI)), uri, new DefaultTUIDCalculatorAndResolver(fileExtensions),
-                fileExtensions);
+        this(new HashSet<String>(Arrays.asList(nsURI)), uri, new DefaultTUIDCalculatorAndResolver(), fileExtensions);
     }
 
     public Metamodel(final Set<String> nsURIs, final VURI uri, final String... fileExtensions) {
-        this(nsURIs, uri, new DefaultTUIDCalculatorAndResolver(fileExtensions), fileExtensions);
+        this(nsURIs, uri, new DefaultTUIDCalculatorAndResolver(), fileExtensions);
     }
 
-    public Metamodel(final String nsURI, final String nameOfIDFeature, final VURI uri, final String... fileExtensions) {
+    public Metamodel(final String nsURI, final String nameOfIDFeature, final String nameOfNameAttribute,
+            final VURI uri, final String... fileExtensions) {
         this(new HashSet<String>(Arrays.asList(nsURI)), uri, new DefaultTUIDCalculatorAndResolver(nameOfIDFeature,
-                fileExtensions), fileExtensions);
+                nameOfNameAttribute), fileExtensions);
     }
 
     public Metamodel(final Set<String> nsURIs, final String nameOfIDFeature, final VURI uri,
             final String... fileExtensions) {
-        this(nsURIs, uri, new DefaultTUIDCalculatorAndResolver(nameOfIDFeature, fileExtensions), fileExtensions);
+        this(nsURIs, uri, new DefaultTUIDCalculatorAndResolver(nameOfIDFeature), fileExtensions);
     }
 
     public Metamodel(final String nsURI, final VURI uri, final TUIDCalculatorAndResolver tuidCalculatorAndResolver,

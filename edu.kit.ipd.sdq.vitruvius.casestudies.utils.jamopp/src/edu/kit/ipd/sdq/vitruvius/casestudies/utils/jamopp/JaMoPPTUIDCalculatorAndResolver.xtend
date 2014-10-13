@@ -5,8 +5,11 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.classifiers.Classifier
 import org.emftext.language.java.containers.CompilationUnit
+import org.emftext.language.java.containers.JavaRoot
+import org.emftext.language.java.containers.Package
 import org.emftext.language.java.imports.Import
 import org.emftext.language.java.imports.StaticImport
+import org.emftext.language.java.members.Constructor
 import org.emftext.language.java.members.Field
 import org.emftext.language.java.members.Method
 import org.emftext.language.java.modifiers.Modifier
@@ -14,9 +17,6 @@ import org.emftext.language.java.parameters.Parameter
 import org.emftext.language.java.types.ClassifierReference
 import org.emftext.language.java.types.NamespaceClassifierReference
 import org.emftext.language.java.types.PrimitiveType
-import org.emftext.language.java.containers.Package
-import org.emftext.language.java.containers.JavaRoot
-import org.apache.commons.lang.StringUtils
 
 /**
  * TUID calculator and resolver for the JaMoPP meta-model.
@@ -24,11 +24,13 @@ import org.apache.commons.lang.StringUtils
 class JaMoPPTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResolver<JavaRoot> {
 
 	private val static Logger logger = Logger.getLogger(JaMoPPTUIDCalculatorAndResolver);
+	
 	private val String TUIDIdentifier = JaMoPPTUIDCalculatorAndResolver.simpleName
 	private val String CLASSIFIER_SELECTOR = "classifier"
 	private val String IMPORT_SELECTOR = "import"
 	private val String METHOD_SELECTOR = "method"
 	private val String FIELD_SELECTOR = "field"
+	private val String CONSTRUCTOR_SELECTOR = "constructor"
 
 	// ============================================================================
 	// Base class stuff
@@ -121,6 +123,13 @@ class JaMoPPTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResol
 
 	private def dispatch calculateIndividualTUID(PrimitiveType pt) {
 		return pt.class.interfaces.get(0).simpleName
+	}
+	
+	private def dispatch calculateIndividualTUID(Constructor constuctor){
+		val tuid = new StringBuilder
+		tuid.append(CONSTRUCTOR_SELECTOR).append(SUBDIVIDER).append(constuctor.name)
+		constuctor.parameters.forEach[tuid.append(SUBDIVIDER + getNameFrom(typeReference))]
+		return tuid.toString
 	}
 
 	private def dispatch calculateIndividualTUID(EObject obj) {

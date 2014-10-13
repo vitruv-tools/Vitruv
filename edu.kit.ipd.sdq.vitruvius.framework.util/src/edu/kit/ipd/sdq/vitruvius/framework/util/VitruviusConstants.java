@@ -8,6 +8,7 @@ public class VitruviusConstants {
     private static final String CORRESPONDENCES_FILE_EXT = ".correspondence";
     private static final String DEFAULT_NAME_OF_IDENTIFIER_FEATURE = "id";
     private static final String TUID_SEGMENT_SEPERATOR = "#";
+    private static final String DEFAULT_NAME_OF_NAME_FEAUTRE = "entityName";
 
     /**
      * @return the name of the executable property of extension points
@@ -34,6 +35,10 @@ public class VitruviusConstants {
 
     public static String getTUIDSegmentSeperator() {
         return TUID_SEGMENT_SEPERATOR;
+    }
+
+    public static String getDefaultNameOfNameFeature() {
+        return DEFAULT_NAME_OF_NAME_FEAUTRE;
     }
 
 }
