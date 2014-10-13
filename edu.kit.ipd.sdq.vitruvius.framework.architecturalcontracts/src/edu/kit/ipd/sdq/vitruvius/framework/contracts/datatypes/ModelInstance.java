@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
@@ -95,12 +95,12 @@ public class ModelInstance extends AbstractURIHaving {
      * before we load it again. Note: Unload will only be done when the resourse was modified
      *
      */
-    public void load() {
+    public void load(final Map<Object, Object> loadOptions) {
         try {
             if (this.resource.isModified()) {
                 this.resource.unload();
             }
-            this.resource.load(Collections.emptyMap());
+            this.resource.load(loadOptions);
         } catch (IOException e) {
             // soften
             throw new RuntimeException(e);

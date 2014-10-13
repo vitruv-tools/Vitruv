@@ -40,7 +40,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     private final ViewTypeManaging viewTypeManaging;
     private final CorrespondenceMMProviding correspondenceMMproviding;
 
-    private final Map<VURI, ModelInstance> modelInstances;
+    protected final Map<VURI, ModelInstance> modelInstances;
     private final ResourceSet resourceSet;
     private final Map<Metamodel, Set<CorrespondenceInstance>> metamodel2CorrespondenceInstancesMap;
     private final Map<Mapping, CorrespondenceInstance> mapping2CorrespondenceInstanceMap;
@@ -86,7 +86,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     public ModelInstance getAndLoadModelInstanceOriginal(final VURI modelURI) {
         ModelInstance modelInstance = getModelInstanceOriginal(modelURI);
         try {
-            modelInstance.load();
+            modelInstance.load(getMetamodelByURI(modelURI).getDefaultLoadOptions());
         } catch (RuntimeException re) {
             // could not load model instance --> this should only be the case when the model is not
             // Existing yet
@@ -119,9 +119,10 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     @Override
     public void saveModelInstanceOriginal(final VURI vuri) {
         ModelInstance modelInstanceToSave = getModelInstanceOriginal(vuri);
+        Metamodel metamodel = getMetamodelByURI(vuri);
         Resource resourceToSave = modelInstanceToSave.getResource();
         try {
-            EcoreResourceBridge.saveResource(resourceToSave);
+            EcoreResourceBridge.saveResource(resourceToSave, metamodel.getDefaultSaveOptions());
             saveAllChangedCorrespondences(modelInstanceToSave);
         } catch (IOException e) {
             throw new RuntimeException("Could not save VURI + " + vuri + ": " + e);
@@ -160,14 +161,15 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     }
 
     private ModelInstance getOrCreateUnregisteredModelInstance(final VURI modelURI, final Metamodel metamodel) {
-        ModelInstance modelInstance = loadModelInstance(modelURI);
+        ModelInstance modelInstance = loadModelInstance(modelURI, metamodel);
         getOrCreateAllCorrespondenceInstances(metamodel);
         return modelInstance;
     }
 
-    private ModelInstance loadModelInstance(final VURI modelURI) {
+    private ModelInstance loadModelInstance(final VURI modelURI, final Metamodel metamodel) {
         URI emfURI = modelURI.getEMFUri();
-        Resource modelResource = EcoreResourceBridge.loadResourceAtURI(emfURI, this.resourceSet);
+        Resource modelResource = EcoreResourceBridge.loadResourceAtURI(emfURI, this.resourceSet,
+                metamodel.getDefaultLoadOptions());
         ModelInstance modelInstance = new ModelInstance(modelURI, modelResource);
         return modelInstance;
     }
@@ -282,7 +284,8 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     private void loadVURIsOfVSMUModelInstances() {
         Set<VURI> vuris = FileSystemHelper.loadVSUMvURIsFromFile();
         for (VURI vuri : vuris) {
-            ModelInstance modelInstance = loadModelInstance(vuri);
+            Metamodel metamodel = getMetamodelByURI(vuri);
+            ModelInstance modelInstance = loadModelInstance(vuri, metamodel);
             this.modelInstances.put(vuri, modelInstance);
         }
     }
@@ -291,4 +294,8 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         FileSystemHelper.saveVSUMvURIsToFile(this.modelInstances.keySet());
     }
 
+    private Metamodel getMetamodelByURI(final VURI uri) {
+        String fileExtension = uri.getFileExtension();
+        return this.metamodelManaging.getMetamodel(fileExtension);
+    }
 }

@@ -198,7 +198,7 @@ public final class EcoreResourceBridge {
      *             if an error occurred during saving
      */
     public static void saveResource(final Resource resource) throws IOException {
-        saveResource(resource, Collections.<String, String> emptyMap());
+        saveResource(resource, Collections.emptyMap());
     }
 
     /**
@@ -206,14 +206,16 @@ public final class EcoreResourceBridge {
      *
      * @param resource
      *            the resource to be saved
+     * @param saveOptions
+     *            the options for saving the resource
      * @throws IOException
      *             if an error occurred during saving
      */
-    public static void saveResource(final Resource resource, final Map<String, String> saveOptions) throws IOException {
+    public static void saveResource(final Resource resource, final Map<?, ?> saveOptions) throws IOException {
         resource.save(saveOptions);
         resource.setModified(true);
     }
-
+    
     public static Resource loadResourceAtURI(final URI resourceURI, final ResourceSet resourceSet) {
         return loadResourceAtURI(resourceURI, resourceSet, Collections.emptyMap());
     }

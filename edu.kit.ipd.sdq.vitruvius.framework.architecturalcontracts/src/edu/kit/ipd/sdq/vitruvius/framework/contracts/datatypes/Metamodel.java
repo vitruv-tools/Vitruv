@@ -1,7 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
@@ -14,6 +16,8 @@ public class Metamodel extends AbstractURIHaving {
     private String[] fileExtensions;
     private TUIDCalculatorAndResolver tuidCalculatorAndResolver;
     private Set<String> nsURIs;
+    private Map<Object, Object> defaultLoadOptions;
+    private Map<Object, Object> defaultSaveOptions;
 
     public Metamodel(final String nsURI, final VURI uri, final String... fileExtensions) {
         this(new HashSet<String>(Arrays.asList(nsURI)), uri, new DefaultTUIDCalculatorAndResolver(fileExtensions),
@@ -41,10 +45,18 @@ public class Metamodel extends AbstractURIHaving {
 
     public Metamodel(final Set<String> nsURIs, final VURI uri,
             final TUIDCalculatorAndResolver tuidCalculatorAndResolver, final String... fileExtensions) {
+        this(nsURIs, uri, tuidCalculatorAndResolver, Collections.emptyMap(), Collections.emptyMap(), fileExtensions);
+    }
+
+    public Metamodel(final Set<String> nsURIs, final VURI uri,
+            final TUIDCalculatorAndResolver tuidCalculatorAndResolver, final Map<Object, Object> defaultLoadOptions,
+            final Map<Object, Object> defaultSaveOptions, final String... fileExtensions) {
         super(uri);
         this.fileExtensions = fileExtensions;
         this.tuidCalculatorAndResolver = tuidCalculatorAndResolver;
         this.nsURIs = nsURIs;
+        this.defaultLoadOptions = defaultLoadOptions;
+        this.defaultSaveOptions = defaultSaveOptions;
     }
 
     public String[] getFileExtensions() {
@@ -77,5 +89,13 @@ public class Metamodel extends AbstractURIHaving {
 
     public Set<String> getNsURIs() {
         return this.nsURIs;
+    }
+
+    public Map<Object, Object> getDefaultLoadOptions() {
+        return this.defaultLoadOptions;
+    }
+
+    public Map<Object, Object> getDefaultSaveOptions() {
+        return this.defaultSaveOptions;
     }
 }
