@@ -97,6 +97,9 @@ abstract class EObjectMappingTransformation {
 	def TransformationChangeResult permuteEAttributeValues(EObject affectedEObject, EAttribute affectedAttribute,
 		EList<Integer> newIndexForElementAt)
 
+	def TransformationChangeResult insertNonRootEObjectInContainmentList(EObject oldAffectedEObject, EObject newAffectedEObject,
+		EReference reference, EObject newValue)
+
 	def void setCorrespondenceForFeatures()
 
 	def void setCorrespondenceInstance(CorrespondenceInstance correspondenceInstance) {

@@ -37,9 +37,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple;
  * instance of a metaclass of the first metamodel of the containing correspondence instance. And
  * every elementB of a correspondence has to be an instance of a metaclass of the second metamodel
  * of the containing correspondence instance.
- * 
+ *
  * @author kramerm
- * 
+ *
  */
 public class CorrespondenceInstanceImpl extends ModelInstance implements CorrespondenceInstance {
 
@@ -489,8 +489,14 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
      */
     @Override
     public void removeAllCorrespondences(final EObject eObject) {
-        // TODO: Check if it is working
+        // TODO: Check if it is working, e.g if it is possible to generate a TUID from an old
+        // eObject
         TUID tuid = calculateTUIDFromEObject(eObject);
+        removeCorrespondenceAndAllDependentCorrespondences(tuid);
+    }
+
+    @Override
+    public void removeCorrespondenceAndAllDependentCorrespondences(final TUID tuid) {
         Set<Correspondence> correspondencesForEObj = this.tuid2CorrespondencesMap.get(tuid);
         if (null == correspondencesForEObj) {
             return;
@@ -499,7 +505,6 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         for (Correspondence correspondence : correspondencesForEObj) {
             removeCorrespondenceAndAllDependentCorrespondences(correspondence);
         }
-
         // FIXME: remove feature correspondences
     }
 
@@ -525,7 +530,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     /**
      * Does the removing recursively. Marks all correspondences that will be deleted in a
      * dependencyList --> Avoid stack overflow with correspondences that have a mutual dependency
-     * 
+     *
      * @param correspondence
      * @param dependencyList
      * @param deletionList
@@ -680,7 +685,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
             /**
              * Removes all old map entries before the hash code of tuids is updated.
-             * 
+             *
              * @param tuidAndNewSegmentPairs
              * @return
              */
@@ -705,7 +710,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
             /**
              * Re-adds all map entries after the hash code of tuids was updated.
-             * 
+             *
              * @param removedMapEntries
              */
             @Override

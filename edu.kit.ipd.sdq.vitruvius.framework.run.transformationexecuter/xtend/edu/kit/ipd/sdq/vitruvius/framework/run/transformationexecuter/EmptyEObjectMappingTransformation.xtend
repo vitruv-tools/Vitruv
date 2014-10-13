@@ -18,14 +18,16 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 
 	override deleteRootEObject(EObject oldRootEObject, EObject[] oldCorrespondingEObjectsToDelete) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
 
 	override createRootEObject(EObject newRootEObject, EObject[] newCorrespondingEObjects) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
@@ -33,21 +35,24 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 	override deleteNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject oldValue,
 		EObject[] eObjectsToDelete) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
 
 	override insertEAttributeValue(EObject affectedEObject, EAttribute affectedAttribute, Object newValue, int index) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
 
 	override removeEAttributeValue(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue, int index) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
@@ -55,7 +60,8 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 	override insertNonContaimentEReference(EObject affectedEObject, EReference affectedReference, EObject newValue,
 		int index) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
@@ -63,7 +69,8 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 	override permuteContainmentEReferenceValues(EObject affectedEObject, EReference affectedReference,
 		EList<Integer> newIndexForElementAt) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
@@ -71,7 +78,8 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 	override permuteEAttributeValues(EObject affectedEObject, EAttribute affectedAttribute,
 		EList<Integer> newIndexForElementAt) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
@@ -79,7 +87,8 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 	override permuteNonContainmentEReferenceValues(EObject affectedEObject, EReference affectedReference,
 		EList<Integer> newIndexForElementAt) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
@@ -87,7 +96,8 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 	override removeNonContainmentEReference(EObject affectedEObject, EReference affectedReference, EObject oldValue,
 		int index) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
@@ -95,7 +105,8 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 	override replaceNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject oldValue,
 		EObject newValue, EObject[] oldCorrespondingEObjectsToDelete, EObject[] newCorrespondingEObjects) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
@@ -103,7 +114,8 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 	override replaceEAttributeValue(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue, int index) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
@@ -111,7 +123,8 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 	override replaceNonContainmentEReference(EObject affectedEObject, EReference affectedReference, EObject oldValue,
 		EObject newValue, int index) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
@@ -119,7 +132,8 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 	override replaceNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue,
 		EObject newValue, int index, EObject[] oldCorrespondingEObjectsToDelete, EObject[] newCorrespondingEObjects) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
@@ -127,14 +141,16 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject newValue) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
 
 	override unsetNonContainmentEReference(EObject affectedEObject, EReference affectedReference, EObject oldValue) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
@@ -142,14 +158,16 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 	override unsetContainmentEReference(EObject affectedEObject, EReference affectedReference, EObject oldValue,
 		EObject[] oldCorrespondingEObjectsToDelete) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
 
 	override unsetEAttribute(EObject affectedEObject, EStructuralFeature affectedFeature, Object oldValue) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
@@ -157,21 +175,24 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 	override replaceRoot(EObject oldRootEObject, EObject newRootEObject, EObject[] oldCorrespondingEObjectsToDelete,
 		EObject[] newCorrespondingEObjects) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
 
 	override createEObject(EObject eObject) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
 
 	override removeEObject(EObject eObject) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
@@ -179,7 +200,8 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue,
 		int index, EObject[] newCorrespondingEObjects) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
@@ -187,7 +209,8 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue,
 		EObject[] newCorrespondingEObjects) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
@@ -195,7 +218,8 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 	override deleteNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue,
 		int index, EObject[] oldCorrespondingEObjectsToDelete) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}
@@ -203,7 +227,17 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
 		logger.warn(
-			"method " + this.class.enclosingMethod + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
+				"transformation")
+		return null
+	}
+
+	override insertNonRootEObjectInContainmentList(EObject object, EObject object2, EReference reference, EObject newValue) {
+		logger.warn(
+			"method " +
+				new Object() {
+				}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}

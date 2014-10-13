@@ -113,11 +113,10 @@ public class SyncManagerImpl implements ChangeSynchronizing {
 
     }
 
-    private void removeOldCorrespondences(
-            final Set<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>> correspondencesToDelete) {
-        for (final Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence> quadruple : correspondencesToDelete) {
-            CorrespondenceInstance correspondenceInstance = quadruple.getFirst();
-            correspondenceInstance.removeCorrespondenceAndAllDependentCorrespondences(quadruple.getFourth());
+    private void removeOldCorrespondences(final Set<Pair<CorrespondenceInstance, TUID>> correspondencesToDelete) {
+        for (final Pair<CorrespondenceInstance, TUID> pair : correspondencesToDelete) {
+            CorrespondenceInstance correspondenceInstance = pair.getFirst();
+            correspondenceInstance.removeCorrespondenceAndAllDependentCorrespondences(pair.getSecond());
         }
     }
 

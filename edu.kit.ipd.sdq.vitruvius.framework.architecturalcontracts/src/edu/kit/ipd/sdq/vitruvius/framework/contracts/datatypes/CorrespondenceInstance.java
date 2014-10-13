@@ -155,6 +155,15 @@ public interface CorrespondenceInstance {
     public void removeAllCorrespondences(EObject eObject);
 
     /**
+     * Removes all correspondences for the given tuid and all child-correspondences of these
+     * correspondences.
+     *
+     * @param eObject
+     *            from which all correspondences should be removed
+     */
+    public void removeCorrespondenceAndAllDependentCorrespondences(TUID tuid);
+
+    /**
      * Removes correspondence and all child Correspondences of this correspondence
      *
      * @param correspondence

@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EObject;
 
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Quadruple;
 
 /**
@@ -32,7 +33,7 @@ public class AddDeleteChangeResult<T, U, V> extends ChangeResult {
 
     Set<Quadruple<CorrespondenceInstance, TUID, EObject, Correspondence>> existingCorrespondencesToUpdate;
     Set<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>> newCorrespondences;
-    Set<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>> correspondencesToDelete;
+    Set<Pair<CorrespondenceInstance, TUID>> correspondencesToDelete;
 
     protected void addExistingObjectToSave(final T toSave) {
         this.existingObjectsToSave.add(toSave);
@@ -58,7 +59,7 @@ public class AddDeleteChangeResult<T, U, V> extends ChangeResult {
         this.existingObjectsToDelete = existingObjectsToDelete;
         this.existingCorrespondencesToUpdate = new HashSet<Quadruple<CorrespondenceInstance, TUID, EObject, Correspondence>>();
         this.newCorrespondences = new HashSet<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>>();
-        this.correspondencesToDelete = new HashSet<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>>();
+        this.correspondencesToDelete = new HashSet<Pair<CorrespondenceInstance, TUID>>();
     }
 
     public void addCorrespondenceChanges(final AddDeleteChangeResult<?, ?, ?> changeResult) {
@@ -96,10 +97,8 @@ public class AddDeleteChangeResult<T, U, V> extends ChangeResult {
                 correspondenceInstance, elementA, elementB, parrentCorrespondence));
     }
 
-    public void addCorrespondenceToDelete(final CorrespondenceInstance correspondenceInstance, final EObject elementA,
-            final EObject elementB, final Correspondence correspondence) {
-        this.correspondencesToDelete.add(new Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>(
-                correspondenceInstance, elementA, elementB, correspondence));
+    public void addCorrespondenceToDelete(final CorrespondenceInstance correspondenceInstance, final TUID tuidToRemove) {
+        this.correspondencesToDelete.add(new Pair<CorrespondenceInstance, TUID>(correspondenceInstance, tuidToRemove));
     }
 
     public void addCorrespondenceToUpdate(final CorrespondenceInstance correspondenceInstance, final TUID oldTUID,
@@ -112,7 +111,7 @@ public class AddDeleteChangeResult<T, U, V> extends ChangeResult {
         return this.newCorrespondences;
     }
 
-    public Set<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>> getCorrespondencesToDelete() {
+    public Set<Pair<CorrespondenceInstance, TUID>> getCorrespondencesToDelete() {
         return this.correspondencesToDelete;
     }
 

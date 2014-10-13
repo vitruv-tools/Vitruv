@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter 
+package edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
@@ -35,6 +35,7 @@ import java.util.LinkedList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.InsertNonRootEObjectInContainmentList
 
 public class ChangeSynchronizer {
 
@@ -53,9 +54,9 @@ public class ChangeSynchronizer {
 			mappingTransformation.setCorrespondenceInstance(correspondenceInstance)
 		}
 	}
-	
-	def setUserInteracting(UserInteracting userInteracting){
-		for(mappingTransformations:mappingTransformations.values){
+
+	def setUserInteracting(UserInteracting userInteracting) {
+		for (mappingTransformations : mappingTransformations.values) {
 			mappingTransformations.setUserInteracting(userInteracting)
 		}
 	}
@@ -80,7 +81,7 @@ public class ChangeSynchronizer {
 	}
 
 	def private dispatch TransformationChangeResult syncChange(EChange change) {
-		logger.error("No syncChang method found for change " + change + ". Change not synchronized")
+		logger.error("No syncChange method found for change " + change + ". Change not synchronized")
 		return null
 	}
 
@@ -152,11 +153,11 @@ public class ChangeSynchronizer {
 		val EObject[] createdEObjects = mappingTransformations.
 			claimForMappedClassOrImplementingInterface(replaceNonRootEObjectInList.newValue.class).
 			createEObject(replaceNonRootEObjectInList.oldAffectedEObject)
-		mappingTransformations.claimForMappedClassOrImplementingInterface(replaceNonRootEObjectInList.oldAffectedEObject.class).
-			replaceNonRootEObjectInList(replaceNonRootEObjectInList.oldAffectedEObject,
-				replaceNonRootEObjectInList.affectedFeature, replaceNonRootEObjectInList.oldValue,
-				replaceNonRootEObjectInList.newValue, replaceNonRootEObjectInList.index, eObjectsToDelete,
-				createdEObjects)
+		mappingTransformations.claimForMappedClassOrImplementingInterface(
+			replaceNonRootEObjectInList.oldAffectedEObject.class).replaceNonRootEObjectInList(
+			replaceNonRootEObjectInList.oldAffectedEObject, replaceNonRootEObjectInList.affectedFeature,
+			replaceNonRootEObjectInList.oldValue, replaceNonRootEObjectInList.newValue,
+			replaceNonRootEObjectInList.index, eObjectsToDelete, createdEObjects)
 	}
 
 	def private dispatch TransformationChangeResult syncChange(CreateNonRootEObjectSingle<?> createNonRootEObjectSingle) {
@@ -200,10 +201,11 @@ public class ChangeSynchronizer {
 		val EObject[] eObjectsToDelete = mappingTransformations.
 			claimForMappedClassOrImplementingInterface(replaceNonRootEObjectSingle.newValue.class).
 			createEObject(replaceNonRootEObjectSingle.oldAffectedEObject)
-		mappingTransformations.claimForMappedClassOrImplementingInterface(replaceNonRootEObjectSingle.oldAffectedEObject.class).
-			replaceNonRootEObjectSingle(replaceNonRootEObjectSingle.oldAffectedEObject,
-				replaceNonRootEObjectSingle.affectedFeature, replaceNonRootEObjectSingle.oldValue,
-				replaceNonRootEObjectSingle.newValue, eObjectsToDelete, createdEObjects)
+		mappingTransformations.claimForMappedClassOrImplementingInterface(
+			replaceNonRootEObjectSingle.oldAffectedEObject.class).replaceNonRootEObjectSingle(
+			replaceNonRootEObjectSingle.oldAffectedEObject, replaceNonRootEObjectSingle.affectedFeature,
+			replaceNonRootEObjectSingle.oldValue, replaceNonRootEObjectSingle.newValue, eObjectsToDelete,
+			createdEObjects)
 	}
 
 	def private dispatch TransformationChangeResult syncChange(
@@ -309,13 +311,26 @@ public class ChangeSynchronizer {
 	}
 
 	def private dispatch TransformationChangeResult syncChange(UnsetContainmentEReference<?> unsetContainmentEReference) {
-		val EObject[] eObjectsToDelete = mappingTransformations.
-			claimForMappedClassOrImplementingInterface(unsetContainmentEReference.oldValue.class).
+		var EObject[] eObjectsToDelete = null
+		if(null != unsetContainmentEReference.oldValue){
+			eObjectsToDelete = mappingTransformations.claimForMappedClassOrImplementingInterface(unsetContainmentEReference.oldValue.class).
 			removeEObject(unsetContainmentEReference.oldValue)
+		}
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			unsetContainmentEReference.oldAffectedEObject.class).unsetContainmentEReference(
 			unsetContainmentEReference.oldAffectedEObject, unsetContainmentEReference.affectedFeature,
 			unsetContainmentEReference.oldValue, eObjectsToDelete)
+	}
+
+	def private dispatch TransformationChangeResult syncChange(
+		InsertNonRootEObjectInContainmentList<?> insertNonRootEObjectInContainmentList) {
+		mappingTransformations.claimForMappedClassOrImplementingInterface(
+			insertNonRootEObjectInContainmentList.newAffectedEObject.class).insertNonRootEObjectInContainmentList(
+			insertNonRootEObjectInContainmentList.newAffectedEObject,
+			insertNonRootEObjectInContainmentList.oldAffectedEObject,
+			insertNonRootEObjectInContainmentList.affectedFeature,
+			insertNonRootEObjectInContainmentList.newValue
+		)
 	}
 
 	def private dispatch TransformationChangeResult syncChange(UnsetEFeature<?> unsetEFeature) {
