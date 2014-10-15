@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rm:rmap xmlns:rm="http://www.eclipse.org/buckminster/RMap-1.0">
+<rm:rmap xmlns:bc="http://www.eclipse.org/buckminster/Common-1.0" xmlns:rm="http://www.eclipse.org/buckminster/RMap-1.0">
 	 <rm:locator searchPathRef="localresources" failOnError="false"/>
 	 <rm:locator searchPathRef="jamopp" failOnError="false" />
 	 <rm:locator searchPathRef="luna" failOnError="false" />
@@ -29,11 +29,13 @@
     </rm:provider>
   </rm:searchPath>
   
-   <rm:searchPath name="localresources">
+  <rm:searchPath name="localresources">
     <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="local">
       <rm:uri format="file:///{0}/{1}/">
+        <bc:propertyRef key="workspace.root"/>
+        <bc:propertyRef key="buckminster.component"/>
       </rm:uri>
     </rm:provider>
-   </rm:searchPath>
+  </rm:searchPath>
 	 
 </rm:rmap>
