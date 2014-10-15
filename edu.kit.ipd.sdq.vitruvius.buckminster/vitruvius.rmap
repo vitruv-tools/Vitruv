@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rm:rmap xmlns:rm="http://www.eclipse.org/buckminster/RMap-1.0">
+	 <rm:locator searchPathRef="localresources" failOnError="false"/>
+	 <rm:locator searchPathRef="jamopp" failOnError="false" />
+	 <rm:locator searchPathRef="luna" failOnError="false" />
+	 <rm:locator searchPathRef="palladio-core" failOnError="false"/>
+   
+   <rm:searchPath name="jamopp">
+	  <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
+	 	<rm:property key="buckminster.source" value="false"/>
+	    <rm:property key="buckminster.mutable" value="false"/>
+	  	<rm:uri format="http://jamopp.org/update_trunk/"/>
+	  </rm:provider>
+  </rm:searchPath>
+  
+  <rm:searchPath name="palladio-core">
+    <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
+      <rm:property key="buckminster.source" value="false"/>
+      <rm:property key="buckminster.mutable" value="false"/>
+      <rm:uri format="http://sdqweb.ipd.kit.edu/eclipse/palladio/nightly/"/>
+    </rm:provider>
+  </rm:searchPath>
+  
+  <rm:searchPath name="luna">
+    <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
+      <rm:property key="buckminster.source" value="false"/>
+      <rm:property key="buckminster.mutable" value="false"/>
+      <rm:uri format="http://download.eclipse.org/releases/luna/"/>
+    </rm:provider>
+  </rm:searchPath>
+  
+   <rm:searchPath name="localresources">
+    <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="local">
+      <rm:uri format="file:///{0}/{1}/">
+      </rm:uri>
+    </rm:provider>
+   </rm:searchPath>
+	 
+</rm:rmap>
