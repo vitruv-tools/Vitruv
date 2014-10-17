@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ASCII"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" id="_ZWJ8YFHTEeSd9sd0NWvKJg" entityName="testRepository">
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_ZtSqAFHTEeSd9sd0NWvKJg" entityName="TestInterface">
+    <signatures__OperationInterface id="_Z4fNYFHTEeSd9sd0NWvKJg" entityName="TestOperationSignature1"/>
+  </interfaces__Repository>
+</repository:Repository>

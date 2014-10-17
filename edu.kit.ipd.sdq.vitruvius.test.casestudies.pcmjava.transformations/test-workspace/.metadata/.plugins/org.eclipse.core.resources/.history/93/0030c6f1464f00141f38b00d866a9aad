@@ -1,0 +1,17 @@
+package testRepository.datatypes;
+
+
+class CompositeDataTypeImpl {
+	int testInnerDec;
+
+public int getTestInnerDec(){
+   return testInnerDec;
+}
+
+public void setTestInnerDec(int testInnerDec){
+   this.testInnerDec = testInnerDec;
+}
+}
+
+
+

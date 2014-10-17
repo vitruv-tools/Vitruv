@@ -12,6 +12,7 @@ import org.emftext.language.java.parameters.VariableLengthParameter
 import org.emftext.language.java.references.ReferenceableElement
 import org.emftext.language.java.types.NamespaceClassifierReference
 import org.emftext.language.java.types.PrimitiveType
+import org.emftext.language.java.expressions.AssignmentExpression
 
 /**
  * Converts a JaMoPP model element to a string representation.
@@ -77,8 +78,9 @@ class StringOperationsJaMoPP {
 	static def dispatch String getStringRepresentation(VariableLengthParameter param) {
 		return param.typeReference.target.getStringRepresentation(param.arrayDimension) + "..."
 	}
-
+	
 	static def String getNamespaceAsString(Iterable<String> namespaces) {
 		return StringUtils.join(namespaces, '.');
 	}
+
 }

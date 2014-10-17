@@ -1,0 +1,10 @@
+package testRepository.TestBasicComponent;
+
+import testRepository.contracts.TestInterface;
+
+
+public class TestBasicComponentImpl implements TestInterface {
+}
+
+
+

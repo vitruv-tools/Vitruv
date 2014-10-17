@@ -1,27 +1,22 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
+import de.uka.ipd.sdq.pcm.repository.DataType
+import de.uka.ipd.sdq.pcm.repository.Interface
 import de.uka.ipd.sdq.pcm.repository.Repository
+import de.uka.ipd.sdq.pcm.repository.RepositoryComponent
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.containers.ContainersFactory
-import org.emftext.language.java.containers.Package
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
-import de.uka.ipd.sdq.pcm.repository.RepositoryComponent
-import de.uka.ipd.sdq.pcm.repository.Interface
-import de.uka.ipd.sdq.pcm.repository.DataType
-import java.util.Set
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
 import org.emftext.language.java.containers.JavaRoot
+import org.emftext.language.java.containers.Package
 
 class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -91,32 +86,15 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 
 	override deleteNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue,
 		int index, EObject[] oldCorrespondingEObjectsToDelete) {
-
-		//FIXME: add useful code here
-		return TransformationUtils.createEmptyTransformationChangeResult
+		return PCM2JaMoPPUtils.
+			deleteCorrespondingEObjectsAndGetTransformationChangeResult(oldCorrespondingEObjectsToDelete,
+				correspondenceInstance)
 	}
 
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
-		val Repository repository = eObject as Repository
-		val correspondingObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(repository, affectedAttribute, featureCorrespondenceMap, correspondenceInstance) 
-		if (correspondingObjects.nullOrEmpty) {
-			return TransformationUtils.createEmptyTransformationChangeResult
-		}
-
-		//val EStructuralFeature jaMoPPNameAttribute = correspondenceInstance.claimCorrespondingEObjectByTypeIfUnique(affectedAttribute, EStructuralFeature)
-		val EStructuralFeature jaMoPPNameAttribute = featureCorrespondenceMap.claimValueForKey(affectedAttribute)
-		val jaMoPPPackages = correspondingObjects.filter(typeof(Package))
-		val jaMoPPPackage = jaMoPPPackages.filter[pack|!pack.name.equals("contracts") && !pack.name.equals("datatypes")].
-			get(0)
-		if (jaMoPPPackage == null) {
-			logger.warn("No Package found that maps to repository: " + repository)
-			return TransformationUtils.createEmptyTransformationChangeResult
-		}
-		
-		val tcr = new TransformationChangeResult
-		PCM2JaMoPPUtils.handleJavaRootNameChange(jaMoPPPackage, affectedAttribute, newValue, tcr, correspondenceInstance, false)
-		return tcr
+		return PCM2JaMoPPUtils.updateNameAsSingleValuedEAttribute(eObject, affectedAttribute, oldValue, newValue,
+			featureCorrespondenceMap, correspondenceInstance)
 	}
 
 	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue,
@@ -175,6 +153,13 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 			"method createNonRootEObjectSingle should not be called for " + RepositoryMappingTransformation.simpleName +
 				" transformation")
 		return null
+	}
+
+	override unsetContainmentEReference(EObject affectedEObject, EReference affectedReference, EObject oldValue,
+		EObject[] oldCorrespondingEObjectsToDelete) {
+
+		//Called everytime a BasicComponent is removed - does nothing because the actual removing is already don e in deleteNonRootEObjectInList
+		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 
 }

@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
 import de.uka.ipd.sdq.pcm.repository.CollectionDataType
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import java.lang.reflect.Modifier
@@ -71,7 +70,7 @@ class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransfo
 			   }
 			   
 			'''
-			val cu = JaMoPPPCMUtils.createCompilationUnit(cdt.entityName, content)
+			val cu = PCM2JaMoPPUtils.createCompilationUnit(cdt.entityName, content)
 			val classifier = cu.classifiers.get(0)
 			return #[cu, classifier]
 		} else {

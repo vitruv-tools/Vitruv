@@ -1,0 +1,11 @@
+package testRepository.TestBasicComponent;
+
+import testRepository.contracts.TestInterface;
+import testRepository.contracts.TestInterfaceRename;
+
+
+public class TestBasicComponentImpl implements TestInterface,TestInterfaceRename {
+}
+
+
+

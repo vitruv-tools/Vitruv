@@ -1,0 +1,8 @@
+package testRepository.contracts;
+
+
+interface TestInterface {
+}
+
+
+

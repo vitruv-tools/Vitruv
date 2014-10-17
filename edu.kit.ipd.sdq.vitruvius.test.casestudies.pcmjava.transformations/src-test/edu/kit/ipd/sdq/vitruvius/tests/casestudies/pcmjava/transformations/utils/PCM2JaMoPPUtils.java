@@ -11,6 +11,8 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
 import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
+import de.uka.ipd.sdq.pcm.system.System;
+import de.uka.ipd.sdq.pcm.system.SystemFactory;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
@@ -32,7 +34,11 @@ public class PCM2JaMoPPUtils {
     public static final String INTERFACE_NAME = "TestInterface";
     public static final String RENAME = "Rename";
     public static final String OPERATION_SIGNATURE_1_NAME = "TestOperationSignature1";
-    public static final String PARAMETER_NAME = "TestParameterName";
+    public static final String PARAMETER_NAME = "testParameterName";
+    public static final String COMPOSITE_DATA_TYPE_NAME = "CompositeDataType";
+    public static final String INNER_DEC_NAME = "testInnerDec";
+    public static final String SYSTEM_NAME = "TestSystem";
+    public static final String ASSEMBLY_CONTEXT_NAME = "assemblyContext";
 
     private PCM2JaMoPPUtils() {
     }
@@ -50,9 +56,13 @@ public class PCM2JaMoPPUtils {
     }
 
     public static BasicComponent createBasicComponent(final Repository repo) {
+        return createBasicComponent(repo, BASIC_COMPONENT_NAME);
+    }
+
+    public static BasicComponent createBasicComponent(final Repository repo, final String name) {
         final BasicComponent basicComponent = RepositoryFactory.eINSTANCE.createBasicComponent();
         basicComponent.setRepository__RepositoryComponent(repo);
-        basicComponent.setEntityName(BASIC_COMPONENT_NAME);
+        basicComponent.setEntityName(name);
         return basicComponent;
     }
 
@@ -119,4 +129,14 @@ public class PCM2JaMoPPUtils {
                 && 0 == transformationChangeResult.getNewRootObjectsToSave().size();
     }
 
+    public static System createSystem(final ResourceSet resourceSet, final String systemName) throws Throwable {
+        final VURI repoVURI = VURI.getInstance(TestUtil.PROJECT_URI + "/model/" + systemName + "."
+                + PCMJaMoPPNamespace.PCM.SYSTEM_FILE_EXTENSION);
+        final Resource resource = resourceSet.createResource(repoVURI.getEMFUri());
+        final System system = SystemFactory.eINSTANCE.createSystem();
+        system.setEntityName(systemName);
+        resource.getContents().add(system);
+        EcoreResourceBridge.saveResource(resource);
+        return system;
+    }
 }

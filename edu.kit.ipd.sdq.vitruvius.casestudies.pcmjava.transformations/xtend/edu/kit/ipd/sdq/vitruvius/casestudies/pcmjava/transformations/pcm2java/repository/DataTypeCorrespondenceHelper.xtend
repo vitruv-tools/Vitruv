@@ -12,6 +12,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
 import org.emftext.language.java.types.TypeReference
 import org.emftext.language.java.types.TypesFactory
 import org.eclipse.xtend.lib.macro.declaration.PrimitiveType.Kind
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 /**
  * Mapping transformation for primitive data types
@@ -24,9 +25,9 @@ import org.eclipse.xtend.lib.macro.declaration.PrimitiveType.Kind
  * char		 char
  * long      long		
  */
-class DataTypeCorrespondenceHelper{ 
+class DataTypeCorrespondenceHelper {
 
-	private new(){
+	private new() {
 	}
 
 	private static var ClaimableMap<PrimitiveTypeEnum, TypeReference> primitveTypeMappingMap;
@@ -47,26 +48,29 @@ class DataTypeCorrespondenceHelper{
 		if (null == primitveTypeMappingMap) {
 			initPrimitiveTypeMap()
 		}
-		return primitveTypeMappingMap.claimValueForKey(pdt.type)
+		return EcoreUtil.copy(primitveTypeMappingMap.claimValueForKey(pdt.type))
 	}
-	
-	public static def TypeReference claimUniqueCorrespondingJaMoPPDataType(DataType dataType, CorrespondenceInstance ci){
-		if(null == dataType){
+
+	public static def TypeReference claimUniqueCorrespondingJaMoPPDataType(DataType dataType, CorrespondenceInstance ci) {
+		if (null == dataType) {
 			return TypesFactory.eINSTANCE.createVoid
 		}
 		return claimUniqueCorrespondingType(dataType, ci)
 	}
-	
-	private static def dispatch TypeReference claimUniqueCorrespondingType(CollectionDataType cdt, CorrespondenceInstance ci){
+
+	private static def dispatch TypeReference claimUniqueCorrespondingType(CollectionDataType cdt,
+		CorrespondenceInstance ci) {
 		return ci.claimUniqueCorrespondingEObjectByType(cdt, TypeReference)
 	}
-	
-	private static def dispatch TypeReference claimUniqueCorrespondingType(PrimitiveDataType pdt, CorrespondenceInstance ci){
+
+	private static def dispatch TypeReference claimUniqueCorrespondingType(PrimitiveDataType pdt,
+		CorrespondenceInstance ci) {
 		return claimJaMoPPTypeForPrimitiveDataType(pdt)
 	}
-	
-	private static def dispatch TypeReference claimUniqueCorrespondingType(CompositeDataType cdt, CorrespondenceInstance ci){
+
+	private static def dispatch TypeReference claimUniqueCorrespondingType(CompositeDataType cdt,
+		CorrespondenceInstance ci) {
 		return ci.claimUniqueCorrespondingEObjectByType(cdt, TypeReference)
 	}
-	
+
 }

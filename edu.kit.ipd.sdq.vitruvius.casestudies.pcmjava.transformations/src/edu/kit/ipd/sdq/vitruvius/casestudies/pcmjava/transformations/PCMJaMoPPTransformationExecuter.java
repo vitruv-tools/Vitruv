@@ -20,10 +20,15 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.Pa
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.BasicComponentMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.CollectionDataTypeMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.CompositeDataTypeMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.InnerDeclarationMappingTransforamtion;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.OperationInterfaceMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.OperationProvidedRoleMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.OperationRequiredRoleMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.OperationSignatureMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.ParameterMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.RepositoryMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.system.AssemblyContextMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.system.SystemMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
@@ -61,6 +66,7 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
     private void initializeChangeSynchronizer() {
         final UserInteracting userInteracting = new UserInteractor();
         // PCM2JaMoPP
+        // Repository
         this.changeSynchronizer.addMapping(new RepositoryMappingTransformation());
         this.changeSynchronizer.addMapping(new BasicComponentMappingTransformation());
         this.changeSynchronizer.addMapping(new OperationInterfaceMappingTransformation());
@@ -68,12 +74,19 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
         this.changeSynchronizer.addMapping(new ParameterMappingTransformation());
         this.changeSynchronizer.addMapping(new CollectionDataTypeMappingTransformation());
         this.changeSynchronizer.addMapping(new CompositeDataTypeMappingTransformation());
+        this.changeSynchronizer.addMapping(new InnerDeclarationMappingTransforamtion());
+        this.changeSynchronizer.addMapping(new OperationProvidedRoleMappingTransformation());
+        this.changeSynchronizer.addMapping(new OperationRequiredRoleMappingTransformation());
+        // System
+        this.changeSynchronizer.addMapping(new SystemMappingTransformation());
+        this.changeSynchronizer.addMapping(new AssemblyContextMappingTransformation());
 
         // JaMoPP2PCM
         this.changeSynchronizer.addMapping(new PackageMappingTransformation());
         this.changeSynchronizer.addMapping(new ClassMappingTransformation());
         this.changeSynchronizer.addMapping(new InterfaceMappingTransformation());
         this.changeSynchronizer.addMapping(new ModifierMappingTransformation());
+
         // set userInteractor
         this.changeSynchronizer.setUserInteracting(userInteracting);
     }

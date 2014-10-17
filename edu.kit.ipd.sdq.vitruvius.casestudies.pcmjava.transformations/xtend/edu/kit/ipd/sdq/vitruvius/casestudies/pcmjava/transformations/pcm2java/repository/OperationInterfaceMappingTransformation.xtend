@@ -20,6 +20,7 @@ import java.util.List
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
+import org.emftext.language.java.modifiers.ModifiersFactory
 
 class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -39,6 +40,7 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 		// create Interface and compilation unit that contains the java interface
 		var Interface correspondingInterface = ClassifiersFactory.eINSTANCE.createInterface
 		correspondingInterface.setName(operationInterface.entityName)
+		correspondingInterface.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPublic)
 		var CompilationUnit correspondingCompilationUnit = ContainersFactory.eINSTANCE.createCompilationUnit
 		correspondingCompilationUnit.name = operationInterface.entityName + "." +
 			PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION

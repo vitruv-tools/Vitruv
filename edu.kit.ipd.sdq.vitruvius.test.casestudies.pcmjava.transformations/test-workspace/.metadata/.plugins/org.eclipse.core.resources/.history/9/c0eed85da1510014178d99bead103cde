@@ -1,0 +1,14 @@
+package testRepository.TestBasicComponent;
+
+import testRepository.contracts.TestInterface;
+
+
+public class TestBasicComponentImpl {
+	private TestInterface testinterface;
+	public TestBasicComponentImpl(TestInterface testinterface) {
+		this.testinterface = testinterface;
+	}
+}
+
+
+

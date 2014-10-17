@@ -1,19 +1,25 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.emftext.language.java.classifiers.Classifier;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.containers.Package;
 import org.emftext.language.java.members.Member;
 import org.emftext.language.java.members.Method;
+import org.emftext.language.java.statements.ExpressionStatement;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,7 +46,8 @@ public class JaMoPPTUIDCalculatorAndResolverTest {
         // create new ResourceSet
         final ResourceSet resSet = new ResourceSetImpl();
 
-        this.compUnitUri = VURI.getInstance("MockupProject/src-test/JaMoPPTUIDCalculatorAndResolverTest.java");
+        this.compUnitUri = VURI
+                .getInstance("MockupProject/src-test/TestCodeForJaMoPPTUIDCalculatorAndResolverTest.java");
         this.jaMoPPCompilationUnit = this.getRootJaMoPPObjectFromURIStr(resSet, this.compUnitUri);
         this.packageUri = VURI.getInstance("MockupProject/src-test/package-info.java");
         this.jaMoPPPackage = this.getRootJaMoPPObjectFromURIStr(resSet, this.packageUri);
@@ -126,31 +133,44 @@ public class JaMoPPTUIDCalculatorAndResolverTest {
             System.out.println("Method for method with tuid " + methodTuid + ": "
                     + this.jamoppTUIDCR.resolveEObjectFromRootAndFullTUID(newRootEObject, methodTuid));
         }
-
     }
 
-    /**
-     * Since the class @JaMoPPTUIDCalculatorAndResolverTest itself is used for the test the
-     * following methods are necessary.
-     */
-    @SuppressWarnings("unused")
-    private String testWithStringAsTypeReference() {
-        return "";
+    @Test
+    public void testExpressionStatement() {
+        final List<ExpressionStatement> expressionStatements = this.findUsageOfClass(ExpressionStatement.class);
+        assertTrue("No expression statement found", 0 < expressionStatements.size());
+        final List<String> expressionStatementsTUIDs = new ArrayList<String>();
+        for (final ExpressionStatement expressionStatement : expressionStatements) {
+            final String currentTUID = this.jamoppTUIDCR.calculateTUIDFromEObject(expressionStatement);
+            expressionStatementsTUIDs.add(currentTUID);
+        }
+
+        final List<ExpressionStatement> foundExpressionStatements = new ArrayList<ExpressionStatement>();
+        for (final String expressoinStatementTUID : expressionStatementsTUIDs) {
+            final VURI containingFile = this.jamoppTUIDCR
+                    .getModelVURIContainingIdentifiedEObject(expressoinStatementTUID);
+            final ResourceSet resourceSet = new ResourceSetImpl();
+            final Resource jaMoPPResource = resourceSet.getResource(containingFile.getEMFUri(), true);
+            final EObject rootEObject = jaMoPPResource.getContents().get(0);
+            final EObject eObject = this.jamoppTUIDCR.resolveEObjectFromRootAndFullTUID(rootEObject,
+                    expressoinStatementTUID);
+            assertTrue("eObject is not an instanceof expression statement", eObject instanceof ExpressionStatement);
+            foundExpressionStatements.add((ExpressionStatement) eObject);
+        }
+
+        assertEquals("Wrong number of expression statements found", expressionStatements.size(),
+                foundExpressionStatements.size());
     }
 
-    @SuppressWarnings("unused")
-    private String testWithParameters(final String param1, final String param2) {
-        return "";
+    private <T> List<T> findUsageOfClass(final Class<T> type) {
+        final List<T> expressionStatements = new ArrayList<T>();
+        final TreeIterator<Object> eObjects = EcoreUtil.getAllContents(this.jaMoPPCompilationUnit, false);
+        while (eObjects.hasNext()) {
+            final Object eObject = eObjects.next();
+            if (type.isInstance(eObject)) {
+                expressionStatements.add((T) eObject);
+            }
+        }
+        return expressionStatements;
     }
-
-    @SuppressWarnings("unused")
-    private String testWithParameters(final String param1, final String param2, final String param3) {
-        return "";
-    }
-
-    @SuppressWarnings("unused")
-    private String testWithParams2(final int intParam, final String strParam) {
-        return "";
-    }
-
 }

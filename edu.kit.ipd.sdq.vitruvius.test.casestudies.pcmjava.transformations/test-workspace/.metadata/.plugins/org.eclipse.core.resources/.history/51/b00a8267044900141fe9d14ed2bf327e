@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="ASCII"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" id="_NLAKEEj_EeS6tfdkbtNOCA" entityName="testRepository">
+  <components__Repository xsi:type="repository:BasicComponent" id="_O3lAoEj_EeS6tfdkbtNOCA" entityName="TestBasicComponent"/>
+</repository:Repository>

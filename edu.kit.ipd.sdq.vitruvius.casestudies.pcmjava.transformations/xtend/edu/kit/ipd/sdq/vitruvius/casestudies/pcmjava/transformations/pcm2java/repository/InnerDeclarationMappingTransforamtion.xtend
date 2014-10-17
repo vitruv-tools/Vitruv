@@ -3,17 +3,20 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.r
 import com.google.common.collect.Sets
 import de.uka.ipd.sdq.pcm.repository.DataType
 import de.uka.ipd.sdq.pcm.repository.InnerDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMUtils
+import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
-import java.util.Comparator
 import java.util.List
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.util.EcoreUtil
+import org.emftext.language.java.members.ClassMethod
 import org.emftext.language.java.members.Field
 import org.emftext.language.java.members.MembersFactory
 import org.emftext.language.java.members.Method
@@ -30,6 +33,11 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 
 	override setCorrespondenceForFeatures() {
 		PCM2JaMoPPUtils.addEntityName2NameCorrespondence(featureCorrespondenceMap)
+		var innerDatatypeAttribute = RepositoryFactory.eINSTANCE.createInnerDeclaration.eClass.EAllReferences.filter[attribute|
+			attribute.name.equals(PCMJaMoPPNamespace.PCM.DATATYPE_INNERDECLARATION)].iterator.next
+		var typeRefAttribute = MembersFactory.eINSTANCE.createClassMethod.eClass.EAllReferences.filter[attribute|
+			attribute.name.equals(PCMJaMoPPNamespace.JaMoPP.JAMOPP_PARAMETER_ATTRIBUTE_TYPE_REFERENCE)].iterator.next
+		featureCorrespondenceMap.put(innerDatatypeAttribute, typeRefAttribute)
 	}
 
 	/**
@@ -38,33 +46,17 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 	 */
 	override createEObject(EObject eObject) {
 		val InnerDeclaration innerDec = eObject as InnerDeclaration
-		val DataType innerType = innerDec.compositeDataType_InnerDeclaration
+		val DataType innerType = innerDec.datatype_InnerDeclaration
 		val TypeReference typeRef = DataTypeCorrespondenceHelper.
 			claimUniqueCorrespondingJaMoPPDataType(innerType, correspondenceInstance)
 		val members = addFieldGetterAndSetterToClassifier(typeRef, innerDec.entityName)
-		members.sort(
-			new Comparator<EObject> {
-
-				override compare(EObject o1, EObject o2) {
-					if (o1 instanceof Field && o2 instanceof Method) {
-						return 1
-					} else if (o1 instanceof Method && o2 instanceof Field) {
-						return -1
-					}
-					return 0;
-				}
-
-				override equals(Object obj) {
-					return this == obj;
-				}
-
-			})
+		PCM2JaMoPPUtils.sortMembers(members)
 		return members
 	}
 
 	def private List<EObject> addFieldGetterAndSetterToClassifier(TypeReference reference, String name) {
 		val List<EObject> ret = new ArrayList<EObject>()
-		val Field field = createField(reference, name)
+		val Field field = PCM2JaMoPPUtils.createPrivateField(reference, name)
 		ret.add(field)
 		ret.addAll(createGetterAndSetter(field, reference))
 		return ret
@@ -72,43 +64,79 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 
 	def private List<EObject> createGetterAndSetter(Field field, TypeReference reference) {
 		val List<EObject> ret = new ArrayList<EObject>()
-		val String commonContent = '''private «JaMoPPPCMUtils.getNameFromJaMoPPType(reference)» «field.name»;
-			'''
+
+		//ret.add(createGetter(field, reference))
+		//ret.add(createSetter(field, reference))
+		val String commonContent = '''private «PCM2JaMoPPUtils.getNameFromJaMoPPType(reference)» «field.name»;
+			''' + "\n"
 		val String getterContent = commonContent + '''
-			public «JaMoPPPCMUtils.getNameFromJaMoPPType(reference)» get«field.name.toFirstUpper»(){
-				return «field.name»;
+			public «PCM2JaMoPPUtils.getNameFromJaMoPPType(reference)» get«field.name.toFirstUpper»(){
+			   return «field.name»;
 			}
 		'''
 		val String setterContent = commonContent + '''
-			public void set«field.name.toFirstUpper»(«JaMoPPPCMUtils.getNameFromJaMoPPType(reference)» «field.name»){
-				this.«field.name» = «field.name»;
+			public void set«field.name.toFirstUpper»(«PCM2JaMoPPUtils.getNameFromJaMoPPType(reference)» «field.name»){
+			   this.«field.name» = «field.name»;
 			}
 		'''
-		val getter = JaMoPPPCMUtils.createJaMoPPMethod(getterContent)
-		val setter = JaMoPPPCMUtils.createJaMoPPMethod(setterContent)
+		val getter = PCM2JaMoPPUtils.createJaMoPPMethod(getterContent)
+		val setter = PCM2JaMoPPUtils.createJaMoPPMethod(setterContent)
 		ret.add(getter)
 		ret.add(setter)
 		return ret
 	}
 
-	def private createField(TypeReference reference, String name) {
-		val Field field = MembersFactory.eINSTANCE.createField
-		field.typeReference = reference
-		var String fieldName = name
-		if (fieldName.nullOrEmpty) {
-			fieldName = JaMoPPPCMUtils.getNameFromJaMoPPType(reference)
-		}
-		if (Character.isUpperCase(fieldName.charAt(0))) {
-			fieldName = fieldName.toFirstLower
-		} else {
-			fieldName = "f_" + fieldName
-		}
-		if (fieldName.nullOrEmpty) {
-			fieldName = "field_" + JaMoPPPCMUtils.getNameFromJaMoPPType(reference)
-		}
-		field.name = fieldName
-		return field
-	}
+//	def private createSetter(Field field, TypeReference reference) {
+//		val method = MembersFactory.eINSTANCE.createClassMethod
+//		method.name = "set" + field.name.toFirstUpper
+//		method.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPublic)
+//		method.typeReference = TypesFactory.eINSTANCE.createVoid
+//		val parameter = ParametersFactory.eINSTANCE.createOrdinaryParameter
+//		parameter.name = field.name
+//		parameter.typeReference = reference
+//		method.parameters.add(parameter)
+//		val expressionStatement = StatementsFactory.eINSTANCE.createExpressionStatement
+//		val assigmentExpression = ExpressionsFactory.eINSTANCE.createAssignmentExpression
+//
+//		//this.
+//		val selfReference = ReferencesFactory.eINSTANCE.createSelfReference
+//		assigmentExpression.child = selfReference
+//
+//		//.fieldname
+//		val fieldReference = ReferencesFactory.eINSTANCE.createIdentifierReference
+//		fieldReference.target = field
+//		selfReference.next = fieldReference
+//
+//		//=
+//		assigmentExpression.assignmentOperator = OperatorsFactory.eINSTANCE.createAssignment
+//
+//		//name		
+//		val identifierReference = ReferencesFactory.eINSTANCE.createIdentifierReference
+//		identifierReference.target = parameter
+//
+//		assigmentExpression.value = identifierReference
+//		expressionStatement.expression = assigmentExpression
+//		method.statements.add(expressionStatement)
+//		return method
+//	}
+//
+//	def private createGetter(Field field, TypeReference reference) {
+//		val method = MembersFactory.eINSTANCE.createClassMethod
+//		method.name = "get" + field.name.toFirstUpper
+//		method.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPublic)
+//		method.typeReference = reference
+//
+//		//this.fieldname
+//		val selfReference = ReferencesFactory.eINSTANCE.createSelfReference
+//		val identifierRef = ReferencesFactory.eINSTANCE.createIdentifierReference
+//		identifierRef.target = field
+//		selfReference.next = identifierRef
+//
+//		// return
+//		val ret = StatementsFactory.eINSTANCE.createReturn
+//		ret.returnValue = selfReference
+//		return method
+//	}
 
 	/**
 	 * Called when a InnerDeclaration has been renamed.
@@ -122,17 +150,30 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 		if (affectedEObjects.nullOrEmpty) {
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
-		val field = affectedEObjects.filter(typeof(Field))
+		val fields = affectedEObjects.filter(typeof(Field))
+		if(fields.nullOrEmpty){
+			logger.error("No field found in corresponding EObjects for PCM Type " + eObject + " Change not sznchronized!")
+			return TransformationUtils.createEmptyTransformationChangeResult
+		}
+		val field = fields.get(0)
 		val tcr = PCM2JaMoPPUtils.updateNameAttribute(Sets.newHashSet(field), newValue, affectedAttribute,
 			featureCorrespondenceMap, correspondenceInstance, true)
-		val methods = affectedEObjects.filter(typeof(Method))
+		val methods = affectedEObjects.filter(typeof(ClassMethod))
 		for (method : methods) {
 			val TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(method)
 			if (isGetter(method)) {
 				method.name = "get" + newValue.toString.toFirstUpper
+
+			//TODO: change access in return
 			}
 			if (isSetter(method)) {
 				method.name = "set" + newValue.toString.toFirstUpper
+				if (!method.parameters.nullOrEmpty) {
+					val firstParam = method.parameters.get(0)
+					firstParam.name = newValue.toString
+
+				//TODO: change assignemnt
+				}
 			}
 			tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, method, null)
 			tcr.existingObjectsToSave.add(method)
@@ -143,8 +184,8 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 	/**
 	 * called when the type of an InnerDeclaration has been changed
 	 */
-	override insertNonContaimentEReference(EObject affectedEObject, EReference affectedReference, EObject newValue,
-		int index) {
+	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
+		EObject oldValue, EObject newValue) {
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(affectedEObject, affectedReference,
 			featureCorrespondenceMap, correspondenceInstance)
 		if (affectedEObjects.nullOrEmpty) {
@@ -153,21 +194,33 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 		if (false == newValue instanceof DataType) {
 			logger.warn("NewValue is not an instance of DataType: " + newValue + " - change not synchronized")
 		}
+		val tcr = new TransformationChangeResult
 		val newDataType = newValue as DataType
-		val field = affectedEObjects.filter(typeof(Field))
-		val tcr = PCM2JaMoPPUtils.updateNameAttribute(Sets.newHashSet(field), newValue, affectedReference,
-			featureCorrespondenceMap, correspondenceInstance, true)
+		val newJaMoPPType = DataTypeCorrespondenceHelper.
+			claimUniqueCorrespondingJaMoPPDataType(newDataType, correspondenceInstance)
+
+		//Change field Type
+		val fields = affectedEObjects.filter(typeof(Field))
+		if(fields.nullOrEmpty){
+			logger.error("No field found in corresponding EObjects for PCM Type " + affectedEObject + " Change not sznchronized!")
+			return TransformationUtils.createEmptyTransformationChangeResult
+		}
+		val field = fields.get(0)
+
+		val oldFieldTUID = correspondenceInstance.calculateTUIDFromEObject(field)
+		field.typeReference = EcoreUtil.copy(newJaMoPPType)
+		tcr.addCorrespondenceToUpdate(correspondenceInstance, oldFieldTUID, field, null)
+
+		//Change method type/parameter
 		val methods = affectedEObjects.filter(typeof(Method))
 		for (method : methods) {
 			val TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(method)
-			val typeRef = DataTypeCorrespondenceHelper.
-				claimUniqueCorrespondingJaMoPPDataType(newDataType, correspondenceInstance)
 			if (isGetter(method)) {
-				method.typeReference = typeRef
+				method.typeReference = EcoreUtil.copy(newJaMoPPType)
 			} else if (isSetter(method)) {
 				if (!method.parameters.nullOrEmpty) {
 					val parameter = method.parameters.get(0)
-					parameter.typeReference = typeRef
+					parameter.typeReference = EcoreUtil.copy(newJaMoPPType)
 				}
 			}
 			tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, method, null)
@@ -175,13 +228,15 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 		}
 		return tcr
 	}
+	
+	
 
 	def isSetter(Method method) {
-		return method.name.startsWith("set")
+		return method.name.startsWith("set") && method.typeReference instanceof Void
 	}
 
 	def isGetter(Method method) {
-		return method.name.startsWith("get") && method.typeReference instanceof Void
+		return method.name.startsWith("get")
 	}
 
 }

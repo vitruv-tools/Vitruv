@@ -27,7 +27,7 @@ import org.junit.Test;
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
 import de.uka.ipd.sdq.pcm.repository.OperationInterface;
 import de.uka.ipd.sdq.pcm.repository.Repository;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMUtils;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPP2CMUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.AttributeFactory;
@@ -316,7 +316,7 @@ public class JaMoPP2PCMTest extends PCMJaMoPPTransformationTestBase {
         String packageFile = StringUtils.join(namespace, "/");
         packageFile = packageFile + "package-info.java";
         final VURI packageVURI = this.createVURIForSrcFile(packageFile);
-        final Package jaMoPPPackage = JaMoPPPCMUtils.createPackage(namespaceDotted);
+        final Package jaMoPPPackage = JaMoPPP2CMUtils.createPackage(namespaceDotted);
         final Resource resource = this.resourceSet.createResource(packageVURI.getEMFUri());
         EcoreResourceBridge.saveEObjectAsOnlyContent(jaMoPPPackage, resource);
         logger.info("Namespace of new package: " + jaMoPPPackage.getNamespacesAsString());

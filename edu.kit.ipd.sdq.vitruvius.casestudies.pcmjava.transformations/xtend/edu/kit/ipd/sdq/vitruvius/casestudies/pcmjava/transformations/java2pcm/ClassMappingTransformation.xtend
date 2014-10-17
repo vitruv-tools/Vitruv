@@ -4,7 +4,7 @@ import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingRequiringEntity
 import de.uka.ipd.sdq.pcm.repository.RepositoryComponent
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPPCMUtils
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
@@ -72,7 +72,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 		}
 
 		//ii) + iv)
-		val jaMoPPPackage = JaMoPPPCMUtils.
+		val jaMoPPPackage = PCM2JaMoPPUtils.
 			getContainingPackageFromCorrespondenceInstance(jaMoPPClass, correspondenceInstance)
 		if (null == jaMoPPPackage) {
 

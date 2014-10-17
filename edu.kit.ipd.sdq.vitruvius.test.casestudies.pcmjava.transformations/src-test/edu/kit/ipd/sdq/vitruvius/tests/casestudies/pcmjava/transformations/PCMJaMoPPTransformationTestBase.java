@@ -3,6 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.change.ChangeDescription;
 import org.eclipse.emf.ecore.change.util.ChangeRecorder;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -123,6 +124,11 @@ public class PCMJaMoPPTransformationTestBase {
         cd.applyAndReverse();
         this.syncManager.synchronizeChanges(changes);
         this.changeRecorder.beginRecording(Collections.EMPTY_LIST);
+    }
+
+    protected void triggerSynchronization(final EObject eObject) {
+        final VURI vuri = VURI.getInstance(eObject.eResource());
+        this.triggerSynchronization(vuri);
     }
 
     protected void synchronizeFileChange(final FileChangeKind fileChangeKind, final VURI vuri) {
