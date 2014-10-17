@@ -18,7 +18,7 @@
    
    <rm:searchPath name="monitoredEditor">
 	  <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="svn" source="false" mutable="false">
-	 	<rm:uri format="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/stud/Master-Implementation/">
+	 	<rm:uri format="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/stud/DominikMessinger/Master-Implementation/">
         <bc:propertyRef key="buckminster.component" />
     	</rm:uri>
 	  </rm:provider>
