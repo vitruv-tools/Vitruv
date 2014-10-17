@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rm:rmap xmlns:bc="http://www.eclipse.org/buckminster/Common-1.0" xmlns:rm="http://www.eclipse.org/buckminster/RMap-1.0">
-	 <rm:locator searchPathRef="localresources" failOnError="false"/>
+	 <rm:locator pattern="^edu\.kit\.ipd\.sdq\.vitruvius\..*" searchPathRef="vitruvius" failOnError="false" />
+	 <rm:locator searchPathRef="monitoredEditor" failOnError="false" />
 	 <rm:locator searchPathRef="jamopp" failOnError="false" />
 	 <rm:locator searchPathRef="luna" failOnError="false" />
 	 <rm:locator searchPathRef="palladio-core" failOnError="false"/>
+	 <rm:locator pattern="^org\.eclipse\.xtend.*" searchPathRef="xtext" failOnError="false"/>
+   
+   <rm:searchPath name="vitruvius">
+	  <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="svn" source="false" mutable="false">
+	 	<uri format="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/">
+        <bc:propertyRef key="buckminster.component" />
+    	</uri>
+	  </rm:provider>
+  </rm:searchPath>
+   
+   <rm:searchPath name="monitoredEditor">
+	  <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="svn" source="false" mutable="false">
+	 	<uri format="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/stud/Master-Implementation/">
+        <bc:propertyRef key="buckminster.component" />
+    	</uri>
+	  </rm:provider>
+  </rm:searchPath>
    
    <rm:searchPath name="jamopp">
 	  <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
@@ -29,13 +47,12 @@
     </rm:provider>
   </rm:searchPath>
   
-  <rm:searchPath name="localresources">
-    <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="local">
-      <rm:uri format="file:///{0}/{1}/">
-        <bc:propertyRef key="workspace.root"/>
-        <bc:propertyRef key="buckminster.component"/>
-      </rm:uri>
+  <rm:searchPath name="xtext">
+    <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
+      <rm:property key="buckminster.source" value="false"/>
+      <rm:property key="buckminster.mutable" value="false"/>
+      <rm:uri format="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
     </rm:provider>
   </rm:searchPath>
-	 
+  
 </rm:rmap>
