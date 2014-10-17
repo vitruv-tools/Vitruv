@@ -2,7 +2,8 @@
 <feature
       id="edu.kit.ipd.sdq.vitruvius.buckminster"
       label="Vitruvius Buckminster"
-      version="1.0.0.qualifier">
+      version="1.0.0.qualifier"
+      provider-name="SDQ">
 
    <description url="http://www.example.com/description">
       This feature contains the buckminster build structure for Vitruvius framework including:
