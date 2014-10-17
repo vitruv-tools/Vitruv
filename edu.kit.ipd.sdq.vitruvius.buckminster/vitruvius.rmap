@@ -6,20 +6,21 @@
 	 <rm:locator searchPathRef="luna" failOnError="false" />
 	 <rm:locator searchPathRef="palladio-core" failOnError="false"/>
 	 <rm:locator pattern="^org\.eclipse\.xtend.*" searchPathRef="xtext" failOnError="false"/>
+	 <rm:locator pattern="^org\.eclipse\.emf\..*" searchPathRef="emf" failOnError="false"/>
    
    <rm:searchPath name="vitruvius">
 	  <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="svn" source="false" mutable="false">
-	 	<uri format="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/">
+	 	<rm:uri format="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/">
         <bc:propertyRef key="buckminster.component" />
-    	</uri>
+    	</rm:uri>
 	  </rm:provider>
   </rm:searchPath>
    
    <rm:searchPath name="monitoredEditor">
 	  <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="svn" source="false" mutable="false">
-	 	<uri format="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/stud/Master-Implementation/">
+	 	<rm:uri format="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/stud/Master-Implementation/">
         <bc:propertyRef key="buckminster.component" />
-    	</uri>
+    	</rm:uri>
 	  </rm:provider>
   </rm:searchPath>
    
@@ -52,6 +53,14 @@
       <rm:property key="buckminster.source" value="false"/>
       <rm:property key="buckminster.mutable" value="false"/>
       <rm:uri format="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
+    </rm:provider>
+  </rm:searchPath>
+  
+  <rm:searchPath name="emf">
+    <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
+      <rm:property key="buckminster.source" value="false"/>
+      <rm:property key="buckminster.mutable" value="false"/>
+      <rm:uri format="http://download.eclipse.org/modeling/emf/emf/updates/releases/"/>
     </rm:provider>
   </rm:searchPath>
   
