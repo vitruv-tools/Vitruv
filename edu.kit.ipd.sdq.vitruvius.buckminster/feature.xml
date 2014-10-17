@@ -19,6 +19,10 @@
       [Enter License Description here.]
    </license>
 
+   <includes
+         id="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.feature"
+         version="0.0.0"/>
+
    <plugin
          id="edu.kit.ipd.sdq.vitruvius.test.casestudies.pcmjava.transformations"
          download-size="0"
