@@ -210,12 +210,20 @@ public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
                 mapForKey = new RecursiveHashMap<K, V>(this.valueCreatorAndLinker);
                 this.key2NextRecursiveMapMap.put(key, mapForKey);
             }
+        } else if (mapToAdd == null) {
+        	// nothing to merge
+            // do not return the unmodifiable Collections.emptyList() because segments might be
+            // prepended, what would cause an UnsupportedOperationException
+        	return new LinkedList<Pair<V,V>>();
         }
         return mapForKey.mergeMaps(value, mapToAdd);
     }
 
     @Override
     public Collection<Pair<V,V>> mergeMaps(V previousValue, final RecursiveMap<K, V> mapToAdd) {
+    	if (previousValue == null || mapToAdd == null) {
+    		throw new IllegalArgumentException("Cannot merge the previous value '" + previousValue + "' and the map '" + mapToAdd + "'!"); 
+    	}
         final Collection<Pair<V,V>> updatedValues = new LinkedList<Pair<V,V>>();
         Pair<Set<Map.Entry<K, RecursiveMap<K, V>>>, Set<Map.Entry<K, V>>> entrySets = mapToAdd.entrySets();
         Set<Entry<K, RecursiveMap<K, V>>> nextMapsToAddEntries = entrySets.getFirst();
