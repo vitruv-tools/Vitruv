@@ -4,6 +4,7 @@
 	 <rm:locator searchPathRef="vitruv" failOnError="false" />
 	 <rm:locator searchPathRef="jamopp" failOnError="false" />
 	 <rm:locator searchPathRef="luna" failOnError="false" />
+	 <rm:locator searchPathRef="modelling" failOnError="false" />
 	 <rm:locator searchPathRef="palladio-core" failOnError="false"/>
 	 <rm:locator pattern="^org\.eclipse\.xtend.*" searchPathRef="xtext" failOnError="false"/>
 	 <rm:locator pattern="^org\.eclipse\.emf\..*" searchPathRef="emf" failOnError="false"/>
@@ -45,6 +46,14 @@
       <rm:property key="buckminster.source" value="false"/>
       <rm:property key="buckminster.mutable" value="false"/>
       <rm:uri format="http://download.eclipse.org/releases/luna/"/>
+    </rm:provider>
+  </rm:searchPath>
+  
+  <rm:searchPath name="modelling">
+    <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
+      <rm:property key="buckminster.source" value="false"/>
+      <rm:property key="buckminster.mutable" value="false"/>
+      <rm:uri format="http://download.eclipse.org/modeling/emf/updates/releases/"/>
     </rm:provider>
   </rm:searchPath>
   
