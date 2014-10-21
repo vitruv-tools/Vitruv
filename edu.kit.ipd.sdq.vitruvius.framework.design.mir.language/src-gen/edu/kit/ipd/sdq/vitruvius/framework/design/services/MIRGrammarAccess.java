@@ -803,36 +803,56 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	
-	private ModelElements pModel;
-	private ImportElements pImport;
-	private MMNsPrefixElements pMMNsPrefix;
-	private MappingElements pMapping;
-	private MappingBaseElements pMappingBase;
-	private WhenElements pWhen;
-	private WithElements pWith;
-	private InvariantElements pInvariant;
-	private ParameterElements pParameter;
-	private GlobalVariableElements pGlobalVariable;
-	private ResponseElements pResponse;
-	private OperationRestrictionElements pOperationRestriction;
-	private MetalclassOperationRestrictionElements pMetalclassOperationRestriction;
-	private MetaclassOperationTypeElements pMetaclassOperationType;
-	private FeatureOperationRestrictionElements pFeatureOperationRestriction;
-	private FeatureOperationTypeElements pFeatureOperationType;
-	private InvariantRestrictionElements pInvariantRestriction;
-	private CpxIDElements pCpxID;
-	private NsPrefixQualifiedIDElements pNsPrefixQualifiedID;
-	private PackageQualifiedIDElements pPackageQualifiedID;
+	private final ModelElements pModel;
+	private final ImportElements pImport;
+	private final MMNsPrefixElements pMMNsPrefix;
+	private final MappingElements pMapping;
+	private final MappingBaseElements pMappingBase;
+	private final WhenElements pWhen;
+	private final WithElements pWith;
+	private final InvariantElements pInvariant;
+	private final ParameterElements pParameter;
+	private final GlobalVariableElements pGlobalVariable;
+	private final ResponseElements pResponse;
+	private final OperationRestrictionElements pOperationRestriction;
+	private final MetalclassOperationRestrictionElements pMetalclassOperationRestriction;
+	private final MetaclassOperationTypeElements pMetaclassOperationType;
+	private final FeatureOperationRestrictionElements pFeatureOperationRestriction;
+	private final FeatureOperationTypeElements pFeatureOperationType;
+	private final InvariantRestrictionElements pInvariantRestriction;
+	private final CpxIDElements pCpxID;
+	private final NsPrefixQualifiedIDElements pNsPrefixQualifiedID;
+	private final PackageQualifiedIDElements pPackageQualifiedID;
 	
 	private final Grammar grammar;
 
-	private XbaseGrammarAccess gaXbase;
+	private final XbaseGrammarAccess gaXbase;
 
 	@Inject
 	public MIRGrammarAccess(GrammarProvider grammarProvider,
 		XbaseGrammarAccess gaXbase) {
 		this.grammar = internalFindGrammar(grammarProvider);
 		this.gaXbase = gaXbase;
+		this.pModel = new ModelElements();
+		this.pImport = new ImportElements();
+		this.pMMNsPrefix = new MMNsPrefixElements();
+		this.pMapping = new MappingElements();
+		this.pMappingBase = new MappingBaseElements();
+		this.pWhen = new WhenElements();
+		this.pWith = new WithElements();
+		this.pInvariant = new InvariantElements();
+		this.pParameter = new ParameterElements();
+		this.pGlobalVariable = new GlobalVariableElements();
+		this.pResponse = new ResponseElements();
+		this.pOperationRestriction = new OperationRestrictionElements();
+		this.pMetalclassOperationRestriction = new MetalclassOperationRestrictionElements();
+		this.pMetaclassOperationType = new MetaclassOperationTypeElements();
+		this.pFeatureOperationRestriction = new FeatureOperationRestrictionElements();
+		this.pFeatureOperationType = new FeatureOperationTypeElements();
+		this.pInvariantRestriction = new InvariantRestrictionElements();
+		this.pCpxID = new CpxIDElements();
+		this.pNsPrefixQualifiedID = new NsPrefixQualifiedIDElements();
+		this.pPackageQualifiedID = new PackageQualifiedIDElements();
 	}
 	
 	protected Grammar internalFindGrammar(GrammarProvider grammarProvider) {
@@ -866,7 +886,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	//	mmImports+=Import+ javaImportSection=XImportSection? mappings+=Mapping* invariants+=Invariant*
 	//	globalVariables+=GlobalVariable* respones+=Response*;
 	public ModelElements getModelAccess() {
-		return (pModel != null) ? pModel : (pModel = new ModelElements());
+		return pModel;
 	}
 	
 	public ParserRule getModelRule() {
@@ -877,7 +897,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	//Import:
 	//	"import" nsURI=STRING "as" mmNsPrefix=MMNsPrefix;
 	public ImportElements getImportAccess() {
-		return (pImport != null) ? pImport : (pImport = new ImportElements());
+		return pImport;
 	}
 	
 	public ParserRule getImportRule() {
@@ -887,7 +907,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	//MMNsPrefix:
 	//	nsPrefix=ID;
 	public MMNsPrefixElements getMMNsPrefixAccess() {
-		return (pMMNsPrefix != null) ? pMMNsPrefix : (pMMNsPrefix = new MMNsPrefixElements());
+		return pMMNsPrefix;
 	}
 	
 	public ParserRule getMMNsPrefixRule() {
@@ -900,7 +920,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	//Mapping:
 	//	"map" MappingBase;
 	public MappingElements getMappingAccess() {
-		return (pMapping != null) ? pMapping : (pMapping = new MappingElements());
+		return pMapping;
 	}
 	
 	public ParserRule getMappingRule() {
@@ -911,7 +931,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	//	(nameA=ID ":")? metaclassA=[ecore::EClass|NsPrefixQualifiedID] "to" (nameB=ID ":")?
 	//	metaclassB=[ecore::EClass|NsPrefixQualifiedID] "{" whens+=When* withs+=With* "}";
 	public MappingBaseElements getMappingBaseAccess() {
-		return (pMappingBase != null) ? pMappingBase : (pMappingBase = new MappingBaseElements());
+		return pMappingBase;
 	}
 	
 	public ParserRule getMappingBaseRule() {
@@ -921,7 +941,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	//When: // TODO make sure this is the right for binary OCL-like expressions for model elements
 	//	"when" xorExpression=XOrExpression;
 	public WhenElements getWhenAccess() {
-		return (pWhen != null) ? pWhen : (pWhen = new WhenElements());
+		return pWhen;
 	}
 	
 	public ParserRule getWhenRule() {
@@ -931,7 +951,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	//With:
 	//	"with" MappingBase;
 	public WithElements getWithAccess() {
-		return (pWith != null) ? pWith : (pWith = new WithElements());
+		return pWith;
 	}
 	
 	public ParserRule getWithRule() {
@@ -945,7 +965,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	//	"context" NsPrefixQualifiedID "inv" name=ID parameters+=Parameter? "{" // TODO make sure this is the right for binary OCL-like expressions for model elements
 	//	xorExpression=XOrExpression "}";
 	public InvariantElements getInvariantAccess() {
-		return (pInvariant != null) ? pInvariant : (pInvariant = new InvariantElements());
+		return pInvariant;
 	}
 	
 	public ParserRule getInvariantRule() {
@@ -955,7 +975,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	//Parameter:
 	//	(name=ID ":")? metaclass=[ecore::EClass|NsPrefixQualifiedID];
 	public ParameterElements getParameterAccess() {
-		return (pParameter != null) ? pParameter : (pParameter = new ParameterElements());
+		return pParameter;
 	}
 	
 	public ParserRule getParameterRule() {
@@ -968,7 +988,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	//GlobalVariable: // TODO make sure this is the right rule for java type declarations
 	//	"var" name=ID ":" jvmTypeReference=JvmTypeReference;
 	public GlobalVariableElements getGlobalVariableAccess() {
-		return (pGlobalVariable != null) ? pGlobalVariable : (pGlobalVariable = new GlobalVariableElements());
+		return pGlobalVariable;
 	}
 	
 	public ParserRule getGlobalVariableRule() {
@@ -980,7 +1000,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	//	(operationRestriction=OperationRestriction? invariantRestriction=InvariantRestriction) "by" "{" // TODO allow all Xtend stmts here
 	//	xtendStmt=STRING "}";
 	public ResponseElements getResponseAccess() {
-		return (pResponse != null) ? pResponse : (pResponse = new ResponseElements());
+		return pResponse;
 	}
 	
 	public ParserRule getResponseRule() {
@@ -990,7 +1010,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	//OperationRestriction:
 	//	"on" MetalclassOperationRestriction | FeatureOperationRestriction;
 	public OperationRestrictionElements getOperationRestrictionAccess() {
-		return (pOperationRestriction != null) ? pOperationRestriction : (pOperationRestriction = new OperationRestrictionElements());
+		return pOperationRestriction;
 	}
 	
 	public ParserRule getOperationRestrictionRule() {
@@ -1000,7 +1020,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	//MetalclassOperationRestriction:
 	//	MetaclassOperationType "of" NsPrefixQualifiedID;
 	public MetalclassOperationRestrictionElements getMetalclassOperationRestrictionAccess() {
-		return (pMetalclassOperationRestriction != null) ? pMetalclassOperationRestriction : (pMetalclassOperationRestriction = new MetalclassOperationRestrictionElements());
+		return pMetalclassOperationRestriction;
 	}
 	
 	public ParserRule getMetalclassOperationRestrictionRule() {
@@ -1010,7 +1030,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	//MetaclassOperationType:
 	//	"creation" | "update" | "deletion";
 	public MetaclassOperationTypeElements getMetaclassOperationTypeAccess() {
-		return (pMetaclassOperationType != null) ? pMetaclassOperationType : (pMetaclassOperationType = new MetaclassOperationTypeElements());
+		return pMetaclassOperationType;
 	}
 	
 	public ParserRule getMetaclassOperationTypeRule() {
@@ -1020,7 +1040,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	//FeatureOperationRestriction:
 	//	FeatureOperationType "of" NsPrefixQualifiedID "." feature=ID;
 	public FeatureOperationRestrictionElements getFeatureOperationRestrictionAccess() {
-		return (pFeatureOperationRestriction != null) ? pFeatureOperationRestriction : (pFeatureOperationRestriction = new FeatureOperationRestrictionElements());
+		return pFeatureOperationRestriction;
 	}
 	
 	public ParserRule getFeatureOperationRestrictionRule() {
@@ -1030,7 +1050,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	//FeatureOperationType:
 	//	"update";
 	public FeatureOperationTypeElements getFeatureOperationTypeAccess() {
-		return (pFeatureOperationType != null) ? pFeatureOperationType : (pFeatureOperationType = new FeatureOperationTypeElements());
+		return pFeatureOperationType;
 	}
 	
 	public ParserRule getFeatureOperationTypeRule() {
@@ -1040,7 +1060,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	//InvariantRestriction:
 	//	"restore" "inv" name=[Invariant] ("(" parameters+=Parameter ")")?;
 	public InvariantRestrictionElements getInvariantRestrictionAccess() {
-		return (pInvariantRestriction != null) ? pInvariantRestriction : (pInvariantRestriction = new InvariantRestrictionElements());
+		return pInvariantRestriction;
 	}
 	
 	public ParserRule getInvariantRestrictionRule() {
@@ -1050,7 +1070,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	//CpxID:
 	//	ID ("." ID)+;
 	public CpxIDElements getCpxIDAccess() {
-		return (pCpxID != null) ? pCpxID : (pCpxID = new CpxIDElements());
+		return pCpxID;
 	}
 	
 	public ParserRule getCpxIDRule() {
@@ -1062,7 +1082,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	//NsPrefixQualifiedID:
 	//	ID "::" PackageQualifiedID;
 	public NsPrefixQualifiedIDElements getNsPrefixQualifiedIDAccess() {
-		return (pNsPrefixQualifiedID != null) ? pNsPrefixQualifiedID : (pNsPrefixQualifiedID = new NsPrefixQualifiedIDElements());
+		return pNsPrefixQualifiedID;
 	}
 	
 	public ParserRule getNsPrefixQualifiedIDRule() {
@@ -1072,7 +1092,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	//PackageQualifiedID:
 	//	ID ("::" ID)* "::" (CpxID | ID);
 	public PackageQualifiedIDElements getPackageQualifiedIDAccess() {
-		return (pPackageQualifiedID != null) ? pPackageQualifiedID : (pPackageQualifiedID = new PackageQualifiedIDElements());
+		return pPackageQualifiedID;
 	}
 	
 	public ParserRule getPackageQualifiedIDRule() {
@@ -1451,7 +1471,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//XCasePart:
-	//	{XCasePart} typeGuard=JvmTypeReference? ("case" case=XExpression)? (":" then=XExpression | ",");
+	//	{XCasePart} typeGuard=JvmTypeReference? ("case" case=XExpression)? (":" then=XExpression | fallThrough?=",");
 	public XbaseGrammarAccess.XCasePartElements getXCasePartAccess() {
 		return gaXbase.getXCasePartAccess();
 	}
@@ -1783,8 +1803,9 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//JvmParameterizedTypeReference:
-	//	type=[JvmType|QualifiedName] ("<" arguments+=JvmArgumentTypeReference ("," arguments+=JvmArgumentTypeReference)*
-	//	">")?;
+	//	type=[JvmType|QualifiedName] ("<" arguments+=JvmArgumentTypeReference ("," arguments+=JvmArgumentTypeReference)* ">"
+	//	(=> ({JvmInnerTypeReference.outer=current} ".") type=[JvmType|ValidID] ("<" arguments+=JvmArgumentTypeReference (","
+	//	arguments+=JvmArgumentTypeReference)* ">")?)*)?;
 	public XtypeGrammarAccess.JvmParameterizedTypeReferenceElements getJvmParameterizedTypeReferenceAccess() {
 		return gaXbase.getJvmParameterizedTypeReferenceAccess();
 	}
@@ -1804,7 +1825,8 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//JvmWildcardTypeReference:
-	//	{JvmWildcardTypeReference} "?" (constraints+=JvmUpperBound | constraints+=JvmLowerBound)?;
+	//	{JvmWildcardTypeReference} "?" (constraints+=JvmUpperBound constraints+=JvmUpperBoundAnded* |
+	//	constraints+=JvmLowerBound constraints+=JvmLowerBoundAnded*)?;
 	public XtypeGrammarAccess.JvmWildcardTypeReferenceElements getJvmWildcardTypeReferenceAccess() {
 		return gaXbase.getJvmWildcardTypeReferenceAccess();
 	}
@@ -1841,6 +1863,16 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getJvmLowerBoundRule() {
 		return getJvmLowerBoundAccess().getRule();
+	}
+
+	//JvmLowerBoundAnded returns JvmLowerBound:
+	//	"&" typeReference=JvmTypeReference;
+	public XtypeGrammarAccess.JvmLowerBoundAndedElements getJvmLowerBoundAndedAccess() {
+		return gaXbase.getJvmLowerBoundAndedAccess();
+	}
+	
+	public ParserRule getJvmLowerBoundAndedRule() {
+		return getJvmLowerBoundAndedAccess().getRule();
 	}
 
 	//JvmTypeParameter:
@@ -1912,8 +1944,8 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	} 
 
 	//terminal STRING:
-	//	"\"" ("\\" ("b" | "t" | "n" | "f" | "r" | "u" | "\"" | "\'" | "\\") | !("\\" | "\""))* "\"" | "\'" ("\\" ("b" | "t" |
-	//	"n" | "f" | "r" | "u" | "\"" | "\'" | "\\") | !("\\" | "\'"))* "\'";
+	//	"\"" ("\\" . / * ('b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\') * / | !("\\" | "\""))* "\""? | "\'" ("\\" .
+	//	/ * ('b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\') * / | !("\\" | "\'"))* "\'"?;
 	public TerminalRule getSTRINGRule() {
 		return gaXbase.getSTRINGRule();
 	} 

@@ -489,17 +489,29 @@
    </extension>
    <extension point="org.eclipse.ui.popupMenus">
       <viewerContribution
-         targetID="example.rulerContextMenuId"
+         targetID="edu.kit.ipd.sdq.vitruvius.framework.design.MIR.ide.rulerContextMenu"
          id="edu.kit.ipd.sdq.vitruvius.framework.design.MIR.ide.RulerPopupActions">
          <action
             label="Toggle Breakpoint"
             class="edu.kit.ipd.sdq.vitruvius.framework.design.ui.MIRExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
-            menubarPath="additions"
+            menubarPath="debug"
             id="edu.kit.ipd.sdq.vitruvius.framework.design.MIR.ide.rulerContextMenu.toggleBreakpointAction">
+         </action>
+         <action
+            label="Not used"
+            class="edu.kit.ipd.sdq.vitruvius.framework.design.ui.MIRExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"
+            menubarPath="debug"
+            id="edu.kit.ipd.sdq.vitruvius.framework.design.MIR.ide.rulerContextMenu.enableDisableBreakpointAction">
+         </action>
+         <action
+           label="Breakpoint Properties"
+           helpContextId="breakpoint_properties_action_context"
+           class="edu.kit.ipd.sdq.vitruvius.framework.design.ui.MIRExecutableExtensionFactory:org.eclipse.jdt.debug.ui.actions.JavaBreakpointPropertiesRulerActionDelegate"
+           menubarPath="group.properties"
+           id="edu.kit.ipd.sdq.vitruvius.framework.design.MIR.ide.rulerContextMenu.openBreapointPropertiesAction">
          </action>
       </viewerContribution>
    </extension>
-   
     <!-- Introduce Local Variable Refactoring -->
 	<extension point="org.eclipse.ui.handlers">
 		<handler 
