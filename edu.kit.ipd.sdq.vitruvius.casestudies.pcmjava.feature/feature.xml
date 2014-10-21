@@ -185,48 +185,6 @@
          unpack="false"/>
 
    <plugin
-         id="edu.kit.ipd.sdq.vitruvius.test.casestudies.pcmjava.transformations"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.test.framework.run.editor.monitored.emf"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.test.framework.run.editor.monitored.emfchange"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.tests.jamopppcm.util"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.tests.mockup"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.tests.util"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="MonitoredEditor"
          download-size="0"
          install-size="0"
