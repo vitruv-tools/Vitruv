@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ChangeClassification
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.changeclassification;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: changeclassification.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.jdt.core,
+ org.eclipse.core.resources
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: edu.kit.ipd.sdq.vitruvius.framework.model.monitor,
+ edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events

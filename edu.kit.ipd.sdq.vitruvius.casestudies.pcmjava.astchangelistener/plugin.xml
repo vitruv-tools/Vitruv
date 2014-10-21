@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.classifiers.postreconcile" name="Postreconcile Classifiers" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.classifiers.postreconcile.exsd"/>
+   <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.classifiers.postchange" name="Postchange Classifiers" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.classifiers.postchange.exsd"/>
+
+</plugin>

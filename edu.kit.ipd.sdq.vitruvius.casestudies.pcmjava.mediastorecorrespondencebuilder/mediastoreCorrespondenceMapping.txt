@@ -1,0 +1,74 @@
+
+#------------------------------------------------------INTERFACES-----------------------------------------------
+
+$PREFIXES: de.uka.ipd.sdq.mediastore.interfaces. - defaultRepository.
+
+IWatermarking - IWatermarking
+{
+	watermark0 - watermark
+}
+
+IAudioDB - IAudioDB
+{
+	addFile0 - addFile
+	getFile1 - getFile
+	getFileList2 - getFileList
+}
+
+IEncoder - IEncoder
+{
+	encode0 - encode
+}
+
+IUserDB - IUserDB
+{
+	addUser0 - addUser
+	authenticate1 - authenticate
+}
+
+IWebGui - IWebGui
+{
+	upload0 - upload
+	download1 - download
+	getFileList2 - getFileList
+	register3 - register
+	logIn4 - logIn
+	downloadCollection5 - downloadCollection
+}
+
+IUserManagement - IUserManagement
+{
+	register0 - register
+	logIn1 - logIn
+}
+
+IMediaStore - IMediaStore
+{
+	upload0 - upload
+	download1 - download
+	getFileList2 - getFileList
+	dowloadCollection3 - dowloadCollection
+}
+
+DBInterface - DBInterface
+{
+	query0 - query
+}
+
+IPackaging - IPackaging
+{
+	zip0 - zip
+}
+
+#-------------------------------------------COMPONENTS---------------------------------------------------
+$PREFIXES: de.uka.ipd.sdq.mediastore.impl. - defaultRepository.
+
+Encoder - Encoder
+Watermarking - Watermarking
+MediaStore - MediaStore
+AudioDBAdapter - AudioDBAdapter
+WebGUI - WebGUI
+UserManagement - UserManagement
+UserDBAdapter - UserDBAdapter
+DB - DB
+Packaging - Packaging
