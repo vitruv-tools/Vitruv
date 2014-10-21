@@ -18,7 +18,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.expressions;bundle-version="3.4.500",
  edu.kit.ipd.sdq.vitruvius.framework.metarepository,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- MonitoredEditor,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.monitorededitor,
  edu.kit.ipd.sdq.vitruvius.framework.vsum;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence,
  edu.kit.ipd.sdq.vitruvius.casestudies.utils.jamopp;bundle-version="1.0.0"
