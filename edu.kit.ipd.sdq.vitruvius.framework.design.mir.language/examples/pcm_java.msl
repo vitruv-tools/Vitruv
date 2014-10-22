@@ -1,0 +1,18 @@
+mapping pcm:Interface as pi to java:Interface as ji {
+	
+	....
+	
+	with pi.signatures : pcm:Signature to ji.methodDeclarations : java:MethodDeclaration {
+		...
+	}
+}
+
+mapping pcm:Component as pc to java:Class as jc {
+	
+	with pc.provides : pcm:Interface to jc.implements : java:Interface; // no body allowed for the moment, later only additions to global mapping should be possible
+	
+	with pc.services : pcm:Service to jc.methodBodies : java:MethodBody {
+		
+	}
+}
+
