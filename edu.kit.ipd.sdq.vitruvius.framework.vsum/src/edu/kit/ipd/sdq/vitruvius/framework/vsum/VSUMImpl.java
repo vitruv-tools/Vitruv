@@ -48,11 +48,11 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     private Map<String, String> saveCorrespondenceOptions;
 
     public VSUMImpl(final MetamodelManaging metamodelManaging, final ViewTypeManaging viewTypeManaging,
-            final MappingManaging mappingManaging, final CorrespondenceMMProviding correspondenceMMproviding) {
+            final MappingManaging mappingManaging) {
         this.metamodelManaging = metamodelManaging;
         this.viewTypeManaging = viewTypeManaging;
         this.mappingManaging = mappingManaging;
-        this.correspondenceMMproviding = correspondenceMMproviding;
+        this.correspondenceMMproviding = this.correspondenceMMproviding;
 
         this.saveCorrespondenceOptions = new HashMap<String, String>();
         this.saveCorrespondenceOptions.put(VSUMConstants.OPTION_PROCESS_DANGLING_HREF,

@@ -20,7 +20,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileCh
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.correspmmprovider.CorrespondenceMMProviderImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.design.metamodelmanager.MetamodelManagerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.design.viewtype.manager.ViewTypeManagerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
@@ -107,8 +106,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
     private ModelProviding createChangeSynchronizing(final MetaRepositoryImpl metaRepositoryImpl) {
         final MetamodelManagerImpl metaModelManager = new MetamodelManagerImpl(metaRepositoryImpl);
         final ViewTypeManagerImpl viewTypeManager = new ViewTypeManagerImpl();
-        final CorrespondenceMMProviderImpl correspondenceProvider = new CorrespondenceMMProviderImpl();
-        this.vsum = new VSUMImpl(metaModelManager, viewTypeManager, metaRepositoryImpl, correspondenceProvider);
+        this.vsum = new VSUMImpl(metaModelManager, viewTypeManager, metaRepositoryImpl);
         // create syncTransformationProvider
         final TransformationExecutingProvidingImpl syncTransformationProvider = new TransformationExecutingProvidingImpl();
         final EMFModelPropagationEngineImpl propagatingChange = new EMFModelPropagationEngineImpl(

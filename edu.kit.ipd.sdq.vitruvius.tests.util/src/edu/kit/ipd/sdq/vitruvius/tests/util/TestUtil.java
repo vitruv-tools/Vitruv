@@ -50,14 +50,7 @@ public final class TestUtil {
      * @return vsum
      */
     public static VSUMImpl createVSUM(final MetaRepositoryImpl metaRepository) {
-        final CorrespondenceMMProviding correspondenceMMproviding = new CorrespondenceMMProviding() {
-            @Override
-            public CorrespondenceMM getCorrespondenceMM(final VURI uriMM1, final VURI uriMM2) {
-                // nothing to be done as long as the correspondence mm stays generic
-                return null;
-            }
-        };
-        final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository, correspondenceMMproviding);
+        final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository);
         return vsum;
     }
 
