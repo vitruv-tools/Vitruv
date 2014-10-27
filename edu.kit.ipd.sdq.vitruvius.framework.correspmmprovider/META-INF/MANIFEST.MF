@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Correspondence Metamodel Provider
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.correspmmprovider;singleton:=true
-Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts
-Export-Package: edu.kit.ipd.sdq.vitruvius.framework.correspmmprovider
