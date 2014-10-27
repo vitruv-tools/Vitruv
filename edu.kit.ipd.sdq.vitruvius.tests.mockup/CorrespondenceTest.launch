@@ -14,7 +14,7 @@
 <booleanAttribute key="includeOptional" value="true"/>
 <stringAttribute key="location" value="${workspace_loc:edu.kit.ipd.sdq.vitruvius.tests.mockup/test-workspace}"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/edu.kit.ipd.sdq.vitruvius.tests.mockup/src/edu/kit/ipd/sdq/vitruvius/tests/mockup/CorrespondenceTest.java"/>
+<listEntry value="/edu.kit.ipd.sdq.vitruvius.tests.components/src/edu/kit/ipd/sdq/vitruvius/tests/mockup/CorrespondenceTest.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
@@ -27,7 +27,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="edu.kit.ipd.sdq.vitruvius.tests.mockup.CorrespondenceTest"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="edu.kit.ipd.sdq.vitruvius.tests.mockup"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="edu.kit.ipd.sdq.vitruvius.tests.components"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dosgi.requiredJavaVersion=1.5 -Dhelp.lucene.tokenizer=standard -XX:MaxPermSize=512m -Xms40m -Xmx512m"/>
 <stringAttribute key="pde.version" value="3.3"/>

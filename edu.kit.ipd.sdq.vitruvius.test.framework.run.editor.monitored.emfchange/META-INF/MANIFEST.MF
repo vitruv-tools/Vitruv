@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: emfchange.test
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.test.framework.run.editor.monitored.emfchange;singleton:=true
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.framework.run.editor.monitored.emfchange;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.Activator
 Require-Bundle: org.eclipse.ui,
@@ -18,10 +18,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.workbench,
  org.eclipse.gmf.runtime.diagram.ui;bundle-version="1.7.0",
  org.eclipse.gmf.runtime.diagram.ui.resources.editor,
- edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emf,
  de.uka.ipd.sdq.pcm,
  edu.kit.ipd.sdq.vitruvius.framework.metarepository;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange,
+ edu.kit.ipd.sdq.vitruvius.casestudies.gmf.run.monitorededitor,
  de.uka.ipd.sdq.pcm.resources;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

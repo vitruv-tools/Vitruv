@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: MonitoredEditor
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.monitorededitor;singleton:=true
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.java.run.monitorededitor;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: monitorededitor.Activator
 Require-Bundle: org.eclipse.ui,
@@ -14,8 +14,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt.core,
  org.emftext.language.java,
  org.eclipse.core.resources,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.astchangelistener;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.changeclassification;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.casestudies.java.run.astchangelistener;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.casestudies.java.run.changeclassification;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.casestudies.utils.refactoringchangelistener;bundle-version="1.0.0",
  org.eclipse.ui.console;bundle-version="3.5.200",
  org.eclipse.swt;bundle-version="3.102.1",

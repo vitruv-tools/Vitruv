@@ -14,7 +14,7 @@
 <booleanAttribute key="includeOptional" value="true"/>
 <stringAttribute key="location" value="${workspace_loc:edu.kit.ipd.sdq.vitruvius.test.casestudies.pcmjava.transformations/test-workspace}"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/edu.kit.ipd.sdq.vitruvius.test.casestudies.pcmjava.transformations/src-test/edu/kit/ipd/sdq/vitruvius/tests/casestudies/pcmjava/transformations/pcm2jamopp/system/SystemMappingTransformationTest.java"/>
+<listEntry value="/edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations/src-test/edu/kit/ipd/sdq/vitruvius/tests/casestudies/pcmjava/transformations/pcm2jamopp/system/SystemMappingTransformationTest.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
@@ -27,7 +27,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.system.SystemMappingTransformationTest"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="edu.kit.ipd.sdq.vitruvius.test.casestudies.pcmjava.transformations"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dosgi.requiredJavaVersion=1.6 -XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts -XX:MaxPermSize=2048m -Xms512m -Xmx1024m -Xdock:icon=../Resources/Eclipse.icns -XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts"/>
 <stringAttribute key="pde.version" value="3.3"/>

@@ -1,13 +1,14 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.mockup;singleton:=true
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.components;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: pcm_mockup,
+Export-Package: edu.kit.ipd.sdq.vitruvius.tests.mockup,
+ pcm_mockup,
  pcm_mockup.impl,
  pcm_mockup.util,
  uml_mockup,

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Test for Transformations
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.test.casestudies.pcmjava.transformations
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.junit,
@@ -30,11 +30,11 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.framework.synctransprovider,
  edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine,
  edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange,
+ edu.kit.ipd.sdq.vitruvius.casestudies.gmf.run.monitorededitor,
  edu.kit.ipd.sdq.vitruvius.casestudies.emf,
  org.eclipse.emf.edit,
  org.eclipse.ui.ide,
- edu.kit.ipd.sdq.vitruvius.test.framework.run.editor.monitored.emfchange,
+ edu.kit.ipd.sdq.vitruvius.tests.framework.run.editor.monitored.emfchange,
  edu.kit.ipd.sdq.vitruvius.casestudies.utils.jamopp,
  org.eclipse.emf.emfstore.common
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver

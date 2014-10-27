@@ -6,7 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: refactoringchangelistener.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.changeclassification,
+ edu.kit.ipd.sdq.vitruvius.casestudies.java.run.changeclassification,
  org.eclipse.ltk.core.refactoring;bundle-version="3.6.100",
  org.eclipse.core.commands,
  org.eclipse.jdt.core.manipulation;bundle-version="1.5.0",
