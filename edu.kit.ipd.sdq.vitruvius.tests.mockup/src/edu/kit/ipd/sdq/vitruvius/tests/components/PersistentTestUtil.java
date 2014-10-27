@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.mockup;
+package edu.kit.ipd.sdq.vitruvius.tests.components;
 
 import static org.junit.Assert.assertEquals;
 

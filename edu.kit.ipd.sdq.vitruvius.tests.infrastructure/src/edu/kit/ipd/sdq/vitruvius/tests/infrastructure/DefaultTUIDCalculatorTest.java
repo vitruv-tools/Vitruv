@@ -13,7 +13,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.DefaultTUID
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
-import edu.kit.ipd.sdq.vitruvius.tests.mockup.VSUMTest;
+import edu.kit.ipd.sdq.vitruvius.tests.components.VSUMTest;
 
 public class DefaultTUIDCalculatorTest extends VSUMTest {
     private static final String PCM_REPO_ID = "_r5CW0PxiEeO_U4GJ6Zitkg";
