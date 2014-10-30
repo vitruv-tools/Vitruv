@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JaMoPP PCM Util
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.jamopppcm.util
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.util
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.tests.util;bundle-version="1.0.0",

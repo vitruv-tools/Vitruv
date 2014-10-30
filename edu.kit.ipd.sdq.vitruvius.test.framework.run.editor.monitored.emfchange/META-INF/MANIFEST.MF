@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: emfchange.test
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.framework.run.editor.monitored.emfchange;singleton:=true
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.casestudies.gmf.run.monitorededitor;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.Activator
 Require-Bundle: org.eclipse.ui,

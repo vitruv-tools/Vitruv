@@ -16,12 +16,9 @@
       [Enter License Description here.]
    </license>
 
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.casestudies.emf"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <requires>
+      <import feature="edu.kit.ipd.sdq.vitruvius.casestudies.java.feature" version="1.0.0.qualifier"/>
+   </requires>
 
    <plugin
          id="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava"
@@ -31,196 +28,14 @@
          unpack="false"/>
 
    <plugin
+         id="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.mediastorecorrespondencebuilder"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.casestudies.utils.jamopp"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.contracts"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.correspmmprovider"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.design.metamodelmanager"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.design.mir.generator"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.design.mir.manager"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.design.viewtype.generator"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.design.viewtype.manager"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.meta.change"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.metarepository"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.projects"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emf"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.synctransprovider"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.util"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.vsum"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="MonitoredEditor"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="ChangeClassification"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="JaMoPPBridge"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="JDTToolTipProvider"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="RefactoringChangeListener"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="UserInteractor"
          download-size="0"
          install-size="0"
          version="0.0.0"
