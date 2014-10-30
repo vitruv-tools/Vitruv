@@ -21,7 +21,39 @@
    </license>
 
    <includes
+         id="edu.kit.ipd.sdq.vitruvius.casestudies.emf.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="edu.kit.ipd.sdq.vitruvius.casestudies.gmf.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="edu.kit.ipd.sdq.vitruvius.casestudies.java.feature"
+         version="0.0.0"/>
+
+   <includes
          id="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="edu.kit.ipd.sdq.vitruvius.framework.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="edu.kit.ipd.sdq.vitruvius.tests.casestudies.gmf.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="edu.kit.ipd.sdq.vitruvius.tests.casestudies.java.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="edu.kit.ipd.sdq.vitruvius.tests.feature"
          version="0.0.0"/>
 
 </feature>
