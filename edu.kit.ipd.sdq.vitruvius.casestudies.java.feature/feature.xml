@@ -16,6 +16,10 @@
       [Enter License Description here.]
    </license>
 
+   <requires>
+      <import feature="edu.kit.ipd.sdq.vitruvius.framework.feature" version="1.0.0.qualifier"/>
+   </requires>
+
    <plugin
          id="edu.kit.ipd.sdq.vitruvius.casestudies.java.run.astchangelistener"
          download-size="0"
