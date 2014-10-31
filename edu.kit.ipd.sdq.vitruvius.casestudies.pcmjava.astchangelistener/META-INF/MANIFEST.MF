@@ -9,7 +9,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt.core,
  org.eclipse.core.resources;bundle-version="3.8.100",
  edu.kit.ipd.sdq.vitruvius.casestudies.java.run.changeclassification;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.casestudies.utils.javamodel2ast;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.casestudies.java.util.javamodel2ast;bundle-version="1.0.0",
  org.apache.log4j,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.framework.util

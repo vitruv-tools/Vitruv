@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JDTToolTipProvider
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.utils.jdttooltipprovider
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.java.util.jdttooltipprovider
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: jdttooltipprovider.Activator
 Require-Bundle: org.eclipse.ui,

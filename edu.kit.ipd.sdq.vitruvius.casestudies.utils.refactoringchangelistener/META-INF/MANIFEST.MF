@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: RefactoringChangeListener
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.utils.refactoringchangelistener;singleton:=true
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.java.util.refactoringchangelistener;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: refactoringchangelistener.Activator
 Require-Bundle: org.eclipse.ui,
@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt.core.manipulation;bundle-version="1.5.0",
  org.eclipse.jdt.core;bundle-version="3.9.0",
  org.eclipse.jdt.ui;bundle-version="3.9.0",
- edu.kit.ipd.sdq.vitruvius.casestudies.utils.javamodel2ast;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.casestudies.java.util.javamodel2ast;bundle-version="1.0.0",
  org.eclipse.jface.text;bundle-version="3.8.101",
  org.eclipse.ui.editors;bundle-version="3.8.100",
  org.eclipse.ui.workbench

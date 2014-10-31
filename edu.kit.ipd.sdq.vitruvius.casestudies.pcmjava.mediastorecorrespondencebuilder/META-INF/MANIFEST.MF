@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.emftext.language.java.resource,
  org.apache.log4j,
  org.emftext.language.java.resource.java,
- edu.kit.ipd.sdq.vitruvius.casestudies.utils.jamoppbridge;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.casestudies.java.util.jamoppbridge;bundle-version="1.0.0",
  org.eclipse.core.resources,
  org.eclipse.jdt.core,
  org.eclipse.ui

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JaMoPPBridge
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.utils.jamoppbridge
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.java.util.jamoppbridge
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: jamoppbridge.Activator
 Require-Bundle: org.eclipse.ui,

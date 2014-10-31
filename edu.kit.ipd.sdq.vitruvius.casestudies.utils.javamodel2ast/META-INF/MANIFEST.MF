@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JavaModel2AST
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.utils.javamodel2ast
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.java.util.javamodel2ast
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: javamodel2ast.Activator
 Require-Bundle: org.eclipse.ui,
