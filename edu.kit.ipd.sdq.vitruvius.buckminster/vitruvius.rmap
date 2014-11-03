@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rm:rmap xmlns:bc="http://www.eclipse.org/buckminster/Common-1.0" xmlns:rm="http://www.eclipse.org/buckminster/RMap-1.0">
-	 <rm:locator pattern="^edu\.kit\.ipd\.sdq\.vitruvius*" searchPathRef="vitruvius" failOnError="false" />
+	 <rm:locator searchPathRef="vitruv" failOnError="false" />
 	 <rm:locator searchPathRef="jamopp" failOnError="false" />
 	 <rm:locator searchPathRef="luna" failOnError="false" />
 	 <rm:locator searchPathRef="modelling" failOnError="false" />
@@ -19,9 +19,9 @@
 	  </rm:provider>
   </rm:searchPath>
    
-   <rm:searchPath name="vitruvius">
-	  <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="svn" source="false" mutable="false">
-	 	<rm:uri format="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/">
+   <rm:searchPath name="vitruv">
+	  <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="svn" source="false" mutable="false">
+	 	<rm:uri format="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/{0}">
         <bc:propertyRef key="buckminster.component" />
     	</rm:uri>
 	  </rm:provider>
