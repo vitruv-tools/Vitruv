@@ -9,7 +9,7 @@
 	 <rm:locator pattern="^org\.eclipse\.xtend.*" searchPathRef="xtext" failOnError="false"/>
 	 <rm:locator pattern="^org\.eclipse\.emf\..*" searchPathRef="emf" failOnError="false"/>
 	 
-	 <rm:locator pattern="^emftext*" searchPathRef="emftext" failOnError="false"/>
+	 <rm:locator searchPathRef="emftext" failOnError="false"/>
 	 
 	 <rm:locator pattern="^edu\.kit\.ipd\.sdq\.mdsd\.*" searchPathRef="MDSDProfiles" failOnError="false"/>
 	 <rm:locator pattern="^org\.modelversioning\.*" searchPathRef="EMFProfiles" failOnError="false"/>
