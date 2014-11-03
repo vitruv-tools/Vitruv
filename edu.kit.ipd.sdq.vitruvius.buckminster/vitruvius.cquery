@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><cq:componentQuery xmlns:cq="http://www.eclipse.org/buckminster/CQuery-1.0" resourceMap="vitruvius.rmap">
     <cq:rootRequest name="edu.kit.ipd.sdq.vitruvius.buckminster" componentType="eclipse.feature"/>
     <cq:advisorNode namePattern="^vitruvius*" useWorkspace="false"/>
+    <cq:advisorNode namePattern="^edu\.kit\.ipd\.sdq\.mdsd\.profiles.*" useWorkspace="false"/>
     <cq:advisorNode namePattern="^org\.modelversioning\.*" useWorkspace="false" branchTagPath="develop-kit"/>
 </cq:componentQuery>
