@@ -6,6 +6,7 @@
 	 <rm:locator searchPathRef="luna" failOnError="false" />
 	 <rm:locator searchPathRef="modelling" failOnError="false" />
 	 <rm:locator searchPathRef="palladio-core" failOnError="false"/>
+	 <rm:locator searchPathRef="profiles" failOnError="false"/>
 	 <rm:locator pattern="^org\.eclipse\.xtend.*" searchPathRef="xtext" failOnError="false"/>
 	 <rm:locator pattern="^org\.eclipse\.emf\..*" searchPathRef="emf" failOnError="false"/>
 	 
@@ -48,6 +49,14 @@
       <rm:property key="buckminster.source" value="false"/>
       <rm:property key="buckminster.mutable" value="false"/>
       <rm:uri format="http://sdqweb.ipd.kit.edu/eclipse/palladio/nightly/"/>
+    </rm:provider>
+  </rm:searchPath>
+  
+  <rm:searchPath name="profiles">
+    <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
+      <rm:property key="buckminster.source" value="false"/>
+      <rm:property key="buckminster.mutable" value="false"/>
+      <rm:uri format="https://sdqweb.ipd.kit.edu/eclipse/mdsdprofiles/nightly/"/>
     </rm:provider>
   </rm:searchPath>
   
