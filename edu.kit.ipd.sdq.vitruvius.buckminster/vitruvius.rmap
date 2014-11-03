@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rm:rmap xmlns:bc="http://www.eclipse.org/buckminster/Common-1.0" xmlns:rm="http://www.eclipse.org/buckminster/RMap-1.0">
-	 <rm:locator pattern="^edu\.kit\.ipd.*" searchPathRef="vitruvius" failOnError="false" />
+	 <rm:locator pattern="^edu\.kit\.ipd\.sdq\.vitruvius*" searchPathRef="vitruvius" failOnError="false" />
 	 <rm:locator searchPathRef="vitruv" failOnError="false" />
 	 <rm:locator searchPathRef="jamopp" failOnError="false" />
 	 <rm:locator searchPathRef="luna" failOnError="false" />
@@ -11,33 +11,12 @@
 	 
 	 <rm:locator searchPathRef="emftext" failOnError="false"/>
 	 
-	 <rm:locator pattern="^edu\.kit\.ipd\.sdq\.mdsd\.*" searchPathRef="MDSDProfiles" failOnError="false"/>
-	 <rm:locator pattern="^org\.modelversioning\.*" searchPathRef="EMFProfiles" failOnError="false"/>
-	 
-	 
    <rm:searchPath name="emftext">
 	  <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
 	 	<rm:property key="buckminster.source" value="false"/>
 	    <rm:property key="buckminster.mutable" value="false"/>
 	  	<rm:uri format="http://emftext.org/update/"/>
 	  </rm:provider>
-  </rm:searchPath>
-
-  <rm:searchPath name="MDSDProfiles">
-    <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="svn">
-      <rm:uri format="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Palladio/Incubation/Profiles/trunk/{0}">
-        <bc:propertyRef key="buckminster.component"/>
-      </rm:uri>
-    </rm:provider>
-  </rm:searchPath>
-  <rm:searchPath name="EMFProfiles">
-    <rm:provider readerType="git" componentTypes="osgi.bundle,eclipse.feature" resolutionFilter="">
-        <rm:uri format="{0}/plugins,{1}">
-          <bc:propertyRef key="workspace.root" />
-          <bc:propertyRef key="buckminster.component" />
-        </rm:uri>
-      <rm:property key="git.remote.uri" value="https://code.google.com/a/eclipselabs.org/p/emf-profiles"/>      
-    </rm:provider>
   </rm:searchPath>
    
    <rm:searchPath name="vitruvius">
