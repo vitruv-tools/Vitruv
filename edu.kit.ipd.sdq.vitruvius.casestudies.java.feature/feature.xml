@@ -49,28 +49,28 @@
          unpack="false"/>
 
    <plugin
-         id="edu.kit.ipd.sdq.vitruvius.casestudies.utils.jamoppbridge"
+         id="edu.kit.ipd.sdq.vitruvius.casestudies.java.util.jamoppbridge"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="edu.kit.ipd.sdq.vitruvius.casestudies.utils.javamodel2ast"
+         id="edu.kit.ipd.sdq.vitruvius.casestudies.java.util.javamodel2ast"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="edu.kit.ipd.sdq.vitruvius.casestudies.utils.jdttooltipprovider"
+         id="edu.kit.ipd.sdq.vitruvius.casestudies.java.util.jdttooltipprovider"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="edu.kit.ipd.sdq.vitruvius.casestudies.utils.refactoringchangelistener"
+         id="edu.kit.ipd.sdq.vitruvius.casestudies.java.util.refactoringchangelistener"
          download-size="0"
          install-size="0"
          version="0.0.0"
