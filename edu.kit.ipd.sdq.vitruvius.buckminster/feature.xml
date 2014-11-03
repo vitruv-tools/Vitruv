@@ -33,10 +33,6 @@
          version="0.0.0"/>
 
    <includes
-         id="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.feature"
-         version="0.0.0"/>
-
-   <includes
          id="edu.kit.ipd.sdq.vitruvius.framework.feature"
          version="0.0.0"/>
 
