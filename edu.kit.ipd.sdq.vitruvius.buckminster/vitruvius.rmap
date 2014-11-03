@@ -8,6 +8,18 @@
 	 <rm:locator searchPathRef="palladio-core" failOnError="false"/>
 	 <rm:locator pattern="^org\.eclipse\.xtend.*" searchPathRef="xtext" failOnError="false"/>
 	 <rm:locator pattern="^org\.eclipse\.emf\..*" searchPathRef="emf" failOnError="false"/>
+	 
+	 <rm:locator pattern="^org\.modelversioning\.*" searchPathRef="EMFProfiles" failOnError="false"/>
+	 
+  <rm:searchPath name="EMFProfiles">
+    <rm:provider readerType="git" componentTypes="osgi.bundle,eclipse.feature" resolutionFilter="">
+        <rm:uri format="{0}/plugins,{1}">
+          <bc:propertyRef key="workspace.root" />
+          <bc:propertyRef key="buckminster.component" />
+        </rm:uri>
+      <rm:property key="git.remote.uri" value="https://code.google.com/a/eclipselabs.org/p/emf-profiles"/>      
+    </rm:provider>
+  </rm:searchPath>
    
    <rm:searchPath name="vitruvius">
 	  <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="svn" source="false" mutable="false">
