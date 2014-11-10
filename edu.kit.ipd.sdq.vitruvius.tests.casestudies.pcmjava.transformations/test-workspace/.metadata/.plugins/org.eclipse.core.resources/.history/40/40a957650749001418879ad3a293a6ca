@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="ASCII"?>
-<correspondence:Correspondences xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:correspondence="http://edu.kit.ipd.sdq.vitruvius/Correspondence/1.0">
-  <correspondences xsi:type="correspondence:EObjectCorrespondence" elementATUID="DefaultTUIDCalculatorAndResolver#repository_#platform:/resource/MockupProject/model/testRepository.repository#_Xj4v0EkHEeSKqLQSoCTqiA" elementBTUID="JaMoPPTUIDCalculatorAndResolver#platform:/resource/MockupProject/src/testRepository/package-info.java"/>
-</correspondence:Correspondences>

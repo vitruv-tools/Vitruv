@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="ASCII"?>
-<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" id="_jdiVgFGmEeSAR_r-VDpoRw" entityName="testRepository">
-  <components__Repository xsi:type="repository:BasicComponent" id="_kIJYwFGmEeSAR_r-VDpoRw" entityName="TestBasicComponent"/>
-  <interfaces__Repository xsi:type="repository:OperationInterface" id="_jy7WsFGmEeSAR_r-VDpoRw" entityName="TestInterface">
-    <signatures__OperationInterface id="_kC2CCVGmEeSAR_r-VDpoRw" entityName="TestOperationSignature1"/>
-  </interfaces__Repository>
-</repository:Repository>

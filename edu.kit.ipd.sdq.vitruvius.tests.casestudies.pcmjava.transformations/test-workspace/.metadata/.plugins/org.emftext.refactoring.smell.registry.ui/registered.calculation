@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<calculation:CalculationModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:calculation="http://modelrefactoring.org/smell/calculation" xmlns:ecoresmells="http://modelrefactoring.org/smell/calculation/ecore" xmlns:rolessmell="http://modelrefactoring.org/smell/calculation/roles">
-  <calculations xsi:type="ecoresmells:CheckInterfaceSpecifications" monotonicity="DECREASING" description="Determines all interfaces in each EPackage having no implementing subclasses." name="Interfaces Without Specifications Count" smellMessage="This EClass being an interface has no implementing classes in this model."/>
-  <calculations xsi:type="ecoresmells:CompareNamesOfClasses" monotonicity="DECREASING" description="Determines all EClassifiers having the same name." name="EClassifiers with same name count" smellMessage="This EClassifier has the same name as another one."/>
-  <calculations xsi:type="ecoresmells:CountParametersOfMethods" monotonicity="DECREASING" description="Determines those EOperations having a parameter count greater than the given threshold" name="Parameters Of Methods Count" smellMessage="This EOperation has too many parameters."/>
-  <calculations xsi:type="ecoresmells:SearchEmptyClasses" monotonicity="DECREASING" description="Determines all EClasses having no attributes or operations" name="Empty Classes Count" smellMessage="This EClass has no attributes or operations."/>
-  <calculations xsi:type="rolessmell:DistinctRoleNames" monotonicity="DECREASING" description="Determines all Roles having the same name." name="Distinct Role Names" smellMessage="This Role name is not unique."/>
-</calculation:CalculationModel>

@@ -1,3 +1,0 @@
-INDEX VERSION 1.127+/Users/Michael/eclipseWorkspaces/Vitruvius/edu.kit.ipd.sdq.vitruvius.test.casestudies.pcmjava.transformations/test-workspace/.metadata/.plugins/org.eclipse.jdt.core
-2792453937.index
-795370637.index

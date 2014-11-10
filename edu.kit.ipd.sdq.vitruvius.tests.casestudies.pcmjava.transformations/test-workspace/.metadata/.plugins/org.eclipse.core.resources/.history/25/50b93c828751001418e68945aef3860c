@@ -1,9 +1,0 @@
-package testRepository.contracts;
-
-
-interface TestInterface {
-	void TestOperationSignature1();
-}
-
-
-
