@@ -34,9 +34,6 @@ public class PCMJaMoPPTransformationTestBase {
     private SyncManagerImpl syncManager;
     protected ChangeRecorder changeRecorder;
     ChangeDescription2ChangeConverter changeDescrition2ChangeConverter;
-    // private MonitoredEditor codeMonitor;
-    // private VitruviusEMFEditorMonitorImpl emfMonitor;
-    // private PCMJavaBuilder builder;
 
     private CorrespondenceInstance correspondenceInstance;
     protected ResourceSet resourceSet;
@@ -54,20 +51,7 @@ public class PCMJaMoPPTransformationTestBase {
      */
     @Before
     public void setUpTest() throws Exception {
-        // final PCMJavaAddBuilder addBuilder = new PCMJavaAddBuilder();
-        // final IProject mockupProject =
-        // ResourcesPlugin.getWorkspace().getRoot().getProject(TestUtil.PROJECT_URI);
-        // if (addBuilder.hasBuilder(mockupProject)) {
-        // final PCMJavaRemoveBuilder removeBuilder = new PCMJavaRemoveBuilder();
-        // removeBuilder.removeBuilderFromProject(mockupProject);
-        // }
-        // addBuilder.addBuilderToProject(mockupProject);
-        // ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.INCREMENTAL_BUILD, new
-        // NullProgressMonitor());
-        //
-        // this.resourceSet = new ResourceSetImpl();
-
-        // // set up syncManager, monitor and metaRepostitory
+        
         final MetaRepositoryImpl metaRepository = JaMoPPPCMTestUtil.createJaMoPPPCMMetaRepository();
         this.vsum = TestUtil.createVSUM(metaRepository);
         final TransformationExecutingProvidingImpl syncTransformationProvider = new TransformationExecutingProvidingImpl();
@@ -76,11 +60,7 @@ public class PCMJaMoPPTransformationTestBase {
         this.syncManager = new SyncManagerImpl(this.vsum, propagatingChange, this.vsum, metaRepository, this.vsum);
         this.resourceSet = new ResourceSetImpl();
         this.changeRecorder = new ChangeRecorder();
-        // this.changeRecorder.beginRecording(Collections.EMPTY_LIST);
         this.changeDescrition2ChangeConverter = new ChangeDescription2ChangeConverter();
-        // this.codeMonitor = new MonitoredEditor(this.syncManager, this.vsum,
-        // TestUtil.PROJECT_URI);
-
     }
 
     /**
