@@ -95,16 +95,6 @@ public class MIRAdapterFactory extends AdapterFactoryImpl
         return createMappableElementAdapter();
       }
       @Override
-      public Adapter caseWhen(When object)
-      {
-        return createWhenAdapter();
-      }
-      @Override
-      public Adapter caseWhere(Where object)
-      {
-        return createWhereAdapter();
-      }
-      @Override
       public Adapter caseEClassParameter(EClassParameter object)
       {
         return createEClassParameterAdapter();
@@ -222,36 +212,6 @@ public class MIRAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createMappableElementAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.When <em>When</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.When
-   * @generated
-   */
-  public Adapter createWhenAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Where <em>Where</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Where
-   * @generated
-   */
-  public Adapter createWhereAdapter()
   {
     return null;
   }

@@ -13,8 +13,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.OCLBlock;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Response;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.SubMapping;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.When;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Where;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.services.MIRGrammarAccess;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
@@ -138,21 +136,8 @@ public class MIRSemanticSequencer extends XbaseSemanticSequencer {
 				}
 				else break;
 			case MIRPackage.SUB_MAPPING:
-				if(context == grammarAccess.getSubMappingRule() ||
-				   context == grammarAccess.getWithRule()) {
+				if(context == grammarAccess.getSubMappingRule()) {
 					sequence_SubMapping(context, (SubMapping) semanticObject); 
-					return; 
-				}
-				else break;
-			case MIRPackage.WHEN:
-				if(context == grammarAccess.getWhenRule()) {
-					sequence_When(context, (When) semanticObject); 
-					return; 
-				}
-				else break;
-			case MIRPackage.WHERE:
-				if(context == grammarAccess.getWhereRule()) {
-					sequence_Where(context, (Where) semanticObject); 
 					return; 
 				}
 				else break;
@@ -1270,7 +1255,7 @@ public class MIRSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (mappedElements+=NamedEClass mappedElements+=NamedEClass (whens+=When | withs+=With | wheres+=Where)*)
+	 *     (mappedElements+=NamedEClass mappedElements+=NamedEClass (whens+=PredicateBlock | withs+=SubMapping | wheres+=PredicateBlock)*)
 	 */
 	protected void sequence_BaseMapping(EObject context, BaseMapping semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1382,41 +1367,9 @@ public class MIRSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (mappedElements+=NamedFeature mappedElements+=NamedFeature (whens+=When | withs+=With | wheres+=Where)*)
+	 *     (mappedElements+=NamedFeature mappedElements+=NamedFeature (whens+=PredicateBlock | withs+=SubMapping | wheres+=PredicateBlock)*)
 	 */
 	protected void sequence_SubMapping(EObject context, SubMapping semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     predicate=PredicateBlock
-	 */
-	protected void sequence_When(EObject context, When semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, MIRPackage.Literals.WHEN__PREDICATE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MIRPackage.Literals.WHEN__PREDICATE));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getWhenAccess().getPredicatePredicateBlockParserRuleCall_1_0(), semanticObject.getPredicate());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     predicate=PredicateBlock
-	 */
-	protected void sequence_Where(EObject context, Where semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, MIRPackage.Literals.WHERE__PREDICATE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MIRPackage.Literals.WHERE__PREDICATE));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getWhereAccess().getPredicatePredicateBlockParserRuleCall_1_0(), semanticObject.getPredicate());
-		feeder.finish();
 	}
 }

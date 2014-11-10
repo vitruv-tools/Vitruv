@@ -69,8 +69,6 @@ public class MIRFactoryImpl extends EFactoryImpl implements MIRFactory
       case MIRPackage.IMPORT: return createImport();
       case MIRPackage.MAPPING: return createMapping();
       case MIRPackage.MAPPABLE_ELEMENT: return createMappableElement();
-      case MIRPackage.WHEN: return createWhen();
-      case MIRPackage.WHERE: return createWhere();
       case MIRPackage.ECLASS_PARAMETER: return createEClassParameter();
       case MIRPackage.INVARIANT: return createInvariant();
       case MIRPackage.OCL_BLOCK: return createOCLBlock();
@@ -160,28 +158,6 @@ public class MIRFactoryImpl extends EFactoryImpl implements MIRFactory
   {
     MappableElementImpl mappableElement = new MappableElementImpl();
     return mappableElement;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public When createWhen()
-  {
-    WhenImpl when = new WhenImpl();
-    return when;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Where createWhere()
-  {
-    WhereImpl where = new WhereImpl();
-    return where;
   }
 
   /**

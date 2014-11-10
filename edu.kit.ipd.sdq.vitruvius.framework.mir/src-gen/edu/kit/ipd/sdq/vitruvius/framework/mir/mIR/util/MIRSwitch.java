@@ -100,20 +100,6 @@ public class MIRSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case MIRPackage.WHEN:
-      {
-        When when = (When)theEObject;
-        T result = caseWhen(when);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case MIRPackage.WHERE:
-      {
-        Where where = (Where)theEObject;
-        T result = caseWhere(where);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       case MIRPackage.ECLASS_PARAMETER:
       {
         EClassParameter eClassParameter = (EClassParameter)theEObject;
@@ -238,38 +224,6 @@ public class MIRSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseMappableElement(MappableElement object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>When</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>When</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseWhen(When object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Where</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Where</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseWhere(Where object)
   {
     return null;
   }

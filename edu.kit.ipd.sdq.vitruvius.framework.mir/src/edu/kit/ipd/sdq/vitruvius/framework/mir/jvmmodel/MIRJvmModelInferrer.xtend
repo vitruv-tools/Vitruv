@@ -21,8 +21,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.OCLBlock
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Response
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.SubMapping
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.When
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Where
 import java.util.ArrayList
 import java.util.Collection
 import java.util.List
@@ -51,6 +49,7 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 	int invariantCounter
 	int mappingCounter
 	int whenCounter
+	int whereCounter
 	
 	private static val INVARIANT_TYPE = edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.Invariant.name
 	private static val RESPONSE_INVOKER_TYPE = JavaResponseInvoker.name
@@ -63,6 +62,9 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 	
 	private List<String> whenCreateStatements
 	private List<String> whereCreateStatements
+	
+	private Map<Mapping, List<String>> mappingToWhenEvaluation
+	private Map<Mapping, List<String>> mappingToWhereEvaluation
 
    	def dispatch void infer(MIRFile element, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
    		// TODO: refactor god method
@@ -77,17 +79,20 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 			// MAPPINGS
 			mappingCounter = 0
 			whenCounter = 0
+			whereCounter = 0
+			
 			whenCreateStatements = newArrayList()
 			whereCreateStatements = newArrayList()
-			val Map<Mapping, List<String>> mappingToWhenEvaluation = newHashMap()
-			val Map<Mapping, List<String>> mappingToWhereEvaluation = newHashMap()
-
-			createWhenEvaluationStatements(element.mappings, pkgName, acceptor, mappingToWhenEvaluation)
-			createWhereEvaluationStatements(element.mappings, pkgName, acceptor, mappingToWhereEvaluation)
+			
+			mappingToWhenEvaluation = newHashMap()
+			mappingToWhereEvaluation = newHashMap()
+			
+			createWhenEvaluationStatements(element.mappings, pkgName, acceptor)
+			createWhereEvaluationStatements(element.mappings, pkgName, acceptor)
 			
 			acceptor.accept(element.toClass(mappingsClassNameFQN)) [ mappingClass |
 				element.mappings.forEach [ mapping |
-					createMappingMethods(mapping, acceptor, mappingClass, mappingToWhenEvaluation, null)
+					createMappingMethods(mapping, acceptor, mappingClass, null)
 				]
 			]
 			
@@ -134,72 +139,92 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 			]
    		}
    	}
-	
-	def void createWhenEvaluationStatements(EList<Mapping> mappingList, String pkgName, IJvmDeclaredTypeAcceptor acceptor, Map<Mapping, List<String>> whenMap) {
-		mappingList.forEach [ mapping |
-			val whenEvaluationStatements = newArrayList 
-			for (When when : mapping.whens) {
-				whenEvaluationStatements += when.createWhenClass(
-					mapping.mappedElements.get(0),
-					pkgName,
-					acceptor
-				)
-			}
-			whenMap.put(mapping, whenEvaluationStatements)
-			
-			createWhenEvaluationStatements(mapping.withs, pkgName, acceptor, whenMap)
-		]
-	}
-	
-	def void createWhereEvaluationStatements(EList<Mapping> mappingList, String pkgName, IJvmDeclaredTypeAcceptor acceptor, Map<Mapping, List<String>> whereMap) {
-		// TODO: implement
-	}
-	
-	def String createWhereClass(Where where, MappableElement element, String string, IJvmDeclaredTypeAcceptor acceptor) {
-		// TODO: implement
-	}
-	
-	/**
-	 * Generic method for when and where is createPredicate.
-	 */
-	def String createWhenClass__(When when, MappableElement context, String pkgName, IJvmDeclaredTypeAcceptor acceptor) {
-		// createPredicate(when, context, pkgName, acceptor)
-	}
-	
-	def String createWhenClass(When when, MappableElement context, String pkgName, IJvmDeclaredTypeAcceptor acceptor) {
-		val currentNameVarName = '''this.«WHEN_PREFIX»«whenCounter»''';
-		
-		if (when.predicate instanceof XBlockExpression) {
-			val predicate = (when.predicate as XBlockExpression)
-			val whenClassName = pkgName + ".whens.When" + whenCounter
-			
-			acceptor.accept(when.toClass(whenClassName) [ whenClass |
-				whenClass.members += when.toMethod("check", typeRef(Boolean.TYPE)) [ checkMethod |
-					checkMethod.parameters += toParameter(when, context)
+   	
+	def String createBlock(EObject predicate, List<MappableElement> context, String pkgName,
+		IJvmDeclaredTypeAcceptor acceptor,
+		String currentNameVarName, String className,
+		Class<?> type,
+		List<String> createStatements
+	) {
+		if (predicate instanceof XBlockExpression) {
+			acceptor.accept(predicate.toClass(className) [ whenClass |
+				whenClass.members += predicate.toMethod("check", typeRef(type)) [ checkMethod |
+					checkMethod.parameters += context.map [ toParameter(predicate, it) ]
 					checkMethod.body = predicate
 				]
 			])
 			
-			whenCreateStatements +=
-				'''«currentNameVarName» = new «JavaPredicateEvaluator.name»(«whenClassName».class);'''
-			
-			whenCounter++
-		} else if (when.predicate instanceof OCLBlock) {
-			val predicate = (when.predicate as OCLBlock)
+			createStatements +=
+				'''«currentNameVarName» = new «JavaPredicateEvaluator.name»(«className».class);'''
+		} else if (predicate instanceof OCLBlock) {
 			whenCreateStatements += '''
 				«currentNameVarName» = new «OCLPredicateEvaluator.name»(
 					"«predicate.oclString»",
 					null, null
 				);'''
-						
-			whenCounter++
 		}
 		
 		return '''«currentNameVarName».check(source, target)'''
 	}
 	
+	def void createWhenEvaluationStatements(EList<Mapping> mappingList, String pkgName, IJvmDeclaredTypeAcceptor acceptor) {
+		mappingList.forEach [ mapping |
+			val whenEvaluationStatements = newArrayList 
+			for (EObject when : mapping.whens) {
+				whenEvaluationStatements += when.createWhenPredicateClass(
+					mapping.mappedElements.get(0),
+					pkgName,
+					acceptor
+				)
+			}
+			mappingToWhenEvaluation.put(mapping, whenEvaluationStatements)
+			
+			// TODO: change for unnested structure after normalisation
+			createWhenEvaluationStatements(mapping.withs, pkgName, acceptor)
+		]
+	}
+	
+	def void createWhereEvaluationStatements(EList<Mapping> mappingList, String pkgName, IJvmDeclaredTypeAcceptor acceptor) {
+		mappingList.forEach [ mapping |
+			val whereEvaluationStatements = newArrayList 
+			for (EObject where : mapping.wheres) {
+				whereEvaluationStatements += where.createWherePredicateClass(
+					mapping.mappedElements.get(1),
+					pkgName,
+					acceptor
+				)
+			}
+			mappingToWhereEvaluation.put(mapping, whereEvaluationStatements)
+			
+			// TODO: change for unnested structure after normalisation
+			createWhereEvaluationStatements(mapping.withs, pkgName, acceptor)
+		]
+	}
+	
+	def String createWhenPredicateClass(EObject predicate, MappableElement context, String pkgName, IJvmDeclaredTypeAcceptor acceptor) {
+		val currentNameVarName = '''this.«WHEN_PREFIX»«whenCounter»''';
+		val whenClassName = pkgName + ".whens.When" + whenCounter
+		
+		val whenPredicateString = createBlock(predicate, #[context], pkgName, acceptor,
+				currentNameVarName, whenClassName, Boolean.TYPE, whenCreateStatements)
+		whenCounter++
+
+		return whenPredicateString
+	}
+	
+	def String createWherePredicateClass(EObject predicate, MappableElement context, String pkgName, IJvmDeclaredTypeAcceptor acceptor) {
+		val currentNameVarName = '''this.«WHERE_PREFIX»«whereCounter»''';
+		val whereClassName = pkgName + ".wheres.Where" + whereCounter
+		
+		val wherePredicateString = createBlock(predicate, #[context], pkgName, acceptor,
+				currentNameVarName, whereClassName, Void.TYPE, whereCreateStatements)
+		whereCounter++
+
+		return wherePredicateString
+	}
+	
 	def dispatch void createMappingMethods(BaseMapping mapping, IJvmDeclaredTypeAcceptor acceptor, JvmGenericType mappingClass,
-		Map<Mapping, List<String>> mappingToWhenEvaluation, Mapping parentMapping
+		Mapping parentMapping
 	) {
 		val whenEvaluationStatements = mappingToWhenEvaluation.get(mapping)
 		
@@ -214,13 +239,13 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 		mappingCounter++
 
 		mapping.withs.forEach[ subMapping |
-			createMappingMethods(subMapping, acceptor, mappingClass, mappingToWhenEvaluation, mapping)
+			createMappingMethods(subMapping, acceptor, mappingClass, mapping)
 		]
 		
 	}
 	
 	def dispatch void createMappingMethods(SubMapping mapping, IJvmDeclaredTypeAcceptor acceptor, JvmGenericType mappingClass,
-		Map<Mapping, List<String>> mappingToWhenEvaluation, Mapping parentMapping
+		Mapping parentMapping
 	) {
 		val whenEvaluationStatements = mappingToWhenEvaluation.get(mapping)
 		
@@ -235,7 +260,7 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 		mappingCounter++
 
 		mapping.withs.forEach[ subMapping |
-			createMappingMethods(subMapping, acceptor, mappingClass, mappingToWhenEvaluation, mapping)
+			createMappingMethods(subMapping, acceptor, mappingClass, mapping)
 		]
 		
 	}
@@ -422,8 +447,8 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
    		typeRef(object.representedEClass.instanceTypeName)
    	}
    	
-   	def dispatch toParameter(When w, MappableElement object) {
-   		w.toParameter(object.name, object.toParameterType)
+   	def dispatch toParameter(EObject obj, MappableElement object) {
+   		obj.toParameter(object.name, object.toParameterType)
 	}
 	
 	def toTypeIdentifier(NamedEClass object) {

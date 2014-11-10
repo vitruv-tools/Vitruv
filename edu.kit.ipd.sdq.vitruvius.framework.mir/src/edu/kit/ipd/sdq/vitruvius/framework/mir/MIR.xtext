@@ -23,6 +23,8 @@ Import:
 	'import' 'package' package=[ecore::EPackage|STRING]
 	'as' name=ValidID;
 
+
+// Mappings
 Mapping:
 	'map' BaseMapping
 ;
@@ -33,7 +35,10 @@ BaseMapping returns Mapping:
 	'to'
 	mappedElements+=NamedEClass
 	('{'
-		(whens += When | withs += With | wheres += Where)*
+		( ('when' whens += PredicateBlock)
+		| ('with' withs += SubMapping)
+		| ('where' wheres += PredicateBlock)
+		)*
 	'}')?
 ;
 
@@ -43,7 +48,10 @@ SubMapping returns Mapping:
 	'to'
 	mappedElements+=NamedFeature
 	('{'
-		(whens += When | withs += With | wheres += Where)*
+		( ('when' whens += PredicateBlock)
+		| ('with' withs += SubMapping)
+		| ('where' wheres += PredicateBlock)
+		)*
 	'}')?
 ;
 
@@ -59,27 +67,7 @@ NamedFeature returns MappableElement:
 	('as' name=ValidID)?
 ;
 
-With returns Mapping:
-	'with' SubMapping
-;
-
-/////////////////
-// WHEN /////////
-/////////////////
-When:
-	'when' predicate=PredicateBlock
-;
-
-/////////////////
-// WHERE /////////
-/////////////////
-Where:
-	'where' predicate=PredicateBlock
-;
-
-/////////////////
-// INVARIANTS ///
-/////////////////
+// Invariants
 EClassParameter:
 	type=[ecore::EClass|QualifiedName]
 	name=ValidID
@@ -104,9 +92,7 @@ OCLBlock:
 	oclString=STRING
 ;
 
-/////////////////
-// RESPONSE   ///
-/////////////////
+// Response
 Response:
 	'on'
 	(action=ResponseAction 'of')?
@@ -116,5 +102,7 @@ Response:
 ;
 
 enum ResponseAction:
-	ANY='any' | CREATE='create' | CHANGE='change'
+	ANY='any' |
+	CREATE='create' |
+	CHANGE='change'
 ;

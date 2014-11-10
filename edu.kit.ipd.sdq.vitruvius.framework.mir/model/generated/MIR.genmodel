@@ -35,12 +35,6 @@
     <genClasses ecoreClass="MIR.ecore#//MappableElement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//MappableElement/name"/>
     </genClasses>
-    <genClasses ecoreClass="MIR.ecore#//When">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//When/predicate"/>
-    </genClasses>
-    <genClasses ecoreClass="MIR.ecore#//Where">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Where/predicate"/>
-    </genClasses>
     <genClasses ecoreClass="MIR.ecore#//EClassParameter">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//EClassParameter/type"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//EClassParameter/name"/>

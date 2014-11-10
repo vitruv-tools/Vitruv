@@ -251,62 +251,6 @@ public interface MIRPackage extends EPackage
   int MAPPABLE_ELEMENT_FEATURE_COUNT = 1;
 
   /**
-   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.WhenImpl <em>When</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.WhenImpl
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getWhen()
-   * @generated
-   */
-  int WHEN = 4;
-
-  /**
-   * The feature id for the '<em><b>Predicate</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int WHEN__PREDICATE = 0;
-
-  /**
-   * The number of structural features of the '<em>When</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int WHEN_FEATURE_COUNT = 1;
-
-  /**
-   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.WhereImpl <em>Where</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.WhereImpl
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getWhere()
-   * @generated
-   */
-  int WHERE = 5;
-
-  /**
-   * The feature id for the '<em><b>Predicate</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int WHERE__PREDICATE = 0;
-
-  /**
-   * The number of structural features of the '<em>Where</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int WHERE_FEATURE_COUNT = 1;
-
-  /**
    * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.EClassParameterImpl <em>EClass Parameter</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -314,7 +258,7 @@ public interface MIRPackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getEClassParameter()
    * @generated
    */
-  int ECLASS_PARAMETER = 6;
+  int ECLASS_PARAMETER = 4;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' reference.
@@ -351,7 +295,7 @@ public interface MIRPackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getInvariant()
    * @generated
    */
-  int INVARIANT = 7;
+  int INVARIANT = 5;
 
   /**
    * The feature id for the '<em><b>Context</b></em>' reference.
@@ -406,7 +350,7 @@ public interface MIRPackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getOCLBlock()
    * @generated
    */
-  int OCL_BLOCK = 8;
+  int OCL_BLOCK = 6;
 
   /**
    * The feature id for the '<em><b>Ocl String</b></em>' attribute.
@@ -434,7 +378,7 @@ public interface MIRPackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getResponse()
    * @generated
    */
-  int RESPONSE = 9;
+  int RESPONSE = 7;
 
   /**
    * The feature id for the '<em><b>Action</b></em>' attribute.
@@ -489,7 +433,7 @@ public interface MIRPackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getBaseMapping()
    * @generated
    */
-  int BASE_MAPPING = 10;
+  int BASE_MAPPING = 8;
 
   /**
    * The feature id for the '<em><b>Mapped Elements</b></em>' containment reference list.
@@ -544,7 +488,7 @@ public interface MIRPackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getSubMapping()
    * @generated
    */
-  int SUB_MAPPING = 11;
+  int SUB_MAPPING = 9;
 
   /**
    * The feature id for the '<em><b>Mapped Elements</b></em>' containment reference list.
@@ -599,7 +543,7 @@ public interface MIRPackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getNamedEClass()
    * @generated
    */
-  int NAMED_ECLASS = 12;
+  int NAMED_ECLASS = 10;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -636,7 +580,7 @@ public interface MIRPackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getNamedFeature()
    * @generated
    */
-  int NAMED_FEATURE = 13;
+  int NAMED_FEATURE = 11;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -682,7 +626,7 @@ public interface MIRPackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getResponseAction()
    * @generated
    */
-  int RESPONSE_ACTION = 14;
+  int RESPONSE_ACTION = 12;
 
 
   /**
@@ -867,48 +811,6 @@ public interface MIRPackage extends EPackage
    * @generated
    */
   EAttribute getMappableElement_Name();
-
-  /**
-   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.When <em>When</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>When</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.When
-   * @generated
-   */
-  EClass getWhen();
-
-  /**
-   * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.When#getPredicate <em>Predicate</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Predicate</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.When#getPredicate()
-   * @see #getWhen()
-   * @generated
-   */
-  EReference getWhen_Predicate();
-
-  /**
-   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Where <em>Where</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Where</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Where
-   * @generated
-   */
-  EClass getWhere();
-
-  /**
-   * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Where#getPredicate <em>Predicate</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Predicate</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Where#getPredicate()
-   * @see #getWhere()
-   * @generated
-   */
-  EReference getWhere_Predicate();
 
   /**
    * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.EClassParameter <em>EClass Parameter</em>}'.
@@ -1320,42 +1222,6 @@ public interface MIRPackage extends EPackage
      * @generated
      */
     EAttribute MAPPABLE_ELEMENT__NAME = eINSTANCE.getMappableElement_Name();
-
-    /**
-     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.WhenImpl <em>When</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.WhenImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getWhen()
-     * @generated
-     */
-    EClass WHEN = eINSTANCE.getWhen();
-
-    /**
-     * The meta object literal for the '<em><b>Predicate</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference WHEN__PREDICATE = eINSTANCE.getWhen_Predicate();
-
-    /**
-     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.WhereImpl <em>Where</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.WhereImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getWhere()
-     * @generated
-     */
-    EClass WHERE = eINSTANCE.getWhere();
-
-    /**
-     * The meta object literal for the '<em><b>Predicate</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference WHERE__PREDICATE = eINSTANCE.getWhere_Predicate();
 
     /**
      * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.EClassParameterImpl <em>EClass Parameter</em>}' class.

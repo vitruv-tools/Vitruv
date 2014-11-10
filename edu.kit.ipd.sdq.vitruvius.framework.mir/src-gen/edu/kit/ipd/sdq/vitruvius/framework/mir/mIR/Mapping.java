@@ -45,7 +45,7 @@ public interface Mapping extends EObject
 
   /**
    * Returns the value of the '<em><b>Whens</b></em>' containment reference list.
-   * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.When}.
+   * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Whens</em>' containment reference list isn't clear,
@@ -57,7 +57,7 @@ public interface Mapping extends EObject
    * @model containment="true"
    * @generated
    */
-  EList<When> getWhens();
+  EList<EObject> getWhens();
 
   /**
    * Returns the value of the '<em><b>Withs</b></em>' containment reference list.
@@ -77,7 +77,7 @@ public interface Mapping extends EObject
 
   /**
    * Returns the value of the '<em><b>Wheres</b></em>' containment reference list.
-   * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Where}.
+   * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Wheres</em>' containment reference list isn't clear,
@@ -89,6 +89,6 @@ public interface Mapping extends EObject
    * @model containment="true"
    * @generated
    */
-  EList<Where> getWheres();
+  EList<EObject> getWheres();
 
 } // Mapping

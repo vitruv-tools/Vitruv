@@ -181,21 +181,27 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
 		private final Keyword cLeftCurlyBracketKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
 		private final Alternatives cAlternatives_4_1 = (Alternatives)cGroup_4.eContents().get(1);
-		private final Assignment cWhensAssignment_4_1_0 = (Assignment)cAlternatives_4_1.eContents().get(0);
-		private final RuleCall cWhensWhenParserRuleCall_4_1_0_0 = (RuleCall)cWhensAssignment_4_1_0.eContents().get(0);
-		private final Assignment cWithsAssignment_4_1_1 = (Assignment)cAlternatives_4_1.eContents().get(1);
-		private final RuleCall cWithsWithParserRuleCall_4_1_1_0 = (RuleCall)cWithsAssignment_4_1_1.eContents().get(0);
-		private final Assignment cWheresAssignment_4_1_2 = (Assignment)cAlternatives_4_1.eContents().get(2);
-		private final RuleCall cWheresWhereParserRuleCall_4_1_2_0 = (RuleCall)cWheresAssignment_4_1_2.eContents().get(0);
+		private final Group cGroup_4_1_0 = (Group)cAlternatives_4_1.eContents().get(0);
+		private final Keyword cWhenKeyword_4_1_0_0 = (Keyword)cGroup_4_1_0.eContents().get(0);
+		private final Assignment cWhensAssignment_4_1_0_1 = (Assignment)cGroup_4_1_0.eContents().get(1);
+		private final RuleCall cWhensPredicateBlockParserRuleCall_4_1_0_1_0 = (RuleCall)cWhensAssignment_4_1_0_1.eContents().get(0);
+		private final Group cGroup_4_1_1 = (Group)cAlternatives_4_1.eContents().get(1);
+		private final Keyword cWithKeyword_4_1_1_0 = (Keyword)cGroup_4_1_1.eContents().get(0);
+		private final Assignment cWithsAssignment_4_1_1_1 = (Assignment)cGroup_4_1_1.eContents().get(1);
+		private final RuleCall cWithsSubMappingParserRuleCall_4_1_1_1_0 = (RuleCall)cWithsAssignment_4_1_1_1.eContents().get(0);
+		private final Group cGroup_4_1_2 = (Group)cAlternatives_4_1.eContents().get(2);
+		private final Keyword cWhereKeyword_4_1_2_0 = (Keyword)cGroup_4_1_2.eContents().get(0);
+		private final Assignment cWheresAssignment_4_1_2_1 = (Assignment)cGroup_4_1_2.eContents().get(1);
+		private final RuleCall cWheresPredicateBlockParserRuleCall_4_1_2_1_0 = (RuleCall)cWheresAssignment_4_1_2_1.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_4_2 = (Keyword)cGroup_4.eContents().get(2);
 		
 		//BaseMapping returns Mapping:
-		//	{BaseMapping} mappedElements+=NamedEClass "to" mappedElements+=NamedEClass ("{" (whens+=When | withs+=With |
-		//	wheres+=Where)* "}")?;
+		//	{BaseMapping} mappedElements+=NamedEClass "to" mappedElements+=NamedEClass ("{" ("when" whens+=PredicateBlock |
+		//	"with" withs+=SubMapping | "where" wheres+=PredicateBlock)* "}")?;
 		public ParserRule getRule() { return rule; }
 
-		//{BaseMapping} mappedElements+=NamedEClass "to" mappedElements+=NamedEClass ("{" (whens+=When | withs+=With |
-		//wheres+=Where)* "}")?
+		//{BaseMapping} mappedElements+=NamedEClass "to" mappedElements+=NamedEClass ("{" ("when" whens+=PredicateBlock | "with"
+		//withs+=SubMapping | "where" wheres+=PredicateBlock)* "}")?
 		public Group getGroup() { return cGroup; }
 
 		//{BaseMapping}
@@ -216,32 +222,50 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 		//NamedEClass
 		public RuleCall getMappedElementsNamedEClassParserRuleCall_3_0() { return cMappedElementsNamedEClassParserRuleCall_3_0; }
 
-		//("{" (whens+=When | withs+=With | wheres+=Where)* "}")?
+		//("{" ("when" whens+=PredicateBlock | "with" withs+=SubMapping | "where" wheres+=PredicateBlock)* "}")?
 		public Group getGroup_4() { return cGroup_4; }
 
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_4_0() { return cLeftCurlyBracketKeyword_4_0; }
 
-		//(whens+=When | withs+=With | wheres+=Where)*
+		//("when" whens+=PredicateBlock | "with" withs+=SubMapping | "where" wheres+=PredicateBlock)*
 		public Alternatives getAlternatives_4_1() { return cAlternatives_4_1; }
 
-		//whens+=When
-		public Assignment getWhensAssignment_4_1_0() { return cWhensAssignment_4_1_0; }
+		//"when" whens+=PredicateBlock
+		public Group getGroup_4_1_0() { return cGroup_4_1_0; }
 
-		//When
-		public RuleCall getWhensWhenParserRuleCall_4_1_0_0() { return cWhensWhenParserRuleCall_4_1_0_0; }
+		//"when"
+		public Keyword getWhenKeyword_4_1_0_0() { return cWhenKeyword_4_1_0_0; }
 
-		//withs+=With
-		public Assignment getWithsAssignment_4_1_1() { return cWithsAssignment_4_1_1; }
+		//whens+=PredicateBlock
+		public Assignment getWhensAssignment_4_1_0_1() { return cWhensAssignment_4_1_0_1; }
 
-		//With
-		public RuleCall getWithsWithParserRuleCall_4_1_1_0() { return cWithsWithParserRuleCall_4_1_1_0; }
+		//PredicateBlock
+		public RuleCall getWhensPredicateBlockParserRuleCall_4_1_0_1_0() { return cWhensPredicateBlockParserRuleCall_4_1_0_1_0; }
 
-		//wheres+=Where
-		public Assignment getWheresAssignment_4_1_2() { return cWheresAssignment_4_1_2; }
+		//"with" withs+=SubMapping
+		public Group getGroup_4_1_1() { return cGroup_4_1_1; }
 
-		//Where
-		public RuleCall getWheresWhereParserRuleCall_4_1_2_0() { return cWheresWhereParserRuleCall_4_1_2_0; }
+		//"with"
+		public Keyword getWithKeyword_4_1_1_0() { return cWithKeyword_4_1_1_0; }
+
+		//withs+=SubMapping
+		public Assignment getWithsAssignment_4_1_1_1() { return cWithsAssignment_4_1_1_1; }
+
+		//SubMapping
+		public RuleCall getWithsSubMappingParserRuleCall_4_1_1_1_0() { return cWithsSubMappingParserRuleCall_4_1_1_1_0; }
+
+		//"where" wheres+=PredicateBlock
+		public Group getGroup_4_1_2() { return cGroup_4_1_2; }
+
+		//"where"
+		public Keyword getWhereKeyword_4_1_2_0() { return cWhereKeyword_4_1_2_0; }
+
+		//wheres+=PredicateBlock
+		public Assignment getWheresAssignment_4_1_2_1() { return cWheresAssignment_4_1_2_1; }
+
+		//PredicateBlock
+		public RuleCall getWheresPredicateBlockParserRuleCall_4_1_2_1_0() { return cWheresPredicateBlockParserRuleCall_4_1_2_1_0; }
 
 		//"}"
 		public Keyword getRightCurlyBracketKeyword_4_2() { return cRightCurlyBracketKeyword_4_2; }
@@ -259,21 +283,27 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
 		private final Keyword cLeftCurlyBracketKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
 		private final Alternatives cAlternatives_4_1 = (Alternatives)cGroup_4.eContents().get(1);
-		private final Assignment cWhensAssignment_4_1_0 = (Assignment)cAlternatives_4_1.eContents().get(0);
-		private final RuleCall cWhensWhenParserRuleCall_4_1_0_0 = (RuleCall)cWhensAssignment_4_1_0.eContents().get(0);
-		private final Assignment cWithsAssignment_4_1_1 = (Assignment)cAlternatives_4_1.eContents().get(1);
-		private final RuleCall cWithsWithParserRuleCall_4_1_1_0 = (RuleCall)cWithsAssignment_4_1_1.eContents().get(0);
-		private final Assignment cWheresAssignment_4_1_2 = (Assignment)cAlternatives_4_1.eContents().get(2);
-		private final RuleCall cWheresWhereParserRuleCall_4_1_2_0 = (RuleCall)cWheresAssignment_4_1_2.eContents().get(0);
+		private final Group cGroup_4_1_0 = (Group)cAlternatives_4_1.eContents().get(0);
+		private final Keyword cWhenKeyword_4_1_0_0 = (Keyword)cGroup_4_1_0.eContents().get(0);
+		private final Assignment cWhensAssignment_4_1_0_1 = (Assignment)cGroup_4_1_0.eContents().get(1);
+		private final RuleCall cWhensPredicateBlockParserRuleCall_4_1_0_1_0 = (RuleCall)cWhensAssignment_4_1_0_1.eContents().get(0);
+		private final Group cGroup_4_1_1 = (Group)cAlternatives_4_1.eContents().get(1);
+		private final Keyword cWithKeyword_4_1_1_0 = (Keyword)cGroup_4_1_1.eContents().get(0);
+		private final Assignment cWithsAssignment_4_1_1_1 = (Assignment)cGroup_4_1_1.eContents().get(1);
+		private final RuleCall cWithsSubMappingParserRuleCall_4_1_1_1_0 = (RuleCall)cWithsAssignment_4_1_1_1.eContents().get(0);
+		private final Group cGroup_4_1_2 = (Group)cAlternatives_4_1.eContents().get(2);
+		private final Keyword cWhereKeyword_4_1_2_0 = (Keyword)cGroup_4_1_2.eContents().get(0);
+		private final Assignment cWheresAssignment_4_1_2_1 = (Assignment)cGroup_4_1_2.eContents().get(1);
+		private final RuleCall cWheresPredicateBlockParserRuleCall_4_1_2_1_0 = (RuleCall)cWheresAssignment_4_1_2_1.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_4_2 = (Keyword)cGroup_4.eContents().get(2);
 		
 		//SubMapping returns Mapping:
-		//	{SubMapping} mappedElements+=NamedFeature "to" mappedElements+=NamedFeature ("{" (whens+=When | withs+=With |
-		//	wheres+=Where)* "}")?;
+		//	{SubMapping} mappedElements+=NamedFeature "to" mappedElements+=NamedFeature ("{" ("when" whens+=PredicateBlock |
+		//	"with" withs+=SubMapping | "where" wheres+=PredicateBlock)* "}")?;
 		public ParserRule getRule() { return rule; }
 
-		//{SubMapping} mappedElements+=NamedFeature "to" mappedElements+=NamedFeature ("{" (whens+=When | withs+=With |
-		//wheres+=Where)* "}")?
+		//{SubMapping} mappedElements+=NamedFeature "to" mappedElements+=NamedFeature ("{" ("when" whens+=PredicateBlock | "with"
+		//withs+=SubMapping | "where" wheres+=PredicateBlock)* "}")?
 		public Group getGroup() { return cGroup; }
 
 		//{SubMapping}
@@ -294,32 +324,50 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 		//NamedFeature
 		public RuleCall getMappedElementsNamedFeatureParserRuleCall_3_0() { return cMappedElementsNamedFeatureParserRuleCall_3_0; }
 
-		//("{" (whens+=When | withs+=With | wheres+=Where)* "}")?
+		//("{" ("when" whens+=PredicateBlock | "with" withs+=SubMapping | "where" wheres+=PredicateBlock)* "}")?
 		public Group getGroup_4() { return cGroup_4; }
 
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_4_0() { return cLeftCurlyBracketKeyword_4_0; }
 
-		//(whens+=When | withs+=With | wheres+=Where)*
+		//("when" whens+=PredicateBlock | "with" withs+=SubMapping | "where" wheres+=PredicateBlock)*
 		public Alternatives getAlternatives_4_1() { return cAlternatives_4_1; }
 
-		//whens+=When
-		public Assignment getWhensAssignment_4_1_0() { return cWhensAssignment_4_1_0; }
+		//"when" whens+=PredicateBlock
+		public Group getGroup_4_1_0() { return cGroup_4_1_0; }
 
-		//When
-		public RuleCall getWhensWhenParserRuleCall_4_1_0_0() { return cWhensWhenParserRuleCall_4_1_0_0; }
+		//"when"
+		public Keyword getWhenKeyword_4_1_0_0() { return cWhenKeyword_4_1_0_0; }
 
-		//withs+=With
-		public Assignment getWithsAssignment_4_1_1() { return cWithsAssignment_4_1_1; }
+		//whens+=PredicateBlock
+		public Assignment getWhensAssignment_4_1_0_1() { return cWhensAssignment_4_1_0_1; }
 
-		//With
-		public RuleCall getWithsWithParserRuleCall_4_1_1_0() { return cWithsWithParserRuleCall_4_1_1_0; }
+		//PredicateBlock
+		public RuleCall getWhensPredicateBlockParserRuleCall_4_1_0_1_0() { return cWhensPredicateBlockParserRuleCall_4_1_0_1_0; }
 
-		//wheres+=Where
-		public Assignment getWheresAssignment_4_1_2() { return cWheresAssignment_4_1_2; }
+		//"with" withs+=SubMapping
+		public Group getGroup_4_1_1() { return cGroup_4_1_1; }
 
-		//Where
-		public RuleCall getWheresWhereParserRuleCall_4_1_2_0() { return cWheresWhereParserRuleCall_4_1_2_0; }
+		//"with"
+		public Keyword getWithKeyword_4_1_1_0() { return cWithKeyword_4_1_1_0; }
+
+		//withs+=SubMapping
+		public Assignment getWithsAssignment_4_1_1_1() { return cWithsAssignment_4_1_1_1; }
+
+		//SubMapping
+		public RuleCall getWithsSubMappingParserRuleCall_4_1_1_1_0() { return cWithsSubMappingParserRuleCall_4_1_1_1_0; }
+
+		//"where" wheres+=PredicateBlock
+		public Group getGroup_4_1_2() { return cGroup_4_1_2; }
+
+		//"where"
+		public Keyword getWhereKeyword_4_1_2_0() { return cWhereKeyword_4_1_2_0; }
+
+		//wheres+=PredicateBlock
+		public Assignment getWheresAssignment_4_1_2_1() { return cWheresAssignment_4_1_2_1; }
+
+		//PredicateBlock
+		public RuleCall getWheresPredicateBlockParserRuleCall_4_1_2_1_0() { return cWheresPredicateBlockParserRuleCall_4_1_2_1_0; }
 
 		//"}"
 		public Keyword getRightCurlyBracketKeyword_4_2() { return cRightCurlyBracketKeyword_4_2; }
@@ -429,80 +477,6 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 
 		//ValidID
 		public RuleCall getNameValidIDParserRuleCall_4_1_0() { return cNameValidIDParserRuleCall_4_1_0; }
-	}
-
-	public class WithElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "With");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cWithKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final RuleCall cSubMappingParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
-		
-		//With returns Mapping:
-		//	"with" SubMapping;
-		public ParserRule getRule() { return rule; }
-
-		//"with" SubMapping
-		public Group getGroup() { return cGroup; }
-
-		//"with"
-		public Keyword getWithKeyword_0() { return cWithKeyword_0; }
-
-		//SubMapping
-		public RuleCall getSubMappingParserRuleCall_1() { return cSubMappingParserRuleCall_1; }
-	}
-
-	public class WhenElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "When");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cWhenKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cPredicateAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cPredicatePredicateBlockParserRuleCall_1_0 = (RuleCall)cPredicateAssignment_1.eContents().get(0);
-		
-		///////////////////
-		//// WHEN /////////
-		///////////////////
-		//When:
-		//	"when" predicate=PredicateBlock;
-		public ParserRule getRule() { return rule; }
-
-		//"when" predicate=PredicateBlock
-		public Group getGroup() { return cGroup; }
-
-		//"when"
-		public Keyword getWhenKeyword_0() { return cWhenKeyword_0; }
-
-		//predicate=PredicateBlock
-		public Assignment getPredicateAssignment_1() { return cPredicateAssignment_1; }
-
-		//PredicateBlock
-		public RuleCall getPredicatePredicateBlockParserRuleCall_1_0() { return cPredicatePredicateBlockParserRuleCall_1_0; }
-	}
-
-	public class WhereElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Where");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cWhereKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cPredicateAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cPredicatePredicateBlockParserRuleCall_1_0 = (RuleCall)cPredicateAssignment_1.eContents().get(0);
-		
-		///////////////////
-		//// WHERE /////////
-		///////////////////
-		//Where:
-		//	"where" predicate=PredicateBlock;
-		public ParserRule getRule() { return rule; }
-
-		//"where" predicate=PredicateBlock
-		public Group getGroup() { return cGroup; }
-
-		//"where"
-		public Keyword getWhereKeyword_0() { return cWhereKeyword_0; }
-
-		//predicate=PredicateBlock
-		public Assignment getPredicateAssignment_1() { return cPredicateAssignment_1; }
-
-		//PredicateBlock
-		public RuleCall getPredicatePredicateBlockParserRuleCall_1_0() { return cPredicatePredicateBlockParserRuleCall_1_0; }
 	}
 
 	public class EClassParameterElements extends AbstractParserRuleElementFinder {
@@ -806,9 +780,6 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	private final SubMappingElements pSubMapping;
 	private final NamedEClassElements pNamedEClass;
 	private final NamedFeatureElements pNamedFeature;
-	private final WithElements pWith;
-	private final WhenElements pWhen;
-	private final WhereElements pWhere;
 	private final EClassParameterElements pEClassParameter;
 	private final InvariantElements pInvariant;
 	private final PredicateBlockElements pPredicateBlock;
@@ -832,9 +803,6 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 		this.pSubMapping = new SubMappingElements();
 		this.pNamedEClass = new NamedEClassElements();
 		this.pNamedFeature = new NamedFeatureElements();
-		this.pWith = new WithElements();
-		this.pWhen = new WhenElements();
-		this.pWhere = new WhereElements();
 		this.pEClassParameter = new EClassParameterElements();
 		this.pInvariant = new InvariantElements();
 		this.pPredicateBlock = new PredicateBlockElements();
@@ -902,8 +870,8 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//BaseMapping returns Mapping:
-	//	{BaseMapping} mappedElements+=NamedEClass "to" mappedElements+=NamedEClass ("{" (whens+=When | withs+=With |
-	//	wheres+=Where)* "}")?;
+	//	{BaseMapping} mappedElements+=NamedEClass "to" mappedElements+=NamedEClass ("{" ("when" whens+=PredicateBlock |
+	//	"with" withs+=SubMapping | "where" wheres+=PredicateBlock)* "}")?;
 	public BaseMappingElements getBaseMappingAccess() {
 		return pBaseMapping;
 	}
@@ -913,8 +881,8 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//SubMapping returns Mapping:
-	//	{SubMapping} mappedElements+=NamedFeature "to" mappedElements+=NamedFeature ("{" (whens+=When | withs+=With |
-	//	wheres+=Where)* "}")?;
+	//	{SubMapping} mappedElements+=NamedFeature "to" mappedElements+=NamedFeature ("{" ("when" whens+=PredicateBlock |
+	//	"with" withs+=SubMapping | "where" wheres+=PredicateBlock)* "}")?;
 	public SubMappingElements getSubMappingAccess() {
 		return pSubMapping;
 	}
@@ -942,42 +910,6 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getNamedFeatureRule() {
 		return getNamedFeatureAccess().getRule();
-	}
-
-	//With returns Mapping:
-	//	"with" SubMapping;
-	public WithElements getWithAccess() {
-		return pWith;
-	}
-	
-	public ParserRule getWithRule() {
-		return getWithAccess().getRule();
-	}
-
-	///////////////////
-	//// WHEN /////////
-	///////////////////
-	//When:
-	//	"when" predicate=PredicateBlock;
-	public WhenElements getWhenAccess() {
-		return pWhen;
-	}
-	
-	public ParserRule getWhenRule() {
-		return getWhenAccess().getRule();
-	}
-
-	///////////////////
-	//// WHERE /////////
-	///////////////////
-	//Where:
-	//	"where" predicate=PredicateBlock;
-	public WhereElements getWhereAccess() {
-		return pWhere;
-	}
-	
-	public ParserRule getWhereRule() {
-		return getWhereAccess().getRule();
 	}
 
 	///////////////////

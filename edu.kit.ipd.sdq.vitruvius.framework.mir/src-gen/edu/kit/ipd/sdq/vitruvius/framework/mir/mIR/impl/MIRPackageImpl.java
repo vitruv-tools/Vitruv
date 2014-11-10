@@ -17,8 +17,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.OCLBlock;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Response;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ResponseAction;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.SubMapping;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.When;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Where;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -65,20 +63,6 @@ public class MIRPackageImpl extends EPackageImpl implements MIRPackage
    * @generated
    */
   private EClass mappableElementEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass whenEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass whereEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -384,46 +368,6 @@ public class MIRPackageImpl extends EPackageImpl implements MIRPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getWhen()
-  {
-    return whenEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getWhen_Predicate()
-  {
-    return (EReference)whenEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getWhere()
-  {
-    return whereEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getWhere_Predicate()
-  {
-    return (EReference)whereEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EClass getEClassParameter()
   {
     return eClassParameterEClass;
@@ -700,12 +644,6 @@ public class MIRPackageImpl extends EPackageImpl implements MIRPackage
     mappableElementEClass = createEClass(MAPPABLE_ELEMENT);
     createEAttribute(mappableElementEClass, MAPPABLE_ELEMENT__NAME);
 
-    whenEClass = createEClass(WHEN);
-    createEReference(whenEClass, WHEN__PREDICATE);
-
-    whereEClass = createEClass(WHERE);
-    createEReference(whereEClass, WHERE__PREDICATE);
-
     eClassParameterEClass = createEClass(ECLASS_PARAMETER);
     createEReference(eClassParameterEClass, ECLASS_PARAMETER__TYPE);
     createEAttribute(eClassParameterEClass, ECLASS_PARAMETER__NAME);
@@ -792,18 +730,12 @@ public class MIRPackageImpl extends EPackageImpl implements MIRPackage
 
     initEClass(mappingEClass, Mapping.class, "Mapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getMapping_MappedElements(), this.getMappableElement(), null, "mappedElements", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMapping_Whens(), this.getWhen(), null, "whens", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMapping_Whens(), ecorePackage.getEObject(), null, "whens", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMapping_Withs(), this.getMapping(), null, "withs", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMapping_Wheres(), this.getWhere(), null, "wheres", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMapping_Wheres(), ecorePackage.getEObject(), null, "wheres", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(mappableElementEClass, MappableElement.class, "MappableElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getMappableElement_Name(), ecorePackage.getEString(), "name", null, 0, 1, MappableElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(whenEClass, When.class, "When", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getWhen_Predicate(), ecorePackage.getEObject(), null, "predicate", null, 0, 1, When.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(whereEClass, Where.class, "Where", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getWhere_Predicate(), ecorePackage.getEObject(), null, "predicate", null, 0, 1, Where.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(eClassParameterEClass, EClassParameter.class, "EClassParameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getEClassParameter_Type(), ecorePackage.getEClass(), null, "type", null, 0, 1, EClassParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

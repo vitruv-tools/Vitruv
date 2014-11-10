@@ -59,24 +59,6 @@ public interface MIRFactory extends EFactory
   MappableElement createMappableElement();
 
   /**
-   * Returns a new object of class '<em>When</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>When</em>'.
-   * @generated
-   */
-  When createWhen();
-
-  /**
-   * Returns a new object of class '<em>Where</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Where</em>'.
-   * @generated
-   */
-  Where createWhere();
-
-  /**
    * Returns a new object of class '<em>EClass Parameter</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

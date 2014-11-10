@@ -374,65 +374,77 @@ ruleBaseMapping returns [EObject current=null]
     {
     	newLeafNode(otherlv_4, grammarAccess.getBaseMappingAccess().getLeftCurlyBracketKeyword_4_0());
     }
-((
+((	otherlv_5='when' 
+    {
+    	newLeafNode(otherlv_5, grammarAccess.getBaseMappingAccess().getWhenKeyword_4_1_0_0());
+    }
+(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getBaseMappingAccess().getWhensWhenParserRuleCall_4_1_0_0()); 
+	        newCompositeNode(grammarAccess.getBaseMappingAccess().getWhensPredicateBlockParserRuleCall_4_1_0_1_0()); 
 	    }
-		lv_whens_5_0=ruleWhen		{
+		lv_whens_6_0=rulePredicateBlock		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getBaseMappingRule());
 	        }
        		add(
        			$current, 
        			"whens",
-        		lv_whens_5_0, 
-        		"When");
+        		lv_whens_6_0, 
+        		"PredicateBlock");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)
-    |(
+))
+    |(	otherlv_7='with' 
+    {
+    	newLeafNode(otherlv_7, grammarAccess.getBaseMappingAccess().getWithKeyword_4_1_1_0());
+    }
+(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getBaseMappingAccess().getWithsWithParserRuleCall_4_1_1_0()); 
+	        newCompositeNode(grammarAccess.getBaseMappingAccess().getWithsSubMappingParserRuleCall_4_1_1_1_0()); 
 	    }
-		lv_withs_6_0=ruleWith		{
+		lv_withs_8_0=ruleSubMapping		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getBaseMappingRule());
 	        }
        		add(
        			$current, 
        			"withs",
-        		lv_withs_6_0, 
-        		"With");
+        		lv_withs_8_0, 
+        		"SubMapping");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)
-    |(
+))
+    |(	otherlv_9='where' 
+    {
+    	newLeafNode(otherlv_9, grammarAccess.getBaseMappingAccess().getWhereKeyword_4_1_2_0());
+    }
+(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getBaseMappingAccess().getWheresWhereParserRuleCall_4_1_2_0()); 
+	        newCompositeNode(grammarAccess.getBaseMappingAccess().getWheresPredicateBlockParserRuleCall_4_1_2_1_0()); 
 	    }
-		lv_wheres_7_0=ruleWhere		{
+		lv_wheres_10_0=rulePredicateBlock		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getBaseMappingRule());
 	        }
        		add(
        			$current, 
        			"wheres",
-        		lv_wheres_7_0, 
-        		"Where");
+        		lv_wheres_10_0, 
+        		"PredicateBlock");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-))*	otherlv_8='}' 
+)))*	otherlv_11='}' 
     {
-    	newLeafNode(otherlv_8, grammarAccess.getBaseMappingAccess().getRightCurlyBracketKeyword_4_2());
+    	newLeafNode(otherlv_11, grammarAccess.getBaseMappingAccess().getRightCurlyBracketKeyword_4_2());
     }
 )?)
 ;
@@ -505,65 +517,77 @@ ruleSubMapping returns [EObject current=null]
     {
     	newLeafNode(otherlv_4, grammarAccess.getSubMappingAccess().getLeftCurlyBracketKeyword_4_0());
     }
-((
+((	otherlv_5='when' 
+    {
+    	newLeafNode(otherlv_5, grammarAccess.getSubMappingAccess().getWhenKeyword_4_1_0_0());
+    }
+(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getSubMappingAccess().getWhensWhenParserRuleCall_4_1_0_0()); 
+	        newCompositeNode(grammarAccess.getSubMappingAccess().getWhensPredicateBlockParserRuleCall_4_1_0_1_0()); 
 	    }
-		lv_whens_5_0=ruleWhen		{
+		lv_whens_6_0=rulePredicateBlock		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getSubMappingRule());
 	        }
        		add(
        			$current, 
        			"whens",
-        		lv_whens_5_0, 
-        		"When");
+        		lv_whens_6_0, 
+        		"PredicateBlock");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)
-    |(
+))
+    |(	otherlv_7='with' 
+    {
+    	newLeafNode(otherlv_7, grammarAccess.getSubMappingAccess().getWithKeyword_4_1_1_0());
+    }
+(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getSubMappingAccess().getWithsWithParserRuleCall_4_1_1_0()); 
+	        newCompositeNode(grammarAccess.getSubMappingAccess().getWithsSubMappingParserRuleCall_4_1_1_1_0()); 
 	    }
-		lv_withs_6_0=ruleWith		{
+		lv_withs_8_0=ruleSubMapping		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getSubMappingRule());
 	        }
        		add(
        			$current, 
        			"withs",
-        		lv_withs_6_0, 
-        		"With");
+        		lv_withs_8_0, 
+        		"SubMapping");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)
-    |(
+))
+    |(	otherlv_9='where' 
+    {
+    	newLeafNode(otherlv_9, grammarAccess.getSubMappingAccess().getWhereKeyword_4_1_2_0());
+    }
+(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getSubMappingAccess().getWheresWhereParserRuleCall_4_1_2_0()); 
+	        newCompositeNode(grammarAccess.getSubMappingAccess().getWheresPredicateBlockParserRuleCall_4_1_2_1_0()); 
 	    }
-		lv_wheres_7_0=ruleWhere		{
+		lv_wheres_10_0=rulePredicateBlock		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getSubMappingRule());
 	        }
        		add(
        			$current, 
        			"wheres",
-        		lv_wheres_7_0, 
-        		"Where");
+        		lv_wheres_10_0, 
+        		"PredicateBlock");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-))*	otherlv_8='}' 
+)))*	otherlv_11='}' 
     {
-    	newLeafNode(otherlv_8, grammarAccess.getSubMappingAccess().getRightCurlyBracketKeyword_4_2());
+    	newLeafNode(otherlv_11, grammarAccess.getSubMappingAccess().getRightCurlyBracketKeyword_4_2());
     }
 )?)
 ;
@@ -711,126 +735,6 @@ ruleNamedFeature returns [EObject current=null]
 
 )
 ))?)
-;
-
-
-
-
-
-// Entry rule entryRuleWith
-entryRuleWith returns [EObject current=null] 
-	:
-	{ newCompositeNode(grammarAccess.getWithRule()); }
-	 iv_ruleWith=ruleWith 
-	 { $current=$iv_ruleWith.current; } 
-	 EOF 
-;
-
-// Rule With
-ruleWith returns [EObject current=null] 
-    @init { enterRule(); 
-    }
-    @after { leaveRule(); }:
-(	otherlv_0='with' 
-    {
-    	newLeafNode(otherlv_0, grammarAccess.getWithAccess().getWithKeyword_0());
-    }
-
-    { 
-        newCompositeNode(grammarAccess.getWithAccess().getSubMappingParserRuleCall_1()); 
-    }
-    this_SubMapping_1=ruleSubMapping
-    { 
-        $current = $this_SubMapping_1.current; 
-        afterParserOrEnumRuleCall();
-    }
-)
-;
-
-
-
-
-
-// Entry rule entryRuleWhen
-entryRuleWhen returns [EObject current=null] 
-	:
-	{ newCompositeNode(grammarAccess.getWhenRule()); }
-	 iv_ruleWhen=ruleWhen 
-	 { $current=$iv_ruleWhen.current; } 
-	 EOF 
-;
-
-// Rule When
-ruleWhen returns [EObject current=null] 
-    @init { enterRule(); 
-    }
-    @after { leaveRule(); }:
-(	otherlv_0='when' 
-    {
-    	newLeafNode(otherlv_0, grammarAccess.getWhenAccess().getWhenKeyword_0());
-    }
-(
-(
-		{ 
-	        newCompositeNode(grammarAccess.getWhenAccess().getPredicatePredicateBlockParserRuleCall_1_0()); 
-	    }
-		lv_predicate_1_0=rulePredicateBlock		{
-	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getWhenRule());
-	        }
-       		set(
-       			$current, 
-       			"predicate",
-        		lv_predicate_1_0, 
-        		"PredicateBlock");
-	        afterParserOrEnumRuleCall();
-	    }
-
-)
-))
-;
-
-
-
-
-
-// Entry rule entryRuleWhere
-entryRuleWhere returns [EObject current=null] 
-	:
-	{ newCompositeNode(grammarAccess.getWhereRule()); }
-	 iv_ruleWhere=ruleWhere 
-	 { $current=$iv_ruleWhere.current; } 
-	 EOF 
-;
-
-// Rule Where
-ruleWhere returns [EObject current=null] 
-    @init { enterRule(); 
-    }
-    @after { leaveRule(); }:
-(	otherlv_0='where' 
-    {
-    	newLeafNode(otherlv_0, grammarAccess.getWhereAccess().getWhereKeyword_0());
-    }
-(
-(
-		{ 
-	        newCompositeNode(grammarAccess.getWhereAccess().getPredicatePredicateBlockParserRuleCall_1_0()); 
-	    }
-		lv_predicate_1_0=rulePredicateBlock		{
-	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getWhereRule());
-	        }
-       		set(
-       			$current, 
-       			"predicate",
-        		lv_predicate_1_0, 
-        		"PredicateBlock");
-	        afterParserOrEnumRuleCall();
-	    }
-
-)
-))
 ;
 
 

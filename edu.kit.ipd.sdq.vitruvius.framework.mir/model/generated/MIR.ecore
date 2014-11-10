@@ -22,22 +22,14 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappedElements" upperBound="-1"
         eType="#//MappableElement" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="whens" upperBound="-1"
-        eType="#//When" containment="true"/>
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="withs" upperBound="-1"
         eType="#//Mapping" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="wheres" upperBound="-1"
-        eType="#//Where" containment="true"/>
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MappableElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="When">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="predicate" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Where">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="predicate" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
-        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EClassParameter">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>

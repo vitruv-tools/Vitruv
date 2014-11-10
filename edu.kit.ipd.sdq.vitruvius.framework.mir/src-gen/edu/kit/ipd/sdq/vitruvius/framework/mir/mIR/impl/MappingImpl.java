@@ -5,8 +5,6 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRPackage;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MappableElement;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Mapping;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.When;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Where;
 
 import java.util.Collection;
 
@@ -15,6 +13,7 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
@@ -58,7 +57,7 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
    * @generated
    * @ordered
    */
-  protected EList<When> whens;
+  protected EList<EObject> whens;
 
   /**
    * The cached value of the '{@link #getWiths() <em>Withs</em>}' containment reference list.
@@ -78,7 +77,7 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
    * @generated
    * @ordered
    */
-  protected EList<Where> wheres;
+  protected EList<EObject> wheres;
 
   /**
    * <!-- begin-user-doc -->
@@ -120,11 +119,11 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<When> getWhens()
+  public EList<EObject> getWhens()
   {
     if (whens == null)
     {
-      whens = new EObjectContainmentEList<When>(When.class, this, MIRPackage.MAPPING__WHENS);
+      whens = new EObjectContainmentEList<EObject>(EObject.class, this, MIRPackage.MAPPING__WHENS);
     }
     return whens;
   }
@@ -148,11 +147,11 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<Where> getWheres()
+  public EList<EObject> getWheres()
   {
     if (wheres == null)
     {
-      wheres = new EObjectContainmentEList<Where>(Where.class, this, MIRPackage.MAPPING__WHERES);
+      wheres = new EObjectContainmentEList<EObject>(EObject.class, this, MIRPackage.MAPPING__WHERES);
     }
     return wheres;
   }
@@ -218,7 +217,7 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
         return;
       case MIRPackage.MAPPING__WHENS:
         getWhens().clear();
-        getWhens().addAll((Collection<? extends When>)newValue);
+        getWhens().addAll((Collection<? extends EObject>)newValue);
         return;
       case MIRPackage.MAPPING__WITHS:
         getWiths().clear();
@@ -226,7 +225,7 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
         return;
       case MIRPackage.MAPPING__WHERES:
         getWheres().clear();
-        getWheres().addAll((Collection<? extends Where>)newValue);
+        getWheres().addAll((Collection<? extends EObject>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
