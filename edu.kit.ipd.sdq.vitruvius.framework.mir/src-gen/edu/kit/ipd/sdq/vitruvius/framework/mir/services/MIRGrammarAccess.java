@@ -155,6 +155,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cMapKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final RuleCall cBaseMappingParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
 		
+		//// Mappings
 		//Mapping:
 		//	"map" BaseMapping;
 		public ParserRule getRule() { return rule; }
@@ -488,9 +489,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameValidIDParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
 		
-		///////////////////
-		//// INVARIANTS ///
-		///////////////////
+		//// Invariants
 		//EClassParameter:
 		//	type=[ecore::EClass|QualifiedName] name=ValidID;
 		public ParserRule getRule() { return rule; }
@@ -679,9 +678,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cRestoreActionAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final RuleCall cRestoreActionXBlockExpressionParserRuleCall_4_0 = (RuleCall)cRestoreActionAssignment_4.eContents().get(0);
 		
-		///////////////////
-		//// RESPONSE   ///
-		///////////////////
+		//// Response
 		//Response:
 		//	"on" (action=ResponseAction "of")? context=NamedEClass ("restore" inv=[Invariant] "by")?
 		//	restoreAction=XBlockExpression;
@@ -747,7 +744,11 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 		private final EnumLiteralDeclaration cCHANGEEnumLiteralDeclaration_2 = (EnumLiteralDeclaration)cAlternatives.eContents().get(2);
 		private final Keyword cCHANGEChangeKeyword_2_0 = (Keyword)cCHANGEEnumLiteralDeclaration_2.eContents().get(0);
 		
-		//enum ResponseAction:
+		//// xbase extension
+		////CorrespondsExpression returns xbase::XExpression:
+		////	{CorrespondsExpression}
+		////	"[" left=XFeatureCall "corresponds" right=XFeatureCall "]"
+		////; enum ResponseAction:
 		//	ANY="any" | CREATE="create" | CHANGE="change";
 		public EnumRule getRule() { return rule; }
 
@@ -859,6 +860,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 		return getImportAccess().getRule();
 	}
 
+	//// Mappings
 	//Mapping:
 	//	"map" BaseMapping;
 	public MappingElements getMappingAccess() {
@@ -912,9 +914,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 		return getNamedFeatureAccess().getRule();
 	}
 
-	///////////////////
-	//// INVARIANTS ///
-	///////////////////
+	//// Invariants
 	//EClassParameter:
 	//	type=[ecore::EClass|QualifiedName] name=ValidID;
 	public EClassParameterElements getEClassParameterAccess() {
@@ -956,9 +956,7 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 		return getOCLBlockAccess().getRule();
 	}
 
-	///////////////////
-	//// RESPONSE   ///
-	///////////////////
+	//// Response
 	//Response:
 	//	"on" (action=ResponseAction "of")? context=NamedEClass ("restore" inv=[Invariant] "by")?
 	//	restoreAction=XBlockExpression;
@@ -970,7 +968,11 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 		return getResponseAccess().getRule();
 	}
 
-	//enum ResponseAction:
+	//// xbase extension
+	////CorrespondsExpression returns xbase::XExpression:
+	////	{CorrespondsExpression}
+	////	"[" left=XFeatureCall "corresponds" right=XFeatureCall "]"
+	////; enum ResponseAction:
 	//	ANY="any" | CREATE="create" | CHANGE="change";
 	public ResponseActionElements getResponseActionAccess() {
 		return unknownRuleResponseAction;

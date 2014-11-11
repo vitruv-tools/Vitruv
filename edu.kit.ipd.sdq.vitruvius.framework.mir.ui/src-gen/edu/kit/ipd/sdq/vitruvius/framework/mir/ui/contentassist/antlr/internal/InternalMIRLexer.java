@@ -1151,10 +1151,10 @@ public class InternalMIRLexer extends Lexer {
         try {
             int _type = T__62;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:60:7: ( 'with' )
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:60:9: 'with'
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:60:7: ( 'when' )
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:60:9: 'when'
             {
-            match("with"); 
+            match("when"); 
 
 
             }
@@ -1172,10 +1172,10 @@ public class InternalMIRLexer extends Lexer {
         try {
             int _type = T__63;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:61:7: ( 'when' )
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:61:9: 'when'
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:61:7: ( 'with' )
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:61:9: 'with'
             {
-            match("when"); 
+            match("with"); 
 
 
             }
@@ -2064,10 +2064,10 @@ public class InternalMIRLexer extends Lexer {
         try {
             int _type = RULE_HEX;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22880:10: ( ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )? )
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22880:12: ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22955:10: ( ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )? )
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22955:12: ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
             {
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22880:12: ( '0x' | '0X' )
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22955:12: ( '0x' | '0X' )
             int alt1=2;
             int LA1_0 = input.LA(1);
 
@@ -2095,7 +2095,7 @@ public class InternalMIRLexer extends Lexer {
             }
             switch (alt1) {
                 case 1 :
-                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22880:13: '0x'
+                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22955:13: '0x'
                     {
                     match("0x"); 
 
@@ -2103,7 +2103,7 @@ public class InternalMIRLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22880:18: '0X'
+                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22955:18: '0X'
                     {
                     match("0X"); 
 
@@ -2113,7 +2113,7 @@ public class InternalMIRLexer extends Lexer {
 
             }
 
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22880:24: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22955:24: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+
             int cnt2=0;
             loop2:
             do {
@@ -2151,7 +2151,7 @@ public class InternalMIRLexer extends Lexer {
                 cnt2++;
             } while (true);
 
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22880:58: ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22955:58: ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
             int alt4=2;
             int LA4_0 = input.LA(1);
 
@@ -2160,10 +2160,10 @@ public class InternalMIRLexer extends Lexer {
             }
             switch (alt4) {
                 case 1 :
-                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22880:59: '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
+                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22955:59: '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
                     {
                     match('#'); 
-                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22880:63: ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
+                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22955:63: ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
                     int alt3=2;
                     int LA3_0 = input.LA(1);
 
@@ -2181,7 +2181,7 @@ public class InternalMIRLexer extends Lexer {
                     }
                     switch (alt3) {
                         case 1 :
-                            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22880:64: ( 'b' | 'B' ) ( 'i' | 'I' )
+                            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22955:64: ( 'b' | 'B' ) ( 'i' | 'I' )
                             {
                             if ( input.LA(1)=='B'||input.LA(1)=='b' ) {
                                 input.consume();
@@ -2205,7 +2205,7 @@ public class InternalMIRLexer extends Lexer {
                             }
                             break;
                         case 2 :
-                            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22880:84: ( 'l' | 'L' )
+                            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22955:84: ( 'l' | 'L' )
                             {
                             if ( input.LA(1)=='L'||input.LA(1)=='l' ) {
                                 input.consume();
@@ -2244,11 +2244,11 @@ public class InternalMIRLexer extends Lexer {
         try {
             int _type = RULE_INT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22882:10: ( '0' .. '9' ( '0' .. '9' | '_' )* )
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22882:12: '0' .. '9' ( '0' .. '9' | '_' )*
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22957:10: ( '0' .. '9' ( '0' .. '9' | '_' )* )
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22957:12: '0' .. '9' ( '0' .. '9' | '_' )*
             {
             matchRange('0','9'); 
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22882:21: ( '0' .. '9' | '_' )*
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22957:21: ( '0' .. '9' | '_' )*
             loop5:
             do {
                 int alt5=2;
@@ -2297,11 +2297,11 @@ public class InternalMIRLexer extends Lexer {
         try {
             int _type = RULE_DECIMAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22884:14: ( RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )? )
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22884:16: RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22959:14: ( RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )? )
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22959:16: RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
             {
             mRULE_INT(); 
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22884:25: ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )?
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22959:25: ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )?
             int alt7=2;
             int LA7_0 = input.LA(1);
 
@@ -2310,7 +2310,7 @@ public class InternalMIRLexer extends Lexer {
             }
             switch (alt7) {
                 case 1 :
-                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22884:26: ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT
+                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22959:26: ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT
                     {
                     if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
                         input.consume();
@@ -2321,7 +2321,7 @@ public class InternalMIRLexer extends Lexer {
                         recover(mse);
                         throw mse;}
 
-                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22884:36: ( '+' | '-' )?
+                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22959:36: ( '+' | '-' )?
                     int alt6=2;
                     int LA6_0 = input.LA(1);
 
@@ -2354,7 +2354,7 @@ public class InternalMIRLexer extends Lexer {
 
             }
 
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22884:58: ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22959:58: ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
             int alt8=3;
             int LA8_0 = input.LA(1);
 
@@ -2366,7 +2366,7 @@ public class InternalMIRLexer extends Lexer {
             }
             switch (alt8) {
                 case 1 :
-                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22884:59: ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' )
+                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22959:59: ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' )
                     {
                     if ( input.LA(1)=='B'||input.LA(1)=='b' ) {
                         input.consume();
@@ -2390,7 +2390,7 @@ public class InternalMIRLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22884:87: ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' )
+                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22959:87: ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' )
                     {
                     if ( input.LA(1)=='D'||input.LA(1)=='F'||input.LA(1)=='L'||input.LA(1)=='d'||input.LA(1)=='f'||input.LA(1)=='l' ) {
                         input.consume();
@@ -2423,10 +2423,10 @@ public class InternalMIRLexer extends Lexer {
         try {
             int _type = RULE_ID;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22886:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )* )
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22886:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22961:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )* )
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22961:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
             {
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22886:11: ( '^' )?
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22961:11: ( '^' )?
             int alt9=2;
             int LA9_0 = input.LA(1);
 
@@ -2435,7 +2435,7 @@ public class InternalMIRLexer extends Lexer {
             }
             switch (alt9) {
                 case 1 :
-                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22886:11: '^'
+                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22961:11: '^'
                     {
                     match('^'); 
 
@@ -2453,7 +2453,7 @@ public class InternalMIRLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22886:44: ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22961:44: ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
             loop10:
             do {
                 int alt10=2;
@@ -2502,10 +2502,10 @@ public class InternalMIRLexer extends Lexer {
         try {
             int _type = RULE_STRING;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22888:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? ) )
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22888:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22963:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? ) )
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22963:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
             {
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22888:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22963:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
             int alt15=2;
             int LA15_0 = input.LA(1);
 
@@ -2523,10 +2523,10 @@ public class InternalMIRLexer extends Lexer {
             }
             switch (alt15) {
                 case 1 :
-                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22888:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )?
+                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22963:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )?
                     {
                     match('\"'); 
-                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22888:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
+                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22963:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
                     loop11:
                     do {
                         int alt11=3;
@@ -2542,7 +2542,7 @@ public class InternalMIRLexer extends Lexer {
 
                         switch (alt11) {
                     	case 1 :
-                    	    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22888:21: '\\\\' .
+                    	    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22963:21: '\\\\' .
                     	    {
                     	    match('\\'); 
                     	    matchAny(); 
@@ -2550,7 +2550,7 @@ public class InternalMIRLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22888:28: ~ ( ( '\\\\' | '\"' ) )
+                    	    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22963:28: ~ ( ( '\\\\' | '\"' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -2570,7 +2570,7 @@ public class InternalMIRLexer extends Lexer {
                         }
                     } while (true);
 
-                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22888:44: ( '\"' )?
+                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22963:44: ( '\"' )?
                     int alt12=2;
                     int LA12_0 = input.LA(1);
 
@@ -2579,7 +2579,7 @@ public class InternalMIRLexer extends Lexer {
                     }
                     switch (alt12) {
                         case 1 :
-                            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22888:44: '\"'
+                            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22963:44: '\"'
                             {
                             match('\"'); 
 
@@ -2592,10 +2592,10 @@ public class InternalMIRLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22888:49: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )?
+                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22963:49: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )?
                     {
                     match('\''); 
-                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22888:54: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
+                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22963:54: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
                     loop13:
                     do {
                         int alt13=3;
@@ -2611,7 +2611,7 @@ public class InternalMIRLexer extends Lexer {
 
                         switch (alt13) {
                     	case 1 :
-                    	    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22888:55: '\\\\' .
+                    	    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22963:55: '\\\\' .
                     	    {
                     	    match('\\'); 
                     	    matchAny(); 
@@ -2619,7 +2619,7 @@ public class InternalMIRLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22888:62: ~ ( ( '\\\\' | '\\'' ) )
+                    	    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22963:62: ~ ( ( '\\\\' | '\\'' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -2639,7 +2639,7 @@ public class InternalMIRLexer extends Lexer {
                         }
                     } while (true);
 
-                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22888:79: ( '\\'' )?
+                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22963:79: ( '\\'' )?
                     int alt14=2;
                     int LA14_0 = input.LA(1);
 
@@ -2648,7 +2648,7 @@ public class InternalMIRLexer extends Lexer {
                     }
                     switch (alt14) {
                         case 1 :
-                            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22888:79: '\\''
+                            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22963:79: '\\''
                             {
                             match('\''); 
 
@@ -2679,12 +2679,12 @@ public class InternalMIRLexer extends Lexer {
         try {
             int _type = RULE_ML_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22890:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22890:19: '/*' ( options {greedy=false; } : . )* '*/'
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22965:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22965:19: '/*' ( options {greedy=false; } : . )* '*/'
             {
             match("/*"); 
 
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22890:24: ( options {greedy=false; } : . )*
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22965:24: ( options {greedy=false; } : . )*
             loop16:
             do {
                 int alt16=2;
@@ -2709,7 +2709,7 @@ public class InternalMIRLexer extends Lexer {
 
                 switch (alt16) {
             	case 1 :
-            	    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22890:52: .
+            	    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22965:52: .
             	    {
             	    matchAny(); 
 
@@ -2739,12 +2739,12 @@ public class InternalMIRLexer extends Lexer {
         try {
             int _type = RULE_SL_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22892:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22892:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22967:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22967:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
             {
             match("//"); 
 
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22892:24: (~ ( ( '\\n' | '\\r' ) ) )*
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22967:24: (~ ( ( '\\n' | '\\r' ) ) )*
             loop17:
             do {
                 int alt17=2;
@@ -2757,7 +2757,7 @@ public class InternalMIRLexer extends Lexer {
 
                 switch (alt17) {
             	case 1 :
-            	    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22892:24: ~ ( ( '\\n' | '\\r' ) )
+            	    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22967:24: ~ ( ( '\\n' | '\\r' ) )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -2777,7 +2777,7 @@ public class InternalMIRLexer extends Lexer {
                 }
             } while (true);
 
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22892:40: ( ( '\\r' )? '\\n' )?
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22967:40: ( ( '\\r' )? '\\n' )?
             int alt19=2;
             int LA19_0 = input.LA(1);
 
@@ -2786,9 +2786,9 @@ public class InternalMIRLexer extends Lexer {
             }
             switch (alt19) {
                 case 1 :
-                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22892:41: ( '\\r' )? '\\n'
+                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22967:41: ( '\\r' )? '\\n'
                     {
-                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22892:41: ( '\\r' )?
+                    // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22967:41: ( '\\r' )?
                     int alt18=2;
                     int LA18_0 = input.LA(1);
 
@@ -2797,7 +2797,7 @@ public class InternalMIRLexer extends Lexer {
                     }
                     switch (alt18) {
                         case 1 :
-                            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22892:41: '\\r'
+                            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22967:41: '\\r'
                             {
                             match('\r'); 
 
@@ -2829,10 +2829,10 @@ public class InternalMIRLexer extends Lexer {
         try {
             int _type = RULE_WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22894:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22894:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22969:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22969:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             {
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22894:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22969:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             int cnt20=0;
             loop20:
             do {
@@ -2886,8 +2886,8 @@ public class InternalMIRLexer extends Lexer {
         try {
             int _type = RULE_ANY_OTHER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22896:16: ( . )
-            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22896:18: .
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22971:16: ( . )
+            // ../edu.kit.ipd.sdq.vitruvius.framework.mir.ui/src-gen/edu/kit/ipd/sdq/vitruvius/framework/mir/ui/contentassist/antlr/internal/InternalMIR.g:22971:18: .
             {
             matchAny(); 
 
@@ -3638,15 +3638,16 @@ public class InternalMIRLexer extends Lexer {
         "\uffff\10\125\1\uffff\1\125\1\u00d6\1\125\1\u00d8\4\125\1\u00de"+
         "\2\uffff\2\125\1\uffff\1\125\1\uffff\1\u00e2\1\125\2\uffff\1\125"+
         "\1\u00e5\5\125\1\uffff\2\125\1\uffff\1\125\1\uffff\3\125\1\u00f1"+
-        "\3\125\1\u00f6\1\125\1\uffff\1\u00f8\1\uffff\1\u00f9\1\u00fa\3\125"+
-        "\1\uffff\3\125\1\uffff\1\u0101\1\125\1\uffff\1\125\1\u0105\4\125"+
-        "\1\u010a\4\125\1\uffff\1\u010f\3\125\1\uffff\1\u0113\3\uffff\1\u0114"+
-        "\1\u0115\1\u0116\3\125\1\uffff\2\125\1\u011c\1\uffff\1\u011d\1\125"+
-        "\1\u011f\1\125\1\uffff\1\125\1\u0122\1\u0123\1\125\1\uffff\2\125"+
-        "\1\u0127\4\uffff\1\125\1\u0129\1\125\1\u012b\1\125\2\uffff\1\125"+
-        "\1\uffff\1\125\1\u012f\2\uffff\1\u0130\1\125\1\u0132\1\uffff\1\u0133"+
-        "\1\uffff\1\u0134\1\uffff\3\125\2\uffff\1\125\3\uffff\1\u0139\2\125"+
-        "\1\u013c\1\uffff\1\125\1\u013e\1\uffff\1\125\1\uffff\1\u0140\1\uffff";
+        "\3\125\1\u00f6\1\125\1\uffff\1\u00f8\1\uffff\1\u00f9\2\125\1\u00fc"+
+        "\1\125\1\uffff\3\125\1\uffff\1\u0101\1\125\1\uffff\1\125\1\u0105"+
+        "\4\125\1\u010a\4\125\1\uffff\1\u010f\3\125\1\uffff\1\u0113\2\uffff"+
+        "\1\u0114\1\u0115\1\uffff\1\u0116\3\125\1\uffff\2\125\1\u011c\1\uffff"+
+        "\1\u011d\1\125\1\u011f\1\125\1\uffff\1\125\1\u0122\1\u0123\1\125"+
+        "\1\uffff\2\125\1\u0127\4\uffff\1\125\1\u0129\1\125\1\u012b\1\125"+
+        "\2\uffff\1\125\1\uffff\1\125\1\u012f\2\uffff\1\u0130\1\125\1\u0132"+
+        "\1\uffff\1\u0133\1\uffff\1\u0134\1\uffff\3\125\2\uffff\1\125\3\uffff"+
+        "\1\u0139\2\125\1\u013c\1\uffff\1\125\1\u013e\1\uffff\1\125\1\uffff"+
+        "\1\u0140\1\uffff";
     static final String DFA21_eofS =
         "\u0141\uffff";
     static final String DFA21_minS =
@@ -3656,23 +3657,24 @@ public class InternalMIRLexer extends Lexer {
         "\5\uffff\1\75\26\uffff\1\75\5\uffff\1\74\4\uffff\1\154\1\uffff\1"+
         "\164\1\163\1\141\1\160\1\151\1\156\1\160\1\163\1\44\1\154\1\162"+
         "\1\156\1\171\1\44\1\145\1\141\1\156\1\163\1\156\1\143\1\160\1\44"+
-        "\1\162\1\165\1\160\2\uffff\1\164\1\145\5\uffff\1\141\1\154\2\44"+
+        "\1\162\1\165\1\160\2\uffff\1\145\1\164\5\uffff\1\141\1\154\2\44"+
         "\1\163\1\44\4\uffff\1\146\1\44\1\167\1\154\2\uffff\1\60\11\uffff"+
         "\2\44\2\145\1\164\1\145\1\164\1\143\1\157\1\44\1\164\1\uffff\1\163"+
         "\1\44\1\141\1\44\1\uffff\1\141\1\156\1\164\1\145\1\143\1\145\1\153"+
-        "\1\145\1\uffff\1\157\1\44\1\145\1\44\1\150\1\156\1\154\1\163\1\44"+
+        "\1\145\1\uffff\1\157\1\44\1\145\1\44\1\156\1\154\1\150\1\163\1\44"+
         "\2\uffff\1\164\1\165\1\uffff\1\141\1\uffff\1\44\1\154\2\uffff\1"+
         "\156\1\44\1\151\1\162\1\143\1\150\1\162\1\uffff\1\141\1\145\1\uffff"+
         "\1\154\1\uffff\1\164\1\147\1\145\1\44\1\150\1\162\1\141\1\44\1\167"+
-        "\1\uffff\1\44\1\uffff\2\44\3\145\1\uffff\1\157\1\162\1\165\1\uffff"+
-        "\1\44\1\144\1\uffff\1\143\1\44\1\150\1\162\1\164\1\156\1\44\1\154"+
-        "\2\145\1\170\1\uffff\1\44\1\141\1\147\1\146\1\uffff\1\44\3\uffff"+
-        "\3\44\1\162\1\156\1\154\1\uffff\1\163\1\151\1\44\1\uffff\1\44\1"+
-        "\157\1\44\1\143\1\uffff\1\171\2\44\1\164\1\uffff\1\164\1\145\1\44"+
-        "\4\uffff\1\145\1\44\1\164\1\44\1\157\2\uffff\1\156\1\uffff\1\145"+
-        "\1\44\2\uffff\1\44\1\145\1\44\1\uffff\1\44\1\uffff\1\44\1\uffff"+
-        "\1\156\1\151\1\157\2\uffff\1\163\3\uffff\1\44\1\172\1\146\1\44\1"+
-        "\uffff\1\145\1\44\1\uffff\1\144\1\uffff\1\44\1\uffff";
+        "\1\uffff\1\44\1\uffff\1\44\2\145\1\44\1\145\1\uffff\1\157\1\162"+
+        "\1\165\1\uffff\1\44\1\144\1\uffff\1\143\1\44\1\150\1\162\1\164\1"+
+        "\156\1\44\1\154\2\145\1\170\1\uffff\1\44\1\141\1\147\1\146\1\uffff"+
+        "\1\44\2\uffff\2\44\1\uffff\1\44\1\162\1\156\1\154\1\uffff\1\163"+
+        "\1\151\1\44\1\uffff\1\44\1\157\1\44\1\143\1\uffff\1\171\2\44\1\164"+
+        "\1\uffff\1\164\1\145\1\44\4\uffff\1\145\1\44\1\164\1\44\1\157\2"+
+        "\uffff\1\156\1\uffff\1\145\1\44\2\uffff\1\44\1\145\1\44\1\uffff"+
+        "\1\44\1\uffff\1\44\1\uffff\1\156\1\151\1\157\2\uffff\1\163\3\uffff"+
+        "\1\44\1\172\1\146\1\44\1\uffff\1\145\1\44\1\uffff\1\144\1\uffff"+
+        "\1\44\1\uffff";
     static final String DFA21_maxS =
         "\1\uffff\1\76\1\174\1\46\1\75\1\76\5\75\1\76\1\56\1\72\1\141\1"+
         "\170\1\171\1\156\1\157\1\163\1\162\1\145\1\141\1\171\1\141\2\uffff"+
@@ -3680,24 +3682,25 @@ public class InternalMIRLexer extends Lexer {
         "\1\170\1\154\1\172\5\uffff\1\75\26\uffff\1\75\5\uffff\1\74\4\uffff"+
         "\1\162\1\uffff\1\164\1\163\1\141\1\160\1\151\1\156\1\160\1\166\1"+
         "\172\1\154\1\162\1\156\1\171\1\172\1\145\1\141\1\156\1\164\1\156"+
-        "\1\143\1\160\1\172\1\162\1\171\1\160\2\uffff\1\164\1\151\5\uffff"+
+        "\1\143\1\160\1\172\1\162\1\171\1\160\2\uffff\1\151\1\164\5\uffff"+
         "\1\141\1\154\2\172\1\164\1\172\4\uffff\1\146\1\172\1\167\1\154\2"+
         "\uffff\1\154\11\uffff\2\172\2\145\1\164\1\145\1\164\1\143\1\157"+
         "\1\172\1\164\1\uffff\1\163\1\172\1\141\1\172\1\uffff\1\141\1\156"+
         "\1\164\1\145\1\143\1\145\1\153\1\145\1\uffff\1\157\1\172\1\145\1"+
-        "\172\1\150\1\162\1\154\1\163\1\172\2\uffff\1\164\1\165\1\uffff\1"+
+        "\172\1\162\1\154\1\150\1\163\1\172\2\uffff\1\164\1\165\1\uffff\1"+
         "\141\1\uffff\1\172\1\154\2\uffff\1\156\1\172\1\151\1\162\1\143\1"+
         "\150\1\162\1\uffff\1\141\1\145\1\uffff\1\154\1\uffff\1\164\1\147"+
         "\1\145\1\172\1\150\1\162\1\141\1\172\1\167\1\uffff\1\172\1\uffff"+
-        "\2\172\3\145\1\uffff\1\157\1\162\1\165\1\uffff\1\172\1\163\1\uffff"+
-        "\1\143\1\172\1\150\1\162\1\164\1\156\1\172\1\154\2\145\1\170\1\uffff"+
-        "\1\172\1\141\1\147\1\146\1\uffff\1\172\3\uffff\3\172\1\162\1\156"+
-        "\1\154\1\uffff\1\163\1\151\1\172\1\uffff\1\172\1\157\1\172\1\143"+
-        "\1\uffff\1\171\2\172\1\164\1\uffff\1\164\1\145\1\172\4\uffff\1\145"+
-        "\1\172\1\164\1\172\1\157\2\uffff\1\156\1\uffff\1\145\1\172\2\uffff"+
-        "\1\172\1\145\1\172\1\uffff\1\172\1\uffff\1\172\1\uffff\1\156\1\151"+
-        "\1\157\2\uffff\1\163\3\uffff\2\172\1\146\1\172\1\uffff\1\145\1\172"+
-        "\1\uffff\1\144\1\uffff\1\172\1\uffff";
+        "\1\172\2\145\1\172\1\145\1\uffff\1\157\1\162\1\165\1\uffff\1\172"+
+        "\1\163\1\uffff\1\143\1\172\1\150\1\162\1\164\1\156\1\172\1\154\2"+
+        "\145\1\170\1\uffff\1\172\1\141\1\147\1\146\1\uffff\1\172\2\uffff"+
+        "\2\172\1\uffff\1\172\1\162\1\156\1\154\1\uffff\1\163\1\151\1\172"+
+        "\1\uffff\1\172\1\157\1\172\1\143\1\uffff\1\171\2\172\1\164\1\uffff"+
+        "\1\164\1\145\1\172\4\uffff\1\145\1\172\1\164\1\172\1\157\2\uffff"+
+        "\1\156\1\uffff\1\145\1\172\2\uffff\1\172\1\145\1\172\1\uffff\1\172"+
+        "\1\uffff\1\172\1\uffff\1\156\1\151\1\157\2\uffff\1\163\3\uffff\2"+
+        "\172\1\146\1\172\1\uffff\1\145\1\172\1\uffff\1\144\1\uffff\1\172"+
+        "\1\uffff";
     static final String DFA21_acceptS =
         "\31\uffff\1\60\1\61\2\uffff\1\70\1\71\1\72\4\uffff\1\102\1\103"+
         "\1\104\1\105\5\uffff\1\141\2\142\1\145\1\146\1\uffff\1\23\1\1\1"+
@@ -3710,11 +3713,11 @@ public class InternalMIRLexer extends Lexer {
         "\1\75\1\76\2\uffff\1\100\1\uffff\1\115\2\uffff\1\40\1\134\7\uffff"+
         "\1\66\2\uffff\1\113\1\uffff\1\47\11\uffff\1\123\1\uffff\1\56\5\uffff"+
         "\1\74\3\uffff\1\116\2\uffff\1\107\13\uffff\1\112\4\uffff\1\54\1"+
-        "\uffff\1\135\1\62\1\63\6\uffff\1\117\3\uffff\1\45\4\uffff\1\46\4"+
-        "\uffff\1\126\3\uffff\1\121\1\64\1\114\1\73\5\uffff\1\42\1\110\1"+
-        "\uffff\1\43\2\uffff\1\50\1\51\3\uffff\1\120\1\uffff\1\122\1\uffff"+
-        "\1\41\3\uffff\1\124\1\65\1\uffff\1\53\1\77\1\111\4\uffff\1\44\2"+
-        "\uffff\1\52\1\uffff\1\101\1\uffff\1\125";
+        "\uffff\1\135\1\62\2\uffff\1\63\4\uffff\1\117\3\uffff\1\45\4\uffff"+
+        "\1\46\4\uffff\1\126\3\uffff\1\121\1\64\1\114\1\73\5\uffff\1\42\1"+
+        "\110\1\uffff\1\43\2\uffff\1\50\1\51\3\uffff\1\120\1\uffff\1\122"+
+        "\1\uffff\1\41\3\uffff\1\124\1\65\1\uffff\1\53\1\77\1\111\4\uffff"+
+        "\1\44\2\uffff\1\52\1\uffff\1\101\1\uffff\1\125";
     static final String DFA21_specialS =
         "\1\0\u0140\uffff}>";
     static final String[] DFA21_transitionS = {
@@ -3750,7 +3753,7 @@ public class InternalMIRLexer extends Lexer {
             "\1\156",
             "",
             "",
-            "\1\162\1\161",
+            "\1\161\1\162",
             "\1\163",
             "",
             "",
@@ -3843,8 +3846,8 @@ public class InternalMIRLexer extends Lexer {
             "\1\u00af",
             "",
             "",
-            "\1\u00b0",
-            "\1\u00b1\3\uffff\1\u00b2",
+            "\1\u00b0\3\uffff\1\u00b1",
+            "\1\u00b2",
             "",
             "",
             "",
@@ -3919,8 +3922,8 @@ public class InternalMIRLexer extends Lexer {
             "\1\u00d7",
             "\1\125\13\uffff\12\125\7\uffff\32\125\4\uffff\1\125\1\uffff"+
             "\32\125",
-            "\1\u00d9",
-            "\1\u00da\3\uffff\1\u00db",
+            "\1\u00d9\3\uffff\1\u00da",
+            "\1\u00db",
             "\1\u00dc",
             "\1\u00dd",
             "\1\125\13\uffff\12\125\7\uffff\32\125\4\uffff\1\125\1\uffff"+
@@ -3968,10 +3971,10 @@ public class InternalMIRLexer extends Lexer {
             "",
             "\1\125\13\uffff\12\125\7\uffff\32\125\4\uffff\1\125\1\uffff"+
             "\32\125",
+            "\1\u00fa",
+            "\1\u00fb",
             "\1\125\13\uffff\12\125\7\uffff\32\125\4\uffff\1\125\1\uffff"+
             "\32\125",
-            "\1\u00fb",
-            "\1\u00fc",
             "\1\u00fd",
             "",
             "\1\u00fe",
@@ -4006,11 +4009,11 @@ public class InternalMIRLexer extends Lexer {
             "\32\125",
             "",
             "",
+            "\1\125\13\uffff\12\125\7\uffff\32\125\4\uffff\1\125\1\uffff"+
+            "\32\125",
+            "\1\125\13\uffff\12\125\7\uffff\32\125\4\uffff\1\125\1\uffff"+
+            "\32\125",
             "",
-            "\1\125\13\uffff\12\125\7\uffff\32\125\4\uffff\1\125\1\uffff"+
-            "\32\125",
-            "\1\125\13\uffff\12\125\7\uffff\32\125\4\uffff\1\125\1\uffff"+
-            "\32\125",
             "\1\125\13\uffff\12\125\7\uffff\32\125\4\uffff\1\125\1\uffff"+
             "\32\125",
             "\1\u0117",

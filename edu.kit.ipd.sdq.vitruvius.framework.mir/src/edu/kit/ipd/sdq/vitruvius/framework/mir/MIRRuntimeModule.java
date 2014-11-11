@@ -10,8 +10,12 @@ import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.scoping.IGlobalScopeProvider;
 
 import com.google.inject.Binder;
+import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 
+import edu.kit.ipd.sdq.vitruvius.framework.mir.generator.IGeneratorStatus;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.generator.MIRGeneratorStatus;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.generator.MIRIntermediateLanguageGenerator;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.linking.MIRLinkingService;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.scoping.MIRGlobalScopeProvider;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.scoping.MIRQualifiedNameConverter;
@@ -41,5 +45,16 @@ public class MIRRuntimeModule extends edu.kit.ipd.sdq.vitruvius.framework.mir.Ab
 	@Override
 	public Class<? extends IQualifiedNameConverter> bindIQualifiedNameConverter() {
 		return MIRQualifiedNameConverter.class;
+	}
+	
+	@Override
+	public Class<? extends IGenerator> bindIGenerator() {
+		return MIRIntermediateLanguageGenerator.class;
+	}
+	
+	public void configureIGeneratorStatus(Binder binder) {
+		binder.bind(IGeneratorStatus.class)
+		      .to(MIRGeneratorStatus.class)
+		      .in(Singleton.class);
 	}
 }
