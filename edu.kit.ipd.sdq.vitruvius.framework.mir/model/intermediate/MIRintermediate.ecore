@@ -2,14 +2,27 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="MIRintermediate" nsURI="http://www.kit.edu/ipd/sdq/vitruvius/framework/mir/MIRintermediate"
     nsPrefix="MIRintermediate">
-  <eClassifiers xsi:type="ecore:EClass" name="MIR"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Mapping" abstract="true"/>
-  <eClassifiers xsi:type="ecore:EClass" name="FeatureMapping" eSuperTypes="#//Mapping">
+  <eClassifiers xsi:type="ecore:EClass" name="MIR">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="classMappings" upperBound="-1"
+        eType="#//ClassMapping" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureMappings" upperBound="-1"
+        eType="#//FeatureMapping" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="predicates" upperBound="-1"
+        eType="#//Predicate" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureMapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="predicates" upperBound="-1"
+        eType="#//Predicate"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ClassMapping" eSuperTypes="#//Mapping">
+  <eClassifiers xsi:type="ecore:EClass" name="ClassMapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClass"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="predicates" upperBound="-1"
+        eType="#//Predicate"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Predicate">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="className" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>

@@ -2,8 +2,9 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.serializer;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.BaseMapping;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.EClassParameter;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Import;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Invariant;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile;
@@ -12,7 +13,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.OCLBlock;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Response;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.SubMapping;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.services.MIRGrammarAccess;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
@@ -79,16 +79,22 @@ public class MIRSemanticSequencer extends XbaseSemanticSequencer {
 	
 	public void createSequence(EObject context, EObject semanticObject) {
 		if(semanticObject.eClass().getEPackage() == MIRPackage.eINSTANCE) switch(semanticObject.eClass().getClassifierID()) {
-			case MIRPackage.BASE_MAPPING:
-				if(context == grammarAccess.getBaseMappingRule() ||
+			case MIRPackage.CLASS_MAPPING:
+				if(context == grammarAccess.getClassMappingRule() ||
 				   context == grammarAccess.getMappingRule()) {
-					sequence_BaseMapping(context, (BaseMapping) semanticObject); 
+					sequence_ClassMapping(context, (ClassMapping) semanticObject); 
 					return; 
 				}
 				else break;
 			case MIRPackage.ECLASS_PARAMETER:
 				if(context == grammarAccess.getEClassParameterRule()) {
 					sequence_EClassParameter(context, (EClassParameter) semanticObject); 
+					return; 
+				}
+				else break;
+			case MIRPackage.FEATURE_MAPPING:
+				if(context == grammarAccess.getFeatureMappingRule()) {
+					sequence_FeatureMapping(context, (FeatureMapping) semanticObject); 
 					return; 
 				}
 				else break;
@@ -132,12 +138,6 @@ public class MIRSemanticSequencer extends XbaseSemanticSequencer {
 			case MIRPackage.RESPONSE:
 				if(context == grammarAccess.getResponseRule()) {
 					sequence_Response(context, (Response) semanticObject); 
-					return; 
-				}
-				else break;
-			case MIRPackage.SUB_MAPPING:
-				if(context == grammarAccess.getSubMappingRule()) {
-					sequence_SubMapping(context, (SubMapping) semanticObject); 
 					return; 
 				}
 				else break;
@@ -320,7 +320,8 @@ public class MIRSemanticSequencer extends XbaseSemanticSequencer {
 				}
 				else break;
 			case XbasePackage.XBLOCK_EXPRESSION:
-				if(context == grammarAccess.getPredicateBlockRule() ||
+				if(context == grammarAccess.getExpressionBlockRule() ||
+				   context == grammarAccess.getPredicateBlockRule() ||
 				   context == grammarAccess.getXAdditiveExpressionRule() ||
 				   context == grammarAccess.getXAdditiveExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0() ||
 				   context == grammarAccess.getXAndExpressionRule() ||
@@ -1255,9 +1256,9 @@ public class MIRSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (mappedElements+=NamedEClass mappedElements+=NamedEClass (whens+=PredicateBlock | withs+=SubMapping | wheres+=PredicateBlock)*)
+	 *     (mappedElements+=NamedEClass mappedElements+=NamedEClass (whens+=PredicateBlock | withs+=FeatureMapping | wheres+=ExpressionBlock)*)
 	 */
-	protected void sequence_BaseMapping(EObject context, BaseMapping semanticObject) {
+	protected void sequence_ClassMapping(EObject context, ClassMapping semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -1278,6 +1279,15 @@ public class MIRSemanticSequencer extends XbaseSemanticSequencer {
 		feeder.accept(grammarAccess.getEClassParameterAccess().getTypeEClassQualifiedNameParserRuleCall_0_0_1(), semanticObject.getType());
 		feeder.accept(grammarAccess.getEClassParameterAccess().getNameValidIDParserRuleCall_1_0(), semanticObject.getName());
 		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (mappedElements+=NamedFeature mappedElements+=NamedFeature (whens+=PredicateBlock | withs+=FeatureMapping | wheres+=ExpressionBlock)*)
+	 */
+	protected void sequence_FeatureMapping(EObject context, FeatureMapping semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -1361,15 +1371,6 @@ public class MIRSemanticSequencer extends XbaseSemanticSequencer {
 	 *     (action=ResponseAction? context=NamedEClass inv=[Invariant|ID]? restoreAction=XBlockExpression)
 	 */
 	protected void sequence_Response(EObject context, Response semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (mappedElements+=NamedFeature mappedElements+=NamedFeature (whens+=PredicateBlock | withs+=SubMapping | wheres+=PredicateBlock)*)
-	 */
-	protected void sequence_SubMapping(EObject context, SubMapping semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 }

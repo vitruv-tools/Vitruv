@@ -2,11 +2,11 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl;
 
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Import;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Invariant;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRPackage;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Response;
 
 import java.util.Collection;
@@ -103,7 +103,7 @@ public class MIRFileImpl extends MinimalEObjectImpl.Container implements MIRFile
    * @generated
    * @ordered
    */
-  protected EList<Mapping> mappings;
+  protected EList<ClassMapping> mappings;
 
   /**
    * The cached value of the '{@link #getInvariants() <em>Invariants</em>}' containment reference list.
@@ -211,11 +211,11 @@ public class MIRFileImpl extends MinimalEObjectImpl.Container implements MIRFile
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<Mapping> getMappings()
+  public EList<ClassMapping> getMappings()
   {
     if (mappings == null)
     {
-      mappings = new EObjectContainmentEList<Mapping>(Mapping.class, this, MIRPackage.MIR_FILE__MAPPINGS);
+      mappings = new EObjectContainmentEList<ClassMapping>(ClassMapping.class, this, MIRPackage.MIR_FILE__MAPPINGS);
     }
     return mappings;
   }
@@ -319,7 +319,7 @@ public class MIRFileImpl extends MinimalEObjectImpl.Container implements MIRFile
         return;
       case MIRPackage.MIR_FILE__MAPPINGS:
         getMappings().clear();
-        getMappings().addAll((Collection<? extends Mapping>)newValue);
+        getMappings().addAll((Collection<? extends ClassMapping>)newValue);
         return;
       case MIRPackage.MIR_FILE__INVARIANTS:
         getInvariants().clear();

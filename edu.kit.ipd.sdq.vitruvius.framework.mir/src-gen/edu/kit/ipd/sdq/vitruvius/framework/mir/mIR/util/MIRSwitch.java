@@ -86,17 +86,31 @@ public class MIRSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case MIRPackage.MAPPING:
+      case MIRPackage.CLASS_MAPPING:
       {
-        Mapping mapping = (Mapping)theEObject;
-        T result = caseMapping(mapping);
+        ClassMapping classMapping = (ClassMapping)theEObject;
+        T result = caseClassMapping(classMapping);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case MIRPackage.MAPPABLE_ELEMENT:
+      case MIRPackage.FEATURE_MAPPING:
       {
-        MappableElement mappableElement = (MappableElement)theEObject;
-        T result = caseMappableElement(mappableElement);
+        FeatureMapping featureMapping = (FeatureMapping)theEObject;
+        T result = caseFeatureMapping(featureMapping);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case MIRPackage.NAMED_ECLASS:
+      {
+        NamedEClass namedEClass = (NamedEClass)theEObject;
+        T result = caseNamedEClass(namedEClass);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case MIRPackage.NAMED_FEATURE:
+      {
+        NamedFeature namedFeature = (NamedFeature)theEObject;
+        T result = caseNamedFeature(namedFeature);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -125,38 +139,6 @@ public class MIRSwitch<T> extends Switch<T>
       {
         Response response = (Response)theEObject;
         T result = caseResponse(response);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case MIRPackage.BASE_MAPPING:
-      {
-        BaseMapping baseMapping = (BaseMapping)theEObject;
-        T result = caseBaseMapping(baseMapping);
-        if (result == null) result = caseMapping(baseMapping);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case MIRPackage.SUB_MAPPING:
-      {
-        SubMapping subMapping = (SubMapping)theEObject;
-        T result = caseSubMapping(subMapping);
-        if (result == null) result = caseMapping(subMapping);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case MIRPackage.NAMED_ECLASS:
-      {
-        NamedEClass namedEClass = (NamedEClass)theEObject;
-        T result = caseNamedEClass(namedEClass);
-        if (result == null) result = caseMappableElement(namedEClass);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case MIRPackage.NAMED_FEATURE:
-      {
-        NamedFeature namedFeature = (NamedFeature)theEObject;
-        T result = caseNamedFeature(namedFeature);
-        if (result == null) result = caseMappableElement(namedFeature);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -197,33 +179,65 @@ public class MIRSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Mapping</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Class Mapping</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Mapping</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Class Mapping</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseMapping(Mapping object)
+  public T caseClassMapping(ClassMapping object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Mappable Element</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Feature Mapping</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Mappable Element</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Feature Mapping</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseMappableElement(MappableElement object)
+  public T caseFeatureMapping(FeatureMapping object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Named EClass</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Named EClass</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseNamedEClass(NamedEClass object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Named Feature</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Named Feature</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseNamedFeature(NamedFeature object)
   {
     return null;
   }
@@ -288,70 +302,6 @@ public class MIRSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseResponse(Response object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Base Mapping</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Base Mapping</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseBaseMapping(BaseMapping object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Sub Mapping</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Sub Mapping</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseSubMapping(SubMapping object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Named EClass</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Named EClass</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseNamedEClass(NamedEClass object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Named Feature</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Named Feature</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseNamedFeature(NamedFeature object)
   {
     return null;
   }

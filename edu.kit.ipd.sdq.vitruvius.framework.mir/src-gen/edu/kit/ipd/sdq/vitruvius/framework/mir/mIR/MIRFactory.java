@@ -41,22 +41,40 @@ public interface MIRFactory extends EFactory
   Import createImport();
 
   /**
-   * Returns a new object of class '<em>Mapping</em>'.
+   * Returns a new object of class '<em>Class Mapping</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Mapping</em>'.
+   * @return a new object of class '<em>Class Mapping</em>'.
    * @generated
    */
-  Mapping createMapping();
+  ClassMapping createClassMapping();
 
   /**
-   * Returns a new object of class '<em>Mappable Element</em>'.
+   * Returns a new object of class '<em>Feature Mapping</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Mappable Element</em>'.
+   * @return a new object of class '<em>Feature Mapping</em>'.
    * @generated
    */
-  MappableElement createMappableElement();
+  FeatureMapping createFeatureMapping();
+
+  /**
+   * Returns a new object of class '<em>Named EClass</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Named EClass</em>'.
+   * @generated
+   */
+  NamedEClass createNamedEClass();
+
+  /**
+   * Returns a new object of class '<em>Named Feature</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Named Feature</em>'.
+   * @generated
+   */
+  NamedFeature createNamedFeature();
 
   /**
    * Returns a new object of class '<em>EClass Parameter</em>'.
@@ -93,42 +111,6 @@ public interface MIRFactory extends EFactory
    * @generated
    */
   Response createResponse();
-
-  /**
-   * Returns a new object of class '<em>Base Mapping</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Base Mapping</em>'.
-   * @generated
-   */
-  BaseMapping createBaseMapping();
-
-  /**
-   * Returns a new object of class '<em>Sub Mapping</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Sub Mapping</em>'.
-   * @generated
-   */
-  SubMapping createSubMapping();
-
-  /**
-   * Returns a new object of class '<em>Named EClass</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Named EClass</em>'.
-   * @generated
-   */
-  NamedEClass createNamedEClass();
-
-  /**
-   * Returns a new object of class '<em>Named Feature</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Named Feature</em>'.
-   * @generated
-   */
-  NamedFeature createNamedFeature();
 
   /**
    * Returns the package supported by this factory.

@@ -8,12 +8,15 @@ import org.eclipse.xtext.linking.ILinkingService;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.scoping.IGlobalScopeProvider;
+import org.eclipse.xtext.xbase.compiler.JvmModelGenerator;
 
 import com.google.inject.Binder;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 
 import edu.kit.ipd.sdq.vitruvius.framework.mir.generator.IGeneratorStatus;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.generator.MIRCodeGenerator;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.generator.MIRGenerator;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.generator.MIRGeneratorStatus;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.generator.MIRIntermediateLanguageGenerator;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.linking.MIRLinkingService;
@@ -49,8 +52,13 @@ public class MIRRuntimeModule extends edu.kit.ipd.sdq.vitruvius.framework.mir.Ab
 	
 	@Override
 	public Class<? extends IGenerator> bindIGenerator() {
-		return MIRIntermediateLanguageGenerator.class;
+		return MIRGenerator.class;
 	}
+	
+	// TODO: can this injection be done differently?
+	private Class<? extends JvmModelGenerator> bindJvmModelGenerator() { return JvmModelGenerator.class; }
+	private Class<? extends MIRIntermediateLanguageGenerator> bindMIRIntermediateLanguageGenerator() { return MIRIntermediateLanguageGenerator.class; }
+	private Class<? extends MIRCodeGenerator> bindMIRCodeGenerator() { return MIRCodeGenerator.class; }
 	
 	public void configureIGeneratorStatus(Binder binder) {
 		binder.bind(IGeneratorStatus.class)

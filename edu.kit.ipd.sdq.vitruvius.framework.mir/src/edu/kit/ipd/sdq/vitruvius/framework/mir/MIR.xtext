@@ -25,46 +25,42 @@ Import:
 
 
 // Mappings
-Mapping:
-	'map' BaseMapping
+Mapping returns ClassMapping:
+	'map' ClassMapping
 ;
 
-BaseMapping returns Mapping:
-	{BaseMapping}
+ClassMapping:
 	mappedElements+=NamedEClass
 	'to'
 	mappedElements+=NamedEClass
 	('{'
 		( ('when' whens += PredicateBlock)
-		| ('with' withs += SubMapping)
-		| ('where' wheres += PredicateBlock)
+		| ('with' withs += FeatureMapping)
+		| ('where' wheres += ExpressionBlock)
 		)*
 	'}')?
 ;
 
-SubMapping returns Mapping:
-	{SubMapping}
+FeatureMapping:
 	mappedElements+=NamedFeature
 	'to'
 	mappedElements+=NamedFeature
 	('{'
 		( ('when' whens += PredicateBlock)
-		| ('with' withs += SubMapping)
-		| ('where' wheres += PredicateBlock)
+		| ('with' withs += FeatureMapping)
+		| ('where' wheres += ExpressionBlock)
 		)*
 	'}')?
 ;
 
-NamedEClass returns MappableElement:
-	{NamedEClass}
+NamedEClass:
 	representedEClass=[ecore::EClass|QualifiedName]
-	('as' name=ValidID)?
+	'as' name=ValidID
 ;
 
-NamedFeature returns MappableElement:
-	{NamedFeature}
+NamedFeature:
 	containingNamedEClass=[NamedEClass] '.' representedFeature=[ecore::EStructuralFeature|ValidID]
-	('as' name=ValidID)?
+	'as' name=ValidID
 ;
 
 // Invariants
@@ -86,6 +82,10 @@ Invariant:
 PredicateBlock returns ecore::EObject:
 	('xbase' XBlockExpression) |
 	('ocl' OCLBlock)
+;
+
+ExpressionBlock returns ecore::EObject:
+	('xbase' XBlockExpression)
 ;
 
 OCLBlock:

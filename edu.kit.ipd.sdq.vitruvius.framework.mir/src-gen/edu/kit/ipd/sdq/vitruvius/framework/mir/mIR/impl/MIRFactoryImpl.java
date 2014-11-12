@@ -67,16 +67,14 @@ public class MIRFactoryImpl extends EFactoryImpl implements MIRFactory
     {
       case MIRPackage.MIR_FILE: return createMIRFile();
       case MIRPackage.IMPORT: return createImport();
-      case MIRPackage.MAPPING: return createMapping();
-      case MIRPackage.MAPPABLE_ELEMENT: return createMappableElement();
+      case MIRPackage.CLASS_MAPPING: return createClassMapping();
+      case MIRPackage.FEATURE_MAPPING: return createFeatureMapping();
+      case MIRPackage.NAMED_ECLASS: return createNamedEClass();
+      case MIRPackage.NAMED_FEATURE: return createNamedFeature();
       case MIRPackage.ECLASS_PARAMETER: return createEClassParameter();
       case MIRPackage.INVARIANT: return createInvariant();
       case MIRPackage.OCL_BLOCK: return createOCLBlock();
       case MIRPackage.RESPONSE: return createResponse();
-      case MIRPackage.BASE_MAPPING: return createBaseMapping();
-      case MIRPackage.SUB_MAPPING: return createSubMapping();
-      case MIRPackage.NAMED_ECLASS: return createNamedEClass();
-      case MIRPackage.NAMED_FEATURE: return createNamedFeature();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -143,10 +141,10 @@ public class MIRFactoryImpl extends EFactoryImpl implements MIRFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public Mapping createMapping()
+  public ClassMapping createClassMapping()
   {
-    MappingImpl mapping = new MappingImpl();
-    return mapping;
+    ClassMappingImpl classMapping = new ClassMappingImpl();
+    return classMapping;
   }
 
   /**
@@ -154,10 +152,32 @@ public class MIRFactoryImpl extends EFactoryImpl implements MIRFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public MappableElement createMappableElement()
+  public FeatureMapping createFeatureMapping()
   {
-    MappableElementImpl mappableElement = new MappableElementImpl();
-    return mappableElement;
+    FeatureMappingImpl featureMapping = new FeatureMappingImpl();
+    return featureMapping;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NamedEClass createNamedEClass()
+  {
+    NamedEClassImpl namedEClass = new NamedEClassImpl();
+    return namedEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NamedFeature createNamedFeature()
+  {
+    NamedFeatureImpl namedFeature = new NamedFeatureImpl();
+    return namedFeature;
   }
 
   /**
@@ -202,50 +222,6 @@ public class MIRFactoryImpl extends EFactoryImpl implements MIRFactory
   {
     ResponseImpl response = new ResponseImpl();
     return response;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public BaseMapping createBaseMapping()
-  {
-    BaseMappingImpl baseMapping = new BaseMappingImpl();
-    return baseMapping;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public SubMapping createSubMapping()
-  {
-    SubMappingImpl subMapping = new SubMappingImpl();
-    return subMapping;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NamedEClass createNamedEClass()
-  {
-    NamedEClassImpl namedEClass = new NamedEClassImpl();
-    return namedEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NamedFeature createNamedFeature()
-  {
-    NamedFeatureImpl namedFeature = new NamedFeatureImpl();
-    return namedFeature;
   }
 
   /**

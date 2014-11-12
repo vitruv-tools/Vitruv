@@ -2,6 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.mir.mIR;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
@@ -14,6 +15,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature#getContainingNamedEClass <em>Containing Named EClass</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature#getRepresentedFeature <em>Represented Feature</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -21,7 +23,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * @model
  * @generated
  */
-public interface NamedFeature extends MappableElement
+public interface NamedFeature extends EObject
 {
   /**
    * Returns the value of the '<em><b>Containing Named EClass</b></em>' reference.
@@ -74,5 +76,31 @@ public interface NamedFeature extends MappableElement
    * @generated
    */
   void setRepresentedFeature(EStructuralFeature value);
+
+  /**
+   * Returns the value of the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Name</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Name</em>' attribute.
+   * @see #setName(String)
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRPackage#getNamedFeature_Name()
+   * @model
+   * @generated
+   */
+  String getName();
+
+  /**
+   * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature#getName <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Name</em>' attribute.
+   * @see #getName()
+   * @generated
+   */
+  void setName(String value);
 
 } // NamedFeature

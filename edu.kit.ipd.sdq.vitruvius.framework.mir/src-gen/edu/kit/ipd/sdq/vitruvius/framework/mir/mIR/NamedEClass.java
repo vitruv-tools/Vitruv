@@ -3,6 +3,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.mIR;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -13,6 +14,7 @@ import org.eclipse.emf.ecore.EClass;
  * The following features are supported:
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass#getRepresentedEClass <em>Represented EClass</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -20,7 +22,7 @@ import org.eclipse.emf.ecore.EClass;
  * @model
  * @generated
  */
-public interface NamedEClass extends MappableElement
+public interface NamedEClass extends EObject
 {
   /**
    * Returns the value of the '<em><b>Represented EClass</b></em>' reference.
@@ -47,5 +49,31 @@ public interface NamedEClass extends MappableElement
    * @generated
    */
   void setRepresentedEClass(EClass value);
+
+  /**
+   * Returns the value of the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Name</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Name</em>' attribute.
+   * @see #setName(String)
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRPackage#getNamedEClass_Name()
+   * @model
+   * @generated
+   */
+  String getName();
+
+  /**
+   * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass#getName <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Name</em>' attribute.
+   * @see #getName()
+   * @generated
+   */
+  void setName(String value);
 
 } // NamedEClass

@@ -153,331 +153,313 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Mapping");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cMapKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final RuleCall cBaseMappingParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
+		private final RuleCall cClassMappingParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
 		
 		//// Mappings
-		//Mapping:
-		//	"map" BaseMapping;
+		//Mapping returns ClassMapping:
+		//	"map" ClassMapping;
 		public ParserRule getRule() { return rule; }
 
-		//"map" BaseMapping
+		//"map" ClassMapping
 		public Group getGroup() { return cGroup; }
 
 		//"map"
 		public Keyword getMapKeyword_0() { return cMapKeyword_0; }
 
-		//BaseMapping
-		public RuleCall getBaseMappingParserRuleCall_1() { return cBaseMappingParserRuleCall_1; }
+		//ClassMapping
+		public RuleCall getClassMappingParserRuleCall_1() { return cClassMappingParserRuleCall_1; }
 	}
 
-	public class BaseMappingElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "BaseMapping");
+	public class ClassMappingElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "ClassMapping");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cBaseMappingAction_0 = (Action)cGroup.eContents().get(0);
-		private final Assignment cMappedElementsAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cMappedElementsNamedEClassParserRuleCall_1_0 = (RuleCall)cMappedElementsAssignment_1.eContents().get(0);
-		private final Keyword cToKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cMappedElementsAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cMappedElementsNamedEClassParserRuleCall_3_0 = (RuleCall)cMappedElementsAssignment_3.eContents().get(0);
-		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
-		private final Keyword cLeftCurlyBracketKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
-		private final Alternatives cAlternatives_4_1 = (Alternatives)cGroup_4.eContents().get(1);
-		private final Group cGroup_4_1_0 = (Group)cAlternatives_4_1.eContents().get(0);
-		private final Keyword cWhenKeyword_4_1_0_0 = (Keyword)cGroup_4_1_0.eContents().get(0);
-		private final Assignment cWhensAssignment_4_1_0_1 = (Assignment)cGroup_4_1_0.eContents().get(1);
-		private final RuleCall cWhensPredicateBlockParserRuleCall_4_1_0_1_0 = (RuleCall)cWhensAssignment_4_1_0_1.eContents().get(0);
-		private final Group cGroup_4_1_1 = (Group)cAlternatives_4_1.eContents().get(1);
-		private final Keyword cWithKeyword_4_1_1_0 = (Keyword)cGroup_4_1_1.eContents().get(0);
-		private final Assignment cWithsAssignment_4_1_1_1 = (Assignment)cGroup_4_1_1.eContents().get(1);
-		private final RuleCall cWithsSubMappingParserRuleCall_4_1_1_1_0 = (RuleCall)cWithsAssignment_4_1_1_1.eContents().get(0);
-		private final Group cGroup_4_1_2 = (Group)cAlternatives_4_1.eContents().get(2);
-		private final Keyword cWhereKeyword_4_1_2_0 = (Keyword)cGroup_4_1_2.eContents().get(0);
-		private final Assignment cWheresAssignment_4_1_2_1 = (Assignment)cGroup_4_1_2.eContents().get(1);
-		private final RuleCall cWheresPredicateBlockParserRuleCall_4_1_2_1_0 = (RuleCall)cWheresAssignment_4_1_2_1.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_4_2 = (Keyword)cGroup_4.eContents().get(2);
+		private final Assignment cMappedElementsAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cMappedElementsNamedEClassParserRuleCall_0_0 = (RuleCall)cMappedElementsAssignment_0.eContents().get(0);
+		private final Keyword cToKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cMappedElementsAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cMappedElementsNamedEClassParserRuleCall_2_0 = (RuleCall)cMappedElementsAssignment_2.eContents().get(0);
+		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
+		private final Keyword cLeftCurlyBracketKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
+		private final Alternatives cAlternatives_3_1 = (Alternatives)cGroup_3.eContents().get(1);
+		private final Group cGroup_3_1_0 = (Group)cAlternatives_3_1.eContents().get(0);
+		private final Keyword cWhenKeyword_3_1_0_0 = (Keyword)cGroup_3_1_0.eContents().get(0);
+		private final Assignment cWhensAssignment_3_1_0_1 = (Assignment)cGroup_3_1_0.eContents().get(1);
+		private final RuleCall cWhensPredicateBlockParserRuleCall_3_1_0_1_0 = (RuleCall)cWhensAssignment_3_1_0_1.eContents().get(0);
+		private final Group cGroup_3_1_1 = (Group)cAlternatives_3_1.eContents().get(1);
+		private final Keyword cWithKeyword_3_1_1_0 = (Keyword)cGroup_3_1_1.eContents().get(0);
+		private final Assignment cWithsAssignment_3_1_1_1 = (Assignment)cGroup_3_1_1.eContents().get(1);
+		private final RuleCall cWithsFeatureMappingParserRuleCall_3_1_1_1_0 = (RuleCall)cWithsAssignment_3_1_1_1.eContents().get(0);
+		private final Group cGroup_3_1_2 = (Group)cAlternatives_3_1.eContents().get(2);
+		private final Keyword cWhereKeyword_3_1_2_0 = (Keyword)cGroup_3_1_2.eContents().get(0);
+		private final Assignment cWheresAssignment_3_1_2_1 = (Assignment)cGroup_3_1_2.eContents().get(1);
+		private final RuleCall cWheresExpressionBlockParserRuleCall_3_1_2_1_0 = (RuleCall)cWheresAssignment_3_1_2_1.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_3_2 = (Keyword)cGroup_3.eContents().get(2);
 		
-		//BaseMapping returns Mapping:
-		//	{BaseMapping} mappedElements+=NamedEClass "to" mappedElements+=NamedEClass ("{" ("when" whens+=PredicateBlock |
-		//	"with" withs+=SubMapping | "where" wheres+=PredicateBlock)* "}")?;
+		//ClassMapping:
+		//	mappedElements+=NamedEClass "to" mappedElements+=NamedEClass ("{" ("when" whens+=PredicateBlock | "with"
+		//	withs+=FeatureMapping | "where" wheres+=ExpressionBlock)* "}")?;
 		public ParserRule getRule() { return rule; }
 
-		//{BaseMapping} mappedElements+=NamedEClass "to" mappedElements+=NamedEClass ("{" ("when" whens+=PredicateBlock | "with"
-		//withs+=SubMapping | "where" wheres+=PredicateBlock)* "}")?
+		//mappedElements+=NamedEClass "to" mappedElements+=NamedEClass ("{" ("when" whens+=PredicateBlock | "with"
+		//withs+=FeatureMapping | "where" wheres+=ExpressionBlock)* "}")?
 		public Group getGroup() { return cGroup; }
 
-		//{BaseMapping}
-		public Action getBaseMappingAction_0() { return cBaseMappingAction_0; }
-
 		//mappedElements+=NamedEClass
-		public Assignment getMappedElementsAssignment_1() { return cMappedElementsAssignment_1; }
+		public Assignment getMappedElementsAssignment_0() { return cMappedElementsAssignment_0; }
 
 		//NamedEClass
-		public RuleCall getMappedElementsNamedEClassParserRuleCall_1_0() { return cMappedElementsNamedEClassParserRuleCall_1_0; }
+		public RuleCall getMappedElementsNamedEClassParserRuleCall_0_0() { return cMappedElementsNamedEClassParserRuleCall_0_0; }
 
 		//"to"
-		public Keyword getToKeyword_2() { return cToKeyword_2; }
+		public Keyword getToKeyword_1() { return cToKeyword_1; }
 
 		//mappedElements+=NamedEClass
-		public Assignment getMappedElementsAssignment_3() { return cMappedElementsAssignment_3; }
+		public Assignment getMappedElementsAssignment_2() { return cMappedElementsAssignment_2; }
 
 		//NamedEClass
-		public RuleCall getMappedElementsNamedEClassParserRuleCall_3_0() { return cMappedElementsNamedEClassParserRuleCall_3_0; }
+		public RuleCall getMappedElementsNamedEClassParserRuleCall_2_0() { return cMappedElementsNamedEClassParserRuleCall_2_0; }
 
-		//("{" ("when" whens+=PredicateBlock | "with" withs+=SubMapping | "where" wheres+=PredicateBlock)* "}")?
-		public Group getGroup_4() { return cGroup_4; }
+		//("{" ("when" whens+=PredicateBlock | "with" withs+=FeatureMapping | "where" wheres+=ExpressionBlock)* "}")?
+		public Group getGroup_3() { return cGroup_3; }
 
 		//"{"
-		public Keyword getLeftCurlyBracketKeyword_4_0() { return cLeftCurlyBracketKeyword_4_0; }
+		public Keyword getLeftCurlyBracketKeyword_3_0() { return cLeftCurlyBracketKeyword_3_0; }
 
-		//("when" whens+=PredicateBlock | "with" withs+=SubMapping | "where" wheres+=PredicateBlock)*
-		public Alternatives getAlternatives_4_1() { return cAlternatives_4_1; }
+		//("when" whens+=PredicateBlock | "with" withs+=FeatureMapping | "where" wheres+=ExpressionBlock)*
+		public Alternatives getAlternatives_3_1() { return cAlternatives_3_1; }
 
 		//"when" whens+=PredicateBlock
-		public Group getGroup_4_1_0() { return cGroup_4_1_0; }
+		public Group getGroup_3_1_0() { return cGroup_3_1_0; }
 
 		//"when"
-		public Keyword getWhenKeyword_4_1_0_0() { return cWhenKeyword_4_1_0_0; }
+		public Keyword getWhenKeyword_3_1_0_0() { return cWhenKeyword_3_1_0_0; }
 
 		//whens+=PredicateBlock
-		public Assignment getWhensAssignment_4_1_0_1() { return cWhensAssignment_4_1_0_1; }
+		public Assignment getWhensAssignment_3_1_0_1() { return cWhensAssignment_3_1_0_1; }
 
 		//PredicateBlock
-		public RuleCall getWhensPredicateBlockParserRuleCall_4_1_0_1_0() { return cWhensPredicateBlockParserRuleCall_4_1_0_1_0; }
+		public RuleCall getWhensPredicateBlockParserRuleCall_3_1_0_1_0() { return cWhensPredicateBlockParserRuleCall_3_1_0_1_0; }
 
-		//"with" withs+=SubMapping
-		public Group getGroup_4_1_1() { return cGroup_4_1_1; }
+		//"with" withs+=FeatureMapping
+		public Group getGroup_3_1_1() { return cGroup_3_1_1; }
 
 		//"with"
-		public Keyword getWithKeyword_4_1_1_0() { return cWithKeyword_4_1_1_0; }
+		public Keyword getWithKeyword_3_1_1_0() { return cWithKeyword_3_1_1_0; }
 
-		//withs+=SubMapping
-		public Assignment getWithsAssignment_4_1_1_1() { return cWithsAssignment_4_1_1_1; }
+		//withs+=FeatureMapping
+		public Assignment getWithsAssignment_3_1_1_1() { return cWithsAssignment_3_1_1_1; }
 
-		//SubMapping
-		public RuleCall getWithsSubMappingParserRuleCall_4_1_1_1_0() { return cWithsSubMappingParserRuleCall_4_1_1_1_0; }
+		//FeatureMapping
+		public RuleCall getWithsFeatureMappingParserRuleCall_3_1_1_1_0() { return cWithsFeatureMappingParserRuleCall_3_1_1_1_0; }
 
-		//"where" wheres+=PredicateBlock
-		public Group getGroup_4_1_2() { return cGroup_4_1_2; }
+		//"where" wheres+=ExpressionBlock
+		public Group getGroup_3_1_2() { return cGroup_3_1_2; }
 
 		//"where"
-		public Keyword getWhereKeyword_4_1_2_0() { return cWhereKeyword_4_1_2_0; }
+		public Keyword getWhereKeyword_3_1_2_0() { return cWhereKeyword_3_1_2_0; }
 
-		//wheres+=PredicateBlock
-		public Assignment getWheresAssignment_4_1_2_1() { return cWheresAssignment_4_1_2_1; }
+		//wheres+=ExpressionBlock
+		public Assignment getWheresAssignment_3_1_2_1() { return cWheresAssignment_3_1_2_1; }
 
-		//PredicateBlock
-		public RuleCall getWheresPredicateBlockParserRuleCall_4_1_2_1_0() { return cWheresPredicateBlockParserRuleCall_4_1_2_1_0; }
+		//ExpressionBlock
+		public RuleCall getWheresExpressionBlockParserRuleCall_3_1_2_1_0() { return cWheresExpressionBlockParserRuleCall_3_1_2_1_0; }
 
 		//"}"
-		public Keyword getRightCurlyBracketKeyword_4_2() { return cRightCurlyBracketKeyword_4_2; }
+		public Keyword getRightCurlyBracketKeyword_3_2() { return cRightCurlyBracketKeyword_3_2; }
 	}
 
-	public class SubMappingElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "SubMapping");
+	public class FeatureMappingElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "FeatureMapping");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cSubMappingAction_0 = (Action)cGroup.eContents().get(0);
-		private final Assignment cMappedElementsAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cMappedElementsNamedFeatureParserRuleCall_1_0 = (RuleCall)cMappedElementsAssignment_1.eContents().get(0);
-		private final Keyword cToKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cMappedElementsAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cMappedElementsNamedFeatureParserRuleCall_3_0 = (RuleCall)cMappedElementsAssignment_3.eContents().get(0);
-		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
-		private final Keyword cLeftCurlyBracketKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
-		private final Alternatives cAlternatives_4_1 = (Alternatives)cGroup_4.eContents().get(1);
-		private final Group cGroup_4_1_0 = (Group)cAlternatives_4_1.eContents().get(0);
-		private final Keyword cWhenKeyword_4_1_0_0 = (Keyword)cGroup_4_1_0.eContents().get(0);
-		private final Assignment cWhensAssignment_4_1_0_1 = (Assignment)cGroup_4_1_0.eContents().get(1);
-		private final RuleCall cWhensPredicateBlockParserRuleCall_4_1_0_1_0 = (RuleCall)cWhensAssignment_4_1_0_1.eContents().get(0);
-		private final Group cGroup_4_1_1 = (Group)cAlternatives_4_1.eContents().get(1);
-		private final Keyword cWithKeyword_4_1_1_0 = (Keyword)cGroup_4_1_1.eContents().get(0);
-		private final Assignment cWithsAssignment_4_1_1_1 = (Assignment)cGroup_4_1_1.eContents().get(1);
-		private final RuleCall cWithsSubMappingParserRuleCall_4_1_1_1_0 = (RuleCall)cWithsAssignment_4_1_1_1.eContents().get(0);
-		private final Group cGroup_4_1_2 = (Group)cAlternatives_4_1.eContents().get(2);
-		private final Keyword cWhereKeyword_4_1_2_0 = (Keyword)cGroup_4_1_2.eContents().get(0);
-		private final Assignment cWheresAssignment_4_1_2_1 = (Assignment)cGroup_4_1_2.eContents().get(1);
-		private final RuleCall cWheresPredicateBlockParserRuleCall_4_1_2_1_0 = (RuleCall)cWheresAssignment_4_1_2_1.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_4_2 = (Keyword)cGroup_4.eContents().get(2);
+		private final Assignment cMappedElementsAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cMappedElementsNamedFeatureParserRuleCall_0_0 = (RuleCall)cMappedElementsAssignment_0.eContents().get(0);
+		private final Keyword cToKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cMappedElementsAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cMappedElementsNamedFeatureParserRuleCall_2_0 = (RuleCall)cMappedElementsAssignment_2.eContents().get(0);
+		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
+		private final Keyword cLeftCurlyBracketKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
+		private final Alternatives cAlternatives_3_1 = (Alternatives)cGroup_3.eContents().get(1);
+		private final Group cGroup_3_1_0 = (Group)cAlternatives_3_1.eContents().get(0);
+		private final Keyword cWhenKeyword_3_1_0_0 = (Keyword)cGroup_3_1_0.eContents().get(0);
+		private final Assignment cWhensAssignment_3_1_0_1 = (Assignment)cGroup_3_1_0.eContents().get(1);
+		private final RuleCall cWhensPredicateBlockParserRuleCall_3_1_0_1_0 = (RuleCall)cWhensAssignment_3_1_0_1.eContents().get(0);
+		private final Group cGroup_3_1_1 = (Group)cAlternatives_3_1.eContents().get(1);
+		private final Keyword cWithKeyword_3_1_1_0 = (Keyword)cGroup_3_1_1.eContents().get(0);
+		private final Assignment cWithsAssignment_3_1_1_1 = (Assignment)cGroup_3_1_1.eContents().get(1);
+		private final RuleCall cWithsFeatureMappingParserRuleCall_3_1_1_1_0 = (RuleCall)cWithsAssignment_3_1_1_1.eContents().get(0);
+		private final Group cGroup_3_1_2 = (Group)cAlternatives_3_1.eContents().get(2);
+		private final Keyword cWhereKeyword_3_1_2_0 = (Keyword)cGroup_3_1_2.eContents().get(0);
+		private final Assignment cWheresAssignment_3_1_2_1 = (Assignment)cGroup_3_1_2.eContents().get(1);
+		private final RuleCall cWheresExpressionBlockParserRuleCall_3_1_2_1_0 = (RuleCall)cWheresAssignment_3_1_2_1.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_3_2 = (Keyword)cGroup_3.eContents().get(2);
 		
-		//SubMapping returns Mapping:
-		//	{SubMapping} mappedElements+=NamedFeature "to" mappedElements+=NamedFeature ("{" ("when" whens+=PredicateBlock |
-		//	"with" withs+=SubMapping | "where" wheres+=PredicateBlock)* "}")?;
+		//FeatureMapping:
+		//	mappedElements+=NamedFeature "to" mappedElements+=NamedFeature ("{" ("when" whens+=PredicateBlock | "with"
+		//	withs+=FeatureMapping | "where" wheres+=ExpressionBlock)* "}")?;
 		public ParserRule getRule() { return rule; }
 
-		//{SubMapping} mappedElements+=NamedFeature "to" mappedElements+=NamedFeature ("{" ("when" whens+=PredicateBlock | "with"
-		//withs+=SubMapping | "where" wheres+=PredicateBlock)* "}")?
+		//mappedElements+=NamedFeature "to" mappedElements+=NamedFeature ("{" ("when" whens+=PredicateBlock | "with"
+		//withs+=FeatureMapping | "where" wheres+=ExpressionBlock)* "}")?
 		public Group getGroup() { return cGroup; }
 
-		//{SubMapping}
-		public Action getSubMappingAction_0() { return cSubMappingAction_0; }
-
 		//mappedElements+=NamedFeature
-		public Assignment getMappedElementsAssignment_1() { return cMappedElementsAssignment_1; }
+		public Assignment getMappedElementsAssignment_0() { return cMappedElementsAssignment_0; }
 
 		//NamedFeature
-		public RuleCall getMappedElementsNamedFeatureParserRuleCall_1_0() { return cMappedElementsNamedFeatureParserRuleCall_1_0; }
+		public RuleCall getMappedElementsNamedFeatureParserRuleCall_0_0() { return cMappedElementsNamedFeatureParserRuleCall_0_0; }
 
 		//"to"
-		public Keyword getToKeyword_2() { return cToKeyword_2; }
+		public Keyword getToKeyword_1() { return cToKeyword_1; }
 
 		//mappedElements+=NamedFeature
-		public Assignment getMappedElementsAssignment_3() { return cMappedElementsAssignment_3; }
+		public Assignment getMappedElementsAssignment_2() { return cMappedElementsAssignment_2; }
 
 		//NamedFeature
-		public RuleCall getMappedElementsNamedFeatureParserRuleCall_3_0() { return cMappedElementsNamedFeatureParserRuleCall_3_0; }
+		public RuleCall getMappedElementsNamedFeatureParserRuleCall_2_0() { return cMappedElementsNamedFeatureParserRuleCall_2_0; }
 
-		//("{" ("when" whens+=PredicateBlock | "with" withs+=SubMapping | "where" wheres+=PredicateBlock)* "}")?
-		public Group getGroup_4() { return cGroup_4; }
+		//("{" ("when" whens+=PredicateBlock | "with" withs+=FeatureMapping | "where" wheres+=ExpressionBlock)* "}")?
+		public Group getGroup_3() { return cGroup_3; }
 
 		//"{"
-		public Keyword getLeftCurlyBracketKeyword_4_0() { return cLeftCurlyBracketKeyword_4_0; }
+		public Keyword getLeftCurlyBracketKeyword_3_0() { return cLeftCurlyBracketKeyword_3_0; }
 
-		//("when" whens+=PredicateBlock | "with" withs+=SubMapping | "where" wheres+=PredicateBlock)*
-		public Alternatives getAlternatives_4_1() { return cAlternatives_4_1; }
+		//("when" whens+=PredicateBlock | "with" withs+=FeatureMapping | "where" wheres+=ExpressionBlock)*
+		public Alternatives getAlternatives_3_1() { return cAlternatives_3_1; }
 
 		//"when" whens+=PredicateBlock
-		public Group getGroup_4_1_0() { return cGroup_4_1_0; }
+		public Group getGroup_3_1_0() { return cGroup_3_1_0; }
 
 		//"when"
-		public Keyword getWhenKeyword_4_1_0_0() { return cWhenKeyword_4_1_0_0; }
+		public Keyword getWhenKeyword_3_1_0_0() { return cWhenKeyword_3_1_0_0; }
 
 		//whens+=PredicateBlock
-		public Assignment getWhensAssignment_4_1_0_1() { return cWhensAssignment_4_1_0_1; }
+		public Assignment getWhensAssignment_3_1_0_1() { return cWhensAssignment_3_1_0_1; }
 
 		//PredicateBlock
-		public RuleCall getWhensPredicateBlockParserRuleCall_4_1_0_1_0() { return cWhensPredicateBlockParserRuleCall_4_1_0_1_0; }
+		public RuleCall getWhensPredicateBlockParserRuleCall_3_1_0_1_0() { return cWhensPredicateBlockParserRuleCall_3_1_0_1_0; }
 
-		//"with" withs+=SubMapping
-		public Group getGroup_4_1_1() { return cGroup_4_1_1; }
+		//"with" withs+=FeatureMapping
+		public Group getGroup_3_1_1() { return cGroup_3_1_1; }
 
 		//"with"
-		public Keyword getWithKeyword_4_1_1_0() { return cWithKeyword_4_1_1_0; }
+		public Keyword getWithKeyword_3_1_1_0() { return cWithKeyword_3_1_1_0; }
 
-		//withs+=SubMapping
-		public Assignment getWithsAssignment_4_1_1_1() { return cWithsAssignment_4_1_1_1; }
+		//withs+=FeatureMapping
+		public Assignment getWithsAssignment_3_1_1_1() { return cWithsAssignment_3_1_1_1; }
 
-		//SubMapping
-		public RuleCall getWithsSubMappingParserRuleCall_4_1_1_1_0() { return cWithsSubMappingParserRuleCall_4_1_1_1_0; }
+		//FeatureMapping
+		public RuleCall getWithsFeatureMappingParserRuleCall_3_1_1_1_0() { return cWithsFeatureMappingParserRuleCall_3_1_1_1_0; }
 
-		//"where" wheres+=PredicateBlock
-		public Group getGroup_4_1_2() { return cGroup_4_1_2; }
+		//"where" wheres+=ExpressionBlock
+		public Group getGroup_3_1_2() { return cGroup_3_1_2; }
 
 		//"where"
-		public Keyword getWhereKeyword_4_1_2_0() { return cWhereKeyword_4_1_2_0; }
+		public Keyword getWhereKeyword_3_1_2_0() { return cWhereKeyword_3_1_2_0; }
 
-		//wheres+=PredicateBlock
-		public Assignment getWheresAssignment_4_1_2_1() { return cWheresAssignment_4_1_2_1; }
+		//wheres+=ExpressionBlock
+		public Assignment getWheresAssignment_3_1_2_1() { return cWheresAssignment_3_1_2_1; }
 
-		//PredicateBlock
-		public RuleCall getWheresPredicateBlockParserRuleCall_4_1_2_1_0() { return cWheresPredicateBlockParserRuleCall_4_1_2_1_0; }
+		//ExpressionBlock
+		public RuleCall getWheresExpressionBlockParserRuleCall_3_1_2_1_0() { return cWheresExpressionBlockParserRuleCall_3_1_2_1_0; }
 
 		//"}"
-		public Keyword getRightCurlyBracketKeyword_4_2() { return cRightCurlyBracketKeyword_4_2; }
+		public Keyword getRightCurlyBracketKeyword_3_2() { return cRightCurlyBracketKeyword_3_2; }
 	}
 
 	public class NamedEClassElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "NamedEClass");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cNamedEClassAction_0 = (Action)cGroup.eContents().get(0);
-		private final Assignment cRepresentedEClassAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final CrossReference cRepresentedEClassEClassCrossReference_1_0 = (CrossReference)cRepresentedEClassAssignment_1.eContents().get(0);
-		private final RuleCall cRepresentedEClassEClassQualifiedNameParserRuleCall_1_0_1 = (RuleCall)cRepresentedEClassEClassCrossReference_1_0.eContents().get(1);
-		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
-		private final Keyword cAsKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
-		private final Assignment cNameAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
-		private final RuleCall cNameValidIDParserRuleCall_2_1_0 = (RuleCall)cNameAssignment_2_1.eContents().get(0);
+		private final Assignment cRepresentedEClassAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final CrossReference cRepresentedEClassEClassCrossReference_0_0 = (CrossReference)cRepresentedEClassAssignment_0.eContents().get(0);
+		private final RuleCall cRepresentedEClassEClassQualifiedNameParserRuleCall_0_0_1 = (RuleCall)cRepresentedEClassEClassCrossReference_0_0.eContents().get(1);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Keyword cAsKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
+		private final Assignment cNameAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final RuleCall cNameValidIDParserRuleCall_1_1_0 = (RuleCall)cNameAssignment_1_1.eContents().get(0);
 		
-		//NamedEClass returns MappableElement:
-		//	{NamedEClass} representedEClass=[ecore::EClass|QualifiedName] ("as" name=ValidID)?;
+		//NamedEClass:
+		//	representedEClass=[ecore::EClass|QualifiedName] ("as" name=ValidID)?;
 		public ParserRule getRule() { return rule; }
 
-		//{NamedEClass} representedEClass=[ecore::EClass|QualifiedName] ("as" name=ValidID)?
+		//representedEClass=[ecore::EClass|QualifiedName] ("as" name=ValidID)?
 		public Group getGroup() { return cGroup; }
 
-		//{NamedEClass}
-		public Action getNamedEClassAction_0() { return cNamedEClassAction_0; }
-
 		//representedEClass=[ecore::EClass|QualifiedName]
-		public Assignment getRepresentedEClassAssignment_1() { return cRepresentedEClassAssignment_1; }
+		public Assignment getRepresentedEClassAssignment_0() { return cRepresentedEClassAssignment_0; }
 
 		//[ecore::EClass|QualifiedName]
-		public CrossReference getRepresentedEClassEClassCrossReference_1_0() { return cRepresentedEClassEClassCrossReference_1_0; }
+		public CrossReference getRepresentedEClassEClassCrossReference_0_0() { return cRepresentedEClassEClassCrossReference_0_0; }
 
 		//QualifiedName
-		public RuleCall getRepresentedEClassEClassQualifiedNameParserRuleCall_1_0_1() { return cRepresentedEClassEClassQualifiedNameParserRuleCall_1_0_1; }
+		public RuleCall getRepresentedEClassEClassQualifiedNameParserRuleCall_0_0_1() { return cRepresentedEClassEClassQualifiedNameParserRuleCall_0_0_1; }
 
 		//("as" name=ValidID)?
-		public Group getGroup_2() { return cGroup_2; }
+		public Group getGroup_1() { return cGroup_1; }
 
 		//"as"
-		public Keyword getAsKeyword_2_0() { return cAsKeyword_2_0; }
+		public Keyword getAsKeyword_1_0() { return cAsKeyword_1_0; }
 
 		//name=ValidID
-		public Assignment getNameAssignment_2_1() { return cNameAssignment_2_1; }
+		public Assignment getNameAssignment_1_1() { return cNameAssignment_1_1; }
 
 		//ValidID
-		public RuleCall getNameValidIDParserRuleCall_2_1_0() { return cNameValidIDParserRuleCall_2_1_0; }
+		public RuleCall getNameValidIDParserRuleCall_1_1_0() { return cNameValidIDParserRuleCall_1_1_0; }
 	}
 
 	public class NamedFeatureElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "NamedFeature");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cNamedFeatureAction_0 = (Action)cGroup.eContents().get(0);
-		private final Assignment cContainingNamedEClassAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final CrossReference cContainingNamedEClassNamedEClassCrossReference_1_0 = (CrossReference)cContainingNamedEClassAssignment_1.eContents().get(0);
-		private final RuleCall cContainingNamedEClassNamedEClassIDTerminalRuleCall_1_0_1 = (RuleCall)cContainingNamedEClassNamedEClassCrossReference_1_0.eContents().get(1);
-		private final Keyword cFullStopKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cRepresentedFeatureAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final CrossReference cRepresentedFeatureEStructuralFeatureCrossReference_3_0 = (CrossReference)cRepresentedFeatureAssignment_3.eContents().get(0);
-		private final RuleCall cRepresentedFeatureEStructuralFeatureValidIDParserRuleCall_3_0_1 = (RuleCall)cRepresentedFeatureEStructuralFeatureCrossReference_3_0.eContents().get(1);
-		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
-		private final Keyword cAsKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
-		private final Assignment cNameAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
-		private final RuleCall cNameValidIDParserRuleCall_4_1_0 = (RuleCall)cNameAssignment_4_1.eContents().get(0);
+		private final Assignment cContainingNamedEClassAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final CrossReference cContainingNamedEClassNamedEClassCrossReference_0_0 = (CrossReference)cContainingNamedEClassAssignment_0.eContents().get(0);
+		private final RuleCall cContainingNamedEClassNamedEClassIDTerminalRuleCall_0_0_1 = (RuleCall)cContainingNamedEClassNamedEClassCrossReference_0_0.eContents().get(1);
+		private final Keyword cFullStopKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cRepresentedFeatureAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final CrossReference cRepresentedFeatureEStructuralFeatureCrossReference_2_0 = (CrossReference)cRepresentedFeatureAssignment_2.eContents().get(0);
+		private final RuleCall cRepresentedFeatureEStructuralFeatureValidIDParserRuleCall_2_0_1 = (RuleCall)cRepresentedFeatureEStructuralFeatureCrossReference_2_0.eContents().get(1);
+		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
+		private final Keyword cAsKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
+		private final Assignment cNameAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
+		private final RuleCall cNameValidIDParserRuleCall_3_1_0 = (RuleCall)cNameAssignment_3_1.eContents().get(0);
 		
-		//NamedFeature returns MappableElement:
-		//	{NamedFeature} containingNamedEClass=[NamedEClass] "." representedFeature=[ecore::EStructuralFeature|ValidID] ("as"
-		//	name=ValidID)?;
+		//NamedFeature:
+		//	containingNamedEClass=[NamedEClass] "." representedFeature=[ecore::EStructuralFeature|ValidID] ("as" name=ValidID)?;
 		public ParserRule getRule() { return rule; }
 
-		//{NamedFeature} containingNamedEClass=[NamedEClass] "." representedFeature=[ecore::EStructuralFeature|ValidID] ("as"
-		//name=ValidID)?
+		//containingNamedEClass=[NamedEClass] "." representedFeature=[ecore::EStructuralFeature|ValidID] ("as" name=ValidID)?
 		public Group getGroup() { return cGroup; }
 
-		//{NamedFeature}
-		public Action getNamedFeatureAction_0() { return cNamedFeatureAction_0; }
-
 		//containingNamedEClass=[NamedEClass]
-		public Assignment getContainingNamedEClassAssignment_1() { return cContainingNamedEClassAssignment_1; }
+		public Assignment getContainingNamedEClassAssignment_0() { return cContainingNamedEClassAssignment_0; }
 
 		//[NamedEClass]
-		public CrossReference getContainingNamedEClassNamedEClassCrossReference_1_0() { return cContainingNamedEClassNamedEClassCrossReference_1_0; }
+		public CrossReference getContainingNamedEClassNamedEClassCrossReference_0_0() { return cContainingNamedEClassNamedEClassCrossReference_0_0; }
 
 		//ID
-		public RuleCall getContainingNamedEClassNamedEClassIDTerminalRuleCall_1_0_1() { return cContainingNamedEClassNamedEClassIDTerminalRuleCall_1_0_1; }
+		public RuleCall getContainingNamedEClassNamedEClassIDTerminalRuleCall_0_0_1() { return cContainingNamedEClassNamedEClassIDTerminalRuleCall_0_0_1; }
 
 		//"."
-		public Keyword getFullStopKeyword_2() { return cFullStopKeyword_2; }
+		public Keyword getFullStopKeyword_1() { return cFullStopKeyword_1; }
 
 		//representedFeature=[ecore::EStructuralFeature|ValidID]
-		public Assignment getRepresentedFeatureAssignment_3() { return cRepresentedFeatureAssignment_3; }
+		public Assignment getRepresentedFeatureAssignment_2() { return cRepresentedFeatureAssignment_2; }
 
 		//[ecore::EStructuralFeature|ValidID]
-		public CrossReference getRepresentedFeatureEStructuralFeatureCrossReference_3_0() { return cRepresentedFeatureEStructuralFeatureCrossReference_3_0; }
+		public CrossReference getRepresentedFeatureEStructuralFeatureCrossReference_2_0() { return cRepresentedFeatureEStructuralFeatureCrossReference_2_0; }
 
 		//ValidID
-		public RuleCall getRepresentedFeatureEStructuralFeatureValidIDParserRuleCall_3_0_1() { return cRepresentedFeatureEStructuralFeatureValidIDParserRuleCall_3_0_1; }
+		public RuleCall getRepresentedFeatureEStructuralFeatureValidIDParserRuleCall_2_0_1() { return cRepresentedFeatureEStructuralFeatureValidIDParserRuleCall_2_0_1; }
 
 		//("as" name=ValidID)?
-		public Group getGroup_4() { return cGroup_4; }
+		public Group getGroup_3() { return cGroup_3; }
 
 		//"as"
-		public Keyword getAsKeyword_4_0() { return cAsKeyword_4_0; }
+		public Keyword getAsKeyword_3_0() { return cAsKeyword_3_0; }
 
 		//name=ValidID
-		public Assignment getNameAssignment_4_1() { return cNameAssignment_4_1; }
+		public Assignment getNameAssignment_3_1() { return cNameAssignment_3_1; }
 
 		//ValidID
-		public RuleCall getNameValidIDParserRuleCall_4_1_0() { return cNameValidIDParserRuleCall_4_1_0; }
+		public RuleCall getNameValidIDParserRuleCall_3_1_0() { return cNameValidIDParserRuleCall_3_1_0; }
 	}
 
 	public class EClassParameterElements extends AbstractParserRuleElementFinder {
@@ -643,6 +625,26 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 		public RuleCall getOCLBlockParserRuleCall_1_1() { return cOCLBlockParserRuleCall_1_1; }
 	}
 
+	public class ExpressionBlockElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "ExpressionBlock");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cXbaseKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final RuleCall cXBlockExpressionParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
+		
+		//ExpressionBlock returns ecore::EObject:
+		//	"xbase" XBlockExpression;
+		public ParserRule getRule() { return rule; }
+
+		//"xbase" XBlockExpression
+		public Group getGroup() { return cGroup; }
+
+		//"xbase"
+		public Keyword getXbaseKeyword_0() { return cXbaseKeyword_0; }
+
+		//XBlockExpression
+		public RuleCall getXBlockExpressionParserRuleCall_1() { return cXBlockExpressionParserRuleCall_1; }
+	}
+
 	public class OCLBlockElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "OCLBlock");
 		private final Assignment cOclStringAssignment = (Assignment)rule.eContents().get(1);
@@ -777,13 +779,14 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	private final MIRFileElements pMIRFile;
 	private final ImportElements pImport;
 	private final MappingElements pMapping;
-	private final BaseMappingElements pBaseMapping;
-	private final SubMappingElements pSubMapping;
+	private final ClassMappingElements pClassMapping;
+	private final FeatureMappingElements pFeatureMapping;
 	private final NamedEClassElements pNamedEClass;
 	private final NamedFeatureElements pNamedFeature;
 	private final EClassParameterElements pEClassParameter;
 	private final InvariantElements pInvariant;
 	private final PredicateBlockElements pPredicateBlock;
+	private final ExpressionBlockElements pExpressionBlock;
 	private final OCLBlockElements pOCLBlock;
 	private final ResponseElements pResponse;
 	private final ResponseActionElements unknownRuleResponseAction;
@@ -800,13 +803,14 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 		this.pMIRFile = new MIRFileElements();
 		this.pImport = new ImportElements();
 		this.pMapping = new MappingElements();
-		this.pBaseMapping = new BaseMappingElements();
-		this.pSubMapping = new SubMappingElements();
+		this.pClassMapping = new ClassMappingElements();
+		this.pFeatureMapping = new FeatureMappingElements();
 		this.pNamedEClass = new NamedEClassElements();
 		this.pNamedFeature = new NamedFeatureElements();
 		this.pEClassParameter = new EClassParameterElements();
 		this.pInvariant = new InvariantElements();
 		this.pPredicateBlock = new PredicateBlockElements();
+		this.pExpressionBlock = new ExpressionBlockElements();
 		this.pOCLBlock = new OCLBlockElements();
 		this.pResponse = new ResponseElements();
 		this.unknownRuleResponseAction = new ResponseActionElements();
@@ -861,8 +865,8 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//// Mappings
-	//Mapping:
-	//	"map" BaseMapping;
+	//Mapping returns ClassMapping:
+	//	"map" ClassMapping;
 	public MappingElements getMappingAccess() {
 		return pMapping;
 	}
@@ -871,30 +875,30 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 		return getMappingAccess().getRule();
 	}
 
-	//BaseMapping returns Mapping:
-	//	{BaseMapping} mappedElements+=NamedEClass "to" mappedElements+=NamedEClass ("{" ("when" whens+=PredicateBlock |
-	//	"with" withs+=SubMapping | "where" wheres+=PredicateBlock)* "}")?;
-	public BaseMappingElements getBaseMappingAccess() {
-		return pBaseMapping;
+	//ClassMapping:
+	//	mappedElements+=NamedEClass "to" mappedElements+=NamedEClass ("{" ("when" whens+=PredicateBlock | "with"
+	//	withs+=FeatureMapping | "where" wheres+=ExpressionBlock)* "}")?;
+	public ClassMappingElements getClassMappingAccess() {
+		return pClassMapping;
 	}
 	
-	public ParserRule getBaseMappingRule() {
-		return getBaseMappingAccess().getRule();
+	public ParserRule getClassMappingRule() {
+		return getClassMappingAccess().getRule();
 	}
 
-	//SubMapping returns Mapping:
-	//	{SubMapping} mappedElements+=NamedFeature "to" mappedElements+=NamedFeature ("{" ("when" whens+=PredicateBlock |
-	//	"with" withs+=SubMapping | "where" wheres+=PredicateBlock)* "}")?;
-	public SubMappingElements getSubMappingAccess() {
-		return pSubMapping;
+	//FeatureMapping:
+	//	mappedElements+=NamedFeature "to" mappedElements+=NamedFeature ("{" ("when" whens+=PredicateBlock | "with"
+	//	withs+=FeatureMapping | "where" wheres+=ExpressionBlock)* "}")?;
+	public FeatureMappingElements getFeatureMappingAccess() {
+		return pFeatureMapping;
 	}
 	
-	public ParserRule getSubMappingRule() {
-		return getSubMappingAccess().getRule();
+	public ParserRule getFeatureMappingRule() {
+		return getFeatureMappingAccess().getRule();
 	}
 
-	//NamedEClass returns MappableElement:
-	//	{NamedEClass} representedEClass=[ecore::EClass|QualifiedName] ("as" name=ValidID)?;
+	//NamedEClass:
+	//	representedEClass=[ecore::EClass|QualifiedName] ("as" name=ValidID)?;
 	public NamedEClassElements getNamedEClassAccess() {
 		return pNamedEClass;
 	}
@@ -903,9 +907,8 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 		return getNamedEClassAccess().getRule();
 	}
 
-	//NamedFeature returns MappableElement:
-	//	{NamedFeature} containingNamedEClass=[NamedEClass] "." representedFeature=[ecore::EStructuralFeature|ValidID] ("as"
-	//	name=ValidID)?;
+	//NamedFeature:
+	//	containingNamedEClass=[NamedEClass] "." representedFeature=[ecore::EStructuralFeature|ValidID] ("as" name=ValidID)?;
 	public NamedFeatureElements getNamedFeatureAccess() {
 		return pNamedFeature;
 	}
@@ -944,6 +947,16 @@ public class MIRGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getPredicateBlockRule() {
 		return getPredicateBlockAccess().getRule();
+	}
+
+	//ExpressionBlock returns ecore::EObject:
+	//	"xbase" XBlockExpression;
+	public ExpressionBlockElements getExpressionBlockAccess() {
+		return pExpressionBlock;
+	}
+	
+	public ParserRule getExpressionBlockRule() {
+		return getExpressionBlockAccess().getRule();
 	}
 
 	//OCLBlock:

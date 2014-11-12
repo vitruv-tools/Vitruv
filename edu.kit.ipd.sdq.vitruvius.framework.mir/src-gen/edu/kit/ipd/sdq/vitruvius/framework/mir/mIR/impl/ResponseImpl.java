@@ -4,7 +4,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Invariant;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRPackage;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MappableElement;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Response;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ResponseAction;
 
@@ -65,7 +65,7 @@ public class ResponseImpl extends MinimalEObjectImpl.Container implements Respon
    * @generated
    * @ordered
    */
-  protected MappableElement context;
+  protected NamedEClass context;
 
   /**
    * The cached value of the '{@link #getInv() <em>Inv</em>}' reference.
@@ -136,7 +136,7 @@ public class ResponseImpl extends MinimalEObjectImpl.Container implements Respon
    * <!-- end-user-doc -->
    * @generated
    */
-  public MappableElement getContext()
+  public NamedEClass getContext()
   {
     return context;
   }
@@ -146,9 +146,9 @@ public class ResponseImpl extends MinimalEObjectImpl.Container implements Respon
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetContext(MappableElement newContext, NotificationChain msgs)
+  public NotificationChain basicSetContext(NamedEClass newContext, NotificationChain msgs)
   {
-    MappableElement oldContext = context;
+    NamedEClass oldContext = context;
     context = newContext;
     if (eNotificationRequired())
     {
@@ -163,7 +163,7 @@ public class ResponseImpl extends MinimalEObjectImpl.Container implements Respon
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setContext(MappableElement newContext)
+  public void setContext(NamedEClass newContext)
   {
     if (newContext != context)
     {
@@ -325,7 +325,7 @@ public class ResponseImpl extends MinimalEObjectImpl.Container implements Respon
         setAction((ResponseAction)newValue);
         return;
       case MIRPackage.RESPONSE__CONTEXT:
-        setContext((MappableElement)newValue);
+        setContext((NamedEClass)newValue);
         return;
       case MIRPackage.RESPONSE__INV:
         setInv((Invariant)newValue);
@@ -351,7 +351,7 @@ public class ResponseImpl extends MinimalEObjectImpl.Container implements Respon
         setAction(ACTION_EDEFAULT);
         return;
       case MIRPackage.RESPONSE__CONTEXT:
-        setContext((MappableElement)null);
+        setContext((NamedEClass)null);
         return;
       case MIRPackage.RESPONSE__INV:
         setInv((Invariant)null);

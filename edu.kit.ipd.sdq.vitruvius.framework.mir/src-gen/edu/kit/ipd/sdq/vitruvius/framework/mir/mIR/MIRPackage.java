@@ -168,14 +168,14 @@ public interface MIRPackage extends EPackage
   int IMPORT_FEATURE_COUNT = 2;
 
   /**
-   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MappingImpl <em>Mapping</em>}' class.
+   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.ClassMappingImpl <em>Class Mapping</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MappingImpl
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getMapping()
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.ClassMappingImpl
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getClassMapping()
    * @generated
    */
-  int MAPPING = 2;
+  int CLASS_MAPPING = 2;
 
   /**
    * The feature id for the '<em><b>Mapped Elements</b></em>' containment reference list.
@@ -184,7 +184,7 @@ public interface MIRPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MAPPING__MAPPED_ELEMENTS = 0;
+  int CLASS_MAPPING__MAPPED_ELEMENTS = 0;
 
   /**
    * The feature id for the '<em><b>Whens</b></em>' containment reference list.
@@ -193,7 +193,7 @@ public interface MIRPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MAPPING__WHENS = 1;
+  int CLASS_MAPPING__WHENS = 1;
 
   /**
    * The feature id for the '<em><b>Withs</b></em>' containment reference list.
@@ -202,7 +202,7 @@ public interface MIRPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MAPPING__WITHS = 2;
+  int CLASS_MAPPING__WITHS = 2;
 
   /**
    * The feature id for the '<em><b>Wheres</b></em>' containment reference list.
@@ -211,26 +211,90 @@ public interface MIRPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MAPPING__WHERES = 3;
+  int CLASS_MAPPING__WHERES = 3;
 
   /**
-   * The number of structural features of the '<em>Mapping</em>' class.
+   * The number of structural features of the '<em>Class Mapping</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MAPPING_FEATURE_COUNT = 4;
+  int CLASS_MAPPING_FEATURE_COUNT = 4;
 
   /**
-   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MappableElementImpl <em>Mappable Element</em>}' class.
+   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.FeatureMappingImpl <em>Feature Mapping</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MappableElementImpl
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getMappableElement()
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.FeatureMappingImpl
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getFeatureMapping()
    * @generated
    */
-  int MAPPABLE_ELEMENT = 3;
+  int FEATURE_MAPPING = 3;
+
+  /**
+   * The feature id for the '<em><b>Mapped Elements</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FEATURE_MAPPING__MAPPED_ELEMENTS = 0;
+
+  /**
+   * The feature id for the '<em><b>Whens</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FEATURE_MAPPING__WHENS = 1;
+
+  /**
+   * The feature id for the '<em><b>Withs</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FEATURE_MAPPING__WITHS = 2;
+
+  /**
+   * The feature id for the '<em><b>Wheres</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FEATURE_MAPPING__WHERES = 3;
+
+  /**
+   * The number of structural features of the '<em>Feature Mapping</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FEATURE_MAPPING_FEATURE_COUNT = 4;
+
+  /**
+   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.NamedEClassImpl <em>Named EClass</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.NamedEClassImpl
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getNamedEClass()
+   * @generated
+   */
+  int NAMED_ECLASS = 4;
+
+  /**
+   * The feature id for the '<em><b>Represented EClass</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NAMED_ECLASS__REPRESENTED_ECLASS = 0;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -239,16 +303,62 @@ public interface MIRPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MAPPABLE_ELEMENT__NAME = 0;
+  int NAMED_ECLASS__NAME = 1;
 
   /**
-   * The number of structural features of the '<em>Mappable Element</em>' class.
+   * The number of structural features of the '<em>Named EClass</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MAPPABLE_ELEMENT_FEATURE_COUNT = 1;
+  int NAMED_ECLASS_FEATURE_COUNT = 2;
+
+  /**
+   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.NamedFeatureImpl <em>Named Feature</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.NamedFeatureImpl
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getNamedFeature()
+   * @generated
+   */
+  int NAMED_FEATURE = 5;
+
+  /**
+   * The feature id for the '<em><b>Containing Named EClass</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NAMED_FEATURE__CONTAINING_NAMED_ECLASS = 0;
+
+  /**
+   * The feature id for the '<em><b>Represented Feature</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NAMED_FEATURE__REPRESENTED_FEATURE = 1;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NAMED_FEATURE__NAME = 2;
+
+  /**
+   * The number of structural features of the '<em>Named Feature</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NAMED_FEATURE_FEATURE_COUNT = 3;
 
   /**
    * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.EClassParameterImpl <em>EClass Parameter</em>}' class.
@@ -258,7 +368,7 @@ public interface MIRPackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getEClassParameter()
    * @generated
    */
-  int ECLASS_PARAMETER = 4;
+  int ECLASS_PARAMETER = 6;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' reference.
@@ -295,7 +405,7 @@ public interface MIRPackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getInvariant()
    * @generated
    */
-  int INVARIANT = 5;
+  int INVARIANT = 7;
 
   /**
    * The feature id for the '<em><b>Context</b></em>' reference.
@@ -350,7 +460,7 @@ public interface MIRPackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getOCLBlock()
    * @generated
    */
-  int OCL_BLOCK = 6;
+  int OCL_BLOCK = 8;
 
   /**
    * The feature id for the '<em><b>Ocl String</b></em>' attribute.
@@ -378,7 +488,7 @@ public interface MIRPackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getResponse()
    * @generated
    */
-  int RESPONSE = 7;
+  int RESPONSE = 9;
 
   /**
    * The feature id for the '<em><b>Action</b></em>' attribute.
@@ -426,199 +536,6 @@ public interface MIRPackage extends EPackage
   int RESPONSE_FEATURE_COUNT = 4;
 
   /**
-   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.BaseMappingImpl <em>Base Mapping</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.BaseMappingImpl
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getBaseMapping()
-   * @generated
-   */
-  int BASE_MAPPING = 8;
-
-  /**
-   * The feature id for the '<em><b>Mapped Elements</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int BASE_MAPPING__MAPPED_ELEMENTS = MAPPING__MAPPED_ELEMENTS;
-
-  /**
-   * The feature id for the '<em><b>Whens</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int BASE_MAPPING__WHENS = MAPPING__WHENS;
-
-  /**
-   * The feature id for the '<em><b>Withs</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int BASE_MAPPING__WITHS = MAPPING__WITHS;
-
-  /**
-   * The feature id for the '<em><b>Wheres</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int BASE_MAPPING__WHERES = MAPPING__WHERES;
-
-  /**
-   * The number of structural features of the '<em>Base Mapping</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int BASE_MAPPING_FEATURE_COUNT = MAPPING_FEATURE_COUNT + 0;
-
-  /**
-   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.SubMappingImpl <em>Sub Mapping</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.SubMappingImpl
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getSubMapping()
-   * @generated
-   */
-  int SUB_MAPPING = 9;
-
-  /**
-   * The feature id for the '<em><b>Mapped Elements</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SUB_MAPPING__MAPPED_ELEMENTS = MAPPING__MAPPED_ELEMENTS;
-
-  /**
-   * The feature id for the '<em><b>Whens</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SUB_MAPPING__WHENS = MAPPING__WHENS;
-
-  /**
-   * The feature id for the '<em><b>Withs</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SUB_MAPPING__WITHS = MAPPING__WITHS;
-
-  /**
-   * The feature id for the '<em><b>Wheres</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SUB_MAPPING__WHERES = MAPPING__WHERES;
-
-  /**
-   * The number of structural features of the '<em>Sub Mapping</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SUB_MAPPING_FEATURE_COUNT = MAPPING_FEATURE_COUNT + 0;
-
-  /**
-   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.NamedEClassImpl <em>Named EClass</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.NamedEClassImpl
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getNamedEClass()
-   * @generated
-   */
-  int NAMED_ECLASS = 10;
-
-  /**
-   * The feature id for the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int NAMED_ECLASS__NAME = MAPPABLE_ELEMENT__NAME;
-
-  /**
-   * The feature id for the '<em><b>Represented EClass</b></em>' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int NAMED_ECLASS__REPRESENTED_ECLASS = MAPPABLE_ELEMENT_FEATURE_COUNT + 0;
-
-  /**
-   * The number of structural features of the '<em>Named EClass</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int NAMED_ECLASS_FEATURE_COUNT = MAPPABLE_ELEMENT_FEATURE_COUNT + 1;
-
-  /**
-   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.NamedFeatureImpl <em>Named Feature</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.NamedFeatureImpl
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getNamedFeature()
-   * @generated
-   */
-  int NAMED_FEATURE = 11;
-
-  /**
-   * The feature id for the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int NAMED_FEATURE__NAME = MAPPABLE_ELEMENT__NAME;
-
-  /**
-   * The feature id for the '<em><b>Containing Named EClass</b></em>' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int NAMED_FEATURE__CONTAINING_NAMED_ECLASS = MAPPABLE_ELEMENT_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Represented Feature</b></em>' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int NAMED_FEATURE__REPRESENTED_FEATURE = MAPPABLE_ELEMENT_FEATURE_COUNT + 1;
-
-  /**
-   * The number of structural features of the '<em>Named Feature</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int NAMED_FEATURE_FEATURE_COUNT = MAPPABLE_ELEMENT_FEATURE_COUNT + 2;
-
-  /**
    * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ResponseAction <em>Response Action</em>}' enum.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -626,7 +543,7 @@ public interface MIRPackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getResponseAction()
    * @generated
    */
-  int RESPONSE_ACTION = 12;
+  int RESPONSE_ACTION = 10;
 
 
   /**
@@ -738,79 +655,187 @@ public interface MIRPackage extends EPackage
   EAttribute getImport_Name();
 
   /**
-   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Mapping <em>Mapping</em>}'.
+   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping <em>Class Mapping</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Mapping</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Mapping
+   * @return the meta object for class '<em>Class Mapping</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping
    * @generated
    */
-  EClass getMapping();
+  EClass getClassMapping();
 
   /**
-   * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Mapping#getMappedElements <em>Mapped Elements</em>}'.
+   * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping#getMappedElements <em>Mapped Elements</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Mapped Elements</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Mapping#getMappedElements()
-   * @see #getMapping()
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping#getMappedElements()
+   * @see #getClassMapping()
    * @generated
    */
-  EReference getMapping_MappedElements();
+  EReference getClassMapping_MappedElements();
 
   /**
-   * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Mapping#getWhens <em>Whens</em>}'.
+   * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping#getWhens <em>Whens</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Whens</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Mapping#getWhens()
-   * @see #getMapping()
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping#getWhens()
+   * @see #getClassMapping()
    * @generated
    */
-  EReference getMapping_Whens();
+  EReference getClassMapping_Whens();
 
   /**
-   * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Mapping#getWiths <em>Withs</em>}'.
+   * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping#getWiths <em>Withs</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Withs</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Mapping#getWiths()
-   * @see #getMapping()
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping#getWiths()
+   * @see #getClassMapping()
    * @generated
    */
-  EReference getMapping_Withs();
+  EReference getClassMapping_Withs();
 
   /**
-   * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Mapping#getWheres <em>Wheres</em>}'.
+   * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping#getWheres <em>Wheres</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Wheres</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Mapping#getWheres()
-   * @see #getMapping()
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping#getWheres()
+   * @see #getClassMapping()
    * @generated
    */
-  EReference getMapping_Wheres();
+  EReference getClassMapping_Wheres();
 
   /**
-   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MappableElement <em>Mappable Element</em>}'.
+   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping <em>Feature Mapping</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Mappable Element</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MappableElement
+   * @return the meta object for class '<em>Feature Mapping</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping
    * @generated
    */
-  EClass getMappableElement();
+  EClass getFeatureMapping();
 
   /**
-   * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MappableElement#getName <em>Name</em>}'.
+   * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping#getMappedElements <em>Mapped Elements</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Mapped Elements</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping#getMappedElements()
+   * @see #getFeatureMapping()
+   * @generated
+   */
+  EReference getFeatureMapping_MappedElements();
+
+  /**
+   * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping#getWhens <em>Whens</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Whens</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping#getWhens()
+   * @see #getFeatureMapping()
+   * @generated
+   */
+  EReference getFeatureMapping_Whens();
+
+  /**
+   * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping#getWiths <em>Withs</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Withs</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping#getWiths()
+   * @see #getFeatureMapping()
+   * @generated
+   */
+  EReference getFeatureMapping_Withs();
+
+  /**
+   * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping#getWheres <em>Wheres</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Wheres</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping#getWheres()
+   * @see #getFeatureMapping()
+   * @generated
+   */
+  EReference getFeatureMapping_Wheres();
+
+  /**
+   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass <em>Named EClass</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Named EClass</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass
+   * @generated
+   */
+  EClass getNamedEClass();
+
+  /**
+   * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass#getRepresentedEClass <em>Represented EClass</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>Represented EClass</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass#getRepresentedEClass()
+   * @see #getNamedEClass()
+   * @generated
+   */
+  EReference getNamedEClass_RepresentedEClass();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Name</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MappableElement#getName()
-   * @see #getMappableElement()
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass#getName()
+   * @see #getNamedEClass()
    * @generated
    */
-  EAttribute getMappableElement_Name();
+  EAttribute getNamedEClass_Name();
+
+  /**
+   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature <em>Named Feature</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Named Feature</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature
+   * @generated
+   */
+  EClass getNamedFeature();
+
+  /**
+   * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature#getContainingNamedEClass <em>Containing Named EClass</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>Containing Named EClass</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature#getContainingNamedEClass()
+   * @see #getNamedFeature()
+   * @generated
+   */
+  EReference getNamedFeature_ContainingNamedEClass();
+
+  /**
+   * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature#getRepresentedFeature <em>Represented Feature</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>Represented Feature</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature#getRepresentedFeature()
+   * @see #getNamedFeature()
+   * @generated
+   */
+  EReference getNamedFeature_RepresentedFeature();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature#getName()
+   * @see #getNamedFeature()
+   * @generated
+   */
+  EAttribute getNamedFeature_Name();
 
   /**
    * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.EClassParameter <em>EClass Parameter</em>}'.
@@ -974,79 +999,6 @@ public interface MIRPackage extends EPackage
   EReference getResponse_RestoreAction();
 
   /**
-   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.BaseMapping <em>Base Mapping</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Base Mapping</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.BaseMapping
-   * @generated
-   */
-  EClass getBaseMapping();
-
-  /**
-   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.SubMapping <em>Sub Mapping</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Sub Mapping</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.SubMapping
-   * @generated
-   */
-  EClass getSubMapping();
-
-  /**
-   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass <em>Named EClass</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Named EClass</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass
-   * @generated
-   */
-  EClass getNamedEClass();
-
-  /**
-   * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass#getRepresentedEClass <em>Represented EClass</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the reference '<em>Represented EClass</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass#getRepresentedEClass()
-   * @see #getNamedEClass()
-   * @generated
-   */
-  EReference getNamedEClass_RepresentedEClass();
-
-  /**
-   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature <em>Named Feature</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Named Feature</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature
-   * @generated
-   */
-  EClass getNamedFeature();
-
-  /**
-   * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature#getContainingNamedEClass <em>Containing Named EClass</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the reference '<em>Containing Named EClass</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature#getContainingNamedEClass()
-   * @see #getNamedFeature()
-   * @generated
-   */
-  EReference getNamedFeature_ContainingNamedEClass();
-
-  /**
-   * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature#getRepresentedFeature <em>Represented Feature</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the reference '<em>Represented Feature</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature#getRepresentedFeature()
-   * @see #getNamedFeature()
-   * @generated
-   */
-  EReference getNamedFeature_RepresentedFeature();
-
-  /**
    * Returns the meta object for enum '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ResponseAction <em>Response Action</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1164,14 +1116,14 @@ public interface MIRPackage extends EPackage
     EAttribute IMPORT__NAME = eINSTANCE.getImport_Name();
 
     /**
-     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MappingImpl <em>Mapping</em>}' class.
+     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.ClassMappingImpl <em>Class Mapping</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MappingImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getMapping()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.ClassMappingImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getClassMapping()
      * @generated
      */
-    EClass MAPPING = eINSTANCE.getMapping();
+    EClass CLASS_MAPPING = eINSTANCE.getClassMapping();
 
     /**
      * The meta object literal for the '<em><b>Mapped Elements</b></em>' containment reference list feature.
@@ -1179,7 +1131,7 @@ public interface MIRPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference MAPPING__MAPPED_ELEMENTS = eINSTANCE.getMapping_MappedElements();
+    EReference CLASS_MAPPING__MAPPED_ELEMENTS = eINSTANCE.getClassMapping_MappedElements();
 
     /**
      * The meta object literal for the '<em><b>Whens</b></em>' containment reference list feature.
@@ -1187,7 +1139,7 @@ public interface MIRPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference MAPPING__WHENS = eINSTANCE.getMapping_Whens();
+    EReference CLASS_MAPPING__WHENS = eINSTANCE.getClassMapping_Whens();
 
     /**
      * The meta object literal for the '<em><b>Withs</b></em>' containment reference list feature.
@@ -1195,7 +1147,7 @@ public interface MIRPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference MAPPING__WITHS = eINSTANCE.getMapping_Withs();
+    EReference CLASS_MAPPING__WITHS = eINSTANCE.getClassMapping_Withs();
 
     /**
      * The meta object literal for the '<em><b>Wheres</b></em>' containment reference list feature.
@@ -1203,17 +1155,67 @@ public interface MIRPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference MAPPING__WHERES = eINSTANCE.getMapping_Wheres();
+    EReference CLASS_MAPPING__WHERES = eINSTANCE.getClassMapping_Wheres();
 
     /**
-     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MappableElementImpl <em>Mappable Element</em>}' class.
+     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.FeatureMappingImpl <em>Feature Mapping</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MappableElementImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getMappableElement()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.FeatureMappingImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getFeatureMapping()
      * @generated
      */
-    EClass MAPPABLE_ELEMENT = eINSTANCE.getMappableElement();
+    EClass FEATURE_MAPPING = eINSTANCE.getFeatureMapping();
+
+    /**
+     * The meta object literal for the '<em><b>Mapped Elements</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference FEATURE_MAPPING__MAPPED_ELEMENTS = eINSTANCE.getFeatureMapping_MappedElements();
+
+    /**
+     * The meta object literal for the '<em><b>Whens</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference FEATURE_MAPPING__WHENS = eINSTANCE.getFeatureMapping_Whens();
+
+    /**
+     * The meta object literal for the '<em><b>Withs</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference FEATURE_MAPPING__WITHS = eINSTANCE.getFeatureMapping_Withs();
+
+    /**
+     * The meta object literal for the '<em><b>Wheres</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference FEATURE_MAPPING__WHERES = eINSTANCE.getFeatureMapping_Wheres();
+
+    /**
+     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.NamedEClassImpl <em>Named EClass</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.NamedEClassImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getNamedEClass()
+     * @generated
+     */
+    EClass NAMED_ECLASS = eINSTANCE.getNamedEClass();
+
+    /**
+     * The meta object literal for the '<em><b>Represented EClass</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference NAMED_ECLASS__REPRESENTED_ECLASS = eINSTANCE.getNamedEClass_RepresentedEClass();
 
     /**
      * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
@@ -1221,7 +1223,41 @@ public interface MIRPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute MAPPABLE_ELEMENT__NAME = eINSTANCE.getMappableElement_Name();
+    EAttribute NAMED_ECLASS__NAME = eINSTANCE.getNamedEClass_Name();
+
+    /**
+     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.NamedFeatureImpl <em>Named Feature</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.NamedFeatureImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getNamedFeature()
+     * @generated
+     */
+    EClass NAMED_FEATURE = eINSTANCE.getNamedFeature();
+
+    /**
+     * The meta object literal for the '<em><b>Containing Named EClass</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference NAMED_FEATURE__CONTAINING_NAMED_ECLASS = eINSTANCE.getNamedFeature_ContainingNamedEClass();
+
+    /**
+     * The meta object literal for the '<em><b>Represented Feature</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference NAMED_FEATURE__REPRESENTED_FEATURE = eINSTANCE.getNamedFeature_RepresentedFeature();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute NAMED_FEATURE__NAME = eINSTANCE.getNamedFeature_Name();
 
     /**
      * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.EClassParameterImpl <em>EClass Parameter</em>}' class.
@@ -1350,70 +1386,6 @@ public interface MIRPackage extends EPackage
      * @generated
      */
     EReference RESPONSE__RESTORE_ACTION = eINSTANCE.getResponse_RestoreAction();
-
-    /**
-     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.BaseMappingImpl <em>Base Mapping</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.BaseMappingImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getBaseMapping()
-     * @generated
-     */
-    EClass BASE_MAPPING = eINSTANCE.getBaseMapping();
-
-    /**
-     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.SubMappingImpl <em>Sub Mapping</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.SubMappingImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getSubMapping()
-     * @generated
-     */
-    EClass SUB_MAPPING = eINSTANCE.getSubMapping();
-
-    /**
-     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.NamedEClassImpl <em>Named EClass</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.NamedEClassImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getNamedEClass()
-     * @generated
-     */
-    EClass NAMED_ECLASS = eINSTANCE.getNamedEClass();
-
-    /**
-     * The meta object literal for the '<em><b>Represented EClass</b></em>' reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference NAMED_ECLASS__REPRESENTED_ECLASS = eINSTANCE.getNamedEClass_RepresentedEClass();
-
-    /**
-     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.NamedFeatureImpl <em>Named Feature</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.NamedFeatureImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.MIRPackageImpl#getNamedFeature()
-     * @generated
-     */
-    EClass NAMED_FEATURE = eINSTANCE.getNamedFeature();
-
-    /**
-     * The meta object literal for the '<em><b>Containing Named EClass</b></em>' reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference NAMED_FEATURE__CONTAINING_NAMED_ECLASS = eINSTANCE.getNamedFeature_ContainingNamedEClass();
-
-    /**
-     * The meta object literal for the '<em><b>Represented Feature</b></em>' reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference NAMED_FEATURE__REPRESENTED_FEATURE = eINSTANCE.getNamedFeature_RepresentedFeature();
 
     /**
      * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ResponseAction <em>Response Action</em>}' enum.

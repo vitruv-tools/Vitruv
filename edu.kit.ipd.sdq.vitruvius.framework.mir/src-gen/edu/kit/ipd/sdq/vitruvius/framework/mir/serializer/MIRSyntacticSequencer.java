@@ -18,9 +18,9 @@ import org.eclipse.xtext.serializer.sequencer.AbstractSyntacticSequencer;
 public class MIRSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	protected MIRGrammarAccess grammarAccess;
-	protected AbstractElementAlias match_BaseMapping___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_2__q;
+	protected AbstractElementAlias match_ClassMapping___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q;
+	protected AbstractElementAlias match_FeatureMapping___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q;
 	protected AbstractElementAlias match_Invariant___LeftParenthesisKeyword_4_0_RightParenthesisKeyword_4_2__q;
-	protected AbstractElementAlias match_SubMapping___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_2__q;
 	protected AbstractElementAlias match_XBlockExpression_SemicolonKeyword_2_1_q;
 	protected AbstractElementAlias match_XExpressionInClosure_SemicolonKeyword_1_1_q;
 	protected AbstractElementAlias match_XFunctionTypeRef___LeftParenthesisKeyword_0_0_RightParenthesisKeyword_0_2__q;
@@ -31,9 +31,9 @@ public class MIRSyntacticSequencer extends AbstractSyntacticSequencer {
 	@Inject
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (MIRGrammarAccess) access;
-		match_BaseMapping___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getBaseMappingAccess().getLeftCurlyBracketKeyword_4_0()), new TokenAlias(false, false, grammarAccess.getBaseMappingAccess().getRightCurlyBracketKeyword_4_2()));
+		match_ClassMapping___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getClassMappingAccess().getLeftCurlyBracketKeyword_3_0()), new TokenAlias(false, false, grammarAccess.getClassMappingAccess().getRightCurlyBracketKeyword_3_2()));
+		match_FeatureMapping___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getFeatureMappingAccess().getLeftCurlyBracketKeyword_3_0()), new TokenAlias(false, false, grammarAccess.getFeatureMappingAccess().getRightCurlyBracketKeyword_3_2()));
 		match_Invariant___LeftParenthesisKeyword_4_0_RightParenthesisKeyword_4_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getInvariantAccess().getLeftParenthesisKeyword_4_0()), new TokenAlias(false, false, grammarAccess.getInvariantAccess().getRightParenthesisKeyword_4_2()));
-		match_SubMapping___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getSubMappingAccess().getLeftCurlyBracketKeyword_4_0()), new TokenAlias(false, false, grammarAccess.getSubMappingAccess().getRightCurlyBracketKeyword_4_2()));
 		match_XBlockExpression_SemicolonKeyword_2_1_q = new TokenAlias(false, true, grammarAccess.getXBlockExpressionAccess().getSemicolonKeyword_2_1());
 		match_XExpressionInClosure_SemicolonKeyword_1_1_q = new TokenAlias(false, true, grammarAccess.getXExpressionInClosureAccess().getSemicolonKeyword_1_1());
 		match_XFunctionTypeRef___LeftParenthesisKeyword_0_0_RightParenthesisKeyword_0_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getXFunctionTypeRefAccess().getLeftParenthesisKeyword_0_0()), new TokenAlias(false, false, grammarAccess.getXFunctionTypeRefAccess().getRightParenthesisKeyword_0_2()));
@@ -79,12 +79,12 @@ public class MIRSyntacticSequencer extends AbstractSyntacticSequencer {
 		List<INode> transitionNodes = collectNodes(fromNode, toNode);
 		for (AbstractElementAlias syntax : transition.getAmbiguousSyntaxes()) {
 			List<INode> syntaxNodes = getNodesFor(transitionNodes, syntax);
-			if(match_BaseMapping___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_2__q.equals(syntax))
-				emit_BaseMapping___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			if(match_ClassMapping___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q.equals(syntax))
+				emit_ClassMapping___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_FeatureMapping___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q.equals(syntax))
+				emit_FeatureMapping___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_Invariant___LeftParenthesisKeyword_4_0_RightParenthesisKeyword_4_2__q.equals(syntax))
 				emit_Invariant___LeftParenthesisKeyword_4_0_RightParenthesisKeyword_4_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_SubMapping___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_2__q.equals(syntax))
-				emit_SubMapping___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_XBlockExpression_SemicolonKeyword_2_1_q.equals(syntax))
 				emit_XBlockExpression_SemicolonKeyword_2_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_XExpressionInClosure_SemicolonKeyword_1_1_q.equals(syntax))
@@ -105,7 +105,15 @@ public class MIRSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * Syntax:
 	 *     ('{' '}')?
 	 */
-	protected void emit_BaseMapping___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_ClassMapping___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Syntax:
+	 *     ('{' '}')?
+	 */
+	protected void emit_FeatureMapping___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -114,14 +122,6 @@ public class MIRSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     ('(' ')')?
 	 */
 	protected void emit_Invariant___LeftParenthesisKeyword_4_0_RightParenthesisKeyword_4_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Syntax:
-	 *     ('{' '}')?
-	 */
-	protected void emit_SubMapping___LeftCurlyBracketKeyword_4_0_RightCurlyBracketKeyword_4_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

@@ -2,21 +2,19 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.BaseMapping;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.EClassParameter;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Import;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Invariant;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRPackage;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MappableElement;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.OCLBlock;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Response;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ResponseAction;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.SubMapping;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -55,14 +53,28 @@ public class MIRPackageImpl extends EPackageImpl implements MIRPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass mappingEClass = null;
+  private EClass classMappingEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass mappableElementEClass = null;
+  private EClass featureMappingEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass namedEClassEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass namedFeatureEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -91,34 +103,6 @@ public class MIRPackageImpl extends EPackageImpl implements MIRPackage
    * @generated
    */
   private EClass responseEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass baseMappingEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass subMappingEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass namedEClassEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass namedFeatureEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -298,9 +282,9 @@ public class MIRPackageImpl extends EPackageImpl implements MIRPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getMapping()
+  public EClass getClassMapping()
   {
-    return mappingEClass;
+    return classMappingEClass;
   }
 
   /**
@@ -308,9 +292,9 @@ public class MIRPackageImpl extends EPackageImpl implements MIRPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getMapping_MappedElements()
+  public EReference getClassMapping_MappedElements()
   {
-    return (EReference)mappingEClass.getEStructuralFeatures().get(0);
+    return (EReference)classMappingEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -318,9 +302,9 @@ public class MIRPackageImpl extends EPackageImpl implements MIRPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getMapping_Whens()
+  public EReference getClassMapping_Whens()
   {
-    return (EReference)mappingEClass.getEStructuralFeatures().get(1);
+    return (EReference)classMappingEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -328,9 +312,9 @@ public class MIRPackageImpl extends EPackageImpl implements MIRPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getMapping_Withs()
+  public EReference getClassMapping_Withs()
   {
-    return (EReference)mappingEClass.getEStructuralFeatures().get(2);
+    return (EReference)classMappingEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -338,9 +322,9 @@ public class MIRPackageImpl extends EPackageImpl implements MIRPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getMapping_Wheres()
+  public EReference getClassMapping_Wheres()
   {
-    return (EReference)mappingEClass.getEStructuralFeatures().get(3);
+    return (EReference)classMappingEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -348,9 +332,9 @@ public class MIRPackageImpl extends EPackageImpl implements MIRPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getMappableElement()
+  public EClass getFeatureMapping()
   {
-    return mappableElementEClass;
+    return featureMappingEClass;
   }
 
   /**
@@ -358,9 +342,109 @@ public class MIRPackageImpl extends EPackageImpl implements MIRPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getMappableElement_Name()
+  public EReference getFeatureMapping_MappedElements()
   {
-    return (EAttribute)mappableElementEClass.getEStructuralFeatures().get(0);
+    return (EReference)featureMappingEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getFeatureMapping_Whens()
+  {
+    return (EReference)featureMappingEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getFeatureMapping_Withs()
+  {
+    return (EReference)featureMappingEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getFeatureMapping_Wheres()
+  {
+    return (EReference)featureMappingEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getNamedEClass()
+  {
+    return namedEClassEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getNamedEClass_RepresentedEClass()
+  {
+    return (EReference)namedEClassEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getNamedEClass_Name()
+  {
+    return (EAttribute)namedEClassEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getNamedFeature()
+  {
+    return namedFeatureEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getNamedFeature_ContainingNamedEClass()
+  {
+    return (EReference)namedFeatureEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getNamedFeature_RepresentedFeature()
+  {
+    return (EReference)namedFeatureEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getNamedFeature_Name()
+  {
+    return (EAttribute)namedFeatureEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -518,76 +602,6 @@ public class MIRPackageImpl extends EPackageImpl implements MIRPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getBaseMapping()
-  {
-    return baseMappingEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getSubMapping()
-  {
-    return subMappingEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getNamedEClass()
-  {
-    return namedEClassEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getNamedEClass_RepresentedEClass()
-  {
-    return (EReference)namedEClassEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getNamedFeature()
-  {
-    return namedFeatureEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getNamedFeature_ContainingNamedEClass()
-  {
-    return (EReference)namedFeatureEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getNamedFeature_RepresentedFeature()
-  {
-    return (EReference)namedFeatureEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EEnum getResponseAction()
   {
     return responseActionEEnum;
@@ -635,14 +649,26 @@ public class MIRPackageImpl extends EPackageImpl implements MIRPackage
     createEReference(importEClass, IMPORT__PACKAGE);
     createEAttribute(importEClass, IMPORT__NAME);
 
-    mappingEClass = createEClass(MAPPING);
-    createEReference(mappingEClass, MAPPING__MAPPED_ELEMENTS);
-    createEReference(mappingEClass, MAPPING__WHENS);
-    createEReference(mappingEClass, MAPPING__WITHS);
-    createEReference(mappingEClass, MAPPING__WHERES);
+    classMappingEClass = createEClass(CLASS_MAPPING);
+    createEReference(classMappingEClass, CLASS_MAPPING__MAPPED_ELEMENTS);
+    createEReference(classMappingEClass, CLASS_MAPPING__WHENS);
+    createEReference(classMappingEClass, CLASS_MAPPING__WITHS);
+    createEReference(classMappingEClass, CLASS_MAPPING__WHERES);
 
-    mappableElementEClass = createEClass(MAPPABLE_ELEMENT);
-    createEAttribute(mappableElementEClass, MAPPABLE_ELEMENT__NAME);
+    featureMappingEClass = createEClass(FEATURE_MAPPING);
+    createEReference(featureMappingEClass, FEATURE_MAPPING__MAPPED_ELEMENTS);
+    createEReference(featureMappingEClass, FEATURE_MAPPING__WHENS);
+    createEReference(featureMappingEClass, FEATURE_MAPPING__WITHS);
+    createEReference(featureMappingEClass, FEATURE_MAPPING__WHERES);
+
+    namedEClassEClass = createEClass(NAMED_ECLASS);
+    createEReference(namedEClassEClass, NAMED_ECLASS__REPRESENTED_ECLASS);
+    createEAttribute(namedEClassEClass, NAMED_ECLASS__NAME);
+
+    namedFeatureEClass = createEClass(NAMED_FEATURE);
+    createEReference(namedFeatureEClass, NAMED_FEATURE__CONTAINING_NAMED_ECLASS);
+    createEReference(namedFeatureEClass, NAMED_FEATURE__REPRESENTED_FEATURE);
+    createEAttribute(namedFeatureEClass, NAMED_FEATURE__NAME);
 
     eClassParameterEClass = createEClass(ECLASS_PARAMETER);
     createEReference(eClassParameterEClass, ECLASS_PARAMETER__TYPE);
@@ -662,17 +688,6 @@ public class MIRPackageImpl extends EPackageImpl implements MIRPackage
     createEReference(responseEClass, RESPONSE__CONTEXT);
     createEReference(responseEClass, RESPONSE__INV);
     createEReference(responseEClass, RESPONSE__RESTORE_ACTION);
-
-    baseMappingEClass = createEClass(BASE_MAPPING);
-
-    subMappingEClass = createEClass(SUB_MAPPING);
-
-    namedEClassEClass = createEClass(NAMED_ECLASS);
-    createEReference(namedEClassEClass, NAMED_ECLASS__REPRESENTED_ECLASS);
-
-    namedFeatureEClass = createEClass(NAMED_FEATURE);
-    createEReference(namedFeatureEClass, NAMED_FEATURE__CONTAINING_NAMED_ECLASS);
-    createEReference(namedFeatureEClass, NAMED_FEATURE__REPRESENTED_FEATURE);
 
     // Create enums
     responseActionEEnum = createEEnum(RESPONSE_ACTION);
@@ -710,17 +725,13 @@ public class MIRPackageImpl extends EPackageImpl implements MIRPackage
     // Set bounds for type parameters
 
     // Add supertypes to classes
-    baseMappingEClass.getESuperTypes().add(this.getMapping());
-    subMappingEClass.getESuperTypes().add(this.getMapping());
-    namedEClassEClass.getESuperTypes().add(this.getMappableElement());
-    namedFeatureEClass.getESuperTypes().add(this.getMappableElement());
 
     // Initialize classes and features; add operations and parameters
     initEClass(mirFileEClass, MIRFile.class, "MIRFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getMIRFile_GeneratedPackage(), ecorePackage.getEString(), "generatedPackage", null, 0, 1, MIRFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getMIRFile_GeneratedClass(), ecorePackage.getEString(), "generatedClass", null, 0, 1, MIRFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMIRFile_Imports(), this.getImport(), null, "imports", null, 0, -1, MIRFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMIRFile_Mappings(), this.getMapping(), null, "mappings", null, 0, -1, MIRFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMIRFile_Mappings(), this.getClassMapping(), null, "mappings", null, 0, -1, MIRFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMIRFile_Invariants(), this.getInvariant(), null, "invariants", null, 0, -1, MIRFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMIRFile_Responses(), this.getResponse(), null, "responses", null, 0, -1, MIRFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -728,14 +739,26 @@ public class MIRPackageImpl extends EPackageImpl implements MIRPackage
     initEReference(getImport_Package(), ecorePackage.getEPackage(), null, "package", null, 0, 1, Import.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getImport_Name(), ecorePackage.getEString(), "name", null, 0, 1, Import.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(mappingEClass, Mapping.class, "Mapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getMapping_MappedElements(), this.getMappableElement(), null, "mappedElements", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMapping_Whens(), ecorePackage.getEObject(), null, "whens", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMapping_Withs(), this.getMapping(), null, "withs", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMapping_Wheres(), ecorePackage.getEObject(), null, "wheres", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(classMappingEClass, ClassMapping.class, "ClassMapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getClassMapping_MappedElements(), this.getNamedEClass(), null, "mappedElements", null, 0, -1, ClassMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getClassMapping_Whens(), ecorePackage.getEObject(), null, "whens", null, 0, -1, ClassMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getClassMapping_Withs(), this.getFeatureMapping(), null, "withs", null, 0, -1, ClassMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getClassMapping_Wheres(), ecorePackage.getEObject(), null, "wheres", null, 0, -1, ClassMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(mappableElementEClass, MappableElement.class, "MappableElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getMappableElement_Name(), ecorePackage.getEString(), "name", null, 0, 1, MappableElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(featureMappingEClass, FeatureMapping.class, "FeatureMapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getFeatureMapping_MappedElements(), this.getNamedFeature(), null, "mappedElements", null, 0, -1, FeatureMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getFeatureMapping_Whens(), ecorePackage.getEObject(), null, "whens", null, 0, -1, FeatureMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getFeatureMapping_Withs(), this.getFeatureMapping(), null, "withs", null, 0, -1, FeatureMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getFeatureMapping_Wheres(), ecorePackage.getEObject(), null, "wheres", null, 0, -1, FeatureMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(namedEClassEClass, NamedEClass.class, "NamedEClass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getNamedEClass_RepresentedEClass(), ecorePackage.getEClass(), null, "representedEClass", null, 0, 1, NamedEClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getNamedEClass_Name(), ecorePackage.getEString(), "name", null, 0, 1, NamedEClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(namedFeatureEClass, NamedFeature.class, "NamedFeature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getNamedFeature_ContainingNamedEClass(), this.getNamedEClass(), null, "containingNamedEClass", null, 0, 1, NamedFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getNamedFeature_RepresentedFeature(), ecorePackage.getEStructuralFeature(), null, "representedFeature", null, 0, 1, NamedFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getNamedFeature_Name(), ecorePackage.getEString(), "name", null, 0, 1, NamedFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(eClassParameterEClass, EClassParameter.class, "EClassParameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getEClassParameter_Type(), ecorePackage.getEClass(), null, "type", null, 0, 1, EClassParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -752,20 +775,9 @@ public class MIRPackageImpl extends EPackageImpl implements MIRPackage
 
     initEClass(responseEClass, Response.class, "Response", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getResponse_Action(), this.getResponseAction(), "action", null, 0, 1, Response.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getResponse_Context(), this.getMappableElement(), null, "context", null, 0, 1, Response.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getResponse_Context(), this.getNamedEClass(), null, "context", null, 0, 1, Response.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getResponse_Inv(), this.getInvariant(), null, "inv", null, 0, 1, Response.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getResponse_RestoreAction(), theXbasePackage.getXExpression(), null, "restoreAction", null, 0, 1, Response.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(baseMappingEClass, BaseMapping.class, "BaseMapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(subMappingEClass, SubMapping.class, "SubMapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(namedEClassEClass, NamedEClass.class, "NamedEClass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getNamedEClass_RepresentedEClass(), ecorePackage.getEClass(), null, "representedEClass", null, 0, 1, NamedEClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(namedFeatureEClass, NamedFeature.class, "NamedFeature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getNamedFeature_ContainingNamedEClass(), this.getNamedEClass(), null, "containingNamedEClass", null, 0, 1, NamedFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getNamedFeature_RepresentedFeature(), ecorePackage.getEStructuralFeature(), null, "representedFeature", null, 0, 1, NamedFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Initialize enums and add enum literals
     initEEnum(responseActionEEnum, ResponseAction.class, "ResponseAction");

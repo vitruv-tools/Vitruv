@@ -1,14 +1,16 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.generator
 
-import org.eclipse.xtext.generator.IGenerator
-import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.xtext.generator.IFileSystemAccess
+import com.google.inject.Inject
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIRintermediateFactory
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import java.util.Collections
 import org.eclipse.emf.common.util.URI
-import com.google.inject.Inject
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
+import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.xbase.compiler.JvmModelGenerator
 
 /**
@@ -32,11 +34,48 @@ class MIRIntermediateLanguageGenerator extends JvmModelGenerator {
 		val xmifactory = new XMIResourceFactoryImpl
 		m.put("il", xmifactory)
 		
-		var mirResourceSet = new ResourceSetImpl()
-		var outResource = mirResourceSet.createResource(resourcePath.trimFileExtension.appendFileExtension("il"));
-		outResource.contents.add(mirfile)
+		val mirResourceSet = new ResourceSetImpl()
+		val outResource = mirResourceSet.createResource(resourcePath.trimFileExtension.appendFileExtension("il"));
 		
+		val mir = MIRintermediateFactory.eINSTANCE.createMIR
+
+		mirfile.mapMIRFileToMIR(mir)
+		
+		outResource.contents.add(mir)		
 		outResource.save(Collections.EMPTY_MAP)
+	}
+	
+	def void mapMIRFileToMIR(MIRFile mirfile, MIR mir) {
+		mirfile.mappings
+	    	   .forEach [ it.mapClassMappingToClassMapping(mir) ]
+	}
+	
+	def void mapClassMappingToClassMapping(ClassMapping mapping, MIR mir) {
+		val result = MIRintermediateFactory.eINSTANCE.createClassMapping
+		
+		val leftElement = mapping.mappedElements.get(0)
+		val rightElement = mapping.mappedElements.get(1)
+		
+		result.left = leftElement.representedEClass
+		result.right = rightElement.representedEClass
+		
+		result.predicates +=
+			mapping.whens.map [
+				val jvmName = generatorStatus.GetJvmName(it)
+				
+				if (jvmName == null)
+					null
+				else {
+					val predicate = MIRintermediateFactory.eINSTANCE.createPredicate
+					predicate.className = jvmName
+					mir.predicates += predicate
+					
+					predicate
+				}
+					
+			].filterNull
+			
+		mir.classMappings += result
 	}
 	
 }

@@ -9,22 +9,18 @@ import org.eclipse.ocl.ecore.OCL;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.helper.OCLHelper;
 
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.WhenEvaluator;
+public class OCLPredicateEvaluator {
 
-public class OCLPredicateEvaluator implements WhenEvaluator {
-
-	private String targetName;
-	private String sourceName;
 	private String oclPredicate;
+	private Object sourceName;
+	private Object varName;
 
-	public OCLPredicateEvaluator(String oclPredicate, String sourceName, String targetName) {
+	public OCLPredicateEvaluator(String oclPredicate, String varName) {
 		this.oclPredicate = oclPredicate;
-		this.sourceName = sourceName;
-		this.targetName = targetName;
+		this.varName = sourceName;
 	}
 	
-	@Override
-	public boolean check(EObject source, EObject target) {
+	public boolean check(EObject context) {
 		OCL ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);
 		OCLHelper<EClassifier, ?, ?, Constraint> helper = ocl.createOCLHelper();
 
@@ -36,8 +32,7 @@ public class OCLPredicateEvaluator implements WhenEvaluator {
 			e.printStackTrace();
 		}
 		
-		// TODO: set up source and target!
-		
+		// TODO: set up variable
 		return ocl.check(null, predicate);
 	}
 

@@ -65,12 +65,12 @@ public interface Response extends EObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Context</em>' containment reference.
-   * @see #setContext(MappableElement)
+   * @see #setContext(NamedEClass)
    * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRPackage#getResponse_Context()
    * @model containment="true"
    * @generated
    */
-  MappableElement getContext();
+  NamedEClass getContext();
 
   /**
    * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Response#getContext <em>Context</em>}' containment reference.
@@ -80,7 +80,7 @@ public interface Response extends EObject
    * @see #getContext()
    * @generated
    */
-  void setContext(MappableElement value);
+  void setContext(NamedEClass value);
 
   /**
    * Returns the value of the '<em><b>Inv</b></em>' reference.

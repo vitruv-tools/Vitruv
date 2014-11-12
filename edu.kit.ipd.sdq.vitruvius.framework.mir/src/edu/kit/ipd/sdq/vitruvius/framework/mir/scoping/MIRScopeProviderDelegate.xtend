@@ -16,7 +16,7 @@ import org.eclipse.xtext.xbase.scoping.XImportSectionNamespaceScopeProvider
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRPackage
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Import
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.BaseMapping
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass
 
 class MIRScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
@@ -75,11 +75,11 @@ class MIRScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 		if (context == null)
 			return IScope.NULLSCOPE;
 			
-		var parentBaseMapping = EcoreUtil2.getContainerOfType(context, BaseMapping)
+		var parentClassMapping = EcoreUtil2.getContainerOfType(context, ClassMapping)
 		
 		var featureDescriptions =
-			if (parentBaseMapping != null && parentBaseMapping instanceof BaseMapping) {
-				parentBaseMapping.mappedElements.filter(typeof(NamedEClass)).map [ namedClass |
+			if (parentClassMapping != null && parentClassMapping instanceof ClassMapping) {
+				parentClassMapping.mappedElements.filter(typeof(NamedEClass)).map [ namedClass |
 					namedClass.representedEClass.getEAllStructuralFeatures.map [
 							val qualifiedName =
 								QualifiedName.create(it.name)
@@ -98,8 +98,8 @@ class MIRScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 	def getContainingNamedEClassScope(NamedFeature feature) {
 		var resultScope = IScope.NULLSCOPE
 		for (var container = feature.eContainer; container != null; container = container.eContainer) {
-			if (container instanceof BaseMapping) {
-				val mapping = container as BaseMapping
+			if (container instanceof ClassMapping) {
+				val mapping = container as ClassMapping
 				resultScope = new SimpleScope(resultScope,
 					mapping.mappedElements
 						.filter(typeof(NamedEClass))
