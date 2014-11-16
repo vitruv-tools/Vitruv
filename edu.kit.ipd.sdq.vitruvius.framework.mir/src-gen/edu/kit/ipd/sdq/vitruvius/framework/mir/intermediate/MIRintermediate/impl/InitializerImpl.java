@@ -2,8 +2,8 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl;
 
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Initializer;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIRintermediatePackage;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Predicate;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -14,44 +14,44 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Predicate</b></em>'.
+ * An implementation of the model object '<em><b>Initializer</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.PredicateImpl#getCheckStatement <em>Check Statement</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.InitializerImpl#getCallStatement <em>Call Statement</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class PredicateImpl extends MinimalEObjectImpl.Container implements Predicate {
+public class InitializerImpl extends MinimalEObjectImpl.Container implements Initializer {
 	/**
-	 * The default value of the '{@link #getCheckStatement() <em>Check Statement</em>}' attribute.
+	 * The default value of the '{@link #getCallStatement() <em>Call Statement</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getCheckStatement()
+	 * @see #getCallStatement()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String CHECK_STATEMENT_EDEFAULT = "";
+	protected static final String CALL_STATEMENT_EDEFAULT = "";
 
 	/**
-	 * The cached value of the '{@link #getCheckStatement() <em>Check Statement</em>}' attribute.
+	 * The cached value of the '{@link #getCallStatement() <em>Call Statement</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getCheckStatement()
+	 * @see #getCallStatement()
 	 * @generated
 	 * @ordered
 	 */
-	protected String checkStatement = CHECK_STATEMENT_EDEFAULT;
+	protected String callStatement = CALL_STATEMENT_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected PredicateImpl() {
+	protected InitializerImpl() {
 		super();
 	}
 
@@ -62,7 +62,7 @@ public class PredicateImpl extends MinimalEObjectImpl.Container implements Predi
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return MIRintermediatePackage.Literals.PREDICATE;
+		return MIRintermediatePackage.Literals.INITIALIZER;
 	}
 
 	/**
@@ -70,8 +70,8 @@ public class PredicateImpl extends MinimalEObjectImpl.Container implements Predi
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getCheckStatement() {
-		return checkStatement;
+	public String getCallStatement() {
+		return callStatement;
 	}
 
 	/**
@@ -79,11 +79,11 @@ public class PredicateImpl extends MinimalEObjectImpl.Container implements Predi
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setCheckStatement(String newCheckStatement) {
-		String oldCheckStatement = checkStatement;
-		checkStatement = newCheckStatement;
+	public void setCallStatement(String newCallStatement) {
+		String oldCallStatement = callStatement;
+		callStatement = newCallStatement;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, MIRintermediatePackage.PREDICATE__CHECK_STATEMENT, oldCheckStatement, checkStatement));
+			eNotify(new ENotificationImpl(this, Notification.SET, MIRintermediatePackage.INITIALIZER__CALL_STATEMENT, oldCallStatement, callStatement));
 	}
 
 	/**
@@ -94,8 +94,8 @@ public class PredicateImpl extends MinimalEObjectImpl.Container implements Predi
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case MIRintermediatePackage.PREDICATE__CHECK_STATEMENT:
-				return getCheckStatement();
+			case MIRintermediatePackage.INITIALIZER__CALL_STATEMENT:
+				return getCallStatement();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -108,8 +108,8 @@ public class PredicateImpl extends MinimalEObjectImpl.Container implements Predi
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case MIRintermediatePackage.PREDICATE__CHECK_STATEMENT:
-				setCheckStatement((String)newValue);
+			case MIRintermediatePackage.INITIALIZER__CALL_STATEMENT:
+				setCallStatement((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -123,8 +123,8 @@ public class PredicateImpl extends MinimalEObjectImpl.Container implements Predi
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case MIRintermediatePackage.PREDICATE__CHECK_STATEMENT:
-				setCheckStatement(CHECK_STATEMENT_EDEFAULT);
+			case MIRintermediatePackage.INITIALIZER__CALL_STATEMENT:
+				setCallStatement(CALL_STATEMENT_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -138,8 +138,8 @@ public class PredicateImpl extends MinimalEObjectImpl.Container implements Predi
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case MIRintermediatePackage.PREDICATE__CHECK_STATEMENT:
-				return CHECK_STATEMENT_EDEFAULT == null ? checkStatement != null : !CHECK_STATEMENT_EDEFAULT.equals(checkStatement);
+			case MIRintermediatePackage.INITIALIZER__CALL_STATEMENT:
+				return CALL_STATEMENT_EDEFAULT == null ? callStatement != null : !CALL_STATEMENT_EDEFAULT.equals(callStatement);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -154,10 +154,10 @@ public class PredicateImpl extends MinimalEObjectImpl.Container implements Predi
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (checkStatement: ");
-		result.append(checkStatement);
+		result.append(" (callStatement: ");
+		result.append(callStatement);
 		result.append(')');
 		return result.toString();
 	}
 
-} //PredicateImpl
+} //InitializerImpl

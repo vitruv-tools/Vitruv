@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR#getClassMappings <em>Class Mappings</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR#getFeatureMappings <em>Feature Mappings</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR#getPredicates <em>Predicates</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR#getConfiguration <em>Configuration</em>}</li>
  * </ul>
  * </p>
  *
@@ -72,5 +73,31 @@ public interface MIR extends EObject {
 	 * @generated
 	 */
 	EList<Predicate> getPredicates();
+
+	/**
+	 * Returns the value of the '<em><b>Configuration</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Configuration</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Configuration</em>' containment reference.
+	 * @see #setConfiguration(Configuration)
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIRintermediatePackage#getMIR_Configuration()
+	 * @model containment="true" required="true"
+	 * @generated
+	 */
+	Configuration getConfiguration();
+
+	/**
+	 * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR#getConfiguration <em>Configuration</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Configuration</em>' containment reference.
+	 * @see #getConfiguration()
+	 * @generated
+	 */
+	void setConfiguration(Configuration value);
 
 } // MIR

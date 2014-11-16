@@ -84,6 +84,14 @@ public class MIRintermediateAdapterFactory extends AdapterFactoryImpl {
 				return createPredicateAdapter();
 			}
 			@Override
+			public Adapter caseInitializer(Initializer object) {
+				return createInitializerAdapter();
+			}
+			@Override
+			public Adapter caseConfiguration(Configuration object) {
+				return createConfigurationAdapter();
+			}
+			@Override
 			public Adapter defaultCase(EObject object) {
 				return createEObjectAdapter();
 			}
@@ -156,6 +164,34 @@ public class MIRintermediateAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createPredicateAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Initializer <em>Initializer</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Initializer
+	 * @generated
+	 */
+	public Adapter createInitializerAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Configuration <em>Configuration</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Configuration
+	 * @generated
+	 */
+	public Adapter createConfigurationAdapter() {
 		return null;
 	}
 

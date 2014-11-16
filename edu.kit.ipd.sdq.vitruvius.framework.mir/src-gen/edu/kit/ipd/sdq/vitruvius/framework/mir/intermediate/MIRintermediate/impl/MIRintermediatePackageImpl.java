@@ -3,7 +3,9 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassMapping;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Configuration;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.FeatureMapping;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Initializer;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIRintermediateFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIRintermediatePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Predicate;
@@ -50,6 +52,20 @@ public class MIRintermediatePackageImpl extends EPackageImpl implements MIRinter
 	 * @generated
 	 */
 	private EClass predicateEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass initializerEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass configurationEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -156,6 +172,15 @@ public class MIRintermediatePackageImpl extends EPackageImpl implements MIRinter
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getMIR_Configuration() {
+		return (EReference)mirEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getFeatureMapping() {
 		return featureMappingEClass;
 	}
@@ -228,6 +253,15 @@ public class MIRintermediatePackageImpl extends EPackageImpl implements MIRinter
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getClassMapping_Initializer() {
+		return (EReference)classMappingEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getPredicate() {
 		return predicateEClass;
 	}
@@ -237,8 +271,53 @@ public class MIRintermediatePackageImpl extends EPackageImpl implements MIRinter
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getPredicate_ClassName() {
+	public EAttribute getPredicate_CheckStatement() {
 		return (EAttribute)predicateEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getInitializer() {
+		return initializerEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getInitializer_CallStatement() {
+		return (EAttribute)initializerEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getConfiguration() {
+		return configurationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getConfiguration_Package() {
+		return (EAttribute)configurationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getConfiguration_Type() {
+		return (EAttribute)configurationEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -273,6 +352,7 @@ public class MIRintermediatePackageImpl extends EPackageImpl implements MIRinter
 		createEReference(mirEClass, MIR__CLASS_MAPPINGS);
 		createEReference(mirEClass, MIR__FEATURE_MAPPINGS);
 		createEReference(mirEClass, MIR__PREDICATES);
+		createEReference(mirEClass, MIR__CONFIGURATION);
 
 		featureMappingEClass = createEClass(FEATURE_MAPPING);
 		createEReference(featureMappingEClass, FEATURE_MAPPING__LEFT);
@@ -283,9 +363,17 @@ public class MIRintermediatePackageImpl extends EPackageImpl implements MIRinter
 		createEReference(classMappingEClass, CLASS_MAPPING__LEFT);
 		createEReference(classMappingEClass, CLASS_MAPPING__RIGHT);
 		createEReference(classMappingEClass, CLASS_MAPPING__PREDICATES);
+		createEReference(classMappingEClass, CLASS_MAPPING__INITIALIZER);
 
 		predicateEClass = createEClass(PREDICATE);
-		createEAttribute(predicateEClass, PREDICATE__CLASS_NAME);
+		createEAttribute(predicateEClass, PREDICATE__CHECK_STATEMENT);
+
+		initializerEClass = createEClass(INITIALIZER);
+		createEAttribute(initializerEClass, INITIALIZER__CALL_STATEMENT);
+
+		configurationEClass = createEClass(CONFIGURATION);
+		createEAttribute(configurationEClass, CONFIGURATION__PACKAGE);
+		createEAttribute(configurationEClass, CONFIGURATION__TYPE);
 	}
 
 	/**
@@ -325,6 +413,7 @@ public class MIRintermediatePackageImpl extends EPackageImpl implements MIRinter
 		initEReference(getMIR_ClassMappings(), this.getClassMapping(), null, "classMappings", null, 0, -1, edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getMIR_FeatureMappings(), this.getFeatureMapping(), null, "featureMappings", null, 0, -1, edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getMIR_Predicates(), this.getPredicate(), null, "predicates", null, 0, -1, edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getMIR_Configuration(), this.getConfiguration(), null, "configuration", null, 1, 1, edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(featureMappingEClass, FeatureMapping.class, "FeatureMapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getFeatureMapping_Left(), theEcorePackage.getEStructuralFeature(), null, "left", null, 0, 1, FeatureMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -335,9 +424,17 @@ public class MIRintermediatePackageImpl extends EPackageImpl implements MIRinter
 		initEReference(getClassMapping_Left(), theEcorePackage.getEClass(), null, "left", null, 0, 1, ClassMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getClassMapping_Right(), theEcorePackage.getEClass(), null, "right", null, 0, 1, ClassMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getClassMapping_Predicates(), this.getPredicate(), null, "predicates", null, 0, -1, ClassMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getClassMapping_Initializer(), this.getInitializer(), null, "initializer", null, 0, -1, ClassMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(predicateEClass, Predicate.class, "Predicate", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getPredicate_ClassName(), ecorePackage.getEString(), "className", null, 0, 1, Predicate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPredicate_CheckStatement(), ecorePackage.getEString(), "checkStatement", "", 0, 1, Predicate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(initializerEClass, Initializer.class, "Initializer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getInitializer_CallStatement(), ecorePackage.getEString(), "callStatement", "", 0, 1, Initializer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(configurationEClass, Configuration.class, "Configuration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getConfiguration_Package(), ecorePackage.getEString(), "package", null, 1, 1, Configuration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getConfiguration_Type(), ecorePackage.getEString(), "type", null, 1, 1, Configuration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

@@ -3,6 +3,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassMapping;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Initializer;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIRintermediatePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Predicate;
 
@@ -10,6 +11,7 @@ import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
@@ -18,7 +20,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,6 +34,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.ClassMappingImpl#getLeft <em>Left</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.ClassMappingImpl#getRight <em>Right</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.ClassMappingImpl#getPredicates <em>Predicates</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.ClassMappingImpl#getInitializer <em>Initializer</em>}</li>
  * </ul>
  * </p>
  *
@@ -65,6 +70,16 @@ public class ClassMappingImpl extends MinimalEObjectImpl.Container implements Cl
 	 * @ordered
 	 */
 	protected EList<Predicate> predicates;
+
+	/**
+	 * The cached value of the '{@link #getInitializer() <em>Initializer</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getInitializer()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Initializer> initializer;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -178,6 +193,32 @@ public class ClassMappingImpl extends MinimalEObjectImpl.Container implements Cl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<Initializer> getInitializer() {
+		if (initializer == null) {
+			initializer = new EObjectContainmentEList<Initializer>(Initializer.class, this, MIRintermediatePackage.CLASS_MAPPING__INITIALIZER);
+		}
+		return initializer;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case MIRintermediatePackage.CLASS_MAPPING__INITIALIZER:
+				return ((InternalEList<?>)getInitializer()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -189,6 +230,8 @@ public class ClassMappingImpl extends MinimalEObjectImpl.Container implements Cl
 				return basicGetRight();
 			case MIRintermediatePackage.CLASS_MAPPING__PREDICATES:
 				return getPredicates();
+			case MIRintermediatePackage.CLASS_MAPPING__INITIALIZER:
+				return getInitializer();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -212,6 +255,10 @@ public class ClassMappingImpl extends MinimalEObjectImpl.Container implements Cl
 				getPredicates().clear();
 				getPredicates().addAll((Collection<? extends Predicate>)newValue);
 				return;
+			case MIRintermediatePackage.CLASS_MAPPING__INITIALIZER:
+				getInitializer().clear();
+				getInitializer().addAll((Collection<? extends Initializer>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -233,6 +280,9 @@ public class ClassMappingImpl extends MinimalEObjectImpl.Container implements Cl
 			case MIRintermediatePackage.CLASS_MAPPING__PREDICATES:
 				getPredicates().clear();
 				return;
+			case MIRintermediatePackage.CLASS_MAPPING__INITIALIZER:
+				getInitializer().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -251,6 +301,8 @@ public class ClassMappingImpl extends MinimalEObjectImpl.Container implements Cl
 				return right != null;
 			case MIRintermediatePackage.CLASS_MAPPING__PREDICATES:
 				return predicates != null && !predicates.isEmpty();
+			case MIRintermediatePackage.CLASS_MAPPING__INITIALIZER:
+				return initializer != null && !initializer.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

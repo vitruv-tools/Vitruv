@@ -94,13 +94,22 @@ public interface MIRintermediatePackage extends EPackage {
 	int MIR__PREDICATES = 2;
 
 	/**
+	 * The feature id for the '<em><b>Configuration</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MIR__CONFIGURATION = 3;
+
+	/**
 	 * The number of structural features of the '<em>MIR</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MIR_FEATURE_COUNT = 3;
+	int MIR_FEATURE_COUNT = 4;
 
 	/**
 	 * The number of operations of the '<em>MIR</em>' class.
@@ -204,13 +213,22 @@ public interface MIRintermediatePackage extends EPackage {
 	int CLASS_MAPPING__PREDICATES = 2;
 
 	/**
+	 * The feature id for the '<em><b>Initializer</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CLASS_MAPPING__INITIALIZER = 3;
+
+	/**
 	 * The number of structural features of the '<em>Class Mapping</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CLASS_MAPPING_FEATURE_COUNT = 3;
+	int CLASS_MAPPING_FEATURE_COUNT = 4;
 
 	/**
 	 * The number of operations of the '<em>Class Mapping</em>' class.
@@ -232,13 +250,13 @@ public interface MIRintermediatePackage extends EPackage {
 	int PREDICATE = 3;
 
 	/**
-	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Check Statement</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PREDICATE__CLASS_NAME = 0;
+	int PREDICATE__CHECK_STATEMENT = 0;
 
 	/**
 	 * The number of structural features of the '<em>Predicate</em>' class.
@@ -257,6 +275,91 @@ public interface MIRintermediatePackage extends EPackage {
 	 * @ordered
 	 */
 	int PREDICATE_OPERATION_COUNT = 0;
+
+
+	/**
+	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.InitializerImpl <em>Initializer</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.InitializerImpl
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.MIRintermediatePackageImpl#getInitializer()
+	 * @generated
+	 */
+	int INITIALIZER = 4;
+
+	/**
+	 * The feature id for the '<em><b>Call Statement</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INITIALIZER__CALL_STATEMENT = 0;
+
+	/**
+	 * The number of structural features of the '<em>Initializer</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INITIALIZER_FEATURE_COUNT = 1;
+
+	/**
+	 * The number of operations of the '<em>Initializer</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INITIALIZER_OPERATION_COUNT = 0;
+
+
+	/**
+	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.ConfigurationImpl <em>Configuration</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.ConfigurationImpl
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.MIRintermediatePackageImpl#getConfiguration()
+	 * @generated
+	 */
+	int CONFIGURATION = 5;
+
+	/**
+	 * The feature id for the '<em><b>Package</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION__PACKAGE = 0;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION__TYPE = 1;
+
+	/**
+	 * The number of structural features of the '<em>Configuration</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_FEATURE_COUNT = 2;
+
+	/**
+	 * The number of operations of the '<em>Configuration</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFIGURATION_OPERATION_COUNT = 0;
 
 
 	/**
@@ -301,6 +404,17 @@ public interface MIRintermediatePackage extends EPackage {
 	 * @generated
 	 */
 	EReference getMIR_Predicates();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR#getConfiguration <em>Configuration</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Configuration</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR#getConfiguration()
+	 * @see #getMIR()
+	 * @generated
+	 */
+	EReference getMIR_Configuration();
 
 	/**
 	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.FeatureMapping <em>Feature Mapping</em>}'.
@@ -389,6 +503,17 @@ public interface MIRintermediatePackage extends EPackage {
 	EReference getClassMapping_Predicates();
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassMapping#getInitializer <em>Initializer</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Initializer</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassMapping#getInitializer()
+	 * @see #getClassMapping()
+	 * @generated
+	 */
+	EReference getClassMapping_Initializer();
+
+	/**
 	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Predicate <em>Predicate</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -399,15 +524,68 @@ public interface MIRintermediatePackage extends EPackage {
 	EClass getPredicate();
 
 	/**
-	 * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Predicate#getClassName <em>Class Name</em>}'.
+	 * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Predicate#getCheckStatement <em>Check Statement</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Class Name</em>'.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Predicate#getClassName()
+	 * @return the meta object for the attribute '<em>Check Statement</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Predicate#getCheckStatement()
 	 * @see #getPredicate()
 	 * @generated
 	 */
-	EAttribute getPredicate_ClassName();
+	EAttribute getPredicate_CheckStatement();
+
+	/**
+	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Initializer <em>Initializer</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Initializer</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Initializer
+	 * @generated
+	 */
+	EClass getInitializer();
+
+	/**
+	 * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Initializer#getCallStatement <em>Call Statement</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Call Statement</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Initializer#getCallStatement()
+	 * @see #getInitializer()
+	 * @generated
+	 */
+	EAttribute getInitializer_CallStatement();
+
+	/**
+	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Configuration <em>Configuration</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Configuration</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Configuration
+	 * @generated
+	 */
+	EClass getConfiguration();
+
+	/**
+	 * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Configuration#getPackage <em>Package</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Package</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Configuration#getPackage()
+	 * @see #getConfiguration()
+	 * @generated
+	 */
+	EAttribute getConfiguration_Package();
+
+	/**
+	 * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Configuration#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Type</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Configuration#getType()
+	 * @see #getConfiguration()
+	 * @generated
+	 */
+	EAttribute getConfiguration_Type();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -465,6 +643,14 @@ public interface MIRintermediatePackage extends EPackage {
 		 * @generated
 		 */
 		EReference MIR__PREDICATES = eINSTANCE.getMIR_Predicates();
+
+		/**
+		 * The meta object literal for the '<em><b>Configuration</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference MIR__CONFIGURATION = eINSTANCE.getMIR_Configuration();
 
 		/**
 		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.FeatureMappingImpl <em>Feature Mapping</em>}' class.
@@ -535,6 +721,14 @@ public interface MIRintermediatePackage extends EPackage {
 		EReference CLASS_MAPPING__PREDICATES = eINSTANCE.getClassMapping_Predicates();
 
 		/**
+		 * The meta object literal for the '<em><b>Initializer</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CLASS_MAPPING__INITIALIZER = eINSTANCE.getClassMapping_Initializer();
+
+		/**
 		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.PredicateImpl <em>Predicate</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -545,12 +739,56 @@ public interface MIRintermediatePackage extends EPackage {
 		EClass PREDICATE = eINSTANCE.getPredicate();
 
 		/**
-		 * The meta object literal for the '<em><b>Class Name</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Check Statement</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute PREDICATE__CLASS_NAME = eINSTANCE.getPredicate_ClassName();
+		EAttribute PREDICATE__CHECK_STATEMENT = eINSTANCE.getPredicate_CheckStatement();
+
+		/**
+		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.InitializerImpl <em>Initializer</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.InitializerImpl
+		 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.MIRintermediatePackageImpl#getInitializer()
+		 * @generated
+		 */
+		EClass INITIALIZER = eINSTANCE.getInitializer();
+
+		/**
+		 * The meta object literal for the '<em><b>Call Statement</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute INITIALIZER__CALL_STATEMENT = eINSTANCE.getInitializer_CallStatement();
+
+		/**
+		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.ConfigurationImpl <em>Configuration</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.ConfigurationImpl
+		 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.MIRintermediatePackageImpl#getConfiguration()
+		 * @generated
+		 */
+		EClass CONFIGURATION = eINSTANCE.getConfiguration();
+
+		/**
+		 * The meta object literal for the '<em><b>Package</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONFIGURATION__PACKAGE = eINSTANCE.getConfiguration_Package();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONFIGURATION__TYPE = eINSTANCE.getConfiguration_Type();
 
 	}
 

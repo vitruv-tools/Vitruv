@@ -60,6 +60,8 @@ public class MIRintermediateFactoryImpl extends EFactoryImpl implements MIRinter
 			case MIRintermediatePackage.FEATURE_MAPPING: return createFeatureMapping();
 			case MIRintermediatePackage.CLASS_MAPPING: return createClassMapping();
 			case MIRintermediatePackage.PREDICATE: return createPredicate();
+			case MIRintermediatePackage.INITIALIZER: return createInitializer();
+			case MIRintermediatePackage.CONFIGURATION: return createConfiguration();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -103,6 +105,26 @@ public class MIRintermediateFactoryImpl extends EFactoryImpl implements MIRinter
 	public Predicate createPredicate() {
 		PredicateImpl predicate = new PredicateImpl();
 		return predicate;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Initializer createInitializer() {
+		InitializerImpl initializer = new InitializerImpl();
+		return initializer;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Configuration createConfiguration() {
+		ConfigurationImpl configuration = new ConfigurationImpl();
+		return configuration;
 	}
 
 	/**

@@ -12,7 +12,7 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Predicate#getClassName <em>Class Name</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Predicate#getCheckStatement <em>Check Statement</em>}</li>
  * </ul>
  * </p>
  *
@@ -22,29 +22,30 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Predicate extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Class Name</b></em>' attribute.
+	 * Returns the value of the '<em><b>Check Statement</b></em>' attribute.
+	 * The default value is <code>""</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Class Name</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Check Statement</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Class Name</em>' attribute.
-	 * @see #setClassName(String)
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIRintermediatePackage#getPredicate_ClassName()
-	 * @model
+	 * @return the value of the '<em>Check Statement</em>' attribute.
+	 * @see #setCheckStatement(String)
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIRintermediatePackage#getPredicate_CheckStatement()
+	 * @model default=""
 	 * @generated
 	 */
-	String getClassName();
+	String getCheckStatement();
 
 	/**
-	 * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Predicate#getClassName <em>Class Name</em>}' attribute.
+	 * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Predicate#getCheckStatement <em>Check Statement</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Class Name</em>' attribute.
-	 * @see #getClassName()
+	 * @param value the new value of the '<em>Check Statement</em>' attribute.
+	 * @see #getCheckStatement()
 	 * @generated
 	 */
-	void setClassName(String value);
+	void setCheckStatement(String value);
 
 } // Predicate

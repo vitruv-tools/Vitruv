@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassMapping#getLeft <em>Left</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassMapping#getRight <em>Right</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassMapping#getPredicates <em>Predicates</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassMapping#getInitializer <em>Initializer</em>}</li>
  * </ul>
  * </p>
  *
@@ -93,5 +94,21 @@ public interface ClassMapping extends EObject {
 	 * @generated
 	 */
 	EList<Predicate> getPredicates();
+
+	/**
+	 * Returns the value of the '<em><b>Initializer</b></em>' containment reference list.
+	 * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Initializer}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Initializer</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Initializer</em>' containment reference list.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIRintermediatePackage#getClassMapping_Initializer()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<Initializer> getInitializer();
 
 } // ClassMapping

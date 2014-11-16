@@ -3,15 +3,18 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassMapping;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Configuration;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.FeatureMapping;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIRintermediatePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Predicate;
 import java.util.Collection;
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -26,6 +29,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.MIRImpl#getClassMappings <em>Class Mappings</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.MIRImpl#getFeatureMappings <em>Feature Mappings</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.MIRImpl#getPredicates <em>Predicates</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.MIRImpl#getConfiguration <em>Configuration</em>}</li>
  * </ul>
  * </p>
  *
@@ -61,6 +65,16 @@ public class MIRImpl extends MinimalEObjectImpl.Container implements MIR {
 	 * @ordered
 	 */
 	protected EList<Predicate> predicates;
+
+	/**
+	 * The cached value of the '{@link #getConfiguration() <em>Configuration</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getConfiguration()
+	 * @generated
+	 * @ordered
+	 */
+	protected Configuration configuration;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -122,6 +136,49 @@ public class MIRImpl extends MinimalEObjectImpl.Container implements MIR {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Configuration getConfiguration() {
+		return configuration;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetConfiguration(Configuration newConfiguration, NotificationChain msgs) {
+		Configuration oldConfiguration = configuration;
+		configuration = newConfiguration;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MIRintermediatePackage.MIR__CONFIGURATION, oldConfiguration, newConfiguration);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setConfiguration(Configuration newConfiguration) {
+		if (newConfiguration != configuration) {
+			NotificationChain msgs = null;
+			if (configuration != null)
+				msgs = ((InternalEObject)configuration).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MIRintermediatePackage.MIR__CONFIGURATION, null, msgs);
+			if (newConfiguration != null)
+				msgs = ((InternalEObject)newConfiguration).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MIRintermediatePackage.MIR__CONFIGURATION, null, msgs);
+			msgs = basicSetConfiguration(newConfiguration, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, MIRintermediatePackage.MIR__CONFIGURATION, newConfiguration, newConfiguration));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -131,6 +188,8 @@ public class MIRImpl extends MinimalEObjectImpl.Container implements MIR {
 				return ((InternalEList<?>)getFeatureMappings()).basicRemove(otherEnd, msgs);
 			case MIRintermediatePackage.MIR__PREDICATES:
 				return ((InternalEList<?>)getPredicates()).basicRemove(otherEnd, msgs);
+			case MIRintermediatePackage.MIR__CONFIGURATION:
+				return basicSetConfiguration(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -149,6 +208,8 @@ public class MIRImpl extends MinimalEObjectImpl.Container implements MIR {
 				return getFeatureMappings();
 			case MIRintermediatePackage.MIR__PREDICATES:
 				return getPredicates();
+			case MIRintermediatePackage.MIR__CONFIGURATION:
+				return getConfiguration();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -174,6 +235,9 @@ public class MIRImpl extends MinimalEObjectImpl.Container implements MIR {
 				getPredicates().clear();
 				getPredicates().addAll((Collection<? extends Predicate>)newValue);
 				return;
+			case MIRintermediatePackage.MIR__CONFIGURATION:
+				setConfiguration((Configuration)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -195,6 +259,9 @@ public class MIRImpl extends MinimalEObjectImpl.Container implements MIR {
 			case MIRintermediatePackage.MIR__PREDICATES:
 				getPredicates().clear();
 				return;
+			case MIRintermediatePackage.MIR__CONFIGURATION:
+				setConfiguration((Configuration)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -213,6 +280,8 @@ public class MIRImpl extends MinimalEObjectImpl.Container implements MIR {
 				return featureMappings != null && !featureMappings.isEmpty();
 			case MIRintermediatePackage.MIR__PREDICATES:
 				return predicates != null && !predicates.isEmpty();
+			case MIRintermediatePackage.MIR__CONFIGURATION:
+				return configuration != null;
 		}
 		return super.eIsSet(featureID);
 	}

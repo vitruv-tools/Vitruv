@@ -84,7 +84,7 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 				whenClass.makeSingleton(context)
 			])
 			
-			generatorStatus.PutJvmName(predicate, className)
+			generatorStatus.putJvmName(predicate, className)
 		} else if (predicate instanceof OCLBlock) {
 			acceptor.accept(predicate.toClass(className)) [ whenClass |
 				whenClass.members += predicate.toMethod("apply", typeRef(type)) [ checkMethod |
@@ -200,7 +200,7 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 			
 		invariantCounter++
 		
-		generatorStatus.PutJvmName(xbaseBlock, invariantClassName)
+		generatorStatus.putJvmName(xbaseBlock, invariantClassName)
    	}
    	
    	def typeNameToEClassStatement(String typeName) {
@@ -248,7 +248,7 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
    		
    		responseCounter++
    		
-   		generatorStatus.PutJvmName(resp, responseClassName)
+   		generatorStatus.putJvmName(resp, responseClassName)
    	}
    	
    	def dispatch toParameterType(NamedFeature object) {
