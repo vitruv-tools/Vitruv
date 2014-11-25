@@ -45,8 +45,9 @@ class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransfo
 		val int createOwnClassInt = userInteracting.selectFromMessage(UserInteractionType.MODAL,
 			"Collection Data Type created. " + selectClasOrNoClass, #{"Yes", "No"})
 		var boolean createOwnClass = false;
-		if(0 == createOwnClassInt) createOwnClass = true
-
+		if(0 == createOwnClassInt){
+			createOwnClass = true
+		} 
 		//ii) ask data type
 		val reflection = new Reflections
 		var Set<Class<? extends Collection>> collectionDataTypes = reflection.getSubTypesOf(Collection)

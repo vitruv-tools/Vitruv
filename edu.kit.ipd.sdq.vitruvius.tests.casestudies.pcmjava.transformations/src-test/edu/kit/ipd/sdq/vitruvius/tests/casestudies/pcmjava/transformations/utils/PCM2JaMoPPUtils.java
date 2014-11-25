@@ -2,6 +2,8 @@ package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util
 
 import java.io.IOException;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -51,7 +53,7 @@ public class PCM2JaMoPPUtils {
         final Repository repo = RepositoryFactory.eINSTANCE.createRepository();
         repo.setEntityName(repositoryName);
         resource.getContents().add(repo);
-        EcoreResourceBridge.saveResource(resource);
+    	EcoreResourceBridge.saveResource(resource);
         return repo;
     }
 

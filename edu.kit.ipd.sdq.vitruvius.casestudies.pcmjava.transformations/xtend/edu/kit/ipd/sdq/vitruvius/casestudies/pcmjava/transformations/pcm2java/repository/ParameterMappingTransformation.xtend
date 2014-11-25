@@ -65,7 +65,7 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 		if (correspondingObjects.nullOrEmpty || correspondingObjects.filter(typeof(org.emftext.language.java.parameters.Parameter)).nullOrEmpty) {
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
-		if (affectedAttribute.name.equals(PCMJaMoPPNamespace.PCM.PCM_PARAMETER_ATTRIBUTE_PARAMETER_NAME)) {
+		if (affectedAttribute.name.equals(PCMJaMoPPNamespace.PCM.PCM_ATTRIBUTE_ENTITY_NAME)) {
 			val boolean markFilesOfChangedEObjectsAsFilesToSave = true
 			val tcr = PCM2JaMoPPUtils.updateNameAttribute(correspondingObjects, newValue, affectedAttribute,
 				featureCorrespondenceMap, correspondenceInstance, markFilesOfChangedEObjectsAsFilesToSave)
@@ -115,7 +115,7 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 			getReferenceByNameFromEObject(PCMJaMoPPNamespace.PCM.PCM_PARAMETER_ATTRIBUTE_DATA_TYPE, pcmDummyParam);
 		val jaMoPPTypeReference = TransformationUtils.getReferenceByNameFromEObject(
 			PCMJaMoPPNamespace.JaMoPP.JAMOPP_PARAMETER_ATTRIBUTE_TYPE_REFERENCE, jaMoPPDummyParam)
-		val EStructuralFeature pcmParameterNameAttribute = TransformationUtils.getAttributeByNameFromEObject(PCMJaMoPPNamespace.PCM.PCM_PARAMETER_ATTRIBUTE_PARAMETER_NAME, pcmDummyParam)
+		val EStructuralFeature pcmParameterNameAttribute = TransformationUtils.getAttributeByNameFromEObject(PCMJaMoPPNamespace.PCM.PCM_ATTRIBUTE_ENTITY_NAME, pcmDummyParam)
 		val EStructuralFeature jaMoPPParammeterNameAttribute = TransformationUtils.getAttributeByNameFromEObject(PCMJaMoPPNamespace.JaMoPP.JAMOPP_ATTRIBUTE_NAME, jaMoPPDummyParam)
 		featureCorrespondenceMap.put(pcmDataTypeAttribute, jaMoPPTypeReference)
 		featureCorrespondenceMap.put(pcmParameterNameAttribute, jaMoPPParammeterNameAttribute)
