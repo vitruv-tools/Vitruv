@@ -29,16 +29,13 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 
 	/**
 	 * creates an IntetfaceMethod for each signature that is created
-	 * Assumptions:
-	 * 		- the OperationSignature does not have an return type yet
-	 * 		- the OperationSignature does not have any parameters yet
+	 * if the interface method already has a return type or parameters they have to be added 
+	 * separately in later transformations 
 	 */
 	override createEObject(EObject eObject) {
 		val OperationSignature opSig = eObject as OperationSignature
 		if (null != opSig.returnType__OperationSignature || !opSig.parameters__OperationSignature.nullOrEmpty) {
-			throw new RuntimeException(
-				"Operation signature either has return type or parameters directly after " +
-					"creating - should not happen" + opSig)
+			logger.debug("Operation signature either has return type or parameters directly after creating it.")
 		}
 		var InterfaceMethod ifMethod = MembersFactory.eINSTANCE.createInterfaceMethod
 		ifMethod.setName(opSig.entityName)
