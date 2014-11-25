@@ -3,7 +3,6 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.generator
 import com.google.inject.Inject
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIRintermediateFactory
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile
 import java.util.Collections
@@ -13,6 +12,12 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.JavaBlock
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Mapping
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ReverseFeaturesCorrespondWithEClassifiers import org.eclipse.emf.ecore.util.EcoreUtil
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassifierMapping
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping
 
 /**
  * Generates the intermediate language form of the model
@@ -21,13 +26,13 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 	
 	@Inject IGeneratorStatus generatorStatus;
 	
+	extension MIRintermediateFactory mirILfactory = MIRintermediateFactory.eINSTANCE
+	
 	/**
 	 * Entry point of the generator, dispatches to transform
 	 * for each MIRFile in the passed resource
 	 */
 	override doGenerate(Resource input, IFileSystemAccess fsa) {
-		// generate Java class hierarchy for predicates
-		
 		val resourcePath = input.URI
 		input.contents.filter(typeof(MIRFile)).forEach[
 			transform(it, resourcePath)
@@ -48,7 +53,7 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		val mirResourceSet = new ResourceSetImpl()
 		val outResource = mirResourceSet.createResource(resourcePath.trimFileExtension.appendFileExtension("il"));
 		
-		val mir = MIRintermediateFactory.eINSTANCE.createMIR
+		val mir = createMIR
 
 		mirfile.mapMIRFileToMIR(mir)
 		
@@ -62,7 +67,7 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 	 * The actual transformation of a MIRFile to a MIR Intermediate Language file
 	 */
 	def void mapMIRFileToMIR(MIRFile mirfile, MIR mir) {
-		mir.configuration = MIRintermediateFactory.eINSTANCE.createConfiguration
+		mir.configuration = createConfiguration
 		mir.configuration.package = mirfile.generatedPackage
 		mir.configuration.type =
 			if (mirfile.generatedClass != null)
@@ -71,11 +76,11 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 				"ChangeSynchronizer"
 		
 		mirfile.mappings
-	    	   .forEach [ it.mapClassMapping(mir) ]
+	    	   .forEach [ it.mapClassifierMapping(mir) ]
 	}
 	
-	def void mapClassMapping(ClassMapping mapping, MIR mir) {
-		val result = MIRintermediateFactory.eINSTANCE.createClassMapping
+	def void mapClassifierMapping(ClassMapping mapping, MIR mir) {
+		val result = createClassifierMapping
 		
 		val leftElement = mapping.mappedElements.get(0)
 		val rightElement = mapping.mappedElements.get(1)
@@ -83,65 +88,110 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		result.left = leftElement.representedEClass
 		result.right = rightElement.representedEClass
 		
-		result.predicates +=
-			mapping.whens.map [
-				val jvmName = generatorStatus.getJvmName(it)
-				
-				if (jvmName == null)
-					null
-				else {
-					val predicate = MIRintermediateFactory.eINSTANCE.createJavaPredicate
-					predicate.checkStatement = "/* check " + jvmName + " */ false"
-					mir.predicates += predicate
-					predicate
-				}
+		result.predicates += mapping.whens.map([it.dispatchCreatePredicate]).filterNull
+		result.initializer += mapping.wheres.map([it.dispatchCreateInitializer]).filterNull
+		
+		mapping.withs.forEach [ it.mapFeatureMapping(mir, result) ]
 					
-			].filterNull
-
-		result.initializer +=
-			mapping.withs.map [
-				val jvmName = generatorStatus.getJvmName(it)
-				
-				if (jvmName == null)
-					null
-				else {
-					val initializer = MIRintermediateFactory.eINSTANCE.createJavaInitializer
-					initializer.callStatement = "/* call " + jvmName + " */"
-					initializer
-				}
-			].filterNull
-			
-		mapping.withs.forEach [
-			mapFeatureMapping(mir, result)
-		]
-			
 		mir.classMappings += result
 	}
 	
+	def dispatch dispatchCreatePredicate(Object o) { return null; }
+	def dispatch dispatchCreatePredicate(JavaBlock javaBlock) {
+		val result = createJavaPredicate
+		result.checkStatement = "(" + javaBlock.javaString + ")";
+		return result
+	}
+	
+	def dispatch dispatchCreateInitializer(Object o) { return null; }
+	def dispatch dispatchCreateInitializer(JavaBlock javaBlock) {
+		val result = createJavaInitializer
+		result.callStatement = "(" + javaBlock.javaString + ")";
+		return result
+	}
+	
 	def void mapFeatureMapping(FeatureMapping mapping, MIR mir,
-		edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassMapping parent
+		edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassifierMapping parent
 	) {
-		val result = MIRintermediateFactory.eINSTANCE.createFeatureMapping
+		// create new Feature Mapping
+		val featureMapping = createFeatureMapping
+		mir.featureMappings += featureMapping
 		
 		val leftElement = mapping.mappedElements.get(0)
 		val rightElement = mapping.mappedElements.get(1)
 		
-		result.left = leftElement.representedFeature
-		result.right = rightElement.representedFeature
+		featureMapping.left = createEClassifierFeature(leftElement)
+		featureMapping.right = createEClassifierFeature(rightElement)
+
+		// create new Class Mapping for the Feature Mapping
+		val classifierMapping = createClassifierMapping
+		mir.classMappings += classifierMapping
 		
-		leftElement.representedFeature.EContainingClass
+		classifierMapping.left = featureMapping.left.EClassifier
+		classifierMapping.right = featureMapping.right.EClassifier
+
+		// create new correspondence predicate for the feature mapping
+		val correspondencePredicate = createReverseFeaturesCorrespondWithEClassifiers
+		val correspondence = createFeatureEClassifierCorrespondence
+		correspondence.feature = leftElement.representedFeature
+		correspondence.EClassifier = getRightSideType(parent)
+		correspondencePredicate.correspondences += correspondence
 		
-		result.predicates += parent.predicates
+		// get correspondences from parent. there should only be one
+		correspondencePredicate.correspondences += EcoreUtil.copyAll(getMappingCorrespondences(parent))
+
+		mir.predicates += correspondencePredicate
+		classifierMapping.predicates += correspondencePredicate
 		
+		// map predicates for both class and feature mapping
+		val mappedPredicates = mapping.whens.map [ createJavaPredicate ].filterNull
+		mir.predicates += mappedPredicates
+		featureMapping.predicates += mappedPredicates
+		classifierMapping.predicates += mappedPredicates
 		
+		// call recursively for each child mapping
+		mapping.withs.forEach [
+			mapFeatureMapping(it, mir, classifierMapping)
+		]
+	}
+	
+	/**
+	 * Returns the correspondences of the mapping if it has any,
+	 * or an empty list if not.
+	 */
+	def getMappingCorrespondences(Mapping mapping) {
+		mapping
+			.predicates
+			.filter(ReverseFeaturesCorrespondWithEClassifiers)
+			.head
+			?.correspondences
+		?:
+			#[]
+	}
+	
+	def createEClassifierFeature(NamedFeature namedFeature) {
+		val result = createEClassifierFeature
+		result.feature = namedFeature.representedFeature
+		result.EClassifier = namedFeature.type ?: namedFeature.representedFeature.EContainingClass
 		
-		val correspondence = MIRintermediateFactory.eINSTANCE.createJavaPredicate
-		correspondence.checkStatement = "/* check correspondence */ false"
-		
-		mir.predicates += correspondence
-		result.predicates += correspondence
-		
-		mir.featureMappings += result
+		return result
+	}
+	
+	/**
+	 * Returns the type of the right side of the {@link Mapping} 
+	 */
+	def dispatch getRightSideType(edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.FeatureMapping mapping) {
+		return mapping.right.EClassifier
+	}
+	def dispatch getRightSideType(edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassifierMapping mapping) {
+		return mapping.right
+	}
+	
+	def dispatch getLeftSideType(edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.FeatureMapping mapping) {
+		return mapping.left.EClassifier
+	}
+	def dispatch getLeftSideType(edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassifierMapping mapping) {
+		return mapping.left
 	}
 	
 }

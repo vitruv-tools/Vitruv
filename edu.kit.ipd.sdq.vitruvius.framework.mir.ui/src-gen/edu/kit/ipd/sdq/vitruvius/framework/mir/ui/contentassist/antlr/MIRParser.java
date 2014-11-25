@@ -40,7 +40,9 @@ public class MIRParser extends AbstractContentAssistParser {
 					put(grammarAccess.getMIRFileAccess().getAlternatives_4(), "rule__MIRFile__Alternatives_4");
 					put(grammarAccess.getClassMappingAccess().getAlternatives_3_1(), "rule__ClassMapping__Alternatives_3_1");
 					put(grammarAccess.getFeatureMappingAccess().getAlternatives_3_1(), "rule__FeatureMapping__Alternatives_3_1");
+					put(grammarAccess.getNamedFeatureAccess().getAlternatives_0_1(), "rule__NamedFeature__Alternatives_0_1");
 					put(grammarAccess.getPredicateBlockAccess().getAlternatives(), "rule__PredicateBlock__Alternatives");
+					put(grammarAccess.getExpressionBlockAccess().getAlternatives(), "rule__ExpressionBlock__Alternatives");
 					put(grammarAccess.getXAssignmentAccess().getAlternatives(), "rule__XAssignment__Alternatives");
 					put(grammarAccess.getOpMultiAssignAccess().getAlternatives(), "rule__OpMultiAssign__Alternatives");
 					put(grammarAccess.getOpEqualityAccess().getAlternatives(), "rule__OpEquality__Alternatives");
@@ -96,8 +98,10 @@ public class MIRParser extends AbstractContentAssistParser {
 					put(grammarAccess.getFeatureMappingAccess().getGroup_3_1_1(), "rule__FeatureMapping__Group_3_1_1__0");
 					put(grammarAccess.getFeatureMappingAccess().getGroup_3_1_2(), "rule__FeatureMapping__Group_3_1_2__0");
 					put(grammarAccess.getNamedEClassAccess().getGroup(), "rule__NamedEClass__Group__0");
-					put(grammarAccess.getNamedEClassAccess().getGroup_1(), "rule__NamedEClass__Group_1__0");
 					put(grammarAccess.getNamedFeatureAccess().getGroup(), "rule__NamedFeature__Group__0");
+					put(grammarAccess.getNamedFeatureAccess().getGroup_0(), "rule__NamedFeature__Group_0__0");
+					put(grammarAccess.getNamedFeatureAccess().getGroup_0_1_0(), "rule__NamedFeature__Group_0_1_0__0");
+					put(grammarAccess.getNamedFeatureAccess().getGroup_0_1_1(), "rule__NamedFeature__Group_0_1_1__0");
 					put(grammarAccess.getNamedFeatureAccess().getGroup_3(), "rule__NamedFeature__Group_3__0");
 					put(grammarAccess.getEClassParameterAccess().getGroup(), "rule__EClassParameter__Group__0");
 					put(grammarAccess.getInvariantAccess().getGroup(), "rule__Invariant__Group__0");
@@ -106,7 +110,9 @@ public class MIRParser extends AbstractContentAssistParser {
 					put(grammarAccess.getInvariantAccess().getGroup_4_1_1(), "rule__Invariant__Group_4_1_1__0");
 					put(grammarAccess.getPredicateBlockAccess().getGroup_0(), "rule__PredicateBlock__Group_0__0");
 					put(grammarAccess.getPredicateBlockAccess().getGroup_1(), "rule__PredicateBlock__Group_1__0");
-					put(grammarAccess.getExpressionBlockAccess().getGroup(), "rule__ExpressionBlock__Group__0");
+					put(grammarAccess.getPredicateBlockAccess().getGroup_2(), "rule__PredicateBlock__Group_2__0");
+					put(grammarAccess.getExpressionBlockAccess().getGroup_0(), "rule__ExpressionBlock__Group_0__0");
+					put(grammarAccess.getExpressionBlockAccess().getGroup_1(), "rule__ExpressionBlock__Group_1__0");
 					put(grammarAccess.getResponseAccess().getGroup(), "rule__Response__Group__0");
 					put(grammarAccess.getResponseAccess().getGroup_1(), "rule__Response__Group_1__0");
 					put(grammarAccess.getResponseAccess().getGroup_3(), "rule__Response__Group_3__0");
@@ -308,10 +314,12 @@ public class MIRParser extends AbstractContentAssistParser {
 					put(grammarAccess.getFeatureMappingAccess().getWithsAssignment_3_1_1_1(), "rule__FeatureMapping__WithsAssignment_3_1_1_1");
 					put(grammarAccess.getFeatureMappingAccess().getWheresAssignment_3_1_2_1(), "rule__FeatureMapping__WheresAssignment_3_1_2_1");
 					put(grammarAccess.getNamedEClassAccess().getRepresentedEClassAssignment_0(), "rule__NamedEClass__RepresentedEClassAssignment_0");
-					put(grammarAccess.getNamedEClassAccess().getNameAssignment_1_1(), "rule__NamedEClass__NameAssignment_1_1");
-					put(grammarAccess.getNamedFeatureAccess().getContainingNamedEClassAssignment_0(), "rule__NamedFeature__ContainingNamedEClassAssignment_0");
+					put(grammarAccess.getNamedEClassAccess().getNameAssignment_2(), "rule__NamedEClass__NameAssignment_2");
+					put(grammarAccess.getNamedFeatureAccess().getContainingNamedEClassAssignment_0_1_0_1(), "rule__NamedFeature__ContainingNamedEClassAssignment_0_1_0_1");
+					put(grammarAccess.getNamedFeatureAccess().getContainingNamedFeatureAssignment_0_1_1_1(), "rule__NamedFeature__ContainingNamedFeatureAssignment_0_1_1_1");
 					put(grammarAccess.getNamedFeatureAccess().getRepresentedFeatureAssignment_2(), "rule__NamedFeature__RepresentedFeatureAssignment_2");
-					put(grammarAccess.getNamedFeatureAccess().getNameAssignment_3_1(), "rule__NamedFeature__NameAssignment_3_1");
+					put(grammarAccess.getNamedFeatureAccess().getTypeAssignment_3_1(), "rule__NamedFeature__TypeAssignment_3_1");
+					put(grammarAccess.getNamedFeatureAccess().getNameAssignment_5(), "rule__NamedFeature__NameAssignment_5");
 					put(grammarAccess.getEClassParameterAccess().getTypeAssignment_0(), "rule__EClassParameter__TypeAssignment_0");
 					put(grammarAccess.getEClassParameterAccess().getNameAssignment_1(), "rule__EClassParameter__NameAssignment_1");
 					put(grammarAccess.getInvariantAccess().getContextAssignment_1(), "rule__Invariant__ContextAssignment_1");
@@ -320,6 +328,7 @@ public class MIRParser extends AbstractContentAssistParser {
 					put(grammarAccess.getInvariantAccess().getParamsAssignment_4_1_1_1(), "rule__Invariant__ParamsAssignment_4_1_1_1");
 					put(grammarAccess.getInvariantAccess().getPredicateAssignment_6(), "rule__Invariant__PredicateAssignment_6");
 					put(grammarAccess.getOCLBlockAccess().getOclStringAssignment(), "rule__OCLBlock__OclStringAssignment");
+					put(grammarAccess.getJavaBlockAccess().getJavaStringAssignment(), "rule__JavaBlock__JavaStringAssignment");
 					put(grammarAccess.getResponseAccess().getActionAssignment_1_0(), "rule__Response__ActionAssignment_1_0");
 					put(grammarAccess.getResponseAccess().getContextAssignment_2(), "rule__Response__ContextAssignment_2");
 					put(grammarAccess.getResponseAccess().getInvAssignment_3_1(), "rule__Response__InvAssignment_3_1");

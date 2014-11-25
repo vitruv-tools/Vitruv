@@ -248,39 +248,6 @@
 	    <persistent value="true"/>
 	</extension>
 
-   <extension
-         point="org.eclipse.xtext.builder.participant">
-      <participant
-            class="edu.kit.ipd.sdq.vitruvius.framework.mir.ui.MIRExecutableExtensionFactory:org.eclipse.xtext.builder.IXtextBuilderParticipant"
-            fileExtensions="mir"
-            >
-      </participant>
-   </extension>
-   <extension
-            point="org.eclipse.ui.preferencePages">
-        <page
-            category="edu.kit.ipd.sdq.vitruvius.framework.mir.MIR"
-            class="edu.kit.ipd.sdq.vitruvius.framework.mir.ui.MIRExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
-            id="edu.kit.ipd.sdq.vitruvius.framework.mir.MIR.compiler.preferencePage"
-            name="Compiler">
-            <keywordReference id="edu.kit.ipd.sdq.vitruvius.framework.mir.ui.keyword_MIR"/>
-        </page>
-    </extension>
-    <extension
-            point="org.eclipse.ui.propertyPages">
-        <page
-            category="edu.kit.ipd.sdq.vitruvius.framework.mir.MIR"
-            class="edu.kit.ipd.sdq.vitruvius.framework.mir.ui.MIRExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
-            id="edu.kit.ipd.sdq.vitruvius.framework.mir.MIR.compiler.propertyPage"
-            name="Compiler">
-            <keywordReference id="edu.kit.ipd.sdq.vitruvius.framework.mir.ui.keyword_MIR"/>
-            <enabledWhen>
-	            <adapt type="org.eclipse.core.resources.IProject"/>
-			</enabledWhen>
-	        <filter name="projectNature" value="org.eclipse.xtext.ui.shared.xtextNature"/>
-        </page>
-    </extension>
-
 	<!-- Quick Outline -->
 	<extension
 		point="org.eclipse.ui.handlers">

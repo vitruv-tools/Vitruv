@@ -10,7 +10,6 @@ import org.eclipse.xtext.xbase.compiler.JvmModelGenerator;
 
 import com.google.inject.Inject;
 
-
 /**
  * A generator that executes multiple IGenerators after each other
  * to support the multiple stages of the compilation process for MIR.

@@ -59,8 +59,8 @@ NamedEClass:
 ;
 
 NamedFeature:
-	('(' ('class' containingNamedEClass=[NamedEClass] ')') |
-	('(' 'feature' containingNamedFeature=[NamedFeature]) ')')
+	('(' (('class' containingNamedEClass=[NamedEClass]) |
+	     ('feature' containingNamedFeature=[NamedFeature])) ')')
 	'.' representedFeature=[ecore::EStructuralFeature|ValidID]
 	('::' type=[ecore::EClassifier|QualifiedName])?
 	'as' name=ValidID

@@ -37,10 +37,10 @@ Workflow {
     }
     
     // Generate Intermediate Language model
-    component = org.eclipse.emf.mwe2.ecore.EcoreGenerator {
-    	genModel = "${runtimeProject}/model/intermediate/MIRintermediate.genmodel"
-    	srcPath = "${runtimeProject}/src-gen"
-    }
+//    component = org.eclipse.emf.mwe2.ecore.EcoreGenerator {
+//    	genModel = "${runtimeProject}/model/intermediate/MIRintermediate.genmodel"
+//    	srcPath = "${runtimeProject}/src-gen"
+//    }
     
     component = Generator {
     	pathRtProject = runtimeProject
@@ -92,7 +92,7 @@ Workflow {
     		fragment = builder.BuilderIntegrationFragment auto-inject {}
     
     		// generator API
-    		fragment = generator.GeneratorFragment auto-inject {}
+//    		fragment = generator.GeneratorFragment auto-inject {}
     
     		// formatter API
     		fragment = formatting.FormatterFragment auto-inject {}

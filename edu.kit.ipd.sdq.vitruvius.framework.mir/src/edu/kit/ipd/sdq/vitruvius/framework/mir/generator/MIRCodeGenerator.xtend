@@ -7,13 +7,14 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR
 import org.eclipse.emf.common.util.URI
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassMapping
 import java.util.HashMap
 import org.eclipse.emf.common.util.EList
 import java.util.List
 import java.util.Map
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EcorePackage
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassifierMapping
+import org.eclipse.emf.ecore.EClassifier
 
 class MIRCodeGenerator implements IGenerator {
 	@Inject IGeneratorStatus generatorStatus;
@@ -22,17 +23,17 @@ class MIRCodeGenerator implements IGenerator {
 	public override doGenerate(Resource input, IFileSystemAccess fsa) {
 		val resourcePath = input.URI.trimSegments(1)
 		
-		input.contents.filter(typeof(MIRFile)).forEach[
+/* 		input.contents.filter(typeof(MIRFile)).forEach[
 			val il = generatorStatus.getIntermediateForMIR(it)
 			transform(il, resourcePath, fsa)
-		]
+		]*/
 	}
 	
 	def transform(MIR file, URI resourcePath, IFileSystemAccess fsa) {
 		println(file.configuration.package)
 		println(resourcePath)
 		
-		val classMappingToMethodName = new HashMap<ClassMapping, String>();
+		val classMappingToMethodName = new HashMap<ClassifierMapping, String>();
 		var mappingMethods = generateMappingMethods(file.classMappings, classMappingToMethodName)
 
 		fsa.generateFile(file.configuration.type + ".java", '''
@@ -80,8 +81,8 @@ class MIRCodeGenerator implements IGenerator {
 		''')
 	}
 	
-	def getCreateStatement(EClass eClass) {
-		return "/* create " + eClass.name + " */ null"
+	def getCreateStatement(EClassifier eClassifier) {
+		return "/* create " + eClassifier.name + " */ null"
 		/*if (eClass.EPackage.equals(EcorePackage.eINSTANCE))
 			return "org.eclipse.emf.ecore.EcoreFactory.eINSTANCE.create" + eClass.name.toFirstUpper + "()"
 		else 
@@ -89,7 +90,7 @@ class MIRCodeGenerator implements IGenerator {
 				".eINSTANCE.create" + eClass.name.toFirstUpper + "()";*/
 	}
 	
-	def generateMappingMethods(List<ClassMapping> list, Map<ClassMapping, String> map) {
+	def generateMappingMethods(List<ClassifierMapping> list, Map<ClassifierMapping, String> map) {
 		var result = ""; 
 		var mappingCounter = 0;
 		

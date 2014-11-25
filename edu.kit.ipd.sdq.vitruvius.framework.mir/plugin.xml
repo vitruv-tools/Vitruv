@@ -10,6 +10,14 @@
        genModel = "model/generated/MIR.genmodel" /> 
 	
   </extension>
+  <extension
+        point="org.eclipse.emf.ecore.generated_package">
+     <package
+           class="edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIRintermediatePackage"
+           genModel="model/intermediate/MIRintermediate.genmodel"
+           uri="http://www.kit.edu/ipd/sdq/vitruvius/framework/mir/MIRintermediate">
+     </package>
+  </extension>
 
 
 

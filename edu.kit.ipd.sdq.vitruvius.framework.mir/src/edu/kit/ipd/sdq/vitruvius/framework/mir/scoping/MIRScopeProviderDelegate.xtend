@@ -1,9 +1,14 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.scoping
 
 import com.google.inject.Inject
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Import
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRPackage
 import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.mwe2.language.scoping.QualifiedNameProvider
@@ -13,11 +18,6 @@ import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.impl.SimpleScope
 import org.eclipse.xtext.xbase.scoping.XImportSectionNamespaceScopeProvider
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRPackage
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Import
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass
-import org.eclipse.emf.ecore.EClassifier
 
 /**
  * @author Dominik Werle
@@ -79,12 +79,16 @@ class MIRScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 	 * {@link Import}.
 	 */
 	def createEObjectDescription(EClassifier classifier, Import imp) {
-		return EObjectDescription.create(
-			QualifiedName
-				.create(imp.name)
-				.append(qualifiedNameProvider.getFullyQualifiedName(classifier).skipFirst(1)),
-			classifier
-		)
+		return
+			if (classifier == null)
+				null 
+			else
+				EObjectDescription.create(
+					QualifiedName
+						.create(imp.name)
+						.append(qualifiedNameProvider.getFullyQualifiedName(classifier).skipFirst(1)),
+					classifier
+				)
 	}
 	
 	/**
@@ -133,11 +137,12 @@ class MIRScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 		if (context == null || !(context instanceof NamedFeature))
 			return IScope.NULLSCOPE;
 		
-		val NamedFeature contextFeature = context as NamedFeature
+		val contextFeature = (context as NamedFeature)
 		val containingEClass = contextFeature.containingNamedEClass?.representedEClass
 		val containingFeature = contextFeature.containingNamedFeature?.representedFeature
 		
-		val featureDescriptions = if (containingEClass != null) {
+		val featureDescriptions =
+			if (containingEClass != null) {
 				containingEClass.createFeatureDescriptions	
 			} else if (containingFeature != null) {
 				val containingType = containingFeature.EType

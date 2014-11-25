@@ -5,10 +5,6 @@ import java.util.Collection;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateEAttribute;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectSingle;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.EChangeListener;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.Invariant;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.InvariantEvaluationResult;
@@ -36,7 +32,8 @@ public abstract class AbstractMIRChangeListener implements EChangeListener {
 	protected abstract void setup();
 	
 	@Override
-	public void onEChange(EChange change) {
+	public void onEChange() { }
+/*	public void onEChange(EChange change) {
 		if (change instanceof CreateNonRootEObjectSingle<?>) {
 			CreateNonRootEObjectSingle createEObject = (CreateNonRootEObjectSingle<?>) change;
 		} else if (change instanceof UpdateEAttribute<?>) {
@@ -55,6 +52,6 @@ public abstract class AbstractMIRChangeListener implements EChangeListener {
 				}
 			}
 		}
-	}
+	}*/
 
 }
