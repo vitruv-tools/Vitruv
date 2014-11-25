@@ -21,13 +21,24 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 	
 	@Inject IGeneratorStatus generatorStatus;
 	
+	/**
+	 * Entry point of the generator, dispatches to transform
+	 * for each MIRFile in the passed resource
+	 */
 	override doGenerate(Resource input, IFileSystemAccess fsa) {
 		// generate Java class hierarchy for predicates
 		
 		val resourcePath = input.URI
-		input.contents.filter(typeof(MIRFile)).forEach[transform(it, resourcePath)]
+		input.contents.filter(typeof(MIRFile)).forEach[
+			transform(it, resourcePath)
+		]
 	}
 	
+	/**
+	 * Transformation entry point, sets up the resulting file  and the
+	 * transformation context (factories, etc.) and
+	 * passes it to the actual mappings. 
+	 */
 	def transform(MIRFile mirfile, URI resourcePath) {
 		val reg = Resource.Factory.Registry.INSTANCE
 		val m = reg.extensionToFactoryMap
@@ -47,6 +58,9 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		generatorStatus.put(mirfile, mir)
 	}
 	
+	/**
+	 * The actual transformation of a MIRFile to a MIR Intermediate Language file
+	 */
 	def void mapMIRFileToMIR(MIRFile mirfile, MIR mir) {
 		mir.configuration = MIRintermediateFactory.eINSTANCE.createConfiguration
 		mir.configuration.package = mirfile.generatedPackage
@@ -57,10 +71,10 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 				"ChangeSynchronizer"
 		
 		mirfile.mappings
-	    	   .forEach [ it.mapClassMappingToClassMapping(mir) ]
+	    	   .forEach [ it.mapClassMapping(mir) ]
 	}
 	
-	def void mapClassMappingToClassMapping(ClassMapping mapping, MIR mir) {
+	def void mapClassMapping(ClassMapping mapping, MIR mir) {
 		val result = MIRintermediateFactory.eINSTANCE.createClassMapping
 		
 		val leftElement = mapping.mappedElements.get(0)
@@ -76,7 +90,7 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 				if (jvmName == null)
 					null
 				else {
-					val predicate = MIRintermediateFactory.eINSTANCE.createPredicate
+					val predicate = MIRintermediateFactory.eINSTANCE.createJavaPredicate
 					predicate.checkStatement = "/* check " + jvmName + " */ false"
 					mir.predicates += predicate
 					predicate
@@ -91,20 +105,20 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 				if (jvmName == null)
 					null
 				else {
-					val initializer = MIRintermediateFactory.eINSTANCE.createInitializer
+					val initializer = MIRintermediateFactory.eINSTANCE.createJavaInitializer
 					initializer.callStatement = "/* call " + jvmName + " */"
 					initializer
 				}
 			].filterNull
 			
 		mapping.withs.forEach [
-			mapFeatureMappingToFeatureMapping(mir, result)
+			mapFeatureMapping(mir, result)
 		]
 			
 		mir.classMappings += result
 	}
 	
-	def void mapFeatureMappingToFeatureMapping(FeatureMapping mapping, MIR mir,
+	def void mapFeatureMapping(FeatureMapping mapping, MIR mir,
 		edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassMapping parent
 	) {
 		val result = MIRintermediateFactory.eINSTANCE.createFeatureMapping
@@ -121,7 +135,7 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		
 		
 		
-		val correspondence = MIRintermediateFactory.eINSTANCE.createPredicate
+		val correspondence = MIRintermediateFactory.eINSTANCE.createJavaPredicate
 		correspondence.checkStatement = "/* check correspondence */ false"
 		
 		mir.predicates += correspondence

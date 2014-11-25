@@ -44,7 +44,9 @@
     </genClasses>
     <genClasses ecoreClass="MIR.ecore#//NamedFeature">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//NamedFeature/containingNamedEClass"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//NamedFeature/containingNamedFeature"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//NamedFeature/representedFeature"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//NamedFeature/type"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//NamedFeature/name"/>
     </genClasses>
     <genClasses ecoreClass="MIR.ecore#//EClassParameter">
@@ -59,6 +61,9 @@
     </genClasses>
     <genClasses ecoreClass="MIR.ecore#//OCLBlock">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//OCLBlock/oclString"/>
+    </genClasses>
+    <genClasses ecoreClass="MIR.ecore#//JavaBlock">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//JavaBlock/javaString"/>
     </genClasses>
     <genClasses ecoreClass="MIR.ecore#//Response">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//Response/action"/>

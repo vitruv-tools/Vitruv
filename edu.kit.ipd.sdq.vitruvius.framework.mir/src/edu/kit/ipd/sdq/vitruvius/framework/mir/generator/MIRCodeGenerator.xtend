@@ -105,7 +105,7 @@ class MIRCodeGenerator implements IGenerator {
 				public «rightType» «methodName»(«leftType» input) {
 					if (!(
 					«FOR predicate : mapping.predicates SEPARATOR "&&"»
-						(«predicate.checkStatement»)
+						(«predicate.toString»)
 					«ENDFOR»
 					))
 						return null;

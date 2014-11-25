@@ -26,13 +26,32 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="initializer" upperBound="-1"
         eType="#//Initializer" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Predicate">
+  <eClassifiers xsi:type="ecore:EClass" name="Predicate" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="JavaPredicate" eSuperTypes="#//Predicate">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="checkStatement" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral=""/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Initializer">
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureEClassifierCorrespondence">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" lowerBound="1"
+        eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eClassifier" lowerBound="1"
+        eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ReverseFeaturesCorrespondWithEClassifiers"
+      eSuperTypes="#//Predicate">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="correspondences" lowerBound="1"
+        upperBound="-1" eType="#//FeatureEClassifierCorrespondence" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Initializer" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="JavaInitializer" eSuperTypes="#//Initializer">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="callStatement" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral=""/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CreateCorresponding" eSuperTypes="#//Initializer">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureLeft" lowerBound="1"
+        eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureRight" lowerBound="1"
+        eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Configuration">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="package" lowerBound="1"

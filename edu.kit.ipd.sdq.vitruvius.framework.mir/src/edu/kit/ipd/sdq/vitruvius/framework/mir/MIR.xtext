@@ -59,7 +59,10 @@ NamedEClass:
 ;
 
 NamedFeature:
-	containingNamedEClass=[NamedEClass] '.' representedFeature=[ecore::EStructuralFeature|ValidID]
+	('(' ('class' containingNamedEClass=[NamedEClass] ')') |
+	('(' 'feature' containingNamedFeature=[NamedFeature]) ')')
+	'.' representedFeature=[ecore::EStructuralFeature|ValidID]
+	('::' type=[ecore::EClassifier|QualifiedName])?
 	'as' name=ValidID
 ;
 
@@ -81,15 +84,21 @@ Invariant:
 
 PredicateBlock returns ecore::EObject:
 	('xbase' XBlockExpression) |
-	('ocl' OCLBlock)
+	('ocl' OCLBlock) |
+	('java' JavaBlock)
 ;
 
 ExpressionBlock returns ecore::EObject:
-	('xbase' XBlockExpression)
+	('xbase' XBlockExpression) |
+	('java' JavaBlock)
 ;
 
 OCLBlock:
 	oclString=STRING
+;
+
+JavaBlock:
+	javaString=STRING
 ;
 
 // Response
@@ -106,9 +115,3 @@ enum ResponseAction:
 	CREATE='create' |
 	CHANGE='change'
 ;
-
-// xbase extension
-//CorrespondsExpression returns xbase::XExpression:
-//	{CorrespondsExpression}
-//	"[" left=XFeatureCall "corresponds" right=XFeatureCall "]"
-//;

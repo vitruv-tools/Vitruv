@@ -1,0 +1,297 @@
+Grundlegende Annahmen / Kommentare:
+* Nach der Erzeugung steht ein Objekt immer "im leeren Raum", bis die Containment-Beziehung vom Parent aus gesetzt wird.
+* Beim Löschen eines Objekts wird das Objekt zuvor aus der contains-Liste des Parents gelöscht
+* Unter "with" können nur Containment-Beziehungen stehen.
+
+* Feature-Änderungen sehen atomar so aus, dass nur add (zu Liste hinzufügen)/del (aus Liste löschen)
+  existieren (change ist delete mit darauf folgendem add).
+
+####################################
+### BASIC FORM
+####################################
+
+map repo:OperationInterface to umlcd:Interface
+
+--- Semantik ---
+
+Bei Erzeugung einer Instanz von
+	* OperationInterface
+		=> erzeuge Interface + Correspondence
+	* Interface
+		=> erzeuge OperationInterface + Correspondence
+				
+Bei Löschen eines Elements mit einer Correspondence
+	=> lösche auch das korrespondierende 
+
+--- IL ---
+
+MIR
+	classMappings = [
+		ClassMapping #c1 = [
+			left = OperationInterface
+			right = Interface
+			predicates = []
+			initializer = []
+		],
+		ClassMapping #c1_r = [
+			left = Interface
+			right = OperationInterface
+			predicates = []
+			initializer = []
+		]
+	]
+		
+
+####################################
+### ADVANCED FORM
+####################################
+
+map repo:OperationInterface to umlcd:Interface {
+  with signatures::OperationSignature 
+    to ownedOperation::Operation
+}
+
+--- Semantik ---
+
+Bei Erzeugung einer Instanz von
+	* OperationInterface
+		=> erzeuge Interface + Correspondence
+	* Interface
+		=> erzeuge OperationInterface + Correspondence
+	
+	* OperationSignature
+		=> tue nichts
+	* Operation
+		=> tue nichts
+		
+Bei Änderung der Eigenschaft (einer beliebigen Instanz; von @pre auf @post)
+	* Del x:OperationSignature from OperationInterface.signatures
+		=> Del corresponding(x) from corresponding(context).ownedOperation	// das existiert immer
+	* Add x:OperationSignature to OperationInterface.signatures
+		=> 1) Create new y:Operation
+		   2) Create correspondence x <-> y;
+		   3) Add y to corresponding(context).ownedOperation
+	* Del x:Operation from Interface.ownedOperation
+		=> Del corresponding(x) from corresponding(context).signatures		// das existiert immer
+	* Add x:Operation to Interface.signatures
+		=> 1) Create new y:OperationSignature
+		   2) Create correspondence x <-> y;
+		   3) Add y to corresponding(context).signatures
+				
+Bei Löschen eines Elements mit einer Correspondence
+	* lösche auch das korrespondierende (und rekursive auch
+	  enthaltene Elemente) 
+
+--- IL ---
+
+MIR
+	classMappings = [
+		ClassMapping #c1 = [
+			left = OperationInterface,
+			right = Interface,
+			predicates = [],
+			initializer = []
+		],
+		ClassMapping #c1_r = [
+			left = Interface,
+			right = OperationInterface,
+			predicates = [],
+			initializer = []
+		],
+		
+		ClassMapping #c2 = [
+			left = OperationSignature,
+			right = Operation,
+			predicates = [
+				"parentInterface = operationSignature.<<reverse>>(OperationInterface.signatures);
+				 return (parentInterface != null) && (corresponding(parentInterface) instanceof Interface)"
+			],
+			initializer = [
+				corresponding(newOperationSignature.parentInterface)
+					.ownedOperation = newOperation
+			]
+		],
+		ClassMapping #c2_r = [
+			left = Operation,
+			right = OperationSignature,
+			predicates = [
+				"parentInterface = operation.<<reverse>>(Interface.ownedOperation);
+				 return (parentInterface != null) && (corresponding(parentInterface) instanceof OperationInterface)"
+			],
+			initializer = [
+				"corresponding(newOperation.parentInterface)
+					.signatures = newOperationSignature"
+			]
+		]
+	]
+	
+	featureMappings = [
+		FeatureMapping #f1 = [
+			left = OperationInterface.signatures,
+			right = Interface.ownedOperation,
+			predicates = [
+				""
+			]
+		]
+	]
+	
+	configuration = [...]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// cut here
+
+####################################
+### ADVANCED FORM 2
+####################################
+
+map repo:OperationInterface to umlcd:Interface
+  with signatures::OperationSignature 
+      to ownedOperation::Operation
+    with returnType::DataType 
+      to ownedParameter::Parameter
+      when P_A
+    and with parameters::Parameter 
+      to ownedParameter::Parameter 
+      when P_B
+
+--- Semantik ---
+
+Bei Erzeugung einer Instanz von
+	* OperationInterface
+		=> erzeuge Interface + Correspondence
+	* Interface
+		=> erzeuge OperationInterface + Correspondence
+	
+	* OperationSignature
+		=> tue nichts
+	* Operation
+		=> tue nichts
+		
+	* DataType
+		=> tue nichts
+	* Parameter
+		=> tue nichts
+		
+	* Parameter
+		=> tue nichts
+		
+Bei Änderung der Eigenschaft (einer beliebigen Instanz; von @pre auf @post)
+	* Del x:OperationSignature from OperationInterface.signatures
+		=> Del corresponding(x) from corresponding(context).ownedOperation	// das existiert immer
+	* Add x:OperationSignature to OperationInterface.signatures
+		=> 1) Create new y:Operation
+		   2) Create correspondence x <-> y;
+		   3) Add y to corresponding(context).ownedOperation
+	* Del x:Operation from Interface.ownedOperation
+		=> Del corresponding(x) from corresponding(context).signatures		// das existiert immer
+	* Add x:Operation to Interface.signatures
+		=> 1) Create new y:OperationSignature
+		   2) Create correspondence x <-> y;
+		   3) Add y to corresponding(context).signatures
+				
+Bei Löschen eines Elements mit einer Correspondence
+	* lösche auch das korrespondierende (und rekursive auch
+	  enthaltene Elemente) 
+
+--- IL ---
+
+Resulting IL:
+
+MIR
+	classMappings = [
+		ClassMapping #c1 = [
+			left = OperationInterface,
+			right = Interface,
+			predicates = [],
+			initializer = []
+		],
+		ClassMapping #c1_r = [
+			left = Interface,
+			right = OperationInterface,
+			predicates = [],
+			initializer = []
+		],
+		
+		ClassMapping #c2 = [
+			left = OperationSignature,
+			right = Operation,
+			predicates = [
+				"parentInterface = operationSignature.<<reverse>>(OperationInterface.signatures);
+				 return (parentInterface != null) && (corresponding(parentInterface) instanceof Interface)"
+			],
+			initializer = [
+				"corresponding(parentInterface).ownedOperation = newOperation"
+			]
+		],
+		ClassMapping #c2_r = [
+			left = Operation,
+			right = OperationSignature,
+			predicates = [
+				"parentInterface = operation.<<reverse>>(Interface.ownedOperation);
+				 return (parentInterface != null) && (corresponding(parentInterface) instanceof OperationInterface)"
+			],
+			initializer = [
+				"corresponding(parentInterface).signatures = newOperationSignature"
+			]
+		]
+		
+		ClassMapping #c3 = [
+			left = DataType,
+			right = Type,
+			predicates = [
+				"parentInterface = operation.<<reverse>>(Interface.ownedOperation);
+				 return (parentInterface != null) && (corresponding(parentInterface) instanceof OperationInterface)"
+			],
+			initializer = [
+				"corresponding(parentInterface).signatures = newOperationSignature"
+			]
+		],
+		ClassMapping #c3_r = [
+			left = Type,
+			right = DataType,
+			predicates = [],
+			initializer = []
+		],
+		
+		ClassMapping  #c4 = [
+			left = Parameter,
+			right = Parameter,
+			predicates = [],
+			initializer = []
+		],
+		ClassMapping  #c4_r = [
+			left = Parameter,
+			right = Parameter,
+			predicates = [],
+			initializer = []
+		]
+	]
+	
+	featureMappings = [
+		
+	]
+	
+	predicates = [
+		Predicate #os2o = [ "corresponds o" ]
+	]
+	
+	configuration = [...]

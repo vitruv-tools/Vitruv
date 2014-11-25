@@ -36,6 +36,12 @@ Workflow {
     	directory = "${runtimeProject}.tests/src-gen"
     }
     
+    // Generate Intermediate Language model
+    component = org.eclipse.emf.mwe2.ecore.EcoreGenerator {
+    	genModel = "${runtimeProject}/model/intermediate/MIRintermediate.genmodel"
+    	srcPath = "${runtimeProject}/src-gen"
+    }
+    
     component = Generator {
     	pathRtProject = runtimeProject
     	pathUiProject = "${runtimeProject}.ui"
