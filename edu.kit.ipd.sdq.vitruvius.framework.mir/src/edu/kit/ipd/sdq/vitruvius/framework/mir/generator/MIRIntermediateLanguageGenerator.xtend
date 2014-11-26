@@ -18,6 +18,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ReverseFeaturesCorrespondWithEClassifiers import org.eclipse.emf.ecore.util.EcoreUtil
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassifierMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping
+import org.eclipse.emf.ecore.EObject
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Predicate
 
 /**
  * Generates the intermediate language form of the model
@@ -88,8 +90,10 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		result.left = leftElement.representedEClass
 		result.right = rightElement.representedEClass
 		
-		result.predicates += mapping.whens.map([it.dispatchCreatePredicate]).filterNull
-		result.initializer += mapping.wheres.map([it.dispatchCreateInitializer]).filterNull
+		val mappedPredicates = mapping.whens.map[dispatchCreatePredicate].filterNull.toList
+		mir.predicates += mappedPredicates
+		result.predicates += mappedPredicates
+		result.initializer += mapping.wheres.map[dispatchCreateInitializer].filterNull
 		
 		mapping.withs.forEach [ it.mapFeatureMapping(mir, result) ]
 					
@@ -130,6 +134,9 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		classifierMapping.left = featureMapping.left.EClassifier
 		classifierMapping.right = featureMapping.right.EClassifier
 
+		// create initializers for classifier mapping
+		classifierMapping.initializer += mapping.wheres.map[dispatchCreateInitializer].filterNull
+
 		// create new correspondence predicate for the feature mapping
 		val correspondencePredicate = createReverseFeaturesCorrespondWithEClassifiers
 		val correspondence = createFeatureEClassifierCorrespondence
@@ -144,7 +151,7 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		classifierMapping.predicates += correspondencePredicate
 		
 		// map predicates for both class and feature mapping
-		val mappedPredicates = mapping.whens.map [ createJavaPredicate ].filterNull
+		val mappedPredicates = mapping.whens.map [ it.dispatchCreatePredicate ].filterNull.toList
 		mir.predicates += mappedPredicates
 		featureMapping.predicates += mappedPredicates
 		classifierMapping.predicates += mappedPredicates
