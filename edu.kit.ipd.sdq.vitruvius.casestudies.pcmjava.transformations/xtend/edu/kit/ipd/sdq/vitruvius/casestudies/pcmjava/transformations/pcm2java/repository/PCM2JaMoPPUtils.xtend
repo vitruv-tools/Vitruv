@@ -318,6 +318,16 @@ abstract class PCM2JaMoPPUtils {
 		return classifierImport
 	}
 
+	def static Import addImportToCompilationUnitOfClassifier(Classifier classifier,
+		NamespaceClassifierReference namespaceClassifierReference) {
+		val classifierToImport = namespaceClassifierReference.target
+		if(classifierToImport instanceof ConcreteClassifier){
+			return addImportToCompilationUnitOfClassifier(classifier, classifierToImport)	
+		}
+		//return empty import - should not change class at all
+		return ImportsFactory.eINSTANCE.createClassifierImport
+	}
+
 	def static addConstructorToClass(Class jaMoPPClass) {
 		val Constructor constructor = MembersFactory.eINSTANCE.createConstructor
 		constructor.name = jaMoPPClass.name

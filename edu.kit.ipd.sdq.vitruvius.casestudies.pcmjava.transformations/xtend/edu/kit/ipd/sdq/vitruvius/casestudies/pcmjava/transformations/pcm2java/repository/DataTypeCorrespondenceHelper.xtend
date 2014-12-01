@@ -5,14 +5,14 @@ import de.uka.ipd.sdq.pcm.repository.CompositeDataType
 import de.uka.ipd.sdq.pcm.repository.DataType
 import de.uka.ipd.sdq.pcm.repository.PrimitiveDataType
 import de.uka.ipd.sdq.pcm.repository.PrimitiveTypeEnum
-import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
+import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.types.TypeReference
 import org.emftext.language.java.types.TypesFactory
-import org.eclipse.xtend.lib.macro.declaration.PrimitiveType.Kind
-import org.eclipse.emf.ecore.util.EcoreUtil
+import org.emftext.language.java.classifiers.Classifier
+import org.emftext.language.java.classifiers.ConcreteClassifier
 
 /**
  * Mapping transformation for primitive data types
@@ -60,7 +60,8 @@ class DataTypeCorrespondenceHelper {
 
 	private static def dispatch TypeReference claimUniqueCorrespondingType(CollectionDataType cdt,
 		CorrespondenceInstance ci) {
-		return ci.claimUniqueCorrespondingEObjectByType(cdt, TypeReference)
+		val concreteClassifier =  ci.claimUniqueCorrespondingEObjectByType(cdt, ConcreteClassifier)
+		return PCM2JaMoPPUtils.createNamespaceClassifierReference(concreteClassifier)
 	}
 
 	private static def dispatch TypeReference claimUniqueCorrespondingType(PrimitiveDataType pdt,
@@ -70,7 +71,8 @@ class DataTypeCorrespondenceHelper {
 
 	private static def dispatch TypeReference claimUniqueCorrespondingType(CompositeDataType cdt,
 		CorrespondenceInstance ci) {
-		return ci.claimUniqueCorrespondingEObjectByType(cdt, TypeReference)
+		val concreteClassifier =  ci.claimUniqueCorrespondingEObjectByType(cdt, ConcreteClassifier)
+		return PCM2JaMoPPUtils.createNamespaceClassifierReference(concreteClassifier)
 	}
 
 }

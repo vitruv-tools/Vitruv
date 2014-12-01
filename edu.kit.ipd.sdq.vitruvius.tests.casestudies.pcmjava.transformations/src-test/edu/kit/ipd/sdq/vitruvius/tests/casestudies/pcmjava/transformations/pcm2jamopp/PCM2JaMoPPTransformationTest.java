@@ -132,7 +132,8 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
 
     protected void assertEqualsTypeReference(final TypeReference expected, final TypeReference actual) {
         assertTrue("type reference are not from the same type", expected.getClass().equals(actual.getClass()));
-        // Note: not necessary to check Primitive type: if the classes are from the same type (e.g.
+        // Note: not necessary to check Primitive type: if the classes are from
+        // the same type (e.g.
         // Int) the TypeReferences are equal
         if (expected instanceof ClassifierReference) {
             final ClassifierReference expectedClassifierRef = (ClassifierReference) expected;
@@ -212,11 +213,15 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
         return opSig;
     }
 
-    private Parameter addAndSyncParameterToSignature(final OperationSignature opSig) {
-        final Parameter param = RepositoryFactory.eINSTANCE.createParameter();
-        param.setParameterName(PCM2JaMoPPUtils.PARAMETER_NAME);
+    private Parameter addAndSyncParameterWithPrimitiveTypeToSignature(final OperationSignature opSig) {
         final PrimitiveDataType dataType = RepositoryFactory.eINSTANCE.createPrimitiveDataType();
         dataType.setType(PrimitiveTypeEnum.INT);
+        return this.addAndSyncParameterToSignature(opSig, dataType);
+    }
+
+    protected Parameter addAndSyncParameterToSignature(final OperationSignature opSig, final DataType dataType) {
+        final Parameter param = RepositoryFactory.eINSTANCE.createParameter();
+        param.setParameterName(PCM2JaMoPPUtils.PARAMETER_NAME);
         param.setDataType__Parameter(dataType);
         param.setModifier__Parameter(ParameterModifier.IN);
         param.setOperationSignature__Parameter(opSig);
@@ -246,7 +251,16 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
     protected Parameter createAndSyncRepoOpSigAndParameter() throws IOException, Throwable {
         final OperationSignature opSig = this.createAndSyncRepoInterfaceAndOperationSignature();
 
-        final Parameter param = this.addAndSyncParameterToSignature(opSig);
+        final Parameter param = this.addAndSyncParameterWithPrimitiveTypeToSignature(opSig);
+        return param;
+    }
+
+    public Parameter createAndSyncRepoOpSigAndParameterWithDataTypeName(final String compositeDataTypeName)
+            throws Throwable {
+        final OperationSignature opSig = this.createAndSyncRepoInterfaceAndOperationSignature();
+        final CompositeDataType cdt = this.createAndSyncCompositeDataType(opSig.getInterface__OperationSignature()
+                .getRepository__Interface(), compositeDataTypeName);
+        final Parameter param = this.addAndSyncParameterToSignature(opSig, cdt);
         return param;
     }
 
@@ -270,14 +284,14 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
     }
 
     protected OperationProvidedRole createAndSyncRepoOpIntfOpSigBasicCompAndOperationProvRole() throws IOException,
-            Throwable {
+    Throwable {
         final OperationSignature opSig = this.createAndSyncRepoInterfaceAndOperationSignature();
         final OperationInterface opInterface = opSig.getInterface__OperationSignature();
         final BasicComponent basicComponent = this.addBasicComponentAndSync(opInterface.getRepository__Interface());
 
         final OperationProvidedRole operationProvidedRole = RepositoryFactory.eINSTANCE.createOperationProvidedRole();
         operationProvidedRole
-                .setEntityName(basicComponent.getEntityName() + "_provides_" + opInterface.getEntityName());
+        .setEntityName(basicComponent.getEntityName() + "_provides_" + opInterface.getEntityName());
         operationProvidedRole.setProvidedInterface__OperationProvidedRole(opInterface);
         operationProvidedRole.setProvidingEntity_ProvidedRole(basicComponent);
         final VURI vuri = VURI.getInstance(opInterface.eResource());
@@ -286,7 +300,7 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
     }
 
     protected OperationRequiredRole createAndSyncRepoBasicCompInterfaceAndOperationReqiredRole() throws IOException,
-            Throwable {
+    Throwable {
         final OperationSignature opSig = this.createAndSyncRepoInterfaceAndOperationSignature();
         final OperationInterface opInterface = opSig.getInterface__OperationSignature();
         final BasicComponent basicComponent = this.addBasicComponentAndSync(opInterface.getRepository__Interface());

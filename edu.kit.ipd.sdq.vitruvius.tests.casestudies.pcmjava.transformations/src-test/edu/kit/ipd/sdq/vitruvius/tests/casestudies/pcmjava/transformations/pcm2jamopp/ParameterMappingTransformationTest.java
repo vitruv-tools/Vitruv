@@ -40,6 +40,13 @@ public class ParameterMappingTransformationTest extends PCM2JaMoPPTransformation
         this.assertParameterCorrespondences(param);
     }
 
+    @Test
+    public void testAddParameterWithCompositeDataType() throws Throwable {
+    	final Parameter param = super.createAndSyncRepoOpSigAndParameterWithDataTypeName(PCM2JaMoPPUtils.COMPOSITE_DATA_TYPE_NAME);
+    	
+        this.assertParameterCorrespondences(param);
+    }
+    
     /**
      * assert that the parameter type has a correspondence to the type of the parameter in the
      * JaMoPP model

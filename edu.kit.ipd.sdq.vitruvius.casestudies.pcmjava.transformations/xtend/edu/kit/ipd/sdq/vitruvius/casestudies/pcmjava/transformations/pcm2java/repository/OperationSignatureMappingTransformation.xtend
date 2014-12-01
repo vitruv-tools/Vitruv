@@ -1,6 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
+import de.uka.ipd.sdq.pcm.repository.DataType
 import de.uka.ipd.sdq.pcm.repository.OperationSignature
+import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.Set
@@ -12,12 +15,9 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.members.InterfaceMethod
 import org.emftext.language.java.members.MembersFactory
 import org.emftext.language.java.parameters.Parameter
-import org.emftext.language.java.types.TypesFactory
-import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
-import de.uka.ipd.sdq.pcm.repository.PrimitiveDataType
-import de.uka.ipd.sdq.pcm.repository.DataType
+import org.emftext.language.java.types.NamespaceClassifierReference
 import org.emftext.language.java.types.TypeReference
+import org.emftext.language.java.types.TypesFactory
 
 class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -72,10 +72,16 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 		}
 		val parrentCorrespondence = correspondenceInstance.getAllCorrespondences(affectedEObject)
 		val tcr = TransformationUtils.createTransformationChangeResultForEObjectsToSave(jaMoPPIfMethods)
+		val Parameter newParameter = newCorrespondingParameter.get(0) as Parameter
+		val paramType = newParameter.typeReference
 		for (interfaceMethod : jaMoPPIfMethods) {
-			interfaceMethod.parameters.add(index, newCorrespondingParameter.get(0) as Parameter)
+			// add import if paramType is namespaceclassifier reference
+			if(paramType instanceof NamespaceClassifierReference){
+				PCM2JaMoPPUtils.addImportToCompilationUnitOfClassifier(interfaceMethod.containingConcreteClassifier, paramType)
+			}
+			interfaceMethod.parameters.add(index, newParameter)
 
-			tcr.addNewCorrespondence(correspondenceInstance, newValue, newCorrespondingParameter.get(0),
+			tcr.addNewCorrespondence(correspondenceInstance, newValue, newParameter,
 				parrentCorrespondence.get(0))
 		}
 		return tcr
