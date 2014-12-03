@@ -312,9 +312,13 @@ abstract class PCM2JaMoPPUtils {
 	def static Import addImportToCompilationUnitOfClassifier(Classifier classifier,
 		ConcreteClassifier classifierToImport) {
 		val classifierImport = ImportsFactory.eINSTANCE.createClassifierImport
-		classifierImport.namespaces.addAll(classifierToImport.containingCompilationUnit.namespaces)
+		if(null != classifierToImport.containingCompilationUnit){
+			if(null != classifierToImport.containingCompilationUnit.namespaces){
+				classifierImport.namespaces.addAll(classifierToImport.containingCompilationUnit.namespaces)
+			}
+			classifier.containingCompilationUnit.imports.add(classifierImport)
+		}
 		classifierImport.classifier = classifierToImport
-		classifier.containingCompilationUnit.imports.add(classifierImport)
 		return classifierImport
 	}
 

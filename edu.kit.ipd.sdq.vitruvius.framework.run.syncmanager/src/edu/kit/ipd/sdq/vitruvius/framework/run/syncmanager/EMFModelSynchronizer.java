@@ -33,6 +33,8 @@ class EMFModelSynchronizer extends ConcreteChangeSynchronizer {
     public ChangeResult synchronizeChange(final Change change) {
         EMFModelChange emfModelChange = (EMFModelChange) change;
         VURI sourceModelURI = emfModelChange.getURI();
+        // called in order to create the source model URI if it's not existing already
+        this.modelProviding.getAndLoadModelInstanceOriginal(sourceModelURI);
         Set<CorrespondenceInstance> correspondenceInstances = this.correspondenceProviding
                 .getAllCorrespondenceInstances(sourceModelURI);
         if (null == correspondenceInstances || 0 == correspondenceInstances.size()) {
