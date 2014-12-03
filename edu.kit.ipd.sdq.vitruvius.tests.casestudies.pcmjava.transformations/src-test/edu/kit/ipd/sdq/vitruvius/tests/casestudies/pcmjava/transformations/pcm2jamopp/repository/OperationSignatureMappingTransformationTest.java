@@ -47,7 +47,7 @@ public class OperationSignatureMappingTransformationTest extends PCM2JaMoPPTrans
     private InterfaceMethod assertOperationSignatureCorrespondence(final OperationSignature opSig) throws Throwable {
         final InterfaceMethod intMethod = (InterfaceMethod) this.assertSingleCorrespondence(opSig,
                 InterfaceMethod.class, opSig.getEntityName());
-        final TypeReference tr = DataTypeCorrespondenceHelper.claimUniqueCorrespondingJaMoPPDataType(
+        final TypeReference tr = DataTypeCorrespondenceHelper.claimUniqueCorrespondingJaMoPPDataTypeReference(
                 opSig.getReturnType__OperationSignature(), this.getCorrespondenceInstance());
         this.assertEqualsTypeReference(intMethod.getTypeReference(), tr);
 

@@ -48,7 +48,7 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 		val InnerDeclaration innerDec = eObject as InnerDeclaration
 		val DataType innerType = innerDec.datatype_InnerDeclaration
 		val TypeReference typeRef = DataTypeCorrespondenceHelper.
-			claimUniqueCorrespondingJaMoPPDataType(innerType, correspondenceInstance)
+			claimUniqueCorrespondingJaMoPPDataTypeReference(innerType, correspondenceInstance)
 		val members = addFieldGetterAndSetterToClassifier(typeRef, innerDec.entityName)
 		PCM2JaMoPPUtils.sortMembers(members)
 		return members
@@ -197,7 +197,7 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 		val tcr = new TransformationChangeResult
 		val newDataType = newValue as DataType
 		val newJaMoPPType = DataTypeCorrespondenceHelper.
-			claimUniqueCorrespondingJaMoPPDataType(newDataType, correspondenceInstance)
+			claimUniqueCorrespondingJaMoPPDataTypeReference(newDataType, correspondenceInstance)
 
 		//Change field Type
 		val fields = affectedEObjects.filter(typeof(Field))

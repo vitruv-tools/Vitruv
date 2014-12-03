@@ -1,8 +1,10 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
 import de.uka.ipd.sdq.pcm.repository.CollectionDataType
+import de.uka.ipd.sdq.pcm.repository.DataType
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.lang.reflect.Modifier
 import java.util.ArrayList
 import java.util.Collection
@@ -11,6 +13,10 @@ import java.util.List
 import java.util.Set
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
+import org.emftext.language.java.classifiers.ConcreteClassifier
+import org.emftext.language.java.generics.GenericsFactory
+import org.emftext.language.java.generics.QualifiedTypeArgument
+import org.emftext.language.java.types.NamespaceClassifierReference
 import org.reflections.Reflections
 
 class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransformation {
@@ -35,8 +41,7 @@ class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransfo
 		var String jaMoPPInnerDataTypeName = "?"
 		if (null != cdt.innerType_CollectionDataType) {
 			val jaMoPPInnerDataType = DataTypeCorrespondenceHelper.
-				claimUniqueCorrespondingJaMoPPDataType(cdt.innerType_CollectionDataType, correspondenceInstance)
-			
+				claimUniqueCorrespondingJaMoPPDataTypeReference(cdt.innerType_CollectionDataType, correspondenceInstance)
 		}
 
 		//i) ask whether to create a new class
@@ -45,9 +50,10 @@ class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransfo
 		val int createOwnClassInt = userInteracting.selectFromMessage(UserInteractionType.MODAL,
 			"Collection Data Type created. " + selectClasOrNoClass, #{"Yes", "No"})
 		var boolean createOwnClass = false;
-		if(0 == createOwnClassInt){
+		if (0 == createOwnClassInt) {
 			createOwnClass = true
-		} 
+		}
+
 		//ii) ask data type
 		val reflection = new Reflections
 		var Set<Class<? extends Collection>> collectionDataTypes = reflection.getSubTypesOf(Collection)
@@ -66,17 +72,20 @@ class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransfo
 		if (createOwnClass) {
 			val String content = '''import «selectedClass.package.name».«selectedClass.simpleName»
 			   
-			   public class «cdt.entityName» extends «selectedClass.simpleName»<«jaMoPPInnerDataTypeName»>{
+			   public class «cdt.entityName» extends «selectedClass.simpleName»{
 			   	
 			   }
 			   
 			'''
 			val cu = PCM2JaMoPPUtils.createCompilationUnit(cdt.entityName, content)
 			val classifier = cu.classifiers.get(0)
-			return #[cu, classifier]
+			val superTypeRef = classifier.superTypeReferences.get(0)
+			return #[cu, classifier, superTypeRef]
 		} else {
-			throw new UnsupportedOperationException("Not creating a class for collection data type is currently not supported")
+
 			//TODO
+			throw new UnsupportedOperationException(
+				"Not creating a class for collection data type is currently not supported")
 		}
 	}
 
@@ -92,9 +101,24 @@ class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransfo
 
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject newValue) {
-
-		//TODO: implement behaviour for change of innerdataType
-		return null
+		val innerType = DataTypeCorrespondenceHelper.
+			claimUniqueCorrespondingJaMoPPDataType(newValue as DataType, correspondenceInstance)
+		if (null == innerType || !(innerType instanceof ConcreteClassifier)) {
+			return TransformationUtils.createEmptyTransformationChangeResult
+		}
+		val innerClassifier = innerType as ConcreteClassifier
+		val concreteClass = correspondenceInstance.
+			claimUniqueCorrespondingEObjectByType(affectedEObject, org.emftext.language.java.classifiers.Class)
+		if(!(concreteClass.extends instanceof NamespaceClassifierReference)){
+			return TransformationUtils.createEmptyTransformationChangeResult
+		}
+		val extendsReference = concreteClass.extends as NamespaceClassifierReference
+		val QualifiedTypeArgument qtr = GenericsFactory.eINSTANCE.createQualifiedTypeArgument
+		qtr.typeReference = PCM2JaMoPPUtils.createNamespaceClassifierReference(innerClassifier)
+		PCM2JaMoPPUtils.addImportToCompilationUnitOfClassifier(concreteClass, innerClassifier)
+		extendsReference.classifierReferences.get(0).typeArguments.clear
+		extendsReference.classifierReferences.get(0).typeArguments.add(qtr)
+		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(concreteClass.toArray)
 	}
 
 }

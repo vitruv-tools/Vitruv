@@ -1,12 +1,15 @@
-package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp;
+package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.repository;
 
 import org.junit.Test;
 
+import de.uka.ipd.sdq.pcm.repository.CompositeDataType;
+import de.uka.ipd.sdq.pcm.repository.OperationSignature;
 import de.uka.ipd.sdq.pcm.repository.Parameter;
 import de.uka.ipd.sdq.pcm.repository.PrimitiveDataType;
 import de.uka.ipd.sdq.pcm.repository.PrimitiveTypeEnum;
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPUtils;
 
 public class ParameterMappingTransformationTest extends PCM2JaMoPPTransformationTest {
@@ -42,11 +45,28 @@ public class ParameterMappingTransformationTest extends PCM2JaMoPPTransformation
 
     @Test
     public void testAddParameterWithCompositeDataType() throws Throwable {
-    	final Parameter param = super.createAndSyncRepoOpSigAndParameterWithDataTypeName(PCM2JaMoPPUtils.COMPOSITE_DATA_TYPE_NAME);
-    	
+        final Parameter param = super.createAndSyncRepoOpSigAndParameterWithDataTypeName(
+                PCM2JaMoPPUtils.COMPOSITE_DATA_TYPE_NAME, PCM2JaMoPPUtils.PARAMETER_NAME);
+
         this.assertParameterCorrespondences(param);
     }
-    
+
+    @Test
+    public void testAddMultipleParameters() throws Throwable {
+        final Parameter param = super.createAndSyncRepoOpSigAndParameterWithDataTypeName(
+                PCM2JaMoPPUtils.COMPOSITE_DATA_TYPE_NAME + "_1", "compositeParam1");
+        final OperationSignature opSig = param.getOperationSignature__Parameter();
+        final CompositeDataType cdt = super.createAndSyncCompositeDataType(opSig.getInterface__OperationSignature()
+                .getRepository__Interface(), PCM2JaMoPPUtils.COMPOSITE_DATA_TYPE_NAME + "_2");
+
+        final Parameter param2 = super.addAndSyncParameterWithPrimitiveTypeToSignature(opSig);
+        final Parameter param3 = super.addAndSyncParameterToSignature(opSig, cdt, "compositeParam2");
+
+        this.assertParameterCorrespondences(param);
+        this.assertParameterCorrespondences(param2);
+        this.assertParameterCorrespondences(param3);
+    }
+
     /**
      * assert that the parameter type has a correspondence to the type of the parameter in the
      * JaMoPP model

@@ -347,6 +347,10 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
             VURI vuri = metamodel.getModelVURIContainingIdentifiedEObject(tuidString);
             EObject rootEObject = this.modelProviding.getAndLoadModelInstanceOriginal(vuri).getFirstRootEObject();
             EObject resolvedEobject = metamodel.resolveEObjectFromRootAndFullTUID(rootEObject, tuidString);
+            if (null == resolvedEobject) {
+                // TODO think about something light wighter than throwing an exception
+                throw new RuntimeException("Could not resolve TUID " + tuid + " in eObject " + rootEObject);
+            }
             if (resolvedEobject.eIsProxy()) {
                 EcoreUtil.resolve(resolvedEobject, getResource());
             }

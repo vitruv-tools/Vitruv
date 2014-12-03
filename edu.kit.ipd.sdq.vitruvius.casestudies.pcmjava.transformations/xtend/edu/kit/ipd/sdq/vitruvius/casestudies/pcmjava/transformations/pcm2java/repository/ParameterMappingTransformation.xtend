@@ -33,7 +33,7 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 		var OrdinaryParameter jaMoPPParam = ParametersFactory.eINSTANCE.createOrdinaryParameter
 		jaMoPPParam.setName(parameter.parameterName)
 		val TypeReference typeReference = DataTypeCorrespondenceHelper.
-			claimUniqueCorrespondingJaMoPPDataType(parameter.dataType__Parameter, correspondenceInstance)
+			claimUniqueCorrespondingJaMoPPDataTypeReference(parameter.dataType__Parameter, correspondenceInstance)
 		if (null == typeReference) {
 			logger.warn(
 				"No corresponding for data type " + parameter.dataType__Parameter +
@@ -92,7 +92,7 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 			newValue instanceof DataType) {
 			try {
 				val TypeReference typeReference = DataTypeCorrespondenceHelper.
-					claimUniqueCorrespondingJaMoPPDataType(newValue as DataType, correspondenceInstance)
+					claimUniqueCorrespondingJaMoPPDataTypeReference(newValue as DataType, correspondenceInstance)
 				correspondingParameter.setTypeReference(typeReference)
 				val oldTUID = correspondenceInstance.calculateTUIDFromEObject(correspondingParameter)
 				val tcr = TransformationUtils.createTransformationChangeResultForEObjectsToSave(correspondingParameter.toArray)
