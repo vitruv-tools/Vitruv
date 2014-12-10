@@ -1,13 +1,14 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.scoping
 
 import com.google.inject.Inject
+import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EcoreHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassOrFeature
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureCall
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Import
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRPackage
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeatureCall
-import javax.naming.OperationNotSupportedException
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.TypedElementRef
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
@@ -22,7 +23,7 @@ import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.impl.SimpleScope
 import org.eclipse.xtext.xbase.scoping.XImportSectionNamespaceScopeProvider
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper.* 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper.*
 
 /**
  * @author Dominik Werle
@@ -36,11 +37,11 @@ class MIRScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 			return createQualifiedEClassScope(context.eResource)
 		else if (reference.getEType.equals(EcorePackage.eINSTANCE.getEClassifier))
 			return createQualifiedEClassifierScope(context.eResource)
-		else if (reference.equals(MIRPackage.eINSTANCE.namedFeatureCall_Tail))
-			return createFeatureCallTailScope(context as NamedFeatureCall)
-		else if ((context instanceof NamedFeature)
-			&& (reference.equals(MIRPackage.eINSTANCE.classOrFeature_ReferencedClass)))
-			return getContainingNamedEClassScope(context as NamedFeature)
+		else if (reference.equals(MIRPackage.eINSTANCE.featureCall_Tail))
+			return createFeatureCallTailScope(context as FeatureCall)
+		else if (reference.equals(MIRPackage.eINSTANCE.typedElementRef_Ref)
+			&& (context instanceof TypedElementRef))
+			return createFeatureCallRootElementScope(context as TypedElementRef)
 		
 		super.getScope(context, reference)
 	}
@@ -138,41 +139,36 @@ class MIRScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 	 * @see NamedFeature#getContainingNamedFeature()
 	 * @see NamedFeature#getContainingNamedEClass()
 	 */
-	def createFeatureCallTailScope(NamedFeatureCall call) {
+	def createFeatureCallTailScope(FeatureCall call) {
 		val head = call.ref
-		switch (head) {
-			ClassOrFeature : {
-				val containingEClass = head.referencedClass?.representedEClass
-				val containingFeature = head.referencedFeature?.feature?.getStructuralFeature
-				val containingType = head.referencedFeature?.feature?.getType
-				val featureDescriptions =
-					if (containingEClass != null) {
-						containingEClass.createFeatureDescriptions	
-					} else if (containingFeature != null) {
-						if (containingType instanceof EClass) {
-							containingType.createFeatureDescriptions
-						}
-					}
-				
-				val resultScope = new SimpleScope(IScope.NULLSCOPE, featureDescriptions ?: #[])
-				return resultScope
-			}
-			
-			NamedFeatureCall : {
-				val containingFeature = head.tail
-				val featureDescriptions =
-					if ((head.type != null) && (head.type instanceof EClass)) {
-						(head.type as EClass).createFeatureDescriptions
-					} else if (containingFeature != null) {
-						val containingType = containingFeature.EType
-						if (containingType instanceof EClass)
-							containingType.createFeatureDescriptions
-					}
-					
-				val resultScope = new SimpleScope(IScope.NULLSCOPE, featureDescriptions ?: #[])
-				return resultScope
-			}
+		
+		val headType = head.getTypeRecursive
+		val featureDescriptions = if (headType instanceof EClass) {
+			headType.createFeatureDescriptions
 		}
+		
+		val resultScope = new SimpleScope(IScope.NULLSCOPE, featureDescriptions ?: #[])
+		return resultScope
+	}
+	
+	
+	// TODO: refactor Feature/ClassMapping, pull up mappedElements to supertype
+	def createFeatureCallRootElementScope(TypedElementRef call) {
+		val elementsInScope = EcoreHelper.getContainerHierarchy(call)
+			.filter[it instanceof FeatureMapping || it instanceof ClassMapping]
+		
+		return new SimpleScope(IScope.NULLSCOPE,
+			elementsInScope.map [
+				switch it {
+					FeatureMapping:
+						mappedElements
+					ClassMapping:
+						mappedElements
+				}
+			]
+			.flatten
+			.filter[it.name != null]
+			.map[EObjectDescription.create(it.name, it)])
 	}
 	
 	/**

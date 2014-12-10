@@ -53,31 +53,31 @@ FeatureMapping:
 	'}')?
 ;
 
-NamedEClass:
+NamedEClass returns TypedElement:
+	{NamedEClass}
 	representedEClass=[ecore::EClass|QualifiedName]
 	('as' name=ValidID)?
 ;
 
-ClassOrFeature returns Ref:
-	{ClassOrFeature}
-	'(' ((('class' referencedClass=[NamedEClass]) |
-     ('feature' referencedFeature=[NamedFeature])))
-    ')'
+NamedFeature returns TypedElement:
+	{NamedFeature}
+	feature=FeatureCall
+	('as' name=ValidID)?
+;
+
+TypedElementRef returns Ref:
+	{TypedElementRef}
+	ref=[TypedElement]
 ;
 
 FeatureCall returns Ref:
-	ClassOrFeature
-	({NamedFeatureCall.ref=current} "."
+	TypedElementRef
+	({FeatureCall.ref=current} "."
 		(
 			tail=[ecore::EStructuralFeature|ValidID]
 			("[" type=[ecore::EClassifier|QualifiedName] "]")?
 		)
 	)*
-;
-
-NamedFeature:
-	feature=FeatureCall
-	('as' name=ValidID)?
 ;
 
 // Invariants

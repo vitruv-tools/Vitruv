@@ -20,7 +20,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ClassMapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappedElements" upperBound="-1"
-        eType="#//NamedEClass" containment="true"/>
+        eType="#//TypedElement" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="whens" upperBound="-1"
         eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="withs" upperBound="-1"
@@ -30,7 +30,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FeatureMapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappedElements" upperBound="-1"
-        eType="#//NamedFeature" containment="true"/>
+        eType="#//TypedElement" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="whens" upperBound="-1"
         eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="withs" upperBound="-1"
@@ -38,16 +38,10 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="wheres" upperBound="-1"
         eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NamedEClass">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="representedEClass" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TypedElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Ref"/>
-  <eClassifiers xsi:type="ecore:EClass" name="NamedFeature">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="#//Ref"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EClassParameter">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -68,7 +62,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Response">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="action" eType="#//ResponseAction"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="#//NamedEClass"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="#//TypedElement"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="inv" eType="#//Invariant"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="restoreAction" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
@@ -79,11 +73,17 @@
     <eLiterals name="CREATE" value="1" literal="create"/>
     <eLiterals name="CHANGE" value="2" literal="change"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ClassOrFeature" eSuperTypes="#//Ref">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="referencedClass" eType="#//NamedEClass"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="referencedFeature" eType="#//NamedFeature"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NamedEClass" eSuperTypes="#//TypedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="representedEClass" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NamedFeatureCall" eSuperTypes="#//Ref">
+  <eClassifiers xsi:type="ecore:EClass" name="NamedFeature" eSuperTypes="#//TypedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="#//Ref"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TypedElementRef" eSuperTypes="#//Ref">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//TypedElement"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureCall" eSuperTypes="#//Ref">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//Ref" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="tail" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>

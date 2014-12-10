@@ -20,7 +20,8 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper.* 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper.* import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureCall
 
 /**
  * Generates the intermediate language form of the model
@@ -88,8 +89,8 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		val leftElement = mapping.mappedElements.get(0)
 		val rightElement = mapping.mappedElements.get(1)
 		
-		result.left = leftElement.representedEClass
-		result.right = rightElement.representedEClass
+		result.left = (leftElement as NamedEClass).representedEClass
+		result.right = (rightElement as NamedEClass).representedEClass
 		
 		val mappedPredicates = mapping.whens.map[dispatchCreatePredicate].filterNull.toList
 		mir.predicates += mappedPredicates
@@ -122,8 +123,8 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		val featureMapping = createFeatureMapping
 		mir.featureMappings += featureMapping
 		
-		val leftElement = mapping.mappedElements.get(0)
-		val rightElement = mapping.mappedElements.get(1)
+		val leftElement = mapping.mappedElements.get(0) as NamedFeature
+		val rightElement = mapping.mappedElements.get(1) as NamedFeature
 		
 		featureMapping.left = createEClassifierFeature(leftElement)
 		featureMapping.right = createEClassifierFeature(rightElement)
@@ -180,7 +181,7 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 	def createEClassifierFeature(NamedFeature namedFeature) {
 		val result = createEClassifierFeature
 		result.feature = namedFeature.feature.getStructuralFeature
-		result.EClassifier = namedFeature.feature.getType
+		result.EClassifier = namedFeature.feature.getTypeRecursive
 		
 		return result
 	}

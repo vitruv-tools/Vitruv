@@ -262,6 +262,8 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
    		typeRef(object.representedEClass.instanceTypeName)
    	}
    	
+   	def dispatch toParameterType(EObject object) { return null }
+   	
    	def toParameter(EObject obj, EObject object) {
    		obj.toParameter(object.tryGetName, object.toParameterType)
 	}
@@ -293,6 +295,7 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 	
 	def dispatch String tryGetName(NamedEClass object) { return object.name }
 	def dispatch String tryGetName(NamedFeature object) { return object.name }
+	def dispatch String tryGetName(EObject object) { return null }
 	
 }
 
