@@ -58,14 +58,6 @@ NamedEClass:
 	'as' name=ValidID
 ;
 
-//NamedFeature:
-//	('(' (('class' containingNamedEClass=[NamedEClass]) |
-//	     ('feature' containingNamedFeature=[NamedFeature])) ')')
-//	'.' representedFeature=[ecore::EStructuralFeature|ValidID]
-//	('[' type=[ecore::EClassifier|QualifiedName] ']')?
-//	'as' name=ValidID
-//;
-
 ClassOrFeature returns Ref:
 	{ClassOrFeature}
 	'(' ((('class' containingNamedEClass=[NamedEClass]) |

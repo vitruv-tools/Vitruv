@@ -38,8 +38,6 @@ class MIRScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 			return createQualifiedEClassifierScope(context.eResource)
 		else if (reference.equals(MIRPackage.eINSTANCE.namedFeatureCall_Tail))
 			return createFeatureCallTailScope(context as NamedFeatureCall)
-		else if (reference.getEType.equals(EcorePackage.eINSTANCE.getEStructuralFeature))
-			return getEFeatureScope(context)
 		else if ((context instanceof NamedFeature)
 			&& (reference.equals(MIRPackage.eINSTANCE.classOrFeature_ContainingNamedEClass)))
 			return getContainingNamedEClassScope(context as NamedFeature)
@@ -133,8 +131,12 @@ class MIRScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 	
 	
 	/**
-	 * Creates an {@link IScope} that includes all {@link EStructuralFeature}s referenceable
-	 * in the current context.
+	 * Creates an {@link IScope} that includes all features that are referenceable
+	 * in the given context, where context is a {@link NamedFeature} that already has
+	 * a defined referenced {@link EStructuralFeature} or {@link EClass}.
+	 * 
+	 * @see NamedFeature#getContainingNamedFeature()
+	 * @see NamedFeature#getContainingNamedEClass()
 	 */
 	def createFeatureCallTailScope(NamedFeatureCall call) {
 		val head = call.ref
@@ -171,36 +173,6 @@ class MIRScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 				return resultScope
 			}
 		}
-	}
-	
-	/**
-	 * Creates an {@link IScope} that includes all features that are referenceable
-	 * in the given context, where context is a {@link NamedFeature} that already has
-	 * a defined referenced {@link EStructuralFeature} or {@link EClass}.
-	 * 
-	 * @see NamedFeature#getContainingNamedFeature()
-	 * @see NamedFeature#getContainingNamedEClass()
-	 */
-	def IScope getEFeatureScope(EObject context) {
-		throw new OperationNotSupportedException()
-		/*if (context == null || !(context instanceof NamedFeature))
-			return IScope.NULLSCOPE;
-		
-		val contextFeature = (context as NamedFeature)
-		val containingEClass = contextFeature.feature.containingNamedEClass?.representedEClass
-		val containingFeature = contextFeature.feature.containingNamedFeature?.representedFeature
-		
-		val featureDescriptions =
-			if (containingEClass != null) {
-				containingEClass.createFeatureDescriptions	
-			} else if (containingFeature != null) {
-				val containingType = containingFeature.EType
-				if (containingType instanceof EClass)
-					containingType.createFeatureDescriptions
-			}
-		
-		val resultScope = new SimpleScope(IScope.NULLSCOPE, featureDescriptions ?: #[])
-		return resultScope*/		
 	}
 	
 	/**
