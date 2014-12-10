@@ -42,11 +42,9 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//NamedEClass/representedEClass"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//NamedEClass/name"/>
     </genClasses>
+    <genClasses ecoreClass="MIR.ecore#//Ref"/>
     <genClasses ecoreClass="MIR.ecore#//NamedFeature">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//NamedFeature/containingNamedEClass"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//NamedFeature/containingNamedFeature"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//NamedFeature/representedFeature"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//NamedFeature/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//NamedFeature/feature"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//NamedFeature/name"/>
     </genClasses>
     <genClasses ecoreClass="MIR.ecore#//EClassParameter">
@@ -70,6 +68,15 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Response/context"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//Response/inv"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Response/restoreAction"/>
+    </genClasses>
+    <genClasses ecoreClass="MIR.ecore#//ClassOrFeature">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//ClassOrFeature/containingNamedEClass"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//ClassOrFeature/containingNamedFeature"/>
+    </genClasses>
+    <genClasses ecoreClass="MIR.ecore#//NamedFeatureCall">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//NamedFeatureCall/ref"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//NamedFeatureCall/tail"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//NamedFeatureCall/type"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

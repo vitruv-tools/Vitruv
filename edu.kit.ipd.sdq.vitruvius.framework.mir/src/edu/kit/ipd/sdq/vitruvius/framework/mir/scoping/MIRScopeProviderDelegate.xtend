@@ -2,8 +2,12 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.scoping
 
 import com.google.inject.Inject
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassOrFeature
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Import
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRPackage
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeatureCall
+import javax.naming.OperationNotSupportedException
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
@@ -17,7 +21,8 @@ import org.eclipse.xtext.resource.EObjectDescription
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.impl.SimpleScope
 import org.eclipse.xtext.xbase.scoping.XImportSectionNamespaceScopeProvider
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature
+
+import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper.* 
 
 /**
  * @author Dominik Werle
@@ -31,10 +36,12 @@ class MIRScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 			return createQualifiedEClassScope(context.eResource)
 		else if (reference.getEType.equals(EcorePackage.eINSTANCE.getEClassifier))
 			return createQualifiedEClassifierScope(context.eResource)
+		else if (reference.equals(MIRPackage.eINSTANCE.namedFeatureCall_Tail))
+			return createFeatureCallTailScope(context as NamedFeatureCall)
 		else if (reference.getEType.equals(EcorePackage.eINSTANCE.getEStructuralFeature))
 			return getEFeatureScope(context)
 		else if ((context instanceof NamedFeature)
-			&& (reference.equals(MIRPackage.eINSTANCE.namedFeature_ContainingNamedEClass)))
+			&& (reference.equals(MIRPackage.eINSTANCE.classOrFeature_ContainingNamedEClass)))
 			return getContainingNamedEClassScope(context as NamedFeature)
 		
 		super.getScope(context, reference)
@@ -126,7 +133,48 @@ class MIRScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 	
 	
 	/**
-	 * Creates an {@link IScope} that includes all features that are referencable
+	 * Creates an {@link IScope} that includes all {@link EStructuralFeature}s referenceable
+	 * in the current context.
+	 */
+	def createFeatureCallTailScope(NamedFeatureCall call) {
+		val head = call.ref
+		switch (head) {
+			ClassOrFeature : {
+				val containingEClass = head.containingNamedEClass?.representedEClass
+				val containingFeature = head.containingNamedFeature?.feature?.getStructuralFeature
+				val containingType = head.containingNamedFeature?.feature?.getType
+				val featureDescriptions =
+					if (containingEClass != null) {
+						containingEClass.createFeatureDescriptions	
+					} else if (containingFeature != null) {
+						if (containingType instanceof EClass) {
+							containingType.createFeatureDescriptions
+						}
+					}
+				
+				val resultScope = new SimpleScope(IScope.NULLSCOPE, featureDescriptions ?: #[])
+				return resultScope
+			}
+			
+			NamedFeatureCall : {
+				val containingFeature = head.tail
+				val featureDescriptions =
+					if ((head.type != null) && (head.type instanceof EClass)) {
+						(head.type as EClass).createFeatureDescriptions
+					} else if (containingFeature != null) {
+						val containingType = containingFeature.EType
+						if (containingType instanceof EClass)
+							containingType.createFeatureDescriptions
+					}
+					
+				val resultScope = new SimpleScope(IScope.NULLSCOPE, featureDescriptions ?: #[])
+				return resultScope
+			}
+		}
+	}
+	
+	/**
+	 * Creates an {@link IScope} that includes all features that are referenceable
 	 * in the given context, where context is a {@link NamedFeature} that already has
 	 * a defined referenced {@link EStructuralFeature} or {@link EClass}.
 	 * 
@@ -134,12 +182,13 @@ class MIRScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 	 * @see NamedFeature#getContainingNamedEClass()
 	 */
 	def IScope getEFeatureScope(EObject context) {
-		if (context == null || !(context instanceof NamedFeature))
+		throw new OperationNotSupportedException()
+		/*if (context == null || !(context instanceof NamedFeature))
 			return IScope.NULLSCOPE;
 		
 		val contextFeature = (context as NamedFeature)
-		val containingEClass = contextFeature.containingNamedEClass?.representedEClass
-		val containingFeature = contextFeature.containingNamedFeature?.representedFeature
+		val containingEClass = contextFeature.feature.containingNamedEClass?.representedEClass
+		val containingFeature = contextFeature.feature.containingNamedFeature?.representedFeature
 		
 		val featureDescriptions =
 			if (containingEClass != null) {
@@ -151,7 +200,7 @@ class MIRScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 			}
 		
 		val resultScope = new SimpleScope(IScope.NULLSCOPE, featureDescriptions ?: #[])
-		return resultScope		
+		return resultScope*/		
 	}
 	
 	/**

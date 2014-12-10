@@ -58,12 +58,35 @@ NamedEClass:
 	'as' name=ValidID
 ;
 
+//NamedFeature:
+//	('(' (('class' containingNamedEClass=[NamedEClass]) |
+//	     ('feature' containingNamedFeature=[NamedFeature])) ')')
+//	'.' representedFeature=[ecore::EStructuralFeature|ValidID]
+//	('[' type=[ecore::EClassifier|QualifiedName] ']')?
+//	'as' name=ValidID
+//;
+
+ClassOrFeature returns Ref:
+	{ClassOrFeature}
+	'(' ((('class' containingNamedEClass=[NamedEClass]) |
+     ('feature' containingNamedFeature=[NamedFeature])))
+    ')'
+;
+
+NamedFeatureCall returns Ref:
+	ClassOrFeature
+	({NamedFeatureCall.ref=current} "."
+		(
+			tail=[ecore::EStructuralFeature|ValidID]
+			("[" type=[ecore::EClassifier|QualifiedName] "]")?
+		)
+	)*
+;
+
 NamedFeature:
-	('(' (('class' containingNamedEClass=[NamedEClass]) |
-	     ('feature' containingNamedFeature=[NamedFeature])) ')')
-	'.' representedFeature=[ecore::EStructuralFeature|ValidID]
-	('::' type=[ecore::EClassifier|QualifiedName])?
-	'as' name=ValidID
+	feature=NamedFeatureCall
+	'as'
+	name=ValidID
 ;
 
 // Invariants

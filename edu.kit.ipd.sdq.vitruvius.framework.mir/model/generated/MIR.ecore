@@ -42,13 +42,10 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="representedEClass" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Ref"/>
   <eClassifiers xsi:type="ecore:EClass" name="NamedFeature">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="containingNamedEClass"
-        eType="#//NamedEClass"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="containingNamedFeature"
-        eType="#//NamedFeature"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="representedFeature" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="#//Ref"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EClassParameter">
@@ -81,5 +78,16 @@
     <eLiterals name="ANY" literal="any"/>
     <eLiterals name="CREATE" value="1" literal="create"/>
     <eLiterals name="CHANGE" value="2" literal="change"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassOrFeature" eSuperTypes="#//Ref">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="containingNamedEClass"
+        eType="#//NamedEClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="containingNamedFeature"
+        eType="#//NamedFeature"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NamedFeatureCall" eSuperTypes="#//Ref">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//Ref" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tail" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
   </eClassifiers>
 </ecore:EPackage>

@@ -27,6 +27,7 @@ import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
+import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper.*;
 
 class MIRJvmModelInferrer extends AbstractModelInferrer {
 	@Inject extension JvmTypesBuilder
@@ -252,7 +253,7 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
    	}
    	
    	def dispatch toParameterType(NamedFeature object) {
-   		var fref = object.representedFeature;
+   		var fref = object.feature.getStructuralFeature
    		var typeName = fref.getEType.instanceTypeName
    		typeRef(typeName)
    	}
@@ -274,7 +275,7 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 	}
 	
 	def dispatch toIdentifier(NamedFeature object) {
-		(object.representedFeature.name.orIfNull("unnamed") + "_" + object.name.orIfNull("unnamed"))
+		(object.feature.getStructuralFeature.name.orIfNull("unnamed") + "_" + object.name.orIfNull("unnamed"))
 	}
 	
 	def dispatch toIdentifier(NamedEClass object) {

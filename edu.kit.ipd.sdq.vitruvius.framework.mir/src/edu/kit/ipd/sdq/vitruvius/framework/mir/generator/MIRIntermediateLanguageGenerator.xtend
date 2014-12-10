@@ -1,25 +1,26 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.generator
 
 import com.google.inject.Inject
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassifierMapping
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.FeatureMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIRintermediateFactory
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Mapping
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ReverseFeaturesCorrespondWithEClassifiers
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.JavaBlock
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature
 import java.util.Collections
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.JavaBlock
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Mapping
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ReverseFeaturesCorrespondWithEClassifiers import org.eclipse.emf.ecore.util.EcoreUtil
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassifierMapping
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping
-import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Predicate
+
+import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper.* 
 
 /**
  * Generates the intermediate language form of the model
@@ -114,8 +115,8 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		return result
 	}
 	
-	def void mapFeatureMapping(FeatureMapping mapping, MIR mir,
-		edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassifierMapping parent
+	def void mapFeatureMapping(edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping mapping, MIR mir,
+		ClassifierMapping parent
 	) {
 		// create new Feature Mapping
 		val featureMapping = createFeatureMapping
@@ -140,7 +141,7 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		// create new correspondence predicate for the feature mapping
 		val correspondencePredicate = createReverseFeaturesCorrespondWithEClassifiers
 		val correspondence = createFeatureEClassifierCorrespondence
-		correspondence.feature = leftElement.representedFeature
+		correspondence.feature = leftElement.feature.getStructuralFeature
 		correspondence.EClassifier = getRightSideType(parent)
 		correspondencePredicate.correspondences += correspondence
 		
@@ -178,8 +179,8 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 	
 	def createEClassifierFeature(NamedFeature namedFeature) {
 		val result = createEClassifierFeature
-		result.feature = namedFeature.representedFeature
-		result.EClassifier = namedFeature.type ?: namedFeature.representedFeature.EContainingClass
+		result.feature = namedFeature.feature.getStructuralFeature
+		result.EClassifier = namedFeature.feature.getType
 		
 		return result
 	}
@@ -187,17 +188,17 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 	/**
 	 * Returns the type of the right side of the {@link Mapping} 
 	 */
-	def dispatch getRightSideType(edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.FeatureMapping mapping) {
+	def dispatch getRightSideType(FeatureMapping mapping) {
 		return mapping.right.EClassifier
 	}
-	def dispatch getRightSideType(edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassifierMapping mapping) {
+	def dispatch getRightSideType(ClassifierMapping mapping) {
 		return mapping.right
 	}
 	
-	def dispatch getLeftSideType(edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.FeatureMapping mapping) {
+	def dispatch getLeftSideType(FeatureMapping mapping) {
 		return mapping.left.EClassifier
 	}
-	def dispatch getLeftSideType(edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassifierMapping mapping) {
+	def dispatch getLeftSideType(ClassifierMapping mapping) {
 		return mapping.left
 	}
 	
