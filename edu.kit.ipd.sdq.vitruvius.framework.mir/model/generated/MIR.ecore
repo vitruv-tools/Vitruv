@@ -80,10 +80,8 @@
     <eLiterals name="CHANGE" value="2" literal="change"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ClassOrFeature" eSuperTypes="#//Ref">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="containingNamedEClass"
-        eType="#//NamedEClass"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="containingNamedFeature"
-        eType="#//NamedFeature"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="referencedClass" eType="#//NamedEClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="referencedFeature" eType="#//NamedFeature"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NamedFeatureCall" eSuperTypes="#//Ref">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//Ref" containment="true"/>

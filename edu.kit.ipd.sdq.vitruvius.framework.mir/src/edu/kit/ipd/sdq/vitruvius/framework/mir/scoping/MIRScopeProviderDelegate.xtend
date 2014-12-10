@@ -39,7 +39,7 @@ class MIRScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 		else if (reference.equals(MIRPackage.eINSTANCE.namedFeatureCall_Tail))
 			return createFeatureCallTailScope(context as NamedFeatureCall)
 		else if ((context instanceof NamedFeature)
-			&& (reference.equals(MIRPackage.eINSTANCE.classOrFeature_ContainingNamedEClass)))
+			&& (reference.equals(MIRPackage.eINSTANCE.classOrFeature_ReferencedClass)))
 			return getContainingNamedEClassScope(context as NamedFeature)
 		
 		super.getScope(context, reference)
@@ -142,9 +142,9 @@ class MIRScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 		val head = call.ref
 		switch (head) {
 			ClassOrFeature : {
-				val containingEClass = head.containingNamedEClass?.representedEClass
-				val containingFeature = head.containingNamedFeature?.feature?.getStructuralFeature
-				val containingType = head.containingNamedFeature?.feature?.getType
+				val containingEClass = head.referencedClass?.representedEClass
+				val containingFeature = head.referencedFeature?.feature?.getStructuralFeature
+				val containingType = head.referencedFeature?.feature?.getType
 				val featureDescriptions =
 					if (containingEClass != null) {
 						containingEClass.createFeatureDescriptions	

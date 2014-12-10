@@ -70,8 +70,8 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Response/restoreAction"/>
     </genClasses>
     <genClasses ecoreClass="MIR.ecore#//ClassOrFeature">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//ClassOrFeature/containingNamedEClass"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//ClassOrFeature/containingNamedFeature"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//ClassOrFeature/referencedClass"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//ClassOrFeature/referencedFeature"/>
     </genClasses>
     <genClasses ecoreClass="MIR.ecore#//NamedFeatureCall">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//NamedFeatureCall/ref"/>

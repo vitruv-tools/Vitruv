@@ -7,7 +7,7 @@ import org.eclipse.emf.ecore.EClassifier
 
 class MIRHelper {
 	static def dispatch EStructuralFeature getStructuralFeature(ClassOrFeature ref) {
-		val feature = ref.containingNamedFeature?.feature
+		val feature = ref.referencedFeature?.feature
 		val result = (if (feature == null) null else ref.getStructuralFeature)
 		
 		return result
@@ -20,7 +20,7 @@ class MIRHelper {
 	}
 	
 	static def dispatch EClassifier getType(ClassOrFeature ref) {
-		val feature = ref.containingNamedFeature?.feature
+		val feature = ref.referencedFeature?.feature
 		val result = (if (feature == null) null else ref.getType)
 		
 		return result

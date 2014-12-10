@@ -55,17 +55,17 @@ FeatureMapping:
 
 NamedEClass:
 	representedEClass=[ecore::EClass|QualifiedName]
-	'as' name=ValidID
+	('as' name=ValidID)?
 ;
 
 ClassOrFeature returns Ref:
 	{ClassOrFeature}
-	'(' ((('class' containingNamedEClass=[NamedEClass]) |
-     ('feature' containingNamedFeature=[NamedFeature])))
+	'(' ((('class' referencedClass=[NamedEClass]) |
+     ('feature' referencedFeature=[NamedFeature])))
     ')'
 ;
 
-NamedFeatureCall returns Ref:
+FeatureCall returns Ref:
 	ClassOrFeature
 	({NamedFeatureCall.ref=current} "."
 		(
@@ -76,9 +76,8 @@ NamedFeatureCall returns Ref:
 ;
 
 NamedFeature:
-	feature=NamedFeatureCall
-	'as'
-	name=ValidID
+	feature=FeatureCall
+	('as' name=ValidID)?
 ;
 
 // Invariants
