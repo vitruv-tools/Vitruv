@@ -225,7 +225,6 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
    		val responseClassName = responsePkgName + "." + "Response_" + responseCounter
    		
    		acceptor.accept(resp.toClass(responseClassName)) [ responseClass |
-   			println("new Class: " + responseClassName)
 			responseClass.annotations += annotationRef(DynamicResponse)
    			
    			responseClass.members += resp.toMethod(JavaResponseInvoker.DISPATCH_METHOD_NAME, typeRef(Void.TYPE)) [
@@ -253,9 +252,11 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
    	}
    	
    	def dispatch toParameterType(NamedFeature object) {
-   		var fref = object.feature.getStructuralFeature
-   		var typeName = fref.getEType.instanceTypeName
-   		typeRef(typeName)
+   		var typeName = object.typeRecursive?.instanceTypeName
+   		if (typeName == null)
+   			typeRef(Object)
+   		else
+   			typeRef(typeName)
    	}
    	
    	def dispatch toParameterType(NamedEClass object) {
@@ -296,7 +297,6 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 	def dispatch String tryGetName(NamedEClass object) { return object.name }
 	def dispatch String tryGetName(NamedFeature object) { return object.name }
 	def dispatch String tryGetName(EObject object) { return null }
-	
 }
 
 

@@ -31,7 +31,7 @@ Mapping returns ClassMapping:
 
 ClassMapping:
 	mappedElements+=NamedEClass
-	'to'
+	'and'
 	mappedElements+=NamedEClass
 	('{'
 		( ('when' whens += PredicateBlock)
@@ -43,7 +43,7 @@ ClassMapping:
 
 FeatureMapping:
 	mappedElements+=NamedFeature
-	'to'
+	'and'
 	mappedElements+=NamedFeature
 	('{'
 		( ('when' whens += PredicateBlock)

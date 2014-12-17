@@ -6,8 +6,14 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass
 import org.eclipse.emf.ecore.EClassifier
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.TypedElementRef
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.TypedElementImpl
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.TypedElement
 
 class MIRHelper {
+	static def dispatch EClassifier getTypeRecursive(TypedElement element) {
+		null
+	}
+	
 	static def dispatch EClassifier getTypeRecursive(NamedEClass namedEClass) {
 		namedEClass.representedEClass
 	}
@@ -27,6 +33,10 @@ class MIRHelper {
 	static def dispatch EStructuralFeature getStructuralFeature(NamedEClass call) {
 		return null
 	}
+	
+	static def dispatch EStructuralFeature getStructuralFeature(TypedElement el) {
+		return null
+	} 
 	
 	static def dispatch EStructuralFeature getStructuralFeature(NamedFeature call) {
 		return call.feature.getStructuralFeature
