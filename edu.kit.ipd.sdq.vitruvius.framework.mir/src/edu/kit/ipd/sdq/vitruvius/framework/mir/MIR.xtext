@@ -42,9 +42,9 @@ ClassMapping:
 ;
 
 FeatureMapping:
-	mappedElements+=NamedFeature
+	mappedElements+=FeatureCall
 	'and'
-	mappedElements+=NamedFeature
+	mappedElements+=FeatureCall
 	('{'
 		( ('when' whens += PredicateBlock)
 		| ('with' withs += FeatureMapping)
@@ -59,24 +59,26 @@ NamedEClass returns TypedElement:
 	('as' name=ValidID)?
 ;
 
-NamedFeature returns TypedElement:
+/*NamedFeature returns TypedElement:
 	{NamedFeature}
 	feature=FeatureCall
-	('as' name=ValidID)?
-;
+//	('as' name=ValidID)?
+;*/
 
 TypedElementRef returns Ref:
 	{TypedElementRef}
 	ref=[TypedElement]
 ;
 
-FeatureCall returns Ref:
+FeatureCall returns TypedElement:
 	TypedElementRef
 	({FeatureCall.ref=current} "."
 		(
-			tail=[ecore::EStructuralFeature|ValidID]
-			("[" type=[ecore::EClassifier|QualifiedName] "]")?
-		)
+			'('
+				tail=[ecore::EStructuralFeature|ValidID]
+				("[" type=[ecore::EClassifier|QualifiedName] "]")?
+			 ('as' name=ValidID)? ')'
+		) 
 	)*
 ;
 

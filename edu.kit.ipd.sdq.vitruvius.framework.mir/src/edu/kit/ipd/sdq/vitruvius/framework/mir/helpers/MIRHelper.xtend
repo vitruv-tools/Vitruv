@@ -4,9 +4,7 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureCall
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass
 import org.eclipse.emf.ecore.EClassifier
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.TypedElementRef
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.impl.TypedElementImpl
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.TypedElement
 
 class MIRHelper {
@@ -18,16 +16,12 @@ class MIRHelper {
 		namedEClass.representedEClass
 	}
 	
-	static def dispatch EClassifier getTypeRecursive(NamedFeature namedFeature) {
-		namedFeature.feature.getTypeRecursive
-	}
-	
 	static def dispatch EClassifier getTypeRecursive(FeatureCall featureCall) {
 		featureCall.type ?: featureCall.tail?.EType ?: featureCall.ref.getTypeRecursive
 	}
 	
 	static def dispatch EClassifier getTypeRecursive(TypedElementRef typedElementRef) {
-		typedElementRef.ref.getTypeRecursive
+		typedElementRef.ref?.getTypeRecursive
 	}
 	
 	static def dispatch EStructuralFeature getStructuralFeature(NamedEClass call) {
@@ -37,10 +31,6 @@ class MIRHelper {
 	static def dispatch EStructuralFeature getStructuralFeature(TypedElement el) {
 		return null
 	} 
-	
-	static def dispatch EStructuralFeature getStructuralFeature(NamedFeature call) {
-		return call.feature.getStructuralFeature
-	}
 	
 	static def dispatch EStructuralFeature getStructuralFeature(FeatureCall call) {
 		return call.tail

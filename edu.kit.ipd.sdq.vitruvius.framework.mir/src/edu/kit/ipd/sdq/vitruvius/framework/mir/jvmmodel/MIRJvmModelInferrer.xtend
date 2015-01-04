@@ -13,7 +13,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Invariant
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.OCLBlock
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Response
 import org.eclipse.emf.common.util.EList
@@ -28,6 +27,7 @@ import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
 import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper.*;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureCall
 
 class MIRJvmModelInferrer extends AbstractModelInferrer {
 	@Inject extension JvmTypesBuilder
@@ -251,7 +251,7 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
    		generatorStatus.putJvmName(resp, responseClassName)
    	}
    	
-   	def dispatch toParameterType(NamedFeature object) {
+   	def dispatch toParameterType(FeatureCall object) {
    		var typeName = object.typeRecursive?.instanceTypeName
    		if (typeName == null)
    			typeRef(Object)
@@ -277,8 +277,8 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 		object.representedEClass.name.orIfNull("unnamed")
 	}
 	
-	def dispatch toIdentifier(NamedFeature object) {
-		(object.feature.getStructuralFeature.name.orIfNull("unnamed") + "_" + object.name.orIfNull("unnamed"))
+	def dispatch toIdentifier(FeatureCall object) {
+		(object.getStructuralFeature.name.orIfNull("unnamed") + "_" + object.name.orIfNull("unnamed"))
 	}
 	
 	def dispatch toIdentifier(NamedEClass object) {
@@ -295,7 +295,7 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 	
 	
 	def dispatch String tryGetName(NamedEClass object) { return object.name }
-	def dispatch String tryGetName(NamedFeature object) { return object.name }
+	def dispatch String tryGetName(FeatureCall object) { return object.name }
 	def dispatch String tryGetName(EObject object) { return null }
 }
 

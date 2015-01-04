@@ -38,9 +38,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//FeatureMapping/withs"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//FeatureMapping/wheres"/>
     </genClasses>
-    <genClasses ecoreClass="MIR.ecore#//TypedElement">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//TypedElement/name"/>
-    </genClasses>
+    <genClasses ecoreClass="MIR.ecore#//TypedElement"/>
     <genClasses ecoreClass="MIR.ecore#//Ref"/>
     <genClasses ecoreClass="MIR.ecore#//EClassParameter">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//EClassParameter/type"/>
@@ -66,9 +64,7 @@
     </genClasses>
     <genClasses ecoreClass="MIR.ecore#//NamedEClass">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//NamedEClass/representedEClass"/>
-    </genClasses>
-    <genClasses ecoreClass="MIR.ecore#//NamedFeature">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//NamedFeature/feature"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//NamedEClass/name"/>
     </genClasses>
     <genClasses ecoreClass="MIR.ecore#//TypedElementRef">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//TypedElementRef/ref"/>
@@ -77,6 +73,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//FeatureCall/ref"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//FeatureCall/tail"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//FeatureCall/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//FeatureCall/name"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

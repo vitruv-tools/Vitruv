@@ -10,7 +10,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Reve
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.JavaBlock
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedFeature
 import java.util.Collections
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
@@ -20,7 +19,8 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper.* import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass
+import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper.*
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureCall
 
 /**
@@ -123,8 +123,8 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		val featureMapping = createFeatureMapping
 		mir.featureMappings += featureMapping
 		
-		val leftElement = mapping.mappedElements.get(0) as NamedFeature
-		val rightElement = mapping.mappedElements.get(1) as NamedFeature
+		val leftElement = mapping.mappedElements.get(0) as FeatureCall
+		val rightElement = mapping.mappedElements.get(1) as FeatureCall
 		
 		featureMapping.left = createEClassifierFeature(leftElement)
 		featureMapping.right = createEClassifierFeature(rightElement)
@@ -142,7 +142,7 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		// create new correspondence predicate for the feature mapping
 		val correspondencePredicate = createReverseFeaturesCorrespondWithEClassifiers
 		val correspondence = createFeatureEClassifierCorrespondence
-		correspondence.feature = leftElement.feature.getStructuralFeature
+		correspondence.feature = leftElement.getStructuralFeature
 		correspondence.EClassifier = getRightSideType(parent)
 		correspondencePredicate.correspondences += correspondence
 		
@@ -178,10 +178,10 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 			#[]
 	}
 	
-	def createEClassifierFeature(NamedFeature namedFeature) {
+	def createEClassifierFeature(FeatureCall feature) {
 		val result = createEClassifierFeature
-		result.feature = namedFeature.feature.getStructuralFeature
-		result.EClassifier = namedFeature.feature.getTypeRecursive
+		result.feature = feature.getStructuralFeature
+		result.EClassifier = feature.getTypeRecursive
 		
 		return result
 	}

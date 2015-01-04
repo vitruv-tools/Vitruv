@@ -38,10 +38,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="wheres" upperBound="-1"
         eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TypedElement">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Ref"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TypedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Ref" eSuperTypes="#//TypedElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="EClassParameter">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -75,17 +73,16 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NamedEClass" eSuperTypes="#//TypedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="representedEClass" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NamedFeature" eSuperTypes="#//TypedElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="#//Ref"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TypedElementRef" eSuperTypes="#//Ref">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//TypedElement"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="FeatureCall" eSuperTypes="#//Ref">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//Ref" containment="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureCall" eSuperTypes="#//TypedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//TypedElement"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="tail" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>
