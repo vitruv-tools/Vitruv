@@ -20,86 +20,89 @@ import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.test.HadoopCodeElements
 
 public class EditorManipulator extends WriterAppender {
 
-    private static final int RUNS = 3;
+    private static final int RUNS = 100;
     private static final long INITIAL_SLEEP = 1000 * 15;
     private boolean barrier = false;
 
     public EditorManipulator() throws JavaModelException, InterruptedException {
         System.out.println("EditorManipulator started");
 
-        Logger monitorLog = Logger.getLogger(MonitoredEditor.class);
+        final Logger monitorLog = Logger.getLogger(MonitoredEditor.class);
         monitorLog.addAppender(this);
-        HadoopCoompilationUnitSize size = HadoopCoompilationUnitSize.LOC67175;
+        final HadoopCoompilationUnitSize size = HadoopCoompilationUnitSize.LOC67175;
         // ICompilationUnit cu = HadoopCodeElements.getCompilationUnit(size);
         // IType type = HadoopCodeElements.getType(size);
-        IMethod method = HadoopCodeElements.getMethod(size);
+        final IMethod method = HadoopCodeElements.getMethod(size);
         // long sleep = HadoopCodeElements.getSleepTime(size);
         // EditorManipulator.renameMethod(method);
         // EditorManipulator.changeReturnTypeVoidAndString(method);
-        Thread.sleep(this.INITIAL_SLEEP);
+        Thread.sleep(EditorManipulator.INITIAL_SLEEP);
         this.renameMethod(method, RUNS);
         // this.togglePrivatePublic(method, RUNS);
         // this.changePackageDeclaration(cu, RUNS);
         // this.addRemoveField(type, RUNS);
     }
 
-    public void addRemoveField(IType type, int runs) throws JavaModelException, InterruptedException {
-        ICompilationUnit cu = type.getCompilationUnit();
-        int offset = ((ISourceReference) type.getChildren()[0]).getSourceRange().getOffset();
-        String field = "String lorem = \"Lorem ipsum dolor sit amet\";\n";
+    public void addRemoveField(final IType type, final int runs) throws JavaModelException, InterruptedException {
+        final ICompilationUnit cu = type.getCompilationUnit();
+        final int offset = ((ISourceReference) type.getChildren()[0]).getSourceRange().getOffset();
+        final String field = "String lorem = \"Lorem ipsum dolor sit amet\";\n";
         for (int i = 0; i < runs; i++) {
-            InsertEdit addField = new InsertEdit(offset, field);
-            DeleteEdit removeField = new DeleteEdit(offset, field.length());
+            final InsertEdit addField = new InsertEdit(offset, field);
+            final DeleteEdit removeField = new DeleteEdit(offset, field.length());
             while (this.barrier) {
                 Thread.sleep(500);
             }
             this.barrier = true;
-            if (i % 2 == 0)
+            if (i % 2 == 0) {
                 cu.applyTextEdit(addField, null);
-            else
+            } else {
                 cu.applyTextEdit(removeField, null);
+            }
         }
     }
 
-    public void changePackageDeclaration(ICompilationUnit cu, int runs) throws JavaModelException, InterruptedException {
-        IPackageDeclaration pkg = cu.getPackageDeclarations()[0];
-        String pkgName = pkg.getElementName();
-        ISourceRange sourceRange = pkg.getSourceRange();
-        String oldSource = pkg.getSource();
+    public void changePackageDeclaration(final ICompilationUnit cu, final int runs) throws JavaModelException,
+            InterruptedException {
+        final IPackageDeclaration pkg = cu.getPackageDeclarations()[0];
+        final String pkgName = pkg.getElementName();
+        final ISourceRange sourceRange = pkg.getSourceRange();
+        final String oldSource = pkg.getSource();
         for (int i = 0; i < runs; i++) {
             while (this.barrier) {
                 Thread.sleep(500);
             }
             this.barrier = true;
-            String newPkgName = pkgName.substring(0, pkgName.length() - 1) + (i % 2);
-            String newSource = oldSource.replace(pkgName, newPkgName);
-            ReplaceEdit edit = new ReplaceEdit(sourceRange.getOffset(), sourceRange.getLength(), newSource);
+            final String newPkgName = pkgName.substring(0, pkgName.length() - 1) + (i % 2);
+            final String newSource = oldSource.replace(pkgName, newPkgName);
+            final ReplaceEdit edit = new ReplaceEdit(sourceRange.getOffset(), sourceRange.getLength(), newSource);
             cu.applyTextEdit(edit, null);
         }
     }
 
-    public void renameMethod(IMethod method, int runs) throws JavaModelException, InterruptedException {
-        String methodName = method.getElementName();
-        ICompilationUnit cu = method.getCompilationUnit();
-        ISourceRange sourceRange = method.getSourceRange();
-        String oldSource = method.getSource();
+    public void renameMethod(final IMethod method, final int runs) throws JavaModelException, InterruptedException {
+        final String methodName = method.getElementName();
+        final ICompilationUnit cu = method.getCompilationUnit();
+        final ISourceRange sourceRange = method.getSourceRange();
+        final String oldSource = method.getSource();
         for (int i = 0; i < runs; i++) {
             while (this.barrier) {
                 Thread.sleep(500);
             }
             this.barrier = true;
-            String newMethodName = methodName.substring(0, methodName.length() - 1) + (i % 2);
-            String newSource = oldSource.replace(methodName, newMethodName);
-            ReplaceEdit edit = new ReplaceEdit(sourceRange.getOffset(), sourceRange.getLength(), newSource);
+            final String newMethodName = methodName.substring(0, methodName.length() - 1) + (i % 2);
+            final String newSource = oldSource.replace(methodName, newMethodName);
+            final ReplaceEdit edit = new ReplaceEdit(sourceRange.getOffset(), sourceRange.getLength(), newSource);
             cu.applyTextEdit(edit, null);
         }
     }
 
-    public void togglePrivatePublic(IMethod method, int runs) throws JavaModelException, InterruptedException {
+    public void togglePrivatePublic(final IMethod method, final int runs) throws JavaModelException,
+            InterruptedException {
         boolean originalPrivate = false;
-        ICompilationUnit cu = method.getCompilationUnit();
-        ISourceRange sourceRange = method.getSourceRange();
-        String oldSource = method.getSource();
+        final ICompilationUnit cu = method.getCompilationUnit();
+        final ISourceRange sourceRange = method.getSourceRange();
+        final String oldSource = method.getSource();
         String newSource = "";
 
         for (int i = 0; i < runs; i++) {
@@ -138,18 +141,19 @@ public class EditorManipulator extends WriterAppender {
         }
     }
 
-    public void changeReturnTypeVoidAndString(IMethod method) throws JavaModelException, InterruptedException {
-        ICompilationUnit cu = method.getCompilationUnit();
-        ISourceRange sourceRange = method.getSourceRange();
-        String oldSource = method.getSource();
-        String newSource = oldSource.replace("void", "String");
-        TextEdit toString = new ReplaceEdit(sourceRange.getOffset(), sourceRange.getLength(), newSource);
-        TextEdit toVoid = new ReplaceEdit(sourceRange.getOffset(), sourceRange.getLength(), oldSource);
+    public void changeReturnTypeVoidAndString(final IMethod method) throws JavaModelException, InterruptedException {
+        final ICompilationUnit cu = method.getCompilationUnit();
+        final ISourceRange sourceRange = method.getSourceRange();
+        final String oldSource = method.getSource();
+        final String newSource = oldSource.replace("void", "String");
+        final TextEdit toString = new ReplaceEdit(sourceRange.getOffset(), sourceRange.getLength(), newSource);
+        final TextEdit toVoid = new ReplaceEdit(sourceRange.getOffset(), sourceRange.getLength(), oldSource);
         for (int i = 0; i < RUNS; i++) {
-            if (i % 2 == 0)
+            if (i % 2 == 0) {
                 cu.applyTextEdit(toString, null);
-            else
+            } else {
                 cu.applyTextEdit(toVoid, null);
+            }
             Thread.sleep(0);
         }
     }
@@ -157,8 +161,8 @@ public class EditorManipulator extends WriterAppender {
     private static final String MSG_PATTERN = "TimeMeasurement:";
 
     @Override
-    public synchronized void doAppend(LoggingEvent event) {
-        String msg = event.getRenderedMessage();
+    public synchronized void doAppend(final LoggingEvent event) {
+        final String msg = event.getRenderedMessage();
         if (msg.startsWith(MSG_PATTERN)) {
             this.barrier = false;
         }
