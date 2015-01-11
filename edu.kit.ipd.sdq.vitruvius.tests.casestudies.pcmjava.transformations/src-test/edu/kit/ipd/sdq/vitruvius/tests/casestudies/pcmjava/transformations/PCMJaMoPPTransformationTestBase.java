@@ -30,7 +30,8 @@ import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 public class PCMJaMoPPTransformationTestBase {
 
-    private VSUMImpl vsum;
+    protected VSUMImpl vsum;
+    protected MetaRepositoryImpl metaRepository;
     private SyncManagerImpl syncManager;
     protected ChangeRecorder changeRecorder;
     ChangeDescription2ChangeConverter changeDescrition2ChangeConverter;
@@ -52,7 +53,7 @@ public class PCMJaMoPPTransformationTestBase {
     @Before
     public void setUpTest() throws Exception {
         
-        final MetaRepositoryImpl metaRepository = JaMoPPPCMTestUtil.createJaMoPPPCMMetaRepository();
+    	metaRepository = JaMoPPPCMTestUtil.createJaMoPPPCMMetaRepository();
         this.vsum = TestUtil.createVSUM(metaRepository);
         final TransformationExecutingProvidingImpl syncTransformationProvider = new TransformationExecutingProvidingImpl();
         final EMFModelPropagationEngineImpl propagatingChange = new EMFModelPropagationEngineImpl(
