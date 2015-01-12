@@ -63,7 +63,7 @@ public class ChangeSynchronizer {
 
 	def public TransformationChangeResult synchronizeChange(EChange change) {
 		val transformationChangeResult = syncChange(change)
-		if (!transformationChangeResult.transformationAborted) {
+		if (null != transformationChangeResult && !transformationChangeResult.transformationAborted) {
 			transformationChangeResult.updateTUIDOfAffectedEObjectInEChange(change)
 		}
 		return transformationChangeResult
@@ -114,15 +114,13 @@ public class ChangeSynchronizer {
 
 	def private dispatch TransformationChangeResult syncChange(CreateNonRootEObjectInList<?> createNonRootEObjectInList) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(createNonRootEObjectInList.newValue.class)
-		mappingTransformations.claimForMappedClassOrImplementingInterface(
-			createNonRootEObjectInList.oldAffectedEObject.class)
-
+		
 		val EObject[] createdEObjects = mappingTransformations.
 			claimForMappedClassOrImplementingInterface(createNonRootEObjectInList.newValue.class).
 			createEObject(createNonRootEObjectInList.newValue)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
-			createNonRootEObjectInList.oldAffectedEObject.class).createNonRootEObjectInList(
-			createNonRootEObjectInList.oldAffectedEObject, createNonRootEObjectInList.affectedFeature,
+			createNonRootEObjectInList.newAffectedEObject.class).createNonRootEObjectInList(
+			createNonRootEObjectInList.newAffectedEObject, createNonRootEObjectInList.affectedFeature,
 			createNonRootEObjectInList.newValue, createNonRootEObjectInList.index, createdEObjects)
 	}
 
@@ -169,7 +167,7 @@ public class ChangeSynchronizer {
 			claimForMappedClassOrImplementingInterface(createNonRootEObjectSingle.newValue.class).
 			createEObject(createNonRootEObjectSingle.newValue)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
-			createNonRootEObjectSingle.oldAffectedEObject.class).createNonRootEObjectSingle(
+			createNonRootEObjectSingle.newAffectedEObject.class).createNonRootEObjectSingle(
 			createNonRootEObjectSingle.oldAffectedEObject, createNonRootEObjectSingle.affectedFeature,
 			createNonRootEObjectSingle.newValue, createdEObjects)
 	}

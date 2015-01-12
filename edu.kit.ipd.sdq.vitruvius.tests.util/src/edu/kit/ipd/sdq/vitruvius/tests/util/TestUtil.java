@@ -15,11 +15,9 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceMM;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceMMProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
@@ -34,7 +32,8 @@ public final class TestUtil {
 
     private static final Logger logger = Logger.getLogger(TestUtil.class.getSimpleName());
     public static final String PROJECT_URI = "MockupProject";
-    public static final int WAITING_TIME_FOR_SYNCHRONIZATION = 1000;
+    public static final int WAITING_TIME_FOR_SYNCHRONIZATION = 4 * 1000;
+    public static final String SOURCE_FOLDER = "src";
 
     /**
      * Utility classes should not have a public constructor
@@ -128,7 +127,7 @@ public final class TestUtil {
      * @param destPathWithTimestamp
      */
     public static void moveModelFilesFromProjectToPath(final String destPathWithTimestamp) {
-        moveFilesFromMockupProjectTo("model", destPathWithTimestamp);
+        moveFilesFromMockupProjectTo("model", "model" + destPathWithTimestamp);
     }
 
     /**
@@ -252,5 +251,10 @@ public final class TestUtil {
         @SuppressWarnings("unchecked")
         final T t = (T) field.get(instance);
         return t;
+    }
+
+    public static IProject getTestProject() {
+        final IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProject(PROJECT_URI);
+        return iProject;
     }
 }

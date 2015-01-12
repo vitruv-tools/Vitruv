@@ -1,14 +1,14 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.system
 
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.PCM2JaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import java.util.ArrayList
 import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.classifiers.Class
-import org.emftext.language.java.types.TypeReference
 import org.emftext.language.java.members.Constructor
+import org.emftext.language.java.types.TypeReference
 
 class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransformation {
 

@@ -16,4 +16,5 @@ public class EMFChangeResult extends AddDeleteChangeResult<VURI, Pair<EObject, V
             final Set<VURI> existingVURIsToDelete) {
         super(existingVURIsToSave, newRootEObjectsToSave, existingVURIsToDelete);
     }
+
 }

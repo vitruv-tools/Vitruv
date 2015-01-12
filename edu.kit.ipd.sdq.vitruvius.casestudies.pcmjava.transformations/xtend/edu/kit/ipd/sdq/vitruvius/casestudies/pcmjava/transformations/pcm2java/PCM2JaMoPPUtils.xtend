@@ -1,9 +1,11 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java
 
+import com.google.common.collect.Sets
 import de.uka.ipd.sdq.pcm.core.entity.NamedElement
 import de.uka.ipd.sdq.pcm.repository.Repository
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.code.jamopp.JaMoPPParser
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
@@ -61,24 +63,24 @@ import org.emftext.language.java.types.Short
 import org.emftext.language.java.types.TypeReference
 import org.emftext.language.java.types.TypesFactory
 
-abstract class PCM2JaMoPPUtils {
+abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	private static val Logger logger = Logger.getLogger(PCM2JaMoPPUtils.simpleName)
 
 	private new() {
 	}
 
-	def static addEntityName2NameCorrespondence(Map<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap) {
-		addCorrespondenceToFeatureCorrespondenceMap(PCMJaMoPPNamespace.PCM::PCM_ATTRIBUTE_ENTITY_NAME,
-			PCMJaMoPPNamespace.JaMoPP::JAMOPP_ATTRIBUTE_NAME, featureCorrespondenceMap)
-	}
-
-	def static addCorrespondenceToFeatureCorrespondenceMap(String featureNameA, String featureNameB,
+	def static addPCM2JaMoPPCorrespondenceToFeatureCorrespondenceMap(String pcmFeatureName, String jaMoPPFeatureName,
 		Map<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap) {
 		var entityNameAttribute = RepositoryFactory.eINSTANCE.createOperationInterface.eClass.getEAllAttributes.filter[attribute|
-			attribute.name.equalsIgnoreCase(featureNameA)].iterator.next
+			attribute.name.equalsIgnoreCase(pcmFeatureName)].iterator.next
 		var nameAttribute = ClassifiersFactory.eINSTANCE.createInterface.eClass.getEAllAttributes.filter[attribute|
-			attribute.name.equalsIgnoreCase(featureNameB)].iterator.next
+			attribute.name.equalsIgnoreCase(jaMoPPFeatureName)].iterator.next
 		featureCorrespondenceMap.put(entityNameAttribute, nameAttribute)
+	}
+
+	def static addEntityName2NameCorrespondence(Map<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap) {
+		addPCM2JaMoPPCorrespondenceToFeatureCorrespondenceMap(PCMJaMoPPNamespace.PCM::PCM_ATTRIBUTE_ENTITY_NAME,
+			PCMJaMoPPNamespace.JaMoPP::JAMOPP_ATTRIBUTE_NAME, featureCorrespondenceMap)
 	}
 
 	def static updateNameAttribute(
@@ -89,47 +91,9 @@ abstract class PCM2JaMoPPUtils {
 		CorrespondenceInstance correspondenceInstance,
 		boolean markFilesOfChangedEObjectsAsFilesToSave
 	) {
-		val EStructuralFeature eStructuralFeature = featureCorrespondenceMap.claimValueForKey(affectedFeature)
-		var transformationChangeResult = new TransformationChangeResult
-
-		val boolean javaRootAffected = correspondingEObjects.exists[eObject|eObject instanceof JavaRoot]
-		if (javaRootAffected) {
-			logger.error("The method updateNameattribut is not able to rename java root objects")
-		}
-		for (EObject correspondingObject : correspondingEObjects) {
-			if (null == correspondingObject || null == correspondingObject.eResource) {
-				logger.error(
-					"corresponding object is null or correspondingObject is not contained in a resource!: " +
-						correspondingObject + " (object.isProxy=" + correspondingObject.eIsProxy + ")")
-			} else {
-				val TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(correspondingObject)
-				correspondingObject.eSet(eStructuralFeature, newValue)
-				transformationChangeResult.addCorrespondenceToUpdate(correspondenceInstance, oldTUID,
-					correspondingObject, null)
-				if (markFilesOfChangedEObjectsAsFilesToSave) {
-					transformationChangeResult.existingObjectsToSave.add(correspondingObject)
-				}
-			}
-		}
-		transformationChangeResult
-	}
-
-	/**
-	 * Checks whether the affectedAttribute is in the featureCorrespondenceMap and returns all corresponding objects, 
-	 * if any. otherwise null is returned.
-	 */
-	def static checkKeyAndCorrespondingObjects(EObject eObject, EStructuralFeature affectedEFeature,
-		Map<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap,
-		CorrespondenceInstance correspondenceInstance) {
-		if (!featureCorrespondenceMap.containsKey(affectedEFeature)) {
-			logger.debug("no feature correspondence found for affectedEeature: " + affectedEFeature)
-			return null
-		}
-		var correspondingEObjects = correspondenceInstance.getAllCorrespondingEObjects(eObject)
-		if (correspondingEObjects.nullOrEmpty) {
-			logger.info("No corresponding objects found for " + eObject)
-		}
-		return correspondingEObjects
+		val Set<java.lang.Class<? extends EObject>> jaMoPPRootClasses = Sets.newHashSet(JavaRoot)
+		updateNameAttribute(correspondingEObjects, newValue, affectedFeature, featureCorrespondenceMap,
+			correspondenceInstance, markFilesOfChangedEObjectsAsFilesToSave, jaMoPPRootClasses)
 	}
 
 	def dispatch static createAndReturnNamespaceClassifierReferenceForSimpleDataType(EObject eObject) {
@@ -312,8 +276,8 @@ abstract class PCM2JaMoPPUtils {
 	def static Import addImportToCompilationUnitOfClassifier(Classifier classifier,
 		ConcreteClassifier classifierToImport) {
 		val classifierImport = ImportsFactory.eINSTANCE.createClassifierImport
-		if(null != classifierToImport.containingCompilationUnit){
-			if(null != classifierToImport.containingCompilationUnit.namespaces){
+		if (null != classifierToImport.containingCompilationUnit) {
+			if (null != classifierToImport.containingCompilationUnit.namespaces) {
 				classifierImport.namespaces.addAll(classifierToImport.containingCompilationUnit.namespaces)
 			}
 			classifier.containingCompilationUnit.imports.add(classifierImport)
@@ -325,9 +289,10 @@ abstract class PCM2JaMoPPUtils {
 	def static Import addImportToCompilationUnitOfClassifier(Classifier classifier,
 		NamespaceClassifierReference namespaceClassifierReference) {
 		val classifierToImport = namespaceClassifierReference.target
-		if(classifierToImport instanceof ConcreteClassifier){
-			return addImportToCompilationUnitOfClassifier(classifier, classifierToImport)	
+		if (classifierToImport instanceof ConcreteClassifier) {
+			return addImportToCompilationUnitOfClassifier(classifier, classifierToImport)
 		}
+
 		//return empty import - should not change class at all
 		return ImportsFactory.eINSTANCE.createClassifierImport
 	}
@@ -364,6 +329,9 @@ abstract class PCM2JaMoPPUtils {
 	def public static Package findCorrespondingPackageByName(String name, CorrespondenceInstance correspondenceInstance,
 		Repository repo) {
 		val packages = correspondenceInstance.getCorrespondingEObjectsByType(repo, Package)
+		if (null == packages) {
+			return null
+		}
 		for (package : packages) {
 			if (package.name.equalsIgnoreCase(name)) {
 				return package
@@ -384,7 +352,7 @@ abstract class PCM2JaMoPPUtils {
 	def static JavaRoot createJavaRoot(String name, String content) {
 		val JaMoPPParser jaMoPPParser = new JaMoPPParser
 		val inStream = new ByteArrayInputStream(content.bytes)
-		val javaRoot = jaMoPPParser.parseCompilationUnitFromInputStream(VURI.getInstance(name + ".java").EMFUri,
+		val javaRoot = jaMoPPParser.parseCompilationUnitFromInputStream(VURI.getInstance(name + ".java").getEMFUri,
 			inStream)
 		javaRoot.name = name + ".java"
 		return javaRoot

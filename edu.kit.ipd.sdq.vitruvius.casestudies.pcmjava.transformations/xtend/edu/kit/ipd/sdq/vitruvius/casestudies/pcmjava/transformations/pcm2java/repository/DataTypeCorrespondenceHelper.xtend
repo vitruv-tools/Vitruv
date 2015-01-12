@@ -5,6 +5,7 @@ import de.uka.ipd.sdq.pcm.repository.CompositeDataType
 import de.uka.ipd.sdq.pcm.repository.DataType
 import de.uka.ipd.sdq.pcm.repository.PrimitiveDataType
 import de.uka.ipd.sdq.pcm.repository.PrimitiveTypeEnum
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap

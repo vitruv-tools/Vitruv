@@ -2,12 +2,12 @@
  * Copyright (c) 2006-2012
  * Software Technology Group, Dresden University of Technology
  * DevBoost GmbH, Berlin, Amtsgericht Charlottenburg, HRB 140026
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *   Software Technology Group - TU Dresden, Germany;
  *   DevBoost GmbH - Berlin, Germany
@@ -39,7 +39,7 @@ public class JaMoPP {
 
     public JaMoPP() {
         this.rs = new ResourceSetImpl();
-        setUp();
+        this.setUp();
     }
 
     public ResourceSet getResourceSet() {
@@ -57,22 +57,22 @@ public class JaMoPP {
                 new XMIResourceFactoryImpl());
     }
 
-    protected void parseResource(File file) throws IOException {
-        loadResource(file.getCanonicalPath());
+    protected void parseResource(final File file) throws IOException {
+        this.loadResource(file.getCanonicalPath());
     }
 
-    protected void loadResource(String filePath) throws IOException {
-        loadResource(URI.createFileURI(filePath));
+    protected void loadResource(final String filePath) throws IOException {
+        this.loadResource(URI.createFileURI(filePath));
     }
 
-    protected void loadResource(URI uri) throws IOException {
+    protected void loadResource(final URI uri) throws IOException {
         this.rs.getResource(uri, true);
     }
 
     // in-memory loading
-    protected void loadResource(URI uri, InputStream in) throws IOException {
+    public void loadResource(final URI uri, final InputStream in) throws IOException {
         // rs.getResource(uri, true);
-        Resource r = this.rs.createResource(uri, "java");
+        final Resource r = this.rs.createResource(uri, "java");
         r.load(in, null);
     }
 }

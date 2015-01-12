@@ -31,23 +31,23 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor.AbstractMonitored
  *         transferred to the {@link ChangeResponder} who builds and returns {@link EMFModelChange}
  *         objects. These change objects are then used by the {@link ChangeSynchronizing} to
  *         propagate changes to other with the code affiliated EMF models.
- * 
+ *
  */
 public class MonitoredEditor extends AbstractMonitoredEditor implements UserInteracting, ChangeOperationListener,
-        ChangeSubmitter, IStartup {
+ChangeSubmitter, IStartup {
 
     private final Logger log = Logger.getLogger(MonitoredEditor.class);
 
     /**
      * @author messinger
-     * 
+     *
      *         Rudimentary time measurement for performance evaluation. This is a DTO class.
      */
     static class TimeMeasurement {
         long createASTchangeEvent, createEMFchange, total;
 
-        TimeMeasurement(long t0, long t1) {
-            long now = System.nanoTime();
+        TimeMeasurement(final long t0, final long t1) {
+            final long now = System.nanoTime();
             this.total = now - t0;
             this.createASTchangeEvent = t1 - t0;
             this.createEMFchange = now - t1;
@@ -91,19 +91,19 @@ public class MonitoredEditor extends AbstractMonitoredEditor implements UserInte
     private long lastRefactoringTime;
     private CompositeChange changeStash = null;
     private static final String MY_MONITORED_PROJECT = "hadoop-hdfs"; // "FooProject";
-                                                                      // "MediaStore";
+    // "MediaStore";
 
     public MonitoredEditor() {
         this(new ChangeSynchronizing() {
 
             @Override
-            public void synchronizeChanges(List<Change> changes) {
+            public void synchronizeChanges(final List<Change> changes) {
                 // TODO Auto-generated method stub
 
             }
 
             @Override
-            public void synchronizeChange(Change change) {
+            public void synchronizeChange(final Change change) {
                 // TODO Auto-generated method stub
 
             }
@@ -125,10 +125,10 @@ public class MonitoredEditor extends AbstractMonitoredEditor implements UserInte
     }
 
     public MonitoredEditor(final ChangeSynchronizing changeSynchronizing, final ModelCopyProviding modelCopyProviding,
-            String... monitoredProjectNames) {
+            final String... monitoredProjectNames) {
         super(changeSynchronizing, modelCopyProviding);
 
-        configureLogger();
+        this.configureLogger();
 
         this.monitoredProjectNames = monitoredProjectNames;
         this.astListener = new ASTChangeListener(this.monitoredProjectNames);
@@ -149,11 +149,11 @@ public class MonitoredEditor extends AbstractMonitoredEditor implements UserInte
         Logger.getRootLogger().addAppender(
                 new ConsoleAppender(new PatternLayout("[%-5p] %d{HH:mm:ss,SSS} %-30C{1} - %m%n")));
         try {
-            TimeFileLogAppender appender = TimeFileLogAppender
+            final TimeFileLogAppender appender = TimeFileLogAppender
                     .createInstanceFor(MY_MONITORED_PROJECT,
                             "C:/Users/messinger/DominikMessinger/EvaluationData/hadoop-hdfs_monitor-overhead-measurements/time_measurements");
             this.log.addAppender(appender);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
         }
     }
@@ -172,15 +172,16 @@ public class MonitoredEditor extends AbstractMonitoredEditor implements UserInte
     public void submitChange(final Change change) {
 
         // basic time measurement for thesis evaluation
-        long million = 1000 * 1000;
+        final long million = 1000 * 1000;
 
         if (this.astListener.lastChangeTime >= 0) {
-            TimeMeasurement time = new TimeMeasurement(this.astListener.lastChangeTime, ChangeResponder.lastCallTime);
+            final TimeMeasurement time = new TimeMeasurement(this.astListener.lastChangeTime,
+                    ChangeResponder.lastCallTime);
             this.log.debug("MonitoredEditor required " + (time.total / million)
                     + " msec for the last *AST* change observation.");
             this.log.info(time.toString());
         } else if (this.lastRefactoringTime >= 0) {
-            TimeMeasurement time = new TimeMeasurement(this.lastRefactoringTime, ChangeResponder.lastCallTime);
+            final TimeMeasurement time = new TimeMeasurement(this.lastRefactoringTime, ChangeResponder.lastCallTime);
             this.log.debug("MonitoredEditor required " + (time.total / million)
                     + " msec for the last *refactoring* change observation.");
             this.log.info(time.toString());
@@ -188,12 +189,13 @@ public class MonitoredEditor extends AbstractMonitoredEditor implements UserInte
         this.astListener.lastChangeTime = -1;
         this.lastRefactoringTime = -1;
 
-        synchronizeChangeOrAddToCompositeChange(change);
+        this.synchronizeChangeOrAddToCompositeChange(change);
     }
 
-    private void synchronizeChangeOrAddToCompositeChange(Change change) {
-        if (this.changeStash == null)
+    private void synchronizeChangeOrAddToCompositeChange(final Change change) {
+        if (this.changeStash == null) {
             this.changeSynchronizing.synchronizeChange(change);
+        }
     }
 
     @Override
@@ -203,17 +205,19 @@ public class MonitoredEditor extends AbstractMonitoredEditor implements UserInte
     }
 
     @Override
-    public void showMessage(UserInteractionType type, String message) {
+    public void showMessage(final UserInteractionType type, final String message) {
         this.userInteractor.showMessage(type, message);
     }
 
     @Override
-    public int selectFromMessage(UserInteractionType type, String message, String... selectionDescriptions) {
+    public int selectFromMessage(final UserInteractionType type, final String message,
+            final String... selectionDescriptions) {
         return this.userInteractor.selectFromMessage(type, message, selectionDescriptions);
     }
 
     @Override
-    public int selectFromModel(UserInteractionType type, String message, ModelInstance... modelInstances) {
+    public int selectFromModel(final UserInteractionType type, final String message,
+            final ModelInstance... modelInstances) {
         return this.userInteractor.selectFromModel(type, message, modelInstances);
     }
 

@@ -19,4 +19,9 @@ public class EMFModelChange extends Change implements URIHaving {
     public VURI getURI() {
         return this.vuri;
     }
+
+    @Override
+    public String toString() {
+        return EMFModelChange.class.getSimpleName() + ": VURI: " + this.vuri + " EChange: " + this.eChange;
+    }
 }

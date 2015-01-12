@@ -9,11 +9,17 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.emftext.language.java.containers.JavaRoot;
 import org.emftext.language.java.containers.Package;
 
+import de.uka.ipd.sdq.pcm.core.entity.NamedElement;
+import de.uka.ipd.sdq.pcm.repository.Repository;
+import de.uka.ipd.sdq.pcm.system.System;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.CompilationUnitMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.InterfaceMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ModifierMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.PackageMappingTransformation;
@@ -38,6 +44,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationCha
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor;
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.ChangeSynchronizer;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
@@ -83,6 +91,7 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
 
         // JaMoPP2PCM
         this.changeSynchronizer.addMapping(new PackageMappingTransformation());
+        this.changeSynchronizer.addMapping(new CompilationUnitMappingTransformation());
         this.changeSynchronizer.addMapping(new ClassMappingTransformation());
         this.changeSynchronizer.addMapping(new InterfaceMappingTransformation());
         this.changeSynchronizer.addMapping(new ModifierMappingTransformation());
@@ -101,9 +110,9 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
      * @return set of changed VURIs
      */
     @Override
-    public EMFChangeResult executeTransformation(final EMFModelChange change,
+    public EMFChangeResult executeTransformation(final EMFModelChange emfModelChange,
             final CorrespondenceInstance correspondenceInstance) {
-        final EMFModelChange emfModelChange = change;
+        this.handlePackageInEChange(emfModelChange);
         this.changeSynchronizer.setCorrespondenceInstance(correspondenceInstance);
 
         // execute actual Transformation
@@ -122,6 +131,51 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
         emfChangeResult.addCorrespondenceChanges(transformationChangeResult);
 
         return emfChangeResult;
+    }
+
+    /**
+     * Special treatment for packages: we have to use the package-info file as input for the
+     * transformation and make sure that the packages have resources attached
+     *
+     * @param change
+     *            the change that may contain the newly created package
+     */
+    private void handlePackageInEChange(final EMFModelChange change) {
+        if (change.getEChange() instanceof CreateRootEObject<?>) {
+            final CreateRootEObject<?> createRoot = (CreateRootEObject<?>) change.getEChange();
+            this.attachPackageToResource(createRoot.getNewValue(), change.getURI());
+        } else if (change.getEChange() instanceof UpdateSingleValuedEAttribute<?>) {
+            final UpdateSingleValuedEAttribute<?> updateSingleValuedEAttribute = (UpdateSingleValuedEAttribute<?>) change
+                    .getEChange();
+            this.prepareRenamePackageInfos(updateSingleValuedEAttribute, change.getURI());
+        }// TODO: package deletion
+    }
+
+    private void prepareRenamePackageInfos(final UpdateSingleValuedEAttribute<?> updateSingleValuedEAttribute,
+            final VURI vuri) {
+        if (updateSingleValuedEAttribute.getOldAffectedEObject() instanceof Package
+                && updateSingleValuedEAttribute.getNewAffectedEObject() instanceof Package) {
+            final Package oldPackage = (Package) updateSingleValuedEAttribute.getOldAffectedEObject();
+            final Package newPackage = (Package) updateSingleValuedEAttribute.getNewAffectedEObject();
+            this.attachPackageToResource(oldPackage, vuri);
+            String newVURIKey = vuri.toString();
+            String oldPackagePath = oldPackage.getName().replace(".", "/");
+            String newPackagePath = newPackage.getName().replace(".", "/");
+            newVURIKey = newVURIKey.replace(oldPackagePath, newPackagePath);
+            final VURI newVURI = VURI.getInstance(newVURIKey);
+            this.attachPackageToResource(newPackage, newVURI);
+        }
+    }
+
+    private void attachPackageToResource(final EObject eObject, final VURI vuri) {
+        if (eObject instanceof Package) {
+            final Package newPackage = (Package) eObject;
+            // attach the package to a resource in order to enable the calculation of
+            // a TUID in the transformations
+            final ResourceSet resourceSet = new ResourceSetImpl();
+            final Resource resource = resourceSet.createResource(vuri.getEMFUri());
+            resource.getContents().add(newPackage);
+        }
     }
 
     @Override
@@ -152,13 +206,8 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
         for (final EObject newRootEObject : newRootEObjectsToSave) {
             if (newRootEObject instanceof JavaRoot) {
                 final JavaRoot newJavaRoot = (JavaRoot) newRootEObject;
-                final IFile fileSourceModel = EMFBridge.getIFileForEMFUri(sourceModelVURI.getEMFUri());
-                final IProject projectSourceModel = fileSourceModel.getProject();
                 // TODO: use configured src-folder path instead of hardcoded "src"
-                String srcFolderPath = projectSourceModel.getFullPath().toString() + "/src/";
-                if (srcFolderPath.startsWith("/")) {
-                    srcFolderPath = srcFolderPath.substring(1, srcFolderPath.length());
-                }
+                final String srcFolderPath = this.getFolderPathInProjectOfResource(sourceModelVURI, "src");
                 String javaRootPath = newJavaRoot.getNamespacesAsString().replace(".", "/").replace("$", "/")
                         + newJavaRoot.getName().replace("$", ".");
                 if (newJavaRoot instanceof Package) {
@@ -167,8 +216,31 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
                 final VURI cuVURI = VURI.getInstance(srcFolderPath + javaRootPath);
                 final Pair<EObject, VURI> newEObjectVURIPair = new Pair<EObject, VURI>(newJavaRoot, cuVURI);
                 newVURIsToSave.add(newEObjectVURIPair);
-            } // TODO: Else if instanceof Repository
+                this.addRootEObjectVURIPair(newVURIsToSave, newJavaRoot, srcFolderPath, javaRootPath);
+            } else if (newRootEObject instanceof Repository) {
+                this.handlePCMRootEObject(newVURIsToSave, sourceModelVURI, newRootEObject, "repository");
+            } else if (newRootEObject instanceof System) {
+                this.handlePCMRootEObject(newVURIsToSave, sourceModelVURI, newRootEObject, "system");
+            }
         }
+    }
+
+    private void handlePCMRootEObject(final Set<Pair<EObject, VURI>> newVURIsToSave, final VURI sourceModelVURI,
+            final EObject newRootEObject, final String fileExt) {
+        final NamedElement namedElement = (NamedElement) newRootEObject;
+        final String modelFolderPath = this.getFolderPathInProjectOfResource(sourceModelVURI, "model");
+        final String repoitoryFileName = namedElement.getEntityName() + "." + fileExt;
+        this.addRootEObjectVURIPair(newVURIsToSave, namedElement, modelFolderPath, repoitoryFileName);
+    }
+
+    private void addRootEObjectVURIPair(final Set<Pair<EObject, VURI>> newVURIsToSave, final EObject rootEObject,
+            String folderName, final String fileName) {
+        if (!folderName.endsWith("/")) {
+            folderName = folderName + "/";
+        }
+        final VURI repoVURI = VURI.getInstance(folderName + fileName);
+        final Pair<EObject, VURI> newEObjectVURIPair = new Pair<EObject, VURI>(rootEObject, repoVURI);
+        newVURIsToSave.add(newEObjectVURIPair);
     }
 
     private void handleEObjectsToSaveInTransformationChange(final Set<EObject> eObjectsInTransformationChange,
@@ -188,5 +260,15 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
             final Set<VURI> existingObjectsToDeleteeInTransformationChangeResult,
             final Set<VURI> existingObjectsToDeleteInEMFChangeResult) {
         existingObjectsToDeleteInEMFChangeResult.addAll(existingObjectsToDeleteeInTransformationChangeResult);
+    }
+
+    private String getFolderPathInProjectOfResource(final VURI sourceModelVURI, final String folderName) {
+        final IFile fileSourceModel = EMFBridge.getIFileForEMFUri(sourceModelVURI.getEMFUri());
+        final IProject projectSourceModel = fileSourceModel.getProject();
+        String srcFolderPath = projectSourceModel.getFullPath().toString() + "/" + folderName + "/";
+        if (srcFolderPath.startsWith("/")) {
+            srcFolderPath = srcFolderPath.substring(1, srcFolderPath.length());
+        }
+        return srcFolderPath;
     }
 }

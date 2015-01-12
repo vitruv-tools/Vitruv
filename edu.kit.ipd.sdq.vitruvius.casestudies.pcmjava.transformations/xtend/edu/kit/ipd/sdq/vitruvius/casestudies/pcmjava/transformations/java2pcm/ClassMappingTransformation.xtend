@@ -4,8 +4,9 @@ import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingRequiringEntity
 import de.uka.ipd.sdq.pcm.repository.RepositoryComponent
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.PCM2JaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
@@ -49,7 +50,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 	}
 
 	/**
-	 * if a class is add in java we have to check whether this is a class that implements a component or a system
+	 * if a class is add in java we have to check whether this is a class that implements a component or a system or a datatype
 	 * This is checked as follows:
 	 * The class does not represents the implementing class when:
 	 * 		i) the class is not public, or
@@ -58,11 +59,12 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 	 * 		iii) the class is public, and
 	 * 		iv) the component or system corresponding to the package of the class does not has an implementing class yet, and
 	 * 		v) a) the class name contians the name of the package,or 
-	 * 		v) b) the user says it is the implementing class 
+	 * 		v) b) the user says it is the implementing class
+	 * //TODO what happens when the class should be a datatype 
 	 */
 	override createEObject(EObject eObject) {
 		val jaMoPPClass = eObject as Class
-
+	
 		// i) + iii)
 		val hasPublicAnnotation = jaMoPPClass.annotationsAndModifiers.filter[aam|aam instanceof Public].size
 		if (0 == hasPublicAnnotation) {
@@ -81,17 +83,43 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 			return null
 		}
 
-		// get corresponding component or system (here we ask for InterfaceProvidingRequiringEntity cause components 
+		// get corresponding component or system (ask for InterfaceProvidingRequiringEntity cause components 
 		// and systems are both InterfaceProvidingRequiringEntitys) 
-		val pcmComponentOrSystem = correspondenceInstance.
+		var pcmComponentOrSystem = correspondenceInstance.
 			claimUniqueCorrespondingEObjectByType(jaMoPPPackage, InterfaceProvidingRequiringEntity)
-		val correspondencesForPCMCompOrSystem = correspondenceInstance.getAllCorrespondences(pcmComponentOrSystem)
+		var correspondencesForPCMCompOrSystem = correspondenceInstance.getAllCorrespondences(pcmComponentOrSystem)
+		var isCorrespondingClass = false
 		if (null == correspondencesForPCMCompOrSystem) {
-
-			// TODO: package currently does not correspond to a PCM Component or system
-			// In this case we currently do nothing 
-			// TODO: implement user interaction where user is ask whether the package should correspond to a component/system 
-			return null
+			var int selection = super.modalTextUserinteracting("The created class is 'public' and in a package that does not correspond to a component yet." + 
+				" Should a component or a system be created for the package and the class '" + jaMoPPClass.name + "' used as the component implementing class?", 
+				"Create BasicComponent", "Create System", "Create Composite Component", "Do nothing")
+			if(2 == selection ){
+				logger.warn("Creation of composite component not yet supported");
+				return null
+			}
+			if(3 == selection){
+				return null
+			}
+			if(0 == selection){
+				val repo = JaMoPP2PCMUtils.getRepository(correspondenceInstance)
+				val basicComponent = RepositoryFactory.eINSTANCE.createBasicComponent
+				basicComponent.entityName = jaMoPPClass.name
+				basicComponent.repository__RepositoryComponent = repo
+				val parrentCorrespondences = correspondenceInstance.getAllCorrespondences(repo)
+				var Correspondence parrentCorrespondence = null
+				if(!parrentCorrespondences.nullOrEmpty){
+					parrentCorrespondence = parrentCorrespondences.get(0)
+				}
+				correspondenceInstance.createAndAddEObjectCorrespondence(basicComponent, jaMoPPPackage, parrentCorrespondence)
+				correspondencesForPCMCompOrSystem = correspondenceInstance.getAllCorrespondences(pcmComponentOrSystem)
+				isCorrespondingClass = true
+				pcmComponentOrSystem = basicComponent
+			}else if(1 == selection){
+				//TODO: create system (i.e. create new system file...)
+				logger.error("Creating of a system is not supported yet")
+				isCorrespondingClass = true
+				return null				
+			}
 		}
 		val hasClassCorrespondence = correspondencesForPCMCompOrSystem.filter[correspondence|
 			correspondence instanceof Class].size
@@ -104,12 +132,15 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 		//iii) and iv) --> already checked above 
 		//--> the component corresponding to the package of the class does not have a correspoding pcmComponentOrSystem yet
 		//v) a)
-		var isCorrespondingClass = false
 		if (jaMoPPClass.name.contains(pcmComponentOrSystem.entityName)) {
 
 			//the class is the implementing class
 			isCorrespondingClass = true
-		} //TODO: v) b) else if (askuser)
+		} else if(!isCorrespondingClass){
+			//v) b)
+			isCorrespondingClass = super.modalTextYesNoUserInteracting("Should the new public class '" + jaMoPPClass.name + "' be the implementing class for "+
+				pcmComponentOrSystem.entityName)
+		}
 
 		//the corresponding instance should be created in the next method that is called by the framework
 		if (isCorrespondingClass) {

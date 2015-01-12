@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.emftext.language.java.classifiers.Class;
 import org.emftext.language.java.classifiers.ConcreteClassifier;
 import org.emftext.language.java.classifiers.Interface;
+import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.imports.Import;
 import org.emftext.language.java.members.Field;
 import org.emftext.language.java.members.Method;
@@ -89,113 +90,116 @@ public class ChangeResponder implements ChangeEventVisitor {
         lastCallTime = System.nanoTime();
     }
 
-    public ChangeResponder(MonitoredEditor monitoredEditor) {
+    public ChangeResponder(final MonitoredEditor monitoredEditor) {
         this.monitoredEditor = monitoredEditor;
         this.util = new ChangeResponderUtility();
         this.dispatcher = new HashMap<java.lang.Class<? extends ChangeClassifyingEventExtension>, ChangeEventExtendedVisitor>();
-        fillDispatcherMap();
+        this.fillDispatcherMap();
     }
 
     private void fillDispatcherMap() {
-        for (ChangeEventExtendedVisitor visitor : getRegisteredVisitors("edu.kit.ipd.sdq.vitruvius.framework.model.monitor.changeeventextendedvisitors")) {
-            for (java.lang.Class<? extends ChangeClassifyingEventExtension> clazz : visitor.getTreatedClasses()) {
+        for (final ChangeEventExtendedVisitor visitor : getRegisteredVisitors("edu.kit.ipd.sdq.vitruvius.framework.model.monitor.changeeventextendedvisitors")) {
+            for (final java.lang.Class<? extends ChangeClassifyingEventExtension> clazz : visitor.getTreatedClasses()) {
                 this.dispatcher.put(clazz, visitor);
             }
         }
     }
 
-    private static List<ChangeEventExtendedVisitor> getRegisteredVisitors(String extensionPointName) {
+    private static List<ChangeEventExtendedVisitor> getRegisteredVisitors(final String extensionPointName) {
         return EclipseBridge.getRegisteredExtensions(extensionPointName, VitruviusConstants.getExtensionPropertyName(),
                 ChangeEventExtendedVisitor.class);
     }
 
     @Override
-    public void visit(ChangeClassifyingEventExtension changeClassifyingEvent) {
+    public void visit(final ChangeClassifyingEventExtension changeClassifyingEvent) {
         this.dispatcher.get(changeClassifyingEvent.getClass()).visit(changeClassifyingEvent, this.monitoredEditor);
     }
 
     @Override
-    public void visit(AddMethodEvent addMethodEvent) {
-        MethodDeclaration newMethodDeclaration = addMethodEvent.method;
-        CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(newMethodDeclaration);
-        Method newMethod = originalCU.getMethodForMethodDeclaration(newMethodDeclaration);
-        CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(addMethodEvent.typeBeforeAdd);
-        ConcreteClassifier classifierBeforeAdd = changedCU
+    public void visit(final AddMethodEvent addMethodEvent) {
+        final MethodDeclaration newMethodDeclaration = addMethodEvent.method;
+        final CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(newMethodDeclaration);
+        final Method newMethod = originalCU.getMethodForMethodDeclaration(newMethodDeclaration);
+        final CompilationUnitAdapter changedCU = this.util
+                .getUnsavedCompilationUnitAdapter(addMethodEvent.typeBeforeAdd);
+        final ConcreteClassifier classifierBeforeAdd = changedCU
                 .getConcreteClassifierForTypeDeclaration(addMethodEvent.typeBeforeAdd);
-        EChange eChange = JaMoPPChangeBuildHelper.createAddMethodChange(newMethod, classifierBeforeAdd);
+        final EChange eChange = JaMoPPChangeBuildHelper.createAddMethodChange(newMethod, classifierBeforeAdd);
         this.util.submitEMFModelChange(eChange, addMethodEvent.method);
     }
 
     @Override
-    public void visit(CreateInterfaceEvent createInterfaceEvent) {
-        TypeDeclaration type = createInterfaceEvent.type;
-        CompilationUnitAdapter originalCU = this.util
+    public void visit(final CreateInterfaceEvent createInterfaceEvent) {
+        final TypeDeclaration type = createInterfaceEvent.type;
+        final CompilationUnitAdapter originalCU = this.util
                 .getUnsavedCompilationUnitAdapter(createInterfaceEvent.compilationUnitBeforeCreate);
-        CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(type);
-        Interface newInterface = (Interface) changedCU.getConcreteClassifierForTypeDeclaration(type);
-        EChange eChange = JaMoPPChangeBuildHelper.createCreateInterfaceChange(newInterface,
+        final CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(type);
+        final Interface newInterface = (Interface) changedCU.getConcreteClassifierForTypeDeclaration(type);
+        final EChange eChange = JaMoPPChangeBuildHelper.createCreateInterfaceChange(newInterface,
                 originalCU.getCompilationUnit());
         this.util.submitEMFModelChange(eChange, createInterfaceEvent.type);
 
     }
 
     @Override
-    public void visit(CreateClassEvent createClassEvent) {
-        TypeDeclaration type = createClassEvent.type;
-        CompilationUnitAdapter originalCU = this.util
+    public void visit(final CreateClassEvent createClassEvent) {
+        final TypeDeclaration type = createClassEvent.type;
+        final CompilationUnitAdapter originalCU = this.util
                 .getUnsavedCompilationUnitAdapter(createClassEvent.compilationUnitBeforeCreate);
-        CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(type);
-        Class newClass = (Class) changedCU.getConcreteClassifierForTypeDeclaration(type);
-        EChange eChange = JaMoPPChangeBuildHelper.createAddClassChange(newClass, originalCU.getCompilationUnit());
+        final CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(type);
+        final Class newClass = (Class) changedCU.getConcreteClassifierForTypeDeclaration(type);
+        final CompilationUnit beforeChange = (null == originalCU ? null : originalCU.getCompilationUnit());
+        final EChange eChange = JaMoPPChangeBuildHelper.createAddClassChange(newClass, beforeChange);
         this.util.submitEMFModelChange(eChange, createClassEvent.type);
 
     }
 
     @Override
-    public void visit(ChangeMethodReturnTypeEvent changeMethodReturnTypeEvent) {
-        setLastCallTime();
-        CompilationUnitAdapter originalCU = this.util
+    public void visit(final ChangeMethodReturnTypeEvent changeMethodReturnTypeEvent) {
+        this.setLastCallTime();
+        final CompilationUnitAdapter originalCU = this.util
                 .getUnsavedCompilationUnitAdapter(changeMethodReturnTypeEvent.original);
-        Method original = originalCU.getMethodForMethodDeclaration(changeMethodReturnTypeEvent.original);
-        CompilationUnitAdapter cu = this.util.getUnsavedCompilationUnitAdapter(changeMethodReturnTypeEvent.renamed);
-        Method changed = cu.getMethodForMethodDeclaration(changeMethodReturnTypeEvent.renamed);
-        EChange eChange = JaMoPPChangeBuildHelper.createChangeMethodReturnTypeChange(original, changed);
+        final Method original = originalCU.getMethodForMethodDeclaration(changeMethodReturnTypeEvent.original);
+        final CompilationUnitAdapter cu = this.util
+                .getUnsavedCompilationUnitAdapter(changeMethodReturnTypeEvent.renamed);
+        final Method changed = cu.getMethodForMethodDeclaration(changeMethodReturnTypeEvent.renamed);
+        final EChange eChange = JaMoPPChangeBuildHelper.createChangeMethodReturnTypeChange(original, changed);
         this.util.submitEMFModelChange(eChange, changeMethodReturnTypeEvent.original);
 
     }
 
     @Override
-    public void visit(RemoveMethodEvent removeMethodEvent) {
-        CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(removeMethodEvent.method);
-        Method removedMethod = originalCU.getMethodForMethodDeclaration(removeMethodEvent.method);
-        CompilationUnitAdapter changedCU = this.util
+    public void visit(final RemoveMethodEvent removeMethodEvent) {
+        final CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(removeMethodEvent.method);
+        final Method removedMethod = originalCU.getMethodForMethodDeclaration(removeMethodEvent.method);
+        final CompilationUnitAdapter changedCU = this.util
                 .getUnsavedCompilationUnitAdapter(removeMethodEvent.typeAfterRemove);
-        ConcreteClassifier classifierAfterRemove = changedCU
+        final ConcreteClassifier classifierAfterRemove = changedCU
                 .getConcreteClassifierForTypeDeclaration(removeMethodEvent.typeAfterRemove);
-        EChange eChange = JaMoPPChangeBuildHelper.createRemoveMethodChange(removedMethod, classifierAfterRemove);
+        final EChange eChange = JaMoPPChangeBuildHelper.createRemoveMethodChange(removedMethod, classifierAfterRemove);
         this.util.submitEMFModelChange(eChange, removeMethodEvent.method);
     }
 
     @Override
-    public void visit(DeleteClassEvent deleteClassEvent) {
-        TypeDeclaration type = deleteClassEvent.type;
-        CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(type);
-        Class deletedClass = (Class) originalCU.getConcreteClassifierForTypeDeclaration(type);
-        CompilationUnitAdapter changedCU = this.util
+    public void visit(final DeleteClassEvent deleteClassEvent) {
+        final TypeDeclaration type = deleteClassEvent.type;
+        final CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(type);
+        final Class deletedClass = (Class) originalCU.getConcreteClassifierForTypeDeclaration(type);
+        final CompilationUnitAdapter changedCU = this.util
                 .getUnsavedCompilationUnitAdapter(deleteClassEvent.compilationUnitAfterDelete);
-        EChange eChange = JaMoPPChangeBuildHelper
-                .createRemovedClassChange(deletedClass, changedCU.getCompilationUnit());
+        final EChange eChange = JaMoPPChangeBuildHelper.createRemovedClassChange(deletedClass,
+                changedCU.getCompilationUnit());
         this.util.submitEMFModelChange(eChange, deleteClassEvent.type);
     }
 
     @Override
-    public void visit(DeleteInterfaceEvent deleteInterfaceEvent) {
-        TypeDeclaration type = deleteInterfaceEvent.type;
-        CompilationUnitAdapter oldCU = this.util.getUnsavedCompilationUnitAdapter(type);
-        Interface deletedInterface = (Interface) oldCU.getConcreteClassifierForTypeDeclaration(type);
-        CompilationUnitAdapter changedCU = this.util
+    public void visit(final DeleteInterfaceEvent deleteInterfaceEvent) {
+        final TypeDeclaration type = deleteInterfaceEvent.type;
+        final CompilationUnitAdapter oldCU = this.util.getUnsavedCompilationUnitAdapter(type);
+        final Interface deletedInterface = (Interface) oldCU.getConcreteClassifierForTypeDeclaration(type);
+        final CompilationUnitAdapter changedCU = this.util
                 .getUnsavedCompilationUnitAdapter(deleteInterfaceEvent.compilationUnitAfterDelete);
-        EChange eChange = JaMoPPChangeBuildHelper.createRemovedInterfaceChange(deletedInterface,
+        final EChange eChange = JaMoPPChangeBuildHelper.createRemovedInterfaceChange(deletedInterface,
                 changedCU.getCompilationUnit());
         this.util.submitEMFModelChange(eChange, deleteInterfaceEvent.type);
     }
@@ -210,28 +214,31 @@ public class ChangeResponder implements ChangeEventVisitor {
     // }
 
     @Override
-    public void visit(RenameMethodEvent renameMethodEvent) {
-        setLastCallTime();
-        CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(renameMethodEvent.original);
-        Method original = originalCU.getMethodForMethodDeclaration(renameMethodEvent.original);
-        URI uri = this.util.getFirstExistingURI(renameMethodEvent.renamed, renameMethodEvent.original);
-        CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(renameMethodEvent.renamed, uri);
-        Method changed = changedCU.getMethodForMethodDeclaration(renameMethodEvent.renamed);
-        EChange eChange = JaMoPPChangeBuildHelper.createRenameMethodChange(original, changed);
+    public void visit(final RenameMethodEvent renameMethodEvent) {
+        this.setLastCallTime();
+        final CompilationUnitAdapter originalCU = this.util
+                .getUnsavedCompilationUnitAdapter(renameMethodEvent.original);
+        final Method original = originalCU.getMethodForMethodDeclaration(renameMethodEvent.original);
+        final URI uri = this.util.getFirstExistingURI(renameMethodEvent.renamed, renameMethodEvent.original);
+        final CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(renameMethodEvent.renamed,
+                uri);
+        final Method changed = changedCU.getMethodForMethodDeclaration(renameMethodEvent.renamed);
+        final EChange eChange = JaMoPPChangeBuildHelper.createRenameMethodChange(original, changed);
         this.util.submitEMFModelChange(eChange, renameMethodEvent.original);
         // this.monitoredEditor.showMessage(UserInteractionType.MODAL,
         // "You just renamed a method.");
     }
 
     @Override
-    public void visit(RenameFieldEvent renameFieldEvent) {
-        setLastCallTime();
-        CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(renameFieldEvent.original);
-        Field original = originalCU.getFieldForVariableDeclarationFragment(renameFieldEvent.originalFragment);
-        URI uri = this.util.getFirstExistingURI(renameFieldEvent.changed, renameFieldEvent.original);
-        CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(renameFieldEvent.changed, uri);
-        Field renamed = changedCU.getFieldForVariableDeclarationFragment(renameFieldEvent.changedFragment);
-        EChange eChange = JaMoPPChangeBuildHelper.createRenameFieldChange(original, renamed);
+    public void visit(final RenameFieldEvent renameFieldEvent) {
+        this.setLastCallTime();
+        final CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(renameFieldEvent.original);
+        final Field original = originalCU.getFieldForVariableDeclarationFragment(renameFieldEvent.originalFragment);
+        final URI uri = this.util.getFirstExistingURI(renameFieldEvent.changed, renameFieldEvent.original);
+        final CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(renameFieldEvent.changed,
+                uri);
+        final Field renamed = changedCU.getFieldForVariableDeclarationFragment(renameFieldEvent.changedFragment);
+        final EChange eChange = JaMoPPChangeBuildHelper.createRenameFieldChange(original, renamed);
         this.util.submitEMFModelChange(eChange, renameFieldEvent.original);
 
         // ++ Test UserInteractor ++
@@ -244,170 +251,181 @@ public class ChangeResponder implements ChangeEventVisitor {
     }
 
     @Override
-    public void visit(RenameInterfaceEvent renameInterfaceEvent) {
-        CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(renameInterfaceEvent.original);
-        Interface originalInterface = (Interface) originalCU
+    public void visit(final RenameInterfaceEvent renameInterfaceEvent) {
+        final CompilationUnitAdapter originalCU = this.util
+                .getUnsavedCompilationUnitAdapter(renameInterfaceEvent.original);
+        final Interface originalInterface = (Interface) originalCU
                 .getConcreteClassifierForTypeDeclaration(renameInterfaceEvent.original);
-        URI uri = this.util.getFirstExistingURI(renameInterfaceEvent.renamed, renameInterfaceEvent.original);
-        CompilationUnitAdapter cuRenamed = this.util
-                .getUnsavedCompilationUnitAdapter(renameInterfaceEvent.renamed, uri);
-        Interface renamedInterface = (Interface) cuRenamed
+        final URI uri = this.util.getFirstExistingURI(renameInterfaceEvent.renamed, renameInterfaceEvent.original);
+        final CompilationUnitAdapter cuRenamed = this.util.getUnsavedCompilationUnitAdapter(
+                renameInterfaceEvent.renamed, uri);
+        final Interface renamedInterface = (Interface) cuRenamed
                 .getConcreteClassifierForTypeDeclaration(renameInterfaceEvent.renamed);
 
-        EChange eChange = JaMoPPChangeBuildHelper.createRenameInterfaceChange(originalInterface, renamedInterface);
+        final EChange eChange = JaMoPPChangeBuildHelper
+                .createRenameInterfaceChange(originalInterface, renamedInterface);
         this.util.submitEMFModelChange(eChange, renameInterfaceEvent.original);
     }
 
     @Override
-    public void visit(RenameClassEvent renameClassEvent) {
-        CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(renameClassEvent.original);
-        Class originalClass = (Class) originalCU.getConcreteClassifierForTypeDeclaration(renameClassEvent.original);
-        URI uri = this.util.getFirstExistingURI(renameClassEvent.renamed, renameClassEvent.original);
-        CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(renameClassEvent.renamed, uri);
-        Class renamedClass = (Class) changedCU.getConcreteClassifierForTypeDeclaration(renameClassEvent.renamed);
-        EChange eChange = JaMoPPChangeBuildHelper.createRenameClassChange(originalClass, renamedClass);
+    public void visit(final RenameClassEvent renameClassEvent) {
+        final CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(renameClassEvent.original);
+        final Class originalClass = (Class) originalCU
+                .getConcreteClassifierForTypeDeclaration(renameClassEvent.original);
+        final URI uri = this.util.getFirstExistingURI(renameClassEvent.renamed, renameClassEvent.original);
+        final CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(renameClassEvent.renamed,
+                uri);
+        final Class renamedClass = (Class) changedCU.getConcreteClassifierForTypeDeclaration(renameClassEvent.renamed);
+        final EChange eChange = JaMoPPChangeBuildHelper.createRenameClassChange(originalClass, renamedClass);
         this.util.submitEMFModelChange(eChange, renameClassEvent.original);
     }
 
     @Override
-    public void visit(AddImportEvent addImportEvent) {
-        CompilationUnitAdapter originalCU = this.util
+    public void visit(final AddImportEvent addImportEvent) {
+        final CompilationUnitAdapter originalCU = this.util
                 .getUnsavedCompilationUnitAdapter(addImportEvent.importDeclaration);
-        Import imp = originalCU.getImportForImportDeclaration(addImportEvent.importDeclaration);
-        CompilationUnitAdapter changedCU = this.util
+        final Import imp = originalCU.getImportForImportDeclaration(addImportEvent.importDeclaration);
+        final CompilationUnitAdapter changedCU = this.util
                 .getUnsavedCompilationUnitAdapter(addImportEvent.compilationUnitBeforeAdd);
-        EChange eChange = JaMoPPChangeBuildHelper.createAddImportChange(imp, changedCU.getCompilationUnit());
+        final EChange eChange = JaMoPPChangeBuildHelper.createAddImportChange(imp, changedCU.getCompilationUnit());
         this.util.submitEMFModelChange(eChange, addImportEvent.importDeclaration);
     }
 
     @Override
-    public void visit(RemoveImportEvent removeImportEvent) {
-        CompilationUnitAdapter originalCU = this.util
+    public void visit(final RemoveImportEvent removeImportEvent) {
+        final CompilationUnitAdapter originalCU = this.util
                 .getUnsavedCompilationUnitAdapter(removeImportEvent.importDeclaration);
-        Import imp = originalCU.getImportForImportDeclaration(removeImportEvent.importDeclaration);
-        CompilationUnitAdapter changedCU = this.util
+        final Import imp = originalCU.getImportForImportDeclaration(removeImportEvent.importDeclaration);
+        final CompilationUnitAdapter changedCU = this.util
                 .getUnsavedCompilationUnitAdapter(removeImportEvent.compilationUnitAfterRemove);
-        EChange eChange = JaMoPPChangeBuildHelper.createRemoveImportChange(imp, changedCU.getCompilationUnit());
+        final EChange eChange = JaMoPPChangeBuildHelper.createRemoveImportChange(imp, changedCU.getCompilationUnit());
         this.util.submitEMFModelChange(eChange, removeImportEvent.importDeclaration);
     }
 
     @Override
-    public void visit(MoveMethodEvent moveMethodEvent) {
-        CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(moveMethodEvent.original);
-        CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(moveMethodEvent.moved);
-        ConcreteClassifier classifierMovedFromAfterRemove = originalCU
+    public void visit(final MoveMethodEvent moveMethodEvent) {
+        final CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(moveMethodEvent.original);
+        final CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(moveMethodEvent.moved);
+        final ConcreteClassifier classifierMovedFromAfterRemove = originalCU
                 .getConcreteClassifierForTypeDeclaration(moveMethodEvent.typeMovedFromAfterRemove);
-        ConcreteClassifier classifierMovedToBeforeAdd = originalCU
+        final ConcreteClassifier classifierMovedToBeforeAdd = originalCU
                 .getConcreteClassifierForTypeDeclaration(moveMethodEvent.typeMovedToBeforeAdd);
-        Method removedMethod = originalCU.getMethodForMethodDeclaration(moveMethodEvent.original);
-        Method addedMethod = changedCU.getMethodForMethodDeclaration(moveMethodEvent.moved);
-        EChange[] eChanges = JaMoPPChangeBuildHelper.createMoveMethodChange(removedMethod,
+        final Method removedMethod = originalCU.getMethodForMethodDeclaration(moveMethodEvent.original);
+        final Method addedMethod = changedCU.getMethodForMethodDeclaration(moveMethodEvent.moved);
+        final EChange[] eChanges = JaMoPPChangeBuildHelper.createMoveMethodChange(removedMethod,
                 classifierMovedFromAfterRemove, addedMethod, classifierMovedToBeforeAdd);
-        CompositeChange moveMethodChange = new CompositeChange(new Change[] {});
+        final CompositeChange moveMethodChange = new CompositeChange(new Change[] {});
         // [0] is remove, [1] is add
-        EMFModelChange removeMethodChange = this.util.wrapToEMFModelChange(eChanges[0], moveMethodEvent.original);
-        EMFModelChange addMethodChange = this.util.wrapToEMFModelChange(eChanges[1], moveMethodEvent.moved);
+        final EMFModelChange removeMethodChange = this.util.wrapToEMFModelChange(eChanges[0], moveMethodEvent.original);
+        final EMFModelChange addMethodChange = this.util.wrapToEMFModelChange(eChanges[1], moveMethodEvent.moved);
         moveMethodChange.addChange(removeMethodChange);
         moveMethodChange.addChange(addMethodChange);
         this.monitoredEditor.submitChange(moveMethodChange);
     }
 
     @Override
-    public void visit(AddSuperInterfaceEvent addSuperInterfaceEvent) {
-        CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(addSuperInterfaceEvent.baseType);
-        CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(addSuperInterfaceEvent.superType);
-        ConcreteClassifier base = originalCU.getConcreteClassifierForTypeDeclaration(addSuperInterfaceEvent.baseType);
+    public void visit(final AddSuperInterfaceEvent addSuperInterfaceEvent) {
+        final CompilationUnitAdapter originalCU = this.util
+                .getUnsavedCompilationUnitAdapter(addSuperInterfaceEvent.baseType);
+        final CompilationUnitAdapter changedCU = this.util
+                .getUnsavedCompilationUnitAdapter(addSuperInterfaceEvent.superType);
+        final ConcreteClassifier base = originalCU
+                .getConcreteClassifierForTypeDeclaration(addSuperInterfaceEvent.baseType);
     }
 
     @Override
-    public void visit(RemoveSuperInterfaceEvent removeSuperInterfaceEvent) {
+    public void visit(final RemoveSuperInterfaceEvent removeSuperInterfaceEvent) {
         // TODO Auto-generated method stub
-        CompilationUnitAdapter originalCU = this.util
+        final CompilationUnitAdapter originalCU = this.util
                 .getUnsavedCompilationUnitAdapter(removeSuperInterfaceEvent.baseType);
-        CompilationUnitAdapter changedCU = this.util
+        final CompilationUnitAdapter changedCU = this.util
                 .getUnsavedCompilationUnitAdapter(removeSuperInterfaceEvent.superType);
     }
 
     @Override
-    public void visit(AddSuperClassEvent addSuperClassEvent) {
+    public void visit(final AddSuperClassEvent addSuperClassEvent) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void visit(RemoveSuperClassEvent removeSuperClassEvent) {
+    public void visit(final RemoveSuperClassEvent removeSuperClassEvent) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void visit(ChangeMethodParameterEvent changeMethodParameterEvent) {
-        CompilationUnitAdapter originalCU = this.util
+    public void visit(final ChangeMethodParameterEvent changeMethodParameterEvent) {
+        final CompilationUnitAdapter originalCU = this.util
                 .getUnsavedCompilationUnitAdapter(changeMethodParameterEvent.original);
-        Method original = originalCU.getMethodForMethodDeclaration(changeMethodParameterEvent.original);
-        CompilationUnitAdapter cu = this.util.getUnsavedCompilationUnitAdapter(changeMethodParameterEvent.renamed);
-        Method changed = cu.getMethodForMethodDeclaration(changeMethodParameterEvent.renamed);
-        handleParameterChanges(changed, original, original.getParameters(), changed.getParameters(),
+        final Method original = originalCU.getMethodForMethodDeclaration(changeMethodParameterEvent.original);
+        final CompilationUnitAdapter cu = this.util
+                .getUnsavedCompilationUnitAdapter(changeMethodParameterEvent.renamed);
+        final Method changed = cu.getMethodForMethodDeclaration(changeMethodParameterEvent.renamed);
+        this.handleParameterChanges(changed, original, original.getParameters(), changed.getParameters(),
                 changeMethodParameterEvent.original);
     }
 
-    private void handleParameterChanges(Method methodAfterRemove, Method methodBeforeAdd,
-            List<Parameter> oldParameters, List<Parameter> newParameters, ASTNode oldNode) {
-        CompositeChange compositeChange = new CompositeChange(new Change[] {});
-        for (Parameter oldParameter : oldParameters) {
-            EChange eChange = JaMoPPChangeBuildHelper.createRemoveParameterChange(oldParameter, methodAfterRemove);
+    private void handleParameterChanges(final Method methodAfterRemove, final Method methodBeforeAdd,
+            final List<Parameter> oldParameters, final List<Parameter> newParameters, final ASTNode oldNode) {
+        final CompositeChange compositeChange = new CompositeChange(new Change[] {});
+        for (final Parameter oldParameter : oldParameters) {
+            final EChange eChange = JaMoPPChangeBuildHelper
+                    .createRemoveParameterChange(oldParameter, methodAfterRemove);
             compositeChange.addChange(this.util.wrapToEMFModelChange(eChange, oldNode));
         }
-        for (Parameter newParameter : newParameters) {
-            EChange eChange = JaMoPPChangeBuildHelper.createAddParameterChange(newParameter, methodBeforeAdd);
+        for (final Parameter newParameter : newParameters) {
+            final EChange eChange = JaMoPPChangeBuildHelper.createAddParameterChange(newParameter, methodBeforeAdd);
             compositeChange.addChange(this.util.wrapToEMFModelChange(eChange, oldNode));
         }
         this.monitoredEditor.submitChange(compositeChange);
     }
 
     @Override
-    public void visit(ChangeMethodModifiersEvent changeMethodModifierEvent) {
-        setLastCallTime();
-        CompilationUnitAdapter originalCU = this.util
+    public void visit(final ChangeMethodModifiersEvent changeMethodModifierEvent) {
+        this.setLastCallTime();
+        final CompilationUnitAdapter originalCU = this.util
                 .getUnsavedCompilationUnitAdapter(changeMethodModifierEvent.original);
-        Method originalMethod = originalCU.getMethodForMethodDeclaration(changeMethodModifierEvent.original);
-        CompilationUnitAdapter changedCU = this.util
+        final Method originalMethod = originalCU.getMethodForMethodDeclaration(changeMethodModifierEvent.original);
+        final CompilationUnitAdapter changedCU = this.util
                 .getUnsavedCompilationUnitAdapter(changeMethodModifierEvent.renamed);
-        Method changedMethod = changedCU.getMethodForMethodDeclaration(changeMethodModifierEvent.renamed);
+        final Method changedMethod = changedCU.getMethodForMethodDeclaration(changeMethodModifierEvent.renamed);
 
-        CompositeChange change = buildModifierChanges(originalMethod, changedMethod, originalMethod.getModifiers(),
-                changedMethod.getModifiers(), changeMethodModifierEvent.original);
+        final CompositeChange change = this.buildModifierChanges(originalMethod, changedMethod,
+                originalMethod.getModifiers(), changedMethod.getModifiers(), changeMethodModifierEvent.original);
         this.monitoredEditor.submitChange(change);
     }
 
     @Override
-    public void visit(ChangeClassModifiersEvent changeClassModifiersEvent) {
-        handleClassifierModifierChanges(changeClassModifiersEvent.original, changeClassModifiersEvent.changed);
+    public void visit(final ChangeClassModifiersEvent changeClassModifiersEvent) {
+        this.handleClassifierModifierChanges(changeClassModifiersEvent.original, changeClassModifiersEvent.changed);
     }
 
     @Override
-    public void visit(ChangeInterfaceModifiersEvent changeInterfaceModifiersEvent) {
-        handleClassifierModifierChanges(changeInterfaceModifiersEvent.original, changeInterfaceModifiersEvent.changed);
+    public void visit(final ChangeInterfaceModifiersEvent changeInterfaceModifiersEvent) {
+        this.handleClassifierModifierChanges(changeInterfaceModifiersEvent.original,
+                changeInterfaceModifiersEvent.changed);
     }
 
-    private void handleClassifierModifierChanges(TypeDeclaration original, TypeDeclaration changed) {
-        CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(original);
-        ConcreteClassifier originalClassifier = originalCU.getConcreteClassifierForTypeDeclaration(original);
-        CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(changed);
-        ConcreteClassifier changedClassifier = changedCU.getConcreteClassifierForTypeDeclaration(changed);
+    private void handleClassifierModifierChanges(final TypeDeclaration original, final TypeDeclaration changed) {
+        final CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(original);
+        final ConcreteClassifier originalClassifier = originalCU.getConcreteClassifierForTypeDeclaration(original);
+        final CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(changed);
+        final ConcreteClassifier changedClassifier = changedCU.getConcreteClassifierForTypeDeclaration(changed);
 
-        CompositeChange change = buildModifierChanges(originalClassifier, changedClassifier,
+        final CompositeChange change = this.buildModifierChanges(originalClassifier, changedClassifier,
                 originalClassifier.getModifiers(), changedClassifier.getModifiers(), original);
         this.monitoredEditor.submitChange(change);
     }
 
-    private CompositeChange buildModifierChanges(EObject modifiableBeforeChange, EObject modifiableAfterChange,
-            List<Modifier> oldModifiers, List<Modifier> newModifiers, ASTNode oldNode) {
-        List<Modifier> originalModifiers = new ArrayList<Modifier>(oldModifiers);
-        List<Modifier> changedModifiers = new ArrayList<Modifier>(newModifiers);
+    private CompositeChange buildModifierChanges(final EObject modifiableBeforeChange,
+            final EObject modifiableAfterChange, final List<Modifier> oldModifiers, final List<Modifier> newModifiers,
+            final ASTNode oldNode) {
+        final List<Modifier> originalModifiers = new ArrayList<Modifier>(oldModifiers);
+        final List<Modifier> changedModifiers = new ArrayList<Modifier>(newModifiers);
 
-        for (Modifier changedModifier : newModifiers) {
-            for (Modifier origModifier : oldModifiers) {
+        for (final Modifier changedModifier : newModifiers) {
+            for (final Modifier origModifier : oldModifiers) {
                 if (changedModifier.getClass() == origModifier.getClass()) {
                     originalModifiers.remove(origModifier);
                     changedModifiers.remove(changedModifier);
@@ -416,63 +434,66 @@ public class ChangeResponder implements ChangeEventVisitor {
             }
         }
 
-        CompositeChange modifierChanges = new CompositeChange(new Change[] {});
-        for (Modifier removedModifier : originalModifiers) {
-            EChange eChange = JaMoPPChangeBuildHelper
-                    .createRemoveModifierChange(removedModifier, modifiableAfterChange);
+        final CompositeChange modifierChanges = new CompositeChange(new Change[] {});
+        for (final Modifier removedModifier : originalModifiers) {
+            final EChange eChange = JaMoPPChangeBuildHelper.createRemoveModifierChange(removedModifier,
+                    modifiableAfterChange);
             modifierChanges.addChange(this.util.wrapToEMFModelChange(eChange, oldNode));
         }
-        for (Modifier newModifier : changedModifiers) {
-            EChange eChange = JaMoPPChangeBuildHelper.createAddModifierChange(newModifier, modifiableBeforeChange);
+        for (final Modifier newModifier : changedModifiers) {
+            final EChange eChange = JaMoPPChangeBuildHelper
+                    .createAddModifierChange(newModifier, modifiableBeforeChange);
             modifierChanges.addChange(this.util.wrapToEMFModelChange(eChange, oldNode));
         }
         return modifierChanges;
     }
 
     @Override
-    public void visit(AddFieldEvent addFieldEvent) {
-        setLastCallTime();
-        CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(addFieldEvent.typeBeforeAdd);
-        ConcreteClassifier classifierBeforeAdd = originalCU
+    public void visit(final AddFieldEvent addFieldEvent) {
+        this.setLastCallTime();
+        final CompilationUnitAdapter originalCU = this.util
+                .getUnsavedCompilationUnitAdapter(addFieldEvent.typeBeforeAdd);
+        final ConcreteClassifier classifierBeforeAdd = originalCU
                 .getConcreteClassifierForTypeDeclaration(addFieldEvent.typeBeforeAdd);
-        CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(addFieldEvent.field);
-        Field field = changedCU.getFieldForVariableDeclarationFragment(addFieldEvent.fieldFragment);
-        EChange eChange = JaMoPPChangeBuildHelper.createAddFieldChange(field, classifierBeforeAdd);
+        final CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(addFieldEvent.field);
+        final Field field = changedCU.getFieldForVariableDeclarationFragment(addFieldEvent.fieldFragment);
+        final EChange eChange = JaMoPPChangeBuildHelper.createAddFieldChange(field, classifierBeforeAdd);
         this.util.submitEMFModelChange(eChange, addFieldEvent.field);
     }
 
     @Override
-    public void visit(RemoveFieldEvent removeFieldEvent) {
-        setLastCallTime();
-        CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(removeFieldEvent.field);
-        Field field = originalCU.getFieldForVariableDeclarationFragment(removeFieldEvent.fieldFragment);
-        CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(removeFieldEvent.typeAfterRemove);
-        ConcreteClassifier classiferAfterRemove = changedCU
+    public void visit(final RemoveFieldEvent removeFieldEvent) {
+        this.setLastCallTime();
+        final CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(removeFieldEvent.field);
+        final Field field = originalCU.getFieldForVariableDeclarationFragment(removeFieldEvent.fieldFragment);
+        final CompilationUnitAdapter changedCU = this.util
+                .getUnsavedCompilationUnitAdapter(removeFieldEvent.typeAfterRemove);
+        final ConcreteClassifier classiferAfterRemove = changedCU
                 .getConcreteClassifierForTypeDeclaration(removeFieldEvent.typeAfterRemove);
-        EChange eChange = JaMoPPChangeBuildHelper.createAddFieldChange(field, classiferAfterRemove);
+        final EChange eChange = JaMoPPChangeBuildHelper.createAddFieldChange(field, classiferAfterRemove);
         this.util.submitEMFModelChange(eChange, removeFieldEvent.field);
     }
 
     @Override
-    public void visit(ChangeFieldModifiersEvent changeFieldModifiersEvent) {
-        CompilationUnitAdapter originalCU = this.util
+    public void visit(final ChangeFieldModifiersEvent changeFieldModifiersEvent) {
+        final CompilationUnitAdapter originalCU = this.util
                 .getUnsavedCompilationUnitAdapter(changeFieldModifiersEvent.original);
-        List<Field> originalFields = originalCU.getFieldsForFieldDeclaration(changeFieldModifiersEvent.original);
-        CompilationUnitAdapter changedCU = this.util
+        final List<Field> originalFields = originalCU.getFieldsForFieldDeclaration(changeFieldModifiersEvent.original);
+        final CompilationUnitAdapter changedCU = this.util
                 .getUnsavedCompilationUnitAdapter(changeFieldModifiersEvent.changed);
-        List<Field> changedFields = changedCU.getFieldsForFieldDeclaration(changeFieldModifiersEvent.changed);
+        final List<Field> changedFields = changedCU.getFieldsForFieldDeclaration(changeFieldModifiersEvent.changed);
 
-        CompositeChange allFieldModifierChanges = new CompositeChange(new Change[] {});
-        ListIterator<Field> ofit = originalFields.listIterator();
+        final CompositeChange allFieldModifierChanges = new CompositeChange(new Change[] {});
+        final ListIterator<Field> ofit = originalFields.listIterator();
         while (ofit.hasNext()) {
-            Field oField = ofit.next();
-            ListIterator<Field> cfit = changedFields.listIterator();
+            final Field oField = ofit.next();
+            final ListIterator<Field> cfit = changedFields.listIterator();
             while (cfit.hasNext()) {
-                Field cField = cfit.next();
+                final Field cField = cfit.next();
                 if (oField.getName().equals(cField.getName())) {
                     cfit.remove();
-                    CompositeChange fieldModifierChanges = buildModifierChanges(oField, cField, oField.getModifiers(),
-                            cField.getModifiers(), changeFieldModifiersEvent.original);
+                    final CompositeChange fieldModifierChanges = this.buildModifierChanges(oField, cField,
+                            oField.getModifiers(), cField.getModifiers(), changeFieldModifiersEvent.original);
                     allFieldModifierChanges.addChange(fieldModifierChanges);
                 }
             }
@@ -481,22 +502,24 @@ public class ChangeResponder implements ChangeEventVisitor {
     }
 
     @Override
-    public void visit(ChangeFieldTypeEvent changeFieldTypeEvent) {
-        CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(changeFieldTypeEvent.original);
-        List<Field> originalFields = originalCU.getFieldsForFieldDeclaration(changeFieldTypeEvent.original);
-        CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(changeFieldTypeEvent.changed);
-        List<Field> changedFields = changedCU.getFieldsForFieldDeclaration(changeFieldTypeEvent.changed);
+    public void visit(final ChangeFieldTypeEvent changeFieldTypeEvent) {
+        final CompilationUnitAdapter originalCU = this.util
+                .getUnsavedCompilationUnitAdapter(changeFieldTypeEvent.original);
+        final List<Field> originalFields = originalCU.getFieldsForFieldDeclaration(changeFieldTypeEvent.original);
+        final CompilationUnitAdapter changedCU = this.util
+                .getUnsavedCompilationUnitAdapter(changeFieldTypeEvent.changed);
+        final List<Field> changedFields = changedCU.getFieldsForFieldDeclaration(changeFieldTypeEvent.changed);
 
-        CompositeChange typeChanges = new CompositeChange(new Change[] {});
-        ListIterator<Field> ofit = originalFields.listIterator();
+        final CompositeChange typeChanges = new CompositeChange(new Change[] {});
+        final ListIterator<Field> ofit = originalFields.listIterator();
         while (ofit.hasNext()) {
-            Field oField = ofit.next();
-            ListIterator<Field> cfit = changedFields.listIterator();
+            final Field oField = ofit.next();
+            final ListIterator<Field> cfit = changedFields.listIterator();
             while (cfit.hasNext()) {
-                Field cField = cfit.next();
+                final Field cField = cfit.next();
                 if (oField.getName().equals(cField.getName())) {
                     cfit.remove();
-                    EChange eChange = JaMoPPChangeBuildHelper.createChangeFieldTypeChange(oField, cField);
+                    final EChange eChange = JaMoPPChangeBuildHelper.createChangeFieldTypeChange(oField, cField);
                     typeChanges.addChange(this.util.wrapToEMFModelChange(eChange, changeFieldTypeEvent.original));
                 }
             }
@@ -505,66 +528,68 @@ public class ChangeResponder implements ChangeEventVisitor {
     }
 
     @Override
-    public void visit(AddMethodAnnotationEvent addMethodAnnotationEvent) {
+    public void visit(final AddMethodAnnotationEvent addMethodAnnotationEvent) {
         // TODO
-        CompilationUnitAdapter originalCU = this.util
+        final CompilationUnitAdapter originalCU = this.util
                 .getUnsavedCompilationUnitAdapter(addMethodAnnotationEvent.annotation);
 
     }
 
     @Override
-    public void visit(RemoveMethodAnnotationEvent removeMethodAnnotationEvent) {
+    public void visit(final RemoveMethodAnnotationEvent removeMethodAnnotationEvent) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void visit(RenamePackageEvent renamePackageEvent) {
-        EChange renamePackageChange = JaMoPPChangeBuildHelper.createRenamePackageChange(
+    public void visit(final RenamePackageEvent renamePackageEvent) {
+        final EChange renamePackageChange = JaMoPPChangeBuildHelper.createRenamePackageChange(
                 renamePackageEvent.originalPackageName, renamePackageEvent.renamedPackageName);
         this.util.submitEMFModelChange(renamePackageChange, renamePackageEvent.originalIResource);
 
     }
 
     @Override
-    public void visit(DeletePackageEvent deletePackageEvent) {
-        EChange deletePackageChange = JaMoPPChangeBuildHelper.createDeletePackageChange(deletePackageEvent.packageName);
+    public void visit(final DeletePackageEvent deletePackageEvent) {
+        final EChange deletePackageChange = JaMoPPChangeBuildHelper
+                .createDeletePackageChange(deletePackageEvent.packageName);
         this.util.submitEMFModelChange(deletePackageChange, deletePackageEvent.iResource);
 
     }
 
     @Override
-    public void visit(CreatePackageEvent addPackageEvent) {
-        EChange createPackageChange = JaMoPPChangeBuildHelper.createCreatePackageChange(addPackageEvent.packageName);
+    public void visit(final CreatePackageEvent addPackageEvent) {
+        final EChange createPackageChange = JaMoPPChangeBuildHelper
+                .createCreatePackageChange(addPackageEvent.packageName);
         this.util.submitEMFModelChange(createPackageChange, addPackageEvent.iResource);
 
     }
 
     @Override
-    public void visit(RenamePackageDeclarationEvent renamePackageDeclarationEvent) {
+    public void visit(final RenamePackageDeclarationEvent renamePackageDeclarationEvent) {
         // TODO Auto-generated method stub
     }
 
     @Override
-    public void visit(ChangePackageDeclarationEvent changePackageDeclarationEvent) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void visit(AddJavaDocEvent addJavaDocEvent) {
+    public void visit(final ChangePackageDeclarationEvent changePackageDeclarationEvent) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void visit(RemoveJavaDocEvent removeJavaDocEvent) {
+    public void visit(final AddJavaDocEvent addJavaDocEvent) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void visit(ChangeJavaDocEvent changeJavaDocEvent) {
+    public void visit(final RemoveJavaDocEvent removeJavaDocEvent) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void visit(final ChangeJavaDocEvent changeJavaDocEvent) {
         // TODO Auto-generated method stub
 
     }
@@ -574,56 +599,65 @@ public class ChangeResponder implements ChangeEventVisitor {
         private ChangeResponderUtility() {
         }
 
-        public CompilationUnitAdapter getUnsavedCompilationUnitAdapter(ASTNode astNode) {
-            CompilationUnitAdapter cu = null;
-            URI uri = getURIFromCompilationUnit(astNode);
-            return getUnsavedCompilationUnitAdapter(astNode, uri);
+        public CompilationUnitAdapter getUnsavedCompilationUnitAdapter(final ASTNode astNode) {
+            final URI uri = this.getURIFromCompilationUnit(astNode);
+            return this.getUnsavedCompilationUnitAdapter(astNode, uri);
         }
 
-        public CompilationUnitAdapter getUnsavedCompilationUnitAdapter(ASTNode astNode, URI uri) {
+        public CompilationUnitAdapter getUnsavedCompilationUnitAdapter(final ASTNode astNode, final URI uri) {
             CompilationUnitAdapter cu = null;
+            if (null == astNode) {
+                return null;
+            }
             cu = new CompilationUnitAdapter(astNode, uri, false);
-            if (cu.getCompilationUnit() == null)
+            if (cu.getCompilationUnit() == null) {
                 cu = null;
+            }
             return cu;
         }
 
-        private void submitEMFModelChange(EChange eChange, ASTNode astNodeWithIResource) {
-            EMFModelChange change = wrapToEMFModelChange(eChange, astNodeWithIResource);
+        private void submitEMFModelChange(final EChange eChange, final ASTNode astNodeWithIResource) {
+            final EMFModelChange change = this.wrapToEMFModelChange(eChange, astNodeWithIResource);
             ChangeResponder.this.monitoredEditor.submitChange(change);
         }
 
-        private void submitEMFModelChange(EChange eChange, IResource originalIResource) {
-            EMFModelChange change = wrapToEMFModelChange(eChange, originalIResource);
+        private void submitEMFModelChange(final EChange eChange, final IResource originalIResource) {
+            final EMFModelChange change = this.wrapToEMFModelChange(eChange, originalIResource);
             ChangeResponder.this.monitoredEditor.submitChange(change);
         }
 
-        private EMFModelChange wrapToEMFModelChange(EChange eChange, ASTNode astNodeWithIResource) {
-            VURI vuri = VURI.getInstance(AST2JaMoPP.getIResource(astNodeWithIResource));
+        private EMFModelChange wrapToEMFModelChange(final EChange eChange, final ASTNode astNodeWithIResource) {
+            final VURI vuri = VURI.getInstance(AST2JaMoPP.getIResource(astNodeWithIResource));
             return new EMFModelChange(eChange, vuri);
         }
 
-        private EMFModelChange wrapToEMFModelChange(EChange eChange, IResource originalIResource) {
-            VURI vuri = VURI.getInstance(originalIResource);
+        private EMFModelChange wrapToEMFModelChange(final EChange eChange, final IResource originalIResource) {
+            final VURI vuri = VURI.getInstance(originalIResource);
             return new EMFModelChange(eChange, vuri);
         }
 
         // returns URI from node1 if exists, otherwise URI from node2 or null if both have no
         // attached
         // IResource
-        URI getFirstExistingURI(ASTNode node1, ASTNode node2) {
-            URI uri = getURIFromCompilationUnit(node1);
-            if (uri == null)
-                uri = getURIFromCompilationUnit(node2);
+        URI getFirstExistingURI(final ASTNode node1, final ASTNode node2) {
+            URI uri = this.getURIFromCompilationUnit(node1);
+            if (uri == null) {
+                uri = this.getURIFromCompilationUnit(node2);
+            }
             return uri;
         }
 
-        private URI getURIFromCompilationUnit(ASTNode astNode) {
+        private URI getURIFromCompilationUnit(final ASTNode astNode) {
             // TODO IPath for CompilationUnit without linked IResource
             // IPath iPath = AST2JaMoPP.getIPathFromCompilationUnitWithResource(astNode);
-            IPath iPath = AST2JaMoPP.getIResource(astNode).getFullPath();
-            if (iPath == null)
+            final IResource iResource = AST2JaMoPP.getIResource(astNode);
+            if (null == iResource) {
                 return null;
+            }
+            final IPath iPath = iResource.getFullPath();
+            if (iPath == null) {
+                return null;
+            }
             return URI.createPlatformResourceURI(iPath.toString(), true);
         }
     }

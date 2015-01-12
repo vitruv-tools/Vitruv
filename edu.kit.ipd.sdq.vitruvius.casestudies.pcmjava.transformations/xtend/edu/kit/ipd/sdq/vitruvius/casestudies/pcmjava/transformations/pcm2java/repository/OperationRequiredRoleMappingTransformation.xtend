@@ -1,23 +1,24 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
+import com.google.common.collect.Sets
 import de.uka.ipd.sdq.pcm.repository.OperationRequiredRole
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import java.util.List
+import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.Interface
 import org.emftext.language.java.members.Constructor
+import org.emftext.language.java.members.Field
 import org.emftext.language.java.parameters.Parameter
 import org.emftext.language.java.statements.Statement
 import org.emftext.language.java.types.TypeReference
-import org.eclipse.emf.ecore.EAttribute
-import org.emftext.language.java.members.Field
-import com.google.common.collect.Sets
 
 class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTransformation {
 

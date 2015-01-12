@@ -16,5 +16,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine,
  org.apache.log4j;bundle-version="1.2.15",
  edu.kit.ipd.sdq.vitruvius.framework.meta.change,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence
+ edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence,
+ org.eclipse.core.jobs,
+ org.eclipse.equinox.registry
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager

@@ -79,7 +79,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
      * existing that contains at most a root element without children. But throws an exception if an
      * instance that contains more than one element exists at the uri.
      *
-     * DECISION If we do not throw an exception (which can happen in 3) we always return a valid
+     * DECISION Since we do not throw an exception (which can happen in 3) we always return a valid
      * model. Hence the caller do not have to check whether the retrived model is null.
      */
     @Override

@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 
 abstract class EObjectMappingTransformation {
 
@@ -131,6 +132,14 @@ abstract class EObjectMappingTransformation {
 			return null
 		}
 		#[eObject]
+	}
+	
+	def protected int modalTextUserinteracting(String msg, String... selections ){
+		return userInteracting.selectFromMessage(UserInteractionType.MODAL, msg, selections)
+	}
+	
+	def protected boolean modalTextYesNoUserInteracting(String msg){
+		return 0 == modalTextUserinteracting(msg, "Yes", "No")
 	}
 
 }

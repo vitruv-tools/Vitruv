@@ -1,8 +1,14 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
 import de.uka.ipd.sdq.pcm.repository.OperationInterface
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
+import java.util.ArrayList
+import java.util.List
 import java.util.Set
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
@@ -15,11 +21,6 @@ import org.emftext.language.java.containers.CompilationUnit
 import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.Package
 import org.emftext.language.java.members.InterfaceMethod
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
-import java.util.List
-import java.util.ArrayList
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
 import org.emftext.language.java.modifiers.ModifiersFactory
 
 class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransformation {

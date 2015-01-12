@@ -1,33 +1,22 @@
 package edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePropagating;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.InvariantProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Quadruple;
 
 public class SyncManagerImpl implements ChangeSynchronizing {
 
@@ -38,6 +27,7 @@ public class SyncManagerImpl implements ChangeSynchronizing {
     private final CorrespondenceProviding correspondenceProviding;
     private final InvariantProviding invariantProviding;
     private final Validating validating;
+    private final VitruviusResourceManipulatingJob vitruviusResourceManipulatingJob;
 
     private Map<Class<?>, ConcreteChangeSynchronizer> changeSynchonizerMap;
 
@@ -57,6 +47,7 @@ public class SyncManagerImpl implements ChangeSynchronizing {
                 this.changePropagating, this.correspondenceProviding));
         this.invariantProviding = invariantProviding;
         this.validating = validating;
+        this.vitruviusResourceManipulatingJob = new VitruviusResourceManipulatingJob(this.modelProviding);
     }
 
     @Override
@@ -68,72 +59,30 @@ public class SyncManagerImpl implements ChangeSynchronizing {
 
     @Override
     public void synchronizeChange(final Change change) {
+        if (changeCausedByResourceManipultingJob()) {
+            logger.info("Change " + change
+                    + " not syncrhonized, cause it was caused by the resource manipulating job itself.");
+            return;
+        }
         if (!this.changeSynchonizerMap.containsKey(change.getClass())) {
             logger.warn("Could not find ChangeSynchronizer for change " + change.getClass().getSimpleName()
                     + ". Can not synchronize change " + change);
         }
         EMFChangeResult emfChangeResult = (EMFChangeResult) this.changeSynchonizerMap.get(change.getClass())
                 .synchronizeChange(change);
-        // TODO: Check invariants:
-        // Get invariants from Invariant providing
-        // Validate models with Validating
-        // TODO: Execute responses for violated invariants --> Classified response actions
 
-        // TODO: Check wheather we need a deleteModelInstanceOriginal in VSUM.
-        // Here we usually do not need it because we usually delete JaMoPP resource that are renamed
-        // Hence we do not need to remove the correspondence models etc.However the question is what
-        // happens if we delete, e.g. a PCM instance.
-        for (VURI vuriToDelete : emfChangeResult.getExistingObjectsToDelete()) {
-            ModelInstance mi = this.modelProviding.getAndLoadModelInstanceOriginal(vuriToDelete);
-            Resource resource = mi.getResource();
-            try {
-                resource.delete(null);
-            } catch (IOException e) {
-                throw new RuntimeException("Could not delete VURI: " + vuriToDelete + ". Exception: " + e);
-            }
-        }
-
-        for (VURI changedVURI : emfChangeResult.getExistingObjectsToSave()) {
-            this.modelProviding.saveModelInstanceOriginal(changedVURI);
-        }
-
-        for (Pair<EObject, VURI> createdEObjectVURIPair : emfChangeResult.getNewRootObjectsToSave()) {
-            ModelInstance mi = this.modelProviding.getAndLoadModelInstanceOriginal(createdEObjectVURIPair.getSecond());
-            Resource resource = mi.getResource();
-            // clear the resource first
-            resource.getContents().clear();
-            resource.getContents().add(createdEObjectVURIPair.getFirst());
-            this.modelProviding.saveModelInstanceOriginal(mi.getURI());
-        }
-
-        // update correspondenceInstances
-        removeOldCorrespondences(emfChangeResult.getCorrespondencesToDelete());
-        addNewCorrespondences(emfChangeResult.getNewCorrespondences());
-        updateExistingCorrespondence(emfChangeResult.getCorrespondencesToUpdate());
-
+        this.vitruviusResourceManipulatingJob.addEMFChangeResult(emfChangeResult);
+        this.vitruviusResourceManipulatingJob.schedule();
     }
 
-    private void removeOldCorrespondences(final Set<Pair<CorrespondenceInstance, TUID>> correspondencesToDelete) {
-        for (final Pair<CorrespondenceInstance, TUID> pair : correspondencesToDelete) {
-            CorrespondenceInstance correspondenceInstance = pair.getFirst();
-            correspondenceInstance.removeCorrespondenceAndAllDependentCorrespondences(pair.getSecond());
-        }
+    private boolean changeCausedByResourceManipultingJob() {
+        return this.vitruviusResourceManipulatingJob.isResourceManipulatingInProgress();
+        // if (Job.RUNNING == this.vitruisviusResourceManipulatingJob.getState()) {
+        // if (this.vitruviusResourceManipulatingJob.getThread() == Thread.currentThread()) {
+        // return true;
+        // }
+        // }
+        // return false;
     }
 
-    private void addNewCorrespondences(
-            final Set<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>> newCorrespondences) {
-        for (final Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence> quadruple : newCorrespondences) {
-            CorrespondenceInstance correspondenceInstance = quadruple.getFirst();
-            correspondenceInstance.createAndAddEObjectCorrespondence(quadruple.getSecond(), quadruple.getThird(),
-                    quadruple.getFourth());
-        }
-    }
-
-    private void updateExistingCorrespondence(
-            final Set<Quadruple<CorrespondenceInstance, TUID, EObject, Correspondence>> correspondencesToUpdate) {
-        for (final Quadruple<CorrespondenceInstance, TUID, EObject, Correspondence> quadruple : correspondencesToUpdate) {
-            CorrespondenceInstance correspondenceInstance = quadruple.getFirst();
-            correspondenceInstance.update(quadruple.getSecond(), quadruple.getThird());
-        }
-    }
 }
