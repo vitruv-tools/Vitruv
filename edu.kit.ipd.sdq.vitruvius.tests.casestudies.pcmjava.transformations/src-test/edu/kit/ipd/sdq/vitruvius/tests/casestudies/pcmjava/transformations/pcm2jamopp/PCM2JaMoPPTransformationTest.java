@@ -68,8 +68,10 @@ import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
  */
 public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBase {
 
-    private VSUMImpl vsum;
-    private SyncManagerImpl syncManager;
+    protected VSUMImpl vsum;
+    protected SyncManagerImpl syncManager;
+    protected MetaRepositoryImpl metaRepository;
+
     private ChangeDescription2ChangeConverter changeDescrition2ChangeConverter;
     private ChangeRecorder changeRecorder;
 
@@ -83,13 +85,12 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
      */
     @Before
     public void setUpTest() throws Exception {
-
-        final MetaRepositoryImpl metaRepository = JaMoPPPCMTestUtil.createJaMoPPPCMMetaRepository();
-        this.vsum = TestUtil.createVSUM(metaRepository);
+        this.metaRepository = JaMoPPPCMTestUtil.createJaMoPPPCMMetaRepository();
+        this.vsum = TestUtil.createVSUM(this.metaRepository);
         final TransformationExecutingProvidingImpl syncTransformationProvider = new TransformationExecutingProvidingImpl();
         final EMFModelPropagationEngineImpl propagatingChange = new EMFModelPropagationEngineImpl(
                 syncTransformationProvider);
-        this.syncManager = new SyncManagerImpl(this.vsum, propagatingChange, this.vsum, metaRepository, this.vsum);
+        this.syncManager = new SyncManagerImpl(this.vsum, propagatingChange, this.vsum, this.metaRepository, this.vsum);
         this.resourceSet = new ResourceSetImpl();
         this.changeRecorder = new ChangeRecorder();
         this.changeDescrition2ChangeConverter = new ChangeDescription2ChangeConverter();
@@ -367,14 +368,14 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
     }
 
     protected OperationProvidedRole createAndSyncRepoOpIntfOpSigBasicCompAndOperationProvRole() throws IOException,
-    Throwable {
+            Throwable {
         final OperationSignature opSig = this.createAndSyncRepoInterfaceAndOperationSignature();
         final OperationInterface opInterface = opSig.getInterface__OperationSignature();
         final BasicComponent basicComponent = this.addBasicComponentAndSync(opInterface.getRepository__Interface());
 
         final OperationProvidedRole operationProvidedRole = RepositoryFactory.eINSTANCE.createOperationProvidedRole();
         operationProvidedRole
-        .setEntityName(basicComponent.getEntityName() + "_provides_" + opInterface.getEntityName());
+                .setEntityName(basicComponent.getEntityName() + "_provides_" + opInterface.getEntityName());
         operationProvidedRole.setProvidedInterface__OperationProvidedRole(opInterface);
         operationProvidedRole.setProvidingEntity_ProvidedRole(basicComponent);
         final VURI vuri = VURI.getInstance(opInterface.eResource());
@@ -383,7 +384,7 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
     }
 
     protected OperationRequiredRole createAndSyncRepoBasicCompInterfaceAndOperationReqiredRole() throws IOException,
-    Throwable {
+            Throwable {
         final OperationSignature opSig = this.createAndSyncRepoInterfaceAndOperationSignature();
         final OperationInterface opInterface = opSig.getInterface__OperationSignature();
         final BasicComponent basicComponent = this.addBasicComponentAndSync(opInterface.getRepository__Interface());
