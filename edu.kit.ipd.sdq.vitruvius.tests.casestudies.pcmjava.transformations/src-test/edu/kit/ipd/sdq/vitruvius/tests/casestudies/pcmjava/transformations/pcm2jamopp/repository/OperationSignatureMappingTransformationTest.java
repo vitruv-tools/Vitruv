@@ -11,7 +11,7 @@ import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.DataTypeCorrespondenceHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPUtils;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 
 public class OperationSignatureMappingTransformationTest extends PCM2JaMoPPTransformationTest {
 
@@ -26,7 +26,7 @@ public class OperationSignatureMappingTransformationTest extends PCM2JaMoPPTrans
     public void testRenameOperationSignature() throws Throwable {
         final OperationSignature opSig = this.createAndSyncRepoInterfaceAndOperationSignature();
 
-        opSig.setEntityName(PCM2JaMoPPUtils.OPERATION_SIGNATURE_1_NAME + PCM2JaMoPPUtils.RENAME);
+        opSig.setEntityName(PCM2JaMoPPTestUtils.OPERATION_SIGNATURE_1_NAME + PCM2JaMoPPTestUtils.RENAME);
         super.triggerSynchronization(VURI.getInstance(opSig.eResource()));
 
         this.assertOperationSignatureCorrespondence(opSig);

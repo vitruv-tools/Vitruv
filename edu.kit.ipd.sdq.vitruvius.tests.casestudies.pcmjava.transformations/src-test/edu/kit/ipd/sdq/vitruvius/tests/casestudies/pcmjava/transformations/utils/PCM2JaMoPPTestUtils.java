@@ -28,7 +28,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
-public class PCM2JaMoPPUtils {
+public class PCM2JaMoPPTestUtils {
 
     public static final String REPOSITORY_NAME = "testRepository";
     public static final String BASIC_COMPONENT_NAME = "TestBasicComponent";
@@ -42,7 +42,7 @@ public class PCM2JaMoPPUtils {
     public static final String SYSTEM_NAME = "TestSystem";
     public static final String ASSEMBLY_CONTEXT_NAME = "assemblyContext";
 
-    private PCM2JaMoPPUtils() {
+    private PCM2JaMoPPTestUtils() {
     }
 
     public static Repository createRepository(final ResourceSet resourceSet, final String repositoryName)

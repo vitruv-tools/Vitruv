@@ -36,7 +36,11 @@ Require-Bundle: org.junit,
  org.eclipse.ui.ide,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.gmf.run.monitorededitor,
  edu.kit.ipd.sdq.vitruvius.casestudies.java.util,
- org.eclipse.emf.emfstore.common
+ org.eclipse.emf.emfstore.common,
+ org.eclipse.jdt.core,
+ org.eclipse.jdt.core.manipulation,
+ org.eclipse.ltk.core.refactoring
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp
+

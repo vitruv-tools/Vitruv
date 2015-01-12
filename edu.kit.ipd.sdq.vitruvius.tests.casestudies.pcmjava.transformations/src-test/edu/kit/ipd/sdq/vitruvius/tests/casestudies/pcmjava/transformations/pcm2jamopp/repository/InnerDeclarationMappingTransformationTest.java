@@ -8,7 +8,7 @@ import de.uka.ipd.sdq.pcm.repository.PrimitiveTypeEnum;
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPUtils;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 
 public class InnerDeclarationMappingTransformationTest extends PCM2JaMoPPTransformationTest {
 
@@ -23,7 +23,7 @@ public class InnerDeclarationMappingTransformationTest extends PCM2JaMoPPTransfo
     public void testRenameInnerDeclaration() throws Throwable {
         final InnerDeclaration innerDec = this.createAndSyncRepositoryCompositeDataTypeAndInnerDeclaration();
 
-        innerDec.setEntityName(PCM2JaMoPPUtils.INNER_DEC_NAME + PCM2JaMoPPUtils.RENAME);
+        innerDec.setEntityName(PCM2JaMoPPTestUtils.INNER_DEC_NAME + PCM2JaMoPPTestUtils.RENAME);
         super.triggerSynchronization(VURI.getInstance(innerDec.eResource()));
 
         this.assertInnerDeclaration(innerDec);

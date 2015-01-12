@@ -11,18 +11,18 @@ import de.uka.ipd.sdq.pcm.repository.BasicComponent;
 import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.system.System;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPUtils;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 
 public class AssemblyContextMappingTransformationTest extends PCM2JaMoPPTransformationTest {
 
     @Test
     public void testCreateAssemblyContext() throws Throwable {
-        final System system = super.createAndSyncSystem(PCM2JaMoPPUtils.SYSTEM_NAME);
-        final Repository repo = super.createAndSyncRepository(this.resourceSet, PCM2JaMoPPUtils.REPOSITORY_NAME);
+        final System system = super.createAndSyncSystem(PCM2JaMoPPTestUtils.SYSTEM_NAME);
+        final Repository repo = super.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
         final BasicComponent basicComponent = super.addBasicComponentAndSync(repo);
 
         final AssemblyContext assemblyContext = CompositionFactory.eINSTANCE.createAssemblyContext();
-        assemblyContext.setEntityName(PCM2JaMoPPUtils.ASSEMBLY_CONTEXT_NAME);
+        assemblyContext.setEntityName(PCM2JaMoPPTestUtils.ASSEMBLY_CONTEXT_NAME);
         assemblyContext.setEncapsulatedComponent__AssemblyContext(basicComponent);
         assemblyContext.setParentStructure__AssemblyContext(system);
         super.triggerSynchronization(system);

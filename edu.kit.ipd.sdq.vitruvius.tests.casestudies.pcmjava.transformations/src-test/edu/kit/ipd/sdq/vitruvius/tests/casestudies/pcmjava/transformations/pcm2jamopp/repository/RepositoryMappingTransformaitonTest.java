@@ -12,13 +12,13 @@ import de.uka.ipd.sdq.pcm.repository.Repository;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPUtils;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 
 public class RepositoryMappingTransformaitonTest extends PCM2JaMoPPTransformationTest {
 
     @Test
     public void testAddRepository() throws Throwable {
-        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPUtils.REPOSITORY_NAME);
+        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
 
         this.assertRepositoryCorrespondences(repo);
     }
@@ -26,10 +26,10 @@ public class RepositoryMappingTransformaitonTest extends PCM2JaMoPPTransformatio
     @Test
     public void testRepositoryNameChange() throws Throwable {
         // setup
-        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPUtils.REPOSITORY_NAME);
+        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
 
         // Test
-        repo.setEntityName(PCM2JaMoPPUtils.REPOSITORY_NAME + PCM2JaMoPPUtils.RENAME);
+        repo.setEntityName(PCM2JaMoPPTestUtils.REPOSITORY_NAME + PCM2JaMoPPTestUtils.RENAME);
         EcoreResourceBridge.saveResource(repo.eResource());
         super.triggerSynchronization(VURI.getInstance(repo.eResource()));
 

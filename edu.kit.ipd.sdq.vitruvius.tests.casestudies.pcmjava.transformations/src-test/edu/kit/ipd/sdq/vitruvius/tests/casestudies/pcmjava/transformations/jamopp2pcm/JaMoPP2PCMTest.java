@@ -5,12 +5,9 @@
 //
 //import java.util.Set;
 //
-//import org.apache.commons.lang.StringUtils;
-//import org.apache.log4j.Logger;
 //import org.eclipse.emf.ecore.EAttribute;
 //import org.eclipse.emf.ecore.EObject;
 //import org.eclipse.emf.ecore.EReference;
-//import org.eclipse.emf.ecore.resource.Resource;
 //import org.eclipse.emf.ecore.util.EcoreUtil;
 //import org.emftext.language.java.classifiers.Class;
 //import org.emftext.language.java.classifiers.ClassifiersFactory;
@@ -27,9 +24,7 @@
 //import de.uka.ipd.sdq.pcm.repository.BasicComponent;
 //import de.uka.ipd.sdq.pcm.repository.OperationInterface;
 //import de.uka.ipd.sdq.pcm.repository.Repository;
-//import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.JaMoPPP2CMUtils;
 //import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult;
-//import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 //import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.AttributeFactory;
 //import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
 //import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
@@ -37,9 +32,8 @@
 //import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectInList;
 //import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject;
 //import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ObjectFactory;
-//import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 //import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.PCMJaMoPPTransformationTestBase;
-//import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPUtils;
+//import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 //
 ///**
 // * Test for JaMoPP 2 PCM Curent Test cases: i) C Package a) package that corresponds to repository
@@ -49,39 +43,6 @@
 // *
 // */
 //public class JaMoPP2PCMTest extends PCMJaMoPPTransformationTestBase {
-//
-//    private static final Logger logger = Logger.getLogger(JaMoPP2PCMTest.class.getSimpleName());
-//
-//    private Package mainPackage;
-//    private Package secondPackage;
-//
-//    /**
-//     * Test i) a) --> first package is created --> should be mapped to a repository
-//     *
-//     * @throws Exception
-//     */
-//    @Test
-//    public void testAddFirstPackage() throws Exception {
-//        final Repository repo = this.addFirstPackage();
-//        assertEquals("Name of the repository is not the same as the name of the package",
-//                PCM2JaMoPPUtils.REPOSITORY_NAME, repo.getEntityName());
-//    }
-//
-//    /**
-//     * Test i) b) --> second packages is added --> should be mapped to a basic component
-//     *
-//     * @throws Exception
-//     */
-//    @Test
-//    public void testAddSecondPackage() throws Exception {
-//        final Repository repo = this.addFirstPackage();
-//        final BasicComponent bc = this.addSecondPackage();
-//        // repository of basic component has to be the repository
-//        assertTrue("Repository of basic compoennt is not the repository: " + repo,
-//                repo.equals(bc.getRepository__RepositoryComponent()));
-//        assertTrue("The name of the basic component is not " + PCM2JaMoPPUtils.BASIC_COMPONENT_NAME, bc.getEntityName()
-//                .equalsIgnoreCase(PCM2JaMoPPUtils.BASIC_COMPONENT_NAME));
-//    }
 //
 //    /**
 //     * Test ii) class that in mapped package and same name as component + impl--> should be the new
@@ -132,7 +93,7 @@
 //
 //        assertTrue("The created operation interface is null", null != opIf);
 //        assertEquals("OperationInterface name does not equals the expected interface Name.", opIf.getEntityName(),
-//                PCM2JaMoPPUtils.INTERFACE_NAME);
+//                PCM2JaMoPPTestUtils.INTERFACE_NAME);
 //        assertEquals("The created operation interface is not in the repository", repo, opIf.getRepository__Interface());
 //    }
 //
@@ -161,13 +122,13 @@
 //                .createUpdateSingleValuedEAttribute();
 //        updateEAttribute.setOldAffectedEObject(this.secondPackage);
 //        updateEAttribute.setAffectedFeature(this.getNameAttribute(this.secondPackage));
-//        updateEAttribute.setNewValue(PCM2JaMoPPUtils.BASIC_COMPONENT_NAME + PCM2JaMoPPUtils.RENAME);
-//        this.secondPackage.setName(PCM2JaMoPPUtils.BASIC_COMPONENT_NAME + PCM2JaMoPPUtils.RENAME);
+//        updateEAttribute.setNewValue(PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + PCM2JaMoPPTestUtils.RENAME);
+//        this.secondPackage.setName(PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + PCM2JaMoPPTestUtils.RENAME);
 //
 //        super.triggerSynchronization(vuri);
 //
 //        assertTrue("Nothing should happen since the name of the component matches the name of the implementing class",
-//                PCM2JaMoPPUtils.isEmptyTransformationChangeResult(transformationChangeResult));
+//                PCM2JaMoPPTestUtils.isEmptyTransformationChangeResult(transformationChangeResult));
 //    }
 //
 //    @Test
@@ -181,10 +142,10 @@
 //                .createUpdateSingleValuedEAttribute();
 //        updateEAttribute.setOldAffectedEObject(classInSecondPackage);
 //        updateEAttribute.setAffectedFeature(this.getNameAttribute(classInSecondPackage));
-//        updateEAttribute.setNewValue(classInSecondPackage.getName() + PCM2JaMoPPUtils.RENAME);
+//        updateEAttribute.setNewValue(classInSecondPackage.getName() + PCM2JaMoPPTestUtils.RENAME);
 //        final TransformationChangeResult transformationChangeResult = changeSynchronizer
 //                .synchronizeChange(updateEAttribute);
-//        classInSecondPackage.setName(PCM2JaMoPPUtils.IMPLEMENTING_CLASS_NAME + PCM2JaMoPPUtils.RENAME);
+//        classInSecondPackage.setName(PCM2JaMoPPTestUtils.IMPLEMENTING_CLASS_NAME + PCM2JaMoPPTestUtils.RENAME);
 //        final BasicComponent basicComponent = (BasicComponent) transformationChangeResult.getExistingObjectsToSave()
 //                .toArray()[0];
 //        assertEquals("The BasicComponent should have the same name as the renamed class",
@@ -201,12 +162,12 @@
 //                .createUpdateSingleValuedEAttribute();
 //        updateEAttribute.setOldAffectedEObject(jaMoPPIf);
 //        updateEAttribute.setAffectedFeature(this.getNameAttribute(jaMoPPIf));
-//        updateEAttribute.setNewValue(jaMoPPIf.getName() + PCM2JaMoPPUtils.RENAME);
+//        updateEAttribute.setNewValue(jaMoPPIf.getName() + PCM2JaMoPPTestUtils.RENAME);
 //        final TransformationChangeResult transformationChangeResult = changeSynchronizer
 //                .synchronizeChange(updateEAttribute);
 //        final OperationInterface opIf = (OperationInterface) transformationChangeResult.getExistingObjectsToSave()
 //                .toArray()[0];
-//        jaMoPPIf.setName(PCM2JaMoPPUtils.INTERFACE_NAME + PCM2JaMoPPUtils.RENAME);
+//        jaMoPPIf.setName(PCM2JaMoPPTestUtils.INTERFACE_NAME + PCM2JaMoPPTestUtils.RENAME);
 //        assertEquals("The OperationInterface should have the same name as the renamed interface", jaMoPPIf.getName(),
 //                opIf.getEntityName());
 //    }
@@ -250,7 +211,7 @@
 //                .getAllEObjectsInCorrespondencesWithType(Object.class);
 //
 //        assertTrue("Returned TransformationChangeResult is not null",
-//                PCM2JaMoPPUtils.isEmptyTransformationChangeResult(transformationChangeResult));
+//                PCM2JaMoPPTestUtils.isEmptyTransformationChangeResult(transformationChangeResult));
 //        assertTrue("Main packages still has correspondences",
 //                null == this.correspondenceInstance.getAllCorrespondences(this.mainPackage));
 //        assertTrue(
@@ -306,36 +267,6 @@
 //                null == this.correspondenceInstance.getAllCorrespondences(compilationUnitInMainPackage));
 //    }
 //
-//    private Repository addFirstPackage() throws Exception {
-//        this.mainPackage = this.createPackage(new String[] { PCM2JaMoPPUtils.REPOSITORY_NAME });
-//        return this.correspondenceInstance.claimUniqueCorrespondingEObjectByType(this.mainPackage, Repository.class);
-//    }
-//
-//    private Package createPackage(final String[] namespace) throws Exception {
-//        final String namespaceDotted = StringUtils.join(namespace, ".");
-//        String packageFile = StringUtils.join(namespace, "/");
-//        packageFile = packageFile + "package-info.java";
-//        final VURI packageVURI = this.createVURIForSrcFile(packageFile);
-//        final Package jaMoPPPackage = JaMoPPP2CMUtils.createPackage(namespaceDotted);
-//        final Resource resource = this.resourceSet.createResource(packageVURI.getEMFUri());
-//        EcoreResourceBridge.saveEObjectAsOnlyContent(jaMoPPPackage, resource);
-//        logger.info("Namespace of new package: " + jaMoPPPackage.getNamespacesAsString());
-//        Thread.sleep(WAITING_TIME_FOR_SYNCHRONIZATION);
-//        return jaMoPPPackage;
-//    }
-//
-//    private VURI createVURIForSrcFile(final String srcFilePath) {
-//        final String vuriKey = super.getProjectPath() + "src/" + srcFilePath;
-//        return VURI.getInstance(vuriKey);
-//    }
-//
-//    private BasicComponent addSecondPackage() throws Exception {
-//        this.secondPackage = this.createPackage(new String[] { PCM2JaMoPPUtils.REPOSITORY_NAME,
-//                PCM2JaMoPPUtils.BASIC_COMPONENT_NAME });
-//        return this.correspondenceInstance.claimUniqueCorrespondingEObjectByType(this.secondPackage,
-//                BasicComponent.class);
-//    }
-//
 //    private BasicComponent addClassInSecondPackage() {
 //        final EObject createdEObject = this.addClassInPackage(this.secondPackage);
 //        return (BasicComponent) createdEObject;
@@ -343,9 +274,9 @@
 //
 //    private EObject addClassInPackage(final Package packageForClass) {
 //        final CompilationUnit cu = ContainersFactory.eINSTANCE.createCompilationUnit();
-//        cu.setName(PCM2JaMoPPUtils.IMPLEMENTING_CLASS_NAME + ".java");
+//        cu.setName(PCM2JaMoPPTestUtils.IMPLEMENTING_CLASS_NAME + ".java");
 //        final Class jaMoPPClass = ClassifiersFactory.eINSTANCE.createClass();
-//        jaMoPPClass.setName(PCM2JaMoPPUtils.IMPLEMENTING_CLASS_NAME);
+//        jaMoPPClass.setName(PCM2JaMoPPTestUtils.IMPLEMENTING_CLASS_NAME);
 //        jaMoPPClass.addModifier(ModifiersFactory.eINSTANCE.createPublic());
 //        cu.getClassifiers().add(jaMoPPClass);
 //        packageForClass.getCompilationUnits().add(cu);
@@ -372,9 +303,9 @@
 //
 //    private EObject addInterfaceInPackage(final Package pack) {
 //        final CompilationUnit cu = ContainersFactory.eINSTANCE.createCompilationUnit();
-//        cu.setName(PCM2JaMoPPUtils.INTERFACE_NAME + ".java");
+//        cu.setName(PCM2JaMoPPTestUtils.INTERFACE_NAME + ".java");
 //        final Interface jaMoPPInterface = ClassifiersFactory.eINSTANCE.createInterface();
-//        jaMoPPInterface.setName(PCM2JaMoPPUtils.INTERFACE_NAME);
+//        jaMoPPInterface.setName(PCM2JaMoPPTestUtils.INTERFACE_NAME);
 //        cu.getClassifiers().add(jaMoPPInterface);
 //        pack.getCompilationUnits().add(cu);
 //        cu.getNamespaces().addAll(pack.getNamespaces());
@@ -394,4 +325,4 @@
 //    private EAttribute getNameAttribute(final NamedElement ne) {
 //        return (EAttribute) ne.eClass().getEStructuralFeature(CommonsPackage.NAMED_ELEMENT__NAME);
 //    }
-//}
+// }

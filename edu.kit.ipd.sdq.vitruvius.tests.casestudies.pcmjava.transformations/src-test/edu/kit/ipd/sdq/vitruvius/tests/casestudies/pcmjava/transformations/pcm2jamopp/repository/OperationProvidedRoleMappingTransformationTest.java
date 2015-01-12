@@ -19,7 +19,7 @@ import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPUtils;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 
 public class OperationProvidedRoleMappingTransformationTest extends PCM2JaMoPPTransformationTest {
 
@@ -38,7 +38,7 @@ public class OperationProvidedRoleMappingTransformationTest extends PCM2JaMoPPTr
         final Repository repo = operationProvidedRole.getProvidedInterface__OperationProvidedRole()
                 .getRepository__Interface();
         final OperationInterface newInterface = this.addInterfaceToReposiotryAndSync(repo,
-                PCM2JaMoPPUtils.INTERFACE_NAME + PCM2JaMoPPUtils.RENAME);
+                PCM2JaMoPPTestUtils.INTERFACE_NAME + PCM2JaMoPPTestUtils.RENAME);
 
         operationProvidedRole.setProvidedInterface__OperationProvidedRole(newInterface);
         super.triggerSynchronization(VURI.getInstance(repo.eResource()));
@@ -68,7 +68,7 @@ public class OperationProvidedRoleMappingTransformationTest extends PCM2JaMoPPTr
                 .getRepository__Interface();
         final BasicComponent basicComponent = (BasicComponent) operationProvidedRole.getProvidingEntity_ProvidedRole();
         final OperationInterface newInterface = this.addInterfaceToReposiotryAndSync(repo,
-                PCM2JaMoPPUtils.INTERFACE_NAME + PCM2JaMoPPUtils.RENAME);
+                PCM2JaMoPPTestUtils.INTERFACE_NAME + PCM2JaMoPPTestUtils.RENAME);
 
         final OperationProvidedRole newOperationProvidedRole = RepositoryFactory.eINSTANCE
                 .createOperationProvidedRole();
@@ -91,7 +91,7 @@ public class OperationProvidedRoleMappingTransformationTest extends PCM2JaMoPPTr
                 .getRepository__Interface();
         final BasicComponent basicComponent = (BasicComponent) operationProvidedRole.getProvidingEntity_ProvidedRole();
         final OperationInterface newInterface = this.addInterfaceToReposiotryAndSync(repo,
-                PCM2JaMoPPUtils.INTERFACE_NAME + PCM2JaMoPPUtils.RENAME);
+                PCM2JaMoPPTestUtils.INTERFACE_NAME + PCM2JaMoPPTestUtils.RENAME);
         final OperationProvidedRole newOperationProvidedRole = RepositoryFactory.eINSTANCE
                 .createOperationProvidedRole();
         newOperationProvidedRole.setEntityName("NewOperationProvidedRole");

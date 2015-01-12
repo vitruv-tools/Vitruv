@@ -7,10 +7,14 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.change.ChangeDescription;
+import org.eclipse.emf.ecore.change.util.ChangeRecorder;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.emftext.language.java.classifiers.Classifier;
 import org.emftext.language.java.commons.NamedElement;
 import org.emftext.language.java.containers.CompilationUnit;
@@ -19,6 +23,7 @@ import org.emftext.language.java.members.Method;
 import org.emftext.language.java.types.ClassifierReference;
 import org.emftext.language.java.types.NamespaceClassifierReference;
 import org.emftext.language.java.types.TypeReference;
+import org.junit.Before;
 
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
 import de.uka.ipd.sdq.pcm.repository.CollectionDataType;
@@ -36,12 +41,24 @@ import de.uka.ipd.sdq.pcm.repository.PrimitiveTypeEnum;
 import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
 import de.uka.ipd.sdq.pcm.system.System;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.DataTypeCorrespondenceHelper;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.changedescription2change.ChangeDescription2ChangeConverter;
+import edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine.EMFModelPropagationEngineImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager.SyncManagerImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.TransformationExecutingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.PCMJaMoPPTransformationTestBase;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPUtils;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
+import edu.kit.ipd.sdq.vitruvius.tests.jamopppcm.util.JaMoPPPCMTestUtil;
+import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 /**
  * super class for all repository and system tests. Contains helper methods
@@ -51,6 +68,71 @@ import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils
  */
 public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBase {
 
+    private VSUMImpl vsum;
+    private SyncManagerImpl syncManager;
+    private ChangeDescription2ChangeConverter changeDescrition2ChangeConverter;
+    private ChangeRecorder changeRecorder;
+
+    protected CorrespondenceInstance correspondenceInstance;
+
+    /**
+     * Set up SyncMangaer and metaRepository facility. Creates a fresh VSUM, Metarepository etc.
+     * before each test
+     *
+     * @throws Exception
+     */
+    @Before
+    public void setUpTest() throws Exception {
+
+        final MetaRepositoryImpl metaRepository = JaMoPPPCMTestUtil.createJaMoPPPCMMetaRepository();
+        this.vsum = TestUtil.createVSUM(metaRepository);
+        final TransformationExecutingProvidingImpl syncTransformationProvider = new TransformationExecutingProvidingImpl();
+        final EMFModelPropagationEngineImpl propagatingChange = new EMFModelPropagationEngineImpl(
+                syncTransformationProvider);
+        this.syncManager = new SyncManagerImpl(this.vsum, propagatingChange, this.vsum, metaRepository, this.vsum);
+        this.resourceSet = new ResourceSetImpl();
+        this.changeRecorder = new ChangeRecorder();
+        this.changeDescrition2ChangeConverter = new ChangeDescription2ChangeConverter();
+    }
+
+    @Override
+    protected void afterTest() {
+        this.correspondenceInstance = null;
+    }
+
+    private CorrespondenceInstance getCorrespondenceInstanceForProject(final String projectName) throws Throwable {
+        final VURI pcmMMUri = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
+        final VURI jaMoPPURI = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE);
+        return this.vsum.getCorrespondenceInstanceOriginal(pcmMMUri, jaMoPPURI);
+    }
+
+    @Override
+    protected CorrespondenceInstance getCorrespondenceInstance() throws Throwable {
+        if (null == this.correspondenceInstance) {
+            this.correspondenceInstance = this.getCorrespondenceInstanceForProject(TestUtil.PROJECT_URI);
+        }
+        return this.correspondenceInstance;
+    }
+
+    protected void triggerSynchronization(final VURI vuri) {
+        final ChangeDescription cd = this.changeRecorder.endRecording();
+        cd.applyAndReverse();
+        final List<Change> changes = this.changeDescrition2ChangeConverter.getChanges(cd, vuri);
+        cd.applyAndReverse();
+        this.syncManager.synchronizeChanges(changes);
+        this.changeRecorder.beginRecording(Collections.EMPTY_LIST);
+    }
+
+    protected void triggerSynchronization(final EObject eObject) {
+        final VURI vuri = VURI.getInstance(eObject.eResource());
+        this.triggerSynchronization(vuri);
+    }
+
+    protected void synchronizeFileChange(final FileChangeKind fileChangeKind, final VURI vuri) {
+        final FileChange fileChange = new FileChange(fileChangeKind, vuri);
+        this.syncManager.synchronizeChange(fileChange);
+    }
+
     /**
      * innerDeclaration must have 3 correspondences: one field, one getter and one setter
      *
@@ -58,8 +140,8 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
      * @throws Throwable
      */
     protected void assertInnerDeclaration(final InnerDeclaration innerDec) throws Throwable {
-        final Set<EObject> correspondingObjects = super.getCorrespondenceInstance().getAllCorrespondingEObjects(
-                innerDec);
+        final Set<EObject> correspondingObjects = this.getCorrespondenceInstance()
+                .getAllCorrespondingEObjects(innerDec);
         int fieldsFound = 0;
         int methodsFound = 0;
         for (final EObject eObject : correspondingObjects) {
@@ -152,10 +234,10 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
     private OperationSignature createAndSyncOperationSignature(final Repository repo,
             final OperationInterface opInterface) throws IOException {
         final OperationSignature opSig = RepositoryFactory.eINSTANCE.createOperationSignature();
-        opSig.setEntityName(PCM2JaMoPPUtils.OPERATION_SIGNATURE_1_NAME);
+        opSig.setEntityName(PCM2JaMoPPTestUtils.OPERATION_SIGNATURE_1_NAME);
         opSig.setInterface__OperationSignature(opInterface);
         EcoreResourceBridge.saveResource(repo.eResource());
-        super.triggerSynchronization(VURI.getInstance(repo.eResource()));
+        this.triggerSynchronization(VURI.getInstance(repo.eResource()));
         return opSig;
     }
 
@@ -169,22 +251,22 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
     }
 
     protected OperationInterface renameInterfaceAndSync(final OperationInterface opInterface) throws Throwable {
-        final String newValue = opInterface.getEntityName() + PCM2JaMoPPUtils.RENAME;
+        final String newValue = opInterface.getEntityName() + PCM2JaMoPPTestUtils.RENAME;
         opInterface.setEntityName(newValue);
         EcoreResourceBridge.saveResource(opInterface.eResource());
-        super.triggerSynchronization(VURI.getInstance(opInterface.eResource()));
+        this.triggerSynchronization(VURI.getInstance(opInterface.eResource()));
         return opInterface;
     }
 
     protected BasicComponent addBasicComponentAndSync(final Repository repo, final String name) throws Throwable {
-        final BasicComponent basicComponent = PCM2JaMoPPUtils.createBasicComponent(repo, name);
+        final BasicComponent basicComponent = PCM2JaMoPPTestUtils.createBasicComponent(repo, name);
         EcoreResourceBridge.saveResource(repo.eResource());
-        super.triggerSynchronization(VURI.getInstance(repo.eResource()));
+        this.triggerSynchronization(VURI.getInstance(repo.eResource()));
         return basicComponent;
     }
 
     protected BasicComponent addBasicComponentAndSync(final Repository repo) throws Throwable {
-        return this.addBasicComponentAndSync(repo, PCM2JaMoPPUtils.BASIC_COMPONENT_NAME);
+        return this.addBasicComponentAndSync(repo, PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME);
     }
 
     protected OperationInterface addInterfaceToReposiotryAndSync(final Repository repo, final String interfaceName)
@@ -193,22 +275,22 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
         opInterface.setRepository__Interface(repo);
         opInterface.setEntityName(interfaceName);
         EcoreResourceBridge.saveResource(repo.eResource());
-        super.triggerSynchronization(VURI.getInstance(repo.eResource()));
+        this.triggerSynchronization(VURI.getInstance(repo.eResource()));
         return opInterface;
     }
 
     protected Repository createAndSyncRepository(final ResourceSet resourceSet, final String repositoryName)
             throws IOException {
-        final Repository repo = PCM2JaMoPPUtils.createRepository(resourceSet, repositoryName);
+        final Repository repo = PCM2JaMoPPTestUtils.createRepository(resourceSet, repositoryName);
         this.changeRecorder.beginRecording(Collections.singletonList(repo));
-        super.synchronizeFileChange(FileChangeKind.CREATE, VURI.getInstance(repo.eResource()));
+        this.synchronizeFileChange(FileChangeKind.CREATE, VURI.getInstance(repo.eResource()));
         return repo;
     }
 
     protected OperationSignature createAndSyncRepoInterfaceAndOperationSignature() throws IOException, Throwable {
-        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPUtils.REPOSITORY_NAME);
+        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
         final OperationInterface opInterface = this.addInterfaceToReposiotryAndSync(repo,
-                PCM2JaMoPPUtils.INTERFACE_NAME);
+                PCM2JaMoPPTestUtils.INTERFACE_NAME);
         final OperationSignature opSig = this.createAndSyncOperationSignature(repo, opInterface);
         return opSig;
     }
@@ -216,7 +298,7 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
     protected Parameter addAndSyncParameterWithPrimitiveTypeToSignature(final OperationSignature opSig) {
         final PrimitiveDataType dataType = RepositoryFactory.eINSTANCE.createPrimitiveDataType();
         dataType.setType(PrimitiveTypeEnum.INT);
-        return this.addAndSyncParameterToSignature(opSig, dataType, PCM2JaMoPPUtils.PARAMETER_NAME);
+        return this.addAndSyncParameterToSignature(opSig, dataType, PCM2JaMoPPTestUtils.PARAMETER_NAME);
     }
 
     protected Parameter addAndSyncParameterToSignature(final OperationSignature opSig, final DataType dataType,
@@ -228,13 +310,13 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
         param.setOperationSignature__Parameter(opSig);
         opSig.getParameters__OperationSignature().add(param);
         final VURI vuri = VURI.getInstance(opSig.eResource());
-        super.triggerSynchronization(vuri);
+        this.triggerSynchronization(vuri);
         return param;
     }
 
     protected CompositeDataType createAndSyncCompositeDataType(final Repository repo, final String name) {
         final CompositeDataType cdt = this.createCompositeDataType(repo, name);
-        super.triggerSynchronization(VURI.getInstance(repo.eResource()));
+        this.triggerSynchronization(VURI.getInstance(repo.eResource()));
         return cdt;
     }
 
@@ -246,7 +328,7 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
     }
 
     protected CompositeDataType createAndSyncCompositeDataType(final Repository repo) {
-        return this.createAndSyncCompositeDataType(repo, PCM2JaMoPPUtils.COMPOSITE_DATA_TYPE_NAME);
+        return this.createAndSyncCompositeDataType(repo, PCM2JaMoPPTestUtils.COMPOSITE_DATA_TYPE_NAME);
     }
 
     protected Parameter createAndSyncRepoOpSigAndParameter() throws IOException, Throwable {
@@ -266,10 +348,10 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
     }
 
     protected InnerDeclaration createAndSyncRepositoryCompositeDataTypeAndInnerDeclaration() throws IOException {
-        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPUtils.REPOSITORY_NAME);
+        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
         final CompositeDataType cdt = this.createAndSyncCompositeDataType(repo);
         final InnerDeclaration innerDec = this.addInnerDeclaration(cdt);
-        super.triggerSynchronization(VURI.getInstance(repo.eResource()));
+        this.triggerSynchronization(VURI.getInstance(repo.eResource()));
         return innerDec;
     }
 
@@ -279,29 +361,29 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
         pdt.setType(PrimitiveTypeEnum.INT);
         innerDec.setDatatype_InnerDeclaration(pdt);
         innerDec.setCompositeDataType_InnerDeclaration(cdt);
-        innerDec.setEntityName(PCM2JaMoPPUtils.INNER_DEC_NAME);
+        innerDec.setEntityName(PCM2JaMoPPTestUtils.INNER_DEC_NAME);
         cdt.getInnerDeclaration_CompositeDataType().add(innerDec);
         return innerDec;
     }
 
     protected OperationProvidedRole createAndSyncRepoOpIntfOpSigBasicCompAndOperationProvRole() throws IOException,
-            Throwable {
+    Throwable {
         final OperationSignature opSig = this.createAndSyncRepoInterfaceAndOperationSignature();
         final OperationInterface opInterface = opSig.getInterface__OperationSignature();
         final BasicComponent basicComponent = this.addBasicComponentAndSync(opInterface.getRepository__Interface());
 
         final OperationProvidedRole operationProvidedRole = RepositoryFactory.eINSTANCE.createOperationProvidedRole();
         operationProvidedRole
-                .setEntityName(basicComponent.getEntityName() + "_provides_" + opInterface.getEntityName());
+        .setEntityName(basicComponent.getEntityName() + "_provides_" + opInterface.getEntityName());
         operationProvidedRole.setProvidedInterface__OperationProvidedRole(opInterface);
         operationProvidedRole.setProvidingEntity_ProvidedRole(basicComponent);
         final VURI vuri = VURI.getInstance(opInterface.eResource());
-        super.triggerSynchronization(vuri);
+        this.triggerSynchronization(vuri);
         return operationProvidedRole;
     }
 
     protected OperationRequiredRole createAndSyncRepoBasicCompInterfaceAndOperationReqiredRole() throws IOException,
-            Throwable {
+    Throwable {
         final OperationSignature opSig = this.createAndSyncRepoInterfaceAndOperationSignature();
         final OperationInterface opInterface = opSig.getInterface__OperationSignature();
         final BasicComponent basicComponent = this.addBasicComponentAndSync(opInterface.getRepository__Interface());
@@ -311,14 +393,14 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
         operationRequiredRole.setRequiredInterface__OperationRequiredRole(opInterface);
         operationRequiredRole.setRequiringEntity_RequiredRole(basicComponent);
         final VURI vuri = VURI.getInstance(basicComponent.eResource());
-        super.triggerSynchronization(vuri);
+        this.triggerSynchronization(vuri);
         return operationRequiredRole;
     }
 
     protected System createAndSyncSystem(final String name) throws Throwable {
-        final System system = PCM2JaMoPPUtils.createSystem(this.resourceSet, name);
+        final System system = PCM2JaMoPPTestUtils.createSystem(this.resourceSet, name);
         this.changeRecorder.beginRecording(Collections.singletonList(system));
-        super.synchronizeFileChange(FileChangeKind.CREATE, VURI.getInstance(system.eResource()));
+        this.synchronizeFileChange(FileChangeKind.CREATE, VURI.getInstance(system.eResource()));
         return system;
     }
 }

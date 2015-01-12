@@ -20,7 +20,7 @@ import de.uka.ipd.sdq.pcm.repository.Repository;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPUtils;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 
 public class BasicComponentMappingTransformationTest extends PCM2JaMoPPTransformationTest {
 
@@ -31,7 +31,7 @@ public class BasicComponentMappingTransformationTest extends PCM2JaMoPPTransform
     	saveResourceFromDefaultModelTo(RESOURCETYPE_URI, "Palladio.resourcetype", "resourcetype");
     	saveResourceFromDefaultModelTo(PRIMITIVETYPES_URI, "PrimitiveTypes.repository", "repository");
         
-    	final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPUtils.REPOSITORY_NAME);
+    	final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
 
         final BasicComponent basicComponent = this.addBasicComponentAndSync(repo);
 
@@ -55,10 +55,10 @@ public class BasicComponentMappingTransformationTest extends PCM2JaMoPPTransform
 
     @Test
     public void testRenameBasicComponent() throws Throwable {
-        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPUtils.REPOSITORY_NAME);
+        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
         final BasicComponent basicComponent = this.addBasicComponentAndSync(repo);
 
-        basicComponent.setEntityName(PCM2JaMoPPUtils.BASIC_COMPONENT_NAME + PCM2JaMoPPUtils.RENAME);
+        basicComponent.setEntityName(PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + PCM2JaMoPPTestUtils.RENAME);
         this.triggerSynchronization(VURI.getInstance(repo.eResource()));
 
         this.assertBasicComponentCorrespondences(basicComponent);
@@ -66,7 +66,7 @@ public class BasicComponentMappingTransformationTest extends PCM2JaMoPPTransform
 
     @Test
     public void testDeleteBasicComponent() throws Throwable {
-        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPUtils.REPOSITORY_NAME);
+        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
         final BasicComponent basicComponent = this.addBasicComponentAndSync(repo);
 
         EcoreUtil.delete(basicComponent);
@@ -77,7 +77,7 @@ public class BasicComponentMappingTransformationTest extends PCM2JaMoPPTransform
 
     @Test
     public void testAddTwoBasicComponentAndDeleteOne() throws Throwable {
-        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPUtils.REPOSITORY_NAME);
+        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
         final BasicComponent basicComponent = this.addBasicComponentAndSync(repo);
         final BasicComponent basicComponent2 = this.addBasicComponentAndSync(repo, "SecondBasicComponent");
 

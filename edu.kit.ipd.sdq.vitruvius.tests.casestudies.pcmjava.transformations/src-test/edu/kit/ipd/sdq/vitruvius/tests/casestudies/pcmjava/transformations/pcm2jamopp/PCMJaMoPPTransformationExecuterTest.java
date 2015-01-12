@@ -15,26 +15,25 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.PCMJaMoPPTransformationTestBase;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPUtils;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 
-public class PCMJaMoPPTransformationExecuterTest extends PCMJaMoPPTransformationTestBase {
+public class PCMJaMoPPTransformationExecuterTest extends PCM2JaMoPPTransformationTest {
 
     private static final Logger logger = Logger.getLogger(PCMJaMoPPTransformationExecuterTest.class.getSimpleName());
 
     @Test
     public void testCreateNewResourceInPCM2JaMoPPTransformation() throws Throwable {
         final PCMJaMoPPTransformationExecuter pcmJaMoPPTransformation = new PCMJaMoPPTransformationExecuter();
-        final Repository repo = PCM2JaMoPPUtils.createRepository(this.resourceSet, PCM2JaMoPPUtils.REPOSITORY_NAME);
-        final BasicComponent basicComponent = PCM2JaMoPPUtils.createBasicComponent(repo);
-        final EMFModelChange change = PCM2JaMoPPUtils.createCreateChange(basicComponent, repo, repo,
+        final Repository repo = PCM2JaMoPPTestUtils.createRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
+        final BasicComponent basicComponent = PCM2JaMoPPTestUtils.createBasicComponent(repo);
+        final EMFModelChange change = PCM2JaMoPPTestUtils.createCreateChange(basicComponent, repo, repo,
                 "components__Repository");
 
         final EMFChangeResult emfChangeResult = pcmJaMoPPTransformation.executeTransformation(change,
                 super.getCorrespondenceInstance());
         logger.info("changed VURIs: " + emfChangeResult);
 
-        PCM2JaMoPPUtils.saveEMFChangeResult(emfChangeResult, this.resourceSet);
+        PCM2JaMoPPTestUtils.saveEMFChangeResult(emfChangeResult, this.resourceSet);
         assertTrue("Existing VURIs to save should be 0", 0 == emfChangeResult.getExistingObjectsToSave().size());
         assertTrue("New root EObjects to save should be 1", 1 == emfChangeResult.getNewRootObjectsToSave().size());
         final Pair<EObject, VURI> eObjectVURIPair = emfChangeResult.getNewRootObjectsToSave().iterator().next();

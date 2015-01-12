@@ -8,24 +8,24 @@ import de.uka.ipd.sdq.pcm.repository.OperationInterface;
 import de.uka.ipd.sdq.pcm.repository.Repository;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPUtils;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 
 public class OperationMappingTransformationTest extends PCM2JaMoPPTransformationTest {
 
     @Test
     public void testAddInterface() throws Throwable {
-        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPUtils.REPOSITORY_NAME);
+        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
 
         final OperationInterface opInterface = this.addInterfaceToReposiotryAndSync(repo,
-                PCM2JaMoPPUtils.INTERFACE_NAME);
+                PCM2JaMoPPTestUtils.INTERFACE_NAME);
 
         this.assertOperationInterfaceCorrespondences(opInterface);
     }
 
     @Test
     public void testRenameInterface() throws Throwable {
-        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPUtils.REPOSITORY_NAME);
-        OperationInterface opInterface = this.addInterfaceToReposiotryAndSync(repo, PCM2JaMoPPUtils.INTERFACE_NAME);
+        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
+        OperationInterface opInterface = this.addInterfaceToReposiotryAndSync(repo, PCM2JaMoPPTestUtils.INTERFACE_NAME);
 
         opInterface = this.renameInterfaceAndSync(opInterface);
         super.triggerSynchronization(VURI.getInstance(opInterface.eResource()));

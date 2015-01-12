@@ -14,7 +14,7 @@ import org.emftext.language.java.members.ClassMethod;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.PCM2JaMoPPUtils;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.jamopppcm.util.JaMoPPPCMTestUtil;
 
 /**
@@ -34,6 +34,7 @@ public class JaMoPPPCMUtilsTest {
     @Test
     public void testCreateCompilationUnit() throws IOException {
         final String className = "TestCollectionDataType";
+        @SuppressWarnings("rawtypes")
         final Class<? extends Collection> selectedClass = ArrayList.class;
         final String content = "package " + "datatypes;" + "\n\n" + "import " + selectedClass.getPackage().getName()
                 + "." + selectedClass.getSimpleName() + ";\n\n" + "public class " + className + " extends "

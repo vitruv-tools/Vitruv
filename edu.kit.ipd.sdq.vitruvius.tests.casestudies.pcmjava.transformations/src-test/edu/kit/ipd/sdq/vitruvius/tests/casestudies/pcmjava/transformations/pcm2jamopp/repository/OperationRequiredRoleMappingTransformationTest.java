@@ -21,7 +21,7 @@ import de.uka.ipd.sdq.pcm.repository.OperationRequiredRole;
 import de.uka.ipd.sdq.pcm.repository.Repository;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPUtils;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 
 public class OperationRequiredRoleMappingTransformationTest extends PCM2JaMoPPTransformationTest {
 
@@ -39,9 +39,9 @@ public class OperationRequiredRoleMappingTransformationTest extends PCM2JaMoPPTr
         final Repository repo = opr.getRequiredInterface__OperationRequiredRole().getRepository__Interface();
 
         final OperationInterface newInterface = this.addInterfaceToReposiotryAndSync(repo,
-                PCM2JaMoPPUtils.INTERFACE_NAME + PCM2JaMoPPUtils.RENAME);
+                PCM2JaMoPPTestUtils.INTERFACE_NAME + PCM2JaMoPPTestUtils.RENAME);
         final BasicComponent newBasicComponent = this.addBasicComponentAndSync(repo,
-                PCM2JaMoPPUtils.BASIC_COMPONENT_NAME + PCM2JaMoPPUtils.RENAME);
+                PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + PCM2JaMoPPTestUtils.RENAME);
         opr.setRequiredInterface__OperationRequiredRole(newInterface);
         opr.setRequiringEntity_RequiredRole(newBasicComponent);
         super.triggerSynchronization(VURI.getInstance(repo.eResource()));
@@ -65,7 +65,7 @@ public class OperationRequiredRoleMappingTransformationTest extends PCM2JaMoPPTr
         final Repository repo = opr.getRequiredInterface__OperationRequiredRole().getRepository__Interface();
 
         final OperationInterface newInterface = this.addInterfaceToReposiotryAndSync(repo,
-                PCM2JaMoPPUtils.INTERFACE_NAME + PCM2JaMoPPUtils.RENAME);
+                PCM2JaMoPPTestUtils.INTERFACE_NAME + PCM2JaMoPPTestUtils.RENAME);
         opr.setRequiredInterface__OperationRequiredRole(newInterface);
         super.triggerSynchronization(VURI.getInstance(opr.eResource()));
 
