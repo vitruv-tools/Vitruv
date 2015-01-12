@@ -71,9 +71,9 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
     protected VSUMImpl vsum;
     protected SyncManagerImpl syncManager;
     protected MetaRepositoryImpl metaRepository;
+    protected ChangeRecorder changeRecorder;
 
     private ChangeDescription2ChangeConverter changeDescrition2ChangeConverter;
-    private ChangeRecorder changeRecorder;
 
     protected CorrespondenceInstance correspondenceInstance;
 
@@ -368,14 +368,14 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
     }
 
     protected OperationProvidedRole createAndSyncRepoOpIntfOpSigBasicCompAndOperationProvRole() throws IOException,
-            Throwable {
+    Throwable {
         final OperationSignature opSig = this.createAndSyncRepoInterfaceAndOperationSignature();
         final OperationInterface opInterface = opSig.getInterface__OperationSignature();
         final BasicComponent basicComponent = this.addBasicComponentAndSync(opInterface.getRepository__Interface());
 
         final OperationProvidedRole operationProvidedRole = RepositoryFactory.eINSTANCE.createOperationProvidedRole();
         operationProvidedRole
-                .setEntityName(basicComponent.getEntityName() + "_provides_" + opInterface.getEntityName());
+        .setEntityName(basicComponent.getEntityName() + "_provides_" + opInterface.getEntityName());
         operationProvidedRole.setProvidedInterface__OperationProvidedRole(opInterface);
         operationProvidedRole.setProvidingEntity_ProvidedRole(basicComponent);
         final VURI vuri = VURI.getInstance(opInterface.eResource());
@@ -384,7 +384,7 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
     }
 
     protected OperationRequiredRole createAndSyncRepoBasicCompInterfaceAndOperationReqiredRole() throws IOException,
-            Throwable {
+    Throwable {
         final OperationSignature opSig = this.createAndSyncRepoInterfaceAndOperationSignature();
         final OperationInterface opInterface = opSig.getInterface__OperationSignature();
         final BasicComponent basicComponent = this.addBasicComponentAndSync(opInterface.getRepository__Interface());
