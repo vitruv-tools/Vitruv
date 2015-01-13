@@ -27,4 +27,9 @@ public class MetamodelManagerImpl implements MetamodelManaging {
         return this.metamodelManaging.getMetamodel(fileExtension);
     }
 
+    @Override
+    public Metamodel[] getAllMetamodels() {
+        return this.metamodelManaging.getAllMetamodels();
+    }
+
 }

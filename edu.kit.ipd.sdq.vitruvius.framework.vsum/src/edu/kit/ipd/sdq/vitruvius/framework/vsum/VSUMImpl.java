@@ -58,13 +58,14 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         this.saveCorrespondenceOptions.put(VSUMConstants.OPTION_PROCESS_DANGLING_HREF,
                 VSUMConstants.OPTION_PROCESS_DANGLING_HREF_DISCARD);
 
-        this.modelInstances = new HashMap<VURI, ModelInstance>();
         this.resourceSet = new ResourceSetImpl();
-        // FIXME fill metamodel and mapping map from correspondence folder in vitruvius.meta project
+
+        this.modelInstances = new HashMap<VURI, ModelInstance>();
         this.metamodel2CorrespondenceInstancesMap = new HashMap<Metamodel, Set<CorrespondenceInstance>>();
         this.mapping2CorrespondenceInstanceMap = new HashMap<Mapping, CorrespondenceInstance>();
 
         loadVURIsOfVSMUModelInstances();
+        fillCorrepondenceInstanceMaps();
     }
 
     @Override
@@ -198,9 +199,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
                 VURI[] mmURIs = mapping.getMetamodelURIs();
                 VURI correspondencesVURI = FileSystemHelper.getCorrespondencesVURI(mmURIs);
                 FileSystemHelper.saveCorrespondenceInstanceMMURIs(mmURIs);
-                Resource correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri());
-                correspondenceInstance = createCorrespondenceInstance(mapping, correspondencesVURI,
-                        correspondencesResource);
+                correspondenceInstance = createCorrespondenceInstance(mapping, correspondencesVURI);
                 this.mapping2CorrespondenceInstanceMap.put(mapping, correspondenceInstance);
             }
             correspondenceInstances.add(correspondenceInstance);
@@ -208,8 +207,13 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         return correspondenceInstances;
     }
 
-    protected CorrespondenceInstance createCorrespondenceInstance(final Mapping mapping,
-            final VURI correspondencesVURI, final Resource correspondencesResource) {
+    protected CorrespondenceInstance createCorrespondenceInstance(final Mapping mapping, final VURI correspondencesVURI) {
+        Resource correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri());
+        try {
+            correspondencesResource.load(this.saveCorrespondenceOptions);
+        } catch (Exception e) {
+            logger.trace("Could not load correspondence resource - creating new correspondence instance resource.");
+        }
         return new CorrespondenceInstanceImpl(mapping, this, correspondencesVURI, correspondencesResource);
     }
 
@@ -297,5 +301,23 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     private Metamodel getMetamodelByURI(final VURI uri) {
         String fileExtension = uri.getFileExtension();
         return this.metamodelManaging.getMetamodel(fileExtension);
+    }
+
+    private void fillCorrepondenceInstanceMaps() {
+        Metamodel[] metamodels = this.metamodelManaging.getAllMetamodels();
+        for (Metamodel metamodel : metamodels) {
+            Collection<Mapping> mappings = this.mappingManaging.getAllMappings(metamodel);
+            Set<CorrespondenceInstance> correspondenceInstances = new HashSet<CorrespondenceInstance>();
+            for (Mapping mapping : mappings) {
+                CorrespondenceInstance newCorrespondenceInstance = this.mapping2CorrespondenceInstanceMap.get(mapping);
+                if (null == newCorrespondenceInstance) {
+                    VURI correspondencesVURI = FileSystemHelper.getCorrespondencesVURI(mapping.getMetamodelURIs());
+                    newCorrespondenceInstance = createCorrespondenceInstance(mapping, correspondencesVURI);
+                    this.mapping2CorrespondenceInstanceMap.put(mapping, newCorrespondenceInstance);
+                }
+                correspondenceInstances.add(newCorrespondenceInstance);
+            }
+            this.metamodel2CorrespondenceInstancesMap.put(metamodel, correspondenceInstances);
+        }
     }
 }

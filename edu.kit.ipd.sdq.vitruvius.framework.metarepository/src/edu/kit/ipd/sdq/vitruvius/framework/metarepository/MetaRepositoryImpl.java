@@ -138,4 +138,10 @@ public class MetaRepositoryImpl implements MetamodelManaging, ViewTypeManaging, 
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public Metamodel[] getAllMetamodels() {
+        return this.fileExtension2MetamodelMap.values().toArray(
+                new Metamodel[this.fileExtension2MetamodelMap.values().size()]);
+    }
 }

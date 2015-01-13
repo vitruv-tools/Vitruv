@@ -29,23 +29,18 @@ public class FileSystemHelper {
     }
 
     public static VURI getCorrespondencesVURI(final VURI[] mmURIs) {
-        String fileExt = VitruviusConstants.getCorrespondencesFileExt();
-        return getCorrespondenceVURI(mmURIs, fileExt);
+        IFile correspondenceFile = getCorrespondenceIFile(mmURIs);
+        return VURI.getInstance(correspondenceFile);
     }
 
     public static void saveCorrespondenceInstanceMMURIs(final VURI[] mmURIs) {
-        String fileExt = VitruviusConstants.getCorrespondenceInstanceFileExt();
-        IFile correspondenceInstanceIFile = getCorrespondenceIFile(mmURIs, fileExt);
+        IFile correspondenceInstanceIFile = getCorrespondenceIFile(mmURIs);
         Set<VURI> mmURIsSet = new HashSet<VURI>(Arrays.asList(mmURIs));
         saveVURISetToFile(mmURIsSet, correspondenceInstanceIFile.getLocation().toOSString());
     }
 
-    private static VURI getCorrespondenceVURI(final VURI[] mmURIs, final String fileExt) {
-        IFile correspondenceFile = getCorrespondenceIFile(mmURIs, fileExt);
-        return VURI.getInstance(correspondenceFile);
-    }
-
-    private static IFile getCorrespondenceIFile(final VURI[] mmURIs, final String fileExt) {
+    public static IFile getCorrespondenceIFile(final VURI[] mmURIs) {
+        String fileExt = VitruviusConstants.getCorrespondencesFileExt();
         IProject correspondenceProject = getVSUMProject();
         IFolder correspondenceFolder = getCorrespondenceFolder(correspondenceProject);
         VURI[] copyOfMMURIs = Arrays.copyOf(mmURIs, mmURIs.length);
@@ -82,7 +77,7 @@ public class FileSystemHelper {
 
     private static void saveStringSetToFile(final Set<String> stringSet, final String fileName) {
         try {
-            // TODO: this code could be optimozed in a way that it only appends the new strings to
+            // TODO: this code could be optimized in a way that it only appends the new strings to
             // the file
             FileOutputStream fileOutputStream = new FileOutputStream(fileName);
             ObjectOutputStream oos = new ObjectOutputStream(fileOutputStream);

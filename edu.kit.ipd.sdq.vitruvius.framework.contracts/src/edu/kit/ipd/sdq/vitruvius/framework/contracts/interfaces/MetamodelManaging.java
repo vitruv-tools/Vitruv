@@ -10,5 +10,7 @@ public interface MetamodelManaging {
 
     Metamodel getMetamodel(String fileExtension);
 
+    Metamodel[] getAllMetamodels();
+
     // TODO decide whether MetamodelManaging.remove(String uri) is needed
 }

@@ -19,8 +19,13 @@ import pcm_mockup.Component;
 import pcm_mockup.Interface;
 import pcm_mockup.Pcm_mockupFactory;
 import pcm_mockup.Repository;
+import uml_mockup.UClass;
+import uml_mockup.UPackage;
+import uml_mockup.Uml_mockupFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
@@ -29,6 +34,7 @@ public class VSUMTest extends MetaRepositoryTest {
     protected static final String PCM_INSTANCE_URI = "MockupProject/model/My.pcm_mockup";
     protected static final String UML_INSTANCE_URI = "MockupProject/model/My.uml_mockup";
     private static final String PCM_INSTANCE_TO_CREATE_URI = TestUtil.PROJECT_URI + "/model/NewPCMInstance.pcm_mockup";
+    private static final String UML_INSTANCE_TO_CREATE_URI = TestUtil.PROJECT_URI + "/model/NewUMLInstance.uml_mockup";
 
     @Override
     @Test
@@ -107,17 +113,8 @@ public class VSUMTest extends MetaRepositoryTest {
     public void testLoadVSUMRepeadly() {
         VSUMImpl vsum = this.testMetaRepositoryAndVSUMCreation();
 
-        VURI vuri = VURI.getInstance(PCM_INSTANCE_TO_CREATE_URI);
-        ModelInstance mi = vsum.getAndLoadModelInstanceOriginal(vuri);
-        Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
-        mi.getResource().getContents().clear();
-        mi.getResource().getContents().add(repo);
-        Component component = Pcm_mockupFactory.eINSTANCE.createComponent();
-        repo.getComponents().add(component);
-        vsum.saveModelInstanceOriginal(vuri);
-        Interface mockIf = Pcm_mockupFactory.eINSTANCE.createInterface();
-        repo.getInterfaces().add(mockIf);
-        vsum.saveModelInstanceOriginal(vuri);
+        ModelInstance mi = fillVSUM(vsum);
+
         ModelInstance interfaceMi = vsum.getAndLoadModelInstanceOriginal(mi.getURI());
         Interface foundInterface = findInterfaceInModelInstance(interfaceMi);
         assertTrue("The interface in " + foundInterface + " in the model instance: " + mi + " has no resource",
@@ -131,6 +128,48 @@ public class VSUMTest extends MetaRepositoryTest {
         assertTrue("The interface " + foundInterface + " in the model instance: " + mi + " has no resource",
                 null != foundInterface.eResource());
 
+    }
+
+    protected ModelInstance fillVSUM(final VSUMImpl vsum) {
+        // create PCM
+        VURI vuri = VURI.getInstance(PCM_INSTANCE_TO_CREATE_URI);
+        ModelInstance mi = vsum.getAndLoadModelInstanceOriginal(vuri);
+        Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
+        mi.getResource().getContents().clear();
+        mi.getResource().getContents().add(repo);
+        Component component = Pcm_mockupFactory.eINSTANCE.createComponent();
+        repo.getComponents().add(component);
+        vsum.saveModelInstanceOriginal(vuri);
+        Interface mockIf = Pcm_mockupFactory.eINSTANCE.createInterface();
+        repo.getInterfaces().add(mockIf);
+        vsum.saveModelInstanceOriginal(vuri);
+
+        // create UML
+        VURI vuriUML = VURI.getInstance(UML_INSTANCE_TO_CREATE_URI);
+        ModelInstance umlMi = vsum.getAndLoadModelInstanceOriginal(vuriUML);
+        UPackage uPackage = Uml_mockupFactory.eINSTANCE.createUPackage();
+        umlMi.getResource().getContents().clear();
+        umlMi.getResource().getContents().add(uPackage);
+        UClass uClass = Uml_mockupFactory.eINSTANCE.createUClass();
+        uPackage.getClasses().add(uClass);
+        uml_mockup.Interface uInterface = Uml_mockupFactory.eINSTANCE.createInterface();
+        uPackage.getInterfaces().add(uInterface);
+        vsum.saveModelInstanceOriginal(vuriUML);
+
+        // create some correspondences
+        CorrespondenceInstance correspondenceInstance = vsum.getCorrespondenceInstanceOriginal(
+                VURI.getInstance(PCM_MM_URI), VURI.getInstance(UML_MM_URI));
+        assertNotNull("Correspondence instance is null", correspondenceInstance);
+        EObjectCorrespondence parrentCorrespondence = correspondenceInstance.createAndAddEObjectCorrespondence(repo,
+                uPackage);
+        correspondenceInstance.createAndAddEObjectCorrespondence(component, uClass, parrentCorrespondence);
+        correspondenceInstance.createAndAddEObjectCorrespondence(mockIf, uInterface, parrentCorrespondence);
+
+        // save instances again in order to trigger saving for CorrespondenceInstance(s)
+        vsum.saveModelInstanceOriginal(vuri);
+        vsum.saveModelInstanceOriginal(vuriUML);
+
+        return mi;
     }
 
     private Component findComponentInModelInstance(final ModelInstance compMi) {
