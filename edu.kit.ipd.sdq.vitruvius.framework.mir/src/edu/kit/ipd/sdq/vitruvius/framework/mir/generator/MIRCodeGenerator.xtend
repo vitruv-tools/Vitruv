@@ -23,10 +23,10 @@ class MIRCodeGenerator implements IGenerator {
 	public override doGenerate(Resource input, IFileSystemAccess fsa) {
 		val resourcePath = input.URI.trimSegments(1)
 		
-/* 		input.contents.filter(typeof(MIRFile)).forEach[
+ 		input.contents.filter(typeof(MIRFile)).forEach[
 			val il = generatorStatus.getIntermediateForMIR(it)
 			transform(il, resourcePath, fsa)
-		]*/
+		]
 	}
 	
 	def transform(MIR file, URI resourcePath, IFileSystemAccess fsa) {

@@ -8,8 +8,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIRi
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Mapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ReverseFeaturesCorrespondWithEClassifiers
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureCall
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.JavaBlock
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass
 import java.util.Collections
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
@@ -20,13 +22,13 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper.*
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureCall
 
 /**
  * Generates the intermediate language form of the model
  */
 class MIRIntermediateLanguageGenerator implements IGenerator {
+	private static final String DEFAULT_CLASS_NAME = "ChangeSynchronizer"
+	
 	
 	@Inject IGeneratorStatus generatorStatus;
 	
@@ -77,7 +79,7 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 			if (mirfile.generatedClass != null)
 				mirfile.generatedClass
 			else
-				"ChangeSynchronizer"
+				DEFAULT_CLASS_NAME
 		
 		mirfile.mappings
 	    	   .forEach [ it.mapClassifierMapping(mir) ]
@@ -116,6 +118,24 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		return result
 	}
 	
+	/**
+	 * Creates a {@link ClassifierMapping} for a {@link FeatureMapping}.
+	 */
+	def ClassifierMapping mapFeatureMappingClassifierMapping(FeatureMapping featureMapping, MIR mir) {
+				// create new Class Mapping for the Feature Mapping
+		val classifierMapping = createClassifierMapping
+		mir.classMappings += classifierMapping
+		
+		classifierMapping.featureMapping = featureMapping
+		featureMapping.classifierMapping = classifierMapping
+		
+		classifierMapping.left = featureMapping.left.last.EClassifier
+		classifierMapping.right = featureMapping.right.last.EClassifier
+		
+		classifierMapping
+	}
+	
+	// TODO: Refactor god method
 	def void mapFeatureMapping(edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping mapping, MIR mir,
 		ClassifierMapping parent
 	) {
@@ -126,15 +146,10 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		val leftElement = mapping.mappedElements.get(0) as FeatureCall
 		val rightElement = mapping.mappedElements.get(1) as FeatureCall
 		
-		featureMapping.left = createEClassifierFeature(leftElement)
-		featureMapping.right = createEClassifierFeature(rightElement)
+		featureMapping.left += createEClassifierFeature(leftElement)
+		featureMapping.right += createEClassifierFeature(rightElement)
 
-		// create new Class Mapping for the Feature Mapping
-		val classifierMapping = createClassifierMapping
-		mir.classMappings += classifierMapping
-		
-		classifierMapping.left = featureMapping.left.EClassifier
-		classifierMapping.right = featureMapping.right.EClassifier
+		val classifierMapping = mapFeatureMappingClassifierMapping(featureMapping, mir)
 
 		// create initializers for classifier mapping
 		classifierMapping.initializer += mapping.wheres.map[dispatchCreateInitializer].filterNull
@@ -190,14 +205,14 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 	 * Returns the type of the right side of the {@link Mapping} 
 	 */
 	def dispatch getRightSideType(FeatureMapping mapping) {
-		return mapping.right.EClassifier
+		return mapping.right.last.EClassifier
 	}
 	def dispatch getRightSideType(ClassifierMapping mapping) {
 		return mapping.right
 	}
 	
 	def dispatch getLeftSideType(FeatureMapping mapping) {
-		return mapping.left.EClassifier
+		return mapping.left.last.EClassifier
 	}
 	def dispatch getLeftSideType(ClassifierMapping mapping) {
 		return mapping.left

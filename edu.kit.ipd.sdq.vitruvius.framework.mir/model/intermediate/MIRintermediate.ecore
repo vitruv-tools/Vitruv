@@ -21,12 +21,16 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="right" upperBound="-1"
         eType="#//EClassifierFeature" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="classifierMapping" eType="#//ClassifierMapping"
+        eOpposite="#//ClassifierMapping/featureMapping"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ClassifierMapping" eSuperTypes="#//Mapping">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClassifier"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClassifier"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" lowerBound="1" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClassifier"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" lowerBound="1" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClassifier"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="initializer" upperBound="-1"
         eType="#//Initializer" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureMapping" eType="#//FeatureMapping"
+        eOpposite="#//FeatureMapping/classifierMapping"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Predicate" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="JavaPredicate" eSuperTypes="#//Predicate">

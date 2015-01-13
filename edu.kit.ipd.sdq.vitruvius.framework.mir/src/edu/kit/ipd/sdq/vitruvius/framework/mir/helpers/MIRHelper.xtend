@@ -6,8 +6,29 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass
 import org.eclipse.emf.ecore.EClassifier
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.TypedElementRef
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.TypedElement
+import java.util.List
+import java.util.ArrayList
 
 class MIRHelper {
+	static def List<FeatureCall> collectFeatureCalls(TypedElement fc) {
+		val result = new ArrayList<FeatureCall>()
+		
+		var TypedElement iter = fc;
+		while (iter != null) {
+			if (iter instanceof FeatureCall) {
+				result += iter
+				iter = iter.ref
+			} else if (iter instanceof TypedElementRef) {
+				iter = null
+			} else {
+				iter = null
+			}
+		}
+		
+		result
+	}
+	
+	
 	static def dispatch EClassifier getTypeRecursive(TypedElement element) {
 		null
 	}

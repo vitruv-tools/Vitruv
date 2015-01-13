@@ -28,6 +28,12 @@ import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
 import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper.*;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureCall
+import java.util.List
+import org.eclipse.xtext.util.Tuples
+import org.eclipse.emf.ecore.EClassifier
+import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EcoreHelper
+import java.util.ArrayList
+import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper
 
 class MIRJvmModelInferrer extends AbstractModelInferrer {
 	@Inject extension JvmTypesBuilder
@@ -53,8 +59,9 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 
 			// at this point, only the Java classes for XBlockExpressions
 			// (When, Where, Invariant, Response) are created
-			createClassMappingWhens(element.mappings, pkgName, acceptor)
-			createClassMappingWheres(element.mappings, pkgName, acceptor)
+			element.mappings.forEach [
+				createMappingWhensWheres(pkgName, acceptor)
+			]
 			
 			// INVARIANTS
 			invariantCounter = 0
@@ -70,7 +77,7 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
    		}
    	}
    	
-	def void createBlock(EObject predicate, EObject context, String pkgName,
+	def void createBlock(EObject predicate, List<EObject> parameterList, String pkgName,
 		IJvmDeclaredTypeAcceptor acceptor,
 		String className,
 		Class<?> type
@@ -78,28 +85,32 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 		if (predicate instanceof XBlockExpression) {
 			acceptor.accept(predicate.toClass(className) [ whenClass |
 				whenClass.members += predicate.toMethod("apply", typeRef(type)) [ checkMethod |
-					checkMethod.parameters += toParameter(predicate, context)
+					checkMethod.parameters += parameterList.map [
+						toParameter(predicate, it)
+					]
 					checkMethod.body = predicate
 				]
 				
-				whenClass.makeSingleton(context)
+				whenClass.makeSingleton(predicate)
 			])
 			
 			generatorStatus.putJvmName(predicate, className)
 		} else if (predicate instanceof OCLBlock) {
 			acceptor.accept(predicate.toClass(className)) [ whenClass |
 				whenClass.members += predicate.toMethod("apply", typeRef(type)) [ checkMethod |
-					checkMethod.parameters += toParameter(predicate, context, "context")
+					checkMethod.parameters += parameterList.map [
+						toParameter(predicate, it, "context")
+					]
 					checkMethod.body = '''return this.predicateEvaluator.check(context);'''
 				]
 				whenClass.members += predicate.toField("predicateEvaluator", typeRef(OCLPredicateEvaluator)) [
 					visibility = JvmVisibility::PRIVATE
 				]
-				whenClass.makeSingleton(context,
+				whenClass.makeSingleton(predicate,
 					'''
 					this.predicateEvaluator = new OCLPredicateEvaluator(
 						"«predicate.oclString»",
-						"«context.tryGetName»");
+						«parameterList.map['"' + tryGetName + '"'].join(", ")»);
 					'''
 				)
 			]
@@ -121,66 +132,82 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 	def void makeSingleton(JvmGenericType type, EObject context) {
 		makeSingleton(type, context, '''''');
 	}
-	
-	def void createClassMappingWhens(EList<ClassMapping> mappingList, String pkgName, IJvmDeclaredTypeAcceptor acceptor) {
-		mappingList.forEach [ mapping |
-			mapping.whens.forEach[it.createWhenPredicateClass(
-					mapping.mappedElements.get(0),
-					pkgName,
-					acceptor
-				)]
-			
-			createFeatureMappingWhens(mapping.withs, pkgName, acceptor)
-		]
+
+	// TODO: Pull up name from NamedEClass and FeatureCall, refactor
+	def List<EObject> createParameterList(EObject context, int index) {
+		var containerHierarchy = EcoreHelper.getContainerHierarchy(context, true)
+		
+		val result = new ArrayList<EObject>()
+		
+		for (EObject o : containerHierarchy) {
+			if (o instanceof ClassMapping) {
+				if (o.mappedElements.size > index) {
+					val namedEClass = o.mappedElements.get(index) as NamedEClass
+					if (namedEClass?.name != null)
+						result += namedEClass
+				}
+					
+			} else if (o instanceof FeatureMapping) {
+				if (o.mappedElements.size > index) {
+					val featureCall = o.mappedElements.get(index)
+					val callList = MIRHelper.collectFeatureCalls(featureCall)
+					result += callList.filter[name != null]
+				}
+			}
+		}
+		
+		result.reverse
 	}
 	
-	def void createFeatureMappingWhens(EList<FeatureMapping> mappingList, String pkgName, IJvmDeclaredTypeAcceptor acceptor) {
-		mappingList.forEach [ mapping |
-			mapping.whens.forEach[it.createWhenPredicateClass(
-					mapping.mappedElements.get(0),
-					pkgName,
-					acceptor
-				)]
-			
-			createFeatureMappingWhens(mapping.withs, pkgName, acceptor)
-		]
+	// TODO: refactor whens/withs into super class
+	def void createMappingWhensWheres(EObject mapping, String pkgName, IJvmDeclaredTypeAcceptor acceptor) {
+		val whens = switch (mapping) {
+			ClassMapping: mapping.whens
+			FeatureMapping: mapping.whens
+			default: null
+		}
+		
+		val withs = switch (mapping) {
+			ClassMapping: mapping.withs
+			FeatureMapping: mapping.withs
+			default: null
+		}
+		
+		val wheres = switch (mapping) {
+			ClassMapping: mapping.wheres
+			FeatureMapping: mapping.wheres
+			default: null
+		}
+		
+		val parameterListWhen = createParameterList(mapping, 0)
+		val parameterListWhere = createParameterList(mapping, 1)
+		
+		whens.forEach[it.createWhenPredicateClass(
+			parameterListWhen,
+			pkgName,
+			acceptor
+		)]
+		
+		wheres.forEach[it.createWherePredicateClass(
+			parameterListWhere,
+			pkgName,
+			acceptor
+		)]
+		
+		withs.forEach[it.createMappingWhensWheres(pkgName, acceptor)]
 	}
 	
-	def void createClassMappingWheres(EList<ClassMapping> mappingList, String pkgName, IJvmDeclaredTypeAcceptor acceptor) {
-		mappingList.forEach [ mapping |
-			mapping.wheres.forEach[it.createWherePredicateClass(
-					mapping.mappedElements.get(1),
-					pkgName,
-					acceptor
-				)]
-			
-			createFeatureMappingWheres(mapping.withs, pkgName, acceptor)
-		]
-	}
-	
-	def void createFeatureMappingWheres(EList<FeatureMapping> mappingList, String pkgName, IJvmDeclaredTypeAcceptor acceptor) {
-		mappingList.forEach [ mapping |
-			mapping.wheres.forEach[it.createWherePredicateClass(
-					mapping.mappedElements.get(1),
-					pkgName,
-					acceptor
-				)]
-			
-			createFeatureMappingWheres(mapping.withs, pkgName, acceptor)
-		]
-	}
-	
-	def void createWhenPredicateClass(EObject predicate, EObject context, String pkgName, IJvmDeclaredTypeAcceptor acceptor) {
+	def void createWhenPredicateClass(EObject predicate, List<EObject> parameterList, String pkgName, IJvmDeclaredTypeAcceptor acceptor) {
 		val whenClassName = pkgName + ".whens.When" + whenCounter
 		
-		createBlock(predicate, context, pkgName, acceptor, whenClassName, Boolean)
+		createBlock(predicate, parameterList, pkgName, acceptor, whenClassName, Boolean)
 		whenCounter++
 	}
 	
-	def void createWherePredicateClass(EObject predicate, EObject context, String pkgName, IJvmDeclaredTypeAcceptor acceptor) {
+	def void createWherePredicateClass(EObject predicate, List<EObject> parameterList, String pkgName, IJvmDeclaredTypeAcceptor acceptor) {
 		val whereClassName = pkgName + ".wheres.Where" + whereCounter
 		
-		createBlock(predicate, context, pkgName, acceptor,
+		createBlock(predicate, parameterList, pkgName, acceptor,
 				whereClassName, Void.TYPE)
 		whereCounter++
 	}
@@ -265,12 +292,12 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
    	
    	def dispatch toParameterType(EObject object) { return null }
    	
-   	def toParameter(EObject obj, EObject object) {
-   		obj.toParameter(object.tryGetName, object.toParameterType)
+   	def toParameter(EObject context, EObject object) {
+   		context.toParameter(object.tryGetName, object.toParameterType)
 	}
 	
-   	def toParameter(EObject obj, EObject object, String name) {
-   		obj.toParameter(name, object.toParameterType)
+   	def toParameter(EObject context, EObject object, String name) {
+   		context.toParameter(name, object.toParameterType)
 	}
 	
 	def toTypeIdentifier(NamedEClass object) {

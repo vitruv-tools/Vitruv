@@ -12,12 +12,11 @@ import org.eclipse.ocl.helper.OCLHelper;
 public class OCLPredicateEvaluator {
 
 	private String oclPredicate;
-	private Object sourceName;
-	private Object varName;
+	private Object varNames;
 
-	public OCLPredicateEvaluator(String oclPredicate, String varName) {
+	public OCLPredicateEvaluator(String oclPredicate, String... varNames) {
 		this.oclPredicate = oclPredicate;
-		this.varName = sourceName;
+		this.varNames = varNames;
 	}
 	
 	public boolean check(EObject context) {
