@@ -19,6 +19,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Java
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.CreateCorresponding
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.FeatureMapping
 import java.util.ArrayList
+import java.util.List
 
 class MIRCodeGenerator implements IGenerator {
 	private static final String CONTEXT_NAME = "context";
@@ -28,6 +29,7 @@ class MIRCodeGenerator implements IGenerator {
 	
 	var Map<ClassifierMapping, String> predicateCheckMethodNames
 	var Map<ClassifierMapping, String> createMethodNames
+	var List<ClassifierMapping> classifierMappings
 	
 	@Override
 	public override doGenerate(Resource input, IFileSystemAccess fsa) {
@@ -49,8 +51,10 @@ class MIRCodeGenerator implements IGenerator {
 		println(file.configuration.package)
 		println(resourcePath)
 		
-		var predicateChecks = file.classMappings.map [ generatePredicateCheckMethod ].join
-		var checkMappingMethods = file.classMappings.map [ generateCreateMappingMethod ].join
+		classifierMappings = file.classMappings
+		
+		var predicateChecks = classifierMappings.map [ generatePredicateCheckMethod ].join
+		var checkMappingMethods = classifierMappings.map [ generateCreateMappingMethod ].join
 		val featureChangeMethods = file.featureMappings.map [ generateFeatureChangeMethods ].join
 		val mappingIDMethod = generateGetMappingIDMethod
 		val callCreateMethod = generateCallCreateMethod
@@ -62,6 +66,8 @@ class MIRCodeGenerator implements IGenerator {
 			import org.eclipse.emf.ecore.EObject;
 			import java.util.Map;
 			import java.util.HashMap;
+			
+			import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper;
 			
 			class «file.configuration.type» {
 				/*
@@ -103,21 +109,33 @@ class MIRCodeGenerator implements IGenerator {
 	}
 	
 	def generateCallCreateMethod() {
+		var result =
+			'''
+			public void callCreateMethod(int mappingID, EObject «CONTEXT_NAME») {
+				switch (mappingID) {
+			'''
+			
 		var i = 0;
-		'''
-		public void callCreateMethod(int mappingID, EObject «CONTEXT_NAME») {
-			switch (mappingID) {
-				«FOR createMethod : createMethodNames.values»
-				case «i++»:
+		for (classifierMapping : classifierMappings) {
+			var createMethod = createMethodNames.get(classifierMapping)
+			result +=
+				'''
+				case «i»:
 					«createMethod»(«CONTEXT_NAME»);
-				    break;
-				«ENDFOR»
-				default:
-					throw new IllegalArgumentException("Unknown mapping id: " + mappingID);
+					break;
+				'''
+			i++
+		}
+		
+		result +=
+			'''
+					default:
+						throw new IllegalArgumentException("Unknown mapping id: " + mappingID);
+				}
 			}
-		}'''
-		
-		
+			'''
+			
+		return result
 	}
 	
 	private def generateCheckElementMethod() {
@@ -149,15 +167,21 @@ class MIRCodeGenerator implements IGenerator {
 	
 	private def generateGetMappingIDMethod() {
 		var i = 0;
-		'''
-		public Integer getMappingID(EObject «CONTEXT_NAME») {
-			«FOR predicateCheck : predicateCheckMethodNames.values»
-			if («predicateCheck»(«CONTEXT_NAME»))
-				return «i++»;
-			«ENDFOR»
-			return null;
+		var result = '''public Integer getMappingID(EObject «CONTEXT_NAME») {'''
+		
+		for (classifierMapping : classifierMappings) {
+			var predicateCheck = predicateCheckMethodNames.get(classifierMapping)
+			result +=
+				'''
+					if («predicateCheck»(«CONTEXT_NAME»))
+						return «i»;
+				'''
+			i++
 		}
-		'''
+		
+		result += "return null;\n}"
+		
+		return result
 	}
 	
 	private def generatePredicateCheckMethod(ClassifierMapping mapping) {
