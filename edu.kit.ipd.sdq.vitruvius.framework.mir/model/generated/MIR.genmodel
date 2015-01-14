@@ -29,14 +29,22 @@
     <genClasses ecoreClass="MIR.ecore#//ClassMapping">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//ClassMapping/mappedElements"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//ClassMapping/whens"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//ClassMapping/withs"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//ClassMapping/wheres"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//ClassMapping/withs"/>
+    </genClasses>
+    <genClasses ecoreClass="MIR.ecore#//Where">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Where/expression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Where/oppositePredicate"/>
+    </genClasses>
+    <genClasses ecoreClass="MIR.ecore#//When">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//When/predicate"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//When/oppositeExpression"/>
     </genClasses>
     <genClasses ecoreClass="MIR.ecore#//FeatureMapping">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//FeatureMapping/mappedElements"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//FeatureMapping/whens"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//FeatureMapping/withs"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//FeatureMapping/wheres"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//FeatureMapping/withs"/>
     </genClasses>
     <genClasses ecoreClass="MIR.ecore#//TypedElement"/>
     <genClasses ecoreClass="MIR.ecore#//Ref"/>

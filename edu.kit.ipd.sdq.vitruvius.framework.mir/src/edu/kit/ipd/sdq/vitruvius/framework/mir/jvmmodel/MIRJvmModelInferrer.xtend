@@ -182,17 +182,19 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 		val parameterListWhen = createParameterList(mapping, 0)
 		val parameterListWhere = createParameterList(mapping, 1)
 		
-		whens.forEach[it.createWhenPredicateClass(
-			parameterListWhen,
-			pkgName,
-			acceptor
-		)]
+		(whens.map[predicate] + wheres.map[oppositePredicate].filterNull).forEach[
+			it.createWhenPredicateClass(
+				parameterListWhen,
+				pkgName,
+				acceptor
+			)]
 		
-		wheres.forEach[it.createWherePredicateClass(
-			parameterListWhere,
-			pkgName,
-			acceptor
-		)]
+		(wheres.map[expression] + whens.map[oppositeExpression].filterNull).forEach[
+			it.createWherePredicateClass(
+				parameterListWhere,
+				pkgName,
+				acceptor
+			)]
 		
 		withs.forEach[it.createMappingWhensWheres(pkgName, acceptor)]
 	}

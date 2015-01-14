@@ -86,22 +86,71 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 	}
 	
 	def void mapClassifierMapping(ClassMapping mapping, MIR mir) {
+		mapClassifierMapping(mapping, mir, true)
+		mapClassifierMapping(mapping, mir, false)
+	}
+	
+	def void mapClassifierMapping(ClassMapping mapping, MIR mir, boolean reverse) {
 		val result = createClassifierMapping
 		
-		val leftElement = mapping.mappedElements.get(0)
-		val rightElement = mapping.mappedElements.get(1)
+		val leftElement = mapping.getLeftElement(reverse)
+		val rightElement = mapping.getRightElement(reverse)
 		
 		result.left = (leftElement as NamedEClass).representedEClass
 		result.right = (rightElement as NamedEClass).representedEClass
 		
-		val mappedPredicates = mapping.whens.map[dispatchCreatePredicate].filterNull.toList
+		val mappedPredicates = mapping.getWhenPredicates(reverse).map[dispatchCreatePredicate].filterNull.toList
 		mir.predicates += mappedPredicates
 		result.predicates += mappedPredicates
-		result.initializer += mapping.wheres.map[dispatchCreateInitializer].filterNull
+		result.initializer += mapping.getWhereExpressions(reverse).map[dispatchCreateInitializer].filterNull
 		
-		mapping.withs.forEach [ it.mapFeatureMapping(mir, result) ]
+		mapping.withs.forEach [ it.mapFeatureMapping(mir, result, reverse) ]
 					
 		mir.classMappings += result
+	}
+	
+	def getLeftElement(ClassMapping mapping, boolean reverse) {
+		mapping.mappedElements.get(if (!reverse) 0 else 1)
+	}
+	
+	def getRightElement(ClassMapping mapping, boolean reverse) {
+		mapping.mappedElements.get(if (!reverse) 1 else 0)
+	}
+	
+	def getLeftElement(edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping mapping, boolean reverse) {
+		mapping.mappedElements.get(if (!reverse) 0 else 1)
+	}
+	
+	def getRightElement(edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping mapping, boolean reverse) {
+		mapping.mappedElements.get(if (!reverse) 1 else 0)
+	}
+	
+	def getWhenPredicates(ClassMapping mapping, boolean reverse) {
+		if (!reverse)
+			mapping.whens.map[predicate]
+		else
+			mapping.wheres.map[oppositePredicate].filterNull
+	}
+	
+	def getWhereExpressions(ClassMapping mapping, boolean reverse) {
+		if (!reverse)
+			mapping.wheres.map[expression]
+		else
+			mapping.whens.map[oppositeExpression].filterNull
+	}
+	
+	def getWhenPredicates(edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping mapping, boolean reverse) {
+		if (!reverse)
+			mapping.whens.map[predicate]
+		else
+			mapping.wheres.map[oppositePredicate].filterNull
+	}
+	
+	def getWhereExpressions(edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping mapping, boolean reverse) {
+		if (!reverse)
+			mapping.wheres.map[expression]
+		else
+			mapping.whens.map[oppositeExpression].filterNull
 	}
 	
 	def dispatch dispatchCreatePredicate(Object o) { return null; }
@@ -129,6 +178,7 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		classifierMapping.featureMapping = featureMapping
 		featureMapping.classifierMapping = classifierMapping
 		
+		// TODO: case where there is not only one EClassifier
 		classifierMapping.left = featureMapping.left.last.EClassifier
 		classifierMapping.right = featureMapping.right.last.EClassifier
 		
@@ -137,14 +187,14 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 	
 	// TODO: Refactor god method
 	def void mapFeatureMapping(edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping mapping, MIR mir,
-		ClassifierMapping parent
+		ClassifierMapping parent, boolean reverse
 	) {
 		// create new Feature Mapping
 		val featureMapping = createFeatureMapping
 		mir.featureMappings += featureMapping
 		
-		val leftElement = mapping.mappedElements.get(0) as FeatureCall
-		val rightElement = mapping.mappedElements.get(1) as FeatureCall
+		val leftElement = mapping.getLeftElement(reverse) as FeatureCall
+		val rightElement = mapping.getRightElement(reverse) as FeatureCall
 		
 		featureMapping.left += createEClassifierFeature(leftElement)
 		featureMapping.right += createEClassifierFeature(rightElement)
@@ -152,7 +202,7 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		val classifierMapping = mapFeatureMappingClassifierMapping(featureMapping, mir)
 
 		// create initializers for classifier mapping
-		classifierMapping.initializer += mapping.wheres.map[dispatchCreateInitializer].filterNull
+		classifierMapping.initializer += mapping.getWhereExpressions(reverse).map[dispatchCreateInitializer].filterNull
 
 		// create new correspondence predicate for the feature mapping
 		val correspondencePredicate = createReverseFeaturesCorrespondWithEClassifiers
@@ -168,14 +218,14 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		classifierMapping.predicates += correspondencePredicate
 		
 		// map predicates for both class and feature mapping
-		val mappedPredicates = mapping.whens.map [ it.dispatchCreatePredicate ].filterNull.toList
+		val mappedPredicates = mapping.getWhenPredicates(reverse).map [ it.dispatchCreatePredicate ].filterNull.toList
 		mir.predicates += mappedPredicates
 		featureMapping.predicates += mappedPredicates
 		classifierMapping.predicates += mappedPredicates
 		
 		// call recursively for each child mapping
 		mapping.withs.forEach [
-			mapFeatureMapping(it, mir, classifierMapping)
+			mapFeatureMapping(it, mir, classifierMapping, reverse)
 		]
 	}
 	

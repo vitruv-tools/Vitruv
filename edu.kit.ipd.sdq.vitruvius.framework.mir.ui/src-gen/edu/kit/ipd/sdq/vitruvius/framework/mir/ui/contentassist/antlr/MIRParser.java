@@ -39,6 +39,8 @@ public class MIRParser extends AbstractContentAssistParser {
 				{
 					put(grammarAccess.getMIRFileAccess().getAlternatives_4(), "rule__MIRFile__Alternatives_4");
 					put(grammarAccess.getClassMappingAccess().getAlternatives_3_1(), "rule__ClassMapping__Alternatives_3_1");
+					put(grammarAccess.getWhereAccess().getAlternatives_2(), "rule__Where__Alternatives_2");
+					put(grammarAccess.getWhenAccess().getAlternatives_2(), "rule__When__Alternatives_2");
 					put(grammarAccess.getFeatureMappingAccess().getAlternatives_3_1(), "rule__FeatureMapping__Alternatives_3_1");
 					put(grammarAccess.getPredicateBlockAccess().getAlternatives(), "rule__PredicateBlock__Alternatives");
 					put(grammarAccess.getExpressionBlockAccess().getAlternatives(), "rule__ExpressionBlock__Alternatives");
@@ -91,6 +93,8 @@ public class MIRParser extends AbstractContentAssistParser {
 					put(grammarAccess.getClassMappingAccess().getGroup_3_1_0(), "rule__ClassMapping__Group_3_1_0__0");
 					put(grammarAccess.getClassMappingAccess().getGroup_3_1_1(), "rule__ClassMapping__Group_3_1_1__0");
 					put(grammarAccess.getClassMappingAccess().getGroup_3_1_2(), "rule__ClassMapping__Group_3_1_2__0");
+					put(grammarAccess.getWhereAccess().getGroup(), "rule__Where__Group__0");
+					put(grammarAccess.getWhenAccess().getGroup(), "rule__When__Group__0");
 					put(grammarAccess.getFeatureMappingAccess().getGroup(), "rule__FeatureMapping__Group__0");
 					put(grammarAccess.getFeatureMappingAccess().getGroup_3(), "rule__FeatureMapping__Group_3__0");
 					put(grammarAccess.getFeatureMappingAccess().getGroup_3_1_0(), "rule__FeatureMapping__Group_3_1_0__0");
@@ -307,13 +311,17 @@ public class MIRParser extends AbstractContentAssistParser {
 					put(grammarAccess.getClassMappingAccess().getMappedElementsAssignment_0(), "rule__ClassMapping__MappedElementsAssignment_0");
 					put(grammarAccess.getClassMappingAccess().getMappedElementsAssignment_2(), "rule__ClassMapping__MappedElementsAssignment_2");
 					put(grammarAccess.getClassMappingAccess().getWhensAssignment_3_1_0_1(), "rule__ClassMapping__WhensAssignment_3_1_0_1");
-					put(grammarAccess.getClassMappingAccess().getWithsAssignment_3_1_1_1(), "rule__ClassMapping__WithsAssignment_3_1_1_1");
-					put(grammarAccess.getClassMappingAccess().getWheresAssignment_3_1_2_1(), "rule__ClassMapping__WheresAssignment_3_1_2_1");
+					put(grammarAccess.getClassMappingAccess().getWheresAssignment_3_1_1_1(), "rule__ClassMapping__WheresAssignment_3_1_1_1");
+					put(grammarAccess.getClassMappingAccess().getWithsAssignment_3_1_2_1(), "rule__ClassMapping__WithsAssignment_3_1_2_1");
+					put(grammarAccess.getWhereAccess().getExpressionAssignment_0(), "rule__Where__ExpressionAssignment_0");
+					put(grammarAccess.getWhereAccess().getOppositePredicateAssignment_2_1(), "rule__Where__OppositePredicateAssignment_2_1");
+					put(grammarAccess.getWhenAccess().getPredicateAssignment_0(), "rule__When__PredicateAssignment_0");
+					put(grammarAccess.getWhenAccess().getOppositeExpressionAssignment_2_1(), "rule__When__OppositeExpressionAssignment_2_1");
 					put(grammarAccess.getFeatureMappingAccess().getMappedElementsAssignment_0(), "rule__FeatureMapping__MappedElementsAssignment_0");
 					put(grammarAccess.getFeatureMappingAccess().getMappedElementsAssignment_2(), "rule__FeatureMapping__MappedElementsAssignment_2");
 					put(grammarAccess.getFeatureMappingAccess().getWhensAssignment_3_1_0_1(), "rule__FeatureMapping__WhensAssignment_3_1_0_1");
-					put(grammarAccess.getFeatureMappingAccess().getWithsAssignment_3_1_1_1(), "rule__FeatureMapping__WithsAssignment_3_1_1_1");
-					put(grammarAccess.getFeatureMappingAccess().getWheresAssignment_3_1_2_1(), "rule__FeatureMapping__WheresAssignment_3_1_2_1");
+					put(grammarAccess.getFeatureMappingAccess().getWheresAssignment_3_1_1_1(), "rule__FeatureMapping__WheresAssignment_3_1_1_1");
+					put(grammarAccess.getFeatureMappingAccess().getWithsAssignment_3_1_2_1(), "rule__FeatureMapping__WithsAssignment_3_1_2_1");
 					put(grammarAccess.getNamedEClassAccess().getRepresentedEClassAssignment_1(), "rule__NamedEClass__RepresentedEClassAssignment_1");
 					put(grammarAccess.getNamedEClassAccess().getNameAssignment_2_1(), "rule__NamedEClass__NameAssignment_2_1");
 					put(grammarAccess.getTypedElementRefAccess().getRefAssignment_1(), "rule__TypedElementRef__RefAssignment_1");

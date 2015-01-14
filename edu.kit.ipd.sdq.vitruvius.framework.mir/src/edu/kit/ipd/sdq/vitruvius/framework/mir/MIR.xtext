@@ -34,11 +34,21 @@ ClassMapping:
 	'and'
 	mappedElements+=NamedEClass
 	('{'
-		( ('when' whens += PredicateBlock)
+		( ('when' whens += When)
+		| ('where' wheres += Where)
 		| ('with' withs += FeatureMapping)
-		| ('where' wheres += ExpressionBlock)
 		)*
 	'}')?
+;
+
+Where:
+	expression=ExpressionBlock
+	'opposite' ('auto' | oppositePredicate=PredicateBlock)
+;
+
+When:
+	predicate=PredicateBlock
+	'opposite' ('auto' | oppositeExpression=ExpressionBlock)
 ;
 
 FeatureMapping:
@@ -46,9 +56,9 @@ FeatureMapping:
 	'and'
 	mappedElements+=FeatureCall
 	('{'
-		( ('when' whens += PredicateBlock)
+		( ('when' whens += When)
+		| ('where' wheres += Where)
 		| ('with' withs += FeatureMapping)
-		| ('where' wheres += ExpressionBlock)
 		)*
 	'}')?
 ;
