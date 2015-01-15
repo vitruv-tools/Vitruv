@@ -1,0 +1,47 @@
+generates package mir.pcm2uml
+generates type PCM2UML
+
+import package "http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" as repo
+import package "http://www.eclipse.org/uml2/2.1.0/UML" as uml
+
+map repo.repository.OperationInterface as oi
+ and uml.Interface as ui {
+ 	when xbase { "repo.repository.OperationInterface".empty }
+ 		opposite auto
+ 	where xbase { "uml.Interfae".empty }
+ 		opposite auto
+ 	
+ 	with oi.(signatures__OperationInterface[repo.repository.OperationSignature] as ois)
+ 	  and ui.(ownedOperation[uml.Operation] as uioo) {
+	 	when xbase { "repo.repository.OperationInterface, repo.repository.OperationSignature".empty }
+	 		 opposite xbase { uioo.bodyCondition = null }
+	 	where xbase { "uml.Interface, uml.Operation".empty }
+	 		 opposite auto
+
+ 		with ois.(returnType__OperationSignature[repo.repository.DataType] as oisrt)
+		  and uioo.(ownedParameter[uml.Parameter] as uioop).(^type[uml.DataType] as uiooopt) {
+		  	//where java "uiooop.direction = org.eclipse.uml2.uml.ParameterDirectionKind.RETURN"
+		 	when xbase { "repo.repository.OperationInterface, repo.repository.OperationSignature, repo.repository.DataType".empty }
+	 			opposite auto
+		 	where xbase { "uml.Interface, uml.Operation, uml.Parameter, uml.DataType".empty }
+	 			opposite auto
+		}
+		with ois.(parameters__OperationSignature[repo.repository.Parameter] as oisp)
+		  and uioo.(ownedParameter[uml.Parameter] as uiooop2) {
+		  	//where java "uioop.direction != org.eclipse.uml2.uml.ParameterDirectionKind.RETURN"
+		 	when xbase { "repo.repository.OperationInterface, repo.repository.OperationSignature, repo.repository.Parameter".empty }
+		 		opposite auto
+		 	where xbase { "uml.Interface, uml.Operation, uml.Parameter".empty }
+		 		opposite auto
+		}
+ 	}
+}
+
+map repo.repository.Repository as pr
+ and uml.Package as up {
+	with pr.(interfaces__Repository) and up.(member)
+}
+
+context uml.Action
+inv blax(uml.Abstraction a):
+xbase { ^context.activity != null }
