@@ -1,7 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine;
 
-import org.apache.log4j.Logger;
-
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
@@ -13,7 +11,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.TransformationEx
 
 public class EMFModelPropagationEngineImpl implements ChangePropagating {
 
-    private static final Logger logger = Logger.getLogger(EMFModelPropagationEngineImpl.class.getSimpleName());
+    // private static final Logger logger =
+    // Logger.getLogger(EMFModelPropagationEngineImpl.class.getSimpleName());
 
     private final TransformationExecutingProviding transformationExecutingProviding;
 

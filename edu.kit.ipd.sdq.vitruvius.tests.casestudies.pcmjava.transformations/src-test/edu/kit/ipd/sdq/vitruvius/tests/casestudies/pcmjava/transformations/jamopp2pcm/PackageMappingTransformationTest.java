@@ -6,7 +6,9 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
+import de.uka.ipd.sdq.pcm.repository.CompositeComponent;
 import de.uka.ipd.sdq.pcm.repository.Repository;
+import de.uka.ipd.sdq.pcm.system.System;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
@@ -42,19 +44,41 @@ public class PackageMappingTransformationTest extends JaMoPP2PCMTransformationTe
     @Test
     public void testAddSecondPackage() throws Throwable {
         final Repository repo = super.addFirstPackage();
-        final BasicComponent bc = super.addSecondPackage();
+        final BasicComponent bc = super.addSecondPackageCorrespondsToBasicComponent();
 
-        // repository of basic component has to be the repository
-        assertEquals("Repository of basic compoennt is not the repository: " + repo, repo.getId(), bc
-                .getRepository__RepositoryComponent().getId());
-        assertTrue("The name of the basic component is not " + PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME, bc
-                .getEntityName().equalsIgnoreCase(PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME));
+        this.assertRepositoryAndPCMName(repo, bc, PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME);
+    }
+
+    @Test
+    public void testCreateCompositeComponent() throws Throwable {
+        final Repository repo = super.addFirstPackage();
+
+        final CompositeComponent cc = super.addSecondPackageCorrespondsToCompositeComponent();
+
+        this.assertRepositoryAndPCMName(repo, cc, PCM2JaMoPPTestUtils.COMPOSITE_COMPONENT_NAME);
+    }
+
+    @Test
+    public void testCreateSystem() throws Throwable {
+        super.addFirstPackage();
+        final System system = super.addSecondPackageCorrespondsToSystem();
+
+        this.assertPCMNamedElement(system, PCM2JaMoPPTestUtils.SYSTEM_NAME);
+    }
+
+    @Test
+    public void testCreateNoCorrespondingObject() throws Throwable {
+        final Repository repo = super.addFirstPackage();
+
+        super.addSecondPackageCorrespondsWithoutCorrespondences();
+
+        // TODO:what to check?
     }
 
     @Test
     public void testRenamePackage() throws Throwable {
         final Repository repo = super.addFirstPackage();
-        final BasicComponent bc = super.addSecondPackage();
+        final BasicComponent bc = super.addSecondPackageCorrespondsToBasicComponent();
 
         final String packageName = PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + PCM2JaMoPPTestUtils.RENAME;
 
@@ -68,6 +92,6 @@ public class PackageMappingTransformationTest extends JaMoPP2PCMTransformationTe
                 .getRepository__RepositoryComponent().getId());
         // name should be changed since there is no implementing class (yet) fot the component
         assertTrue("The name of the basic component is not " + packageName,
-                bc.getEntityName().equalsIgnoreCase(packageName));
+                packageName.toLowerCase().contains(bc.getEntityName()));
     }
 }

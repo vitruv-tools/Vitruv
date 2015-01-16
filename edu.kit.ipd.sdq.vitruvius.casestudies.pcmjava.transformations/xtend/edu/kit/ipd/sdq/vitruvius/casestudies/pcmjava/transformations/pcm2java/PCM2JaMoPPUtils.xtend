@@ -308,17 +308,14 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	def static Package getContainingPackageFromCorrespondenceInstance(Classifier classifier,
 		CorrespondenceInstance correspondenceInstance) {
 		var namespace = classifier.containingCompilationUnit.namespacesAsString
-		if (namespace.endsWith("$")) {
+		if (namespace.endsWith("$") || namespace.endsWith(".")) {
 			namespace = namespace.substring(0, namespace.length - 1)
-		}
-		if (!namespace.endsWith(".")) {
-			namespace = namespace + "."
 		}
 		val finalNamespace = namespace
 		var Set<Package> packagesWithCorrespondences = correspondenceInstance.
 			getAllEObjectsInCorrespondencesWithType(Package)
 		val packagesWithNamespace = packagesWithCorrespondences.filter[pack|
-			finalNamespace.equals(pack.namespacesAsString)]
+			finalNamespace.equals(pack.namespacesAsString + pack.name)]
 		if (null != packagesWithNamespace && 0 < packagesWithNamespace.size &&
 			null != packagesWithNamespace.iterator.next) {
 			return packagesWithNamespace.iterator.next

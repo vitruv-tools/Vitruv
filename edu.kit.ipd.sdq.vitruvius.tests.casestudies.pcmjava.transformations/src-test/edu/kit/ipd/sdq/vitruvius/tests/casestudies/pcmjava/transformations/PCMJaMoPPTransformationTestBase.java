@@ -41,5 +41,4 @@ public abstract class PCMJaMoPPTransformationTestBase {
     public String getProjectPath() {
         return TestUtil.PROJECT_URI + "/";
     }
-
 }

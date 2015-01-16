@@ -1,59 +1,71 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.emftext.language.java.containers.CompilationUnit
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
+import org.emftext.language.java.classifiers.Interface
 
 class CompilationUnitMappingTransformation extends EmptyEObjectMappingTransformation {
-	
+
 	val private static Logger logger = Logger.getLogger(CompilationUnitMappingTransformation.simpleName)
-	
+
 	override getClassOfMappedEObject() {
 		return CompilationUnit
 	}
-	
+
 	/**
 	 * We do not need this method. 
 	 * After a creation of a compilation unit the creation method for a class or an interface is executed
-	 * @see ClassMappingTransformation. We handle the creation of a classes or interfaces in the specific transformations.
+	 * @see ClassMappingTransformation We handle the creation of a classes or interfaces in the specific transformations.
 	 */
 	override createEObject(EObject eObject) {
 		logger.trace("Compilation unit " + eObject + " created. Currently nothing is done for compilation unit")
 		return null
 	}
-	
+
 	override createRootEObject(EObject newRootEObject, EObject[] newCorrespondingEObjects) {
-		logger.trace("Compilation unit " + newRootEObject + " created as root EObject. Currently nothing is done for compilation unit")
+		logger.trace(
+			"Compilation unit " + newRootEObject +
+				" created as root EObject. Currently nothing is done for compilation unit")
 		return TransformationUtils.createEmptyTransformationChangeResult
 	}
-	
+
 	/**
 	 * The method is called when a class or interface has been created within the compilation unit 
 	 * that has corresponding PCM objects (i.e. basic components)
 	 */
 	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue,
 		int index, EObject[] newCorrespondingEObjects) {
-		if(newCorrespondingEObjects.nullOrEmpty){
-			return TransformationUtils.createEmptyTransformationChangeResult
+		if (newValue instanceof org.emftext.language.java.classifiers.Class || newValue instanceof Interface) {
+			// if it is a class that should correspond to a system and the system already has a container 
+			//do not mark the system as new objet to create.
+			if(!newCorrespondingEObjects.nullOrEmpty){
+				val systems = newCorrespondingEObjects.filter(typeof(de.uka.ipd.sdq.pcm.system.System))
+				if(!systems.nullOrEmpty){
+					val tcr = new TransformationChangeResult
+					for(system:systems){
+						if(null == system.eResource){
+							tcr.newRootObjectsToSave.add(system)
+						}else{
+							tcr.existingObjectsToSave.add(system)
+						}
+						tcr.addNewCorrespondence(correspondenceInstance, system, newValue, null)
+						return tcr
+					}
+				}
+			} 
+			return JaMoPP2PCMUtils.
+				createTransformationChangeResultForNewCorrespondingEObjects(newValue, newCorrespondingEObjects,
+					correspondenceInstance)
 		}
-		val tcr = new TransformationChangeResult
-		val parrentCorrespondences = correspondenceInstance.getAllCorrespondences(affectedEObject)
-		var Correspondence parrentCorrespondence = null
-		if(!parrentCorrespondences.nullOrEmpty){
-			parrentCorrespondence = parrentCorrespondences.get(0)
-		}
-		for(correspondingEObject : newCorrespondingEObjects){
-			tcr.addNewCorrespondence(this.correspondenceInstance, correspondingEObject, newValue, parrentCorrespondence)
-		}
-		return tcr
+		return TransformationUtils.createEmptyTransformationChangeResult
 	}
-	
+
 	override setCorrespondenceForFeatures() {
 	}
-	
+
 }

@@ -309,25 +309,59 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     @Override
     public <T> Set<T> getAllEObjectsInCorrespondencesWithType(final Class<T> type) {
         Set<T> correspondencesWithType = new HashSet<T>();
-        for (Correspondence correspondence : this.correspondences.getCorrespondences()) {
+        getAllEObjectsInCorrespondenceListWithType(this.correspondences.getCorrespondences(), type,
+                correspondencesWithType);
+        return correspondencesWithType;
+    }
+
+    /**
+     * Iterate recursively through correspondence list and the children of the current
+     * correspondence and add all EObjects from type T to the result set
+     *
+     * @param correspondenceList
+     *            the list to iterate over
+     * @param type
+     *            the type to be found
+     * @param correspondencesWithType
+     *            the result set
+     */
+    private <T> void getAllEObjectsInCorrespondenceListWithType(final List<Correspondence> correspondenceList,
+            final Class<T> type, final Set<T> correspondencesWithType) {
+        for (Correspondence correspondence : correspondenceList) {
+            // first: investigate the current correspondence itself
             if (correspondence instanceof EObjectCorrespondence) {
                 EObjectCorrespondence eObjectCorrespondence = (EObjectCorrespondence) correspondence;
-                EObject element = resolveEObjectFromTUID(eObjectCorrespondence.getElementATUID());
-                if (type.isInstance(element)) {
+                EObject element = resolveEObjectFromTUIDWithoutException(eObjectCorrespondence.getElementATUID());
+                if (null != element && type.isInstance(element)) {
                     @SuppressWarnings("unchecked")
                     T t = (T) element;
                     correspondencesWithType.add(t);
                 } else {
-                    element = resolveEObjectFromTUID(eObjectCorrespondence.getElementBTUID());
-                    if (type.isInstance(element)) {
+                    element = resolveEObjectFromTUIDWithoutException(eObjectCorrespondence.getElementBTUID());
+                    if (null != element && type.isInstance(element)) {
                         @SuppressWarnings("unchecked")
                         T t = (T) element;
                         correspondencesWithType.add(t);
                     }
                 }
             }
+            // Second: investigate the dependent correspondences of the current correspondence (if
+            // list is !nullOrEmpty
+            if (null != correspondence.getDependentCorrespondences()
+                    && 0 < correspondence.getDependentCorrespondences().size()) {
+                getAllEObjectsInCorrespondenceListWithType(correspondence.getDependentCorrespondences(), type,
+                        correspondencesWithType);
+            }
         }
-        return correspondencesWithType;
+    }
+
+    private EObject resolveEObjectFromTUIDWithoutException(final TUID tuid) {
+        try {
+            return resolveEObjectFromTUID(tuid);
+        } catch (Throwable t) {
+            // ignore exception
+        }
+        return null;
     }
 
     @Override

@@ -12,6 +12,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 public class ModelInstance extends AbstractURIHaving {
     private static final Logger LOGGER = Logger.getLogger(ModelInstance.class.getSimpleName());
     private Resource resource;
+    private Map<Object, Object> lastUsedLoadOptions;
 
     public ModelInstance(final VURI uri, final Resource resource) {
         super(uri);
@@ -58,7 +59,13 @@ public class ModelInstance extends AbstractURIHaving {
      * @return the root element
      */
     public EObject getFirstRootEObject() {
-        return EcoreResourceBridge.getFirstRootEObject(this.resource, getURI().toString());
+        try {
+            return EcoreResourceBridge.getFirstRootEObject(this.resource, getURI().toString());
+        } catch (RuntimeException re) {
+            boolean forceLoad = true;
+            this.load(this.lastUsedLoadOptions, forceLoad);
+            return EcoreResourceBridge.getFirstRootEObject(this.resource, getURI().toString());
+        }
     }
 
     /**
@@ -95,9 +102,10 @@ public class ModelInstance extends AbstractURIHaving {
      * before we load it again. Note: Unload will only be done when the resourse was modified
      *
      */
-    public void load(final Map<Object, Object> loadOptions) {
+    public void load(final Map<Object, Object> loadOptions, final boolean forceLoadByDoingUnloadBeforeLoad) {
         try {
-            if (this.resource.isModified()) {
+            this.lastUsedLoadOptions = loadOptions;
+            if (this.resource.isModified() || forceLoadByDoingUnloadBeforeLoad) {
                 this.resource.unload();
             }
             this.resource.load(loadOptions);
@@ -105,5 +113,9 @@ public class ModelInstance extends AbstractURIHaving {
             // soften
             throw new RuntimeException(e);
         }
+    }
+
+    public void load(final Map<Object, Object> loadOptions) {
+        load(loadOptions, false);
     }
 }

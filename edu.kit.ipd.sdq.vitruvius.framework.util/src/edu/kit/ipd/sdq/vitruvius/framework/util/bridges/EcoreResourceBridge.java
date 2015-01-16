@@ -107,7 +107,7 @@ public final class EcoreResourceBridge {
         return JavaBridge.dynamicCast(rootElement, rootElementClass, "root element '" + rootElement + "' of the "
                 + modelName + " '" + resource + "'");
     }
-    
+
     /**
      * Returns the root element of the model instance if it is the only one with a compatible type.
      * It is NOT necessary to have exactly one root element as long as only one of these element
@@ -125,19 +125,21 @@ public final class EcoreResourceBridge {
      * @return the root element
      */
     @SuppressWarnings("unchecked")
-    public static <T extends EObject> T getUniqueTypedRootEObject(final Resource resource,
-            final String modelName, final Class<T> rootElementClass) {
+    public static <T extends EObject> T getUniqueTypedRootEObject(final Resource resource, final String modelName,
+            final Class<T> rootElementClass) {
         T typedRootObject = null;
-        for (EObject rootObject : resource.getContents()) {
+        for (final EObject rootObject : resource.getContents()) {
             if (rootElementClass.isInstance(rootObject)) {
                 if (typedRootObject != null) {
-                    throw new RuntimeException("There are more than one root objects in " + modelName + ", which match the given type.");
+                    throw new RuntimeException("There are more than one root objects in " + modelName
+                            + ", which match the given type.");
                 }
                 typedRootObject = (T) rootObject;
             }
         }
         if (typedRootObject == null) {
-            throw new RuntimeException("The resource " + modelName + " does not contain a correctly typed root element.");
+            throw new RuntimeException("The resource " + modelName
+                    + " does not contain a correctly typed root element.");
         }
         return typedRootObject;
     }
@@ -159,7 +161,7 @@ public final class EcoreResourceBridge {
         }
         return resource.getContents().get(0);
     }
-    
+
     /**
      * Returns a set containing all contents of the given resource.
      *
@@ -215,12 +217,13 @@ public final class EcoreResourceBridge {
         resource.save(saveOptions);
         resource.setModified(true);
     }
-    
+
     public static Resource loadResourceAtURI(final URI resourceURI, final ResourceSet resourceSet) {
         return loadResourceAtURI(resourceURI, resourceSet, Collections.emptyMap());
     }
-    
-    public static Resource loadResourceAtURI(final URI resourceURI, final ResourceSet resourceSet, Map<Object, Object> loadOptions) {
+
+    public static Resource loadResourceAtURI(final URI resourceURI, final ResourceSet resourceSet,
+            final Map<Object, Object> loadOptions) {
         Resource resource = null;
         try {
             try {
@@ -234,8 +237,10 @@ public final class EcoreResourceBridge {
             } else {
                 resource.load(loadOptions);
             }
-            // fixes issue caused by JaMoPP: If a model is transitively loaded (e.g. because of an import)
-            // the URI starts with pathmap instead of the usual URI. If you try to load this model again
+            // fixes issue caused by JaMoPP: If a model is transitively loaded (e.g. because of an
+            // import)
+            // the URI starts with pathmap instead of the usual URI. If you try to load this model
+            // again
             // the URI remains wrong.
             resource.setURI(resourceURI);
         } catch (final IOException e) {

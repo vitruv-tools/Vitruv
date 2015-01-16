@@ -136,7 +136,7 @@ public class ChangeResponder implements ChangeEventVisitor {
         final CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(type);
         final Interface newInterface = (Interface) changedCU.getConcreteClassifierForTypeDeclaration(type);
         final EChange eChange = JaMoPPChangeBuildHelper.createCreateInterfaceChange(newInterface,
-                originalCU.getCompilationUnit());
+                null == originalCU ? null : originalCU.getCompilationUnit());
         this.util.submitEMFModelChange(eChange, createInterfaceEvent.type);
 
     }

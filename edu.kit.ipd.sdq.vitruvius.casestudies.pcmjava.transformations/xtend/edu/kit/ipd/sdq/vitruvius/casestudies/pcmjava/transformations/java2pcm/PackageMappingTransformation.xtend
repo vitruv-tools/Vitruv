@@ -1,13 +1,12 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
 import de.uka.ipd.sdq.pcm.repository.BasicComponent
+import de.uka.ipd.sdq.pcm.repository.CompositeComponent
 import de.uka.ipd.sdq.pcm.repository.Repository
-import de.uka.ipd.sdq.pcm.repository.RepositoryComponent
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
 import de.uka.ipd.sdq.pcm.system.System
+import de.uka.ipd.sdq.pcm.system.SystemFactory
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
@@ -55,23 +54,24 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 	}
 
 	/**
-	 * when a package is added there following possibilities exists:
-	 * i) it is a package corresponding to a basic component --> create PCM basic component
-	 * ii) it is a package corresponding to a composite component --> create PCM composite component
-	 * iii) it is a package corresponding to a system --> create PCM system  
-	 * iv) it is the root package and the package where all interfaces and datatypes should be stored --> create PCM repository
-	 * v) none of the above --> do nothing
+	 * When the first package has been added we automatically create a repository for the package. 
+	 * Otherwise the following possibilities exists:
+	 * i) it should be a package corresponding to a basic component --> create PCM basic component
+	 * ii) it should be a a package corresponding to a composite component --> create PCM composite component
+	 * iii) it should be a package corresponding to a system --> create PCM system  
+	 * iv) none of the above/decide later (in other transformations) whether the package should become a one of the above  
+	 * 	   --> do nothing
 	 * 
 	 * Case iv) occurs when no package and no repository exist yet--> c
 	 * 			an be determined automatically (see correspondenceRepositoryAlreadyExists)
-	 * Whether it is case i), ii) or iii) can not be decided automatically --> ask user
+	 * To figure out which case should be realized ask the user directly
 	 * 
 	 */
 	override createEObject(EObject eObject) {
 		val Package jaMoPPPackage = eObject as Package
 
 		//if the package already has already a correspondence 
-		//(which can happen when the package was created by the PCM2JaMoPP transformation we do nothing here 
+		//(which can happen when the package was created by the PCM2JaMoPP transformation) nothing has do be done 
 		if (!correspondenceInstance.getAllCorrespondences(jaMoPPPackage).nullOrEmpty) {
 			return null
 		}
@@ -81,46 +81,55 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 		}
 		if (!correspondenceRepositoryAlreadyExists && !checkCorrespondenceRepository()) {
 
-			// iv) first package created --> it is the corresponding package to the repository
+			//first package created --> it is the corresponding package to the repository
 			repository = RepositoryFactory.eINSTANCE.createRepository
 			repository.setEntityName(packageName)
 			correspondenceRepositoryAlreadyExists = true
 			return repository.toArray
 		}
+		val String userMsg = "A package has been created. Please decide whether and which corresponding architectural element should be created"
+		val String[] selections = #["Create basic component", "Create composite component", "Create system",
+			"Do nothing/Decide later"]
+		switch (selection : super.modalTextUserinteracting(userMsg, selections)) {
+			case 0: {
 
-		// case i)
-		var BasicComponent basicComponent = RepositoryFactory.eINSTANCE.createBasicComponent
-		basicComponent.setEntityName(packageName)
-		basicComponent.setRepository__RepositoryComponent(repository)
-		repository.components__Repository.add(basicComponent)
-		return basicComponent.toArray
+				// case i)
+				var BasicComponent basicComponent = RepositoryFactory.eINSTANCE.createBasicComponent
+				basicComponent.setEntityName(packageName)
+				repository.components__Repository.add(basicComponent)
+				return basicComponent.toArray
+			}
+			case 1: {
+
+				//case ii)
+				var CompositeComponent compositeComponent = RepositoryFactory.eINSTANCE.createCompositeComponent
+				compositeComponent.entityName = packageName
+				repository.components__Repository.add(compositeComponent)
+				return compositeComponent.toArray
+			}
+			case 2: {
+
+				//case iii)
+				var System pcmSystem = SystemFactory.eINSTANCE.createSystem
+				pcmSystem.entityName = packageName
+				return pcmSystem.toArray
+			}
+			case 3: {
+
+				//case iv)
+				logger.debug("No PCM object should be created for package: " + packageName)
+				return null
+			}
+			default: {
+				return null
+			}
+		}
 	}
 
 	override createRootEObject(EObject newRootEObject, EObject[] newCorrespondingEObjects) {
-		if (newCorrespondingEObjects.nullOrEmpty) {
-			return TransformationUtils.createEmptyTransformationChangeResult
-		}
-		val tcr = new TransformationChangeResult
-		var Correspondence parrentCorrespondence = null
-		for (pcmElement : newCorrespondingEObjects) {
-			parrentCorrespondence = null
-			if (pcmElement instanceof Repository || pcmElement instanceof System) {
-				tcr.newRootObjectsToSave.add(pcmElement)
-			} else if (pcmElement instanceof RepositoryComponent) {
-				val component = pcmElement as RepositoryComponent
-				val parrentCorrespondences = correspondenceInstance.getAllCorrespondences(
-					component.repository__RepositoryComponent)
-				if (!parrentCorrespondences.nullOrEmpty) {
-					parrentCorrespondence = parrentCorrespondences.get(0)
-				}
-				tcr.existingObjectsToSave.add(component)
-
-			} else {
-				tcr.existingObjectsToSave.add(pcmElement)
-			}
-			tcr.addNewCorrespondence(correspondenceInstance, pcmElement, newRootEObject, parrentCorrespondence)
-		}
-		return tcr
+		return JaMoPP2PCMUtils.
+			createTransformationChangeResultForNewCorrespondingEObjects(newRootEObject, newCorrespondingEObjects,
+				correspondenceInstance)
 	}
 
 	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue,
@@ -165,15 +174,15 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
 		var Object newVarValue = newValue
-		if(newValue instanceof String){
+		if (newValue instanceof String) {
 			var String newStringValue = newValue as String
-			if(newStringValue.contains(".") && newStringValue.length > newStringValue.lastIndexOf(".")+1){
-				newStringValue = newStringValue.substring(newStringValue.lastIndexOf(".")+1, newStringValue.length)
+			if (newStringValue.contains(".") && newStringValue.length > newStringValue.lastIndexOf(".") + 1) {
+				newStringValue = newStringValue.substring(newStringValue.lastIndexOf(".") + 1, newStringValue.length)
 				newVarValue = newStringValue.toString()
 			}
 		}
-		JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(eObject, affectedAttribute, oldValue, newVarValue, featureCorrespondenceMap,
-			correspondenceInstance)
+		JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(eObject, affectedAttribute, oldValue, newVarValue,
+			featureCorrespondenceMap, correspondenceInstance)
 	}
 
 	override setCorrespondenceForFeatures() {

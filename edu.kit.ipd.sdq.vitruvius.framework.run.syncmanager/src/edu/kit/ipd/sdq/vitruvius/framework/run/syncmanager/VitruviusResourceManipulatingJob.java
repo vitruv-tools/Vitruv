@@ -44,9 +44,9 @@ class VitruviusResourceManipulatingJob extends Job {
     @Override
     protected IStatus run(final IProgressMonitor monitor) {
         setPriority(SHORT);
-        this.resourceManipulatingInProgress = true;
         try {
             while (!this.emfChangeResultQueue.isEmpty()) {
+                this.resourceManipulatingInProgress = true;
                 EMFChangeResult emfChangeResult = this.emfChangeResultQueue.poll();
 
                 // TODO: Check wheather we need a deleteModelInstanceOriginal in VSUM.
