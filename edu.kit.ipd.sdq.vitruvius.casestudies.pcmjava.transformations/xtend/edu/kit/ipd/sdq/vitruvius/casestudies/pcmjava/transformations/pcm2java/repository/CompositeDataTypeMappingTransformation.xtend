@@ -93,12 +93,12 @@ class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransfor
 	/**
 	 * called when a InnerDeclaration has been added to the CompositeDataType
 	 */
-	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue,
-		int index, EObject[] newCorrespondingEObjects) {
+	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
+		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
 		if (!affectedReference.name.equals(PCMJaMoPPNamespace.PCM.INNER_DECLARATION_COMPOSITE_DATA_TYPE)) {
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
-		val compositeDataType = affectedEObject as CompositeDataType
+		val compositeDataType = newAffectedEObject as CompositeDataType
 		val jaMoPPDataType = correspondenceInstance.claimUniqueCorrespondingEObjectByType(compositeDataType, Class)
 		val tcr = TransformationUtils.createEmptyTransformationChangeResult
 		val correspondences = correspondenceInstance.getAllCorrespondences(compositeDataType)
@@ -108,16 +108,16 @@ class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransfor
 		}
 		var rootObjectsAffected = false
 		val rootObjects = newCorrespondingEObjects.filter(typeof(JavaRoot))
-		if(!rootObjects.nullOrEmpty){
+		if (!rootObjects.nullOrEmpty) {
 			tcr.newRootObjectsToSave.addAll(rootObjects)
-			rootObjectsAffected = true	
+			rootObjectsAffected = true
 		}
 		for (newCorrespondingEObject : newCorrespondingEObjects) {
 			tcr.addNewCorrespondence(correspondenceInstance, newValue, newCorrespondingEObject, correspondence)
-			if(!rootObjectsAffected){
+			if (!rootObjectsAffected) {
 				tcr.existingObjectsToSave.add(newCorrespondingEObject)
 			}
-			if(newCorrespondingEObject instanceof Member){
+			if (newCorrespondingEObject instanceof Member) {
 				jaMoPPDataType.members.add(newCorrespondingEObject)
 			}
 		}

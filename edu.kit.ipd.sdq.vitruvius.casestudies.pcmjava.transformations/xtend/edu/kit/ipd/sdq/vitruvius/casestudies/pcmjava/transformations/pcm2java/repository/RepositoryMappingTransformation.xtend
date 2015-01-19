@@ -85,7 +85,7 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 
-	override deleteNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue,
+	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
 		int index, EObject[] oldCorrespondingEObjectsToDelete) {
 		return PCM2JaMoPPUtils.
 			deleteCorrespondingEObjectsAndGetTransformationChangeResult(oldCorrespondingEObjectsToDelete,
@@ -98,10 +98,10 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 			featureCorrespondenceMap, correspondenceInstance)
 	}
 
-	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue,
-		int index, EObject[] newCorrespondingEObjects) {
+	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
+		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
 		val Iterable<EObjectCorrespondence> correspondenceCandidates = correspondenceInstance.
-			getAllCorrespondences(affectedEObject).filter(typeof(EObjectCorrespondence))
+			getAllCorrespondences(newAffectedEObject).filter(typeof(EObjectCorrespondence))
 		val transformationResult = TransformationUtils.
 			createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects.filter(typeof(JavaRoot)))
 		for (jaMoPPElement : newCorrespondingEObjects) {

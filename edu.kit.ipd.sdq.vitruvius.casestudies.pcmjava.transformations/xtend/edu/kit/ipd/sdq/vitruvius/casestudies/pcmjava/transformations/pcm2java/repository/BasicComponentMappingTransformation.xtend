@@ -37,12 +37,12 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 		return retEObjects
 	}
 
-	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue,
-		int index, EObject[] newCorrespondingEObjects) {
+	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
+		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
 		if (null == newCorrespondingEObjects) {
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
-		val BasicComponent basicComponent = affectedEObject as BasicComponent
+		val BasicComponent basicComponent = newAffectedEObject as BasicComponent
 		val parentCorrespondences = correspondenceInstance.getAllCorrespondences(basicComponent)
 		var Correspondence parentCorrespondence = null
 		if (!parentCorrespondences.nullOrEmpty) {
@@ -64,7 +64,7 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 		return correspondenceInstance.getAllCorrespondingEObjects(eObject)
 	}
 
-	override deleteNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue,
+	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
 		int index, EObject[] oldCorrespondingEObjectsToDelete) {
 		if (oldCorrespondingEObjectsToDelete.nullOrEmpty) {
 			return TransformationUtils.createEmptyTransformationChangeResult

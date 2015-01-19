@@ -47,8 +47,8 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 	/**
 	 * called when a AssemblyContext has been added
 	 */
-	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue,
-		int index, EObject[] newCorrespondingEObjects) {
+	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
+		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
 		val tcr = TransformationUtils.createEmptyTransformationChangeResult
 		if (affectedReference.name.equals(PCMJaMoPPNamespace.PCM.SYSTEM_ASSEMBLY_CONTEXTS__COMPOSED_STRUCTURE)) {
 		}

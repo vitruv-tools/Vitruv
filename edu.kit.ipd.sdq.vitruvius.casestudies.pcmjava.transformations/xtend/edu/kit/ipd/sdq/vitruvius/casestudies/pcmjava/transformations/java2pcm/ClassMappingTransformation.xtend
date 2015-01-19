@@ -145,7 +145,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 	 * called when a child object (e.g. a Method or a field) is added to the class
 	 * Creates the correspondences and returns the TransformationChangeResult object containing the PCM element that should be saved
 	 */
-	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue,
+	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject newValue,
 		int index, EObject[] newCorrespondingEObjects) {
 		logger.info("createNonRootEObjectInList called")
 
@@ -188,11 +188,11 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 	 * object has already be done in removeEObject.
 	 * We just return an empty TransformationChangeResult 
 	 */
-	override deleteNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue,
+	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
 		int index, EObject[] oldCorrespondingEObjectsToDelete) {
-		val components = correspondenceInstance.getCorrespondingEObjectsByType(affectedEObject, RepositoryComponent)
+		val components = correspondenceInstance.getCorrespondingEObjectsByType(newAffectedEObject, RepositoryComponent)
 		var EObject eObjectToSave = null
-		val affectedClass = affectedEObject as ConcreteClassifier
+		val affectedClass = newAffectedEObject as ConcreteClassifier
 		if (!components.nullOrEmpty &&
 			PCMJaMoPPNamespace.JaMoPP.JAMOPP_ANNOTATIONS_AND_MODIFIERS_REFERENCE_NAME.equals(affectedReference.name) &&
 			(oldValue instanceof PublicImpl)) {
@@ -204,7 +204,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 			switch choice {
 				case 0: {
 					affectedClass.addModifier(oldValue as Modifier)
-					eObjectToSave = affectedEObject
+					eObjectToSave = newAffectedEObject
 				}
 				case 1: {
 					eObjectToSave = component.eContainer

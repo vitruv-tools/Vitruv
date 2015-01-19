@@ -36,7 +36,7 @@ abstract class EObjectMappingTransformation {
 	def TransformationChangeResult replaceRoot(EObject oldRootEObject, EObject newRootEObject,
 		EObject[] oldCorrespondingEObjectsToDelete, EObject[] newCorrespondingEObjects)
 
-	def TransformationChangeResult createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference,
+	def TransformationChangeResult createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference,
 		EObject newValue, int index, EObject[] newCorrespondingEObjects)
 
 	def TransformationChangeResult deleteNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference,
@@ -49,12 +49,11 @@ abstract class EObjectMappingTransformation {
 		EObject oldValue, EObject newValue, int index, EObject[] oldCorrespondingEObjectsToDelete,
 		EObject[] newCorrespondingEObjects)
 
-	def TransformationChangeResult deleteNonRootEObjectInList(EObject affectedEObject, EReference affectedReference,
+	def TransformationChangeResult deleteNonRootEObjectInList(EObject newAffectedEObject ,EObject oldAffectedEObject, EReference affectedReference,
 		EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete)
 
 	def TransformationChangeResult replaceNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference,
-		EObject oldValue, EObject newValue, EObject[] oldCorrespondingEObjectsToDelete,
-		EObject[] newCorrespondingEObjects)
+		EObject oldValue, EObject newValue)
 
 	def TransformationChangeResult permuteContainmentEReferenceValues(EObject affectedEObject,
 		EReference affectedReference, EList<Integer> newIndexForElementAt)

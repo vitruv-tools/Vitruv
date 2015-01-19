@@ -76,20 +76,21 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 	 * Called when a signature was added.
 	 * Add Method (which is in newCorrespondingEObjects) to the Interface corresponding to the OperationInterface 
 	 */
-	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue,
-		int index, EObject[] newMethods) {
+	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffecteEObject,
+		EReference affectedReference, EObject newValue, int index, EObject[] newMethods) {
 		if (newMethods.nullOrEmpty || (false == newMethods.forall[method|method instanceof InterfaceMethod])) {
 			throw new RuntimeException(
 				"unexpeceted value in newMethods parameter " + newMethods.size + " (expected 1):" + newMethods)
 		}
-		val Interface jaMoPPIf = correspondenceInstance.getCorrespondingEObjectsByType(affectedEObject, Interface).
+		val Interface jaMoPPIf = correspondenceInstance.getCorrespondingEObjectsByType(newAffectedEObject, Interface).
 			get(0)
-		val parrentCorrespondence = correspondenceInstance.getAllCorrespondences(affectedEObject).get(0)
+		val parrentCorrespondence = correspondenceInstance.getAllCorrespondences(newAffectedEObject).get(0)
 		val transformationResult = TransformationUtils.
 			createTransformationChangeResultForEObjectsToSave(jaMoPPIf.toArray)
 		for (eObject : newMethods) {
 			val InterfaceMethod newMethod = eObject as InterfaceMethod;
 			jaMoPPIf.members.add(newMethod)
+
 			//this code does not work, because adding a method to interface methods does not cause an update of the resource.
 			//I guess only members list is a containment list 
 			//jaMoPPIf.methods.add(index, newMethod);
@@ -102,13 +103,13 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 	 * called when a signature was removed.
 	 * Remove method from corresponding interface
 	 */
-	override deleteNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue,
+	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
 		int index, EObject[] oldMethods) {
 		if (oldMethods.nullOrEmpty || (false == oldMethods.forall[method|method instanceof InterfaceMethod])) {
 			throw new RuntimeException(
 				"unexpeceted value in oldMethods parameter " + oldMethods.size + " (expected 1):" + oldMethods)
 		}
-		val Interface jaMoPPIf = correspondenceInstance.getCorrespondingEObjectsByType(affectedEObject, Interface).
+		val Interface jaMoPPIf = correspondenceInstance.getCorrespondingEObjectsByType(newAffectedEObject, Interface).
 			get(0)
 		for (eObject : oldMethods) {
 			val InterfaceMethod oldMethod = eObject as InterfaceMethod;

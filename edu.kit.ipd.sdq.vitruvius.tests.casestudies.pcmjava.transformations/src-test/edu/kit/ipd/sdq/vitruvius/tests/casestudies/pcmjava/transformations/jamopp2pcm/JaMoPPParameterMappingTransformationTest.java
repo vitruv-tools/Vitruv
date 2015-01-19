@@ -1,0 +1,147 @@
+package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.jamopp2pcm;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.ILocalVariable;
+import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.text.edits.DeleteEdit;
+import org.eclipse.text.edits.InsertEdit;
+import org.junit.Test;
+
+import de.uka.ipd.sdq.pcm.core.entity.NamedElement;
+import de.uka.ipd.sdq.pcm.repository.CollectionDataType;
+import de.uka.ipd.sdq.pcm.repository.CompositeDataType;
+import de.uka.ipd.sdq.pcm.repository.OperationInterface;
+import de.uka.ipd.sdq.pcm.repository.OperationSignature;
+import de.uka.ipd.sdq.pcm.repository.Parameter;
+import de.uka.ipd.sdq.pcm.repository.PrimitiveDataType;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
+import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
+
+public class JaMoPPParameterMappingTransformationTest extends JaMoPP2PCMTransformationTest {
+
+    @Test
+    public void testAddParameter() throws Throwable {
+        super.addFirstPackage();
+        final OperationInterface opInterface = super.addInterfaceInContractsPackage();
+        final OperationSignature opSig = super.addMethodToInterfaceWithCorrespondence(opInterface.getEntityName());
+
+        final Parameter parameter = super.addParameterToSignature(opInterface.getEntityName(), opSig.getEntityName(),
+                "String", PCM2JaMoPPTestUtils.PARAMETER_NAME);
+
+        this.assertParameter(opSig, parameter, "String", PCM2JaMoPPTestUtils.PARAMETER_NAME);
+    }
+
+    /**
+     *
+     * @throws Throwable
+     */
+    @Test
+    public void testRenameParameter() throws Throwable {
+        super.addFirstPackage();
+        final OperationInterface opInterface = super.addInterfaceInContractsPackage();
+        final OperationSignature opSig = super.addMethodToInterfaceWithCorrespondence(opInterface.getEntityName());
+        final Parameter parameter = super.addParameterToSignature(opInterface.getEntityName(), opSig.getEntityName(),
+                "String", PCM2JaMoPPTestUtils.PARAMETER_NAME);
+
+        final Parameter newParameter = this.renameParameterInSignature(opInterface.getEntityName(),
+                opSig.getEntityName(), parameter.getEntityName(), PCM2JaMoPPTestUtils.PARAMETER_NAME
+                        + PCM2JaMoPPTestUtils.RENAME);
+
+        this.assertParameter(opSig, newParameter, "String", PCM2JaMoPPTestUtils.PARAMETER_NAME
+                + PCM2JaMoPPTestUtils.RENAME);
+    }
+
+    @Test
+    public void testChangeParameterType() throws Throwable {
+        super.addFirstPackage();
+        final OperationInterface opInterface = super.addInterfaceInContractsPackage();
+        final OperationSignature opSig = super.addMethodToInterfaceWithCorrespondence(opInterface.getEntityName());
+        final Parameter parameter = super.addParameterToSignature(opInterface.getEntityName(), opSig.getEntityName(),
+                "String", PCM2JaMoPPTestUtils.PARAMETER_NAME);
+        final String expectedParamType = "int";
+
+        final Parameter changedParameter = this.changeParameterType(opInterface.getEntityName(), opSig.getEntityName(),
+                parameter.getEntityName(), expectedParamType);
+
+        this.assertParameter(opSig, changedParameter, expectedParamType, changedParameter.getEntityName());
+    }
+
+    private Parameter renameParameterInSignature(final String interfaceName, final String methodName,
+            final String oldParameterName, final String newParameterName) throws Throwable {
+        final ICompilationUnit icu = this.findCompilationWithClassName(interfaceName);
+        final IMethod iMethod = this.findIMethodByName(interfaceName, methodName, icu);
+        final ILocalVariable localVariable = this.findParameterInIMethod(iMethod, oldParameterName);
+        final String typeName = localVariable.getSource().split(" ")[0];
+        final String paramName = localVariable.getSource().split(" ")[1];
+        final int offset = localVariable.getSourceRange().getOffset() + typeName.length() + 1;
+        final int length = paramName.length();
+        final DeleteEdit deleteEdit = new DeleteEdit(offset, length);
+        final InsertEdit insertEdit = new InsertEdit(offset, newParameterName);
+        super.editCompilationUnit(icu, deleteEdit, insertEdit);
+        TestUtil.waitForSynchronization();
+        final org.emftext.language.java.parameters.Parameter newJaMoPPParameter = super.findJaMoPPParameterInICU(icu,
+                interfaceName, methodName, newParameterName);
+        return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(newJaMoPPParameter,
+                Parameter.class);
+
+    }
+
+    private Parameter changeParameterType(final String interfaceName, final String methodName, final String paramName,
+            final String newTypeName) throws Throwable {
+        final ICompilationUnit icu = this.findCompilationWithClassName(interfaceName);
+        final IMethod iMethod = this.findIMethodByName(interfaceName, methodName, icu);
+        final ILocalVariable parameter = this.findParameterInIMethod(iMethod, paramName);
+        final int offset = parameter.getSourceRange().getOffset();
+        final int length = parameter.getSource().split(" ")[0].length();
+        final DeleteEdit deleteEdit = new DeleteEdit(offset, length);
+        final InsertEdit insertEdit = new InsertEdit(offset, newTypeName + " ");
+        super.editCompilationUnit(icu, deleteEdit, insertEdit);
+        TestUtil.waitForSynchronization();
+        final org.emftext.language.java.parameters.Parameter newJaMoPPParameter = super.findJaMoPPParameterInICU(icu,
+                interfaceName, methodName, paramName);
+        return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(newJaMoPPParameter,
+                Parameter.class);
+    }
+
+    private IMethod findIMethodByName(final String interfaceName, final String methodName, final ICompilationUnit icu)
+            throws JavaModelException {
+        final IType type = icu.getType(interfaceName);
+        for (final IMethod method : type.getMethods()) {
+            if (method.getElementName().equals(methodName)) {
+                return method;
+            }
+        }
+        throw new RuntimeException("Method not " + methodName + " not found in classifier " + interfaceName);
+    }
+
+    private ILocalVariable findParameterInIMethod(final IMethod iMethod, final String parameterName)
+            throws JavaModelException {
+        for (final ILocalVariable localVariable : iMethod.getParameters()) {
+            if (localVariable.getElementName().equals(parameterName)) {
+                return localVariable;
+            }
+        }
+        throw new RuntimeException("Old parameter with name " + parameterName + " not found");
+    }
+
+    private void assertParameter(final OperationSignature opSig, final Parameter parameter,
+            final String expectedTypeName, final String expectedName) {
+        assertEquals("The parameter is not contained in the expected operation signature", opSig.getId(), parameter
+                .getOperationSignature__Parameter().getId());
+        this.assertPCMNamedElement(parameter, expectedName);
+        if (parameter.getDataType__Parameter() instanceof CollectionDataType
+                || parameter.getDataType__Parameter() instanceof CompositeDataType) {
+            this.assertPCMNamedElement((NamedElement) parameter.getDataType__Parameter(), expectedTypeName);
+        } else {
+            final String primitiveTypeName = this.getNameFromPCMPrimitiveDataType((PrimitiveDataType) parameter
+                    .getDataType__Parameter());
+            assertTrue("The primitve type parameter has the wrong name",
+                    expectedTypeName.equalsIgnoreCase(primitiveTypeName));
+        }
+    }
+}

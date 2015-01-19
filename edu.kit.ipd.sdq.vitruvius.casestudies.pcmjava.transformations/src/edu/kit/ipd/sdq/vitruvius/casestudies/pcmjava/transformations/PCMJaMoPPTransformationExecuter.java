@@ -21,6 +21,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.CompilationUnitMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.InterfaceMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.MethodMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ModifierMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.PackageMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.BasicComponentMappingTransformation;
@@ -94,6 +95,9 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
         this.changeSynchronizer.addMapping(new CompilationUnitMappingTransformation());
         this.changeSynchronizer.addMapping(new ClassMappingTransformation());
         this.changeSynchronizer.addMapping(new InterfaceMappingTransformation());
+        this.changeSynchronizer.addMapping(new MethodMappingTransformation());
+        this.changeSynchronizer
+        .addMapping(new edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ParameterMappingTransformation());
         this.changeSynchronizer.addMapping(new ModifierMappingTransformation());
 
         // set userInteractor
@@ -159,8 +163,8 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
             final Package newPackage = (Package) updateSingleValuedEAttribute.getNewAffectedEObject();
             this.attachPackageToResource(oldPackage, vuri);
             String newVURIKey = vuri.toString();
-            String oldPackagePath = oldPackage.getName().replace(".", "/");
-            String newPackagePath = newPackage.getName().replace(".", "/");
+            final String oldPackagePath = oldPackage.getName().replace(".", "/");
+            final String newPackagePath = newPackage.getName().replace(".", "/");
             newVURIKey = newVURIKey.replace(oldPackagePath, newPackagePath);
             final VURI newVURI = VURI.getInstance(newVURIKey);
             this.attachPackageToResource(newPackage, newVURI);

@@ -114,14 +114,15 @@ public class ChangeSynchronizer {
 
 	def private dispatch TransformationChangeResult syncChange(CreateNonRootEObjectInList<?> createNonRootEObjectInList) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(createNonRootEObjectInList.newValue.class)
-		
+
 		val EObject[] createdEObjects = mappingTransformations.
 			claimForMappedClassOrImplementingInterface(createNonRootEObjectInList.newValue.class).
 			createEObject(createNonRootEObjectInList.newValue)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			createNonRootEObjectInList.newAffectedEObject.class).createNonRootEObjectInList(
-			createNonRootEObjectInList.newAffectedEObject, createNonRootEObjectInList.affectedFeature,
-			createNonRootEObjectInList.newValue, createNonRootEObjectInList.index, createdEObjects)
+			createNonRootEObjectInList.newAffectedEObject, createNonRootEObjectInList.oldAffectedEObject,
+			createNonRootEObjectInList.affectedFeature, createNonRootEObjectInList.newValue,
+			createNonRootEObjectInList.index, createdEObjects)
 	}
 
 	def private dispatch TransformationChangeResult syncChange(DeleteNonRootEObjectInList<?> deleteNonRootEObjectInList) {
@@ -134,7 +135,7 @@ public class ChangeSynchronizer {
 			removeEObject(deleteNonRootEObjectInList.oldValue)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			deleteNonRootEObjectInList.oldAffectedEObject.class).deleteNonRootEObjectInList(
-			deleteNonRootEObjectInList.oldAffectedEObject, deleteNonRootEObjectInList.affectedFeature,
+			deleteNonRootEObjectInList.newAffectedEObject, deleteNonRootEObjectInList.oldAffectedEObject, deleteNonRootEObjectInList.affectedFeature,
 			deleteNonRootEObjectInList.oldValue, deleteNonRootEObjectInList.index, eObjectsToDelete)
 	}
 
@@ -188,22 +189,13 @@ public class ChangeSynchronizer {
 
 	def private dispatch TransformationChangeResult syncChange(
 		ReplaceNonRootEObjectSingle<?> replaceNonRootEObjectSingle) {
-		mappingTransformations.claimForMappedClassOrImplementingInterface(replaceNonRootEObjectSingle.newValue.class)
-		mappingTransformations.claimForMappedClassOrImplementingInterface(replaceNonRootEObjectSingle.oldValue.class)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			replaceNonRootEObjectSingle.oldAffectedEObject.class)
 
-		val EObject[] createdEObjects = mappingTransformations.
-			claimForMappedClassOrImplementingInterface(replaceNonRootEObjectSingle.oldValue.class).
-			removeEObject(replaceNonRootEObjectSingle.oldAffectedEObject)
-		val EObject[] eObjectsToDelete = mappingTransformations.
-			claimForMappedClassOrImplementingInterface(replaceNonRootEObjectSingle.newValue.class).
-			createEObject(replaceNonRootEObjectSingle.oldAffectedEObject)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			replaceNonRootEObjectSingle.oldAffectedEObject.class).replaceNonRootEObjectSingle(
 			replaceNonRootEObjectSingle.oldAffectedEObject, replaceNonRootEObjectSingle.affectedFeature,
-			replaceNonRootEObjectSingle.oldValue, replaceNonRootEObjectSingle.newValue, eObjectsToDelete,
-			createdEObjects)
+			replaceNonRootEObjectSingle.oldValue, replaceNonRootEObjectSingle.newValue)
 	}
 
 	def private dispatch TransformationChangeResult syncChange(
@@ -310,9 +302,10 @@ public class ChangeSynchronizer {
 
 	def private dispatch TransformationChangeResult syncChange(UnsetContainmentEReference<?> unsetContainmentEReference) {
 		var EObject[] eObjectsToDelete = null
-		if(null != unsetContainmentEReference.oldValue){
-			eObjectsToDelete = mappingTransformations.claimForMappedClassOrImplementingInterface(unsetContainmentEReference.oldValue.class).
-			removeEObject(unsetContainmentEReference.oldValue)
+		if (null != unsetContainmentEReference.oldValue) {
+			eObjectsToDelete = mappingTransformations.
+				claimForMappedClassOrImplementingInterface(unsetContainmentEReference.oldValue.class).
+				removeEObject(unsetContainmentEReference.oldValue)
 		}
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			unsetContainmentEReference.oldAffectedEObject.class).unsetContainmentEReference(

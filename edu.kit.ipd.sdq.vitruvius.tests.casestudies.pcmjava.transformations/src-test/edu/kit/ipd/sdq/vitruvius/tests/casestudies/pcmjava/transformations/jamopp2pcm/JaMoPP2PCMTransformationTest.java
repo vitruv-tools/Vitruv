@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.jamopp2pcm;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,9 +28,12 @@ import org.eclipse.jdt.core.IBuffer;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.refactoring.IJavaRefactorings;
 import org.eclipse.jdt.core.refactoring.descriptors.RenameJavaElementDescriptor;
 import org.eclipse.jdt.ui.wizards.NewClassWizardPage;
@@ -41,11 +43,18 @@ import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.eclipse.ltk.core.refactoring.RefactoringContribution;
 import org.eclipse.ltk.core.refactoring.RefactoringCore;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
+import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.ReplaceEdit;
+import org.eclipse.text.edits.TextEdit;
 import org.emftext.language.java.classifiers.Classifier;
+import org.emftext.language.java.classifiers.ConcreteClassifier;
+import org.emftext.language.java.classifiers.Interface;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.containers.ContainersFactory;
 import org.emftext.language.java.containers.Package;
+import org.emftext.language.java.members.Member;
+import org.emftext.language.java.members.Method;
+import org.emftext.language.java.types.TypeReference;
 import org.junit.Before;
 
 import de.uka.ipd.sdq.pcm.core.entity.NamedElement;
@@ -55,6 +64,9 @@ import de.uka.ipd.sdq.pcm.repository.CompositeComponent;
 import de.uka.ipd.sdq.pcm.repository.CompositeDataType;
 import de.uka.ipd.sdq.pcm.repository.DataType;
 import de.uka.ipd.sdq.pcm.repository.OperationInterface;
+import de.uka.ipd.sdq.pcm.repository.OperationSignature;
+import de.uka.ipd.sdq.pcm.repository.Parameter;
+import de.uka.ipd.sdq.pcm.repository.PrimitiveDataType;
 import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.repository.RepositoryComponent;
 import de.uka.ipd.sdq.pcm.system.System;
@@ -65,6 +77,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaAddBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaRemoveBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPTransformationExecuter;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
@@ -238,16 +251,12 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
             throws Throwable {
         try {
             final ICompilationUnit cu = this.findCompilationWithClassName(entityName + ".java");
-            cu.becomeWorkingCopy(new NullProgressMonitor());
             final int offset = cu.getBuffer().getContents().indexOf(entityName);
             if (cu.getBuffer() instanceof IBuffer.ITextEditCapability) {
                 logger.info(cu.getBuffer());
             }
             final ReplaceEdit edit = new ReplaceEdit(offset, entityName.length(), newName);
-            cu.applyTextEdit(edit, null);
-            cu.save(new NullProgressMonitor(), true);
-            cu.commitWorkingCopy(true, new NullProgressMonitor());
-            cu.save(new NullProgressMonitor(), true);
+            this.editCompilationUnit(cu, edit);
             TestUtil.waitForSynchronization();
             final VURI vuri = VURI.getInstance(cu.getResource());
             final Classifier jaMoPPClass = this.getJaMoPPClassifierForVURI(vuri);
@@ -259,7 +268,20 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
 
     }
 
-    private ICompilationUnit findCompilationWithClassName(final String entityName) throws Throwable {
+    protected void editCompilationUnit(final ICompilationUnit cu, final TextEdit... edits) throws JavaModelException {
+        cu.becomeWorkingCopy(new NullProgressMonitor());
+        for (final TextEdit edit : edits) {
+            cu.applyTextEdit(edit, null);
+        }
+        cu.save(new NullProgressMonitor(), true);
+        cu.commitWorkingCopy(true, new NullProgressMonitor());
+        cu.save(new NullProgressMonitor(), true);
+    }
+
+    protected ICompilationUnit findCompilationWithClassName(String entityName) throws Throwable {
+        if (!entityName.endsWith("." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION)) {
+            entityName = entityName + "." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION;
+        }
         final IJavaProject javaProject = JavaCore.create(TestUtil.getTestProject());
         for (final IPackageFragmentRoot packageFragmentRoot : javaProject.getPackageFragmentRoots()) {
             final IJavaElement[] children = packageFragmentRoot.getChildren();
@@ -344,11 +366,11 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
         throw new RuntimeException("No packageFragment found for JaMoPP package " + packageForClass);
     }
 
-    private Classifier getJaMoPPClassifierForVURI(final VURI vuri) {
-        final Resource resource = EcoreResourceBridge.loadResourceAtURI(vuri.getEMFUri(), this.resourceSet);
+    private ConcreteClassifier getJaMoPPClassifierForVURI(final VURI vuri) {
+        final Resource resource = EcoreResourceBridge.loadResourceAtURI(vuri.getEMFUri(), new ResourceSetImpl());
         final CompilationUnit cu = (CompilationUnit) resource.getContents().get(0);
         final Classifier jaMoPPClassifier = cu.getClassifiers().get(0);
-        return jaMoPPClassifier;
+        return (ConcreteClassifier) jaMoPPClassifier;
     }
 
     /**
@@ -424,8 +446,8 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
     }
 
     protected void assertPCMNamedElement(final NamedElement pcmNamedElement, final String expectedName) {
-        assertTrue("The name of pcm named element is not " + expectedName, pcmNamedElement.getEntityName()
-                .equalsIgnoreCase(expectedName));
+        assertEquals("The name of pcm named element is not " + expectedName, expectedName,
+                pcmNamedElement.getEntityName());
     }
 
     protected OperationInterface addInterfaceInContractsPackage() throws Throwable {
@@ -480,4 +502,128 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
         throw new RuntimeException("Could not find datatypes package");
     }
 
+    protected OperationSignature addMethodToInterfaceWithCorrespondence(final String interfaceName) throws Throwable {
+        final ICompilationUnit cu = this.findCompilationWithClassName(interfaceName);
+        final String methodString = "void " + PCM2JaMoPPTestUtils.OPERATION_SIGNATURE_1_NAME + "();";
+        final IType firstType = cu.getAllTypes()[0];
+        final int offset = firstType.getNameRange().getOffset() + firstType.getNameRange().getLength() + 3;
+        final InsertEdit insertEdit = new InsertEdit(offset, methodString);
+        this.editCompilationUnit(cu, insertEdit);
+        TestUtil.waitForSynchronization();
+        return this.findOperationSignatureForJaMoPPMethodInCompilationUnit(
+                PCM2JaMoPPTestUtils.OPERATION_SIGNATURE_1_NAME, interfaceName, cu);
+    }
+
+    protected OperationSignature findOperationSignatureForJaMoPPMethodInCompilationUnit(final String methodName,
+            final String interfaceName, final ICompilationUnit cu) throws Throwable {
+        final VURI vuri = VURI.getInstance(cu.getResource());
+        final Classifier classifier = this.getJaMoPPClassifierForVURI(vuri);
+        final Interface jaMoPPInterface = (Interface) classifier;
+        for (final Method jaMoPPMethod : jaMoPPInterface.getMethods()) {
+            if (jaMoPPMethod.getName().equals(methodName)) {
+                return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(jaMoPPMethod,
+                        OperationSignature.class);
+            }
+        }
+        logger.warn("No JaMoPP method with name " + methodName + " found in " + interfaceName);
+        return null;
+    }
+
+    protected OperationSignature renameMethodInClassWithName(final String className, final String methodName)
+            throws Throwable {
+        final ICompilationUnit cu = this.findCompilationWithClassName(className);
+        final IMethod iMethod = cu.getType(className).getMethod(methodName, null);
+        final int offset = iMethod.getNameRange().getOffset();
+        final int length = iMethod.getNameRange().getLength();
+        final String newMethodName = methodName + PCM2JaMoPPTestUtils.RENAME;
+        final ReplaceEdit replaceEdit = new ReplaceEdit(offset, length, newMethodName);
+        this.editCompilationUnit(cu, replaceEdit);
+        TestUtil.waitForSynchronization();
+        return this.findOperationSignatureForJaMoPPMethodInCompilationUnit(newMethodName, className, cu);
+    }
+
+    protected void assertDataTypeName(final TypeReference typeReference, final DataType pcmDataType) {
+        final String jaMoPPTypeName = PCM2JaMoPPUtils.getNameFromJaMoPPType(typeReference);
+        final String pcmTypeName = this.getNameFromPCMDataType(pcmDataType);
+        assertEquals("The name of the PCM datatype does not equal the JaMoPP type name", jaMoPPTypeName, pcmTypeName);
+    }
+
+    private String getNameFromPCMDataType(final DataType pcmDataType) {
+        if (null == pcmDataType) {
+            return "void";
+        } else if (pcmDataType instanceof CollectionDataType) {
+            return ((CollectionDataType) pcmDataType).getEntityName();
+        } else if (pcmDataType instanceof CompositeDataType) {
+            return ((CompositeDataType) pcmDataType).getEntityName();
+        } else if (pcmDataType instanceof PrimitiveDataType) {
+            return this.getNameFromPrimitveDataType((PrimitiveDataType) pcmDataType);
+        }
+        throw new RuntimeException("getNameFromPCMDataType failed");
+    }
+
+    private String getNameFromPrimitveDataType(final PrimitiveDataType pcmDataType) {
+        switch (pcmDataType.getType()) {
+        case BOOL:
+            return "boolean";
+        case CHAR:
+            return "char";
+        case BYTE:
+            return "byte";
+        case DOUBLE:
+            return "double";
+        case INT:
+            return "int";
+        case LONG:
+            return "long";
+        case STRING:
+            return "String";
+        }
+        throw new RuntimeException("getNameFromPrimitveDataType");
+    }
+
+    protected Parameter addParameterToSignature(final String interfaceName, final String methodName,
+            final String typeName, final String parameterName) throws Throwable {
+        final ICompilationUnit icu = this.findCompilationWithClassName(interfaceName);
+        final IMethod iMethod = icu.getType(interfaceName).getMethod(methodName, null);
+        final String parameterStr = typeName + " " + parameterName;
+        final int offset = iMethod.getSourceRange().getOffset() + iMethod.getSourceRange().getLength() - 2;
+        final InsertEdit insertEdit = new InsertEdit(offset, parameterStr);
+        this.editCompilationUnit(icu, insertEdit);
+        TestUtil.waitForSynchronization();
+        final ConcreteClassifier concreateClassifier = this.getJaMoPPClassifierForVURI(VURI.getInstance(icu
+                .getResource()));
+        final Method jaMoPPMethod = (Method) concreateClassifier.getMembersByName(methodName).get(0);
+        final org.emftext.language.java.parameters.Parameter jaMoPPParam = this.getJaMoPPParameterFromJaMoPPMethod(
+                jaMoPPMethod, parameterName);
+        return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(jaMoPPParam, Parameter.class);
+
+    }
+
+    protected org.emftext.language.java.parameters.Parameter getJaMoPPParameterFromJaMoPPMethod(
+            final Method jaMoPPMethod, final String parameterName) {
+        for (final org.emftext.language.java.parameters.Parameter jaMoPPParam : jaMoPPMethod.getParameters()) {
+            if (jaMoPPParam.getName().equals(parameterName)) {
+                return jaMoPPParam;
+            }
+        }
+        throw new RuntimeException("JaMoPP param with name " + parameterName + " not found in method "
+                + jaMoPPMethod.getName());
+    }
+
+    protected org.emftext.language.java.parameters.Parameter findJaMoPPParameterInICU(final ICompilationUnit icu,
+            final String interfaceName, final String methodName, final String parameterName) {
+        final ConcreteClassifier cc = this.getJaMoPPClassifierForVURI(VURI.getInstance(icu.getResource()));
+        final List<Member> jaMoPPMethods = cc.getMembersByName(methodName);
+        for (final Member member : jaMoPPMethods) {
+            if (member instanceof Method && member.getName().equals(methodName)) {
+                return this.getJaMoPPParameterFromJaMoPPMethod((Method) member, parameterName);
+            }
+        }
+        throw new RuntimeException("No method with name " + methodName + " found in " + interfaceName);
+
+    }
+
+    protected String getNameFromPCMPrimitiveDataType(final PrimitiveDataType primitiveDataType) {
+        return primitiveDataType.getType().getName();
+    }
 }

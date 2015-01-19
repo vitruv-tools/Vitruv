@@ -132,8 +132,8 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 				correspondenceInstance)
 	}
 
-	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue,
-		int index, EObject[] newCorrespondingEObjects) {
+	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
+		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
 		return createRootEObject(newValue, newCorrespondingEObjects)
 	}
 
@@ -160,7 +160,7 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 
-	override deleteNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue,
+	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
 		int index, EObject[] oldCorrespondingEObjectsToDelete) {
 		return TransformationUtils.createEmptyTransformationChangeResult
 	}

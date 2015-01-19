@@ -103,7 +103,7 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 	}
 
 	override replaceNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject oldValue,
-		EObject newValue, EObject[] oldCorrespondingEObjectsToDelete, EObject[] newCorrespondingEObjects) {
+		EObject newValue) {
 		logger.warn(
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
@@ -197,8 +197,8 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 		return null
 	}
 
-	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue,
-		int index, EObject[] newCorrespondingEObjects) {
+	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
+		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
 		logger.warn(
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
@@ -215,7 +215,7 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 		return null
 	}
 
-	override deleteNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue,
+	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
 		int index, EObject[] oldCorrespondingEObjectsToDelete) {
 		logger.warn(
 			"method " + new Object() {
@@ -233,11 +233,11 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 		return null
 	}
 
-	override insertNonRootEObjectInContainmentList(EObject object, EObject object2, EReference reference, EObject newValue) {
+	override insertNonRootEObjectInContainmentList(EObject object, EObject object2, EReference reference,
+		EObject newValue) {
 		logger.warn(
-			"method " +
-				new Object() {
-				}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
 		return null
 	}

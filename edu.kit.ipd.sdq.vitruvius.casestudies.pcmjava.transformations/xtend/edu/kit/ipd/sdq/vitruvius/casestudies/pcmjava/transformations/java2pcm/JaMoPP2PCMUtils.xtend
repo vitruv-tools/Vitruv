@@ -6,6 +6,8 @@ import de.uka.ipd.sdq.pcm.repository.CollectionDataType
 import de.uka.ipd.sdq.pcm.repository.CompositeDataType
 import de.uka.ipd.sdq.pcm.repository.Interface
 import de.uka.ipd.sdq.pcm.repository.OperationInterface
+import de.uka.ipd.sdq.pcm.repository.OperationSignature
+import de.uka.ipd.sdq.pcm.repository.Parameter
 import de.uka.ipd.sdq.pcm.repository.Repository
 import de.uka.ipd.sdq.pcm.repository.RepositoryComponent
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
@@ -209,35 +211,58 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 			parrentCorrespondence = null
 			if (pcmElement instanceof Repository || pcmElement instanceof System) {
 				tcr.newRootObjectsToSave.add(pcmElement)
-			} else{ 
+			} else {
 				parrentCorrespondence = JaMoPP2PCMUtils.
-					findMainParrentCorrepsondenceForRepositoryFromPCMElement(pcmElement,
-						correspondenceInstance)
+					findParrentCorrepsondenceForPCMElement(pcmElement, correspondenceInstance)
 				tcr.existingObjectsToSave.add(pcmElement)
-			} 
+			}
 			tcr.addNewCorrespondence(correspondenceInstance, pcmElement, newEObject, parrentCorrespondence)
 		}
 		tcr
 	}
-	
-	def dispatch private static Correspondence findMainParrentCorrepsondenceForRepositoryFromPCMElement(EObject object, CorrespondenceInstance correspondenceInstance){
+
+	def dispatch public static Correspondence findParrentCorrepsondenceForPCMElement(EObject object,
+		CorrespondenceInstance correspondenceInstance) {
 		return null
 	}
-	
-	def dispatch private static Correspondence findMainParrentCorrepsondenceForRepositoryFromPCMElement(RepositoryComponent repoComponent, CorrespondenceInstance correspondenceInstance){
-		return findMainParrentCorrepsondenceForRepository(repoComponent.repository__RepositoryComponent, correspondenceInstance)
+
+	def dispatch public static Correspondence findParrentCorrepsondenceForPCMElement(
+		RepositoryComponent repoComponent, CorrespondenceInstance correspondenceInstance) {
+		return findMainParrentCorrepsondenceForRepository(repoComponent.repository__RepositoryComponent,
+			correspondenceInstance)
 	}
-	
-	def dispatch private static Correspondence findMainParrentCorrepsondenceForRepositoryFromPCMElement(CompositeDataType cdt, CorrespondenceInstance correspondenceInstance){
+
+	def dispatch public static Correspondence findParrentCorrepsondenceForPCMElement(CompositeDataType cdt,
+		CorrespondenceInstance correspondenceInstance) {
 		return findMainParrentCorrepsondenceForRepository(cdt.repository__DataType, correspondenceInstance)
 	}
-	
-	def dispatch private static Correspondence findMainParrentCorrepsondenceForRepositoryFromPCMElement(CollectionDataType cdt, CorrespondenceInstance correspondenceInstance){
+
+	def dispatch public static Correspondence findParrentCorrepsondenceForPCMElement(CollectionDataType cdt,
+		CorrespondenceInstance correspondenceInstance) {
 		return findMainParrentCorrepsondenceForRepository(cdt.repository__DataType, correspondenceInstance)
 	}
-	
-	def dispatch private static Correspondence findMainParrentCorrepsondenceForRepositoryFromPCMElement(OperationInterface opInterface, CorrespondenceInstance correspondenceInstance){
+
+	def dispatch public static Correspondence findParrentCorrepsondenceForPCMElement(OperationSignature opSig,
+		CorrespondenceInstance correspondenceInstance) {
+		val correspondences = correspondenceInstance.getAllCorrespondences(opSig.interface__OperationSignature)
+		if (correspondences.nullOrEmpty) {
+			return null
+		}
+		return correspondences.iterator.next
+	}
+
+	def dispatch public static Correspondence findParrentCorrepsondenceForPCMElement(OperationInterface opInterface,
+		CorrespondenceInstance correspondenceInstance) {
 		return findMainParrentCorrepsondenceForRepository(opInterface.repository__Interface, correspondenceInstance)
+	}
+
+	def dispatch public static findParrentCorrepsondenceForPCMElement(Parameter pcmParameter,
+		CorrespondenceInstance correspondenceInstance) {
+		val correspondences = correspondenceInstance.getAllCorrespondences(pcmParameter.operationSignature__Parameter)
+		if (correspondences.nullOrEmpty) {
+			return null
+		}
+		return correspondences.iterator.next
 	}
 
 }

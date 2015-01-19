@@ -41,7 +41,7 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 		val Interface jaMoPPInterface = eObject as Interface
 		try {
 			val Package jaMoPPPackage = PCM2JaMoPPUtils::
-			getContainingPackageFromCorrespondenceInstance(jaMoPPInterface, correspondenceInstance)
+				getContainingPackageFromCorrespondenceInstance(jaMoPPInterface, correspondenceInstance)
 			var boolean createInterface = false
 			if (null != jaMoPPPackage && jaMoPPPackage.name.equals("contracts")) {
 
@@ -50,8 +50,8 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 			} else {
 
 				//ii)
-				val String msg = "The created interface is not in the contracts packages. Should an architectural interface be created for the interface " + jaMoPPInterface.name +
-					" ?"
+				val String msg = "The created interface is not in the contracts packages. Should an architectural interface be created for the interface " +
+					jaMoPPInterface.name + " ?"
 				createInterface = super.modalTextYesNoUserInteracting(msg)
 			}
 			if (createInterface) {
@@ -61,7 +61,7 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 				opInterface.setRepository__Interface(repo)
 				return opInterface.toArray
 			}
-			
+
 		} catch (Exception e) {
 			logger.info(e)
 		}
@@ -72,22 +72,11 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 	 * called when an interface method has been created
 	 * 
 	 */
-	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue,
+	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject newValue,
 		int index, EObject[] newCorrespondingEObjects) {
-		if (newCorrespondingEObjects.nullOrEmpty) {
-			return TransformationUtils.createEmptyTransformationChangeResult
-		}
-		val Interface jaMoPPIf = newValue as Interface
-		val parentCorrespondences = correspondenceInstance.getAllCorrespondences(affectedEObject)
-		var Correspondence parentCorrespondence = null
-		if (null != parentCorrespondences) {
-			parentCorrespondence = parentCorrespondences.iterator.next
-		}
-		for (newCorrespondingEObject : newCorrespondingEObjects) {
-			correspondenceInstance.createAndAddEObjectCorrespondence(newCorrespondingEObject, jaMoPPIf,
-				parentCorrespondence)
-		}
-		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(newCorrespondingEObjects)
+		return JaMoPP2PCMUtils.
+			createTransformationChangeResultForNewCorrespondingEObjects(newValue, newCorrespondingEObjects,
+				correspondenceInstance)
 	}
 
 	/**
@@ -125,14 +114,15 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 	 * object has already be done in removeEObject.
 	 * We just return an empty TransformationChangeResult 
 	 */
-	override deleteNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue,
+	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
 		int index, EObject[] oldCorrespondingEObjectsToDelete) {
 		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
-		return JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(eObject, affectedAttribute, oldValue, newValue, featureCorrespondenceMap, correspondenceInstance)
+		return JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(eObject, affectedAttribute, oldValue, newValue,
+			featureCorrespondenceMap, correspondenceInstance)
 	}
 
 	override setCorrespondenceForFeatures() {

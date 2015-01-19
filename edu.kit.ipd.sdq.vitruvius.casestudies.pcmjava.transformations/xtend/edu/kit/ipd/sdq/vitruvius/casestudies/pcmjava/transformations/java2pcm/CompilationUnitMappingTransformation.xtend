@@ -1,13 +1,15 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
+import de.uka.ipd.sdq.pcm.system.System
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import org.emftext.language.java.containers.CompilationUnit
+import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.Interface
+import org.emftext.language.java.containers.CompilationUnit
 
 class CompilationUnitMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -38,26 +40,27 @@ class CompilationUnitMappingTransformation extends EmptyEObjectMappingTransforma
 	 * The method is called when a class or interface has been created within the compilation unit 
 	 * that has corresponding PCM objects (i.e. basic components)
 	 */
-	override createNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject newValue,
-		int index, EObject[] newCorrespondingEObjects) {
-		if (newValue instanceof org.emftext.language.java.classifiers.Class || newValue instanceof Interface) {
+	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
+		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
+		if (newValue instanceof Class || newValue instanceof Interface) {
+
 			// if it is a class that should correspond to a system and the system already has a container 
 			//do not mark the system as new objet to create.
-			if(!newCorrespondingEObjects.nullOrEmpty){
-				val systems = newCorrespondingEObjects.filter(typeof(de.uka.ipd.sdq.pcm.system.System))
-				if(!systems.nullOrEmpty){
+			if (!newCorrespondingEObjects.nullOrEmpty) {
+				val systems = newCorrespondingEObjects.filter(typeof(System))
+				if (!systems.nullOrEmpty) {
 					val tcr = new TransformationChangeResult
-					for(system:systems){
-						if(null == system.eResource){
+					for (system : systems) {
+						if (null == system.eResource) {
 							tcr.newRootObjectsToSave.add(system)
-						}else{
+						} else {
 							tcr.existingObjectsToSave.add(system)
 						}
 						tcr.addNewCorrespondence(correspondenceInstance, system, newValue, null)
 						return tcr
 					}
 				}
-			} 
+			}
 			return JaMoPP2PCMUtils.
 				createTransformationChangeResultForNewCorrespondingEObjects(newValue, newCorrespondingEObjects,
 					correspondenceInstance)
