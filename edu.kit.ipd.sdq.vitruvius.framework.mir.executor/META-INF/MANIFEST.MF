@@ -8,7 +8,9 @@ Require-Bundle: org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  org.eclipse.ocl,
- org.eclipse.ocl.ecore
+ org.eclipse.ocl.ecore,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change,
+ org.eclipse.emf.ecore.change;bundle-version="2.10.0"
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl,
  edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces,
  edu.kit.ipd.sdq.vitruvius.framework.mir.executor.reflection,

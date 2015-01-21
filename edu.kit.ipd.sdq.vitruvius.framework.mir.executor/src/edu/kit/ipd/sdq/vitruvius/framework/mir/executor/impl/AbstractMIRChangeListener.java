@@ -1,13 +1,10 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl;
 
-import java.util.Collection;
+import java.util.List;
 
-import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.EObject;
-
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.EChangeListener;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.Invariant;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.InvariantEvaluationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.InvariantRegistry;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.Response;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.ResponseRegistry;
@@ -31,9 +28,10 @@ public abstract class AbstractMIRChangeListener implements EChangeListener {
 	
 	protected abstract void setup();
 	
+	
 	@Override
-	public void onEChange() { }
-/*	public void onEChange(EChange change) {
+	public List<EChange> handleChange(EChange change) {
+	/*
 		if (change instanceof CreateNonRootEObjectSingle<?>) {
 			CreateNonRootEObjectSingle createEObject = (CreateNonRootEObjectSingle<?>) change;
 		} else if (change instanceof UpdateEAttribute<?>) {
@@ -51,7 +49,9 @@ public abstract class AbstractMIRChangeListener implements EChangeListener {
 					break;
 				}
 			}
-		}
-	}*/
+		}*/
+		
+		return null;
+	}
 
 }
