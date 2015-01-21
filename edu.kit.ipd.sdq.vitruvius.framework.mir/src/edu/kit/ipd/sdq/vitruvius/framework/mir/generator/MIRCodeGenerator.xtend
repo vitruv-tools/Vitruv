@@ -20,10 +20,13 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Crea
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.FeatureMapping
 import java.util.ArrayList
 import java.util.List
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.EChangeListener
 
 class MIRCodeGenerator implements IGenerator {
 	private static final String CONTEXT_NAME = "context";
 	private static final String RESULT_NAME = "result";
+	
+	private static final String ECHANGELISTENER_FQN = EChangeListener.name
 	
 	@Inject IGeneratorStatus generatorStatus;
 	
@@ -47,6 +50,16 @@ class MIRCodeGenerator implements IGenerator {
 		createMethodNames = new HashMap<ClassifierMapping, String>();
 	}
 	
+
+	private static final char PATH_SEPERATOR = '/';
+	
+	/**
+	 * 
+	 */
+	private def packageNameToPath(String pkgName) {
+		pkgName.replace('.', PATH_SEPERATOR)
+	}
+	
 	private def transform(MIR file, URI resourcePath, IFileSystemAccess fsa) {
 		println(file.configuration.package)
 		println(resourcePath)
@@ -60,16 +73,19 @@ class MIRCodeGenerator implements IGenerator {
 		val callCreateMethod = generateCallCreateMethod
 		val checkElementMethod = generateCheckElementMethod
 		
-		fsa.generateFile(file.configuration.type + ".java", '''
-			/*package «file.configuration.package»;*/
+		fsa.generateFile(file.configuration.package.packageNameToPath + '/' + file.configuration.type + ".java", '''
+			package «file.configuration.package»;
 			
 			import org.eclipse.emf.ecore.EObject;
 			import java.util.Map;
 			import java.util.HashMap;
+			import java.util.List;
+			
+			import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 			
 			import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper;
 			
-			class «file.configuration.type» {
+			class «file.configuration.type» implements «ECHANGELISTENER_FQN»{
 				/*
 				 * Generated:
 				 *     * Methods to check if mapping with index i holds (predicateCheck_i)
@@ -90,6 +106,18 @@ class MIRCodeGenerator implements IGenerator {
 					currentMappingID = new HashMap<EObject, Integer>();
 				}
 				
+				/**
+				 * For debug purposes only. Prints out {@code s} and returns {@code null}.
+				 */
+				private static <T> T outAndNull(String s) {
+					System.out.println(s);
+					return null;
+				}
+				
+				private void deleteCorrespondenceRecursive(EObject object) {
+					System.out.println("Deleting correspondence of " + object.toString());
+				}
+				
 				«checkElementMethod»
 				
 				«mappingIDMethod»
@@ -104,8 +132,19 @@ class MIRCodeGenerator implements IGenerator {
 				
 				// feature change methods
 				«featureChangeMethods»
+				
+				«handleEChangeMethod»
 			}
 		''')
+	}
+	
+	def handleEChangeMethod() {
+		'''
+		@Override
+		public List<EChange> handleChange(EChange change) {
+			return null;
+		}
+		'''
 	}
 	
 	def generateCallCreateMethod() {
@@ -120,6 +159,7 @@ class MIRCodeGenerator implements IGenerator {
 			var createMethod = createMethodNames.get(classifierMapping)
 			result +=
 				'''
+			
 				case «i»:
 					«createMethod»(«CONTEXT_NAME»);
 					break;
@@ -129,9 +169,12 @@ class MIRCodeGenerator implements IGenerator {
 		
 		result +=
 			'''
-					default:
-						throw new IllegalArgumentException("Unknown mapping id: " + mappingID);
+			
+				default:
+					throw new IllegalArgumentException("Unknown mapping id: " + mappingID);
 				}
+				
+				currentMappingID.put(«CONTEXT_NAME», mappingID);
 			}
 			'''
 			
@@ -153,11 +196,11 @@ class MIRCodeGenerator implements IGenerator {
 				} else if (newMappingID == null) {
 					// case 2: deleted model element
 					
-					// delete corresponding ...
+					deleteCorrespondenceRecursive(«CONTEXT_NAME»);
 				} else {
 					// case 3: different mapping
 					
-					// delete corresponding ...
+					deleteCorrespondenceRecursive(«CONTEXT_NAME»);
 					callCreateMethod(newMappingID, «CONTEXT_NAME»);
 				}
 			}
@@ -167,19 +210,24 @@ class MIRCodeGenerator implements IGenerator {
 	
 	private def generateGetMappingIDMethod() {
 		var i = 0;
-		var result = '''public Integer getMappingID(EObject «CONTEXT_NAME») {'''
+		var result = '''
+		public Integer getMappingID(EObject «CONTEXT_NAME») {
+		'''
 		
 		for (classifierMapping : classifierMappings) {
 			var predicateCheck = predicateCheckMethodNames.get(classifierMapping)
 			result +=
 				'''
+				
 					if («predicateCheck»(«CONTEXT_NAME»))
 						return «i»;
 				'''
 			i++
 		}
 		
-		result += "return null;\n}"
+		result += '''
+			return null;
+		}'''
 		
 		return result
 	}
@@ -195,25 +243,25 @@ class MIRCodeGenerator implements IGenerator {
 		 * @generated
 		 */
 		public boolean «methodName»(EObject eObject_«CONTEXT_NAME») {
-				if (!(eObject_«CONTEXT_NAME» instanceof «leftType»))
-					return false;
-					
-				// type cast from EObject
-				«leftType» «CONTEXT_NAME» = («leftType») eObject_«CONTEXT_NAME»;
-			
-				«FOR predicate : mapping.predicates SEPARATOR "\n\n"»
-					if (!(«getPredicateString(predicate)»)) return false;
-				«ENDFOR»
+			if (!(eObject_«CONTEXT_NAME» instanceof «leftType»))
+				return false;
 				
-				// all predicates hold
-				return true;
+			// type cast from EObject
+			«leftType» «CONTEXT_NAME» = («leftType») eObject_«CONTEXT_NAME»;
+			
+			«FOR predicate : mapping.predicates SEPARATOR "\n\n"»
+				if (!(«getPredicateString(predicate)»)) return false;
+			«ENDFOR»
+			
+			// all predicates hold
+			return true;
 		}
 		'''
 		
 	}
 	
 	private def getCreateStatement(EClassifier eClassifier) {
-		return "/* create " + eClassifier.name + " */ (null)"
+		return '''outAndNull("create «eClassifier.name»")'''
 	}
 	
 	private def generateCreateMappingMethod(ClassifierMapping mapping) {
