@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated SimplestA -->
+      <package
+            uri="http://edu.kit.ipd.sdq.vitruvius/mir/tests/SimpleAtoB/SimplestA/1.0"
+            class="SimpleAtoBTest_SimplestA.SimpleAtoBTest_SimplestAPackage"
+            genModel="models/01_SimpleAtoB/SimplestA.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated SimplestB -->
+      <package
+            uri="http://edu.kit.ipd.sdq.vitruvius/mir/tests/SimpleAtoB/SimplestB/1.0"
+            class="SimpleAtoBTest_SimplestB.SimpleAtoBTest_SimplestBPackage"
+            genModel="models/01_SimpleAtoB/SimplestB.genmodel"/>
+   </extension>
+
+</plugin>

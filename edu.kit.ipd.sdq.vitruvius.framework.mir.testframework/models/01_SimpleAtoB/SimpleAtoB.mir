@@ -1,0 +1,7 @@
+generates package simpleAtoB.generated
+generates type SimpleAtoB
+
+import package "http://edu.kit.ipd.sdq.vitruvius/mir/tests/SimpleAtoB/SimplestA/1.0" as a
+import package "http://edu.kit.ipd.sdq.vitruvius/mir/tests/SimpleAtoB/SimplestB/1.0" as b
+
+map a.A and b.B {}
