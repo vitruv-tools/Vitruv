@@ -1,9 +1,12 @@
 package edu.kit.ipd.sdq.vitruvius.framework.model.monitor;
 
+import java.io.IOException;
 import java.util.List;
 
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.apache.log4j.PatternLayout;
 import org.eclipse.ui.IStartup;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
@@ -14,7 +17,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionTy
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelCopyProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor;
 import edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor.AbstractMonitoredEditor;
