@@ -64,7 +64,7 @@ public final class AST2JaMoPPCorrespondence {
 
     public static boolean corresponds(FieldDeclaration fieldDeclaration, Field field, boolean compareOnlyName) {
         boolean sameName = varOfSameNameExists(fieldDeclaration, field);
-        String fieldType = typeToString(field);
+        String fieldType = typeToString(field, field.getArrayDimension());
         boolean sameTypes = fieldDeclaration.getType().toString().equals(fieldType); // sameMethodParameters(methodDeclaration,
                                                                                      // method);
         return sameName && (compareOnlyName || sameTypes);
@@ -72,10 +72,6 @@ public final class AST2JaMoPPCorrespondence {
 
     public static boolean correspondsByName(VariableDeclarationFragment fieldFragment, Field field) {
         return field.getName().equals(fieldFragment.getName().toString());
-    }
-
-    private static String typeToString(TypedElement typedElement) {
-        return typeToString(typedElement, 0);
     }
 
     private static String typeToString(TypedElement typedElement, long arrayDimension) {

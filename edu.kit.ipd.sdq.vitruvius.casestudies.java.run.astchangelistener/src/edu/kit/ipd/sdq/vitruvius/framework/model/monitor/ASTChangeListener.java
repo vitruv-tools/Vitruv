@@ -98,6 +98,11 @@ public class ASTChangeListener implements IStartup, IElementChangedListener {
         JavaCore.addElementChangedListener(this);
     }
 
+    public void revokeRegistrations() {
+        this.editCommandListener.revokeRegistrations();
+        JavaCore.removeElementChangedListener(this);
+    }
+    
     private static ConcreteChangeClassifier[] getPostReconcileClassifiers() {
         List<ConcreteChangeClassifier> classifiers = new ArrayList<ConcreteChangeClassifier>(Arrays.asList(
                 new AddFieldClassifier(), new RemoveFieldClassifier(), new RenameFieldClassifier(),

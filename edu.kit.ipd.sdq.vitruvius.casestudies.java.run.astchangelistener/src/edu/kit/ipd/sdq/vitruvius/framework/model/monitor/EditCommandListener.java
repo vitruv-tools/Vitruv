@@ -26,6 +26,11 @@ class EditCommandListener implements IExecutionListener {
         ICommandService service = (ICommandService) PlatformUI.getWorkbench().getService(ICommandService.class);
         service.addExecutionListener(this);
     }
+    
+    public void revokeRegistrations() {
+        ICommandService service = (ICommandService) PlatformUI.getWorkbench().getService(ICommandService.class);
+        service.removeExecutionListener(this);
+    }
 
     public boolean isListening() {
         return this.listening;

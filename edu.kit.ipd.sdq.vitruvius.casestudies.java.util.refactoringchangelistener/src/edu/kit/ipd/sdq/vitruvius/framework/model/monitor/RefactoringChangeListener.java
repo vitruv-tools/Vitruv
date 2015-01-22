@@ -67,6 +67,19 @@ public final class RefactoringChangeListener implements IStartup, IRefactoringEx
             instance.monitoredProjectNames = Arrays.asList(projectNames);
         return instance;
     }
+    
+    public static synchronized void destroyInstance() {
+        if (instance == null) {
+            return;
+        }
+        instance.revokeRegistrations();
+        instance = null;
+    }
+    
+    private void revokeRegistrations() {
+        RefactoringCore.getHistoryService().removeExecutionListener(this);
+        ((ICommandService) PlatformUI.getWorkbench().getService(ICommandService.class)).removeExecutionListener(this);
+    }
 
     public boolean isMonitoredProject(String projectName) {
         return this.monitoredProjectNames.contains(projectName);

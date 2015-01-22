@@ -61,7 +61,7 @@ ChangeSubmitter, IStartup {
 
     }
 
-    protected final ASTChangeListener astListener;
+    private final ASTChangeListener astListener;
     private final RefactoringChangeListener refactoringListener;
     // private CorrespondenceInstance correspondenceInstance;
     private final ChangeResponder changeResponder;
@@ -71,14 +71,14 @@ ChangeSubmitter, IStartup {
         @Override
         public void preExecute() {
             MonitoredEditor.this.log.info("Stop AST Listening");
-            MonitoredEditor.this.astListener.stopListening();
+            stopASTListening();
             MonitoredEditor.this.startCollectInCompositeChange();
         }
 
         @Override
         public void postExecute() {
             MonitoredEditor.this.log.info("Start AST Listening");
-            MonitoredEditor.this.astListener.startListening();
+            startASTListening();
             MonitoredEditor.this.lastRefactoringTime = System.nanoTime();
         }
 
@@ -145,6 +145,14 @@ ChangeSubmitter, IStartup {
         this.changeResponder = new ChangeResponder(this);
         this.userInteractor = new UserInteractor();
         // this.addDummyCorrespondencesForAllInterfaceMethods();
+    }
+    
+    protected void revokeRegistrations() {
+      this.astListener.removeListener(this);
+      this.astListener.revokeRegistrations();
+      refactoringListener.removeListener(this);
+      refactoringListener.removeListener(this.refactoringStatusListener);
+      RefactoringChangeListener.destroyInstance();
     }
 
     private void configureLogger() {
@@ -225,4 +233,11 @@ ChangeSubmitter, IStartup {
         return this.userInteractor.selectFromModel(type, message, modelInstances);
     }
 
+    protected void startASTListening() {
+        astListener.startListening();
+    }
+    
+    protected void stopASTListening() {
+        astListener.stopListening();
+    }
 }
