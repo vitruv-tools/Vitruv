@@ -10,6 +10,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IImportDeclaration;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -23,6 +24,7 @@ import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jdt.core.dom.VariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
 /**
@@ -259,6 +261,23 @@ public final class JavaModel2AST {
             VariableDeclarationFragment fragment = fragmentIterator.next();
             if (JavaModel2ASTCorrespondence.correspondsByName(ifield, fragment))
                 return fragment;
+        }
+        return null;
+    }
+    
+    public static VariableDeclaration getParameterVariableDeclarationByName(ILocalVariable locVar) {
+        CompilationUnit astUnit = parseCompilationUnit(((IMethod)locVar.getParent()).getCompilationUnit());
+        return getParameterVariableDeclarationByName(locVar, astUnit);
+    }
+    
+    public static VariableDeclaration getParameterVariableDeclarationByName(ILocalVariable locVar, CompilationUnit cu) {
+        IMethod correspondingMethod = (IMethod)locVar.getParent();
+        MethodDeclaration md = getMethodDeclaration(correspondingMethod, cu);
+        for (Object parameter : md.parameters()) {
+            VariableDeclaration vd = (VariableDeclaration)parameter;
+            if (vd.getName().getIdentifier().equals(locVar.getElementName())) {
+                return vd;
+            }
         }
         return null;
     }

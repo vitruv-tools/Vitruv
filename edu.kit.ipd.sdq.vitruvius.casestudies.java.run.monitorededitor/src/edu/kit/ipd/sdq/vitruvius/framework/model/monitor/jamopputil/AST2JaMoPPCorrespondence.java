@@ -190,7 +190,9 @@ public final class AST2JaMoPPCorrespondence {
         EStructuralFeature classifierReference = imprt.eClass().getEStructuralFeature("classifier");
         Classifier importedClassifier = (Classifier) imprt.eGet(classifierReference);
         String className = importedClassifier.getName();
-        qualifiedName += "." + className;
-        return qualifiedName.equals(importDeclaration.getName().getFullyQualifiedName());
+        qualifiedName += !qualifiedName.endsWith(".") ? "." : "";
+        qualifiedName += className;
+        String importDeclarationQualifiedName = importDeclaration.getName().getFullyQualifiedName();
+        return qualifiedName.equals(importDeclarationQualifiedName);
     }
 }

@@ -56,6 +56,24 @@
       </renameParticipant>
    </extension>
    <extension
+         point="org.eclipse.ltk.core.refactoring.renameParticipants">
+      <renameParticipant
+            class="edu.kit.ipd.sdq.vitruvius.framework.model.monitor.refactoringParticipants.RenameLocalVariableParticipant"
+            id="RefactoringChangeListener.renameParticipant4"
+            name="RenameLocalVariableParticipant">
+         <enablement>
+		      <with variable="affectedNatures">
+		        <iterate operator="or">
+		          <equals value="org.eclipse.jdt.core.javanature"/>
+		        </iterate>
+		      </with>
+		      <with variable="element">
+		        <instanceof value="org.eclipse.jdt.core.ILocalVariable"/>
+		      </with>
+		    </enablement>
+      </renameParticipant>
+   </extension>
+   <extension
          point="org.eclipse.ltk.core.refactoring.moveParticipants">
       <moveParticipant
             class="edu.kit.ipd.sdq.vitruvius.framework.model.monitor.refactoringParticipants.MoveMethodParticipant"

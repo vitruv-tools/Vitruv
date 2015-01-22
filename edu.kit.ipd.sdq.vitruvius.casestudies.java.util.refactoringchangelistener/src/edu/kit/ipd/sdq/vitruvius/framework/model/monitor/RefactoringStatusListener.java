@@ -10,8 +10,10 @@ public interface RefactoringStatusListener {
     public void postExecute();
 
     public void preExecute();
+    
+    public void aboutPostExecute();
 
     public enum RefactoringStatus {
-        PRE_EXECUTE, POST_EXECUTE
+        PRE_EXECUTE, ABOUT_POST_EXECUTE, POST_EXECUTE
     }
 }

@@ -67,6 +67,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RenameInterfaceE
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RenameMethodEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RenamePackageDeclarationEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RenamePackageEvent;
+import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RenameParameterEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.jamopputil.AST2JaMoPP;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.jamopputil.CompilationUnitAdapter;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.jamopputil.JaMoPPChangeBuildHelper;
@@ -562,7 +563,18 @@ public class ChangeResponder implements ChangeEventVisitor {
         final EChange createPackageChange = JaMoPPChangeBuildHelper
                 .createCreatePackageChange(addPackageEvent.packageName);
         this.util.submitEMFModelChange(createPackageChange, addPackageEvent.iResource);
+    }
+    
 
+    @Override
+    public void visit(RenameParameterEvent renameParameterEvent) {
+        CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(renameParameterEvent.original);
+        Parameter original = originalCU.getParameterForVariableDeclaration(renameParameterEvent.originalParam);
+        URI uri = this.util.getFirstExistingURI(renameParameterEvent.original, renameParameterEvent.renamed);
+        CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(renameParameterEvent.renamed, uri);
+        Parameter renamed = changedCU.getParameterForVariableDeclaration(renameParameterEvent.changedParam);
+        EChange eChange = JaMoPPChangeBuildHelper.createRenameParameterChange(original, renamed);
+        this.util.submitEMFModelChange(eChange, renameParameterEvent.original);
     }
 
     @Override

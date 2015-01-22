@@ -77,9 +77,10 @@ public final class RefactoringChangeListener implements IStartup, IRefactoringEx
         if (!this.listening)
             return; // ignore event
 
-        if (event.getEventType() == RefactoringExecutionEvent.PERFORMED) {
+        if (event.getEventType() == RefactoringExecutionEvent.ABOUT_TO_PERFORM)
+            notifyAllStatusListeners(RefactoringStatus.ABOUT_POST_EXECUTE, event);
+        else if (event.getEventType() == RefactoringExecutionEvent.PERFORMED)
             notifyAllStatusListeners(RefactoringStatus.POST_EXECUTE, event);
-        }
     }
 
     @Override
@@ -147,6 +148,10 @@ public final class RefactoringChangeListener implements IStartup, IRefactoringEx
                 break;
             case POST_EXECUTE:
                 listener.postExecute();
+                break;
+            case ABOUT_POST_EXECUTE:
+                listener.aboutPostExecute();
+                break;
             default:
                 break;
             }

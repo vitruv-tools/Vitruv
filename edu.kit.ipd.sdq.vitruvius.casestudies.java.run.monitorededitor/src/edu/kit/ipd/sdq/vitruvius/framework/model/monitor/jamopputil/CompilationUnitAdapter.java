@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jdt.core.dom.VariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.emftext.language.java.classifiers.AnonymousClass;
 import org.emftext.language.java.classifiers.ConcreteClassifier;
@@ -25,6 +26,7 @@ import org.emftext.language.java.instantiations.impl.NewConstructorCallImpl;
 import org.emftext.language.java.members.Field;
 import org.emftext.language.java.members.Member;
 import org.emftext.language.java.members.Method;
+import org.emftext.language.java.parameters.Parameter;
 
 /**
  * @author messinger
@@ -144,6 +146,16 @@ public class CompilationUnitAdapter {
             parent = parent.getParent();
         }
         return (MethodDeclaration) parent;
+    }
+    
+    public Parameter getParameterForVariableDeclaration(VariableDeclaration parameterDeclaration) {
+        Method method = getMethodForMethodDeclaration((MethodDeclaration)parameterDeclaration.getParent());
+        for (Parameter parameter : method.getParameters()) {
+            if (parameter.getName().equals(parameterDeclaration.getName().getIdentifier())) {
+                return parameter;
+            }
+        }
+        return null;
     }
 
     // TODO test if it works with anonymous and inner classes

@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.model.monitor.jamopputil;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -22,8 +23,6 @@ import org.emftext.language.java.types.TypedElement;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.AttributeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.ReferenceFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.UpdateSingleValuedNonContainmentEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectInList;
@@ -54,6 +53,10 @@ public class JaMoPPChangeBuildHelper {
 
     public static EChange createRenameMethodChange(Method originalMethod, Method renamedMethod) {
         return createRenameChange(originalMethod, renamedMethod);
+    }
+    
+    public static EChange createRenameParameterChange(Parameter originalParameter, Parameter renamedParameter) {
+        return createRenameChange(originalParameter, renamedParameter);
     }
 
     public static EChange createRenameFieldChange(Field originalField, Field renamedField) {
@@ -182,7 +185,8 @@ public class JaMoPPChangeBuildHelper {
         createChange.setNewAffectedEObject(createdEObject.eContainer());
         createChange.setOldAffectedEObject(containerBeforeAdd);
         EReference containingReference = (EReference) createdEObject.eContainingFeature();
-        int index = containingReference.eContents().indexOf(createChange);
+        @SuppressWarnings("unchecked")
+        int index = ((EList<EObject>)createChange.getNewAffectedEObject().eGet(containingReference)).indexOf(createdEObject);
         createChange.setAffectedFeature(containingReference);
         createChange.setIndex(index);
         createChange.setNewValue(createdEObject);
@@ -192,10 +196,11 @@ public class JaMoPPChangeBuildHelper {
     private static <T extends EObject> EChange createDeleteNonRootEObjectInListChange(T deletedEObject,
             EObject containerAfterDelete) {
         DeleteNonRootEObjectInList<T> deleteChange = ContainmentFactory.eINSTANCE.createDeleteNonRootEObjectInList();
-        deleteChange.setOldAffectedEObject(containerAfterDelete);
-        deleteChange.setNewAffectedEObject(deletedEObject.eContainer());
+        deleteChange.setOldAffectedEObject(deletedEObject.eContainer());
+        deleteChange.setNewAffectedEObject(containerAfterDelete);
         EReference containingReference = (EReference) deletedEObject.eContainingFeature();
-        int index = containingReference.eContents().indexOf(deleteChange);
+        @SuppressWarnings("unchecked")
+        int index = ((EList<EObject>)deleteChange.getOldAffectedEObject().eGet(containingReference)).indexOf(deletedEObject);
         deleteChange.setAffectedFeature(containingReference);
         deleteChange.setIndex(index);
         deleteChange.setOldValue(deletedEObject);

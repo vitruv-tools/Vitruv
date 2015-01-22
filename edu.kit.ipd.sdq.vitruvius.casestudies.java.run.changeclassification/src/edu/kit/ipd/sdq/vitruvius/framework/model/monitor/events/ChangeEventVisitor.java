@@ -84,4 +84,6 @@ public interface ChangeEventVisitor {
 
     void visit(AddMethodEvent addMethodEvent);
 
+    void visit(RenameParameterEvent renameParameterEvent);
+
 }
