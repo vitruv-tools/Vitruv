@@ -1,0 +1,25 @@
+===================================================================
+--- specs\javacard\framework\service\RMIService.jml
++++ specs\javacard\framework\service\RMIService.jml
+@@ -49,7 +49,7 @@
+ 	requires true;
+ 	ensures _invokeInstructionByte == ins;
+ 	@*/
+-	public void setInvokeInstructionByte (byte ins);
++	public /*@ pure */ void setInvokeInstructionByte (byte ins);
+ 
+ 	/*@
+ 	also public normal_behavior
+
+===================================================================
+--- src\javacard\framework\service\RMIService.java
++++ src\javacard\framework\service\RMIService.java
+@@ -31,7 +31,7 @@
+     }
+ 
+     public void setInvokeInstructionByte(byte ins) {
+-        _invokeInstructionByte = ins;
++
+     }
+ 
+     public boolean processCommand(APDU apdu) {

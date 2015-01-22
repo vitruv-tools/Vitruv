@@ -1,0 +1,141 @@
+===================================================================
+--- specs\javacard\framework\APDU.jml
++++ specs\javacard\framework\APDU.jml
+@@ -31,27 +31,22 @@
+ 	/*@
+ 	public invariant _Lc >= 0 && _Lc < 256;
+ 	@*/
+-
+ 	private /*@ spec_public */ short _Lc;
+ 
+ 	/*@
+ 	public invariant _Lr >= 0 && _Lr <= 256;
+ 	@*/
+-
+ 	private /*@ spec_public */ short _Lr;
+ 
+ 	/*@
+ 	public invariant _Le >= 0 && _Le <= 256;
+ 	@*/
+-
+ 	private /*@ spec_public */ short _Le;
+ 
+ 	/*@
+ 	public invariant BUFFER_LENGTH >= 37;
+ 	@*/
+-
+ 	private final static /*@ spec_public */ short BUFFER_LENGTH;
+-
+ 	private /*@ spec_public */ byte[] _buffer;
+ 
+ 	/*@
+@@ -73,83 +68,44 @@
+ 	/*@
+ 	public invariant ( _apduState >= STATE_INITIAL && _apduState <= STATE_FULL_OUTGOING ) || _apduState == STATE_ERROR_NO_T0_GETRESPONSE || _apduState == STATE_ERROR_T1_IFD_ABORT || _apduState == STATE_ERROR_IO || _apduState == STATE_ERROR_NO_T0_REISSUE;
+ 	@*/
+-
+ 	private /*@ spec_public */ byte _apduState;
+-
+ 	public static final byte PROTOCOL_MEDIA_CONTACTLESS_TYPE_A;
+-
+ 	public static final byte PROTOCOL_MEDIA_CONTACTLESS_TYPE_B;
+-
+ 	public static final byte PROTOCOL_MEDIA_DEFAULT;
+-
+ 	public static final byte PROTOCOL_MEDIA_MASK;
+-
+ 	public static final byte PROTOCOL_MEDIA_USB;
+-
+ 	public static final byte PROTOCOL_T0;
+-
+ 	public static final byte PROTOCOL_T1;
+-
+ 	public static final byte PROTOCOL_TYPE_MASK;
+-
+ 	public static final byte STATE_ERROR_NO_T0_GETRESPONSE;
+-
+ 	public static final byte STATE_ERROR_T1_IFD_ABORT;
+-
+ 	public static final byte STATE_ERROR_IO;
+-
+ 	public static final byte STATE_ERROR_NO_T0_REISSUE;
+-
+ 	public static final byte STATE_INITIAL;
+-
+ 	public static final byte STATE_PARTIAL_INCOMING;
+-
+ 	public static final byte STATE_FULL_INCOMING;
+-
+ 	public static final byte STATE_OUTGOING;
+-
+ 	public static final byte STATE_OUTGOING_LENGTH_KNOWN;
+-
+ 	public static final byte STATE_PARTIAL_OUTGOING;
+-
+ 	public static final byte STATE_FULL_OUTGOING;
+-
+ 	//@ public static invariant PROTOCOL_MEDIA_CONTACTLESS_TYPE_A == 0xff;
+-
+ 	//@ public static invariant PROTOCOL_MEDIA_CONTACTLESS_TYPE_B == 0xef;
+-
+ 	//@ public static invariant PROTOCOL_MEDIA_DEFAULT == 0;
+-
+ 	//@ public static invariant PROTOCOL_MEDIA_MASK == 0x8f;
+-
+ 	//@ public static invariant PROTOCOL_MEDIA_USB == 0xdf;
+-
+ 	//@ public static invariant PROTOCOL_T0 == 0;
+-
+ 	//@ public static invariant PROTOCOL_T1 == 1;
+-
+ 	//@ public static invariant PROTOCOL_TYPE_MASK == 0xf;
+-
+ 	//@ public static invariant STATE_ERROR_NO_T0_GETRESPONSE == 0x80;
+-
+ 	//@ public static invariant STATE_ERROR_T1_IFD_ABORT == 0x81;
+-
+ 	//@ public static invariant STATE_ERROR_IO == 0x82;
+-
+ 	//@ public static invariant STATE_ERROR_NO_T0_REISSUE == 0x83;
+-
+ 	//@ public static invariant STATE_INITIAL == 0;
+-
+ 	//@ public static invariant STATE_PARTIAL_INCOMING == 1;
+-
+ 	//@ public static invariant STATE_FULL_INCOMING == 2;
+-
+ 	//@ public static invariant STATE_OUTGOING == 3;
+-
+ 	//@ public static invariant STATE_OUTGOING_LENGTH_KNOWN == 4;
+-
+ 	//@ public static invariant STATE_PARTIAL_OUTGOING == 5;
+-
+ 	//@ public static invariant STATE_FULL_OUTGOING == 6;
+ 
+ 	/*@
+
+===================================================================
+--- specs\javacard\framework\Applet.jml
++++ specs\javacard\framework\Applet.jml
+@@ -56,7 +56,7 @@
+ 	requires true;
+ 	ensures \result == null;
+ 	@*/
+-	public Shareable getShareableInterfaceObject (AID clientAID, byte parameter);
++	public Shareable getShareableInterfaceObject (AID clientAIDRENAMED, byte parameter);
+ 
+ 	/*@
+ 	behavior requires true;
+
+===================================================================
+--- src\javacard\framework\Applet.java
++++ src\javacard\framework\Applet.java
+@@ -31,7 +31,7 @@
+     public void deselect() {
+     }
+ 
+-    public Shareable getShareableInterfaceObject(AID clientAID, byte parameter) {
++    public Shareable getShareableInterfaceObject(AID clientAIDRENAMED, byte parameter) {
+         return null;
+     }
+ 

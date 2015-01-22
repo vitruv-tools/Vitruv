@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Initializer
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.initializer;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.apache.log4j;bundle-version="1.2.15",
+ org.eclipse.core.commands,
+ org.eclipse.core.resources,
+ org.eclipse.core.runtime;bundle-version="3.10.0",
+ org.eclipse.jdt.core,
+ org.eclipse.ui,
+ edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.java.run.monitorededitor;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor;bundle-version="1.0.0"
+Bundle-Activator: edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.initializer.Activator
+Bundle-ActivationPolicy: lazy
+Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.initializer

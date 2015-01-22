@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry exported="true" kind="lib" path="aopalliance.jar"/>
+	<classpathentry exported="true" kind="lib" path="guice-3.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="guice-assistedinject-3.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="guice-grapher-3.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="guice-jmx-3.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="guice-jndi-3.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="guice-multibindings-3.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="guice-persist-3.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="guice-servlet-3.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="guice-spring-3.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="guice-struts2-plugin-3.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="guice-throwingproviders-3.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="javax.inject.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

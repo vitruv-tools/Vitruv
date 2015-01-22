@@ -1,0 +1,239 @@
+===================================================================
+--- specs\javacard\framework\APDU.jml
++++ specs\javacard\framework\APDU.jml
+@@ -31,27 +31,22 @@
+ 	/*@
+ 	public invariant _Lc >= 0 && _Lc < 256;
+ 	@*/
+-
+ 	private /*@ spec_public */ short _Lc;
+ 
+ 	/*@
+ 	public invariant _Lr >= 0 && _Lr <= 256;
+ 	@*/
+-
+ 	private /*@ spec_public */ short _Lr;
+ 
+ 	/*@
+ 	public invariant _Le >= 0 && _Le <= 256;
+ 	@*/
+-
+ 	private /*@ spec_public */ short _Le;
+ 
+ 	/*@
+ 	public invariant BUFFER_LENGTH >= 37;
+ 	@*/
+-
+ 	private final static /*@ spec_public */ short BUFFER_LENGTH;
+-
+ 	private /*@ spec_public */ byte[] _buffer;
+ 
+ 	/*@
+@@ -73,83 +68,44 @@
+ 	/*@
+ 	public invariant ( _apduState >= STATE_INITIAL && _apduState <= STATE_FULL_OUTGOING ) || _apduState == STATE_ERROR_NO_T0_GETRESPONSE || _apduState == STATE_ERROR_T1_IFD_ABORT || _apduState == STATE_ERROR_IO || _apduState == STATE_ERROR_NO_T0_REISSUE;
+ 	@*/
+-
+ 	private /*@ spec_public */ byte _apduState;
+-
+ 	public static final byte PROTOCOL_MEDIA_CONTACTLESS_TYPE_A;
+-
+ 	public static final byte PROTOCOL_MEDIA_CONTACTLESS_TYPE_B;
+-
+ 	public static final byte PROTOCOL_MEDIA_DEFAULT;
+-
+ 	public static final byte PROTOCOL_MEDIA_MASK;
+-
+ 	public static final byte PROTOCOL_MEDIA_USB;
+-
+ 	public static final byte PROTOCOL_T0;
+-
+ 	public static final byte PROTOCOL_T1;
+-
+ 	public static final byte PROTOCOL_TYPE_MASK;
+-
+ 	public static final byte STATE_ERROR_NO_T0_GETRESPONSE;
+-
+ 	public static final byte STATE_ERROR_T1_IFD_ABORT;
+-
+ 	public static final byte STATE_ERROR_IO;
+-
+ 	public static final byte STATE_ERROR_NO_T0_REISSUE;
+-
+ 	public static final byte STATE_INITIAL;
+-
+ 	public static final byte STATE_PARTIAL_INCOMING;
+-
+ 	public static final byte STATE_FULL_INCOMING;
+-
+ 	public static final byte STATE_OUTGOING;
+-
+ 	public static final byte STATE_OUTGOING_LENGTH_KNOWN;
+-
+ 	public static final byte STATE_PARTIAL_OUTGOING;
+-
+ 	public static final byte STATE_FULL_OUTGOING;
+-
+ 	//@ public static invariant PROTOCOL_MEDIA_CONTACTLESS_TYPE_A == 0xff;
+-
+ 	//@ public static invariant PROTOCOL_MEDIA_CONTACTLESS_TYPE_B == 0xef;
+-
+ 	//@ public static invariant PROTOCOL_MEDIA_DEFAULT == 0;
+-
+ 	//@ public static invariant PROTOCOL_MEDIA_MASK == 0x8f;
+-
+ 	//@ public static invariant PROTOCOL_MEDIA_USB == 0xdf;
+-
+ 	//@ public static invariant PROTOCOL_T0 == 0;
+-
+ 	//@ public static invariant PROTOCOL_T1 == 1;
+-
+ 	//@ public static invariant PROTOCOL_TYPE_MASK == 0xf;
+-
+ 	//@ public static invariant STATE_ERROR_NO_T0_GETRESPONSE == 0x80;
+-
+ 	//@ public static invariant STATE_ERROR_T1_IFD_ABORT == 0x81;
+-
+ 	//@ public static invariant STATE_ERROR_IO == 0x82;
+-
+ 	//@ public static invariant STATE_ERROR_NO_T0_REISSUE == 0x83;
+-
+ 	//@ public static invariant STATE_INITIAL == 0;
+-
+ 	//@ public static invariant STATE_PARTIAL_INCOMING == 1;
+-
+ 	//@ public static invariant STATE_FULL_INCOMING == 2;
+-
+ 	//@ public static invariant STATE_OUTGOING == 3;
+-
+ 	//@ public static invariant STATE_OUTGOING_LENGTH_KNOWN == 4;
+-
+ 	//@ public static invariant STATE_PARTIAL_OUTGOING == 5;
+-
+ 	//@ public static invariant STATE_FULL_OUTGOING == 6;
+ 
+ 	/*@
+@@ -157,7 +113,7 @@
+ 	requires true;
+ 	ensures \result == _buffer;
+ 	@*/
+-	public /*@ pure @*/ byte[] getBuffer ();
++	public /*@ pure @*/ byte[] getBufferRENAMED ();
+ 
+ 	/*@
+ 	public normal_behavior
+@@ -249,7 +205,7 @@
+ 	/*@
+ 	public normal_behavior
+ 	requires true;
+-	ensures \result == getCurrentAPDU().getBuffer();
++	ensures \result == getCurrentAPDU().getBufferRENAMED();
+ 	@*/
+ 	public static /*@ pure @*/ byte[] getCurrentAPDUBuffer () throws SecurityException;
+ 
+
+===================================================================
+--- src\javacard\framework\APDU.java
++++ src\javacard\framework\APDU.java
+@@ -78,7 +78,7 @@
+ 
+     public static final byte STATE_FULL_OUTGOING = (byte) 6;
+ 
+-    public byte[] getBuffer() {
++    public byte[] getBufferRENAMED() {
+         return _buffer;
+     }
+ 
+@@ -177,7 +177,7 @@
+     }
+ 
+     public static byte[] getCurrentAPDUBuffer() throws SecurityException {
+-        return getCurrentAPDU().getBuffer();
++        return getCurrentAPDU().getBufferRENAMED();
+     }
+ 
+     public static byte getCLAChannel() {
+
+===================================================================
+--- src\javacard\framework\service\BasicService.java
++++ src\javacard\framework\service\BasicService.java
+@@ -62,25 +62,25 @@
+             throws ServiceException {
+         if (length < 0 || length > 256)
+             ServiceException.throwIt(ServiceException.ILLEGAL_PARAM);
+-        apdu.getBuffer()[ISO7816.OFFSET_LC] = (byte) length;
++        apdu.getBufferRENAMED()[ISO7816.OFFSET_LC] = (byte) length;
+     }
+ 
+     public short getOutputLength(APDU apdu) throws ServiceException {
+         if (apdu.getCurrentState() < APDU.STATE_OUTGOING)
+             ServiceException
+                     .throwIt(ServiceException.CANNOT_ACCESS_OUT_COMMAND);
+-        return (short) (apdu.getBuffer()[ISO7816.OFFSET_LC] & (byte) 0xff);
++        return (short) (apdu.getBufferRENAMED()[ISO7816.OFFSET_LC] & (byte) 0xff);
+     }
+ 
+     public void setStatusWord(APDU apdu, short sw) {
+-        Util.setShort(apdu.getBuffer(), ISO7816.OFFSET_P1, sw);
++        Util.setShort(apdu.getBufferRENAMED(), ISO7816.OFFSET_P1, sw);
+     }
+ 
+     public short getStatusWord(APDU apdu) throws ServiceException {
+         if (apdu.getCurrentState() < APDU.STATE_OUTGOING)
+             ServiceException
+                     .throwIt(ServiceException.CANNOT_ACCESS_OUT_COMMAND);
+-        return Util.getShort(apdu.getBuffer(), ISO7816.OFFSET_P1);
++        return Util.getShort(apdu.getBufferRENAMED(), ISO7816.OFFSET_P1);
+     }
+ 
+     public boolean fail(APDU apdu, short sw) throws ServiceException {
+@@ -113,25 +113,25 @@
+     }
+ 
+     public byte getCLA(APDU apdu) {
+-        return apdu.getBuffer()[ISO7816.OFFSET_CLA];
++        return apdu.getBufferRENAMED()[ISO7816.OFFSET_CLA];
+     }
+ 
+     public byte getINS(APDU apdu) {
+-        return apdu.getBuffer()[ISO7816.OFFSET_INS];
++        return apdu.getBufferRENAMED()[ISO7816.OFFSET_INS];
+     }
+ 
+     public byte getP1(APDU apdu) throws ServiceException {
+         if (apdu.getCurrentState() != APDU.STATE_INITIAL
+                 && apdu.getCurrentState() != APDU.STATE_FULL_INCOMING)
+             ServiceException.throwIt(ServiceException.CANNOT_ACCESS_IN_COMMAND);
+-        return apdu.getBuffer()[ISO7816.OFFSET_P1];
++        return apdu.getBufferRENAMED()[ISO7816.OFFSET_P1];
+     }
+ 
+     public byte getP2(APDU apdu) throws ServiceException {
+         if (apdu.getCurrentState() != APDU.STATE_INITIAL
+                 && apdu.getCurrentState() != APDU.STATE_FULL_INCOMING)
+             ServiceException.throwIt(ServiceException.CANNOT_ACCESS_IN_COMMAND);
+-        return apdu.getBuffer()[ISO7816.OFFSET_P2];
++        return apdu.getBufferRENAMED()[ISO7816.OFFSET_P2];
+     }
+ 
+     public boolean selectingApplet() {
+
+===================================================================
+--- src\javacard\framework\service\Dispatcher.java
++++ src\javacard\framework\service\Dispatcher.java
+@@ -129,12 +129,12 @@
+                 } else {
+                     if (command.getCurrentState() == APDU.STATE_OUTGOING) {
+                         if (_services[service].processDataOut(command)) {
+-                            short len = (short) (command.getBuffer()[ISO7816.OFFSET_LC] & 0xff);
++                            short len = (short) (command.getBufferRENAMED()[ISO7816.OFFSET_LC] & 0xff);
+                             command.setOutgoingLength(len);
+                             command.sendBytes(ISO7816.OFFSET_CDATA, len);
+                             ISOException.throwIt(Util.makeShort(command
+-                                    .getBuffer()[ISO7816.OFFSET_P1], command
+-                                    .getBuffer()[ISO7816.OFFSET_P2]));
++                                    .getBufferRENAMED()[ISO7816.OFFSET_P1], command
++                                    .getBufferRENAMED()[ISO7816.OFFSET_P2]));
+                         }
+                     } else {
+                         return;

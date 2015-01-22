@@ -1,0 +1,38 @@
+===================================================================
+--- specs\javacard\framework\APDU.jml
++++ specs\javacard\framework\APDU.jml
+@@ -283,12 +283,4 @@
+ 	ensures _Lr == len;
+ 	@*/
+ 	public void setOutgoingAndSend (short bOff, short len) throws APDUException;
+-
+-	/*@
+-	public normal_behavior
+-	requires _apduState >= STATE_OUTGOING_LENGTH_KNOWN && _apduState < STATE_FULL_OUTGOING;
+-	requires outData != null && bOff >= 0 && len >= 0 && len <= 256 && bOff + len <= outData.length;
+-	ensures _apduState == STATE_FULL_OUTGOING;
+-	@*/
+-	public void sendBytesLong (byte[] outData, short bOff, short len) throws APDUException, SecurityException;
+ }
+
+===================================================================
+--- src\javacard\framework\APDU.java
++++ src\javacard\framework\APDU.java
+@@ -204,16 +204,6 @@
+         sendBytes(bOff, len);
+     }
+ 
+-    public void sendBytesLong(byte[] outData, short bOff, short len)
+-            throws APDUException, SecurityException {
+-        if (_apduState < STATE_OUTGOING_LENGTH_KNOWN
+-                | _apduState >= STATE_FULL_OUTGOING) {
+-            APDUException.throwIt(APDUException.ILLEGAL_USE);
+-        }
+-        if (len < 0 | bOff < 0 | (short) (bOff + len) > outData.length) {
+-            APDUException.throwIt(APDUException.BUFFER_BOUNDS);
+-        }
+-        _apduState = STATE_FULL_OUTGOING;
+-    }
++    
+ 
+ }

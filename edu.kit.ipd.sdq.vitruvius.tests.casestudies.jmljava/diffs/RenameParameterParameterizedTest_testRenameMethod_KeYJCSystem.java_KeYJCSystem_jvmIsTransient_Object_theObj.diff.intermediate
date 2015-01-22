@@ -1,0 +1,12 @@
+===================================================================
+--- src\de\uka\ilkd\key\javacard\KeYJCSystem.java
++++ src\de\uka\ilkd\key\javacard\KeYJCSystem.java
+@@ -20,7 +20,7 @@
+ 
+     private static KeYJCSystem _instance = new KeYJCSystem();
+ 
+-    public static native byte jvmIsTransient(Object theObj);
++    public static native byte jvmIsTransient(Object theObjRENAMED);
+ 
+     public static native boolean[] jvmMakeTransientBooleanArray(short length,
+             byte event);

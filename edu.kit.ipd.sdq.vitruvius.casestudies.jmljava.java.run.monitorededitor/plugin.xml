@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.classifiers.postreconcile">
+      <provides
+            provider="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.java.changeclassifiers.MethodParameterNameChangedClassifier">
+      </provides>
+      <provides
+            provider="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.java.changeclassifiers.MethodBodyChangedClassifier">
+      </provides>
+   </extension>
+   <extension
+         point="edu.kit.ipd.sdq.vitruvius.framework.model.monitor.changeeventextendedvisitors">
+      <provides
+            provider="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.java.changeresponder.MethodParameterNameChangedVisitor">
+      </provides>
+      <provides
+            provider="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.java.changeresponder.MethodBodyChangedVisitor">
+      </provides>
+   </extension>
+   <extension
+         point="edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.extensions.sourcedirprovider">
+      <provides
+            provider="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.java.JavaMonitoredEditor$JavaSourceDirProvider">
+      </provides>
+   </extension>
+
+</plugin>

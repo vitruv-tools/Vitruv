@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature id="edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.sdk"
+	label="JML SDK Feature "
+	version="1.0.0.qualifier">
+	<plugin
+			id="edu.kit.ipd.sdq.seifermann.thesis.jml"
+			download-size="0"
+			install-size="0"
+			version="0.0.0"
+			unpack="false"/>
+	<plugin
+			id="edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.ui"
+			download-size="0"
+			install-size="0"
+			version="0.0.0"
+			unpack="false"/>
+</feature>

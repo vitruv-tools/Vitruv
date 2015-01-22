@@ -1,0 +1,26 @@
+===================================================================
+--- specs\javacard\framework\AID.jml
++++ specs\javacard\framework\AID.jml
+@@ -14,6 +14,8 @@
+  */
+ package javacard.framework;
+ 
++import javacard.security.AESKey;
++
+ import de.uka.ilkd.key.javacard.KeYJCSystem;
+ 
+ public class AID {
+
+===================================================================
+--- src\javacard\framework\AID.java
++++ src\javacard\framework\AID.java
+@@ -9,7 +9,9 @@
+  */
+ 
+ package javacard.framework;
++import javacard.security.AESKey;
+ 
++
+ import de.uka.ilkd.key.javacard.KeYJCSystem;
+ 
+ public class AID {

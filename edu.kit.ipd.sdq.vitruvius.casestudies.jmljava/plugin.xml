@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.extensions.sourcedirprovider" name="SourceDirProvider" schema="schema/edu.kit.ipd.sdq.seifermann.thesis.cst.extensions.sourcedirprovider.exsd"/>
+   <extension-point id="edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.extensions.userinteractingprovider" name="UserInteractingProvider" schema="schema/edu.kit.ipd.sdq.seifermann.thesis.cst.extensions.userinteractingprovider.exsd"/>
+
+</plugin>

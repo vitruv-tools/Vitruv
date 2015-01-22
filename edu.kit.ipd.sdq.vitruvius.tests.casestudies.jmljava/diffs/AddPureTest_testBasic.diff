@@ -1,0 +1,12 @@
+===================================================================
+--- specs\javacard\framework\Applet.jml
++++ specs\javacard\framework\Applet.jml
+@@ -42,7 +42,7 @@
+ 	requires true;
+ 	ensures \result;
+ 	@*/
+-	public boolean select ();
++	public /*@ pure */ boolean select ();
+ 
+ 	/*@
+ 	public normal_behavior

@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Java
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.java.run.monitorededitor;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: com.google.guava,
+ org.apache.commons.lang;bundle-version="2.6.0",
+ org.eclipse.ui,
+ org.eclipse.core.resources;bundle-version="3.9.0",
+ org.eclipse.core.runtime,
+ org.eclipse.jdt.core,
+ org.eclipse.jface.text;bundle-version="3.9.0",
+ org.eclipse.swt,
+ org.eclipse.text,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtext.xbase.lib,
+ edu.kit.ipd.sdq.vitruvius.casestudies.java.run.astchangelistener;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.casestudies.java.run.changeclassification;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.casestudies.java.util.javamodel2ast;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.casestudies.java.run.monitorededitor;bundle-version="1.0.0";visibility:=reexport,
+ edu.kit.ipd.sdq.vitruvius.casestudies.jmljava;bundle-version="1.0.0";visibility:=reexport
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.java
+Import-Package: org.apache.log4j
+

@@ -1,0 +1,12 @@
+===================================================================
+--- specs\javacard\framework\APDU.jml
++++ specs\javacard\framework\APDU.jml
+@@ -165,7 +165,7 @@
+ 	ensures ! ( getProtocol() == PROTOCOL_T0 ) || ( \result == 1 );
+ 	ensures ! ( getProtocol() == PROTOCOL_T1 ) || ( \result > 0 && \result <= BUFFER_LENGTH );
+ 	@*/
+-	public static /*@ pure @*/ short getInBlockSize ();
++	public static short getInBlockSize ();
+ 
+ 	/*@
+ 	public normal_behavior
