@@ -24,7 +24,7 @@ class JaMoPPConcreteSyntax {
 			val options = new HashMap<Object, Object>();
 			options.put(IJavaOptions.DISABLE_LAYOUT_INFORMATION_RECORDING, Boolean.TRUE);
 			options.put(IJavaOptions.DISABLE_LOCATION_MAP, Boolean.TRUE);
-			options.put(IJavaOptions.DISABLE_EMF_VALIDATION, Boolean.TRUE);
+			//options.put(IJavaOptions.DISABLE_EMF_VALIDATION, Boolean.TRUE);
 			options.put(IJavaOptions.DISABLE_CREATING_MARKERS_FOR_PROBLEMS, Boolean.TRUE);
 			return options;
 		}

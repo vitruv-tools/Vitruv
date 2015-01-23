@@ -13,6 +13,7 @@ import org.emftext.language.java.parameters.VariableLengthParameter
 import org.emftext.language.java.references.ReferenceableElement
 import org.emftext.language.java.types.NamespaceClassifierReference
 import org.emftext.language.java.types.PrimitiveType
+import org.emftext.language.java.classifiers.ConcreteClassifier
 
 /**
  * Converts a JaMoPP model element to a string representation.
@@ -38,6 +39,28 @@ class StringOperationsJaMoPP {
 
 	static def dispatch getStringRepresentation(StaticMemberImport imprt) {
 		return imprt.namespaces.getNamespaceAsString + "." + getNameList(imprt.staticMembers)
+	}
+	
+	
+	/**
+	* Returns the qualified name of this concrete classifier.
+	* 
+	* This method is part of JaMoPP (https://github.com/DevBoost/JaMoPP) Rev. fbc0471
+	* org.emftext.language.java.extensions.classifiers.ConcreteClassifierExtension.java
+	* Licensed under EPL v1.0
+	* Contributors:
+	*   Software Technology Group - TU Dresden, Germany;
+	*   DevBoost GmbH - Berlin, Germany
+	*/
+	static def getQualifiedName(ConcreteClassifier c) {
+		val qualifiedName = new StringBuilder();
+		val packageParts = c.getContainingPackageName();
+		for (String packagePart : packageParts) {
+			qualifiedName.append(packagePart);
+			qualifiedName.append(".");
+		}
+		qualifiedName.append(c.getName());
+		return qualifiedName.toString();
 	}
 
 	private static def getNameList(Iterable<ReferenceableElement> elements) {

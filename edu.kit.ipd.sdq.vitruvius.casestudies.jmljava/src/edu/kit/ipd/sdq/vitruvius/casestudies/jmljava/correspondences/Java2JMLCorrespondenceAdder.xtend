@@ -56,7 +56,7 @@ class Java2JMLCorrespondenceAdder {
 			if (jmlClass != null) {
 				addCorrespondences(javaClassifier, jmlClass, ci, cuCorrespondence)
 			} else {
-				LOGGER.warn("No matching JML classifier for Java classifier (" + javaClassifier.qualifiedName + ") found.")
+				LOGGER.warn("No matching JML classifier for Java classifier (" + StringOperationsJaMoPP.getQualifiedName(javaClassifier) + ") found.")
 			}
 		}
 	}
@@ -128,15 +128,15 @@ class Java2JMLCorrespondenceAdder {
 		val relevantElements = ncd.bodyDeclarations.filter(JMLSpecifiedElement).filter[element != null]
 			
 		javaClass.fields.forEach[javaField | addCorrespondencesNullableJMLElement(javaField, MatchingModelElementsFinder.findMatchingField(javaField, relevantElements), ci, ncdCorr)]
-		javaClass.methods.filter[!javaClass.constructors.contains(it)].forEach[javaMethod | addCorrespondencesNullableJMLElement(javaMethod, MatchingModelElementsFinder.findMatchingMethod(javaMethod, relevantElements), ci, ncdCorr)]
-		javaClass.constructors.forEach[javaConstructor | addCorrespondencesNullableJMLElement(javaConstructor, MatchingModelElementsFinder.findMatchingConstructor(javaConstructor, relevantElements), ci, ncdCorr)]
+		javaClass.methods.filter[!javaClass.members.filter(Constructor).toList.contains(it)].forEach[javaMethod | addCorrespondencesNullableJMLElement(javaMethod, MatchingModelElementsFinder.findMatchingMethod(javaMethod, relevantElements), ci, ncdCorr)]
+		javaClass.members.filter(Constructor).forEach[javaConstructor | addCorrespondencesNullableJMLElement(javaConstructor, MatchingModelElementsFinder.findMatchingConstructor(javaConstructor, relevantElements), ci, ncdCorr)]
 		
 		return null
 	}
 	
 	static def Void addCorrespondencesNullableJMLElement(NamedElement javaObject, EObject jmlObject, CorrespondenceInstance ci, Correspondence parentCorrespondence) {
 		if (jmlObject == null) {
-			LOGGER.warn("No matching JML element for Java element (" + javaObject.containingConcreteClassifier.qualifiedName + "." + javaObject.name + ") found.")
+			LOGGER.warn("No matching JML element for Java element (" + StringOperationsJaMoPP.getQualifiedName(javaObject.containingConcreteClassifier) + "." + javaObject.name + ") found.")
 			return null
 		}
 		return addCorrespondences(javaObject, jmlObject, ci, parentCorrespondence)
@@ -266,7 +266,7 @@ class Java2JMLCorrespondenceAdder {
 			if (javaObject != null) {
 				ci.createAndAddEObjectCorrespondence(javaField, variableDeclarator)
 			} else {
-				LOGGER.warn("No matching JML field for Java field (" + javaField.containingConcreteClassifier.qualifiedName + "." + javaField.name + ") or one of its additional fields found.")
+				LOGGER.warn("No matching JML field for Java field (" + StringOperationsJaMoPP.getQualifiedName(javaField.containingConcreteClassifier) + "." + javaField.name + ") or one of its additional fields found.")
 			}
 		}
 		
