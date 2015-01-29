@@ -13,6 +13,17 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespond
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 
+/**
+ * Contains all correspondences for all model instances that conform to the metamodels of a give
+ * mapping. The correspondences do not store any information on metamodels. Only correspondence
+ * instances link to the metamodels. Therefore every elementA of a correspondence has to be an
+ * instance of a metaclass of the first metamodel of the containing correspondence instance. And
+ * every elementB of a correspondence has to be an instance of a metaclass of the second metamodel
+ * of the containing correspondence instance.
+ *
+ * @author kramerm
+ *
+ */
 public interface CorrespondenceInstance {
 
     public Resource getResource();
