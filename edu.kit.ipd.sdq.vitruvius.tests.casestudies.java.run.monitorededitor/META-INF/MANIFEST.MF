@@ -8,4 +8,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.text,
  org.eclipse.jdt.core,
  org.apache.log4j
-Export-Package: edu.kit.ipd.sdq.vitruvius.framework.model.monitor.test
+Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.java.run.monitorededitor

@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.startup">
       <startup
-            class="edu.kit.ipd.sdq.vitruvius.framework.model.monitor.test.EditorManipulator">
+            class="edu.kit.ipd.sdq.vitruvius.tests.casestudies.java.run.monitorededitor.EditorManipulator">
       </startup>
    </extension>
 

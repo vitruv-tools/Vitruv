@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.model.monitor.test;
+package edu.kit.ipd.sdq.vitruvius.tests.casestudies.java.run.monitorededitor;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.WriterAppender;
@@ -16,7 +16,7 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.text.edits.TextEdit;
 
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.MonitoredEditor;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.test.HadoopCodeElements.HadoopCoompilationUnitSize;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.java.run.monitorededitor.HadoopCodeElements.HadoopCoompilationUnitSize;
 
 public class EditorManipulator extends WriterAppender {
 
