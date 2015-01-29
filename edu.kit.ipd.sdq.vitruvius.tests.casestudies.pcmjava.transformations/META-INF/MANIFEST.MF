@@ -39,7 +39,9 @@ Require-Bundle: org.junit,
  org.eclipse.emf.emfstore.common,
  org.eclipse.jdt.core,
  org.eclipse.jdt.core.manipulation,
- org.eclipse.ltk.core.refactoring
+ org.eclipse.ltk.core.refactoring,
+ org.eclipse.text;bundle-version="3.5.300",
+ org.eclipse.jdt.ui
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp
