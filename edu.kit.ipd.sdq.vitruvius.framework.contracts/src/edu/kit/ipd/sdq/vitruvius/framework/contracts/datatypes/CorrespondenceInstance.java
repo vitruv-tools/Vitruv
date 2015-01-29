@@ -140,6 +140,17 @@ public interface CorrespondenceInstance {
     public Correspondence claimUniqueCorrespondence(EObject eObject);
 
     /**
+     * Returns the SameTypeCorrespondence for the given eObjects a and b and throws a
+     * {@link RuntimeException} if there is no such correspondence. Note that a has to be an element
+     * of metamodel a and b an instance of metamodel b.
+     * 
+     * @param a
+     * @param b
+     * @return
+     */
+    public SameTypeCorrespondence claimUniqueSameTypeCorrespondence(final EObject a, final EObject b);
+
+    /**
      * Returns all eObjects that have some correspondence and are an instance of the given class.
      *
      * @param type
