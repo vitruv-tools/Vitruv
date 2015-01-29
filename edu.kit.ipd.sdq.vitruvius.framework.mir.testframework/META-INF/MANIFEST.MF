@@ -23,4 +23,5 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.mir;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  org.eclipse.core.resources;bundle-version="3.9.0",
  edu.kit.ipd.sdq.vitruvius.framework.vsum
+Bundle-ActivationPolicy: lazy
 
