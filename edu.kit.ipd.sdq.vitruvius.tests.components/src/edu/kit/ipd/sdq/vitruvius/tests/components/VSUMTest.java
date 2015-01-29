@@ -26,11 +26,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceIns
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
-import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
-public class VSUMTest extends MetaRepositoryTest {
+public class VSUMTest extends AbstractVSUMTest {
     protected static final String PCM_INSTANCE_URI = "MockupProject/model/My.pcm_mockup";
     protected static final String UML_INSTANCE_URI = "MockupProject/model/My.uml_mockup";
     private static final String PCM_INSTANCE_TO_CREATE_URI = TestUtil.PROJECT_URI + "/model/NewPCMInstance.pcm_mockup";
@@ -211,18 +210,6 @@ public class VSUMTest extends MetaRepositoryTest {
 
     protected VSUMImpl testMetaRepositoryAndVSUMCreation() {
         return testMetaRepositoryAndVSUMCreation(PCM_MM_URI, PCM_FILE_EXT, UML_MM_URI, UML_FILE_EXT);
-    }
-
-    private VSUMImpl testMetaRepositoryAndVSUMCreation(final String mm1URIString, final String fileExt1,
-            final String mm2URIString, final String fileExt2) {
-        MetaRepositoryImpl metaRepository = testMetaRepository();
-        testAddMapping(metaRepository, mm1URIString, fileExt1, mm2URIString, fileExt2);
-        return testVSUMCreation(metaRepository);
-    }
-
-    protected VSUMImpl testVSUMCreation(final MetaRepositoryImpl metaRepository) {
-        VSUMImpl vsum = TestUtil.createVSUM(metaRepository);
-        return vsum;
     }
 
     protected void testInstanceCreation(final VSUMImpl vsum) {
