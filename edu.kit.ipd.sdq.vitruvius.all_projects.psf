@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <psf version="2.0">
 <provider id="org.eclipse.team.svn.core.svnnature">
+<project reference="1.0.1,https://svnserver.informatik.kit.edu/i43/svn/code/Palladio/Core/branches/PCM_for_Vitruvius/de.uka.ipd.sdq.pcm,de.uka.ipd.sdq.pcm,00f373a73ca600141088e40b11785918;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/;branches;tags;trunk;true;769cc9a0-fb0c-0410-8c2f-a2305f0e6268;https://svnserver.informatik.kit.edu/i43/svn/code;;false;;;0"/>
 <project reference="1.0.1,https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/edu.kit.ipd.sdq.vitruvius.buckminster,edu.kit.ipd.sdq.vitruvius.buckminster,00f373a73ca600141088e40b11785918;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/;branches;tags;trunk;true;769cc9a0-fb0c-0410-8c2f-a2305f0e6268;https://svnserver.informatik.kit.edu/i43/svn/code;;false;;;0"/>
 <project reference="1.0.1,https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/edu.kit.ipd.sdq.vitruvius.casestudies.emf,edu.kit.ipd.sdq.vitruvius.casestudies.emf,00f373a73ca600141088e40b11785918;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/;branches;tags;trunk;true;769cc9a0-fb0c-0410-8c2f-a2305f0e6268;https://svnserver.informatik.kit.edu/i43/svn/code;;false;;;0"/>
 <project reference="1.0.1,https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/edu.kit.ipd.sdq.vitruvius.casestudies.emf.feature,edu.kit.ipd.sdq.vitruvius.casestudies.emf.feature,00f373a73ca600141088e40b11785918;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/;branches;tags;trunk;true;769cc9a0-fb0c-0410-8c2f-a2305f0e6268;https://svnserver.informatik.kit.edu/i43/svn/code;;false;;;0"/>
@@ -119,6 +120,7 @@
 <workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1422530251968_8" label="vitruvius.external" name="vitruvius.external">
 <item elementID="=edu.kit.ipd.sdq.vitruvius.external.guice" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=edu.kit.ipd.sdq.vitruvius.external.openjml" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.uka.ipd.sdq.pcm" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSets>
 <workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1422529901033_2" label="vitruvius.features" name="vitruvius.features">
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/edu.kit.ipd.sdq.vitruvius.casestudies.java.feature" type="4"/>
