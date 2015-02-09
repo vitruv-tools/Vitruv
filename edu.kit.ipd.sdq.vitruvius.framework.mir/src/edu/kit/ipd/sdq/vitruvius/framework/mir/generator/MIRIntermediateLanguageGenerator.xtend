@@ -22,6 +22,7 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper.*
+import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper
 
 /**
  * Generates the intermediate language form of the model
@@ -40,9 +41,9 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 	 */
 	override doGenerate(Resource input, IFileSystemAccess fsa) {
 		val resourcePath = input.URI
-		input.contents.filter(typeof(MIRFile)).forEach[
-			transform(it, resourcePath)
-		]
+		val mirFile = MIRHelper.getMIR(input)
+		
+		transform(mirFile, resourcePath)
 	}
 	
 	/**

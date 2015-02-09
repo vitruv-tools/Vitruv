@@ -3,7 +3,6 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.generator
 import com.google.inject.Inject
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassifierMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile
 import java.util.HashMap
 import java.util.Map
 import org.eclipse.emf.common.util.URI
@@ -21,10 +20,13 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Feat
 import java.util.ArrayList
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.EChangeListener
+import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting
 
 class MIRCodeGenerator implements IGenerator {
 	private static final String CONTEXT_NAME = "context";
 	private static final String RESULT_NAME = "result";
+	private static final String SRC_GEN_FOLDER = "src-gen/";
 	
 	private static final String ECHANGELISTENER_FQN = EChangeListener.name
 	
@@ -37,30 +39,49 @@ class MIRCodeGenerator implements IGenerator {
 	@Override
 	public override doGenerate(Resource input, IFileSystemAccess fsa) {
 		val resourcePath = input.URI.trimSegments(1)
+		val mirFile = MIRHelper.getMIR(input)
 		
- 		input.contents.filter(typeof(MIRFile)).forEach [
- 			resetState
-			val il = generatorStatus.getIntermediateForMIR(it)
-			transform(il, resourcePath, fsa)
-		]
+		resetState
+		val il = generatorStatus.getIntermediateForMIR(mirFile)
+		
+		generatePluginXML(il, fsa)
+		generateManifest(il, fsa)
+		generateTransformationExecuting(il, resourcePath, fsa)
 	}
 	
 	private def resetState() {
 		predicateCheckMethodNames = new HashMap<ClassifierMapping, String>();
 		createMethodNames = new HashMap<ClassifierMapping, String>();
 	}
-	
 
 	private static final char PATH_SEPERATOR = '/';
 	
-	/**
-	 * 
-	 */
 	private def packageNameToPath(String pkgName) {
 		pkgName.replace('.', PATH_SEPERATOR)
 	}
+
+	private def generatePluginXML(MIR file, IFileSystemAccess fsa) {
+		val fqn = file.configuration.package + "." + file.configuration.type
+		
+		fsa.generateFile("plugin.xml", '''
+		<?xml version="1.0" encoding="UTF-8"?>
+		<?eclipse version="3.4"?>
+		<plugin>
+		   <extension
+		         point="«EMFModelTransformationExecuting.ID»">
+		      <provides
+		            provider="«fqn»">
+		      </provides>
+		   </extension>
+		
+		</plugin>
+		''')
+	}
 	
-	private def transform(MIR file, URI resourcePath, IFileSystemAccess fsa) {
+	private def generateManifest(MIR file, IFileSystemAccess fsa) {
+	}
+	
+	private def generateTransformationExecuting(MIR file, URI resourcePath, IFileSystemAccess fsa) {
 		println(file.configuration.package)
 		println(resourcePath)
 		
@@ -73,7 +94,7 @@ class MIRCodeGenerator implements IGenerator {
 		val callCreateMethod = generateCallCreateMethod
 		val checkElementMethod = generateCheckElementMethod
 		
-		fsa.generateFile(file.configuration.package.packageNameToPath + '/' + file.configuration.type + ".java", '''
+		fsa.generateFile(SRC_GEN_FOLDER + file.configuration.package.packageNameToPath + '/' + file.configuration.type + ".java", '''
 			package «file.configuration.package»;
 			
 			import org.eclipse.emf.ecore.EObject;
@@ -81,8 +102,8 @@ class MIRCodeGenerator implements IGenerator {
 			import java.util.HashMap;
 			import java.util.List;
 			
+			import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
 			import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-			
 			import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper;
 			
 			class «file.configuration.type» implements «ECHANGELISTENER_FQN»{
