@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java
 
 import com.google.common.collect.Sets
 import de.uka.ipd.sdq.pcm.repository.OperationRequiredRole
@@ -19,8 +19,11 @@ import org.emftext.language.java.members.Field
 import org.emftext.language.java.parameters.Parameter
 import org.emftext.language.java.statements.Statement
 import org.emftext.language.java.types.TypeReference
+import org.apache.log4j.Logger
 
 class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTransformation {
+
+	private val Logger logger = Logger.getLogger(OperationRequiredRoleMappingTransformation.simpleName)
 
 	override getClassOfMappedEObject() {
 		return OperationRequiredRole
@@ -33,17 +36,23 @@ class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTran
 	/**
 	 * called when a operation Required role has been created
 	 * Following things are done:
-	 * 1) create field with interface type and name of required role in main class of the component which corresponds to the newly created interface
+	 * 1) create field with interface type and name of required role in main class of the component/system which corresponds to the newly created interface
 	 * 2) create constructor parameter in all constructors of the class
 	 * 3) add assignment from contructor to newly created field
 	 */
 	override createEObject(EObject eObject) {
 		val OperationRequiredRole operationRequiredRole = eObject as OperationRequiredRole
-		val basicComponent = operationRequiredRole.requiringEntity_RequiredRole
-		val jaMoPPClass = correspondenceInstance.claimUniqueCorrespondingEObjectByType(basicComponent, Class)
+		val interfaceRequiringEntity = operationRequiredRole.requiringEntity_RequiredRole
+		val jaMoPPClass = correspondenceInstance.claimUniqueCorrespondingEObjectByType(interfaceRequiringEntity, Class)
 		val opInterface = operationRequiredRole.requiredInterface__OperationRequiredRole
 		val jaMoPPInterface = correspondenceInstance.claimUniqueCorrespondingEObjectByType(opInterface, Interface)
 		val List<EObject> newEObjects = new ArrayList
+
+		if (null == jaMoPPInterface) {
+			logger.info(
+				"No corresponding Java Interface found for OperationInterface " + opInterface + " not created an field for the operation required role (yet)")
+			return null
+		}
 
 		val name = operationRequiredRole.entityName
 		val TypeReference type = PCM2JaMoPPUtils.createNamespaceClassifierReference(jaMoPPInterface)
@@ -79,7 +88,6 @@ class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTran
 
 	/**
 	 * called when a operation required role has been changed.
-	 * Delete the old one and create a new one
 	 */
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject newValue) {
@@ -95,8 +103,8 @@ class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTran
 			EcoreUtil.remove(oldEObject)
 		}
 		val opr = affectedEObject as OperationRequiredRole
-		val basicComponet = opr.requiringEntity_RequiredRole
-		val parrentCorrespondences = correspondenceInstance.getAllCorrespondences(basicComponet)
+		val interfaceRequiringEntity = opr.requiringEntity_RequiredRole
+		val parrentCorrespondences = correspondenceInstance.getAllCorrespondences(interfaceRequiringEntity)
 		var Correspondence parrentCorrespondence = null
 		if (!parrentCorrespondences.nullOrEmpty) {
 			parrentCorrespondence = parrentCorrespondences.get(0)
@@ -112,8 +120,7 @@ class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTran
 	}
 
 	/**
-	 * called when the name or ID of a OperationRequiredRole has been changed - has no effect to the code
-	 * but must be overwritten here in order to not get an exception from the super class
+	 * called when the name or ID of a OperationRequiredRole has been changed - rename parameter
 	 */
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
@@ -125,9 +132,10 @@ class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTran
 		val affectedField = affectedEObjects.filter(typeof(Field))
 		val tcr = PCM2JaMoPPUtils.updateNameAttribute(Sets.newHashSet(affectedField), newValue, affectedAttribute,
 			featureCorrespondenceMap, correspondenceInstance, true)
-		val affectedParam = affectedEObjects.filter(typeof(Field))
-		tcr.addChangeResult(PCM2JaMoPPUtils.updateNameAttribute(Sets.newHashSet(affectedParam), newValue, affectedAttribute,
-			featureCorrespondenceMap, correspondenceInstance, true))
+		val affectedParam = affectedEObjects.filter(typeof(Parameter))
+		tcr.addChangeResult(
+			PCM2JaMoPPUtils.updateNameAttribute(Sets.newHashSet(affectedParam), newValue, affectedAttribute,
+				featureCorrespondenceMap, correspondenceInstance, true))
 		return tcr
 	}
 }

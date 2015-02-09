@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.EObject;
@@ -16,6 +18,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronizationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
@@ -29,30 +32,34 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Quadruple;
  */
 class VitruviusResourceManipulatingJob extends Job {
 
+    private static final Logger logger = Logger.getLogger(VitruviusResourceManipulatingJob.class.getSimpleName());
+
     private ConcurrentLinkedQueue<EMFChangeResult> emfChangeResultQueue;
     private ModelProviding modelProviding;
-    private boolean resourceManipulatingInProgress;
+    private final SynchronizationListener synchroizationListener;
 
-    public VitruviusResourceManipulatingJob(final ModelProviding modelProviding) {
+    public VitruviusResourceManipulatingJob(final ModelProviding modelProviding,
+            final SynchronizationListener synchronizationListener) {
         super(VitruviusResourceManipulatingJob.class.getSimpleName());
 
         this.modelProviding = modelProviding;
         this.emfChangeResultQueue = new ConcurrentLinkedQueue<EMFChangeResult>();
-        this.resourceManipulatingInProgress = false;
+        this.synchroizationListener = synchronizationListener;
     }
 
     @Override
     protected IStatus run(final IProgressMonitor monitor) {
         setPriority(SHORT);
-        try {
-            while (!this.emfChangeResultQueue.isEmpty()) {
-                this.resourceManipulatingInProgress = true;
-                EMFChangeResult emfChangeResult = this.emfChangeResultQueue.poll();
+        while (!this.emfChangeResultQueue.isEmpty()) {
+            EMFChangeResult emfChangeResult = this.emfChangeResultQueue.poll();
+            try {
 
                 // TODO: Check wheather we need a deleteModelInstanceOriginal in VSUM.
-                // Here we usually do not need it because we usually delete JaMoPP resource that are
+                // Here we usually do not need it because we usually delete JaMoPP resource that
+                // are
                 // renamed
-                // Hence we do not need to remove the correspondence models etc.However the question
+                // Hence we do not need to remove the correspondence models etc.However the
+                // question
                 // is
                 // what
                 // happens if we delete, e.g. a PCM instance.
@@ -84,9 +91,12 @@ class VitruviusResourceManipulatingJob extends Job {
                 removeOldCorrespondences(emfChangeResult.getCorrespondencesToDelete());
                 addNewCorrespondences(emfChangeResult.getNewCorrespondences());
                 updateExistingCorrespondence(emfChangeResult.getCorrespondencesToUpdate());
+            } finally {
+                if (null != this.synchroizationListener && emfChangeResult.isLastChangeResultInList()) {
+                    logger.info("emfChangeResult.isLastChangeResultInList() = true");
+                    this.synchroizationListener.synchronizationFinished();
+                }
             }
-        } finally {
-            this.resourceManipulatingInProgress = false;
         }
         return Status.OK_STATUS;
     }
@@ -119,7 +129,8 @@ class VitruviusResourceManipulatingJob extends Job {
         this.emfChangeResultQueue.add(emfChangeResult);
     }
 
-    public boolean isResourceManipulatingInProgress() {
-        return this.resourceManipulatingInProgress;
+    public void runSynchron() {
+        run(new NullProgressMonitor());
     }
+
 }

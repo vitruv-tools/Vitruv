@@ -16,4 +16,5 @@
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.projectgenerating" name="ProjectGenerating" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.projectgenerating.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.projectpreparing" name="ProjectPreparing" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.projectpreparing.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.transformationexecuting" name="TransformationExecuting" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.transformationexecuting.exsd"/>
+   <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.synchronizationlistening" name="SynchronizationListening" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.synchronizationlistening.exsd"/>
 </plugin>

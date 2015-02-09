@@ -37,7 +37,7 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 		var innerDatatypeAttribute = RepositoryFactory.eINSTANCE.createInnerDeclaration.eClass.EAllReferences.filter[attribute|
 			attribute.name.equals(PCMJaMoPPNamespace.PCM.DATATYPE_INNERDECLARATION)].iterator.next
 		var typeRefAttribute = MembersFactory.eINSTANCE.createClassMethod.eClass.EAllReferences.filter[attribute|
-			attribute.name.equals(PCMJaMoPPNamespace.JaMoPP.JAMOPP_PARAMETER_ATTRIBUTE_TYPE_REFERENCE)].iterator.next
+			attribute.name.equals(PCMJaMoPPNamespace.JaMoPP.JAMOPP_REFERENCE_TYPE_REFERENCE)].iterator.next
 		featureCorrespondenceMap.put(innerDatatypeAttribute, typeRefAttribute)
 	}
 

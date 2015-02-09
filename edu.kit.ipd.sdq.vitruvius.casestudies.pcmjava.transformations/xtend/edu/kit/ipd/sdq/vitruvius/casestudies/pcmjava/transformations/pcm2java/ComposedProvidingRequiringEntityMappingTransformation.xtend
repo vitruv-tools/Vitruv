@@ -8,6 +8,9 @@ import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.emftext.language.java.containers.Package
+import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace.PCM
+import de.uka.ipd.sdq.pcm.core.entity.NamedElement
 
 /**
  * base class for RepositoryComponentMappingTransformation and SystemMappingTransformation
@@ -50,8 +53,14 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
 		val tcr = TransformationUtils.createEmptyTransformationChangeResult
-		if (affectedReference.name.equals(PCMJaMoPPNamespace.PCM.SYSTEM_ASSEMBLY_CONTEXTS__COMPOSED_STRUCTURE)) {
-		}
+		if ((affectedReference.name.equals(PCMJaMoPPNamespace.PCM.SYSTEM_ASSEMBLY_CONTEXTS__COMPOSED_STRUCTURE) ||
+			affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
+			affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) &&
+			newValue instanceof NamedElement) {
+			PCM2JaMoPPUtils.
+				handleAssemblyContextAddedAsNonRootEObjectInList(newAffectedEObject as ComposedProvidingRequiringEntity,
+					newValue as NamedElement, newCorrespondingEObjects, tcr, correspondenceInstance)
+		} 
 		return tcr
 	}
 

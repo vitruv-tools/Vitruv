@@ -51,11 +51,11 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 		featureCorrespondenceMap.put(StatementsPackage.eINSTANCE.statementListContainer_Statements, JMLPackage.eINSTANCE.methodDeclaration_Methodbody)
 	}
 
-	override replaceNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference,	EObject oldValue, EObject newValue) {
+	override replaceNonRootEObjectSingle(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference,	EObject oldValue, EObject newValue) {
 		val changedObjects = new ArrayList<EObject>()
-		val javaMethod = affectedEObject as Method
+		val javaMethod = newAffectedEObject as Method
 		
-		LOGGER.trace("UpdateSingleValuedNonContainmentEReference\t" + affectedEObject + "." + affectedReference.name + " (" + oldValue + " -> " + newValue + ")")
+		LOGGER.trace("UpdateSingleValuedNonContainmentEReference\t" + newAffectedEObject + "." + affectedReference.name + " (" + oldValue + " -> " + newValue + ")")
 		
 		val jmlFeature = featureCorrespondenceMap.claimValueForKey(affectedReference)
 		

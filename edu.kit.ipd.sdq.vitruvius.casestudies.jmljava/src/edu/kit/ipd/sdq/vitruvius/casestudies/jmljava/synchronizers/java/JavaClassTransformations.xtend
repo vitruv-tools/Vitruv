@@ -1,13 +1,15 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java
 
 import com.google.inject.Inject
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences.Java2JMLCorrespondenceAdder
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ClassifierDeclarationWithModifier
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLPackage
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement
+import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.NormalClassDeclaration
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.RegularModifier
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences.Java2JMLCorrespondenceAdder
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences.MatchingModelElementsFinder
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import java.util.ArrayList
 import org.apache.log4j.Logger
@@ -15,15 +17,11 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.ClassifiersPackage
+import org.emftext.language.java.commons.Commentable
 import org.emftext.language.java.members.Field
 import org.emftext.language.java.members.Member
 import org.emftext.language.java.members.Method
 import org.emftext.language.java.modifiers.Modifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.Utilities
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.FieldDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences.MatchingModelElementsFinder
-import org.emftext.language.java.commons.Commentable
 
 class JavaClassTransformations extends Java2JMLTransformationBase {
 	

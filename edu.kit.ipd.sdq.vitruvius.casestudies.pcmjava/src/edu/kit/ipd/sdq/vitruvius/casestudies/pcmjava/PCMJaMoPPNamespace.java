@@ -24,12 +24,14 @@ public class PCMJaMoPPNamespace {
                 "http://www.emftext.org/java/members", "http://www.emftext.org/java/modifiers",
                 "http://www.emftext.org/java/operators", "http://www.emftext.org/java/references",
                 "http://www.emftext.org/java/statements", "http://www.emftext.org/java/types",
-                "http://www.emftext.org/java/imports", "http://www.emftext.org/java/parameters" };
+                "http://www.emftext.org/java/imports", "http://www.emftext.org/java/parameters",
+                "http://www.emftext.org/java/instantiations" };
 
         // Attributes
         public static String JAMOPP_ATTRIBUTE_NAME = "name";
         public static String JAMOPP_ANNOTATIONS_AND_MODIFIERS_REFERENCE_NAME = "annotationsAndModifiers";
-        public static String JAMOPP_PARAMETER_ATTRIBUTE_TYPE_REFERENCE = "typeReference";
+        public static String JAMOPP_REFERENCE_TYPE_REFERENCE = "typeReference";
+        public static String JAMOPP_MEMBERS_REFERENCE = "members";
     }
 
     public static class PCM {
@@ -41,9 +43,13 @@ public class PCMJaMoPPNamespace {
         public static final String SYSTEM_FILE_EXTENSION = "system";
         // MM Namespace
         public static final String PCM_METAMODEL_NAMESPACE = "http://sdq.ipd.uka.de/PalladioComponentModel/5.0";
-        public static final String PCM_METAMODEL_NAMESPACE_URI = PCM_METAMODEL_NAMESPACE;
-        public static final String PCM_METAMODEL_NAMESPACE_URI_REPOSITORY = "http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0";
-        public static final String PCM_METAMODEL_NAMESPACE_URI_SYSTEM = "http://sdq.ipd.uka.de/PalladioComponentModel/System/5.0";;
+        private static final String PCM_METAMODEL_NAMESPACE_URI_REPOSITORY = "http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0";
+        private static final String PCM_METAMODEL_NAMESPACE_URI_SYSTEM = "http://sdq.ipd.uka.de/PalladioComponentModel/System/5.0";
+        private static final String PCM_METAMODEL_NAMESPACE_URI_COMPOSITION = "http://sdq.ipd.uka.de/PalladioComponentModel/Core/Composition/5.0";
+        private static final String PCM_METAMODEL_NAMESPACE_URI = PCM_METAMODEL_NAMESPACE;
+        public static final String[] PCM_METAMODEL_NAMESPACE_URIS = { PCM_METAMODEL_NAMESPACE_URI,
+                PCM_METAMODEL_NAMESPACE_URI_REPOSITORY, PCM_METAMODEL_NAMESPACE_URI_SYSTEM,
+                PCM_METAMODEL_NAMESPACE_URI_COMPOSITION };
         // Attributes and References
         public static String PCM_ATTRIBUTE_ENTITY_NAME = "entityName";
         public static String PCM_PARAMETER_ATTRIBUTE_DATA_TYPE = "dataType__Parameter";
@@ -54,6 +60,7 @@ public class PCMJaMoPPNamespace {
         public static String OPERATION_PROVIDED_ROLE_PROVIDED_INTERFACE = "providedInterface__OperationProvidedRole";
         public static String COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY = "providedRoles_InterfaceProvidingEntity";
         public static String COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY = "requiredRoles_InterfaceRequiringEntity";
-        public static Object SYSTEM_ASSEMBLY_CONTEXTS__COMPOSED_STRUCTURE = "assemblyContexts__ComposedStructure";
+        public static String SYSTEM_ASSEMBLY_CONTEXTS__COMPOSED_STRUCTURE = "assemblyContexts__ComposedStructure";
+        public static String ASSEMBLY_CONTEXT_ENCAPSULATED_COMPONENT = "encapsulatedComponent__AssemblyContext";
     }
 }

@@ -193,13 +193,13 @@ abstract class EObjectMappingTransformationBase extends EObjectMappingTransforma
 		return createTransformationChangeResultForEObjectsToSave()
 	}
 
-	override replaceNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject oldValue,
+	override replaceNonRootEObjectSingle(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
 		EObject newValue) {
 		val methodName = new Object() {
 		}.getClass().getEnclosingMethod().name
 		val logMsg = createDefaultImplementationLoggingString(methodName,
 			#["affectedEObject", "affectedReference", "oldValue", "newValue"],
-			#[affectedEObject, affectedReference, oldValue, newValue])
+			#[newAffectedEObject, affectedReference, oldValue, newValue])
 		logger.info(logMsg)
 		return createTransformationChangeResultForEObjectsToSave()
 	}

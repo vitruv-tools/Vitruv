@@ -34,7 +34,7 @@ public class EMFModelPropagationEngineImpl implements ChangePropagating {
                 correspondenceInstance);
     }
 
-    public EMFModelTransformationExecuting getTransformationExecuting(
+    private EMFModelTransformationExecuting getTransformationExecuting(
             final CorrespondenceInstance correspondenceInstance) {
         EMFModelTransformationExecuting transformationExecuting = this.transformationExecutingProviding
                 .getTransformationExecuting(correspondenceInstance.getMapping().getMetamodelA().getURI(),

@@ -36,8 +36,8 @@ abstract class EObjectMappingTransformation {
 	def TransformationChangeResult replaceRoot(EObject oldRootEObject, EObject newRootEObject,
 		EObject[] oldCorrespondingEObjectsToDelete, EObject[] newCorrespondingEObjects)
 
-	def TransformationChangeResult createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference,
-		EObject newValue, int index, EObject[] newCorrespondingEObjects)
+	def TransformationChangeResult createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
+		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects)
 
 	def TransformationChangeResult deleteNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject[] eObjectsToDelete)
@@ -49,11 +49,11 @@ abstract class EObjectMappingTransformation {
 		EObject oldValue, EObject newValue, int index, EObject[] oldCorrespondingEObjectsToDelete,
 		EObject[] newCorrespondingEObjects)
 
-	def TransformationChangeResult deleteNonRootEObjectInList(EObject newAffectedEObject ,EObject oldAffectedEObject, EReference affectedReference,
-		EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete)
+	def TransformationChangeResult deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
+		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete)
 
-	def TransformationChangeResult replaceNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference,
-		EObject oldValue, EObject newValue)
+	def TransformationChangeResult replaceNonRootEObjectSingle(EObject newAffectedEObject, EObject oldAffectedEObject,
+		EReference affectedReference, EObject oldValue, EObject newValue)
 
 	def TransformationChangeResult permuteContainmentEReferenceValues(EObject affectedEObject,
 		EReference affectedReference, EList<Integer> newIndexForElementAt)
@@ -97,8 +97,8 @@ abstract class EObjectMappingTransformation {
 	def TransformationChangeResult permuteEAttributeValues(EObject affectedEObject, EAttribute affectedAttribute,
 		EList<Integer> newIndexForElementAt)
 
-	def TransformationChangeResult insertNonRootEObjectInContainmentList(EObject oldAffectedEObject, EObject newAffectedEObject,
-		EReference reference, EObject newValue)
+	def TransformationChangeResult insertNonRootEObjectInContainmentList(EObject oldAffectedEObject,
+		EObject newAffectedEObject, EReference reference, EObject newValue)
 
 	def void setCorrespondenceForFeatures()
 
@@ -132,12 +132,12 @@ abstract class EObjectMappingTransformation {
 		}
 		#[eObject]
 	}
-	
-	def protected int modalTextUserinteracting(String msg, String... selections ){
+
+	def protected int modalTextUserinteracting(String msg, String... selections) {
 		return userInteracting.selectFromMessage(UserInteractionType.MODAL, msg, selections)
 	}
-	
-	def protected boolean modalTextYesNoUserInteracting(String msg){
+
+	def protected boolean modalTextYesNoUserInteracting(String msg) {
 		return 0 == modalTextUserinteracting(msg, "Yes", "No")
 	}
 

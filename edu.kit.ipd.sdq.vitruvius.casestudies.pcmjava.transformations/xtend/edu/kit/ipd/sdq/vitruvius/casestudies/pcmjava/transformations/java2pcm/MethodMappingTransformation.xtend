@@ -13,9 +13,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.Transforma
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.members.Method
 import org.emftext.language.java.types.TypeReference
-import org.eclipse.emf.ecore.util.EcoreUtil
+import org.emftext.language.java.types.TypedElement
 
 class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -28,7 +29,7 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 	}
 
 	/**
-	 * called when an Method has been added:
+	 * called when a Method has been added:
 	 * creates a corresponding OperationInterface if the method is in an interface and 
 	 * the interface has corresponding OperationInterface(s)
 	 */
@@ -60,14 +61,14 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 	/**
 	 * called when the return type has been changed
 	 */
-	override replaceNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject oldValue,
-		EObject newValue) {
+	override replaceNonRootEObjectSingle(EObject newAffectedEObject, EObject oldAffectedEObject,
+		EReference affectedReference, EObject oldValue, EObject newValue) {
 		val tcr = TransformationUtils.createEmptyTransformationChangeResult
-		if (affectedEObject instanceof Method &&
-			affectedReference.name.equals(PCMJaMoPPNamespace.JaMoPP.JAMOPP_PARAMETER_ATTRIBUTE_TYPE_REFERENCE) &&
+		if (oldAffectedEObject instanceof Method &&
+			affectedReference.name.equals(PCMJaMoPPNamespace.JaMoPP.JAMOPP_REFERENCE_TYPE_REFERENCE) &&
 			newValue instanceof TypeReference) {
 			val correspondingPCMSignatures = correspondenceInstance.
-				getCorrespondingEObjectsByType(affectedEObject, OperationSignature)
+				getCorrespondingEObjectsByType(oldAffectedEObject, OperationSignature)
 			if (correspondingPCMSignatures.nullOrEmpty) {
 				return tcr
 			}
@@ -92,7 +93,8 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	/**
      *  called when a parameter has been added
-     * 
+     *  If the type of the parameter is a component interface or another 
+     *  component an OperationRrovidedRole is added 
      */
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
@@ -108,13 +110,24 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 				}
 			}
 		}
-		return JaMoPP2PCMUtils.
+
+		val tcr = JaMoPP2PCMUtils.
 			createTransformationChangeResultForNewCorrespondingEObjects(newValue, newCorrespondingEObjects,
 				correspondenceInstance)
+		if (newValue instanceof TypedElement) {
+			val newCorrespondingOperationProvidedRoles = JaMoPP2PCMUtils.
+				checkAndAddOperationRequiredRole(newValue as TypedElement, correspondenceInstance, userInteracting)
+			tcr.addChangeResult(
+				JaMoPP2PCMUtils.
+					createTransformationChangeResultForNewCorrespondingEObjects(newValue,
+						newCorrespondingOperationProvidedRoles, correspondenceInstance))
+		}
+		return tcr
 	}
 
 	/**
 	 * called when a parameter has been deleted/changed
+	 * If the parameter had a correspondence to an OperationRequiredRole delete it as well
 	 */
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {

@@ -32,7 +32,7 @@ public final class TestUtil {
 
     private static final Logger logger = Logger.getLogger(TestUtil.class.getSimpleName());
     public static final String PROJECT_URI = "MockupProject";
-    public static final int WAITING_TIME_FOR_SYNCHRONIZATION = 4 * 1000;
+    public static final int WAITING_TIME_FOR_SYNCHRONIZATION = 1 * 1000;
     public static final String SOURCE_FOLDER = "src";
 
     /**

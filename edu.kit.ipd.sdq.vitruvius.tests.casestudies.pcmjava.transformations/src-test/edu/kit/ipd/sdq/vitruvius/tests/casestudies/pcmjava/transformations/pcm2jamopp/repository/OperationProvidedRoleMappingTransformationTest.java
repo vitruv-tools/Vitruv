@@ -112,6 +112,19 @@ public class OperationProvidedRoleMappingTransformationTest extends PCM2JaMoPPTr
         assertEquals("Unexpected size of implemented interfaces", 1, jaMoPPClass.getImplements().size());
     }
 
+    @Test
+    public void testOperationProvidedRoleToSystem() throws Throwable {
+        final Repository repo = super.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
+        final OperationInterface opInterface = super.addInterfaceToReposiotryAndSync(repo,
+                PCM2JaMoPPTestUtils.INTERFACE_NAME);
+        final de.uka.ipd.sdq.pcm.system.System system = super.createAndSyncSystem(PCM2JaMoPPTestUtils.SYSTEM_NAME);
+
+        final OperationProvidedRole operationProvidedRole = super.createAndSyncOperationProvidedRole(opInterface,
+                system);
+
+        this.assertOperationProvidedRole(operationProvidedRole);
+    }
+
     /**
      * a operation provided is represented by the main class implementing the interface and an
      * import

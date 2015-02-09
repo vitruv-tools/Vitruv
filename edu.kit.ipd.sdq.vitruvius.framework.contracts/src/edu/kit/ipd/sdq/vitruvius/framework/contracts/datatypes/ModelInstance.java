@@ -98,17 +98,19 @@ public class ModelInstance extends AbstractURIHaving {
 
     /**
      * Loads the resource into memory. The load can be forced by setting
-     * forceLoadByDoingUnloadBeforeLoad to true, which means that te resource will be unloaded
-     * before we load it again. Note: Unload will only be done when the resourse was modified
+     * forceLoadByDoingUnloadBeforeLoad to true, which means that the resource will be unloaded
+     * before we load it again.
      *
      */
     public void load(final Map<Object, Object> loadOptions, final boolean forceLoadByDoingUnloadBeforeLoad) {
         try {
-            this.lastUsedLoadOptions = loadOptions;
+            if (null != loadOptions) {
+                this.lastUsedLoadOptions = loadOptions;
+            }
             if (this.resource.isModified() || forceLoadByDoingUnloadBeforeLoad) {
                 this.resource.unload();
             }
-            this.resource.load(loadOptions);
+            this.resource.load(this.lastUsedLoadOptions);
         } catch (IOException e) {
             // soften
             throw new RuntimeException(e);

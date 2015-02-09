@@ -35,9 +35,7 @@ public class PCMJavaUtils {
         // PCM
         final VURI pcmMMUri = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
         final Set<String> pcmNSUris = new HashSet<String>();
-        pcmNSUris.add(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE_URI);
-        pcmNSUris.add(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE_URI_REPOSITORY);
-        pcmNSUris.add(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE_URI_SYSTEM);
+        pcmNSUris.addAll(Arrays.asList(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE_URIS));
         String[] fileExtensions = new String[2];
         fileExtensions[0] = PCMJaMoPPNamespace.PCM.REPOSITORY_FILE_EXTENSION;
         fileExtensions[1] = PCMJaMoPPNamespace.PCM.SYSTEM_FILE_EXTENSION;

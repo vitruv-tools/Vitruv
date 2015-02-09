@@ -16,6 +16,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchroniz
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.InvariantProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronizationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
 
 public class SyncManagerImpl implements ChangeSynchronizing {
@@ -31,12 +32,15 @@ public class SyncManagerImpl implements ChangeSynchronizing {
 
     private Map<Class<?>, ConcreteChangeSynchronizer> changeSynchonizerMap;
 
+    private SynchronizationListener synchronizationListener;
+
     public SyncManagerImpl(final ModelProviding modelProviding, final ChangePropagating changePropagating,
             final CorrespondenceProviding correspondenceProviding, final InvariantProviding invariantProviding,
-            final Validating validating) {
+            final Validating validating, final SynchronizationListener synchronizationListener) {
         this.modelProviding = modelProviding;
         this.changePropagating = changePropagating;
         this.correspondenceProviding = correspondenceProviding;
+        this.synchronizationListener = synchronizationListener;
         this.changeSynchonizerMap = new HashMap<Class<?>, ConcreteChangeSynchronizer>();
         EMFModelSynchronizer emfModelSynchronizer = new EMFModelSynchronizer(modelProviding, this,
                 this.changePropagating, this.correspondenceProviding);
@@ -47,18 +51,31 @@ public class SyncManagerImpl implements ChangeSynchronizing {
                 this.changePropagating, this.correspondenceProviding));
         this.invariantProviding = invariantProviding;
         this.validating = validating;
-        this.vitruviusResourceManipulatingJob = new VitruviusResourceManipulatingJob(this.modelProviding);
+        this.vitruviusResourceManipulatingJob = new VitruviusResourceManipulatingJob(this.modelProviding,
+                this.synchronizationListener);
     }
 
     @Override
     public void synchronizeChanges(final List<Change> changes) {
+        boolean isListSynchronization = true;
         for (Change change : changes) {
-            synchronizeChange(change);
+            boolean isFirstSynchronizationInList = changes.indexOf(change) == 0;
+            boolean isLastSynchronizationInList = changes.indexOf(change) == changes.size() - 1;
+            synchronizeChange(change, isListSynchronization, isFirstSynchronizationInList, isLastSynchronizationInList);
         }
     }
 
     @Override
     public void synchronizeChange(final Change change) {
+        synchronizeChange(change, false, true, true);
+    }
+
+    public void synchronizeChange(final Change change, final boolean isListSynchronization,
+            final boolean isFirstSynchronisationInList, final boolean isLastSynchroisationInList) {
+        if (null != this.synchronizationListener
+                && (!isListSynchronization || (isListSynchronization && isFirstSynchronisationInList))) {
+            this.synchronizationListener.aboutToStartSynchronization();
+        }
         if (changeCausedByResourceManipultingJob()) {
             logger.info("Change " + change
                     + " not syncrhonized, cause it was caused by the resource manipulating job itself.");
@@ -70,19 +87,21 @@ public class SyncManagerImpl implements ChangeSynchronizing {
         }
         EMFChangeResult emfChangeResult = (EMFChangeResult) this.changeSynchonizerMap.get(change.getClass())
                 .synchronizeChange(change);
-
+        boolean isLastChangeResultInList = null != this.synchronizationListener
+                && (!isListSynchronization || (isListSynchronization && isLastSynchroisationInList));
+        emfChangeResult.setLastChangeResultInList(isLastChangeResultInList);
         this.vitruviusResourceManipulatingJob.addEMFChangeResult(emfChangeResult);
         this.vitruviusResourceManipulatingJob.schedule();
     }
 
+    /**
+     * check whether the change is caused by the resource manipulating job itself. This is true if
+     * the current thread is the same thread as the resource manipulating thread.
+     *
+     * @return
+     */
     private boolean changeCausedByResourceManipultingJob() {
-        return this.vitruviusResourceManipulatingJob.isResourceManipulatingInProgress();
-        // if (Job.RUNNING == this.vitruisviusResourceManipulatingJob.getState()) {
-        // if (this.vitruviusResourceManipulatingJob.getThread() == Thread.currentThread()) {
-        // return true;
-        // }
-        // }
-        // return false;
+        return this.vitruviusResourceManipulatingJob.getThread() == Thread.currentThread();
     }
 
 }

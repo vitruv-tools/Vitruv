@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java
 
 import com.google.common.collect.Sets
+import de.uka.ipd.sdq.pcm.core.composition.ComposedStructure
 import de.uka.ipd.sdq.pcm.core.entity.NamedElement
 import de.uka.ipd.sdq.pcm.repository.Repository
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
@@ -12,12 +13,14 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationCha
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
 import java.io.ByteArrayInputStream
 import java.util.ArrayList
 import java.util.Comparator
+import java.util.HashSet
 import java.util.List
 import java.util.Map
 import java.util.Set
@@ -38,6 +41,7 @@ import org.emftext.language.java.expressions.ExpressionsFactory
 import org.emftext.language.java.imports.Import
 import org.emftext.language.java.imports.ImportsFactory
 import org.emftext.language.java.instantiations.InstantiationsFactory
+import org.emftext.language.java.instantiations.NewConstructorCall
 import org.emftext.language.java.literals.LiteralsFactory
 import org.emftext.language.java.members.Constructor
 import org.emftext.language.java.members.Field
@@ -47,6 +51,8 @@ import org.emftext.language.java.modifiers.ModifiersFactory
 import org.emftext.language.java.operators.OperatorsFactory
 import org.emftext.language.java.parameters.Parameter
 import org.emftext.language.java.parameters.ParametersFactory
+import org.emftext.language.java.references.IdentifierReference
+import org.emftext.language.java.references.ReferenceableElement
 import org.emftext.language.java.references.ReferencesFactory
 import org.emftext.language.java.statements.Statement
 import org.emftext.language.java.statements.StatementsFactory
@@ -140,8 +146,10 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		classifierReference.setTarget(classifier)
 		val namespaceClassifierReference = TypesFactory.eINSTANCE.createNamespaceClassifierReference
 		namespaceClassifierReference.classifierReferences.add(classifierReference)
-		if (!namespace.empty) {
+		if (!namespace.nullOrEmpty) {
 			namespaceClassifierReference.namespaces.addAll(namespace.split("."))
+		} else {
+			namespaceClassifierReference.namespaces.add("")
 		}
 		return namespaceClassifierReference
 	}
@@ -185,7 +193,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 
 	def static createPrivateField(TypeReference reference, String name) {
 		val Field field = MembersFactory.eINSTANCE.createField
-		field.typeReference = reference
+		field.typeReference = EcoreUtil.copy(reference)
 		field.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPrivate)
 		var String fieldName = name
 		if (fieldName.nullOrEmpty) {
@@ -199,6 +207,18 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		}
 		field.name = fieldName
 		return field
+	}
+
+	def static createPrivateFieldUsingDummyPrinting(TypeReference reference, String name) {
+		try {
+			val String cuContent = "class Dummy{ private " + PCM2JaMoPPUtils.getNameFromJaMoPPType(reference) + " " + name + "; }"
+			val String fileName = "vitruvius.meta/src/dummy.java";
+			val cu = createJavaRoot(fileName, cuContent) as CompilationUnit
+			return cu.classifiers.get(0).fields.get(0)
+		} catch (Throwable t) {
+			logger.info("Could not create field: " + name)
+			return null
+		}
 	}
 
 	def static Parameter createOrdinaryParameter(TypeReference typeReference, String name) {
@@ -265,11 +285,12 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 			})
 	}
 
-	def static NamespaceClassifierReference createNamespaceClassifierReference(ConcreteClassifier jaMoPPInterface) {
+	def static NamespaceClassifierReference createNamespaceClassifierReference(ConcreteClassifier concreteClassifier) {
 		val namespaceClassifierReference = TypesFactory.eINSTANCE.createNamespaceClassifierReference
 		val classifierRef = TypesFactory.eINSTANCE.createClassifierReference
-		classifierRef.target = jaMoPPInterface
+		classifierRef.target = EcoreUtil.copy(concreteClassifier)
 		namespaceClassifierReference.classifierReferences.add(classifierRef)
+		//namespaceClassifierReference.namespaces.addAll(concreteClassifier.containingCompilationUnit.namespaces)
 		return namespaceClassifierReference
 	}
 
@@ -365,7 +386,6 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 			logger.warn("Exception during createJaMoPPMethod with content " + content + " Exception: " + t)
 			return null;
 		}
-
 	}
 
 	def dispatch static getNameFromJaMoPPType(ClassifierReference reference) {
@@ -498,7 +518,8 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	/**
 	 * creates this.<fieldName> = new <typeOfField>(params)
 	 */
-	def static Statement createNewOfFieldInConstructor(Constructor constructor, Field field, Field[] requiredFields) {
+	def static NewConstructorCall addNewStatementToConstructor(Constructor constructor, Field field,
+		Field[] fieldsToUseAsArgument, Parameter[] parametersToUseAsArgument) {
 		val expressionStatement = StatementsFactory.eINSTANCE.createExpressionStatement
 		val assigmentExpression = ExpressionsFactory.eINSTANCE.createAssignmentExpression
 
@@ -510,18 +531,88 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		//.fieldname
 		val fieldReference = ReferencesFactory.eINSTANCE.createIdentifierReference
 		fieldReference.target = EcoreUtil.copy(field)
-		selfReference.next = fieldReference
+		selfReference.next = EcoreUtil.copy(fieldReference)
 
 		//=
 		assigmentExpression.assignmentOperator = OperatorsFactory.eINSTANCE.createAssignment
 
 		//new fieldType
 		val newConstructorCall = InstantiationsFactory.eINSTANCE.createNewConstructorCall
-		newConstructorCall.typeReference = field.typeReference
+		newConstructorCall.typeReference = EcoreUtil.copy(field.typeReference)
+
+		//get order of type references of the constructor
+		updateArgumentsOfConstructorCall(field, fieldsToUseAsArgument, parametersToUseAsArgument, newConstructorCall)
 
 		assigmentExpression.value = newConstructorCall
 		expressionStatement.expression = assigmentExpression
-		return expressionStatement
+		constructor.statements.add(expressionStatement) 
+		return newConstructorCall
+	}
+
+	def static updateArgumentsOfConstructorCall(Field field, Field[] fieldsToUseAsArgument,
+		Parameter[] parametersToUseAsArgument, NewConstructorCall newConstructorCall) {
+		val List<TypeReference> typeListForConstructor = new ArrayList<TypeReference>
+		if (null != field.typeReference && null != field.typeReference.pureClassifierReference &&
+			null != field.typeReference.pureClassifierReference.target) {
+			val classifier = EcoreUtil.copy(field.typeReference.pureClassifierReference.target)
+			if (classifier instanceof Class) {
+				val jaMoPPClass = classifier as Class
+				val constructorsForClass = jaMoPPClass.members.filter(typeof(Constructor))
+				if (!constructorsForClass.nullOrEmpty) {
+					val constructorForClass = constructorsForClass.get(0)
+					for (parameter : constructorForClass.parameters) {
+						typeListForConstructor.add(parameter.typeReference)
+					}
+				}
+			}
+		}
+
+		//find type with same name in fields or parameters (start with parameter)
+		for (typeRef : typeListForConstructor) {
+			val refElement = typeRef.findMatchingTypeInParametersOrFields(fieldsToUseAsArgument,
+				parametersToUseAsArgument)
+			if (refElement != null) {
+				val IdentifierReference identifierReference = ReferencesFactory.eINSTANCE.createIdentifierReference
+				identifierReference.target = refElement
+			} else {
+				newConstructorCall.arguments.add(LiteralsFactory.eINSTANCE.createNullLiteral)
+			}
+		}
+	}
+
+	def static ReferenceableElement findMatchingTypeInParametersOrFields(TypeReference typeReferenceToFind,
+		Field[] fieldsToUseAsArgument, Parameter[] parametersToUseAsArgument) {
+		for (parameter : parametersToUseAsArgument) {
+			if (parameter.typeReference.target == typeReferenceToFind.target) {
+				return parameter
+			}
+		}
+		for (field : fieldsToUseAsArgument) {
+			if (field.typeReference.target == typeReferenceToFind.target) {
+				return field
+			}
+		}
+		return null
+	}
+
+	def static createNewForFieldInConstructor(Field field) {
+		val classifier = field.containingConcreteClassifier
+		if (!(classifier instanceof Class)) {
+			return null
+		}
+		val jaMoPPClass = classifier as Class
+
+		//create constructor if none exists
+		if (classifier.members.filter(typeof(Constructor)).nullOrEmpty) {
+			PCM2JaMoPPUtils.addConstructorToClass(jaMoPPClass)
+		}
+		val newObjects = new HashSet<EObject>
+		for (constructor : classifier.members.filter(typeof(Constructor))) {
+			newObjects.add(
+				PCM2JaMoPPUtils.addNewStatementToConstructor(constructor, field, jaMoPPClass.fields,
+					constructor.parameters))
+		}
+		return newObjects
 	}
 
 	def static TransformationChangeResult deleteCorrespondingEObjectsAndGetTransformationChangeResult(
@@ -541,6 +632,23 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 			tcr.addCorrespondenceToDelete(correspondenceInstance, oldTUID)
 		}
 		return tcr
+	}
+
+	def static void handleAssemblyContextAddedAsNonRootEObjectInList(ComposedStructure composedEntity,
+		NamedElement namedElement, EObject[] newCorrespondingEObjects, TransformationChangeResult tcr,
+		CorrespondenceInstance ci) {
+		if (newCorrespondingEObjects.nullOrEmpty) {
+			return
+		}
+		var Correspondence parrentCorrespondence = null
+		val parrentCorrespondences = ci.getAllCorrespondences(composedEntity)
+		if (!parrentCorrespondences.nullOrEmpty) {
+			parrentCorrespondence = parrentCorrespondences.get(0)
+		}
+		for (newCorrespondingEObject : newCorrespondingEObjects) {
+			tcr.addNewCorrespondence(ci, namedElement, newCorrespondingEObject, parrentCorrespondence)
+			tcr.existingObjectsToSave.add(newCorrespondingEObject)
+		}
 	}
 
 }

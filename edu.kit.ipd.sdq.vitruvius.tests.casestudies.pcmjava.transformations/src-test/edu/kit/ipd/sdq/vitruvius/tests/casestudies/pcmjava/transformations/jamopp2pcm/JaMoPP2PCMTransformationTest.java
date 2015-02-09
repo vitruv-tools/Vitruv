@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jdt.core.IBuffer;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMethod;
@@ -76,20 +77,14 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaAddBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaRemoveBuilder;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPTransformationExecuter;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine.EMFModelPropagationEngineImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager.SyncManagerImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.ChangeSynchronizer;
-import edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.TransformationExecutingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.PCMJaMoPPTransformationTestBase;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
@@ -111,12 +106,11 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
 
     protected Package mainPackage;
     protected Package secondPackage;
-    protected TestUserInteractor testUserInteractor;
 
     @Before
     public void setUpTest() throws Throwable {
-        this.afterTest();
         // remove PCM java builder from Project
+        this.afterTest();
         this.testUserInteractor = new TestUserInteractor();
         // add PCM Java Builder to Project under test
         final PCMJavaAddBuilder pcmJavaBuilder = new PCMJavaAddBuilder();
@@ -250,7 +244,7 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
     protected <T> T renameClassifierWithName(final String entityName, final String newName, final Class<T> type)
             throws Throwable {
         try {
-            final ICompilationUnit cu = this.findCompilationWithClassName(entityName + ".java");
+            final ICompilationUnit cu = this.findICompilationUnitWithClassName(entityName + ".java");
             final int offset = cu.getBuffer().getContents().indexOf(entityName);
             if (cu.getBuffer() instanceof IBuffer.ITextEditCapability) {
                 logger.info(cu.getBuffer());
@@ -278,7 +272,7 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
         cu.save(new NullProgressMonitor(), true);
     }
 
-    protected ICompilationUnit findCompilationWithClassName(String entityName) throws Throwable {
+    protected ICompilationUnit findICompilationUnitWithClassName(String entityName) throws Throwable {
         if (!entityName.endsWith("." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION)) {
             entityName = entityName + "." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION;
         }
@@ -366,7 +360,7 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
         throw new RuntimeException("No packageFragment found for JaMoPP package " + packageForClass);
     }
 
-    private ConcreteClassifier getJaMoPPClassifierForVURI(final VURI vuri) {
+    protected ConcreteClassifier getJaMoPPClassifierForVURI(final VURI vuri) {
         final Resource resource = EcoreResourceBridge.loadResourceAtURI(vuri.getEMFUri(), new ResourceSetImpl());
         final CompilationUnit cu = (CompilationUnit) resource.getContents().get(0);
         final Classifier jaMoPPClassifier = cu.getClassifiers().get(0);
@@ -383,26 +377,7 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
         final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
         final SyncManagerImpl syncManagerImpl = TestUtil.getFieldFromClass(VitruviusEmfBuilder.class,
                 "changeSynchronizing", pcmJavaBuilder);
-        final EMFModelPropagationEngineImpl emfModelPropagationEngineImpl = TestUtil.getFieldFromClass(
-                SyncManagerImpl.class, "changePropagating", syncManagerImpl);
-        final TransformationExecutingProvidingImpl transformationExecutingProvidingImpl = TestUtil.getFieldFromClass(
-                EMFModelPropagationEngineImpl.class, "transformationExecutingProviding", emfModelPropagationEngineImpl);
-        final ClaimableMap<Pair<VURI, VURI>, EMFModelTransformationExecuting> transformationExecuterMap = TestUtil
-                .getFieldFromClass(TransformationExecutingProvidingImpl.class, "transformationExecuterMap",
-                        transformationExecutingProvidingImpl);
-        PCMJaMoPPTransformationExecuter pcmJaMoPPTransformationExecuter = null;
-        for (final EMFModelTransformationExecuting emfModelTransformationExecuting : transformationExecuterMap.values()) {
-            if (emfModelTransformationExecuting instanceof PCMJaMoPPTransformationExecuter) {
-                pcmJaMoPPTransformationExecuter = (PCMJaMoPPTransformationExecuter) emfModelTransformationExecuting;
-                break;
-            }
-        }
-        if (null == pcmJaMoPPTransformationExecuter) {
-            throw new RuntimeException("Could not find an PCMJaMoPPTransformationExecuter that is currently active.");
-        }
-        final ChangeSynchronizer changeSynchronizer = TestUtil.getFieldFromClass(PCMJaMoPPTransformationExecuter.class,
-                "changeSynchronizer", pcmJaMoPPTransformationExecuter);
-        changeSynchronizer.setUserInteracting(newUserInteracting);
+        this.setUserInteractor(newUserInteracting, syncManagerImpl);
     }
 
     protected CompositeComponent addSecondPackageCorrespondsToCompositeComponent() throws Throwable {
@@ -503,15 +478,19 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
     }
 
     protected OperationSignature addMethodToInterfaceWithCorrespondence(final String interfaceName) throws Throwable {
-        final ICompilationUnit cu = this.findCompilationWithClassName(interfaceName);
+        final ICompilationUnit cu = this.findICompilationUnitWithClassName(interfaceName);
         final String methodString = "void " + PCM2JaMoPPTestUtils.OPERATION_SIGNATURE_1_NAME + "();";
         final IType firstType = cu.getAllTypes()[0];
-        final int offset = firstType.getNameRange().getOffset() + firstType.getNameRange().getLength() + 3;
+        final int offset = this.getOffsetForClassifierManipulation(firstType);
         final InsertEdit insertEdit = new InsertEdit(offset, methodString);
         this.editCompilationUnit(cu, insertEdit);
         TestUtil.waitForSynchronization();
         return this.findOperationSignatureForJaMoPPMethodInCompilationUnit(
                 PCM2JaMoPPTestUtils.OPERATION_SIGNATURE_1_NAME, interfaceName, cu);
+    }
+
+    protected int getOffsetForClassifierManipulation(final IType firstType) throws JavaModelException {
+        return firstType.getNameRange().getOffset() + firstType.getNameRange().getLength() + 3;
     }
 
     protected OperationSignature findOperationSignatureForJaMoPPMethodInCompilationUnit(final String methodName,
@@ -531,7 +510,7 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
 
     protected OperationSignature renameMethodInClassWithName(final String className, final String methodName)
             throws Throwable {
-        final ICompilationUnit cu = this.findCompilationWithClassName(className);
+        final ICompilationUnit cu = this.findICompilationUnitWithClassName(className);
         final IMethod iMethod = cu.getType(className).getMethod(methodName, null);
         final int offset = iMethod.getNameRange().getOffset();
         final int length = iMethod.getNameRange().getLength();
@@ -548,7 +527,7 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
         assertEquals("The name of the PCM datatype does not equal the JaMoPP type name", jaMoPPTypeName, pcmTypeName);
     }
 
-    private String getNameFromPCMDataType(final DataType pcmDataType) {
+    protected String getNameFromPCMDataType(final DataType pcmDataType) {
         if (null == pcmDataType) {
             return "void";
         } else if (pcmDataType instanceof CollectionDataType) {
@@ -583,7 +562,7 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
 
     protected Parameter addParameterToSignature(final String interfaceName, final String methodName,
             final String typeName, final String parameterName) throws Throwable {
-        final ICompilationUnit icu = this.findCompilationWithClassName(interfaceName);
+        final ICompilationUnit icu = this.findICompilationUnitWithClassName(interfaceName);
         final IMethod iMethod = icu.getType(interfaceName).getMethod(methodName, null);
         final String parameterStr = typeName + " " + parameterName;
         final int offset = iMethod.getSourceRange().getOffset() + iMethod.getSourceRange().getLength() - 2;
@@ -626,4 +605,32 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
     protected String getNameFromPCMPrimitiveDataType(final PrimitiveDataType primitiveDataType) {
         return primitiveDataType.getType().getName();
     }
+
+    protected Package getDatatypesPackage() throws Throwable {
+        return this.getPackageWithName("datatypes");
+    }
+
+    protected CompositeDataType addClassThatCorrespondsToCompositeDatatype() throws Throwable {
+        this.testUserInteractor.addNextSelections(ClassMappingTransformation.SELECT_CREATE_COMPOSITE_DATA_TYPE);
+        final CompositeDataType cdt = this.addClassInPackage(this.getDatatypesPackage(), CompositeDataType.class);
+        return cdt;
+    }
+
+    protected IMethod findIMethodByName(final String interfaceName, final String methodName, final ICompilationUnit icu)
+            throws JavaModelException {
+        final IType type = icu.getType(interfaceName);
+        for (final IMethod method : type.getMethods()) {
+            if (method.getElementName().equals(methodName)) {
+                return method;
+            }
+        }
+        throw new RuntimeException("Method not " + methodName + " not found in classifier " + interfaceName);
+    }
+
+    protected IField findIFieldByName(final String className, final String fieldName, final ICompilationUnit icu)
+            throws JavaModelException {
+        final IType type = icu.getType(className);
+        return type.getField(fieldName);
+    }
+
 }

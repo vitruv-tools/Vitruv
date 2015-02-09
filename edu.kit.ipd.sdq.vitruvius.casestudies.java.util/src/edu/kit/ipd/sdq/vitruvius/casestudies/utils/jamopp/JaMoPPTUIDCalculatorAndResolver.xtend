@@ -25,6 +25,7 @@ import org.emftext.language.java.references.IdentifierReference
 import org.emftext.language.java.operators.Assignment
 import org.emftext.language.java.instantiations.NewConstructorCall
 import org.emftext.language.java.expressions.ConditionalExpression
+import org.emftext.language.java.expressions.Expression
 
 /**
  * TUID calculator and resolver for the JaMoPP meta-model.
@@ -195,8 +196,6 @@ class JaMoPPTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResol
 		val tuid = new StringBuilder
 		tuid.append(NEW_CONSTRUCTOR_CALL_SELECTOR).append(SUBDIVIDER)
 		tuid.append(getNameFrom(newConstructorCall.typeReference)).append(SUBDIVIDER)
-
-		//TODO: add arguments
 		return tuid.toString
 	}
 
@@ -207,7 +206,7 @@ class JaMoPPTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResol
 		tuid.append(CONDITIONAL_EXPRESSION_SELECTOR)
 		if (null == conditionalExpression.type) {
 			tuid.append(SUBDIVIDER).append("null")
-		} else{
+		} else {
 			tuid.append(SUBDIVIDER).append(conditionalExpression.type.calculateIndividualTUID)
 		}
 		return tuid.toString

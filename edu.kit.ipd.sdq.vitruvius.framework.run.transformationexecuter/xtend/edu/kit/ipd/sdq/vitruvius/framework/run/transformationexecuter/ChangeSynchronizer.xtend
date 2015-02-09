@@ -135,8 +135,9 @@ public class ChangeSynchronizer {
 			removeEObject(deleteNonRootEObjectInList.oldValue)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			deleteNonRootEObjectInList.oldAffectedEObject.class).deleteNonRootEObjectInList(
-			deleteNonRootEObjectInList.newAffectedEObject, deleteNonRootEObjectInList.oldAffectedEObject, deleteNonRootEObjectInList.affectedFeature,
-			deleteNonRootEObjectInList.oldValue, deleteNonRootEObjectInList.index, eObjectsToDelete)
+			deleteNonRootEObjectInList.newAffectedEObject, deleteNonRootEObjectInList.oldAffectedEObject,
+			deleteNonRootEObjectInList.affectedFeature, deleteNonRootEObjectInList.oldValue,
+			deleteNonRootEObjectInList.index, eObjectsToDelete)
 	}
 
 	def private dispatch TransformationChangeResult syncChange(
@@ -194,8 +195,9 @@ public class ChangeSynchronizer {
 
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			replaceNonRootEObjectSingle.oldAffectedEObject.class).replaceNonRootEObjectSingle(
-			replaceNonRootEObjectSingle.oldAffectedEObject, replaceNonRootEObjectSingle.affectedFeature,
-			replaceNonRootEObjectSingle.oldValue, replaceNonRootEObjectSingle.newValue)
+			replaceNonRootEObjectSingle.newAffectedEObject, replaceNonRootEObjectSingle.oldAffectedEObject,
+			replaceNonRootEObjectSingle.affectedFeature, replaceNonRootEObjectSingle.oldValue,
+			replaceNonRootEObjectSingle.newValue)
 	}
 
 	def private dispatch TransformationChangeResult syncChange(

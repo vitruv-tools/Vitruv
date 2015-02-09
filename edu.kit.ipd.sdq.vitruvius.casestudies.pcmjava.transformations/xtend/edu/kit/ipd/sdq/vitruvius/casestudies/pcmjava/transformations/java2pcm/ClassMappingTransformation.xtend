@@ -5,9 +5,9 @@ import de.uka.ipd.sdq.pcm.repository.RepositoryComponent
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
 import de.uka.ipd.sdq.pcm.system.SystemFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
@@ -19,11 +19,11 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.Classifier
 import org.emftext.language.java.classifiers.ConcreteClassifier
+import org.emftext.language.java.containers.ContainersFactory
+import org.emftext.language.java.members.Field
 import org.emftext.language.java.modifiers.Modifier
 import org.emftext.language.java.modifiers.Public
 import org.emftext.language.java.modifiers.impl.PublicImpl
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory
-import org.emftext.language.java.containers.ContainersFactory
 
 /**
  * Maps a JaMoPP class to a PCM Components or System. 
@@ -99,9 +99,9 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 
 		if (null == pcmComponentOrSystem) {
 			pcmComponentOrSystem = askUserWhetherToCreateComponentOrSystem(jaMoPPClass)
-			if(null == pcmComponentOrSystem){
+			if (null == pcmComponentOrSystem) {
 				return null
-			}else{
+			} else {
 				return pcmComponentOrSystem.toArray
 			}
 		} else {
@@ -123,7 +123,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 		}
 		return null
 	}
-	
+
 	def getJaMoPPPackage(Class jaMoPPClass) {
 		val jaMoPPPackage = ContainersFactory.eINSTANCE.createPackage
 		jaMoPPPackage.namespaces.addAll(jaMoPPClass.containingPackageName)
@@ -145,12 +145,11 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 	 * called when a child object (e.g. a Method or a field) is added to the class
 	 * Creates the correspondences and returns the TransformationChangeResult object containing the PCM element that should be saved
 	 */
-	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject newValue,
-		int index, EObject[] newCorrespondingEObjects) {
-		logger.info("createNonRootEObjectInList called")
-
-		//TODO: implement code here
-		return null
+	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
+		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
+		return JaMoPP2PCMUtils.
+			createTransformationChangeResultForNewCorrespondingEObjects(newValue, newCorrespondingEObjects,
+				correspondenceInstance)
 	}
 
 	/**
@@ -167,8 +166,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 		var eObjectsToDelete = new ArrayList<EObject>()
 		if (null != correspondences && 0 < correspondences.size) {
 			val classifiersInSamePackage = jaMoPPClass.containingCompilationUnit.classifiersInSamePackage
-			if (null != classifiersInSamePackage && 1 < classifiersInSamePackage.size) {
-
+			if (!classifiersInSamePackage.nullOrEmpty) {
 				//TODO: ask user whether to remove also this classifiers
 				var boolean removeAllClassifiers = false;
 				if (removeAllClassifiers) {
@@ -184,22 +182,20 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 	}
 
 	/**
-	 * we do not really need the method deleteNonRootEObjectInList in InterfaceMappingTransformation because the deletion of the 
-	 * object has already be done in removeEObject.
-	 * We just return an empty TransformationChangeResult 
+	 * Called when a method, a modifier or field has been removed
 	 */
-	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
-		int index, EObject[] oldCorrespondingEObjectsToDelete) {
+	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
+		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
 		val components = correspondenceInstance.getCorrespondingEObjectsByType(newAffectedEObject, RepositoryComponent)
 		var EObject eObjectToSave = null
 		val affectedClass = newAffectedEObject as ConcreteClassifier
+		val tcr = TransformationUtils.createEmptyTransformationChangeResult
 		if (!components.nullOrEmpty &&
 			PCMJaMoPPNamespace.JaMoPP.JAMOPP_ANNOTATIONS_AND_MODIFIERS_REFERENCE_NAME.equals(affectedReference.name) &&
 			(oldValue instanceof PublicImpl)) {
 			val component = components.get(0)
-			val userInteractor = new UserInteractor()
 			val msg = "Public modifier has been removed from " + affectedClass.name + "."
-			val choice = userInteractor.selectFromMessage(UserInteractionType.MODAL, msg, "Undo change",
+			val choice = super.userInteracting.selectFromMessage(UserInteractionType.MODAL, msg, "Undo change",
 				"Remove component " + component.entityName)
 			switch choice {
 				case 0: {
@@ -207,13 +203,24 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 					eObjectToSave = newAffectedEObject
 				}
 				case 1: {
-					eObjectToSave = component.eContainer
-					correspondenceInstance.removeAllCorrespondences(component)
+					val tuidToRemove = correspondenceInstance.calculateTUIDFromEObject(component)
+					tcr.addCorrespondenceToDelete(correspondenceInstance, tuidToRemove)
+					tcr.existingObjectsToSave.add(component.repository__RepositoryComponent)
 					EcoreUtil.remove(component)
 				}
 			}
+		} else if (!components.nullOrEmpty &&
+			PCMJaMoPPNamespace.JaMoPP.JAMOPP_MEMBERS_REFERENCE.equals(affectedReference.name) &&
+			oldValue instanceof Field) {
+			PCMJaMoPPUtils.removeEObjectAndAddCorrespondencesToDelete(oldCorrespondingEObjectsToDelete,
+				correspondenceInstance, tcr)
+		}//TODO implement code for methods that are corresponding to architectural signatures  
+		else {
+			logger.warn(
+				"deleteNonRootEObjectInList in class mapping called. Nothing done for EObject with oldValue" + oldValue)
 		}
-		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(eObjectToSave.toArray)
+
+		return tcr
 	}
 
 	/**

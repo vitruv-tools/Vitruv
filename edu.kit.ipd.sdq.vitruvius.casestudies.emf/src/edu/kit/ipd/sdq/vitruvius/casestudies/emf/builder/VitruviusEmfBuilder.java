@@ -20,6 +20,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileCh
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronizationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.design.metamodelmanager.MetamodelManagerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.design.viewtype.manager.ViewTypeManagerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
@@ -34,20 +35,21 @@ import edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.TransformationExecu
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
-public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
+public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder implements SynchronizationListener {
 
     private static final Logger LOGGER = Logger.getLogger(VitruviusEmfBuilder.class.getSimpleName());
 
     private Set<String> monitoredFileTypes;
-    private IVitruviusEMFEditorMonitor monitor;
     private final VitruviusEMFDeltaVisitor vitruviusEMFDeltaVisitor;
-    protected ChangeSynchronizing changeSynchronizing;
-    protected ModelProviding modelProviding;
-    protected VSUMImpl vsum;
 
     private final IResourceDeltaProviding resourceDeltaProviding;
     private final IProjectProviding projectProviding;
-    private final EMFEditorMonitorFactory monitorFactory;
+
+    protected final EMFEditorMonitorFactory monitorFactory;
+    protected IVitruviusEMFEditorMonitor emfMonitor;
+    protected ChangeSynchronizing changeSynchronizing;
+    protected ModelProviding modelProviding;
+    protected VSUMImpl vsum;
 
     private final boolean isInTestingMode = true;
 
@@ -95,12 +97,16 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
         this.monitoredFileTypes = monitoredFileTypes;
         this.modelProviding = this.createChangeSynchronizing(metaRepository);
 
-        final IVitruviusAccessor vitruviusAcc = this.createVitruviusAccessor();
-        final IEditorPartAdapterFactory epaFactory = new DefaultEditorPartAdapterFactoryImpl(monitoredFileTypes);
-        this.monitor = this.monitorFactory.createVitruviusModelEditorSyncMgr(epaFactory, this.changeSynchronizing,
-                null /* TODO */, vitruviusAcc);
-        this.monitor.initialize();
+        this.createAndStartEMFMonitor();
+        this.emfMonitor.initialize();
         LOGGER.trace("Initialized the builder.");
+    }
+
+    protected void createAndStartEMFMonitor() {
+        final IVitruviusAccessor vitruviusAcc = this.createVitruviusAccessor();
+        final IEditorPartAdapterFactory epaFactory = new DefaultEditorPartAdapterFactoryImpl(this.monitoredFileTypes);
+        this.emfMonitor = this.monitorFactory.createVitruviusModelEditorSyncMgr(epaFactory, this.changeSynchronizing,
+                null /* TODO */, vitruviusAcc);
     }
 
     private ModelProviding createChangeSynchronizing(final MetaRepositoryImpl metaRepositoryImpl) {
@@ -113,7 +119,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
                 syncTransformationProvider);
 
         final SyncManagerImpl smi = new SyncManagerImpl(this.vsum, propagatingChange, this.vsum, metaRepositoryImpl,
-                this.vsum);
+                this.vsum, this);
         // create syncManager
         this.changeSynchronizing = smi;
         return this.vsum;
@@ -148,7 +154,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
     class VitruviusEMFDeltaVisitor implements IResourceDeltaVisitor {
         /*
          * (non-Javadoc)
-         *
+         * 
          * @see org.eclipse.core.resources.IResourceDeltaVisitor#visit(org.eclipse.core.resources.
          * IResourceDelta)
          */
@@ -190,7 +196,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.eclipse.core.internal.events.InternalBuilder#build(int, java.util.Map,
      * org.eclipse.core.runtime.IProgressMonitor)
      */
@@ -232,7 +238,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
     private void importToVitruvius(final IResource iResource) {
         LOGGER.trace("Importing " + iResource);
         final VURI resUri = VURI.getInstance(iResource);
-        this.monitor.addModel(resUri);
+        this.emfMonitor.addModel(resUri);
         this.triggerFileChangeSynchronisation(iResource, FileChangeKind.CREATE);
     }
 
@@ -245,7 +251,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
     private void removeFromVitruvius(final IResource iResource) {
         LOGGER.trace("Removing " + iResource);
         final VURI resUri = VURI.getInstance(iResource);
-        this.monitor.removeModel(resUri);
+        this.emfMonitor.removeModel(resUri);
         this.triggerFileChangeSynchronisation(iResource, FileChangeKind.DELETE);
     }
 
@@ -262,7 +268,7 @@ public class VitruviusEmfBuilder extends IncrementalProjectBuilder {
         LOGGER.trace("Triggering synchronization for " + iResource);
         if (this.monitoredFileTypes.contains(iResource.getFileExtension())) {
             final VURI vuri = VURI.getInstance(iResource);
-            this.monitor.triggerSynchronisation(vuri);
+            this.emfMonitor.triggerSynchronisation(vuri);
         }
     }
 

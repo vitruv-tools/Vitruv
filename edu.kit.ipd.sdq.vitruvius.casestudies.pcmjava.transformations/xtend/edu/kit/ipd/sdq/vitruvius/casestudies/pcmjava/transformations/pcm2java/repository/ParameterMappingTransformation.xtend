@@ -115,7 +115,7 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 		val EStructuralFeature pcmDataTypeAttribute = TransformationUtils.
 			getReferenceByNameFromEObject(PCMJaMoPPNamespace.PCM.PCM_PARAMETER_ATTRIBUTE_DATA_TYPE, pcmDummyParam);
 		val jaMoPPTypeReference = TransformationUtils.getReferenceByNameFromEObject(
-			PCMJaMoPPNamespace.JaMoPP.JAMOPP_PARAMETER_ATTRIBUTE_TYPE_REFERENCE, jaMoPPDummyParam)
+			PCMJaMoPPNamespace.JaMoPP.JAMOPP_REFERENCE_TYPE_REFERENCE, jaMoPPDummyParam)
 		val EStructuralFeature pcmParameterNameAttribute = TransformationUtils.getAttributeByNameFromEObject(PCMJaMoPPNamespace.PCM.PCM_ATTRIBUTE_ENTITY_NAME, pcmDummyParam)
 		val EStructuralFeature jaMoPPParammeterNameAttribute = TransformationUtils.getAttributeByNameFromEObject(PCMJaMoPPNamespace.JaMoPP.JAMOPP_ATTRIBUTE_NAME, jaMoPPDummyParam)
 		featureCorrespondenceMap.put(pcmDataTypeAttribute, jaMoPPTypeReference)

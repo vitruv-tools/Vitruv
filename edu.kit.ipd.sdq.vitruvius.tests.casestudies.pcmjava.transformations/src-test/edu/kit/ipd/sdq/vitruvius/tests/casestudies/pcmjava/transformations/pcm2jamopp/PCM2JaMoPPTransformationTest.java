@@ -25,6 +25,10 @@ import org.emftext.language.java.types.NamespaceClassifierReference;
 import org.emftext.language.java.types.TypeReference;
 import org.junit.Before;
 
+import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
+import de.uka.ipd.sdq.pcm.core.composition.CompositionFactory;
+import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingEntity;
+import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingRequiringEntity;
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
 import de.uka.ipd.sdq.pcm.repository.CollectionDataType;
 import de.uka.ipd.sdq.pcm.repository.CompositeDataType;
@@ -48,6 +52,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceIns
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronizationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.changedescription2change.ChangeDescription2ChangeConverter;
 import edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine.EMFModelPropagationEngineImpl;
@@ -56,6 +61,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.TransformationExecu
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.PCMJaMoPPTransformationTestBase;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.jamopp2pcm.TestUserInteractor;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.jamopppcm.util.JaMoPPPCMTestUtil;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
@@ -66,7 +72,7 @@ import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
  * @author Langhamm
  *
  */
-public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBase {
+public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBase implements SynchronizationListener {
 
     protected VSUMImpl vsum;
     protected SyncManagerImpl syncManager;
@@ -80,17 +86,20 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
     /**
      * Set up SyncMangaer and metaRepository facility. Creates a fresh VSUM, Metarepository etc.
      * before each test
-     *
-     * @throws Exception
+     * 
+     * @throws Throwable
      */
     @Before
-    public void setUpTest() throws Exception {
+    public void setUpTest() throws Throwable {
         this.metaRepository = JaMoPPPCMTestUtil.createJaMoPPPCMMetaRepository();
         this.vsum = TestUtil.createVSUM(this.metaRepository);
         final TransformationExecutingProvidingImpl syncTransformationProvider = new TransformationExecutingProvidingImpl();
         final EMFModelPropagationEngineImpl propagatingChange = new EMFModelPropagationEngineImpl(
                 syncTransformationProvider);
-        this.syncManager = new SyncManagerImpl(this.vsum, propagatingChange, this.vsum, this.metaRepository, this.vsum);
+        this.syncManager = new SyncManagerImpl(this.vsum, propagatingChange, this.vsum, this.metaRepository, this.vsum,
+                this);
+        this.testUserInteractor = new TestUserInteractor();
+        super.setUserInteractor(this.testUserInteractor, this.syncManager);
         this.resourceSet = new ResourceSetImpl();
         this.changeRecorder = new ChangeRecorder();
         this.changeDescrition2ChangeConverter = new ChangeDescription2ChangeConverter();
@@ -232,7 +241,7 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
         }
     }
 
-    private OperationSignature createAndSyncOperationSignature(final Repository repo,
+    protected OperationSignature createAndSyncOperationSignature(final Repository repo,
             final OperationInterface opInterface) throws IOException {
         final OperationSignature opSig = RepositoryFactory.eINSTANCE.createOperationSignature();
         opSig.setEntityName(PCM2JaMoPPTestUtils.OPERATION_SIGNATURE_1_NAME);
@@ -368,32 +377,45 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
     }
 
     protected OperationProvidedRole createAndSyncRepoOpIntfOpSigBasicCompAndOperationProvRole() throws IOException,
-    Throwable {
+            Throwable {
         final OperationSignature opSig = this.createAndSyncRepoInterfaceAndOperationSignature();
         final OperationInterface opInterface = opSig.getInterface__OperationSignature();
         final BasicComponent basicComponent = this.addBasicComponentAndSync(opInterface.getRepository__Interface());
 
+        return this.createAndSyncOperationProvidedRole(opInterface, basicComponent);
+    }
+
+    protected OperationProvidedRole createAndSyncOperationProvidedRole(final OperationInterface opInterface,
+            final InterfaceProvidingEntity interfaceProvidingEntity) {
         final OperationProvidedRole operationProvidedRole = RepositoryFactory.eINSTANCE.createOperationProvidedRole();
-        operationProvidedRole
-        .setEntityName(basicComponent.getEntityName() + "_provides_" + opInterface.getEntityName());
+        operationProvidedRole.setEntityName(interfaceProvidingEntity.getEntityName() + "_provides_"
+                + opInterface.getEntityName());
         operationProvidedRole.setProvidedInterface__OperationProvidedRole(opInterface);
-        operationProvidedRole.setProvidingEntity_ProvidedRole(basicComponent);
+        operationProvidedRole.setProvidingEntity_ProvidedRole(interfaceProvidingEntity);
         final VURI vuri = VURI.getInstance(opInterface.eResource());
         this.triggerSynchronization(vuri);
         return operationProvidedRole;
     }
 
     protected OperationRequiredRole createAndSyncRepoBasicCompInterfaceAndOperationReqiredRole() throws IOException,
-    Throwable {
+            Throwable {
         final OperationSignature opSig = this.createAndSyncRepoInterfaceAndOperationSignature();
         final OperationInterface opInterface = opSig.getInterface__OperationSignature();
         final BasicComponent basicComponent = this.addBasicComponentAndSync(opInterface.getRepository__Interface());
 
+        final OperationRequiredRole operationRequiredRole = this.createAndSyncOperationRequiredRole(opInterface,
+                basicComponent);
+        return operationRequiredRole;
+    }
+
+    protected OperationRequiredRole createAndSyncOperationRequiredRole(final OperationInterface opInterface,
+            final InterfaceProvidingRequiringEntity iprovidingRequiringEntity) throws Throwable {
         final OperationRequiredRole operationRequiredRole = RepositoryFactory.eINSTANCE.createOperationRequiredRole();
         operationRequiredRole.setEntityName(opInterface.getEntityName().toLowerCase());
         operationRequiredRole.setRequiredInterface__OperationRequiredRole(opInterface);
-        operationRequiredRole.setRequiringEntity_RequiredRole(basicComponent);
-        final VURI vuri = VURI.getInstance(basicComponent.eResource());
+        operationRequiredRole.setRequiringEntity_RequiredRole(iprovidingRequiringEntity);
+        EcoreResourceBridge.saveResource(iprovidingRequiringEntity.eResource());
+        final VURI vuri = VURI.getInstance(iprovidingRequiringEntity.eResource());
         this.triggerSynchronization(vuri);
         return operationRequiredRole;
     }
@@ -403,5 +425,24 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
         this.changeRecorder.beginRecording(Collections.singletonList(system));
         this.synchronizeFileChange(FileChangeKind.CREATE, VURI.getInstance(system.eResource()));
         return system;
+    }
+
+    @Override
+    public void aboutToStartSynchronization() {
+    }
+
+    @Override
+    public void synchronizationFinished() {
+    }
+
+    protected AssemblyContext createAndSyncAssemblyContext(final System system, final BasicComponent basicComponent)
+            throws IOException {
+        final AssemblyContext assemblyContext = CompositionFactory.eINSTANCE.createAssemblyContext();
+        assemblyContext.setEntityName(PCM2JaMoPPTestUtils.ASSEMBLY_CONTEXT_NAME);
+        assemblyContext.setEncapsulatedComponent__AssemblyContext(basicComponent);
+        assemblyContext.setParentStructure__AssemblyContext(system);
+        EcoreResourceBridge.saveResource(system.eResource());
+        this.triggerSynchronization(system);
+        return assemblyContext;
     }
 }

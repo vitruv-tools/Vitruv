@@ -9,14 +9,16 @@ import java.util.Set
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.util.EcoreUtil
+import de.uka.ipd.sdq.pcm.usagemodel.UsagemodelFactory
 
 class PCMJaMoPPUtils {
 	private static val Logger logger = Logger.getLogger(PCMJaMoPPUtils.simpleName)
 
 	protected new() {
 	}
-	
-/**
+
+	/**
 	 * Checks whether the affectedAttribute is in the featureCorrespondenceMap and returns all corresponding objects, 
 	 * if any. otherwise null is returned.
 	 */
@@ -33,7 +35,7 @@ class PCMJaMoPPUtils {
 		}
 		return correspondingEObjects
 	}
-	
+
 	def static updateNameAttribute(
 		Set<EObject> correspondingEObjects,
 		Object newValue,
@@ -42,11 +44,12 @@ class PCMJaMoPPUtils {
 		CorrespondenceInstance correspondenceInstance,
 		boolean markFilesOfChangedEObjectsAsFilesToSave,
 		Set<Class<? extends EObject>> classesOfRootObjects
-	){
+	) {
 		val EStructuralFeature eStructuralFeature = featureCorrespondenceMap.claimValueForKey(affectedFeature)
 		var transformationChangeResult = new TransformationChangeResult
-
-		val boolean rootAffected = correspondingEObjects.exists[eObject|eObjectInstanceOfRootEObject(eObject, classesOfRootObjects)]
+		
+		val boolean rootAffected = correspondingEObjects.exists[eObject|
+			eObjectInstanceOfRootEObject(eObject, classesOfRootObjects)]
 		if (rootAffected) {
 			logger.error("The method updateNameattribut is not able to rename root objects")
 			return transformationChangeResult
@@ -68,14 +71,26 @@ class PCMJaMoPPUtils {
 		}
 		transformationChangeResult
 	}
-	
+
 	def private static boolean eObjectInstanceOfRootEObject(EObject object, Set<Class<? extends EObject>> classes) {
-		for(c : classes){
-			if(c.isInstance(object)){
+		for (c : classes) {
+			if (c.isInstance(object)) {
 				return true
 			}
 		}
 		return false
 	}
-	
+
+	def static removeEObjectAndAddCorrespondencesToDelete(EObject[] objectsToDelete,
+		CorrespondenceInstance correspondenceInstance, TransformationChangeResult tcr) {
+		for (eObjectToDelete : objectsToDelete) {
+			val tuidToRemove = correspondenceInstance.calculateTUIDFromEObject(eObjectToDelete)
+			tcr.addCorrespondenceToDelete(correspondenceInstance, tuidToRemove)
+			if(null != eObjectToDelete.eContainer){
+				tcr.existingObjectsToSave.add(eObjectToDelete.eContainer)
+			}
+			EcoreUtil.delete(eObjectToDelete)
+		}
+	}
+
 }

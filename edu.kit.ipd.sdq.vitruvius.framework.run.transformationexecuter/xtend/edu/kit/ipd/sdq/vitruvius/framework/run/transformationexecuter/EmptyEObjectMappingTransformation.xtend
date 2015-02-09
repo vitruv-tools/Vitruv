@@ -102,8 +102,8 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 		return null
 	}
 
-	override replaceNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject oldValue,
-		EObject newValue) {
+	override replaceNonRootEObjectSingle(EObject newAffectedEObject, EObject oldAffectedEObject,
+		EReference affectedReference, EObject oldValue, EObject newValue) {
 		logger.warn(
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
@@ -215,8 +215,8 @@ abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransform
 		return null
 	}
 
-	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
-		int index, EObject[] oldCorrespondingEObjectsToDelete) {
+	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
+		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
 		logger.warn(
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +

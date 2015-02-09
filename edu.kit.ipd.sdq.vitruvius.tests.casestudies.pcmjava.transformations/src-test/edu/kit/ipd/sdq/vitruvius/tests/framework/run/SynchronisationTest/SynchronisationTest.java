@@ -79,7 +79,7 @@ public class SynchronisationTest {
         final TransformationExecutingProvidingImpl syncTransformationProvider = new TransformationExecutingProvidingImpl();
         final EMFModelPropagationEngineImpl propagatingChange = new EMFModelPropagationEngineImpl(
                 syncTransformationProvider);
-        this.syncManager = new SyncManagerImpl(this.vsum, propagatingChange, this.vsum, metaRepository, this.vsum);
+        this.syncManager = new SyncManagerImpl(this.vsum, propagatingChange, this.vsum, metaRepository, this.vsum, null);
 
         final EMFEditorMonitorFactory monitorFactory = new EMFEditorMonitorFactory();
         final IEditorPartAdapterFactory epaFactory = new DefaultEditorPartAdapterFactoryImpl(
@@ -101,7 +101,7 @@ public class SynchronisationTest {
 
         final ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-        .put("repository", new PcmResourceFactoryImpl());
+                .put("repository", new PcmResourceFactoryImpl());
         final Resource resource = resourceSet.createResource(this.sourceModelURI.getEMFUri());
         if (null == resource) {
             fail("Could not create resource with URI: " + this.sourceModelURI);

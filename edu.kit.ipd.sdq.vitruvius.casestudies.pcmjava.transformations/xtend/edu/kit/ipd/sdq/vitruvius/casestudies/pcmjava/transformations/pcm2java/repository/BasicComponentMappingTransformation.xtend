@@ -19,7 +19,7 @@ import org.emftext.language.java.containers.Package
 
 class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformation {
 
-	val private static Logger logger = Logger.getLogger(BasicComponentMappingTransformation.simpleName)
+	//val private static Logger logger = Logger.getLogger(BasicComponentMappingTransformation.simpleName)
 
 	override getClassOfMappedEObject() {
 		return BasicComponent
@@ -36,7 +36,7 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 		val retEObjects = PCM2JaMoPPUtils.createPackageCompilationUnitAndJaMoPPClass(basicComponent, rootPackage)
 		return retEObjects
 	}
-
+	
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
 		if (null == newCorrespondingEObjects) {

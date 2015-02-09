@@ -3,7 +3,6 @@ package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.jamo
 import static org.junit.Assert.fail;
 
 import org.eclipse.emf.ecore.EObject;
-import org.emftext.language.java.containers.Package;
 import org.junit.Test;
 
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
@@ -40,7 +39,7 @@ public class ClassMappingTransformationTest extends JaMoPP2PCMTransformationTest
         final CompositeComponent cc = super.addSecondPackageCorrespondsToCompositeComponent();
 
         this.testUserInteractor.addNextSelections(0);
-        final CompositeComponent ccForClass = super.addClassInSecondPackage(CompositeComponent.class);
+        final CompositeComponent ccForClass = this.addClassInSecondPackage(CompositeComponent.class);
 
         super.assertRepositoryAndPCMName(repo, ccForClass, cc.getEntityName());
     }
@@ -112,8 +111,7 @@ public class ClassMappingTransformationTest extends JaMoPP2PCMTransformationTest
     public void testAddCompsiteDatatypeClassInDatatypePackage() throws Throwable {
         final Repository repo = this.addFirstPackage();
 
-        this.testUserInteractor.addNextSelections(ClassMappingTransformation.SELECT_CREATE_COMPOSITE_DATA_TYPE);
-        final CompositeDataType cdt = super.addClassInPackage(this.getDatatypesPackage(), CompositeDataType.class);
+        final CompositeDataType cdt = addClassThatCorrespondsToCompositeDatatype();
 
         this.assertRepositoryAndPCMNameForDatatype(repo, cdt, PCM2JaMoPPTestUtils.IMPLEMENTING_CLASS_NAME);
     }
@@ -154,11 +152,6 @@ public class ClassMappingTransformationTest extends JaMoPP2PCMTransformationTest
 
         this.assertRepositoryAndPCMName(repo, newBasicComponent, PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME
                 + PCM2JaMoPPTestUtils.RENAME);
-    }
-
-    private Package getDatatypesPackage() throws Throwable {
-        return this.getPackageWithName("datatypes");
-
     }
 
 }

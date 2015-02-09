@@ -4,8 +4,11 @@ import com.google.common.collect.Sets
 import de.uka.ipd.sdq.pcm.core.entity.NamedElement
 import de.uka.ipd.sdq.pcm.repository.CollectionDataType
 import de.uka.ipd.sdq.pcm.repository.CompositeDataType
+import de.uka.ipd.sdq.pcm.repository.InnerDeclaration
 import de.uka.ipd.sdq.pcm.repository.Interface
 import de.uka.ipd.sdq.pcm.repository.OperationInterface
+import de.uka.ipd.sdq.pcm.repository.OperationProvidedRole
+import de.uka.ipd.sdq.pcm.repository.OperationRequiredRole
 import de.uka.ipd.sdq.pcm.repository.OperationSignature
 import de.uka.ipd.sdq.pcm.repository.Parameter
 import de.uka.ipd.sdq.pcm.repository.Repository
@@ -16,21 +19,33 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
+import java.util.ArrayList
 import java.util.HashSet
+import java.util.List
 import java.util.Map
 import java.util.Set
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
+import org.emftext.language.java.classifiers.Classifier
 import org.emftext.language.java.classifiers.ClassifiersFactory
+import org.emftext.language.java.classifiers.ConcreteClassifier
 import org.emftext.language.java.containers.Package
+import org.emftext.language.java.types.ClassifierReference
+import org.emftext.language.java.types.NamespaceClassifierReference
+import org.emftext.language.java.types.PrimitiveType
+import org.emftext.language.java.types.Type
+import org.emftext.language.java.types.TypeReference
+import org.emftext.language.java.types.TypedElement
 
 abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 	private new() {
@@ -232,6 +247,16 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 			correspondenceInstance)
 	}
 
+	def dispatch public static Correspondence findParrentCorrepsondenceForPCMElement(
+		InnerDeclaration innerDeclaration, CorrespondenceInstance correspondenceInstance) {
+		val correspondences = correspondenceInstance.getAllCorrespondences(
+			innerDeclaration.compositeDataType_InnerDeclaration)
+		if (correspondences.nullOrEmpty) {
+			return null
+		}
+		return correspondences.iterator.next
+	}
+
 	def dispatch public static Correspondence findParrentCorrepsondenceForPCMElement(CompositeDataType cdt,
 		CorrespondenceInstance correspondenceInstance) {
 		return findMainParrentCorrepsondenceForRepository(cdt.repository__DataType, correspondenceInstance)
@@ -263,6 +288,133 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 			return null
 		}
 		return correspondences.iterator.next
+	}
+
+	def dispatch static Classifier getTargetClassifierFromTypeReference(TypeReference reference) {
+		return null
+	}
+
+	def dispatch static Classifier getTargetClassifierFromTypeReference(NamespaceClassifierReference reference) {
+		if (reference.classifierReferences.nullOrEmpty) {
+			return null
+		}
+		return getTargetClassifierFromTypeReference(reference.classifierReferences.get(0))
+	}
+
+	def dispatch static Classifier getTargetClassifierFromTypeReference(ClassifierReference reference) {
+		return reference.target
+	}
+
+	def dispatch static Classifier getTargetClassifierFromTypeReference(PrimitiveType reference) {
+		return null
+	}
+
+	/**
+	 * Try to automatically find the corresponding repository component for a given classifier by 
+	 * a) looking for a direct component
+	 * a2) looking for a direct corresponding System-->it has no corresponding component in that case
+	 * b) looking for the a component class in the same package
+	 * c) asking the user in which component the classifier is
+	 * @param classifier the classifier
+	 */
+	def static RepositoryComponent getComponentOfConcreteClassifier(ConcreteClassifier classifier,
+		CorrespondenceInstance ci, UserInteracting userInteracting) {
+
+		//a)
+		var correspondingComponents = ci.getCorrespondingEObjectsByType(classifier, RepositoryComponent)
+		if (!correspondingComponents.nullOrEmpty) {
+			return correspondingComponents.get(0)
+		}
+		
+		//a2)
+		var correspondingComposedProvidingRequiringEntitys = ci.getCorrespondingEObjectsByType(classifier, System)
+		if(!correspondingComposedProvidingRequiringEntitys.nullOrEmpty){
+			return null
+		}			
+
+		//b)
+		for (Classifier classifierInSamePackage : classifier.containingCompilationUnit.classifiersInSamePackage) {
+			correspondingComponents = ci.getCorrespondingEObjectsByType(classifierInSamePackage, RepositoryComponent)
+			if (!correspondingComponents.nullOrEmpty) {
+				return correspondingComponents.get(0)
+			}
+		}
+
+		//c)
+		val repo = getRepository(ci)
+		val String msg = "Please specify the component for class: " +
+			classifier.containingCompilationUnit.namespacesAsString + classifier.name
+		val List<String> selections = new ArrayList<String>
+		repo.components__Repository.forEach[comp|selections.add(comp.entityName)]
+		selections.add("Class is not in any component")
+		val int selection = userInteracting.selectFromMessage(UserInteractionType.MODAL, msg, selections)
+		if (selection == selections.size) {
+			return null
+		}
+		return repo.components__Repository.get(selection)
+	}
+
+	def public static EObject[] checkAndAddOperationRequiredRole(TypedElement typedElement,
+		CorrespondenceInstance correspondenceInstance, UserInteracting userInteracting) {
+		val Type type = getTargetClassifierFromTypeReference(typedElement.typeReference)
+		if (null == type) {
+			return null
+		}
+		val Set<EObject> newCorrespondingEObjects = new HashSet
+		val fieldTypeCorrespondences = correspondenceInstance.getAllCorrespondingEObjects(typedElement)
+		val correspondingInterfaces = fieldTypeCorrespondences.filter(typeof(OperationInterface))
+		var RepositoryComponent repoComponent = null
+		if (!correspondingInterfaces.nullOrEmpty) {
+			for (correspondingInterface : correspondingInterfaces) {
+
+				//ii)a)
+				repoComponent = JaMoPP2PCMUtils.getComponentOfConcreteClassifier(
+					typedElement.containingConcreteClassifier, correspondenceInstance, userInteracting)
+				if (null == repoComponent) {
+					return null
+				}
+				val OperationRequiredRole operationRequiredRole = RepositoryFactory.eINSTANCE.
+					createOperationRequiredRole
+				operationRequiredRole.requiredInterface__OperationRequiredRole = correspondingInterface
+				operationRequiredRole.requiringEntity_RequiredRole = repoComponent
+				operationRequiredRole.entityName = "Component_" + repoComponent.entityName + "_requires_" +
+					correspondingInterface.entityName
+				newCorrespondingEObjects.add(operationRequiredRole)
+				userInteracting.showMessage(UserInteractionType.MODELESS,
+					"An OperationRequiredRole (from component " + repoComponent.entityName + " to interface " +
+						correspondingInterface.entityName + ") for the element: " + typedElement + " has been created.")
+			}
+		}
+
+		val correspondingComponents = fieldTypeCorrespondences.filter(typeof(RepositoryComponent))
+		if (!correspondingComponents.nullOrEmpty) {
+			if (null == repoComponent) {
+				repoComponent = JaMoPP2PCMUtils.getComponentOfConcreteClassifier(
+					typedElement.containingConcreteClassifier, correspondenceInstance, userInteracting)
+			}
+			if (null == repoComponent) {
+				return null
+			}
+
+			//ii)b)
+			for (correspondingComponent : correspondingComponents) {
+				for (OperationProvidedRole operationProvidedRole : correspondingComponent.
+					providedRoles_InterfaceProvidingEntity.filter(typeof(OperationProvidedRole))) {
+					var operationInterface = operationProvidedRole.providedInterface__OperationProvidedRole
+					val OperationRequiredRole operationRequiredRole = RepositoryFactory.eINSTANCE.
+						createOperationRequiredRole
+					operationRequiredRole.requiredInterface__OperationRequiredRole = operationInterface
+					operationRequiredRole.requiringEntity_RequiredRole = repoComponent
+					operationRequiredRole.entityName = "Component_" + repoComponent.entityName + "_requires_" +
+						operationInterface.entityName
+					userInteracting.showMessage(UserInteractionType.MODELESS,
+						"An OperationRequiredRole (from component " + repoComponent.entityName + " to interface " +
+							operationInterface.entityName + ") for the element: " + typedElement + " has been created.")
+					newCorrespondingEObjects.add(operationRequiredRole)
+				}
+			}
+		}
+		return newCorrespondingEObjects
 	}
 
 }

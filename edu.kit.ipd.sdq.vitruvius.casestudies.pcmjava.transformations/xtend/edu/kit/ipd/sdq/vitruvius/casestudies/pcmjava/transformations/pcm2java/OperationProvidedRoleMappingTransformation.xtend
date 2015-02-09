@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java
 
 import de.uka.ipd.sdq.pcm.repository.OperationProvidedRole
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
@@ -22,7 +22,6 @@ class OperationProvidedRoleMappingTransformation extends EmptyEObjectMappingTran
 	}
 
 	override setCorrespondenceForFeatures() {
-		//TODO:
 	}
 
 	/**
@@ -33,16 +32,16 @@ class OperationProvidedRoleMappingTransformation extends EmptyEObjectMappingTran
 	override createEObject(EObject eObject) {
 		val OperationProvidedRole opr = eObject as OperationProvidedRole
 		val opInterface = opr.providedInterface__OperationProvidedRole
-		val basicComponent = opr.providingEntity_ProvidedRole
+		val providingEntity = opr.providingEntity_ProvidedRole
 		if (null == opInterface) {
 			logger.warn("operation interface is null. Can not synchronize creation of opeation provided role: " + opr)
 			return null
 		}
-		if (null == basicComponent) {
+		if (null == providingEntity) {
 			logger.warn("Basic component is null. Can not synchronize creation of opeation provided role: " + opr)
 			return null
 		}
-		val jaMoPPClass = correspondenceInstance.claimUniqueCorrespondingEObjectByType(basicComponent, Class)
+		val jaMoPPClass = correspondenceInstance.claimUniqueCorrespondingEObjectByType(providingEntity, Class)
 		val jaMoPPInterface = correspondenceInstance.claimUniqueCorrespondingEObjectByType(opInterface, Interface)
 		val namespaceClassifierRef = PCM2JaMoPPUtils.createNamespaceClassifierReference(jaMoPPInterface)
 		jaMoPPClass.implements.add(namespaceClassifierRef)
@@ -75,8 +74,8 @@ class OperationProvidedRoleMappingTransformation extends EmptyEObjectMappingTran
 			EcoreUtil.remove(oldEObject)
 		}
 		val opr = affectedEObject as OperationProvidedRole
-		val basicComponet = opr.providingEntity_ProvidedRole
-		val parrentCorrespondences = correspondenceInstance.getAllCorrespondences(basicComponet)
+		val providingEntity = opr.providingEntity_ProvidedRole
+		val parrentCorrespondences = correspondenceInstance.getAllCorrespondences(providingEntity)
 		var Correspondence parrentCorrespondence = null
 		if (!parrentCorrespondences.nullOrEmpty) {
 			parrentCorrespondence = parrentCorrespondences.get(0)
@@ -93,7 +92,7 @@ class OperationProvidedRoleMappingTransformation extends EmptyEObjectMappingTran
 
 	/**
 	 * called when the name or ID of a OperationProvidedRole has been changed - has no effect to the code
-	 * but must be overwriden here in order to not get an exception from the super class
+	 * but must be overwritten here in order to not get an exception from the super class
 	 */
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {

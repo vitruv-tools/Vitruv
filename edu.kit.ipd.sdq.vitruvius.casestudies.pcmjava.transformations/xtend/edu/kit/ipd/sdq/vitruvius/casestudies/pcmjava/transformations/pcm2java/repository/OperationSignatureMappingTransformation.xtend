@@ -151,7 +151,7 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 		val EReference pcmOpSigDataTypeReference = TransformationUtils.
 			getReferenceByNameFromEObject(PCMJaMoPPNamespace.PCM.PCM_OPERATION_SIGNATURE_RETURN_TYPE, pcmDummyOpSig)
 		val EReference jaMoPPInterfaceMethodTypeReference = TransformationUtils.
-			getReferenceByNameFromEObject(PCMJaMoPPNamespace.JaMoPP.JAMOPP_PARAMETER_ATTRIBUTE_TYPE_REFERENCE,
+			getReferenceByNameFromEObject(PCMJaMoPPNamespace.JaMoPP.JAMOPP_REFERENCE_TYPE_REFERENCE,
 				jaMoPPDummyInterfaceMethod)
 		featureCorrespondenceMap.put(pcmOpSigDataTypeReference, jaMoPPInterfaceMethodTypeReference)
 	}

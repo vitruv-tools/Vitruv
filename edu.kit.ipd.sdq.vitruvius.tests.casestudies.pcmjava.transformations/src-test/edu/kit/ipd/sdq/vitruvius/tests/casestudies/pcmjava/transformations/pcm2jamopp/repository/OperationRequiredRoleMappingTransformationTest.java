@@ -19,6 +19,7 @@ import de.uka.ipd.sdq.pcm.repository.BasicComponent;
 import de.uka.ipd.sdq.pcm.repository.OperationInterface;
 import de.uka.ipd.sdq.pcm.repository.OperationRequiredRole;
 import de.uka.ipd.sdq.pcm.repository.Repository;
+import de.uka.ipd.sdq.pcm.system.System;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
@@ -70,6 +71,18 @@ public class OperationRequiredRoleMappingTransformationTest extends PCM2JaMoPPTr
         super.triggerSynchronization(VURI.getInstance(opr.eResource()));
 
         this.assertOperationRequiredRole(opr);
+    }
+
+    @Test
+    public void testAddOperationRequiredRoleToSystem() throws Throwable {
+        final Repository repo = super.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
+        final System system = super.createAndSyncSystem(PCM2JaMoPPTestUtils.SYSTEM_NAME);
+        final OperationInterface opInterface = super.addInterfaceToReposiotryAndSync(repo,
+                PCM2JaMoPPTestUtils.INTERFACE_NAME);
+
+        final OperationRequiredRole orr = super.createAndSyncOperationRequiredRole(opInterface, system);
+
+        this.assertOperationRequiredRole(orr);
     }
 
     /**

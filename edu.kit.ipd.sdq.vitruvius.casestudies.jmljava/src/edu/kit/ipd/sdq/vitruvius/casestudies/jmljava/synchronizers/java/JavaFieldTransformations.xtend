@@ -104,13 +104,13 @@ class JavaFieldTransformations extends Java2JMLTransformationBase {
 		return createTransformationChangeResultForEObjectsToSave(changedObjects)
 	}
 
-	override replaceNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject oldValue,
+	override replaceNonRootEObjectSingle(EObject newAffectedEobejct, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
 		EObject newValue) {
 		val changedObjects = new ArrayList<EObject>()
-		val javaField = affectedEObject as Field
+		val javaField = newAffectedEobejct as Field
 
 		LOGGER.trace(
-			"UpdateSingleValuedNonContainmentEReference\t" + affectedEObject + "." + affectedReference.name + " (" +
+			"UpdateSingleValuedNonContainmentEReference\t" + newAffectedEobejct + "." + affectedReference.name + " (" +
 				oldValue + " -> " + newValue + ")")
 
 		val jmlFeature = featureCorrespondenceMap.claimValueForKey(affectedReference)

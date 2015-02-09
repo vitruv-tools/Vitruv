@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.InsertEdit;
@@ -73,7 +72,7 @@ public class JaMoPPParameterMappingTransformationTest extends JaMoPP2PCMTransfor
 
     private Parameter renameParameterInSignature(final String interfaceName, final String methodName,
             final String oldParameterName, final String newParameterName) throws Throwable {
-        final ICompilationUnit icu = this.findCompilationWithClassName(interfaceName);
+        final ICompilationUnit icu = this.findICompilationUnitWithClassName(interfaceName);
         final IMethod iMethod = this.findIMethodByName(interfaceName, methodName, icu);
         final ILocalVariable localVariable = this.findParameterInIMethod(iMethod, oldParameterName);
         final String typeName = localVariable.getSource().split(" ")[0];
@@ -93,7 +92,7 @@ public class JaMoPPParameterMappingTransformationTest extends JaMoPP2PCMTransfor
 
     private Parameter changeParameterType(final String interfaceName, final String methodName, final String paramName,
             final String newTypeName) throws Throwable {
-        final ICompilationUnit icu = this.findCompilationWithClassName(interfaceName);
+        final ICompilationUnit icu = this.findICompilationUnitWithClassName(interfaceName);
         final IMethod iMethod = this.findIMethodByName(interfaceName, methodName, icu);
         final ILocalVariable parameter = this.findParameterInIMethod(iMethod, paramName);
         final int offset = parameter.getSourceRange().getOffset();
@@ -106,17 +105,6 @@ public class JaMoPPParameterMappingTransformationTest extends JaMoPP2PCMTransfor
                 interfaceName, methodName, paramName);
         return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(newJaMoPPParameter,
                 Parameter.class);
-    }
-
-    private IMethod findIMethodByName(final String interfaceName, final String methodName, final ICompilationUnit icu)
-            throws JavaModelException {
-        final IType type = icu.getType(interfaceName);
-        for (final IMethod method : type.getMethods()) {
-            if (method.getElementName().equals(methodName)) {
-                return method;
-            }
-        }
-        throw new RuntimeException("Method not " + methodName + " not found in classifier " + interfaceName);
     }
 
     private ILocalVariable findParameterInIMethod(final IMethod iMethod, final String parameterName)

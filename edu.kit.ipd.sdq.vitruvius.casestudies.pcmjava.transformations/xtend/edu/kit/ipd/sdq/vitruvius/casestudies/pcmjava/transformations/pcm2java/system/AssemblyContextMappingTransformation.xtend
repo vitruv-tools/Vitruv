@@ -1,14 +1,24 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.system
 
+import com.google.common.collect.Lists
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext
+import de.uka.ipd.sdq.pcm.repository.RepositoryComponent
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import java.util.List
+import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EReference
 import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.members.Constructor
 import org.emftext.language.java.types.TypeReference
+import org.emftext.language.java.types.TypedElement
 
 class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -28,36 +38,114 @@ class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransforma
 	override createEObject(EObject eObject) {
 		val AssemblyContext assemblyContext = eObject as AssemblyContext
 		val component = assemblyContext.encapsulatedComponent__AssemblyContext
-		if(null == component){
+		if (null == component) {
+
 			// we are not able to create a field if the component in the assembly context is null
-			// the following methods has to be aware of that
+			// the following methods have to be aware of that
 			return null
 		}
-			
-		val jaMoPPClass = correspondenceInstance.
-			claimUniqueCorrespondingEObjectByType(component, Class)
-		
-		val TypeReference typeRef = PCM2JaMoPPUtils.createNamespaceClassifierReference(jaMoPPClass) 
-		val String name = assemblyContext.entityName
-		
-		val List<EObject> newEObjects = new ArrayList<EObject>()
-		
-		val field = PCM2JaMoPPUtils.createPrivateField(typeRef, name)
-		jaMoPPClass.members.add(field)
-		
-		newEObjects.add(field)
-		
-		val constructors = jaMoPPClass.members.filter(typeof(Constructor))
-		
-		if(constructors.nullOrEmpty){
-			PCM2JaMoPPUtils.addConstructorToClass(jaMoPPClass)
+		//createFieldForAssemblyContext(assemblyContext, component)
+		return null;
+	}
+
+	/**
+	 * called when a assembly context has been renamed --> rename the field
+	 */
+	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
+		Object newValue) {
+		PCM2JaMoPPUtils.updateNameAsSingleValuedEAttribute(affectedEObject, affectedAttribute, oldValue, newValue,
+			featureCorrespondenceMap, correspondenceInstance)
+	}
+
+	/**
+	 * called when the component within the assembly context has been changed.
+	 * Creates a new field2AssemblyCorrespondence if no correspondence exists. 
+	 * If a correspondence already exists the TypeReference of the field will be updated
+	 */
+	override TransformationChangeResult replaceNonContainmentEReference(EObject affectedEObject,
+		EReference affectedReference, EObject oldValue, EObject newValue, int index) {
+		val tcr = TransformationUtils.createEmptyTransformationChangeResult
+		if (affectedReference.name.equals(PCMJaMoPPNamespace.PCM.ASSEMBLY_CONTEXT_ENCAPSULATED_COMPONENT) &&
+			newValue instanceof RepositoryComponent && affectedEObject instanceof AssemblyContext) {
+			val typedElementCorrespondences = correspondenceInstance.
+				getCorrespondingEObjectsByType(affectedEObject as AssemblyContext, TypedElement)
+			if (typedElementCorrespondences.nullOrEmpty) {
+				val assemblyContext = affectedEObject as AssemblyContext
+
+				//create new correspondences
+				val newEObjects = this.createFieldForAssemblyContext(assemblyContext,
+					newValue as RepositoryComponent);
+				val composedProvidingRequiringEntity = assemblyContext.parentStructure__AssemblyContext
+				PCM2JaMoPPUtils.
+					handleAssemblyContextAddedAsNonRootEObjectInList(composedProvidingRequiringEntity, assemblyContext,
+						newEObjects, tcr, correspondenceInstance)
+
+			} else {
+				val jaMoPPClass = correspondenceInstance.
+					claimUniqueCorrespondingEObjectByType(newValue as RepositoryComponent, Class)
+
+				//update existing correspondence
+				var Correspondence parrentCorrespondence = null
+				val parrentCorrespondences = correspondenceInstance.getAllCorrespondences(affectedEObject)
+				if (!parrentCorrespondences.nullOrEmpty) {
+					parrentCorrespondence = parrentCorrespondences.get(0)
+				}
+				for (typedElement : typedElementCorrespondences) {
+					val oldTUID = correspondenceInstance.calculateTUIDFromEObject(typedElement)
+					typedElement.typeReference = PCM2JaMoPPUtils.createNamespaceClassifierReference(jaMoPPClass)
+					tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, typedElement, parrentCorrespondence)
+					tcr.existingObjectsToSave.add(typedElement)
+				}
+			}
 		}
+		return tcr
+	}
+
+	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
+		EObject oldValue, EObject newValue) {
+		replaceNonContainmentEReference(affectedEObject, affectedReference, oldValue, newValue, 0)
+	}
+
+	def private EObject[] createFieldForAssemblyContext(AssemblyContext assemblyContext, RepositoryComponent component) {
+		var Class jaMoPPClass = null
+		var Class jaMoPPCompositeClass = null
+		try {
+			jaMoPPClass = correspondenceInstance.claimUniqueCorrespondingEObjectByType(component, Class)
+			jaMoPPCompositeClass = correspondenceInstance.
+				claimUniqueCorrespondingEObjectByType(assemblyContext.parentStructure__AssemblyContext, Class)
+
+		} catch (RuntimeException e) {
+			val String msg = "Can not create field for component " + component.entityName +
+				" because the component does not have a corresponding class yet."
+			userInteracting.showMessage(UserInteractionType.MODELESS, msg)
+			return Lists.newArrayList
+		}
+
+		val TypeReference typeRef = PCM2JaMoPPUtils.createNamespaceClassifierReference(jaMoPPClass)
+		val String name = assemblyContext.entityName
+
+		val List<EObject> newEObjects = new ArrayList<EObject>()
+
+		val field = PCM2JaMoPPUtils.createPrivateField(typeRef, name)
+		jaMoPPCompositeClass.members.add(field)
+
+		newEObjects.add(field)
+
+		val constructors = jaMoPPCompositeClass.members.filter(typeof(Constructor))
+
+		if (constructors.nullOrEmpty) {
+			newEObjects.add(PCM2JaMoPPUtils.addConstructorToClass(jaMoPPCompositeClass))
+		} else {
+			newEObjects.addAll(constructors)
+		}
+		
+		newEObjects.add(PCM2JaMoPPUtils.addImportToCompilationUnitOfClassifier(jaMoPPCompositeClass, jaMoPPClass))
 		
 		// add creation of EObject to each constructor
-		for (ctor : jaMoPPClass.members.filter(typeof(Constructor))) {
-			PCM2JaMoPPUtils.createNewOfFieldInConstructor(ctor, field, null)
+		for (ctor : jaMoPPCompositeClass.members.filter(typeof(Constructor))) {
+			newEObjects.addAll(PCM2JaMoPPUtils.createNewForFieldInConstructor(field))
 		}
-		
+
 		newEObjects
 	}
 

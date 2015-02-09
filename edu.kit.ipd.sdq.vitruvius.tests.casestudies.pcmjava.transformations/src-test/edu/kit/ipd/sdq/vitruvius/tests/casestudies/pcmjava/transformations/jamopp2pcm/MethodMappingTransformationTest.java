@@ -54,7 +54,7 @@ public class MethodMappingTransformationTest extends JaMoPP2PCMTransformationTes
     private OperationSignature changeReturnType(final OperationSignature opSig) throws Throwable {
         final String className = opSig.getInterface__OperationSignature().getEntityName();
         final String methodName = opSig.getEntityName();
-        final ICompilationUnit cu = super.findCompilationWithClassName(className);
+        final ICompilationUnit cu = super.findICompilationUnitWithClassName(className);
         final IMethod iMethod = cu.getType(className).getMethod(methodName, null);
         final int returnTypeOffset = iMethod.getSourceRange().getOffset();
         final String retTypeName = iMethod.getSource().split(" ")[0];
