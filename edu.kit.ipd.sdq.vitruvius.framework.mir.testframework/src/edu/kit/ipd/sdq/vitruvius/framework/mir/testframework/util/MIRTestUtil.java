@@ -3,8 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.emf.common.util.URI;
-
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
@@ -45,7 +44,7 @@ public class MIRTestUtil {
 	 * @return the created VSUM
 	 */
 	public static VSUMImpl createEmptyVSUM(List<URIwithExtension> mmURIs) {
-		MetaRepositoryImpl metarepository = createEmptyMetarepository(mmURIs);
+		MetaRepositoryImpl metarepository = createEmptyMetaRepository(mmURIs);
 		return new VSUMImpl(metarepository, metarepository, metarepository);
 	}
 	
@@ -62,13 +61,21 @@ public class MIRTestUtil {
 	 * 
 	 * @param mmURIs the URIs and extensions of the meta models to include in the meta repository.
 	 * @return the created meta repository
+	 * @see PCMJavaUtils#createPCMJavaMetarepository()
 	 */
-	public static MetaRepositoryImpl createEmptyMetarepository(List<URIwithExtension> mmURIs) {
+	public static MetaRepositoryImpl createEmptyMetaRepository(List<URIwithExtension> mmURIs) {
 		final MetaRepositoryImpl metarepository = new MetaRepositoryImpl();
 		for (URIwithExtension mmURI : mmURIs) {
 			Metamodel metamodel = new Metamodel(mmURI.getUri(), VURI.getInstance(mmURI.getUri()), mmURI.getExtension());
 			metarepository.addMetamodel(metamodel);
 		}
+		
+		// create mappings for all pairs of metamodels
+		Metamodel[] metamodels = metarepository.getAllMetamodels();
+		
+		for (int i = 0; i < metamodels.length; i++)
+			for (int j = i + 1; j < metamodels.length; j++)
+					metarepository.addMapping(new Mapping(metamodels[i], metamodels[j]));
 
 		return metarepository;
 	}
@@ -76,7 +83,11 @@ public class MIRTestUtil {
 	/**
 	 * @see #createEmptyMetarepository(List) 
 	 */
-	public static MetaRepositoryImpl createEmptyMetarepository(URIwithExtension... mmURIs) {
-		return createEmptyMetarepository(Arrays.asList(mmURIs));
+	public static MetaRepositoryImpl createEmptyMetaRepository(URIwithExtension... mmURIs) {
+		return createEmptyMetaRepository(Arrays.asList(mmURIs));
+	}
+
+	public static VSUMImpl createEmptyVSUM(MetaRepositoryImpl metaRepository) {
+		return new VSUMImpl(metaRepository, metaRepository, metaRepository);
 	}
 }

@@ -12,6 +12,7 @@ import org.junit.Test;
 import SimpleAtoBTest_SimplestA.SimpleAtoBTest_SimplestAFactory;
 import SimpleAtoBTest_SimplestA.SimpleAtoBTest_SimplestAPackage;
 import SimpleAtoBTest_SimplestB.SimpleAtoBTest_SimplestBPackage;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.tests.AbstractMIRTestBase;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util.MIRTestUtil;
@@ -30,11 +31,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
  * @author Dominik Werle
  */
 public class SimpleAtoBTest extends AbstractMIRTestBase {
-	@Test
-	public void test() {
-		fail("Not yet implemented");
-	}
-
 	@Override
 	protected URIwithExtension[] getMMURIsWithExtensionsToLoad() {
 		return new URIwithExtension[] {
@@ -51,6 +47,12 @@ public class SimpleAtoBTest extends AbstractMIRTestBase {
 			URI.createFileURI("simplea.simpleatobtest_simplesta"),
 			URI.createFileURI("simpleb.simpleatobtest_simplestb"),
 		};
+	}
+
+	@Override
+	protected CorrespondenceInstance getCorrespondenceInstance() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
