@@ -21,7 +21,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ValidationResult;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceMMProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MappingManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
@@ -38,7 +37,6 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     private final MappingManaging mappingManaging;
     private final MetamodelManaging metamodelManaging;
     private final ViewTypeManaging viewTypeManaging;
-    private final CorrespondenceMMProviding correspondenceMMproviding;
 
     protected final Map<VURI, ModelInstance> modelInstances;
     private final ResourceSet resourceSet;
@@ -52,7 +50,6 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         this.metamodelManaging = metamodelManaging;
         this.viewTypeManaging = viewTypeManaging;
         this.mappingManaging = mappingManaging;
-        this.correspondenceMMproviding = this.correspondenceMMproviding;
 
         this.saveCorrespondenceOptions = new HashMap<String, String>();
         this.saveCorrespondenceOptions.put(VSUMConstants.OPTION_PROCESS_DANGLING_HREF,
