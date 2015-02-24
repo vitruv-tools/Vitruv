@@ -10,7 +10,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 
-public class OperationMappingTransformationTest extends PCM2JaMoPPTransformationTest {
+public class OperationInterfaceMappingTransformationTest extends PCM2JaMoPPTransformationTest {
 
     @Test
     public void testAddInterface() throws Throwable {

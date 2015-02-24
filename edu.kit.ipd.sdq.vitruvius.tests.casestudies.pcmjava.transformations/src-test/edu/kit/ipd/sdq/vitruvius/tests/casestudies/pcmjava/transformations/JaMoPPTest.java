@@ -10,13 +10,17 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.emftext.commons.layout.LayoutInformation;
 import org.emftext.language.java.JavaPackage;
 import org.emftext.language.java.classifiers.ClassifiersFactory;
+import org.emftext.language.java.classifiers.ConcreteClassifier;
 import org.emftext.language.java.classifiers.Interface;
+import org.emftext.language.java.commons.NamedElement;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.containers.ContainersFactory;
 import org.emftext.language.java.containers.Package;
 import org.emftext.language.java.members.InterfaceMethod;
+import org.emftext.language.java.members.Member;
 import org.emftext.language.java.members.MembersFactory;
 import org.emftext.language.java.resource.java.mopp.JavaResourceFactory;
 import org.emftext.language.java.types.TypesFactory;
@@ -95,5 +99,34 @@ public class JaMoPPTest {
         jaIf.getMembers().add(ifMethod);
         resource.save(null);
         assertTrue("Resource of interface method is null", null != ifMethod.eResource());
+    }
+
+    @Test
+    public void testGetLayoutInformations() throws Throwable {
+        String uriStr = JaMoPPTest.class.getCanonicalName();
+        uriStr = uriStr.replace(".", "/");
+        uriStr = "src-test/" + uriStr + ".java";
+        final URI uri = URI.createURI(uriStr);
+        final ResourceSet resourceSet = new ResourceSetImpl();
+        final Resource resource = resourceSet.createResource(uri);
+        resource.load(null);
+        final CompilationUnit compilationUnit = (CompilationUnit) resource.getContents().get(0);
+        this.printLayoutInformation(compilationUnit);
+        for (final ConcreteClassifier classifier : compilationUnit.getClassifiers()) {
+            this.printLayoutInformation(classifier);
+            for (final Member member : classifier.getMembers()) {
+                this.printLayoutInformation(member);
+            }
+        }
+        assertTrue("Could not get layout information", null != compilationUnit.getLayoutInformations());
+
+    }
+
+    private void printLayoutInformation(final NamedElement namedElement) {
+        System.out.println("commenatable.getLayoutInformations(): " + namedElement.getLayoutInformations());
+        for (final LayoutInformation layoutInformation : namedElement.getLayoutInformations()) {
+            final int startOffset = layoutInformation.getStartOffset();
+            System.out.println("Start offset for " + namedElement.getName() + ": " + startOffset);
+        }
     }
 }

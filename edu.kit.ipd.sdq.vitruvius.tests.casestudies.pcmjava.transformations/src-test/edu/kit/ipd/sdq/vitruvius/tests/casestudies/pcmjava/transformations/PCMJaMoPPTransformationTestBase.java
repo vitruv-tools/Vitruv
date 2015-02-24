@@ -23,6 +23,8 @@ public abstract class PCMJaMoPPTransformationTestBase {
 
     protected ResourceSet resourceSet;
 
+    protected TestUserInteractor testUserInteractor;
+
     protected abstract void afterTest();
 
     protected abstract CorrespondenceInstance getCorrespondenceInstance() throws Throwable;
@@ -48,13 +50,13 @@ public abstract class PCMJaMoPPTransformationTestBase {
             TestUtil.moveVSUMProjectToOwnFolderWithTimepstamp(previousMethodName);
         };
     };
-    protected TestUserInteractor testUserInteractor;
 
     public String getProjectPath() {
         return TestUtil.PROJECT_URI + "/";
     }
 
-    protected void setUserInteractor(final UserInteracting newUserInteracting, final SyncManagerImpl syncManagerImpl) throws Throwable {
+    protected void setUserInteractor(final UserInteracting newUserInteracting, final SyncManagerImpl syncManagerImpl)
+            throws Throwable {
         final EMFModelPropagationEngineImpl emfModelPropagationEngineImpl = TestUtil.getFieldFromClass(
                 SyncManagerImpl.class, "changePropagating", syncManagerImpl);
         final TransformationExecutingProvidingImpl transformationExecutingProvidingImpl = TestUtil.getFieldFromClass(
