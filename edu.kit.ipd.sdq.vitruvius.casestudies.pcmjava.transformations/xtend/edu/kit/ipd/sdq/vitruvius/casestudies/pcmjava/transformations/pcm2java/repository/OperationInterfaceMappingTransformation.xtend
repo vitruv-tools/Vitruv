@@ -22,6 +22,7 @@ import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.Package
 import org.emftext.language.java.members.InterfaceMethod
 import org.emftext.language.java.modifiers.ModifiersFactory
+import org.apache.log4j.Level
 
 class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -50,8 +51,10 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 		// add compilation unit to contracts package, which correspondent to the repository
 		val packages = correspondenceInstance.getCorrespondingEObjectsByType(operationInterface.repository__Interface,
 			Package)
+		logger.info("found " + packages.size + " packages ")
 		for (containingPackage : packages) {
 			if (containingPackage.name.equalsIgnoreCase("contracts")) {
+				logger.info("Found contracts package.")
 				containingPackage.compilationUnits.add(correspondingCompilationUnit)
 				correspondingCompilationUnit.namespaces.addAll(containingPackage.namespaces)
 				correspondingCompilationUnit.namespaces.add(containingPackage.name)
@@ -64,11 +67,17 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 		for (candidate : packages) {
 			stringList.add(candidate.name)
 		}
+		var String ifName = "";
+		if(null != correspondingInterface && null != correspondingInterface.name){
+			ifName = correspondingInterface.name
+		}
 		var int selection = userInteracting.selectFromMessage(UserInteractionType.MODAL,
 			"No explicit contracts package found. Select a package to which the new interface '" +
-				correspondingInterface.name + "' should be added", stringList)
-		packages.get(selection).compilationUnits.add(correspondingCompilationUnit)
-		correspondingCompilationUnit.namespaces.addAll(packages.get(selection).namespaces)
+				ifName + "' should be added", stringList)
+		if(selection < stringList.size()){
+			packages.get(selection).compilationUnits.add(correspondingCompilationUnit)
+			correspondingCompilationUnit.namespaces.addAll(packages.get(selection).namespaces)
+		}
 		return #[correspondingInterface, correspondingCompilationUnit]
 	}
 

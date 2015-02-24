@@ -53,10 +53,13 @@ class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransfor
 		var datatypePackage = PCM2JaMoPPUtils.findCorrespondingPackageByName("datatypes", correspondenceInstance,
 			cdt.repository__DataType)
 		if (null == datatypePackage) {
+			logger.info("datatype package not found")
 			val String message = "Datatype " + cdt.entityName +
 				" created. Please specify to which package the datatype should be added"
 			datatypePackage = PCM2JaMoPPUtils.askUserForPackage(correspondenceInstance, cdt.repository__DataType,
 				userInteracting, message)
+		}else{
+			logger.info("found datatype package")
 		}
 		compUnit.name = cdt.entityName + "." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION
 		if (null != datatypePackage) {

@@ -91,7 +91,7 @@ public class SyncManagerImpl implements ChangeSynchronizing {
                 && (!isListSynchronization || (isListSynchronization && isLastSynchroisationInList));
         emfChangeResult.setLastChangeResultInList(isLastChangeResultInList);
         this.vitruviusResourceManipulatingJob.addEMFChangeResult(emfChangeResult);
-        this.vitruviusResourceManipulatingJob.schedule();
+        this.vitruviusResourceManipulatingJob.runSynchron();
     }
 
     /**
