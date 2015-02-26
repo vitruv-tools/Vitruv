@@ -22,7 +22,6 @@ import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.Package
 import org.emftext.language.java.members.InterfaceMethod
 import org.emftext.language.java.modifiers.ModifiersFactory
-import org.apache.log4j.Level
 
 class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 

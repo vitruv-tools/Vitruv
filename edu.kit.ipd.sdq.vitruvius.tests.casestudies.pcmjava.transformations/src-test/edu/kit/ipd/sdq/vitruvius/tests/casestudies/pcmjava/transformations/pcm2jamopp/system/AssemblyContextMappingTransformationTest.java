@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.system;
 
 import org.emftext.language.java.imports.Import;
+import org.emftext.language.java.members.Constructor;
 import org.emftext.language.java.members.Field;
 import org.junit.Test;
 
@@ -19,7 +20,7 @@ public class AssemblyContextMappingTransformationTest extends PCM2JaMoPPTransfor
         final Repository repo = super.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
         final BasicComponent basicComponent = super.addBasicComponentAndSync(repo);
 
-        final AssemblyContext assemblyContext = createAndSyncAssemblyContext(system, basicComponent);
+        final AssemblyContext assemblyContext = this.createAndSyncAssemblyContext(system, basicComponent);
 
         this.assertAssemblyContext(assemblyContext);
     }
@@ -34,7 +35,7 @@ public class AssemblyContextMappingTransformationTest extends PCM2JaMoPPTransfor
     private void assertAssemblyContext(final AssemblyContext assemblyContext) throws Throwable {
         final BasicComponent basicComponent = (BasicComponent) assemblyContext
                 .getEncapsulatedComponent__AssemblyContext();
-        this.assertCorrespondnecesAndCompareNames(assemblyContext, 3, new Class[] { Import.class, Field.class },
-                new String[] { basicComponent.getEntityName(), assemblyContext.getEntityName() });
+        this.assertCorrespondnecesAndCompareNames(assemblyContext, 4, new Class[] { Import.class, Field.class,
+                Constructor.class }, new String[] { basicComponent.getEntityName(), assemblyContext.getEntityName() });
     }
 }

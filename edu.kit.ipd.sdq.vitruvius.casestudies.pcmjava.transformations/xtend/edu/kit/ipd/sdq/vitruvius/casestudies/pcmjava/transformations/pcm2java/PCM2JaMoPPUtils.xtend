@@ -492,12 +492,15 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		EAttribute affectedAttribute, Object oldValue, Object newValue,
 		ClaimableMap<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap,
 		CorrespondenceInstance correspondenceInstance) {
+		val tcr = new TransformationChangeResult
+		if(oldValue == newValue){
+			return tcr			
+		}
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(eObject, affectedAttribute,
 			featureCorrespondenceMap, correspondenceInstance)
 		if (affectedEObjects.nullOrEmpty) {
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
-		val tcr = new TransformationChangeResult
 		val jaMoPPPackages = affectedEObjects.filter(typeof(Package))
 		if (!jaMoPPPackages.nullOrEmpty) {
 

@@ -40,7 +40,13 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 		}
 		var InterfaceMethod ifMethod = MembersFactory.eINSTANCE.createInterfaceMethod
 		ifMethod.setName(opSig.entityName)
-		ifMethod.setTypeReference(TypesFactory.eINSTANCE.createVoid)
+		if (null == opSig.returnType__OperationSignature) {
+			ifMethod.setTypeReference(TypesFactory.eINSTANCE.createVoid)
+		} else {
+			val retTypeRef = DataTypeCorrespondenceHelper.
+				claimUniqueCorrespondingJaMoPPDataTypeReference(opSig.returnType__OperationSignature, correspondenceInstance)
+			ifMethod.typeReference = retTypeRef
+		}
 		return ifMethod.toArray
 	}
 
@@ -93,8 +99,8 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 	/**
 	 * called when a parameter was removed
 	 */
-	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
-		int index, EObject[] oldCorrespondingEObjectsToDelete) {
+	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
+		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
 		val jaMoPPIfMethod = correspondenceInstance.getAllCorrespondingEObjects(newAffectedEObject)
 		for (correspondingEObject : oldCorrespondingEObjectsToDelete) {
 			EcoreUtil.delete(correspondingEObject, true)
@@ -126,6 +132,10 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 		val Set<EObject> correspondingEObjects = PCM2JaMoPPUtils.
 			checkKeyAndCorrespondingObjects(affectedEObject, affectedReference, featureCorrespondenceMap,
 				correspondenceInstance)
+		if(newValue == oldValue){
+			//type not really changed
+			return TransformationUtils.createEmptyTransformationChangeResult
+		}
 		if (correspondingEObjects.nullOrEmpty || (false == newValue instanceof DataType)) {
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}

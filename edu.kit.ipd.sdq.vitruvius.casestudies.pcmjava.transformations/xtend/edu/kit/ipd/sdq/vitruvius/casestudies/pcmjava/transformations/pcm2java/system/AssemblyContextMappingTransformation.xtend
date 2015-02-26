@@ -19,6 +19,7 @@ import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.members.Constructor
 import org.emftext.language.java.types.TypeReference
 import org.emftext.language.java.types.TypedElement
+import org.emftext.language.java.members.Field
 
 class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -44,8 +45,7 @@ class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransforma
 			// the following methods have to be aware of that
 			return null
 		}
-		//createFieldForAssemblyContext(assemblyContext, component)
-		return null;
+		return createFieldForAssemblyContext(assemblyContext, component)
 	}
 
 	/**
@@ -65,10 +65,14 @@ class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransforma
 	override TransformationChangeResult replaceNonContainmentEReference(EObject affectedEObject,
 		EReference affectedReference, EObject oldValue, EObject newValue, int index) {
 		val tcr = TransformationUtils.createEmptyTransformationChangeResult
+		if(oldValue == newValue){
+			// if the object has not changed we do not do anything
+			return tcr
+		}
 		if (affectedReference.name.equals(PCMJaMoPPNamespace.PCM.ASSEMBLY_CONTEXT_ENCAPSULATED_COMPONENT) &&
 			newValue instanceof RepositoryComponent && affectedEObject instanceof AssemblyContext) {
 			val typedElementCorrespondences = correspondenceInstance.
-				getCorrespondingEObjectsByType(affectedEObject as AssemblyContext, TypedElement)
+				getCorrespondingEObjectsByType(affectedEObject as AssemblyContext, Field)
 			if (typedElementCorrespondences.nullOrEmpty) {
 				val assemblyContext = affectedEObject as AssemblyContext
 
@@ -138,9 +142,9 @@ class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransforma
 		} else {
 			newEObjects.addAll(constructors)
 		}
-		
+
 		newEObjects.add(PCM2JaMoPPUtils.addImportToCompilationUnitOfClassifier(jaMoPPCompositeClass, jaMoPPClass))
-		
+
 		// add creation of EObject to each constructor
 		for (ctor : jaMoPPCompositeClass.members.filter(typeof(Constructor))) {
 			newEObjects.addAll(PCM2JaMoPPUtils.createNewForFieldInConstructor(field))
