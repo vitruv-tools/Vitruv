@@ -184,7 +184,9 @@ class JaMoPPTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResol
 	private def dispatch String calculateIndividualTUID(IdentifierReference identifierReference) {
 		val tuid = new StringBuilder
 		tuid.append(IDENTIFIER_REFERENCE_SELECTOR)
-		tuid.append(identifierReference.target.calculateIndividualTUID)
+		if(null != identifierReference && null != identifierReference.target){
+			tuid.append(identifierReference.target.name)	
+		}
 		return tuid.toString
 	}
 
