@@ -63,5 +63,35 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 		} 
 		return tcr
 	}
+	
+	/**
+	 * TODO: copied from BasicComponent: refactor 
+	 * called when OperationProvidedRole has been removed from the current basic component
+	 */
+	override removeNonContainmentEReference(EObject affectedEObject, EReference affectedReference, EObject oldValue,
+		int index) {
+
+		//provided role removed - deletion of eobject should already be done in OperationProvidedRoleMappingTransformation - mark bc to save
+		if (affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
+			affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
+			return TransformationUtils.createTransformationChangeResultForEObjectsToSave(affectedEObject.toArray)
+		}
+		return TransformationUtils.createEmptyTransformationChangeResult
+	}
+
+	/**
+	 * TODO: copied from BasicComponent: refactor
+	 * called when an OperationProvidedRole was has been inserted in the current basic component
+	 */
+	override insertNonRootEObjectInContainmentList(EObject oldAffectedEObject, EObject newAffectedEObject,
+		EReference affectedReference, EObject newValue) {
+		if (affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
+			affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
+			if (null != newAffectedEObject) {
+				return TransformationUtils.createTransformationChangeResultForEObjectsToSave(newAffectedEObject.toArray)
+			}
+		}
+		return TransformationUtils.createEmptyTransformationChangeResult
+	}
 
 }

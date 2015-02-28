@@ -35,6 +35,19 @@ public class OperationRequiredRoleMappingTransformationTest extends PCM2JaMoPPTr
     }
 
     @Test
+    public void testAddOperationRequiredToSystem() throws Throwable {
+        final System system = super.createAndSyncSystem(PCM2JaMoPPTestUtils.SYSTEM_NAME);
+        final Repository repo = super.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
+        final OperationInterface opInterface = this.addInterfaceToReposiotryAndSync(repo,
+                PCM2JaMoPPTestUtils.INTERFACE_NAME);
+
+        final OperationRequiredRole operationRequiredRole = this
+                .createAndSyncOperationRequiredRole(opInterface, system);
+
+        this.assertOperationRequiredRole(operationRequiredRole);
+    }
+
+    @Test
     public void testChangeOperationRequiredRole() throws Throwable, Throwable {
         final OperationRequiredRole opr = this.createAndSyncRepoBasicCompInterfaceAndOperationReqiredRole();
         final Repository repo = opr.getRequiredInterface__OperationRequiredRole().getRepository__Interface();
