@@ -37,6 +37,15 @@ public class ForwardHashedBackwardLinkedTree<T> {
         private T getValue() {
             return this.value;
         }
+        
+        public String getValueString() {
+        	T value = getValue();
+        	if (value == null) {
+        		return "";
+        	} else {
+        		return value.toString();
+        	}
+        }
 
         private void setValue(final T value) {
             this.value = value;

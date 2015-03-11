@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -74,18 +75,16 @@ public class TUID {
     public static synchronized TUID getInstance(final String tuidString) {
         return getInstance(tuidString, false);
     }
-
+    
     /**
      * Changes the given tuid so that it points to the given newLastSegment.<br/>
      * <b>ATTENTION: This changes the hashcode of the given tuid!</b>
-     * 
      * @param tuid
      * @param newLastSegment
      */
-    private static synchronized void updateInstance(TUID tuid,
-            ForwardHashedBackwardLinkedTree<String>.Segment newLastSegment) {
-        ForwardHashedBackwardLinkedTree<String>.Segment oldSegment = tuid.lastSegment;
-        tuid.lastSegment = newLastSegment;
+    private static synchronized void updateInstance(TUID tuid, ForwardHashedBackwardLinkedTree<String>.Segment newLastSegment) {
+    	ForwardHashedBackwardLinkedTree<String>.Segment oldSegment = tuid.lastSegment;
+    	tuid.lastSegment = newLastSegment;
         LAST_SEGMENT_2_TUID_INSTANCES_MAP.remove(oldSegment);
     }
 
@@ -137,24 +136,17 @@ public class TUID {
         return this.lastSegment;
     }
 
-    /**
-     * Returns the minimal suffix of the TUID, i.e. a String representation of the last segment.
-     *
-     * @return
-     */
-    public String getMinimalSuffix() {
-        return this.getLastSegment().toString();
+    private String getLastSegmentString() {
+    	return this.lastSegment.getValueString();
     }
-
+    
     /**
      * Renames the <b>last</b> segment of this TUID instance to the specified
      * {@link newLastSegmentString}. If an instance for the resulting TUID already exists, then all
-     * depending TUIDs of this instance and the destination instance are merged (as if
-     * {@link #moveLastSegment(String)} would have been called).<br/>
+     * depending TUIDs of this instance and the destination instance are merged.<br/>
      * <br/>
      *
-     * If an infix segment of a TUID should be changed (e.g. a#tochange#b) this method has to be
-     * called on the TUID instance that ends with the segment to change (a#tochange).
+     * If infix segments of a TUID should be changed (e.g. a#tochange#b) use the {@link renameSegments} method.
      *
      * @param newLastSegmentString
      *            the new name for the last segment
@@ -163,18 +155,16 @@ public class TUID {
      *             contains the TUID separator
      */
     public void renameLastSegment(final String newLastSegmentString) {
-        renameLastSegment(newLastSegmentString, null, null);
+    	renameLastSegment(newLastSegmentString, null, null);
     }
 
     /**
      * Renames the <b>last</b> segment of this TUID instance to the specified
      * {@link newLastSegmentString}. If an instance for the resulting TUID already exists, then all
-     * depending TUIDs of this instance and the destination instance are merged (as if
-     * {@link #moveLastSegment(String)} would have been called).<br/>
+     * depending TUIDs of this instance and the destination instance are merged.<br/>
      * <br/>
      *
-     * If an infix segment of a TUID should be changed (e.g. a#tochange#b) this method has to be
-     * called on the TUID instance that ends with the segment to change (a#tochange).
+     * If infix segments of a TUID should be changed (e.g. a#tochange#b) use the {@link renameSegments} method.
      *
      * @param newLastSegmentString
      *            the new name for the last segment
@@ -182,8 +172,7 @@ public class TUID {
      *             {@link IllegalArgumentException} if the specified {@link newLastSegmentString}
      *             contains the TUID separator
      */
-    public void renameLastSegment(final String newLastSegmentString, BeforeHashCodeUpdateLambda before,
-            AfterHashCodeUpdateLambda after) {
+    public void renameLastSegment(final String newLastSegmentString, BeforeHashCodeUpdateLambda before, AfterHashCodeUpdateLambda after) {
         final String segmentSeperator = VitruviusConstants.getTUIDSegmentSeperator();
         final boolean containsSeparator = newLastSegmentString.indexOf(segmentSeperator) != -1;
         if (!containsSeparator) {
@@ -200,7 +189,7 @@ public class TUID {
                     + "' because this String contains the TUID separator '" + segmentSeperator + "'!");
         }
     }
-
+    
     /**
      * Moves the last segment of this TUID instance to the specified destination. If the destination
      * already exists, then all depending TUIDs of this instance and the destination instance are
@@ -209,85 +198,53 @@ public class TUID {
      * @param fullDestinationTUIDString
      *            the full TUID string of the move destination
      */
-    public void moveLastSegment(final String fullDestinationTUIDString) {
-        moveLastSegment(fullDestinationTUIDString, null, null);
-    }
-
-    /**
-     * Moves the last segment of this TUID instance to the specified destination. If the destination
-     * already exists, then all depending TUIDs of this instance and the destination instance are
-     * merged. If the specified destination is identical to
-     *
-     * @param fullDestinationTUIDString
-     *            the full TUID string of the move destination
-     */
-    public void moveLastSegment(final String fullDestinationTUIDString, BeforeHashCodeUpdateLambda before,
-            AfterHashCodeUpdateLambda after) {
+    private void moveLastSegment(final String fullDestinationTUIDString, BeforeHashCodeUpdateLambda before, AfterHashCodeUpdateLambda after) {
         final TUID fullDestinationTUID = getInstance(fullDestinationTUIDString);
         this.moveLastSegment(fullDestinationTUID, before, after);
     }
-
+    
     /**
      * Moves the last segment of this TUID instance to the specified destination. If the destination
      * already exists, then all depending TUIDs of this instance and the destination instance are
-     * merged. If the specified destination is identical to
+     * merged.
      *
      * @param fullDestinationTUID
      *            the full TUID of the move destination
-     * @return
+     * @return 
      */
-    public void moveLastSegment(final TUID fullDestinationTUID) {
-        moveLastSegment(fullDestinationTUID, null, null);
+	private void moveLastSegment(final TUID fullDestinationTUID, BeforeHashCodeUpdateLambda before, AfterHashCodeUpdateLambda after) {
+    	Collection<Pair<ForwardHashedBackwardLinkedTree<String>.Segment, ForwardHashedBackwardLinkedTree<String>.Segment>> segmentPairs = SEGMENTS.mergeSegmentIntoAnother(this.lastSegment, fullDestinationTUID.lastSegment);
+        	for (Pair<ForwardHashedBackwardLinkedTree<String>.Segment, ForwardHashedBackwardLinkedTree<String>.Segment> segmentPair : segmentPairs) {
+        		ForwardHashedBackwardLinkedTree<String>.Segment oldSegment = segmentPair.getFirst();
+            	TUID tuid = LAST_SEGMENT_2_TUID_INSTANCES_MAP.get(oldSegment);
+            	ForwardHashedBackwardLinkedTree<String>.Segment newSegment = segmentPair.getSecond();
+            	Triple<TUID, Set<Correspondence>, Set<TUID>> removedMapEntries = null;
+            	if (before != null) {
+            		removedMapEntries = before.performPreAction(tuid, newSegment);
+            	}
+            	// this update changes the hashcode of the given tuid
+                TUID.updateInstance(tuid, newSegment);
+            	if (after != null && removedMapEntries != null) {
+            		after.performPostAction(removedMapEntries);
+            	}
+            }
     }
 
-    /**
-     * Moves the last segment of this TUID instance to the specified destination. If the destination
-     * already exists, then all depending TUIDs of this instance and the destination instance are
-     * merged. If the specified destination is identical to
-     *
-     * @param fullDestinationTUID
-     *            the full TUID of the move destination
-     * @return
-     */
-    public void moveLastSegment(final TUID fullDestinationTUID, BeforeHashCodeUpdateLambda before,
-            AfterHashCodeUpdateLambda after) {
-        Collection<Pair<ForwardHashedBackwardLinkedTree<String>.Segment, ForwardHashedBackwardLinkedTree<String>.Segment>> segmentPairs = SEGMENTS
-                .mergeSegmentIntoAnother(this.lastSegment, fullDestinationTUID.lastSegment);
-        for (Pair<ForwardHashedBackwardLinkedTree<String>.Segment, ForwardHashedBackwardLinkedTree<String>.Segment> segmentPair : segmentPairs) {
-            ForwardHashedBackwardLinkedTree<String>.Segment oldSegment = segmentPair.getFirst();
-            TUID tuid = LAST_SEGMENT_2_TUID_INSTANCES_MAP.get(oldSegment);
-            ForwardHashedBackwardLinkedTree<String>.Segment newSegment = segmentPair.getSecond();
-            Triple<TUID, Set<Correspondence>, Set<TUID>> removedMapEntries = null;
-            if (before != null) {
-                removedMapEntries = before.performPreAction(tuid, newSegment);
-            }
-            // this update changes the hashcode of the given tuid
-            TUID.updateInstance(tuid, newSegment);
-            if (after != null && removedMapEntries != null) {
-                after.performPostAction(removedMapEntries);
-            }
-        }
-    }
-
-    private int findCommonPrefixSegmentCount(final TUID otherTUID) {
+    private int getCommonPrefixSegmentsCount(final TUID otherTUID) {
         final String thisTUIDString = this.toString();
         final String otherTUIDString = otherTUID.toString();
         final String commonPrefix = Strings.commonPrefix(thisTUIDString, otherTUIDString);
-        final String[] commonPrefixSegments = commonPrefix.split(VitruviusConstants.getTUIDSegmentSeperator());
-        int commonPrefixSegmentCount = commonPrefixSegments.length;
-        if (!commonPrefix.endsWith(VitruviusConstants.getTUIDSegmentSeperator())) {
-            --commonPrefixSegmentCount;
+        if ("".equals(commonPrefix)) {
+        	return 0;
+        } else {
+        	final String[] commonPrefixSegments = commonPrefix.split(VitruviusConstants.getTUIDSegmentSeperator());
+            if (commonPrefix.endsWith(VitruviusConstants.getTUIDSegmentSeperator()) || thisTUIDString.equals(otherTUIDString)) {
+                return commonPrefixSegments.length;
+            } else {
+            	// the last segment is only partially shared and therefore not common
+            	return commonPrefixSegments.length - 1;
+            }
         }
-        return Math.max(0, commonPrefixSegmentCount);
-    }
-
-    private int findCommonSuffixSegmentCount(final TUID otherTUID) {
-        final String thisTUIDString = this.toString();
-        final String otherTUIDString = otherTUID.toString();
-        final String commonSuffix = Strings.commonSuffix(thisTUIDString, otherTUIDString);
-        final String[] commonPrefixSegments = commonSuffix.split(VitruviusConstants.getTUIDSegmentSeperator());
-        final int commonSuffixSegmentCount = commonPrefixSegments.length;
-        return Math.max(0, commonSuffixSegmentCount - 1);
     }
 
     private static String[] getSegments(final TUID tuid) {
@@ -298,27 +255,9 @@ public class TUID {
         return getSegments(this).length;
     }
 
-    private int getCommonPrefixSegmentsCountForUpdate(final TUID newTUID) {
-        final int oldSegmentCount = this.getAndEnsureEqualSegmentCount(newTUID);
-
-        final int commonPrefixSegmentsCount = this.findCommonPrefixSegmentCount(newTUID);
-        final int commonSuffixSegmentsCount = this.findCommonSuffixSegmentCount(newTUID);
-        final int commonSegmentsCount = commonPrefixSegmentsCount + commonSuffixSegmentsCount;
-
-        /*
-         * if (commonSegmentsCount + 1 != oldSegmentCount || commonSegmentsCount == 0) { throw new
-         * IllegalArgumentException("Cannot update the TUID " + this + " because the new TUID " +
-         * newTUID + " differs in more than one segment!"); }
-         */
-
-        return commonPrefixSegmentsCount;
-    }
-
-    public int getAndEnsureEqualSegmentCount(final TUID newTUID) {
+    private int getAndEnsureEqualSegmentCount(final TUID newTUID) {
         final int oldSegmentCount = this.getSegmentCount();
-
         final int newSegmentCount = newTUID.getSegmentCount();
-
         if (oldSegmentCount != newSegmentCount) {
             throw new IllegalArgumentException("Cannot update the TUID " + this + " because the new TUID " + newTUID
                     + " has a different number of segments!");
@@ -326,79 +265,66 @@ public class TUID {
         return oldSegmentCount;
     }
 
-    private int getFistSegmentChange(final TUID newTUID) {
+    private int getFirstSegmentToChange(final TUID newTUID) {
         final int segmentsCount = this.getAndEnsureEqualSegmentCount(newTUID);
-        final int commonPrefixSegmentCount = this.findCommonPrefixSegmentCount(newTUID);
-        if (commonPrefixSegmentCount + 1 > segmentsCount) {
+        final int commonPrefixSegmentCount = this.getCommonPrefixSegmentsCount(newTUID);
+        if (commonPrefixSegmentCount == segmentsCount) {
             return -1;
         }
         return commonPrefixSegmentCount + 1;
     }
 
-    private static TUID getSlicedTUID(final TUID tuid, final int numberOfSegments) {
+    private static TUID getTUIDPrefix(final TUID tuid, final int length) {
         final String[] segments = getSegments(tuid);
-        final String[] segmentsSlice = Arrays.copyOfRange(segments, 0, numberOfSegments);
-        final TUID slicedTUID = TUID.getInstance(StringUtils.join(segmentsSlice,
+        final String[] prefixSegments = Arrays.copyOfRange(segments, 0, length);
+        final TUID prefixTUID = TUID.getInstance(StringUtils.join(prefixSegments,
                 VitruviusConstants.getTUIDSegmentSeperator()));
-        return slicedTUID;
+        return prefixTUID;
     }
-
-    public TUID getOldTUIDForUpdate(final TUID newTUID) {
-        final int commonPrefixSegmentsCount = this.getCommonPrefixSegmentsCountForUpdate(newTUID);
-        return getSlicedTUID(this, commonPrefixSegmentsCount + 1);
-    }
-
-    public TUID getNewTUIDForUpdate(final TUID newTUID) {
-        final int commonPrefixSegmentsCount = this.getCommonPrefixSegmentsCountForUpdate(newTUID);
-        return getSlicedTUID(newTUID, commonPrefixSegmentsCount + 1);
-    }
-
-    public void updateSingleSegment(final TUID newTUID) {
-        updateSingleSegment(newTUID, null, null);
-    }
-
-    public void updateSingleSegment(final TUID newTUID, BeforeHashCodeUpdateLambda before,
-            AfterHashCodeUpdateLambda after) {
-        final int commonPrefixSegmentsCount = this.getCommonPrefixSegmentsCountForUpdate(newTUID);
-
-        final String[] thisSegments = getSegments(this);
-        final String[] newSegments = getSegments(newTUID);
-        final String[] commonPrefixWithOldLastSegment = Arrays.copyOfRange(thisSegments, 0,
-                commonPrefixSegmentsCount + 1);
-        final TUID tuidWithOldLastSegment = TUID.getInstance(StringUtils.join(commonPrefixWithOldLastSegment,
-                VitruviusConstants.getTUIDSegmentSeperator()));
-        tuidWithOldLastSegment.renameLastSegment(newSegments[commonPrefixSegmentsCount], before, after);
-        // enjoy the side-effect of TUID: the right segment of this and newTUID will be changed too
+    
+    /**
+     * Renames a single segments or multiple segments of this TUID instance so that it represents the specified new TUID.
+     * It is <b>not</b> possible to remove or add segments, i.e. the number of segments has to stay unchanged. 
+     * The position and number of segments that should be changed are not restricted.
+     * <br/>
+     *
+     * If only the last segment should be changed the {@link renameLastSegment} method can be used.
+     *
+     * @param newTUID
+     *            the TUID according to which the segments shall be renamed
+     * @throws an
+     *             {@link IllegalArgumentException} if {@link newTUID} has a different number of segments
+     */
+    public void renameSegments(final TUID newTUID) {
+    	renameSegments(newTUID, null, null);
     }
 
     /**
-     * Updates multiple segments at once. It gets the first segment that changed and then updates
-     * only the specific part of the TUID.
+     * Renames a single segments or multiple segments of this TUID instance so that it represents the specified new TUID.
+     * It is <b>not</b> possible to remove or add segments, i.e. the number of segments has to stay unchanged. 
+     * The position and number of segments that should be changed are not restricted.
+     * <br/>
+     *
+     * If only the last segment should be changed the {@link renameLastSegment} method can be used.
      *
      * @param newTUID
+     *            the TUID according to which the segments shall be renamed
+     * @returns the pairs of TUID representing all performed individual changes of last segments
+     * @throws an {@link IllegalArgumentException} if {@link newTUID} has a different number of segments
      */
-    public void updateMultipleSegments(final TUID newTUID) {
-        updateMultipleSegments(newTUID, null, null);
-    }
-
-    /**
-     * Updates multiple segments at once. It gets the first segment that changed and then updates
-     * only the specific part of the TUID.
-     *
-     * @param newTUID
-     */
-    public void updateMultipleSegments(final TUID newTUID, BeforeHashCodeUpdateLambda before,
-            AfterHashCodeUpdateLambda after) {
-        int firstSegmentChanged = this.getFistSegmentChange(newTUID);
-        while (-1 != firstSegmentChanged) {
-            final TUID tmpNewTUID = TUID.getSlicedTUID(newTUID, firstSegmentChanged);
-            final TUID tmpOldTUID = TUID.getSlicedTUID(this, firstSegmentChanged);
-            tmpOldTUID.updateSingleSegment(tmpNewTUID, before, after);
-            if (this.toString().equals(newTUID.toString())) {
-                break;
-            }
-            firstSegmentChanged = this.getFistSegmentChange(newTUID);
+    public List<Pair<String,String>> renameSegments(final TUID newTUID, BeforeHashCodeUpdateLambda before, AfterHashCodeUpdateLambda after) {
+    	List<Pair<String,String>> changedPairs = new LinkedList<Pair<String,String>>();
+    	int firstSegmentToChange = this.getFirstSegmentToChange(newTUID);
+        while (-1 != firstSegmentToChange) {
+            final TUID oldPrefixPlusFirstSegmentToChange = TUID.getTUIDPrefix(this, firstSegmentToChange);
+            final TUID newPrefixPlusFirstChangedSegment = TUID.getTUIDPrefix(newTUID, firstSegmentToChange);
+            String newSegment = newPrefixPlusFirstChangedSegment.getLastSegmentString();
+            changedPairs.add(new Pair<String, String>(oldPrefixPlusFirstSegmentToChange.toString(), newPrefixPlusFirstChangedSegment.toString()));
+            oldPrefixPlusFirstSegmentToChange.renameLastSegment(newSegment, before, after);
+            // enjoy the side-effect of TUID: the right segment of this and newTUID will be changed too
+            firstSegmentToChange = this.getFirstSegmentToChange(newTUID);
         }
+        return changedPairs;
     }
 
     @Override
@@ -462,13 +388,14 @@ public class TUID {
     }
 
     // FIXME generate or write new hashCode (also for last segment)
-
+    
     public interface BeforeHashCodeUpdateLambda {
-        Triple<TUID, Set<Correspondence>, Set<TUID>> performPreAction(TUID tuid,
-                ForwardHashedBackwardLinkedTree<String>.Segment newSegment);
+		Triple<TUID, Set<Correspondence>, Set<TUID>> performPreAction(TUID tuid,
+				ForwardHashedBackwardLinkedTree<String>.Segment newSegment);
     }
-
+    
     public interface AfterHashCodeUpdateLambda {
-        void performPostAction(Triple<TUID, Set<Correspondence>, Set<TUID>> removedMapEntries);
+		void performPostAction(
+				Triple<TUID, Set<Correspondence>, Set<TUID>> removedMapEntries);
     }
 }

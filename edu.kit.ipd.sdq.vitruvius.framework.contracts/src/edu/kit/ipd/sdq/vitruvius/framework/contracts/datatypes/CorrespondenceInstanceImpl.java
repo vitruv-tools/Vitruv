@@ -27,6 +27,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ForwardHashedBackwardLinkedTree;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple;
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
@@ -700,6 +701,14 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         this.update(oldTUID, newEObject);
     }
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#update(edu
+     * .kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID,
+     * org.eclipse.emf.ecore.EObject)
+     */
     @Override
     public void update(final TUID oldTUID, final EObject newEObject) {
         TUID newTUID = calculateTUIDFromEObject(newEObject);
@@ -723,11 +732,6 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
             return;
         }
 
-        TUID oldTUIDUpdate = oldTUID.getOldTUIDForUpdate(newTUID);
-        TUID newTUIDUpdate = oldTUID.getNewTUIDForUpdate(newTUID);
-
-        updateTUID2CorrespondencesMap(oldTUIDUpdate, newTUIDUpdate, sameTUID);
-        updateTUID2CorrespondingEObjectsMap(oldTUIDUpdate, newTUIDUpdate, sameTUID);
         // FIXME AAA MAX reactivate feature instance stuff without EObject
         // updateFeatureInstances(oldTUID, newTUID, oldTUIDUpdate);
         // updateFeatureInstances(oldEObject, newEObject, oldTUIDUpdate);
@@ -780,7 +784,16 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
             }
         };
 
-        oldTUIDUpdate.updateMultipleSegments(newTUIDUpdate, before, after);
+        List<Pair<String, String>> changedPairs = oldTUID.renameSegments(newTUID, before, after);
+        for (Pair<String, String> changedPair : changedPairs) {
+            String oldTUIDPrefixString = changedPair.getFirst();
+            String newTUIDPrefixString = changedPair.getSecond();
+            TUID oldTUIDPrefix = TUID.getInstance(oldTUIDPrefixString);
+            TUID newTUIDPrefix = TUID.getInstance(newTUIDPrefixString);
+            updateTUID2CorrespondencesMap(oldTUIDPrefix, newTUIDPrefix, sameTUID);
+            updateTUID2CorrespondingEObjectsMap(oldTUIDPrefix, newTUIDPrefix, sameTUID);
+        }
+
     }
 
     private void updateFeatureInstances(final EObject oldEObject, final EObject newEObject, final TUID oldTUID) {

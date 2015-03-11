@@ -115,7 +115,8 @@ public class TUIDTest {
         /** third operation (move t to existing folder u = merge) **/
         /***********************************************************/
         TUID tuid4prefix = TUID.getInstance(s4prefix);
-        tuid4prefix.moveLastSegment(s5prefix);
+        TUID tuid5prefix = TUID.getInstance(s5prefix);
+        tuid4prefix.renameSegments(tuid5prefix);
         System.out.println("**** BEGIN THIRD OPERATION ****\n" + TUID.toStrings()
                 + "\n**** END THIRD OPERATION ****\n\n\n");
         assertEquals(s5prefix, tuid4prefix.toString());
@@ -164,9 +165,9 @@ public class TUIDTest {
         /***************************************************************/
         /** sixth operation (move folder u in q to u in r = no merge) **/
         /***************************************************************/
-        TUID tuid5prefix = TUID.getInstance(s5prefix);
         String s5prefixrrrrrr = s9 + sep + "u";
-        tuid5prefix.moveLastSegment(s5prefixrrrrrr);
+        TUID tuid5prefixrrrrrr = TUID.getInstance(s5prefixrrrrrr);
+        tuid5prefix.renameSegments(tuid5prefixrrrrrr);
         System.out.println("**** BEGIN SIXTH OPERATION ****\n" + TUID.toStrings()
                 + "\n**** END SIXTH OPERATION ****\n\n");
         assertEquals(s5prefixrrrrrr, tuid5prefix.toString());
@@ -188,6 +189,12 @@ public class TUIDTest {
         testUpdateSingleSegment(useUpdateMultipleSegmentsMethod);
     }
 
+    @Test
+    public void testUpdateSingleSegmentUsingMultipleSegmentChange() {
+        boolean useUpdateMultipleSegmentsMethod = true;
+        testUpdateSingleSegment(useUpdateMultipleSegmentsMethod);
+    }
+
     public void testUpdateSingleSegment(final boolean useUpdateMultipleSegmentsMethod) {
         String[] input = new String[] { "prefix#b", "prefix#b#c", "prefix#b#c#d", "prefix#b#c2#d" };
         String[] expected = new String[] { "prefix#b", "prefix#b#c2", "prefix#b#c2#d", "prefix#b#c2#d" };
@@ -202,14 +209,10 @@ public class TUIDTest {
             tuids.add(TUID.getInstance(tuidString));
         }
 
-        // rename TUIDs
         TUID oldTUID = TUID.getInstance(oldTUIDString);
         TUID newTUID = TUID.getInstance(newTUIDString);
-        if (updateMultipleSegments) {
-            oldTUID.updateMultipleSegments(newTUID);
-        } else {
-            oldTUID.updateSingleSegment(newTUID);
-        }
+        
+        oldTUID.renameSegments(newTUID);
 
         // validate TUID
         assertTrue(TUID.validate());
@@ -232,11 +235,15 @@ public class TUIDTest {
         boolean updateMultipleSegments = true;
         testUpdateSegment(input, expected, "pre#fix#b#c#suffix", "pre#fix#b2#c2#suffix2", updateMultipleSegments);
     }
-
+    
     @Test
-    public void testUpdateSingleSegmentUsingMultipleSegmentChange() {
-        boolean useUpdateMultipleSegmentsMethod = true;
-        testUpdateSingleSegment(useUpdateMultipleSegmentsMethod);
+    public void testScatteredSegmentChange() {
+        String[] input = new String[] { "pre#a#b#c#d#e#f", "pre#a#b", "pre#a#b#cc", "pre#a#b#c#d#e", 
+        "pre#a#b#c#d#e#ff" };
+        String[] expected = new String[] { "pre#a2#b2#c#d2#e2#f", "pre#a2#b2", "pre#a2#b2#cc", "pre#a2#b2#c#d2#e2",
+                "pre#a2#b2#c#d2#e2#ff" };
+        boolean updateMultipleSegments = true;
+        testUpdateSegment(input, expected, "pre#a#b#c#d#e#f", "pre#a2#b2#c#d2#e2#f", updateMultipleSegments);
     }
 
     @Test
@@ -253,7 +260,7 @@ public class TUIDTest {
         // rename TUIDs
         TUID oldTUID = TUID.getInstance("prefix2#a#b");
         TUID newTUID = TUID.getInstance("prefix2#a#c");
-        oldTUID.updateSingleSegment(newTUID);
+        oldTUID.renameSegments(newTUID);
 
         // validate TUID
         assertTrue(TUID.validate());
