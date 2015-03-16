@@ -110,6 +110,10 @@ public class JaMoPPTest {
         final ResourceSet resourceSet = new ResourceSetImpl();
         final Resource resource = resourceSet.createResource(uri);
         resource.load(null);
+        this.assertLayoutInfosInResource(resource);
+    }
+
+    protected void assertLayoutInfosInResource(final Resource resource) {
         final CompilationUnit compilationUnit = (CompilationUnit) resource.getContents().get(0);
         this.printLayoutInformation(compilationUnit);
         for (final ConcreteClassifier classifier : compilationUnit.getClassifiers()) {
@@ -119,7 +123,6 @@ public class JaMoPPTest {
             }
         }
         assertTrue("Could not get layout information", null != compilationUnit.getLayoutInformations());
-
     }
 
     private void printLayoutInformation(final NamedElement namedElement) {

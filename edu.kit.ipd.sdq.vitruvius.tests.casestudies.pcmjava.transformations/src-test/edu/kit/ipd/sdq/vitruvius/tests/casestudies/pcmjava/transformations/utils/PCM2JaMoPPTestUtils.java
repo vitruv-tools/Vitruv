@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
+import de.uka.ipd.sdq.pcm.repository.CompositeComponent;
 import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
 import de.uka.ipd.sdq.pcm.system.System;
@@ -65,6 +66,13 @@ public class PCM2JaMoPPTestUtils {
         basicComponent.setRepository__RepositoryComponent(repo);
         basicComponent.setEntityName(name);
         return basicComponent;
+    }
+
+    public static CompositeComponent createCompositeComponent(final Repository repo, final String name) {
+        final CompositeComponent compositeComponent = RepositoryFactory.eINSTANCE.createCompositeComponent();
+        compositeComponent.setRepository__RepositoryComponent(repo);
+        compositeComponent.setEntityName(name);
+        return compositeComponent;
     }
 
     public static VURI createDummyVURI(final String name) {

@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java
 
 import de.uka.ipd.sdq.pcm.core.entity.ComposedProvidingRequiringEntity
+import de.uka.ipd.sdq.pcm.core.entity.NamedElement
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
@@ -8,9 +9,6 @@ import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.emftext.language.java.containers.Package
-import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace.PCM
-import de.uka.ipd.sdq.pcm.core.entity.NamedElement
 
 /**
  * base class for RepositoryComponentMappingTransformation and SystemMappingTransformation

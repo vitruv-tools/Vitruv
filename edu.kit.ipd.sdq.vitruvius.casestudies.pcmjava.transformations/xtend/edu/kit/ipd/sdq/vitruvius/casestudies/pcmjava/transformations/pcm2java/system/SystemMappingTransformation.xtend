@@ -9,7 +9,7 @@ class SystemMappingTransformation extends ComposedProvidingRequiringEntityMappin
 	
 	/**
 	 * called when a system has been created.
-	 * system has no parent package
+	 * system has no parent package --> return null
 	 */
 	override getParentPackage(EObject eObject) {
 		return null

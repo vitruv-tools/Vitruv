@@ -31,6 +31,7 @@ import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingEntity;
 import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingRequiringEntity;
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
 import de.uka.ipd.sdq.pcm.repository.CollectionDataType;
+import de.uka.ipd.sdq.pcm.repository.CompositeComponent;
 import de.uka.ipd.sdq.pcm.repository.CompositeDataType;
 import de.uka.ipd.sdq.pcm.repository.DataType;
 import de.uka.ipd.sdq.pcm.repository.InnerDeclaration;
@@ -86,7 +87,7 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
     /**
      * Set up SyncMangaer and metaRepository facility. Creates a fresh VSUM, Metarepository etc.
      * before each test
-     * 
+     *
      * @throws Throwable
      */
     @Before
@@ -348,7 +349,7 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
         return param;
     }
 
-    public Parameter createAndSyncRepoOpSigAndParameterWithDataTypeName(final String compositeDataTypeName,
+    protected Parameter createAndSyncRepoOpSigAndParameterWithDataTypeName(final String compositeDataTypeName,
             final String parameterName) throws Throwable {
         final OperationSignature opSig = this.createAndSyncRepoInterfaceAndOperationSignature();
         final CompositeDataType cdt = this.createAndSyncCompositeDataType(opSig.getInterface__OperationSignature()
@@ -444,5 +445,13 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
         EcoreResourceBridge.saveResource(system.eResource());
         this.triggerSynchronization(system);
         return assemblyContext;
+    }
+
+    protected CompositeComponent createAndSyncCompositeComponent(final Repository repo, final String name)
+            throws Throwable {
+        final CompositeComponent compositeComponent = PCM2JaMoPPTestUtils.createCompositeComponent(repo, name);
+        EcoreResourceBridge.saveResource(repo.eResource());
+        this.triggerSynchronization(VURI.getInstance(repo.eResource()));
+        return compositeComponent;
     }
 }

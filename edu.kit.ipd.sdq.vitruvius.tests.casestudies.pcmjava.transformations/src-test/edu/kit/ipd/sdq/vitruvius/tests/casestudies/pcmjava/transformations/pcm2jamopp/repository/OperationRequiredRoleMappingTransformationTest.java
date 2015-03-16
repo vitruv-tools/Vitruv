@@ -16,6 +16,7 @@ import org.emftext.language.java.statements.Statement;
 import org.junit.Test;
 
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
+import de.uka.ipd.sdq.pcm.repository.CompositeComponent;
 import de.uka.ipd.sdq.pcm.repository.OperationInterface;
 import de.uka.ipd.sdq.pcm.repository.OperationRequiredRole;
 import de.uka.ipd.sdq.pcm.repository.Repository;
@@ -45,6 +46,22 @@ public class OperationRequiredRoleMappingTransformationTest extends PCM2JaMoPPTr
                 .createAndSyncOperationRequiredRole(opInterface, system);
 
         this.assertOperationRequiredRole(operationRequiredRole);
+    }
+
+    @Test
+    public void testAddOperationRequiredRoleToCompositeComponent() throws Throwable {
+        final Repository repo = super.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
+        final OperationInterface opInterface = this.addInterfaceToReposiotryAndSync(repo,
+                PCM2JaMoPPTestUtils.INTERFACE_NAME);
+        final CompositeComponent compositeComponent = super.createAndSyncCompositeComponent(repo,
+                PCM2JaMoPPTestUtils.COMPOSITE_COMPONENT_NAME);
+
+        // test: add the requried Role
+        final OperationRequiredRole operationRequiredRole = this.createAndSyncOperationRequiredRole(opInterface,
+                compositeComponent);
+
+        this.assertOperationRequiredRole(operationRequiredRole);
+
     }
 
     @Test
