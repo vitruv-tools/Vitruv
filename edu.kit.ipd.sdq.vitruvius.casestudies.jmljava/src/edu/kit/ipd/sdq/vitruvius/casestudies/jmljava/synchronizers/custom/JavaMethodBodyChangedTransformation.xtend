@@ -15,6 +15,7 @@ import java.util.Collection
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.members.ClassMethod
+import org.emftext.language.java.statements.Statement
 
 class JavaMethodBodyChangedTransformation extends CustomTransformationsBase implements JavaTransformation {
 
@@ -38,7 +39,7 @@ class JavaMethodBodyChangedTransformation extends CustomTransformationsBase impl
 		val newShadowCopy = shadowCopyFactory.create(ci)
 		val newJavaMember = newShadowCopy.shadowCopyCorrespondences.getShadow(newMethod as ClassMethod)
 		newJavaMember.statements.clear()
-		newMethod.statements.forEach[newJavaMember.statements.add(Utilities.clone(it))]
+		newMethod.statements.forEach[newJavaMember.statements.add(Utilities.<Statement>clone(it))]
 		newShadowCopy.setupShadowCopyWithJMLSpecifications(false)
 		val newMethodIsPure = newJavaMember.isMethodPure(ci)
 
