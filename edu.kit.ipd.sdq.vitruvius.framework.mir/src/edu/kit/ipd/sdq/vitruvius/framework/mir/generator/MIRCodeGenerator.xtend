@@ -47,8 +47,12 @@ class MIRCodeGenerator implements IGenerator {
 		resetState
 		val il = generatorStatus.getIntermediateForMIR(mirFile)
 		
-		generatePluginXML(il, fsa)
-		generateManifest(il, fsa)
+		val fqn = il.configuration.package + "." + il.configuration.type
+		val projectName = MIRHelper.getProjectName(MIRHelper.getMIR(input));
+		
+		MIRPluginProjectCreator.createPluginXML(fsa, fqn);
+		MIRPluginProjectCreator.createManifest(fsa, projectName)
+		
 		generateTransformationExecuting(il, resourcePath, fsa)
 	}
 	
@@ -63,27 +67,6 @@ class MIRCodeGenerator implements IGenerator {
 		pkgName.replace('.', PATH_SEPERATOR)
 	}
 
-	private def generatePluginXML(MIR file, IFileSystemAccess fsa) {
-		val fqn = file.configuration.package + "." + file.configuration.type
-		
-		fsa.generateFile("plugin.xml", '''
-		<?xml version="1.0" encoding="UTF-8"?>
-		<?eclipse version="3.4"?>
-		<plugin>
-		   <extension
-		         point="«EMFModelTransformationExecuting.ID»">
-		      <provides
-		            provider="«fqn»">
-		      </provides>
-		   </extension>
-		
-		</plugin>
-		''')
-	}
-	
-	private def generateManifest(MIR file, IFileSystemAccess fsa) {
-	}
-	
 	private def generateTransformationExecuting(MIR file, URI resourcePath, IFileSystemAccess fsa) {
 		println(file.configuration.package)
 		println(resourcePath)
