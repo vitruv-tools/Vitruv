@@ -11,6 +11,8 @@
         eType="#//Predicate" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="configuration" lowerBound="1"
         eType="#//Configuration" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="packages" lowerBound="2"
+        upperBound="2" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EPackage"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Mapping" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="predicates" upperBound="-1"

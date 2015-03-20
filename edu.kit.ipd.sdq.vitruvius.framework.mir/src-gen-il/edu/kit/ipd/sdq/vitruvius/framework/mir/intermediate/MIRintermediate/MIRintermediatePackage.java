@@ -103,13 +103,22 @@ public interface MIRintermediatePackage extends EPackage {
 	int MIR__CONFIGURATION = 3;
 
 	/**
+	 * The feature id for the '<em><b>Packages</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MIR__PACKAGES = 4;
+
+	/**
 	 * The number of structural features of the '<em>MIR</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MIR_FEATURE_COUNT = 4;
+	int MIR_FEATURE_COUNT = 5;
 
 	/**
 	 * The number of operations of the '<em>MIR</em>' class.
@@ -701,6 +710,17 @@ public interface MIRintermediatePackage extends EPackage {
 	EReference getMIR_Configuration();
 
 	/**
+	 * Returns the meta object for the reference list '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR#getPackages <em>Packages</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Packages</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR#getPackages()
+	 * @see #getMIR()
+	 * @generated
+	 */
+	EReference getMIR_Packages();
+
+	/**
 	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Mapping <em>Mapping</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1093,6 +1113,14 @@ public interface MIRintermediatePackage extends EPackage {
 		 * @generated
 		 */
 		EReference MIR__CONFIGURATION = eINSTANCE.getMIR_Configuration();
+
+		/**
+		 * The meta object literal for the '<em><b>Packages</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference MIR__PACKAGES = eINSTANCE.getMIR_Packages();
 
 		/**
 		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.MappingImpl <em>Mapping</em>}' class.

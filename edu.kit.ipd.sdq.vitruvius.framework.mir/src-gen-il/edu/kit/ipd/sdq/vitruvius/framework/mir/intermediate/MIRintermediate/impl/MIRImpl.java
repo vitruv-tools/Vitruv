@@ -8,21 +8,17 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Feat
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIRintermediatePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Predicate;
-
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
@@ -36,6 +32,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.MIRImpl#getFeatureMappings <em>Feature Mappings</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.MIRImpl#getPredicates <em>Predicates</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.MIRImpl#getConfiguration <em>Configuration</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.impl.MIRImpl#getPackages <em>Packages</em>}</li>
  * </ul>
  * </p>
  *
@@ -81,6 +78,16 @@ public class MIRImpl extends MinimalEObjectImpl.Container implements MIR {
 	 * @ordered
 	 */
 	protected Configuration configuration;
+
+	/**
+	 * The cached value of the '{@link #getPackages() <em>Packages</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPackages()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<EPackage> packages;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -185,6 +192,18 @@ public class MIRImpl extends MinimalEObjectImpl.Container implements MIR {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<EPackage> getPackages() {
+		if (packages == null) {
+			packages = new EObjectResolvingEList<EPackage>(EPackage.class, this, MIRintermediatePackage.MIR__PACKAGES);
+		}
+		return packages;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -216,6 +235,8 @@ public class MIRImpl extends MinimalEObjectImpl.Container implements MIR {
 				return getPredicates();
 			case MIRintermediatePackage.MIR__CONFIGURATION:
 				return getConfiguration();
+			case MIRintermediatePackage.MIR__PACKAGES:
+				return getPackages();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -244,6 +265,10 @@ public class MIRImpl extends MinimalEObjectImpl.Container implements MIR {
 			case MIRintermediatePackage.MIR__CONFIGURATION:
 				setConfiguration((Configuration)newValue);
 				return;
+			case MIRintermediatePackage.MIR__PACKAGES:
+				getPackages().clear();
+				getPackages().addAll((Collection<? extends EPackage>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -268,6 +293,9 @@ public class MIRImpl extends MinimalEObjectImpl.Container implements MIR {
 			case MIRintermediatePackage.MIR__CONFIGURATION:
 				setConfiguration((Configuration)null);
 				return;
+			case MIRintermediatePackage.MIR__PACKAGES:
+				getPackages().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -288,6 +316,8 @@ public class MIRImpl extends MinimalEObjectImpl.Container implements MIR {
 				return predicates != null && !predicates.isEmpty();
 			case MIRintermediatePackage.MIR__CONFIGURATION:
 				return configuration != null;
+			case MIRintermediatePackage.MIR__PACKAGES:
+				return packages != null && !packages.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

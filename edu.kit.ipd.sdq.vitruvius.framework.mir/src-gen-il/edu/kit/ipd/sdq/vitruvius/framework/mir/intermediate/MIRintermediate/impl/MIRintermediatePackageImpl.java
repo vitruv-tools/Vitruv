@@ -237,6 +237,15 @@ public class MIRintermediatePackageImpl extends EPackageImpl implements MIRinter
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getMIR_Packages() {
+		return (EReference)mirEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getMapping() {
 		return mappingEClass;
 	}
@@ -544,6 +553,7 @@ public class MIRintermediatePackageImpl extends EPackageImpl implements MIRinter
 		createEReference(mirEClass, MIR__FEATURE_MAPPINGS);
 		createEReference(mirEClass, MIR__PREDICATES);
 		createEReference(mirEClass, MIR__CONFIGURATION);
+		createEReference(mirEClass, MIR__PACKAGES);
 
 		mappingEClass = createEClass(MAPPING);
 		createEReference(mappingEClass, MAPPING__PREDICATES);
@@ -633,6 +643,7 @@ public class MIRintermediatePackageImpl extends EPackageImpl implements MIRinter
 		initEReference(getMIR_FeatureMappings(), this.getFeatureMapping(), null, "featureMappings", null, 0, -1, edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getMIR_Predicates(), this.getPredicate(), null, "predicates", null, 0, -1, edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getMIR_Configuration(), this.getConfiguration(), null, "configuration", null, 1, 1, edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getMIR_Packages(), theEcorePackage.getEPackage(), null, "packages", null, 2, 2, edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(mappingEClass, Mapping.class, "Mapping", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getMapping_Predicates(), this.getPredicate(), null, "predicates", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

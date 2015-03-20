@@ -31,7 +31,7 @@ class MIRCodeGenerator implements IGenerator {
 	private static final String RESULT_NAME = "result";
 	private static final String SRC_GEN_FOLDER = "src-gen/";
 	
-	private static final String ECHANGELISTENER_FQN = EChangeListener.name
+	private static final String EMFMODELTRANSFORMATIONEXECUTING_FQN = EMFModelTransformationExecuting.name
 	
 	@Inject IGeneratorStatus generatorStatus;
 	
@@ -87,12 +87,18 @@ class MIRCodeGenerator implements IGenerator {
 			import java.util.Map;
 			import java.util.HashMap;
 			import java.util.List;
+			import java.util.ArrayList;
+			
+			import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 			
 			import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
+			import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
+			import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+			
 			import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 			import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper;
 			
-			class «file.configuration.type» implements «ECHANGELISTENER_FQN»{
+			class «file.configuration.type» implements «EMFMODELTRANSFORMATIONEXECUTING_FQN»{
 				/*
 				 * Generated:
 				 *     * Methods to check if mapping with index i holds (predicateCheck_i)
@@ -108,6 +114,11 @@ class MIRCodeGenerator implements IGenerator {
 				 */
 				
 				private Map<EObject, Integer> currentMappingID;
+				
+				/** The first mapped metamodel. **/
+				public final String MM_ONE = "";
+				/** The second mapped metamodel. **/
+				public final String MM_TWO = "";
 				
 				public «file.configuration.type»() {
 					currentMappingID = new HashMap<EObject, Integer>();
@@ -125,6 +136,21 @@ class MIRCodeGenerator implements IGenerator {
 					System.out.println("Deleting correspondence of " + object.toString());
 				}
 				
+				@Override
+				public EMFChangeResult executeTransformation(EMFModelChange change, CorrespondenceInstance correspondenceInstance) {
+					return null;
+				}
+				
+				@Override
+				public EMFChangeResult executeTransformation(CompositeChange compositeChange, CorrespondenceInstance correspondenceInstance) {
+					return null;
+				}
+				
+				@Override
+				public List<Pair<VURI, VURI>> getTransformableMetamodels() {
+					return null;
+				}
+				
 				«checkElementMethod»
 				
 				«mappingIDMethod»
@@ -139,19 +165,8 @@ class MIRCodeGenerator implements IGenerator {
 				
 				// feature change methods
 				«featureChangeMethods»
-				
-				«handleEChangeMethod»
 			}
 		''')
-	}
-	
-	def handleEChangeMethod() {
-		'''
-		@Override
-		public List<EChange> handleChange(EChange change) {
-			return null;
-		}
-		'''
 	}
 	
 	def generateCallCreateMethod() {

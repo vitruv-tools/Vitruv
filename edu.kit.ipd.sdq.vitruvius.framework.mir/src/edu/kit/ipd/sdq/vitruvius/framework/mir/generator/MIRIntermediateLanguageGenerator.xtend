@@ -23,12 +23,14 @@ import org.eclipse.xtext.generator.IGenerator
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper.*
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper
+import org.apache.log4j.Logger
 
 /**
  * Generates the intermediate language form of the model
  * @author Dominik Werle
  */
 class MIRIntermediateLanguageGenerator implements IGenerator {
+	private static final Logger logger = Logger.getLogger(MIRIntermediateLanguageGenerator)
 	private static final String DEFAULT_CLASS_NAME = "ChangeSynchronizer"
 	
 	
@@ -82,7 +84,15 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 				mirfile.generatedClass
 			else
 				DEFAULT_CLASS_NAME
+				
+		if (mirfile.imports.size != 2) {
+			logger.error("MIR currently only supports exactly two metamodels")
+			throw new IllegalStateException("MIR currently only supports exactly two metamodels");
+		}
 		
+		mir.packages.clear
+		mir.packages += mirfile.imports.map[it.package]
+				
 		mirfile.mappings
 	    	   .forEach [ it.mapClassifierMapping(mir) ]
 	}
