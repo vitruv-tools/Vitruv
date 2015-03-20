@@ -23,6 +23,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.EChangeListen
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting
 
+/**
+ * @author Dominik Werle
+ */
 class MIRCodeGenerator implements IGenerator {
 	private static final String CONTEXT_NAME = "context";
 	private static final String RESULT_NAME = "result";

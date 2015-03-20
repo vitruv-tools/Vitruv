@@ -26,6 +26,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper
 
 /**
  * Generates the intermediate language form of the model
+ * @author Dominik Werle
  */
 class MIRIntermediateLanguageGenerator implements IGenerator {
 	private static final String DEFAULT_CLASS_NAME = "ChangeSynchronizer"

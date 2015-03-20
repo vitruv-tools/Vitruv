@@ -10,6 +10,10 @@ import org.eclipse.emf.ecore.resource.Resource;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile;
 
+/**
+ * @author Dominik Werle
+ *
+ */
 public class MIRGeneratorStatus implements IGeneratorStatus {
 	
 	private Map<EObject, String> objectToName;
