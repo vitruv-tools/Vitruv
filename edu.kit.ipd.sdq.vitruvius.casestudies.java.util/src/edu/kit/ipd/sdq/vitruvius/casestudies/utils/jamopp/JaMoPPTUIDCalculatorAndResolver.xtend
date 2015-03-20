@@ -214,6 +214,10 @@ class JaMoPPTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResol
 		return tuid.toString
 	}
 
+	private def dispatch String calculateIndividualTUID(ClassifierReference classifierReference) {
+		return ""
+	}
+
 	private def dispatch String calculateIndividualTUID(EObject obj) {
 		throw new IllegalArgumentException("Invalid type given " + obj.class.simpleName);
 	}

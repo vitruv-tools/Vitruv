@@ -64,7 +64,7 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 	
 	/**
 	 * TODO: copied from BasicComponent: refactor 
-	 * called when OperationProvidedRole has been removed from the current basic component
+	 * called when OperationProvidedRole has been removed from the current ComposedProvidingRequiringEntity
 	 */
 	override removeNonContainmentEReference(EObject affectedEObject, EReference affectedReference, EObject oldValue,
 		int index) {
@@ -79,7 +79,7 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 
 	/**
 	 * TODO: copied from BasicComponent: refactor
-	 * called when an OperationProvidedRole was has been inserted in the current basic component
+	 * called when an OperationProvidedRole was has been inserted in the current ComposedProvidingRequiringEntity
 	 */
 	override insertNonRootEObjectInContainmentList(EObject oldAffectedEObject, EObject newAffectedEObject,
 		EReference affectedReference, EObject newValue) {

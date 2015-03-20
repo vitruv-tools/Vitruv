@@ -155,10 +155,10 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	}
 
 	def public static void handleClassifierNameChange(Classifier classifier, Object newValue,
-		TransformationChangeResult tcr, CorrespondenceInstance correspondenceInstance) {
+		TransformationChangeResult tcr, CorrespondenceInstance correspondenceInstance, boolean appendImpl) {
 		val TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(classifier)
 		classifier.name = newValue.toString
-		if (classifier instanceof Class) {
+		if (classifier instanceof Class && appendImpl) {
 			classifier.name = classifier.name + "Impl"
 		}
 		tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, classifier, null)
@@ -181,7 +181,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 			}
 			newName = newName + "." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION
 			handleClassifierNameChange(javaRoot.classifiers.get(0), newValue, transformationChangeResult,
-				correspondenceInstance)
+				correspondenceInstance, changeNamespanceIfCompilationUnit)
 		}
 		javaRoot.name = newName;
 
@@ -211,7 +211,8 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 
 	def static createPrivateFieldUsingDummyPrinting(TypeReference reference, String name) {
 		try {
-			val String cuContent = "class Dummy{ private " + PCM2JaMoPPUtils.getNameFromJaMoPPType(reference) + " " + name + "; }"
+			val String cuContent = "class Dummy{ private " + PCM2JaMoPPUtils.getNameFromJaMoPPType(reference) + " " +
+				name + "; }"
 			val String fileName = "vitruvius.meta/src/dummy.java";
 			val cu = createJavaRoot(fileName, cuContent) as CompilationUnit
 			return cu.classifiers.get(0).fields.get(0)
@@ -290,6 +291,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		val classifierRef = TypesFactory.eINSTANCE.createClassifierReference
 		classifierRef.target = EcoreUtil.copy(concreteClassifier)
 		namespaceClassifierReference.classifierReferences.add(classifierRef)
+
 		//namespaceClassifierReference.namespaces.addAll(concreteClassifier.containingCompilationUnit.namespaces)
 		return namespaceClassifierReference
 	}
@@ -493,8 +495,8 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		ClaimableMap<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap,
 		CorrespondenceInstance correspondenceInstance) {
 		val tcr = new TransformationChangeResult
-		if(oldValue == newValue){
-			return tcr			
+		if (oldValue == newValue) {
+			return tcr
 		}
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(eObject, affectedAttribute,
 			featureCorrespondenceMap, correspondenceInstance)
@@ -548,7 +550,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 
 		assigmentExpression.value = newConstructorCall
 		expressionStatement.expression = assigmentExpression
-		constructor.statements.add(expressionStatement) 
+		constructor.statements.add(expressionStatement)
 		return newConstructorCall
 	}
 
@@ -652,6 +654,21 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 			tcr.addNewCorrespondence(ci, namedElement, newCorrespondingEObject, parrentCorrespondence)
 			tcr.existingObjectsToSave.add(newCorrespondingEObject)
 		}
+	}
+
+	def static getDatatypePackage(CorrespondenceInstance correspondenceInstance, Repository repo, String dataTypeName,
+		UserInteracting userInteracting) {
+		var datatypePackage = PCM2JaMoPPUtils.findCorrespondingPackageByName("datatypes", correspondenceInstance,
+			repo)
+		if (null == datatypePackage) {
+			logger.info("datatype package not found")
+			val String message = "Datatype " + dataTypeName +
+				" created. Please specify to which package the datatype should be added"
+			datatypePackage = PCM2JaMoPPUtils.askUserForPackage(correspondenceInstance, repo, userInteracting, message)
+		} else {
+			logger.info("found datatype package")
+		}
+		datatypePackage
 	}
 
 }

@@ -41,7 +41,9 @@ public class PCM2JaMoPPTestUtils {
     public static final String SYSTEM_NAME = "TestSystem";
     public static final String ASSEMBLY_CONTEXT_NAME = "assemblyContext";
     public static final String COMPOSITE_COMPONENT_NAME = "TestCompositeComponent";
+    public static final String COLLECTION_DATA_TYPE_NAME = "TestCollectionDatatype";
 
+    // private ctor for util class
     private PCM2JaMoPPTestUtils() {
     }
 

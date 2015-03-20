@@ -21,7 +21,8 @@ Require-Bundle: org.eclipse.xtend.lib,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.run.userinteractor;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.casestudies.java.util.jamoppbridge;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.0.0"
+ edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.external.guice;bundle-version="3.0.0"
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java,
@@ -29,5 +30,5 @@ Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations,
  org.modelrefactoring.jamopp.test.valueprovider
 Bundle-ClassPath: libs/reflections-0.9.9-RC1.jar,
  .,
- libs/
+ libs/javassist.jar
 

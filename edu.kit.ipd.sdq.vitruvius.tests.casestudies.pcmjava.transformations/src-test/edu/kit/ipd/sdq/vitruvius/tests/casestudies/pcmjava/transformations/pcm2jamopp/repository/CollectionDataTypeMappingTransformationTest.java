@@ -1,0 +1,62 @@
+package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.repository;
+
+import org.junit.Test;
+
+import de.uka.ipd.sdq.pcm.repository.CollectionDataType;
+import de.uka.ipd.sdq.pcm.repository.CompositeDataType;
+import de.uka.ipd.sdq.pcm.repository.DataType;
+import de.uka.ipd.sdq.pcm.repository.PrimitiveDataType;
+import de.uka.ipd.sdq.pcm.repository.PrimitiveTypeEnum;
+import de.uka.ipd.sdq.pcm.repository.Repository;
+import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
+
+public class CollectionDataTypeMappingTransformationTest extends PCM2JaMoPPTransformationTest {
+
+    @Test
+    public void testAddCollectionDataTypeWithoutInnerType() throws Throwable {
+        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
+
+        final CollectionDataType collectionDataType = this.addCollectionDatatypeAndSync(repo,
+                PCM2JaMoPPTestUtils.COLLECTION_DATA_TYPE_NAME, null);
+
+        this.assertDataTypeCorrespondence(collectionDataType);
+    }
+
+    @Test
+    public void testAddCollectionDataTypeWithPrimitiveInnerType() throws Throwable {
+        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
+        final PrimitiveDataType primitiveTypeString = RepositoryFactory.eINSTANCE.createPrimitiveDataType();
+        primitiveTypeString.setType(PrimitiveTypeEnum.STRING);
+
+        final CollectionDataType collectionDataType = this.addCollectionDatatypeAndSync(repo,
+                PCM2JaMoPPTestUtils.COLLECTION_DATA_TYPE_NAME, primitiveTypeString);
+
+        this.assertDataTypeCorrespondence(collectionDataType);
+    }
+
+    @Test
+    public void testAddCollectionDataTypeWithComplexInnerType() throws Throwable {
+        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
+        final CompositeDataType compositeDataType = this.createAndSyncCompositeDataType(repo);
+
+        final CollectionDataType collectionDataType = this.addCollectionDatatypeAndSync(repo,
+                PCM2JaMoPPTestUtils.COLLECTION_DATA_TYPE_NAME, compositeDataType);
+
+        this.assertDataTypeCorrespondence(collectionDataType);
+    }
+
+    private CollectionDataType addCollectionDatatypeAndSync(final Repository repo, final String name,
+            final DataType innerType) {
+        final CollectionDataType cdt = RepositoryFactory.eINSTANCE.createCollectionDataType();
+        cdt.setEntityName(name);
+        cdt.setRepository__DataType(repo);
+        if (null != innerType) {
+            cdt.setInnerType_CollectionDataType(innerType);
+        }
+        super.triggerSynchronization(repo);
+        return cdt;
+    }
+
+}

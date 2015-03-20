@@ -175,12 +175,13 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
     protected void assertDataTypeCorrespondence(final DataType dataType) throws Throwable {
         if (dataType instanceof CollectionDataType) {
             final CollectionDataType cdt = (CollectionDataType) dataType;
-            this.assertCorrespondnecesAndCompareNames(cdt, 2, new java.lang.Class[] { CompilationUnit.class,
-                    Classifier.class }, new String[] { cdt.getEntityName() + "Impl.java", cdt.getEntityName() });
+            this.assertCorrespondnecesAndCompareNames(cdt, 3, new java.lang.Class[] { CompilationUnit.class,
+                    Classifier.class, TypeReference.class },
+                    new String[] { cdt.getEntityName() + ".java", cdt.getEntityName(), null });
         } else if (dataType instanceof CompositeDataType) {
             final CompositeDataType cdt = (CompositeDataType) dataType;
             this.assertCorrespondnecesAndCompareNames(cdt, 2, new java.lang.Class[] { CompilationUnit.class,
-                    Classifier.class }, new String[] { cdt.getEntityName() + "Impl.java", cdt.getEntityName() });
+                    Classifier.class }, new String[] { cdt.getEntityName() + ".java", cdt.getEntityName() });
         } else if (dataType instanceof PrimitiveDataType) {
             final PrimitiveDataType pdt = (PrimitiveDataType) dataType;
             assertTrue("No correspondence exists for DataType " + dataType,
@@ -203,12 +204,17 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
             if (!expectedClass.isInstance(correspondingEObject)) {
                 fail("Corresponding EObject " + correspondingEObject + " is not an instance of " + expectedClass);
             }
-            final NamedElement jaMoPPElement = (NamedElement) correspondingEObject;
-            assertTrue("The '" + jaMoPPElement.getClass().getSimpleName() + "' with name '" + jaMoPPElement.getName()
-                    + "' does not contain " + "the '" + pcmNamedElement.getClass().getSimpleName() + "' with name "
-                    + pcmNamedElement.getEntityName(), jaMoPPElement.getName()
-                    .contains(pcmNamedElement.getEntityName()));
-            jaMoPPElements.add(jaMoPPElement);
+            final String expectedName = expectedNames[i];
+            if (correspondingEObject instanceof NamedElement) {
+                final NamedElement jaMoPPElement = (NamedElement) correspondingEObject;
+                assertTrue("The name of the jamopp element does not contain the expected name", jaMoPPElement.getName()
+                        .contains(expectedName));
+                jaMoPPElements.add(jaMoPPElement);
+            } else {
+                // expected name should be null
+                assertTrue("The expected name should be null if the element is not a NamedElement",
+                        null == expectedName);
+            }
         }
         return jaMoPPElements;
     }
@@ -378,7 +384,7 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
     }
 
     protected OperationProvidedRole createAndSyncRepoOpIntfOpSigBasicCompAndOperationProvRole() throws IOException,
-            Throwable {
+    Throwable {
         final OperationSignature opSig = this.createAndSyncRepoInterfaceAndOperationSignature();
         final OperationInterface opInterface = opSig.getInterface__OperationSignature();
         final BasicComponent basicComponent = this.addBasicComponentAndSync(opInterface.getRepository__Interface());
@@ -399,7 +405,7 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
     }
 
     protected OperationRequiredRole createAndSyncRepoBasicCompInterfaceAndOperationReqiredRole() throws IOException,
-            Throwable {
+    Throwable {
         final OperationSignature opSig = this.createAndSyncRepoInterfaceAndOperationSignature();
         final OperationInterface opInterface = opSig.getInterface__OperationSignature();
         final BasicComponent basicComponent = this.addBasicComponentAndSync(opInterface.getRepository__Interface());
