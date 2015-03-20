@@ -17,11 +17,20 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Init
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.JavaInitializer
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.CreateCorresponding
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.FeatureMapping
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.ArrayList
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.EChangeListener
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting
+import org.eclipse.emf.ecore.EObject
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
 
 /**
  * @author Dominik Werle
@@ -66,6 +75,28 @@ class MIRCodeGenerator implements IGenerator {
 	private def packageNameToPath(String pkgName) {
 		pkgName.replace('.', PATH_SEPERATOR)
 	}
+	
+	/**
+	 * The classes that are imported <strong>inside the generated class</strong>.
+	 */
+	private static final List<? extends Class<?>> IMPORTED_CLASSES = #[
+		EObject, Map, HashMap, List, ArrayList,
+		IllegalArgumentException,
+		Pair, EMFModelTransformationExecuting, EMFChangeResult, VURI,
+		CorrespondenceInstance, EMFModelChange, Change,
+		EChange, EcoreHelper
+	]
+	
+	/**
+	 * Creates the import statements for {@link #IMPORTED_CLASSES}.
+	 */
+	private static def String getImportStatements() {
+		'''
+		«FOR i : IMPORTED_CLASSES»
+		import «i.name»;
+		«ENDFOR»
+		'''
+	}
 
 	private def generateTransformationExecuting(MIR file, URI resourcePath, IFileSystemAccess fsa) {
 		println(file.configuration.package)
@@ -83,22 +114,16 @@ class MIRCodeGenerator implements IGenerator {
 		fsa.generateFile(SRC_GEN_FOLDER + file.configuration.package.packageNameToPath + '/' + file.configuration.type + ".java", '''
 			package «file.configuration.package»;
 			
-			import org.eclipse.emf.ecore.EObject;
-			import java.util.Map;
-			import java.util.HashMap;
-			import java.util.List;
-			import java.util.ArrayList;
+			«importStatements»
 			
-			import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
-			
-			import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
-			import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
-			import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-			
-			import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-			import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper;
-			
-			class «file.configuration.type» implements «EMFMODELTRANSFORMATIONEXECUTING_FQN»{
+			/**
+			 * {@link EMFModelTransformationExecuting} for keeping the following meta models consistent:
+			 * <ol>
+			 *   <li>«file.packages.get(0).nsURI»</li>
+			 *   <li>«file.packages.get(1).nsURI»</li>
+			 * </ol>.
+			 */
+			class «file.configuration.type» implements «EMFModelTransformationExecuting.simpleName» {
 				/*
 				 * Generated:
 				 *     * Methods to check if mapping with index i holds (predicateCheck_i)
@@ -116,14 +141,29 @@ class MIRCodeGenerator implements IGenerator {
 				private Map<EObject, Integer> currentMappingID;
 				
 				/** The first mapped metamodel. **/
-				public final String MM_ONE = "";
+				public final String MM_ONE = "«file.packages.get(0).nsURI»";
 				/** The second mapped metamodel. **/
-				public final String MM_TWO = "";
+				public final String MM_TWO = "«file.packages.get(1).nsURI»";
+				
+				private final VURI VURI_ONE = VURI.getInstance(MM_ONE);
+				private final VURI VURI_TWO = VURI.getInstance(MM_TWO);
+				
+				/* Transformable metamodels. */
+				private final List<Pair<VURI, VURI>> transformableMetamodels;
 				
 				public «file.configuration.type»() {
 					currentMappingID = new HashMap<EObject, Integer>();
+					
+					transformableMetamodels = new ArrayList<Pair<VURI, VURI>>();
+					transformableMetamodels.add(new Pair<VURI, VURI>(VURI_ONE, VURI_TWO));
+					transformableMetamodels.add(new Pair<VURI, VURI>(VURI_TWO, VURI_ONE));
 				}
 				
+				@Override
+				public List<Pair<VURI, VURI>> getTransformableMetamodels() {
+					return transformableMetamodels;
+				}
+
 				/**
 				 * For debug purposes only. Prints out {@code s} and returns {@code null}.
 				 */
@@ -138,33 +178,28 @@ class MIRCodeGenerator implements IGenerator {
 				
 				@Override
 				public EMFChangeResult executeTransformation(EMFModelChange change, CorrespondenceInstance correspondenceInstance) {
-					return null;
+					return handleEChange(change.getEChange(), correspondenceInstance);
 				}
 				
 				@Override
 				public EMFChangeResult executeTransformation(CompositeChange compositeChange, CorrespondenceInstance correspondenceInstance) {
-					return null;
+					final EMFChangeResult result = new EMFChangeResult();
+					for (Change c : compositeChange.getChanges()) {
+						if (c instanceof CompositeChange) {
+							result.addChangeResult(this.executeTransformation((CompositeChange) c, correspondenceInstance));
+						} else if (c instanceof EMFModelChange) {
+							result.addChangeResult(this.executeTransformation((EMFModelChange) c, correspondenceInstance));
+						} else {
+							throw new IllegalArgumentException("Change subtype " + c.class.getName() + " not handled");
+						}
+					}
+					
+					return result;
 				}
 				
-				@Override
-				public List<Pair<VURI, VURI>> getTransformableMetamodels() {
+				public EMFChangeResult handleEChange(EChange eChange, CorrespondenceInstance correspondenceInstance) {
 					return null;
 				}
-				
-				«checkElementMethod»
-				
-				«mappingIDMethod»
-				
-				«callCreateMethod»
-								
-				// predicate checks
-				«predicateChecks»
-				
-				// object creation
-				«checkMappingMethods»
-				
-				// feature change methods
-				«featureChangeMethods»
 			}
 		''')
 	}

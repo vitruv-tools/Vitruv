@@ -4,6 +4,8 @@ import org.eclipse.core.resources.ResourcesPlugin
 import org.eclipse.jdt.core.JavaCore
 import org.eclipse.jdt.launching.JavaRuntime
 import org.eclipse.xtext.generator.IFileSystemAccess
+import org.eclipse.pde.core.project.IBundleProjectDescription
+import org.eclipse.pde.core.project.IBundleProjectService
 
 class EclipseProjectHelper {
 	public final String SRC_GEN_FOLDER_NAME = "src-gen"
@@ -25,13 +27,14 @@ class EclipseProjectHelper {
 	
 	/**
 	 * @see https://sdqweb.ipd.kit.edu/wiki/JDT_Tutorial:_Creating_Eclipse_Java_Projects_Programmatically
+	 * TODO: Refactor god method
 	 */
 	public def createJavaProject() {
 		val project = getProject()
 
-		// add Java nature
+		// add Java and plug-in natures
 		val description = project.getDescription();
-		description.setNatureIds(#[ JavaCore.NATURE_ID ]);
+		description.setNatureIds(#[ JavaCore.NATURE_ID, IBundleProjectDescription.PLUGIN_NATURE ]);
 		project.setDescription(description, null);
 		
 		// create Java project
@@ -43,29 +46,32 @@ class EclipseProjectHelper {
 		javaProject.setOutputLocation(binFolder.getFullPath(), null);
 		
 		// set JVM for the project
-		val entries = newArrayList
 		val vmInstall = JavaRuntime.getDefaultVMInstall();
 		val libraryLocations = JavaRuntime.getLibraryLocations(vmInstall);
-		for (element : libraryLocations) {
-			entries.add(JavaCore.newLibraryEntry(element.getSystemLibraryPath(), null, null));
-		}
 		
 		// add libs to project class path
+		val entries = libraryLocations.map [
+			JavaCore.newLibraryEntry(it.getSystemLibraryPath(), null, null)
+		]
+		
 		javaProject.setRawClasspath(entries.toArray(newArrayOfSize(entries.size())), null);
+		
 		
 		// add src and src-gen folder
 		val sourceFolder = project.getFolder("src");
 		sourceFolder.create(false, true, null);
 		val sourceRoot = javaProject.getPackageFragmentRoot(sourceFolder);
 		
-//		val sourceGenFolder = project.getFolder("src-gen");
-//		sourceGenFolder.create(false, true, null);
-//		val sourceGenRoot = javaProject.getPackageFragmentRoot(sourceFolder);
+		
+		val sourceGenFolder = project.getFolder(SRC_GEN_FOLDER_NAME);
+		sourceGenFolder.create(false, true, null);
+		val sourceGenRoot = javaProject.getPackageFragmentRoot(sourceGenFolder);
 		
 		val oldEntries = javaProject.getRawClasspath();
-		val newEntries = newArrayOfSize(oldEntries.length + 1);
+		val newEntries = newArrayOfSize(oldEntries.length + 2);
 		System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
 		newEntries.set(oldEntries.length, JavaCore.newSourceEntry(sourceRoot.getPath))
+		newEntries.set(oldEntries.length + 1, JavaCore.newSourceEntry(sourceGenRoot.getPath))
 		javaProject.setRawClasspath(newEntries, null);
 		
 		// TODO: create Monitor

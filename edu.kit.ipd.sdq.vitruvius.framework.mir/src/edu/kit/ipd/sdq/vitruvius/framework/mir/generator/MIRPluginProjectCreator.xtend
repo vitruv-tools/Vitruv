@@ -42,7 +42,7 @@ class MIRPluginProjectCreator{
 		Manifest-Version: 1.0
 		Bundle-ManifestVersion: 2
 		Bundle-Name: «projectName»
-		Bundle-SymbolicName: «projectName»
+		Bundle-SymbolicName: «projectName»;singleton:=true
 		Bundle-Version: 1.0.0.qualifier
 		Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 		'''
