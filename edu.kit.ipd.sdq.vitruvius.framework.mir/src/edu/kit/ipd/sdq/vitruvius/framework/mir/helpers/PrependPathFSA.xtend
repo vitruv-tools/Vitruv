@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.helpers
 import org.eclipse.xtext.generator.IFileSystemAccess
 
 /**
- * This class implements the Decorater pattern to prepend the path
+ * This class implements the Decorator pattern to prepend the path
  * of every access to an {@link IFileSystemAccess} instance with a
  * path fragment 
  */
