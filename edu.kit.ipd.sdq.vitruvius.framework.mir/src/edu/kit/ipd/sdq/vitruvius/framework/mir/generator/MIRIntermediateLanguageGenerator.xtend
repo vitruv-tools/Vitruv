@@ -184,14 +184,9 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 	 * @return null if no mapping is needed
 	 */
 	def ClassifierMapping mapFeatureMappingClassifierMapping(FeatureMapping featureMapping, MIR mir) {
-			// TODO: case where there is not only one EClassifier
+		// TODO: case where there is not only one EClassifier
 		val leftType = featureMapping.left.last.definedType
 		val rightType = featureMapping.right.last.definedType
-		
-		// if both sides are primitives, we do not need a classifier mapping 
-		if (isPrimitiveType(leftType) && isPrimitiveType(rightType)) {
-			return null;
-		}
 		
 		if (!isPrimitiveType(leftType) && !isPrimitiveType(rightType)) {
 			val classifierMapping = createClassifierMapping
@@ -206,9 +201,9 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 			return classifierMapping
 		}
 		
-		// one side is primitive, the other is not
-		// should already be sorted out in validation stage
-		throw new IllegalArgumentException("Can't map primitive and non-primitive type in feature mapping")
+		// if one side is a primitive type, there is no classifier mapping
+		// associated with the feature mapping
+		return null;
 	}
 	
 	static def boolean isPrimitiveType(EClassifier eClassifier) {
