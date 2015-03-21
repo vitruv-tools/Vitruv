@@ -12,8 +12,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
  * propagated (e.g. to another EChangeListener) is handled by the caller. 
  * 
  * @author Dominik Werle
- *
+ * @deprecated Use {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting EMFModelTransformationExecuting} instead
  */
+@Deprecated
 public interface EChangeListener {
 	/**
 	 * Handles a list of {@link EChange EChanges} and returns the
