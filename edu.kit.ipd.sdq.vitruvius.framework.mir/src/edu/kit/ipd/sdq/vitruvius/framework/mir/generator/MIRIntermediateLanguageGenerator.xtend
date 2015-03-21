@@ -6,7 +6,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Feat
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIRintermediateFactory
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Mapping
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ReverseFeaturesCorrespondWithEClassifiers
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureCall
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.JavaBlock
@@ -16,7 +15,6 @@ import java.util.Collections
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
@@ -24,6 +22,8 @@ import org.eclipse.xtext.generator.IGenerator
 import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper.*
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper
 import org.apache.log4j.Logger
+import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EDataType
 
 /**
  * Generates the intermediate language form of the model
@@ -98,68 +98,68 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 	}
 	
 	def void mapClassifierMapping(ClassMapping mapping, MIR mir) {
-		mapClassifierMapping(mapping, mir, true)
 		mapClassifierMapping(mapping, mir, false)
+		mapClassifierMapping(mapping, mir, true)
 	}
 	
-	def void mapClassifierMapping(ClassMapping mapping, MIR mir, boolean reverse) {
+	def void mapClassifierMapping(ClassMapping mapping, MIR mir, boolean swapLeftRight) {
 		val result = createClassifierMapping
 		
-		val leftElement = mapping.getLeftElement(reverse)
-		val rightElement = mapping.getRightElement(reverse)
+		val leftElement = mapping.getLeftElement(swapLeftRight)
+		val rightElement = mapping.getRightElement(swapLeftRight)
 		
 		result.left = (leftElement as NamedEClass).representedEClass
 		result.right = (rightElement as NamedEClass).representedEClass
 		
-		val mappedPredicates = mapping.getWhenPredicates(reverse).map[dispatchCreatePredicate].filterNull.toList
+		val mappedPredicates = mapping.getWhenPredicates(swapLeftRight).map[dispatchCreatePredicate].filterNull.toList
 		mir.predicates += mappedPredicates
 		result.predicates += mappedPredicates
-		result.initializer += mapping.getWhereExpressions(reverse).map[dispatchCreateInitializer].filterNull
+		result.initializer += mapping.getWhereExpressions(swapLeftRight).map[dispatchCreateInitializer].filterNull
 		
-		mapping.withs.forEach [ it.mapFeatureMapping(mir, result, reverse) ]
+		mapping.withs.forEach [ it.mapFeatureMapping(mir, result, swapLeftRight) ]
 					
 		mir.classMappings += result
 	}
 	
-	def getLeftElement(ClassMapping mapping, boolean reverse) {
-		mapping.mappedElements.get(if (!reverse) 0 else 1)
+	def getLeftElement(ClassMapping mapping, boolean swapLeftRight) {
+		mapping.mappedElements.get(if (!swapLeftRight) 0 else 1)
 	}
 	
-	def getRightElement(ClassMapping mapping, boolean reverse) {
-		mapping.mappedElements.get(if (!reverse) 1 else 0)
+	def getRightElement(ClassMapping mapping, boolean swapLeftRight) {
+		mapping.mappedElements.get(if (!swapLeftRight) 1 else 0)
 	}
 	
-	def getLeftElement(edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping mapping, boolean reverse) {
-		mapping.mappedElements.get(if (!reverse) 0 else 1)
+	def getLeftElement(edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping mapping, boolean swapLeftRight) {
+		mapping.mappedElements.get(if (!swapLeftRight) 0 else 1)
 	}
 	
-	def getRightElement(edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping mapping, boolean reverse) {
-		mapping.mappedElements.get(if (!reverse) 1 else 0)
+	def getRightElement(edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping mapping, boolean swapLeftRight) {
+		mapping.mappedElements.get(if (!swapLeftRight) 1 else 0)
 	}
 	
-	def getWhenPredicates(ClassMapping mapping, boolean reverse) {
-		if (!reverse)
+	def getWhenPredicates(ClassMapping mapping, boolean swapLeftRight) {
+		if (!swapLeftRight)
 			mapping.whens.map[predicate]
 		else
 			mapping.wheres.map[oppositePredicate].filterNull
 	}
 	
-	def getWhereExpressions(ClassMapping mapping, boolean reverse) {
-		if (!reverse)
+	def getWhereExpressions(ClassMapping mapping, boolean swapLeftRight) {
+		if (!swapLeftRight)
 			mapping.wheres.map[expression]
 		else
 			mapping.whens.map[oppositeExpression].filterNull
 	}
 	
-	def getWhenPredicates(edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping mapping, boolean reverse) {
-		if (!reverse)
+	def getWhenPredicates(edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping mapping, boolean swapLeftRight) {
+		if (!swapLeftRight)
 			mapping.whens.map[predicate]
 		else
 			mapping.wheres.map[oppositePredicate].filterNull
 	}
 	
-	def getWhereExpressions(edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping mapping, boolean reverse) {
-		if (!reverse)
+	def getWhereExpressions(edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping mapping, boolean swapLeftRight) {
+		if (!swapLeftRight)
 			mapping.wheres.map[expression]
 		else
 			mapping.whens.map[oppositeExpression].filterNull
@@ -181,84 +181,77 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 	
 	/**
 	 * Creates a {@link ClassifierMapping} for a {@link FeatureMapping}.
+	 * @return null if no mapping is needed
 	 */
 	def ClassifierMapping mapFeatureMappingClassifierMapping(FeatureMapping featureMapping, MIR mir) {
-				// create new Class Mapping for the Feature Mapping
-		val classifierMapping = createClassifierMapping
-		mir.classMappings += classifierMapping
+			// TODO: case where there is not only one EClassifier
+		val leftType = featureMapping.left.last.definedType
+		val rightType = featureMapping.right.last.definedType
 		
-		classifierMapping.featureMapping = featureMapping
-		featureMapping.classifierMapping = classifierMapping
+		// if both sides are primitives, we do not need a classifier mapping 
+		if (isPrimitiveType(leftType) && isPrimitiveType(rightType)) {
+			return null;
+		}
 		
-		// TODO: case where there is not only one EClassifier
-		classifierMapping.left = featureMapping.left.last.EClassifier
-		classifierMapping.right = featureMapping.right.last.EClassifier
+		if (!isPrimitiveType(leftType) && !isPrimitiveType(rightType)) {
+			val classifierMapping = createClassifierMapping
+			mir.classMappings += classifierMapping
+			
+			classifierMapping.featureMapping = featureMapping
+			featureMapping.classifierMapping = classifierMapping
+			
+			classifierMapping.left = leftType
+			classifierMapping.right = rightType
+			
+			return classifierMapping
+		}
 		
-		classifierMapping
+		// one side is primitive, the other is not
+		// should already be sorted out in validation stage
+		throw new IllegalArgumentException("Can't map primitive and non-primitive type in feature mapping")
 	}
 	
-	// TODO: Refactor god method
+	static def boolean isPrimitiveType(EClassifier eClassifier) {
+		return (eClassifier instanceof EDataType)
+	} 
+	
 	def void mapFeatureMapping(edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping mapping, MIR mir,
-		ClassifierMapping parent, boolean reverse
+		ClassifierMapping parent, boolean swapLeftRight
 	) {
 		// create new Feature Mapping
 		val featureMapping = createFeatureMapping
 		mir.featureMappings += featureMapping
 		
-		val leftElement = mapping.getLeftElement(reverse) as FeatureCall
-		val rightElement = mapping.getRightElement(reverse) as FeatureCall
+		val leftElement = mapping.getLeftElement(swapLeftRight) as FeatureCall
+		val rightElement = mapping.getRightElement(swapLeftRight) as FeatureCall
 		
-		featureMapping.left += createEClassifierFeature(leftElement)
-		featureMapping.right += createEClassifierFeature(rightElement)
+		featureMapping.left += leftElement.collectFeatureCalls.map [ createEClassifierFeature(it) ]
+		featureMapping.right += rightElement.collectFeatureCalls.map [ createEClassifierFeature(it) ]
 
-		val classifierMapping = mapFeatureMappingClassifierMapping(featureMapping, mir)
 
-		// create initializers for classifier mapping
-		classifierMapping.initializer += mapping.getWhereExpressions(reverse).map[dispatchCreateInitializer].filterNull
-
-		// create new correspondence predicate for the feature mapping
-		val correspondencePredicate = createReverseFeaturesCorrespondWithEClassifiers
-		val correspondence = createFeatureEClassifierCorrespondence
-		correspondence.feature = leftElement.getStructuralFeature
-		correspondence.EClassifier = getRightSideType(parent)
-		correspondencePredicate.correspondences += correspondence
-		
-		// get correspondences from parent. there should only be one
-		correspondencePredicate.correspondences += EcoreUtil.copyAll(getMappingCorrespondences(parent))
-
-		mir.predicates += correspondencePredicate
-		classifierMapping.predicates += correspondencePredicate
-		
 		// map predicates for both class and feature mapping
-		val mappedPredicates = mapping.getWhenPredicates(reverse).map [ it.dispatchCreatePredicate ].filterNull.toList
+		val mappedPredicates = mapping.getWhenPredicates(swapLeftRight).map [ it.dispatchCreatePredicate ].filterNull.toList
 		mir.predicates += mappedPredicates
 		featureMapping.predicates += mappedPredicates
-		classifierMapping.predicates += mappedPredicates
+
+		// create initializers for classifier mapping
+		val classifierMapping = mapFeatureMappingClassifierMapping(featureMapping, mir)
+		if (classifierMapping != null) {
+			classifierMapping.initializer += mapping.getWhereExpressions(swapLeftRight).map[dispatchCreateInitializer].filterNull
+			classifierMapping.predicates += mappedPredicates
+		}
 		
 		// call recursively for each child mapping
 		mapping.withs.forEach [
-			mapFeatureMapping(it, mir, classifierMapping, reverse)
+			mapFeatureMapping(it, mir, classifierMapping, swapLeftRight)
 		]
-	}
-	
-	/**
-	 * Returns the correspondences of the mapping if it has any,
-	 * or an empty list if not.
-	 */
-	def getMappingCorrespondences(Mapping mapping) {
-		mapping
-			.predicates
-			.filter(ReverseFeaturesCorrespondWithEClassifiers)
-			.head
-			?.correspondences
-		?:
-			#[]
 	}
 	
 	def createEClassifierFeature(FeatureCall feature) {
 		val result = createEClassifierFeature
 		result.feature = feature.getStructuralFeature
-		result.EClassifier = feature.getTypeRecursive
+		result.EClassifier = feature.ref.typeRecursive
+		result.definedType = feature.typeRecursive
 		
 		return result
 	}
@@ -279,5 +272,4 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 	def dispatch getLeftSideType(ClassifierMapping mapping) {
 		return mapping.left
 	}
-	
 }

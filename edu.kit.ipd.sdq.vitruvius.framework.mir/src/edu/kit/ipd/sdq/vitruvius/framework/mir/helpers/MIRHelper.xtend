@@ -10,6 +10,7 @@ import java.util.List
 import java.util.ArrayList
 import org.eclipse.emf.ecore.resource.Resource
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.EClassifierFeature
 
 class MIRHelper {
 	static def List<FeatureCall> collectFeatureCalls(TypedElement fc) {

@@ -12,10 +12,8 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Predicate;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.JavaPredicate;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ReverseFeaturesCorrespondWithEClassifiers
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Initializer
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.JavaInitializer
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.CreateCorresponding
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.FeatureMapping
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.ArrayList
@@ -350,32 +348,8 @@ class MIRCodeGenerator implements IGenerator {
 		'''/* Java predicate */ «predicate.checkStatement»'''
 	}
 	
-	private def dispatch getPredicateString(ReverseFeaturesCorrespondWithEClassifiers predicate) {
-		var leftPath = ""
-		var result = "/* RFCWECls */ ("
-		
-		var predicateParts = new ArrayList<String>()
-		
-		for (correspondence : predicate.correspondences) {
-			leftPath += ".(reverse "+correspondence.feature.name+")"
-			predicateParts += '''
-				(/* check if «CONTEXT_NAME»«leftPath» corresponds
-						with a «correspondence.EClassifier.name» */ false)
-				'''
-		}
-		
-		result += predicateParts.join("\n &&")
-		result += ")"
-		
-		return result
-	}
-	
 	private def dispatch getPredicateString(Predicate predicate) {
 		'''/* Unknown predicate type */ false'''
-	}
-	
-	private def dispatch getInitializerStatement(CreateCorresponding initializer) {
-		'''/* Create corresponding */'''
 	}
 	
 	private def dispatch getInitializerStatement(JavaInitializer initializer) {
