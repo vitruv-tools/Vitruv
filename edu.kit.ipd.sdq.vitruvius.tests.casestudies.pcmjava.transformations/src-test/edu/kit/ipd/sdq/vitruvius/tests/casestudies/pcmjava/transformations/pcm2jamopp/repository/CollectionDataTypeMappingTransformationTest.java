@@ -25,15 +25,14 @@ public class CollectionDataTypeMappingTransformationTest extends PCM2JaMoPPTrans
     }
 
     @Test
-    public void testAddCollectionDataTypeWithPrimitiveInnerType() throws Throwable {
-        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
-        final PrimitiveDataType primitiveTypeString = RepositoryFactory.eINSTANCE.createPrimitiveDataType();
-        primitiveTypeString.setType(PrimitiveTypeEnum.STRING);
+    public void testAddCollectionDataTypeWithPrimitiveTypeStringAsInnerType() throws Throwable {
+        final PrimitiveTypeEnum pte = PrimitiveTypeEnum.STRING;
+        this.testAddCollectionDataTypeWithPrimitiveInnerType(pte);
+    }
 
-        final CollectionDataType collectionDataType = this.addCollectionDatatypeAndSync(repo,
-                PCM2JaMoPPTestUtils.COLLECTION_DATA_TYPE_NAME, primitiveTypeString);
-
-        this.assertDataTypeCorrespondence(collectionDataType);
+    @Test
+    public void testAddCollectionDataTypeWithPrimitiveTypeIntAsInnerType() throws Throwable {
+        this.testAddCollectionDataTypeWithPrimitiveInnerType(PrimitiveTypeEnum.INT);
     }
 
     @Test
@@ -43,6 +42,17 @@ public class CollectionDataTypeMappingTransformationTest extends PCM2JaMoPPTrans
 
         final CollectionDataType collectionDataType = this.addCollectionDatatypeAndSync(repo,
                 PCM2JaMoPPTestUtils.COLLECTION_DATA_TYPE_NAME, compositeDataType);
+
+        this.assertDataTypeCorrespondence(collectionDataType);
+    }
+
+    protected void testAddCollectionDataTypeWithPrimitiveInnerType(final PrimitiveTypeEnum pte) throws Throwable {
+        final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
+        final PrimitiveDataType primitiveType = RepositoryFactory.eINSTANCE.createPrimitiveDataType();
+        primitiveType.setType(pte);
+
+        final CollectionDataType collectionDataType = this.addCollectionDatatypeAndSync(repo,
+                PCM2JaMoPPTestUtils.COLLECTION_DATA_TYPE_NAME, primitiveType);
 
         this.assertDataTypeCorrespondence(collectionDataType);
     }

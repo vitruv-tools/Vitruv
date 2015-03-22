@@ -8,24 +8,23 @@ import org.emftext.language.java.containers.CompilationUnit
 import org.emftext.language.java.containers.JavaRoot
 import org.emftext.language.java.containers.Package
 import org.emftext.language.java.expressions.AssignmentExpression
+import org.emftext.language.java.expressions.ConditionalExpression
 import org.emftext.language.java.imports.Import
 import org.emftext.language.java.imports.StaticImport
+import org.emftext.language.java.instantiations.NewConstructorCall
+import org.emftext.language.java.literals.This
 import org.emftext.language.java.members.Constructor
 import org.emftext.language.java.members.Field
 import org.emftext.language.java.members.Method
 import org.emftext.language.java.modifiers.Modifier
+import org.emftext.language.java.operators.Assignment
 import org.emftext.language.java.parameters.Parameter
+import org.emftext.language.java.references.IdentifierReference
+import org.emftext.language.java.references.SelfReference
 import org.emftext.language.java.statements.ExpressionStatement
 import org.emftext.language.java.types.ClassifierReference
 import org.emftext.language.java.types.NamespaceClassifierReference
 import org.emftext.language.java.types.PrimitiveType
-import org.emftext.language.java.references.SelfReference
-import org.emftext.language.java.literals.This
-import org.emftext.language.java.references.IdentifierReference
-import org.emftext.language.java.operators.Assignment
-import org.emftext.language.java.instantiations.NewConstructorCall
-import org.emftext.language.java.expressions.ConditionalExpression
-import org.emftext.language.java.expressions.Expression
 
 /**
  * TUID calculator and resolver for the JaMoPP meta-model.

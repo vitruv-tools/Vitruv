@@ -25,6 +25,8 @@ import org.emftext.language.java.containers.CompilationUnit
 import org.emftext.language.java.generics.GenericsFactory
 import org.emftext.language.java.generics.QualifiedTypeArgument
 import org.emftext.language.java.types.NamespaceClassifierReference
+import org.emftext.language.java.types.impl.IntImpl
+import org.emftext.language.java.types.PrimitiveType
 
 class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -49,20 +51,26 @@ class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransfo
 		val CollectionDataType cdt = eObject as CollectionDataType
 		var String jaMoPPInnerDataTypeName = "?"
 		if (null != cdt.innerType_CollectionDataType) {
-			val jaMoPPInnerDataType = DataTypeCorrespondenceHelper.
+			var jaMoPPInnerDataType = DataTypeCorrespondenceHelper.
 				claimUniqueCorrespondingJaMoPPDataTypeReference(cdt.innerType_CollectionDataType, correspondenceInstance)
-			jaMoPPInnerDataTypeName = JaMoPP2PCMUtils.getTargetClassifierFromTypeReference(jaMoPPInnerDataType).name
+			if(jaMoPPInnerDataType instanceof PrimitiveType){
+				//get class object for inner type, e.g, for int get the class Integer
+				jaMoPPInnerDataType = PCM2JaMoPPUtils.getWrapperTypeReferenceForPrimitiveType(jaMoPPInnerDataType)
+			}
+			if (null != jaMoPPInnerDataType && null != JaMoPP2PCMUtils.getTargetClassifierFromTypeReference(jaMoPPInnerDataType)) {
+				jaMoPPInnerDataTypeName = JaMoPP2PCMUtils.getTargetClassifierFromTypeReference(jaMoPPInnerDataType).name
+			}
 		}
 
 		//i) ask whether to create a new class
-//		val String selectClasOrNoClass = "Would you like to create a own class for the CollectionDataType named '" +
-//			cdt.entityName + "' in the data type package?"
-//		val int createOwnClassInt = userInteracting.selectFromMessage(UserInteractionType.MODAL,
-//			"Collection Data Type created. " + selectClasOrNoClass, #{"Yes", "No"})
-//		var boolean createOwnClass = false;
-//		if (0 == createOwnClassInt) {
-//			createOwnClass = true
-//		}
+		//		val String selectClasOrNoClass = "Would you like to create a own class for the CollectionDataType named '" +
+		//			cdt.entityName + "' in the data type package?"
+		//		val int createOwnClassInt = userInteracting.selectFromMessage(UserInteractionType.MODAL,
+		//			"Collection Data Type created. " + selectClasOrNoClass, #{"Yes", "No"})
+		//		var boolean createOwnClass = false;
+		//		if (0 == createOwnClassInt) {
+		//			createOwnClass = true
+		//		}
 		val createOwnClass = true
 
 		//ii) ask data type
@@ -87,9 +95,9 @@ class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransfo
 			collectionDataTypeNames)
 		val Class<? extends Collection> selectedClass = collectionDataTypes.get(selectedType)
 		if (createOwnClass) {
-			var datatypePackage = PCM2JaMoPPUtils.getDatatypePackage(correspondenceInstance, cdt.repository__DataType,
-				cdt.entityName, userInteracting)
-			val String content = '''package «datatypePackage.namespacesAsString +datatypePackage.name»;
+			var datatypePackage = PCM2JaMoPPUtils.getDatatypePackage(correspondenceInstance,
+				cdt.repository__DataType, cdt.entityName, userInteracting)
+			val String content = '''package «datatypePackage.namespacesAsString + datatypePackage.name»;
 
 import «selectedClass.package.name».«selectedClass.simpleName»;
 
@@ -102,6 +110,7 @@ public class «cdt.entityName» extends «selectedClass.simpleName»<«jaMoPPInn
 			val superTypeRef = classifier.superTypeReferences.get(0)
 			return #[cu, classifier, superTypeRef]
 		} else {
+
 			//TODO
 			throw new UnsupportedOperationException(
 				"Not creating a class for collection data type is currently not supported")
@@ -117,11 +126,11 @@ public class «cdt.entityName» extends «selectedClass.simpleName»<«jaMoPPInn
 		}
 		return nonAbstractCollections
 	}
-	
+
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(affectedEObject, affectedAttribute,
-		featureCorrespondenceMap, correspondenceInstance)
+			featureCorrespondenceMap, correspondenceInstance)
 		if (affectedEObjects.nullOrEmpty) {
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
@@ -129,7 +138,8 @@ public class «cdt.entityName» extends «selectedClass.simpleName»<«jaMoPPInn
 		val cus = affectedEObjects.filter(typeof(CompilationUnit))
 		if (!cus.nullOrEmpty) {
 			val CompilationUnit cu = cus.get(0)
-			PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, tcr, correspondenceInstance, false)
+			PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, tcr, correspondenceInstance,
+				false)
 		}
 		return tcr
 	}
@@ -144,7 +154,7 @@ public class «cdt.entityName» extends «selectedClass.simpleName»<«jaMoPPInn
 		val innerClassifier = innerType as ConcreteClassifier
 		val concreteClass = correspondenceInstance.
 			claimUniqueCorrespondingEObjectByType(affectedEObject, org.emftext.language.java.classifiers.Class)
-		if(!(concreteClass.extends instanceof NamespaceClassifierReference)){
+		if (!(concreteClass.extends instanceof NamespaceClassifierReference)) {
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
 		val extendsReference = concreteClass.extends as NamespaceClassifierReference

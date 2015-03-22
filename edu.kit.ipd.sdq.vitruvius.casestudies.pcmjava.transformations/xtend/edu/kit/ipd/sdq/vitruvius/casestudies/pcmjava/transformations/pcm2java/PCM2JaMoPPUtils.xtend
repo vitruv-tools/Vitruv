@@ -65,6 +65,7 @@ import org.emftext.language.java.types.Float
 import org.emftext.language.java.types.Int
 import org.emftext.language.java.types.Long
 import org.emftext.language.java.types.NamespaceClassifierReference
+import org.emftext.language.java.types.PrimitiveType
 import org.emftext.language.java.types.Short
 import org.emftext.language.java.types.TypeReference
 import org.emftext.language.java.types.TypesFactory
@@ -669,6 +670,50 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 			logger.info("found datatype package")
 		}
 		datatypePackage
+	}
+	
+		/**
+	 * returns the class object for a primitive type, e.g, Integer for int
+	 */
+	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(PrimitiveType type){
+		logger.warn("no dispatch method found for type: " + type)
+		return null
+	}
+	
+	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Boolean type){
+		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Boolean")	
+	}
+	
+	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Byte type){
+		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Byte")
+	}
+	
+	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Char type){
+		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Character")
+	}
+	
+	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Double type){
+		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Double")
+	}
+	
+	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Float type){
+		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Float")
+	}
+	
+	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Int type){
+		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Integer")
+	}
+	
+	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Long type){
+		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Long")
+	}
+	
+	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Short type){
+		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Short")
+	}
+	
+	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(org.emftext.language.java.types.Void type){
+		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Void")
 	}
 
 }
