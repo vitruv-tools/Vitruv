@@ -43,12 +43,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="checkStatement" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral=""/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ReverseFeaturesMappedBy" eSuperTypes="#//Predicate">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="reverseFeatures" lowerBound="1"
-        upperBound="-1" eType="#//EClassifierFeature" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" lowerBound="1"
-        eType="#//Mapping"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Initializer" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="JavaInitializer" eSuperTypes="#//Initializer">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="callStatement" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
