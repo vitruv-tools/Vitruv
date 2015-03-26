@@ -31,9 +31,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureCall
 import java.util.List
 import org.eclipse.xtext.util.Tuples
 import org.eclipse.emf.ecore.EClassifier
-import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EcoreHelper
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper
+import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EMFHelper
 
 class MIRJvmModelInferrer extends AbstractModelInferrer {
 	@Inject extension JvmTypesBuilder
@@ -135,7 +135,7 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 
 	// TODO: Pull up name from NamedEClass and FeatureCall, refactor
 	def List<EObject> createParameterList(EObject context, int index) {
-		var containerHierarchy = EcoreHelper.getContainerHierarchy(context, true)
+		var containerHierarchy = EMFHelper.getContainerHierarchy(context, true)
 		
 		val result = new ArrayList<EObject>()
 		

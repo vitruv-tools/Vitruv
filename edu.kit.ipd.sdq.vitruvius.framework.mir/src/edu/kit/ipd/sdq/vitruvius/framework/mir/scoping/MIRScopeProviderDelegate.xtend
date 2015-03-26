@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.scoping
 
 import com.google.inject.Inject
-import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EcoreHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureCall
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping
@@ -24,6 +23,7 @@ import org.eclipse.xtext.xbase.scoping.XImportSectionNamespaceScopeProvider
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper.*
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass
+import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EMFHelper
 
 /**
  * @author Dominik Werle
@@ -153,7 +153,7 @@ class MIRScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 	
 	// TODO: refactor Feature/ClassMapping, pull up mappedElements to supertype
 	def createFeatureCallRootElementScope(EObject context) {
-		val elementsInScope = EcoreHelper.getContainerHierarchy(context, true)
+		val elementsInScope = EMFHelper.getContainerHierarchy(context, true)
 			.filter[it instanceof FeatureMapping || it instanceof ClassMapping]
 		
 		return new SimpleScope(IScope.NULLSCOPE,
