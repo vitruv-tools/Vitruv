@@ -8,27 +8,32 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRTransformationExecuting
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMapping
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRModelInformationProvider
+import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EMFHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassifierMapping
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.FeatureMapping
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.JavaPredicate
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Mapping
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Predicate
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.ArrayList
 import java.util.HashMap
+import java.util.HashSet
 import java.util.List
 import java.util.Map
+import java.util.Set
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Mapping
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.FeatureMapping
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMapping
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MappingClaimRegistry
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRModelInformationProvider
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject
 
 /**
  * @author Dominik Werle
@@ -70,62 +75,6 @@ class MIRCodeGenerator implements IGenerator {
 		generateTransformationExecuting(il, resourcePath, fsa)
 	}
 	
-	def String nextMappingClassName() {
-		'''Mapping''' + mappingClassNames.size
-	}
-	
-	def String mappingPackageName(String rootPkgName) {
-		rootPkgName + "." + MAPPING_PKG_NAME
-	}	
-	
-	def dispatch generateMappingClass(ClassifierMapping mapping, String pkgName, IFileSystemAccess fsa) {
-		val className = nextMappingClassName
-		mappingClassNames.put(mapping, className)
-		
-		fsa.generateFile(SRC_GEN_FOLDER + pkgName.mappingPackageName.packageNameToPath + className + ".java",
-		'''
-			package «pkgName.mappingPackageName»;
-			
-			import «MIRMapping.name»;
-			import «EMFChangeResult.name»;
-			import «EChange.name»;
-			import «CorrespondenceInstance.name»;
-			import «MappingClaimRegistry.name»;
-			import «MIRModelInformationProvider.name»;
-			
-			import «CreateRootEObject.name»;
-			import «DeleteRootEObject.name»;
-			
-			class «className» implements MIRMapping {
-				final static Logger logger = Logger.getLogger(«className».class);
-				
-				public EMFChangeResult applyEChange(EChange eChange, CorrespondenceInstance correspondenceInstance, MappingClaimRegistry mappingClaimRegistry, MIRModelInformationProvider modelInformationProvider) {
-				«#["CreateRootEObject", "DeleteRootEObject"].map [
-				'''
-					if (eChange instanceof «it») {
-						doApplyChange((«it») eChange, correspondenceInstance, mappingClaimRegistry, modelInformationProvider);
-					}'''
-				].join(" else ")»
-					else {
-						logger.debug("Change not handled: " + eChange.toString());
-					}
-				}
-				
-				public EMFChangeResult doApplyEChange(CreateRootEObject eChange, CorrespondenceInstance correspondenceInstance, MappingClaimRegistry mappingClaimRegistry, MIRModelInformationProvider modelInformationProvider) {
-					logger.debug("CreateRootEObject");
-				}
-				
-				public EMFChangeResult doApplyEChange(DeleteRootEObject eChange, CorrespondenceInstance correspondenceInstance, MappingClaimRegistry mappingClaimRegistry, MIRModelInformationProvider modelInformationProvider) {
-					logger.debug("DeleteRootEObject");
-				}
-			}
-		'''
-		)
-	}
-	
-	def dispatch generateMappingClass(FeatureMapping mapping, String pkgName, IFileSystemAccess fsa) {
-	}
-	
 	private def resetState() {
 		predicateCheckMethodNames = new HashMap<ClassifierMapping, String>()
 		createMethodNames = new HashMap<ClassifierMapping, String>()
@@ -149,6 +98,7 @@ class MIRCodeGenerator implements IGenerator {
 		EObject, Map, HashMap, List, ArrayList,
 		IllegalArgumentException,
 		Pair, EMFModelTransformationExecuting, EMFChangeResult, VURI,
+		AbstractMIRTransformationExecuting,
 		CorrespondenceInstance, EMFModelChange, Change,
 		EChange, EcoreHelper
 	]
@@ -179,7 +129,7 @@ class MIRCodeGenerator implements IGenerator {
 			 *   <li>«file.packages.get(1).nsURI»</li>
 			 * </ol>.
 			 */
-			class «file.configuration.type» implements «EMFModelTransformationExecuting.simpleName» {
+			class «file.configuration.type» extends «AbstractMIRTransformationExecuting.simpleName» {
 				/** The first mapped metamodel. **/
 				public final String MM_ONE = "«file.packages.get(0).nsURI»";
 				/** The second mapped metamodel. **/
@@ -200,6 +150,13 @@ class MIRCodeGenerator implements IGenerator {
 				}
 				
 				@Override
+				protected void setup() {
+					«FOR name : mappingClassNames.values»
+					addMIRMapping(new «name»());
+					«ENDFOR»
+				}
+				
+				@Override
 				public List<Pair<VURI, VURI>> getTransformableMetamodels() {
 					return transformableMetamodels;
 				}
@@ -209,5 +166,94 @@ class MIRCodeGenerator implements IGenerator {
 				}
 			}
 		''')
+	}
+	
+	def String nextMappingClassName() {
+		'''Mapping''' + mappingClassNames.size
+	}
+	
+	def String mappingPackageName(String rootPkgName) {
+		rootPkgName + "." + MAPPING_PKG_NAME
+	}
+	
+	def dispatch String getPredicateEvaluationJava(JavaPredicate predicate) {
+		predicate.checkStatement
+	}
+	
+	def dispatch String getPredicateEvaluationJava(Predicate predicate) {
+		'''/* unknown predicate: «predicate.toString» */ false'''
+	}
+	
+	def dispatch generateMappingClass(ClassifierMapping mapping, String pkgName, IFileSystemAccess fsa) {
+		val className = nextMappingClassName
+		mappingClassNames.put(mapping, className)
+		
+		fsa.generateFile(SRC_GEN_FOLDER + pkgName.mappingPackageName.packageNameToPath + className + ".java",
+		'''
+			package «pkgName.mappingPackageName»;
+			
+			import «MIRMapping.name»;
+			import «EMFChangeResult.name»;
+			import «EChange.name»;
+			import «CorrespondenceInstance.name»;
+			import «MIRModelInformationProvider.name»;
+			
+			import «CreateRootEObject.name»;
+			import «DeleteRootEObject.name»;
+			
+			import «Set.name»;
+			import «HashSet.name»;
+			
+			/**
+			 * Classifier Mapping
+			 */
+			class «className» extends AbstractMIRMapping {
+				final static Logger logger = Logger.getLogger(«className».class);
+				
+				final Set<EObject> managedEObjects = new HashSet<EObject>(); 
+				
+				public EMFChangeResult applyEChange(EChange eChange, CorrespondenceInstance correspondenceInstance, MIRModelInformationProvider modelInformationProvider) {
+				«#["CreateRootEObject", "DeleteRootEObject"].map [
+				'''
+					if (eChange instanceof «it») {
+						doApplyChange((«it») eChange, correspondenceInstance, mappingClaimRegistry, modelInformationProvider);
+					}'''
+				].join(" else ")»
+					else {
+						logger.debug("Change not handled: " + eChange.toString());
+					}
+				}
+				
+				public boolean checkIfAppliesTo(EObject object, CorrespondenceInstance correspondenceInstance, MappingClaimRegistry mappingClaimRegistry, MIRModelInformationProvider modelInformationProvider) {
+					boolean predicate;
+					
+					«FOR predicate : mapping.predicates»
+					predicate = «predicate.predicateEvaluationJava»;
+					if (!predicate) { return false; }
+					
+					«ENDFOR»
+					«featureMappingCheckJava(mapping)»
+					
+					return true;
+				}
+			}
+		'''
+		)
+	}
+	
+	def featureMappingCheckJava(ClassifierMapping mapping) {
+		if (mapping.featureMapping != null) {
+			'''
+			EStructuralFeature feature = «EMFHelper.getJavaExpressionThatReturns(mapping.featureMapping.left.get(0).feature)»;
+			EClassifier sourceType = «EMFHelper.getJavaExpressionThatReturns(mapping.featureMapping.left.get(0).EClassifier)»;
+			predicate = modelInformationProvider.isReferencedFromTypeByFeature(object, sourceType, feature);
+			if (!predicate) { return false; }
+			'''
+		} else {
+			""
+		}
+	}
+	
+	def dispatch generateMappingClass(FeatureMapping mapping, String pkgName, IFileSystemAccess fsa) {
 	}
 }

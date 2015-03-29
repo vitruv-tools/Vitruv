@@ -5,6 +5,7 @@ import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.EClassifier
 
 class EMFHelper {
 	/**
@@ -26,6 +27,15 @@ class EMFHelper {
 		return result
 	}
 	
+	static def getJavaExpressionThatReturns(EClassifier classifier) {
+		val classifierID = classifier.classifierID
+		val ePackage = classifier.EPackage
+		
+		val packageExpression = getJavaExpressionThatReturns(ePackage)
+		
+		return '''((org.eclipse.emf.ecore.EClass) «packageExpression».getEClassifiers().get(«classifierID»))'''
+	}
+	
 	/**
 	 * Returns a Java expression that when evaluated returns the given
 	 * EStructuralFeature.
@@ -33,12 +43,8 @@ class EMFHelper {
 	static def getJavaExpressionThatReturns(EStructuralFeature feature) {
 		val featureID = feature.featureID
 		val containerClass = feature.EContainingClass
-		val classifierID = containerClass.classifierID
-		val ePackage = containerClass.EPackage
 		
-		val packageExpression = getJavaExpressionThatReturns(ePackage)
-		
-		return '''((org.eclipse.emf.ecore.EClass) «packageExpression».getEClassifiers().get(«classifierID»)).getEStructuralFeature(«featureID»)'''
+		return '''«getJavaExpressionThatReturns(containerClass)».getEStructuralFeature(«featureID»)'''
 	}
 	
 	/**

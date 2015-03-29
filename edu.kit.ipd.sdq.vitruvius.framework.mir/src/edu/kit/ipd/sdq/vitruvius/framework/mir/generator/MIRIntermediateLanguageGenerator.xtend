@@ -24,6 +24,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EDataType
+import org.eclipse.xtext.xbase.XBlockExpression
 
 /**
  * Generates the intermediate language form of the model
@@ -168,14 +169,20 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 	def dispatch dispatchCreatePredicate(Object o) { return null; }
 	def dispatch dispatchCreatePredicate(JavaBlock javaBlock) {
 		val result = createJavaPredicate
-		result.checkStatement = "(" + javaBlock.javaString + ")";
+		result.checkStatement = "(" + javaBlock.javaString + ")"
+		return result
+	}
+	
+	def dispatch dispatchCreatePredicate(XBlockExpression xbaseBlock) {
+		val result = createJavaPredicate
+		result.checkStatement = ''' /* call «generatorStatus.getJvmName(xbaseBlock)». */ false'''
 		return result
 	}
 	
 	def dispatch dispatchCreateInitializer(Object o) { return null; }
 	def dispatch dispatchCreateInitializer(JavaBlock javaBlock) {
 		val result = createJavaInitializer
-		result.callStatement = "(" + javaBlock.javaString + ")";
+		result.callStatement = "(" + javaBlock.javaString + ")"
 		return result
 	}
 	
