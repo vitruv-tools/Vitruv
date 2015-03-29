@@ -198,9 +198,6 @@ class MIRCodeGenerator implements IGenerator {
 			import «CorrespondenceInstance.name»;
 			import «MIRModelInformationProvider.name»;
 			
-			import «CreateRootEObject.name»;
-			import «DeleteRootEObject.name»;
-			
 			import «Set.name»;
 			import «HashSet.name»;
 			
@@ -211,18 +208,6 @@ class MIRCodeGenerator implements IGenerator {
 				final static Logger logger = Logger.getLogger(«className».class);
 				
 				final Set<EObject> managedEObjects = new HashSet<EObject>(); 
-				
-				public EMFChangeResult applyEChange(EChange eChange, CorrespondenceInstance correspondenceInstance, MIRModelInformationProvider modelInformationProvider) {
-				«#["CreateRootEObject", "DeleteRootEObject"].map [
-				'''
-					if (eChange instanceof «it») {
-						doApplyChange((«it») eChange, correspondenceInstance, mappingClaimRegistry, modelInformationProvider);
-					}'''
-				].join(" else ")»
-					else {
-						logger.debug("Change not handled: " + eChange.toString());
-					}
-				}
 				
 				public boolean checkIfAppliesTo(EObject object, CorrespondenceInstance correspondenceInstance, MappingClaimRegistry mappingClaimRegistry, MIRModelInformationProvider modelInformationProvider) {
 					boolean predicate;
