@@ -25,9 +25,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Quadruple;
 
 /**
- * The VitruviusResourceManipulatingJob is an eclipse job. Its task is to save A own job is used
- * since it is not always possible to save or manipulate elements using the same thread that calls
- * {@link SyncManagerImpl}::synchronizeChange (e.g. when the manipulation is caused during a build).
+ * The VitruviusResourceManipulatingJob is an eclipse job. Its task is to save the changed models. A
+ * own job is used since it is not always possible to save or manipulate elements using the same
+ * thread that calls {@link SyncManagerImpl} ::synchronizeChange (e.g. when the manipulation is
+ * caused during a build).
  *
  */
 class VitruviusResourceManipulatingJob extends Job {
@@ -53,16 +54,10 @@ class VitruviusResourceManipulatingJob extends Job {
         while (!this.emfChangeResultQueue.isEmpty()) {
             EMFChangeResult emfChangeResult = this.emfChangeResultQueue.poll();
             try {
-
                 // TODO: Check wheather we need a deleteModelInstanceOriginal in VSUM.
-                // Here we usually do not need it because we usually delete JaMoPP resource that
-                // are
-                // renamed
-                // Hence we do not need to remove the correspondence models etc.However the
-                // question
-                // is
-                // what
-                // happens if we delete, e.g. a PCM instance.
+                // Here we usually do not need it because we usually delete JaMoPP resource that are
+                // renamed. Hence we do not need to remove the correspondence models etc.However the
+                // question is what happens if we delete, e.g. a PCM instance.
                 for (VURI vuriToDelete : emfChangeResult.getExistingObjectsToDelete()) {
                     ModelInstance mi = this.modelProviding.getAndLoadModelInstanceOriginal(vuriToDelete);
                     Resource resource = mi.getResource();
