@@ -263,9 +263,11 @@ public class EditorManagementListenerMgr {
         for (IEditorManagementListener listener : getEditorManagementListeners()) {
             removeEditorManagementListener(listener);
         }
-        eclipseAdapter.getWorkbench().removeWindowListener(workbenchListener);
-        for (IWorkbenchWindow window : workbenchWindowListeners.keySet()) {
-            window.removePageListener(workbenchWindowListeners.get(window));
+        if (null != workbenchListener) {
+            eclipseAdapter.getWorkbench().removeWindowListener(workbenchListener);
+            for (IWorkbenchWindow window : workbenchWindowListeners.keySet()) {
+                window.removePageListener(workbenchWindowListeners.get(window));
+            }
         }
     }
 }
