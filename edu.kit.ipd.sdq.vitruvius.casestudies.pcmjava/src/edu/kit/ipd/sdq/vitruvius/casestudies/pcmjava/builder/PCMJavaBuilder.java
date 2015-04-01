@@ -13,11 +13,13 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.VitruviusEmfBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronizationListener;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.MonitoredEditor;
 
-public class PCMJavaBuilder extends VitruviusEmfBuilder implements SynchronizationListener {
+public class PCMJavaBuilder extends VitruviusEmfBuilder implements SynchronisationListener {
 
     private static Logger logger = Logger.getLogger(PCMJavaBuilder.class.getSimpleName());
 
@@ -56,7 +58,7 @@ public class PCMJavaBuilder extends VitruviusEmfBuilder implements Synchronizati
      * deactivate all monitors
      */
     @Override
-    public void aboutToStartSynchronization() {
+    public void syncStarted() {
         if (null != this.emfMonitor) {
             logger.info("Stop Vitruvius EMF monitor");
             this.emfMonitor.dispose();
@@ -67,11 +69,21 @@ public class PCMJavaBuilder extends VitruviusEmfBuilder implements Synchronizati
      * reactive the monitors
      */
     @Override
-    public void synchronizationFinished() {
+    public void syncFinished() {
         logger.info("Restart Vitruvius EMF monitor");
         this.emfMonitor.initialize();
         if (null == this.javaMonitoredEditor) {
             initializeCodeMonitor();
         }
+    }
+
+    @Override
+    public void syncAborted(final EMFModelChange abortedChange) {
+        // nothing to do
+    }
+
+    @Override
+    public void syncAborted(final TransformationAbortCause cause) {
+        // nothing to do
     }
 }

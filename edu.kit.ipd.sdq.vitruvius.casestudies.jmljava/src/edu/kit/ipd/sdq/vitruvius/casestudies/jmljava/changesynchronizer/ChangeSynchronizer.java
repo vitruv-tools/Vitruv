@@ -6,13 +6,14 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.extensions.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.ModelProvidingDirtyMarker;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.internal.VitruviusChangeSynchronizer;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
 
 /**
  * Singleton implementation of the ChangeSynchronizer. Listeners can register to be informed about

@@ -20,7 +20,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileCh
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronizationListener;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.design.metamodelmanager.MetamodelManagerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.design.viewtype.manager.ViewTypeManagerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
@@ -35,7 +35,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.TransformationExecu
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
-public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder implements SynchronizationListener {
+public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder implements SynchronisationListener {
 
     private static final Logger LOGGER = Logger.getLogger(VitruviusEmfBuilder.class.getSimpleName());
 
@@ -154,7 +154,7 @@ public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder impl
     class VitruviusEMFDeltaVisitor implements IResourceDeltaVisitor {
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.core.resources.IResourceDeltaVisitor#visit(org.eclipse.core.resources.
          * IResourceDelta)
          */
@@ -196,7 +196,7 @@ public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder impl
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.core.internal.events.InternalBuilder#build(int, java.util.Map,
      * org.eclipse.core.runtime.IProgressMonitor)
      */

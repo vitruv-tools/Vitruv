@@ -61,11 +61,11 @@ import com.google.common.base.Stopwatch;
 import com.google.common.io.Files;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.ChangeSynchronizerRegistry;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.TransformationAbortCause;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.extensions.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.initializer.ActivateHandler;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.initializer.DeactivateHandler;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.plugintests.util.CodeElementUtil;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.plugintests.util.DirDiffer;

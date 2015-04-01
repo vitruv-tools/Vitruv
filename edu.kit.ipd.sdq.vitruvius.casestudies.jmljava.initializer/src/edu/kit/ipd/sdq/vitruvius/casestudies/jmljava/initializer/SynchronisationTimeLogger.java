@@ -6,9 +6,9 @@ import org.apache.log4j.Logger;
 
 import com.google.common.base.Stopwatch;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.TransformationAbortCause;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.extensions.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
 
 public final class SynchronisationTimeLogger implements SynchronisationListener {
 

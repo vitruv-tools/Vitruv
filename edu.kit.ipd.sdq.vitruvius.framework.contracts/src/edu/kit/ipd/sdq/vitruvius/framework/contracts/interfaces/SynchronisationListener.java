@@ -1,7 +1,7 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.extensions;
+package edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.TransformationAbortCause;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
 
 /**
  * Listener for the synchronisation status.
@@ -20,7 +20,7 @@ public interface SynchronisationListener {
 
     /**
      * Called if the synchronisation has been aborted.
-     * 
+     *
      * @param abortedChange
      *            The unprocessed change because of the aborted transformation.
      */
@@ -28,7 +28,7 @@ public interface SynchronisationListener {
 
     /**
      * Called if the synchronisation has been aborted.
-     * 
+     *
      * @param cause
      *            The cause for the abortion.
      */

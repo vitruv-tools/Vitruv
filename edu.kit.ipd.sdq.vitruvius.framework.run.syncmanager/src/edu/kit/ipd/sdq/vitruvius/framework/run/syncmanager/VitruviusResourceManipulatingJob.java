@@ -18,7 +18,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronizationListener;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
@@ -36,15 +36,15 @@ class VitruviusResourceManipulatingJob extends Job {
 
     private ConcurrentLinkedQueue<EMFChangeResult> emfChangeResultQueue;
     private ModelProviding modelProviding;
-    private final SynchronizationListener synchroizationListener;
+    private final Set<SynchronisationListener> synchronisationListeners;
 
     public VitruviusResourceManipulatingJob(final ModelProviding modelProviding,
-            final SynchronizationListener synchronizationListener) {
+            final Set<SynchronisationListener> synchronisationListeners) {
         super(VitruviusResourceManipulatingJob.class.getSimpleName());
 
         this.modelProviding = modelProviding;
         this.emfChangeResultQueue = new ConcurrentLinkedQueue<EMFChangeResult>();
-        this.synchroizationListener = synchronizationListener;
+        this.synchronisationListeners = synchronisationListeners;
     }
 
     @Override
@@ -92,9 +92,11 @@ class VitruviusResourceManipulatingJob extends Job {
                 addNewCorrespondences(emfChangeResult.getNewCorrespondences());
                 updateExistingCorrespondence(emfChangeResult.getCorrespondencesToUpdate());
             } finally {
-                if (null != this.synchroizationListener && emfChangeResult.isLastChangeResultInList()) {
+                if (emfChangeResult.isLastChangeResultInList()) {
                     logger.info("emfChangeResult.isLastChangeResultInList() = true");
-                    this.synchroizationListener.synchronizationFinished();
+                    for (SynchronisationListener syncListener : this.synchronisationListeners) {
+                        syncListener.syncFinished();
+                    }
                 }
             }
         }

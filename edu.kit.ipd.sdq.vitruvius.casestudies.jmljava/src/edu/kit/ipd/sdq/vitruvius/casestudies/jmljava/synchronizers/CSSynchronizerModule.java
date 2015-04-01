@@ -7,13 +7,13 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.CSSynchronize
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.extensions.ModelURIProvider;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.utils.EclipseUtilities;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.ChangeSynchronizerRegistry;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.TransformationAbortCause;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.extensions.UserInteractingProvider;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactoryImpl;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.models.JavaModelURIProvider;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor;
 
 /**

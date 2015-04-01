@@ -72,6 +72,15 @@ class RequiredDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 				"transformation")
 		return TransformationUtils.createEmptyTransformationChangeResult
 	}
+	
+	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
+		EObject oldValue, EObject newValue) {
+		logger.warn(
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
+				"transformation")
+		return TransformationUtils.createEmptyTransformationChangeResult
+	}
 
 	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue,
 		EObject[] newCorrespondingEObjects) {

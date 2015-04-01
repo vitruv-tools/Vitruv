@@ -1,8 +1,10 @@
 package edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -16,7 +18,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchroniz
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.InvariantProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronizationListener;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
 
 public class SyncManagerImpl implements ChangeSynchronizing {
@@ -32,15 +34,18 @@ public class SyncManagerImpl implements ChangeSynchronizing {
 
     private Map<Class<?>, ConcreteChangeSynchronizer> changeSynchonizerMap;
 
-    private SynchronizationListener synchronizationListener;
+    private Set<SynchronisationListener> synchronisationListeners;
 
     public SyncManagerImpl(final ModelProviding modelProviding, final ChangePropagating changePropagating,
             final CorrespondenceProviding correspondenceProviding, final InvariantProviding invariantProviding,
-            final Validating validating, final SynchronizationListener synchronizationListener) {
+            final Validating validating, final SynchronisationListener synchronisationListener) {
         this.modelProviding = modelProviding;
         this.changePropagating = changePropagating;
         this.correspondenceProviding = correspondenceProviding;
-        this.synchronizationListener = synchronizationListener;
+        this.synchronisationListeners = new HashSet<SynchronisationListener>();
+        if (null != synchronisationListener) {
+            this.synchronisationListeners.add(synchronisationListener);
+        }
         this.changeSynchonizerMap = new HashMap<Class<?>, ConcreteChangeSynchronizer>();
         EMFModelSynchronizer emfModelSynchronizer = new EMFModelSynchronizer(modelProviding, this,
                 this.changePropagating, this.correspondenceProviding);
@@ -52,7 +57,7 @@ public class SyncManagerImpl implements ChangeSynchronizing {
         this.invariantProviding = invariantProviding;
         this.validating = validating;
         this.vitruviusResourceManipulatingJob = new VitruviusResourceManipulatingJob(this.modelProviding,
-                this.synchronizationListener);
+                this.synchronisationListeners);
     }
 
     @Override
@@ -72,9 +77,10 @@ public class SyncManagerImpl implements ChangeSynchronizing {
 
     public void synchronizeChange(final Change change, final boolean isListSynchronization,
             final boolean isFirstSynchronisationInList, final boolean isLastSynchroisationInList) {
-        if (null != this.synchronizationListener
-                && (!isListSynchronization || (isListSynchronization && isFirstSynchronisationInList))) {
-            this.synchronizationListener.aboutToStartSynchronization();
+        if (!isListSynchronization || (isListSynchronization && isFirstSynchronisationInList)) {
+            for (SynchronisationListener syncListener : this.synchronisationListeners) {
+                syncListener.syncStarted();
+            }
         }
         if (changeCausedByResourceManipultingJob()) {
             logger.info("Change " + change
@@ -87,8 +93,7 @@ public class SyncManagerImpl implements ChangeSynchronizing {
         }
         EMFChangeResult emfChangeResult = (EMFChangeResult) this.changeSynchonizerMap.get(change.getClass())
                 .synchronizeChange(change);
-        boolean isLastChangeResultInList = null != this.synchronizationListener
-                && (!isListSynchronization || (isListSynchronization && isLastSynchroisationInList));
+        boolean isLastChangeResultInList = (!isListSynchronization || (isListSynchronization && isLastSynchroisationInList));
         emfChangeResult.setLastChangeResultInList(isLastChangeResultInList);
         this.vitruviusResourceManipulatingJob.addEMFChangeResult(emfChangeResult);
         this.vitruviusResourceManipulatingJob.runSynchron();

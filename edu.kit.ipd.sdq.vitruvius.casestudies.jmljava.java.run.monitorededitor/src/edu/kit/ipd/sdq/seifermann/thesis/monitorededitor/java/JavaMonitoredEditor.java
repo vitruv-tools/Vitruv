@@ -25,12 +25,12 @@ import org.emftext.language.java.containers.CompilationUnit;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.ChangeSynchronizerRegistry;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.JavaTransformation;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.TransformationAbortCause;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.extensions.SourceDirProvider;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.extensions.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.MonitoredEditor;
 import edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor.registries.MonitoredProjectsRegistry;

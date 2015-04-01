@@ -1,9 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.TransformationAbortCause;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
 
 /**
  * Base interface for custom transformations, which are not part of the usual transformation
