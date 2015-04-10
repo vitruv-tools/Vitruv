@@ -53,6 +53,7 @@ class VitruviusResourceManipulatingJob extends Job {
         setPriority(SHORT);
         while (!this.emfChangeResultQueue.isEmpty()) {
             EMFChangeResult emfChangeResult = this.emfChangeResultQueue.poll();
+            boolean exceptionOccured = true;
             try {
                 // TODO: Check wheather we need a deleteModelInstanceOriginal in VSUM.
                 // Here we usually do not need it because we usually delete JaMoPP resource that are
@@ -86,8 +87,9 @@ class VitruviusResourceManipulatingJob extends Job {
                 removeOldCorrespondences(emfChangeResult.getCorrespondencesToDelete());
                 addNewCorrespondences(emfChangeResult.getNewCorrespondences());
                 updateExistingCorrespondence(emfChangeResult.getCorrespondencesToUpdate());
+                exceptionOccured = false;
             } finally {
-                if (emfChangeResult.isLastChangeResultInList()) {
+                if (emfChangeResult.isLastChangeResultInList() || exceptionOccured) {
                     logger.info("emfChangeResult.isLastChangeResultInList() = true");
                     for (SynchronisationListener syncListener : this.synchronisationListeners) {
                         syncListener.syncFinished();
@@ -95,6 +97,7 @@ class VitruviusResourceManipulatingJob extends Job {
                 }
             }
         }
+
         return Status.OK_STATUS;
     }
 

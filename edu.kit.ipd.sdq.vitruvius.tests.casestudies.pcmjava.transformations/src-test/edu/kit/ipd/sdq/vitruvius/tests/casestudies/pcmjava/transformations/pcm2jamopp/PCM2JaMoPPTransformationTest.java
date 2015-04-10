@@ -15,11 +15,18 @@ import org.eclipse.emf.ecore.change.ChangeDescription;
 import org.eclipse.emf.ecore.change.util.ChangeRecorder;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.emftext.language.java.classifiers.Class;
 import org.emftext.language.java.classifiers.Classifier;
 import org.emftext.language.java.commons.NamedElement;
 import org.emftext.language.java.containers.CompilationUnit;
+import org.emftext.language.java.imports.ClassifierImport;
+import org.emftext.language.java.imports.Import;
+import org.emftext.language.java.instantiations.NewConstructorCall;
+import org.emftext.language.java.members.Constructor;
 import org.emftext.language.java.members.Field;
+import org.emftext.language.java.members.Member;
 import org.emftext.language.java.members.Method;
+import org.emftext.language.java.statements.Statement;
 import org.emftext.language.java.types.ClassifierReference;
 import org.emftext.language.java.types.NamespaceClassifierReference;
 import org.emftext.language.java.types.TypeReference;
@@ -27,6 +34,7 @@ import org.junit.Before;
 
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
 import de.uka.ipd.sdq.pcm.core.composition.CompositionFactory;
+import de.uka.ipd.sdq.pcm.core.entity.ComposedProvidingRequiringEntity;
 import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingEntity;
 import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingRequiringEntity;
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
@@ -50,10 +58,12 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.DataTypeCorrespondenceHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronizationListener;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.changedescription2change.ChangeDescription2ChangeConverter;
 import edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine.EMFModelPropagationEngineImpl;
@@ -73,7 +83,7 @@ import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
  * @author Langhamm
  *
  */
-public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBase implements SynchronizationListener {
+public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBase implements SynchronisationListener {
 
     protected VSUMImpl vsum;
     protected SyncManagerImpl syncManager;
@@ -434,22 +444,15 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
         return system;
     }
 
-    @Override
-    public void aboutToStartSynchronization() {
-    }
-
-    @Override
-    public void synchronizationFinished() {
-    }
-
-    protected AssemblyContext createAndSyncAssemblyContext(final System system, final BasicComponent basicComponent)
-            throws IOException {
+    protected AssemblyContext createAndSyncAssemblyContext(
+            final ComposedProvidingRequiringEntity composedProvidingRequiringEntity, final BasicComponent basicComponent)
+                    throws IOException {
         final AssemblyContext assemblyContext = CompositionFactory.eINSTANCE.createAssemblyContext();
         assemblyContext.setEntityName(PCM2JaMoPPTestUtils.ASSEMBLY_CONTEXT_NAME);
         assemblyContext.setEncapsulatedComponent__AssemblyContext(basicComponent);
-        assemblyContext.setParentStructure__AssemblyContext(system);
-        EcoreResourceBridge.saveResource(system.eResource());
-        this.triggerSynchronization(system);
+        assemblyContext.setParentStructure__AssemblyContext(composedProvidingRequiringEntity);
+        EcoreResourceBridge.saveResource(composedProvidingRequiringEntity.eResource());
+        this.triggerSynchronization(composedProvidingRequiringEntity);
         return assemblyContext;
     }
 
@@ -459,5 +462,138 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
         EcoreResourceBridge.saveResource(repo.eResource());
         this.triggerSynchronization(VURI.getInstance(repo.eResource()));
         return compositeComponent;
+    }
+
+    @Override
+    public void syncStarted() {
+
+    }
+
+    @Override
+    public void syncFinished() {
+
+    }
+
+    @Override
+    public void syncAborted(final EMFModelChange abortedChange) {
+
+    }
+
+    @Override
+    public void syncAborted(final TransformationAbortCause cause) {
+
+    }
+
+    /**
+     * a operation provided is represented by the main class implementing the interface and an
+     * import
+     *
+     * @param operationProvidedRole
+     * @throws Throwable
+     */
+    protected void assertOperationProvidedRole(final OperationProvidedRole operationProvidedRole) throws Throwable {
+        final Set<EObject> correspondingEObjects = this.getCorrespondenceInstance().getAllCorrespondingEObjects(
+                operationProvidedRole);
+        int namespaceClassifierReferenceFound = 0;
+        int importFound = 0;
+        for (final EObject eObject : correspondingEObjects) {
+            if (eObject instanceof NamespaceClassifierReference) {
+                namespaceClassifierReferenceFound++;
+            } else if (eObject instanceof ClassifierImport) {
+                importFound++;
+            } else {
+                fail("operation provided role corresponds to unexpected object: " + eObject);
+            }
+        }
+        assertEquals("unexpected size of corresponding imports", 1, importFound);
+        assertEquals("unexpected size of corresponding namespace classifier references", 1,
+                namespaceClassifierReferenceFound);
+    }
+
+    /**
+     * ap operation required role is represented by one constructor parameter (per constructor), one
+     * assignment in the constructor (per constructor) and a field with the type of the interface as
+     * well as the import of the required interface in the components main class
+     *
+     * @param operationRequiredRole
+     * @throws Throwable
+     */
+    protected void assertOperationRequiredRole(final OperationRequiredRole operationRequiredRole) throws Throwable {
+        final Set<EObject> correspondingEObjects = this.getCorrespondenceInstance().getAllCorrespondingEObjects(
+                operationRequiredRole);
+        int importFounds = 0;
+        int constructorParameterFound = 0;
+        int fieldsFound = 0;
+        int assignmentOperatorsFound = 0;
+        int expectedConstrucotrParameters = 0;
+        for (final EObject correspondingEObj : correspondingEObjects) {
+            if (correspondingEObj instanceof Import) {
+                importFounds++;
+            } else if (correspondingEObj instanceof org.emftext.language.java.parameters.Parameter) {
+                constructorParameterFound++;
+                final org.emftext.language.java.parameters.Parameter param = (org.emftext.language.java.parameters.Parameter) correspondingEObj;
+                assertTrue("Corresponding parameter has wrong name",
+                        param.getName().equalsIgnoreCase(operationRequiredRole.getEntityName()));
+
+            } else if (correspondingEObj instanceof Statement) {
+                assignmentOperatorsFound++;
+            } else if (correspondingEObj instanceof Field) {
+                fieldsFound++;
+                final Field field = (Field) correspondingEObj;
+                final Class jaMoPPClass = (Class) field.getContainingConcreteClassifier();
+                for (final Member member : jaMoPPClass.getMembers()) {
+                    if (member instanceof Constructor) {
+                        expectedConstrucotrParameters++;
+                    }
+                }
+                assertTrue("Corresponding field has wrong name",
+                        field.getName().equalsIgnoreCase(operationRequiredRole.getEntityName()));
+
+            } else {
+                fail("operation required role corresponds to unexpected object: " + correspondingEObj);
+            }
+        }
+        assertEquals("Unexpected number of imports found", 1, importFounds);
+        assertEquals("Unexpected number of constructorParameters found", expectedConstrucotrParameters,
+                constructorParameterFound);
+        assertEquals("Unexpected number of fields found", 1, fieldsFound);
+        // we currently do not synchronize the assignment statements
+        // assertEquals("Unexpected number of imports found", assignmentOperatorsFound,
+        // constructorParameterFound);
+    }
+
+    /**
+     * AssemblyContext should correspond to a field, a constructor, an import and to a new
+     * constructor call
+     *
+     * @param assemblyContext
+     * @throws Throwable
+     */
+    protected void assertAssemblyContext(final AssemblyContext assemblyContext) throws Throwable {
+        final Set<EObject> correspondingEObjects = this.getCorrespondenceInstance().getAllCorrespondingEObjects(
+                assemblyContext);
+        boolean fieldFound = false;
+        boolean importFound = false;
+        boolean newConstructorCallFound = false;
+        boolean constructorFound = false;
+        for (final EObject correspondingEObject : correspondingEObjects) {
+            if (correspondingEObject instanceof Field) {
+                final Field field = (Field) correspondingEObject;
+                assertEquals("The name of the field has to be the same as the name of the assembly context",
+                        assemblyContext.getEntityName(), field.getName());
+                fieldFound = true;
+            }
+            if (correspondingEObject instanceof Import) {
+                importFound = true;
+            }
+            if (correspondingEObject instanceof NewConstructorCall) {
+                newConstructorCallFound = true;
+            }
+            if (correspondingEObject instanceof Constructor) {
+                constructorFound = true;
+            }
+        }
+        assertTrue("Could not find all necessary corresponding objects", constructorFound && importFound
+                && newConstructorCallFound && fieldFound);
     }
 }

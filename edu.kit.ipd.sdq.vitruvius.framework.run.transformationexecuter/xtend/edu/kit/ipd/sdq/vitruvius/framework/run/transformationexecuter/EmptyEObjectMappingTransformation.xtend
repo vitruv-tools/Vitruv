@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EStructuralFeature
  */
 abstract class EmptyEObjectMappingTransformation extends EObjectMappingTransformation {
 
-	private static val Logger logger = Logger.getLogger(EmptyEObjectMappingTransformation.simpleName)
+	protected static val Logger logger = Logger.getLogger(EmptyEObjectMappingTransformation.simpleName)
 
 	override deleteRootEObject(EObject oldRootEObject, EObject[] oldCorrespondingEObjectsToDelete) {
 		logger.warn(

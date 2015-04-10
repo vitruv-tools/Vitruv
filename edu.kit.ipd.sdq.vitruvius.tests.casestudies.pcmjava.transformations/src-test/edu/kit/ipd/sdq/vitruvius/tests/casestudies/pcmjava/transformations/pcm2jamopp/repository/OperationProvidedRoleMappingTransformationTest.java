@@ -1,15 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.repository;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
-import java.util.Set;
-
-import org.eclipse.emf.ecore.EObject;
 import org.emftext.language.java.classifiers.Class;
 import org.emftext.language.java.containers.CompilationUnit;
-import org.emftext.language.java.imports.ClassifierImport;
-import org.emftext.language.java.types.NamespaceClassifierReference;
 import org.junit.Test;
 
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
@@ -123,32 +117,6 @@ public class OperationProvidedRoleMappingTransformationTest extends PCM2JaMoPPTr
                 system);
 
         this.assertOperationProvidedRole(operationProvidedRole);
-    }
-
-    /**
-     * a operation provided is represented by the main class implementing the interface and an
-     * import
-     *
-     * @param operationProvidedRole
-     * @throws Throwable
-     */
-    private void assertOperationProvidedRole(final OperationProvidedRole operationProvidedRole) throws Throwable {
-        final Set<EObject> correspondingEObjects = this.getCorrespondenceInstance().getAllCorrespondingEObjects(
-                operationProvidedRole);
-        int namespaceClassifierReferenceFound = 0;
-        int importFound = 0;
-        for (final EObject eObject : correspondingEObjects) {
-            if (eObject instanceof NamespaceClassifierReference) {
-                namespaceClassifierReferenceFound++;
-            } else if (eObject instanceof ClassifierImport) {
-                importFound++;
-            } else {
-                fail("operation provided role corresponds to unexpected object: " + eObject);
-            }
-        }
-        assertEquals("unexpected size of corresponding imports", 1, importFound);
-        assertEquals("unexpected size of corresponding namespace classifier references", 1,
-                namespaceClassifierReferenceFound);
     }
 
 }

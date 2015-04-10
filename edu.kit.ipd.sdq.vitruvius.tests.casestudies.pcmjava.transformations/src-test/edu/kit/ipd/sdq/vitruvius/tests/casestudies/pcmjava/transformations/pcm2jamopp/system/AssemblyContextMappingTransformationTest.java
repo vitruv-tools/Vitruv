@@ -1,8 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.system;
 
-import org.emftext.language.java.imports.Import;
-import org.emftext.language.java.members.Constructor;
-import org.emftext.language.java.members.Field;
 import org.junit.Test;
 
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
@@ -25,17 +22,4 @@ public class AssemblyContextMappingTransformationTest extends PCM2JaMoPPTransfor
         this.assertAssemblyContext(assemblyContext);
     }
 
-    /**
-     * assemblyContext should correspond to a field
-     *
-     * @param assemblyContext
-     * @throws Throwable
-     */
-    @SuppressWarnings("unchecked")
-    private void assertAssemblyContext(final AssemblyContext assemblyContext) throws Throwable {
-        final BasicComponent basicComponent = (BasicComponent) assemblyContext
-                .getEncapsulatedComponent__AssemblyContext();
-        this.assertCorrespondnecesAndCompareNames(assemblyContext, 4, new Class[] { Import.class, Field.class,
-                Constructor.class }, new String[] { basicComponent.getEntityName(), assemblyContext.getEntityName() });
-    }
 }
