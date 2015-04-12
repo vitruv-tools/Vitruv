@@ -15,11 +15,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRModelInfor
 
 public class MIRMappingRegistryImpl implements MIRMappingRegistry {
 	private List<MIRMapping> mappings;
-	private Map<Correspondence, MIRMapping> correspondence2mapping;
 	
 	public MIRMappingRegistryImpl() {
 		mappings = new ArrayList<MIRMapping>();
-		correspondence2mapping = new HashMap<Correspondence, MIRMapping>();
 	}
 	
 	@Override
@@ -36,16 +34,5 @@ public class MIRMappingRegistryImpl implements MIRMappingRegistry {
 			result.addChangeResult(mapping.applyEChange(eChange, correspondenceInstance, modelInformationProvider));
 		}
 		return result;
-	}
-
-	@Override
-	public MIRMapping getMappingForCorrespondence(Correspondence correspondence) {
-		return correspondence2mapping.get(correspondence);
-	}
-
-	@Override
-	public void registerMappingForCorrespondence(MIRMapping mapping,
-			Correspondence correspondence) {
-		correspondence2mapping.put(correspondence, mapping);		
 	}
 }

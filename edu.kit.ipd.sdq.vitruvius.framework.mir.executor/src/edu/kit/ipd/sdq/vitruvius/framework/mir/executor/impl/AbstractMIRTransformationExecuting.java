@@ -2,6 +2,8 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -16,6 +18,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.Invariant;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.InvariantRegistry;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMapping;
@@ -28,11 +31,15 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 	private ResponseRegistry responseRegistry;
 	private InvariantRegistry invariantRegistry;
 	private MIRMappingRegistry mappingRegistry;
+
+	private Map<Correspondence, MIRMapping> correspondence2mapping;
 	
 	public AbstractMIRTransformationExecuting() {
 		responseRegistry = new ResponseRegistryImpl();
 		invariantRegistry = new InvariantRegistryImpl();
 		mappingRegistry = new MIRMappingRegistryImpl();
+
+		correspondence2mapping = new HashMap<Correspondence, MIRMapping>();
 		
 		setup();
 	}
@@ -102,6 +109,29 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * Returns the MIRMapping that created a correspondence, or null if
+	 * no mapping is coupled to the correspondence. To get all MIRMappings for an
+	 * EObject, first get all correspondences from the {@link CorrespondenceInstance},
+	 * then use this method.
+	 * @param correspondence
+	 * @return
+	 */
+	public MIRMapping getMappingForCorrespondence(Correspondence correspondence) {
+		return correspondence2mapping.get(correspondence);
+	}
+	
+	/**
+	 * Register a mapping for a correspondence that can then be retrieved by calling
+	 * {@link #getMappingForCorrespondence(Correspondence)}.
+	 * @param mapping
+	 * @param correspondence
+	 */
+	public void registerMappingForCorrespondence(MIRMapping mapping,
+			Correspondence correspondence) {
+		correspondence2mapping.put(correspondence, mapping);		
 	}
 	
 	protected abstract void setup();

@@ -11,22 +11,4 @@ public interface MIRMappingRegistry {
 	public EMFChangeResult applyAllMappings(EChange eChange,
 			CorrespondenceInstance correspondenceInstance,
 			MIRModelInformationProvider modelInformationProvider);
-	
-	/**
-	 * Returns the MIRMapping that created a correspondence, or null if
-	 * no mapping is coupled to the correspondence. To get all MIRMappings for an
-	 * EObject, first get all correspondences from the {@link CorrespondenceInstance},
-	 * then use this method.
-	 * @param correspondence
-	 * @return
-	 */
-	public MIRMapping getMappingForCorrespondence(Correspondence correspondence);
-	
-	/**
-	 * Register a mapping for a correspondence that can then be retrieved by calling
-	 * {@link #getMappingForCorrespondence(Correspondence)}.
-	 * @param mapping
-	 * @param correspondence
-	 */
-	public void registerMappingForCorrespondence(MIRMapping mapping, Correspondence correspondence);
 }
