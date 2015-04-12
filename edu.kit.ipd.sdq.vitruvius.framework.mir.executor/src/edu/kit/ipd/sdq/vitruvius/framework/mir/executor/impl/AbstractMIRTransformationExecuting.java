@@ -3,7 +3,9 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -22,7 +24,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.Invariant;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.InvariantRegistry;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMapping;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRegistry;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRModelInformationProvider;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.Response;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.ResponseRegistry;
@@ -30,14 +31,14 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.ResponseRegis
 public abstract class AbstractMIRTransformationExecuting implements EMFModelTransformationExecuting, MIRModelInformationProvider {
 	private ResponseRegistry responseRegistry;
 	private InvariantRegistry invariantRegistry;
-	private MIRMappingRegistry mappingRegistry;
+	private Collection<MIRMapping> mappings;
 
 	private Map<Correspondence, MIRMapping> correspondence2mapping;
 	
 	public AbstractMIRTransformationExecuting() {
 		responseRegistry = new ResponseRegistryImpl();
 		invariantRegistry = new InvariantRegistryImpl();
-		mappingRegistry = new MIRMappingRegistryImpl();
+		mappings = new HashSet<MIRMapping>();
 
 		correspondence2mapping = new HashMap<Correspondence, MIRMapping>();
 		
@@ -53,7 +54,7 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 	}
 	
 	protected void addMIRMapping(MIRMapping mapping) {
-		mappingRegistry.addMapping(mapping);
+		mappings.add(mapping);
 	}
 
 	@Override
@@ -76,11 +77,28 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 		
 		return result;
 	}
+	
 
 	protected EMFChangeResult handleEChange(EChange eChange, CorrespondenceInstance correspondenceInstance) {
-		return mappingRegistry.applyAllMappings(eChange, correspondenceInstance, this);
+		EMFChangeResult result = new EMFChangeResult();
+		Collection<MIRMapping> relevantMappings = getCandidateMappings(eChange, correspondenceInstance);
+		for (MIRMapping mapping : relevantMappings) {
+			result.addChangeResult(mapping.applyEChange(eChange, correspondenceInstance, this));
+		}
+		return result;
 	}
 	
+	/**
+	 * Returns mappings that could be affected by the given {@link EChange}. Always
+	 * returns a conservative estimate. Should be overwritten by the generated
+	 * subclass of {@link AbstractMIRTransformationExecuting}, since the base
+	 * implementation returns all mappings (i.e. the most conservative estimate).  
+	 * @return
+	 */
+	protected Collection<MIRMapping> getCandidateMappings(EChange eChange, CorrespondenceInstance correspondenceInstance) {
+		return mappings;
+	}
+
 	@Override
 	public Collection<EObject> getReverseFeature(EObject target, EStructuralFeature feature) {
 		Collection<Setting> settings = EcoreUtil.UsageCrossReferencer.find(target, target.eResource());
