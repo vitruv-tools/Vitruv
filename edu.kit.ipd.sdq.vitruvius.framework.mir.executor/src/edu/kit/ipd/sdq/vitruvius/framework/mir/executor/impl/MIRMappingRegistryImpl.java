@@ -28,10 +28,10 @@ public class MIRMappingRegistryImpl implements MIRMappingRegistry {
 	@Override
 	public EMFChangeResult applyAllMappings(EChange eChange,
 			CorrespondenceInstance correspondenceInstance,
-			MIRModelInformationProvider modelInformationProvider) {
+			AbstractMIRTransformationExecuting abstractMIRTransformationExecuting) {
 		EMFChangeResult result = new EMFChangeResult();
 		for (MIRMapping mapping : mappings) {
-			result.addChangeResult(mapping.applyEChange(eChange, correspondenceInstance, modelInformationProvider));
+			result.addChangeResult(mapping.applyEChange(eChange, correspondenceInstance, abstractMIRTransformationExecuting));
 		}
 		return result;
 	}
