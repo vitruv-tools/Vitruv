@@ -18,6 +18,24 @@ public abstract class AbstractMIRMapping implements MIRMapping {
 	protected abstract EClassifier getMappedEClassifier();
 	
 	/**
+	 * Check if the conditions of the mapping hold for the given
+	 * {@link EObject}.
+	 * @param eObject the object to check
+	 * @return true if the mapping holds for the given object.
+	 */
+	protected abstract boolean appliesTo(EObject eObject);
+	
+	/**
+	 * Ensure that the postconditions ("where") still hold for the
+	 * mapping.
+	 * <p>
+	 * The given {@link EChange} can be used to select the conditions
+	 * that have to be checked.
+	 * @param eChange the change that was applied
+	 */
+	protected abstract void restorePostConditions(EChange eChange);
+	
+	/**
 	 * Returns {@link EObject EObjects} that are possibly affected by this change.
 	 * @param eChange
 	 * @return
