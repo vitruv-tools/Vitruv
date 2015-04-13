@@ -8,9 +8,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRTransformationExecuting
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRModelInformationProvider
@@ -34,7 +33,6 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRMapping
 
 /**
  * @author Dominik Werle
@@ -199,6 +197,8 @@ class MIRCodeGenerator implements IGenerator {
 			import «AbstractMIRTransformationExecuting.name»;
 			import «EObject.name»;
 			
+			import «List.name»;
+			import «ArrayList.name»;
 			import «Set.name»;
 			import «HashSet.name»;
 			
@@ -214,6 +214,8 @@ class MIRCodeGenerator implements IGenerator {
 						AbstractMIRTransformationExecuting transformationExecuting) {
 
 					boolean predicate;
+					
+					List<EObject> boundEObjects = new ArrayList<EObject>();
 					
 					«featureMappingCheckJava(mapping)»
 					
@@ -233,10 +235,20 @@ class MIRCodeGenerator implements IGenerator {
 	def featureMappingCheckJava(ClassifierMapping mapping) {
 		if (mapping.featureMapping != null) {
 			'''
-			EStructuralFeature feature = «EMFHelper.getJavaExpressionThatReturns(mapping.featureMapping.left.get(0).feature)»;
-			EClassifier sourceType = «EMFHelper.getJavaExpressionThatReturns(mapping.featureMapping.left.get(0).EClassifier)»;
-			predicate = transformationExecuting.isReferencedFromTypeByFeature(object, sourceType, feature);
-			if (!predicate) { return false; }
+			{
+				EStructuralFeature feature = «EMFHelper.getJavaExpressionThatReturns(mapping.featureMapping.left.get(0).feature)»;
+				EClassifier sourceType = «EMFHelper.getJavaExpressionThatReturns(mapping.featureMapping.left.get(0).EClassifier)»;
+				Class<MIRMapping> mapping = «mappingClassNames.get(mapping.featureMapping.parent)».class;
+				EObject mappedObject = transformationExecuting.getReverseFeatureMappedBy(eObject,
+					feature, correspondenceInstance, mapping);
+				if (mappedObject == null) {
+					return false;
+				}
+				else {
+					boundEObjects.add(mappedObject);
+				}
+			}
+			«featureMappingCheckJava(mapping.featureMapping.parent)»
 			'''
 		} else {
 			""
