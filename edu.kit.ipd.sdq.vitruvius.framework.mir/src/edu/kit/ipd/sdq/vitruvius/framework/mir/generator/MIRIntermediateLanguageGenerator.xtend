@@ -230,6 +230,7 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		featureMapping.left += leftElement.collectFeatureCalls.map [ createEClassifierFeature(it) ]
 		featureMapping.right += rightElement.collectFeatureCalls.map [ createEClassifierFeature(it) ]
 
+		featureMapping.parent = parent
 
 		// map predicates for both class and feature mapping
 		val mappedPredicates = mapping.getWhenPredicates(swapLeftRight).map [ it.dispatchCreatePredicate ].filterNull.toList

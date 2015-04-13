@@ -34,6 +34,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRMapping
 
 /**
  * @author Dominik Werle
@@ -160,10 +161,6 @@ class MIRCodeGenerator implements IGenerator {
 				public List<Pair<VURI, VURI>> getTransformableMetamodels() {
 					return transformableMetamodels;
 				}
-
-				public EMFChangeResult handleEChange(EChange eChange, CorrespondenceInstance correspondenceInstance) {
-					return null;
-				}
 			}
 		''')
 	}
@@ -193,10 +190,14 @@ class MIRCodeGenerator implements IGenerator {
 			package «pkgName.mappingPackageName»;
 			
 			import «MIRMapping.name»;
+			import «AbstractMIRMapping.name»;
 			import «EMFChangeResult.name»;
 			import «EChange.name»;
 			import «CorrespondenceInstance.name»;
 			import «MIRModelInformationProvider.name»;
+			
+			import «AbstractMIRTransformationExecuting.name»;
+			import «EObject.name»;
 			
 			import «Set.name»;
 			import «HashSet.name»;
@@ -204,20 +205,23 @@ class MIRCodeGenerator implements IGenerator {
 			/**
 			 * Classifier Mapping
 			 */
-			class «className» extends AbstractMIRMapping {
+			class «className» extends «AbstractMIRMapping.simpleName» {
 				final static Logger logger = Logger.getLogger(«className».class);
 				
-				final Set<EObject> managedEObjects = new HashSet<EObject>(); 
+				final Set<EObject> managedEObjects = new HashSet<EObject>();
 				
-				public boolean checkIfAppliesTo(EObject object, CorrespondenceInstance correspondenceInstance, MappingClaimRegistry mappingClaimRegistry, MIRModelInformationProvider modelInformationProvider) {
+				protected abstract boolean checkConditions(EObject eObject, CorrespondenceInstance correspondenceInstance,
+						AbstractMIRTransformationExecuting transformationExecuting) {
+
 					boolean predicate;
+					
+					«featureMappingCheckJava(mapping)»
 					
 					«FOR predicate : mapping.predicates»
 					predicate = «predicate.predicateEvaluationJava»;
 					if (!predicate) { return false; }
 					
 					«ENDFOR»
-					«featureMappingCheckJava(mapping)»
 					
 					return true;
 				}
@@ -231,7 +235,7 @@ class MIRCodeGenerator implements IGenerator {
 			'''
 			EStructuralFeature feature = «EMFHelper.getJavaExpressionThatReturns(mapping.featureMapping.left.get(0).feature)»;
 			EClassifier sourceType = «EMFHelper.getJavaExpressionThatReturns(mapping.featureMapping.left.get(0).EClassifier)»;
-			predicate = modelInformationProvider.isReferencedFromTypeByFeature(object, sourceType, feature);
+			predicate = transformationExecuting.isReferencedFromTypeByFeature(object, sourceType, feature);
 			if (!predicate) { return false; }
 			'''
 		} else {
