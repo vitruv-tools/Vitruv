@@ -88,15 +88,7 @@ public abstract class AbstractMIRMapping implements MIRMapping {
 	 */
 	private boolean checkIfMappedBy(EObject eObject, CorrespondenceInstance correspondenceInstance,
 			AbstractMIRTransformationExecuting transformationExecuting) {
-		Collection<Correspondence> correspondences = correspondenceInstance.getAllCorrespondences(eObject);
-		for (Correspondence correspondence : correspondences) {
-			MIRMapping mappingForCorrespondence = transformationExecuting.getMappingForCorrespondence(correspondence);
-			if (mappingForCorrespondence == this) {
-				return true;
-			}
-		}
-		
-		return false;
+		return transformationExecuting.checkIfMappedBy(eObject, correspondenceInstance, this);
 	}
 	
 	@Override

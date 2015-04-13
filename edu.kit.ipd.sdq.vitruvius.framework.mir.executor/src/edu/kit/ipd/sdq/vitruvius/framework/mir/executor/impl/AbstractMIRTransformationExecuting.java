@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -114,6 +113,7 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 	}
 	
 	@Override
+	@Deprecated
 	public boolean isReferencedFromTypeByFeature(EObject target,
 			EClassifier sourceType, EStructuralFeature feature) {
 		
@@ -122,6 +122,72 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 		for (Setting setting : settings) {
 			if (feature.equals(setting.getEStructuralFeature())
 					&& sourceType.equals(setting.getEObject().getClass())) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public EObject getReverseFeatureMappedBy(EObject target,
+			EStructuralFeature feature, CorrespondenceInstance correspondenceInstance,
+			Class<MIRMapping> mappingClass) {
+		Collection<EObject> candidates = getReverseFeature(target, feature);
+		for (EObject candidate : candidates) {
+			if (checkIfMappedBy(candidate, correspondenceInstance, mappingClass)) {
+				return candidate;
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public EObject getReverseFeatureMappedBy(EObject target,
+			EStructuralFeature feature, CorrespondenceInstance correspondenceInstance,
+			MIRMapping mapping) {
+		Collection<EObject> candidates = getReverseFeature(target, feature);
+		for (EObject candidate : candidates) {
+			if (checkIfMappedBy(candidate, correspondenceInstance, mapping)) {
+				return candidate;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Checks if the given mapping maps <code>eObject</code>.
+	 * @param eObject the {@link EObject} to check
+	 * @param correspondenceInstance
+	 * @param mapping
+	 * @return <code>true</code> if this mapping maps <code>eObject</code>
+	 */
+	public boolean checkIfMappedBy(EObject eObject, CorrespondenceInstance correspondenceInstance,
+			MIRMapping mapping) {
+		Collection<Correspondence> correspondences = correspondenceInstance.getAllCorrespondences(eObject);
+		for (Correspondence correspondence : correspondences) {
+			MIRMapping mappingForCorrespondence = getMappingForCorrespondence(correspondence);
+			if (mappingForCorrespondence == mapping) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Checks if the given mapping class maps <code>eObject</code>.
+	 * @param eObject the {@link EObject} to check
+	 * @param correspondenceInstance
+	 * @param mapping
+	 * @return <code>true</code> if this mapping maps <code>eObject</code>
+	 */
+	public boolean checkIfMappedBy(EObject eObject, CorrespondenceInstance correspondenceInstance,
+			Class<MIRMapping> mappingClass) {
+		Collection<Correspondence> correspondences = correspondenceInstance.getAllCorrespondences(eObject);
+		for (Correspondence correspondence : correspondences) {
+			MIRMapping mappingForCorrespondence = getMappingForCorrespondence(correspondence);
+			if ((mappingForCorrespondence != null) && (mappingForCorrespondence.getClass().equals(mappingClass))) {
 				return true;
 			}
 		}
