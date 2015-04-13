@@ -19,5 +19,6 @@ public interface MIRMapping {
 	 * @param modelInformationProvider
 	 * @return the resulting change
 	 */
-	public EMFChangeResult applyEChange(EChange eChange, CorrespondenceInstance correspondenceInstance, AbstractMIRTransformationExecuting abstractMIRTransformationExecuting);
+	public EMFChangeResult applyEChange(EChange eChange, CorrespondenceInstance correspondenceInstance,
+			AbstractMIRTransformationExecuting transformationExecuting);
 }
