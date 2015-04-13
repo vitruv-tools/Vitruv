@@ -67,7 +67,7 @@ class MIRCodeGenerator implements IGenerator {
 		MIRPluginProjectCreator.createPluginXML(fsa, fqn);
 		MIRPluginProjectCreator.createManifest(fsa, projectName)
 		
-		for (mapping : (il.classMappings + il.featureMappings)) {
+		for (mapping : il.classMappings) {
 			generateMappingClass(mapping, il.configuration.package, fsa)
 		}
 		
@@ -221,7 +221,9 @@ class MIRCodeGenerator implements IGenerator {
 					
 					«FOR predicate : mapping.predicates»
 					predicate = «predicate.predicateEvaluationJava»;
-					if (!predicate) { return false; }
+					if (!predicate) {
+						return false;
+					}
 					
 					«ENDFOR»
 					
@@ -232,11 +234,13 @@ class MIRCodeGenerator implements IGenerator {
 		)
 	}
 	
-	def featureMappingCheckJava(ClassifierMapping mapping) {
+	def String featureMappingCheckJava(ClassifierMapping mapping) {
 		if (mapping.featureMapping != null) {
 			'''
 			{
+				// feature «mapping.featureMapping.left.get(0).feature.name»
 				EStructuralFeature feature = «EMFHelper.getJavaExpressionThatReturns(mapping.featureMapping.left.get(0).feature)»;
+				// sourceType «mapping.featureMapping.left.get(0).EClassifier.instanceClassName»
 				EClassifier sourceType = «EMFHelper.getJavaExpressionThatReturns(mapping.featureMapping.left.get(0).EClassifier)»;
 				Class<MIRMapping> mapping = «mappingClassNames.get(mapping.featureMapping.parent)».class;
 				EObject mappedObject = transformationExecuting.getReverseFeatureMappedBy(eObject,

@@ -116,10 +116,10 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		mir.predicates += mappedPredicates
 		result.predicates += mappedPredicates
 		result.initializer += mapping.getWhereExpressions(swapLeftRight).map[dispatchCreateInitializer].filterNull
+
+		mir.classMappings += result
 		
 		mapping.withs.forEach [ it.mapFeatureMapping(mir, result, swapLeftRight) ]
-					
-		mir.classMappings += result
 	}
 	
 	def getLeftElement(ClassMapping mapping, boolean swapLeftRight) {
