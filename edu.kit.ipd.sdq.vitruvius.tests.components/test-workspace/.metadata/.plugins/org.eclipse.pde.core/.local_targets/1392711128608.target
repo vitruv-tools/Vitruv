@@ -3,7 +3,7 @@
 
 <target name="Running Platform" sequenceNumber="4">
 <locations>
-<location configuration="/home/kramerm/workspaces/vitruv/.metadata/.plugins/org.eclipse.pde.core/TEST WS ALL PLUGINS/" path="${eclipse_home}" type="Profile"/>
+<location configuration="C:/Eclipse/workspaces/VitruviusSVN18030215/.metadata/.plugins/org.eclipse.pde.core/TestWorkspace Eclipse Nested Instance/" path="${eclipse_home}" type="Profile"/>
 </locations>
 <environment>
 <os>linux</os>

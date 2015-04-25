@@ -5,7 +5,7 @@
 		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
 		<item value="false" key="WizardProjectsImportPage.STORE_NESTED_PROJECTS"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
-			<item value="/home/kramerm/Dropbox/UniAktuelles/KIT/svn/code/Vitruvius/edu.kit.ipd.sdq.vitruvius.tests.mockup/test-workspace/MockupProject"/>
+			<item value="C:/Eclipse/workspaces/VitruviusSVN18030215/edu.kit.ipd.sdq.vitruvius.tests.components/test-workspace/MockupProject"/>
 		</list>
 		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
 			<item value=""/>
