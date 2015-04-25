@@ -1,9 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.generator
 
-import org.eclipse.xtext.generator.IFileSystemAccess
-import org.eclipse.emf.common.util.URI
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting
+import org.eclipse.xtext.generator.IFileSystemAccess
 
 /**
  * Helper class containing methods for setting up the plugin project to generate
@@ -12,6 +10,14 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransfor
  * @author Dominik Werle
  */
 class MIRPluginProjectCreator{
+	private final static String[] requiredBundles = #[
+		"org.eclipse.emf.ecore",
+		"edu.kit.ipd.sdq.vitruvius.framework.util",
+		"edu.kit.ipd.sdq.vitruvius.framework.contracts",
+		"edu.kit.ipd.sdq.vitruvius.framework.mir.executor",
+		"edu.kit.ipd.sdq.vitruvius.framework.meta.change"	
+	]
+	
 	/**
 	 * Creates the plugin.xml for extending the correct extension point
 	 * for edu.kit.ipd.sdq.vitruvius.framework.contracts.transformationexecuting 
@@ -44,7 +50,9 @@ class MIRPluginProjectCreator{
 		Bundle-Name: «projectName»
 		Bundle-SymbolicName: «projectName»;singleton:=true
 		Bundle-Version: 1.0.0.qualifier
-		Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+		Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+		Require-Bundle: «requiredBundles.join(",\n ")»
+		
 		'''
 		)
 	}

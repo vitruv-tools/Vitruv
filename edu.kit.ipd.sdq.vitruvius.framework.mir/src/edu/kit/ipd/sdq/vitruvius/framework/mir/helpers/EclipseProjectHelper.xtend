@@ -1,18 +1,24 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.helpers
 
 import org.eclipse.core.resources.ResourcesPlugin
+import org.eclipse.core.runtime.Path
+import org.eclipse.jdt.core.IClasspathEntry
 import org.eclipse.jdt.core.JavaCore
-import org.eclipse.jdt.launching.JavaRuntime
-import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.pde.core.project.IBundleProjectDescription
-import org.eclipse.pde.core.project.IBundleProjectService
+import org.eclipse.xtext.generator.IFileSystemAccess
 
 class EclipseProjectHelper {
 	public final String SRC_GEN_FOLDER_NAME = "src-gen"
 	
+	private final String JRE_CONTAINER = "org.eclipse.jdt.launching.JRE_CONTAINER/"
+		+ "org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"
+
+	private final String REQUIRED_PLUGINS_CONTAINER = "org.eclipse.pde.core.requiredPlugins"
+	
 	private String projectName
 	private IFileSystemAccess rootFSA
 	private IFileSystemAccess srcgenFSA
+	
 	
 	new(String projectName) {
 		this.projectName = projectName
@@ -27,6 +33,7 @@ class EclipseProjectHelper {
 	
 	/**
 	 * @see https://sdqweb.ipd.kit.edu/wiki/JDT_Tutorial:_Creating_Eclipse_Java_Projects_Programmatically
+	 * @see http://architecturware.cvs.sourceforge.net/viewvc/architecturware/oaw_v4/core.plugin/plugin.oaw4/main/src/org/openarchitectureware/wizards/EclipseHelper.java?revision=1.13&view=markup
 	 * TODO: Refactor god method
 	 */
 	public def createJavaProject() {
@@ -37,6 +44,22 @@ class EclipseProjectHelper {
 		description.setNatureIds(#[ JavaCore.NATURE_ID, IBundleProjectDescription.PLUGIN_NATURE ]);
 		project.setDescription(description, null);
 		
+		// set builders
+		val javaBuilderCommand = description.newCommand
+		javaBuilderCommand.builderName = JavaCore.BUILDER_ID
+		
+		val manifestBuilderCommand = description.newCommand
+		manifestBuilderCommand.builderName = "org.eclipse.pde.ManifestBuilder"
+		
+		val schemaBuilderCommand = description.newCommand
+		schemaBuilderCommand.builderName = "org.eclipse.pde.SchemaBuilder"
+		
+		description.buildSpec = #[
+			javaBuilderCommand,
+			manifestBuilderCommand,
+			schemaBuilderCommand
+		]
+		
 		// create Java project
 		val javaProject = JavaCore.create(project);
 		
@@ -45,34 +68,23 @@ class EclipseProjectHelper {
 		binFolder.create(false, true, null);
 		javaProject.setOutputLocation(binFolder.getFullPath(), null);
 		
-		// set JVM for the project
-		val vmInstall = JavaRuntime.getDefaultVMInstall();
-		val libraryLocations = JavaRuntime.getLibraryLocations(vmInstall);
-		
-		// add libs to project class path
-		val entries = libraryLocations.map [
-			JavaCore.newLibraryEntry(it.getSystemLibraryPath(), null, null)
-		]
-		
-		javaProject.setRawClasspath(entries.toArray(newArrayOfSize(entries.size())), null);
-		
-		
 		// add src and src-gen folder
 		val sourceFolder = project.getFolder("src");
 		sourceFolder.create(false, true, null);
 		val sourceRoot = javaProject.getPackageFragmentRoot(sourceFolder);
 		
-		
 		val sourceGenFolder = project.getFolder(SRC_GEN_FOLDER_NAME);
 		sourceGenFolder.create(false, true, null);
 		val sourceGenRoot = javaProject.getPackageFragmentRoot(sourceGenFolder);
 		
-		val oldEntries = javaProject.getRawClasspath();
-		val newEntries = newArrayOfSize(oldEntries.length + 2);
-		System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
-		newEntries.set(oldEntries.length, JavaCore.newSourceEntry(sourceRoot.getPath))
-		newEntries.set(oldEntries.length + 1, JavaCore.newSourceEntry(sourceGenRoot.getPath))
-		javaProject.setRawClasspath(newEntries, null);
+		val IClasspathEntry[] classpathEntries = #[
+			JavaCore.newSourceEntry(sourceRoot.getPath),
+			JavaCore.newSourceEntry(sourceGenRoot.getPath),
+			JavaCore.newContainerEntry(new Path(REQUIRED_PLUGINS_CONTAINER)),
+			JavaCore.newContainerEntry(new Path(JRE_CONTAINER))
+		]
+		
+		javaProject.setRawClasspath(classpathEntries, null);
 		
 		// TODO: create Monitor
 		javaProject.open(null)

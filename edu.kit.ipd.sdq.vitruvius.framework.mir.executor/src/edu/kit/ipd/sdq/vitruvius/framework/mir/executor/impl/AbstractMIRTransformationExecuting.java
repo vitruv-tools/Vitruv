@@ -82,6 +82,7 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 		EMFChangeResult result = new EMFChangeResult();
 		Collection<MIRMapping> relevantMappings = getCandidateMappings(eChange, correspondenceInstance);
 		for (MIRMapping mapping : relevantMappings) {
+			// TODO: dependency on AbstractMIRTransformationExecuting
 			result.addChangeResult(mapping.applyEChange(eChange, correspondenceInstance, this));
 		}
 		return result;

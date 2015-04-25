@@ -8,7 +8,6 @@ import org.eclipse.emf.ecore.EObject;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMapping;
 
 /**
@@ -76,6 +75,7 @@ public abstract class AbstractMIRMapping implements MIRMapping {
 	 */
 	protected Collection<EObject> getCandidates(EChange eChange) {
 		// TODO: implement
+		// VSUM -> eChange.getVURI to get model elements
 		throw new UnsupportedOperationException("getting candidates not supported");
 	}
 	

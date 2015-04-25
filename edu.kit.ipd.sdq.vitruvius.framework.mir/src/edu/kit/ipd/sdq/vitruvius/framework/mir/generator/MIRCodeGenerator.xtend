@@ -206,11 +206,11 @@ class MIRCodeGenerator implements IGenerator {
 			 * Classifier Mapping
 			 */
 			class «className» extends «AbstractMIRMapping.simpleName» {
-				final static Logger logger = Logger.getLogger(«className».class);
+				// final static Logger logger = Logger.getLogger(«className».class);
 				
 				final Set<EObject> managedEObjects = new HashSet<EObject>();
 				
-				protected abstract boolean checkConditions(EObject eObject, CorrespondenceInstance correspondenceInstance,
+				protected boolean checkConditions(EObject eObject, CorrespondenceInstance correspondenceInstance,
 						AbstractMIRTransformationExecuting transformationExecuting) {
 
 					boolean predicate;
