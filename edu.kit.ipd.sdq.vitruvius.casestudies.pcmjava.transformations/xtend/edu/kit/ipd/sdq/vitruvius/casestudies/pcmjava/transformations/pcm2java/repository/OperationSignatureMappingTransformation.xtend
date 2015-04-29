@@ -148,6 +148,9 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 		val tcr = TransformationUtils.
 			createTransformationChangeResultForEObjectsToSave(correspondingInterfaceMethod.toArray)
 		tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, correspondingInterfaceMethod, null)
+		if(newTypeReference instanceof NamespaceClassifierReference){
+			PCM2JaMoPPUtils.addImportToCompilationUnitOfClassifier(correspondingInterfaceMethod.containingConcreteClassifier, newTypeReference)
+		}
 		return tcr
 	}
 

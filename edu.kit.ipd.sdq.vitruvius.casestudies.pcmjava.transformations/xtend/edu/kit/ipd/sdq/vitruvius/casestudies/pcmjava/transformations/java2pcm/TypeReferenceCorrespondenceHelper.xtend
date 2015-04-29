@@ -205,10 +205,10 @@ class TypeReferenceCorrespondenceHelper {
 				JaMoPP2PCMUtils.findParrentCorrepsondenceForPCMElement(cdt, correspondenceInstance))
 		}
 
-		val String message = "Automatically created the corresponding composite data type " + cdt.entityName +
+		/*val String message = "Automatically created the corresponding composite data type " + cdt.entityName +
 			" for classifier " + classifier.name + correspondingWarning
-		userInteracting.showMessage(UserInteractionType.MODELESS, message)
-		return null
+		userInteracting.showMessage(UserInteractionType.MODELESS, message)*/
+		return cdt
 	}
 
 	/**

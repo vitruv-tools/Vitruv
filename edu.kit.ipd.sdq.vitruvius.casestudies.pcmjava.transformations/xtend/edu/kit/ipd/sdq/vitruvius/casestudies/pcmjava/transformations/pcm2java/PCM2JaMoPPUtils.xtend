@@ -198,12 +198,6 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		field.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPrivate)
 		var String fieldName = name
 		if (fieldName.nullOrEmpty) {
-			fieldName = PCM2JaMoPPUtils.getNameFromJaMoPPType(reference)
-		}
-		if (Character.isUpperCase(fieldName.charAt(0))) {
-			fieldName = fieldName.toFirstLower
-		}
-		if (fieldName.nullOrEmpty) {
 			fieldName = "field_" + PCM2JaMoPPUtils.getNameFromJaMoPPType(reference)
 		}
 		field.name = fieldName

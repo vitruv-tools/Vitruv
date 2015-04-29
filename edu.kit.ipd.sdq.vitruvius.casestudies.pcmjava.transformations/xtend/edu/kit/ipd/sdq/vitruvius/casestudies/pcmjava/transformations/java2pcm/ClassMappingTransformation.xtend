@@ -90,11 +90,15 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 
 			// get corresponding component or system (ask for InterfaceProvidingRequiringEntity cause components 
 			// and systems are both InterfaceProvidingRequiringEntitys) 
-			pcmComponentOrSystem = correspondenceInstance.
-				claimUniqueCorrespondingEObjectByType(jaMoPPPackage, InterfaceProvidingRequiringEntity)
-			if (alreadyHasClassCorrespondence(pcmComponentOrSystem)) {
-				return null
+			val pcmComponentOrSystems = correspondenceInstance.
+				getCorrespondingEObjectsByType(jaMoPPPackage, InterfaceProvidingRequiringEntity)
+			if (!pcmComponentOrSystems.nullOrEmpty) {
+				pcmComponentOrSystem = pcmComponentOrSystems.get(0)
+				if (alreadyHasClassCorrespondence(pcmComponentOrSystem)) {
+					return null
+				}
 			}
+
 		}
 
 		if (null == pcmComponentOrSystem) {
@@ -167,6 +171,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 		if (null != correspondences && 0 < correspondences.size) {
 			val classifiersInSamePackage = jaMoPPClass.containingCompilationUnit.classifiersInSamePackage
 			if (!classifiersInSamePackage.nullOrEmpty) {
+
 				//TODO: ask user whether to remove also this classifiers
 				var boolean removeAllClassifiers = false;
 				if (removeAllClassifiers) {

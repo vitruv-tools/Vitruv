@@ -50,30 +50,38 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 		// add compilation unit to contracts package, which correspondent to the repository
 		val packages = correspondenceInstance.getCorrespondingEObjectsByType(operationInterface.repository__Interface,
 			Package)
-		logger.info("found " + packages.size + " packages ")
-		for (containingPackage : packages) {
-			if (containingPackage.name.equalsIgnoreCase("contracts")) {
-				logger.info("Found contracts package.")
-				containingPackage.compilationUnits.add(correspondingCompilationUnit)
-				correspondingCompilationUnit.namespaces.addAll(containingPackage.namespaces)
-				correspondingCompilationUnit.namespaces.add(containingPackage.name)
-				return #[correspondingInterface, correspondingCompilationUnit]
+		logger.info("found " + packages + " packages ")
+		if (!packages.nullOrEmpty) {
+			for (containingPackage : packages) {
+				if (containingPackage.name.equalsIgnoreCase("contracts")) {
+					logger.info("Found contracts package.")
+					containingPackage.compilationUnits.add(correspondingCompilationUnit)
+					correspondingCompilationUnit.namespaces.addAll(containingPackage.namespaces)
+					correspondingCompilationUnit.namespaces.add(containingPackage.name)
+					return #[correspondingInterface, correspondingCompilationUnit]
+				}
 			}
 		}
 
 		//package with name "contracts" not found --> ask user
 		val List<String> stringList = new ArrayList<String>()
-		for (candidate : packages) {
-			stringList.add(candidate.name)
+		if (!packages.nullOrEmpty) {
+			for (candidate : packages) {
+				stringList.add(candidate.name)
+			}
+		}else{
+			val package = PCM2JaMoPPUtils.createPackage("contracts")
+			stringList.add(package.name)
 		}
+		
 		var String ifName = "";
-		if(null != correspondingInterface && null != correspondingInterface.name){
+		if (null != correspondingInterface && null != correspondingInterface.name) {
 			ifName = correspondingInterface.name
 		}
 		var int selection = userInteracting.selectFromMessage(UserInteractionType.MODAL,
-			"No explicit contracts package found. Select a package to which the new interface '" +
-				ifName + "' should be added", stringList)
-		if(selection < stringList.size()){
+			"No explicit contracts package found. Select a package to which the new interface '" + ifName +
+				"' should be added", stringList)
+		if (selection < stringList.size()) {
 			packages.get(selection).compilationUnits.add(correspondingCompilationUnit)
 			correspondingCompilationUnit.namespaces.addAll(packages.get(selection).namespaces)
 		}
@@ -100,9 +108,9 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 			jaMoPPIf.members.add(newMethod)
 			transformationResult.addNewCorrespondence(correspondenceInstance, newValue, newMethod, parrentCorrespondence)
 
-			//the code jaMoPPIf.methods.add(index, newMethod); does not work, because adding a method 
-			//to interface methods does not cause an update of the resource.
-			//I guess only members list is a containment list (this is why we do it 2 lines above)
+		//the code jaMoPPIf.methods.add(index, newMethod); does not work, because adding a method 
+		//to interface methods does not cause an update of the resource.
+		//I guess only members list is a containment list (this is why we do it 2 lines above)
 		}
 		return transformationResult
 	}

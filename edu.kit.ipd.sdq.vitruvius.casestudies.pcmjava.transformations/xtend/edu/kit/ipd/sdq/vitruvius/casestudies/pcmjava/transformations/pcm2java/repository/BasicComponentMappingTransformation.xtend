@@ -7,7 +7,6 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PC
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
-import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
@@ -147,6 +146,15 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 				return TransformationUtils.createTransformationChangeResultForEObjectsToSave(affectedEObject.toArray)
 			}
 		}
+		return TransformationUtils.createEmptyTransformationChangeResult
+	}
+	
+	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
+		EObject oldValue, EObject newValue) {
+		logger.warn(
+			"method " + new Object() {
+			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
+				"transformation")
 		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 }

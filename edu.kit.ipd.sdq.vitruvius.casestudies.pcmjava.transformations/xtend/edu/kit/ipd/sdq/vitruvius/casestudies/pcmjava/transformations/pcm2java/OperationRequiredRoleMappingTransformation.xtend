@@ -50,7 +50,8 @@ class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTran
 
 		if (null == jaMoPPInterface) {
 			logger.info(
-				"No corresponding Java Interface found for OperationInterface " + opInterface + " not created an field for the operation required role (yet)")
+				"No corresponding Java Interface found for OperationInterface " + opInterface +
+					" not created an field for the operation required role (yet)")
 			return null
 		}
 
@@ -92,8 +93,15 @@ class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTran
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject newValue) {
 		val tcr = TransformationUtils.createEmptyTransformationChangeResult
+		val orr = affectedEObject as OperationRequiredRole
+		val orrInterface = orr.requiredInterface__OperationRequiredRole
+		val orrComponent = orr.requiringEntity_RequiredRole
+		if(oldValue == newValue || orrInterface == newValue || orrComponent == newValue){
+			// if the value has not changed we do nothing
+			return tcr
+		}
+		
 		val EObject[] oldEObjects = removeEObject(affectedEObject)
-		val EObject[] newEObjects = createEObject(affectedEObject)
 		for (oldEObject : oldEObjects) {
 			val tuidToRemove = correspondenceInstance.calculateTUIDFromEObject(oldEObject)
 			tcr.addCorrespondenceToDelete(correspondenceInstance, tuidToRemove)
@@ -102,6 +110,7 @@ class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTran
 			}
 			EcoreUtil.remove(oldEObject)
 		}
+		val EObject[] newEObjects = createEObject(affectedEObject)
 		val opr = affectedEObject as OperationRequiredRole
 		val interfaceRequiringEntity = opr.requiringEntity_RequiredRole
 		val parrentCorrespondences = correspondenceInstance.getAllCorrespondences(interfaceRequiringEntity)
@@ -139,3 +148,4 @@ class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTran
 		return tcr
 	}
 }
+	
