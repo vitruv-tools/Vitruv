@@ -74,4 +74,6 @@ public interface IVitruviusEMFEditorMonitor {
      *            The URI of the model whose changes are to be synchronized.
      */
     public void triggerSynchronisation(final VURI resourceURI);
+
+    public void setReportChanges(boolean b);
 }

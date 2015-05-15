@@ -60,20 +60,20 @@ public class JavaMonitoredEditor extends MonitoredEditor implements Synchronisat
         @Override
         public IResource[] getSourceDirs() {
 
-            List<IResource> sourceDirs = new ArrayList<IResource>();
+            final List<IResource> sourceDirs = new ArrayList<IResource>();
 
             try {
-                IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-                for (String projectName : MonitoredProjectsRegistry.getInstance().getRegisteredElements()) {
-                    IProject project = root.getProject(projectName);
-                    IJavaProject javaProject = JavaCore.create(project);
-                    for (IPackageFragmentRoot fragmentRoot : javaProject.getAllPackageFragmentRoots()) {
+                final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+                for (final String projectName : MonitoredProjectsRegistry.getInstance().getRegisteredElements()) {
+                    final IProject project = root.getProject(projectName);
+                    final IJavaProject javaProject = JavaCore.create(project);
+                    for (final IPackageFragmentRoot fragmentRoot : javaProject.getAllPackageFragmentRoots()) {
                         if (fragmentRoot.getKind() == IPackageFragmentRoot.K_SOURCE) {
                             sourceDirs.add(fragmentRoot.getResource());
                         }
                     }
                 }
-            } catch (JavaModelException e) {
+            } catch (final JavaModelException e) {
                 LOGGER.warn(
                         "Could not determine source directories of "
                                 + StringUtils.join(MonitoredProjectsRegistry.getInstance().getRegisteredElements(),
@@ -93,22 +93,22 @@ public class JavaMonitoredEditor extends MonitoredEditor implements Synchronisat
         super(new ChangeSynchronizing() {
             @Override
             public void synchronizeChanges(final List<Change> changes) {
-//                new Thread() {
-//                    @Override
-//                    public void run() {
-                        ChangeSynchronizerRegistry.getInstance().getChangeSynchronizer().synchronizeChanges(changes);
-//                    }
-//                } .start();
+                // new Thread() {
+                // @Override
+                // public void run() {
+                ChangeSynchronizerRegistry.getInstance().getChangeSynchronizer().synchronizeChanges(changes);
+                // }
+                // } .start();
             }
 
             @Override
             public void synchronizeChange(final Change change) {
-//                new Thread() {
-//                    @Override
-//                    public void run() {
-                        ChangeSynchronizerRegistry.getInstance().getChangeSynchronizer().synchronizeChange(change);
-//                    }
-//                } .start();
+                // new Thread() {
+                // @Override
+                // public void run() {
+                ChangeSynchronizerRegistry.getInstance().getChangeSynchronizer().synchronizeChange(change);
+                // }
+                // } .start();
             }
         }, null, MonitoredProjectsRegistry.getInstance().getRegisteredElements().toArray(new String[0]));
         ChangeSynchronizerRegistry.getInstance().getChangeSynchronizer().register(this);
@@ -117,86 +117,87 @@ public class JavaMonitoredEditor extends MonitoredEditor implements Synchronisat
 
     @Override
     public void syncStarted() {
-        syncInProgress = true;
-        stopASTListening();
+        this.syncInProgress = true;
+        this.stopASTListening();
     }
 
     @Override
     public void syncFinished() {
-        syncInProgress = false;
-        startASTListening();
+        this.syncInProgress = false;
+        this.startASTListening();
     }
 
     @Override
-    public void syncAborted(EMFModelChange abortedChange) {
-        EFeatureChange<?> featureChange = (EFeatureChange<?>) abortedChange.getEChange();
+    public void syncAborted(final EMFModelChange abortedChange) {
+        final EFeatureChange<?> featureChange = (EFeatureChange<?>) abortedChange.getEChange();
         EObject affectedObject = featureChange.getNewAffectedEObject();
         if (affectedObject == null) {
             affectedObject = featureChange.getOldAffectedEObject();
         }
-        EObject rootObject = EcoreUtil.getRootContainer(affectedObject);
+        final EObject rootObject = EcoreUtil.getRootContainer(affectedObject);
         if (!(rootObject instanceof CompilationUnit)) {
             return;
         }
-        
-        undoLastOperation();
+
+        this.undoLastOperation();
     }
-    
+
     @Override
-    public void syncAborted(TransformationAbortCause cause) {
+    public void syncAborted(final TransformationAbortCause cause) {
         if (cause instanceof JavaTransformation) {
-            undoLastOperation();            
+            this.undoLastOperation();
         }
     }
 
     @Override
-    protected void startASTListening() {
-        if (!syncInProgress && !refactoringInProgress) {
+    public void startASTListening() {
+        if (!this.syncInProgress && !this.refactoringInProgress) {
             super.startASTListening();
-            synchronized (astListenerStartedMonitorObject) {
-            	astListenerStartedMonitorObject.notifyAll();
+            synchronized (this.astListenerStartedMonitorObject) {
+                this.astListenerStartedMonitorObject.notifyAll();
             }
         }
     }
 
-	/**
+    /**
      * Undoes the last operation by using the Eclipse undo history. Attention: This does NOT work
      * for refactorings, since at the time the synchronisation is called, it is not finished yet.
      */
     private void undoLastOperation() {
-    	try {
-    		synchronized (astListenerStartedMonitorObject) {
-    			while (refactoringInProgress) {
-    				astListenerStartedMonitorObject.wait(10000);
-    				Thread.sleep(1000);
-    			}				
-			}
-    	} catch (InterruptedException e) {
-    		LOGGER.error("Interrupted. Performing undo operation.", e);
-    	}
-    	
-    	new Thread(new Runnable(){
-			@Override
-			public void run() {
-	            Display.getDefault().syncExec(new Runnable() {
-	                @Override
-	                public void run() {
-	                    try {
-	                    	IUndoableOperation[] undoOps = OperationHistoryFactory.getOperationHistory().getUndoHistory(
-	        		                IOperationHistory.GLOBAL_UNDO_CONTEXT);
-	        		        if (undoOps.length > 0) {
-	        		            final IUndoableOperation lastOperation = undoOps[undoOps.length - 1];
-	        		            LOGGER.info("Undoing operation: " + lastOperation.getLabel());
-		                    	stopASTListening();
-		                        lastOperation.undo(new NullProgressMonitor(), null);
-		                        startASTListening();
-	        		        }
-	                    } catch (ExecutionException e) {
-	                        LOGGER.error("Unable to undo the last operation:", e);
-	                    }
-	            }});
-			}  
-    	}).start();
+        try {
+            synchronized (this.astListenerStartedMonitorObject) {
+                while (this.refactoringInProgress) {
+                    this.astListenerStartedMonitorObject.wait(10000);
+                    Thread.sleep(1000);
+                }
+            }
+        } catch (final InterruptedException e) {
+            LOGGER.error("Interrupted. Performing undo operation.", e);
+        }
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Display.getDefault().syncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            final IUndoableOperation[] undoOps = OperationHistoryFactory.getOperationHistory()
+                                    .getUndoHistory(IOperationHistory.GLOBAL_UNDO_CONTEXT);
+                            if (undoOps.length > 0) {
+                                final IUndoableOperation lastOperation = undoOps[undoOps.length - 1];
+                                LOGGER.info("Undoing operation: " + lastOperation.getLabel());
+                                JavaMonitoredEditor.this.stopASTListening();
+                                lastOperation.undo(new NullProgressMonitor(), null);
+                                JavaMonitoredEditor.this.startASTListening();
+                            }
+                        } catch (final ExecutionException e) {
+                            LOGGER.error("Unable to undo the last operation:", e);
+                        }
+                    }
+                });
+            }
+        }).start();
     }
 
     @Override

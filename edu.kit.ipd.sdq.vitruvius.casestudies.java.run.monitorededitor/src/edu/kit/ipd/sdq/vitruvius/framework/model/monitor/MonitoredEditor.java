@@ -7,6 +7,10 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.IStartup;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
@@ -73,14 +77,14 @@ ChangeSubmitter, IStartup {
         @Override
         public void preExecute() {
             MonitoredEditor.this.log.info("Stop AST Listening");
-            stopASTListening();
+            MonitoredEditor.this.stopASTListening();
             MonitoredEditor.this.startCollectInCompositeChange();
         }
 
         @Override
         public void postExecute() {
             MonitoredEditor.this.log.info("Start AST Listening");
-            startASTListening();
+            MonitoredEditor.this.startASTListening();
             MonitoredEditor.this.lastRefactoringTime = System.nanoTime();
         }
 
@@ -95,8 +99,10 @@ ChangeSubmitter, IStartup {
     private long lastRefactoringTime;
     protected boolean refactoringInProgress = false;
     private CompositeChange changeStash = null;
+    private boolean reportChanges;
     private static final String MY_MONITORED_PROJECT = "hadoop-hdfs";// "FooProject";
-                                                                     // "MediaStore";
+
+    // "MediaStore";
 
     public MonitoredEditor() {
         this(new ChangeSynchronizing() {
@@ -114,13 +120,14 @@ ChangeSubmitter, IStartup {
             }
 
         }, null, MY_MONITORED_PROJECT);
+        this.reportChanges = true;
         // this(SyncManagerImpl.getSyncManagerInstance(), SyncManagerImpl
         // .getSyncManagerInstance().getModelProviding());
     }
 
     protected void stopCollectInCompositeChange() {
         this.log.debug("Stop collecting Changes in CompositeChange stash and submit stash");
-        this.changeSynchronizing.synchronizeChange(this.changeStash);
+        this.triggerChange(null);
         this.refactoringInProgress = false;
     }
 
@@ -146,15 +153,16 @@ ChangeSubmitter, IStartup {
         // this.buildCorrespondenceInstance();
         this.changeResponder = new ChangeResponder(this);
         this.userInteractor = new UserInteractor();
+        this.reportChanges = true;
         // this.addDummyCorrespondencesForAllInterfaceMethods();
     }
-    
+
     protected void revokeRegistrations() {
-      this.astListener.removeListener(this);
-      this.astListener.revokeRegistrations();
-      refactoringListener.removeListener(this);
-      refactoringListener.removeListener(this.refactoringStatusListener);
-      RefactoringChangeListener.destroyInstance();
+        this.astListener.removeListener(this);
+        this.astListener.revokeRegistrations();
+        this.refactoringListener.removeListener(this);
+        this.refactoringListener.removeListener(this.refactoringStatusListener);
+        RefactoringChangeListener.destroyInstance();
     }
 
     private void configureLogger() {
@@ -208,7 +216,7 @@ ChangeSubmitter, IStartup {
 
     private void synchronizeChangeOrAddToCompositeChange(final Change change) {
         if (this.changeStash == null) {
-            this.changeSynchronizing.synchronizeChange(change);
+            this.triggerChange(change);
         }
     }
 
@@ -235,11 +243,38 @@ ChangeSubmitter, IStartup {
         return this.userInteractor.selectFromModel(type, message, modelInstances);
     }
 
-    protected void startASTListening() {
-        astListener.startListening();
+    public void startASTListening() {
+        this.astListener.startListening();
     }
-    
-    protected void stopASTListening() {
-        astListener.stopListening();
+
+    public void stopASTListening() {
+        this.astListener.stopListening();
+    }
+
+    protected void triggerChange(final Change change) {
+        if (!this.reportChanges) {
+            this.log.trace("Do not report change : " + change + " because report changes is set to false.");
+            return;
+        }
+        final Job triggerChangeJob = new Job("Code monitor trigger job") {
+
+            @Override
+            protected IStatus run(final IProgressMonitor monitor) {
+                if (null != change) {
+                    MonitoredEditor.this.changeSynchronizing.synchronizeChange(change);
+                } else {
+                    MonitoredEditor.this.changeSynchronizing.synchronizeChange(MonitoredEditor.this.changeStash);
+                }
+                return Status.OK_STATUS;
+            }
+        };
+        triggerChangeJob.setPriority(Job.SHORT);
+        triggerChangeJob.schedule();
+
+    }
+
+    public void setReportChanges(final boolean reportChanges) {
+        this.reportChanges = reportChanges;
+
     }
 }

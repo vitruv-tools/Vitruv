@@ -84,7 +84,8 @@ class TransModelObjectCopier {
         if (targetFeature.isMany()) {
             @SuppressWarnings("unchecked")
             EList<EObject> targetList = (EList<EObject>) targetContainer.eGet(targetFeature);
-            targetList.add(targetPosition, newObj);
+            // targetList.add(targetPosition, newObj);
+            targetList.add(newObj);
         } else {
             targetContainer.eSet(targetFeature, newObj);
         }

@@ -87,7 +87,9 @@ class BufferModel {
      */
     public synchronized void incorporateChanges(List<Change> changes, Resource changesOrigin) {
         if (isDisposed) {
-            throw new BufferModelDisposedException("Object is disposed");
+            // throw new BufferModelDisposedException("Object is disposed");
+            LOGGER.trace("Object is disposed - changes not incorporated");
+            return;
         }
 
         ChangeApplicator ca = new ChangeApplicator(changesOrigin, changes);
@@ -110,13 +112,19 @@ class BufferModel {
         }
 
         ChangeDescription cd = bufferInstanceChangeRecorder.endRecording();
-        bufferInstanceChangeRecorder.dispose();
-        bufferInstanceChangeRecorder = new ChangeRecorder(bufferResource);
+        initChangeRecorder();
         ChangeDescription2ChangeConverter changeConverter = new ChangeDescription2ChangeConverter();
         cd.applyAndReverse();
         List<Change> changes = changeConverter.getChanges(cd, modelResourceURI);
         cd.applyAndReverse();
         return changes;
+    }
+
+    protected void initChangeRecorder() {
+        if (null != bufferInstanceChangeRecorder) {
+            bufferInstanceChangeRecorder.dispose();
+        }
+        bufferInstanceChangeRecorder = new ChangeRecorder(bufferResource);
     }
 
     /**
@@ -133,8 +141,12 @@ class BufferModel {
 
         try {
             LOGGER.trace("Trying to load buffer model instance from " + bufferResource.getURI());
+            if (bufferResource.isLoaded()) {
+                bufferResource.unload();
+            }
+            bufferResource.unload();
             bufferResource.load(Collections.EMPTY_MAP);
-            bufferInstanceChangeRecorder = new ChangeRecorder(bufferResource);
+            initChangeRecorder();
         } catch (IOException e) {
             isDisposed = true;
             throw new BufferModelDisposedException("Could not load " + bufferResource.getURI(), e);
@@ -148,7 +160,7 @@ class BufferModel {
     public synchronized void dispose() {
         if (!isDisposed) {
             bufferInstanceChangeRecorder.dispose();
-            bufferResource.unload();
+            // bufferResource.unload();
             isDisposed = true;
         }
     }

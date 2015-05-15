@@ -107,9 +107,12 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
         this.changeSynchronizer.addMapping(new InterfaceMappingTransformation());
         this.changeSynchronizer.addMapping(new MethodMappingTransformation());
         this.changeSynchronizer
-        .addMapping(new edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ParameterMappingTransformation());
+                .addMapping(new edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ParameterMappingTransformation());
         this.changeSynchronizer.addMapping(new ModifierMappingTransformation());
         this.changeSynchronizer.addMapping(new FieldMappingTransformation());
+
+        // Mapping for EObjects in order to avoid runtime exceptions
+        this.changeSynchronizer.addMapping(new DefaultEObjectMappingTransformation());
 
         // set userInteractor
         this.changeSynchronizer.setUserInteracting(userInteracting);

@@ -87,6 +87,8 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
         }
     };
 
+    private boolean reportChanges;
+
     /**
      * A constructor for {@link VitruviusEMFEditorMonitorImpl} instances.
      * 
@@ -189,6 +191,11 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
     public void initialize() {
         changeRecorderMonitor.addEditorStateListener(createBufferModelManagingEditorStateListener());
         changeRecorderMonitor.initialize();
+        // if disposed: undispose
+        for (BufferModel bm : bufferModels.values()) {
+            bm.reInitialize();
+        }
+        reportChanges = true;
     }
 
     @Override
@@ -281,6 +288,9 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
 
     @Override
     public void triggerSynchronisation(final VURI resourceURI) {
+        if (!reportChanges) {
+            return;
+        }
         updateSynchronizationTimestamp(resourceURI);
         if (bufferModels.containsKey(resourceURI)) {
             LOGGER.trace("Got a change buffer for " + resourceURI + ", continuing synchronization.");
@@ -303,5 +313,10 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
         LOGGER.warn("Disabling the timestamp-based recognition of synchronization lag. This is only okay"
                 + " in single-threaded testing environments.");
         isSynchronizationLagRecognitionDisabled = true;
+    }
+
+    @Override
+    public void setReportChanges(boolean reportChanges) {
+        this.reportChanges = reportChanges;
     }
 }

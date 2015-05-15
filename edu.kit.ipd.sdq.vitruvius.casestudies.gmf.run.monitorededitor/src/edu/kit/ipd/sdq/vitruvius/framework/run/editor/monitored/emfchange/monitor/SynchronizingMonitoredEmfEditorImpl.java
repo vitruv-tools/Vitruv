@@ -172,6 +172,10 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
             @Override
             protected void onSavedResource(final ChangeDescription changeDescription) {
                 LOGGER.trace("Received change description " + changeDescription);
+                if (null == changeDescription) {
+                    LOGGER.trace("changeDescription is null. Change can not be synchronized: " + this);
+                    return;
+                }
                 final List<List<Change>> changes = new ArrayList<>();
                 // The following code needs to be executed within the editor's
                 // context because even though it does not change the EMF model
@@ -212,7 +216,9 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
         if (isMonitoringEditor(editorPart)) {
             LOGGER.debug("Dismissing monitor for " + editorPart);
             EMFModelChangeRecordingEditorSaveListener listener = editors.get(editorPart);
-            listener.dispose();
+            if (null != listener) {
+                listener.dispose();
+            }
             fireEditorStateListeners(editorPart, EditorStateChange.MONITORING_ENDED);
             removeEditor(editorPart);
         }
