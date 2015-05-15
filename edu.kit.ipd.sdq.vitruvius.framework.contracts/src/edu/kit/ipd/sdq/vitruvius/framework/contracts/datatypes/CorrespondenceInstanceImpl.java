@@ -679,9 +679,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
             metamodel = this.mapping.getMetamodelB();
         }
         if (metamodel == null) {
-            logger.warn("EObject: '" + eObject
-                    + "' is neither an instance of MM1 nor an instance of MM2. NsURI of object: "
-                    + eObject.eClass().getEPackage().getNsURI());
+            logger.warn("EObject: '" + eObject + "' is neither an instance of MM1 nor an instance of MM2. ");
             return null;
         } else {
             return TUID.getInstance(metamodel.calculateTUIDFromEObject(eObject));
