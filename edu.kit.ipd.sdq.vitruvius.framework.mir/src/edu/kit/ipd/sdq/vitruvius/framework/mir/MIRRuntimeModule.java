@@ -18,6 +18,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.generator.MIRCodeGenerator;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.generator.MIRGenerator;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.generator.MIRGeneratorStatus;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.generator.MIRIntermediateLanguageGenerator;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.generator.MIRJvmModelGenerator;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.linking.MIRLinkingService;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.scoping.MIRGlobalScopeProvider;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.scoping.MIRQualifiedNameConverter;
@@ -55,9 +56,14 @@ public class MIRRuntimeModule extends edu.kit.ipd.sdq.vitruvius.framework.mir.Ab
 	}
 	
 	// TODO: can this injection be done differently?
-	private Class<? extends JvmModelGenerator> bindJvmModelGenerator() { return JvmModelGenerator.class; }
 	private Class<? extends MIRIntermediateLanguageGenerator> bindMIRIntermediateLanguageGenerator() { return MIRIntermediateLanguageGenerator.class; }
 	private Class<? extends MIRCodeGenerator> bindMIRCodeGenerator() { return MIRCodeGenerator.class; }
+
+	public void configureJvmModelGenerator(Binder binder) {
+		binder.bind(JvmModelGenerator.class)
+		      .to(MIRJvmModelGenerator.class)
+		      .in(Singleton.class);
+	}
 	
 	public void configureIGeneratorStatus(Binder binder) {
 		binder.bind(IGeneratorStatus.class)

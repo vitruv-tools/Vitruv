@@ -24,7 +24,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper;
  */
 public class MIRGenerator implements IGenerator {
 
-	List<IGenerator> generators;
 	private JvmModelGenerator jvmModelGenerator;
 	private MIRIntermediateLanguageGenerator intermediateLanguageGenerator;
 	private MIRCodeGenerator codeGenerator;
@@ -35,8 +34,6 @@ public class MIRGenerator implements IGenerator {
 			MIRIntermediateLanguageGenerator intermediateLanguageGenerator,
 			MIRCodeGenerator codeGenerator) {
 		
-		generators = new ArrayList<IGenerator>();
-		
 		this.jvmModelGenerator = jvmModelGenerator;
 		this.intermediateLanguageGenerator = intermediateLanguageGenerator;
 		this.codeGenerator = codeGenerator;
@@ -44,6 +41,8 @@ public class MIRGenerator implements IGenerator {
 	
 	@Override
 	public void doGenerate(Resource input, IFileSystemAccess fsa) {
+		System.out.println("Starting MIRGenerator");
+		
 		String projectName = MIRHelper.getProjectName(MIRHelper.getMIR(input));
 		EclipseProjectHelper eclipseHelper = new EclipseProjectHelper(projectName);
 		eclipseHelper.reinitializeProject();
@@ -51,9 +50,11 @@ public class MIRGenerator implements IGenerator {
 		IFileSystemAccess rootFSA = eclipseHelper.getRootFSA();
 		IFileSystemAccess srcgenFSA = eclipseHelper.getSrcGenFSA();
 		
-		jvmModelGenerator.doGenerate(input, srcgenFSA);
+		jvmModelGenerator.doGenerate(input, fsa);
+		
+/*		jvmModelGenerator.doGenerate(input, srcgenFSA);
 		intermediateLanguageGenerator.doGenerate(input, srcgenFSA);
-		codeGenerator.doGenerate(input, rootFSA);
+		codeGenerator.doGenerate(input, rootFSA);*/
 	}
 
 }

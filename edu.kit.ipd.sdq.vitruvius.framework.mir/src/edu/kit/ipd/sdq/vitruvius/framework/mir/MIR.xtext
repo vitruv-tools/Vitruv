@@ -13,7 +13,7 @@ MIRFile:
 		
 	(
 		imports+=Import |
-		mappings+=Mapping | 
+		mappings+=ClassMapping | 
 		invariants+=Invariant |
 		responses+=Response
 	)*
@@ -25,15 +25,13 @@ Import:
 
 
 // Mappings
-Mapping returns ClassMapping:
-	'map' ClassMapping
-;
-
 ClassMapping:
+	'map'
 	mappedElements+=NamedEClass
 	'and'
 	mappedElements+=NamedEClass
 	('{'
+		('whenwhere' whenwhere = XBlockExpression)?
 		( ('when' whens += When)
 		| ('where' wheres += Where)
 		| ('with' withs += FeatureMapping)
@@ -68,12 +66,6 @@ NamedEClass returns TypedElement:
 	representedEClass=[ecore::EClass|QualifiedName]
 	('as' name=ValidID)?
 ;
-
-/*NamedFeature returns TypedElement:
-	{NamedFeature}
-	feature=FeatureCall
-//	('as' name=ValidID)?
-;*/
 
 TypedElementRef returns Ref:
 	{TypedElementRef}

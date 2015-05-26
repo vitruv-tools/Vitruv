@@ -28,6 +28,7 @@
     </genClasses>
     <genClasses ecoreClass="MIR.ecore#//ClassMapping">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//ClassMapping/mappedElements"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//ClassMapping/whenwhere"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//ClassMapping/whens"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//ClassMapping/wheres"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//ClassMapping/withs"/>
