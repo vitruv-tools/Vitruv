@@ -16,6 +16,11 @@ import org.eclipse.emf.ecore.EPackage
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRPackage
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Import
 
+/**
+ * Used to enable refering to packages by their metamodel namespace URI.
+ * <p>
+ * Uses <code>EPackage.Registry</code> to deresolve URIs.
+ */
 class MIRLinkingService extends DefaultLinkingService {
 	private static final Logger log = Logger.getLogger(typeof(edu.kit.ipd.sdq.vitruvius.framework.mir.linking.MIRLinkingService));
 	

@@ -50,11 +50,9 @@ public class MIRGenerator implements IGenerator {
 		IFileSystemAccess rootFSA = eclipseHelper.getRootFSA();
 		IFileSystemAccess srcgenFSA = eclipseHelper.getSrcGenFSA();
 		
-		jvmModelGenerator.doGenerate(input, fsa);
-		
-/*		jvmModelGenerator.doGenerate(input, srcgenFSA);
+		jvmModelGenerator.doGenerate(input, srcgenFSA);
 		intermediateLanguageGenerator.doGenerate(input, srcgenFSA);
-		codeGenerator.doGenerate(input, rootFSA);*/
+		codeGenerator.doGenerate(input, rootFSA);
 	}
 
 }

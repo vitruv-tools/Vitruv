@@ -15,7 +15,8 @@ class MIRPluginProjectCreator{
 		"edu.kit.ipd.sdq.vitruvius.framework.util",
 		"edu.kit.ipd.sdq.vitruvius.framework.contracts",
 		"edu.kit.ipd.sdq.vitruvius.framework.mir.executor",
-		"edu.kit.ipd.sdq.vitruvius.framework.meta.change"	
+		"edu.kit.ipd.sdq.vitruvius.framework.meta.change",
+		"com.google.guava"
 	]
 	
 	/**
@@ -42,7 +43,7 @@ class MIRPluginProjectCreator{
 	/**
 	 * Creates the META-INF/MANIFEST.MF file for the plugin project.
 	 */
-	public static def createManifest(IFileSystemAccess fsa, String projectName) {
+	public static def createManifest(IFileSystemAccess fsa, String projectName, String ... additionalRequiredBundles) {
 		fsa.generateFile("META-INF/MANIFEST.MF",
 		'''
 		Manifest-Version: 1.0
@@ -51,7 +52,7 @@ class MIRPluginProjectCreator{
 		Bundle-SymbolicName: «projectName»;singleton:=true
 		Bundle-Version: 1.0.0.qualifier
 		Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-		Require-Bundle: «requiredBundles.join(",\n ")»
+		Require-Bundle: «(requiredBundles + additionalRequiredBundles).join(",\n ")»
 		
 		'''
 		)

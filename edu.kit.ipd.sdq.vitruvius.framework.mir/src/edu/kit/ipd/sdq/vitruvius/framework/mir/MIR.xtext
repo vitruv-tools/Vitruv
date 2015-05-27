@@ -12,6 +12,7 @@ MIRFile:
 	('generates' 'type' generatedClass=QualifiedName)?
 		
 	(
+		bundles+=Bundle |
 		imports+=Import |
 		mappings+=ClassMapping | 
 		invariants+=Invariant |
@@ -20,43 +21,37 @@ MIRFile:
 ;
 
 Import:
-	'import' 'package' package=[ecore::EPackage|STRING]
+	'import' 'package' package=[ecore::EPackage|STRING] 
 	'as' name=ValidID;
+	
+Bundle:
+	'bundle' bundleFQN=QualifiedName
+;
 
 
 // Mappings
 ClassMapping:
 	'map'
-	mappedElements+=NamedEClass
+		mappedElements+=NamedEClass
 	'and'
-	mappedElements+=NamedEClass
+		mappedElements+=NamedEClass
 	('{'
-		('whenwhere' whenwhere = XBlockExpression)?
-		( ('when' whens += When)
-		| ('where' wheres += Where)
-		| ('with' withs += FeatureMapping)
+		('when-where' whenwhere = XBlockExpression)?
+		(
+		  ('with-block' withBlocks += XBlockExpression) |
+		  ('with' withs += FeatureMapping)
 		)*
 	'}')?
 ;
 
-Where:
-	expression=ExpressionBlock
-	'opposite' ('auto' | oppositePredicate=PredicateBlock)
-;
-
-When:
-	predicate=PredicateBlock
-	'opposite' ('auto' | oppositeExpression=ExpressionBlock)
-;
-
 FeatureMapping:
-	mappedElements+=FeatureCall
+		mappedElements+=FeatureCall
 	'and'
-	mappedElements+=FeatureCall
+		mappedElements+=FeatureCall
 	('{'
-		( ('when' whens += When)
-		| ('where' wheres += Where)
-		| ('with' withs += FeatureMapping)
+		(
+		  ('with-block' withBlocks += XBlockExpression) |
+		  ('with' withs += FeatureMapping)
 		)*
 	'}')?
 ;
@@ -83,6 +78,8 @@ FeatureCall returns TypedElement:
 		) 
 	)*
 ;
+
+
 
 // Invariants
 EClassParameter:

@@ -65,7 +65,7 @@ class MIRCodeGenerator implements IGenerator {
 		val projectName = MIRHelper.getProjectName(MIRHelper.getMIR(input));
 		
 		MIRPluginProjectCreator.createPluginXML(fsa, fqn);
-		MIRPluginProjectCreator.createManifest(fsa, projectName)
+		MIRPluginProjectCreator.createManifest(fsa, projectName, mirFile.bundles.map[bundleFQN])
 		
 		for (mapping : il.classMappings) {
 			generateMappingClass(mapping, il.configuration.package, fsa)

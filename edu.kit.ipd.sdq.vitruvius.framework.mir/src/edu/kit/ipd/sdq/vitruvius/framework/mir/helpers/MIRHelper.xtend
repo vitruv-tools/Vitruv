@@ -11,6 +11,7 @@ import java.util.ArrayList
 import org.eclipse.emf.ecore.resource.Resource
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.EClassifierFeature
+import org.eclipse.emf.ecore.EObject
 
 class MIRHelper {
 	static def List<FeatureCall> collectFeatureCalls(TypedElement fc) {
@@ -31,6 +32,26 @@ class MIRHelper {
 		result
 	}
 	
+	static def dispatch String tryGetName(EObject element) {
+		return null
+	}
+
+	static def dispatch String tryGetName(TypedElement element) {
+		return null
+	}
+	
+	static def dispatch String tryGetName(NamedEClass element) {
+		return element.name
+	}
+	
+	static def dispatch String tryGetName(FeatureCall element) {
+		return element.name
+	}
+	
+	static def dispatch EClassifier getTypeRecursive(EObject element) {
+		null
+	}
+	
 	static def dispatch EClassifier getTypeRecursive(TypedElement element) {
 		null
 	}
@@ -38,6 +59,7 @@ class MIRHelper {
 	static def dispatch EClassifier getTypeRecursive(NamedEClass namedEClass) {
 		namedEClass.representedEClass
 	}
+	
 	
 	static def dispatch EClassifier getTypeRecursive(FeatureCall featureCall) {
 		featureCall.type ?: featureCall.tail?.EType ?: featureCall.ref.getTypeRecursive

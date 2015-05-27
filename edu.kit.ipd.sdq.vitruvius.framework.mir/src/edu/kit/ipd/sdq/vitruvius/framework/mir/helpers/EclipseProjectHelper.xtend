@@ -95,12 +95,14 @@ class EclipseProjectHelper {
 		return javaProject
 	}
 	
+	/** Deletes the project, and creates a new Java project */
 	public def reinitializeProject() {
 		deleteProject
 		createProject
 		createJavaProject
 	}
 	
+	/** Creates a new project */
 	def createProject() {
 		val project = getProject()
 		
