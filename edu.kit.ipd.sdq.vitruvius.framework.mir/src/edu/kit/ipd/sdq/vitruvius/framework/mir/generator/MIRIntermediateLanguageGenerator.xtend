@@ -34,7 +34,6 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 	private static final Logger logger = Logger.getLogger(MIRIntermediateLanguageGenerator)
 	private static final String DEFAULT_CLASS_NAME = "ChangeSynchronizer"
 	
-	
 	@Inject IGeneratorStatus generatorStatus;
 	
 	extension MIRintermediateFactory mirILfactory = MIRintermediateFactory.eINSTANCE
