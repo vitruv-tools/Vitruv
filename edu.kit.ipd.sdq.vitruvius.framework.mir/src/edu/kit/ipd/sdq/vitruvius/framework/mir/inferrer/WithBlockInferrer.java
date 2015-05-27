@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.inferrer;
 
-import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EPackage;

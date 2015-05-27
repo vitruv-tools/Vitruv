@@ -1,17 +1,16 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.helpers
 
-import org.eclipse.emf.ecore.EStructuralFeature
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureCall
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass
-import org.eclipse.emf.ecore.EClassifier
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.TypedElementRef
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.TypedElement
-import java.util.List
-import java.util.ArrayList
-import org.eclipse.emf.ecore.resource.Resource
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.EClassifierFeature
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.TypedElement
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.TypedElementRef
+import java.util.ArrayList
+import java.util.List
+import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.resource.Resource
 
 class MIRHelper {
 	static def List<FeatureCall> collectFeatureCalls(TypedElement fc) {
@@ -57,7 +56,7 @@ class MIRHelper {
 	}
 	
 	static def dispatch EClassifier getTypeRecursive(NamedEClass namedEClass) {
-		namedEClass.representedEClass
+		namedEClass.type
 	}
 	
 	

@@ -65,8 +65,7 @@ NamedEClass returns TypedElement:
 	('as' name=ValidID)?
 ;
 
-TypedElementRef returns Ref:
-	{TypedElementRef}
+TypedElementRef:
 	ref=[TypedElement]
 ;
 

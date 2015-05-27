@@ -1,30 +1,18 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.generator
 
 import com.google.inject.Inject
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassifierMapping
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.FeatureMapping
+import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIRintermediateFactory
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Mapping
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureCall
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.JavaBlock
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass
 import java.util.Collections
+import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
-
-import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper.*
-import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper
-import org.apache.log4j.Logger
-import org.eclipse.emf.ecore.EClassifier
-import org.eclipse.emf.ecore.EDataType
-import org.eclipse.xtext.xbase.XBlockExpression
 
 /**
  * Generates the intermediate language form of the model
