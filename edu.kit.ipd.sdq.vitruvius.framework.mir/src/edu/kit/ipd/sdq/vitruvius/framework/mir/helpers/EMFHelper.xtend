@@ -6,6 +6,8 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EDataType
 
 class EMFHelper {
 	/**
@@ -27,30 +29,40 @@ class EMFHelper {
 		return result
 	}
 	
-	static def getJavaExpressionThatReturns(EClassifier classifier) {
+	static def getJavaExpressionThatReturns(EClassifier classifier, boolean fqn) {
 		val classifierID = classifier.classifierID
 		val ePackage = classifier.EPackage
 		
-		val packageExpression = getJavaExpressionThatReturns(ePackage)
+		val eClassName = if (fqn) EClass.name else EClass.simpleName
 		
-		return '''((org.eclipse.emf.ecore.EClass) «packageExpression».getEClassifiers().get(«classifierID»))'''
+		val packageExpression = getJavaExpressionThatReturns(ePackage, fqn)
+		
+		return '''((«eClassName») «packageExpression».getEClassifiers().get(«classifierID»))'''
 	}
 	
 	/**
 	 * Returns a Java expression that when evaluated returns the given
 	 * EStructuralFeature.
 	 */
-	static def getJavaExpressionThatReturns(EStructuralFeature feature) {
+	static def getJavaExpressionThatReturns(EStructuralFeature feature, boolean fqn) {
 		val featureID = feature.featureID
 		val containerClass = feature.EContainingClass
 		
-		return '''«getJavaExpressionThatReturns(containerClass)».getEStructuralFeature(«featureID»)'''
+		return '''«getJavaExpressionThatReturns(containerClass, fqn)».getEStructuralFeature(«featureID»)'''
 	}
 	
 	/**
 	 * Returns a Java expression that evaluates to the given EPackage
 	 */
-	static def getJavaExpressionThatReturns(EPackage ePackage) {
-		'''org.eclipse.emf.ecore.EPackage.Registry.INSTANCE.getEPackage("«ePackage.nsURI»")'''
+	static def getJavaExpressionThatReturns(EPackage ePackage, boolean fqn) {
+		val ePackageName = if (fqn) EPackage.name else EPackage.simpleName
+		'''«ePackageName».Registry.INSTANCE.getEPackage("«ePackage.nsURI»")'''
 	}
+	
+	/**
+	 * Returns true if the given type is a primitive type or an enumerable
+	 */
+	 static def isEDataType(EClassifier eClassifier) {
+	 	return (eClassifier instanceof EDataType)
+	 }
 }

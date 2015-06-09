@@ -17,8 +17,8 @@ import org.eclipse.xtext.xbase.XExpression;
  * @author Dominik Werle
  */
 public interface IGeneratorStatus {
-	public String getJvmName(EObject obj);
-	public void putJvmName(EObject obj, String fqn);
+	public String getJvmName(Object obj);
+	public void putJvmName(Object obj, String fqn);
 	
 	public void put(MIRFile file, MIR mir);
 	public MIR getIntermediateForMIR(MIRFile file);

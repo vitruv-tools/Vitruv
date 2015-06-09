@@ -1,0 +1,96 @@
+Vorbedingungen müssen immer auch "herstellbar sein"
+	=> When-where (when...)
+
+Nachbedingungen sind eigentlich eher "responses"
+	Hier muss nicht unbedingt die Umkehrbarkeit garantiert sein, kann aber
+	eventuell abgeleitet werden! (sonst muss eben aktiv definiert werden, dass
+	die Rückrichtung nicht herstellbar ist / informationen verloren gehen)
+	=> with
+
+Quick sketch of intermediate language:
+  class mapping to class mapping
+	-> links to when-where methods, with-block methods
+    -> links to feature mappings
+
+  feature mappings: separate between EDataType and EClass mappings
+    -> the former just become a list of features (FBlocks)
+    -> the latter become class mappings of their own with an additional condition
+    -> the additional condition is that parent corresponds to correct type
+
+Sketch of generated code:
+  create methods that check if a mapping holds for an object
+    -> from when-where-equalities
+  create code that can be called whenever a mapping holds and will not destroy
+    the consistency (usually called after a change or after mapping is established) => postconditions
+    -> from with-blocks, when-where-assignments, FBlocks
+	
+  after each "change":
+    -> AbstractMIRTransformationExecuting
+	   * Kandidaten-Mappings feststellen
+	   - > change übergeben, mappings entscheiden selbst, was sie dann anfassen
+	   
+	   Die Mappings werden generiert. Jedes mapping hat eine applyEChange(EChange, CorrespondenceInstance, Abst..MIRT..Executing)
+	   Ein Mapping kann dann herausfinden, ob Sachen bereits gemapped sind, wie sich der "Mappingzustand" ändert, etc. Entsprechend
+	   müssen dann die passenden "Nachbedingungen" ausgeführt werden (welche ist wieder konservativ -> schlau zu machen, d.h. erst mal
+	   alle die überhaupt irgendwie betroffen sein könnten, eventuell dann schlauer auswählen).x
+	   
+	   
+ACHTUNG:
+	Bedingungen in einem when-where-Block, die sich nicht direkt auf die gemappten Elemente sondern auf Elternelemente beziehen, müssen einfach als Bedingungen auf beiden Seiten beibehalten werden.
+	
+	bsp:
+		map repo.repository.BasicComponent as bc
+		and uml.Package as up {
+			
+			with map bc.(providedRoles_InterfaceProvidingEntity as bc_pr)
+			     and up.(member as up_m) {
+				when-where {
+					bc.entityName == "AX"  // <-- wird einfach auf beiden Seiten geprüft. Insbesondere
+					                       //     kann hier auch alles mögliche stehen, nicht nur .x =(=) Literal
+					                       // das wird im moment noch falsch verteilt!
+				}
+			 }
+		}
+		
+		
+Braucht man wirklich eine explizite Darstellung von FeatureMappings in der IL? Was bringt einem das? Man könnte es auch direkt als Bedingungen an die Classifiermappings darstellen:
+	+ IL wird einfacher
+	+ Abbildung in Code ist "direkter"
+	
+	- evtl. ist die Information gut, um daraus schlau auf bestimmte Änderungen zu reagieren?
+	
+Warum muss ein Element "exklusiv" von einem Klassmapping gemapped werden? Was ist mit dem Fall InOut <-> In + Out?
+	* Im Moment ist das Design so gemacht.
+	
+	
+Kommentar Max:
+ * Assignments: feingranularer.
+ * Trennung der verschiedenen Änderungsarten.
+  
+ * Dokumentieren des aktuellen Zustand
+ * Punkte für Freitag überlegen
+ * Noch zwei Punkte: Feature Hopping, exklusive Mapping (eMail) -> v.a. in Bezug auf Auswirkung auf Architektur
+	
+  public static void propagateChangeBasicComponent_ID(Package up, BasicComponent bc) {
+	  up.URI = "http://urltobc?" + bc.id
+  }
+  
+  public static void propagateChangePackage_URI(Package up, BasicComponent bc) {
+	  /* ... */
+  }
+  
+  
+  
+Mapping:
+	if (getChangedFeature(eChange).equals(RepositoryPackage.BASIC_COMPONENT__ID)) {
+		BlockWithInferred487d490b
+			.propagateChangeBasicComponent_ID(up, bc)
+	} else if (.. == RepositoryPackage.BASIC_COMPONENT__ENTITY_NAME)
+	}
+	
+
+Stundenzettel am KIT:
+	20h insgesamt,
+	nicht mehr als 10h am Tag und nur zw. 6h und 22h, und nur Arbeitstagen
+	
+	Android Zeiterfassung

@@ -15,9 +15,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRModelInformationProvider
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EMFHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassifierMapping
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.FeatureMapping
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.JavaPredicate
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Mapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Predicate
@@ -33,6 +32,10 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
+import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.EClass
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.WhenWhereJavaClass
+import org.eclipse.emf.ecore.EPackage
 
 /**
  * @author Dominik Werle
@@ -45,13 +48,13 @@ class MIRCodeGenerator implements IGenerator {
 	
 	@Inject IGeneratorStatus generatorStatus;
 	
-	var Map<ClassifierMapping, String> predicateCheckMethodNames
-	var Map<ClassifierMapping, String> createMethodNames
+	var Map<ClassMapping, String> predicateCheckMethodNames
+	var Map<ClassMapping, String> createMethodNames
 
 	var Map<Mapping, String> mappingClassNames;
 
 
-	var List<ClassifierMapping> classifierMappings
+	var List<ClassMapping> ClassMappings
 	
 	@Override
 	public override doGenerate(Resource input, IFileSystemAccess fsa) {
@@ -75,8 +78,8 @@ class MIRCodeGenerator implements IGenerator {
 	}
 	
 	private def resetState() {
-		predicateCheckMethodNames = new HashMap<ClassifierMapping, String>()
-		createMethodNames = new HashMap<ClassifierMapping, String>()
+		predicateCheckMethodNames = new HashMap<ClassMapping, String>()
+		createMethodNames = new HashMap<ClassMapping, String>()
 		mappingClassNames = new HashMap<Mapping, String>()
 	}
 	
@@ -114,7 +117,7 @@ class MIRCodeGenerator implements IGenerator {
 	}
 
 	private def generateTransformationExecuting(MIR file, URI resourcePath, IFileSystemAccess fsa) {
-		classifierMappings = file.classMappings
+		ClassMappings = file.classMappings
 		
 		fsa.generateFile(SRC_GEN_FOLDER + file.configuration.package.packageNameToPath + file.configuration.type + ".java", '''
 			package «file.configuration.package»;
@@ -140,6 +143,8 @@ class MIRCodeGenerator implements IGenerator {
 				/* Transformable metamodels. */
 				private final List<Pair<VURI, VURI>> transformableMetamodels;
 				
+				private final Map<EObject, Integer> currentMappingID;
+				
 				public «file.configuration.type»() {
 					currentMappingID = new HashMap<EObject, Integer>();
 					
@@ -151,7 +156,7 @@ class MIRCodeGenerator implements IGenerator {
 				@Override
 				protected void setup() {
 					«FOR name : mappingClassNames.values»
-					addMIRMapping(new «name»());
+					addMIRMapping(new «file.configuration.package».mappings.«name»());
 					«ENDFOR»
 				}
 				
@@ -171,18 +176,30 @@ class MIRCodeGenerator implements IGenerator {
 		rootPkgName + "." + MAPPING_PKG_NAME
 	}
 	
-	def dispatch String getPredicateEvaluationJava(JavaPredicate predicate) {
-		predicate.checkStatement
+	def dispatch String getPredicateEvaluationJava(WhenWhereJavaClass predicate) {
+		'''
+		«predicate.classFQN»(
+		«FOR i : 0 ..< boundObjectTypes.size SEPARATOR ",\n"»
+			(«boundObjectTypes.get(i)») boundEObjects.get(«i»)
+		«ENDFOR»
+		)
+		'''
 	}
 	
 	def dispatch String getPredicateEvaluationJava(Predicate predicate) {
 		'''/* unknown predicate: «predicate.toString» */ false'''
 	}
 	
-	def dispatch generateMappingClass(ClassifierMapping mapping, String pkgName, IFileSystemAccess fsa) {
+	/** Refactor. Holds status about the generation*/
+	private List<String> boundObjectTypes; 
+	
+	def dispatch generateMappingClass(ClassMapping mapping, String pkgName, IFileSystemAccess fsa) {
 		val className = nextMappingClassName
 		mappingClassNames.put(mapping, className)
 		
+		boundObjectTypes = newArrayList
+		boundObjectTypes.add(mapping.left.instanceTypeName)
+				
 		fsa.generateFile(SRC_GEN_FOLDER + pkgName.mappingPackageName.packageNameToPath + className + ".java",
 		'''
 			package «pkgName.mappingPackageName»;
@@ -194,6 +211,9 @@ class MIRCodeGenerator implements IGenerator {
 			import «CorrespondenceInstance.name»;
 			import «MIRModelInformationProvider.name»;
 			
+			import «EStructuralFeature.name»;
+			import «EClass.name»;
+			
 			import «AbstractMIRTransformationExecuting.name»;
 			import «EObject.name»;
 			
@@ -202,57 +222,112 @@ class MIRCodeGenerator implements IGenerator {
 			import «Set.name»;
 			import «HashSet.name»;
 			
+			import «EPackage.name»;
+			
+			import «Pair.name»;
+			
 			/**
-			 * Classifier Mapping
+			 * Class Mapping
 			 */
-			class «className» extends «AbstractMIRMapping.simpleName» {
+			public class «className» extends «AbstractMIRMapping.simpleName» {
 				// final static Logger logger = Logger.getLogger(«className».class);
 				
 				final Set<EObject> managedEObjects = new HashSet<EObject>();
 				
+				// Singleton
+				final static «className» INSTANCE = new «className»();
+				
+				private «className»() {}
+				
 				protected boolean checkConditions(EObject eObject, CorrespondenceInstance correspondenceInstance,
 						AbstractMIRTransformationExecuting transformationExecuting) {
 
-					boolean predicate;
-					
-					List<EObject> boundEObjects = new ArrayList<EObject>();
-					
-					«featureMappingCheckJava(mapping)»
-					
-					«FOR predicate : mapping.predicates»
-					predicate = «predicate.predicateEvaluationJava»;
-					if (!predicate) {
+					if (!(eObject instanceof «mapping.left.instanceTypeName»)) {
 						return false;
 					}
+
+					List<EObject> boundEObjects = new ArrayList<EObject>();
+					
+					boundEObjects.add(eObject);
+					
+					EObject eObjectIterator = eObject;
+
+					«featureMappingCheckAndBindingJava(mapping)»
+					
+					«FOR predicate : mapping.predicates»
+					predicate =
+						«predicate.predicateEvaluationJava»;
+					if (!predicate) { return false; }
 					
 					«ENDFOR»
 					
 					return true;
 				}
 			}
+			
+			@Override
+			protected EClass getMappedEClass() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		
+			@Override
+			protected void restorePostConditions(EChange eChange,
+					CorrespondenceInstance correspondenceInstance,
+					AbstractMIRTransformationExecuting transformationExecuting) {
+				// TODO Auto-generated method stub
+				
+			}
+		
+			@Override
+			protected void createCorresponding(EObject eObject,
+					CorrespondenceInstance correspondenceInstance,
+					AbstractMIRTransformationExecuting transformationExecuting) {
+				// TODO Auto-generated method stub
+				
+			}
+		
+			@Override
+			protected void deleteCorresponding(EObject eObject,
+					CorrespondenceInstance correspondenceInstance,
+					AbstractMIRTransformationExecuting transformationExecuting) {
+				// TODO Auto-generated method stub
+				
+			}
 		'''
 		)
 	}
 	
-	def String featureMappingCheckJava(ClassifierMapping mapping) {
+	def String featureMappingCheckAndBindingJava(ClassMapping mapping) {
 		if (mapping.featureMapping != null) {
+			boundObjectTypes += #[
+				mapping.featureMapping.left.get(0).EClass.instanceTypeName,
+				mapping.featureMapping.right.get(0).EClass.instanceTypeName
+			]
 			'''
 			{
 				// feature «mapping.featureMapping.left.get(0).feature.name»
-				EStructuralFeature feature = «EMFHelper.getJavaExpressionThatReturns(mapping.featureMapping.left.get(0).feature)»;
-				// sourceType «mapping.featureMapping.left.get(0).EClassifier.instanceClassName»
-				EClassifier sourceType = «EMFHelper.getJavaExpressionThatReturns(mapping.featureMapping.left.get(0).EClassifier)»;
-				Class<MIRMapping> mapping = «mappingClassNames.get(mapping.featureMapping.parent)».class;
-				EObject mappedObject = transformationExecuting.getReverseFeatureMappedBy(eObject,
-					feature, correspondenceInstance, mapping);
-				if (mappedObject == null) {
-					return false;
-				}
+				EStructuralFeature feature =
+				  «EMFHelper.getJavaExpressionThatReturns(mapping.featureMapping.left.get(0).feature, false)»;
+				// sourceType «mapping.featureMapping.left.get(0).EClass.instanceClassName»
+				EClass sourceType =
+				  «EMFHelper.getJavaExpressionThatReturns(mapping.featureMapping.left.get(0).EClass, false)»;
+				MIRMapping mapping =
+				  «mappingClassNames.get(mapping.featureMapping.parent)».INSTANCE;
+				Pair<EObject, EObject> parentAndMappedEObject =
+					transformationExecuting.getReverseFeatureMappedBy(eObjectIterator,
+						feature, correspondenceInstance, mapping);
+						
+				eObjectIterator = parentAndMappedEObject.getFirst();
+				EObject mappedObject = parentAndMappedEObject.getSecond();
+					
+				if (mappedObject == null) { return false; }
 				else {
 					boundEObjects.add(mappedObject);
+					boundEObjects.add(eObjectIterator);
 				}
 			}
-			«featureMappingCheckJava(mapping.featureMapping.parent)»
+			«featureMappingCheckAndBindingJava(mapping.featureMapping.parent)»
 			'''
 		} else {
 			""

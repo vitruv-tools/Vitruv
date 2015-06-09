@@ -4,7 +4,7 @@
     nsPrefix="MIRintermediate">
   <eClassifiers xsi:type="ecore:EClass" name="MIR">
     <eStructuralFeatures xsi:type="ecore:EReference" name="classMappings" upperBound="-1"
-        eType="#//ClassifierMapping" containment="true"/>
+        eType="#//ClassMapping" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="featureMappings" upperBound="-1"
         eType="#//FeatureMapping" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="predicates" upperBound="-1"
@@ -17,36 +17,29 @@
   <eClassifiers xsi:type="ecore:EClass" name="Mapping" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="predicates" upperBound="-1"
         eType="#//Predicate"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="postconditions" upperBound="-1"
+        eType="#//PostCondition" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FeatureMapping" eSuperTypes="#//Mapping">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="left" upperBound="-1" eType="#//EClassifierFeature"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" upperBound="-1" eType="#//EClassFeature"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="right" upperBound="-1"
-        eType="#//EClassifierFeature" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="classifierMapping" eType="#//ClassifierMapping"
-        eOpposite="#//ClassifierMapping/featureMapping"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="opposite" lowerBound="1"
-        eType="#//FeatureMapping"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//ClassifierMapping"/>
+        eType="#//EClassFeature" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="classMapping" eType="#//ClassMapping"
+        eOpposite="#//ClassMapping/featureMapping"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//ClassMapping"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ClassifierMapping" eSuperTypes="#//Mapping">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="left" lowerBound="1" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClassifier"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="right" lowerBound="1" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClassifier"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="initializer" upperBound="-1"
-        eType="#//Initializer" containment="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassMapping" eSuperTypes="#//Mapping">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" lowerBound="1" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" lowerBound="1" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClass"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="featureMapping" eType="#//FeatureMapping"
-        eOpposite="#//FeatureMapping/classifierMapping"/>
+        eOpposite="#//FeatureMapping/classMapping"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="opposite" lowerBound="1"
-        eType="#//ClassifierMapping"/>
+        eType="#//ClassMapping"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Predicate" abstract="true"/>
-  <eClassifiers xsi:type="ecore:EClass" name="JavaPredicate" eSuperTypes="#//Predicate">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="checkStatement" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-        defaultValueLiteral=""/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Initializer" abstract="true"/>
-  <eClassifiers xsi:type="ecore:EClass" name="JavaInitializer" eSuperTypes="#//Initializer">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="callStatement" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+  <eClassifiers xsi:type="ecore:EClass" name="WhenWhereJavaClass" eSuperTypes="#//Predicate">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="classFQN" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral=""/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Configuration">
@@ -54,11 +47,16 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EClassifierFeature">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="eClassifier" lowerBound="1"
-        eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClassifier"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EClassFeature">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eClass" lowerBound="1"
+        eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClass"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="feature" lowerBound="1"
         eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="definedType" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClassifier"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="definedType" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClass"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PostCondition" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="WithBlockPostCondition" eSuperTypes="#//PostCondition">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="classFQN" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral=""/>
   </eClassifiers>
 </ecore:EPackage>

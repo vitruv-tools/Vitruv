@@ -24,14 +24,14 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile;
  */
 public class MIRGeneratorStatus implements IGeneratorStatus {
 	
-	private Map<EObject, String> objectToName;
+	private Map<Object, String> objectToName;
 	private Map<MIRFile, MIR> mirToIL;
 	
 	private List<XExpression> whenWheresToInfer;
 	private List<XExpression> withBlocksToInfer;
 	
 	public MIRGeneratorStatus() {
-		this.objectToName = new HashMap<EObject, String>();
+		this.objectToName = new HashMap<Object, String>();
 		this.mirToIL = new HashMap<MIRFile, MIR>();
 		
 		this.whenWheresToInfer = new ArrayList<XExpression>();
@@ -39,12 +39,12 @@ public class MIRGeneratorStatus implements IGeneratorStatus {
 	}
 
 	@Override
-	public String getJvmName(EObject obj) {
+	public String getJvmName(Object obj) {
 		return objectToName.get(obj);
 	}
 
 	@Override
-	public void putJvmName(EObject obj, String fqn) {
+	public void putJvmName(Object obj, String fqn) {
 		objectToName.put(obj, fqn);
 	}
 
@@ -58,7 +58,7 @@ public class MIRGeneratorStatus implements IGeneratorStatus {
 	}
 	
 	public void output() {
-		for (Entry<EObject, String> e : objectToName.entrySet()) {
+		for (Entry<Object, String> e : objectToName.entrySet()) {
 			System.out.println(e.getKey().toString() + " -> " + e.getValue());
 		}
 	}

@@ -5,92 +5,44 @@
   <eClassifiers xsi:type="ecore:EClass" name="MIRFile">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="generatedPackage" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="generatedClass" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bundles" upperBound="-1"
+        eType="#//Bundle" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="imports" upperBound="-1"
         eType="#//Import" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappings" upperBound="-1"
-        eType="#//ClassMapping" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="invariants" upperBound="-1"
-        eType="#//Invariant" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="responses" upperBound="-1"
-        eType="#//Response" containment="true"/>
+        eType="#//Mapping" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Import">
     <eStructuralFeatures xsi:type="ecore:EReference" name="package" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ClassMapping">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="mappedElements" upperBound="-1"
-        eType="#//TypedElement" containment="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Bundle">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bundleFQN" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MappingBody">
     <eStructuralFeatures xsi:type="ecore:EReference" name="whenwhere" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="whens" upperBound="-1"
-        eType="#//When" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="wheres" upperBound="-1"
-        eType="#//Where" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="withBlocks" upperBound="-1"
+        eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="withs" upperBound="-1"
-        eType="#//FeatureMapping" containment="true"/>
+        eType="#//Mapping" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Where">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="oppositePredicate" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="When">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="predicate" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="oppositeExpression" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="FeatureMapping">
+  <eClassifiers xsi:type="ecore:EClass" name="Mapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappedElements" upperBound="-1"
         eType="#//TypedElement" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="whens" upperBound="-1"
-        eType="#//When" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="wheres" upperBound="-1"
-        eType="#//Where" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="withs" upperBound="-1"
-        eType="#//FeatureMapping" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="constraints" eType="#//MappingBody"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TypedElement"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Ref" eSuperTypes="#//TypedElement"/>
-  <eClassifiers xsi:type="ecore:EClass" name="EClassParameter">
+  <eClassifiers xsi:type="ecore:EClass" name="TypedElementRef" eSuperTypes="#//TypedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//TypedElement"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassMapping" eSuperTypes="#//Mapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureMapping" eSuperTypes="#//Mapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NamedEClass" eSuperTypes="#//TypedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Invariant">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
-        eType="#//EClassParameter" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="predicate" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="OCLBlock">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="oclString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="JavaBlock">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="javaString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Response">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="action" eType="#//ResponseAction"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="#//TypedElement"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="inv" eType="#//Invariant"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="restoreAction" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="ResponseAction">
-    <eLiterals name="ANY" literal="any"/>
-    <eLiterals name="CREATE" value="1" literal="create"/>
-    <eLiterals name="CHANGE" value="2" literal="change"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NamedEClass" eSuperTypes="#//TypedElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="representedEClass" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TypedElementRef" eSuperTypes="#//Ref">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//TypedElement"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FeatureCall" eSuperTypes="#//TypedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//TypedElement"

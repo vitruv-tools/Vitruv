@@ -11,8 +11,41 @@ import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.Resource
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping
+import edu.kit.ipd.sdq.vitruvius.framework.mir.validation.MIRValidator
+
+import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EMFHelper.*
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Mapping
 
 class MIRHelper {
+	/**
+	 * Returns null if valid. If the Mapping is not valid, a fitting error id is returned
+	 * @see MIRValidator
+	 */
+	static def dispatch String getErrorID(FeatureMapping featureMapping) {
+		val elementsDataType = featureMapping.mappedElements.map [typeRecursive.isEDataType]
+		
+		val allEDataType = elementsDataType.forall[it]
+		val allEClass = elementsDataType.forall[!it]
+		
+		if (!allEDataType && !allEClass) {
+			return MIRValidator.MIXED_FEATURES
+		} else if (allEDataType && (featureMapping.constraints != null)) {
+			return MIRValidator.EDATATYPES_AND_CONSTRAINTS
+		} else {
+			return null
+		}
+	}
+	
+	static def dispatch String getErrorID(ClassMapping classMapping) {
+		return null
+	}
+	
+	static def boolean isValid(Mapping mapping) {
+		return (mapping.errorID == null)
+	}
+	
 	static def List<FeatureCall> collectFeatureCalls(TypedElement fc) {
 		val result = new ArrayList<FeatureCall>()
 		
@@ -88,7 +121,7 @@ class MIRHelper {
 		val mirFiles = input.contents.filter(typeof(MIRFile))
 		
 		if (mirFiles.length != 1)
-			throw new IllegalArgumentException("input resource contains more than one MIRFile model instance")
+			throw new IllegalArgumentException("input resource contains more than one MIRFile model instance (" + mirFiles.length + ")")
 		
 		return mirFiles.get(0);
 	}

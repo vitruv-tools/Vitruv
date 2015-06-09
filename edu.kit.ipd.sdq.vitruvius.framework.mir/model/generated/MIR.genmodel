@@ -9,74 +9,38 @@
     usedGenPackages="platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel#//xbase">
   <genPackages prefix="MIR" basePackage="edu.kit.ipd.sdq.vitruvius.framework.mir"
       disposableProviderFactory="true" fileExtensions="mir" ecorePackage="MIR.ecore#/">
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="MIR.ecore#//ResponseAction">
-      <genEnumLiterals ecoreEnumLiteral="MIR.ecore#//ResponseAction/ANY"/>
-      <genEnumLiterals ecoreEnumLiteral="MIR.ecore#//ResponseAction/CREATE"/>
-      <genEnumLiterals ecoreEnumLiteral="MIR.ecore#//ResponseAction/CHANGE"/>
-    </genEnums>
     <genClasses ecoreClass="MIR.ecore#//MIRFile">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//MIRFile/generatedPackage"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//MIRFile/generatedClass"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//MIRFile/bundles"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//MIRFile/imports"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//MIRFile/mappings"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//MIRFile/invariants"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//MIRFile/responses"/>
     </genClasses>
     <genClasses ecoreClass="MIR.ecore#//Import">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//Import/package"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//Import/name"/>
     </genClasses>
-    <genClasses ecoreClass="MIR.ecore#//ClassMapping">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//ClassMapping/mappedElements"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//ClassMapping/whenwhere"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//ClassMapping/whens"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//ClassMapping/wheres"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//ClassMapping/withs"/>
+    <genClasses ecoreClass="MIR.ecore#//Bundle">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//Bundle/bundleFQN"/>
     </genClasses>
-    <genClasses ecoreClass="MIR.ecore#//Where">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Where/expression"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Where/oppositePredicate"/>
+    <genClasses ecoreClass="MIR.ecore#//MappingBody">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//MappingBody/whenwhere"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//MappingBody/withBlocks"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//MappingBody/withs"/>
     </genClasses>
-    <genClasses ecoreClass="MIR.ecore#//When">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//When/predicate"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//When/oppositeExpression"/>
-    </genClasses>
-    <genClasses ecoreClass="MIR.ecore#//FeatureMapping">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//FeatureMapping/mappedElements"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//FeatureMapping/whens"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//FeatureMapping/wheres"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//FeatureMapping/withs"/>
+    <genClasses ecoreClass="MIR.ecore#//Mapping">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Mapping/mappedElements"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Mapping/constraints"/>
     </genClasses>
     <genClasses ecoreClass="MIR.ecore#//TypedElement"/>
-    <genClasses ecoreClass="MIR.ecore#//Ref"/>
-    <genClasses ecoreClass="MIR.ecore#//EClassParameter">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//EClassParameter/type"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//EClassParameter/name"/>
-    </genClasses>
-    <genClasses ecoreClass="MIR.ecore#//Invariant">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//Invariant/context"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//Invariant/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Invariant/params"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Invariant/predicate"/>
-    </genClasses>
-    <genClasses ecoreClass="MIR.ecore#//OCLBlock">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//OCLBlock/oclString"/>
-    </genClasses>
-    <genClasses ecoreClass="MIR.ecore#//JavaBlock">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//JavaBlock/javaString"/>
-    </genClasses>
-    <genClasses ecoreClass="MIR.ecore#//Response">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//Response/action"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Response/context"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//Response/inv"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Response/restoreAction"/>
-    </genClasses>
-    <genClasses ecoreClass="MIR.ecore#//NamedEClass">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//NamedEClass/representedEClass"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//NamedEClass/name"/>
-    </genClasses>
     <genClasses ecoreClass="MIR.ecore#//TypedElementRef">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//TypedElementRef/ref"/>
+    </genClasses>
+    <genClasses ecoreClass="MIR.ecore#//ClassMapping"/>
+    <genClasses ecoreClass="MIR.ecore#//FeatureMapping"/>
+    <genClasses ecoreClass="MIR.ecore#//NamedEClass">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//NamedEClass/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//NamedEClass/name"/>
     </genClasses>
     <genClasses ecoreClass="MIR.ecore#//FeatureCall">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//FeatureCall/ref"/>
