@@ -2,7 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl;
 
 import java.util.Collection;
 
-import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
@@ -20,10 +20,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMapping;
  */
 public abstract class AbstractMIRMapping implements MIRMapping {
 	/**
-	 * Returns the {@link EClassifier} mapped by this mapping.
-	 * @return the {@link EClassifier} mapped by this mapping
+	 * Returns the {@link EClass} mapped by this mapping.
+	 * @return the {@link EClass} mapped by this mapping
 	 */
-	protected abstract EClassifier getMappedEClassifier();
+	protected abstract EClass getMappedEClass();
 	
 	/**
 	 * Check if the conditions of the mapping hold for the given

@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 /**
  * Provides services for gathering information about a model (i.e.
@@ -19,31 +20,15 @@ public interface MIRModelInformationProvider {
 	public boolean isReferencedFromTypeByFeature(EObject target, EClassifier sourceType, EStructuralFeature feature);
 	
 	/**
-	 * Returns an {@link EObject} that references <code>target</code>
+	 * Returns a {@link Pair} of {@link EObject EObjects} the first references <code>target</code>
 	 * by the {@link EStructuralFeature} <code>feature</code> and is
-	 * mapped by <code>mapping</code>
+	 * mapped by <code>mapping</code> to the second EObject of the Pair.
 	 * @param target
 	 * @param feature
 	 * @param correspondenceInstance
 	 * @param mapping
-	 * @return <code>null</code> if no such {@link EObject} exists.
+	 * @return <code>null</code> if no such {@link Pair} of {@link EObject EObjects} exists.
 	 */
-	public EObject getReverseFeatureMappedBy(EObject target, EStructuralFeature feature,
+	public Pair<EObject, EObject> getReverseFeatureMappedBy(EObject target, EStructuralFeature feature,
 			CorrespondenceInstance correspondenceInstance, MIRMapping mapping);
-
-	
-	/**
-	 * Returns an {@link EObject} that references <code>target</code>
-	 * by the {@link EStructuralFeature} <code>feature</code> and is
-	 * mapped by a mapping of type <code>mappingClass</code>
-	 * @param target
-	 * @param feature
-	 * @param correspondenceInstance
-	 * @param mappingClass
-	 * @return <code>null</code> if no such {@link EObject} exists.
-	 */
-	public EObject getReverseFeatureMappedBy(EObject target,
-			EStructuralFeature feature,
-			CorrespondenceInstance correspondenceInstance,
-			Class<MIRMapping> mappingClass);
 }

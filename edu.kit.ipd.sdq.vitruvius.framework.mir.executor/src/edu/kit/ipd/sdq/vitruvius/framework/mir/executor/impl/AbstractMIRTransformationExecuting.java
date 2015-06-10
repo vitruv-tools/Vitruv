@@ -26,6 +26,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMapping;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRModelInformationProvider;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.Response;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.ResponseRegistry;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 public abstract class AbstractMIRTransformationExecuting implements EMFModelTransformationExecuting, MIRModelInformationProvider {
 	private ResponseRegistry responseRegistry;
@@ -131,31 +132,47 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 	}
 	
 	@Override
-	public EObject getReverseFeatureMappedBy(EObject target,
-			EStructuralFeature feature, CorrespondenceInstance correspondenceInstance,
-			Class<MIRMapping> mappingClass) {
-		Collection<EObject> candidates = getReverseFeature(target, feature);
-		for (EObject candidate : candidates) {
-			if (checkIfMappedBy(candidate, correspondenceInstance, mappingClass)) {
-				return candidate;
-			}
-		}
-		return null;
-	}
-	
-	@Override
-	public EObject getReverseFeatureMappedBy(EObject target,
+	public Pair<EObject, EObject> getReverseFeatureMappedBy(EObject target,
 			EStructuralFeature feature, CorrespondenceInstance correspondenceInstance,
 			MIRMapping mapping) {
 		Collection<EObject> candidates = getReverseFeature(target, feature);
 		for (EObject candidate : candidates) {
-			if (checkIfMappedBy(candidate, correspondenceInstance, mapping)) {
-				return candidate;
+			EObject candidateTarget = getMappingTarget(candidate, correspondenceInstance, mapping);
+			if (candidateTarget != null) { // i.e. the candidate is not mapped by mapping
+				return new Pair(candidate, candidateTarget);
 			}
 		}
 		return null;
 	}
+
+	/**
+	 * Checks if the given mapping maps <code>eObject</code> and returns the target.
+	 * @param eObject the {@link EObject} to check
+	 * @param correspondenceInstance
+	 * @param mapping
+	 * @return The target of the mapping if this mapping maps <code>eObject</code>,
+	 * 	<code>null</code> otherwise.
+	 */
+	public EObject getMappingTarget(EObject eObject , CorrespondenceInstance correspondenceInstance,
+			MIRMapping mapping) {
+		Collection<Correspondence> correspondences = correspondenceInstance.getAllCorrespondences(eObject);
+		for (Correspondence correspondence : correspondences) {
+			MIRMapping mappingForCorrespondence = getMappingForCorrespondence(correspondence);
+			if (mappingForCorrespondence == mapping) {
+				return getCorrespondenceTarget(eObject, correspondence);
+			}
+		}
+		
+		return null;
+	}
 	
+	/**
+	 * Returns the other side of a correspondence
+	 */
+	private EObject getCorrespondenceTarget(EObject source, Correspondence correspondence) {
+		throw new IllegalStateException("Operation not implemented");
+	}
+
 	/**
 	 * Checks if the given mapping maps <code>eObject</code>.
 	 * @param eObject the {@link EObject} to check
@@ -169,26 +186,6 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 		for (Correspondence correspondence : correspondences) {
 			MIRMapping mappingForCorrespondence = getMappingForCorrespondence(correspondence);
 			if (mappingForCorrespondence == mapping) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	/**
-	 * Checks if the given mapping class maps <code>eObject</code>.
-	 * @param eObject the {@link EObject} to check
-	 * @param correspondenceInstance
-	 * @param mapping
-	 * @return <code>true</code> if this mapping maps <code>eObject</code>
-	 */
-	public boolean checkIfMappedBy(EObject eObject, CorrespondenceInstance correspondenceInstance,
-			Class<MIRMapping> mappingClass) {
-		Collection<Correspondence> correspondences = correspondenceInstance.getAllCorrespondences(eObject);
-		for (Correspondence correspondence : correspondences) {
-			MIRMapping mappingForCorrespondence = getMappingForCorrespondence(correspondence);
-			if ((mappingForCorrespondence != null) && (mappingForCorrespondence.getClass().equals(mappingClass))) {
 				return true;
 			}
 		}
