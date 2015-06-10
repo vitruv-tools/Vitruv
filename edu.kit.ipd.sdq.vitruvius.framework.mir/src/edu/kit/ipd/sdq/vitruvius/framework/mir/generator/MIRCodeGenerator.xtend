@@ -11,6 +11,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRMappingRealization
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRTransformationExecuting
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRModelInformationProvider
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EMFHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper
@@ -34,14 +35,13 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRMappingHelper
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MappedCorrespondenceInstance
 
 /**
  * @author Dominik Werle
  */
 class MIRCodeGenerator implements IGenerator {
-	private static final String CONTEXT_NAME = "context";
-	private static final String RESULT_NAME = "result";
 	private static final String SRC_GEN_FOLDER = "src-gen/";
 	private static final String MAPPING_PKG_NAME = "mappings";
 	
@@ -95,7 +95,7 @@ class MIRCodeGenerator implements IGenerator {
 	/**
 	 * The classes that are imported <strong>inside the generated class</strong>.
 	 */
-	private static final List<? extends Class<?>> IMPORTED_CLASSES = #[
+	private static final List<? extends Class<?>> IMPORTED_CLASSES_TRANSFORMATION_EXECUTING = #[
 		EObject, Map, HashMap, List, ArrayList,
 		IllegalArgumentException,
 		Pair, EMFModelTransformationExecuting, EMFChangeResult, VURI,
@@ -104,12 +104,19 @@ class MIRCodeGenerator implements IGenerator {
 		EChange, EcoreHelper
 	]
 	
+	private static final List<? extends Class<?>> IMPORTED_CLASSES_MAPPING = #[
+		MIRMappingRealization, AbstractMIRMappingRealization, EMFChangeResult,
+		EChange, CorrespondenceInstance, MIRModelInformationProvider, EStructuralFeature,
+		EClass, AbstractMIRTransformationExecuting, EObject, List, ArrayList,
+		Set, HashSet, EPackage, Pair, MIRMappingHelper, MappedCorrespondenceInstance
+	]
+	
 	/**
 	 * Creates the import statements for {@link #IMPORTED_CLASSES}.
 	 */
-	private static def String getImportStatements() {
+	private static def String getImportStatements(List<? extends Class<?>> classes) {
 		'''
-		«FOR i : IMPORTED_CLASSES»
+		«FOR i : classes»
 		import «i.name»;
 		«ENDFOR»
 		'''
@@ -121,7 +128,7 @@ class MIRCodeGenerator implements IGenerator {
 		fsa.generateFile(SRC_GEN_FOLDER + file.configuration.package.packageNameToPath + file.configuration.type + ".java", '''
 			package «file.configuration.package»;
 			
-			«importStatements»
+			«getImportStatements(IMPORTED_CLASSES_TRANSFORMATION_EXECUTING)»
 			
 			/**
 			 * {@link EMFModelTransformationExecuting} for keeping the following meta models consistent:
@@ -177,9 +184,7 @@ class MIRCodeGenerator implements IGenerator {
 	
 	def String checkWhenWhereJava(WhenWhereJavaClass predicate) {
 		'''
-		«predicate.methodFQN»(
-			«predicate.parameterNames.map[it].join(", ")»
-		)
+		«predicate.methodFQN»(«predicate.parameterNames.join(", ")»)
 		'''
 	}
 	
@@ -191,43 +196,20 @@ class MIRCodeGenerator implements IGenerator {
 		'''
 			package «pkgName.mappingPackageName»;
 			
-			import «MIRMappingRealization.name»;
-			import «AbstractMIRMappingRealization.name»;
-			import «EMFChangeResult.name»;
-			import «EChange.name»;
-			import «CorrespondenceInstance.name»;
-			import «MIRModelInformationProvider.name»;
-			
-			import «EStructuralFeature.name»;
-			import «EClass.name»;
-			
-			import «AbstractMIRTransformationExecuting.name»;
-			import «EObject.name»;
-			
-			import «List.name»;
-			import «ArrayList.name»;
-			import «Set.name»;
-			import «HashSet.name»;
-			
-			import «EPackage.name»;
-			
-			import «Pair.name»;
+			«getImportStatements(IMPORTED_CLASSES_MAPPING)»
+
 			
 			/**
 			 * Class Mapping
 			 */
 			public class «className» extends «AbstractMIRMappingRealization.simpleName» {
-				// final static Logger logger = Logger.getLogger(«className».class);
-				
-				final Set<EObject> managedEObjects = new HashSet<EObject>();
-				
 				// Singleton
 				public final static «className» INSTANCE = new «className»();
 				
 				private «className»() {}
 				
-				protected boolean checkConditions(EObject context, CorrespondenceInstance correspondenceInstance,
-						AbstractMIRTransformationExecuting transformationExecuting) {
+				protected boolean checkConditions(EObject context,
+					MappedCorrespondenceInstance correspondenceInstance) {
 
 					if (!(context instanceof «mapping.left.type.instanceTypeName»)) {
 						return false;
@@ -250,36 +232,14 @@ class MIRCodeGenerator implements IGenerator {
 					
 					return true;
 				}
-				
-				@Override
-				protected EClass getMappedEClass() {
-					// TODO Auto-generated method stub
-					return null;
-				}
 			
-				@Override
-				protected void restorePostConditions(EChange eChange,
-						CorrespondenceInstance correspondenceInstance,
-						AbstractMIRTransformationExecuting transformationExecuting) {
-					// TODO Auto-generated method stub
-					
-				}
-			
-				@Override
-				protected void createCorresponding(EObject eObject,
-						CorrespondenceInstance correspondenceInstance,
-						AbstractMIRTransformationExecuting transformationExecuting) {
-					// TODO Auto-generated method stub
-					
-				}
-			
-				@Override
-				protected void deleteCorresponding(EObject eObject,
-						CorrespondenceInstance correspondenceInstance,
-						AbstractMIRTransformationExecuting transformationExecuting) {
-					// TODO Auto-generated method stub
-					
-				}
+				@Override protected EClass getMappedEClass() { return null; }
+				@Override protected void restorePostConditions(EChange eChange,
+					MappedCorrespondenceInstance correspondenceInstance) {}
+				@Override protected void createCorresponding(EObject eObject,
+					MappedCorrespondenceInstance correspondenceInstance) {}
+				@Override protected void deleteCorresponding(EObject eObject,
+					MappedCorrespondenceInstance correspondenceInstance) {}
 			}
 		'''
 		)
@@ -306,11 +266,11 @@ class MIRCodeGenerator implements IGenerator {
 			EStructuralFeature «featureName» =
 			  «EMFHelper.getJavaExpressionThatReturns(mapping.featureMapping.left.get(0).feature, true)»;
 			
-			MIRMapping «mappingName» =
+			«MIRMappingRealization.simpleName» «mappingName» =
 			  «mappingClassNames.get(mapping.featureMapping.parent)».INSTANCE;
 			
 			Pair<EObject, EObject> «pairName» =
-				transformationExecuting.getReverseFeatureMappedBy(«classMappingLeftName»,
+				MIRMappingHelper.getReverseFeatureMappedBy(«classMappingLeftName»,
 					«featureName», correspondenceInstance, «mappingName»);
 					
 			«leftType.instanceTypeName» «leftName» =
