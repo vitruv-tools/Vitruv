@@ -9,6 +9,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRMappingRealization
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRTransformationExecuting
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRModelInformationProvider
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EMFHelper
@@ -17,6 +18,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Clas
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.FeatureMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Mapping
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.WhenWhereJavaClass
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.ArrayList
 import java.util.HashMap
@@ -25,16 +27,13 @@ import java.util.List
 import java.util.Map
 import java.util.Set
 import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
-import org.eclipse.emf.ecore.EStructuralFeature
-import org.eclipse.emf.ecore.EClass
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.WhenWhereJavaClass
-import org.eclipse.emf.ecore.EPackage
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.NamedTyped
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRMappingRealization
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization
 
 /**
