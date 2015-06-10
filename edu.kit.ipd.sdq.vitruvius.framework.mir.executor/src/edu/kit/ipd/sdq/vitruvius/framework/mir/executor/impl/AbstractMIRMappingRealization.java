@@ -5,10 +5,10 @@ import java.util.Collection;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MappedCorrespondenceInstance;
 
 /**
  * {@link AbstractMIRMappingRealization} is extended by the code generated from the
@@ -30,11 +30,9 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 	 * {@link EObject}.
 	 * @param eObject the object to check
 	 * @param correspondenceInstance
-	 * @param transformationExecuting
 	 * @return true if the mapping holds for the given object.
 	 */
-	protected abstract boolean checkConditions(EObject eObject, CorrespondenceInstance correspondenceInstance,
-			AbstractMIRTransformationExecuting transformationExecuting);
+	protected abstract boolean checkConditions(EObject eObject, MappedCorrespondenceInstance correspondenceInstance);
 	
 	/**
 	 * Ensure that the postconditions ("where") still hold for the
@@ -46,8 +44,7 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 	 * @param transformationExecuting 
 	 * @param correspondenceInstance 
 	 */
-	protected abstract void restorePostConditions(EChange eChange, CorrespondenceInstance correspondenceInstance,
-			AbstractMIRTransformationExecuting transformationExecuting);
+	protected abstract void restorePostConditions(EChange eChange, MappedCorrespondenceInstance correspondenceInstance);
 	
 	/**
 	 * Creates a corresponding object for <code>eObject</code> and a correspondence in the mapped meta model
@@ -56,8 +53,7 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 	 * @param correspondenceInstance
 	 * @param transformationExecuting
 	 */
-	protected abstract void createCorresponding(EObject eObject, CorrespondenceInstance correspondenceInstance,
-			AbstractMIRTransformationExecuting transformationExecuting);
+	protected abstract void createCorresponding(EObject eObject, MappedCorrespondenceInstance correspondenceInstance);
 	
 	/**
 	 * Deletes the corresponding object (and its children) and the correspondence.
@@ -65,8 +61,7 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 	 * @param correspondenceInstance
 	 * @param transformationExecuting
 	 */
-	protected abstract void deleteCorresponding(EObject eObject, CorrespondenceInstance correspondenceInstance,
-			AbstractMIRTransformationExecuting transformationExecuting);
+	protected abstract void deleteCorresponding(EObject eObject, MappedCorrespondenceInstance correspondenceInstance);
 	
 	/**
 	 * Returns {@link EObject EObjects} that are possibly affected by this change.
@@ -79,41 +74,28 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 		throw new UnsupportedOperationException("getting candidates not supported");
 	}
 	
-	/**
-	 * Checks if this mapping maps <code>eObject</code>.
-	 * @param eObject the {@link EObject} to check
-	 * @param correspondenceInstance
-	 * @param transformationExecuting
-	 * @return <code>true</code> if this mapping maps <code>eObject</code>
-	 */
-	private boolean checkIfMappedBy(EObject eObject, CorrespondenceInstance correspondenceInstance,
-			AbstractMIRTransformationExecuting transformationExecuting) {
-		return transformationExecuting.checkIfMappedBy(eObject, correspondenceInstance, this);
-	}
-	
 	@Override
 	public EMFChangeResult applyEChange(
 			EChange eChange,
-			CorrespondenceInstance correspondenceInstance,
-			AbstractMIRTransformationExecuting transformationExecuting) {
+			MappedCorrespondenceInstance correspondenceInstance) {
 		Collection<EObject> candidates = getCandidates(eChange);
 		
 		EMFChangeResult result = new EMFChangeResult();
 		
 		for (EObject candidate : candidates) {
-			boolean mappedBefore = checkIfMappedBy(candidate, correspondenceInstance, transformationExecuting);
-			boolean mappedAfter = checkConditions(candidate, correspondenceInstance, transformationExecuting);
+			boolean mappedBefore = correspondenceInstance.checkIfMappedBy(candidate, this);
+			boolean mappedAfter = checkConditions(candidate, correspondenceInstance);
 			
 			if (!mappedBefore && mappedAfter) {
-				createCorresponding(candidate, correspondenceInstance, transformationExecuting);
+				createCorresponding(candidate, correspondenceInstance);
 			}
 			
 			if (mappedBefore && !mappedAfter) {
-				deleteCorresponding(candidate, correspondenceInstance, transformationExecuting);
+				deleteCorresponding(candidate, correspondenceInstance);
 			}
 			
 			if (mappedAfter) {
-				restorePostConditions(eChange, correspondenceInstance, transformationExecuting);
+				restorePostConditions(eChange, correspondenceInstance);
 			}
 		}
 		

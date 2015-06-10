@@ -1,16 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
-
-import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.EStructuralFeature.Setting;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
@@ -19,29 +10,23 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.Invariant;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.InvariantRegistry;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRModelInformationProvider;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MappedCorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.Response;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.ResponseRegistry;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
-public abstract class AbstractMIRTransformationExecuting implements EMFModelTransformationExecuting, MIRModelInformationProvider {
+public abstract class AbstractMIRTransformationExecuting implements EMFModelTransformationExecuting {
 	private ResponseRegistry responseRegistry;
 	private InvariantRegistry invariantRegistry;
 	private Collection<MIRMappingRealization> mappings;
 
-	private Map<Correspondence, MIRMappingRealization> correspondence2mapping;
-	
 	public AbstractMIRTransformationExecuting() {
 		responseRegistry = new ResponseRegistryImpl();
 		invariantRegistry = new InvariantRegistryImpl();
 		mappings = new HashSet<MIRMappingRealization>();
 
-		correspondence2mapping = new HashMap<Correspondence, MIRMappingRealization>();
-		
 		setup();
 	}
 	
@@ -56,10 +41,14 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 	protected void addMIRMapping(MIRMappingRealization mapping) {
 		mappings.add(mapping);
 	}
+	
+	protected MappedCorrespondenceInstance getMappedCorrespondenceInstance(CorrespondenceInstance correspondenceInstance) {
+		throw new UnsupportedOperationException("TODO: implement");
+	}
 
 	@Override
 	public EMFChangeResult executeTransformation(EMFModelChange change, CorrespondenceInstance correspondenceInstance) {
-		return handleEChange(change.getEChange(), correspondenceInstance);
+		return handleEChange(change.getEChange(), getMappedCorrespondenceInstance(correspondenceInstance));
 	}
 
 	@Override
@@ -79,12 +68,12 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 	}
 	
 
-	protected EMFChangeResult handleEChange(EChange eChange, CorrespondenceInstance correspondenceInstance) {
+	protected EMFChangeResult handleEChange(EChange eChange, MappedCorrespondenceInstance correspondenceInstance) {
 		EMFChangeResult result = new EMFChangeResult();
 		Collection<MIRMappingRealization> relevantMappings = getCandidateMappings(eChange, correspondenceInstance);
 		for (MIRMappingRealization mapping : relevantMappings) {
 			// TODO: dependency on AbstractMIRTransformationExecuting
-			result.addChangeResult(mapping.applyEChange(eChange, correspondenceInstance, this));
+			result.addChangeResult(mapping.applyEChange(eChange, correspondenceInstance));
 		}
 		return result;
 	}
@@ -96,125 +85,9 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 	 * implementation returns all mappings (i.e. the most conservative estimate).  
 	 * @return
 	 */
-	protected Collection<MIRMappingRealization> getCandidateMappings(EChange eChange, CorrespondenceInstance correspondenceInstance) {
+	protected Collection<MIRMappingRealization> getCandidateMappings(EChange eChange, MappedCorrespondenceInstance correspondenceInstance) {
 		return mappings;
 	}
 
-	@Override
-	public Collection<EObject> getReverseFeature(EObject target, EStructuralFeature feature) {
-		Collection<Setting> settings = EcoreUtil.UsageCrossReferencer.find(target, target.eResource());
-		
-		Collection<EObject> result = new ArrayList<EObject>();
-		for (Setting setting : settings) {
-			if (feature.equals(setting.getEStructuralFeature())) {
-				result.add(setting.getEObject());
-			}
-		}
-		
-		return result;
-	}
-	
-	@Override
-	@Deprecated
-	public boolean isReferencedFromTypeByFeature(EObject target,
-			EClassifier sourceType, EStructuralFeature feature) {
-		
-		Collection<Setting> settings = EcoreUtil.UsageCrossReferencer.find(target, target.eResource());
-		
-		for (Setting setting : settings) {
-			if (feature.equals(setting.getEStructuralFeature())
-					&& sourceType.equals(setting.getEObject().getClass())) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	@Override
-	public Pair<EObject, EObject> getReverseFeatureMappedBy(EObject target,
-			EStructuralFeature feature, CorrespondenceInstance correspondenceInstance,
-			MIRMappingRealization mapping) {
-		Collection<EObject> candidates = getReverseFeature(target, feature);
-		for (EObject candidate : candidates) {
-			EObject candidateTarget = getMappingTarget(candidate, correspondenceInstance, mapping);
-			if (candidateTarget != null) { // i.e. the candidate is not mapped by mapping
-				return new Pair(candidate, candidateTarget);
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Checks if the given mapping maps <code>eObject</code> and returns the target.
-	 * @param eObject the {@link EObject} to check
-	 * @param correspondenceInstance
-	 * @param mapping
-	 * @return The target of the mapping if this mapping maps <code>eObject</code>,
-	 * 	<code>null</code> otherwise.
-	 */
-	public EObject getMappingTarget(EObject eObject , CorrespondenceInstance correspondenceInstance,
-			MIRMappingRealization mapping) {
-		Collection<Correspondence> correspondences = correspondenceInstance.getAllCorrespondences(eObject);
-		for (Correspondence correspondence : correspondences) {
-			MIRMappingRealization mappingForCorrespondence = getMappingForCorrespondence(correspondence);
-			if (mappingForCorrespondence == mapping) {
-				return getCorrespondenceTarget(eObject, correspondence);
-			}
-		}
-		
-		return null;
-	}
-	
-	/**
-	 * Returns the other side of a correspondence
-	 */
-	private EObject getCorrespondenceTarget(EObject source, Correspondence correspondence) {
-		throw new IllegalStateException("Operation not implemented");
-	}
-
-	/**
-	 * Checks if the given mapping maps <code>eObject</code>.
-	 * @param eObject the {@link EObject} to check
-	 * @param correspondenceInstance
-	 * @param mapping
-	 * @return <code>true</code> if this mapping maps <code>eObject</code>
-	 */
-	public boolean checkIfMappedBy(EObject eObject, CorrespondenceInstance correspondenceInstance,
-			MIRMappingRealization mapping) {
-		Collection<Correspondence> correspondences = correspondenceInstance.getAllCorrespondences(eObject);
-		for (Correspondence correspondence : correspondences) {
-			MIRMappingRealization mappingForCorrespondence = getMappingForCorrespondence(correspondence);
-			if (mappingForCorrespondence == mapping) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	/**
-	 * Returns the MIRMapping that created a correspondence, or null if
-	 * no mapping is coupled to the correspondence. To get all MIRMappings for an
-	 * EObject, first get all correspondences from the {@link CorrespondenceInstance},
-	 * then use this method.
-	 * @param correspondence
-	 * @return
-	 */
-	public MIRMappingRealization getMappingForCorrespondence(Correspondence correspondence) {
-		return correspondence2mapping.get(correspondence);
-	}
-	
-	/**
-	 * Register a mapping for a correspondence that can then be retrieved by calling
-	 * {@link #getMappingForCorrespondence(Correspondence)}.
-	 * @param mapping
-	 * @param correspondence
-	 */
-	public void registerMappingForCorrespondence(MIRMappingRealization mapping,
-			Correspondence correspondence) {
-		correspondence2mapping.put(correspondence, mapping);		
-	}
-	
 	protected abstract void setup();
 }
