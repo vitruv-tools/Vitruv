@@ -19,7 +19,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Clas
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.FeatureMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Mapping
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Predicate
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.ArrayList
 import java.util.HashMap
@@ -36,6 +35,7 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.EClass
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.WhenWhereJavaClass
 import org.eclipse.emf.ecore.EPackage
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.NamedTyped
 
 /**
  * @author Dominik Werle
@@ -156,7 +156,7 @@ class MIRCodeGenerator implements IGenerator {
 				@Override
 				protected void setup() {
 					«FOR name : mappingClassNames.values»
-					addMIRMapping(new «file.configuration.package».mappings.«name»());
+					addMIRMapping(«file.configuration.package».mappings.«name».INSTANCE);
 					«ENDFOR»
 				}
 				
@@ -176,30 +176,18 @@ class MIRCodeGenerator implements IGenerator {
 		rootPkgName + "." + MAPPING_PKG_NAME
 	}
 	
-	def dispatch String getPredicateEvaluationJava(WhenWhereJavaClass predicate) {
+	def String checkWhenWhereJava(WhenWhereJavaClass predicate) {
 		'''
-		«predicate.classFQN»(
-		«FOR i : 0 ..< boundObjectTypes.size SEPARATOR ",\n"»
-			(«boundObjectTypes.get(i)») boundEObjects.get(«i»)
-		«ENDFOR»
+		«predicate.methodFQN»(
+			«predicate.parameterNames.map[it].join(", ")»
 		)
 		'''
 	}
-	
-	def dispatch String getPredicateEvaluationJava(Predicate predicate) {
-		'''/* unknown predicate: «predicate.toString» */ false'''
-	}
-	
-	/** Refactor. Holds status about the generation*/
-	private List<String> boundObjectTypes; 
 	
 	def dispatch generateMappingClass(ClassMapping mapping, String pkgName, IFileSystemAccess fsa) {
 		val className = nextMappingClassName
 		mappingClassNames.put(mapping, className)
 		
-		boundObjectTypes = newArrayList
-		boundObjectTypes.add(mapping.left.instanceTypeName)
-				
 		fsa.generateFile(SRC_GEN_FOLDER + pkgName.mappingPackageName.packageNameToPath + className + ".java",
 		'''
 			package «pkgName.mappingPackageName»;
@@ -235,99 +223,111 @@ class MIRCodeGenerator implements IGenerator {
 				final Set<EObject> managedEObjects = new HashSet<EObject>();
 				
 				// Singleton
-				final static «className» INSTANCE = new «className»();
+				public final static «className» INSTANCE = new «className»();
 				
 				private «className»() {}
 				
-				protected boolean checkConditions(EObject eObject, CorrespondenceInstance correspondenceInstance,
+				protected boolean checkConditions(EObject context, CorrespondenceInstance correspondenceInstance,
 						AbstractMIRTransformationExecuting transformationExecuting) {
 
-					if (!(eObject instanceof «mapping.left.instanceTypeName»)) {
+					if (!(context instanceof «mapping.left.type.instanceTypeName»)) {
 						return false;
 					}
+					
+					«mapping.left.type.instanceTypeName» «mapping.left.name» =
+						(«mapping.left.type.instanceTypeName») context;
 
-					List<EObject> boundEObjects = new ArrayList<EObject>();
+					«featureMappingCheckAndBindingJava(mapping, 0)»
 					
-					boundEObjects.add(eObject);
+					«FOR predicate : mapping.predicates.filter(WhenWhereJavaClass)»
+					if (!(«predicate.checkWhenWhereJava»)) {
+						return false;
+					}
+					«ENDFOR»
 					
-					EObject eObjectIterator = eObject;
-
-					«featureMappingCheckAndBindingJava(mapping)»
-					
-					«FOR predicate : mapping.predicates»
-					predicate =
-						«predicate.predicateEvaluationJava»;
-					if (!predicate) { return false; }
-					
+					«FOR predicate : mapping.predicates.filter[!(it instanceof WhenWhereJavaClass)]»
+						// unsupported predicate: «predicate»
 					«ENDFOR»
 					
 					return true;
 				}
-			}
+				
+				@Override
+				protected EClass getMappedEClass() {
+					// TODO Auto-generated method stub
+					return null;
+				}
 			
-			@Override
-			protected EClass getMappedEClass() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-		
-			@Override
-			protected void restorePostConditions(EChange eChange,
-					CorrespondenceInstance correspondenceInstance,
-					AbstractMIRTransformationExecuting transformationExecuting) {
-				// TODO Auto-generated method stub
-				
-			}
-		
-			@Override
-			protected void createCorresponding(EObject eObject,
-					CorrespondenceInstance correspondenceInstance,
-					AbstractMIRTransformationExecuting transformationExecuting) {
-				// TODO Auto-generated method stub
-				
-			}
-		
-			@Override
-			protected void deleteCorresponding(EObject eObject,
-					CorrespondenceInstance correspondenceInstance,
-					AbstractMIRTransformationExecuting transformationExecuting) {
-				// TODO Auto-generated method stub
-				
+				@Override
+				protected void restorePostConditions(EChange eChange,
+						CorrespondenceInstance correspondenceInstance,
+						AbstractMIRTransformationExecuting transformationExecuting) {
+					// TODO Auto-generated method stub
+					
+				}
+			
+				@Override
+				protected void createCorresponding(EObject eObject,
+						CorrespondenceInstance correspondenceInstance,
+						AbstractMIRTransformationExecuting transformationExecuting) {
+					// TODO Auto-generated method stub
+					
+				}
+			
+				@Override
+				protected void deleteCorresponding(EObject eObject,
+						CorrespondenceInstance correspondenceInstance,
+						AbstractMIRTransformationExecuting transformationExecuting) {
+					// TODO Auto-generated method stub
+					
+				}
 			}
 		'''
 		)
 	}
 	
-	def String featureMappingCheckAndBindingJava(ClassMapping mapping) {
+	
+	def String featureMappingCheckAndBindingJava(ClassMapping mapping, int index) {
 		if (mapping.featureMapping != null) {
-			boundObjectTypes += #[
-				mapping.featureMapping.left.get(0).EClass.instanceTypeName,
-				mapping.featureMapping.right.get(0).EClass.instanceTypeName
-			]
+			val classMappingLeftName = mapping.left.name
+			
+			val leftType = mapping.featureMapping.parent.left.type
+			val leftName = mapping.featureMapping.parent.left.name
+			
+			val rightType = mapping.featureMapping.parent.right.type
+			val rightName = mapping.featureMapping.parent.right.name
+			
+			val pairName = '''parentAndMappedEObject_«index»'''
+			val featureName = '''feature_«index»'''
+			val mappingName = '''mapping_«index»'''
+			
+			
 			'''
-			{
-				// feature «mapping.featureMapping.left.get(0).feature.name»
-				EStructuralFeature feature =
-				  «EMFHelper.getJavaExpressionThatReturns(mapping.featureMapping.left.get(0).feature, false)»;
-				// sourceType «mapping.featureMapping.left.get(0).EClass.instanceClassName»
-				EClass sourceType =
-				  «EMFHelper.getJavaExpressionThatReturns(mapping.featureMapping.left.get(0).EClass, false)»;
-				MIRMapping mapping =
-				  «mappingClassNames.get(mapping.featureMapping.parent)».INSTANCE;
-				Pair<EObject, EObject> parentAndMappedEObject =
-					transformationExecuting.getReverseFeatureMappedBy(eObjectIterator,
-						feature, correspondenceInstance, mapping);
-						
-				eObjectIterator = parentAndMappedEObject.getFirst();
-				EObject mappedObject = parentAndMappedEObject.getSecond();
+			// feature «mapping.featureMapping.left.get(0).feature.name»
+			EStructuralFeature «featureName» =
+			  «EMFHelper.getJavaExpressionThatReturns(mapping.featureMapping.left.get(0).feature, true)»;
+			
+			MIRMapping «mappingName» =
+			  «mappingClassNames.get(mapping.featureMapping.parent)».INSTANCE;
+			
+			Pair<EObject, EObject> «pairName» =
+				transformationExecuting.getReverseFeatureMappedBy(«classMappingLeftName»,
+					«featureName», correspondenceInstance, «mappingName»);
 					
-				if (mappedObject == null) { return false; }
-				else {
-					boundEObjects.add(mappedObject);
-					boundEObjects.add(eObjectIterator);
-				}
-			}
-			«featureMappingCheckAndBindingJava(mapping.featureMapping.parent)»
+			«leftType.instanceTypeName» «leftName» =
+				(«leftType.instanceTypeName») «pairName».getFirst();
+				
+			if ((«pairName».getSecond() == null)
+			   || !(«pairName».getSecond() instanceof
+			          «mapping.featureMapping.left.get(0).EClass.instanceTypeName»))
+				{ return false; }
+			
+			// else: type of mapped element is correct
+			«rightType.instanceTypeName» «rightName» =
+				(«rightType.instanceTypeName») «pairName».getSecond();
+			
+			
+			«featureMappingCheckAndBindingJava(mapping.featureMapping.parent, index + 1)»
 			'''
 		} else {
 			""

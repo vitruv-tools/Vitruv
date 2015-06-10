@@ -110,23 +110,6 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 
-	// TODO: Pull up name from NamedEClass and FeatureCall, refactor
-	def List<EObject> createParameterList(EObject context) {
-		var containerHierarchy = EMFHelper.getContainerHierarchy(context, true)
-
-		val result = new ArrayList<EObject>()
-
-		for (EObject o : containerHierarchy) {
-			if (o instanceof ClassMapping) {
-				result += o.mappedElements.filter(NamedEClass).filterNull.filter[it.name != null]
-			} else if (o instanceof FeatureMapping) {
-				result += o.mappedElements.map[MIRHelper.collectFeatureCalls(it)].flatten.filter[it.name != null]
-			}
-		}
-
-		result.reverse
-	}
-
 	def toParameter(EObject context, EObject object) {
 		val typeName = (MIRHelper.getTypeRecursive(object)?.instanceTypeName) ?: "java.lang.Object"
 

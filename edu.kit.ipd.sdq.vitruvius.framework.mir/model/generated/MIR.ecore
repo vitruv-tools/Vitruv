@@ -20,10 +20,10 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="bundleFQN" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MappingBody">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="whenwhere" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="whenwhere" eType="ecore:EClass ../../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="withBlocks" upperBound="-1"
-        eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
+        eType="ecore:EClass ../../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="withs" upperBound="-1"
         eType="#//Mapping" containment="true"/>

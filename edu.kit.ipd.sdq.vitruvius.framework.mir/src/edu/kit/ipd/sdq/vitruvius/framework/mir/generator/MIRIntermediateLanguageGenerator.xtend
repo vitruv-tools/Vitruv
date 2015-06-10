@@ -112,8 +112,8 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		Mapping mapping, MIR mir, boolean reverse) {
 		
 		val newMapping = createClassMapping
-		newMapping.left = mapping.getLeftEClass(reverse)
-		newMapping.right = mapping.getRightEClass(reverse)
+		newMapping.left = mapping.getLeft(reverse).createNamedEClass
+		newMapping.right = mapping.getRight(reverse).createNamedEClass
 
 		mir.classMappings += newMapping
 
@@ -122,9 +122,17 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 				newMapping.predicates += {
 					val newPredicate = createWhenWhereJavaClass
 					mir.predicates += newPredicate
-					newPredicate.classFQN =
+					newPredicate.methodFQN =
 						generatorStatus.getJvmName(mapping.constraints.whenwhere)
 							+ "." + equalitiesMethodName(reverse)
+					newPredicate.parameterNames +=
+						mapping.constraints.whenwhere
+							.createParameterList
+							// filter out the element to map with, since it can't be
+							// checked in the predicate
+							.filter[it != mapping.getRight(reverse)]
+							.map[tryGetName]
+							
 					newPredicate
 				}
 			}
@@ -134,7 +142,7 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 					val newPostcondition = createWithBlockPostCondition
 					newPostcondition.classFQN =
 						generatorStatus.getJvmName(it)
-							+ "." + assignmentMethodName(reverse)
+							+ "." + equalitiesMethodName(reverse)
 					newPostcondition
 				]
 				
@@ -152,11 +160,11 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 	}
 	
 	def assignmentMethodName(boolean reverse) {
-		return if (!reverse) "assignmentsFirst" else "assignmentsSecond"
+		return if (!reverse) "assignmentsSecond" else "assignmentsFirst"
 	}
 	
 	def equalitiesMethodName(boolean reverse) {
-		return if (!reverse) "equalitiesFirst" else "equalitiesSecond"
+		return if (!reverse) "equalitiesSecond" else "equalitiesFirst"
 	}
 
 	def addFeatureConditions(
@@ -181,12 +189,13 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		typedElement
 			.collectFeatureCalls
 			.map [
-				val eClassFeature = createEClassFeature
-				eClassFeature.EClass = it.ref.typeRecursive.ensureEClass
-				eClassFeature.feature = it.structuralFeature
-				eClassFeature.definedType = it.typeRecursive.ensureEClass
+				val namedFeatureCall = createNamedFeatureCall
+				namedFeatureCall.EClass = it.ref.typeRecursive.ensureEClass
+				namedFeatureCall.feature = it.structuralFeature
+				namedFeatureCall.type = it.typeRecursive.ensureEClass
+				namedFeatureCall.name = it.name
 				
-				eClassFeature
+				namedFeatureCall
 			]
 	}
 	
@@ -208,6 +217,17 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 	def TypedElement getRight(Mapping mapping, boolean reverse) {
 		(mapping.mappedElements.get(if(!reverse) 0 else 1))
 	}
+	
+	def createNamedEClass(TypedElement element) {
+		val result = createNamedEClass
+		result.name =
+			element.tryGetName
+		result.type =
+			element.typeRecursive
+			       .ensureEClass
+			       
+		return result
+	}
 
 	def EClass getLeftEClass(Mapping mapping, boolean reverse) {
 		mapping.getLeft(reverse)
@@ -219,5 +239,15 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		mapping.getRight(reverse)
 		       .typeRecursive
 		       .ensureEClass
+	}
+	
+	def String getLeftName(Mapping mapping, boolean reverse) {
+		mapping.getLeft(reverse)
+		       .tryGetName
+	}
+	
+	def String getRightName(Mapping mapping, boolean reverse) {
+		mapping.getRight(reverse)
+		       .tryGetName
 	}
 }

@@ -19,6 +19,22 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Mapping
 
 class MIRHelper {
+	static def List<EObject> createParameterList(EObject context) {
+		var containerHierarchy = EMFHelper.getContainerHierarchy(context, true)
+
+		val result = new ArrayList<EObject>()
+
+		for (EObject o : containerHierarchy) {
+			if (o instanceof ClassMapping) {
+				result += o.mappedElements.filter(NamedEClass).filterNull.filter[it.name != null]
+			} else if (o instanceof FeatureMapping) {
+				result += o.mappedElements.map[MIRHelper.collectFeatureCalls(it)].flatten.filter[it.name != null]
+			}
+		}
+
+		result.reverse
+	}
+	
 	/**
 	 * Returns null if valid. If the Mapping is not valid, a fitting error id is returned
 	 * @see MIRValidator
