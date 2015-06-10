@@ -12,13 +12,13 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureCall#getRef <em>Ref</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureCall#getTail <em>Tail</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureCall#getType <em>Type</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureCall#getName <em>Name</em>}</li>
  * </ul>
- * </p>
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRPackage#getFeatureCall()
  * @model

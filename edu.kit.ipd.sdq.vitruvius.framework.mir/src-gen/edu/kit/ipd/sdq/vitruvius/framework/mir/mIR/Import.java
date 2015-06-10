@@ -12,11 +12,11 @@ import org.eclipse.emf.ecore.EPackage;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Import#getPackage <em>Package</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Import#getName <em>Name</em>}</li>
  * </ul>
- * </p>
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRPackage#getImport()
  * @model

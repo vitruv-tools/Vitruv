@@ -85,24 +85,19 @@ public class MIRAdapterFactory extends AdapterFactoryImpl
         return createImportAdapter();
       }
       @Override
-      public Adapter caseClassMapping(ClassMapping object)
+      public Adapter caseBundle(Bundle object)
       {
-        return createClassMappingAdapter();
+        return createBundleAdapter();
       }
       @Override
-      public Adapter caseWhere(Where object)
+      public Adapter caseMappingBody(MappingBody object)
       {
-        return createWhereAdapter();
+        return createMappingBodyAdapter();
       }
       @Override
-      public Adapter caseWhen(When object)
+      public Adapter caseMapping(Mapping object)
       {
-        return createWhenAdapter();
-      }
-      @Override
-      public Adapter caseFeatureMapping(FeatureMapping object)
-      {
-        return createFeatureMappingAdapter();
+        return createMappingAdapter();
       }
       @Override
       public Adapter caseTypedElement(TypedElement object)
@@ -110,44 +105,24 @@ public class MIRAdapterFactory extends AdapterFactoryImpl
         return createTypedElementAdapter();
       }
       @Override
-      public Adapter caseRef(Ref object)
+      public Adapter caseTypedElementRef(TypedElementRef object)
       {
-        return createRefAdapter();
+        return createTypedElementRefAdapter();
       }
       @Override
-      public Adapter caseEClassParameter(EClassParameter object)
+      public Adapter caseClassMapping(ClassMapping object)
       {
-        return createEClassParameterAdapter();
+        return createClassMappingAdapter();
       }
       @Override
-      public Adapter caseInvariant(Invariant object)
+      public Adapter caseFeatureMapping(FeatureMapping object)
       {
-        return createInvariantAdapter();
-      }
-      @Override
-      public Adapter caseOCLBlock(OCLBlock object)
-      {
-        return createOCLBlockAdapter();
-      }
-      @Override
-      public Adapter caseJavaBlock(JavaBlock object)
-      {
-        return createJavaBlockAdapter();
-      }
-      @Override
-      public Adapter caseResponse(Response object)
-      {
-        return createResponseAdapter();
+        return createFeatureMappingAdapter();
       }
       @Override
       public Adapter caseNamedEClass(NamedEClass object)
       {
         return createNamedEClassAdapter();
-      }
-      @Override
-      public Adapter caseTypedElementRef(TypedElementRef object)
-      {
-        return createTypedElementRefAdapter();
       }
       @Override
       public Adapter caseFeatureCall(FeatureCall object)
@@ -207,61 +182,46 @@ public class MIRAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping <em>Class Mapping</em>}'.
+   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Bundle <em>Bundle</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Bundle
    * @generated
    */
-  public Adapter createClassMappingAdapter()
+  public Adapter createBundleAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Where <em>Where</em>}'.
+   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MappingBody <em>Mapping Body</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Where
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MappingBody
    * @generated
    */
-  public Adapter createWhereAdapter()
+  public Adapter createMappingBodyAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.When <em>When</em>}'.
+   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Mapping <em>Mapping</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.When
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Mapping
    * @generated
    */
-  public Adapter createWhenAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping <em>Feature Mapping</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping
-   * @generated
-   */
-  public Adapter createFeatureMappingAdapter()
+  public Adapter createMappingAdapter()
   {
     return null;
   }
@@ -282,91 +242,46 @@ public class MIRAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Ref <em>Ref</em>}'.
+   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.TypedElementRef <em>Typed Element Ref</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Ref
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.TypedElementRef
    * @generated
    */
-  public Adapter createRefAdapter()
+  public Adapter createTypedElementRefAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.EClassParameter <em>EClass Parameter</em>}'.
+   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping <em>Class Mapping</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.EClassParameter
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping
    * @generated
    */
-  public Adapter createEClassParameterAdapter()
+  public Adapter createClassMappingAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Invariant <em>Invariant</em>}'.
+   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping <em>Feature Mapping</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Invariant
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping
    * @generated
    */
-  public Adapter createInvariantAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.OCLBlock <em>OCL Block</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.OCLBlock
-   * @generated
-   */
-  public Adapter createOCLBlockAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.JavaBlock <em>Java Block</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.JavaBlock
-   * @generated
-   */
-  public Adapter createJavaBlockAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Response <em>Response</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Response
-   * @generated
-   */
-  public Adapter createResponseAdapter()
+  public Adapter createFeatureMappingAdapter()
   {
     return null;
   }
@@ -382,21 +297,6 @@ public class MIRAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createNamedEClassAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.TypedElementRef <em>Typed Element Ref</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.TypedElementRef
-   * @generated
-   */
-  public Adapter createTypedElementRefAdapter()
   {
     return null;
   }

@@ -13,15 +13,14 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile#getGeneratedPackage <em>Generated Package</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile#getGeneratedClass <em>Generated Class</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile#getBundles <em>Bundles</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile#getImports <em>Imports</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile#getMappings <em>Mappings</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile#getInvariants <em>Invariants</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile#getResponses <em>Responses</em>}</li>
  * </ul>
- * </p>
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRPackage#getMIRFile()
  * @model
@@ -82,6 +81,22 @@ public interface MIRFile extends EObject
   void setGeneratedClass(String value);
 
   /**
+   * Returns the value of the '<em><b>Bundles</b></em>' containment reference list.
+   * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Bundle}.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Bundles</em>' containment reference list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Bundles</em>' containment reference list.
+   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRPackage#getMIRFile_Bundles()
+   * @model containment="true"
+   * @generated
+   */
+  EList<Bundle> getBundles();
+
+  /**
    * Returns the value of the '<em><b>Imports</b></em>' containment reference list.
    * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Import}.
    * <!-- begin-user-doc -->
@@ -99,7 +114,7 @@ public interface MIRFile extends EObject
 
   /**
    * Returns the value of the '<em><b>Mappings</b></em>' containment reference list.
-   * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping}.
+   * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Mapping}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Mappings</em>' containment reference list isn't clear,
@@ -111,38 +126,6 @@ public interface MIRFile extends EObject
    * @model containment="true"
    * @generated
    */
-  EList<ClassMapping> getMappings();
-
-  /**
-   * Returns the value of the '<em><b>Invariants</b></em>' containment reference list.
-   * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Invariant}.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Invariants</em>' containment reference list isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Invariants</em>' containment reference list.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRPackage#getMIRFile_Invariants()
-   * @model containment="true"
-   * @generated
-   */
-  EList<Invariant> getInvariants();
-
-  /**
-   * Returns the value of the '<em><b>Responses</b></em>' containment reference list.
-   * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Response}.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Responses</em>' containment reference list isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Responses</em>' containment reference list.
-   * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRPackage#getMIRFile_Responses()
-   * @model containment="true"
-   * @generated
-   */
-  EList<Response> getResponses();
+  EList<Mapping> getMappings();
 
 } // MIRFile

@@ -41,40 +41,31 @@ public interface MIRFactory extends EFactory
   Import createImport();
 
   /**
-   * Returns a new object of class '<em>Class Mapping</em>'.
+   * Returns a new object of class '<em>Bundle</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Class Mapping</em>'.
+   * @return a new object of class '<em>Bundle</em>'.
    * @generated
    */
-  ClassMapping createClassMapping();
+  Bundle createBundle();
 
   /**
-   * Returns a new object of class '<em>Where</em>'.
+   * Returns a new object of class '<em>Mapping Body</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Where</em>'.
+   * @return a new object of class '<em>Mapping Body</em>'.
    * @generated
    */
-  Where createWhere();
+  MappingBody createMappingBody();
 
   /**
-   * Returns a new object of class '<em>When</em>'.
+   * Returns a new object of class '<em>Mapping</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>When</em>'.
+   * @return a new object of class '<em>Mapping</em>'.
    * @generated
    */
-  When createWhen();
-
-  /**
-   * Returns a new object of class '<em>Feature Mapping</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Feature Mapping</em>'.
-   * @generated
-   */
-  FeatureMapping createFeatureMapping();
+  Mapping createMapping();
 
   /**
    * Returns a new object of class '<em>Typed Element</em>'.
@@ -86,58 +77,31 @@ public interface MIRFactory extends EFactory
   TypedElement createTypedElement();
 
   /**
-   * Returns a new object of class '<em>Ref</em>'.
+   * Returns a new object of class '<em>Typed Element Ref</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Ref</em>'.
+   * @return a new object of class '<em>Typed Element Ref</em>'.
    * @generated
    */
-  Ref createRef();
+  TypedElementRef createTypedElementRef();
 
   /**
-   * Returns a new object of class '<em>EClass Parameter</em>'.
+   * Returns a new object of class '<em>Class Mapping</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>EClass Parameter</em>'.
+   * @return a new object of class '<em>Class Mapping</em>'.
    * @generated
    */
-  EClassParameter createEClassParameter();
+  ClassMapping createClassMapping();
 
   /**
-   * Returns a new object of class '<em>Invariant</em>'.
+   * Returns a new object of class '<em>Feature Mapping</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Invariant</em>'.
+   * @return a new object of class '<em>Feature Mapping</em>'.
    * @generated
    */
-  Invariant createInvariant();
-
-  /**
-   * Returns a new object of class '<em>OCL Block</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>OCL Block</em>'.
-   * @generated
-   */
-  OCLBlock createOCLBlock();
-
-  /**
-   * Returns a new object of class '<em>Java Block</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Java Block</em>'.
-   * @generated
-   */
-  JavaBlock createJavaBlock();
-
-  /**
-   * Returns a new object of class '<em>Response</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Response</em>'.
-   * @generated
-   */
-  Response createResponse();
+  FeatureMapping createFeatureMapping();
 
   /**
    * Returns a new object of class '<em>Named EClass</em>'.
@@ -147,15 +111,6 @@ public interface MIRFactory extends EFactory
    * @generated
    */
   NamedEClass createNamedEClass();
-
-  /**
-   * Returns a new object of class '<em>Typed Element Ref</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Typed Element Ref</em>'.
-   * @generated
-   */
-  TypedElementRef createTypedElementRef();
 
   /**
    * Returns a new object of class '<em>Feature Call</em>'.

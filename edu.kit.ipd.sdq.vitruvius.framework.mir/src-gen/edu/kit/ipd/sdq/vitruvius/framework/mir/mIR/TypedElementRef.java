@@ -10,16 +10,16 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.mIR;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.TypedElementRef#getRef <em>Ref</em>}</li>
  * </ul>
- * </p>
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRPackage#getTypedElementRef()
  * @model
  * @generated
  */
-public interface TypedElementRef extends Ref
+public interface TypedElementRef extends TypedElement
 {
   /**
    * Returns the value of the '<em><b>Ref</b></em>' reference.
