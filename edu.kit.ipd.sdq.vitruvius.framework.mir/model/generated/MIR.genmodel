@@ -4,8 +4,8 @@
     editDirectory="/edu.kit.ipd.sdq.vitruvius.framework.mir.edit/src" editorDirectory="/edu.kit.ipd.sdq.vitruvius.framework.mir.editor/src"
     modelPluginID="edu.kit.ipd.sdq.vitruvius.framework.mir" forceOverwrite="true"
     modelName="MIR" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
-    complianceLevel="5.0" copyrightFields="false" editPluginID="edu.kit.ipd.sdq.vitruvius.framework.mir.edit"
-    editorPluginID="edu.kit.ipd.sdq.vitruvius.framework.mir.editor" runtimeVersion="2.10"
+    complianceLevel="6.0" copyrightFields="false" editPluginID="edu.kit.ipd.sdq.vitruvius.framework.mir.edit"
+    editorPluginID="edu.kit.ipd.sdq.vitruvius.framework.mir.editor" runtimeVersion="2.11"
     usedGenPackages="platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel#//xbase">
   <genPackages prefix="MIR" basePackage="edu.kit.ipd.sdq.vitruvius.framework.mir"
       disposableProviderFactory="true" fileExtensions="mir" ecorePackage="MIR.ecore#/">
