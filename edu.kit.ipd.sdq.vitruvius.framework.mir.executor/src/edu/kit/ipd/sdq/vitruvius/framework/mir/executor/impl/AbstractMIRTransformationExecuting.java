@@ -22,7 +22,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.Invariant;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.InvariantRegistry;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMapping;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRModelInformationProvider;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.Response;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.ResponseRegistry;
@@ -31,16 +31,16 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 public abstract class AbstractMIRTransformationExecuting implements EMFModelTransformationExecuting, MIRModelInformationProvider {
 	private ResponseRegistry responseRegistry;
 	private InvariantRegistry invariantRegistry;
-	private Collection<MIRMapping> mappings;
+	private Collection<MIRMappingRealization> mappings;
 
-	private Map<Correspondence, MIRMapping> correspondence2mapping;
+	private Map<Correspondence, MIRMappingRealization> correspondence2mapping;
 	
 	public AbstractMIRTransformationExecuting() {
 		responseRegistry = new ResponseRegistryImpl();
 		invariantRegistry = new InvariantRegistryImpl();
-		mappings = new HashSet<MIRMapping>();
+		mappings = new HashSet<MIRMappingRealization>();
 
-		correspondence2mapping = new HashMap<Correspondence, MIRMapping>();
+		correspondence2mapping = new HashMap<Correspondence, MIRMappingRealization>();
 		
 		setup();
 	}
@@ -53,7 +53,7 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 		invariantRegistry.addInvariant(invariant);
 	}
 	
-	protected void addMIRMapping(MIRMapping mapping) {
+	protected void addMIRMapping(MIRMappingRealization mapping) {
 		mappings.add(mapping);
 	}
 
@@ -81,8 +81,8 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 
 	protected EMFChangeResult handleEChange(EChange eChange, CorrespondenceInstance correspondenceInstance) {
 		EMFChangeResult result = new EMFChangeResult();
-		Collection<MIRMapping> relevantMappings = getCandidateMappings(eChange, correspondenceInstance);
-		for (MIRMapping mapping : relevantMappings) {
+		Collection<MIRMappingRealization> relevantMappings = getCandidateMappings(eChange, correspondenceInstance);
+		for (MIRMappingRealization mapping : relevantMappings) {
 			// TODO: dependency on AbstractMIRTransformationExecuting
 			result.addChangeResult(mapping.applyEChange(eChange, correspondenceInstance, this));
 		}
@@ -96,7 +96,7 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 	 * implementation returns all mappings (i.e. the most conservative estimate).  
 	 * @return
 	 */
-	protected Collection<MIRMapping> getCandidateMappings(EChange eChange, CorrespondenceInstance correspondenceInstance) {
+	protected Collection<MIRMappingRealization> getCandidateMappings(EChange eChange, CorrespondenceInstance correspondenceInstance) {
 		return mappings;
 	}
 
@@ -134,7 +134,7 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 	@Override
 	public Pair<EObject, EObject> getReverseFeatureMappedBy(EObject target,
 			EStructuralFeature feature, CorrespondenceInstance correspondenceInstance,
-			MIRMapping mapping) {
+			MIRMappingRealization mapping) {
 		Collection<EObject> candidates = getReverseFeature(target, feature);
 		for (EObject candidate : candidates) {
 			EObject candidateTarget = getMappingTarget(candidate, correspondenceInstance, mapping);
@@ -154,10 +154,10 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 	 * 	<code>null</code> otherwise.
 	 */
 	public EObject getMappingTarget(EObject eObject , CorrespondenceInstance correspondenceInstance,
-			MIRMapping mapping) {
+			MIRMappingRealization mapping) {
 		Collection<Correspondence> correspondences = correspondenceInstance.getAllCorrespondences(eObject);
 		for (Correspondence correspondence : correspondences) {
-			MIRMapping mappingForCorrespondence = getMappingForCorrespondence(correspondence);
+			MIRMappingRealization mappingForCorrespondence = getMappingForCorrespondence(correspondence);
 			if (mappingForCorrespondence == mapping) {
 				return getCorrespondenceTarget(eObject, correspondence);
 			}
@@ -181,10 +181,10 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 	 * @return <code>true</code> if this mapping maps <code>eObject</code>
 	 */
 	public boolean checkIfMappedBy(EObject eObject, CorrespondenceInstance correspondenceInstance,
-			MIRMapping mapping) {
+			MIRMappingRealization mapping) {
 		Collection<Correspondence> correspondences = correspondenceInstance.getAllCorrespondences(eObject);
 		for (Correspondence correspondence : correspondences) {
-			MIRMapping mappingForCorrespondence = getMappingForCorrespondence(correspondence);
+			MIRMappingRealization mappingForCorrespondence = getMappingForCorrespondence(correspondence);
 			if (mappingForCorrespondence == mapping) {
 				return true;
 			}
@@ -201,7 +201,7 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 	 * @param correspondence
 	 * @return
 	 */
-	public MIRMapping getMappingForCorrespondence(Correspondence correspondence) {
+	public MIRMappingRealization getMappingForCorrespondence(Correspondence correspondence) {
 		return correspondence2mapping.get(correspondence);
 	}
 	
@@ -211,7 +211,7 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 	 * @param mapping
 	 * @param correspondence
 	 */
-	public void registerMappingForCorrespondence(MIRMapping mapping,
+	public void registerMappingForCorrespondence(MIRMappingRealization mapping,
 			Correspondence correspondence) {
 		correspondence2mapping.put(correspondence, mapping);		
 	}

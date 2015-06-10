@@ -9,9 +9,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRTransformationExecuting
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRModelInformationProvider
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EMFHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper
@@ -36,6 +34,8 @@ import org.eclipse.emf.ecore.EClass
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.WhenWhereJavaClass
 import org.eclipse.emf.ecore.EPackage
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.NamedTyped
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRMappingRealization
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization
 
 /**
  * @author Dominik Werle
@@ -192,8 +192,8 @@ class MIRCodeGenerator implements IGenerator {
 		'''
 			package «pkgName.mappingPackageName»;
 			
-			import «MIRMapping.name»;
-			import «AbstractMIRMapping.name»;
+			import «MIRMappingRealization.name»;
+			import «AbstractMIRMappingRealization.name»;
 			import «EMFChangeResult.name»;
 			import «EChange.name»;
 			import «CorrespondenceInstance.name»;
@@ -217,7 +217,7 @@ class MIRCodeGenerator implements IGenerator {
 			/**
 			 * Class Mapping
 			 */
-			public class «className» extends «AbstractMIRMapping.simpleName» {
+			public class «className» extends «AbstractMIRMappingRealization.simpleName» {
 				// final static Logger logger = Logger.getLogger(«className».class);
 				
 				final Set<EObject> managedEObjects = new HashSet<EObject>();

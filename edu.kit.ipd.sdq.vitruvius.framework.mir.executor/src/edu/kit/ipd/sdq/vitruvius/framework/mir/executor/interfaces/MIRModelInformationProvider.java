@@ -30,5 +30,5 @@ public interface MIRModelInformationProvider {
 	 * @return <code>null</code> if no such {@link Pair} of {@link EObject EObjects} exists.
 	 */
 	public Pair<EObject, EObject> getReverseFeatureMappedBy(EObject target, EStructuralFeature feature,
-			CorrespondenceInstance correspondenceInstance, MIRMapping mapping);
+			CorrespondenceInstance correspondenceInstance, MIRMappingRealization mapping);
 }

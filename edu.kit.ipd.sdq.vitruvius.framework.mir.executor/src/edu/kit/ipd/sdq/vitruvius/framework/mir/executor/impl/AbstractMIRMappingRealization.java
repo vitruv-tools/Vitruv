@@ -8,17 +8,17 @@ import org.eclipse.emf.ecore.EObject;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMapping;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization;
 
 /**
- * {@link AbstractMIRMapping} is extended by the code generated from the
+ * {@link AbstractMIRMappingRealization} is extended by the code generated from the
  * intermediate language.
  * <p>
  * A mapping is instantiated for two model instances. 
  * @author Dominik Werle
  *
  */
-public abstract class AbstractMIRMapping implements MIRMapping {
+public abstract class AbstractMIRMappingRealization implements MIRMappingRealization {
 	/**
 	 * Returns the {@link EClass} mapped by this mapping.
 	 * @return the {@link EClass} mapped by this mapping
