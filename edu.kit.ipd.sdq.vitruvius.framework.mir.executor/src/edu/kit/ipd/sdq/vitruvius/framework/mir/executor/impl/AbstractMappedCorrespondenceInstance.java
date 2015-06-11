@@ -42,8 +42,8 @@ public abstract class AbstractMappedCorrespondenceInstance implements MappedCorr
 	}
 	
 	/**
-	 * Returns the MIRMapping that created a correspondence, or null if
-	 * no mapping is coupled to the correspondence. To get all MIRMappings for an
+	 * Returns the MIRMappingRealizations that created a correspondence, or an empty
+	 * set, if no mapping is coupled to the correspondence. To get all MIRMappings for an
 	 * EObject, first get all correspondences from the {@link CorrespondenceInstance},
 	 * then use this method.
 	 * @param correspondence

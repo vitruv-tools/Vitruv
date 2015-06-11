@@ -37,9 +37,11 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRMappingHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MappedCorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMappedCorrespondenceInstance
 
 /**
  * @author Dominik Werle
+ * TODO: refactor god class
  */
 class MIRCodeGenerator implements IGenerator {
 	private static final String SRC_GEN_FOLDER = "src-gen/";
@@ -73,7 +75,28 @@ class MIRCodeGenerator implements IGenerator {
 			generateMappingClass(mapping, il.configuration.package, fsa)
 		}
 		
+		generateMappedCorrespondenceInstance(il, resourcePath, fsa)
 		generateTransformationExecuting(il, resourcePath, fsa)
+	}
+	
+	private def getFqn(MIR mir) {
+		mir.configuration.package + "." + mir.configuration.type
+	}
+	
+	private def getSimpleName(MIR mir) {
+		mir.configuration.type
+	}
+	
+	private def getMappedCorrespondenceName(MIR mir) {
+		mir.simpleName + "Correspondence"
+	}
+	
+	private def getMappedCorrespondenceFQN(MIR mir) {
+		mir.configuration.package + "." + mir.mappedCorrespondenceName
+	}
+	
+	private def classNameToJavaPath(String name) {
+		name.replace('.', PATH_SEPERATOR) + ".java"
 	}
 	
 	private def resetState() {
@@ -111,6 +134,10 @@ class MIRCodeGenerator implements IGenerator {
 		Set, HashSet, EPackage, Pair, MIRMappingHelper, MappedCorrespondenceInstance
 	]
 	
+	private static final List<? extends Class<?>> IMPORTED_CLASSES_CORRESPONDENCE_INSTANCE = #[
+		CorrespondenceInstance, AbstractMappedCorrespondenceInstance, EObject
+	]
+	
 	/**
 	 * Creates the import statements for {@link #IMPORTED_CLASSES}.
 	 */
@@ -122,10 +149,57 @@ class MIRCodeGenerator implements IGenerator {
 		'''
 	}
 
+	def generateMappedCorrespondenceInstance(MIR mir, URI resourcePath, IFileSystemAccess fsa) {
+		fsa.generateFile(SRC_GEN_FOLDER + mir.mappedCorrespondenceFQN.classNameToJavaPath, '''
+			package «mir.configuration.package»;
+			
+			«getImportStatements(IMPORTED_CLASSES_CORRESPONDENCE_INSTANCE)»
+			
+			class «mir.mappedCorrespondenceName» extends AbstractMappedCorrespondenceInstance {
+				private CorrespondenceInstance correspondenceInstance;
+				
+				public CorrespondenceInstance getCorrespondenceInstance() {
+					return correspondenceInstance;
+				}
+				
+				public «mir.mappedCorrespondenceName»(CorrespondenceInstance correspondenceInstance) {
+					this.correspondenceInstance = correspondenceInstance;
+				}
+				
+				«FOR mapping : mappingClassNames.keySet»
+				«mappingCorrespondenceMethods(mapping)»
+				«ENDFOR»
+			}
+			
+		''')
+	}
+	
+	def mappingCorrespondenceMethods(Mapping mapping) {
+		if (!mappingClassNames.containsKey(mapping)) {
+			throw new IllegalStateException("Mapping class for mapping " + mapping.toString + " not created yet")
+		}
+		
+		val mappingName = mappingClassNames.get(mapping)
+		
+		if (mapping instanceof ClassMapping) {
+			'''
+				public boolean isMappedBy«mappingName»(«mapping.left.type.instanceTypeName» «mapping.left.name») {
+					// TODO: implement
+					return false;
+				}
+				
+				public «mapping.right.type.instanceTypeName» getMappingTargetFor«mappingName»(«mapping.left.type.instanceTypeName» «mapping.left.name») {
+					// TODO: implement
+					return null;
+				}
+			'''
+		}
+	}
+
 	private def generateTransformationExecuting(MIR file, URI resourcePath, IFileSystemAccess fsa) {
 		ClassMappings = file.classMappings
 		
-		fsa.generateFile(SRC_GEN_FOLDER + file.configuration.package.packageNameToPath + file.configuration.type + ".java", '''
+		fsa.generateFile(SRC_GEN_FOLDER + file.fqn.classNameToJavaPath, '''
 			package «file.configuration.package»;
 			
 			«getImportStatements(IMPORTED_CLASSES_TRANSFORMATION_EXECUTING)»
@@ -149,11 +223,7 @@ class MIRCodeGenerator implements IGenerator {
 				/* Transformable metamodels. */
 				private final List<Pair<VURI, VURI>> transformableMetamodels;
 				
-				private final Map<EObject, Integer> currentMappingID;
-				
 				public «file.configuration.type»() {
-					currentMappingID = new HashMap<EObject, Integer>();
-					
 					transformableMetamodels = new ArrayList<Pair<VURI, VURI>>();
 					transformableMetamodels.add(new Pair<VURI, VURI>(VURI_ONE, VURI_TWO));
 					transformableMetamodels.add(new Pair<VURI, VURI>(VURI_TWO, VURI_ONE));
@@ -183,16 +253,14 @@ class MIRCodeGenerator implements IGenerator {
 	}
 	
 	def String checkWhenWhereJava(WhenWhereJavaClass predicate) {
-		'''
-		«predicate.methodFQN»(«predicate.parameterNames.join(", ")»)
-		'''
+		'''«predicate.methodFQN»(«predicate.parameterNames.join(", ")»)'''
 	}
 	
 	def dispatch generateMappingClass(ClassMapping mapping, String pkgName, IFileSystemAccess fsa) {
 		val className = nextMappingClassName
 		mappingClassNames.put(mapping, className)
 		
-		fsa.generateFile(SRC_GEN_FOLDER + pkgName.mappingPackageName.packageNameToPath + className + ".java",
+		fsa.generateFile(SRC_GEN_FOLDER + (pkgName.mappingPackageName + "." + className).classNameToJavaPath,
 		'''
 			package «pkgName.mappingPackageName»;
 			
