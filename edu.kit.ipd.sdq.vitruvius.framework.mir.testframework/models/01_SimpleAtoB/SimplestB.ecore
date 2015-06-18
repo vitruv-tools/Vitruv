@@ -2,5 +2,12 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="SimpleAtoBTest_SimplestB" nsURI="http://edu.kit.ipd.sdq.vitruvius/mir/tests/SimpleAtoB/SimplestB/1.0"
     nsPrefix="simpleAtoBTest_simplestB">
-  <eClassifiers xsi:type="ecore:EClass" name="B"/>
+  <eClassifiers xsi:type="ecore:EClass" name="B">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="b_name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="b_children" upperBound="-1"
+        eType="#//BChild"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BChild">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bChild_name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
 </ecore:EPackage>

@@ -13,7 +13,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
  * Utility class for tests for the MIR language.
  * @author Dominik Werle
  */
-public class MIRTestUtil {
+public final class MIRTestUtil {
 	/**
 	 * Helper class for encapsuling an URI with an extension.
 	 * @author Dominik Werle
