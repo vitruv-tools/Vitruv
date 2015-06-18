@@ -77,7 +77,7 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
         this.pairList.add(pcm2JaMoPP);
     }
 
-    private void initializeChangeSynchronizer() {
+    protected void initializeChangeSynchronizer() {
         final UserInteracting userInteracting = new UserInteractor();
         // PCM2JaMoPP
         // Repository
@@ -107,7 +107,7 @@ public class PCMJaMoPPTransformationExecuter implements EMFModelTransformationEx
         this.changeSynchronizer.addMapping(new InterfaceMappingTransformation());
         this.changeSynchronizer.addMapping(new MethodMappingTransformation());
         this.changeSynchronizer
-                .addMapping(new edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ParameterMappingTransformation());
+        .addMapping(new edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ParameterMappingTransformation());
         this.changeSynchronizer.addMapping(new ModifierMappingTransformation());
         this.changeSynchronizer.addMapping(new FieldMappingTransformation());
 
