@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.generator
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting
 import org.eclipse.xtext.generator.IFileSystemAccess
+import java.util.Collection
 
 /**
  * Helper class containing methods for setting up the plugin project to generate
@@ -44,7 +45,10 @@ class MIRPluginProjectCreator{
 	/**
 	 * Creates the META-INF/MANIFEST.MF file for the plugin project.
 	 */
-	public static def createManifest(IFileSystemAccess fsa, String projectName, String ... additionalRequiredBundles) {
+	public static def createManifest(IFileSystemAccess fsa, String projectName,
+		Collection<String> additionalRequiredBundles,
+		Collection<String> exportedPackages
+	) {
 		fsa.generateFile("META-INF/MANIFEST.MF",
 		'''
 		Manifest-Version: 1.0
@@ -54,7 +58,7 @@ class MIRPluginProjectCreator{
 		Bundle-Version: 1.0.0.qualifier
 		Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 		Require-Bundle: «(requiredBundles + additionalRequiredBundles).join(",\n ")»
-		
+		Export-Package: «(exportedPackages.join(",\n "))»
 		'''
 		)
 	}

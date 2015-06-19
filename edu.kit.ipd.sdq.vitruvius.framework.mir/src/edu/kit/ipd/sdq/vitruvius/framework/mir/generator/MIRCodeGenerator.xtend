@@ -69,7 +69,11 @@ class MIRCodeGenerator implements IGenerator {
 		val projectName = MIRHelper.getProjectName(MIRHelper.getMIR(input));
 		
 		MIRPluginProjectCreator.createPluginXML(fsa, fqn);
-		MIRPluginProjectCreator.createManifest(fsa, projectName, mirFile.bundles.map[bundleFQN])
+		MIRPluginProjectCreator.createManifest(fsa, projectName,
+			mirFile.bundles.map[bundleFQN],
+			#[il.configuration.package,
+			  il.configuration.package.mappingPackageName]
+		)
 		
 		for (mapping : il.classMappings) {
 			generateMappingClass(mapping, il.configuration.package, fsa)
@@ -155,7 +159,7 @@ class MIRCodeGenerator implements IGenerator {
 			
 			«getImportStatements(IMPORTED_CLASSES_CORRESPONDENCE_INSTANCE)»
 			
-			class «mir.mappedCorrespondenceName» extends AbstractMappedCorrespondenceInstance {
+			public class «mir.mappedCorrespondenceName» extends AbstractMappedCorrespondenceInstance {
 				private CorrespondenceInstance correspondenceInstance;
 				
 				public CorrespondenceInstance getCorrespondenceInstance() {
@@ -211,7 +215,7 @@ class MIRCodeGenerator implements IGenerator {
 			 *   <li>«file.packages.get(1).nsURI»</li>
 			 * </ol>.
 			 */
-			class «file.configuration.type» extends «AbstractMIRTransformationExecuting.simpleName» {
+			public class «file.configuration.type» extends «AbstractMIRTransformationExecuting.simpleName» {
 				/** The first mapped metamodel. **/
 				public final String MM_ONE = "«file.packages.get(0).nsURI»";
 				/** The second mapped metamodel. **/
