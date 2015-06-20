@@ -169,6 +169,7 @@ class MIRCodeGenerator implements IGenerator {
 				
 				private CorrespondenceInstance correspondenceInstance;
 				
+				@Override
 				public CorrespondenceInstance getCorrespondenceInstance() {
 					return correspondenceInstance;
 				}
@@ -206,12 +207,12 @@ class MIRCodeGenerator implements IGenerator {
 		if (mapping instanceof ClassMapping) {
 			'''
 				public boolean isMappedBy«mappingName»(«mapping.left.type.instanceTypeName» «mapping.left.name») {
-					«LOGGER_NAME».trace("isMappedBy«mappingName»");
+					«LOGGER_NAME».trace("isMappedBy«mappingName»(" + «mapping.left.name».toString() +")");
 					return false;
 				}
 				
 				public «mapping.right.type.instanceTypeName» getMappingTargetFor«mappingName»(«mapping.left.type.instanceTypeName» «mapping.left.name») {
-					«LOGGER_NAME».trace("getMappingTargetFor«mappingName»");
+					«LOGGER_NAME».trace("getMappingTargetFor«mappingName»(" + «mapping.left.name».toString() +")");
 					return null;
 				}
 			'''
@@ -348,19 +349,19 @@ class MIRCodeGenerator implements IGenerator {
 				@Override
 				protected void restorePostConditions(EChange eChange,
 						MappedCorrespondenceInstance correspondenceInstance) {
-					«LOGGER_NAME».trace("restorePostConditions");
+					«LOGGER_NAME».trace("restorePostConditions(" + eChange.toString() + ", " + correspondenceInstance.toString() + ")");
 				}
 				
 				@Override
 				protected void createCorresponding(EObject eObject,
 						MappedCorrespondenceInstance correspondenceInstance) {
-					«LOGGER_NAME».trace("createCorresponding");
+					«LOGGER_NAME».trace("createCorresponding(" + eObject.toString() + ", " + correspondenceInstance.toString() + ")");
 				}
 				
 				@Override
 				protected void deleteCorresponding(EObject eObject,
 						MappedCorrespondenceInstance correspondenceInstance) {
-					«LOGGER_NAME».trace("deleteCorresponding");
+					«LOGGER_NAME».trace("deleteCorresponding(" + eObject.toString() + ", " + correspondenceInstance.toString() + ")");
 				}
 			}
 		'''
