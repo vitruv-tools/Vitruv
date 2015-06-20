@@ -55,7 +55,7 @@ public class AttributeTUIDCalculatorAndResolver extends HierarchicalTUIDCalculat
 			}
 		}
 		
-		return null;
+		throw new RuntimeException("None of '" + String.join("', '", attributeNames) + "' found for eObject '" + obj + "'");		
 	}
 
 	@Override
