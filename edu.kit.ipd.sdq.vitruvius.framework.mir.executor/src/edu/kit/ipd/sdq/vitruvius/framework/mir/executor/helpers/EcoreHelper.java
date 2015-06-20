@@ -76,12 +76,12 @@ public class EcoreHelper {
         if (idFeature != null && idFeature instanceof EAttribute) {
             EAttribute idAttribute = (EAttribute) idFeature;
             EDataType eAttributeType = idAttribute.getEAttributeType();
-            EDataType eString = EcorePackage.eINSTANCE.getEString();
-            if (eString != null && eString.equals(eAttributeType)) {
-                return (String) eObject.eGet(idFeature);
+            
+            if (eAttributeType.getInstanceClassName().equals(String.class.getName())) {
+            	return (String) eObject.eGet(idFeature);
             }
-            EDataType eInt = EcorePackage.eINSTANCE.getEInt();
-            if (eInt != null && eString.equals(eAttributeType)) {
+            
+            if (eAttributeType.getInstanceClassName().equals("int")) {
                 return String.valueOf(eObject.eGet(idFeature));
             }
         }
