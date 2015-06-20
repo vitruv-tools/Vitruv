@@ -5,10 +5,17 @@ import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.DefaultTUIDCalculatorAndResolver;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AttributeTUIDCalculatorAndResolver;
 
 public class EcoreHelper {
 	
@@ -57,4 +64,28 @@ public class EcoreHelper {
 		
 		return currentLevel;
 	}
+	
+	/**
+	 * Copied from {@link DefaultTUIDCalculatorAndResolver#getValueOfAttribute(EObject, String)}.
+	 * Tries to obtain the value of the feature named <code>featureName</code> from the given {@link EObject}.
+	 * If the feature is of type <code>EString</code>, it is returned directly, if it is of type <code>EInt</code>,
+	 * it is converted to the integers string representation.
+	 */
+	// TODO: refactor into helper class that both {@link DefaultTUIDCalculatorAndResolver} and {@link AttributeTUIDCalculatorAndResolver} use.
+    public static String getStringValueOfAttribute(final EObject eObject, final String featureName) {
+        EStructuralFeature idFeature = eObject.eClass().getEStructuralFeature(featureName);
+        if (idFeature != null && idFeature instanceof EAttribute) {
+            EAttribute idAttribute = (EAttribute) idFeature;
+            EDataType eAttributeType = idAttribute.getEAttributeType();
+            EDataType eString = EcorePackage.eINSTANCE.getEString();
+            if (eString != null && eString.equals(eAttributeType)) {
+                return (String) eObject.eGet(idFeature);
+            }
+            EDataType eInt = EcorePackage.eINSTANCE.getEInt();
+            if (eInt != null && eString.equals(eAttributeType)) {
+                return String.valueOf(eObject.eGet(idFeature));
+            }
+        }
+        return null;
+    }
 }
