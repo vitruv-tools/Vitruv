@@ -9,6 +9,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AttributeTUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
 /**
@@ -19,6 +20,9 @@ public final class MIRTestUtil {
 	public static final String[] DEFAULT_ATTRIBUTE_NAMES = new String[] {
 		"id", "name", "entityName"
 	};
+	
+	public static final TUIDCalculatorAndResolver DEFAULT_ATTRIBUTE_TUID_RESOLVER =
+			new AttributeTUIDCalculatorAndResolver(DEFAULT_ATTRIBUTE_NAMES);
 	
 	/**
 	 * Constructs an empty VSUM that contains the meta models for the given
@@ -80,5 +84,9 @@ public final class MIRTestUtil {
 	
 	public static Metamodel createMetamodel(String nsURI, TUIDCalculatorAndResolver tuidCalculatorAndResolver, String... extensions) {
 		return new Metamodel(nsURI, VURI.getInstance(nsURI), tuidCalculatorAndResolver, extensions);
+	}
+	
+	public static Metamodel createAttributeTUIDMetamodel(String nsURI, String... extensions) {
+		return new Metamodel(nsURI, VURI.getInstance(nsURI), DEFAULT_ATTRIBUTE_TUID_RESOLVER, extensions);
 	}
 }
