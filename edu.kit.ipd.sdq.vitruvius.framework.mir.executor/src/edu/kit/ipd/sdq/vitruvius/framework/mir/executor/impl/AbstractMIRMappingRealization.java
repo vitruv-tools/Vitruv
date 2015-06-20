@@ -2,11 +2,13 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl;
 
 import java.util.Collection;
 
+import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRMappingHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MappedCorrespondenceInstance;
 
@@ -19,6 +21,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MappedCorresp
  *
  */
 public abstract class AbstractMIRMappingRealization implements MIRMappingRealization {
+	private final static Logger LOGGER = Logger.getLogger(AbstractMIRMappingRealization.class);
+	
 	/**
 	 * Returns the {@link EClass} mapped by this mapping.
 	 * @return the {@link EClass} mapped by this mapping
@@ -69,9 +73,7 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 	 * @return
 	 */
 	protected Collection<EObject> getCandidates(EChange eChange) {
-		// TODO: implement
-		// VSUM -> eChange.getVURI to get model elements
-		throw new UnsupportedOperationException("getting candidates not supported");
+		return MIRMappingHelper.getAllAffectedObjects(eChange);
 	}
 	
 	@Override
@@ -83,6 +85,8 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 		EMFChangeResult result = new EMFChangeResult();
 		
 		for (EObject candidate : candidates) {
+			LOGGER.trace("Checking candidate " + candidate.toString());
+			
 			boolean mappedBefore = correspondenceInstance.checkIfMappedBy(candidate, this);
 			boolean mappedAfter = checkConditions(candidate, correspondenceInstance);
 			

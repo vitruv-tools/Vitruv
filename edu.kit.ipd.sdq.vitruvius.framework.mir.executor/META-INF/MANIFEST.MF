@@ -14,7 +14,8 @@ Require-Bundle: org.eclipse.xtext.xbase.lib,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.framework.util;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence,
- org.eclipse.emf.ecore
+ org.eclipse.emf.ecore,
+ org.apache.log4j;bundle-version="1.2.15"
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl,
  edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces,
  edu.kit.ipd.sdq.vitruvius.framework.mir.executor.reflection,

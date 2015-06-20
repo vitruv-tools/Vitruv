@@ -2,17 +2,31 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
+import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.UpdateEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MappedCorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
-public class MIRMappingHelper {
+/**
+ * Helper class for MIR mapping realizations.
+ * @author Dominik Werle
+ *
+ */
+public final class MIRMappingHelper {
+	private final static Logger LOGGER = Logger.getLogger(MIRMappingHelper.class);
+	
 	public static Collection<EObject> getReverseFeature(EObject target, EStructuralFeature feature) {
 		Collection<Setting> settings = EcoreUtil.UsageCrossReferencer.find(target, target.eResource());
 		
@@ -37,5 +51,37 @@ public class MIRMappingHelper {
 			}
 		}
 		return null;
+	}
+	
+	
+	
+	public static Collection<EObject> getAllAffectedObjects(EChange eChange) {
+		Collection<EObject> result = new HashSet<EObject>();
+		
+		if (eChange instanceof EFeatureChange<?>) {
+			EObject newAffectedEObject = ((EFeatureChange<?>) eChange).getNewAffectedEObject();
+			result.add(newAffectedEObject);
+			
+			if (eChange instanceof UpdateEReference<?>) {
+				UpdateEReference<?> updateEReference = (UpdateEReference<?>) eChange;
+				EReference affectedFeature = updateEReference.getAffectedFeature();
+				Object featureValue = newAffectedEObject.eGet(affectedFeature);
+				
+				if (featureValue instanceof Collection<?>) {
+					for (Object affectedObject : (Collection<?>) featureValue) {
+						if (affectedObject instanceof EObject) {
+							result.add((EObject) affectedObject);
+						}
+					}
+				} else if (featureValue instanceof EObject) {
+					result.add((EObject) featureValue);
+				}
+			}
+		} else if (eChange instanceof CreateRootEObject<?>) {
+			EObject newValue = ((CreateRootEObject<?>) eChange).getNewValue();
+			result.add(newValue);
+		}
+		
+		return result;
 	}
 }

@@ -38,6 +38,7 @@ import org.eclipse.xtext.generator.IGenerator
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRMappingHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MappedCorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMappedCorrespondenceInstance
+import org.apache.log4j.Logger
 
 /**
  * @author Dominik Werle
@@ -46,6 +47,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMappedCorre
 class MIRCodeGenerator implements IGenerator {
 	private static final String SRC_GEN_FOLDER = "src-gen/";
 	private static final String MAPPING_PKG_NAME = "mappings";
+	private static final String LOGGER_NAME = "LOGGER";
 	
 	@Inject IGeneratorStatus generatorStatus;
 	
@@ -128,18 +130,21 @@ class MIRCodeGenerator implements IGenerator {
 		Pair, EMFModelTransformationExecuting, EMFChangeResult, VURI,
 		AbstractMIRTransformationExecuting,
 		CorrespondenceInstance, EMFModelChange, Change,
-		EChange, EcoreHelper
+		EChange, EcoreHelper,
+		Logger
 	]
 	
 	private static final List<? extends Class<?>> IMPORTED_CLASSES_MAPPING = #[
 		MIRMappingRealization, AbstractMIRMappingRealization, EMFChangeResult,
 		EChange, CorrespondenceInstance, MIRModelInformationProvider, EStructuralFeature,
 		EClass, AbstractMIRTransformationExecuting, EObject, List, ArrayList,
-		Set, HashSet, EPackage, Pair, MIRMappingHelper, MappedCorrespondenceInstance
+		Set, HashSet, EPackage, Pair, MIRMappingHelper, MappedCorrespondenceInstance,
+		Logger
 	]
 	
 	private static final List<? extends Class<?>> IMPORTED_CLASSES_CORRESPONDENCE_INSTANCE = #[
-		CorrespondenceInstance, AbstractMappedCorrespondenceInstance, EObject
+		CorrespondenceInstance, AbstractMappedCorrespondenceInstance, EObject,
+		Logger
 	]
 	
 	/**
@@ -160,10 +165,19 @@ class MIRCodeGenerator implements IGenerator {
 			«getImportStatements(IMPORTED_CLASSES_CORRESPONDENCE_INSTANCE)»
 			
 			public class «mir.mappedCorrespondenceName» extends AbstractMappedCorrespondenceInstance {
+				«createLoggerField(mir.mappedCorrespondenceName)»
+				
 				private CorrespondenceInstance correspondenceInstance;
 				
 				public CorrespondenceInstance getCorrespondenceInstance() {
 					return correspondenceInstance;
+				}
+				
+				public void setCorrespondenceInstance(CorrespondenceInstance correspondenceInstance) {
+					this.correspondenceInstance = correspondenceInstance;
+				}
+				
+				public «mir.mappedCorrespondenceName»() {
 				}
 				
 				public «mir.mappedCorrespondenceName»(CorrespondenceInstance correspondenceInstance) {
@@ -178,6 +192,10 @@ class MIRCodeGenerator implements IGenerator {
 		''')
 	}
 	
+	def createLoggerField(String className) {
+		'''private static final Logger «LOGGER_NAME» = Logger.getLogger(«className».class);'''
+	}
+	
 	def mappingCorrespondenceMethods(Mapping mapping) {
 		if (!mappingClassNames.containsKey(mapping)) {
 			throw new IllegalStateException("Mapping class for mapping " + mapping.toString + " not created yet")
@@ -188,12 +206,12 @@ class MIRCodeGenerator implements IGenerator {
 		if (mapping instanceof ClassMapping) {
 			'''
 				public boolean isMappedBy«mappingName»(«mapping.left.type.instanceTypeName» «mapping.left.name») {
-					// TODO: implement
+					«LOGGER_NAME».trace("isMappedBy«mappingName»");
 					return false;
 				}
 				
 				public «mapping.right.type.instanceTypeName» getMappingTargetFor«mappingName»(«mapping.left.type.instanceTypeName» «mapping.left.name») {
-					// TODO: implement
+					«LOGGER_NAME».trace("getMappingTargetFor«mappingName»");
 					return null;
 				}
 			'''
@@ -216,10 +234,15 @@ class MIRCodeGenerator implements IGenerator {
 			 * </ol>.
 			 */
 			public class «file.configuration.type» extends «AbstractMIRTransformationExecuting.simpleName» {
+				«createLoggerField(file.configuration.type)»
+				
 				/** The first mapped metamodel. **/
 				public final String MM_ONE = "«file.packages.get(0).nsURI»";
 				/** The second mapped metamodel. **/
 				public final String MM_TWO = "«file.packages.get(1).nsURI»";
+				
+				/** The correspondence instance for this TransformationExecuting. */
+				private final «file.mappedCorrespondenceName» mappedCorrespondenceInstance;
 				
 				private final VURI VURI_ONE = VURI.getInstance(MM_ONE);
 				private final VURI VURI_TWO = VURI.getInstance(MM_TWO);
@@ -231,6 +254,8 @@ class MIRCodeGenerator implements IGenerator {
 					transformableMetamodels = new ArrayList<Pair<VURI, VURI>>();
 					transformableMetamodels.add(new Pair<VURI, VURI>(VURI_ONE, VURI_TWO));
 					transformableMetamodels.add(new Pair<VURI, VURI>(VURI_TWO, VURI_ONE));
+					
+					this.mappedCorrespondenceInstance = new «file.mappedCorrespondenceName»();
 				}
 				
 				@Override
@@ -243,6 +268,16 @@ class MIRCodeGenerator implements IGenerator {
 				@Override
 				public List<Pair<VURI, VURI>> getTransformableMetamodels() {
 					return transformableMetamodels;
+				}
+				
+				@Override
+				protected «file.mappedCorrespondenceName» getMappedCorrespondenceInstance() {
+					return this.mappedCorrespondenceInstance;
+				}
+			
+				@Override
+				protected void setCorrespondenceInstance(CorrespondenceInstance correspondenceInstance) {
+					this.mappedCorrespondenceInstance.setCorrespondenceInstance(correspondenceInstance);
 				}
 			}
 		''')
@@ -275,6 +310,8 @@ class MIRCodeGenerator implements IGenerator {
 			 * Class Mapping
 			 */
 			public class «className» extends «AbstractMIRMappingRealization.simpleName» {
+				«createLoggerField(className)»
+				
 				// Singleton
 				public final static «className» INSTANCE = new «className»();
 				
@@ -305,13 +342,26 @@ class MIRCodeGenerator implements IGenerator {
 					return true;
 				}
 			
-				@Override protected EClass getMappedEClass() { return null; }
-				@Override protected void restorePostConditions(EChange eChange,
-					MappedCorrespondenceInstance correspondenceInstance) {}
-				@Override protected void createCorresponding(EObject eObject,
-					MappedCorrespondenceInstance correspondenceInstance) {}
-				@Override protected void deleteCorresponding(EObject eObject,
-					MappedCorrespondenceInstance correspondenceInstance) {}
+				@Override
+				protected EClass getMappedEClass() { return null; }
+				
+				@Override
+				protected void restorePostConditions(EChange eChange,
+						MappedCorrespondenceInstance correspondenceInstance) {
+					«LOGGER_NAME».trace("restorePostConditions");
+				}
+				
+				@Override
+				protected void createCorresponding(EObject eObject,
+						MappedCorrespondenceInstance correspondenceInstance) {
+					«LOGGER_NAME».trace("createCorresponding");
+				}
+				
+				@Override
+				protected void deleteCorresponding(EObject eObject,
+						MappedCorrespondenceInstance correspondenceInstance) {
+					«LOGGER_NAME».trace("deleteCorresponding");
+				}
 			}
 		'''
 		)

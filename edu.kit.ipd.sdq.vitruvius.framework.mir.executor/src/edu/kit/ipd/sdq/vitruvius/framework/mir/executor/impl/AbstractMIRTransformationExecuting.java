@@ -26,7 +26,7 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 		responseRegistry = new ResponseRegistryImpl();
 		invariantRegistry = new InvariantRegistryImpl();
 		mappings = new HashSet<MIRMappingRealization>();
-
+		
 		setup();
 	}
 	
@@ -42,13 +42,14 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 		mappings.add(mapping);
 	}
 	
-	protected MappedCorrespondenceInstance getMappedCorrespondenceInstance(CorrespondenceInstance correspondenceInstance) {
-		throw new UnsupportedOperationException("TODO: implement");
-	}
+	protected abstract MappedCorrespondenceInstance getMappedCorrespondenceInstance();
+	
+	protected abstract void setCorrespondenceInstance(CorrespondenceInstance correspondenceInstance);
 
 	@Override
 	public EMFChangeResult executeTransformation(EMFModelChange change, CorrespondenceInstance correspondenceInstance) {
-		return handleEChange(change.getEChange(), getMappedCorrespondenceInstance(correspondenceInstance));
+		setCorrespondenceInstance(correspondenceInstance);
+		return handleEChange(change.getEChange());
 	}
 
 	@Override
@@ -68,12 +69,11 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 	}
 	
 
-	protected EMFChangeResult handleEChange(EChange eChange, MappedCorrespondenceInstance correspondenceInstance) {
+	protected EMFChangeResult handleEChange(EChange eChange) {
 		EMFChangeResult result = new EMFChangeResult();
-		Collection<MIRMappingRealization> relevantMappings = getCandidateMappings(eChange, correspondenceInstance);
+		Collection<MIRMappingRealization> relevantMappings = getCandidateMappings(eChange);
 		for (MIRMappingRealization mapping : relevantMappings) {
-			// TODO: dependency on AbstractMIRTransformationExecuting
-			result.addChangeResult(mapping.applyEChange(eChange, correspondenceInstance));
+			result.addChangeResult(mapping.applyEChange(eChange, getMappedCorrespondenceInstance()));
 		}
 		return result;
 	}
@@ -85,7 +85,7 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 	 * implementation returns all mappings (i.e. the most conservative estimate).  
 	 * @return
 	 */
-	protected Collection<MIRMappingRealization> getCandidateMappings(EChange eChange, MappedCorrespondenceInstance correspondenceInstance) {
+	protected Collection<MIRMappingRealization> getCandidateMappings(EChange eChange) {
 		return mappings;
 	}
 
