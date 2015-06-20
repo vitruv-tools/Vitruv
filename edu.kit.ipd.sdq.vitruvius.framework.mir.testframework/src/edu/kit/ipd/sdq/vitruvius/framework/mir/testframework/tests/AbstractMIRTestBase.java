@@ -5,6 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util.MIRTestUtil;
@@ -22,7 +23,7 @@ public abstract class AbstractMIRTestBase {
 	 * Returns the URIs and file extensions of the meta models to load for the test.
 	 * @return the URIs and file extensions of the meta models to load for the test
 	 */
-	protected abstract MIRTestUtil.URIwithExtension[] getMMURIsWithExtensionsToLoad();
+	protected abstract Metamodel[] getMMURIsWithExtensionsToLoad();
 
 	/**
 	 * Returns the {@link URI URIs} of the models to load for the test.
