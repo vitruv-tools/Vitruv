@@ -49,6 +49,7 @@ public abstract class AbstractMappedCorrespondenceInstance implements MappedCorr
 	 * @param correspondence
 	 * @return
 	 */
+	@Override
 	public Collection<MIRMappingRealization> getMappingsForCorrespondence(Correspondence correspondence) {
 		if (correspondence2mappings.containsKey(correspondence))
 			return correspondence2mappings.get(correspondence);
@@ -62,6 +63,7 @@ public abstract class AbstractMappedCorrespondenceInstance implements MappedCorr
 	 * @param mapping
 	 * @param correspondence
 	 */
+	@Override
 	public void registerMappingForCorrespondence(MIRMappingRealization mapping,
 			Correspondence correspondence) {
 		if (!correspondence2mappings.containsKey(correspondence))
@@ -70,6 +72,7 @@ public abstract class AbstractMappedCorrespondenceInstance implements MappedCorr
 		correspondence2mappings.get(correspondence).add(mapping);
 	}
 	
+	@Override
 	public boolean unregisterMappingForCorrespondence(MIRMappingRealization mapping,
 			Correspondence correspondence) {
 		
@@ -87,6 +90,7 @@ public abstract class AbstractMappedCorrespondenceInstance implements MappedCorr
 	 * @return The target of the mapping if this mapping maps <code>eObject</code>,
 	 * 	<code>null</code> otherwise.
 	 */
+	@Override
 	public EObject getMappingTarget(EObject eObject, CorrespondenceInstance correspondenceInstance,
 			MIRMappingRealization mapping) {
 		Collection<Correspondence> correspondences = correspondenceInstance.getAllCorrespondences(eObject);
