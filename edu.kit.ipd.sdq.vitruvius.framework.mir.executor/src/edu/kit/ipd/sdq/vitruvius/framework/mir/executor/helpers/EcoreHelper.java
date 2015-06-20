@@ -15,7 +15,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.DefaultTUIDCalculatorAndResolver;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AttributeTUIDCalculatorAndResolver;
 
 public class EcoreHelper {
 	
@@ -71,7 +70,7 @@ public class EcoreHelper {
 	 * If the feature is of type <code>EString</code>, it is returned directly, if it is of type <code>EInt</code>,
 	 * it is converted to the integers string representation.
 	 */
-	// TODO: refactor into helper class that both {@link DefaultTUIDCalculatorAndResolver} and {@link AttributeTUIDCalculatorAndResolver} use.
+	// TODO: refactor into helper class that both DefaultTUIDCalculatorAndResolver and AttributeTUIDCalculatorAndResolver use.
     public static String getStringValueOfAttribute(final EObject eObject, final String featureName) {
         EStructuralFeature idFeature = eObject.eClass().getEStructuralFeature(featureName);
         if (idFeature != null && idFeature instanceof EAttribute) {
