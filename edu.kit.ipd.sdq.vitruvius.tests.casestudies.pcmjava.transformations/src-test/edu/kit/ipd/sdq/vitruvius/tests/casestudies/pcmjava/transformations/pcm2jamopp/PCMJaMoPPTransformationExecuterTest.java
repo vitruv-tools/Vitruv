@@ -10,7 +10,8 @@ import org.junit.Test;
 
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
 import de.uka.ipd.sdq.pcm.repository.Repository;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPTransformationExecuter;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPTransformationExecuterBase;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavapojo.transformations.PCMJaMoPPPOJOTransformationExecuter;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
@@ -23,8 +24,9 @@ public class PCMJaMoPPTransformationExecuterTest extends PCM2JaMoPPTransformatio
 
     @Test
     public void testCreateNewResourceInPCM2JaMoPPTransformation() throws Throwable {
-        final PCMJaMoPPTransformationExecuter pcmJaMoPPTransformation = new PCMJaMoPPTransformationExecuter();
-        final Repository repo = PCM2JaMoPPTestUtils.createRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
+        final PCMJaMoPPTransformationExecuterBase pcmJaMoPPTransformation = new PCMJaMoPPPOJOTransformationExecuter();
+        final Repository repo = PCM2JaMoPPTestUtils.createRepository(this.resourceSet,
+                PCM2JaMoPPTestUtils.REPOSITORY_NAME);
         final BasicComponent basicComponent = PCM2JaMoPPTestUtils.createBasicComponent(repo);
         final EMFModelChange change = PCM2JaMoPPTestUtils.createCreateChange(basicComponent, repo, repo,
                 "components__Repository");

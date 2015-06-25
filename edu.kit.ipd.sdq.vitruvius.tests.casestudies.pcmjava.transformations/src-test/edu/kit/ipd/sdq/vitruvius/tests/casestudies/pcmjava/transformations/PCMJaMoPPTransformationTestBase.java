@@ -5,7 +5,7 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPTransformationExecuter;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPTransformationExecuterBase;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
@@ -64,17 +64,17 @@ public abstract class PCMJaMoPPTransformationTestBase {
         final ClaimableMap<Pair<VURI, VURI>, EMFModelTransformationExecuting> transformationExecuterMap = TestUtil
                 .getFieldFromClass(TransformationExecutingProvidingImpl.class, "transformationExecuterMap",
                         transformationExecutingProvidingImpl);
-        PCMJaMoPPTransformationExecuter pcmJaMoPPTransformationExecuter = null;
+        PCMJaMoPPTransformationExecuterBase pcmJaMoPPTransformationExecuter = null;
         for (final EMFModelTransformationExecuting emfModelTransformationExecuting : transformationExecuterMap.values()) {
-            if (emfModelTransformationExecuting instanceof PCMJaMoPPTransformationExecuter) {
-                pcmJaMoPPTransformationExecuter = (PCMJaMoPPTransformationExecuter) emfModelTransformationExecuting;
+            if (emfModelTransformationExecuting instanceof PCMJaMoPPTransformationExecuterBase) {
+                pcmJaMoPPTransformationExecuter = (PCMJaMoPPTransformationExecuterBase) emfModelTransformationExecuting;
                 break;
             }
         }
         if (null == pcmJaMoPPTransformationExecuter) {
             throw new RuntimeException("Could not find an PCMJaMoPPTransformationExecuter that is currently active.");
         }
-        final ChangeSynchronizer changeSynchronizer = TestUtil.getFieldFromClass(PCMJaMoPPTransformationExecuter.class,
+        final ChangeSynchronizer changeSynchronizer = TestUtil.getFieldFromClass(PCMJaMoPPTransformationExecuterBase.class,
                 "changeSynchronizer", pcmJaMoPPTransformationExecuter);
         changeSynchronizer.setUserInteracting(newUserInteracting);
     }
