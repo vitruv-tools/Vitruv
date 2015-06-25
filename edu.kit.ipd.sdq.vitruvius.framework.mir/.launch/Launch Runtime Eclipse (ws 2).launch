@@ -10,11 +10,11 @@
 <booleanAttribute key="clearConfig" value="false"/>
 <booleanAttribute key="clearws" value="false"/>
 <booleanAttribute key="clearwslog" value="false"/>
-<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Launch Runtime Eclipse"/>
+<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Launch Runtime Eclipse (ws 2)"/>
 <booleanAttribute key="default" value="false"/>
 <stringAttribute key="deselected_workspace_plugins" value="edu.kit.ipd.sdq.vitruvius.casestudies.emf,edu.kit.ipd.sdq.vitruvius.casestudies.gmf.run.monitorededitor,edu.kit.ipd.sdq.vitruvius.casestudies.java.run.astchangelistener,edu.kit.ipd.sdq.vitruvius.casestudies.java.run.changeclassification,edu.kit.ipd.sdq.vitruvius.casestudies.java.run.monitorededitor,edu.kit.ipd.sdq.vitruvius.casestudies.java.util,edu.kit.ipd.sdq.vitruvius.casestudies.java.util.jamoppbridge,edu.kit.ipd.sdq.vitruvius.casestudies.java.util.javamodel2ast,edu.kit.ipd.sdq.vitruvius.casestudies.java.util.jdttooltipprovider,edu.kit.ipd.sdq.vitruvius.casestudies.java.util.refactoringchangelistener,edu.kit.ipd.sdq.vitruvius.casestudies.jml.language,edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.tests,edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.ui,edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor,edu.kit.ipd.sdq.vitruvius.casestudies.jmljava,edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.initializer,edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.java.run.monitorededitor,edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava,edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations,edu.kit.ipd.sdq.vitruvius.tests.casestudies.gmf.run.monitorededitor,edu.kit.ipd.sdq.vitruvius.tests.casestudies.java.run.monitorededitor,edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava,edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations,edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.util"/>
 <booleanAttribute key="includeOptional" value="true"/>
-<stringAttribute key="location" value="${workspace_loc}/../runtime-EclipseXtext-MIR"/>
+<stringAttribute key="location" value="${workspace_loc}/../runtime-EclipseXtext-MIR2"/>
 <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
 <listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
 <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>

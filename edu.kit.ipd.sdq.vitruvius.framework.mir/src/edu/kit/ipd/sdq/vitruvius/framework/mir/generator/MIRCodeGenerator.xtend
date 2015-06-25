@@ -347,21 +347,24 @@ class MIRCodeGenerator implements IGenerator {
 				protected EClass getMappedEClass() { return null; }
 				
 				@Override
-				protected void restorePostConditions(EChange eChange,
+				protected EMFChangeResult restorePostConditions(EChange eChange,
 						MappedCorrespondenceInstance correspondenceInstance) {
 					«LOGGER_NAME».trace("restorePostConditions(" + eChange.toString() + ", " + correspondenceInstance.toString() + ")");
+					return null;
 				}
 				
 				@Override
-				protected void createCorresponding(EObject eObject,
+				protected EMFChangeResult createCorresponding(EObject eObject,
 						MappedCorrespondenceInstance correspondenceInstance) {
 					«LOGGER_NAME».trace("createCorresponding(" + eObject.toString() + ", " + correspondenceInstance.toString() + ")");
+					return null;
 				}
 				
 				@Override
-				protected void deleteCorresponding(EObject eObject,
+				protected EMFChangeResult deleteCorresponding(EObject eObject,
 						MappedCorrespondenceInstance correspondenceInstance) {
 					«LOGGER_NAME».trace("deleteCorresponding(" + eObject.toString() + ", " + correspondenceInstance.toString() + ")");
+					return null;
 				}
 			}
 		'''

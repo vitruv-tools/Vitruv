@@ -12,9 +12,10 @@ import com.google.inject.Singleton
 class ClosureProvider {
 	private Map<XExpression, Map<EPackage, TreeAppendableClosure>> assignmentClosures
 	private Map<XExpression, Map<EPackage, TreeAppendableClosure>> equalityClosures
+	private Map<XExpression, TreeAppendableClosure> invariantClosures
 	
-	@Inject Provider<TreeAppendableClosure> closureProvider;
-	@Inject Provider<TreeAppendableConjunctionClosure> conjunctionClosureProvider;
+	@Inject Provider<TreeAppendableClosure> closureProvider
+	@Inject Provider<TreeAppendableConjunctionClosure> conjunctionClosureProvider
 	
 	new() {
 		reset
@@ -22,7 +23,8 @@ class ClosureProvider {
 	
 	public def void reset() {
 		assignmentClosures = newHashMap
-		equalityClosures = newHashMap		
+		equalityClosures = newHashMap
+		invariantClosures = newHashMap
 	}
 	
 	/**
@@ -35,10 +37,10 @@ class ClosureProvider {
 		if (!assignmentClosures.containsKey(expression))
 			assignmentClosures.put(expression, new HashMap<EPackage, TreeAppendableClosure>());
 		
-		val closureMap = assignmentClosures.get(expression);
+		val closureMap = assignmentClosures.get(expression)
 		
 		if (!closureMap.containsKey(pkg))
-			closureMap.put(pkg, closureProvider.get());
+			closureMap.put(pkg, closureProvider.get())
 
 //		println(hashCode + ".getAssignmentClosure: " + expression.hashCode + " => " + closureMap.get(pkg).hashCode)
 
@@ -55,12 +57,12 @@ class ClosureProvider {
 	 */
 	public def TreeAppendableClosure getEqualityClosure(XExpression expression, EPackage pkg) {
 		if (!equalityClosures.containsKey(expression))
-			equalityClosures.put(expression, new HashMap<EPackage, TreeAppendableClosure>());
+			equalityClosures.put(expression, new HashMap<EPackage, TreeAppendableClosure>())
 		
-		val closureMap = equalityClosures.get(expression);
+		val closureMap = equalityClosures.get(expression)
 		
 		if (!closureMap.containsKey(pkg))
-			closureMap.put(pkg, conjunctionClosureProvider.get());
+			closureMap.put(pkg, conjunctionClosureProvider.get())
 			
 //		println(hashCode + ".getEqualityClosure: " + expression.hashCode + " => " + closureMap.get(pkg).hashCode)
 		
@@ -73,5 +75,15 @@ class ClosureProvider {
 	
 	public def Map<EPackage, TreeAppendableClosure> getEqualityClosureMap(XExpression expression) {
 		return equalityClosures.get(expression)?.immutableCopy ?: newHashMap()
+	}
+	
+	/**
+	 * Returns the invariant closure for the given XExpression.
+	 */
+	public def TreeAppendableClosure getInvariantClosure(XExpression expression) {
+		if (!invariantClosures.containsKey(expression))
+			invariantClosures.put(expression, closureProvider.get())
+			
+		return invariantClosures.get(expression)
 	}
 }

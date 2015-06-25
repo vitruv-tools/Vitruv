@@ -41,8 +41,6 @@ public class MIRGenerator implements IGenerator {
 	
 	@Override
 	public void doGenerate(Resource input, IFileSystemAccess fsa) {
-		System.out.println("Starting MIRGenerator");
-		
 		String projectName = MIRHelper.getProjectName(MIRHelper.getMIR(input));
 		EclipseProjectHelper eclipseHelper = new EclipseProjectHelper(projectName);
 		eclipseHelper.reinitializeProject();

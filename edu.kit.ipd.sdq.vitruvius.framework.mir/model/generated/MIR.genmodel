@@ -15,6 +15,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//MIRFile/bundles"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//MIRFile/imports"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//MIRFile/mappings"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//MIRFile/invariants"/>
     </genClasses>
     <genClasses ecoreClass="MIR.ecore#//Import">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//Import/package"/>
@@ -35,6 +36,10 @@
     <genClasses ecoreClass="MIR.ecore#//TypedElement"/>
     <genClasses ecoreClass="MIR.ecore#//TypedElementRef">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIR.ecore#//TypedElementRef/ref"/>
+    </genClasses>
+    <genClasses ecoreClass="MIR.ecore#//Invariant">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIR.ecore#//Invariant/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIR.ecore#//Invariant/block"/>
     </genClasses>
     <genClasses ecoreClass="MIR.ecore#//ClassMapping"/>
     <genClasses ecoreClass="MIR.ecore#//FeatureMapping"/>

@@ -14,7 +14,8 @@ MIRFile returns MIRFile:
 	(
 		bundles+=Bundle |
 		imports+=Import |
-		mappings+=ClassMapping
+		mappings+=ClassMapping |
+		invariants+=Invariant
 	)*
 ;
 
@@ -25,6 +26,11 @@ Import returns Import:
 Bundle returns Bundle: 
 	'bundle' bundleFQN=QualifiedName
 ;
+
+
+/////////////
+// MAPPINGS
+/////////////
 
 MappingBody returns MappingBody: 
 	('{'
@@ -79,4 +85,11 @@ FeatureCall returns TypedElement:
 			 ('as' name=ValidID)? ')'
 		) 
 	)*
+;
+
+///////////////
+// INVARIANTS
+///////////////
+Invariant:
+	'invariant' name=ValidID block=XBlockExpression
 ;

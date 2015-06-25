@@ -30,5 +30,8 @@ public interface IGeneratorStatus {
 	public void addWithBlockToInfer(XExpression withBlock);
 	public List<XExpression> getWithBlocksToInfer();
 	
+	public void addInvariantToInfer(XExpression invariant);
+	public List<XExpression> getInvariantsToInfer();
+	
 	public void reset();
 }

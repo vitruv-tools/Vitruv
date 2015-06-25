@@ -16,11 +16,15 @@ import org.eclipse.xtext.xbase.lib.ListExtensions;
 import com.google.common.collect.Lists;
 
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.jvmmodel.MIRJvmModelInferrer;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile;
 
 /**
+ * Wraps some state that is passed between the different stages of the
+ * generation (i.e. {@link MIRJvmModelInferrer}, {@link MIRJvmModelGenerator}
+ * and the various inferrers}.
+ * <p>
  * @author Dominik Werle
- *
  */
 public class MIRGeneratorStatus implements IGeneratorStatus {
 	
@@ -29,6 +33,7 @@ public class MIRGeneratorStatus implements IGeneratorStatus {
 	
 	private List<XExpression> whenWheresToInfer;
 	private List<XExpression> withBlocksToInfer;
+	private List<XExpression> invariantsToInfer;
 	
 	public MIRGeneratorStatus() {
 		this.objectToName = new HashMap<Object, String>();
@@ -36,6 +41,7 @@ public class MIRGeneratorStatus implements IGeneratorStatus {
 		
 		this.whenWheresToInfer = new ArrayList<XExpression>();
 		this.withBlocksToInfer = new ArrayList<XExpression>();
+		this.invariantsToInfer = new ArrayList<XExpression>();
 	}
 
 	@Override
@@ -93,6 +99,16 @@ public class MIRGeneratorStatus implements IGeneratorStatus {
 	@Override
 	public List<XExpression> getWithBlocksToInfer() {
 		return Collections.unmodifiableList(withBlocksToInfer);
+	}
+
+	@Override
+	public void addInvariantToInfer(XExpression invariant) {
+		invariantsToInfer.add(invariant);
+	}
+
+	@Override
+	public List<XExpression> getInvariantsToInfer() {
+		return Collections.unmodifiableList(invariantsToInfer);
 	}
 
 }

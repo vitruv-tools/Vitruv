@@ -35,6 +35,7 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 	@Inject extension JvmTypesBuilder
 	@Inject IGeneratorStatus generatorStatus
 	@Inject ClosureProvider closureProvider
+	@Inject MIRInvariantJvmModelInferrer invariantJvmModelInferrer
 
 	def static dispatch String getHexHash(Object o) {
 		return Integer.toHexString(o.hashCode)
@@ -42,7 +43,6 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 
 	// The dispatch modifier must not be removed or the method will not override / be called
 	def dispatch void infer(MIRFile mirFile, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-		println("Starting MIRJvmModelInferrer (" + isPreIndexingPhase + ")")
 		if (!isPreIndexingPhase) {
 
 			// the "compilation state" is reset at this stage
@@ -51,7 +51,11 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 
 			val pkgName = mirFile.generatedPackage
 			EcoreUtil2.resolveAll(mirFile);
-
+			
+			mirFile.invariants.forEach [
+				invariantJvmModelInferrer.infer(it, acceptor, pkgName, _typeReferenceBuilder)
+			]
+			
 			mirFile.mappings.filter[isValid].forEach[inferMapping(it as ClassMapping, pkgName, acceptor)]
 		}
 	}
