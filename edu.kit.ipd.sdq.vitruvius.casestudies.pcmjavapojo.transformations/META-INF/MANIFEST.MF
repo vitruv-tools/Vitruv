@@ -7,5 +7,10 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter
+ edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter,
+ edu.kit.ipd.sdq.vitruvius.casestudies.jmljava,
+ edu.kit.ipd.sdq.vitruvius.casestudies.jmljava,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements,
+ de.uka.ipd.sdq.pcm,
+ org.somox.gast2seff
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavapojo.transformations
