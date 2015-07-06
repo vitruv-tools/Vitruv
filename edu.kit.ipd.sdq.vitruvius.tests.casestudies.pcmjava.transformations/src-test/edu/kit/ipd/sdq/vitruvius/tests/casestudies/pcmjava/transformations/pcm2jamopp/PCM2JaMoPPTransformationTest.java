@@ -53,6 +53,8 @@ import de.uka.ipd.sdq.pcm.repository.PrimitiveDataType;
 import de.uka.ipd.sdq.pcm.repository.PrimitiveTypeEnum;
 import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
+import de.uka.ipd.sdq.pcm.seff.ResourceDemandingSEFF;
+import de.uka.ipd.sdq.pcm.seff.SeffFactory;
 import de.uka.ipd.sdq.pcm.system.System;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.DataTypeCorrespondenceHelper;
@@ -260,8 +262,14 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
 
     protected OperationSignature createAndSyncOperationSignature(final Repository repo,
             final OperationInterface opInterface) throws IOException {
+        final String operationSignatureName = PCM2JaMoPPTestUtils.OPERATION_SIGNATURE_1_NAME;
+        return this.createAndSyncOperationSignature(repo, opInterface, operationSignatureName);
+    }
+
+    private OperationSignature createAndSyncOperationSignature(final Repository repo,
+            final OperationInterface opInterface, final String operationSignatureName) throws IOException {
         final OperationSignature opSig = RepositoryFactory.eINSTANCE.createOperationSignature();
-        opSig.setEntityName(PCM2JaMoPPTestUtils.OPERATION_SIGNATURE_1_NAME);
+        opSig.setEntityName(operationSignatureName);
         opSig.setInterface__OperationSignature(opInterface);
         EcoreResourceBridge.saveResource(repo.eResource());
         this.triggerSynchronization(VURI.getInstance(repo.eResource()));
@@ -595,5 +603,63 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
         }
         assertTrue("Could not find all necessary corresponding objects", constructorFound && importFound
                 && newConstructorCallFound && fieldFound);
+    }
+
+    @SuppressWarnings("unused")
+    public Repository createMediaStore(final String mediaStoreName, final String webGUIName,
+            final String downloadMethodName, final String uploadMethodName) throws Throwable {
+
+        this.setUpTest();
+
+        // create repo
+        final Repository repo = this.createAndSyncRepository(this.resourceSet, "mediastorerepo");
+
+        // create component
+        final BasicComponent mediaStoreBC = this.addBasicComponentAndSync(repo, mediaStoreName);
+        final BasicComponent webGUIBC = this.addBasicComponentAndSync(repo, webGUIName);
+
+        // create interfaces
+        final OperationInterface iMediaStoreIf = this.addInterfaceToReposiotryAndSync(repo, "I" + mediaStoreName);
+        final OperationInterface iwebGUIIf = this.addInterfaceToReposiotryAndSync(repo, "I" + webGUIName);
+
+        // create signatures
+        final OperationSignature downloadMediaStore = this.createAndSyncOperationSignature(repo, iMediaStoreIf,
+                downloadMethodName);
+        final OperationSignature uploadMediaStore = this.createAndSyncOperationSignature(repo, iMediaStoreIf,
+                uploadMethodName);
+        final OperationSignature downloadWebGUI = this.createAndSyncOperationSignature(repo, iwebGUIIf, "http"
+                + downloadMethodName);
+        final OperationSignature uploadWebGUI = this.createAndSyncOperationSignature(repo, iwebGUIIf, "http"
+                + uploadMethodName);
+
+        // create provided roles
+        final OperationProvidedRole mediaStore2IMediaStore = this.createAndSyncOperationProvidedRole(iMediaStoreIf,
+                mediaStoreBC);
+        final OperationProvidedRole webGUI2IWebGUI = this.createAndSyncOperationProvidedRole(iwebGUIIf, webGUIBC);
+
+        // create required role
+        final OperationRequiredRole webGui2MediaStore = this
+                .createAndSyncOperationRequiredRole(iMediaStoreIf, webGUIBC);
+
+        // Create seff for provided roles
+        this.createAndSyncSeff(mediaStoreBC, downloadMediaStore);
+        this.createAndSyncSeff(mediaStoreBC, uploadMediaStore);
+
+        this.createAndSyncSeff(webGUIBC, downloadWebGUI);
+        this.createAndSyncSeff(webGUIBC, uploadWebGUI);
+
+        return repo;
+
+    }
+
+    protected ResourceDemandingSEFF createAndSyncSeff(final BasicComponent basicComponent,
+            final OperationSignature describedSignature) throws Throwable {
+        final ResourceDemandingSEFF rdSEFF = SeffFactory.eINSTANCE.createResourceDemandingSEFF();
+        rdSEFF.setBasicComponent_ServiceEffectSpecification(basicComponent);
+        rdSEFF.setDescribedService__SEFF(describedSignature);
+        EcoreResourceBridge.saveResource(basicComponent.eResource());
+        this.triggerSynchronization(VURI.getInstance(basicComponent.eResource()));
+        return rdSEFF;
+
     }
 }

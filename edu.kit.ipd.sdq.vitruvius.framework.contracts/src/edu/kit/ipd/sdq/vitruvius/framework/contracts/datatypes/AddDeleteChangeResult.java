@@ -31,9 +31,9 @@ public class AddDeleteChangeResult<T, U, V> extends ChangeResult {
     private Set<U> newRootObjectsToSave;
     private Set<V> existingObjectsToDelete;
 
-    Set<Quadruple<CorrespondenceInstance, TUID, EObject, Correspondence>> existingCorrespondencesToUpdate;
-    Set<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>> newCorrespondences;
-    Set<Pair<CorrespondenceInstance, TUID>> correspondencesToDelete;
+    protected Set<Quadruple<CorrespondenceInstance, TUID, EObject, Correspondence>> existingCorrespondencesToUpdate;
+    protected Set<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>> newCorrespondences;
+    protected Set<Pair<CorrespondenceInstance, TUID>> correspondencesToDelete;
 
     protected void addExistingObjectToSave(final T toSave) {
         this.existingObjectsToSave.add(toSave);

@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
@@ -28,6 +29,14 @@ public abstract class PCMJaMoPPTransformationTestBase {
     protected abstract void afterTest();
 
     protected abstract CorrespondenceInstance getCorrespondenceInstance() throws Throwable;
+
+    protected void beforeTest() throws Throwable {
+    }
+
+    @Before
+    public void beforeEachTest() throws Throwable {
+        this.beforeTest();
+    }
 
     @BeforeClass
     public static void setUpAllTests() {
@@ -74,8 +83,8 @@ public abstract class PCMJaMoPPTransformationTestBase {
         if (null == pcmJaMoPPTransformationExecuter) {
             throw new RuntimeException("Could not find an PCMJaMoPPTransformationExecuter that is currently active.");
         }
-        final ChangeSynchronizer changeSynchronizer = TestUtil.getFieldFromClass(PCMJaMoPPTransformationExecuterBase.class,
-                "changeSynchronizer", pcmJaMoPPTransformationExecuter);
+        final ChangeSynchronizer changeSynchronizer = TestUtil.getFieldFromClass(
+                PCMJaMoPPTransformationExecuterBase.class, "changeSynchronizer", pcmJaMoPPTransformationExecuter);
         changeSynchronizer.setUserInteracting(newUserInteracting);
     }
 }

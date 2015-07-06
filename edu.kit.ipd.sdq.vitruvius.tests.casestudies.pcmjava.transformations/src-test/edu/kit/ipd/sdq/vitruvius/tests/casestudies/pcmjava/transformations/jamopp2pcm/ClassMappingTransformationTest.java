@@ -111,7 +111,7 @@ public class ClassMappingTransformationTest extends JaMoPP2PCMTransformationTest
     public void testAddCompsiteDatatypeClassInDatatypePackage() throws Throwable {
         final Repository repo = this.addFirstPackage();
 
-        final CompositeDataType cdt = addClassThatCorrespondsToCompositeDatatype();
+        final CompositeDataType cdt = this.addClassThatCorrespondsToCompositeDatatype();
 
         this.assertRepositoryAndPCMNameForDatatype(repo, cdt, PCM2JaMoPPTestUtils.IMPLEMENTING_CLASS_NAME);
     }

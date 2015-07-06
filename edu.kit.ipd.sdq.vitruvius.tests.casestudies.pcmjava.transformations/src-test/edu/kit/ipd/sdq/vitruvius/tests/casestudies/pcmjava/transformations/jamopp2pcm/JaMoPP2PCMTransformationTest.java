@@ -56,7 +56,6 @@ import org.emftext.language.java.containers.Package;
 import org.emftext.language.java.members.Member;
 import org.emftext.language.java.members.Method;
 import org.emftext.language.java.types.TypeReference;
-import org.junit.Before;
 
 import de.uka.ipd.sdq.pcm.core.entity.NamedElement;
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
@@ -99,7 +98,7 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
 
     private static final Logger logger = Logger.getLogger(JaMoPP2PCMTransformationTest.class.getSimpleName());
 
-    private static final int SELECT_BASIC_COMPONENT = 0;
+    protected static final int SELECT_BASIC_COMPONENT = 0;
     private static final int SELECT_COMPOSITE_COMPONENT = 1;
     private static final int SELECT_SYSTEM = 2;
     private static final int SELECT_NOTHING_DECIDE_LATER = 3;
@@ -107,8 +106,8 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
     protected Package mainPackage;
     protected Package secondPackage;
 
-    @Before
-    public void setUpTest() throws Throwable {
+    @Override
+    protected void beforeTest() throws Throwable {
         // remove PCM java builder from Project
         this.afterTest();
         this.testUserInteractor = new TestUserInteractor();
@@ -177,7 +176,7 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
                 PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME);
     }
 
-    private <T> T createSecondPackage(final Class<T> correspondingType, final String... namespace) throws Throwable {
+    protected <T> T createSecondPackage(final Class<T> correspondingType, final String... namespace) throws Throwable {
         this.secondPackage = this.createPackageWithPackageInfo(namespace);
         TestUtil.waitForSynchronization();
         return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(this.secondPackage,
@@ -196,7 +195,7 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
         packageRoot.createPackageFragment(namespaceDotted, force, new NullProgressMonitor());
     }
 
-    protected Package createPackageWithPackageInfo(final String[] namespace) throws Throwable {
+    protected Package createPackageWithPackageInfo(final String... namespace) throws Throwable {
         String packageFile = StringUtils.join(namespace, "/");
         packageFile = packageFile + "/package-info.java";
         final Package jaMoPPPackage = ContainersFactory.eINSTANCE.createPackage();
@@ -323,12 +322,18 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
 
     protected <T> T addClassInPackage(final Package packageForClass, final Class<T> classOfCorrespondingObject)
             throws Throwable {
+        final String implementingClassName = PCM2JaMoPPTestUtils.IMPLEMENTING_CLASS_NAME;
+        return this.addClassInPackage(packageForClass, classOfCorrespondingObject, implementingClassName);
+    }
+
+    protected <T> T addClassInPackage(final Package packageForClass, final Class<T> classOfCorrespondingObject,
+            final String implementingClassName) throws Throwable, CoreException, InterruptedException {
         final IPackageFragmentRoot packageRoot = this.getIJavaProject();
         final IPackageFragment packageFragment = this.getPackageFragmentToForJaMoPPPackage(packageForClass);
         final NewClassWizardPage classWizard = new NewClassWizardPage();
         classWizard.setPackageFragment(packageFragment, false);
         classWizard.setPackageFragmentRoot(packageRoot, false);
-        classWizard.setTypeName(PCM2JaMoPPTestUtils.IMPLEMENTING_CLASS_NAME, true);
+        classWizard.setTypeName(implementingClassName, true);
         classWizard.createType(new NullProgressMonitor());
 
         final VURI vuri = this.getVURIForElementInPackage(packageFragment, PCM2JaMoPPTestUtils.IMPLEMENTING_CLASS_NAME);
@@ -431,14 +436,20 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
 
     private OperationInterface createInterfaceInPackage(final String packageName, final boolean throwException)
             throws Throwable, CoreException, InterruptedException {
+        final String interfaceName = PCM2JaMoPPTestUtils.INTERFACE_NAME;
+        return this.createInterfaceInPackage(packageName, throwException, interfaceName);
+    }
+
+    protected OperationInterface createInterfaceInPackage(final String packageName, final boolean throwException,
+            final String interfaceName) throws Throwable, CoreException, InterruptedException {
         final IPackageFragment packageFragment = this.getPackageFragmentToForJaMoPPPackage(this
                 .getPackageWithName(packageName));
         final NewInterfaceWizardPage interfaceWizard = new NewInterfaceWizardPage();
         interfaceWizard.setPackageFragment(packageFragment, false);
         interfaceWizard.setPackageFragmentRoot(this.getIJavaProject(), false);
-        interfaceWizard.setTypeName(PCM2JaMoPPTestUtils.INTERFACE_NAME, true);
+        interfaceWizard.setTypeName(interfaceName, true);
         interfaceWizard.createType(new NullProgressMonitor());
-        final VURI vuri = this.getVURIForElementInPackage(packageFragment, PCM2JaMoPPTestUtils.INTERFACE_NAME);
+        final VURI vuri = this.getVURIForElementInPackage(packageFragment, interfaceName);
         TestUtil.waitForSynchronization();
         final Classifier jaMoPPIf = this.getJaMoPPClassifierForVURI(vuri);
         if (throwException) {
@@ -478,15 +489,20 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
     }
 
     protected OperationSignature addMethodToInterfaceWithCorrespondence(final String interfaceName) throws Throwable {
+        final String methodName = PCM2JaMoPPTestUtils.OPERATION_SIGNATURE_1_NAME;
+        return this.addMethodToInterfaceWithCorrespondence(interfaceName, methodName);
+    }
+
+    protected OperationSignature addMethodToInterfaceWithCorrespondence(final String interfaceName,
+            final String methodName) throws Throwable, JavaModelException {
         final ICompilationUnit cu = this.findICompilationUnitWithClassName(interfaceName);
-        final String methodString = "void " + PCM2JaMoPPTestUtils.OPERATION_SIGNATURE_1_NAME + "();";
+        final String methodString = "void " + methodName + "();";
         final IType firstType = cu.getAllTypes()[0];
         final int offset = this.getOffsetForClassifierManipulation(firstType);
         final InsertEdit insertEdit = new InsertEdit(offset, methodString);
         this.editCompilationUnit(cu, insertEdit);
         TestUtil.waitForSynchronization();
-        return this.findOperationSignatureForJaMoPPMethodInCompilationUnit(
-                PCM2JaMoPPTestUtils.OPERATION_SIGNATURE_1_NAME, interfaceName, cu);
+        return this.findOperationSignatureForJaMoPPMethodInCompilationUnit(methodName, interfaceName, cu);
     }
 
     protected int getOffsetForClassifierManipulation(final IType firstType) throws JavaModelException {
@@ -591,15 +607,19 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
 
     protected org.emftext.language.java.parameters.Parameter findJaMoPPParameterInICU(final ICompilationUnit icu,
             final String interfaceName, final String methodName, final String parameterName) {
+        final Method method = this.findJaMoPPMethodInICU(icu, methodName);
+        return this.getJaMoPPParameterFromJaMoPPMethod(method, parameterName);
+    }
+
+    protected Method findJaMoPPMethodInICU(final ICompilationUnit icu, final String methodName) {
         final ConcreteClassifier cc = this.getJaMoPPClassifierForVURI(VURI.getInstance(icu.getResource()));
         final List<Member> jaMoPPMethods = cc.getMembersByName(methodName);
         for (final Member member : jaMoPPMethods) {
             if (member instanceof Method && member.getName().equals(methodName)) {
-                return this.getJaMoPPParameterFromJaMoPPMethod((Method) member, parameterName);
+                return (Method) member;
             }
         }
-        throw new RuntimeException("No method with name " + methodName + " found in " + interfaceName);
-
+        throw new RuntimeException("No method with name " + methodName + " found in " + icu);
     }
 
     protected String getNameFromPCMPrimitiveDataType(final PrimitiveDataType primitiveDataType) {
@@ -616,15 +636,15 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
         return cdt;
     }
 
-    protected IMethod findIMethodByName(final String interfaceName, final String methodName, final ICompilationUnit icu)
+    protected IMethod findIMethodByName(final String typeName, final String methodName, final ICompilationUnit icu)
             throws JavaModelException {
-        final IType type = icu.getType(interfaceName);
+        final IType type = icu.getType(typeName);
         for (final IMethod method : type.getMethods()) {
             if (method.getElementName().equals(methodName)) {
                 return method;
             }
         }
-        throw new RuntimeException("Method not " + methodName + " not found in classifier " + interfaceName);
+        throw new RuntimeException("Method not " + methodName + " not found in classifier " + typeName);
     }
 
     protected IField findIFieldByName(final String className, final String fieldName, final ICompilationUnit icu)

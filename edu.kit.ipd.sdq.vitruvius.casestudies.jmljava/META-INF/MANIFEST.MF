@@ -31,7 +31,10 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer,
  edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.extensions,
- edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper
+ edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper,
+ edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers,
+ edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.custom,
+ edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.compositerefiners
 Bundle-ClassPath: .
 Import-Package: com.google.common.collect,
  org.apache.commons.codec.digest;version="1.6.0",

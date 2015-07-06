@@ -26,7 +26,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor;
@@ -42,6 +41,8 @@ public abstract class PCMJaMoPPTransformationExecuterBase implements EMFModelTra
 
     private final List<Pair<VURI, VURI>> pairList;
 
+    protected UserInteractor userInteracting;
+
     public PCMJaMoPPTransformationExecuterBase() {
         this.changeSynchronizer = new ChangeSynchronizer();
         this.initializeChangeSynchronizer();
@@ -55,13 +56,13 @@ public abstract class PCMJaMoPPTransformationExecuterBase implements EMFModelTra
     }
 
     protected void initializeChangeSynchronizer() {
-        final UserInteracting userInteracting = new UserInteractor();
+        this.userInteracting = new UserInteractor();
 
         // Mapping for EObjects in order to avoid runtime exceptions
         this.changeSynchronizer.addMapping(new DefaultEObjectMappingTransformation());
 
         // set userInteractor
-        this.changeSynchronizer.setUserInteracting(userInteracting);
+        this.changeSynchronizer.setUserInteracting(this.userInteracting);
     }
 
     /**
@@ -95,6 +96,29 @@ public abstract class PCMJaMoPPTransformationExecuterBase implements EMFModelTra
         emfChangeResult.addCorrespondenceChanges(transformationChangeResult);
 
         return emfChangeResult;
+    }
+
+    @Override
+    public EMFChangeResult executeTransformation(final CompositeChange compositeChange,
+            final CorrespondenceInstance correspondenceInstance) {
+        final EMFChangeResult emfChangeResult = new EMFChangeResult();
+        for (final Change change : compositeChange.getChanges()) {
+            // handle CompositeChanges in CompositeChanges
+            if (change instanceof CompositeChange) {
+                emfChangeResult.addChangeResult(this.executeTransformation((EMFModelChange) change,
+                        correspondenceInstance));
+                continue;
+            }
+            final EMFChangeResult currentResult = this.executeTransformation((EMFModelChange) change,
+                    correspondenceInstance);
+            emfChangeResult.addChangeResult(currentResult);
+        }
+        return emfChangeResult;
+    }
+
+    @Override
+    public List<Pair<VURI, VURI>> getTransformableMetamodels() {
+        return this.pairList;
     }
 
     /**
@@ -140,29 +164,6 @@ public abstract class PCMJaMoPPTransformationExecuterBase implements EMFModelTra
             final Resource resource = resourceSet.createResource(vuri.getEMFUri());
             resource.getContents().add(newPackage);
         }
-    }
-
-    @Override
-    public EMFChangeResult executeTransformation(final CompositeChange compositeChange,
-            final CorrespondenceInstance correspondenceInstance) {
-        final EMFChangeResult emfChangeResult = new EMFChangeResult();
-        for (final Change change : compositeChange.getChanges()) {
-            // handle CompositeChanges in CompositeChanges
-            if (change instanceof CompositeChange) {
-                emfChangeResult.addChangeResult(this.executeTransformation((EMFModelChange) change,
-                        correspondenceInstance));
-                continue;
-            }
-            final EMFChangeResult currentResult = this.executeTransformation((EMFModelChange) change,
-                    correspondenceInstance);
-            emfChangeResult.addChangeResult(currentResult);
-        }
-        return emfChangeResult;
-    }
-
-    @Override
-    public List<Pair<VURI, VURI>> getTransformableMetamodels() {
-        return this.pairList;
     }
 
     private void handleNewRootEObjects(final Set<EObject> newRootEObjectsToSave,

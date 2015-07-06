@@ -46,10 +46,11 @@ public class PCMJaMoPPNamespace {
         private static final String PCM_METAMODEL_NAMESPACE_URI_REPOSITORY = "http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0";
         private static final String PCM_METAMODEL_NAMESPACE_URI_SYSTEM = "http://sdq.ipd.uka.de/PalladioComponentModel/System/5.0";
         private static final String PCM_METAMODEL_NAMESPACE_URI_COMPOSITION = "http://sdq.ipd.uka.de/PalladioComponentModel/Core/Composition/5.0";
+        private static final String PCM_METAMODEL_NAMESPACE_URI_SEFF = "http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0";
         private static final String PCM_METAMODEL_NAMESPACE_URI = PCM_METAMODEL_NAMESPACE;
         public static final String[] PCM_METAMODEL_NAMESPACE_URIS = { PCM_METAMODEL_NAMESPACE_URI,
                 PCM_METAMODEL_NAMESPACE_URI_REPOSITORY, PCM_METAMODEL_NAMESPACE_URI_SYSTEM,
-                PCM_METAMODEL_NAMESPACE_URI_COMPOSITION };
+                PCM_METAMODEL_NAMESPACE_URI_COMPOSITION, PCM_METAMODEL_NAMESPACE_URI_SEFF };
         // Attributes and References
         public static String PCM_ATTRIBUTE_ENTITY_NAME = "entityName";
         public static String PCM_PARAMETER_ATTRIBUTE_DATA_TYPE = "dataType__Parameter";

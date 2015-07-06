@@ -61,7 +61,7 @@ public class SyncManagerImpl implements ChangeSynchronizing {
     }
 
     @Override
-    public void synchronizeChanges(final List<Change> changes) {
+    public synchronized void synchronizeChanges(final List<Change> changes) {
         boolean isListSynchronization = true;
         for (Change change : changes) {
             boolean isFirstSynchronizationInList = changes.indexOf(change) == 0;
@@ -71,7 +71,7 @@ public class SyncManagerImpl implements ChangeSynchronizing {
     }
 
     @Override
-    public void synchronizeChange(final Change change) {
+    public synchronized void synchronizeChange(final Change change) {
         synchronizeChange(change, false, true, true);
     }
 
