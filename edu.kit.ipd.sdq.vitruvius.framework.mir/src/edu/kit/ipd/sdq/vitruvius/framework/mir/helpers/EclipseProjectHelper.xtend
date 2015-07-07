@@ -17,7 +17,7 @@ class EclipseProjectHelper {
 	
 	private String projectName
 	private IFileSystemAccess rootFSA
-	private IFileSystemAccess srcgenFSA
+	private PrependPathFSA srcgenFSA
 	
 	
 	new(String projectName) {
@@ -40,11 +40,20 @@ class EclipseProjectHelper {
 		val project = getProject()
 
 		// add Java and plug-in natures
+		// Xtext nature and builder are added for parsing Xtend
 		val description = project.getDescription();
-		description.setNatureIds(#[ JavaCore.NATURE_ID, IBundleProjectDescription.PLUGIN_NATURE ]);
+		description.setNatureIds(#[
+				JavaCore.NATURE_ID,
+				IBundleProjectDescription.PLUGIN_NATURE,
+				"org.eclipse.xtext.ui.shared.xtextNature"
+				
+			]);
 		project.setDescription(description, null);
 		
 		// set builders
+		val xtextBuilderCommand = description.newCommand
+		xtextBuilderCommand.builderName = "org.eclipse.xtext.ui.shared.xtextBuilder"
+		
 		val javaBuilderCommand = description.newCommand
 		javaBuilderCommand.builderName = JavaCore.BUILDER_ID
 		
@@ -55,6 +64,7 @@ class EclipseProjectHelper {
 		schemaBuilderCommand.builderName = "org.eclipse.pde.SchemaBuilder"
 		
 		description.buildSpec = #[
+			xtextBuilderCommand,
 			javaBuilderCommand,
 			manifestBuilderCommand,
 			schemaBuilderCommand
@@ -121,7 +131,7 @@ class EclipseProjectHelper {
 		return rootFSA
 	}
 	
-	public def IFileSystemAccess getSrcGenFSA() {
+	public def PrependPathFSA getSrcGenFSA() {
 		return srcgenFSA
 	}
 }

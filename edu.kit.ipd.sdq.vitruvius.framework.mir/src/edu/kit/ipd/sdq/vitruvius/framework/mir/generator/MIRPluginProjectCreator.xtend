@@ -19,7 +19,9 @@ class MIRPluginProjectCreator{
 		"edu.kit.ipd.sdq.vitruvius.framework.meta.change",
 		"com.google.guava",
 		"org.eclipse.core.resources",
-		"org.apache.log4j"
+		"org.apache.log4j",
+		"org.eclipse.xtend.lib",
+ 		"org.eclipse.xtend.lib.macro"
 	]
 	
 	/**

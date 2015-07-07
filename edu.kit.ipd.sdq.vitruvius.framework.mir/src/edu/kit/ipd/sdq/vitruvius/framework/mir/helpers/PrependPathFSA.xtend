@@ -17,15 +17,19 @@ class PrependPathFSA implements IFileSystemAccess {
 	}
 	
 	override deleteFile(String fileName) {
-		fsa.deleteFile(prependPath + "/" + fileName)
+		fsa.deleteFile(fileName.prependedPath)
 	}
 	
 	override generateFile(String fileName, CharSequence contents) {
-		fsa.generateFile(prependPath + "/" + fileName, contents)
+		fsa.generateFile(fileName.prependedPath, contents)
 	}
 	
 	override generateFile(String fileName, String outputConfigurationName, CharSequence contents) {
-		fsa.generateFile(prependPath + "/" + fileName, outputConfigurationName, contents)
+		fsa.generateFile(fileName.prependedPath, outputConfigurationName, contents)
+	}
+	
+	public def getPrependedPath(String fileName) {
+		return prependPath + "/" + fileName
 	}
 	
 }
