@@ -159,9 +159,16 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		TransformationChangeResult tcr, CorrespondenceInstance correspondenceInstance, boolean appendImpl) {
 		val TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(classifier)
 		classifier.name = newValue.toString
-		if (classifier instanceof Class && appendImpl) {
-			classifier.name = classifier.name + "Impl"
+		if (classifier instanceof Class) {
+			if (appendImpl) {
+				classifier.name = classifier.name + "Impl"
+			}
+			val constructors = classifier.members.filter(Constructor)
+			for (Constructor c : constructors) {
+				c.name = classifier.name
+			}
 		}
+		
 		tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, classifier, null)
 	}
 
