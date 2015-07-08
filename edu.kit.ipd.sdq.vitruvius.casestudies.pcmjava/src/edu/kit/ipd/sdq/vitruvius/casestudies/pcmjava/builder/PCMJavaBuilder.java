@@ -62,16 +62,16 @@ public class PCMJavaBuilder extends VitruviusEmfBuilder implements Synchronisati
      */
     @Override
     public void syncStarted() {
-        enableAutoBuild(false);
-        if (null != this.emfMonitor) {
-            logger.info("Stop Vitruvius EMF monitor");
-            this.emfMonitor.dispose();
-            this.emfMonitor.setReportChanges(false);
-        }
-        if (null != this.javaMonitoredEditor) {
-            this.javaMonitoredEditor.stopASTListening();
-            this.javaMonitoredEditor.setReportChanges(false);
-        }
+        // enableAutoBuild(false);
+        // if (null != this.emfMonitor) {
+        // logger.info("Stop Vitruvius EMF monitor");
+        // this.emfMonitor.dispose();
+        // this.emfMonitor.setReportChanges(false);
+        // }
+        // if (null != this.javaMonitoredEditor) {
+        // this.javaMonitoredEditor.stopASTListening();
+        // this.javaMonitoredEditor.setReportChanges(false);
+        // }
     }
 
     /**
@@ -79,8 +79,27 @@ public class PCMJavaBuilder extends VitruviusEmfBuilder implements Synchronisati
      */
     @Override
     public void syncFinished() {
-        enableAutoBuild(true);
+        // enableAutoBuild(true);
+        try {
+            // waitForPreviosOperationToFinish();
+        } finally {
+            // logger.info("Restart Vitruvius EMF monitor");
+            // if (null != this.emfMonitor) {
+            // this.emfMonitor.initialize();
+            // this.emfMonitor.setReportChanges(true);
+            // }
+            // if (null == this.javaMonitoredEditor) {
+            // initializeCodeMonitor();
+            // }
+            // if (null != this.javaMonitoredEditor) {
+            // this.javaMonitoredEditor.startASTListening();
+            // this.javaMonitoredEditor.setReportChanges(true);
+            // }
+        }
 
+    }
+
+    private void waitForPreviosOperationToFinish() {
         try {
             Object lock = new Object();
             synchronized (lock) {
@@ -88,19 +107,6 @@ public class PCMJavaBuilder extends VitruviusEmfBuilder implements Synchronisati
             }
         } catch (InterruptedException e) {
             logger.info("Could not wait for auto sync to pass. Reason: " + e);
-        } finally {
-            logger.info("Restart Vitruvius EMF monitor");
-            if (null != this.emfMonitor) {
-                this.emfMonitor.initialize();
-                this.emfMonitor.setReportChanges(true);
-            }
-            if (null == this.javaMonitoredEditor) {
-                initializeCodeMonitor();
-            }
-            if (null != this.javaMonitoredEditor) {
-                this.javaMonitoredEditor.startASTListening();
-                this.javaMonitoredEditor.setReportChanges(true);
-            }
         }
     }
 
@@ -117,8 +123,6 @@ public class PCMJavaBuilder extends VitruviusEmfBuilder implements Synchronisati
     private boolean enableAutoBuild(final boolean enable) {
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
         IWorkspaceDescription desc = workspace.getDescription();
-        int buildIteartions = desc.getMaxBuildIterations();
-        logger.info("Max build iterations in current workspace: " + buildIteartions);
         boolean isAutoBuilding = desc.isAutoBuilding();
         if (isAutoBuilding != enable) {
             desc.setAutoBuilding(enable);
