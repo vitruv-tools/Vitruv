@@ -338,7 +338,7 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
 
         final VURI vuri = this.getVURIForElementInPackage(packageFragment, PCM2JaMoPPTestUtils.IMPLEMENTING_CLASS_NAME);
         final Classifier jaMoPPClass = this.getJaMoPPClassifierForVURI(vuri);
-        TestUtil.waitForSynchronization();
+        TestUtil.waitForSynchronization(5 * 1000);
         return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(jaMoPPClass,
                 classOfCorrespondingObject);
     }
@@ -495,14 +495,20 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
 
     protected OperationSignature addMethodToInterfaceWithCorrespondence(final String interfaceName,
             final String methodName) throws Throwable, JavaModelException {
-        final ICompilationUnit cu = this.findICompilationUnitWithClassName(interfaceName);
         final String methodString = "void " + methodName + "();";
+        final ICompilationUnit cu = addMethodToCompilationUnit(interfaceName, methodString);
+        return this.findOperationSignatureForJaMoPPMethodInCompilationUnit(methodName, interfaceName, cu);
+    }
+
+    private ICompilationUnit addMethodToCompilationUnit(final String compilationUnitName, final String methodString) throws Throwable,
+            JavaModelException {
+        final ICompilationUnit cu = this.findICompilationUnitWithClassName(compilationUnitName);
         final IType firstType = cu.getAllTypes()[0];
         final int offset = this.getOffsetForClassifierManipulation(firstType);
         final InsertEdit insertEdit = new InsertEdit(offset, methodString);
         this.editCompilationUnit(cu, insertEdit);
         TestUtil.waitForSynchronization();
-        return this.findOperationSignatureForJaMoPPMethodInCompilationUnit(methodName, interfaceName, cu);
+        return cu;
     }
 
     protected int getOffsetForClassifierManipulation(final IType firstType) throws JavaModelException {
@@ -638,7 +644,8 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
 
     protected IMethod findIMethodByName(final String typeName, final String methodName, final ICompilationUnit icu)
             throws JavaModelException {
-        final IType type = icu.getType(typeName);
+        final IType type = icu.getAllTypes()[0];
+        logger.info(type.getMethods());
         for (final IMethod method : type.getMethods()) {
             if (method.getElementName().equals(methodName)) {
                 return method;
