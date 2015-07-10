@@ -171,9 +171,9 @@ ChangeSubmitter, IStartup {
         Logger.getRootLogger().addAppender(
                 new ConsoleAppender(new PatternLayout("[%-5p] %d{HH:mm:ss,SSS} %-30C{1} - %m%n")));
         try {
-            final TimeFileLogAppender appender = TimeFileLogAppender
-                    .createInstanceFor(MY_MONITORED_PROJECT,
-                            "C:/Users/messinger/DominikMessinger/EvaluationData/hadoop-hdfs_monitor-overhead-measurements/time_measurements");
+            final TimeFileLogAppender appender = TimeFileLogAppender.createInstanceFor(MY_MONITORED_PROJECT,
+            // "C:/Users/messinger/DominikMessinger/EvaluationData/hadoop-hdfs_monitor-overhead-measurements/time_measurements");
+                    "EvaluationData/hadoop-hdfs_monitor-overhead-measurements/time_measurements");
             this.log.addAppender(appender);
         } catch (final IOException e) {
             e.printStackTrace();
