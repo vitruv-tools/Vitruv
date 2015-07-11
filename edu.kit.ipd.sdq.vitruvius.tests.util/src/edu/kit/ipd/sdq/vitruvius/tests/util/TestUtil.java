@@ -144,7 +144,7 @@ public final class TestUtil {
     }
 
     public static String getStringWithTimestamp(final String destinationPathAsStringWithoutTimestamp) {
-        final String timestamp = new Date(System.currentTimeMillis()).toString().replace(" ", "_");
+        final String timestamp = new Date(System.currentTimeMillis()).toString().replace(" ", "_").replace(":", "_");
         final String destPathWithTimestamp = destinationPathAsStringWithoutTimestamp + "_" + timestamp;
         return destPathWithTimestamp;
     }
@@ -209,7 +209,7 @@ public final class TestUtil {
     public static void moveVSUMProjectToOwnFolderWithTimepstamp(final String addtionalName) {
         final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         final IProject project = root.getProject(VSUMConstants.VSUM_PROJECT_NAME);
-        final String timestamp = new Date(System.currentTimeMillis()).toString().replace(" ", "_");
+        final String timestamp = getStringWithTimestamp("");
         final IPath destinationPath = new Path("/" + VSUMConstants.VSUM_PROJECT_NAME + "_" + addtionalName + "_"
                 + timestamp);
         try {
