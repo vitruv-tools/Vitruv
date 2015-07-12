@@ -10,8 +10,13 @@ import org.eclipse.emf.ecore.EObject;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MappedCorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
+
+import static edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*;
 
 public abstract class AbstractMappedCorrespondenceInstance implements MappedCorrespondenceInstance {
 	
@@ -30,15 +35,42 @@ public abstract class AbstractMappedCorrespondenceInstance implements MappedCorr
 		for (Correspondence correspondence : correspondences) {
 			Collection<MIRMappingRealization> mappingsForCorrespondence = getMappingsForCorrespondence(correspondence);
 			if (mappingsForCorrespondence.contains(mapping)) {
-				return getCorrespondenceTarget(eObject, correspondence);
+				return getCorrespondenceTarget(eObject, correspondence).getSecond();
 			}
 		}
 		
 		return null;
 	}
 
-	private EObject getCorrespondenceTarget(EObject eObject, Correspondence correspondence) {
-		throw new UnsupportedOperationException("TODO: implement");
+	@Override
+	public Pair<TUID, EObject> getCorrespondenceTarget(EObject eObject, Correspondence correspondence) {
+		SameTypeCorrespondence sameTypeCorrespondence = requireType(correspondence, SameTypeCorrespondence.class);
+		
+		TUID elementATUID = sameTypeCorrespondence.getElementATUID();
+		EObject eObjectA = getCorrespondenceInstance().resolveEObjectFromTUID(elementATUID);
+		TUID elementBTUID = sameTypeCorrespondence.getElementBTUID();
+		EObject eObjectB = getCorrespondenceInstance().resolveEObjectFromTUID(elementBTUID);
+		
+		// return the other side of the correspondence
+		if (eObjectA.equals(eObject)) { return new Pair<TUID, EObject>(elementBTUID, eObjectB); }
+		if (eObjectB.equals(eObject)) { return new Pair<TUID, EObject>(elementATUID, eObjectA); }
+		
+		throw new IllegalArgumentException(eObject.toString() + " is not part of correspondence " + correspondence.toString());
+	}
+	
+	@Override
+	public SameTypeCorrespondence getMappedCorrespondence(EObject eObject,
+			MIRMappingRealization mapping) {
+		
+		Collection<Correspondence> correspondences = getCorrespondenceInstance().getAllCorrespondences(eObject);
+		for (Correspondence correspondence : correspondences) {
+			Collection<MIRMappingRealization> mappingsForCorrespondence = getMappingsForCorrespondence(correspondence);
+			if (mappingsForCorrespondence.contains(mapping)) {
+				return requireType(correspondence, SameTypeCorrespondence.class);
+			}
+		}
+		
+		return null;
 	}
 	
 	/**
@@ -97,7 +129,7 @@ public abstract class AbstractMappedCorrespondenceInstance implements MappedCorr
 		for (Correspondence correspondence : correspondences) {
 			Collection<MIRMappingRealization> mappingsForCorrespondence = getMappingsForCorrespondence(correspondence);
 			if (mappingsForCorrespondence.contains(mapping)) {
-				return getCorrespondenceTarget(eObject, correspondence);
+				return getCorrespondenceTarget(eObject, correspondence).getSecond();
 			}
 		}
 		

@@ -8,6 +8,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.Invariant;
@@ -70,12 +71,16 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 	
 
 	protected EMFChangeResult handleEChange(EChange eChange) {
-		EMFChangeResult result = new EMFChangeResult();
+		TransformationChangeResult result = new TransformationChangeResult();
 		Collection<MIRMappingRealization> relevantMappings = getCandidateMappings(eChange);
 		for (MIRMappingRealization mapping : relevantMappings) {
 			result.addChangeResult(mapping.applyEChange(eChange, getMappedCorrespondenceInstance()));
 		}
-		return result;
+		
+		// transform TCR into EMFCR
+		EMFChangeResult emfChangeResult = new EMFChangeResult();
+		
+		return emfChangeResult;
 	}
 	
 	/**

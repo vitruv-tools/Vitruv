@@ -1,16 +1,24 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl;
 
+import static org.eclipse.xtext.xbase.lib.IterableExtensions.filter;
+import static org.eclipse.xtext.xbase.lib.IterableExtensions.toList;
+
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtext.xbase.lib.Functions;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRMappingHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MappedCorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 /**
  * {@link AbstractMIRMappingRealization} is extended by the code generated from the
@@ -44,11 +52,13 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 	 * <p>
 	 * The given {@link EChange} can be used to select the conditions
 	 * that have to be checked.
+	 * @param eObject the {@link EObject} that has been changed 
 	 * @param eChange the change that was applied
 	 * @param transformationExecuting 
 	 * @param correspondenceInstance 
+	 * @return 
 	 */
-	protected abstract void restorePostConditions(EChange eChange, MappedCorrespondenceInstance correspondenceInstance);
+	protected abstract TransformationChangeResult restorePostConditions(EObject eObject, EChange eChange, MappedCorrespondenceInstance correspondenceInstance);
 	
 	/**
 	 * Creates a corresponding object for <code>eObject</code> and a correspondence in the mapped meta model
@@ -57,7 +67,7 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 	 * @param correspondenceInstance
 	 * @param transformationExecuting
 	 */
-	protected abstract void createCorresponding(EObject eObject, MappedCorrespondenceInstance correspondenceInstance);
+	protected abstract TransformationChangeResult createCorresponding(EObject eObject, MappedCorrespondenceInstance correspondenceInstance);
 	
 	/**
 	 * Deletes the corresponding object (and its children) and the correspondence.
@@ -65,7 +75,19 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 	 * @param correspondenceInstance
 	 * @param transformationExecuting
 	 */
-	protected abstract void deleteCorresponding(EObject eObject, MappedCorrespondenceInstance correspondenceInstance);
+	protected TransformationChangeResult deleteCorresponding(EObject eObject, MappedCorrespondenceInstance correspondenceInstance) {
+		TransformationChangeResult result = new TransformationChangeResult();
+		
+		SameTypeCorrespondence correspondence = correspondenceInstance.getMappedCorrespondence(eObject, this);
+		Pair<TUID, EObject> target = correspondenceInstance.getCorrespondenceTarget(eObject, correspondence);
+		
+		result.addCorrespondenceToDelete(correspondenceInstance.getCorrespondenceInstance(),
+				target.getFirst());
+		
+		EcoreUtil.remove(target.getSecond());
+		
+		return result;
+	}
 	
 	/**
 	 * Returns {@link EObject EObjects} that are possibly affected by this change.
@@ -73,16 +95,22 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 	 * @return
 	 */
 	protected Collection<EObject> getCandidates(EChange eChange) {
-		return MIRMappingHelper.getAllAffectedObjects(eChange);
+		final EClass mappedEClass = getMappedEClass();
+		Collection<EObject> affectedObjects = MIRMappingHelper.getAllAffectedObjects(eChange);
+		return toList(filter(affectedObjects, new Functions.Function1<EObject, Boolean>() {
+			@Override public Boolean apply(EObject p) {
+				return p.eClass().equals(mappedEClass);
+			}
+		}));
 	}
 	
 	@Override
-	public EMFChangeResult applyEChange(
+	public TransformationChangeResult applyEChange(
 			EChange eChange,
 			MappedCorrespondenceInstance correspondenceInstance) {
 		Collection<EObject> candidates = getCandidates(eChange);
 		
-		EMFChangeResult result = new EMFChangeResult();
+		TransformationChangeResult result = new TransformationChangeResult();
 		
 		for (EObject candidate : candidates) {
 			LOGGER.trace("Checking candidate " + candidate.toString());
@@ -91,19 +119,18 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 			boolean mappedAfter = checkConditions(candidate, correspondenceInstance);
 			
 			if (!mappedBefore && mappedAfter) {
-				createCorresponding(candidate, correspondenceInstance);
+				result.addChangeResult(createCorresponding(candidate, correspondenceInstance));
 			}
 			
 			if (mappedBefore && !mappedAfter) {
-				deleteCorresponding(candidate, correspondenceInstance);
+				result.addChangeResult(deleteCorresponding(candidate, correspondenceInstance));
 			}
 			
 			if (mappedAfter) {
-				restorePostConditions(eChange, correspondenceInstance);
+				result.addChangeResult(restorePostConditions(candidate, eChange, correspondenceInstance));
 			}
 		}
 		
 		return result;
 	}
-
 }

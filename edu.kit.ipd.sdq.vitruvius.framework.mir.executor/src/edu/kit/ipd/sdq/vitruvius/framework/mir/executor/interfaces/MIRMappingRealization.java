@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 
 /**
@@ -16,5 +16,5 @@ public interface MIRMappingRealization {
 	 * @param correspondenceInstance
 	 * @return the resulting change
 	 */
-	public EMFChangeResult applyEChange(EChange eChange, MappedCorrespondenceInstance correspondenceInstance);
+	public TransformationChangeResult applyEChange(EChange eChange, MappedCorrespondenceInstance correspondenceInstance);
 }
