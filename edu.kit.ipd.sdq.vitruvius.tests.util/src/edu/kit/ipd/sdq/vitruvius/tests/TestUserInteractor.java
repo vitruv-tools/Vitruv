@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.jamopp2pcm;
+package edu.kit.ipd.sdq.vitruvius.tests;
 
 import java.util.Arrays;
 import java.util.Random;

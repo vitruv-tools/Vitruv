@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations;
+package edu.kit.ipd.sdq.vitruvius.tests;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.junit.Before;
@@ -6,7 +6,6 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPTransformationExecuterBase;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
@@ -17,10 +16,15 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.ChangeSync
 import edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.TransformationExecutingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.jamopp2pcm.TestUserInteractor;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
-public abstract class PCMJaMoPPTransformationTestBase {
+/**
+ * Base class for all Vitruvius case study tests
+ *
+ * @author langhamm
+ *
+ */
+public abstract class VitruviusCasestudyTest {
 
     protected ResourceSet resourceSet;
 
@@ -51,8 +55,8 @@ public abstract class PCMJaMoPPTransformationTestBase {
     public TestWatcher watchmen = new TestWatcher() {
         @Override
         protected void finished(final org.junit.runner.Description description) {
-            PCMJaMoPPTransformationTestBase.this.afterTest();
-            PCMJaMoPPTransformationTestBase.this.resourceSet = null;
+            VitruviusCasestudyTest.this.afterTest();
+            VitruviusCasestudyTest.this.resourceSet = null;
             final String previousMethodName = description.getMethodName();
             TestUtil.moveSrcFilesFromMockupProjectToPathWithTimestamp(previousMethodName);
             TestUtil.moveModelFilesFromMockupProjectToPathWithTimestamp(previousMethodName);
@@ -73,18 +77,26 @@ public abstract class PCMJaMoPPTransformationTestBase {
         final ClaimableMap<Pair<VURI, VURI>, EMFModelTransformationExecuting> transformationExecuterMap = TestUtil
                 .getFieldFromClass(TransformationExecutingProvidingImpl.class, "transformationExecuterMap",
                         transformationExecutingProvidingImpl);
-        PCMJaMoPPTransformationExecuterBase pcmJaMoPPTransformationExecuter = null;
+        final Class<?> emfModelTransformationExecuterClass = this.getEMFModelTransformationExecuterClass();
+        final String nameOfChangeSynchronizerField = this.getNameOfChangeSynchronizerField();
+        EMFModelTransformationExecuting emfTransformationExecuter = null;
         for (final EMFModelTransformationExecuting emfModelTransformationExecuting : transformationExecuterMap.values()) {
-            if (emfModelTransformationExecuting instanceof PCMJaMoPPTransformationExecuterBase) {
-                pcmJaMoPPTransformationExecuter = (PCMJaMoPPTransformationExecuterBase) emfModelTransformationExecuting;
+            if (emfModelTransformationExecuterClass.isInstance(emfModelTransformationExecuting)) {
+                emfTransformationExecuter = emfModelTransformationExecuting;
                 break;
             }
         }
-        if (null == pcmJaMoPPTransformationExecuter) {
-            throw new RuntimeException("Could not find an PCMJaMoPPTransformationExecuter that is currently active.");
+        if (null == emfTransformationExecuter) {
+            throw new RuntimeException("Could not find an EMFModelTransformationExecuting that is currently active.");
         }
-        final ChangeSynchronizer changeSynchronizer = TestUtil.getFieldFromClass(
-                PCMJaMoPPTransformationExecuterBase.class, "changeSynchronizer", pcmJaMoPPTransformationExecuter);
+        final ChangeSynchronizer changeSynchronizer = TestUtil.getFieldFromClass(emfModelTransformationExecuterClass,
+                nameOfChangeSynchronizerField, emfTransformationExecuter);
         changeSynchronizer.setUserInteracting(newUserInteracting);
+    }
+
+    protected abstract Class<?> getEMFModelTransformationExecuterClass();
+
+    protected String getNameOfChangeSynchronizerField() {
+        return "changeSynchronizer";
     }
 }

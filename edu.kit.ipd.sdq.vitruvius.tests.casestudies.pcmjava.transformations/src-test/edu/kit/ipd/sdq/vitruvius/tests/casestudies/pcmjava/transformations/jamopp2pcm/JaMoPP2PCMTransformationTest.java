@@ -78,6 +78,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaRemoveBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavapojo.transformations.PCMJaMoPPPOJOTransformationExecuter;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
@@ -85,7 +86,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager.SyncManagerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.PCMJaMoPPTransformationTestBase;
+import edu.kit.ipd.sdq.vitruvius.tests.TestUserInteractor;
+import edu.kit.ipd.sdq.vitruvius.tests.VitruviusCasestudyTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
@@ -94,7 +96,7 @@ import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
  *
  */
 @SuppressWarnings("restriction")
-public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBase {
+public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 
     private static final Logger logger = Logger.getLogger(JaMoPP2PCMTransformationTest.class.getSimpleName());
 
@@ -496,12 +498,12 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
     protected OperationSignature addMethodToInterfaceWithCorrespondence(final String interfaceName,
             final String methodName) throws Throwable, JavaModelException {
         final String methodString = "void " + methodName + "();";
-        final ICompilationUnit cu = addMethodToCompilationUnit(interfaceName, methodString);
+        final ICompilationUnit cu = this.addMethodToCompilationUnit(interfaceName, methodString);
         return this.findOperationSignatureForJaMoPPMethodInCompilationUnit(methodName, interfaceName, cu);
     }
 
-    private ICompilationUnit addMethodToCompilationUnit(final String compilationUnitName, final String methodString) throws Throwable,
-            JavaModelException {
+    private ICompilationUnit addMethodToCompilationUnit(final String compilationUnitName, final String methodString)
+            throws Throwable, JavaModelException {
         final ICompilationUnit cu = this.findICompilationUnitWithClassName(compilationUnitName);
         final IType firstType = cu.getAllTypes()[0];
         final int offset = this.getOffsetForClassifierManipulation(firstType);
@@ -658,6 +660,11 @@ public class JaMoPP2PCMTransformationTest extends PCMJaMoPPTransformationTestBas
             throws JavaModelException {
         final IType type = icu.getType(className);
         return type.getField(fieldName);
+    }
+
+    @Override
+    protected java.lang.Class<?> getEMFModelTransformationExecuterClass() {
+        return PCMJaMoPPPOJOTransformationExecuter.class;
     }
 
 }

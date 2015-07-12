@@ -7,14 +7,10 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.change.ChangeDescription;
-import org.eclipse.emf.ecore.change.util.ChangeRecorder;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.emftext.language.java.classifiers.Class;
 import org.emftext.language.java.classifiers.Classifier;
 import org.emftext.language.java.commons.NamedElement;
@@ -30,7 +26,6 @@ import org.emftext.language.java.statements.Statement;
 import org.emftext.language.java.types.ClassifierReference;
 import org.emftext.language.java.types.NamespaceClassifierReference;
 import org.emftext.language.java.types.TypeReference;
-import org.junit.Before;
 
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
 import de.uka.ipd.sdq.pcm.core.composition.CompositionFactory;
@@ -56,28 +51,15 @@ import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
 import de.uka.ipd.sdq.pcm.seff.ResourceDemandingSEFF;
 import de.uka.ipd.sdq.pcm.seff.SeffFactory;
 import de.uka.ipd.sdq.pcm.system.System;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPTransformationExecuterBase;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.DataTypeCorrespondenceHelper;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.changedescription2change.ChangeDescription2ChangeConverter;
-import edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine.EMFModelPropagationEngineImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager.SyncManagerImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.TransformationExecutingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
-import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.PCMJaMoPPTransformationTestBase;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.jamopp2pcm.TestUserInteractor;
+import edu.kit.ipd.sdq.vitruvius.tests.VitruviusEMFCasestudyTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.jamopppcm.util.JaMoPPPCMTestUtil;
-import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 /**
  * super class for all repository and system tests. Contains helper methods
@@ -85,103 +67,7 @@ import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
  * @author Langhamm
  *
  */
-public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBase implements SynchronisationListener {
-
-    protected VSUMImpl vsum;
-    protected SyncManagerImpl syncManager;
-    protected MetaRepositoryImpl metaRepository;
-    protected ChangeRecorder changeRecorder;
-
-    private ChangeDescription2ChangeConverter changeDescrition2ChangeConverter;
-
-    protected CorrespondenceInstance correspondenceInstance;
-
-    /**
-     * Set up SyncMangaer and metaRepository facility. Creates a fresh VSUM, Metarepository etc.
-     * before each test
-     *
-     * @throws Throwable
-     */
-    @Before
-    public void setUpTest() throws Throwable {
-        this.metaRepository = JaMoPPPCMTestUtil.createJaMoPPPCMMetaRepository();
-        this.vsum = TestUtil.createVSUM(this.metaRepository);
-        final TransformationExecutingProvidingImpl syncTransformationProvider = new TransformationExecutingProvidingImpl();
-        final EMFModelPropagationEngineImpl propagatingChange = new EMFModelPropagationEngineImpl(
-                syncTransformationProvider);
-        this.syncManager = new SyncManagerImpl(this.vsum, propagatingChange, this.vsum, this.metaRepository, this.vsum,
-                this);
-        this.testUserInteractor = new TestUserInteractor();
-        super.setUserInteractor(this.testUserInteractor, this.syncManager);
-        this.resourceSet = new ResourceSetImpl();
-        this.changeRecorder = new ChangeRecorder();
-        this.changeDescrition2ChangeConverter = new ChangeDescription2ChangeConverter();
-    }
-
-    @Override
-    protected void afterTest() {
-        this.correspondenceInstance = null;
-    }
-
-    private CorrespondenceInstance getCorrespondenceInstanceForProject(final String projectName) throws Throwable {
-        final VURI pcmMMUri = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
-        final VURI jaMoPPURI = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE);
-        return this.vsum.getCorrespondenceInstanceOriginal(pcmMMUri, jaMoPPURI);
-    }
-
-    @Override
-    protected CorrespondenceInstance getCorrespondenceInstance() throws Throwable {
-        if (null == this.correspondenceInstance) {
-            this.correspondenceInstance = this.getCorrespondenceInstanceForProject(TestUtil.PROJECT_URI);
-        }
-        return this.correspondenceInstance;
-    }
-
-    protected void triggerSynchronization(final VURI vuri) {
-        final ChangeDescription cd = this.changeRecorder.endRecording();
-        cd.applyAndReverse();
-        final List<Change> changes = this.changeDescrition2ChangeConverter.getChanges(cd, vuri);
-        cd.applyAndReverse();
-        this.syncManager.synchronizeChanges(changes);
-        this.changeRecorder.beginRecording(Collections.EMPTY_LIST);
-    }
-
-    protected void triggerSynchronization(final EObject eObject) {
-        final VURI vuri = VURI.getInstance(eObject.eResource());
-        this.triggerSynchronization(vuri);
-    }
-
-    protected void synchronizeFileChange(final FileChangeKind fileChangeKind, final VURI vuri) {
-        final FileChange fileChange = new FileChange(fileChangeKind, vuri);
-        this.syncManager.synchronizeChange(fileChange);
-    }
-
-    /**
-     * innerDeclaration must have 3 correspondences: one field, one getter and one setter
-     *
-     * @param innerDec
-     * @throws Throwable
-     */
-    protected void assertInnerDeclaration(final InnerDeclaration innerDec) throws Throwable {
-        final Set<EObject> correspondingObjects = this.getCorrespondenceInstance()
-                .getAllCorrespondingEObjects(innerDec);
-        int fieldsFound = 0;
-        int methodsFound = 0;
-        for (final EObject eObject : correspondingObjects) {
-            if (eObject instanceof Field) {
-                fieldsFound++;
-                final Field field = (Field) eObject;
-                assertTrue("field name unexpected",
-                        field.getName().toLowerCase().contains(innerDec.getEntityName().toLowerCase()));
-            } else if (eObject instanceof Method) {
-                methodsFound++;
-            } else {
-                fail("unexpected corresponding object for inner declartion found: " + eObject);
-            }
-        }
-        assertEquals("unexpected number of corresponding fields found", 1, fieldsFound);
-        assertEquals("unexpected number of corresponding methods found", 2, methodsFound);
-    }
+public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
 
     @SuppressWarnings("unchecked")
     protected void assertDataTypeCorrespondence(final DataType dataType) throws Throwable {
@@ -402,7 +288,7 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
     }
 
     protected OperationProvidedRole createAndSyncRepoOpIntfOpSigBasicCompAndOperationProvRole() throws IOException,
-    Throwable {
+            Throwable {
         final OperationSignature opSig = this.createAndSyncRepoInterfaceAndOperationSignature();
         final OperationInterface opInterface = opSig.getInterface__OperationSignature();
         final BasicComponent basicComponent = this.addBasicComponentAndSync(opInterface.getRepository__Interface());
@@ -423,7 +309,7 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
     }
 
     protected OperationRequiredRole createAndSyncRepoBasicCompInterfaceAndOperationReqiredRole() throws IOException,
-    Throwable {
+            Throwable {
         final OperationSignature opSig = this.createAndSyncRepoInterfaceAndOperationSignature();
         final OperationInterface opInterface = opSig.getInterface__OperationSignature();
         final BasicComponent basicComponent = this.addBasicComponentAndSync(opInterface.getRepository__Interface());
@@ -454,7 +340,7 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
 
     protected AssemblyContext createAndSyncAssemblyContext(
             final ComposedProvidingRequiringEntity composedProvidingRequiringEntity, final BasicComponent basicComponent)
-                    throws IOException {
+            throws IOException {
         final AssemblyContext assemblyContext = CompositionFactory.eINSTANCE.createAssemblyContext();
         assemblyContext.setEntityName(PCM2JaMoPPTestUtils.ASSEMBLY_CONTEXT_NAME);
         assemblyContext.setEncapsulatedComponent__AssemblyContext(basicComponent);
@@ -470,26 +356,6 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
         EcoreResourceBridge.saveResource(repo.eResource());
         this.triggerSynchronization(VURI.getInstance(repo.eResource()));
         return compositeComponent;
-    }
-
-    @Override
-    public void syncStarted() {
-
-    }
-
-    @Override
-    public void syncFinished() {
-
-    }
-
-    @Override
-    public void syncAborted(final EMFModelChange abortedChange) {
-
-    }
-
-    @Override
-    public void syncAborted(final TransformationAbortCause cause) {
-
     }
 
     /**
@@ -532,6 +398,7 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
         int importFounds = 0;
         int constructorParameterFound = 0;
         int fieldsFound = 0;
+        @SuppressWarnings("unused")
         int assignmentOperatorsFound = 0;
         int expectedConstrucotrParameters = 0;
         for (final EObject correspondingEObj : correspondingEObjects) {
@@ -661,5 +528,42 @@ public class PCM2JaMoPPTransformationTest extends PCMJaMoPPTransformationTestBas
         this.triggerSynchronization(VURI.getInstance(basicComponent.eResource()));
         return rdSEFF;
 
+    }
+
+    @Override
+    protected MetaRepositoryImpl createMetaRepository() {
+        return JaMoPPPCMTestUtil.createJaMoPPPCMMetaRepository();
+    }
+
+    /**
+     * innerDeclaration must have 3 correspondences: one field, one getter and one setter
+     *
+     * @param innerDec
+     * @throws Throwable
+     */
+    protected void assertInnerDeclaration(final InnerDeclaration innerDec) throws Throwable {
+        final Set<EObject> correspondingObjects = this.getCorrespondenceInstance()
+                .getAllCorrespondingEObjects(innerDec);
+        int fieldsFound = 0;
+        int methodsFound = 0;
+        for (final EObject eObject : correspondingObjects) {
+            if (eObject instanceof Field) {
+                fieldsFound++;
+                final Field field = (Field) eObject;
+                assertTrue("field name unexpected",
+                        field.getName().toLowerCase().contains(innerDec.getEntityName().toLowerCase()));
+            } else if (eObject instanceof Method) {
+                methodsFound++;
+            } else {
+                fail("unexpected corresponding object for inner declartion found: " + eObject);
+            }
+        }
+        assertEquals("unexpected number of corresponding fields found", 1, fieldsFound);
+        assertEquals("unexpected number of corresponding methods found", 2, methodsFound);
+    }
+
+    @Override
+    protected java.lang.Class<?> getEMFModelTransformationExecuterClass() {
+        return PCMJaMoPPTransformationExecuterBase.class;
     }
 }

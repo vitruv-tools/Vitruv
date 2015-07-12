@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: TestUtils
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.util
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.casestudies.emf
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
@@ -10,5 +10,16 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
  org.eclipse.core.resources,
  org.eclipse.core.runtime,
  org.apache.log4j,
- org.eclipse.emf.ecore
-Export-Package: edu.kit.ipd.sdq.vitruvius.tests.util
+ org.eclipse.emf.ecore,
+ org.junit,
+ edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager,
+ edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine,
+ edu.kit.ipd.sdq.vitruvius.framework.synctransprovider,
+ edu.kit.ipd.sdq.vitruvius.framework.util,
+ org.eclipse.emf.ecore.change,
+ edu.kit.ipd.sdq.vitruvius.casestudies.gmf.run.monitorededitor,
+ org.apache.commons.codec,
+ org.eclipse.emf.emfstore.common
+Export-Package: edu.kit.ipd.sdq.vitruvius.tests,
+ edu.kit.ipd.sdq.vitruvius.tests.util
+Import-Package: edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter
