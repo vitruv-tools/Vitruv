@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.EObject;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.AddDeleteChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 /**
@@ -26,11 +27,13 @@ public class MIRMappingChangeResult {
 	private final Set<EObject> objectsToSave;
 	private final Set<EObject> objectsToDelete;
 	private final Set<Pair<EObject, EObject>> correspondencesToAdd;
+	private final Set<Correspondence> correspondencesToDelete;
 	
 	public MIRMappingChangeResult() {
 		objectsToSave = new HashSet<EObject>();
 		objectsToDelete = new HashSet<EObject>();
 		correspondencesToAdd = new HashSet<Pair<EObject,EObject>>();
+		correspondencesToDelete = new HashSet<Correspondence>();
 	}
 	
 	public void addObjectToSave(EObject objectToSave) {
@@ -43,6 +46,10 @@ public class MIRMappingChangeResult {
 	
 	public void addCorrespondence(EObject objectA, EObject objectB) {
 		correspondencesToAdd.add(new Pair<EObject, EObject>(objectA, objectB));
+	}
+	
+	public void addCorrespondenceToDelete(Correspondence correspondenceToDelete) {
+		correspondencesToDelete.add(correspondenceToDelete);
 	}
 
 	public Set<EObject> getObjectsToSave() {
@@ -57,5 +64,14 @@ public class MIRMappingChangeResult {
 		return Collections.unmodifiableSet(correspondencesToAdd);
 	}
 	
+	public Set<Correspondence> getCorrespondencesToDelete() {
+		return Collections.unmodifiableSet(correspondencesToDelete);
+	}
 	
+	public void add(MIRMappingChangeResult changeResult) {
+		objectsToSave.addAll(changeResult.getObjectsToSave());
+		objectsToDelete.addAll(changeResult.getObjectsToDelete());
+		correspondencesToAdd.addAll(changeResult.getCorrespondencesToAdd());
+		correspondencesToDelete.addAll(changeResult.getCorrespondencesToDelete());
+	}
 }
