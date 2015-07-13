@@ -10,13 +10,25 @@ import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.DefaultTUIDCalculatorAndResolver;
 
 public class EcoreHelper {
+	public static String createSensibleString(EObject eObject) {
+		String className = eObject.eClass().getName();
+		
+		String name = EcoreHelper.getStringValueOfAttribute(eObject, "name");
+		if (name == null)
+			name = EcoreHelper.getStringValueOfAttribute(eObject, "entityName");
+		if (name == null)
+			name = EcoreHelper.getStringValueOfAttribute(eObject, "id");
+		if (name == null)
+			return className;
+		
+		return String.join(" ", className, name);
+	}
 	
 	// TODO: more efficient with EcoreUtil?
 	public static Set<EObject> findOppositeForFeature(EObject target, EReference reference) {
@@ -86,5 +98,12 @@ public class EcoreHelper {
             }
         }
         return null;
+    }
+    
+    /**
+     * Determines whether an {@link EObject} is the root object in its resource.
+     */
+    public static boolean isRoot(EObject object) {
+    	return (object.eContainer().equals(object.eResource()));
     }
 }
