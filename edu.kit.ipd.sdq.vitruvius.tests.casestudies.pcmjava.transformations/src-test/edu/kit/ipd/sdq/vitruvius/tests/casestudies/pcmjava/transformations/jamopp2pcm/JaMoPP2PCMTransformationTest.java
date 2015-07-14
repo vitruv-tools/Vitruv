@@ -69,6 +69,7 @@ import de.uka.ipd.sdq.pcm.repository.Parameter;
 import de.uka.ipd.sdq.pcm.repository.PrimitiveDataType;
 import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.repository.RepositoryComponent;
+import de.uka.ipd.sdq.pcm.seff.ResourceDemandingSEFF;
 import de.uka.ipd.sdq.pcm.system.System;
 import edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.VitruviusEmfBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.emf.util.BuildProjects;
@@ -76,9 +77,9 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaAddBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaRemoveBuilder;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPTransformationExecuterBase;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavapojo.transformations.PCMJaMoPPPOJOTransformationExecuter;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
@@ -502,7 +503,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         return this.findOperationSignatureForJaMoPPMethodInCompilationUnit(methodName, interfaceName, cu);
     }
 
-    private ICompilationUnit addMethodToCompilationUnit(final String compilationUnitName, final String methodString)
+    protected ICompilationUnit addMethodToCompilationUnit(final String compilationUnitName, final String methodString)
             throws Throwable, JavaModelException {
         final ICompilationUnit cu = this.findICompilationUnitWithClassName(compilationUnitName);
         final IType firstType = cu.getAllTypes()[0];
@@ -664,7 +665,16 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 
     @Override
     protected java.lang.Class<?> getEMFModelTransformationExecuterClass() {
-        return PCMJaMoPPPOJOTransformationExecuter.class;
+        return PCMJaMoPPTransformationExecuterBase.class;
+    }
+
+    protected ResourceDemandingSEFF addImplementingClassMethodToClass(final String className,
+            final String methodNameOfMethodToAdd) throws Throwable {
+        final ICompilationUnit iCu = this.addMethodToCompilationUnit(className, methodNameOfMethodToAdd);
+        final Method jaMoPPMethodInICU = this.findJaMoPPMethodInICU(iCu, methodNameOfMethodToAdd);
+        final ResourceDemandingSEFF rdSeff = this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(
+                jaMoPPMethodInICU, ResourceDemandingSEFF.class);
+        return rdSeff;
     }
 
 }

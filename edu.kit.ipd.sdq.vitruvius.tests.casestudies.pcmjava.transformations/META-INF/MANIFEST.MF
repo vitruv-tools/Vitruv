@@ -12,6 +12,7 @@ Require-Bundle: org.junit,
  org.emftext.language.java;bundle-version="1.4.0",
  org.eclipse.ui.workbench,
  org.eclipse.core.resources;bundle-version="3.8.100",
+ org.eclipse.core.resources;bundle-version="3.8.100",
  org.eclipse.equinox.registry,
  org.apache.log4j;bundle-version="1.2.15",
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava;bundle-version="1.0.0",
@@ -24,7 +25,7 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.util,
- edu.kit.ipd.sdq.vitruvius.tests.util;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.tests.casestudies.emf;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager,
  edu.kit.ipd.sdq.vitruvius.framework.metarepository,
  edu.kit.ipd.sdq.vitruvius.framework.synctransprovider,
@@ -41,10 +42,10 @@ Require-Bundle: org.junit,
  org.eclipse.jdt.core.manipulation,
  org.eclipse.ltk.core.refactoring,
  org.eclipse.text;bundle-version="3.5.300",
- org.eclipse.jdt.ui,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavapojo.transformations
+ org.eclipse.jdt.ui
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations,
- edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp
-Import-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavapojo.transformations
+ edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.jamopp2pcm,
+ edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp,
+ edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils
 
