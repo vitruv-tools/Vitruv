@@ -1,16 +1,16 @@
 generates package edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated
-generates type TestMIRExecutor
+generates type PCM2UMLExecutor
 
-bundle de.uka.ipd.sdq.pcm
+bundle org.palladiosimulator.pcm
 bundle org.eclipse.uml2.uml
 
-import package "http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" as repo
-import package "http://www.eclipse.org/uml2/2.1.0/UML" as uml
+import package "http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" as repo
+import package "http://www.eclipse.org/uml2/5.0.0/UML" as uml
 
 map repo.repository.BasicComponent as bc
 and uml.Package as up {
 	/* alles in einem */
-	when-where {
+	/*when-where {
 		bc.id = "A"
 		up.URI = "ABC"
 		bc.entityName == "D"
@@ -47,5 +47,5 @@ and uml.Package as up {
 	 		}
 	 	
 	 	}*/
-	 }
+	 //}
 }
