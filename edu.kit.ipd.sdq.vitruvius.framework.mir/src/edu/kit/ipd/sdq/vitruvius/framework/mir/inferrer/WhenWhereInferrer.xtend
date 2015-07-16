@@ -1,28 +1,14 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.inferrer
 
 import com.google.inject.Inject
-import com.google.inject.Provider
-import java.util.HashMap
-import java.util.HashSet
-import java.util.Map
-import org.eclipse.emf.ecore.EPackage
-import org.eclipse.xtext.common.types.JvmDeclaredType
-import org.eclipse.xtext.common.types.JvmFormalParameter
+import com.google.inject.Singleton
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
-import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.xbase.XAssignment
 import org.eclipse.xtext.xbase.XBinaryOperation
 import org.eclipse.xtext.xbase.XBlockExpression
-import org.eclipse.xtext.xbase.XBooleanLiteral
 import org.eclipse.xtext.xbase.XExpression
-import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XMemberFeatureCall
-import org.eclipse.xtext.xbase.XNullLiteral
-import org.eclipse.xtext.xbase.XNumberLiteral
-import org.eclipse.xtext.xbase.XStringLiteral
-import org.eclipse.xtext.xbase.XTypeLiteral
 import org.eclipse.xtext.xbase.compiler.XbaseCompiler
-import com.google.inject.Singleton
 
 import static edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.XtextJvmHelper.*
 
@@ -56,8 +42,6 @@ class WhenWhereInferrer {
 	public def dispatch void inferCode(XBlockExpression block, XExpression expression) {
 		println("Unhandled expression: " + expression)
 	}
-	
-
 	
 	public def dispatch void inferCode(XBlockExpression block, XAssignment assignment) {
 		if (!isXExpressionLiteral(assignment.value)) {
