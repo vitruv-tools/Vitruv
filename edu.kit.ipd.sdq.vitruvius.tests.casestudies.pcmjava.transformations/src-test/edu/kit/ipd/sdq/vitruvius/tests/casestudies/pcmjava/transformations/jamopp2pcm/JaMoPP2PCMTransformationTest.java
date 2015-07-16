@@ -677,4 +677,12 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         return rdSeff;
     }
 
+    protected void addPackageAndImplementingClass(final String componentName) throws Throwable, CoreException, InterruptedException {
+        this.testUserInteractor.addNextSelections(SELECT_BASIC_COMPONENT);
+        final Package mediaStorePackage = this.createPackageWithPackageInfo(PCM2JaMoPPTestUtils.REPOSITORY_NAME,
+                componentName);
+        this.testUserInteractor.addNextSelections(0);
+        this.addClassInPackage(mediaStorePackage, BasicComponent.class, componentName + "Impl");
+    }
+
 }

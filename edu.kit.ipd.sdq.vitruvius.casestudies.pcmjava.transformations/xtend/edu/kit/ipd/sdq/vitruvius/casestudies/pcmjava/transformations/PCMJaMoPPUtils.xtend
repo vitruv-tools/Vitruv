@@ -11,6 +11,9 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.util.EcoreUtil
 import de.uka.ipd.sdq.pcm.usagemodel.UsagemodelFactory
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.JaMoPP2PCMUtils
+import org.emftext.language.java.types.TypeReference
+import org.emftext.language.java.members.Method
 
 class PCMJaMoPPUtils {
 	private static val Logger logger = Logger.getLogger(PCMJaMoPPUtils.simpleName)
@@ -91,6 +94,42 @@ class PCMJaMoPPUtils {
 			}
 			EcoreUtil.delete(eObjectToDelete)
 		}
+	}
+
+	/**
+	 * Signatures are considered equal if methods have the same name, the same parameter types and the same return type
+	 * We do not consider modifiers (e.g. public or private here)
+	 */
+	public static def boolean hasSameSignature(Method method1, Method method2) {
+		if (method1 == method2) {
+			return true
+		}
+		if (!method1.name.equals(method1.name)) {
+			return false
+		}
+		if (!method1.typeReference.hasSameTargetReference(method2.typeReference)) {
+			return false
+		}
+		if (method1.parameters.size != method2.parameters.size) {
+			return false
+		}
+		var int i = 0
+		for (param1 : method1.parameters) {
+			if (!hasSameTargetReference(param1.typeReference, method2.parameters.get(i).typeReference)) {
+				return false
+			}
+			i++
+		}
+		return true
+	}
+
+	private static def boolean hasSameTargetReference(TypeReference reference1, TypeReference reference2) {
+		if (reference1 == reference2 || reference1.equals(reference2)) {
+			return true
+		}
+		val target1 = JaMoPP2PCMUtils.getTargetClassifierFromTypeReference(reference1)
+		val target2 = JaMoPP2PCMUtils.getTargetClassifierFromTypeReference(reference2)
+		return target1 == target2 || target1.equals(target2)
 	}
 
 }

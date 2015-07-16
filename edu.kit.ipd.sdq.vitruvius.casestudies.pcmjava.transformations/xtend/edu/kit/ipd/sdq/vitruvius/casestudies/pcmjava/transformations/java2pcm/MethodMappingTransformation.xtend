@@ -51,6 +51,11 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 		}
 		return null
 	}
+	
+	override removeEObject(EObject eObject) {
+		val correspondingObjects = correspondenceInstance.getAllCorrespondingEObjects(eObject)
+		return correspondingObjects
+	}
 
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {

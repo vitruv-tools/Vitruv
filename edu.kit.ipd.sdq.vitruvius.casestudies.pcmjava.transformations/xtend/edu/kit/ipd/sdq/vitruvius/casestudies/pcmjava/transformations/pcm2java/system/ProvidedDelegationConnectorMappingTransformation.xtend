@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.system
 
 import de.uka.ipd.sdq.pcm.core.composition.ProvidedDelegationConnector
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.JaMoPP2PCMUtils
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.Collection
@@ -24,7 +24,6 @@ import org.emftext.language.java.references.ReferencesFactory
 import org.emftext.language.java.references.SelfReference
 import org.emftext.language.java.statements.ExpressionStatement
 import org.emftext.language.java.statements.StatementsFactory
-import org.emftext.language.java.types.TypeReference
 
 class ProvidedDelegationConnectorMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -51,13 +50,13 @@ class ProvidedDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 			val Set<EObject> newEObjects = newHashSet()
 			for (opSig : operationInterface.signatures__OperationInterface) {
 
-				//get corresponding (interface) method and find or create a similar class method in the current class
+				// get corresponding (interface) method and find or create a similar class method in the current class
 				val correspondingMethods = correspondenceInstance.claimCorrespondingEObjectsByType(opSig, Method)
 				for (correspondingMethod : correspondingMethods) {
 					val methodInClassifier = findOrCreateMethodDeclarationInClassifier(correspondingMethod,
 						field.containingConcreteClassifier)
 
-					//create call statement
+					// create call statement
 					val callMethodInFieldStatement = createCallMethodStatement(methodInClassifier, field,
 						methodInClassifier.parameters)
 					methodInClassifier.statements.add(callMethodInFieldStatement)
@@ -70,27 +69,24 @@ class ProvidedDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 			return null
 		}
 	}
-	
-	override removeEObject(EObject eObject){
+
+	override removeEObject(EObject eObject) {
 		return correspondenceInstance.getAllCorrespondingEObjects(eObject)
 	}
-	
-	
+
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
-		logger.warn(
-			"method " + new Object() {
-			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
-				"transformation")
+		logger.warn("method " + new Object() {
+		}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
+			"transformation")
 		return TransformationUtils.createEmptyTransformationChangeResult
 	}
-	
+
 	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue,
 		EObject[] newCorrespondingEObjects) {
-		logger.warn(
-			"method " + new Object() {
-			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
-				"transformation")
+		logger.warn("method " + new Object() {
+		}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
+			"transformation")
 		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 
@@ -119,54 +115,18 @@ class ProvidedDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 	private def ClassMethod findOrCreateMethodDeclarationInClassifier(Method method, ConcreteClassifier classifier) {
 
 		for (classifierMethod : classifier.methods) {
-			if (classifierMethod.hasSameSignature(method) && classifierMethod instanceof ClassMethod) {
+			if (PCMJaMoPPUtils.hasSameSignature(classifierMethod, method) && classifierMethod instanceof ClassMethod) {
 				return classifierMethod as ClassMethod;
 			}
 		}
 
-		//no method found: create it in classifier
+		// no method found: create it in classifier
 		val ClassMethod classMethod = MembersFactory.eINSTANCE.createClassMethod
 		classMethod.name = method.name
 		classMethod.typeReference = EcoreUtil.copy(method.typeReference)
 		classMethod.modifiers.addAll(EcoreUtil.copyAll(classMethod.modifiers))
 		classMethod.parameters.addAll(EcoreUtil.copyAll(method.parameters))
 		return classMethod
-	}
-
-	/**
-	 * Signatures are considered equal if methods have the same name, the same parameter types and the same return type
-	 * We do not consider modifiers (e.g. public or private here)
-	 */
-	private def boolean hasSameSignature(Method method1, Method method2) {
-		if (method1 == method2) {
-			return true
-		}
-		if (!method1.name.equals(method1.name)) {
-			return false
-		}
-		if (!method1.typeReference.hasSameTargetReference(method2.typeReference)) {
-			return false
-		}
-		if (method1.parameters.size != method2.parameters.size) {
-			return false
-		}
-		var int i = 0
-		for (param1 : method1.parameters) {
-			if (!hasSameTargetReference(param1.typeReference, method2.parameters.get(i).typeReference)) {
-				return false
-			}
-			i++
-		}
-		return true
-	}
-
-	private def boolean hasSameTargetReference(TypeReference reference1, TypeReference reference2) {
-		if (reference1 == reference2 || reference1.equals(reference2)) {
-			return true
-		}
-		val target1 = JaMoPP2PCMUtils.getTargetClassifierFromTypeReference(reference1)
-		val target2 = JaMoPP2PCMUtils.getTargetClassifierFromTypeReference(reference2)
-		return target1 == target2 || target1.equals(target2)
 	}
 
 }

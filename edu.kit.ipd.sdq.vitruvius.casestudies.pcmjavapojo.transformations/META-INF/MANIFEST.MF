@@ -4,7 +4,8 @@ Bundle-Name: Transformations for POJO Mapping
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavapojo.transformations;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations,
+Require-Bundle: com.google.guava,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter,
@@ -12,5 +13,6 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations,
  edu.kit.ipd.sdq.vitruvius.casestudies.jmljava,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements,
  de.uka.ipd.sdq.pcm,
- org.somox.gast2seff
+ org.somox.gast2seff,
+ org.eclipse.core.resources
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavapojo.transformations

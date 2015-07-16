@@ -8,6 +8,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.composit
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.ClassMethodBodyChangedTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPTransformationExecuterBase;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMethodMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.CompilationUnitMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.FieldMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.InterfaceMappingTransformation;
@@ -74,10 +75,10 @@ public class PCMJaMoPPPOJOTransformationExecuter extends PCMJaMoPPTransformation
         this.changeSynchronizer.addMapping(new InterfaceMappingTransformation());
         this.changeSynchronizer.addMapping(new MethodMappingTransformation());
         this.changeSynchronizer
-                .addMapping(new edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ParameterMappingTransformation());
+        .addMapping(new edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ParameterMappingTransformation());
         this.changeSynchronizer.addMapping(new ModifierMappingTransformation());
         this.changeSynchronizer.addMapping(new FieldMappingTransformation());
-
+        this.changeSynchronizer.addMapping(new ClassMethodMappingTransformation());
     }
 
     @Override
