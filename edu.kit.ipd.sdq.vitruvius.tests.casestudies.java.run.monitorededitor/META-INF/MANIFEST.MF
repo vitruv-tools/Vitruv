@@ -7,5 +7,6 @@ Fragment-Host: edu.kit.ipd.sdq.vitruvius.casestudies.java.run.monitorededitor;bu
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.text,
  org.eclipse.jdt.core,
- org.apache.log4j
+ org.apache.log4j,
+ org.junit
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.java.run.monitorededitor

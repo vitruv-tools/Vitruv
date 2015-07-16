@@ -14,6 +14,7 @@ import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.text.edits.TextEdit;
+import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.MonitoredEditor;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.java.run.monitorededitor.HadoopCodeElements.HadoopCoompilationUnitSize;
@@ -24,7 +25,12 @@ public class EditorManipulator extends WriterAppender {
     private static final long INITIAL_SLEEP = 1000 * 15;
     private boolean barrier = false;
 
-    public EditorManipulator() throws JavaModelException, InterruptedException {
+    public EditorManipulator() {
+
+    }
+
+    @Test
+    public void testExecuteEditorManipulator() throws JavaModelException, InterruptedException {
         System.out.println("EditorManipulator started");
 
         final Logger monitorLog = Logger.getLogger(MonitoredEditor.class);
