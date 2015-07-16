@@ -32,8 +32,6 @@
 <project reference="1.0.1,https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/edu.kit.ipd.sdq.vitruvius.framework.contracts,edu.kit.ipd.sdq.vitruvius.framework.contracts,00f373a73ca600141088e40b11785918;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/;branches;tags;trunk;true;769cc9a0-fb0c-0410-8c2f-a2305f0e6268;https://svnserver.informatik.kit.edu/i43/svn/code;;false;;;0"/>
 <project reference="1.0.1,https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/edu.kit.ipd.sdq.vitruvius.framework.design,edu.kit.ipd.sdq.vitruvius.framework.design,00f373a73ca600141088e40b11785918;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/;branches;tags;trunk;true;769cc9a0-fb0c-0410-8c2f-a2305f0e6268;https://svnserver.informatik.kit.edu/i43/svn/code;;false;;;0"/>
 <project reference="1.0.1,https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/edu.kit.ipd.sdq.vitruvius.framework.design.metamodelmanager,edu.kit.ipd.sdq.vitruvius.framework.design.metamodelmanager,00f373a73ca600141088e40b11785918;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/;branches;tags;trunk;true;769cc9a0-fb0c-0410-8c2f-a2305f0e6268;https://svnserver.informatik.kit.edu/i43/svn/code;;false;;;0"/>
-<project reference="1.0.1,https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/edu.kit.ipd.sdq.vitruvius.framework.design.mir.generator,edu.kit.ipd.sdq.vitruvius.framework.design.mir.generator,00f373a73ca600141088e40b11785918;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/;branches;tags;trunk;true;769cc9a0-fb0c-0410-8c2f-a2305f0e6268;https://svnserver.informatik.kit.edu/i43/svn/code;;false;;;0"/>
-<project reference="1.0.1,https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/edu.kit.ipd.sdq.vitruvius.framework.design.mir.manager,edu.kit.ipd.sdq.vitruvius.framework.design.mir.manager,00f373a73ca600141088e40b11785918;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/;branches;tags;trunk;true;769cc9a0-fb0c-0410-8c2f-a2305f0e6268;https://svnserver.informatik.kit.edu/i43/svn/code;;false;;;0"/>
 <project reference="1.0.1,https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/edu.kit.ipd.sdq.vitruvius.framework.design.projectgenerator,edu.kit.ipd.sdq.vitruvius.framework.design.projectgenerator,00f373a73ca600141088e40b11785918;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/;branches;tags;trunk;true;769cc9a0-fb0c-0410-8c2f-a2305f0e6268;https://svnserver.informatik.kit.edu/i43/svn/code;;false;;;0"/>
 <project reference="1.0.1,https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/edu.kit.ipd.sdq.vitruvius.framework.design.viewtype.generator,edu.kit.ipd.sdq.vitruvius.framework.design.viewtype.generator,00f373a73ca600141088e40b11785918;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/;branches;tags;trunk;true;769cc9a0-fb0c-0410-8c2f-a2305f0e6268;https://svnserver.informatik.kit.edu/i43/svn/code;;false;;;0"/>
 <project reference="1.0.1,https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/edu.kit.ipd.sdq.vitruvius.framework.design.viewtype.manager,edu.kit.ipd.sdq.vitruvius.framework.design.viewtype.manager,00f373a73ca600141088e40b11785918;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/;https://svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/;branches;tags;trunk;true;769cc9a0-fb0c-0410-8c2f-a2305f0e6268;https://svnserver.informatik.kit.edu/i43/svn/code;;false;;;0"/>
@@ -138,20 +136,16 @@
 <item elementID="=edu.kit.ipd.sdq.vitruvius.framework.mir.executor" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=edu.kit.ipd.sdq.vitruvius.framework.meta.change" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=edu.kit.ipd.sdq.vitruvius.framework.design.mir.language.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=edu.kit.ipd.sdq.vitruvius.framework.design.viewtype.generator" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/edu.kit.ipd.sdq.vitruvius.framework.feature" type="4"/>
 <item elementID="=edu.kit.ipd.sdq.vitruvius.framework.design" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=edu.kit.ipd.sdq.vitruvius.framework.mir" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=edu.kit.ipd.sdq.vitruvius.framework.design.mir.language.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=edu.kit.ipd.sdq.vitruvius.framework.design.mir.generator" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=edu.kit.ipd.sdq.vitruvius.framework.design.viewtype.manager" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=edu.kit.ipd.sdq.vitruvius.framework.contracts" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=edu.kit.ipd.sdq.vitruvius.framework.design.mir.manager" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=edu.kit.ipd.sdq.vitruvius.framework.mir.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=edu.kit.ipd.sdq.vitruvius.framework.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=edu.kit.ipd.sdq.vitruvius.framework.mir.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
@@ -161,7 +155,6 @@
 <item elementID="=edu.kit.ipd.sdq.vitruvius.framework.metarepository" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/edu.kit.ipd.sdq.vitruvius.framework.model" type="4"/>
 <item elementID="=edu.kit.ipd.sdq.vitruvius.framework.design.metamodelmanager" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=edu.kit.ipd.sdq.vitruvius.framework.design.mir.language" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.edit" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSets>
 <workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1422541255810_10" label="vitruvius.tests" name="vitruvius.tests">
