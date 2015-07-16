@@ -140,7 +140,7 @@ class MIRCodeGenerator implements IGenerator {
 		EChange, CorrespondenceInstance, MIRModelInformationProvider, EStructuralFeature,
 		EClass, AbstractMIRTransformationExecuting, EObject, List, ArrayList,
 		Set, HashSet, EPackage, Pair, MIRMappingHelper, MappedCorrespondenceInstance,
-		Logger
+		Logger, MIRMappingChangeResult
 	]
 	
 	private static final List<? extends Class<?>> IMPORTED_CLASSES_CORRESPONDENCE_INSTANCE = #[
