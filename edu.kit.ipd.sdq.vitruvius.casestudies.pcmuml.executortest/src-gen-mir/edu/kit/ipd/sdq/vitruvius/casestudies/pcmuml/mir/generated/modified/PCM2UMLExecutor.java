@@ -46,7 +46,7 @@ public class PCM2UMLExecutor extends AbstractMIRTransformationExecuting {
 	@Override
 	protected void setup() {
 		addMIRMapping(edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.Mapping0.INSTANCE);
-		addMIRMapping(edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.Mapping1.INSTANCE);
+//		addMIRMapping(edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.Mapping1.INSTANCE);
 	}
 	
 	@Override

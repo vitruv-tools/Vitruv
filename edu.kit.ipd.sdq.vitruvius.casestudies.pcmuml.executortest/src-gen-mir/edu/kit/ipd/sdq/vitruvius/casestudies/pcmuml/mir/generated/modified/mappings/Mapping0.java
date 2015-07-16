@@ -3,8 +3,13 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mapp
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.uml2.uml.Package;
+import org.eclipse.uml2.uml.UMLPackage;
+import org.palladiosimulator.pcm.repository.BasicComponent;
+import org.palladiosimulator.pcm.repository.RepositoryFactory;
 
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRMappingRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.MIRMappingChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MappedCorrespondenceInstance;
@@ -36,17 +41,47 @@ public class Mapping0 extends AbstractMIRMappingRealization {
 
 	@Override
 	protected EClass getMappedEClass() {
-		throw new UnsupportedOperationException();
+		return UMLPackage.eINSTANCE.getPackage();
 	}
 
 	@Override
 	protected MIRMappingChangeResult restorePostConditions(EObject eObject, EObject target, EChange change) {
-		throw new UnsupportedOperationException();
+		MIRMappingChangeResult result = new MIRMappingChangeResult();
+		LOGGER.trace("restorePostConditions(" + eObject.toString() + ", " + target.toString() + ", " + change.toString() + ")");
+		
+		Package pkg = JavaHelper.requireType(eObject, Package.class);
+		BasicComponent bc = JavaHelper.requireType(target, BasicComponent.class);
+
+		bc.setEntityName(pkg.getName());
+
+		result.addObjectToSave(bc);
+		
+		return result;
 	}
 
 	@Override
 	protected MIRMappingChangeResult createCorresponding(EObject eObject,
 			MappedCorrespondenceInstance correspondenceInstance) {
-		throw new UnsupportedOperationException();
+		LOGGER.trace("createCorresponding(" + eObject.toString() + ", " + correspondenceInstance.toString() + ")");
+
+		org.eclipse.uml2.uml.Package iface = (org.eclipse.uml2.uml.Package) eObject;
+		BasicComponent bc = RepositoryFactory.eINSTANCE.createBasicComponent();
+
+		MIRMappingChangeResult changeResult = new MIRMappingChangeResult();
+		changeResult.addObjectToSave(bc);
+		LOGGER.trace("eObject to save: " + bc.toString());
+		changeResult.addCorrespondence(iface, bc);
+		LOGGER.trace("addCorrespondence: " + iface.toString() + ", " + bc.toString());
+		return changeResult;
+	}
+	
+	@Override
+	protected MIRMappingChangeResult deleteCorresponding(EObject eObject, EObject target,
+			MappedCorrespondenceInstance correspondenceInstance) {
+		LOGGER.trace("deleteCorresponding(" + eObject.toString()
+			+ ", " + target.toString()
+			+ ", " + correspondenceInstance.toString() + ")");
+		
+		return super.deleteCorresponding(eObject, target, correspondenceInstance);
 	}
 }

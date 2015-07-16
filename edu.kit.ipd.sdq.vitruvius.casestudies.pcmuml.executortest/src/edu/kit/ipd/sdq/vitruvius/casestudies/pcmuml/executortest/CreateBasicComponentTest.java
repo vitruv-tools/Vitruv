@@ -21,7 +21,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.emf.changedescription2change.ChangeDescription2ChangeConverter;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.TestMIRExecutor;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.PCM2UMLExecutor;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
@@ -68,7 +68,7 @@ public class CreateBasicComponentTest implements SynchronisationListener {
 			createAttributeTUIDMetamodel("http://www.eclipse.org/uml2/5.0.0/UML", "uml"));
 		
 		TransformationExecutingProvidingImplCustom transformationProvider = new TransformationExecutingProvidingImplCustom();
-        transformationProvider.addEMFModelTransformationExecuting(new TestMIRExecutor());
+        transformationProvider.addEMFModelTransformationExecuting(new PCM2UMLExecutor());
         
         EMFModelPropagationEngineImpl propagationEngine = new EMFModelPropagationEngineImpl(
         		transformationProvider);
