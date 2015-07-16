@@ -17,6 +17,7 @@ class MIRPluginProjectCreator{
 		"edu.kit.ipd.sdq.vitruvius.framework.contracts",
 		"edu.kit.ipd.sdq.vitruvius.framework.mir.executor",
 		"edu.kit.ipd.sdq.vitruvius.framework.meta.change",
+		"edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence",
 		"com.google.guava",
 		"org.eclipse.core.resources",
 		"org.apache.log4j",

@@ -39,6 +39,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRMappingHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MappedCorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMappedCorrespondenceInstance
 import org.apache.log4j.Logger
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.MIRMappingChangeResult
 
 /**
  * @author Dominik Werle
@@ -344,27 +345,19 @@ class MIRCodeGenerator implements IGenerator {
 				}
 			
 				@Override
-				protected EClass getMappedEClass() { return null; }
-				
-				@Override
-				protected EMFChangeResult restorePostConditions(EChange eChange,
-						MappedCorrespondenceInstance correspondenceInstance) {
-					«LOGGER_NAME».trace("restorePostConditions(" + eChange.toString() + ", " + correspondenceInstance.toString() + ")");
-					return null;
+				protected EClass getMappedEClass() {
+					throw new UnsupportedOperationException();
 				}
-				
+			
 				@Override
-				protected EMFChangeResult createCorresponding(EObject eObject,
-						MappedCorrespondenceInstance correspondenceInstance) {
-					«LOGGER_NAME».trace("createCorresponding(" + eObject.toString() + ", " + correspondenceInstance.toString() + ")");
-					return null;
+				protected MIRMappingChangeResult restorePostConditions(EObject eObject, EObject target, EChange change) {
+					throw new UnsupportedOperationException();
 				}
-				
+			
 				@Override
-				protected EMFChangeResult deleteCorresponding(EObject eObject,
+				protected MIRMappingChangeResult createCorresponding(EObject eObject,
 						MappedCorrespondenceInstance correspondenceInstance) {
-					«LOGGER_NAME».trace("deleteCorresponding(" + eObject.toString() + ", " + correspondenceInstance.toString() + ")");
-					return null;
+					throw new UnsupportedOperationException();
 				}
 			}
 		'''
