@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<trace:TraceModel
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:trace="http://www.eclipse.org/gmf/2006/Trace">
+  <nodeTraces
+      visualID="2002"
+      queryText="let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.1' and _eClass_.name = 'ComposedProvidingRequiringEntity'">
+    <nodeLabelTraces
+        visualID="5012"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7002"
+        queryText="true"/>
+  </nodeTraces>
+  <childNodeTraces
+      visualID="3006"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1' and _eClass_.name = 'AssemblyContext') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.1' and _eClass_.name = 'InterfaceProvidingEntity') and _containmentMF_.name = 'providedRoles_InterfaceProvidingEntity')">
+    <nodeLabelTraces
+        visualID="5009"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3007"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.1' and _eClass_.name = 'OperationProvidedRole') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.1' and _eClass_.name = 'InterfaceProvidingEntity') and _containmentMF_.name = 'providedRoles_InterfaceProvidingEntity')">
+    <nodeLabelTraces
+        visualID="5007"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3008"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.1' and _eClass_.name = 'OperationRequiredRole') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.1' and _eClass_.name = 'InterfaceRequiringEntity') and _containmentMF_.name = 'requiredRoles_InterfaceRequiringEntity')">
+    <nodeLabelTraces
+        visualID="5008"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3011"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.1' and _eClass_.name = 'OperationProvidedRole') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.1' and _eClass_.name = 'InterfaceProvidingEntity') and _containmentMF_.name = 'providedRoles_InterfaceProvidingEntity')">
+    <nodeLabelTraces
+        visualID="5013"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3012"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.1' and _eClass_.name = 'OperationRequiredRole') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.1' and _eClass_.name = 'InterfaceRequiringEntity') and _containmentMF_.name = 'requiredRoles_InterfaceRequiringEntity')">
+    <nodeLabelTraces
+        visualID="5014"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3013"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.1' and _eClass_.name = 'SourceRole') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.1' and _eClass_.name = 'InterfaceRequiringEntity') and _containmentMF_.name = 'requiredRoles_InterfaceRequiringEntity')">
+    <nodeLabelTraces
+        visualID="5015"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3014"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.1' and _eClass_.name = 'SinkRole') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.1' and _eClass_.name = 'InterfaceProvidingEntity') and _containmentMF_.name = 'providedRoles_InterfaceProvidingEntity')">
+    <nodeLabelTraces
+        visualID="5016"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3015"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.1' and _eClass_.name = 'InfrastructureProvidedRole') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.1' and _eClass_.name = 'InterfaceProvidingEntity') and _containmentMF_.name = 'providedRoles_InterfaceProvidingEntity')">
+    <nodeLabelTraces
+        visualID="5017"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3016"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.1' and _eClass_.name = 'InfrastructureRequiredRole') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.1' and _eClass_.name = 'InterfaceRequiringEntity') and _containmentMF_.name = 'requiredRoles_InterfaceRequiringEntity')">
+    <nodeLabelTraces
+        visualID="5018"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3017"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1' and _eClass_.name = 'EventChannel') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1' and _eClass_.name = 'ComposedStructure') and _containmentMF_.name = 'eventChannel__ComposedStructure')">
+    <nodeLabelTraces
+        visualID="5019"
+        queryText="true"/>
+  </childNodeTraces>
+  <linkTraces
+      visualID="4004"
+      queryText="modelFacet.oclIsKindOf(gmfgen::TypeLinkModelFacet) and (let _eClass_:ecore::EClass = modelFacet.oclAsType(gmfgen::TypeLinkModelFacet).metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1' and _eClass_.name = 'AssemblyConnector')"/>
+  <linkTraces
+      visualID="4005"
+      queryText="modelFacet.oclIsKindOf(gmfgen::TypeLinkModelFacet) and (let _eClass_:ecore::EClass = modelFacet.oclAsType(gmfgen::TypeLinkModelFacet).metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1' and _eClass_.name = 'RequiredDelegationConnector')"/>
+  <linkTraces
+      visualID="4006"
+      queryText="modelFacet.oclIsKindOf(gmfgen::TypeLinkModelFacet) and (let _eClass_:ecore::EClass = modelFacet.oclAsType(gmfgen::TypeLinkModelFacet).metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1' and _eClass_.name = 'ProvidedDelegationConnector')"/>
+  <linkTraces
+      visualID="4007"
+      queryText="modelFacet.oclIsKindOf(gmfgen::TypeLinkModelFacet) and (let _eClass_:ecore::EClass = modelFacet.oclAsType(gmfgen::TypeLinkModelFacet).metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1' and _eClass_.name = 'AssemblyEventConnector')"/>
+  <linkTraces
+      visualID="4008"
+      queryText="modelFacet.oclIsKindOf(gmfgen::TypeLinkModelFacet) and (let _eClass_:ecore::EClass = modelFacet.oclAsType(gmfgen::TypeLinkModelFacet).metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1' and _eClass_.name = 'AssemblyInfrastructureConnector')"/>
+  <linkTraces
+      visualID="4009"
+      queryText="modelFacet.oclIsKindOf(gmfgen::TypeLinkModelFacet) and (let _eClass_:ecore::EClass = modelFacet.oclAsType(gmfgen::TypeLinkModelFacet).metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1' and _eClass_.name = 'EventChannelSourceConnector')"/>
+  <linkTraces
+      visualID="4010"
+      queryText="modelFacet.oclIsKindOf(gmfgen::TypeLinkModelFacet) and (let _eClass_:ecore::EClass = modelFacet.oclAsType(gmfgen::TypeLinkModelFacet).metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1' and _eClass_.name = 'EventChannelSinkConnector')"/>
+</trace:TraceModel>

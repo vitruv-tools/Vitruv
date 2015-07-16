@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<trace:TraceModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:trace="http://www.eclipse.org/gmf/2006/Trace">
+  <nodeTraces
+      visualID="2004"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'UsageScenario') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'UsageModel') and _containmentMF_.name = 'usageScenario_UsageModel')">
+    <nodeLabelTraces
+        visualID="5017"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7012"
+        queryText="true"/>
+  </nodeTraces>
+  <childNodeTraces
+      visualID="3001"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'Start') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'ScenarioBehaviour') and _containmentMF_.name = 'actions_ScenarioBehaviour')"/>
+  <childNodeTraces
+      visualID="3002"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'Stop') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'ScenarioBehaviour') and _containmentMF_.name = 'actions_ScenarioBehaviour')"/>
+  <childNodeTraces
+      visualID="3003"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'EntryLevelSystemCall') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'ScenarioBehaviour') and _containmentMF_.name = 'actions_ScenarioBehaviour')">
+    <nodeLabelTraces
+        visualID="5004"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7002"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3005"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'Loop') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'ScenarioBehaviour') and _containmentMF_.name = 'actions_ScenarioBehaviour')">
+    <nodeLabelTraces
+        visualID="5005"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3007"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'ScenarioBehaviour') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'Loop') and _containmentMF_.name = 'bodyBehaviour_Loop')">
+    <compartmentTraces
+        visualID="7005"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3008"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'Branch') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'ScenarioBehaviour') and _containmentMF_.name = 'actions_ScenarioBehaviour')">
+    <compartmentTraces
+        visualID="7009"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3009"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'BranchTransition') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'Branch') and _containmentMF_.name = 'branchTransitions_Branch')">
+    <nodeLabelTraces
+        visualID="5007"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3010"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'ScenarioBehaviour') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'BranchTransition') and _containmentMF_.name = 'branchedBehaviour_BranchTransition')">
+    <compartmentTraces
+        visualID="7008"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3012"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1' and _eClass_.name = 'VariableUsage') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'EntryLevelSystemCall') and _containmentMF_.name = 'inputParameterUsages_EntryLevelSystemCall')">
+    <nodeLabelTraces
+        visualID="5012"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7011"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3013"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1' and _eClass_.name = 'VariableCharacterisation') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1' and _eClass_.name = 'VariableUsage') and _containmentMF_.name = 'variableCharacterisation_VariableUsage')"/>
+  <childNodeTraces
+      visualID="3014"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'ScenarioBehaviour') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'UsageScenario') and _containmentMF_.name = 'scenarioBehaviour_UsageScenario')">
+    <compartmentTraces
+        visualID="7013"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3015"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'ClosedWorkload') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'UsageScenario') and _containmentMF_.name = 'workload_UsageScenario')">
+    <nodeLabelTraces
+        visualID="5013"
+        queryText="true"/>
+    <nodeLabelTraces
+        visualID="5014"
+        queryText="true"/>
+    <nodeLabelTraces
+        visualID="5015"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3016"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'OpenWorkload') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'UsageScenario') and _containmentMF_.name = 'workload_UsageScenario')">
+    <nodeLabelTraces
+        visualID="5016"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3017"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'Delay') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'ScenarioBehaviour') and _containmentMF_.name = 'actions_ScenarioBehaviour')">
+    <nodeLabelTraces
+        visualID="5018"
+        queryText="true"/>
+    <nodeLabelTraces
+        visualID="5019"
+        queryText="true"/>
+  </childNodeTraces>
+  <linkTraces
+      visualID="4002"
+      queryText="modelFacet.oclIsKindOf(gmfgen::FeatureLinkModelFacet) and (let _feature_:ecore::EStructuralFeature = modelFacet.oclAsType(gmfgen::FeatureLinkModelFacet).metaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _feature_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1' and _eClass_.name = 'AbstractUserAction') and _feature_.name = 'successor')"/>
+</trace:TraceModel>

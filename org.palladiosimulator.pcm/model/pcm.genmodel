@@ -1,0 +1,1319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/uml2/2.2.0/GenModel"
+    copyrightText="Copyright 2005-2015 by palladiosimulator.org" modelDirectory="/org.palladiosimulator.pcm/src"
+    editDirectory="/org.palladiosimulator.pcm.edit/src" editorDirectory="/org.palladiosimulator.pcm.editor/src"
+    modelPluginID="org.palladiosimulator.pcm" templateDirectory="/org.palladiosimulator.pcm/templates"
+    dynamicTemplates="true" redirection="" modelName="PalladioComponentModel" editPluginClass="org.palladiosimulator.pcm.core.provider.PalladioComponentModelEditPlugin"
+    editorPluginClass="org.palladiosimulator.pcm.core.presentation.PalladioComponentModelEditorPlugin"
+    rootExtendsInterface="org.eclipse.emf.cdo.CDOObject" rootExtendsClass="org.eclipse.emf.internal.cdo.CDOObjectImpl"
+    codeFormatting="true" testSuiteClass="org.palladiosimulator.pcm.tests.PalladioComponentModelAllTests"
+    importerID="org.eclipse.emf.importer.ecore" featureDelegation="Dynamic" complianceLevel="6.0"
+    editPluginID="org.palladiosimulator.pcm.edit" editorPluginID="org.palladiosimulator.pcm.editor"
+    runtimeVersion="2.5" language="en" usedGenPackages="platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.genmodel#//identifier platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.genmodel#//probfunction platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.genmodel#//stoex platform:/plugin/de.uka.ipd.sdq.units/model/Units.genmodel#//units"
+    cleanup="true">
+  <genAnnotations source="http://www.eclipse.org/emf/2002/GenModel/importer/org.eclipse.uml2.uml.ecore.importer">
+    <details key="ECORE_TAGGED_VALUES" value="PROCESS"/>
+    <details key="UNION_PROPERTIES" value="REPORT"/>
+    <details key="DUPLICATE_FEATURES" value="DISCARD"/>
+    <details key="SUBSETTING_PROPERTIES" value="REPORT"/>
+    <details key="COMMENTS" value="PROCESS"/>
+    <details key="DUPLICATE_FEATURE_INHERITANCE" value="DISCARD"/>
+    <details key="DUPLICATE_OPERATIONS" value="DISCARD"/>
+    <details key="INVARIANT_CONSTRAINTS" value="PROCESS"/>
+    <details key="REDEFINING_PROPERTIES" value="REPORT"/>
+    <details key="ANNOTATION_DETAILS" value="PROCESS"/>
+    <details key="DUPLICATE_OPERATION_INHERITANCE" value="DISCARD"/>
+    <details key="REDEFINING_OPERATIONS" value="REPORT"/>
+    <details key="DERIVED_FEATURES" value="PROCESS"/>
+    <details key="OPERATION_BODIES" value="PROCESS"/>
+    <details key="SUPER_CLASS_ORDER" value="IGNORE"/>
+    <details key="CAMEL_CASE_NAMES" value="IGNORE"/>
+    <details key="VALIDATION_DELEGATES" value="IGNORE"/>
+    <details key="INVOCATION_DELEGATES" value="IGNORE"/>
+  </genAnnotations>
+  <foreignModel>pcm.ecore</foreignModel>
+  <modelPluginVariables>OCL=org.eclipse.ocl</modelPluginVariables>
+  <modelPluginVariables>EMF_OCL=org.eclipse.ocl.ecore</modelPluginVariables>
+  <modelPluginVariables>CDO=org.eclipse.emf.cdo</modelPluginVariables>
+  <genPackages xsi:type="genmodel:GenPackage" prefix="Pcm" basePackage="org.palladiosimulator"
+      resource="XMI" disposableProviderFactory="true" extensibleProviderFactory="true"
+      ecorePackage="pcm.ecore#/">
+    <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//DummyClass"/>
+    <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="Core" basePackage="org.palladiosimulator.pcm"
+        resource="XMI" disposableProviderFactory="true" extensibleProviderFactory="true"
+        ecorePackage="pcm.ecore#//core">
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//core/PCMRandomVariable">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/PCMRandomVariable/closedWorkload_PCMRandomVariable"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/PCMRandomVariable/passiveResource_capacity_PCMRandomVariable"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/PCMRandomVariable/variableCharacterisation_Specification"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/PCMRandomVariable/infrastructureCall__PCMRandomVariable"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/PCMRandomVariable/resourceCall__PCMRandomVariable"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/PCMRandomVariable/parametricResourceDemand_PCMRandomVariable"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/PCMRandomVariable/loopAction_PCMRandomVariable"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/PCMRandomVariable/guardedBranchTransition_PCMRandomVariable"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/PCMRandomVariable/specifiedExecutionTime_PCMRandomVariable"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/PCMRandomVariable/eventChannelSinkConnector__FilterCondition"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/PCMRandomVariable/assemblyEventConnector__FilterCondition"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/PCMRandomVariable/loop_LoopIteration"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/PCMRandomVariable/openWorkload_PCMRandomVariable"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/PCMRandomVariable/delay_TimeSpecification"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/PCMRandomVariable/communicationLinkResourceSpecifcation_throughput_PCMRandomVariable"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/PCMRandomVariable/processingResourceSpecification_processingRate_PCMRandomVariable"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/PCMRandomVariable/communicationLinkResourceSpecification_latency_PCMRandomVariable"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//core/PCMRandomVariable/SpecificationMustNotBeNULL">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/PCMRandomVariable/SpecificationMustNotBeNULL/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/PCMRandomVariable/SpecificationMustNotBeNULL/context"/>
+        </genOperations>
+      </genClasses>
+      <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="Entity" basePackage="org.palladiosimulator.pcm.core"
+          resource="XMI" disposableProviderFactory="true" extensibleProviderFactory="true"
+          ecorePackage="pcm.ecore#//core/entity">
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//core/entity/ResourceProvidedRole">
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+              createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/entity/ResourceProvidedRole/resourceInterfaceProvidingEntity__ResourceProvidedRole"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/entity/ResourceProvidedRole/providedResourceInterface__ResourceProvidedRole"/>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//core/entity/InterfaceProvidingRequiringEntity"/>
+        <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//core/entity/InterfaceProvidingEntity">
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+              createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//core/entity/InterfaceProvidingEntity/providedRoles_InterfaceProvidingEntity"/>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//core/entity/InterfaceRequiringEntity">
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+              createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//core/entity/InterfaceRequiringEntity/requiredRoles_InterfaceRequiringEntity"/>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//core/entity/ResourceInterfaceRequiringEntity">
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+              createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//core/entity/ResourceInterfaceRequiringEntity/resourceRequiredRoles__ResourceInterfaceRequiringEntity"/>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//core/entity/ResourceRequiredRole">
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/entity/ResourceRequiredRole/requiredResourceInterface__ResourceRequiredRole"/>
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+              createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/entity/ResourceRequiredRole/resourceInterfaceRequiringEntity__ResourceRequiredRole"/>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//core/entity/ResourceInterfaceProvidingEntity">
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+              createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//core/entity/ResourceInterfaceProvidingEntity/resourceProvidedRoles__ResourceInterfaceProvidingEntity"/>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//core/entity/ComposedProvidingRequiringEntity">
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//core/entity/ComposedProvidingRequiringEntity/ProvidedRolesMustBeBound">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/entity/ComposedProvidingRequiringEntity/ProvidedRolesMustBeBound/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/entity/ComposedProvidingRequiringEntity/ProvidedRolesMustBeBound/context"/>
+          </genOperations>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//core/entity/NamedElement">
+          <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//core/entity/NamedElement/entityName"/>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//core/entity/ResourceInterfaceProvidingRequiringEntity"/>
+        <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//core/entity/Entity"/>
+      </nestedGenPackages>
+      <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="Composition" basePackage="org.palladiosimulator.pcm.core"
+          resource="XMI" disposableProviderFactory="true" extensibleProviderFactory="true"
+          ecorePackage="pcm.ecore#//core/composition">
+        <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//core/composition/DelegationConnector"/>
+        <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//core/composition/Connector">
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+              createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/Connector/parentStructure__Connector"/>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//core/composition/ComposedStructure">
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+              createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/ComposedStructure/assemblyContexts__ComposedStructure"/>
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+              createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/ComposedStructure/resourceRequiredDelegationConnectors_ComposedStructure"/>
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+              createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/ComposedStructure/eventChannel__ComposedStructure"/>
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+              createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/ComposedStructure/connectors__ComposedStructure"/>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//core/composition/ComposedStructure/MultipleConnectorsConstraint">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/composition/ComposedStructure/MultipleConnectorsConstraint/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/composition/ComposedStructure/MultipleConnectorsConstraint/context"/>
+          </genOperations>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//core/composition/ComposedStructure/MultipleConnectorsConstraintForAssemblyConnectors">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/composition/ComposedStructure/MultipleConnectorsConstraintForAssemblyConnectors/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/composition/ComposedStructure/MultipleConnectorsConstraintForAssemblyConnectors/context"/>
+          </genOperations>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//core/composition/ResourceRequiredDelegationConnector">
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/ResourceRequiredDelegationConnector/innerResourceRequiredRole_ResourceRequiredDelegationConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/ResourceRequiredDelegationConnector/outerResourceRequiredRole_ResourceRequiredDelegationConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+              createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/ResourceRequiredDelegationConnector/parentStructure_ResourceRequiredDelegationConnector"/>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//core/composition/EventChannel">
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/EventChannel/eventGroup__EventChannel"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/EventChannel/eventChannelSourceConnector__EventChannel"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/EventChannel/eventChannelSinkConnector__EventChannel"/>
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+              createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/EventChannel/parentStructure__EventChannel"/>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//core/composition/EventChannelSourceConnector">
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/EventChannelSourceConnector/sourceRole__EventChannelSourceRole"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/EventChannelSourceConnector/assemblyContext__EventChannelSourceConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/EventChannelSourceConnector/eventChannel__EventChannelSourceConnector"/>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//core/composition/EventChannelSinkConnector">
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/EventChannelSinkConnector/sinkRole__EventChannelSinkConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+              createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/EventChannelSinkConnector/filterCondition__EventChannelSinkConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/EventChannelSinkConnector/assemblyContext__EventChannelSinkConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/EventChannelSinkConnector/eventChannel__EventChannelSinkConnector"/>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//core/composition/ProvidedDelegationConnector">
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/ProvidedDelegationConnector/innerProvidedRole_ProvidedDelegationConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/ProvidedDelegationConnector/outerProvidedRole_ProvidedDelegationConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/ProvidedDelegationConnector/assemblyContext_ProvidedDelegationConnector"/>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//core/composition/ProvidedDelegationConnector/ProvidedDelegationConnectorandtheconnectedComponentmustbepartofthesamecompositestructure">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/composition/ProvidedDelegationConnector/ProvidedDelegationConnectorandtheconnectedComponentmustbepartofthesamecompositestructure/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/composition/ProvidedDelegationConnector/ProvidedDelegationConnectorandtheconnectedComponentmustbepartofthesamecompositestructure/context"/>
+          </genOperations>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//core/composition/ProvidedDelegationConnector/ComponentOfAssemblyContextAndInnerRoleProvidingComponentNeedToBeTheSame">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/composition/ProvidedDelegationConnector/ComponentOfAssemblyContextAndInnerRoleProvidingComponentNeedToBeTheSame/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/composition/ProvidedDelegationConnector/ComponentOfAssemblyContextAndInnerRoleProvidingComponentNeedToBeTheSame/context"/>
+          </genOperations>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//core/composition/RequiredDelegationConnector">
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/RequiredDelegationConnector/innerRequiredRole_RequiredDelegationConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/RequiredDelegationConnector/outerRequiredRole_RequiredDelegationConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/RequiredDelegationConnector/assemblyContext_RequiredDelegationConnector"/>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//core/composition/RequiredDelegationConnector/RequiredDelegationConnectorandtheconnectedComponentmustbepartofthesamecompositestructure">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/composition/RequiredDelegationConnector/RequiredDelegationConnectorandtheconnectedComponentmustbepartofthesamecompositestructure/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/composition/RequiredDelegationConnector/RequiredDelegationConnectorandtheconnectedComponentmustbepartofthesamecompositestructure/context"/>
+          </genOperations>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//core/composition/RequiredDelegationConnector/ComponentOfAssemblyContextAndInnerRoleRequiringComponentNeedToBeTheSame">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/composition/RequiredDelegationConnector/ComponentOfAssemblyContextAndInnerRoleRequiringComponentNeedToBeTheSame/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/composition/RequiredDelegationConnector/ComponentOfAssemblyContextAndInnerRoleRequiringComponentNeedToBeTheSame/context"/>
+          </genOperations>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//core/composition/RequiredDelegationConnector/RequiringEntityOfOuterRequiredRoleMustBeTheSameAsTheParentOfTheRequiredDelegationConnector">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/composition/RequiredDelegationConnector/RequiringEntityOfOuterRequiredRoleMustBeTheSameAsTheParentOfTheRequiredDelegationConnector/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/composition/RequiredDelegationConnector/RequiringEntityOfOuterRequiredRoleMustBeTheSameAsTheParentOfTheRequiredDelegationConnector/context"/>
+          </genOperations>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//core/composition/AssemblyConnector">
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/AssemblyConnector/requiringAssemblyContext_AssemblyConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/AssemblyConnector/providingAssemblyContext_AssemblyConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/AssemblyConnector/providedRole_AssemblyConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/AssemblyConnector/requiredRole_AssemblyConnector"/>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//core/composition/AssemblyConnector/AssemblyConnectorsReferencedProvidedRolesAndChildContextMustMatch">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/composition/AssemblyConnector/AssemblyConnectorsReferencedProvidedRolesAndChildContextMustMatch/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/composition/AssemblyConnector/AssemblyConnectorsReferencedProvidedRolesAndChildContextMustMatch/context"/>
+          </genOperations>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//core/composition/AssemblyConnector/AssemblyConnectorsReferencedRequiredRoleAndChildContextMustMatch">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/composition/AssemblyConnector/AssemblyConnectorsReferencedRequiredRoleAndChildContextMustMatch/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/composition/AssemblyConnector/AssemblyConnectorsReferencedRequiredRoleAndChildContextMustMatch/context"/>
+          </genOperations>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//core/composition/AssemblyConnector/AssemblyConnectorsReferencedInterfacesMustMatch">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/composition/AssemblyConnector/AssemblyConnectorsReferencedInterfacesMustMatch/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//core/composition/AssemblyConnector/AssemblyConnectorsReferencedInterfacesMustMatch/context"/>
+          </genOperations>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//core/composition/AssemblyEventConnector">
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/AssemblyEventConnector/sinkRole__AssemblyEventConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/AssemblyEventConnector/sourceRole__AssemblyEventConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/AssemblyEventConnector/sinkAssemblyContext__AssemblyEventConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/AssemblyEventConnector/sourceAssemblyContext__AssemblyEventConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+              createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/AssemblyEventConnector/filterCondition__AssemblyEventConnector"/>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//core/composition/SourceDelegationConnector">
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/SourceDelegationConnector/innerSourceRole__SourceRole"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/SourceDelegationConnector/outerSourceRole__SourceRole"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/SourceDelegationConnector/assemblyContext__SourceDelegationConnector"/>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//core/composition/SinkDelegationConnector">
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/SinkDelegationConnector/assemblyContext__SinkDelegationConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/SinkDelegationConnector/innerSinkRole__SinkRole"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/SinkDelegationConnector/outerSinkRole__SinkRole"/>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//core/composition/AssemblyInfrastructureConnector">
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/AssemblyInfrastructureConnector/providedRole__AssemblyInfrastructureConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/AssemblyInfrastructureConnector/requiredRole__AssemblyInfrastructureConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/AssemblyInfrastructureConnector/providingAssemblyContext__AssemblyInfrastructureConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/AssemblyInfrastructureConnector/requiringAssemblyContext__AssemblyInfrastructureConnector"/>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//core/composition/ProvidedInfrastructureDelegationConnector">
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/ProvidedInfrastructureDelegationConnector/innerProvidedRole__ProvidedInfrastructureDelegationConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/ProvidedInfrastructureDelegationConnector/outerProvidedRole__ProvidedInfrastructureDelegationConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/ProvidedInfrastructureDelegationConnector/assemblyContext__ProvidedInfrastructureDelegationConnector"/>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//core/composition/RequiredInfrastructureDelegationConnector">
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/RequiredInfrastructureDelegationConnector/innerRequiredRole__RequiredInfrastructureDelegationConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/RequiredInfrastructureDelegationConnector/outerRequiredRole__RequiredInfrastructureDelegationConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/RequiredInfrastructureDelegationConnector/assemblyContext__RequiredInfrastructureDelegationConnector"/>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//core/composition/RequiredResourceDelegationConnector">
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/RequiredResourceDelegationConnector/assemblyContext__RequiredResourceDelegationConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/RequiredResourceDelegationConnector/innerRequiredRole__RequiredResourceDelegationConnector"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/RequiredResourceDelegationConnector/outerRequiredRole__RequiredResourceDelegationConnector"/>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//core/composition/AssemblyContext">
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+              createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/AssemblyContext/parentStructure__AssemblyContext"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/AssemblyContext/encapsulatedComponent__AssemblyContext"/>
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+              createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//core/composition/AssemblyContext/configParameterUsages__AssemblyContext"/>
+        </genClasses>
+      </nestedGenPackages>
+    </nestedGenPackages>
+    <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="Usagemodel" basePackage="org.palladiosimulator.pcm"
+        resource="XMI" disposableProviderFactory="true" extensibleProviderFactory="true"
+        ecorePackage="pcm.ecore#//usagemodel">
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//usagemodel/Workload">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/Workload/usageScenario_Workload"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//usagemodel/UsageScenario"
+          labelFeature="#//pcm/core/entity/NamedElement/entityName">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/UsageScenario/usageModel_UsageScenario"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/UsageScenario/scenarioBehaviour_UsageScenario"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/UsageScenario/workload_UsageScenario"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//usagemodel/UserData">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/UserData/assemblyContext_userData"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/UserData/usageModel_UserData"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/UserData/userDataParameterUsages_UserData"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//usagemodel/UsageModel">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/UsageModel/usageScenario_UsageModel"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/UsageModel/userData_UsageModel"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//usagemodel/EntryLevelSystemCall">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/EntryLevelSystemCall/providedRole_EntryLevelSystemCall"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/EntryLevelSystemCall/operationSignature__EntryLevelSystemCall"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/EntryLevelSystemCall/outputParameterUsages_EntryLevelSystemCall"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//usagemodel/EntryLevelSystemCall/priority"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/EntryLevelSystemCall/inputParameterUsages_EntryLevelSystemCall"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//usagemodel/EntryLevelSystemCall/EntryLevelSystemCallMustReferenceProvidedRoleOfASystem">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//usagemodel/EntryLevelSystemCall/EntryLevelSystemCallMustReferenceProvidedRoleOfASystem/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//usagemodel/EntryLevelSystemCall/EntryLevelSystemCallMustReferenceProvidedRoleOfASystem/context"/>
+        </genOperations>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//usagemodel/EntryLevelSystemCall/EntryLevelSystemCallSignatureMustMatchItsProvidedRole">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//usagemodel/EntryLevelSystemCall/EntryLevelSystemCallSignatureMustMatchItsProvidedRole/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//usagemodel/EntryLevelSystemCall/EntryLevelSystemCallSignatureMustMatchItsProvidedRole/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//usagemodel/AbstractUserAction">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/AbstractUserAction/successor"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/AbstractUserAction/predecessor"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/AbstractUserAction/scenarioBehaviour_AbstractUserAction"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//usagemodel/ScenarioBehaviour">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/ScenarioBehaviour/usageScenario_SenarioBehaviour"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/ScenarioBehaviour/branchTransition_ScenarioBehaviour"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/ScenarioBehaviour/loop_ScenarioBehaviour"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/ScenarioBehaviour/actions_ScenarioBehaviour"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//usagemodel/ScenarioBehaviour/Exactlyonestart">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//usagemodel/ScenarioBehaviour/Exactlyonestart/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//usagemodel/ScenarioBehaviour/Exactlyonestart/context"/>
+        </genOperations>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//usagemodel/ScenarioBehaviour/Exactlyonestop">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//usagemodel/ScenarioBehaviour/Exactlyonestop/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//usagemodel/ScenarioBehaviour/Exactlyonestop/context"/>
+        </genOperations>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//usagemodel/ScenarioBehaviour/EachuseractionexceptStartandStopmusthaveapredecessorandsuccessor">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//usagemodel/ScenarioBehaviour/EachuseractionexceptStartandStopmusthaveapredecessorandsuccessor/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//usagemodel/ScenarioBehaviour/EachuseractionexceptStartandStopmusthaveapredecessorandsuccessor/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//usagemodel/BranchTransition">
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//usagemodel/BranchTransition/branchProbability"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/BranchTransition/branch_BranchTransition"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/BranchTransition/branchedBehaviour_BranchTransition"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//usagemodel/Branch">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/Branch/branchTransitions_Branch"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//usagemodel/Branch/AllBranchProbabilitiesMustSumUpTo1">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//usagemodel/Branch/AllBranchProbabilitiesMustSumUpTo1/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//usagemodel/Branch/AllBranchProbabilitiesMustSumUpTo1/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//usagemodel/Loop">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/Loop/loopIteration_Loop"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/Loop/bodyBehaviour_Loop"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//usagemodel/Stop">
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//usagemodel/Stop/StopHasNoSuccessor">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//usagemodel/Stop/StopHasNoSuccessor/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//usagemodel/Stop/StopHasNoSuccessor/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//usagemodel/Start">
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//usagemodel/Start/StartHasNoPredecessor">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//usagemodel/Start/StartHasNoPredecessor/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//usagemodel/Start/StartHasNoPredecessor/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//usagemodel/OpenWorkload">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/OpenWorkload/interArrivalTime_OpenWorkload"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//usagemodel/OpenWorkload/InterArrivalTimeInOpenWorkloadNeedsToBeSpecified">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//usagemodel/OpenWorkload/InterArrivalTimeInOpenWorkloadNeedsToBeSpecified/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//usagemodel/OpenWorkload/InterArrivalTimeInOpenWorkloadNeedsToBeSpecified/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//usagemodel/Delay">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/Delay/timeSpecification_Delay"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//usagemodel/ClosedWorkload">
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//usagemodel/ClosedWorkload/population"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//usagemodel/ClosedWorkload/thinkTime_ClosedWorkload"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//usagemodel/ClosedWorkload/PopulationInClosedWorkloadNeedsToBeSpecified">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//usagemodel/ClosedWorkload/PopulationInClosedWorkloadNeedsToBeSpecified/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//usagemodel/ClosedWorkload/PopulationInClosedWorkloadNeedsToBeSpecified/context"/>
+        </genOperations>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//usagemodel/ClosedWorkload/ThinkTimeInClosedWorkloadNeedsToBeSpecified">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//usagemodel/ClosedWorkload/ThinkTimeInClosedWorkloadNeedsToBeSpecified/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//usagemodel/ClosedWorkload/ThinkTimeInClosedWorkloadNeedsToBeSpecified/context"/>
+        </genOperations>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="Repository" basePackage="org.palladiosimulator.pcm"
+        resource="XMI" disposableProviderFactory="true" extensibleProviderFactory="true"
+        ecorePackage="pcm.ecore#//repository">
+      <genEnums xsi:type="genmodel:GenEnum" typeSafeEnumCompatible="false" ecoreEnum="pcm.ecore#//repository/ParameterModifier">
+        <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="pcm.ecore#//repository/ParameterModifier/none"/>
+        <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="pcm.ecore#//repository/ParameterModifier/in"/>
+        <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="pcm.ecore#//repository/ParameterModifier/out"/>
+        <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="pcm.ecore#//repository/ParameterModifier/inout"/>
+      </genEnums>
+      <genEnums xsi:type="genmodel:GenEnum" typeSafeEnumCompatible="false" ecoreEnum="pcm.ecore#//repository/ComponentType">
+        <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="pcm.ecore#//repository/ComponentType/BUSINESS_COMPONENT"/>
+        <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="pcm.ecore#//repository/ComponentType/INFRASTRUCTURE_COMPONENT"/>
+      </genEnums>
+      <genEnums xsi:type="genmodel:GenEnum" typeSafeEnumCompatible="false" ecoreEnum="pcm.ecore#//repository/PrimitiveTypeEnum">
+        <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="pcm.ecore#//repository/PrimitiveTypeEnum/INT"/>
+        <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="pcm.ecore#//repository/PrimitiveTypeEnum/STRING"/>
+        <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="pcm.ecore#//repository/PrimitiveTypeEnum/BOOL"/>
+        <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="pcm.ecore#//repository/PrimitiveTypeEnum/DOUBLE"/>
+        <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="pcm.ecore#//repository/PrimitiveTypeEnum/CHAR"/>
+        <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="pcm.ecore#//repository/PrimitiveTypeEnum/BYTE"/>
+        <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="pcm.ecore#//repository/PrimitiveTypeEnum/LONG"/>
+      </genEnums>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/PassiveResource">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/PassiveResource/capacity_PassiveResource"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//repository/PassiveResource/basicComponent_PassiveResource"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/PassiveResource/resourceTimeoutFailureType__PassiveResource"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/BasicComponent">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/BasicComponent/serviceEffectSpecifications__BasicComponent"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/BasicComponent/passiveResource_BasicComponent"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//repository/BasicComponent/NoSeffTypeUsedTwice">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/BasicComponent/NoSeffTypeUsedTwice/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/BasicComponent/NoSeffTypeUsedTwice/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//repository/ImplementationComponentType">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/ImplementationComponentType/parentCompleteComponentTypes"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/ImplementationComponentType/componentParameterUsage_ImplementationComponentType"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//repository/ImplementationComponentType/componentType"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//repository/ImplementationComponentType/RequiredInterfacesHaveToConformToCompleteType">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/ImplementationComponentType/RequiredInterfacesHaveToConformToCompleteType/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/ImplementationComponentType/RequiredInterfacesHaveToConformToCompleteType/context"/>
+        </genOperations>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//repository/ImplementationComponentType/providedInterfacesHaveToConformToCompleteType">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/ImplementationComponentType/providedInterfacesHaveToConformToCompleteType/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/ImplementationComponentType/providedInterfacesHaveToConformToCompleteType/context"/>
+        </genOperations>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//repository/ImplementationComponentType/ProvidedInterfaceHaveToConformToComponentType">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/ImplementationComponentType/ProvidedInterfaceHaveToConformToComponentType/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/ImplementationComponentType/ProvidedInterfaceHaveToConformToComponentType/context"/>
+        </genOperations>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//repository/ImplementationComponentType/ProvideSameOrMoreInterfacesAsCompleteComponentType">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/ImplementationComponentType/ProvideSameOrMoreInterfacesAsCompleteComponentType/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/ImplementationComponentType/ProvideSameOrMoreInterfacesAsCompleteComponentType/context"/>
+        </genOperations>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//repository/ImplementationComponentType/RequireSameOrFewerInterfacesAsCompleteComponentType">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/ImplementationComponentType/RequireSameOrFewerInterfacesAsCompleteComponentType/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/ImplementationComponentType/RequireSameOrFewerInterfacesAsCompleteComponentType/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//repository/RepositoryComponent">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//repository/RepositoryComponent/repository__RepositoryComponent"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//repository/ProvidedRole">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//repository/ProvidedRole/providingEntity_ProvidedRole"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/Parameter">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/Parameter/dataType__Parameter"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//repository/Parameter/infrastructureSignature__Parameter"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//repository/Parameter/operationSignature__Parameter"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//repository/Parameter/eventType__Parameter"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//repository/Parameter/parameterName"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//repository/Parameter/modifier__Parameter"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//repository/Parameter/resourceSignature__Parameter"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//repository/DataType">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//repository/DataType/repository__DataType"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/Repository">
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//repository/Repository/repositoryDescription"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/Repository/components__Repository"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/Repository/interfaces__Repository"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/Repository/failureTypes__Repository"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/Repository/dataTypes__Repository"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//repository/Interface">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/Interface/parentInterfaces__Interface"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/Interface/protocols__Interface"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/Interface/requiredCharacterisations"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//repository/Interface/repository__Interface"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//repository/Interface/NoProtocolTypeIDUsedTwice">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/Interface/NoProtocolTypeIDUsedTwice/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/Interface/NoProtocolTypeIDUsedTwice/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/RequiredCharacterisation">
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//repository/RequiredCharacterisation/type"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/RequiredCharacterisation/parameter"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//repository/RequiredCharacterisation/interface_RequiredCharacterisation"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/EventGroup">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/EventGroup/eventTypes__EventGroup"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/EventType">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/EventType/parameter__EventType"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//repository/EventType/eventGroup__EventType"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//repository/Signature">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/Signature/exceptions__Signature"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/Signature/failureType"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/ExceptionType">
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//repository/ExceptionType/exceptionName"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//repository/ExceptionType/exceptionMessage"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/InfrastructureSignature">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/InfrastructureSignature/parameters__InfrastructureSignature"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//repository/InfrastructureSignature/infrastructureInterface__InfrastructureSignature"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/InfrastructureInterface">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/InfrastructureInterface/infrastructureSignatures__InfrastructureInterface"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/InfrastructureRequiredRole">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/InfrastructureRequiredRole/requiredInterface__InfrastructureRequiredRole"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//repository/RequiredRole">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//repository/RequiredRole/requiringEntity_RequiredRole"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/OperationSignature">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//repository/OperationSignature/interface__OperationSignature"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/OperationSignature/parameters__OperationSignature"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/OperationSignature/returnType__OperationSignature"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//repository/OperationSignature/ParameterNamesHaveToBeUniqueForASignature">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/OperationSignature/ParameterNamesHaveToBeUniqueForASignature/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/OperationSignature/ParameterNamesHaveToBeUniqueForASignature/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/OperationInterface">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/OperationInterface/signatures__OperationInterface"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//repository/OperationInterface/SignaturesHaveToBeUniqueForAnInterface">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/OperationInterface/SignaturesHaveToBeUniqueForAnInterface/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/OperationInterface/SignaturesHaveToBeUniqueForAnInterface/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/OperationRequiredRole">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/OperationRequiredRole/requiredInterface__OperationRequiredRole"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/SourceRole">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/SourceRole/eventGroup__SourceRole"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/SinkRole">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/SinkRole/eventGroup__SinkRole"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/OperationProvidedRole">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/OperationProvidedRole/providedInterface__OperationProvidedRole"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/InfrastructureProvidedRole">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/InfrastructureProvidedRole/providedInterface__InfrastructureProvidedRole"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/CompleteComponentType">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/CompleteComponentType/parentProvidesComponentTypes"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//repository/CompleteComponentType/AtLeastOneInterfaceHasToBeProvidedOrRequiredByAUsefullCompleteComponentType">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/CompleteComponentType/AtLeastOneInterfaceHasToBeProvidedOrRequiredByAUsefullCompleteComponentType/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/CompleteComponentType/AtLeastOneInterfaceHasToBeProvidedOrRequiredByAUsefullCompleteComponentType/context"/>
+        </genOperations>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//repository/CompleteComponentType/providedInterfacesHaveToConformToProvidedType2">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/CompleteComponentType/providedInterfacesHaveToConformToProvidedType2/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/CompleteComponentType/providedInterfacesHaveToConformToProvidedType2/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/ProvidesComponentType">
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//repository/ProvidesComponentType/AtLeastOneInterfaceHasToBeProvidedByAUsefullProvidesComponentType">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/ProvidesComponentType/AtLeastOneInterfaceHasToBeProvidedByAUsefullProvidesComponentType/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/ProvidesComponentType/AtLeastOneInterfaceHasToBeProvidedByAUsefullProvidesComponentType/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/CompositeComponent"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/PrimitiveDataType">
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//repository/PrimitiveDataType/type"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/CollectionDataType">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/CollectionDataType/innerType_CollectionDataType"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/CompositeDataType">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/CompositeDataType/parentType_CompositeDataType"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/CompositeDataType/innerDeclaration_CompositeDataType"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//repository/InnerDeclaration">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/InnerDeclaration/datatype_InnerDeclaration"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//repository/InnerDeclaration/compositeDataType_InnerDeclaration"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//repository/Role"/>
+    </nestedGenPackages>
+    <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="Resourcetype" basePackage="org.palladiosimulator.pcm"
+        resource="XMI" disposableProviderFactory="true" extensibleProviderFactory="true"
+        ecorePackage="pcm.ecore#//resourcetype">
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//resourcetype/ResourceSignature">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//resourcetype/ResourceSignature/parameter__ResourceSignature"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//resourcetype/ResourceSignature/resourceServiceId"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//resourcetype/ResourceSignature/resourceInterface__ResourceSignature"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//resourcetype/ProcessingResourceType">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//resourcetype/ProcessingResourceType/hardwareInducedFailureType__ProcessingResourceType"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//resourcetype/ResourceType">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//resourcetype/ResourceType/resourceRepository_ResourceType"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//resourcetype/ResourceRepository">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//resourcetype/ResourceRepository/resourceInterfaces__ResourceRepository"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//resourcetype/ResourceRepository/schedulingPolicies__ResourceRepository"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//resourcetype/ResourceRepository/availableResourceTypes_ResourceRepository"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//resourcetype/SchedulingPolicy">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//resourcetype/SchedulingPolicy/resourceRepository__SchedulingPolicy"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//resourcetype/CommunicationLinkResourceType">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//resourcetype/CommunicationLinkResourceType/networkInducedFailureType__CommunicationLinkResourceType"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//resourcetype/ResourceInterface">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//resourcetype/ResourceInterface/resourceRepository__ResourceInterface"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//resourcetype/ResourceInterface/resourceSignatures__ResourceInterface"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="Protocol" basePackage="org.palladiosimulator.pcm"
+        resource="XMI" disposableProviderFactory="true" extensibleProviderFactory="true"
+        ecorePackage="pcm.ecore#//protocol">
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//protocol/Protocol">
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//protocol/Protocol/protocolTypeID"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="Parameter" basePackage="org.palladiosimulator.pcm"
+        resource="XMI" disposableProviderFactory="true" extensibleProviderFactory="true"
+        ecorePackage="pcm.ecore#//parameter">
+      <genEnums xsi:type="genmodel:GenEnum" typeSafeEnumCompatible="false" ecoreEnum="pcm.ecore#//parameter/VariableCharacterisationType">
+        <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="pcm.ecore#//parameter/VariableCharacterisationType/STRUCTURE"/>
+        <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="pcm.ecore#//parameter/VariableCharacterisationType/NUMBER_OF_ELEMENTS"/>
+        <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="pcm.ecore#//parameter/VariableCharacterisationType/VALUE"/>
+        <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="pcm.ecore#//parameter/VariableCharacterisationType/BYTESIZE"/>
+        <genEnumLiterals xsi:type="genmodel:GenEnumLiteral" ecoreEnumLiteral="pcm.ecore#//parameter/VariableCharacterisationType/TYPE"/>
+      </genEnums>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//parameter/VariableUsage">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//parameter/VariableUsage/variableCharacterisation_VariableUsage"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//parameter/VariableUsage/userData_VariableUsage"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//parameter/VariableUsage/callAction__VariableUsage"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//parameter/VariableUsage/synchronisationPoint_VariableUsage"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//parameter/VariableUsage/callReturnAction__VariableUsage"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//parameter/VariableUsage/setVariableAction_VariableUsage"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//parameter/VariableUsage/specifiedOutputParameterAbstraction_expectedExternalOutputs_VariableUsage"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//parameter/VariableUsage/assemblyContext__VariableUsage"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//parameter/VariableUsage/entryLevelSystemCall_InputParameterUsage"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//parameter/VariableUsage/entryLevelSystemCall_OutputParameterUsage"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//parameter/VariableUsage/namedReference__VariableUsage"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//parameter/VariableCharacterisation">
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//parameter/VariableCharacterisation/type"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//parameter/VariableCharacterisation/specification_VariableCharacterisation"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//parameter/VariableCharacterisation/variableUsage_VariableCharacterisation"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//parameter/CharacterisedVariable">
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//parameter/CharacterisedVariable/characterisationType"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="Reliability" basePackage="org.palladiosimulator.pcm"
+        resource="XMI" disposableProviderFactory="true" extensibleProviderFactory="true"
+        ecorePackage="pcm.ecore#//reliability">
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//reliability/FailureOccurrenceDescription">
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//reliability/FailureOccurrenceDescription/failureProbability"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//reliability/FailureOccurrenceDescription/EnsureValidFailureProbabilityRange">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//reliability/FailureOccurrenceDescription/EnsureValidFailureProbabilityRange/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//reliability/FailureOccurrenceDescription/EnsureValidFailureProbabilityRange/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//reliability/HardwareInducedFailureType">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//reliability/HardwareInducedFailureType/processingResourceType__HardwareInducedFailureType"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//reliability/HardwareInducedFailureType/HardwareInducedFailureTypeHasProcessingResourceType">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//reliability/HardwareInducedFailureType/HardwareInducedFailureTypeHasProcessingResourceType/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//reliability/HardwareInducedFailureType/HardwareInducedFailureTypeHasProcessingResourceType/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//reliability/SoftwareInducedFailureType">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//reliability/SoftwareInducedFailureType/internalFailureOccurrenceDescriptions__SoftwareInducedFailureType"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//reliability/InternalFailureOccurrenceDescription">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//reliability/InternalFailureOccurrenceDescription/internalAction__InternalFailureOccurrenceDescription"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//reliability/InternalFailureOccurrenceDescription/softwareInducedFailureType__InternalFailureOccurrenceDescription"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//reliability/InternalFailureOccurrenceDescription/NoResourceTimeoutFailureAllowedForInternalFailureOccurrenceDescription">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//reliability/InternalFailureOccurrenceDescription/NoResourceTimeoutFailureAllowedForInternalFailureOccurrenceDescription/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//reliability/InternalFailureOccurrenceDescription/NoResourceTimeoutFailureAllowedForInternalFailureOccurrenceDescription/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//reliability/NetworkInducedFailureType">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//reliability/NetworkInducedFailureType/communicationLinkResourceType__NetworkInducedFailureType"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//reliability/NetworkInducedFailureType/NetworkInducedFailureTypeHasCommunicationLinkResourceType">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//reliability/NetworkInducedFailureType/NetworkInducedFailureTypeHasCommunicationLinkResourceType/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//reliability/NetworkInducedFailureType/NetworkInducedFailureTypeHasCommunicationLinkResourceType/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//reliability/ExternalFailureOccurrenceDescription">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//reliability/ExternalFailureOccurrenceDescription/specifiedReliabilityAnnotation__ExternalFailureOccurrenceDescription"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//reliability/ExternalFailureOccurrenceDescription/failureType__ExternalFailureOccurrenceDescription"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//reliability/ExternalFailureOccurrenceDescription/NoResourceTimeoutFailureAllowedForExternalFailureOccurrenceDescription">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//reliability/ExternalFailureOccurrenceDescription/NoResourceTimeoutFailureAllowedForExternalFailureOccurrenceDescription/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//reliability/ExternalFailureOccurrenceDescription/NoResourceTimeoutFailureAllowedForExternalFailureOccurrenceDescription/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//reliability/ResourceTimeoutFailureType">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//reliability/ResourceTimeoutFailureType/passiveResource__ResourceTimeoutFailureType"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//reliability/FailureType">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//reliability/FailureType/repository__FailureType"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="Seff" basePackage="org.palladiosimulator.pcm"
+        resource="XMI" disposableProviderFactory="true" extensibleProviderFactory="true"
+        ecorePackage="pcm.ecore#//seff">
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/StopAction">
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/StopAction/StopActionSuccessorMustNotBeDefined">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/StopAction/StopActionSuccessorMustNotBeDefined/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/StopAction/StopActionSuccessorMustNotBeDefined/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//seff/AbstractInternalControlFlowAction">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/AbstractInternalControlFlowAction/resourceDemand_Action"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/AbstractInternalControlFlowAction/infrastructureCall__Action"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/AbstractInternalControlFlowAction/resourceCall__Action"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//seff/AbstractAction">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/AbstractAction/predecessor_AbstractAction"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/AbstractAction/successor_AbstractAction"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//seff/AbstractAction/resourceDemandingBehaviour_AbstractAction"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/ResourceDemandingBehaviour">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//seff/ResourceDemandingBehaviour/abstractLoopAction_ResourceDemandingBehaviour"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//seff/ResourceDemandingBehaviour/abstractBranchTransition_ResourceDemandingBehaviour"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/ResourceDemandingBehaviour/steps_Behaviour"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/ResourceDemandingBehaviour/ExactlyOneStopAction">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/ResourceDemandingBehaviour/ExactlyOneStopAction/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/ResourceDemandingBehaviour/ExactlyOneStopAction/context"/>
+        </genOperations>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/ResourceDemandingBehaviour/ExactlyOneStartAction">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/ResourceDemandingBehaviour/ExactlyOneStartAction/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/ResourceDemandingBehaviour/ExactlyOneStartAction/context"/>
+        </genOperations>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/ResourceDemandingBehaviour/EachActionExceptStartActionandStopActionMustHhaveAPredecessorAndSuccessor">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/ResourceDemandingBehaviour/EachActionExceptStartActionandStopActionMustHhaveAPredecessorAndSuccessor/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/ResourceDemandingBehaviour/EachActionExceptStartActionandStopActionMustHhaveAPredecessorAndSuccessor/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//seff/AbstractLoopAction">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/AbstractLoopAction/bodyBehaviour_Loop"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//seff/AbstractBranchTransition">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//seff/AbstractBranchTransition/branchAction_AbstractBranchTransition"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/AbstractBranchTransition/branchBehaviour_BranchTransition"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/BranchAction">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/BranchAction/branches_Branch"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/BranchAction/EitherGuardedBranchesOrProbabilisiticBranchTransitions">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/BranchAction/EitherGuardedBranchesOrProbabilisiticBranchTransitions/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/BranchAction/EitherGuardedBranchesOrProbabilisiticBranchTransitions/context"/>
+        </genOperations>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/BranchAction/AllProbabilisticBranchProbabilitiesMustSumUpTo1">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/BranchAction/AllProbabilisticBranchProbabilitiesMustSumUpTo1/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/BranchAction/AllProbabilisticBranchProbabilitiesMustSumUpTo1/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//seff/CallAction">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/CallAction/inputVariableUsages__CallAction"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/StartAction">
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/StartAction/StartActionPredecessorMustNotBeDefined">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/StartAction/StartActionPredecessorMustNotBeDefined/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/StartAction/StartActionPredecessorMustNotBeDefined/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//seff/ServiceEffectSpecification">
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//seff/ServiceEffectSpecification/seffTypeID"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/ServiceEffectSpecification/describedService__SEFF"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//seff/ServiceEffectSpecification/basicComponent_ServiceEffectSpecification"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/ServiceEffectSpecification/ReferencedSignatureMustBelongToInterfaceReferencedByProvidedRole">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/ServiceEffectSpecification/ReferencedSignatureMustBelongToInterfaceReferencedByProvidedRole/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/ServiceEffectSpecification/ReferencedSignatureMustBelongToInterfaceReferencedByProvidedRole/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/ResourceDemandingSEFF">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/ResourceDemandingSEFF/resourceDemandingInternalBehaviours"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/ResourceDemandingInternalBehaviour">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//seff/ResourceDemandingInternalBehaviour/resourceDemandingSEFF_ResourceDemandingInternalBehaviour"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/ReleaseAction">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/ReleaseAction/passiveResource_ReleaseAction"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/LoopAction">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/LoopAction/iterationCount_LoopAction"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/ForkAction">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/ForkAction/asynchronousForkedBehaviours_ForkAction"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/ForkAction/synchronisingBehaviours_ForkAction"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/ForkedBehaviour">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//seff/ForkedBehaviour/synchronisationPoint_ForkedBehaviour"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//seff/ForkedBehaviour/forkAction_ForkedBehaivour"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/SynchronisationPoint">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/SynchronisationPoint/outputParameterUsage_SynchronisationPoint"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//seff/SynchronisationPoint/forkAction_SynchronisationPoint"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/SynchronisationPoint/synchronousForkedBehaviours_SynchronisationPoint"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/ExternalCallAction">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/ExternalCallAction/calledService_ExternalService"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/ExternalCallAction/role_ExternalService"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//seff/ExternalCallAction/retryCount"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/ExternalCallAction/SignatureBelongsToRole">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/ExternalCallAction/SignatureBelongsToRole/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/ExternalCallAction/SignatureBelongsToRole/context"/>
+        </genOperations>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/ExternalCallAction/OperationRequiredRoleMustBeReferencedByContainer">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/ExternalCallAction/OperationRequiredRoleMustBeReferencedByContainer/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/ExternalCallAction/OperationRequiredRoleMustBeReferencedByContainer/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/CallReturnAction">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/CallReturnAction/returnVariableUsage__CallReturnAction"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/ProbabilisticBranchTransition">
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//seff/ProbabilisticBranchTransition/branchProbability"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/AcquireAction">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/AcquireAction/passiveresource_AcquireAction"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//seff/AcquireAction/timeout"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//seff/AcquireAction/timeoutValue"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/AcquireAction/TimeoutValueOfAcquireActionMustNotBeNegative">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/AcquireAction/TimeoutValueOfAcquireActionMustNotBeNegative/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/AcquireAction/TimeoutValueOfAcquireActionMustNotBeNegative/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/CollectionIteratorAction">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/CollectionIteratorAction/parameter_CollectionIteratorAction"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/GuardedBranchTransition">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/GuardedBranchTransition/branchCondition_GuardedBranchTransition"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/SetVariableAction">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/SetVariableAction/localVariableUsages_SetVariableAction"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/InternalCallAction">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/InternalCallAction/calledResourceDemandingInternalBehaviour"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/EmitEventAction">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/EmitEventAction/eventType__EmitEventAction"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/EmitEventAction/sourceRole__EmitEventAction"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/InternalAction">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/InternalAction/internalFailureOccurrenceDescriptions__InternalAction"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/InternalAction/MultipleInternalOccurrenceDescriptionsPerFailureTypeNotAllowed">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/InternalAction/MultipleInternalOccurrenceDescriptionsPerFailureTypeNotAllowed/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/InternalAction/MultipleInternalOccurrenceDescriptionsPerFailureTypeNotAllowed/context"/>
+        </genOperations>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/InternalAction/SumOfInternalActionFailureProbabilitiesMustNotExceed1">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/InternalAction/SumOfInternalActionFailureProbabilitiesMustNotExceed1/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/InternalAction/SumOfInternalActionFailureProbabilitiesMustNotExceed1/context"/>
+        </genOperations>
+      </genClasses>
+      <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="SeffPerformance" basePackage="org.palladiosimulator.pcm.seff"
+          resource="XMI" disposableProviderFactory="true" extensibleProviderFactory="true"
+          ecorePackage="pcm.ecore#//seff/seff_performance">
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/seff_performance/InfrastructureCall">
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/seff_performance/InfrastructureCall/signature__InfrastructureCall"/>
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+              createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/seff_performance/InfrastructureCall/numberOfCalls__InfrastructureCall"/>
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+              createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//seff/seff_performance/InfrastructureCall/action__InfrastructureCall"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/seff_performance/InfrastructureCall/requiredRole__InfrastructureCall"/>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/seff_performance/InfrastructureCall/SignatureMustBelongToUsedRequiredRole">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/seff_performance/InfrastructureCall/SignatureMustBelongToUsedRequiredRole/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/seff_performance/InfrastructureCall/SignatureMustBelongToUsedRequiredRole/context"/>
+          </genOperations>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/seff_performance/InfrastructureCall/ReferencedRequiredRoleMustBeRequiredByComponent">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/seff_performance/InfrastructureCall/ReferencedRequiredRoleMustBeRequiredByComponent/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/seff_performance/InfrastructureCall/ReferencedRequiredRoleMustBeRequiredByComponent/context"/>
+          </genOperations>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/seff_performance/InfrastructureCall/SignatureRoleCombinationMustBeUniqueWithinAbstractInternalControlFlowAction">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/seff_performance/InfrastructureCall/SignatureRoleCombinationMustBeUniqueWithinAbstractInternalControlFlowAction/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/seff_performance/InfrastructureCall/SignatureRoleCombinationMustBeUniqueWithinAbstractInternalControlFlowAction/context"/>
+          </genOperations>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/seff_performance/ResourceCall">
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+              createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//seff/seff_performance/ResourceCall/action__ResourceCall"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/seff_performance/ResourceCall/resourceRequiredRole__ResourceCall"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/seff_performance/ResourceCall/signature__ResourceCall"/>
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+              createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/seff_performance/ResourceCall/numberOfCalls__ResourceCall"/>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/seff_performance/ResourceCall/ResourceSignatureBelongsToResourceRequiredRole">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/seff_performance/ResourceCall/ResourceSignatureBelongsToResourceRequiredRole/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/seff_performance/ResourceCall/ResourceSignatureBelongsToResourceRequiredRole/context"/>
+          </genOperations>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/seff_performance/ResourceCall/ResourceRequiredRoleMustBeReferencedByComponent">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/seff_performance/ResourceCall/ResourceRequiredRoleMustBeReferencedByComponent/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/seff_performance/ResourceCall/ResourceRequiredRoleMustBeReferencedByComponent/context"/>
+          </genOperations>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/seff_performance/ResourceCall/SignatureRoleCombinationMustBeUniqueWithinAbstractInternalControlFlowAction">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/seff_performance/ResourceCall/SignatureRoleCombinationMustBeUniqueWithinAbstractInternalControlFlowAction/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/seff_performance/ResourceCall/SignatureRoleCombinationMustBeUniqueWithinAbstractInternalControlFlowAction/context"/>
+          </genOperations>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/seff_performance/ParametricResourceDemand">
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+              createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/seff_performance/ParametricResourceDemand/specification_ParametericResourceDemand"/>
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/seff_performance/ParametricResourceDemand/requiredResource_ParametricResourceDemand"/>
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+              createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//seff/seff_performance/ParametricResourceDemand/action_ParametricResourceDemand"/>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/seff_performance/ParametricResourceDemand/DemandedProcessingResourceMustBeUniqueWithinAbstractInternalControlFlowAction">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/seff_performance/ParametricResourceDemand/DemandedProcessingResourceMustBeUniqueWithinAbstractInternalControlFlowAction/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/seff_performance/ParametricResourceDemand/DemandedProcessingResourceMustBeUniqueWithinAbstractInternalControlFlowAction/context"/>
+          </genOperations>
+        </genClasses>
+      </nestedGenPackages>
+      <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="SeffReliability" basePackage="org.palladiosimulator.pcm.seff"
+          resource="XMI" disposableProviderFactory="true" extensibleProviderFactory="true"
+          ecorePackage="pcm.ecore#//seff/seff_reliability">
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/seff_reliability/RecoveryActionBehaviour">
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/seff_reliability/RecoveryActionBehaviour/failureHandlingAlternatives__RecoveryActionBehaviour"/>
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+              createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//seff/seff_reliability/RecoveryActionBehaviour/recoveryAction__RecoveryActionBehaviour"/>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/seff_reliability/RecoveryActionBehaviour/RecoveryActionBehaviourHasOnlyOnePredecessor">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/seff_reliability/RecoveryActionBehaviour/RecoveryActionBehaviourHasOnlyOnePredecessor/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/seff_reliability/RecoveryActionBehaviour/RecoveryActionBehaviourHasOnlyOnePredecessor/context"/>
+          </genOperations>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/seff_reliability/RecoveryActionBehaviour/RecoveryActionBehaviourIsNotSuccessorOfItself">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/seff_reliability/RecoveryActionBehaviour/RecoveryActionBehaviourIsNotSuccessorOfItself/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/seff_reliability/RecoveryActionBehaviour/RecoveryActionBehaviourIsNotSuccessorOfItself/context"/>
+          </genOperations>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/seff_reliability/RecoveryActionBehaviour/SuccessorsOfRecoveryActionBehaviourHandleDisjointFailureTypes">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/seff_reliability/RecoveryActionBehaviour/SuccessorsOfRecoveryActionBehaviourHandleDisjointFailureTypes/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/seff_reliability/RecoveryActionBehaviour/SuccessorsOfRecoveryActionBehaviourHandleDisjointFailureTypes/context"/>
+          </genOperations>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/seff_reliability/RecoveryAction">
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/seff_reliability/RecoveryAction/primaryBehaviour__RecoveryAction"/>
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+              createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/seff_reliability/RecoveryAction/recoveryActionBehaviours__RecoveryAction"/>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//seff/seff_reliability/RecoveryAction/PrimaryBehaviourOfRecoveryActionMustBeSet">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/seff_reliability/RecoveryAction/PrimaryBehaviourOfRecoveryActionMustBeSet/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/seff_reliability/RecoveryAction/PrimaryBehaviourOfRecoveryActionMustBeSet/context"/>
+          </genOperations>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//seff/seff_reliability/FailureHandlingEntity">
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/seff_reliability/FailureHandlingEntity/failureTypes_FailureHandlingEntity"/>
+        </genClasses>
+      </nestedGenPackages>
+    </nestedGenPackages>
+    <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="Qosannotations" basePackage="org.palladiosimulator.pcm"
+        resource="XMI" disposableProviderFactory="true" extensibleProviderFactory="true"
+        ecorePackage="pcm.ecore#//qosannotations">
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//qosannotations/SpecifiedQoSAnnotation">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//qosannotations/SpecifiedQoSAnnotation/signature_SpecifiedQoSAnnation"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//qosannotations/SpecifiedQoSAnnotation/role_SpecifiedQoSAnnotation"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//qosannotations/SpecifiedQoSAnnotation/qosAnnotations_SpecifiedQoSAnnotation"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//qosannotations/QoSAnnotations">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//qosannotations/QoSAnnotations/specifiedOutputParameterAbstractions_QoSAnnotations"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//qosannotations/QoSAnnotations/system_QoSAnnotations"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//qosannotations/QoSAnnotations/specifiedQoSAnnotations_QoSAnnotations"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//qosannotations/QoSAnnotations/MultipleReliabilityAnnotationsPerExternalCallNotAllowed">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//qosannotations/QoSAnnotations/MultipleReliabilityAnnotationsPerExternalCallNotAllowed/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//qosannotations/QoSAnnotations/MultipleReliabilityAnnotationsPerExternalCallNotAllowed/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//qosannotations/SpecifiedOutputParameterAbstraction">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//qosannotations/SpecifiedOutputParameterAbstraction/signature_SpecifiedOutputParameterAbstraction"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//qosannotations/SpecifiedOutputParameterAbstraction/role_SpecifiedOutputParameterAbstraction"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//qosannotations/SpecifiedOutputParameterAbstraction/expectedExternalOutputs_SpecifiedOutputParameterAbstraction"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//qosannotations/SpecifiedOutputParameterAbstraction/qosAnnotations_SpecifiedOutputParameterAbstraction"/>
+      </genClasses>
+      <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="QosPerformance" basePackage="org.palladiosimulator.pcm.qosannotations"
+          resource="XMI" disposableProviderFactory="true" extensibleProviderFactory="true"
+          ecorePackage="pcm.ecore#//qosannotations/qos_performance">
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//qosannotations/qos_performance/SystemSpecifiedExecutionTime">
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//qosannotations/qos_performance/SystemSpecifiedExecutionTime/SystemSpecifiedExecutionTimeMustReferenceRequiredRoleOfASystem">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//qosannotations/qos_performance/SystemSpecifiedExecutionTime/SystemSpecifiedExecutionTimeMustReferenceRequiredRoleOfASystem/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//qosannotations/qos_performance/SystemSpecifiedExecutionTime/SystemSpecifiedExecutionTimeMustReferenceRequiredRoleOfASystem/context"/>
+          </genOperations>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="pcm.ecore#//qosannotations/qos_performance/SpecifiedExecutionTime">
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+              createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//qosannotations/qos_performance/SpecifiedExecutionTime/specification_SpecifiedExecutionTime"/>
+        </genClasses>
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//qosannotations/qos_performance/ComponentSpecifiedExecutionTime">
+          <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+              propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//qosannotations/qos_performance/ComponentSpecifiedExecutionTime/assemblyContext_ComponentSpecifiedExecutionTime"/>
+        </genClasses>
+      </nestedGenPackages>
+      <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="QosReliability" basePackage="org.palladiosimulator.pcm.qosannotations"
+          resource="XMI" disposableProviderFactory="true" extensibleProviderFactory="true"
+          ecorePackage="pcm.ecore#//qosannotations/qos_reliability">
+        <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//qosannotations/qos_reliability/SpecifiedReliabilityAnnotation">
+          <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+              createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//qosannotations/qos_reliability/SpecifiedReliabilityAnnotation/externalFailureOccurrenceDescriptions__SpecifiedReliabilityAnnotation"/>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//qosannotations/qos_reliability/SpecifiedReliabilityAnnotation/SpecifiedReliabilityAnnotationMustReferenceRequiredRoleOfASystem">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//qosannotations/qos_reliability/SpecifiedReliabilityAnnotation/SpecifiedReliabilityAnnotationMustReferenceRequiredRoleOfASystem/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//qosannotations/qos_reliability/SpecifiedReliabilityAnnotation/SpecifiedReliabilityAnnotationMustReferenceRequiredRoleOfASystem/context"/>
+          </genOperations>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//qosannotations/qos_reliability/SpecifiedReliabilityAnnotation/SumOfReliabilityAnnotationFailureProbabilitiesMustNotExceed1">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//qosannotations/qos_reliability/SpecifiedReliabilityAnnotation/SumOfReliabilityAnnotationFailureProbabilitiesMustNotExceed1/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//qosannotations/qos_reliability/SpecifiedReliabilityAnnotation/SumOfReliabilityAnnotationFailureProbabilitiesMustNotExceed1/context"/>
+          </genOperations>
+          <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//qosannotations/qos_reliability/SpecifiedReliabilityAnnotation/MultipleExternalOccurrenceDescriptionsPerFailureTypeNotAllowed">
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//qosannotations/qos_reliability/SpecifiedReliabilityAnnotation/MultipleExternalOccurrenceDescriptionsPerFailureTypeNotAllowed/diagnostics"/>
+            <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//qosannotations/qos_reliability/SpecifiedReliabilityAnnotation/MultipleExternalOccurrenceDescriptionsPerFailureTypeNotAllowed/context"/>
+          </genOperations>
+        </genClasses>
+      </nestedGenPackages>
+    </nestedGenPackages>
+    <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="System" basePackage="org.palladiosimulator.pcm"
+        resource="XMI" disposableProviderFactory="true" extensibleProviderFactory="true"
+        ecorePackage="pcm.ecore#//system">
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//system/System">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//system/System/qosAnnotations_System"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//system/System/SystemMustHaveAtLeastOneProvidedRole">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//system/System/SystemMustHaveAtLeastOneProvidedRole/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//system/System/SystemMustHaveAtLeastOneProvidedRole/context"/>
+        </genOperations>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="Resourceenvironment"
+        basePackage="org.palladiosimulator.pcm" resource="XMI" disposableProviderFactory="true"
+        extensibleProviderFactory="true" ecorePackage="pcm.ecore#//resourceenvironment">
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//resourceenvironment/ResourceEnvironment">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//resourceenvironment/ResourceEnvironment/linkingResources__ResourceEnvironment"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//resourceenvironment/ResourceEnvironment/resourceContainer_ResourceEnvironment"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//resourceenvironment/LinkingResource">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//resourceenvironment/LinkingResource/connectedResourceContainers_LinkingResource"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//resourceenvironment/LinkingResource/communicationLinkResourceSpecifications_LinkingResource"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//resourceenvironment/LinkingResource/resourceEnvironment_LinkingResource"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//resourceenvironment/ResourceContainer">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//resourceenvironment/ResourceContainer/activeResourceSpecifications_ResourceContainer"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//resourceenvironment/ResourceContainer/resourceEnvironment_ResourceContainer"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//resourceenvironment/ResourceContainer/nestedResourceContainers__ResourceContainer"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//resourceenvironment/ResourceContainer/parentResourceContainer__ResourceContainer"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//resourceenvironment/ProcessingResourceSpecification">
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//resourceenvironment/ProcessingResourceSpecification/MTTR"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//resourceenvironment/ProcessingResourceSpecification/MTTF"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//resourceenvironment/ProcessingResourceSpecification/requiredByContainer"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//resourceenvironment/ProcessingResourceSpecification/schedulingPolicy"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//resourceenvironment/ProcessingResourceSpecification/activeResourceType_ActiveResourceSpecification"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//resourceenvironment/ProcessingResourceSpecification/processingRate_ProcessingResourceSpecification"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//resourceenvironment/ProcessingResourceSpecification/numberOfReplicas"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//resourceenvironment/ProcessingResourceSpecification/resourceContainer_ProcessingResourceSpecification"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//resourceenvironment/CommunicationLinkResourceSpecification">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//resourceenvironment/CommunicationLinkResourceSpecification/linkingResource_CommunicationLinkResourceSpecification"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute pcm.ecore#//resourceenvironment/CommunicationLinkResourceSpecification/failureProbability"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//resourceenvironment/CommunicationLinkResourceSpecification/communicationLinkResourceType_CommunicationLinkResourceSpecification"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//resourceenvironment/CommunicationLinkResourceSpecification/latency_CommunicationLinkResourceSpecification"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//resourceenvironment/CommunicationLinkResourceSpecification/throughput_CommunicationLinkResourceSpecification"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="Allocation" basePackage="org.palladiosimulator.pcm"
+        resource="XMI" disposableProviderFactory="true" extensibleProviderFactory="true"
+        ecorePackage="pcm.ecore#//allocation">
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//allocation/AllocationContext">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//allocation/AllocationContext/resourceContainer_AllocationContext"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//allocation/AllocationContext/assemblyContext_AllocationContext"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//allocation/AllocationContext/allocation_AllocationContext"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//allocation/AllocationContext/eventChannel__AllocationContext"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//allocation/AllocationContext/OneAssemblyContextOrOneEventChannelShouldBeReferred">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//allocation/AllocationContext/OneAssemblyContextOrOneEventChannelShouldBeReferred/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//allocation/AllocationContext/OneAssemblyContextOrOneEventChannelShouldBeReferred/context"/>
+        </genOperations>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//allocation/Allocation">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//allocation/Allocation/targetResourceEnvironment_Allocation"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference pcm.ecore#//allocation/Allocation/system_Allocation"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//allocation/Allocation/allocationContexts_Allocation"/>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//allocation/Allocation/EachAssemblyContextWithinSystemHasToBeAllocatedExactlyOnce">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//allocation/Allocation/EachAssemblyContextWithinSystemHasToBeAllocatedExactlyOnce/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//allocation/Allocation/EachAssemblyContextWithinSystemHasToBeAllocatedExactlyOnce/context"/>
+        </genOperations>
+        <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//allocation/Allocation/CommunicatingServersHaveToBeConnectedByLinkingResource">
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//allocation/Allocation/CommunicatingServersHaveToBeConnectedByLinkingResource/diagnostics"/>
+          <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//allocation/Allocation/CommunicatingServersHaveToBeConnectedByLinkingResource/context"/>
+        </genOperations>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="Subsystem" basePackage="org.palladiosimulator.pcm"
+        resource="XMI" disposableProviderFactory="true" extensibleProviderFactory="true"
+        ecorePackage="pcm.ecore#//subsystem">
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//subsystem/SubSystem"/>
+    </nestedGenPackages>
+  </genPackages>
+</genmodel:GenModel>

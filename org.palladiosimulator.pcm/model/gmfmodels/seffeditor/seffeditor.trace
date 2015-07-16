@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<trace:TraceModel
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:trace="http://www.eclipse.org/gmf/2006/Trace">
+  <nodeTraces
+      visualID="2001"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'StartAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')"/>
+  <nodeTraces
+      visualID="2002"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'StopAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')"/>
+  <nodeTraces
+      visualID="2003"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ExternalCallAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')">
+    <nodeLabelTraces
+        visualID="5002"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7001"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7021"
+        queryText="true"/>
+  </nodeTraces>
+  <nodeTraces
+      visualID="2004"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'LoopAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')">
+    <nodeLabelTraces
+        visualID="5009"
+        queryText="true"/>
+    <nodeLabelTraces
+        visualID="5010"
+        queryText="true"/>
+  </nodeTraces>
+  <nodeTraces
+      visualID="2005"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'BranchAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')">
+    <nodeLabelTraces
+        visualID="5011"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7011"
+        queryText="true"/>
+  </nodeTraces>
+  <nodeTraces
+      visualID="2006"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'InternalAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')">
+    <nodeLabelTraces
+        visualID="5012"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7012"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7046"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7051"
+        queryText="true"/>
+  </nodeTraces>
+  <nodeTraces
+      visualID="2007"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'CollectionIteratorAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')">
+    <nodeLabelTraces
+        visualID="5015"
+        queryText="true"/>
+    <nodeLabelTraces
+        visualID="5016"
+        queryText="true"/>
+  </nodeTraces>
+  <nodeTraces
+      visualID="2008"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'SetVariableAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')">
+    <nodeLabelTraces
+        visualID="5023"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7016"
+        queryText="true"/>
+  </nodeTraces>
+  <nodeTraces
+      visualID="2010"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ReleaseAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')">
+    <nodeLabelTraces
+        visualID="5022"
+        queryText="true"/>
+  </nodeTraces>
+  <nodeTraces
+      visualID="2011"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ForkAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')">
+    <nodeLabelTraces
+        visualID="5024"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7019"
+        queryText="true"/>
+  </nodeTraces>
+  <nodeTraces
+      visualID="2012"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'AcquireAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')">
+    <nodeLabelTraces
+        visualID="5029"
+        queryText="true"/>
+  </nodeTraces>
+  <nodeTraces
+      visualID="2013"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'EmitEventAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')">
+    <nodeLabelTraces
+        visualID="5046"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7042"
+        queryText="true"/>
+  </nodeTraces>
+  <nodeTraces
+      visualID="2017"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/SEFF_Reliability/5.1' and _eClass_.name = 'RecoveryAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')">
+    <nodeLabelTraces
+        visualID="5061"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7060"
+        queryText="true"/>
+  </nodeTraces>
+  <childNodeTraces
+      visualID="3003"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'AbstractLoopAction') and _containmentMF_.name = 'bodyBehaviour_Loop')">
+    <compartmentTraces
+        visualID="7004"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3004"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'StartAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')"/>
+  <childNodeTraces
+      visualID="3005"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'StopAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')"/>
+  <childNodeTraces
+      visualID="3006"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'LoopAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')">
+    <nodeLabelTraces
+        visualID="5003"
+        queryText="true"/>
+    <nodeLabelTraces
+        visualID="5004"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3007"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'InternalAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')">
+    <nodeLabelTraces
+        visualID="5005"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7006"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7045"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7048"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3009"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'BranchAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')">
+    <nodeLabelTraces
+        visualID="5008"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7007"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3010"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ProbabilisticBranchTransition') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'BranchAction') and _containmentMF_.name = 'branches_Branch')">
+    <nodeLabelTraces
+        visualID="5007"
+        queryText="true"/>
+    <nodeLabelTraces
+        visualID="5037"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3011"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'AbstractBranchTransition') and _containmentMF_.name = 'branchBehaviour_BranchTransition')">
+    <compartmentTraces
+        visualID="7009"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3012"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ExternalCallAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')">
+    <nodeLabelTraces
+        visualID="5006"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7010"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7023"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3013"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'CollectionIteratorAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')">
+    <nodeLabelTraces
+        visualID="5013"
+        queryText="true"/>
+    <nodeLabelTraces
+        visualID="5014"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3014"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'AbstractLoopAction') and _containmentMF_.name = 'bodyBehaviour_Loop')">
+    <compartmentTraces
+        visualID="7014"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3017"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'GuardedBranchTransition') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'BranchAction') and _containmentMF_.name = 'branches_Branch')">
+    <nodeLabelTraces
+        visualID="5018"
+        queryText="true"/>
+    <nodeLabelTraces
+        visualID="5036"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3018"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'AbstractBranchTransition') and _containmentMF_.name = 'branchBehaviour_BranchTransition')">
+    <compartmentTraces
+        visualID="7018"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3020"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ReleaseAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')">
+    <nodeLabelTraces
+        visualID="5020"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3023"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ForkAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')">
+    <nodeLabelTraces
+        visualID="5026"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7024"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3024"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'SetVariableAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')">
+    <nodeLabelTraces
+        visualID="5027"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7025"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3026"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'AcquireAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')">
+    <nodeLabelTraces
+        visualID="5028"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3027"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ForkedBehaviour') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ForkAction') and _containmentMF_.name = 'asynchronousForkedBehaviours_ForkAction')">
+    <compartmentTraces
+        visualID="7026"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3033"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1' and _eClass_.name = 'VariableCharacterisation') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1' and _eClass_.name = 'VariableUsage') and _containmentMF_.name = 'variableCharacterisation_VariableUsage')"/>
+  <childNodeTraces
+      visualID="3035"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1' and _eClass_.name = 'VariableCharacterisation') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1' and _eClass_.name = 'VariableUsage') and _containmentMF_.name = 'variableCharacterisation_VariableUsage')"/>
+  <childNodeTraces
+      visualID="3036"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1' and _eClass_.name = 'VariableUsage') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'SetVariableAction') and _containmentMF_.name = 'localVariableUsages_SetVariableAction')">
+    <nodeLabelTraces
+        visualID="5035"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7032"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3037"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1' and _eClass_.name = 'VariableCharacterisation') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1' and _eClass_.name = 'VariableUsage') and _containmentMF_.name = 'variableCharacterisation_VariableUsage')"/>
+  <childNodeTraces
+      visualID="3038"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'SynchronisationPoint') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ForkAction') and _containmentMF_.name = 'synchronisingBehaviours_ForkAction')">
+    <compartmentTraces
+        visualID="7034"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3039"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ForkedBehaviour') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'SynchronisationPoint') and _containmentMF_.name = 'synchronousForkedBehaviours_SynchronisationPoint')">
+    <compartmentTraces
+        visualID="7033"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3042"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1' and _eClass_.name = 'VariableUsage') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'CallAction') and _containmentMF_.name = 'inputVariableUsages__CallAction')">
+    <nodeLabelTraces
+        visualID="5040"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7037"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3046"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'EmitEventAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')">
+    <nodeLabelTraces
+        visualID="5044"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7041"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3047"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1' and _eClass_.name = 'VariableUsage') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'CallAction') and _containmentMF_.name = 'inputVariableUsages__CallAction')">
+    <nodeLabelTraces
+        visualID="5045"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7043"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3048"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1' and _eClass_.name = 'VariableCharacterisation') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1' and _eClass_.name = 'VariableUsage') and _containmentMF_.name = 'variableCharacterisation_VariableUsage')"/>
+  <childNodeTraces
+      visualID="3049"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1' and _eClass_.name = 'VariableUsage') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'CallReturnAction') and _containmentMF_.name = 'returnVariableUsage__CallReturnAction')">
+    <nodeLabelTraces
+        visualID="5047"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7044"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3050"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Reliability/5.1' and _eClass_.name = 'InternalFailureOccurrenceDescription') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'InternalAction') and _containmentMF_.name = 'internalFailureOccurrenceDescriptions__InternalAction')"/>
+  <childNodeTraces
+      visualID="3054"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1' and _eClass_.name = 'VariableUsage') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'CallAction') and _containmentMF_.name = 'inputVariableUsages__CallAction')">
+    <nodeLabelTraces
+        visualID="5050"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7050"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3055"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1' and _eClass_.name = 'VariableCharacterisation') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1' and _eClass_.name = 'VariableUsage') and _containmentMF_.name = 'variableCharacterisation_VariableUsage')"/>
+  <childNodeTraces
+      visualID="3051"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/SEFF_Performance/5.1' and _eClass_.name = 'ParametricResourceDemand') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'AbstractInternalControlFlowAction') and _containmentMF_.name = 'resourceDemand_Action')"/>
+  <childNodeTraces
+      visualID="3053"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/SEFF_Performance/5.1' and _eClass_.name = 'InfrastructureCall') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'AbstractInternalControlFlowAction') and _containmentMF_.name = 'infrastructureCall__Action')">
+    <nodeLabelTraces
+        visualID="5057"
+        queryText="true"/>
+    <nodeLabelTraces
+        visualID="5058"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7057"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3061"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/SEFF_Reliability/5.1' and _eClass_.name = 'RecoveryAction') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'ResourceDemandingBehaviour') and _containmentMF_.name = 'steps_Behaviour')">
+    <nodeLabelTraces
+        visualID="5060"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7058"
+        queryText="true"/>
+  </childNodeTraces>
+  <childNodeTraces
+      visualID="3062"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/SEFF_Reliability/5.1' and _eClass_.name = 'RecoveryActionBehaviour') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/SEFF_Reliability/5.1' and _eClass_.name = 'RecoveryAction') and _containmentMF_.name = 'recoveryActionBehaviours__RecoveryAction')">
+    <nodeLabelTraces
+        visualID="5059"
+        queryText="true"/>
+    <compartmentTraces
+        visualID="7059"
+        queryText="true"/>
+  </childNodeTraces>
+  <linkTraces
+      visualID="4001"
+      queryText="modelFacet.oclIsKindOf(gmfgen::FeatureLinkModelFacet) and (let _feature_:ecore::EStructuralFeature = modelFacet.oclAsType(gmfgen::FeatureLinkModelFacet).metaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _feature_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1' and _eClass_.name = 'AbstractAction') and _feature_.name = 'successor_AbstractAction')"/>
+  <linkTraces
+      visualID="4004"
+      queryText="modelFacet.oclIsKindOf(gmfgen::FeatureLinkModelFacet) and (let _feature_:ecore::EStructuralFeature = modelFacet.oclAsType(gmfgen::FeatureLinkModelFacet).metaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _feature_.eContainingClass in _eClass_.ePackage.nsURI = 'http://palladiosimulator.org/PalladioComponentModel/SEFF/SEFF_Reliability/5.1' and _eClass_.name = 'RecoveryActionBehaviour') and _feature_.name = 'failureHandlingAlternatives__RecoveryActionBehaviour')"/>
+</trace:TraceModel>
