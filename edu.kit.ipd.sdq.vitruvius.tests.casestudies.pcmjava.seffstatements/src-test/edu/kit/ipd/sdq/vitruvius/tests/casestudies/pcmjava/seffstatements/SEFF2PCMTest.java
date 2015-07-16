@@ -1,0 +1,124 @@
+package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.seffstatements;
+
+import static org.junit.Assert.fail;
+
+import java.util.Set;
+
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.text.edits.InsertEdit;
+import org.emftext.language.java.members.Method;
+import org.junit.Test;
+import org.somox.test.gast2seff.visitors.AssertSEFFHelper;
+
+import de.uka.ipd.sdq.pcm.repository.Repository;
+import de.uka.ipd.sdq.pcm.seff.InternalAction;
+import de.uka.ipd.sdq.pcm.seff.ResourceDemandingSEFF;
+import de.uka.ipd.sdq.pcm.seff.SeffFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.jamopp2pcm.JaMoPP2PCMTransformationTest;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
+import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
+
+public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
+
+    private static final String MEDIA_STORE = "MediaStore";
+    private static final String WEBGUI = "WebGUI";
+    private static final String UPLOAD = "upload";
+    private static final String DOWNLOAD = "download";
+
+    private Repository repository;
+
+    /**
+     * Set up simple media store, which can be used for the tests. It consists of two components
+     * (WebGUI and MediaStore) two Interfaces (IWebGUI and IMediastore). The interfaces have two
+     * methods each ((web)download and (web)upload).
+     */
+    @Override
+    protected void beforeTest() throws Throwable {
+        this.repository = this.createMediaStoreViaCode();
+        // this.repository = this.createMediaStoreViaPCM();
+        super.beforeTest();
+
+    }
+
+    @Test
+    public void testAddNormalStatement() throws Throwable {
+        final String text = "final int i = 5;\nfinal int j = i + 1;";
+
+        final ResourceDemandingSEFF seff = this.editWebGUIDownloadMethod(text);
+
+        final ResourceDemandingSEFF expectedSeff = SeffFactory.eINSTANCE.createResourceDemandingSEFF();
+        expectedSeff.getSteps_Behaviour().add(SeffFactory.eINSTANCE.createStartAction());
+        final InternalAction ia = SeffFactory.eINSTANCE.createInternalAction();
+        expectedSeff.getSteps_Behaviour().add(ia);
+        expectedSeff.getSteps_Behaviour().add(SeffFactory.eINSTANCE.createStopAction());
+
+        AssertSEFFHelper.assertSeffEquals(seff, expectedSeff);
+    }
+
+    private ResourceDemandingSEFF editWebGUIDownloadMethod(final String text) throws Throwable, JavaModelException {
+        final ICompilationUnit iCu = super.findICompilationUnitWithClassName(WEBGUI + "Impl");
+        final IMethod iMethod = super.findIMethodByName(WEBGUI, "http" + DOWNLOAD, iCu);
+        int offset = iMethod.getSourceRange().getOffset();
+        offset += iMethod.getSource().length() - 2;
+        final InsertEdit insertEdit = new InsertEdit(offset, text);
+        this.editCompilationUnit(iCu, insertEdit);
+        TestUtil.waitForSynchronization(10 * 1000);
+        final CorrespondenceInstance ci = this.getCorrespondenceInstance();
+        final Method method = super.findJaMoPPMethodInICU(iCu, "http" + DOWNLOAD);
+        final Set<ResourceDemandingSEFF> seffs = ci.getCorrespondingEObjectsByType(method, ResourceDemandingSEFF.class);
+        if (null == seffs || 0 == seffs.size()) {
+            fail("could not find corresponding seff for method " + method);
+        }
+        return seffs.iterator().next();
+    }
+
+    @SuppressWarnings("unused")
+    private Repository createMediaStoreViaPCM() throws Throwable {
+        final PCM2JaMoPPTransformationTest pcmJaMoPPTransformationTest = new PCM2JaMoPPTransformationTest();
+        return pcmJaMoPPTransformationTest.createMediaStore(MEDIA_STORE, WEBGUI, DOWNLOAD, UPLOAD);
+    }
+
+    // create main package
+    private Repository createMediaStoreViaCode() throws Throwable {
+        final Repository repo = super.addFirstPackage();
+
+        // create packages
+        this.addPackageAndImplementingClass(MEDIA_STORE);
+        this.addPackageAndImplementingClass(WEBGUI);
+
+        final String webGuiInterfaceName = "I" + WEBGUI;
+        final String mediaStoreInterfaceName = "I" + MEDIA_STORE;
+
+        // create interfaces
+        final boolean throwExceptionIfFails = true;
+        super.createInterfaceInPackage("contracts", throwExceptionIfFails, webGuiInterfaceName);
+        super.createInterfaceInPackage("contracts", throwExceptionIfFails, mediaStoreInterfaceName);
+
+        final String uploadMethodName = "upload";
+        final String downloadMethodName = "download";
+
+        final String httpDownloadMethodName = "httpDownload";
+        final String httpUploadMethodName = "httpUpload";
+
+        // create methods
+        super.addMethodToInterfaceWithCorrespondence(webGuiInterfaceName, httpUploadMethodName);
+        super.addMethodToInterfaceWithCorrespondence(webGuiInterfaceName, httpDownloadMethodName);
+
+        super.addMethodToInterfaceWithCorrespondence(mediaStoreInterfaceName, uploadMethodName);
+        super.addMethodToInterfaceWithCorrespondence(mediaStoreInterfaceName, downloadMethodName);
+
+        final String mediaStoreClassName = "";
+        final String webGUIClassName = "";
+
+        // create methods in main class of basic components in order to create SEFF correspondences
+        this.addImplementingClassMethodToClass(webGUIClassName, httpUploadMethodName);
+        this.addImplementingClassMethodToClass(webGUIClassName, httpDownloadMethodName);
+        this.addImplementingClassMethodToClass(mediaStoreClassName, uploadMethodName);
+        this.addImplementingClassMethodToClass(mediaStoreClassName, downloadMethodName);
+        return repo;
+    }
+
+}

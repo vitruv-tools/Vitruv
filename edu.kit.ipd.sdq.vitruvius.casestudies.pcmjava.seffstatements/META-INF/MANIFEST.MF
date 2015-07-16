@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Seff Statements
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations;bundle-version="1.0.0",
+ org.emftext.language.java;bundle-version="1.4.0",
+ edu.kit.ipd.sdq.vitruvius.casestudies.jmljava;bundle-version="1.0.0",
+ org.apache.log4j;bundle-version="1.2.15",
+ org.somox.gast2seff;bundle-version="1.0.0",
+ de.uka.ipd.sdq.pcm;bundle-version="3.6.0",
+ org.somox.sourcecodedecorator;bundle-version="1.0.1",
+ org.somox.kdmhelper,
+ org.eclipse.core.resources,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence,
+ edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter,
+ org.eclipse.emf.ecore.change
+Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff
+
