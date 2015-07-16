@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.change.ChangeDescription;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ui.IEditorPart;
 
+import edu.kit.ipd.sdq.vitruvius.casestudies.emf.changedescription2change.ChangeDescription2ChangeConverter;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.EditorNotMonitorableException;
@@ -31,7 +32,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEdito
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IMonitoringDecider;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.ISynchronizingMonitoredEmfEditor;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.ISynchronizingMonitoredEmfEditor.IEditorStateListener.EditorStateChange;
-import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.changedescription2change.ChangeDescription2ChangeConverter;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.EclipseAdapterProvider;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.EditorManagementListenerMgr;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.IEclipseAdapter;
@@ -145,7 +145,8 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
         try {
             enableMonitoring(editorPart);
         } catch (EditorNotMonitorableException e) {
-            LOGGER.trace("Not installing a listener for an editor of class " + editorPart.getClass().getCanonicalName());
+            LOGGER.trace(
+                    "Not installing a listener for an editor of class " + editorPart.getClass().getCanonicalName());
         }
     }
 
@@ -155,7 +156,8 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
         // createAdapter(), so no further checking needs to be done here.
         IEditorPartAdapter editorPartAdapter = editorPartAdapterFact.createAdapter(editorPart);
         if (monitoringDecider.isMonitoringEnabled(editorPartAdapter)) {
-            LOGGER.debug("Installing an EMF monitor for an editor of class " + editorPart.getClass().getCanonicalName());
+            LOGGER.debug(
+                    "Installing an EMF monitor for an editor of class " + editorPart.getClass().getCanonicalName());
             setupMonitorForEditor(editorPartAdapter);
         } else {
             throw new EditorNotMonitorableException();
