@@ -12,7 +12,8 @@ Export-Package: SimpleAtoBTest_SimplestA,
  SimpleAtoBTest_SimplestA.util,
  SimpleAtoBTest_SimplestB,
  SimpleAtoBTest_SimplestB.impl,
- SimpleAtoBTest_SimplestB.util
+ SimpleAtoBTest_SimplestB.util,
+ edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.mir;bundle-version="1.0.0",
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
