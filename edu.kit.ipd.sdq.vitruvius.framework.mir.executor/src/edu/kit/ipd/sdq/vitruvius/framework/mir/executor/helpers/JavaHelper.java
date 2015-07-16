@@ -9,6 +9,7 @@ import java.util.Objects;
  */
 public final class JavaHelper {
 	public static <Sub extends Sup, Sup> Sub requireType(Sup object, Class<Sub> type) {
+		Objects.requireNonNull(object);
 		return requireType(object, type, "Cannot cast " + object.toString() + " to " + type.toString());
 	}
 	

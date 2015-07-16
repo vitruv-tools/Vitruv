@@ -3,26 +3,36 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.apache.log4j.Logger;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EclipseHelper;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.Invariant;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.InvariantRegistry;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MappedCorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.Response;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.ResponseRegistry;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 public abstract class AbstractMIRTransformationExecuting implements EMFModelTransformationExecuting {
+	private final static Logger LOGGER = Logger.getLogger(AbstractMIRTransformationExecuting.class);
+	
 	private ResponseRegistry responseRegistry;
 	private InvariantRegistry invariantRegistry;
 	private Collection<MIRMappingRealization> mappings;
-
+	
 	public AbstractMIRTransformationExecuting() {
 		responseRegistry = new ResponseRegistryImpl();
 		invariantRegistry = new InvariantRegistryImpl();
@@ -69,17 +79,63 @@ public abstract class AbstractMIRTransformationExecuting implements EMFModelTran
 		return result;
 	}
 	
-
-	protected EMFChangeResult handleEChange(EChange eChange) {
-		TransformationChangeResult result = new TransformationChangeResult();
+	protected MIRMappingChangeResult callRelevantMappings(EChange eChange) {
+		MIRMappingChangeResult result = new MIRMappingChangeResult();
 		Collection<MIRMappingRealization> relevantMappings = getCandidateMappings(eChange);
 		for (MIRMappingRealization mapping : relevantMappings) {
-			result.addChangeResult(mapping.applyEChange(eChange, getMappedCorrespondenceInstance()));
+			result.add(mapping.applyEChange(eChange, getMappedCorrespondenceInstance()));
+		}
+		return result;
+	}
+	
+	private EMFChangeResult handleNonContainedEObjects(MIRMappingChangeResult change) {
+		EMFChangeResult emfChangeResult = new EMFChangeResult();
+		CorrespondenceInstance ci = getMappedCorrespondenceInstance().getCorrespondenceInstance();
+		
+		for (EObject object : change.getObjectsToDelete()) {
+			if (null == object.eContainer()) {
+				LOGGER.warn("EObject is not contained, it is already deleted: " + object.toString());
+			} else if (null == object.eResource()) {
+				LOGGER.warn("EObject is not contained in resource, changed resource cannot be infered: " + object.toString());
+			} else {
+				VURI resourceVURI = VURI.getInstance(object.eResource());
+				if (EcoreHelper.isRoot(object)) {
+					emfChangeResult.getExistingObjectsToDelete().add(resourceVURI);
+				} else { // non-root object: ensure it isn't contained anymore
+					emfChangeResult.getExistingObjectsToSave().add(resourceVURI);
+					EcoreUtil.remove(object);
+				}
+			}
 		}
 		
-		// transform TCR into EMFCR
-		EMFChangeResult emfChangeResult = new EMFChangeResult();
+		// Taken from edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.
+		// PCMJaMoPPTransformationExecuter.handleEObjectsToSaveInTransformationChange(Set<EObject>, Set<VURI>)
+		for (EObject obj : change.getObjectsToSave()) {
+			Resource eObjResource = obj.eResource();
+			if (eObjResource == null) {
+				LOGGER.info("EObject " + obj.toString() + " not contained in any resource.");
+				eObjResource = EclipseHelper.askAndSaveResource(obj);
+			}
+			
+			VURI existingVURIToSave = VURI.getInstance(eObjResource);
+			emfChangeResult.getExistingObjectsToSave().add(existingVURIToSave);
+		}
 		
+		for (Pair<EObject, EObject> correspondenceObjects : change.getCorrespondencesToAdd()) {
+			// TODO: respect correspondence hierarchy
+			emfChangeResult.addNewCorrespondence(ci,
+					correspondenceObjects.getFirst(),
+					correspondenceObjects.getSecond(), null);
+		}
+		
+		return emfChangeResult;
+	}
+
+	protected EMFChangeResult handleEChange(EChange eChange) {
+		LOGGER.trace("handleEChange(" + eChange + ")");
+		MIRMappingChangeResult changeResult = callRelevantMappings(eChange);
+		EMFChangeResult emfChangeResult = handleNonContainedEObjects(changeResult);
+	
 		return emfChangeResult;
 	}
 	

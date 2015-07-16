@@ -1,0 +1,56 @@
+package edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers;
+
+import java.io.IOException;
+import java.util.Collections;
+
+import org.apache.log4j.Logger;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.emf.common.ui.dialogs.WorkspaceResourceDialog;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
+
+public class EclipseHelper {
+	private final static Logger LOGGER = Logger.getLogger(EclipseHelper.class);
+	
+	private static URI toURI(IFile file) { return toURI(file.getFullPath()); }
+	private static URI toURI(IPath path) { return URI.createPlatformResourceURI(path.toString(), true); }
+
+	public static URI askForNewResource(String message) {
+		return toURI(WorkspaceResourceDialog.openNewFile(getShell(), "Select new resource", message, null, null));
+	}
+	
+	public static URI askForNewResource(EObject eObject) {
+		return askForNewResource(EcoreHelper.createSensibleString(eObject));
+	}
+	
+	public static Resource askAndSaveResource(EObject obj) {
+		final URI newResourceURI = askForNewResource(obj);
+		final Resource newResource = createAndSaveResourceForEObject(obj, newResourceURI);
+		
+		return newResource;
+	}
+
+	public static Resource createAndSaveResourceForEObject(EObject eObj, URI uri) {
+		final ResourceSet resSet = new ResourceSetImpl();
+		final Resource res = resSet.createResource(uri);
+		
+		res.getContents().add(eObj);
+		try {
+			res.save(Collections.emptyMap());
+			LOGGER.info("created resource at " + uri.toString());
+		} catch (IOException e) {
+			LOGGER.warn("could not create resource at " + uri.toString(), e);
+		}
+		return res;
+	}
+	
+	private static Shell getShell() {
+		return PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
+	}
+}
