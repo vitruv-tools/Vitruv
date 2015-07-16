@@ -76,10 +76,10 @@ public class CreateBasicComponentTest implements SynchronisationListener {
         this.syncManager = new SyncManagerImpl(vsum, propagationEngine, vsum, null, vsum, this);
 	}
 	
-
 	@Test
 	public void createSimpleUML() throws IOException {
 		final Resource resource = getResource("testproject/models/uml1.uml");
+		resource.getContents().clear();
 		EcoreResourceBridge.saveResource(resource);
 		
 		LOGGER.trace("Starting first change");		
