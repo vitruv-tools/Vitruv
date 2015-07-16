@@ -1155,7 +1155,7 @@
         </eAnnotations>
       </eStructuralFeatures>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Parameter">
+    <eClassifiers xsi:type="ecore:EClass" name="Parameter" eSuperTypes="#//core/entity/NamedElement">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="This entity represents a parameter within a signature. The parameter has a name and it is of a data type."/>
       </eAnnotations>
