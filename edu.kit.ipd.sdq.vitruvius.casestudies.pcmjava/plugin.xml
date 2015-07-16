@@ -12,7 +12,7 @@
       <wizard
             category="edu.kit.ipd.sdq.vitruvius.casestudies.vitruvius_projects"
             class="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.ui.projectwizard.NewPCMJavaProjectWizard"
-            finalPerspective="de.uka.ipd.sdq.pcmbench.perspectives.palladio"
+            finalPerspective="org.palladiosimulator.pcmbench.perspectives.palladio"
             hasPages="true"
             id="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaWizard"
             name="PCM Java Project"

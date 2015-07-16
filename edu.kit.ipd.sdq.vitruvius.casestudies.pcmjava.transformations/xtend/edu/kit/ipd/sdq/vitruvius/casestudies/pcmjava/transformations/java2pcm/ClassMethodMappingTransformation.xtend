@@ -1,10 +1,10 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
-import de.uka.ipd.sdq.pcm.repository.BasicComponent
-import de.uka.ipd.sdq.pcm.repository.OperationInterface
-import de.uka.ipd.sdq.pcm.repository.OperationSignature
-import de.uka.ipd.sdq.pcm.seff.ResourceDemandingSEFF
-import de.uka.ipd.sdq.pcm.seff.SeffFactory
+import org.palladiosimulator.pcm.repository.BasicComponent
+import org.palladiosimulator.pcm.repository.OperationInterface
+import org.palladiosimulator.pcm.repository.OperationSignature
+import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF
+import org.palladiosimulator.pcm.seff.SeffFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList

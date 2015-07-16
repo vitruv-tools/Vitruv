@@ -1,9 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
-import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingRequiringEntity
-import de.uka.ipd.sdq.pcm.repository.RepositoryComponent
-import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
-import de.uka.ipd.sdq.pcm.system.SystemFactory
+import org.palladiosimulator.pcm.core.entity.InterfaceProvidingRequiringEntity
+import org.palladiosimulator.pcm.repository.RepositoryComponent
+import org.palladiosimulator.pcm.repository.RepositoryFactory
+import org.palladiosimulator.pcm.system.SystemFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils

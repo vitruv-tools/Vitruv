@@ -1,13 +1,13 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
-import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext
-import de.uka.ipd.sdq.pcm.core.composition.CompositionFactory
-import de.uka.ipd.sdq.pcm.core.entity.ComposedProvidingRequiringEntity
-import de.uka.ipd.sdq.pcm.repository.CompositeDataType
-import de.uka.ipd.sdq.pcm.repository.InnerDeclaration
-import de.uka.ipd.sdq.pcm.repository.OperationRequiredRole
-import de.uka.ipd.sdq.pcm.repository.RepositoryComponent
-import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
+import org.palladiosimulator.pcm.core.composition.AssemblyContext
+import org.palladiosimulator.pcm.core.composition.CompositionFactory
+import org.palladiosimulator.pcm.core.entity.ComposedProvidingRequiringEntity
+import org.palladiosimulator.pcm.repository.CompositeDataType
+import org.palladiosimulator.pcm.repository.InnerDeclaration
+import org.palladiosimulator.pcm.repository.OperationRequiredRole
+import org.palladiosimulator.pcm.repository.RepositoryComponent
+import org.palladiosimulator.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils

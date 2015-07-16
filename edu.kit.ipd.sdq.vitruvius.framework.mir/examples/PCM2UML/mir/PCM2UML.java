@@ -196,11 +196,11 @@ class PCM2UML {
 	 * @generated
 	 */
 	public boolean predicateCheck_4(EObject eObject_context) {
-			if (!(eObject_context instanceof de.uka.ipd.sdq.pcm.repository.OperationSignature))
+			if (!(eObject_context instanceof org.palladiosimulator.pcm.repository.OperationSignature))
 				return false;
 				
 			// type cast from EObject
-			de.uka.ipd.sdq.pcm.repository.OperationSignature context = (de.uka.ipd.sdq.pcm.repository.OperationSignature) eObject_context;
+			org.palladiosimulator.pcm.repository.OperationSignature context = (org.palladiosimulator.pcm.repository.OperationSignature) eObject_context;
 		
 			if (!(/* RFCWECls */ ((/* check if context.(reverse signatures__OperationInterface) corresponds
 					with a Interface */ false)
@@ -213,11 +213,11 @@ class PCM2UML {
 	 * @generated
 	 */
 	public boolean predicateCheck_5(EObject eObject_context) {
-			if (!(eObject_context instanceof de.uka.ipd.sdq.pcm.repository.DataType))
+			if (!(eObject_context instanceof org.palladiosimulator.pcm.repository.DataType))
 				return false;
 				
 			// type cast from EObject
-			de.uka.ipd.sdq.pcm.repository.DataType context = (de.uka.ipd.sdq.pcm.repository.DataType) eObject_context;
+			org.palladiosimulator.pcm.repository.DataType context = (org.palladiosimulator.pcm.repository.DataType) eObject_context;
 		
 			if (!(/* RFCWECls */ ((/* check if context.(reverse returnType__OperationSignature) corresponds
 					with a Operation */ false)
@@ -233,11 +233,11 @@ class PCM2UML {
 	 * @generated
 	 */
 	public boolean predicateCheck_6(EObject eObject_context) {
-			if (!(eObject_context instanceof de.uka.ipd.sdq.pcm.repository.Parameter))
+			if (!(eObject_context instanceof org.palladiosimulator.pcm.repository.Parameter))
 				return false;
 				
 			// type cast from EObject
-			de.uka.ipd.sdq.pcm.repository.Parameter context = (de.uka.ipd.sdq.pcm.repository.Parameter) eObject_context;
+			org.palladiosimulator.pcm.repository.Parameter context = (org.palladiosimulator.pcm.repository.Parameter) eObject_context;
 		
 			if (!(/* RFCWECls */ ((/* check if context.(reverse parameters__OperationSignature) corresponds
 					with a Operation */ false)
@@ -253,11 +253,11 @@ class PCM2UML {
 	 * @generated
 	 */
 	public boolean predicateCheck_7(EObject eObject_context) {
-			if (!(eObject_context instanceof de.uka.ipd.sdq.pcm.repository.OperationInterface))
+			if (!(eObject_context instanceof org.palladiosimulator.pcm.repository.OperationInterface))
 				return false;
 				
 			// type cast from EObject
-			de.uka.ipd.sdq.pcm.repository.OperationInterface context = (de.uka.ipd.sdq.pcm.repository.OperationInterface) eObject_context;
+			org.palladiosimulator.pcm.repository.OperationInterface context = (org.palladiosimulator.pcm.repository.OperationInterface) eObject_context;
 		
 			
 			// all predicates hold
@@ -298,11 +298,11 @@ class PCM2UML {
 	 * @generated
 	 */
 	public boolean predicateCheck_10(EObject eObject_context) {
-			if (!(eObject_context instanceof de.uka.ipd.sdq.pcm.repository.Interface))
+			if (!(eObject_context instanceof org.palladiosimulator.pcm.repository.Interface))
 				return false;
 				
 			// type cast from EObject
-			de.uka.ipd.sdq.pcm.repository.Interface context = (de.uka.ipd.sdq.pcm.repository.Interface) eObject_context;
+			org.palladiosimulator.pcm.repository.Interface context = (org.palladiosimulator.pcm.repository.Interface) eObject_context;
 		
 			if (!(/* RFCWECls */ ((/* check if context.(reverse interfaces__Repository) corresponds
 					with a Package */ false)
@@ -315,11 +315,11 @@ class PCM2UML {
 	 * @generated
 	 */
 	public boolean predicateCheck_11(EObject eObject_context) {
-			if (!(eObject_context instanceof de.uka.ipd.sdq.pcm.repository.Repository))
+			if (!(eObject_context instanceof org.palladiosimulator.pcm.repository.Repository))
 				return false;
 				
 			// type cast from EObject
-			de.uka.ipd.sdq.pcm.repository.Repository context = (de.uka.ipd.sdq.pcm.repository.Repository) eObject_context;
+			org.palladiosimulator.pcm.repository.Repository context = (org.palladiosimulator.pcm.repository.Repository) eObject_context;
 		
 			
 			// all predicates hold
@@ -331,7 +331,7 @@ class PCM2UML {
 	 * @generated
 	 */
 	public void createOperation_0(EObject context) {
-		de.uka.ipd.sdq.pcm.repository.OperationSignature result =
+		org.palladiosimulator.pcm.repository.OperationSignature result =
 			/* create OperationSignature */ (null);
 			
 		/* create correspondence betweeen context and result */;
@@ -342,7 +342,7 @@ class PCM2UML {
 	 * @generated
 	 */
 	public void createDataType_1(EObject context) {
-		de.uka.ipd.sdq.pcm.repository.DataType result =
+		org.palladiosimulator.pcm.repository.DataType result =
 			/* create DataType */ (null);
 			
 		/* create correspondence betweeen context and result */;
@@ -353,7 +353,7 @@ class PCM2UML {
 	 * @generated
 	 */
 	public void createParameter_2(EObject context) {
-		de.uka.ipd.sdq.pcm.repository.Parameter result =
+		org.palladiosimulator.pcm.repository.Parameter result =
 			/* create Parameter */ (null);
 			
 		/* create correspondence betweeen context and result */;
@@ -364,7 +364,7 @@ class PCM2UML {
 	 * @generated
 	 */
 	public void createInterface_3(EObject context) {
-		de.uka.ipd.sdq.pcm.repository.OperationInterface result =
+		org.palladiosimulator.pcm.repository.OperationInterface result =
 			/* create OperationInterface */ (null);
 			
 		/* create correspondence betweeen context and result */;
@@ -419,7 +419,7 @@ class PCM2UML {
 	 * @generated
 	 */
 	public void createNamedElement_8(EObject context) {
-		de.uka.ipd.sdq.pcm.repository.Interface result =
+		org.palladiosimulator.pcm.repository.Interface result =
 			/* create Interface */ (null);
 			
 		/* create correspondence betweeen context and result */;
@@ -430,7 +430,7 @@ class PCM2UML {
 	 * @generated
 	 */
 	public void createPackage_9(EObject context) {
-		de.uka.ipd.sdq.pcm.repository.Repository result =
+		org.palladiosimulator.pcm.repository.Repository result =
 			/* create Repository */ (null);
 			
 		/* create correspondence betweeen context and result */;
@@ -518,8 +518,8 @@ class PCM2UML {
 		// get correspondence context_correspondence
 		// context_correspondence.parameters__OperationSignature -= deletedElement_correspondence
 	}
-	public void add_OperationSignature_signatures__OperationInterface(de.uka.ipd.sdq.pcm.repository.OperationSignature context,
-		de.uka.ipd.sdq.pcm.repository.OperationSignature elementToAdd) {
+	public void add_OperationSignature_signatures__OperationInterface(org.palladiosimulator.pcm.repository.OperationSignature context,
+		org.palladiosimulator.pcm.repository.OperationSignature elementToAdd) {
 		
 		// correspondence for elementToAdd should already exist
 		// get correspondence elementToAdd_correspondence
@@ -528,8 +528,8 @@ class PCM2UML {
 		// context_correspondence.ownedOperation += elementToAdd_correspondence
 	}
 	
-	public void remove_OperationSignature_signatures__OperationInterface(de.uka.ipd.sdq.pcm.repository.OperationSignature context,
-		de.uka.ipd.sdq.pcm.repository.OperationSignature deletedElement) {
+	public void remove_OperationSignature_signatures__OperationInterface(org.palladiosimulator.pcm.repository.OperationSignature context,
+		org.palladiosimulator.pcm.repository.OperationSignature deletedElement) {
 	
 		// correspondence for deletedElement should already exist
 		// get correspondence deletedElement_correspondence
@@ -537,8 +537,8 @@ class PCM2UML {
 		// get correspondence context_correspondence
 		// context_correspondence.ownedOperation -= deletedElement_correspondence
 	}
-	public void add_DataType_returnType__OperationSignature(de.uka.ipd.sdq.pcm.repository.DataType context,
-		de.uka.ipd.sdq.pcm.repository.DataType elementToAdd) {
+	public void add_DataType_returnType__OperationSignature(org.palladiosimulator.pcm.repository.DataType context,
+		org.palladiosimulator.pcm.repository.DataType elementToAdd) {
 		
 		// correspondence for elementToAdd should already exist
 		// get correspondence elementToAdd_correspondence
@@ -547,8 +547,8 @@ class PCM2UML {
 		// context_correspondence.type += elementToAdd_correspondence
 	}
 	
-	public void remove_DataType_returnType__OperationSignature(de.uka.ipd.sdq.pcm.repository.DataType context,
-		de.uka.ipd.sdq.pcm.repository.DataType deletedElement) {
+	public void remove_DataType_returnType__OperationSignature(org.palladiosimulator.pcm.repository.DataType context,
+		org.palladiosimulator.pcm.repository.DataType deletedElement) {
 	
 		// correspondence for deletedElement should already exist
 		// get correspondence deletedElement_correspondence
@@ -556,8 +556,8 @@ class PCM2UML {
 		// get correspondence context_correspondence
 		// context_correspondence.type -= deletedElement_correspondence
 	}
-	public void add_Parameter_parameters__OperationSignature(de.uka.ipd.sdq.pcm.repository.Parameter context,
-		de.uka.ipd.sdq.pcm.repository.Parameter elementToAdd) {
+	public void add_Parameter_parameters__OperationSignature(org.palladiosimulator.pcm.repository.Parameter context,
+		org.palladiosimulator.pcm.repository.Parameter elementToAdd) {
 		
 		// correspondence for elementToAdd should already exist
 		// get correspondence elementToAdd_correspondence
@@ -566,8 +566,8 @@ class PCM2UML {
 		// context_correspondence.ownedParameter += elementToAdd_correspondence
 	}
 	
-	public void remove_Parameter_parameters__OperationSignature(de.uka.ipd.sdq.pcm.repository.Parameter context,
-		de.uka.ipd.sdq.pcm.repository.Parameter deletedElement) {
+	public void remove_Parameter_parameters__OperationSignature(org.palladiosimulator.pcm.repository.Parameter context,
+		org.palladiosimulator.pcm.repository.Parameter deletedElement) {
 	
 		// correspondence for deletedElement should already exist
 		// get correspondence deletedElement_correspondence
@@ -594,8 +594,8 @@ class PCM2UML {
 		// get correspondence context_correspondence
 		// context_correspondence.interfaces__Repository -= deletedElement_correspondence
 	}
-	public void add_Interface_interfaces__Repository(de.uka.ipd.sdq.pcm.repository.Interface context,
-		de.uka.ipd.sdq.pcm.repository.Interface elementToAdd) {
+	public void add_Interface_interfaces__Repository(org.palladiosimulator.pcm.repository.Interface context,
+		org.palladiosimulator.pcm.repository.Interface elementToAdd) {
 		
 		// correspondence for elementToAdd should already exist
 		// get correspondence elementToAdd_correspondence
@@ -604,8 +604,8 @@ class PCM2UML {
 		// context_correspondence.member += elementToAdd_correspondence
 	}
 	
-	public void remove_Interface_interfaces__Repository(de.uka.ipd.sdq.pcm.repository.Interface context,
-		de.uka.ipd.sdq.pcm.repository.Interface deletedElement) {
+	public void remove_Interface_interfaces__Repository(org.palladiosimulator.pcm.repository.Interface context,
+		org.palladiosimulator.pcm.repository.Interface deletedElement) {
 	
 		// correspondence for deletedElement should already exist
 		// get correspondence deletedElement_correspondence

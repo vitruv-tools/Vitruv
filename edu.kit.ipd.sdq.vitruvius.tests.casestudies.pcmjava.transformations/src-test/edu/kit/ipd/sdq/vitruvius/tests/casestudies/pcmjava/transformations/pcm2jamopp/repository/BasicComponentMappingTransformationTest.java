@@ -15,8 +15,8 @@ import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.containers.Package;
 import org.junit.Test;
 
-import de.uka.ipd.sdq.pcm.repository.BasicComponent;
-import de.uka.ipd.sdq.pcm.repository.Repository;
+import org.palladiosimulator.pcm.repository.BasicComponent;
+import org.palladiosimulator.pcm.repository.Repository;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
@@ -26,8 +26,8 @@ public class BasicComponentMappingTransformationTest extends PCM2JaMoPPTransform
 
     @Test
     public void testAddBasicComponent() throws Throwable {
-    	final String RESOURCETYPE_URI = "platform:/plugin/de.uka.ipd.sdq.pcm.resources/defaultModels/Palladio.resourcetype";
-    	final String PRIMITIVETYPES_URI = "platform:/plugin/de.uka.ipd.sdq.pcm.resources/defaultModels/PrimitiveTypes.repository";
+    	final String RESOURCETYPE_URI = "platform:/plugin/org.palladiosimulator.pcm.resources/defaultModels/Palladio.resourcetype";
+    	final String PRIMITIVETYPES_URI = "platform:/plugin/org.palladiosimulator.pcm.resources/defaultModels/PrimitiveTypes.repository";
     	saveResourceFromDefaultModelTo(RESOURCETYPE_URI, "Palladio.resourcetype", "resourcetype");
     	saveResourceFromDefaultModelTo(PRIMITIVETYPES_URI, "PrimitiveTypes.repository", "repository");
         

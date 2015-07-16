@@ -1,6 +1,6 @@
 package mir.pcm2uml.whens;
 
-import de.uka.ipd.sdq.pcm.repository.OperationInterface;
+import org.palladiosimulator.pcm.repository.OperationInterface;
 
 @SuppressWarnings("all")
 public class When0 {

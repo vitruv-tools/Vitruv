@@ -27,30 +27,30 @@ import org.emftext.language.java.types.ClassifierReference;
 import org.emftext.language.java.types.NamespaceClassifierReference;
 import org.emftext.language.java.types.TypeReference;
 
-import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
-import de.uka.ipd.sdq.pcm.core.composition.CompositionFactory;
-import de.uka.ipd.sdq.pcm.core.entity.ComposedProvidingRequiringEntity;
-import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingEntity;
-import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingRequiringEntity;
-import de.uka.ipd.sdq.pcm.repository.BasicComponent;
-import de.uka.ipd.sdq.pcm.repository.CollectionDataType;
-import de.uka.ipd.sdq.pcm.repository.CompositeComponent;
-import de.uka.ipd.sdq.pcm.repository.CompositeDataType;
-import de.uka.ipd.sdq.pcm.repository.DataType;
-import de.uka.ipd.sdq.pcm.repository.InnerDeclaration;
-import de.uka.ipd.sdq.pcm.repository.OperationInterface;
-import de.uka.ipd.sdq.pcm.repository.OperationProvidedRole;
-import de.uka.ipd.sdq.pcm.repository.OperationRequiredRole;
-import de.uka.ipd.sdq.pcm.repository.OperationSignature;
-import de.uka.ipd.sdq.pcm.repository.Parameter;
-import de.uka.ipd.sdq.pcm.repository.ParameterModifier;
-import de.uka.ipd.sdq.pcm.repository.PrimitiveDataType;
-import de.uka.ipd.sdq.pcm.repository.PrimitiveTypeEnum;
-import de.uka.ipd.sdq.pcm.repository.Repository;
-import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
-import de.uka.ipd.sdq.pcm.seff.ResourceDemandingSEFF;
-import de.uka.ipd.sdq.pcm.seff.SeffFactory;
-import de.uka.ipd.sdq.pcm.system.System;
+import org.palladiosimulator.pcm.core.composition.AssemblyContext;
+import org.palladiosimulator.pcm.core.composition.CompositionFactory;
+import org.palladiosimulator.pcm.core.entity.ComposedProvidingRequiringEntity;
+import org.palladiosimulator.pcm.core.entity.InterfaceProvidingEntity;
+import org.palladiosimulator.pcm.core.entity.InterfaceProvidingRequiringEntity;
+import org.palladiosimulator.pcm.repository.BasicComponent;
+import org.palladiosimulator.pcm.repository.CollectionDataType;
+import org.palladiosimulator.pcm.repository.CompositeComponent;
+import org.palladiosimulator.pcm.repository.CompositeDataType;
+import org.palladiosimulator.pcm.repository.DataType;
+import org.palladiosimulator.pcm.repository.InnerDeclaration;
+import org.palladiosimulator.pcm.repository.OperationInterface;
+import org.palladiosimulator.pcm.repository.OperationProvidedRole;
+import org.palladiosimulator.pcm.repository.OperationRequiredRole;
+import org.palladiosimulator.pcm.repository.OperationSignature;
+import org.palladiosimulator.pcm.repository.Parameter;
+import org.palladiosimulator.pcm.repository.ParameterModifier;
+import org.palladiosimulator.pcm.repository.PrimitiveDataType;
+import org.palladiosimulator.pcm.repository.PrimitiveTypeEnum;
+import org.palladiosimulator.pcm.repository.Repository;
+import org.palladiosimulator.pcm.repository.RepositoryFactory;
+import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
+import org.palladiosimulator.pcm.seff.SeffFactory;
+import org.palladiosimulator.pcm.system.System;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPTransformationExecuterBase;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.DataTypeCorrespondenceHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
@@ -89,7 +89,7 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
     }
 
     protected <T> Set<NamedElement> assertCorrespondnecesAndCompareNames(
-            final de.uka.ipd.sdq.pcm.core.entity.NamedElement pcmNamedElement, final int expectedSize,
+            final org.palladiosimulator.pcm.core.entity.NamedElement pcmNamedElement, final int expectedSize,
             final java.lang.Class<? extends EObject>[] expectedClasses, final String[] expectedNames) throws Throwable {
         final Set<EObject> correspondences = this.getCorrespondenceInstance().claimCorrespondingEObjects(
                 pcmNamedElement);
@@ -164,7 +164,7 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
 
     @SuppressWarnings("unchecked")
     protected NamedElement assertSingleCorrespondence(
-            final de.uka.ipd.sdq.pcm.core.entity.NamedElement pcmNamedElement,
+            final org.palladiosimulator.pcm.core.entity.NamedElement pcmNamedElement,
             final java.lang.Class<? extends EObject> expectedClass, final String expectedName) throws Throwable {
         final Set<NamedElement> namedElements = this.assertCorrespondnecesAndCompareNames(pcmNamedElement, 1,
                 new java.lang.Class[] { expectedClass }, new String[] { expectedName });

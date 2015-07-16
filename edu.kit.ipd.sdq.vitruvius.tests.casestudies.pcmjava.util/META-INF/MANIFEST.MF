@@ -11,7 +11,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.tests.casestudies.emf;bundle-version="
  org.eclipse.emf.ecore,
  org.emftext.language.java,
  org.emftext.language.java.resource.java,
- de.uka.ipd.sdq.pcm,
+ org.palladiosimulator.pcm,
  edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence,
  org.eclipse.emf.ecore.xmi,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava

@@ -423,7 +423,7 @@
    </extension>
    <extension point="org.eclipse.ui.editorActions">
       <editorContribution targetID="edu.kit.ipd.sdq.vitruvius.framework.mir.MIR" 
-                          id="edu.kit.ipd.sdq.vitruvius.framework.mir.MIR.ide.rulerActions">
+                          id="edu.kit.ipd.sdq.vitruvius.framework.mir.MIR.rulerActions">
 	     <action
 	             label="Not Used"
 	             class="edu.kit.ipd.sdq.vitruvius.framework.mir.ui.MIRExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
@@ -434,26 +434,26 @@
    </extension>
    <extension point="org.eclipse.ui.popupMenus">
       <viewerContribution
-         targetID="edu.kit.ipd.sdq.vitruvius.framework.mir.MIR.ide.rulerContextMenu"
-         id="edu.kit.ipd.sdq.vitruvius.framework.mir.MIR.ide.RulerPopupActions">
+         targetID="edu.kit.ipd.sdq.vitruvius.framework.mir.MIR.RulerContext"
+         id="edu.kit.ipd.sdq.vitruvius.framework.mir.MIR.RulerPopupActions">
          <action
             label="Toggle Breakpoint"
             class="edu.kit.ipd.sdq.vitruvius.framework.mir.ui.MIRExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
             menubarPath="debug"
-            id="edu.kit.ipd.sdq.vitruvius.framework.mir.MIR.ide.rulerContextMenu.toggleBreakpointAction">
+            id="edu.kit.ipd.sdq.vitruvius.framework.mir.MIR.rulerContextMenu.toggleBreakpointAction">
          </action>
          <action
             label="Not used"
             class="edu.kit.ipd.sdq.vitruvius.framework.mir.ui.MIRExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"
             menubarPath="debug"
-            id="edu.kit.ipd.sdq.vitruvius.framework.mir.MIR.ide.rulerContextMenu.enableDisableBreakpointAction">
+            id="edu.kit.ipd.sdq.vitruvius.framework.mir.MIR.rulerContextMenu.enableDisableBreakpointAction">
          </action>
          <action
            label="Breakpoint Properties"
            helpContextId="breakpoint_properties_action_context"
            class="edu.kit.ipd.sdq.vitruvius.framework.mir.ui.MIRExecutableExtensionFactory:org.eclipse.jdt.debug.ui.actions.JavaBreakpointPropertiesRulerActionDelegate"
            menubarPath="group.properties"
-           id="edu.kit.ipd.sdq.vitruvius.framework.mir.MIR.ide.rulerContextMenu.openBreapointPropertiesAction">
+           id="edu.kit.ipd.sdq.vitruvius.framework.mir.MIR.rulerContextMenu.openBreapointPropertiesAction">
          </action>
       </viewerContribution>
    </extension>
@@ -524,6 +524,12 @@
             class="edu.kit.ipd.sdq.vitruvius.framework.mir.ui.MIRExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
             extensions="mir">
     </provider>
+  </extension>
+  <extension point="org.eclipse.team.core.fileTypes">
+    <fileTypes
+            extension="mir"
+            type="text">
+    </fileTypes>
   </extension>
 
 </plugin>

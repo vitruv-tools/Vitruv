@@ -16,8 +16,8 @@ import java.util.Map;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import de.uka.ipd.sdq.pcm.PcmPackage;
-import de.uka.ipd.sdq.pcm.util.PcmResourceFactoryImpl;
+import org.palladiosimulator.pcm.PcmPackage;
+import org.palladiosimulator.pcm.util.PcmResourceFactoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.emfmodels.advancedfeatures.AdvancedFeaturesPackage;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.emfmodels.advancedfeatures.impl.AdvancedFeaturesFactoryImpl;
 

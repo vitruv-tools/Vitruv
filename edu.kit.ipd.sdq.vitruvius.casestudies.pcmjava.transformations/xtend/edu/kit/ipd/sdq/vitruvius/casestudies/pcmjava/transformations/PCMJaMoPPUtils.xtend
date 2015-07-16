@@ -10,7 +10,7 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.util.EcoreUtil
-import de.uka.ipd.sdq.pcm.usagemodel.UsagemodelFactory
+import org.palladiosimulator.pcm.usagemodel.UsagemodelFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.JaMoPP2PCMUtils
 import org.emftext.language.java.types.TypeReference
 import org.emftext.language.java.members.Method

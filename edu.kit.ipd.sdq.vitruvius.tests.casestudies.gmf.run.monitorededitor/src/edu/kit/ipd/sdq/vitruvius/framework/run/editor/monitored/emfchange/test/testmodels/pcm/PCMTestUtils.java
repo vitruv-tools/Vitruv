@@ -16,9 +16,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
-import de.uka.ipd.sdq.pcm.repository.DataType;
-import de.uka.ipd.sdq.pcm.repository.PrimitiveDataType;
-import de.uka.ipd.sdq.pcm.repository.PrimitiveTypeEnum;
+import org.palladiosimulator.pcm.repository.DataType;
+import org.palladiosimulator.pcm.repository.PrimitiveDataType;
+import org.palladiosimulator.pcm.repository.PrimitiveTypeEnum;
 
 public final class PCMTestUtils {
     public static final String BOOL_TYPE_URI = "pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.2";

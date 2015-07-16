@@ -13,7 +13,7 @@
       <children xsi:type="advanced:PerspectiveStack" xmi:id="_tlPBdKcdEeS4gbuVONxcvA" elementId="org.eclipse.ui.ide.perspectivestack" containerData="7500" selectedElement="_x_kexqcdEeS4gbuVONxcvA">
         <children xsi:type="advanced:Perspective" xmi:id="_tvBPkacdEeS4gbuVONxcvA" elementId="org.eclipse.ui.resourcePerspective" selectedElement="_tvB2oKcdEeS4gbuVONxcvA" label="Resource" iconURI="platform:/plugin/org.eclipse.ui.ide.application/icons/full/eview16/resource_persp.png">
           <persistedState key="persp.hiddenItems" value="persp.hideToolbarSC:org.eclipse.debug.ui.commands.RunToLine,persp.hideToolbarSC:org.eclipse.jdt.ui.actions.OpenProjectWizard,persp.hideToolbarSC:org.eclipse.ui.edit.text.toggleShowSelectedElementOnly,"/>
-          <tags>persp.actionSet:de.uka.ipd.sdq.pcm.gfm.toolbar.actionSet</tags>
+          <tags>persp.actionSet:org.palladiosimulator.pcm.gfm.toolbar.actionSet</tags>
           <tags>persp.actionSet:org.eclipse.mylyn.doc.actionSet</tags>
           <tags>persp.actionSet:org.eclipse.mylyn.tasks.ui.navigation</tags>
           <tags>persp.actionSet:org.eclipse.ui.cheatsheets.actionSet</tags>
@@ -89,7 +89,7 @@
         </children>
         <children xsi:type="advanced:Perspective" xmi:id="_x_kexqcdEeS4gbuVONxcvA" elementId="org.eclipse.pde.ui.PDEPerspective" selectedElement="_x_kex6cdEeS4gbuVONxcvA" label="Plug-in Development" iconURI="platform:/plugin/org.eclipse.pde.ui/icons/eview16/plugins.gif">
           <persistedState key="persp.hiddenItems" value="persp.hideToolbarSC:org.eclipse.debug.ui.commands.RunToLine,persp.hideToolbarSC:org.eclipse.jdt.ui.actions.OpenProjectWizard,persp.hideToolbarSC:org.eclipse.ui.edit.text.toggleShowSelectedElementOnly,"/>
-          <tags>persp.actionSet:de.uka.ipd.sdq.pcm.gfm.toolbar.actionSet</tags>
+          <tags>persp.actionSet:org.palladiosimulator.pcm.gfm.toolbar.actionSet</tags>
           <tags>persp.actionSet:org.eclipse.mylyn.doc.actionSet</tags>
           <tags>persp.actionSet:org.eclipse.mylyn.tasks.ui.navigation</tags>
           <tags>persp.actionSet:org.eclipse.ui.cheatsheets.actionSet</tags>
@@ -315,7 +315,7 @@
         <tags>toolbarSeparator</tags>
         <children xsi:type="menu:ToolBarSeparator" xmi:id="_tnnnFKcdEeS4gbuVONxcvA" elementId="additions" toBeRendered="false"/>
       </children>
-      <children xsi:type="menu:ToolBar" xmi:id="_uEnFEKcdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gfm.toolbar.actionSet">
+      <children xsi:type="menu:ToolBar" xmi:id="_uEnFEKcdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gfm.toolbar.actionSet">
         <tags>Draggable</tags>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_uFWr8KcdEeS4gbuVONxcvA" elementId="org.eclipse.debug.ui.launchActionSet">
@@ -810,22 +810,22 @@
     <bindings xmi:id="_tVyQz6cdEeS4gbuVONxcvA" keySequence="ALT+CTRL+N" command="_tU46u6cdEeS4gbuVONxcvA"/>
     <bindings xmi:id="_tV7aIqcdEeS4gbuVONxcvA" keySequence="CTRL+W" command="_tU45g6cdEeS4gbuVONxcvA"/>
   </bindingTables>
-  <bindingTables xmi:id="_tVyQNacdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.allocation.ui.diagramContext" bindingContext="_tVCpWKcdEeS4gbuVONxcvA">
+  <bindingTables xmi:id="_tVyQNacdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.allocation.ui.diagramContext" bindingContext="_tVCpWKcdEeS4gbuVONxcvA">
     <bindings xmi:id="_tVyQNqcdEeS4gbuVONxcvA" keySequence="F5" command="_tU46S6cdEeS4gbuVONxcvA"/>
   </bindingTables>
-  <bindingTables xmi:id="_tVyQN6cdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.composite.ui.diagramContext" bindingContext="_tVCpb6cdEeS4gbuVONxcvA">
+  <bindingTables xmi:id="_tVyQN6cdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.composite.ui.diagramContext" bindingContext="_tVCpb6cdEeS4gbuVONxcvA">
     <bindings xmi:id="_tVyQOKcdEeS4gbuVONxcvA" keySequence="F5" command="_tUvH1KcdEeS4gbuVONxcvA"/>
   </bindingTables>
-  <bindingTables xmi:id="_tVyQOacdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.repository.ui.diagramContext" bindingContext="_tVCpZacdEeS4gbuVONxcvA">
+  <bindingTables xmi:id="_tVyQOacdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.repository.ui.diagramContext" bindingContext="_tVCpZacdEeS4gbuVONxcvA">
     <bindings xmi:id="_tVyQOqcdEeS4gbuVONxcvA" keySequence="F5" command="_tU45dKcdEeS4gbuVONxcvA"/>
   </bindingTables>
-  <bindingTables xmi:id="_tVyQO6cdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.resource.ui.diagramContext" bindingContext="_tVCpWqcdEeS4gbuVONxcvA">
+  <bindingTables xmi:id="_tVyQO6cdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.resource.ui.diagramContext" bindingContext="_tVCpWqcdEeS4gbuVONxcvA">
     <bindings xmi:id="_tVyQPKcdEeS4gbuVONxcvA" keySequence="F5" command="_tU44pKcdEeS4gbuVONxcvA"/>
   </bindingTables>
-  <bindingTables xmi:id="_tVyQPacdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.seff.ui.diagramContext" bindingContext="_tVCpdqcdEeS4gbuVONxcvA">
+  <bindingTables xmi:id="_tVyQPacdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.seff.ui.diagramContext" bindingContext="_tVCpdqcdEeS4gbuVONxcvA">
     <bindings xmi:id="_tVyQPqcdEeS4gbuVONxcvA" keySequence="F5" command="_tU44qqcdEeS4gbuVONxcvA"/>
   </bindingTables>
-  <bindingTables xmi:id="_tVyQP6cdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.usage.ui.diagramContext" bindingContext="_tVCpZqcdEeS4gbuVONxcvA">
+  <bindingTables xmi:id="_tVyQP6cdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.usage.ui.diagramContext" bindingContext="_tVCpZqcdEeS4gbuVONxcvA">
     <bindings xmi:id="_tVyQQKcdEeS4gbuVONxcvA" keySequence="F5" command="_tUvHiacdEeS4gbuVONxcvA"/>
   </bindingTables>
   <bindingTables xmi:id="_tVyQYqcdEeS4gbuVONxcvA" elementId="org.eclipse.mylyn.internal.wikitext.ui.editor.basicMarkupSourceContext" bindingContext="_tVCpaqcdEeS4gbuVONxcvA">
@@ -912,13 +912,13 @@
       <children xmi:id="_tVCpU6cdEeS4gbuVONxcvA" elementId="org.eclipse.debug.ui.console" name="In I/O Console" description="In I/O console"/>
       <children xmi:id="_tVCpVacdEeS4gbuVONxcvA" elementId="org.eclipse.compare.compareEditorScope" name="Comparing in an Editor" description="Comparing in an Editor"/>
       <children xmi:id="_tVCpV6cdEeS4gbuVONxcvA" elementId="org.eclipse.gmf.runtime.diagram.ui.diagramContext" name="Diagram Editing" description="GMF Diagram Editing">
-        <children xmi:id="_tVCpWKcdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.allocation.ui.diagramContext" name="In allocation Diagram Editor" description="Allocation Diagram Editing"/>
-        <children xmi:id="_tVCpWqcdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.resource.ui.diagramContext" name="In ResourceEnvironment Diagram Editor" description="ResourceEnvironment Diagram Editing"/>
+        <children xmi:id="_tVCpWKcdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.allocation.ui.diagramContext" name="In allocation Diagram Editor" description="Allocation Diagram Editing"/>
+        <children xmi:id="_tVCpWqcdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.resource.ui.diagramContext" name="In ResourceEnvironment Diagram Editor" description="ResourceEnvironment Diagram Editing"/>
         <children xmi:id="_tVCpX6cdEeS4gbuVONxcvA" elementId="org.eclipse.sirius.diagram.ui.diagramContext" name="In Sirius Diagram Editor" description="Sirius Diagram Editing"/>
-        <children xmi:id="_tVCpZacdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.repository.ui.diagramContext" name="In PCM Repository Model Diagram Editor" description="PCM Repository Model Diagram Editing"/>
-        <children xmi:id="_tVCpZqcdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.usage.ui.diagramContext" name="In PCM Usage Model Diagram Editor" description="PCM Usage Model Diagram Editing"/>
-        <children xmi:id="_tVCpb6cdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.composite.ui.diagramContext" name="In CompositeModel Diagram Editor" description="CompositeModel Diagram Editing"/>
-        <children xmi:id="_tVCpdqcdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.seff.ui.diagramContext" name="In PCM SEFF Model Diagram Editor" description="PCM SEFF Model Diagram Editing"/>
+        <children xmi:id="_tVCpZacdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.repository.ui.diagramContext" name="In PCM Repository Model Diagram Editor" description="PCM Repository Model Diagram Editing"/>
+        <children xmi:id="_tVCpZqcdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.usage.ui.diagramContext" name="In PCM Usage Model Diagram Editor" description="PCM Usage Model Diagram Editing"/>
+        <children xmi:id="_tVCpb6cdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.composite.ui.diagramContext" name="In CompositeModel Diagram Editor" description="CompositeModel Diagram Editing"/>
+        <children xmi:id="_tVCpdqcdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.seff.ui.diagramContext" name="In PCM SEFF Model Diagram Editor" description="PCM SEFF Model Diagram Editing"/>
       </children>
       <children xmi:id="_tVCpWacdEeS4gbuVONxcvA" elementId="org.eclipse.ui.console.ConsoleView" name="In Console View" description="In Console View"/>
       <children xmi:id="_tVCpW6cdEeS4gbuVONxcvA" elementId="org.eclipse.debug.ui.memoryview" name="In Memory View" description="In memory view"/>
@@ -939,7 +939,7 @@
   <rootContext xmi:id="_tVCpUqcdEeS4gbuVONxcvA" elementId="org.eclipse.ui.contexts.actionSet" name="Action Set" description="Parent context for action sets"/>
   <rootContext xmi:id="_tVCpVqcdEeS4gbuVONxcvA" elementId="org.eclipse.ui.contexts.workbenchMenu" name="Workbench Menu" description="When no Workbench windows are active"/>
   <rootContext xmi:id="_tVCpYqcdEeS4gbuVONxcvA" elementId="org.eclipse.jdt.ui.breadcrumbEditorScope" name="Editor Breadcrumb Navigation" description="Editor Breadcrumb Navigation Context"/>
-  <rootContext xmi:id="_tux_AKcdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gfm.toolbar.actionSet" name="Auto::de.uka.ipd.sdq.pcm.gfm.toolbar.actionSet"/>
+  <rootContext xmi:id="_tux_AKcdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gfm.toolbar.actionSet" name="Auto::org.palladiosimulator.pcm.gfm.toolbar.actionSet"/>
   <rootContext xmi:id="_tuymEKcdEeS4gbuVONxcvA" elementId="org.eclipse.ant.ui.actionSet.presentation" name="Auto::org.eclipse.ant.ui.actionSet.presentation"/>
   <rootContext xmi:id="_tuymEqcdEeS4gbuVONxcvA" elementId="org.eclipse.debug.ui.breakpointActionSet" name="Auto::org.eclipse.debug.ui.breakpointActionSet"/>
   <rootContext xmi:id="_tuymFKcdEeS4gbuVONxcvA" elementId="org.eclipse.debug.ui.debugActionSet" name="Auto::org.eclipse.debug.ui.debugActionSet"/>
@@ -1357,7 +1357,7 @@
   <commands xmi:id="_tUvHhqcdEeS4gbuVONxcvA" elementId="org.eclipse.jdt.ui.correction.convertLocalToField.assist" commandName="Quick Assist - Convert local variable to field" description="Invokes quick assist and selects 'Convert local variable to field'" category="_tUvHfKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvHh6cdEeS4gbuVONxcvA" elementId="org.eclipse.jdt.ui.correction.addThrowsDecl" commandName="Quick Fix - Add throws declaration" description="Invokes quick assist and selects 'Add throws declaration'" category="_tUvHfKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvHiKcdEeS4gbuVONxcvA" elementId="org.eclipse.ui.edit.text.deletePreviousWord" commandName="Delete Previous Word" description="Delete the previous word" category="_tUvHVKcdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tUvHiacdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.usage.updateDiagram" commandName="Update PCM Usage Model diagram" description="Perform PCM Usage Model diagram update" category="_tUvHUKcdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tUvHiacdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.usage.updateDiagram" commandName="Update PCM Usage Model diagram" description="Perform PCM Usage Model diagram update" category="_tUvHUKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvHiqcdEeS4gbuVONxcvA" elementId="org.eclipse.jdt.ui.edit.text.java.search.declarations.in.workspace" commandName="Declaration in Workspace" description="Search for declarations of the selected element in the workspace" category="_tUvHcqcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvHi6cdEeS4gbuVONxcvA" elementId="org.eclipse.ui.edit.text.delimiter.unix" commandName="Convert Line Delimiters to Unix (LF, \n, 0A, &#xb6;)" description="Converts the line delimiters to Unix (LF, \n, 0A, &#xb6;)" category="_tUvHWqcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvHjKcdEeS4gbuVONxcvA" elementId="org.eclipse.jdt.ui.edit.text.java.search.read.access.in.working.set" commandName="Read Access in Working Set" description="Search for read references to the selected element in a working set" category="_tUvHcqcdEeS4gbuVONxcvA"/>
@@ -1384,7 +1384,7 @@
   <commands xmi:id="_tUvHoacdEeS4gbuVONxcvA" elementId="org.eclipse.ocl.examples.xtext.oclinecore.ui.outline.SaveAsEcoreCommand" commandName="Save As Ecore Command" description="Save file changing to Ecore (String changes to EString)" category="_tUvHZKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvHoqcdEeS4gbuVONxcvA" elementId="org.eclipse.debug.ui.commands.ToggleLineBreakpoint" commandName="Toggle Line Breakpoint" description="Creates or removes a line breakpoint" category="_tUvHXqcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvHo6cdEeS4gbuVONxcvA" elementId="org.eclipse.mylyn.tasks.ui.command.searchForTask" commandName="Search Repository for Task" category="_tUvHaqcdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tUvHpKcdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.repository.CreateShortcutAction" commandName="Create Shortcut..." category="_tUvHUacdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tUvHpKcdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.repository.CreateShortcutAction" commandName="Create Shortcut..." category="_tUvHUacdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvHpacdEeS4gbuVONxcvA" elementId="org.eclipse.jdt.ui.correction.addImport" commandName="Quick Fix - Add import" description="Invokes quick assist and selects 'Add import'" category="_tUvHfKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvHpqcdEeS4gbuVONxcvA" elementId="org.eclipse.egit.ui.internal.reflog.CheckoutCommand" commandName="Checkout" category="_tUvHZKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvHp6cdEeS4gbuVONxcvA" elementId="org.eclipse.ui.edit.move" commandName="Move..." description="Move the selected item" category="_tUvHWqcdEeS4gbuVONxcvA"/>
@@ -1429,11 +1429,11 @@
   <commands xmi:id="_tUvHzacdEeS4gbuVONxcvA" elementId="org.eclipse.jdt.ui.edit.text.java.open.type.hierarchy" commandName="Open Type Hierarchy" description="Open a type hierarchy on the selected element" category="_tUvHaqcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvHzqcdEeS4gbuVONxcvA" elementId="org.eclipse.emf.emfstore.client.ui.shareProject" commandName="share" category="_tUvHfqcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvHz6cdEeS4gbuVONxcvA" elementId="org.eclipse.jdt.ui.edit.text.java.extract.interface" commandName="Extract Interface" description="Extract a set of members into a new interface and try to use the new interface" category="_tUvHbacdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tUvH0KcdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.allocation.LoadResourceAction" commandName="Load Resource" category="_tUvHgKcdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tUvH0KcdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.allocation.LoadResourceAction" commandName="Load Resource" category="_tUvHgKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvH0acdEeS4gbuVONxcvA" elementId="org.eclipse.team.ui.compareWithEachOther" commandName="Each Other" category="_tUvHZKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvH0qcdEeS4gbuVONxcvA" elementId="org.eclipse.ltk.ui.refactoring.commands.moveResources" commandName="Move Resources" description="Move the selected resources and notify LTK participants." category="_tUvHeacdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvH06cdEeS4gbuVONxcvA" elementId="org.eclipse.team.svn.ui.command.CompareRepositoryWithTagCommand" commandName="Compare With Tag..." category="_tUvHWacdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tUvH1KcdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.composite.updateDiagram" commandName="Update CompositeModel diagram" description="Perform CompositeModel diagram update" category="_tUvHUKcdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tUvH1KcdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.composite.updateDiagram" commandName="Update CompositeModel diagram" description="Perform CompositeModel diagram update" category="_tUvHUKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvH1acdEeS4gbuVONxcvA" elementId="org.eclipse.debug.ui.commands.StepInto" commandName="Step Into" description="Step into" category="_tUvHXqcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvH1qcdEeS4gbuVONxcvA" elementId="org.eclipse.emf.emfstore.client.ui.repositorybrowser.BranchCheckout" commandName="Branch Checkout" category="_tUvHZKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvH16cdEeS4gbuVONxcvA" elementId="org.eclipse.emf.compare.ide.ui.compareInEditor" commandName="Compare in new Editor" category="_tUvHbKcdEeS4gbuVONxcvA"/>
@@ -1573,7 +1573,7 @@
   <commands xmi:id="_tUvIWKcdEeS4gbuVONxcvA" elementId="org.eclipse.ui.edit.text.select.pageDown" commandName="Select Page Down" description="Select to the bottom of the page" category="_tUvHVKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvIWacdEeS4gbuVONxcvA" elementId="org.eclipse.ltk.ui.refactor.create.refactoring.script" commandName="Create Script" description="Create a refactoring script from refactorings on the local workspace" category="_tUvHbacdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvIWqcdEeS4gbuVONxcvA" elementId="org.eclipse.ui.edit.text.join.lines" commandName="Join Lines" description="Join lines of text" category="_tUvHVKcdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tUvIW6cdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.seff.LoadResourceAction" commandName="Load Resource" category="_tUvHcKcdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tUvIW6cdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.seff.LoadResourceAction" commandName="Load Resource" category="_tUvHcKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvIXKcdEeS4gbuVONxcvA" elementId="org.eclipse.jdt.ui.edit.text.java.open.editor" commandName="Open Declaration" description="Open an editor on the selected element" category="_tUvHaqcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvIXacdEeS4gbuVONxcvA" elementId="org.eclipse.ui.window.showContextMenu" commandName="Show Context Menu" description="Show the context menu" category="_tUvHW6cdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tUvIXqcdEeS4gbuVONxcvA" elementId="org.eclipse.jdt.ui.edit.text.java.extract.local.variable" commandName="Extract Local Variable" description="Extracts an expression into a new local variable and uses the new local variable" category="_tUvHbacdEeS4gbuVONxcvA"/>
@@ -1720,13 +1720,13 @@
   <commands xmi:id="_tU44oacdEeS4gbuVONxcvA" elementId="org.eclipse.ocl.examples.debug.ui.DebugHandler" commandName="Debug..." description="Debug..." category="_tUvHZKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU44oqcdEeS4gbuVONxcvA" elementId="org.eclipse.team.cvs.ui.updateSwitch" commandName="Switch to Another Branch or Version" description="Switch to Another Branch or Version" category="_tUvHX6cdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU44o6cdEeS4gbuVONxcvA" elementId="org.eclipse.ocl.examples.xtext.base.ui.ValidateCommand" commandName="Validate the OCL" description="Validate the OCL associated with the selection" category="_tUvHZKcdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tU44pKcdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.resource.updateDiagram" commandName="Update ResourceEnvironment diagram" description="Perform ResourceEnvironment diagram update" category="_tUvHUKcdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tU44pKcdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.resource.updateDiagram" commandName="Update ResourceEnvironment diagram" description="Perform ResourceEnvironment diagram update" category="_tUvHUKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU44pacdEeS4gbuVONxcvA" elementId="org.eclipse.mylyn.tasks.ui.command.disconnected" commandName="Disconnected" category="_tUvHZKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU44pqcdEeS4gbuVONxcvA" elementId="org.eclipse.team.svn.ui.command.SwitchCommand" commandName="Switch..." category="_tUvHWacdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU44p6cdEeS4gbuVONxcvA" elementId="org.eclipse.ui.edit.text.select.lineStart" commandName="Select Line Start" description="Select to the beginning of the line of text" category="_tUvHVKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU44qKcdEeS4gbuVONxcvA" elementId="org.eclipse.egit.ui.commit.Reword" commandName="Reword Commit" category="_tUvHZKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU44qacdEeS4gbuVONxcvA" elementId="org.eclipse.ui.editors.lineNumberToggle" commandName="Show Line Numbers" description="Toggle display of line numbers" category="_tUvHVKcdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tU44qqcdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.seff.updateDiagram" commandName="Update PCM SEFF Model diagram" description="Perform PCM SEFF Model diagram update" category="_tUvHUKcdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tU44qqcdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.seff.updateDiagram" commandName="Update PCM SEFF Model diagram" description="Perform PCM SEFF Model diagram update" category="_tUvHUKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU44q6cdEeS4gbuVONxcvA" elementId="org.eclipse.mylyn.tasks.index.ui.command.ResetIndex" commandName="Refresh Search Index" category="_tUvHV6cdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU44rKcdEeS4gbuVONxcvA" elementId="org.eclipse.xtend.ide.insertRightGuillemet" commandName="Insert right guillemet" description="Inserts an closing french quote" category="_tUvHZKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU44racdEeS4gbuVONxcvA" elementId="org.eclipse.egit.ui.RepositoriesToggleBranchCommit" commandName="Toggle Latest Branch Commit" category="_tUvHdKcdEeS4gbuVONxcvA"/>
@@ -1788,7 +1788,7 @@
   <commands xmi:id="_tU445KcdEeS4gbuVONxcvA" elementId="org.eclipse.jdt.ui.correction.addBlock.assist" commandName="Quick Assist - Replace statement with block" description="Invokes quick assist and selects 'Replace statement with block'" category="_tUvHfKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU445acdEeS4gbuVONxcvA" elementId="org.eclipse.emf.ecp.view.table.model.edit.generateColumns" commandName="Generate Columns" category="_tUvHZKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU445qcdEeS4gbuVONxcvA" elementId="org.eclipse.mylyn.commons.ui.command.AddRepository" commandName="Add Repository" category="_tUvHYqcdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tU4456cdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.usage.LoadResourceAction" commandName="Load Resource" category="_tUvHdqcdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tU4456cdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.usage.LoadResourceAction" commandName="Load Resource" category="_tUvHdqcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU446KcdEeS4gbuVONxcvA" elementId="org.eclipse.jdt.ui.edit.text.java.select.enclosing" commandName="Select Enclosing Element" description="Expand selection to include enclosing element" category="_tUvHUKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU446acdEeS4gbuVONxcvA" elementId="org.eclipse.ant.ui.antShortcut.debug" commandName="Debug Ant Build" description="Debug Ant Build" category="_tUvHXqcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU446qcdEeS4gbuVONxcvA" elementId="org.eclipse.sirius.diagram.ui.command.validateDiagram" commandName="Validate Diagram" category="_tUvHZKcdEeS4gbuVONxcvA"/>
@@ -1814,7 +1814,7 @@
   <commands xmi:id="_tU44_KcdEeS4gbuVONxcvA" elementId="org.eclipse.ui.edit.redo" commandName="Redo" description="Redo the last operation" category="_tUvHUKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU44_acdEeS4gbuVONxcvA" elementId="org.eclipse.xtext.ui.codetemplates.Codetemplates.validate" commandName="Validate" description="Trigger expensive validation" category="_tUvHZKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU44_qcdEeS4gbuVONxcvA" elementId="org.eclipse.ui.navigate.selectWorkingSets" commandName="Select Working Sets" description="Select the working sets that are applicable for this window." category="_tUvHW6cdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tU44_6cdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.repository.LoadResourceAction" commandName="Load Resource" category="_tUvHUacdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tU44_6cdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.repository.LoadResourceAction" commandName="Load Resource" category="_tUvHUacdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU45AKcdEeS4gbuVONxcvA" elementId="org.eclipse.jdt.ui.edit.text.java.rename.element" commandName="Rename - Refactoring " description="Rename the selected element" category="_tUvHbacdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU45AacdEeS4gbuVONxcvA" elementId="org.eclipse.pde.api.tools.ui.remove.filters" commandName="Remove &amp;API Problem Filters..." description="Remove API problem filters for this project" category="_tUvHZKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU45AqcdEeS4gbuVONxcvA" elementId="org.eclipse.team.svn.ui.command.CompareWithWorkingCopyCommand" commandName="Base from Working Copy" category="_tUvHWacdEeS4gbuVONxcvA"/>
@@ -1916,7 +1916,7 @@
   <commands xmi:id="_tU45XqcdEeS4gbuVONxcvA" elementId="org.eclipse.jdt.ui.edit.text.java.change.type" commandName="Generalize Declared Type" description="Change the declaration of a selected variable to a more general type consistent with usage" category="_tUvHbacdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU45X6cdEeS4gbuVONxcvA" elementId="org.eclipse.egit.ui.history.CreateBranch" commandName="Create Branch" category="_tUvHZKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU45YKcdEeS4gbuVONxcvA" elementId="edu.kit.ipd.sdq.vitruvius.framework.mir.MIR.validate" commandName="Validate" description="Trigger expensive validation" category="_tUvHZKcdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tU45YacdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.composite.LoadResourceAction" commandName="Load Resource" category="_tUvHc6cdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tU45YacdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.composite.LoadResourceAction" commandName="Load Resource" category="_tUvHc6cdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU45YqcdEeS4gbuVONxcvA" elementId="org.eclipse.egit.ui.RepositoriesViewClone" commandName="Clone a Git Repository" category="_tUvHdKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU45Y6cdEeS4gbuVONxcvA" elementId="org.eclipse.ui.edit.text.clear.mark" commandName="Clear Mark" description="Clear the mark" category="_tUvHVKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU45ZKcdEeS4gbuVONxcvA" elementId="org.eclipse.egit.ui.RepositoriesViewRemove" commandName="Remove Repository" category="_tUvHdKcdEeS4gbuVONxcvA"/>
@@ -1935,7 +1935,7 @@
   <commands xmi:id="_tU45cacdEeS4gbuVONxcvA" elementId="org.eclipse.debug.ui.commands.Resume" commandName="Resume" description="Resume" category="_tUvHXqcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU45cqcdEeS4gbuVONxcvA" elementId="org.eclipse.team.svn.ui.command.SetKeywordsCommand" commandName="Set Keywords..." category="_tUvHWacdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU45c6cdEeS4gbuVONxcvA" elementId="org.eclipse.emf.emfstore.client.ui.commands.showHistory" commandName="Show History" category="_tUvHZKcdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tU45dKcdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.repository.updateDiagram" commandName="Update PCM Repository Model diagram" description="Perform PCM Repository Model diagram update" category="_tUvHUKcdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tU45dKcdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.repository.updateDiagram" commandName="Update PCM Repository Model diagram" description="Perform PCM Repository Model diagram update" category="_tUvHUKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU45dacdEeS4gbuVONxcvA" elementId="org.eclipse.ocl.examples.xtext.completeocl.CompleteOCL.validate" commandName="Validate" description="Trigger expensive validation" category="_tUvHZKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU45dqcdEeS4gbuVONxcvA" elementId="org.eclipse.mylyn.context.ui.commands.open.context.dialog" commandName="Show Context Quick View" description="Show Context Quick View" category="_tUvHVacdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU45d6cdEeS4gbuVONxcvA" elementId="org.eclipse.ui.file.restartWorkbench" commandName="Restart" description="Restart the workbench" category="_tUvHWqcdEeS4gbuVONxcvA"/>
@@ -2062,7 +2062,7 @@
   <commands xmi:id="_tU456acdEeS4gbuVONxcvA" elementId="org.eclipse.search.ui.performTextSearchFile" commandName="Find Text in File" description="Searches the files in the file for specific text." category="_tUvHcqcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU456qcdEeS4gbuVONxcvA" elementId="org.eclipse.emf.ecp.ui.properties.project" commandName="Project Properties" category="_tUvHZKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU4566cdEeS4gbuVONxcvA" elementId="org.eclipse.ui.edit.text.cut.line" commandName="Cut Line" description="Cut a line of text" category="_tUvHVKcdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tU457KcdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.resource.LoadResourceAction" commandName="Load Resource" category="_tUvHU6cdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tU457KcdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.resource.LoadResourceAction" commandName="Load Resource" category="_tUvHU6cdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU457acdEeS4gbuVONxcvA" elementId="org.eclipse.ui.edit.text.folding.expand_all" commandName="Expand All" description="Expands all folded regions" category="_tUvHVKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU457qcdEeS4gbuVONxcvA" elementId="org.eclipse.xtend.ide.launching.junitPdeShortcut.run" commandName="Run JUnit Plug-in Test" description="Run JUnit Plug-in Test" category="_tUvHXqcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU4576cdEeS4gbuVONxcvA" elementId="org.eclipse.jdt.ui.correction.encapsulateField.assist" commandName="Quick Assist - Create getter/setter for field" description="Invokes quick assist and selects 'Create getter/setter for field'" category="_tUvHfKcdEeS4gbuVONxcvA"/>
@@ -2158,7 +2158,7 @@
   <commands xmi:id="_tU46SKcdEeS4gbuVONxcvA" elementId="org.eclipse.jdt.ui.edit.text.java.search.write.access.in.project" commandName="Write Access in Project" description="Search for write references to the selected element in the enclosing project" category="_tUvHcqcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU46SacdEeS4gbuVONxcvA" elementId="org.eclipse.ui.project.properties" commandName="Properties" description="Display the properties of the selected item's project " category="_tUvHcacdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU46SqcdEeS4gbuVONxcvA" elementId="org.eclipse.egit.ui.history.CompareVersionsInTree" commandName="Compare in Tree" category="_tUvHZKcdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tU46S6cdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.allocation.updateDiagram" commandName="Update allocation diagram" description="Perform allocation diagram update" category="_tUvHUKcdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tU46S6cdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.allocation.updateDiagram" commandName="Update allocation diagram" description="Perform allocation diagram update" category="_tUvHUKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU46TKcdEeS4gbuVONxcvA" elementId="org.eclipse.xtext.ui.shared.OpenXtextElementCommand" commandName="Open Model Element" description="Open the declaration of an Xtext element" category="_tUvHW6cdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU46TacdEeS4gbuVONxcvA" elementId="org.eclipse.ui.edit.text.select.columnPrevious" commandName="Select Previous Column" description="Select the previous column" category="_tUvHVKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tU46TqcdEeS4gbuVONxcvA" elementId="org.eclipse.pde.ui.junitWorkbenchShortcut.debug" commandName="Debug JUnit Plug-in Test" description="Debug JUnit Plug-in Test" category="_tUvHXqcdEeS4gbuVONxcvA"/>
@@ -2353,16 +2353,16 @@
     <parameters xmi:id="_tU47BacdEeS4gbuVONxcvA" elementId="filePath" name="File Path" typeId="org.eclipse.ui.ide.resourcePath"/>
   </commands>
   <commands xmi:id="_tU47BqcdEeS4gbuVONxcvA" elementId="org.eclipse.team.svn.ui.command.EditTreeConflictsCommand" commandName="Edit Tree Conflicts" category="_tUvHWacdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tkCuoKcdEeS4gbuVONxcvA" elementId="AUTOGEN:::de.uka.ipd.sdq.pcm.gfm.toolbar.actionSet/de.uka.ipd.sdq.pcm.gfm.toolbar.actions.NewUsageDiagramActionID" commandName="New Usage Diagram" description="Create a new Usage Model and Diagram from scratch." category="_tUvHZKcdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tkCuoacdEeS4gbuVONxcvA" elementId="AUTOGEN:::de.uka.ipd.sdq.pcm.gfm.toolbar.actionSet/de.uka.ipd.sdq.pcm.gfm.toolbar.actions.NewAllocationDiagramActionID" commandName="New Allocation Diagram" description="Create a new Allocation Model and Diagram from scratch." category="_tUvHZKcdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tkCuoqcdEeS4gbuVONxcvA" elementId="AUTOGEN:::de.uka.ipd.sdq.pcm.gfm.toolbar.actionSet/de.uka.ipd.sdq.pcm.gfm.toolbar.actions.NewResourceDiagramActionID" commandName="New Resource Diagram" description="Create a new Resource Model from scratch." category="_tUvHZKcdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tkCuo6cdEeS4gbuVONxcvA" elementId="AUTOGEN:::de.uka.ipd.sdq.pcm.gfm.toolbar.actionSet/de.uka.ipd.sdq.pcm.gfm.toolbar.actions.NewCompositeDiagramActionID" commandName="New Composite Diagram" description="Create a new System Model and Diagram from scratch." category="_tUvHZKcdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tkCupKcdEeS4gbuVONxcvA" elementId="AUTOGEN:::de.uka.ipd.sdq.pcm.gfm.toolbar.actionSet/de.uka.ipd.sdq.pcm.gfm.toolbar.actions.NewRepositoryDiagramActionID" commandName="New Repository Diagram" description="Create a new Repository Model and Diagram from scratch." category="_tUvHZKcdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tkCupacdEeS4gbuVONxcvA" elementId="AUTOGEN:::de.uka.ipd.sdq.pcm.gfm.toolbar.actionSet/de.uka.ipd.sdq.pcm.gfm.toolbar.actions.InitializeUsageDiagramActionID" commandName="Initialize Usage Diagram" description="Initialize a new Usage Diagram from the selected usage." category="_tUvHZKcdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tkCupqcdEeS4gbuVONxcvA" elementId="AUTOGEN:::de.uka.ipd.sdq.pcm.gfm.toolbar.actionSet/de.uka.ipd.sdq.pcm.gfm.toolbar.actions.InitializeAllocationDiagramActionID" commandName="Initialize Allocation Diagram" description="Initialize a new Allocation Diagram from the selected allocation." category="_tUvHZKcdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tkCup6cdEeS4gbuVONxcvA" elementId="AUTOGEN:::de.uka.ipd.sdq.pcm.gfm.toolbar.actionSet/de.uka.ipd.sdq.pcm.gfm.toolbar.actions.InitializeCompositeDiagramActionID" commandName="Initialize Composite Diagram" description="Initialize a new Composite Diagram from the selected system or repository." category="_tUvHZKcdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tkCuqKcdEeS4gbuVONxcvA" elementId="AUTOGEN:::de.uka.ipd.sdq.pcm.gfm.toolbar.actionSet/de.uka.ipd.sdq.pcm.gfm.toolbar.actions.InitializeSeffDiagramActionID" commandName="Initialize Seff Diagram" description="Initialize a new Seff Diagram from the selected repository." category="_tUvHZKcdEeS4gbuVONxcvA"/>
-  <commands xmi:id="_tkCuqacdEeS4gbuVONxcvA" elementId="AUTOGEN:::de.uka.ipd.sdq.pcm.gfm.toolbar.actionSet/de.uka.ipd.sdq.pcm.gfm.toolbar.actions.InitializeRepositoryDiagramActionID" commandName="Initialize Repository Diagram" description="Initialize a new Repository Diagram from the selected repository." category="_tUvHZKcdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tkCuoKcdEeS4gbuVONxcvA" elementId="AUTOGEN:::org.palladiosimulator.pcm.gfm.toolbar.actionSet/org.palladiosimulator.pcm.gfm.toolbar.actions.NewUsageDiagramActionID" commandName="New Usage Diagram" description="Create a new Usage Model and Diagram from scratch." category="_tUvHZKcdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tkCuoacdEeS4gbuVONxcvA" elementId="AUTOGEN:::org.palladiosimulator.pcm.gfm.toolbar.actionSet/org.palladiosimulator.pcm.gfm.toolbar.actions.NewAllocationDiagramActionID" commandName="New Allocation Diagram" description="Create a new Allocation Model and Diagram from scratch." category="_tUvHZKcdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tkCuoqcdEeS4gbuVONxcvA" elementId="AUTOGEN:::org.palladiosimulator.pcm.gfm.toolbar.actionSet/org.palladiosimulator.pcm.gfm.toolbar.actions.NewResourceDiagramActionID" commandName="New Resource Diagram" description="Create a new Resource Model from scratch." category="_tUvHZKcdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tkCuo6cdEeS4gbuVONxcvA" elementId="AUTOGEN:::org.palladiosimulator.pcm.gfm.toolbar.actionSet/org.palladiosimulator.pcm.gfm.toolbar.actions.NewCompositeDiagramActionID" commandName="New Composite Diagram" description="Create a new System Model and Diagram from scratch." category="_tUvHZKcdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tkCupKcdEeS4gbuVONxcvA" elementId="AUTOGEN:::org.palladiosimulator.pcm.gfm.toolbar.actionSet/org.palladiosimulator.pcm.gfm.toolbar.actions.NewRepositoryDiagramActionID" commandName="New Repository Diagram" description="Create a new Repository Model and Diagram from scratch." category="_tUvHZKcdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tkCupacdEeS4gbuVONxcvA" elementId="AUTOGEN:::org.palladiosimulator.pcm.gfm.toolbar.actionSet/org.palladiosimulator.pcm.gfm.toolbar.actions.InitializeUsageDiagramActionID" commandName="Initialize Usage Diagram" description="Initialize a new Usage Diagram from the selected usage." category="_tUvHZKcdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tkCupqcdEeS4gbuVONxcvA" elementId="AUTOGEN:::org.palladiosimulator.pcm.gfm.toolbar.actionSet/org.palladiosimulator.pcm.gfm.toolbar.actions.InitializeAllocationDiagramActionID" commandName="Initialize Allocation Diagram" description="Initialize a new Allocation Diagram from the selected allocation." category="_tUvHZKcdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tkCup6cdEeS4gbuVONxcvA" elementId="AUTOGEN:::org.palladiosimulator.pcm.gfm.toolbar.actionSet/org.palladiosimulator.pcm.gfm.toolbar.actions.InitializeCompositeDiagramActionID" commandName="Initialize Composite Diagram" description="Initialize a new Composite Diagram from the selected system or repository." category="_tUvHZKcdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tkCuqKcdEeS4gbuVONxcvA" elementId="AUTOGEN:::org.palladiosimulator.pcm.gfm.toolbar.actionSet/org.palladiosimulator.pcm.gfm.toolbar.actions.InitializeSeffDiagramActionID" commandName="Initialize Seff Diagram" description="Initialize a new Seff Diagram from the selected repository." category="_tUvHZKcdEeS4gbuVONxcvA"/>
+  <commands xmi:id="_tkCuqacdEeS4gbuVONxcvA" elementId="AUTOGEN:::org.palladiosimulator.pcm.gfm.toolbar.actionSet/org.palladiosimulator.pcm.gfm.toolbar.actions.InitializeRepositoryDiagramActionID" commandName="Initialize Repository Diagram" description="Initialize a new Repository Diagram from the selected repository." category="_tUvHZKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tkCuqqcdEeS4gbuVONxcvA" elementId="AUTOGEN:::org.eclipse.ant.ui.actionSet.presentation/org.eclipse.ant.ui.toggleAutoReconcile" commandName="Toggle Ant Editor Auto Reconcile" description="Toggle Ant Editor Auto Reconcile" category="_tUvHZKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tkCuq6cdEeS4gbuVONxcvA" elementId="AUTOGEN:::org.eclipse.debug.ui.launchActionSet/org.eclipse.debug.internal.ui.actions.RunWithConfigurationAction" commandName="Run As" category="_tUvHZKcdEeS4gbuVONxcvA"/>
   <commands xmi:id="_tkCurKcdEeS4gbuVONxcvA" elementId="AUTOGEN:::org.eclipse.debug.ui.launchActionSet/org.eclipse.debug.internal.ui.actions.RunHistoryMenuAction" commandName="Run History" category="_tUvHZKcdEeS4gbuVONxcvA"/>
@@ -2516,9 +2516,9 @@
   <addons xmi:id="_tUHcUacdEeS4gbuVONxcvA" elementId="org.eclipse.ui.workbench.addon.0" contributorURI="platform:/plugin/org.eclipse.platform" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.HandlerProcessingAddon"/>
   <addons xmi:id="_tWFLIKcdEeS4gbuVONxcvA" elementId="SplitterAddon" contributionURI="bundleclass://org.eclipse.e4.ui.workbench.addons.swt/org.eclipse.e4.ui.workbench.addons.splitteraddon.SplitterAddon"/>
   <categories xmi:id="_tUvHUKcdEeS4gbuVONxcvA" elementId="org.eclipse.ui.category.edit" name="Edit"/>
-  <categories xmi:id="_tUvHUacdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.repository.part.PalladioComponentModelRepositoryDiagramEditorID" name="PCM Repository Model Editor Commands" description="PCM Repository Model Editor Commands"/>
+  <categories xmi:id="_tUvHUacdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.repository.part.PalladioComponentModelRepositoryDiagramEditorID" name="PCM Repository Model Editor Commands" description="PCM Repository Model Editor Commands"/>
   <categories xmi:id="_tUvHUqcdEeS4gbuVONxcvA" elementId="org.eclipse.mylyn.wikitext.ui.editor.category" name="WikiText Markup Editing Commands" description="commands for editing lightweight markup"/>
-  <categories xmi:id="_tUvHU6cdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.resource.part.PalladioComponentModelDiagramEditorID" name="ResourceEnvironmentModel Editor Commands" description="ResourceEnvironmentModel Editor Commands"/>
+  <categories xmi:id="_tUvHU6cdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.resource.part.PalladioComponentModelDiagramEditorID" name="ResourceEnvironmentModel Editor Commands" description="ResourceEnvironmentModel Editor Commands"/>
   <categories xmi:id="_tUvHVKcdEeS4gbuVONxcvA" elementId="org.eclipse.ui.category.textEditor" name="Text Editing" description="Text Editing Commands"/>
   <categories xmi:id="_tUvHVacdEeS4gbuVONxcvA" elementId="org.eclipse.mylyn.context.ui.commands" name="Focused UI" description="Task-Focused Interface"/>
   <categories xmi:id="_tUvHVqcdEeS4gbuVONxcvA" elementId="org.eclipse.emf.cdo.security.ui.management" name="CDO Security Management"/>
@@ -2547,13 +2547,13 @@
   <categories xmi:id="_tUvHbacdEeS4gbuVONxcvA" elementId="org.eclipse.jdt.ui.category.refactoring" name="Refactor - Java" description="Java Refactoring Actions"/>
   <categories xmi:id="_tUvHbqcdEeS4gbuVONxcvA" elementId="org.eclipse.emf.codegen.ecore.ui.Commands" name="EMF Code Generation" description="Commands for the EMF code generation tools"/>
   <categories xmi:id="_tUvHb6cdEeS4gbuVONxcvA" elementId="org.eclipse.ui.category.help" name="Help"/>
-  <categories xmi:id="_tUvHcKcdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.seff.part.SeffDiagramEditorID" name="PCM SEFF Model Editor Commands" description="PCM SEFF Model Editor Commands"/>
+  <categories xmi:id="_tUvHcKcdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.seff.part.SeffDiagramEditorID" name="PCM SEFF Model Editor Commands" description="PCM SEFF Model Editor Commands"/>
   <categories xmi:id="_tUvHcacdEeS4gbuVONxcvA" elementId="org.eclipse.ui.category.project" name="Project"/>
   <categories xmi:id="_tUvHcqcdEeS4gbuVONxcvA" elementId="org.eclipse.search.ui.category.search" name="Search" description="Search command category"/>
-  <categories xmi:id="_tUvHc6cdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.composite.part.PalladioComponentModelDiagramEditorID" name="CompositeModel Editor Commands" description="CompositeModel Editor Commands"/>
+  <categories xmi:id="_tUvHc6cdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.composite.part.PalladioComponentModelDiagramEditorID" name="CompositeModel Editor Commands" description="CompositeModel Editor Commands"/>
   <categories xmi:id="_tUvHdKcdEeS4gbuVONxcvA" elementId="org.eclipse.egit.ui.commandCategory" name="Git"/>
   <categories xmi:id="_tUvHdacdEeS4gbuVONxcvA" elementId="org.eclipse.xtext.ui.category.XtextEditor" name="Editing" description="Editing Commands"/>
-  <categories xmi:id="_tUvHdqcdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.usage.part.PalladioComponentModelUsageDiagramEditorID" name="PCM Usage Model Editor Commands" description="PCM Usage Model Editor Commands"/>
+  <categories xmi:id="_tUvHdqcdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.usage.part.PalladioComponentModelUsageDiagramEditorID" name="PCM Usage Model Editor Commands" description="PCM Usage Model Editor Commands"/>
   <categories xmi:id="_tUvHd6cdEeS4gbuVONxcvA" elementId="org.eclipse.amalgam.discovery.modeling.commands.category" name="Modeling Amalgamation"/>
   <categories xmi:id="_tUvHeKcdEeS4gbuVONxcvA" elementId="org.eclipse.ui.category.perspectives" name="Perspectives" description="Commands for opening perspectives"/>
   <categories xmi:id="_tUvHeacdEeS4gbuVONxcvA" elementId="org.eclipse.ltk.ui.category.refactoring" name="Refactoring"/>
@@ -2563,5 +2563,5 @@
   <categories xmi:id="_tUvHfacdEeS4gbuVONxcvA" elementId="org.eclipse.pde.runtime.spy.commands.category" name="Spy"/>
   <categories xmi:id="_tUvHfqcdEeS4gbuVONxcvA" elementId="org.eclipse.emf.emfstore.client.ui.project" name="ECP"/>
   <categories xmi:id="_tUvHf6cdEeS4gbuVONxcvA" elementId="org.eclipse.xtext.ui.category.refactoring" name="Refactoring" description="Refactoring Commands"/>
-  <categories xmi:id="_tUvHgKcdEeS4gbuVONxcvA" elementId="de.uka.ipd.sdq.pcm.gmf.allocation.part.PalladioComponentModelAllocationDiagramEditorID" name="allocation Editor Commands" description="allocation Editor Commands"/>
+  <categories xmi:id="_tUvHgKcdEeS4gbuVONxcvA" elementId="org.palladiosimulator.pcm.gmf.allocation.part.PalladioComponentModelAllocationDiagramEditorID" name="allocation Editor Commands" description="allocation Editor Commands"/>
 </application:Application>

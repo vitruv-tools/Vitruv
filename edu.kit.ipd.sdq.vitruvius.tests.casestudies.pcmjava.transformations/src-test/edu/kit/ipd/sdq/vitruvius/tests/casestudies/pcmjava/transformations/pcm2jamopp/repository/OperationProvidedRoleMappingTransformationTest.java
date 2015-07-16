@@ -6,11 +6,11 @@ import org.emftext.language.java.classifiers.Class;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.junit.Test;
 
-import de.uka.ipd.sdq.pcm.repository.BasicComponent;
-import de.uka.ipd.sdq.pcm.repository.OperationInterface;
-import de.uka.ipd.sdq.pcm.repository.OperationProvidedRole;
-import de.uka.ipd.sdq.pcm.repository.Repository;
-import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
+import org.palladiosimulator.pcm.repository.BasicComponent;
+import org.palladiosimulator.pcm.repository.OperationInterface;
+import org.palladiosimulator.pcm.repository.OperationProvidedRole;
+import org.palladiosimulator.pcm.repository.Repository;
+import org.palladiosimulator.pcm.repository.RepositoryFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
@@ -111,7 +111,7 @@ public class OperationProvidedRoleMappingTransformationTest extends PCM2JaMoPPTr
         final Repository repo = super.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
         final OperationInterface opInterface = super.addInterfaceToReposiotryAndSync(repo,
                 PCM2JaMoPPTestUtils.INTERFACE_NAME);
-        final de.uka.ipd.sdq.pcm.system.System system = super.createAndSyncSystem(PCM2JaMoPPTestUtils.SYSTEM_NAME);
+        final org.palladiosimulator.pcm.system.System system = super.createAndSyncSystem(PCM2JaMoPPTestUtils.SYSTEM_NAME);
 
         final OperationProvidedRole operationProvidedRole = super.createAndSyncOperationProvidedRole(opInterface,
                 system);

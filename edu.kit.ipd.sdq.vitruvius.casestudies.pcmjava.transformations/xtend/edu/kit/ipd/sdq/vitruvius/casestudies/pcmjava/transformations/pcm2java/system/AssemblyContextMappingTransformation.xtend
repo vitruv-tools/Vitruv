@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.system
 
 import com.google.common.collect.Lists
-import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext
-import de.uka.ipd.sdq.pcm.repository.RepositoryComponent
+import org.palladiosimulator.pcm.core.composition.AssemblyContext
+import org.palladiosimulator.pcm.repository.RepositoryComponent
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult

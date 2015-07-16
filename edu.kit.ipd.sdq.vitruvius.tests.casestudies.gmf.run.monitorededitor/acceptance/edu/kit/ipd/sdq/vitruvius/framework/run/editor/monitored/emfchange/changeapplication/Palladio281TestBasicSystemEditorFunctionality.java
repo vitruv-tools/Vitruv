@@ -15,22 +15,22 @@ import java.net.URL;
 
 import org.junit.Test;
 
-import de.uka.ipd.sdq.pcm.core.composition.AssemblyConnector;
-import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
-import de.uka.ipd.sdq.pcm.core.composition.AssemblyInfrastructureConnector;
-import de.uka.ipd.sdq.pcm.core.composition.CompositionFactory;
-import de.uka.ipd.sdq.pcm.core.composition.ProvidedDelegationConnector;
-import de.uka.ipd.sdq.pcm.core.composition.RequiredDelegationConnector;
-import de.uka.ipd.sdq.pcm.repository.BasicComponent;
-import de.uka.ipd.sdq.pcm.repository.CompositeComponent;
-import de.uka.ipd.sdq.pcm.repository.InfrastructureInterface;
-import de.uka.ipd.sdq.pcm.repository.InfrastructureProvidedRole;
-import de.uka.ipd.sdq.pcm.repository.InfrastructureRequiredRole;
-import de.uka.ipd.sdq.pcm.repository.OperationInterface;
-import de.uka.ipd.sdq.pcm.repository.OperationProvidedRole;
-import de.uka.ipd.sdq.pcm.repository.OperationRequiredRole;
-import de.uka.ipd.sdq.pcm.repository.Repository;
-import de.uka.ipd.sdq.pcm.repository.RepositoryFactory;
+import org.palladiosimulator.pcm.core.composition.AssemblyConnector;
+import org.palladiosimulator.pcm.core.composition.AssemblyContext;
+import org.palladiosimulator.pcm.core.composition.AssemblyInfrastructureConnector;
+import org.palladiosimulator.pcm.core.composition.CompositionFactory;
+import org.palladiosimulator.pcm.core.composition.ProvidedDelegationConnector;
+import org.palladiosimulator.pcm.core.composition.RequiredDelegationConnector;
+import org.palladiosimulator.pcm.repository.BasicComponent;
+import org.palladiosimulator.pcm.repository.CompositeComponent;
+import org.palladiosimulator.pcm.repository.InfrastructureInterface;
+import org.palladiosimulator.pcm.repository.InfrastructureProvidedRole;
+import org.palladiosimulator.pcm.repository.InfrastructureRequiredRole;
+import org.palladiosimulator.pcm.repository.OperationInterface;
+import org.palladiosimulator.pcm.repository.OperationProvidedRole;
+import org.palladiosimulator.pcm.repository.OperationRequiredRole;
+import org.palladiosimulator.pcm.repository.Repository;
+import org.palladiosimulator.pcm.repository.RepositoryFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.testmodels.Files;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.testmodels.Metamodels;
 
@@ -39,10 +39,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.t
  * https://sdqbuild.ipd.kit.edu/jira/si/jira.issueviews:issue-html/PALLADIO-281/PALLADIO-281.html
  */
 public class Palladio281TestBasicSystemEditorFunctionality extends
-        AbstractInterleavedChangeApplicatorTests<Repository, de.uka.ipd.sdq.pcm.system.System> {
+        AbstractInterleavedChangeApplicatorTests<Repository, org.palladiosimulator.pcm.system.System> {
 
     private Repository repositoryRoot;
-    private de.uka.ipd.sdq.pcm.system.System systemRoot;
+    private org.palladiosimulator.pcm.system.System systemRoot;
 
     @Override
     public void setUp() {

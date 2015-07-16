@@ -1,10 +1,10 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
-import de.uka.ipd.sdq.pcm.repository.DataType
-import de.uka.ipd.sdq.pcm.repository.Interface
-import de.uka.ipd.sdq.pcm.repository.Repository
-import de.uka.ipd.sdq.pcm.repository.RepositoryComponent
-import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
+import org.palladiosimulator.pcm.repository.DataType
+import org.palladiosimulator.pcm.repository.Interface
+import org.palladiosimulator.pcm.repository.Repository
+import org.palladiosimulator.pcm.repository.RepositoryComponent
+import org.palladiosimulator.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence

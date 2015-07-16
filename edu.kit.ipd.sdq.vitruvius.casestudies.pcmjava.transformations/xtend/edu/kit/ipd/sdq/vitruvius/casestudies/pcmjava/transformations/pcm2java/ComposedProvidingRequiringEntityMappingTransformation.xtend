@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java
 
-import de.uka.ipd.sdq.pcm.core.entity.ComposedProvidingRequiringEntity
-import de.uka.ipd.sdq.pcm.core.entity.NamedElement
+import org.palladiosimulator.pcm.core.entity.ComposedProvidingRequiringEntity
+import org.palladiosimulator.pcm.core.entity.NamedElement
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils

@@ -1,11 +1,11 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
-import de.uka.ipd.sdq.pcm.core.entity.NamedElement
-import de.uka.ipd.sdq.pcm.repository.CompositeDataType
-import de.uka.ipd.sdq.pcm.repository.DataType
-import de.uka.ipd.sdq.pcm.repository.PrimitiveDataType
-import de.uka.ipd.sdq.pcm.repository.Repository
-import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
+import org.palladiosimulator.pcm.core.entity.NamedElement
+import org.palladiosimulator.pcm.repository.CompositeDataType
+import org.palladiosimulator.pcm.repository.DataType
+import org.palladiosimulator.pcm.repository.PrimitiveDataType
+import org.palladiosimulator.pcm.repository.Repository
+import org.palladiosimulator.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
@@ -219,7 +219,7 @@ class TypeReferenceCorrespondenceHelper {
 		private new() {
 		}
 
-		val private static String PRIMITIVETYPES_URI = "platform:/plugin/de.uka.ipd.sdq.pcm.resources/defaultModels/PrimitiveTypes.repository";
+		val private static String PRIMITIVETYPES_URI = "platform:/plugin/org.palladiosimulator.pcm.resources/defaultModels/PrimitiveTypes.repository";
 
 		var private static Repository primitiveTypesRepository;
 		var private static Map<String, PrimitiveDataType> primitives = new HashMap<String, PrimitiveDataType>()

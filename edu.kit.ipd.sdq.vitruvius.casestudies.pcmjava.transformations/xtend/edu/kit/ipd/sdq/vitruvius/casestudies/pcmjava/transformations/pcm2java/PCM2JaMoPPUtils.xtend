@@ -1,10 +1,10 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java
 
 import com.google.common.collect.Sets
-import de.uka.ipd.sdq.pcm.core.composition.ComposedStructure
-import de.uka.ipd.sdq.pcm.core.entity.NamedElement
-import de.uka.ipd.sdq.pcm.repository.Repository
-import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
+import org.palladiosimulator.pcm.core.composition.ComposedStructure
+import org.palladiosimulator.pcm.core.entity.NamedElement
+import org.palladiosimulator.pcm.repository.Repository
+import org.palladiosimulator.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.code.jamopp.JaMoPPParser
