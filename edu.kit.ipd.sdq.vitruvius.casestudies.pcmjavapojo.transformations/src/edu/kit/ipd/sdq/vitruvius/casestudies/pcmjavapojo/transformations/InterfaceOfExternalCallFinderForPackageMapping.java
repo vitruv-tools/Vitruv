@@ -6,11 +6,11 @@ import org.apache.log4j.Logger;
 import org.emftext.language.java.members.Method;
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding;
 
-import de.uka.ipd.sdq.pcm.repository.BasicComponent;
-import de.uka.ipd.sdq.pcm.repository.OperationInterface;
-import de.uka.ipd.sdq.pcm.repository.OperationRequiredRole;
-import de.uka.ipd.sdq.pcm.repository.OperationSignature;
-import de.uka.ipd.sdq.pcm.repository.RequiredRole;
+import org.palladiosimulator.pcm.repository.BasicComponent;
+import org.palladiosimulator.pcm.repository.OperationInterface;
+import org.palladiosimulator.pcm.repository.OperationRequiredRole;
+import org.palladiosimulator.pcm.repository.OperationSignature;
+import org.palladiosimulator.pcm.repository.RequiredRole;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 
 /**

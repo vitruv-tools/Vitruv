@@ -13,7 +13,7 @@ import org.emftext.language.java.containers.JavaRoot;
 import org.emftext.language.java.containers.Package;
 import org.emftext.language.java.members.Method;
 
-import de.uka.ipd.sdq.pcm.repository.BasicComponent;
+import org.palladiosimulator.pcm.repository.BasicComponent;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.BasicComponentFinding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;

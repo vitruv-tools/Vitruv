@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavapojo.transformations;
 import org.emftext.language.java.members.ClassMethod;
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding;
 
-import de.uka.ipd.sdq.pcm.repository.BasicComponent;
+import org.palladiosimulator.pcm.repository.BasicComponent;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.compositerefiners.JavaMethodBodyChangedChangeRefiner;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.ClassMethodBodyChangedTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPTransformationExecuterBase;

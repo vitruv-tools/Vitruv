@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.seff2code
 
-import de.uka.ipd.sdq.pcm.seff.AbstractAction
+import org.palladiosimulator.pcm.seff.AbstractAction
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.DefaultEObjectMappingTransformation
 import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.members.Method

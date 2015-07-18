@@ -7,8 +7,8 @@ import org.emftext.language.java.members.ClassMethod;
 import org.emftext.language.java.members.Method;
 import org.somox.gast2seff.visitors.AbstractFunctionClassificationStrategy;
 
-import de.uka.ipd.sdq.pcm.repository.BasicComponent;
-import de.uka.ipd.sdq.pcm.repository.OperationSignature;
+import org.palladiosimulator.pcm.repository.BasicComponent;
+import org.palladiosimulator.pcm.repository.OperationSignature;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.BasicComponentFinding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 

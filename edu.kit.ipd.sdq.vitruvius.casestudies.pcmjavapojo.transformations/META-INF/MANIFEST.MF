@@ -12,7 +12,8 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.vitruvius.casestudies.jmljava,
  edu.kit.ipd.sdq.vitruvius.casestudies.jmljava,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements,
- de.uka.ipd.sdq.pcm,
+ org.palladiosimulator.pcm,
  org.somox.gast2seff,
- org.eclipse.core.resources
+ org.eclipse.core.resources,
+ org.apache.log4j
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavapojo.transformations

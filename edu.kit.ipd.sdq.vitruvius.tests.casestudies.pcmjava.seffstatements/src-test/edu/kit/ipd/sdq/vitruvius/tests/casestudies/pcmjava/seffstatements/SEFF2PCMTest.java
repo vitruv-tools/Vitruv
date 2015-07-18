@@ -10,12 +10,12 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.text.edits.InsertEdit;
 import org.emftext.language.java.members.Method;
 import org.junit.Test;
+import org.palladiosimulator.pcm.repository.Repository;
+import org.palladiosimulator.pcm.seff.InternalAction;
+import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
+import org.palladiosimulator.pcm.seff.SeffFactory;
 import org.somox.test.gast2seff.visitors.AssertSEFFHelper;
 
-import de.uka.ipd.sdq.pcm.repository.Repository;
-import de.uka.ipd.sdq.pcm.seff.InternalAction;
-import de.uka.ipd.sdq.pcm.seff.ResourceDemandingSEFF;
-import de.uka.ipd.sdq.pcm.seff.SeffFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.jamopp2pcm.JaMoPP2PCMTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
@@ -104,7 +104,7 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
         final String httpUploadMethodName = "httpUpload";
 
         // create methods
-        super.addMethodToInterfaceWithCorrespondence(webGuiInterfaceName, httpUploadMethodName);
+
         super.addMethodToInterfaceWithCorrespondence(webGuiInterfaceName, httpDownloadMethodName);
 
         super.addMethodToInterfaceWithCorrespondence(mediaStoreInterfaceName, uploadMethodName);
