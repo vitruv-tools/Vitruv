@@ -24,6 +24,7 @@ import org.emftext.language.java.members.Field
 import org.emftext.language.java.modifiers.Modifier
 import org.emftext.language.java.modifiers.Public
 import org.emftext.language.java.modifiers.impl.PublicImpl
+import org.palladiosimulator.pcm.repository.OperationProvidedRole
 
 /**
  * Maps a JaMoPP class to a PCM Components or System. 
@@ -31,13 +32,13 @@ import org.emftext.language.java.modifiers.impl.PublicImpl
  */
 class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 
-	//for component/system decision 
+	// for component/system decision 
 	val public static int SELECT_CREATE_BASIC_COMPONENT = 0
 	val public static int SELECT_CREATE_SYSTEM = 1
 	val public static int SELECT_CREATE_COMPOSITE_COMPONENT = 2
 	val public static int SELECT_NO_CORRESPONDENCE = 3
 
-	//for data type decision
+	// for data type decision
 	val public static int SELECT_CREATE_COMPOSITE_DATA_TYPE = 0
 	val public static int SELECT_CREATE_COLLECTION_DATA_TYPE = 1
 	val public static int SELECT_DO_NOT_CREATE_DATA_TYPE = 2
@@ -77,21 +78,21 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 			return null;
 		}
 
-		//ii) + iv)
+		// ii) + iv)
 		val jaMoPPPackage = PCM2JaMoPPUtils.
 			getContainingPackageFromCorrespondenceInstance(jaMoPPClass, correspondenceInstance)
 		var InterfaceProvidingRequiringEntity pcmComponentOrSystem = null
 		if (null != jaMoPPPackage) {
 			if (jaMoPPPackage.name.equals("datatypes")) {
 
-				//vi) class is in the datatypes packge --> create a new datatype
+				// vi) class is in the datatypes packge --> create a new datatype
 				return createDatatype(jaMoPPClass)
 			}
 
 			// get corresponding component or system (ask for InterfaceProvidingRequiringEntity cause components 
 			// and systems are both InterfaceProvidingRequiringEntitys) 
-			val pcmComponentOrSystems = correspondenceInstance.
-				getCorrespondingEObjectsByType(jaMoPPPackage, InterfaceProvidingRequiringEntity)
+			val pcmComponentOrSystems = correspondenceInstance.getCorrespondingEObjectsByType(jaMoPPPackage,
+				InterfaceProvidingRequiringEntity)
 			if (!pcmComponentOrSystems.nullOrEmpty) {
 				pcmComponentOrSystem = pcmComponentOrSystems.get(0)
 				if (alreadyHasClassCorrespondence(pcmComponentOrSystem)) {
@@ -110,12 +111,12 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 			}
 		} else {
 
-			//iii) and iv) --> already checked above 
-			//--> the component corresponding to the package of the class does not have a correspoding pcmComponentOrSystem yet
-			//v) a)
+			// iii) and iv) --> already checked above 
+			// --> the component corresponding to the package of the class does not have a correspoding pcmComponentOrSystem yet
+			// v) a)
 			if (jaMoPPClass.name.contains(pcmComponentOrSystem.entityName)) {
 
-				//the class is the implementing class
+				// the class is the implementing class
 				return pcmComponentOrSystem.toArray
 			} else {
 				if (super.modalTextYesNoUserInteracting(
@@ -140,13 +141,14 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	def boolean alreadyHasClassCorrespondence(InterfaceProvidingRequiringEntity pcmComponentOrSystem) {
 		var correspondencesForPCMCompOrSystem = correspondenceInstance.getAllCorrespondingEObjects(pcmComponentOrSystem)
-		val hasClassCorrespondence = correspondencesForPCMCompOrSystem.filter[correspondence|
-			correspondence instanceof Class].size
+		val hasClassCorrespondence = correspondencesForPCMCompOrSystem.filter [ correspondence |
+			correspondence instanceof Class
+		].size
 		return 0 < hasClassCorrespondence
 	}
 
 	/**
-	 * called when a child object (e.g. a Method or a field) is added to the class
+	 * called when a child object (e.g. a Method, a Field or a implements reference) is added to the class
 	 * Creates the correspondences and returns the TransformationChangeResult object containing the PCM element that should be saved
 	 */
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
@@ -172,7 +174,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 			val classifiersInSamePackage = jaMoPPClass.containingCompilationUnit.classifiersInSamePackage
 			if (!classifiersInSamePackage.nullOrEmpty) {
 
-				//TODO: ask user whether to remove also this classifiers
+				// TODO: ask user whether to remove also this classifiers
 				var boolean removeAllClassifiers = false;
 				if (removeAllClassifiers) {
 					eObjectsToDelete.addAll(classifiersInSamePackage)
@@ -217,99 +219,102 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 		} else if (!components.nullOrEmpty &&
 			PCMJaMoPPNamespace.JaMoPP.JAMOPP_MEMBERS_REFERENCE.equals(affectedReference.name) &&
 			oldValue instanceof Field) {
-			PCMJaMoPPUtils.removeEObjectAndAddCorrespondencesToDelete(oldCorrespondingEObjectsToDelete,
-				correspondenceInstance, tcr)
-		}//TODO implement code for methods that are corresponding to architectural signatures  
-		else {
-			logger.warn(
-				"deleteNonRootEObjectInList in class mapping called. Nothing done for EObject with oldValue" + oldValue)
-		}
+				PCMJaMoPPUtils.removeEObjectAndAddCorrespondencesToDelete(oldCorrespondingEObjectsToDelete,
+					correspondenceInstance, tcr)
+			} // TODO implement code for methods that are corresponding to architectural signatures  
+			else {
+				logger.warn(
+					"deleteNonRootEObjectInList in class mapping called. Nothing done for EObject with oldValue" +
+						oldValue)
+					}
 
-		return tcr
-	}
+					return tcr
+				}
 
-	/**
-	 * if the class is renamed rename the corresponding objects on PCM side 
-	 */
-	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
-		Object newValue) {
-		JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(affectedEObject, affectedAttribute, oldValue, newValue,
-			featureCorrespondenceMap, correspondenceInstance)
-	}
+				/**
+				 * if the class is renamed rename the corresponding objects on PCM side 
+				 */
+				override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute,
+					Object oldValue, Object newValue) {
+					JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(affectedEObject, affectedAttribute, oldValue,
+						newValue, featureCorrespondenceMap, correspondenceInstance)
+				}
 
-	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue,
-		EObject[] newCorrespondingEObjects) {
-		logger.warn("method should not be called for ClassMappingTransformation transformation")
-		return null
-	}
+				override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference,
+					EObject newValue, EObject[] newCorrespondingEObjects) {
+					logger.warn("method should not be called for ClassMappingTransformation transformation")
+					return null
+				}
 
-	def private createDatatype(Classifier jaMoPPClass) {
-		val String msg = "Class " + jaMoPPClass.name +
-			"has been created in the datatypes pacakage. Please decide which kind of data type should be created."
-		switch (selection : super.modalTextUserinteracting(msg, #["Create CompositeDataType", "CreateCollectionDataType", "Do not create a data type (not recommended)"])) {
-			case SELECT_CREATE_COMPOSITE_DATA_TYPE: {
-				val repo = JaMoPP2PCMUtils.getRepository(correspondenceInstance)
-				val compositeDataType = RepositoryFactory.eINSTANCE.createCompositeDataType
-				compositeDataType.entityName = jaMoPPClass.name
-				compositeDataType.setRepository__DataType(repo)
-				return compositeDataType.toArray
-			}
-			case SELECT_CREATE_COLLECTION_DATA_TYPE: {
-				val repo = JaMoPP2PCMUtils.getRepository(correspondenceInstance)
-				val collectionDataType = RepositoryFactory.eINSTANCE.createCollectionDataType
-				collectionDataType.entityName = jaMoPPClass.name
-				collectionDataType.setRepository__DataType(repo)
-				return collectionDataType.toArray
-			}
-			case SELECT_DO_NOT_CREATE_DATA_TYPE: {
-				return null
-			}
-		}
-		return null
-	}
+				def private createDatatype(Classifier jaMoPPClass) {
+					val String msg = "Class " + jaMoPPClass.name +
+						"has been created in the datatypes pacakage. Please decide which kind of data type should be created."
+					switch (selection : super.modalTextUserinteracting(msg, #["Create CompositeDataType", "CreateCollectionDataType", "Do not create a data type (not recommended)"])) {
+						case SELECT_CREATE_COMPOSITE_DATA_TYPE: {
+							val repo = JaMoPP2PCMUtils.getRepository(correspondenceInstance)
+							val compositeDataType = RepositoryFactory.eINSTANCE.createCompositeDataType
+							compositeDataType.entityName = jaMoPPClass.name
+							compositeDataType.setRepository__DataType(repo)
+							return compositeDataType.toArray
+						}
+						case SELECT_CREATE_COLLECTION_DATA_TYPE: {
+							val repo = JaMoPP2PCMUtils.getRepository(correspondenceInstance)
+							val collectionDataType = RepositoryFactory.eINSTANCE.createCollectionDataType
+							collectionDataType.entityName = jaMoPPClass.name
+							collectionDataType.setRepository__DataType(repo)
+							return collectionDataType.toArray
+						}
+						case SELECT_DO_NOT_CREATE_DATA_TYPE: {
+							return null
+						}
+					}
+					return null
+				}
 
-	/**
-	 * checks whether the classifier is public
-	 * if it is not public no corresponding object will be created for the class
-	 */
-	def private boolean classIsPublic(Class jaMoPPClass) {
+				/**
+				 * checks whether the classifier is public
+				 * if it is not public no corresponding object will be created for the class
+				 */
+				def private boolean classIsPublic(Class jaMoPPClass) {
 
-		// i) + iii)
-		val hasPublicAnnotation = jaMoPPClass.annotationsAndModifiers.filter[aam|aam instanceof Public].size
-		return 0 < hasPublicAnnotation
-	}
+					// i) + iii)
+					val hasPublicAnnotation = jaMoPPClass.annotationsAndModifiers.filter[aam|aam instanceof Public].size
+					return 0 < hasPublicAnnotation
+				}
 
-	def private InterfaceProvidingRequiringEntity askUserWhetherToCreateComponentOrSystem(Classifier jaMoPPClass) {
-		var int selection = super.modalTextUserinteracting(
-			"The created class is 'public' and in a package that has no corresponding architectural element yet." +
-				" Should a component or a system be created for the package and the class '" + jaMoPPClass.name +
-				"' used as the component implementing class?", "Create BasicComponent", "Create System",
-			"Create Composite Component", "Do not create a Component or System correspondence for the class")
-		switch (selection) {
-			case SELECT_CREATE_BASIC_COMPONENT: {
-				val repo = JaMoPP2PCMUtils.getRepository(correspondenceInstance)
-				val basicComponent = RepositoryFactory.eINSTANCE.createBasicComponent
-				basicComponent.entityName = jaMoPPClass.name
-				basicComponent.repository__RepositoryComponent = repo
-				return basicComponent
-			}
-			case SELECT_CREATE_SYSTEM: {
-				val pcmSystem = SystemFactory.eINSTANCE.createSystem
-				pcmSystem.entityName = jaMoPPClass.name
-				return pcmSystem
-			}
-			case SELECT_CREATE_COMPOSITE_COMPONENT: {
-				val repo = JaMoPP2PCMUtils.getRepository(correspondenceInstance)
-				val compositeComponent = RepositoryFactory.eINSTANCE.createCompositeComponent
-				compositeComponent.entityName = jaMoPPClass.name
-				compositeComponent.repository__RepositoryComponent = repo
-				return compositeComponent
-			}
-			case SELECT_NO_CORRESPONDENCE: {
-				return null
-			}
-		}
-		return null
-	}
+				def private InterfaceProvidingRequiringEntity askUserWhetherToCreateComponentOrSystem(
+					Classifier jaMoPPClass) {
+					var int selection = super.modalTextUserinteracting(
+						"The created class is 'public' and in a package that has no corresponding architectural element yet." +
+							" Should a component or a system be created for the package and the class '" +
+							jaMoPPClass.name + "' used as the component implementing class?", "Create BasicComponent",
+						"Create System", "Create Composite Component",
+						"Do not create a Component or System correspondence for the class")
+						switch (selection) {
+							case SELECT_CREATE_BASIC_COMPONENT: {
+								val repo = JaMoPP2PCMUtils.getRepository(correspondenceInstance)
+								val basicComponent = RepositoryFactory.eINSTANCE.createBasicComponent
+								basicComponent.entityName = jaMoPPClass.name
+								basicComponent.repository__RepositoryComponent = repo
+								return basicComponent
+							}
+							case SELECT_CREATE_SYSTEM: {
+								val pcmSystem = SystemFactory.eINSTANCE.createSystem
+								pcmSystem.entityName = jaMoPPClass.name
+								return pcmSystem
+							}
+							case SELECT_CREATE_COMPOSITE_COMPONENT: {
+								val repo = JaMoPP2PCMUtils.getRepository(correspondenceInstance)
+								val compositeComponent = RepositoryFactory.eINSTANCE.createCompositeComponent
+								compositeComponent.entityName = jaMoPPClass.name
+								compositeComponent.repository__RepositoryComponent = repo
+								return compositeComponent
+							}
+							case SELECT_NO_CORRESPONDENCE: {
+								return null
+							}
+						}
+						return null
+					}
 
-}
+				}

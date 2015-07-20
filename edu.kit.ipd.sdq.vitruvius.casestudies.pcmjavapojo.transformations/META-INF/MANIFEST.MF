@@ -13,7 +13,7 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.vitruvius.casestudies.jmljava,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements,
  org.palladiosimulator.pcm,
- org.somox.gast2seff,
  org.eclipse.core.resources,
- org.apache.log4j
+ org.apache.log4j,
+ org.somox.gast2seff
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavapojo.transformations

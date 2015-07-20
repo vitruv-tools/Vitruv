@@ -37,10 +37,9 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
      */
     @Override
     protected void beforeTest() throws Throwable {
-        this.repository = this.createMediaStoreViaCode();
         // this.repository = this.createMediaStoreViaPCM();
         super.beforeTest();
-
+        this.repository = this.createMediaStoreViaCode();
     }
 
     @Test
@@ -60,14 +59,14 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
 
     private ResourceDemandingSEFF editWebGUIDownloadMethod(final String text) throws Throwable, JavaModelException {
         final ICompilationUnit iCu = super.findICompilationUnitWithClassName(WEBGUI + "Impl");
-        final IMethod iMethod = super.findIMethodByName(WEBGUI, "http" + DOWNLOAD, iCu);
+        final IMethod iMethod = super.findIMethodByName(WEBGUI + "Impl", "httpDownload", iCu);
         int offset = iMethod.getSourceRange().getOffset();
         offset += iMethod.getSource().length() - 2;
         final InsertEdit insertEdit = new InsertEdit(offset, text);
         this.editCompilationUnit(iCu, insertEdit);
         TestUtil.waitForSynchronization(10 * 1000);
         final CorrespondenceInstance ci = this.getCorrespondenceInstance();
-        final Method method = super.findJaMoPPMethodInICU(iCu, "http" + DOWNLOAD);
+        final Method method = super.findJaMoPPMethodInICU(iCu, "httpDownload");
         final Set<ResourceDemandingSEFF> seffs = ci.getCorrespondingEObjectsByType(method, ResourceDemandingSEFF.class);
         if (null == seffs || 0 == seffs.size()) {
             fail("could not find corresponding seff for method " + method);
@@ -81,8 +80,13 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
         return pcmJaMoPPTransformationTest.createMediaStore(MEDIA_STORE, WEBGUI, DOWNLOAD, UPLOAD);
     }
 
-    // create main package
+    @Test
+    public void createMediaStoreViaCodeTest() throws Throwable {
+        // nothing todo --> Media store is created in before test
+    }
+
     private Repository createMediaStoreViaCode() throws Throwable {
+        // create main package
         final Repository repo = super.addFirstPackage();
 
         // create packages
@@ -103,21 +107,25 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
         final String httpDownloadMethodName = "httpDownload";
         final String httpUploadMethodName = "httpUpload";
 
-        // create methods
-
+        // create interface methods
         super.addMethodToInterfaceWithCorrespondence(webGuiInterfaceName, httpDownloadMethodName);
-
+        super.addMethodToInterfaceWithCorrespondence(webGuiInterfaceName, httpUploadMethodName);
         super.addMethodToInterfaceWithCorrespondence(mediaStoreInterfaceName, uploadMethodName);
         super.addMethodToInterfaceWithCorrespondence(mediaStoreInterfaceName, downloadMethodName);
 
-        final String mediaStoreClassName = "";
-        final String webGUIClassName = "";
+        final String mediaStoreClassName = MEDIA_STORE + "Impl";
+        final String webGUIClassName = WEBGUI + "Impl";
 
-        // create methods in main class of basic components in order to create SEFF correspondences
-        this.addImplementingClassMethodToClass(webGUIClassName, httpUploadMethodName);
-        this.addImplementingClassMethodToClass(webGUIClassName, httpDownloadMethodName);
-        this.addImplementingClassMethodToClass(mediaStoreClassName, uploadMethodName);
-        this.addImplementingClassMethodToClass(mediaStoreClassName, downloadMethodName);
+        // create implements
+        super.addImplementsCorrespondingToOperationProvidedRoleToClass(webGUIClassName, webGuiInterfaceName);
+        super.addImplementsCorrespondingToOperationProvidedRoleToClass(mediaStoreClassName, mediaStoreInterfaceName);
+
+        // create class methods in component implementing classes in order to create SEFF
+        // correspondences
+        this.addClassMethodToClassThatOverridesInterfaceMethod(webGUIClassName, httpUploadMethodName);
+        this.addClassMethodToClassThatOverridesInterfaceMethod(webGUIClassName, httpDownloadMethodName);
+        this.addClassMethodToClassThatOverridesInterfaceMethod(mediaStoreClassName, uploadMethodName);
+        this.addClassMethodToClassThatOverridesInterfaceMethod(mediaStoreClassName, downloadMethodName);
         return repo;
     }
 

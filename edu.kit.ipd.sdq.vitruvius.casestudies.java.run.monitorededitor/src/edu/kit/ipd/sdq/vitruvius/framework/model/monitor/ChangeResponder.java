@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.SimpleType;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.emftext.language.java.classifiers.Class;
 import org.emftext.language.java.classifiers.ConcreteClassifier;
@@ -22,6 +24,7 @@ import org.emftext.language.java.members.Field;
 import org.emftext.language.java.members.Method;
 import org.emftext.language.java.modifiers.Modifier;
 import org.emftext.language.java.parameters.Parameter;
+import org.emftext.language.java.types.TypeReference;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
@@ -82,6 +85,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge;
  */
 public class ChangeResponder implements ChangeEventVisitor {
 
+    private static final Logger logger = Logger.getLogger(ChangeResponder.class.getSimpleName());
+
     protected final MonitoredEditor monitoredEditor;
     private final Map<java.lang.Class<? extends ChangeClassifyingEventExtension>, ChangeEventExtendedVisitor> dispatcher;
     protected final ChangeResponderUtility util;
@@ -99,7 +104,8 @@ public class ChangeResponder implements ChangeEventVisitor {
     }
 
     private void fillDispatcherMap() {
-        for (final ChangeEventExtendedVisitor visitor : getRegisteredVisitors("edu.kit.ipd.sdq.vitruvius.framework.model.monitor.changeeventextendedvisitors")) {
+        for (final ChangeEventExtendedVisitor visitor : getRegisteredVisitors(
+                "edu.kit.ipd.sdq.vitruvius.framework.model.monitor.changeeventextendedvisitors")) {
             for (final java.lang.Class<? extends ChangeClassifyingEventExtension> clazz : visitor.getTreatedClasses()) {
                 this.dispatcher.put(clazz, visitor);
             }
@@ -258,13 +264,13 @@ public class ChangeResponder implements ChangeEventVisitor {
         final Interface originalInterface = (Interface) originalCU
                 .getConcreteClassifierForTypeDeclaration(renameInterfaceEvent.original);
         final URI uri = this.util.getFirstExistingURI(renameInterfaceEvent.renamed, renameInterfaceEvent.original);
-        final CompilationUnitAdapter cuRenamed = this.util.getUnsavedCompilationUnitAdapter(
-                renameInterfaceEvent.renamed, uri);
+        final CompilationUnitAdapter cuRenamed = this.util
+                .getUnsavedCompilationUnitAdapter(renameInterfaceEvent.renamed, uri);
         final Interface renamedInterface = (Interface) cuRenamed
                 .getConcreteClassifierForTypeDeclaration(renameInterfaceEvent.renamed);
 
-        final EChange eChange = JaMoPPChangeBuildHelper
-                .createRenameInterfaceChange(originalInterface, renamedInterface);
+        final EChange eChange = JaMoPPChangeBuildHelper.createRenameInterfaceChange(originalInterface,
+                renamedInterface);
         this.util.submitEMFModelChange(eChange, renameInterfaceEvent.original);
     }
 
@@ -330,17 +336,32 @@ public class ChangeResponder implements ChangeEventVisitor {
                 .getUnsavedCompilationUnitAdapter(addSuperInterfaceEvent.baseType);
         final CompilationUnitAdapter changedCU = this.util
                 .getUnsavedCompilationUnitAdapter(addSuperInterfaceEvent.superType);
-        final ConcreteClassifier base = originalCU
-                .getConcreteClassifierForTypeDeclaration(addSuperInterfaceEvent.baseType);
+        if (!(addSuperInterfaceEvent.superType instanceof SimpleType)) {
+            logger.warn("visit AddSuperInterfaceEvent failed: super type is not an instance of SimpleType: "
+                    + addSuperInterfaceEvent.superType);
+            return;
+        }
+        final TypeReference implementsTypeRef = changedCU.getImplementsForSuperType((SimpleType) addSuperInterfaceEvent.superType);
+        final ConcreteClassifier affectedClassifier = originalCU.getConcreteClassifierForTypeDeclaration(addSuperInterfaceEvent.baseType);
+        final EChange eChange = JaMoPPChangeBuildHelper.createAddSuperInterfaceChange(affectedClassifier, implementsTypeRef);
+        this.util.submitEMFModelChange(eChange, addSuperInterfaceEvent.baseType);
     }
 
     @Override
     public void visit(final RemoveSuperInterfaceEvent removeSuperInterfaceEvent) {
-        // TODO Auto-generated method stub
         final CompilationUnitAdapter originalCU = this.util
                 .getUnsavedCompilationUnitAdapter(removeSuperInterfaceEvent.baseType);
         final CompilationUnitAdapter changedCU = this.util
                 .getUnsavedCompilationUnitAdapter(removeSuperInterfaceEvent.superType);
+        if (!(removeSuperInterfaceEvent.superType instanceof SimpleType)) {
+            logger.warn("visit AddSuperInterfaceEvent failed: super type is not an instance of SimpleType: "
+                    + removeSuperInterfaceEvent.superType);
+            return;
+        }
+        final TypeReference implementsTypeRef = originalCU.getImplementsForSuperType((SimpleType) removeSuperInterfaceEvent.superType);
+        final ConcreteClassifier affectedClassifier = changedCU.getConcreteClassifierForTypeDeclaration(removeSuperInterfaceEvent.baseType);
+        final EChange eChange = JaMoPPChangeBuildHelper.createRemoveSuperInterfaceChange(affectedClassifier, implementsTypeRef);
+        this.util.submitEMFModelChange(eChange, removeSuperInterfaceEvent.baseType);
     }
 
     @Override
@@ -371,8 +392,8 @@ public class ChangeResponder implements ChangeEventVisitor {
             final List<Parameter> oldParameters, final List<Parameter> newParameters, final ASTNode oldNode) {
         final CompositeChange compositeChange = new CompositeChange(new Change[] {});
         for (final Parameter oldParameter : oldParameters) {
-            final EChange eChange = JaMoPPChangeBuildHelper
-                    .createRemoveParameterChange(oldParameter, methodAfterRemove);
+            final EChange eChange = JaMoPPChangeBuildHelper.createRemoveParameterChange(oldParameter,
+                    methodAfterRemove);
             compositeChange.addChange(this.util.wrapToEMFModelChange(eChange, oldNode));
         }
         for (final Parameter newParameter : newParameters) {
@@ -442,8 +463,8 @@ public class ChangeResponder implements ChangeEventVisitor {
             modifierChanges.addChange(this.util.wrapToEMFModelChange(eChange, oldNode));
         }
         for (final Modifier newModifier : changedModifiers) {
-            final EChange eChange = JaMoPPChangeBuildHelper
-                    .createAddModifierChange(newModifier, modifiableBeforeChange);
+            final EChange eChange = JaMoPPChangeBuildHelper.createAddModifierChange(newModifier,
+                    modifiableBeforeChange);
             modifierChanges.addChange(this.util.wrapToEMFModelChange(eChange, oldNode));
         }
         return modifierChanges;
@@ -564,16 +585,17 @@ public class ChangeResponder implements ChangeEventVisitor {
                 .createCreatePackageChange(addPackageEvent.packageName);
         this.util.submitEMFModelChange(createPackageChange, addPackageEvent.iResource);
     }
-    
 
     @Override
-    public void visit(RenameParameterEvent renameParameterEvent) {
-        CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(renameParameterEvent.original);
-        Parameter original = originalCU.getParameterForVariableDeclaration(renameParameterEvent.originalParam);
-        URI uri = this.util.getFirstExistingURI(renameParameterEvent.original, renameParameterEvent.renamed);
-        CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(renameParameterEvent.renamed, uri);
-        Parameter renamed = changedCU.getParameterForVariableDeclaration(renameParameterEvent.changedParam);
-        EChange eChange = JaMoPPChangeBuildHelper.createRenameParameterChange(original, renamed);
+    public void visit(final RenameParameterEvent renameParameterEvent) {
+        final CompilationUnitAdapter originalCU = this.util
+                .getUnsavedCompilationUnitAdapter(renameParameterEvent.original);
+        final Parameter original = originalCU.getParameterForVariableDeclaration(renameParameterEvent.originalParam);
+        final URI uri = this.util.getFirstExistingURI(renameParameterEvent.original, renameParameterEvent.renamed);
+        final CompilationUnitAdapter changedCU = this.util
+                .getUnsavedCompilationUnitAdapter(renameParameterEvent.renamed, uri);
+        final Parameter renamed = changedCU.getParameterForVariableDeclaration(renameParameterEvent.changedParam);
+        final EChange eChange = JaMoPPChangeBuildHelper.createRenameParameterChange(original, renamed);
         this.util.submitEMFModelChange(eChange, renameParameterEvent.original);
     }
 

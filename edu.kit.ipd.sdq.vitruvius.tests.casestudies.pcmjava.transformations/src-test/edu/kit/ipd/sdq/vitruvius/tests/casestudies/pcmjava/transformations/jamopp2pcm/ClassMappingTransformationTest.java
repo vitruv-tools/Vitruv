@@ -4,13 +4,13 @@ import static org.junit.Assert.fail;
 
 import org.eclipse.emf.ecore.EObject;
 import org.junit.Test;
-
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.CollectionDataType;
 import org.palladiosimulator.pcm.repository.CompositeComponent;
 import org.palladiosimulator.pcm.repository.CompositeDataType;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.system.System;
+
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 
@@ -150,8 +150,8 @@ public class ClassMappingTransformationTest extends JaMoPP2PCMTransformationTest
         final BasicComponent newBasicComponent = super.renameClassifierWithName(basicComponent.getEntityName(),
                 PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + PCM2JaMoPPTestUtils.RENAME, BasicComponent.class);
 
-        this.assertRepositoryAndPCMName(repo, newBasicComponent, PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME
-                + PCM2JaMoPPTestUtils.RENAME);
+        this.assertRepositoryAndPCMName(repo, newBasicComponent,
+                PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + PCM2JaMoPPTestUtils.RENAME);
     }
 
 }

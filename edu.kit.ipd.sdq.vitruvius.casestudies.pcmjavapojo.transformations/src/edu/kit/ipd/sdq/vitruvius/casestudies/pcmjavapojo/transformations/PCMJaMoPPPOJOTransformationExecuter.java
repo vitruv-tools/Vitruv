@@ -1,9 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavapojo.transformations;
 
 import org.emftext.language.java.members.ClassMethod;
+import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding;
 
-import org.palladiosimulator.pcm.repository.BasicComponent;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.compositerefiners.JavaMethodBodyChangedChangeRefiner;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.ClassMethodBodyChangedTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPTransformationExecuterBase;
@@ -15,6 +15,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.In
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.MethodMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ModifierMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.PackageMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.TypeReferenceMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.OperationProvidedRoleMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.OperationRequiredRoleMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.BasicComponentMappingTransformation;
@@ -45,7 +46,6 @@ public class PCMJaMoPPPOJOTransformationExecuter extends PCMJaMoPPTransformation
 
     @Override
     protected void initializeChangeSynchronizer() {
-        super.initializeChangeSynchronizer();
         // PCM2JaMoPP
         // Repository
         this.changeSynchronizer.addMapping(new RepositoryMappingTransformation());
@@ -79,6 +79,10 @@ public class PCMJaMoPPPOJOTransformationExecuter extends PCMJaMoPPTransformation
         this.changeSynchronizer.addMapping(new ModifierMappingTransformation());
         this.changeSynchronizer.addMapping(new FieldMappingTransformation());
         this.changeSynchronizer.addMapping(new ClassMethodMappingTransformation());
+        this.changeSynchronizer.addMapping(new TypeReferenceMappingTransformation());
+
+        //execute initializeChangeSynchronizer as last statement: it sets the user interactor for all mappings
+        super.initializeChangeSynchronizer();
     }
 
     @Override

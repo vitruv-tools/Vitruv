@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -15,10 +16,13 @@ import org.eclipse.jdt.core.dom.ClassInstanceCreation;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.SimpleName;
+import org.eclipse.jdt.core.dom.SimpleType;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.emftext.language.java.classifiers.AnonymousClass;
+import org.emftext.language.java.classifiers.Class;
 import org.emftext.language.java.classifiers.ConcreteClassifier;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.imports.Import;
@@ -27,64 +31,74 @@ import org.emftext.language.java.members.Field;
 import org.emftext.language.java.members.Member;
 import org.emftext.language.java.members.Method;
 import org.emftext.language.java.parameters.Parameter;
+import org.emftext.language.java.types.ClassifierReference;
+import org.emftext.language.java.types.NamespaceClassifierReference;
+import org.emftext.language.java.types.PrimitiveType;
+import org.emftext.language.java.types.TypeReference;
 
 /**
  * @author messinger
- * 
+ *
  *         Bridge from Eclipse ASTNode to JaMoPP Model. More precise name:
  *         AST2JaMoPP-CompilationUnit-Adapter
- * 
+ *
  */
 public class CompilationUnitAdapter {
 
+    private static final Logger logger = Logger.getLogger(CompilationUnitAdapter.class.getSimpleName());
+
     private CompilationUnit compilationUnit;
 
-    public CompilationUnitAdapter(CompilationUnit unit) {
+    public CompilationUnitAdapter(final CompilationUnit unit) {
         this.compilationUnit = unit;
     }
 
-    public CompilationUnitAdapter(ASTNode astNode, URI uri, boolean isSaved) {
-        ASTNode root = astNode.getRoot();
-        if (!(root instanceof org.eclipse.jdt.core.dom.CompilationUnit))
+    public CompilationUnitAdapter(final ASTNode astNode, final URI uri, final boolean isSaved) {
+        final ASTNode root = astNode.getRoot();
+        if (!(root instanceof org.eclipse.jdt.core.dom.CompilationUnit)) {
             throw new IllegalStateException("astNode argument has to be in the subtree of a CompilationUnit.");
-        org.eclipse.jdt.core.dom.CompilationUnit astCompilationUnit = (org.eclipse.jdt.core.dom.CompilationUnit) root;
+        }
+        final org.eclipse.jdt.core.dom.CompilationUnit astCompilationUnit = (org.eclipse.jdt.core.dom.CompilationUnit) root;
         if (isSaved) {
             try {
                 this.compilationUnit = AST2JaMoPP.getCompilationUnitForSerializedCompilationUnit(astCompilationUnit);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 e.printStackTrace();
             }
         } else {
             try {
                 this.compilationUnit = AST2JaMoPP.getCompilationUnitForInMemoryCompilationUnit(astCompilationUnit, uri);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public CompilationUnitAdapter(IPath compilationUnitPath) throws IOException {
+    public CompilationUnitAdapter(final IPath compilationUnitPath) throws IOException {
         this.compilationUnit = AST2JaMoPP.getCompilationUnitFromAbsolutePath(compilationUnitPath);
     }
 
-    public Method getMethodForMethodDeclaration(MethodDeclaration methodDeclaration) {
-        ASTNode parent = methodDeclaration.getParent();
-        int nodeType = parent.getNodeType();
-        if (nodeType != ASTNode.ANONYMOUS_CLASS_DECLARATION && nodeType != ASTNode.TYPE_DECLARATION)
+    public Method getMethodForMethodDeclaration(final MethodDeclaration methodDeclaration) {
+        final ASTNode parent = methodDeclaration.getParent();
+        final int nodeType = parent.getNodeType();
+        if (nodeType != ASTNode.ANONYMOUS_CLASS_DECLARATION && nodeType != ASTNode.TYPE_DECLARATION) {
             return null;
+        }
         if (nodeType == ASTNode.ANONYMOUS_CLASS_DECLARATION) {
-            List<AnonymousClass> anonymousClasses = getAnonymousClassesForAnonymousClassDeclaration((AnonymousClassDeclaration) parent);
-            for (AnonymousClass anonymousClass : anonymousClasses) {
-                for (Method method : anonymousClass.getMethods()) {
-                    if (AST2JaMoPPCorrespondence.corresponds(methodDeclaration, method, false))
+            final List<AnonymousClass> anonymousClasses = this.getAnonymousClassesForAnonymousClassDeclaration(
+                    (AnonymousClassDeclaration) parent);
+            for (final AnonymousClass anonymousClass : anonymousClasses) {
+                for (final Method method : anonymousClass.getMethods()) {
+                    if (AST2JaMoPPCorrespondence.corresponds(methodDeclaration, method, false)) {
                         return method;
+                    }
                 }
             }
             return null;
         }
 
-        ConcreteClassifier classifier = getConcreteClassifierForTypeDeclaration((TypeDeclaration) parent);
-        for (Method method : classifier.getMethods()) {
+        final ConcreteClassifier classifier = this.getConcreteClassifierForTypeDeclaration((TypeDeclaration) parent);
+        for (final Method method : classifier.getMethods()) {
             if (AST2JaMoPPCorrespondence.corresponds(methodDeclaration, method, false)) {
                 return method;
             }
@@ -92,20 +106,21 @@ public class CompilationUnitAdapter {
         return null;
     }
 
-    public List<Field> getFieldsForFieldDeclaration(FieldDeclaration fieldDeclaration) {
-        ASTNode parent = fieldDeclaration.getParent();
-        int nodeType = parent.getNodeType();
-        if (nodeType != ASTNode.ANONYMOUS_CLASS_DECLARATION && nodeType != ASTNode.TYPE_DECLARATION)
+    public List<Field> getFieldsForFieldDeclaration(final FieldDeclaration fieldDeclaration) {
+        final ASTNode parent = fieldDeclaration.getParent();
+        final int nodeType = parent.getNodeType();
+        if (nodeType != ASTNode.ANONYMOUS_CLASS_DECLARATION && nodeType != ASTNode.TYPE_DECLARATION) {
             return null;
+        }
         if (nodeType == ASTNode.ANONYMOUS_CLASS_DECLARATION) {
             // TODO Anonymous class support
             return null;
         }
 
-        List<Field> fields = new ArrayList<Field>(2);
+        final List<Field> fields = new ArrayList<Field>(2);
 
-        ConcreteClassifier classifier = getConcreteClassifierForTypeDeclaration((TypeDeclaration) parent);
-        for (Field field : classifier.getFields()) {
+        final ConcreteClassifier classifier = this.getConcreteClassifierForTypeDeclaration((TypeDeclaration) parent);
+        for (final Field field : classifier.getFields()) {
             if (AST2JaMoPPCorrespondence.corresponds(fieldDeclaration, field, false)) {
                 fields.add(field);
             }
@@ -113,44 +128,47 @@ public class CompilationUnitAdapter {
         return fields;
     }
 
-    public Field getFieldForVariableDeclarationFragment(VariableDeclarationFragment fieldFragment) {
-        List<Field> fields = getFieldsForFieldDeclaration((FieldDeclaration) fieldFragment.getParent());
+    public Field getFieldForVariableDeclarationFragment(final VariableDeclarationFragment fieldFragment) {
+        final List<Field> fields = this.getFieldsForFieldDeclaration((FieldDeclaration) fieldFragment.getParent());
 
-        for (Field field : fields) {
-            if (AST2JaMoPPCorrespondence.correspondsByName(fieldFragment, field))
+        for (final Field field : fields) {
+            if (AST2JaMoPPCorrespondence.correspondsByName(fieldFragment, field)) {
                 return field;
+            }
         }
         return null;
     }
 
     // FIXME what if there are several anonymous classes of the same type?
     private List<AnonymousClass> getAnonymousClassesForAnonymousClassDeclaration(
-            AnonymousClassDeclaration anonymousClassDeclaration) {
-        MethodDeclaration parentMethodDeclaration = getNextParentMethodDeclaration(anonymousClassDeclaration);
-        ClassInstanceCreation classInstanceCreation = (ClassInstanceCreation) anonymousClassDeclaration.getParent();
-        Method parentMethod = getMethodForMethodDeclaration(parentMethodDeclaration);
-        List<NewConstructorCallImpl> newConstructorCalls = parentMethod.getChildrenByType(NewConstructorCallImpl.class);
-        List<AnonymousClass> anonymousClasses = new LinkedList<AnonymousClass>();
-        for (NewConstructorCallImpl newConstructorCall : newConstructorCalls) {
-            if (AST2JaMoPPCorrespondence.corresponds(classInstanceCreation, newConstructorCall))
+            final AnonymousClassDeclaration anonymousClassDeclaration) {
+        final MethodDeclaration parentMethodDeclaration = this.getNextParentMethodDeclaration(anonymousClassDeclaration);
+        final ClassInstanceCreation classInstanceCreation = (ClassInstanceCreation) anonymousClassDeclaration.getParent();
+        final Method parentMethod = this.getMethodForMethodDeclaration(parentMethodDeclaration);
+        final List<NewConstructorCallImpl> newConstructorCalls = parentMethod.getChildrenByType(NewConstructorCallImpl.class);
+        final List<AnonymousClass> anonymousClasses = new LinkedList<AnonymousClass>();
+        for (final NewConstructorCallImpl newConstructorCall : newConstructorCalls) {
+            if (AST2JaMoPPCorrespondence.corresponds(classInstanceCreation, newConstructorCall)) {
                 anonymousClasses.add(newConstructorCall.getAnonymousClass());
+            }
         }
         return anonymousClasses;
     }
 
-    private MethodDeclaration getNextParentMethodDeclaration(ASTNode astNode) {
-        if (astNode == null)
+    private MethodDeclaration getNextParentMethodDeclaration(final ASTNode astNode) {
+        if (astNode == null) {
             return null;
+        }
         ASTNode parent = astNode.getParent();
         while (parent != null && parent.getNodeType() != ASTNode.METHOD_DECLARATION) {
             parent = parent.getParent();
         }
         return (MethodDeclaration) parent;
     }
-    
-    public Parameter getParameterForVariableDeclaration(VariableDeclaration parameterDeclaration) {
-        Method method = getMethodForMethodDeclaration((MethodDeclaration)parameterDeclaration.getParent());
-        for (Parameter parameter : method.getParameters()) {
+
+    public Parameter getParameterForVariableDeclaration(final VariableDeclaration parameterDeclaration) {
+        final Method method = this.getMethodForMethodDeclaration((MethodDeclaration) parameterDeclaration.getParent());
+        for (final Parameter parameter : method.getParameters()) {
             if (parameter.getName().equals(parameterDeclaration.getName().getIdentifier())) {
                 return parameter;
             }
@@ -159,21 +177,22 @@ public class CompilationUnitAdapter {
     }
 
     // TODO test if it works with anonymous and inner classes
-    public ConcreteClassifier getConcreteClassifierForTypeDeclaration(TypeDeclaration typeDeclaration) {
-        EList<ConcreteClassifier> classifiers = this.compilationUnit.getClassifiers();
-        return getConcreteClassifierForTypeDeclaration(typeDeclaration, classifiers);
+    public ConcreteClassifier getConcreteClassifierForTypeDeclaration(final TypeDeclaration typeDeclaration) {
+        final EList<ConcreteClassifier> classifiers = this.compilationUnit.getClassifiers();
+        return this.getConcreteClassifierForTypeDeclaration(typeDeclaration, classifiers);
     }
 
-    private ConcreteClassifier getConcreteClassifierForTypeDeclaration(TypeDeclaration typeDeclaration,
-            EList<ConcreteClassifier> classifiers) {
-        for (ConcreteClassifier classifier : classifiers) {
-            if (AST2JaMoPPCorrespondence.corresponds(typeDeclaration, classifier))
+    private ConcreteClassifier getConcreteClassifierForTypeDeclaration(final TypeDeclaration typeDeclaration,
+            final EList<ConcreteClassifier> classifiers) {
+        for (final ConcreteClassifier classifier : classifiers) {
+            if (AST2JaMoPPCorrespondence.corresponds(typeDeclaration, classifier)) {
                 return classifier;
-            else {
-                ConcreteClassifier innerClassifier = getConcreteClassifierForTypeDeclaration(typeDeclaration,
-                        getInnerClassifiers(classifier));
-                if (innerClassifier != null)
+            } else {
+                final ConcreteClassifier innerClassifier = this.getConcreteClassifierForTypeDeclaration(typeDeclaration,
+                        this.getInnerClassifiers(classifier));
+                if (innerClassifier != null) {
                     return innerClassifier;
+                }
             }
         }
         return null;
@@ -181,11 +200,12 @@ public class CompilationUnitAdapter {
 
     // ConcreteClassifier.getAllInnerClassifiers() only returns Classifier with members set to null
     // -> Bug in JaMoPP?
-    private EList<ConcreteClassifier> getInnerClassifiers(ConcreteClassifier classifier) {
-        EList<ConcreteClassifier> innerClassifiers = new BasicEList<ConcreteClassifier>(3);
-        for (Member member : classifier.getMembers()) {
-            if (member instanceof ConcreteClassifier)
+    private EList<ConcreteClassifier> getInnerClassifiers(final ConcreteClassifier classifier) {
+        final EList<ConcreteClassifier> innerClassifiers = new BasicEList<ConcreteClassifier>(3);
+        for (final Member member : classifier.getMembers()) {
+            if (member instanceof ConcreteClassifier) {
                 innerClassifiers.add((ConcreteClassifier) member);
+            }
         }
         return innerClassifiers;
     }
@@ -194,12 +214,54 @@ public class CompilationUnitAdapter {
         return this.compilationUnit;
     }
 
-    public Import getImportForImportDeclaration(ImportDeclaration importDeclaration) {
-        for (Import imp : this.compilationUnit.getImports()) {
+    public Import getImportForImportDeclaration(final ImportDeclaration importDeclaration) {
+        for (final Import imp : this.compilationUnit.getImports()) {
             if (AST2JaMoPPCorrespondence.corresponds(importDeclaration, imp)) {
                 return imp;
             }
         }
         return null;
+    }
+
+    public TypeReference getImplementsForSuperType(final SimpleType simpleType) {
+        if(null == simpleType.getName() || !simpleType.getName().isSimpleName()){
+            logger.warn("simpleType.getName is null or not a simple name: " + simpleType.getName());
+            return null;
+        }
+        final SimpleName simpleName = (SimpleName) simpleType.getName();
+        final String implementsName = simpleName.getIdentifier();
+        for (final ConcreteClassifier classifier : this.compilationUnit.getClassifiers()) {
+            if(classifier instanceof org.emftext.language.java.classifiers.Class){
+                final Class jaMoPPClass = (Class) classifier;
+                for (final TypeReference typeReference : jaMoPPClass.getImplements()) {
+                    final String typeRefName = this.getNameFromTypeReference(typeReference);
+                    if(typeRefName.equals(implementsName)){
+                        return typeReference;
+                    }
+                }
+            }
+        }
+        logger.info("no matching type reference found for implements name " + implementsName);
+        return null;
+    }
+
+    private String getNameFromTypeReference(final TypeReference typeReference) {
+        if(typeReference instanceof ClassifierReference){
+            final ClassifierReference cr = (ClassifierReference) typeReference;
+            return cr.getTarget().getName();
+        }
+        if(typeReference instanceof NamespaceClassifierReference){
+            final NamespaceClassifierReference ncr = (NamespaceClassifierReference) typeReference;
+            if(!ncr.getClassifierReferences().isEmpty()){
+                return this.getNameFromTypeReference(ncr.getClassifierReferences().get(0));
+            }
+            logger.info("no ClassifierReference found for NamespaceClassifierReference");
+            return "";
+        }
+        if(typeReference instanceof PrimitiveType){
+            logger.warn("Type Reference should not be a primitive reference");
+            return "";
+        }
+        return "";
     }
 }

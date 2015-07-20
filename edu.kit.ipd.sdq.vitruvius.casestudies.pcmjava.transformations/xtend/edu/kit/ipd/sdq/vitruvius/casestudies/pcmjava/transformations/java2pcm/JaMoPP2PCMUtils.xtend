@@ -417,4 +417,18 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 		return newCorrespondingEObjects
 	}
 	
+	def public static Classifier getTargetClassifierFromImplementsReferenceAndNormalizeURI(TypeReference reference) {
+		val interfaceClassifier = JaMoPP2PCMUtils.getTargetClassifierFromTypeReference(reference)
+		if (null == interfaceClassifier) {
+			return null
+		}
+		val resource = interfaceClassifier.eResource
+		val resourceSet = resource.resourceSet
+		val uri = resource.URI
+		val uriConverter = resourceSet.URIConverter
+		val normalizedURI = uriConverter.normalize(uri)
+		resource.URI = normalizedURI
+		return interfaceClassifier
+	}
+	
 }

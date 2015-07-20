@@ -42,11 +42,11 @@ public class PCMJaMoPPNamespace {
         public static final String REPOSITORY_FILE_EXTENSION = "repository";
         public static final String SYSTEM_FILE_EXTENSION = "system";
         // MM Namespace
-        public static final String PCM_METAMODEL_NAMESPACE = "http://sdq.ipd.uka.de/PalladioComponentModel/5.0";
-        private static final String PCM_METAMODEL_NAMESPACE_URI_REPOSITORY = "http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0";
-        private static final String PCM_METAMODEL_NAMESPACE_URI_SYSTEM = "http://sdq.ipd.uka.de/PalladioComponentModel/System/5.0";
-        private static final String PCM_METAMODEL_NAMESPACE_URI_COMPOSITION = "http://sdq.ipd.uka.de/PalladioComponentModel/Core/Composition/5.0";
-        private static final String PCM_METAMODEL_NAMESPACE_URI_SEFF = "http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0";
+        public static final String PCM_METAMODEL_NAMESPACE = "http://palladiosimulator.org/PalladioComponentModel/5.1";
+        private static final String PCM_METAMODEL_NAMESPACE_URI_REPOSITORY = "http://palladiosimulator.org/PalladioComponentModel/Repository/5.1";
+        private static final String PCM_METAMODEL_NAMESPACE_URI_SYSTEM = "http://palladiosimulator.org/PalladioComponentModel/System/5.1";
+        private static final String PCM_METAMODEL_NAMESPACE_URI_COMPOSITION = "http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1";
+        private static final String PCM_METAMODEL_NAMESPACE_URI_SEFF = "http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1";
         private static final String PCM_METAMODEL_NAMESPACE_URI = PCM_METAMODEL_NAMESPACE;
         public static final String[] PCM_METAMODEL_NAMESPACE_URIS = { PCM_METAMODEL_NAMESPACE_URI,
                 PCM_METAMODEL_NAMESPACE_URI_REPOSITORY, PCM_METAMODEL_NAMESPACE_URI_SYSTEM,

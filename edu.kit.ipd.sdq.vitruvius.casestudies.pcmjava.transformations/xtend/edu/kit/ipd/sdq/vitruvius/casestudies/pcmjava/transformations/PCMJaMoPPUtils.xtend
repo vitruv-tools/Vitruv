@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations
 
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.JaMoPP2PCMUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
@@ -10,10 +11,8 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.util.EcoreUtil
-import org.palladiosimulator.pcm.usagemodel.UsagemodelFactory
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.JaMoPP2PCMUtils
-import org.emftext.language.java.types.TypeReference
 import org.emftext.language.java.members.Method
+import org.emftext.language.java.types.TypeReference
 
 class PCMJaMoPPUtils {
 	private static val Logger logger = Logger.getLogger(PCMJaMoPPUtils.simpleName)
@@ -104,7 +103,7 @@ class PCMJaMoPPUtils {
 		if (method1 == method2) {
 			return true
 		}
-		if (!method1.name.equals(method1.name)) {
+		if (!method1.name.equals(method2.name)) {
 			return false
 		}
 		if (!method1.typeReference.hasSameTargetReference(method2.typeReference)) {

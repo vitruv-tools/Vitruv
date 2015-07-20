@@ -17,6 +17,11 @@ import org.emftext.language.java.members.ClassMethod
 import org.emftext.language.java.members.Method
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
+import org.eclipse.emf.common.util.EList
+import org.emftext.language.java.types.TypeReference
+import org.emftext.language.java.classifiers.Interface
+import java.util.prefs.PreferenceChangeEvent
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 
 class ClassMethodMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -105,7 +110,12 @@ class ClassMethodMappingTransformation extends EmptyEObjectMappingTransformation
 		if (basicComponents.nullOrEmpty) {
 			return null
 		}
-		val implementingInterfaces = classifier.allSuperClassifiers
+		if(!(classifier instanceof org.emftext.language.java.classifiers.Class)){
+			return null
+		}
+		val jaMoPPClass = classifier as org.emftext.language.java.classifiers.Class
+		val implementingInterfacesTypeRefs = jaMoPPClass.implements
+		val implementingInterfaces = findImplementingInterfacesFromTypeRefs(implementingInterfacesTypeRefs)
 		if (implementingInterfaces.nullOrEmpty) {
 			return null
 		}
@@ -118,8 +128,8 @@ class ClassMethodMappingTransformation extends EmptyEObjectMappingTransformation
 				interfaceMethods.addAll(interface.methods)
 			}
 		}
-		val equalMethods = interfaceMethods.filter [interfaceMethod|
-			PCMJaMoPPUtils.hasSameSignature(interfaceMethod, classMethod)]
+		
+		val equalMethods = interfaceMethods.filter[sameSignature(classMethod)]
 		if (equalMethods.nullOrEmpty) {
 			return null
 		}
@@ -135,6 +145,21 @@ class ClassMethodMappingTransformation extends EmptyEObjectMappingTransformation
 			}
 		}
 		returnSeffs
+	}
+	
+	def private sameSignature(Method interfaceMethod, ClassMethod classMethod) {
+		PCMJaMoPPUtils.hasSameSignature(interfaceMethod, classMethod)
+	}
+	
+	def private findImplementingInterfacesFromTypeRefs(EList<TypeReference> typeReferences) {
+		val implementingInterfaces = new ArrayList<Interface>
+		for(typeRef : typeReferences){
+			val classifier = JaMoPP2PCMUtils.getTargetClassifierFromImplementsReferenceAndNormalizeURI(typeRef)
+			if(classifier instanceof Interface){
+				implementingInterfaces.add(classifier)
+			}
+		}
+		return implementingInterfaces
 	}
 
 }
