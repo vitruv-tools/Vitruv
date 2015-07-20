@@ -87,9 +87,8 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     /*
      * (non-Javadoc)
      *
-     * @see
-     * edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#hasCorrespondences
-     * (org.eclipse.emf.ecore.EObject)
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
+     * hasCorrespondences (org.eclipse.emf.ecore.EObject)
      */
     @Override
     public boolean hasCorrespondences(final EObject eObject) {
@@ -200,8 +199,8 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     public EObject claimUniqueCorrespondingEObject(final EObject eObject) {
         Set<EObject> correspondingEObjects = claimCorrespondingEObjects(eObject);
         if (correspondingEObjects.size() != 1) {
-            throw new RuntimeException("The eObjects corresponding to '" + eObject + "' are not unique: "
-                    + correspondingEObjects);
+            throw new RuntimeException(
+                    "The eObjects corresponding to '" + eObject + "' are not unique: " + correspondingEObjects);
         }
         return correspondingEObjects.iterator().next();
     }
@@ -222,8 +221,8 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
             }
         }
         if (correspondingEObjectsByType.size() == 0) {
-            throw new RuntimeException("There are no eObjects of type '" + type + "' that correspond to the eObject '"
-                    + eObject + "!");
+            throw new RuntimeException(
+                    "There are no eObjects of type '" + type + "' that correspond to the eObject '" + eObject + "!");
         }
         return correspondingEObjectsByType;
     }
@@ -253,9 +252,9 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     public <T> T claimUniqueCorrespondingEObjectByType(final EObject eObject, final Class<T> type) {
         Set<T> correspondingEObjectsByType = claimCorrespondingEObjectsByType(eObject, type);
         if (1 != correspondingEObjectsByType.size()) {
-            throw new RuntimeException("claimCorrespondingEObjectForTypeIfUnique failed: "
-                    + correspondingEObjectsByType.size() + " corresponding objects found (expected 1)"
-                    + correspondingEObjectsByType);
+            throw new RuntimeException(
+                    "claimCorrespondingEObjectForTypeIfUnique failed: " + correspondingEObjectsByType.size()
+                            + " corresponding objects found (expected 1)" + correspondingEObjectsByType);
         }
         return correspondingEObjectsByType.iterator().next();
     }
@@ -284,8 +283,8 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     public Correspondence claimUniqueCorrespondence(final EObject eObject) {
         Set<Correspondence> objectCorrespondences = claimCorrespondences(eObject);
         if (objectCorrespondences.size() != 1) {
-            throw new RuntimeException("The correspondence for eObject '" + eObject + "' is not unique: "
-                    + objectCorrespondences);
+            throw new RuntimeException(
+                    "The correspondence for eObject '" + eObject + "' is not unique: " + objectCorrespondences);
         }
         return objectCorrespondences.iterator().next();
     }
@@ -387,7 +386,12 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
             VURI vuri = metamodel.getModelVURIContainingIdentifiedEObject(tuidString);
             ModelInstance modelInstance = this.modelProviding.getAndLoadModelInstanceOriginal(vuri);
             EObject rootEObject = modelInstance.getFirstRootEObject();
-            EObject resolvedEobject = metamodel.resolveEObjectFromRootAndFullTUID(rootEObject, tuidString);
+            EObject resolvedEobject = null;
+            try {
+                resolvedEobject = metamodel.resolveEObjectFromRootAndFullTUID(rootEObject, tuidString);
+            } catch (IllegalArgumentException iae) {
+                // do nothing - just try the solving again
+            }
             if (null == resolvedEobject) {
                 // reload the model and try to solve it again
                 modelInstance.load(null, true);
@@ -523,7 +527,8 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         this.changedAfterLastSave = false;
     }
 
-    private void storeFeatureInstancesForTUID(final TUID tuid, final Set<FeatureInstance> correspondenceSetWithFIofTUID) {
+    private void storeFeatureInstancesForTUID(final TUID tuid,
+            final Set<FeatureInstance> correspondenceSetWithFIofTUID) {
         Set<Set<FeatureInstance>> correspondeceSetsWithFIsOfTUID = this.tuid2CorrespondenceSetsWithComprisedFeatureInstanceMap
                 .get(tuid);
         if (correspondeceSetsWithFIsOfTUID == null) {
@@ -663,8 +668,8 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     public FeatureInstance claimUniqueCorrespondingFeatureInstance(final FeatureInstance featureInstance) {
         Set<FeatureInstance> featureInstances = claimCorrespondingFeatureInstances(featureInstance);
         if (featureInstances.size() != 1) {
-            throw new RuntimeException("The feature instance corresponding to '" + featureInstance
-                    + "' is not unique: " + featureInstances);
+            throw new RuntimeException("The feature instance corresponding to '" + featureInstance + "' is not unique: "
+                    + featureInstances);
         }
         return featureInstances.iterator().next();
     }
@@ -874,7 +879,8 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         }
     }
 
-    private void updateCorrespondingLinksForUpdatedTUID(final TUID newTUID, final TUID oldTUID, final TUID elementBTUID) {
+    private void updateCorrespondingLinksForUpdatedTUID(final TUID newTUID, final TUID oldTUID,
+            final TUID elementBTUID) {
         Set<TUID> correspondingTUIDs = this.tuid2CorrespondingTUIDsMap.get(elementBTUID);
         TUID oldCorrespondingTUID = null;
         for (TUID correspondingTUID : correspondingTUIDs) {
