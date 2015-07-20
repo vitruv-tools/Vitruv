@@ -214,7 +214,10 @@ class JaMoPPTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResol
 	}
 
 	private def dispatch String calculateIndividualTUID(ClassifierReference classifierReference) {
-		return ""
+		val tuid = new StringBuilder()
+		tuid.append(classifierReference.eContainingFeature.name)
+		tuid.append(classifierReference.target.name)
+		return tuid.toString
 	}
 
 	private def dispatch String calculateIndividualTUID(EObject obj) {
