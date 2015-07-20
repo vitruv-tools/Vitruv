@@ -13,21 +13,21 @@ import org.palladiosimulator.pcm.protocol.ProtocolPackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
- *
+ * 
  * @generated
  */
 public class ProtocolFactoryImpl extends EFactoryImpl implements ProtocolFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static ProtocolFactory init() {
@@ -45,7 +45,7 @@ public class ProtocolFactoryImpl extends EFactoryImpl implements ProtocolFactory
 
     /**
      * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public ProtocolFactoryImpl() {
@@ -54,7 +54,7 @@ public class ProtocolFactoryImpl extends EFactoryImpl implements ProtocolFactory
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -67,7 +67,7 @@ public class ProtocolFactoryImpl extends EFactoryImpl implements ProtocolFactory
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -77,7 +77,7 @@ public class ProtocolFactoryImpl extends EFactoryImpl implements ProtocolFactory
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @deprecated
      * @generated
      */

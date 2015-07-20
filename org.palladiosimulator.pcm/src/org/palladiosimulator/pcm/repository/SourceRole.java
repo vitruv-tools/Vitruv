@@ -23,7 +23,7 @@ public interface SourceRole extends RequiredRole {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -49,7 +49,7 @@ public interface SourceRole extends RequiredRole {
      * Sets the value of the '
      * {@link org.palladiosimulator.pcm.repository.SourceRole#getEventGroup__SourceRole
      * <em>Event Group Source Role</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Event Group Source Role</em>' reference.
      * @see #getEventGroup__SourceRole()

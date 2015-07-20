@@ -52,7 +52,7 @@ public interface ProcessingResourceSpecification extends Identifier {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -75,7 +75,7 @@ public interface ProcessingResourceSpecification extends Identifier {
      * Sets the value of the '
      * {@link org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification#getMTTR
      * <em>MTTR</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>MTTR</em>' attribute.
      * @see #getMTTR()
@@ -101,7 +101,7 @@ public interface ProcessingResourceSpecification extends Identifier {
      * Sets the value of the '
      * {@link org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification#getMTTF
      * <em>MTTF</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>MTTF</em>' attribute.
      * @see #getMTTF()
@@ -139,7 +139,7 @@ public interface ProcessingResourceSpecification extends Identifier {
      * Sets the value of the '
      * {@link org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification#isRequiredByContainer
      * <em>Required By Container</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Required By Container</em>' attribute.
      * @see #isRequiredByContainer()
@@ -155,7 +155,7 @@ public interface ProcessingResourceSpecification extends Identifier {
      * be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Scheduling Policy</em>' reference.
      * @see #setSchedulingPolicy(SchedulingPolicy)
      * @see org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentPackage#getProcessingResourceSpecification_SchedulingPolicy()
@@ -168,7 +168,7 @@ public interface ProcessingResourceSpecification extends Identifier {
      * Sets the value of the '
      * {@link org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification#getSchedulingPolicy
      * <em>Scheduling Policy</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Scheduling Policy</em>' reference.
      * @see #getSchedulingPolicy()
@@ -184,7 +184,7 @@ public interface ProcessingResourceSpecification extends Identifier {
      * isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Active Resource Type Active Resource Specification</em>'
      *         reference.
      * @see #setActiveResourceType_ActiveResourceSpecification(ProcessingResourceType)
@@ -199,7 +199,7 @@ public interface ProcessingResourceSpecification extends Identifier {
      * {@link org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification#getActiveResourceType_ActiveResourceSpecification
      * <em>Active Resource Type Active Resource Specification</em>}' reference. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Active Resource Type Active Resource Specification</em>'
      *            reference.
@@ -270,7 +270,7 @@ public interface ProcessingResourceSpecification extends Identifier {
      * Sets the value of the '
      * {@link org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification#getNumberOfReplicas
      * <em>Number Of Replicas</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Number Of Replicas</em>' attribute.
      * @see #getNumberOfReplicas()
@@ -289,7 +289,7 @@ public interface ProcessingResourceSpecification extends Identifier {
      * container reference isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Resource Container Processing Resource Specification</em>'
      *         container reference.
      * @see #setResourceContainer_ProcessingResourceSpecification(ResourceContainer)

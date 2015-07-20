@@ -51,7 +51,7 @@ public interface LoopAction extends AbstractLoopAction {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -66,7 +66,7 @@ public interface LoopAction extends AbstractLoopAction {
      * clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Iteration Count Loop Action</em>' containment reference.
      * @see #setIterationCount_LoopAction(PCMRandomVariable)
      * @see org.palladiosimulator.pcm.seff.SeffPackage#getLoopAction_IterationCount_LoopAction()
@@ -82,7 +82,7 @@ public interface LoopAction extends AbstractLoopAction {
      * {@link org.palladiosimulator.pcm.seff.LoopAction#getIterationCount_LoopAction
      * <em>Iteration Count Loop Action</em>}' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Iteration Count Loop Action</em>' containment reference.
      * @see #getIterationCount_LoopAction()

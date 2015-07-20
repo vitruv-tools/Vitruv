@@ -37,7 +37,7 @@ public interface LinkingResource extends Entity {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -52,7 +52,7 @@ public interface LinkingResource extends Entity {
      * list isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Connected Resource Containers Linking Resource</em>' reference
      *         list.
      * @see org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentPackage#getLinkingResource_ConnectedResourceContainers_LinkingResource()
@@ -73,7 +73,7 @@ public interface LinkingResource extends Entity {
      * containment reference isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '
      *         <em>Communication Link Resource Specifications Linking Resource</em>' containment
      *         reference.
@@ -91,7 +91,7 @@ public interface LinkingResource extends Entity {
      * {@link org.palladiosimulator.pcm.resourceenvironment.LinkingResource#getCommunicationLinkResourceSpecifications_LinkingResource
      * <em>Communication Link Resource Specifications Linking Resource</em>}' containment reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '
      *            <em>Communication Link Resource Specifications Linking Resource</em>' containment
@@ -111,7 +111,7 @@ public interface LinkingResource extends Entity {
      * isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Resource Environment Linking Resource</em>' container
      *         reference.
      * @see #setResourceEnvironment_LinkingResource(ResourceEnvironment)
@@ -128,7 +128,7 @@ public interface LinkingResource extends Entity {
      * {@link org.palladiosimulator.pcm.resourceenvironment.LinkingResource#getResourceEnvironment_LinkingResource
      * <em>Resource Environment Linking Resource</em>}' container reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Resource Environment Linking Resource</em>' container
      *            reference.

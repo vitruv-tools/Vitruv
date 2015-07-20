@@ -35,7 +35,7 @@ public class BranchTransitionImpl extends CDOObjectImpl implements BranchTransit
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -43,7 +43,7 @@ public class BranchTransitionImpl extends CDOObjectImpl implements BranchTransit
     /**
      * The default value of the '{@link #getBranchProbability() <em>Branch Probability</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #getBranchProbability()
      * @generated
      * @ordered
@@ -52,7 +52,7 @@ public class BranchTransitionImpl extends CDOObjectImpl implements BranchTransit
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected BranchTransitionImpl() {
@@ -61,7 +61,7 @@ public class BranchTransitionImpl extends CDOObjectImpl implements BranchTransit
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -71,7 +71,7 @@ public class BranchTransitionImpl extends CDOObjectImpl implements BranchTransit
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -81,7 +81,7 @@ public class BranchTransitionImpl extends CDOObjectImpl implements BranchTransit
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -92,7 +92,7 @@ public class BranchTransitionImpl extends CDOObjectImpl implements BranchTransit
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -103,7 +103,7 @@ public class BranchTransitionImpl extends CDOObjectImpl implements BranchTransit
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -114,7 +114,7 @@ public class BranchTransitionImpl extends CDOObjectImpl implements BranchTransit
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NotificationChain basicSetBranch_BranchTransition(final Branch newBranch_BranchTransition,
@@ -126,7 +126,7 @@ public class BranchTransitionImpl extends CDOObjectImpl implements BranchTransit
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -137,7 +137,7 @@ public class BranchTransitionImpl extends CDOObjectImpl implements BranchTransit
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -149,7 +149,7 @@ public class BranchTransitionImpl extends CDOObjectImpl implements BranchTransit
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NotificationChain basicSetBranchedBehaviour_BranchTransition(
@@ -161,7 +161,7 @@ public class BranchTransitionImpl extends CDOObjectImpl implements BranchTransit
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -173,7 +173,7 @@ public class BranchTransitionImpl extends CDOObjectImpl implements BranchTransit
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -199,7 +199,7 @@ public class BranchTransitionImpl extends CDOObjectImpl implements BranchTransit
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -216,7 +216,7 @@ public class BranchTransitionImpl extends CDOObjectImpl implements BranchTransit
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -231,7 +231,7 @@ public class BranchTransitionImpl extends CDOObjectImpl implements BranchTransit
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -249,7 +249,7 @@ public class BranchTransitionImpl extends CDOObjectImpl implements BranchTransit
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -270,7 +270,7 @@ public class BranchTransitionImpl extends CDOObjectImpl implements BranchTransit
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -291,7 +291,7 @@ public class BranchTransitionImpl extends CDOObjectImpl implements BranchTransit
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

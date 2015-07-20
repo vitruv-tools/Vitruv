@@ -45,7 +45,7 @@ public interface AssemblyEventConnector extends Connector {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -72,7 +72,7 @@ public interface AssemblyEventConnector extends Connector {
      * {@link org.palladiosimulator.pcm.core.composition.AssemblyEventConnector#getSinkRole__AssemblyEventConnector
      * <em>Sink Role Assembly Event Connector</em>}' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Sink Role Assembly Event Connector</em>' reference.
      * @see #getSinkRole__AssemblyEventConnector()
@@ -88,7 +88,7 @@ public interface AssemblyEventConnector extends Connector {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Source Role Assembly Event Connector</em>' reference.
      * @see #setSourceRole__AssemblyEventConnector(SourceRole)
      * @see org.palladiosimulator.pcm.core.composition.CompositionPackage#getAssemblyEventConnector_SourceRole__AssemblyEventConnector()
@@ -102,7 +102,7 @@ public interface AssemblyEventConnector extends Connector {
      * {@link org.palladiosimulator.pcm.core.composition.AssemblyEventConnector#getSourceRole__AssemblyEventConnector
      * <em>Source Role Assembly Event Connector</em>}' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Source Role Assembly Event Connector</em>' reference.
      * @see #getSourceRole__AssemblyEventConnector()
@@ -118,7 +118,7 @@ public interface AssemblyEventConnector extends Connector {
      * isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Sink Assembly Context Assembly Event Connector</em>' reference.
      * @see #setSinkAssemblyContext__AssemblyEventConnector(AssemblyContext)
      * @see org.palladiosimulator.pcm.core.composition.CompositionPackage#getAssemblyEventConnector_SinkAssemblyContext__AssemblyEventConnector()
@@ -132,7 +132,7 @@ public interface AssemblyEventConnector extends Connector {
      * {@link org.palladiosimulator.pcm.core.composition.AssemblyEventConnector#getSinkAssemblyContext__AssemblyEventConnector
      * <em>Sink Assembly Context Assembly Event Connector</em>}' reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Sink Assembly Context Assembly Event Connector</em>'
      *            reference.
@@ -149,7 +149,7 @@ public interface AssemblyEventConnector extends Connector {
      * isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Source Assembly Context Assembly Event Connector</em>'
      *         reference.
      * @see #setSourceAssemblyContext__AssemblyEventConnector(AssemblyContext)
@@ -164,7 +164,7 @@ public interface AssemblyEventConnector extends Connector {
      * {@link org.palladiosimulator.pcm.core.composition.AssemblyEventConnector#getSourceAssemblyContext__AssemblyEventConnector
      * <em>Source Assembly Context Assembly Event Connector</em>}' reference. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Source Assembly Context Assembly Event Connector</em>'
      *            reference.
@@ -183,7 +183,7 @@ public interface AssemblyEventConnector extends Connector {
      * reference isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Filter Condition Assembly Event Connector</em>' containment
      *         reference.
      * @see #setFilterCondition__AssemblyEventConnector(PCMRandomVariable)

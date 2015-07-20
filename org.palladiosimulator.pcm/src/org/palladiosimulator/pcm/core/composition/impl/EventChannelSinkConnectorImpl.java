@@ -40,14 +40,14 @@ public class EventChannelSinkConnectorImpl extends ConnectorImpl implements Even
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected EventChannelSinkConnectorImpl() {
@@ -56,7 +56,7 @@ public class EventChannelSinkConnectorImpl extends ConnectorImpl implements Even
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -66,7 +66,7 @@ public class EventChannelSinkConnectorImpl extends ConnectorImpl implements Even
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -79,7 +79,7 @@ public class EventChannelSinkConnectorImpl extends ConnectorImpl implements Even
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public SinkRole basicGetSinkRole__EventChannelSinkConnector() {
@@ -91,7 +91,7 @@ public class EventChannelSinkConnectorImpl extends ConnectorImpl implements Even
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -103,7 +103,7 @@ public class EventChannelSinkConnectorImpl extends ConnectorImpl implements Even
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -116,7 +116,7 @@ public class EventChannelSinkConnectorImpl extends ConnectorImpl implements Even
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NotificationChain basicSetFilterCondition__EventChannelSinkConnector(
@@ -128,7 +128,7 @@ public class EventChannelSinkConnectorImpl extends ConnectorImpl implements Even
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -141,7 +141,7 @@ public class EventChannelSinkConnectorImpl extends ConnectorImpl implements Even
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -154,7 +154,7 @@ public class EventChannelSinkConnectorImpl extends ConnectorImpl implements Even
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public AssemblyContext basicGetAssemblyContext__EventChannelSinkConnector() {
@@ -166,7 +166,7 @@ public class EventChannelSinkConnectorImpl extends ConnectorImpl implements Even
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -179,7 +179,7 @@ public class EventChannelSinkConnectorImpl extends ConnectorImpl implements Even
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -192,7 +192,7 @@ public class EventChannelSinkConnectorImpl extends ConnectorImpl implements Even
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public EventChannel basicGetEventChannel__EventChannelSinkConnector() {
@@ -204,7 +204,7 @@ public class EventChannelSinkConnectorImpl extends ConnectorImpl implements Even
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NotificationChain basicSetEventChannel__EventChannelSinkConnector(
@@ -216,7 +216,7 @@ public class EventChannelSinkConnectorImpl extends ConnectorImpl implements Even
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -229,7 +229,7 @@ public class EventChannelSinkConnectorImpl extends ConnectorImpl implements Even
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -260,7 +260,7 @@ public class EventChannelSinkConnectorImpl extends ConnectorImpl implements Even
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -277,7 +277,7 @@ public class EventChannelSinkConnectorImpl extends ConnectorImpl implements Even
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -306,7 +306,7 @@ public class EventChannelSinkConnectorImpl extends ConnectorImpl implements Even
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -330,7 +330,7 @@ public class EventChannelSinkConnectorImpl extends ConnectorImpl implements Even
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -354,7 +354,7 @@ public class EventChannelSinkConnectorImpl extends ConnectorImpl implements Even
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

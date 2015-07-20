@@ -51,7 +51,7 @@ public interface SetVariableAction extends AbstractInternalControlFlowAction {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -68,7 +68,7 @@ public interface SetVariableAction extends AbstractInternalControlFlowAction {
      * reference list isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Local Variable Usages Set Variable Action</em>' containment
      *         reference list.
      * @see org.palladiosimulator.pcm.seff.SeffPackage#getSetVariableAction_LocalVariableUsages_SetVariableAction()

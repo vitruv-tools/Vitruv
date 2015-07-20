@@ -29,14 +29,14 @@ public class CommunicationLinkResourceTypeImpl extends ResourceTypeImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected CommunicationLinkResourceTypeImpl() {
@@ -45,7 +45,7 @@ public class CommunicationLinkResourceTypeImpl extends ResourceTypeImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -55,7 +55,7 @@ public class CommunicationLinkResourceTypeImpl extends ResourceTypeImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -68,7 +68,7 @@ public class CommunicationLinkResourceTypeImpl extends ResourceTypeImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NetworkInducedFailureType basicGetNetworkInducedFailureType__CommunicationLinkResourceType() {
@@ -80,7 +80,7 @@ public class CommunicationLinkResourceTypeImpl extends ResourceTypeImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NotificationChain basicSetNetworkInducedFailureType__CommunicationLinkResourceType(
@@ -94,7 +94,7 @@ public class CommunicationLinkResourceTypeImpl extends ResourceTypeImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -108,7 +108,7 @@ public class CommunicationLinkResourceTypeImpl extends ResourceTypeImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -130,7 +130,7 @@ public class CommunicationLinkResourceTypeImpl extends ResourceTypeImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -145,7 +145,7 @@ public class CommunicationLinkResourceTypeImpl extends ResourceTypeImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -162,7 +162,7 @@ public class CommunicationLinkResourceTypeImpl extends ResourceTypeImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -177,7 +177,7 @@ public class CommunicationLinkResourceTypeImpl extends ResourceTypeImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -192,7 +192,7 @@ public class CommunicationLinkResourceTypeImpl extends ResourceTypeImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

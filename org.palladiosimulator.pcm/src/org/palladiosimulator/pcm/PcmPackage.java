@@ -27,35 +27,35 @@ public interface PcmPackage extends EPackage {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * The package name. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String eNAME = "pcm";
 
     /**
      * The package namespace URI. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String eNS_URI = "http://palladiosimulator.org/PalladioComponentModel/5.1";
 
     /**
      * The package namespace name. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String eNS_PREFIX = "pcm";
 
     /**
      * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     PcmPackage eINSTANCE = org.palladiosimulator.pcm.impl.PcmPackageImpl.init();
@@ -63,7 +63,7 @@ public interface PcmPackage extends EPackage {
     /**
      * The meta object id for the '{@link org.palladiosimulator.pcm.impl.DummyClassImpl
      * <em>Dummy Class</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see org.palladiosimulator.pcm.impl.DummyClassImpl
      * @see org.palladiosimulator.pcm.impl.PcmPackageImpl#getDummyClass()
      * @generated
@@ -73,7 +73,7 @@ public interface PcmPackage extends EPackage {
     /**
      * The number of structural features of the '<em>Dummy Class</em>' class. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */
@@ -82,7 +82,7 @@ public interface PcmPackage extends EPackage {
     /**
      * Returns the meta object for class '{@link org.palladiosimulator.pcm.DummyClass
      * <em>Dummy Class</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @return the meta object for class '<em>Dummy Class</em>'.
      * @see org.palladiosimulator.pcm.DummyClass
      * @generated
@@ -92,7 +92,7 @@ public interface PcmPackage extends EPackage {
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @return the factory that creates the instances of the model.
      * @generated
      */
@@ -107,7 +107,7 @@ public interface PcmPackage extends EPackage {
      * <li>and each data type</li>
      * </ul>
      * <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     interface Literals {
@@ -115,7 +115,7 @@ public interface PcmPackage extends EPackage {
         /**
          * The meta object literal for the '{@link org.palladiosimulator.pcm.impl.DummyClassImpl
          * <em>Dummy Class</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
+         * 
          * @see org.palladiosimulator.pcm.impl.DummyClassImpl
          * @see org.palladiosimulator.pcm.impl.PcmPackageImpl#getDummyClass()
          * @generated

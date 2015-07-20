@@ -43,7 +43,7 @@ public interface AllocationContext extends Entity {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -56,7 +56,7 @@ public interface AllocationContext extends Entity {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Resource Container Allocation Context</em>' reference.
      * @see #setResourceContainer_AllocationContext(ResourceContainer)
      * @see org.palladiosimulator.pcm.allocation.AllocationPackage#getAllocationContext_ResourceContainer_AllocationContext()
@@ -70,7 +70,7 @@ public interface AllocationContext extends Entity {
      * {@link org.palladiosimulator.pcm.allocation.AllocationContext#getResourceContainer_AllocationContext
      * <em>Resource Container Allocation Context</em>}' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Resource Container Allocation Context</em>' reference.
      * @see #getResourceContainer_AllocationContext()
@@ -86,7 +86,7 @@ public interface AllocationContext extends Entity {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Assembly Context Allocation Context</em>' reference.
      * @see #setAssemblyContext_AllocationContext(AssemblyContext)
      * @see org.palladiosimulator.pcm.allocation.AllocationPackage#getAllocationContext_AssemblyContext_AllocationContext()
@@ -100,7 +100,7 @@ public interface AllocationContext extends Entity {
      * {@link org.palladiosimulator.pcm.allocation.AllocationContext#getAssemblyContext_AllocationContext
      * <em>Assembly Context Allocation Context</em>}' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Assembly Context Allocation Context</em>' reference.
      * @see #getAssemblyContext_AllocationContext()
@@ -118,7 +118,7 @@ public interface AllocationContext extends Entity {
      * clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Allocation Allocation Context</em>' container reference.
      * @see #setAllocation_AllocationContext(Allocation)
      * @see org.palladiosimulator.pcm.allocation.AllocationPackage#getAllocationContext_Allocation_AllocationContext()
@@ -134,7 +134,7 @@ public interface AllocationContext extends Entity {
      * {@link org.palladiosimulator.pcm.allocation.AllocationContext#getAllocation_AllocationContext
      * <em>Allocation Allocation Context</em>}' container reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Allocation Allocation Context</em>' container reference.
      * @see #getAllocation_AllocationContext()
@@ -164,7 +164,7 @@ public interface AllocationContext extends Entity {
      * {@link org.palladiosimulator.pcm.allocation.AllocationContext#getEventChannel__AllocationContext
      * <em>Event Channel Allocation Context</em>}' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Event Channel Allocation Context</em>' reference.
      * @see #getEventChannel__AllocationContext()

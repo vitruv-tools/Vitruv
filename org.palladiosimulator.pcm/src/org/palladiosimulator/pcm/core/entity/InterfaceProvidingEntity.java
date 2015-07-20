@@ -41,7 +41,7 @@ public interface InterfaceProvidingEntity extends Entity {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -58,7 +58,7 @@ public interface InterfaceProvidingEntity extends Entity {
      * reference list isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Provided Roles Interface Providing Entity</em>' containment
      *         reference list.
      * @see org.palladiosimulator.pcm.core.entity.EntityPackage#getInterfaceProvidingEntity_ProvidedRoles_InterfaceProvidingEntity()

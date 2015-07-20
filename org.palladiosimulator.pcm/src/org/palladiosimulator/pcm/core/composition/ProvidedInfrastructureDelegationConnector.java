@@ -32,7 +32,7 @@ public interface ProvidedInfrastructureDelegationConnector extends DelegationCon
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -47,7 +47,7 @@ public interface ProvidedInfrastructureDelegationConnector extends DelegationCon
      * clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '
      *         <em>Inner Provided Role Provided Infrastructure Delegation Connector</em>' reference.
      * @see #setInnerProvidedRole__ProvidedInfrastructureDelegationConnector(InfrastructureProvidedRole)
@@ -82,7 +82,7 @@ public interface ProvidedInfrastructureDelegationConnector extends DelegationCon
      * clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '
      *         <em>Outer Provided Role Provided Infrastructure Delegation Connector</em>' reference.
      * @see #setOuterProvidedRole__ProvidedInfrastructureDelegationConnector(InfrastructureProvidedRole)
@@ -116,7 +116,7 @@ public interface ProvidedInfrastructureDelegationConnector extends DelegationCon
      * ' reference isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '
      *         <em>Assembly Context Provided Infrastructure Delegation Connector</em>' reference.
      * @see #setAssemblyContext__ProvidedInfrastructureDelegationConnector(AssemblyContext)

@@ -31,7 +31,7 @@ public interface CallReturnAction extends CallAction {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -48,7 +48,7 @@ public interface CallReturnAction extends CallAction {
      * reference list isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Return Variable Usage Call Return Action</em>' containment
      *         reference list.
      * @see org.palladiosimulator.pcm.seff.SeffPackage#getCallReturnAction_ReturnVariableUsage__CallReturnAction()

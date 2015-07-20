@@ -17,7 +17,7 @@ import org.palladiosimulator.pcm.seff.util.SeffValidator;
 
 /**
  * <!-- begin-user-doc --> The <b>Validator</b> for the model. <!-- end-user-doc -->
- *
+ * 
  * @see org.palladiosimulator.pcm.seff.seff_reliability.SeffReliabilityPackage
  * @generated
  */
@@ -25,14 +25,14 @@ public class SeffReliabilityValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * The cached model package <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final SeffReliabilityValidator INSTANCE = new SeffReliabilityValidator();
@@ -41,7 +41,7 @@ public class SeffReliabilityValidator extends EObjectValidator {
      * A constant for the {@link org.eclipse.emf.common.util.Diagnostic#getSource() source} of
      * diagnostic {@link org.eclipse.emf.common.util.Diagnostic#getCode() codes} from this package.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see org.eclipse.emf.common.util.Diagnostic#getSource()
      * @see org.eclipse.emf.common.util.Diagnostic#getCode()
      * @generated
@@ -70,7 +70,7 @@ public class SeffReliabilityValidator extends EObjectValidator {
      * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint 'Successors
      * Of Recovery Action Behaviour Handle Disjoint Failure Types' of 'Recovery Action Behaviour'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final int RECOVERY_ACTION_BEHAVIOUR__SUCCESSORS_OF_RECOVERY_ACTION_BEHAVIOUR_HANDLE_DISJOINT_FAILURE_TYPES = 3;
@@ -79,7 +79,7 @@ public class SeffReliabilityValidator extends EObjectValidator {
      * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint 'Primary
      * Behaviour Of Recovery Action Must Be Set' of 'Recovery Action'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final int RECOVERY_ACTION__PRIMARY_BEHAVIOUR_OF_RECOVERY_ACTION_MUST_BE_SET = 4;
@@ -87,7 +87,7 @@ public class SeffReliabilityValidator extends EObjectValidator {
     /**
      * A constant with a fixed name that can be used as the base value for additional hand written
      * constants. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private static final int GENERATED_DIAGNOSTIC_CODE_COUNT = 4;
@@ -95,21 +95,21 @@ public class SeffReliabilityValidator extends EObjectValidator {
     /**
      * A constant with a fixed name that can be used as the base value for additional hand written
      * constants in a derived class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected static final int DIAGNOSTIC_CODE_COUNT = GENERATED_DIAGNOSTIC_CODE_COUNT;
 
     /**
      * The cached base package validator. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected SeffValidator seffValidator;
 
     /**
      * Creates an instance of the switch. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public SeffReliabilityValidator() {
@@ -119,7 +119,7 @@ public class SeffReliabilityValidator extends EObjectValidator {
 
     /**
      * Returns the package of this validator switch. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -150,7 +150,7 @@ public class SeffReliabilityValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateRecoveryActionBehaviour(final RecoveryActionBehaviour recoveryActionBehaviour,
@@ -209,7 +209,7 @@ public class SeffReliabilityValidator extends EObjectValidator {
     /**
      * Validates the RecoveryActionBehaviourHasOnlyOnePredecessor constraint of '
      * <em>Recovery Action Behaviour</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateRecoveryActionBehaviour_RecoveryActionBehaviourHasOnlyOnePredecessor(
@@ -221,7 +221,7 @@ public class SeffReliabilityValidator extends EObjectValidator {
     /**
      * Validates the RecoveryActionBehaviourIsNotSuccessorOfItself constraint of '
      * <em>Recovery Action Behaviour</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateRecoveryActionBehaviour_RecoveryActionBehaviourIsNotSuccessorOfItself(
@@ -233,7 +233,7 @@ public class SeffReliabilityValidator extends EObjectValidator {
     /**
      * Validates the SuccessorsOfRecoveryActionBehaviourHandleDisjointFailureTypes constraint of '
      * <em>Recovery Action Behaviour</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateRecoveryActionBehaviour_SuccessorsOfRecoveryActionBehaviourHandleDisjointFailureTypes(
@@ -245,7 +245,7 @@ public class SeffReliabilityValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateRecoveryAction(final RecoveryAction recoveryAction, final DiagnosticChain diagnostics,
@@ -282,7 +282,7 @@ public class SeffReliabilityValidator extends EObjectValidator {
     /**
      * Validates the PrimaryBehaviourOfRecoveryActionMustBeSet constraint of '
      * <em>Recovery Action</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateRecoveryAction_PrimaryBehaviourOfRecoveryActionMustBeSet(final RecoveryAction recoveryAction,
@@ -292,7 +292,7 @@ public class SeffReliabilityValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateFailureHandlingEntity(final FailureHandlingEntity failureHandlingEntity,
@@ -303,7 +303,7 @@ public class SeffReliabilityValidator extends EObjectValidator {
     /**
      * Returns the resource locator that will be used to fetch messages for this validator's
      * diagnostics. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

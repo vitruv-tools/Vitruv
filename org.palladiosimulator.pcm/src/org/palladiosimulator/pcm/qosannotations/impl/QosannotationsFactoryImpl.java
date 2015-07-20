@@ -14,21 +14,21 @@ import org.palladiosimulator.pcm.qosannotations.QosannotationsPackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
- *
+ * 
  * @generated
  */
 public class QosannotationsFactoryImpl extends EFactoryImpl implements QosannotationsFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static QosannotationsFactory init() {
@@ -46,7 +46,7 @@ public class QosannotationsFactoryImpl extends EFactoryImpl implements Qosannota
 
     /**
      * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public QosannotationsFactoryImpl() {
@@ -55,7 +55,7 @@ public class QosannotationsFactoryImpl extends EFactoryImpl implements Qosannota
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -70,7 +70,7 @@ public class QosannotationsFactoryImpl extends EFactoryImpl implements Qosannota
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -81,7 +81,7 @@ public class QosannotationsFactoryImpl extends EFactoryImpl implements Qosannota
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -91,7 +91,7 @@ public class QosannotationsFactoryImpl extends EFactoryImpl implements Qosannota
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @deprecated
      * @generated
      */

@@ -37,7 +37,7 @@ public interface NetworkInducedFailureType extends FailureType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -54,7 +54,7 @@ public interface NetworkInducedFailureType extends FailureType {
      * ' reference isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '
      *         <em>Communication Link Resource Type Network Induced Failure Type</em>' reference.
      * @see #setCommunicationLinkResourceType__NetworkInducedFailureType(CommunicationLinkResourceType)

@@ -55,7 +55,7 @@ public interface ScenarioBehaviour extends Entity {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -70,7 +70,7 @@ public interface ScenarioBehaviour extends Entity {
      * clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Usage Scenario Senario Behaviour</em>' container reference.
      * @see #setUsageScenario_SenarioBehaviour(UsageScenario)
      * @see org.palladiosimulator.pcm.usagemodel.UsagemodelPackage#getScenarioBehaviour_UsageScenario_SenarioBehaviour()
@@ -85,7 +85,7 @@ public interface ScenarioBehaviour extends Entity {
      * {@link org.palladiosimulator.pcm.usagemodel.ScenarioBehaviour#getUsageScenario_SenarioBehaviour
      * <em>Usage Scenario Senario Behaviour</em>}' container reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Usage Scenario Senario Behaviour</em>' container
      *            reference.
@@ -104,7 +104,7 @@ public interface ScenarioBehaviour extends Entity {
      * isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Branch Transition Scenario Behaviour</em>' container reference.
      * @see #setBranchTransition_ScenarioBehaviour(BranchTransition)
      * @see org.palladiosimulator.pcm.usagemodel.UsagemodelPackage#getScenarioBehaviour_BranchTransition_ScenarioBehaviour()
@@ -119,7 +119,7 @@ public interface ScenarioBehaviour extends Entity {
      * {@link org.palladiosimulator.pcm.usagemodel.ScenarioBehaviour#getBranchTransition_ScenarioBehaviour
      * <em>Branch Transition Scenario Behaviour</em>}' container reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Branch Transition Scenario Behaviour</em>' container
      *            reference.
@@ -138,7 +138,7 @@ public interface ScenarioBehaviour extends Entity {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Loop Scenario Behaviour</em>' container reference.
      * @see #setLoop_ScenarioBehaviour(Loop)
      * @see org.palladiosimulator.pcm.usagemodel.UsagemodelPackage#getScenarioBehaviour_Loop_ScenarioBehaviour()
@@ -153,7 +153,7 @@ public interface ScenarioBehaviour extends Entity {
      * {@link org.palladiosimulator.pcm.usagemodel.ScenarioBehaviour#getLoop_ScenarioBehaviour
      * <em>Loop Scenario Behaviour</em>}' container reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Loop Scenario Behaviour</em>' container reference.
      * @see #getLoop_ScenarioBehaviour()
@@ -173,7 +173,7 @@ public interface ScenarioBehaviour extends Entity {
      * clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Actions Scenario Behaviour</em>' containment reference list.
      * @see org.palladiosimulator.pcm.usagemodel.UsagemodelPackage#getScenarioBehaviour_Actions_ScenarioBehaviour()
      * @see org.palladiosimulator.pcm.usagemodel.AbstractUserAction#getScenarioBehaviour_AbstractUserAction

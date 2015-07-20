@@ -27,7 +27,7 @@ public class ExceptionTypeImpl extends CDOObjectImpl implements ExceptionType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -35,7 +35,7 @@ public class ExceptionTypeImpl extends CDOObjectImpl implements ExceptionType {
     /**
      * The default value of the '{@link #getExceptionName() <em>Exception Name</em>}' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #getExceptionName()
      * @generated
      * @ordered
@@ -45,7 +45,7 @@ public class ExceptionTypeImpl extends CDOObjectImpl implements ExceptionType {
     /**
      * The default value of the '{@link #getExceptionMessage() <em>Exception Message</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #getExceptionMessage()
      * @generated
      * @ordered
@@ -54,7 +54,7 @@ public class ExceptionTypeImpl extends CDOObjectImpl implements ExceptionType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected ExceptionTypeImpl() {
@@ -63,7 +63,7 @@ public class ExceptionTypeImpl extends CDOObjectImpl implements ExceptionType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -73,7 +73,7 @@ public class ExceptionTypeImpl extends CDOObjectImpl implements ExceptionType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -83,7 +83,7 @@ public class ExceptionTypeImpl extends CDOObjectImpl implements ExceptionType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -94,7 +94,7 @@ public class ExceptionTypeImpl extends CDOObjectImpl implements ExceptionType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -105,7 +105,7 @@ public class ExceptionTypeImpl extends CDOObjectImpl implements ExceptionType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -116,7 +116,7 @@ public class ExceptionTypeImpl extends CDOObjectImpl implements ExceptionType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -127,7 +127,7 @@ public class ExceptionTypeImpl extends CDOObjectImpl implements ExceptionType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -143,7 +143,7 @@ public class ExceptionTypeImpl extends CDOObjectImpl implements ExceptionType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -161,7 +161,7 @@ public class ExceptionTypeImpl extends CDOObjectImpl implements ExceptionType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -179,7 +179,7 @@ public class ExceptionTypeImpl extends CDOObjectImpl implements ExceptionType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

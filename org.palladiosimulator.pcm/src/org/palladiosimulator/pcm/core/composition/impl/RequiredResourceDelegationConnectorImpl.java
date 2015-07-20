@@ -34,14 +34,14 @@ public class RequiredResourceDelegationConnectorImpl extends DelegationConnector
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected RequiredResourceDelegationConnectorImpl() {
@@ -50,7 +50,7 @@ public class RequiredResourceDelegationConnectorImpl extends DelegationConnector
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -60,7 +60,7 @@ public class RequiredResourceDelegationConnectorImpl extends DelegationConnector
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -73,7 +73,7 @@ public class RequiredResourceDelegationConnectorImpl extends DelegationConnector
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public AssemblyContext basicGetAssemblyContext__RequiredResourceDelegationConnector() {
@@ -85,7 +85,7 @@ public class RequiredResourceDelegationConnectorImpl extends DelegationConnector
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -99,7 +99,7 @@ public class RequiredResourceDelegationConnectorImpl extends DelegationConnector
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -112,7 +112,7 @@ public class RequiredResourceDelegationConnectorImpl extends DelegationConnector
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public ResourceRequiredRole basicGetInnerRequiredRole__RequiredResourceDelegationConnector() {
@@ -124,7 +124,7 @@ public class RequiredResourceDelegationConnectorImpl extends DelegationConnector
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -138,7 +138,7 @@ public class RequiredResourceDelegationConnectorImpl extends DelegationConnector
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -151,7 +151,7 @@ public class RequiredResourceDelegationConnectorImpl extends DelegationConnector
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public ResourceRequiredRole basicGetOuterRequiredRole__RequiredResourceDelegationConnector() {
@@ -163,7 +163,7 @@ public class RequiredResourceDelegationConnectorImpl extends DelegationConnector
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -177,7 +177,7 @@ public class RequiredResourceDelegationConnectorImpl extends DelegationConnector
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -204,7 +204,7 @@ public class RequiredResourceDelegationConnectorImpl extends DelegationConnector
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -225,7 +225,7 @@ public class RequiredResourceDelegationConnectorImpl extends DelegationConnector
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -246,7 +246,7 @@ public class RequiredResourceDelegationConnectorImpl extends DelegationConnector
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

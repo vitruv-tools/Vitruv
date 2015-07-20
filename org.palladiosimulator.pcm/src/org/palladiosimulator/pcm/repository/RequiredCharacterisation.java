@@ -36,7 +36,7 @@ public interface RequiredCharacterisation extends CDOObject {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -64,7 +64,7 @@ public interface RequiredCharacterisation extends CDOObject {
      * Sets the value of the '
      * {@link org.palladiosimulator.pcm.repository.RequiredCharacterisation#getType <em>Type</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Type</em>' attribute.
      * @see org.palladiosimulator.pcm.parameter.VariableCharacterisationType
@@ -80,7 +80,7 @@ public interface RequiredCharacterisation extends CDOObject {
      * of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Parameter</em>' reference.
      * @see #setParameter(Parameter)
      * @see org.palladiosimulator.pcm.repository.RepositoryPackage#getRequiredCharacterisation_Parameter()
@@ -93,7 +93,7 @@ public interface RequiredCharacterisation extends CDOObject {
      * Sets the value of the '
      * {@link org.palladiosimulator.pcm.repository.RequiredCharacterisation#getParameter
      * <em>Parameter</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Parameter</em>' reference.
      * @see #getParameter()
@@ -111,7 +111,7 @@ public interface RequiredCharacterisation extends CDOObject {
      * isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Interface Required Characterisation</em>' container reference.
      * @see #setInterface_RequiredCharacterisation(Interface)
      * @see org.palladiosimulator.pcm.repository.RepositoryPackage#getRequiredCharacterisation_Interface_RequiredCharacterisation()
@@ -126,7 +126,7 @@ public interface RequiredCharacterisation extends CDOObject {
      * {@link org.palladiosimulator.pcm.repository.RequiredCharacterisation#getInterface_RequiredCharacterisation
      * <em>Interface Required Characterisation</em>}' container reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Interface Required Characterisation</em>' container
      *            reference.

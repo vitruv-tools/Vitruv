@@ -36,14 +36,14 @@ public class InfrastructureSignatureImpl extends SignatureImpl implements Infras
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected InfrastructureSignatureImpl() {
@@ -52,7 +52,7 @@ public class InfrastructureSignatureImpl extends SignatureImpl implements Infras
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -62,7 +62,7 @@ public class InfrastructureSignatureImpl extends SignatureImpl implements Infras
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -75,7 +75,7 @@ public class InfrastructureSignatureImpl extends SignatureImpl implements Infras
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -88,7 +88,7 @@ public class InfrastructureSignatureImpl extends SignatureImpl implements Infras
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NotificationChain basicSetInfrastructureInterface__InfrastructureSignature(
@@ -100,7 +100,7 @@ public class InfrastructureSignatureImpl extends SignatureImpl implements Infras
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -113,7 +113,7 @@ public class InfrastructureSignatureImpl extends SignatureImpl implements Infras
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -135,7 +135,7 @@ public class InfrastructureSignatureImpl extends SignatureImpl implements Infras
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -152,7 +152,7 @@ public class InfrastructureSignatureImpl extends SignatureImpl implements Infras
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -168,7 +168,7 @@ public class InfrastructureSignatureImpl extends SignatureImpl implements Infras
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -184,7 +184,7 @@ public class InfrastructureSignatureImpl extends SignatureImpl implements Infras
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -204,7 +204,7 @@ public class InfrastructureSignatureImpl extends SignatureImpl implements Infras
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -222,7 +222,7 @@ public class InfrastructureSignatureImpl extends SignatureImpl implements Infras
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

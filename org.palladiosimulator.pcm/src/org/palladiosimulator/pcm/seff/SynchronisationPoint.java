@@ -38,7 +38,7 @@ public interface SynchronisationPoint extends Identifier {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -55,7 +55,7 @@ public interface SynchronisationPoint extends Identifier {
      * reference list isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Output Parameter Usage Synchronisation Point</em>' containment
      *         reference list.
      * @see org.palladiosimulator.pcm.seff.SeffPackage#getSynchronisationPoint_OutputParameterUsage_SynchronisationPoint()
@@ -75,7 +75,7 @@ public interface SynchronisationPoint extends Identifier {
      * clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Fork Action Synchronisation Point</em>' container reference.
      * @see #setForkAction_SynchronisationPoint(ForkAction)
      * @see org.palladiosimulator.pcm.seff.SeffPackage#getSynchronisationPoint_ForkAction_SynchronisationPoint()
@@ -91,7 +91,7 @@ public interface SynchronisationPoint extends Identifier {
      * {@link org.palladiosimulator.pcm.seff.SynchronisationPoint#getForkAction_SynchronisationPoint
      * <em>Fork Action Synchronisation Point</em>}' container reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Fork Action Synchronisation Point</em>' container
      *            reference.
@@ -112,7 +112,7 @@ public interface SynchronisationPoint extends Identifier {
      * containment reference list isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Synchronous Forked Behaviours Synchronisation Point</em>'
      *         containment reference list.
      * @see org.palladiosimulator.pcm.seff.SeffPackage#getSynchronisationPoint_SynchronousForkedBehaviours_SynchronisationPoint()

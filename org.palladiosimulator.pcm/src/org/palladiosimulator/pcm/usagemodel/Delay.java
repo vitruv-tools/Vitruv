@@ -32,7 +32,7 @@ public interface Delay extends AbstractUserAction {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -47,7 +47,7 @@ public interface Delay extends AbstractUserAction {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Time Specification Delay</em>' containment reference.
      * @see #setTimeSpecification_Delay(PCMRandomVariable)
      * @see org.palladiosimulator.pcm.usagemodel.UsagemodelPackage#getDelay_TimeSpecification_Delay()
@@ -62,7 +62,7 @@ public interface Delay extends AbstractUserAction {
      * {@link org.palladiosimulator.pcm.usagemodel.Delay#getTimeSpecification_Delay
      * <em>Time Specification Delay</em>}' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Time Specification Delay</em>' containment reference.
      * @see #getTimeSpecification_Delay()

@@ -39,7 +39,7 @@ public interface RecoveryAction extends AbstractInternalControlFlowAction {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -66,7 +66,7 @@ public interface RecoveryAction extends AbstractInternalControlFlowAction {
      * {@link org.palladiosimulator.pcm.seff.seff_reliability.RecoveryAction#getPrimaryBehaviour__RecoveryAction
      * <em>Primary Behaviour Recovery Action</em>}' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Primary Behaviour Recovery Action</em>' reference.
      * @see #getPrimaryBehaviour__RecoveryAction()
@@ -86,7 +86,7 @@ public interface RecoveryAction extends AbstractInternalControlFlowAction {
      * reference list isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Recovery Action Behaviours Recovery Action</em>' containment
      *         reference list.
      * @see org.palladiosimulator.pcm.seff.seff_reliability.SeffReliabilityPackage#getRecoveryAction_RecoveryActionBehaviours__RecoveryAction()

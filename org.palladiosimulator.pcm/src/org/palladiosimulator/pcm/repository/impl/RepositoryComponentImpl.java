@@ -30,14 +30,14 @@ public abstract class RepositoryComponentImpl extends InterfaceProvidingRequirin
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected RepositoryComponentImpl() {
@@ -46,7 +46,7 @@ public abstract class RepositoryComponentImpl extends InterfaceProvidingRequirin
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -56,7 +56,7 @@ public abstract class RepositoryComponentImpl extends InterfaceProvidingRequirin
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -67,7 +67,7 @@ public abstract class RepositoryComponentImpl extends InterfaceProvidingRequirin
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NotificationChain basicSetRepository__RepositoryComponent(
@@ -79,7 +79,7 @@ public abstract class RepositoryComponentImpl extends InterfaceProvidingRequirin
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -91,7 +91,7 @@ public abstract class RepositoryComponentImpl extends InterfaceProvidingRequirin
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -108,7 +108,7 @@ public abstract class RepositoryComponentImpl extends InterfaceProvidingRequirin
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -123,7 +123,7 @@ public abstract class RepositoryComponentImpl extends InterfaceProvidingRequirin
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -138,7 +138,7 @@ public abstract class RepositoryComponentImpl extends InterfaceProvidingRequirin
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -152,7 +152,7 @@ public abstract class RepositoryComponentImpl extends InterfaceProvidingRequirin
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -167,7 +167,7 @@ public abstract class RepositoryComponentImpl extends InterfaceProvidingRequirin
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -182,7 +182,7 @@ public abstract class RepositoryComponentImpl extends InterfaceProvidingRequirin
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

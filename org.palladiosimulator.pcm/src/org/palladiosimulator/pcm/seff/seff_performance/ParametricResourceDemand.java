@@ -125,7 +125,7 @@ public interface ParametricResourceDemand extends CDOObject {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -140,7 +140,7 @@ public interface ParametricResourceDemand extends CDOObject {
      * reference isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Specification Parameteric Resource Demand</em>' containment
      *         reference.
      * @see #setSpecification_ParametericResourceDemand(PCMRandomVariable)
@@ -174,7 +174,7 @@ public interface ParametricResourceDemand extends CDOObject {
      * clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Required Resource Parametric Resource Demand</em>' reference.
      * @see #setRequiredResource_ParametricResourceDemand(ProcessingResourceType)
      * @see org.palladiosimulator.pcm.seff.seff_performance.SeffPerformancePackage#getParametricResourceDemand_RequiredResource_ParametricResourceDemand()
@@ -188,7 +188,7 @@ public interface ParametricResourceDemand extends CDOObject {
      * {@link org.palladiosimulator.pcm.seff.seff_performance.ParametricResourceDemand#getRequiredResource_ParametricResourceDemand
      * <em>Required Resource Parametric Resource Demand</em>}' reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Required Resource Parametric Resource Demand</em>'
      *            reference.
@@ -207,7 +207,7 @@ public interface ParametricResourceDemand extends CDOObject {
      * clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Action Parametric Resource Demand</em>' container reference.
      * @see #setAction_ParametricResourceDemand(AbstractInternalControlFlowAction)
      * @see org.palladiosimulator.pcm.seff.seff_performance.SeffPerformancePackage#getParametricResourceDemand_Action_ParametricResourceDemand()
@@ -222,7 +222,7 @@ public interface ParametricResourceDemand extends CDOObject {
      * {@link org.palladiosimulator.pcm.seff.seff_performance.ParametricResourceDemand#getAction_ParametricResourceDemand
      * <em>Action Parametric Resource Demand</em>}' container reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Action Parametric Resource Demand</em>' container
      *            reference.

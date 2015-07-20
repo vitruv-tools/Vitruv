@@ -16,21 +16,21 @@ import org.palladiosimulator.pcm.seff.seff_performance.SeffPerformancePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
- *
+ * 
  * @generated
  */
 public class SeffPerformanceFactoryImpl extends EFactoryImpl implements SeffPerformanceFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static SeffPerformanceFactory init() {
@@ -48,7 +48,7 @@ public class SeffPerformanceFactoryImpl extends EFactoryImpl implements SeffPerf
 
     /**
      * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public SeffPerformanceFactoryImpl() {
@@ -57,7 +57,7 @@ public class SeffPerformanceFactoryImpl extends EFactoryImpl implements SeffPerf
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -76,7 +76,7 @@ public class SeffPerformanceFactoryImpl extends EFactoryImpl implements SeffPerf
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -87,7 +87,7 @@ public class SeffPerformanceFactoryImpl extends EFactoryImpl implements SeffPerf
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -98,7 +98,7 @@ public class SeffPerformanceFactoryImpl extends EFactoryImpl implements SeffPerf
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -109,7 +109,7 @@ public class SeffPerformanceFactoryImpl extends EFactoryImpl implements SeffPerf
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -119,7 +119,7 @@ public class SeffPerformanceFactoryImpl extends EFactoryImpl implements SeffPerf
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @deprecated
      * @generated
      */

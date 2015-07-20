@@ -36,7 +36,7 @@ public interface ClosedWorkload extends Workload {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -48,7 +48,7 @@ public interface ClosedWorkload extends Workload {
      * more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Population</em>' attribute.
      * @see #setPopulation(int)
      * @see org.palladiosimulator.pcm.usagemodel.UsagemodelPackage#getClosedWorkload_Population()
@@ -61,7 +61,7 @@ public interface ClosedWorkload extends Workload {
      * Sets the value of the '
      * {@link org.palladiosimulator.pcm.usagemodel.ClosedWorkload#getPopulation <em>Population</em>}
      * ' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Population</em>' attribute.
      * @see #getPopulation()
@@ -79,7 +79,7 @@ public interface ClosedWorkload extends Workload {
      * clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Think Time Closed Workload</em>' containment reference.
      * @see #setThinkTime_ClosedWorkload(PCMRandomVariable)
      * @see org.palladiosimulator.pcm.usagemodel.UsagemodelPackage#getClosedWorkload_ThinkTime_ClosedWorkload()
@@ -95,7 +95,7 @@ public interface ClosedWorkload extends Workload {
      * {@link org.palladiosimulator.pcm.usagemodel.ClosedWorkload#getThinkTime_ClosedWorkload
      * <em>Think Time Closed Workload</em>}' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Think Time Closed Workload</em>' containment reference.
      * @see #getThinkTime_ClosedWorkload()

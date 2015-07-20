@@ -36,7 +36,7 @@ public class VariableCharacterisationImpl extends CDOObjectImpl implements Varia
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -44,7 +44,7 @@ public class VariableCharacterisationImpl extends CDOObjectImpl implements Varia
     /**
      * The default value of the '{@link #getType() <em>Type</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
+     * 
      * @see #getType()
      * @generated
      * @ordered
@@ -53,7 +53,7 @@ public class VariableCharacterisationImpl extends CDOObjectImpl implements Varia
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected VariableCharacterisationImpl() {
@@ -62,7 +62,7 @@ public class VariableCharacterisationImpl extends CDOObjectImpl implements Varia
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -72,7 +72,7 @@ public class VariableCharacterisationImpl extends CDOObjectImpl implements Varia
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -82,7 +82,7 @@ public class VariableCharacterisationImpl extends CDOObjectImpl implements Varia
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -93,7 +93,7 @@ public class VariableCharacterisationImpl extends CDOObjectImpl implements Varia
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -104,7 +104,7 @@ public class VariableCharacterisationImpl extends CDOObjectImpl implements Varia
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -117,7 +117,7 @@ public class VariableCharacterisationImpl extends CDOObjectImpl implements Varia
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NotificationChain basicSetSpecification_VariableCharacterisation(
@@ -129,7 +129,7 @@ public class VariableCharacterisationImpl extends CDOObjectImpl implements Varia
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -142,7 +142,7 @@ public class VariableCharacterisationImpl extends CDOObjectImpl implements Varia
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -155,7 +155,7 @@ public class VariableCharacterisationImpl extends CDOObjectImpl implements Varia
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NotificationChain basicSetVariableUsage_VariableCharacterisation(
@@ -167,7 +167,7 @@ public class VariableCharacterisationImpl extends CDOObjectImpl implements Varia
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -180,7 +180,7 @@ public class VariableCharacterisationImpl extends CDOObjectImpl implements Varia
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -207,7 +207,7 @@ public class VariableCharacterisationImpl extends CDOObjectImpl implements Varia
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -224,7 +224,7 @@ public class VariableCharacterisationImpl extends CDOObjectImpl implements Varia
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -240,7 +240,7 @@ public class VariableCharacterisationImpl extends CDOObjectImpl implements Varia
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -258,7 +258,7 @@ public class VariableCharacterisationImpl extends CDOObjectImpl implements Varia
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -279,7 +279,7 @@ public class VariableCharacterisationImpl extends CDOObjectImpl implements Varia
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -300,7 +300,7 @@ public class VariableCharacterisationImpl extends CDOObjectImpl implements Varia
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

@@ -55,7 +55,7 @@ public interface ServiceEffectSpecification extends CDOObject {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -68,7 +68,7 @@ public interface ServiceEffectSpecification extends CDOObject {
      * more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Seff Type ID</em>' attribute.
      * @see #setSeffTypeID(String)
      * @see org.palladiosimulator.pcm.seff.SeffPackage#getServiceEffectSpecification_SeffTypeID()
@@ -81,7 +81,7 @@ public interface ServiceEffectSpecification extends CDOObject {
      * Sets the value of the '
      * {@link org.palladiosimulator.pcm.seff.ServiceEffectSpecification#getSeffTypeID
      * <em>Seff Type ID</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Seff Type ID</em>' attribute.
      * @see #getSeffTypeID()
@@ -110,7 +110,7 @@ public interface ServiceEffectSpecification extends CDOObject {
      * Sets the value of the '
      * {@link org.palladiosimulator.pcm.seff.ServiceEffectSpecification#getDescribedService__SEFF
      * <em>Described Service SEFF</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Described Service SEFF</em>' reference.
      * @see #getDescribedService__SEFF()
@@ -128,7 +128,7 @@ public interface ServiceEffectSpecification extends CDOObject {
      * reference isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Basic Component Service Effect Specification</em>' container
      *         reference.
      * @see #setBasicComponent_ServiceEffectSpecification(BasicComponent)

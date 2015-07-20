@@ -28,7 +28,7 @@ public interface ProvidedRole extends Role {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -55,7 +55,7 @@ public interface ProvidedRole extends Role {
      * {@link org.palladiosimulator.pcm.repository.ProvidedRole#getProvidingEntity_ProvidedRole
      * <em>Providing Entity Provided Role</em>}' container reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Providing Entity Provided Role</em>' container
      *            reference.

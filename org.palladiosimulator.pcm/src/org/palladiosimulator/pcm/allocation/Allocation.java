@@ -38,7 +38,7 @@ public interface Allocation extends Entity {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -51,7 +51,7 @@ public interface Allocation extends Entity {
      * clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Target Resource Environment Allocation</em>' reference.
      * @see #setTargetResourceEnvironment_Allocation(ResourceEnvironment)
      * @see org.palladiosimulator.pcm.allocation.AllocationPackage#getAllocation_TargetResourceEnvironment_Allocation()
@@ -65,7 +65,7 @@ public interface Allocation extends Entity {
      * {@link org.palladiosimulator.pcm.allocation.Allocation#getTargetResourceEnvironment_Allocation
      * <em>Target Resource Environment Allocation</em>}' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Target Resource Environment Allocation</em>' reference.
      * @see #getTargetResourceEnvironment_Allocation()
@@ -81,7 +81,7 @@ public interface Allocation extends Entity {
      * be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>System Allocation</em>' reference.
      * @see #setSystem_Allocation(org.palladiosimulator.pcm.system.System)
      * @see org.palladiosimulator.pcm.allocation.AllocationPackage#getAllocation_System_Allocation()
@@ -94,7 +94,7 @@ public interface Allocation extends Entity {
      * Sets the value of the '
      * {@link org.palladiosimulator.pcm.allocation.Allocation#getSystem_Allocation
      * <em>System Allocation</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>System Allocation</em>' reference.
      * @see #getSystem_Allocation()
@@ -114,7 +114,7 @@ public interface Allocation extends Entity {
      * isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Allocation Contexts Allocation</em>' containment reference
      *         list.
      * @see org.palladiosimulator.pcm.allocation.AllocationPackage#getAllocation_AllocationContexts_Allocation()

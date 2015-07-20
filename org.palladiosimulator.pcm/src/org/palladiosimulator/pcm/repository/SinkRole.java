@@ -27,7 +27,7 @@ public interface SinkRole extends ProvidedRole {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -53,7 +53,7 @@ public interface SinkRole extends ProvidedRole {
      * Sets the value of the '
      * {@link org.palladiosimulator.pcm.repository.SinkRole#getEventGroup__SinkRole
      * <em>Event Group Sink Role</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Event Group Sink Role</em>' reference.
      * @see #getEventGroup__SinkRole()

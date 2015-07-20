@@ -29,7 +29,7 @@ public interface EventGroup extends Interface {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -45,7 +45,7 @@ public interface EventGroup extends Interface {
      * clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Event Types Event Group</em>' containment reference list.
      * @see org.palladiosimulator.pcm.repository.RepositoryPackage#getEventGroup_EventTypes__EventGroup()
      * @see org.palladiosimulator.pcm.repository.EventType#getEventGroup__EventType

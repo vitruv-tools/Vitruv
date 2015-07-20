@@ -39,7 +39,7 @@ public interface ResourceDemandingSEFF extends Identifier, ServiceEffectSpecific
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -57,7 +57,7 @@ public interface ResourceDemandingSEFF extends Identifier, ServiceEffectSpecific
      * list isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Resource Demanding Internal Behaviours</em>' containment
      *         reference list.
      * @see org.palladiosimulator.pcm.seff.SeffPackage#getResourceDemandingSEFF_ResourceDemandingInternalBehaviours()

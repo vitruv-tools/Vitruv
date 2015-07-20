@@ -51,14 +51,14 @@ public class QoSAnnotationsImpl extends EntityImpl implements QoSAnnotations {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected QoSAnnotationsImpl() {
@@ -67,7 +67,7 @@ public class QoSAnnotationsImpl extends EntityImpl implements QoSAnnotations {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -77,7 +77,7 @@ public class QoSAnnotationsImpl extends EntityImpl implements QoSAnnotations {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -91,7 +91,7 @@ public class QoSAnnotationsImpl extends EntityImpl implements QoSAnnotations {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -103,7 +103,7 @@ public class QoSAnnotationsImpl extends EntityImpl implements QoSAnnotations {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NotificationChain basicSetSystem_QoSAnnotations(
@@ -115,7 +115,7 @@ public class QoSAnnotationsImpl extends EntityImpl implements QoSAnnotations {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -126,7 +126,7 @@ public class QoSAnnotationsImpl extends EntityImpl implements QoSAnnotations {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -154,7 +154,7 @@ public class QoSAnnotationsImpl extends EntityImpl implements QoSAnnotations {
      * {@link #MultipleReliabilityAnnotationsPerExternalCallNotAllowed(org.eclipse.emf.common.util.DiagnosticChain, java.util.Map)
      * <em>Multiple Reliability Annotations Per External Call Not Allowed</em>}' invariant
      * operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #MultipleReliabilityAnnotationsPerExternalCallNotAllowed(org.eclipse.emf.common.util.DiagnosticChain,
      *      java.util.Map)
      * @generated
@@ -164,7 +164,7 @@ public class QoSAnnotationsImpl extends EntityImpl implements QoSAnnotations {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -201,7 +201,7 @@ public class QoSAnnotationsImpl extends EntityImpl implements QoSAnnotations {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -225,7 +225,7 @@ public class QoSAnnotationsImpl extends EntityImpl implements QoSAnnotations {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -245,7 +245,7 @@ public class QoSAnnotationsImpl extends EntityImpl implements QoSAnnotations {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -260,7 +260,7 @@ public class QoSAnnotationsImpl extends EntityImpl implements QoSAnnotations {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -278,7 +278,7 @@ public class QoSAnnotationsImpl extends EntityImpl implements QoSAnnotations {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -304,7 +304,7 @@ public class QoSAnnotationsImpl extends EntityImpl implements QoSAnnotations {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -325,7 +325,7 @@ public class QoSAnnotationsImpl extends EntityImpl implements QoSAnnotations {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -344,7 +344,7 @@ public class QoSAnnotationsImpl extends EntityImpl implements QoSAnnotations {
     /**
      * The cached environment for evaluating OCL expressions. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */

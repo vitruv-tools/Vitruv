@@ -8,7 +8,7 @@ import org.eclipse.emf.ecore.EFactory;
 /**
  * <!-- begin-user-doc --> The <b>Factory</b> for the model. It provides a create method for each
  * non-abstract class of the model. <!-- end-user-doc -->
- *
+ * 
  * @see org.palladiosimulator.pcm.resourcetype.ResourcetypePackage
  * @generated
  */
@@ -16,14 +16,14 @@ public interface ResourcetypeFactory extends EFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * The singleton instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     ResourcetypeFactory eINSTANCE = org.palladiosimulator.pcm.resourcetype.impl.ResourcetypeFactoryImpl.init();
@@ -31,7 +31,7 @@ public interface ResourcetypeFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Resource Signature</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @return a new object of class '<em>Resource Signature</em>'.
      * @generated
      */
@@ -40,7 +40,7 @@ public interface ResourcetypeFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Processing Resource Type</em>'. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
+     * 
      * @return a new object of class '<em>Processing Resource Type</em>'.
      * @generated
      */
@@ -49,7 +49,7 @@ public interface ResourcetypeFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Resource Repository</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @return a new object of class '<em>Resource Repository</em>'.
      * @generated
      */
@@ -58,7 +58,7 @@ public interface ResourcetypeFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Scheduling Policy</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @return a new object of class '<em>Scheduling Policy</em>'.
      * @generated
      */
@@ -76,7 +76,7 @@ public interface ResourcetypeFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Resource Interface</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @return a new object of class '<em>Resource Interface</em>'.
      * @generated
      */
@@ -84,7 +84,7 @@ public interface ResourcetypeFactory extends EFactory {
 
     /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @return the package supported by this factory.
      * @generated
      */

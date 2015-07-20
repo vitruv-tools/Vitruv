@@ -27,14 +27,14 @@ public class LoopActionImpl extends AbstractLoopActionImpl implements LoopAction
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected LoopActionImpl() {
@@ -43,7 +43,7 @@ public class LoopActionImpl extends AbstractLoopActionImpl implements LoopAction
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -53,7 +53,7 @@ public class LoopActionImpl extends AbstractLoopActionImpl implements LoopAction
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -64,7 +64,7 @@ public class LoopActionImpl extends AbstractLoopActionImpl implements LoopAction
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NotificationChain basicSetIterationCount_LoopAction(final PCMRandomVariable newIterationCount_LoopAction,
@@ -76,7 +76,7 @@ public class LoopActionImpl extends AbstractLoopActionImpl implements LoopAction
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -87,7 +87,7 @@ public class LoopActionImpl extends AbstractLoopActionImpl implements LoopAction
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -106,7 +106,7 @@ public class LoopActionImpl extends AbstractLoopActionImpl implements LoopAction
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -121,7 +121,7 @@ public class LoopActionImpl extends AbstractLoopActionImpl implements LoopAction
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -135,7 +135,7 @@ public class LoopActionImpl extends AbstractLoopActionImpl implements LoopAction
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -150,7 +150,7 @@ public class LoopActionImpl extends AbstractLoopActionImpl implements LoopAction
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -165,7 +165,7 @@ public class LoopActionImpl extends AbstractLoopActionImpl implements LoopAction
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

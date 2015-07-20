@@ -28,7 +28,7 @@ public class CharacterisedVariableImpl extends VariableImpl implements Character
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -36,7 +36,7 @@ public class CharacterisedVariableImpl extends VariableImpl implements Character
     /**
      * The default value of the '{@link #getCharacterisationType() <em>Characterisation Type</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #getCharacterisationType()
      * @generated
      * @ordered
@@ -45,7 +45,7 @@ public class CharacterisedVariableImpl extends VariableImpl implements Character
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected CharacterisedVariableImpl() {
@@ -54,7 +54,7 @@ public class CharacterisedVariableImpl extends VariableImpl implements Character
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -64,7 +64,7 @@ public class CharacterisedVariableImpl extends VariableImpl implements Character
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -76,7 +76,7 @@ public class CharacterisedVariableImpl extends VariableImpl implements Character
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -87,7 +87,7 @@ public class CharacterisedVariableImpl extends VariableImpl implements Character
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -101,7 +101,7 @@ public class CharacterisedVariableImpl extends VariableImpl implements Character
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -116,7 +116,7 @@ public class CharacterisedVariableImpl extends VariableImpl implements Character
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -131,7 +131,7 @@ public class CharacterisedVariableImpl extends VariableImpl implements Character
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

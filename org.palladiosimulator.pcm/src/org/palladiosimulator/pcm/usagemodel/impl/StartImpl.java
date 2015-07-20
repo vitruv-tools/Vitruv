@@ -28,14 +28,14 @@ public class StartImpl extends AbstractUserActionImpl implements Start {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected StartImpl() {
@@ -44,7 +44,7 @@ public class StartImpl extends AbstractUserActionImpl implements Start {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -56,7 +56,7 @@ public class StartImpl extends AbstractUserActionImpl implements Start {
      * The cached OCL expression body for the '
      * {@link #StartHasNoPredecessor(org.eclipse.emf.common.util.DiagnosticChain, java.util.Map)
      * <em>Start Has No Predecessor</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #StartHasNoPredecessor(org.eclipse.emf.common.util.DiagnosticChain, java.util.Map)
      * @generated
      * @ordered
@@ -67,7 +67,7 @@ public class StartImpl extends AbstractUserActionImpl implements Start {
      * {@link #StartHasNoPredecessor(org.eclipse.emf.common.util.DiagnosticChain, java.util.Map)
      * <em>Start Has No Predecessor</em>}' invariant operation. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @see #StartHasNoPredecessor(org.eclipse.emf.common.util.DiagnosticChain, java.util.Map)
      * @generated
      * @ordered
@@ -76,7 +76,7 @@ public class StartImpl extends AbstractUserActionImpl implements Start {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -109,7 +109,7 @@ public class StartImpl extends AbstractUserActionImpl implements Start {
     /**
      * The cached environment for evaluating OCL expressions. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */

@@ -34,7 +34,7 @@ public interface UsageModel extends CDOObject {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -51,7 +51,7 @@ public interface UsageModel extends CDOObject {
      * clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Usage Scenario Usage Model</em>' containment reference list.
      * @see org.palladiosimulator.pcm.usagemodel.UsagemodelPackage#getUsageModel_UsageScenario_UsageModel()
      * @see org.palladiosimulator.pcm.usagemodel.UsageScenario#getUsageModel_UsageScenario
@@ -71,7 +71,7 @@ public interface UsageModel extends CDOObject {
      * clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>User Data Usage Model</em>' containment reference list.
      * @see org.palladiosimulator.pcm.usagemodel.UsagemodelPackage#getUsageModel_UserData_UsageModel()
      * @see org.palladiosimulator.pcm.usagemodel.UserData#getUsageModel_UserData

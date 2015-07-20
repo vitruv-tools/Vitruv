@@ -15,7 +15,7 @@ import org.palladiosimulator.pcm.allocation.AllocationPackage;
 
 /**
  * <!-- begin-user-doc --> The <b>Validator</b> for the model. <!-- end-user-doc -->
- *
+ * 
  * @see org.palladiosimulator.pcm.allocation.AllocationPackage
  * @generated
  */
@@ -23,14 +23,14 @@ public class AllocationValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * The cached model package <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final AllocationValidator INSTANCE = new AllocationValidator();
@@ -39,7 +39,7 @@ public class AllocationValidator extends EObjectValidator {
      * A constant for the {@link org.eclipse.emf.common.util.Diagnostic#getSource() source} of
      * diagnostic {@link org.eclipse.emf.common.util.Diagnostic#getCode() codes} from this package.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see org.eclipse.emf.common.util.Diagnostic#getSource()
      * @see org.eclipse.emf.common.util.Diagnostic#getCode()
      * @generated
@@ -50,7 +50,7 @@ public class AllocationValidator extends EObjectValidator {
      * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint 'One
      * Assembly Context Or One Event Channel Should Be Referred' of 'Context'. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final int ALLOCATION_CONTEXT__ONE_ASSEMBLY_CONTEXT_OR_ONE_EVENT_CHANNEL_SHOULD_BE_REFERRED = 1;
@@ -76,7 +76,7 @@ public class AllocationValidator extends EObjectValidator {
     /**
      * A constant with a fixed name that can be used as the base value for additional hand written
      * constants. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private static final int GENERATED_DIAGNOSTIC_CODE_COUNT = 3;
@@ -84,14 +84,14 @@ public class AllocationValidator extends EObjectValidator {
     /**
      * A constant with a fixed name that can be used as the base value for additional hand written
      * constants in a derived class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected static final int DIAGNOSTIC_CODE_COUNT = GENERATED_DIAGNOSTIC_CODE_COUNT;
 
     /**
      * Creates an instance of the switch. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public AllocationValidator() {
@@ -100,7 +100,7 @@ public class AllocationValidator extends EObjectValidator {
 
     /**
      * Returns the package of this validator switch. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -129,7 +129,7 @@ public class AllocationValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateAllocationContext(final AllocationContext allocationContext,
@@ -166,7 +166,7 @@ public class AllocationValidator extends EObjectValidator {
     /**
      * Validates the OneAssemblyContextOrOneEventChannelShouldBeReferred constraint of '
      * <em>Context</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateAllocationContext_OneAssemblyContextOrOneEventChannelShouldBeReferred(
@@ -177,7 +177,7 @@ public class AllocationValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateAllocation(final Allocation allocation, final DiagnosticChain diagnostics,
@@ -218,7 +218,7 @@ public class AllocationValidator extends EObjectValidator {
     /**
      * Validates the EachAssemblyContextWithinSystemHasToBeAllocatedExactlyOnce constraint of '
      * <em>Allocation</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateAllocation_EachAssemblyContextWithinSystemHasToBeAllocatedExactlyOnce(
@@ -229,7 +229,7 @@ public class AllocationValidator extends EObjectValidator {
     /**
      * Validates the CommunicatingServersHaveToBeConnectedByLinkingResource constraint of '
      * <em>Allocation</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateAllocation_CommunicatingServersHaveToBeConnectedByLinkingResource(
@@ -240,7 +240,7 @@ public class AllocationValidator extends EObjectValidator {
     /**
      * Returns the resource locator that will be used to fetch messages for this validator's
      * diagnostics. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

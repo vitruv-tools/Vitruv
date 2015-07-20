@@ -50,7 +50,7 @@ public interface ImplementationComponentType extends RepositoryComponent {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -64,7 +64,7 @@ public interface ImplementationComponentType extends RepositoryComponent {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Parent Complete Component Types</em>' reference list.
      * @see org.palladiosimulator.pcm.repository.RepositoryPackage#getImplementationComponentType_ParentCompleteComponentTypes()
      * @model ordered="false"
@@ -98,7 +98,7 @@ public interface ImplementationComponentType extends RepositoryComponent {
      * more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Component Type</em>' attribute.
      * @see org.palladiosimulator.pcm.repository.ComponentType
      * @see #setComponentType(ComponentType)
@@ -112,7 +112,7 @@ public interface ImplementationComponentType extends RepositoryComponent {
      * Sets the value of the '
      * {@link org.palladiosimulator.pcm.repository.ImplementationComponentType#getComponentType
      * <em>Component Type</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Component Type</em>' attribute.
      * @see org.palladiosimulator.pcm.repository.ComponentType

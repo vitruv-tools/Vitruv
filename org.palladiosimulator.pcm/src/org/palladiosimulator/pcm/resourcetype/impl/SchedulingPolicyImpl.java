@@ -29,14 +29,14 @@ public class SchedulingPolicyImpl extends EntityImpl implements SchedulingPolicy
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected SchedulingPolicyImpl() {
@@ -45,7 +45,7 @@ public class SchedulingPolicyImpl extends EntityImpl implements SchedulingPolicy
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -55,7 +55,7 @@ public class SchedulingPolicyImpl extends EntityImpl implements SchedulingPolicy
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -67,7 +67,7 @@ public class SchedulingPolicyImpl extends EntityImpl implements SchedulingPolicy
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NotificationChain basicSetResourceRepository__SchedulingPolicy(
@@ -79,7 +79,7 @@ public class SchedulingPolicyImpl extends EntityImpl implements SchedulingPolicy
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -92,7 +92,7 @@ public class SchedulingPolicyImpl extends EntityImpl implements SchedulingPolicy
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -109,7 +109,7 @@ public class SchedulingPolicyImpl extends EntityImpl implements SchedulingPolicy
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -124,7 +124,7 @@ public class SchedulingPolicyImpl extends EntityImpl implements SchedulingPolicy
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -140,7 +140,7 @@ public class SchedulingPolicyImpl extends EntityImpl implements SchedulingPolicy
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -154,7 +154,7 @@ public class SchedulingPolicyImpl extends EntityImpl implements SchedulingPolicy
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -169,7 +169,7 @@ public class SchedulingPolicyImpl extends EntityImpl implements SchedulingPolicy
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -184,7 +184,7 @@ public class SchedulingPolicyImpl extends EntityImpl implements SchedulingPolicy
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

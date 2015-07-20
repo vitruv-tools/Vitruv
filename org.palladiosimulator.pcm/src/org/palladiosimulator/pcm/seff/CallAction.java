@@ -29,7 +29,7 @@ public interface CallAction extends AbstractAction {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -46,7 +46,7 @@ public interface CallAction extends AbstractAction {
      * isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Input Variable Usages Call Action</em>' containment reference
      *         list.
      * @see org.palladiosimulator.pcm.seff.SeffPackage#getCallAction_InputVariableUsages__CallAction()

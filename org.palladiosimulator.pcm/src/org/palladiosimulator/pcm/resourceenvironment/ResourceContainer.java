@@ -40,7 +40,7 @@ public interface ResourceContainer extends Entity {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -57,7 +57,7 @@ public interface ResourceContainer extends Entity {
      * containment reference list isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Active Resource Specifications Resource Container</em>'
      *         containment reference list.
      * @see org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentPackage#getResourceContainer_ActiveResourceSpecifications_ResourceContainer()
@@ -78,7 +78,7 @@ public interface ResourceContainer extends Entity {
      * isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Resource Environment Resource Container</em>' container
      *         reference.
      * @see #setResourceEnvironment_ResourceContainer(ResourceEnvironment)
@@ -94,7 +94,7 @@ public interface ResourceContainer extends Entity {
      * {@link org.palladiosimulator.pcm.resourceenvironment.ResourceContainer#getResourceEnvironment_ResourceContainer
      * <em>Resource Environment Resource Container</em>}' container reference. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Resource Environment Resource Container</em>' container
      *            reference.
@@ -115,7 +115,7 @@ public interface ResourceContainer extends Entity {
      * reference list isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Nested Resource Containers Resource Container</em>' containment
      *         reference list.
      * @see org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentPackage#getResourceContainer_NestedResourceContainers__ResourceContainer()
@@ -136,7 +136,7 @@ public interface ResourceContainer extends Entity {
      * reference isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Parent Resource Container Resource Container</em>' container
      *         reference.
      * @see #setParentResourceContainer__ResourceContainer(ResourceContainer)

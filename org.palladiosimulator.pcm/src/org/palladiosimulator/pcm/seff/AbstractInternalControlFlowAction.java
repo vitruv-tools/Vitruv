@@ -41,7 +41,7 @@ public interface AbstractInternalControlFlowAction extends AbstractAction {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -58,7 +58,7 @@ public interface AbstractInternalControlFlowAction extends AbstractAction {
      * clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Resource Demand Action</em>' containment reference list.
      * @see org.palladiosimulator.pcm.seff.SeffPackage#getAbstractInternalControlFlowAction_ResourceDemand_Action()
      * @see org.palladiosimulator.pcm.seff.seff_performance.ParametricResourceDemand#getAction_ParametricResourceDemand
@@ -79,7 +79,7 @@ public interface AbstractInternalControlFlowAction extends AbstractAction {
      * clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Infrastructure Call Action</em>' containment reference list.
      * @see org.palladiosimulator.pcm.seff.SeffPackage#getAbstractInternalControlFlowAction_InfrastructureCall__Action()
      * @see org.palladiosimulator.pcm.seff.seff_performance.InfrastructureCall#getAction__InfrastructureCall
@@ -100,7 +100,7 @@ public interface AbstractInternalControlFlowAction extends AbstractAction {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Resource Call Action</em>' containment reference list.
      * @see org.palladiosimulator.pcm.seff.SeffPackage#getAbstractInternalControlFlowAction_ResourceCall__Action()
      * @see org.palladiosimulator.pcm.seff.seff_performance.ResourceCall#getAction__ResourceCall

@@ -28,14 +28,14 @@ public abstract class AbstractLoopActionImpl extends AbstractInternalControlFlow
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected AbstractLoopActionImpl() {
@@ -44,7 +44,7 @@ public abstract class AbstractLoopActionImpl extends AbstractInternalControlFlow
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -54,7 +54,7 @@ public abstract class AbstractLoopActionImpl extends AbstractInternalControlFlow
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -65,7 +65,7 @@ public abstract class AbstractLoopActionImpl extends AbstractInternalControlFlow
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NotificationChain basicSetBodyBehaviour_Loop(final ResourceDemandingBehaviour newBodyBehaviour_Loop,
@@ -77,7 +77,7 @@ public abstract class AbstractLoopActionImpl extends AbstractInternalControlFlow
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -88,7 +88,7 @@ public abstract class AbstractLoopActionImpl extends AbstractInternalControlFlow
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -107,7 +107,7 @@ public abstract class AbstractLoopActionImpl extends AbstractInternalControlFlow
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -122,7 +122,7 @@ public abstract class AbstractLoopActionImpl extends AbstractInternalControlFlow
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -136,7 +136,7 @@ public abstract class AbstractLoopActionImpl extends AbstractInternalControlFlow
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -151,7 +151,7 @@ public abstract class AbstractLoopActionImpl extends AbstractInternalControlFlow
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -166,7 +166,7 @@ public abstract class AbstractLoopActionImpl extends AbstractInternalControlFlow
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

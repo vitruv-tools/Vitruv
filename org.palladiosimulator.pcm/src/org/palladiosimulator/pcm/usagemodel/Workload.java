@@ -41,7 +41,7 @@ public interface Workload extends CDOObject {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -56,7 +56,7 @@ public interface Workload extends CDOObject {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Usage Scenario Workload</em>' container reference.
      * @see #setUsageScenario_Workload(UsageScenario)
      * @see org.palladiosimulator.pcm.usagemodel.UsagemodelPackage#getWorkload_UsageScenario_Workload()
@@ -71,7 +71,7 @@ public interface Workload extends CDOObject {
      * {@link org.palladiosimulator.pcm.usagemodel.Workload#getUsageScenario_Workload
      * <em>Usage Scenario Workload</em>}' container reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Usage Scenario Workload</em>' container reference.
      * @see #getUsageScenario_Workload()

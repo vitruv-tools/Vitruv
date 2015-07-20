@@ -24,7 +24,7 @@ public interface InfrastructureProvidedRole extends ProvidedRole {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -37,7 +37,7 @@ public interface InfrastructureProvidedRole extends ProvidedRole {
      * isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Provided Interface Infrastructure Provided Role</em>'
      *         reference.
      * @see #setProvidedInterface__InfrastructureProvidedRole(InfrastructureInterface)
@@ -52,7 +52,7 @@ public interface InfrastructureProvidedRole extends ProvidedRole {
      * {@link org.palladiosimulator.pcm.repository.InfrastructureProvidedRole#getProvidedInterface__InfrastructureProvidedRole
      * <em>Provided Interface Infrastructure Provided Role</em>}' reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Provided Interface Infrastructure Provided Role</em>'
      *            reference.

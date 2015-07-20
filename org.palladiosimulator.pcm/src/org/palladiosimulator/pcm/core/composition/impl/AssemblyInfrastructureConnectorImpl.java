@@ -37,14 +37,14 @@ public class AssemblyInfrastructureConnectorImpl extends ConnectorImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected AssemblyInfrastructureConnectorImpl() {
@@ -53,7 +53,7 @@ public class AssemblyInfrastructureConnectorImpl extends ConnectorImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -63,7 +63,7 @@ public class AssemblyInfrastructureConnectorImpl extends ConnectorImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -76,7 +76,7 @@ public class AssemblyInfrastructureConnectorImpl extends ConnectorImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public InfrastructureProvidedRole basicGetProvidedRole__AssemblyInfrastructureConnector() {
@@ -88,7 +88,7 @@ public class AssemblyInfrastructureConnectorImpl extends ConnectorImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -102,7 +102,7 @@ public class AssemblyInfrastructureConnectorImpl extends ConnectorImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -115,7 +115,7 @@ public class AssemblyInfrastructureConnectorImpl extends ConnectorImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public InfrastructureRequiredRole basicGetRequiredRole__AssemblyInfrastructureConnector() {
@@ -127,7 +127,7 @@ public class AssemblyInfrastructureConnectorImpl extends ConnectorImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -141,7 +141,7 @@ public class AssemblyInfrastructureConnectorImpl extends ConnectorImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -154,7 +154,7 @@ public class AssemblyInfrastructureConnectorImpl extends ConnectorImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public AssemblyContext basicGetProvidingAssemblyContext__AssemblyInfrastructureConnector() {
@@ -166,7 +166,7 @@ public class AssemblyInfrastructureConnectorImpl extends ConnectorImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -180,7 +180,7 @@ public class AssemblyInfrastructureConnectorImpl extends ConnectorImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -193,7 +193,7 @@ public class AssemblyInfrastructureConnectorImpl extends ConnectorImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public AssemblyContext basicGetRequiringAssemblyContext__AssemblyInfrastructureConnector() {
@@ -205,7 +205,7 @@ public class AssemblyInfrastructureConnectorImpl extends ConnectorImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -219,7 +219,7 @@ public class AssemblyInfrastructureConnectorImpl extends ConnectorImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -251,7 +251,7 @@ public class AssemblyInfrastructureConnectorImpl extends ConnectorImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -275,7 +275,7 @@ public class AssemblyInfrastructureConnectorImpl extends ConnectorImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -299,7 +299,7 @@ public class AssemblyInfrastructureConnectorImpl extends ConnectorImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

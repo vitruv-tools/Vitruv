@@ -26,7 +26,7 @@ public interface SchedulingPolicy extends Entity {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -41,7 +41,7 @@ public interface SchedulingPolicy extends Entity {
      * isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Resource Repository Scheduling Policy</em>' container
      *         reference.
      * @see #setResourceRepository__SchedulingPolicy(ResourceRepository)
@@ -58,7 +58,7 @@ public interface SchedulingPolicy extends Entity {
      * {@link org.palladiosimulator.pcm.resourcetype.SchedulingPolicy#getResourceRepository__SchedulingPolicy
      * <em>Resource Repository Scheduling Policy</em>}' container reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Resource Repository Scheduling Policy</em>' container
      *            reference.

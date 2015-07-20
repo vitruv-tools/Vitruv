@@ -39,14 +39,14 @@ public abstract class InterfaceProvidingRequiringEntityImpl extends InterfacePro
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected InterfaceProvidingRequiringEntityImpl() {
@@ -55,7 +55,7 @@ public abstract class InterfaceProvidingRequiringEntityImpl extends InterfacePro
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -65,7 +65,7 @@ public abstract class InterfaceProvidingRequiringEntityImpl extends InterfacePro
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -79,7 +79,7 @@ public abstract class InterfaceProvidingRequiringEntityImpl extends InterfacePro
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -93,7 +93,7 @@ public abstract class InterfaceProvidingRequiringEntityImpl extends InterfacePro
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -113,7 +113,7 @@ public abstract class InterfaceProvidingRequiringEntityImpl extends InterfacePro
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -131,7 +131,7 @@ public abstract class InterfaceProvidingRequiringEntityImpl extends InterfacePro
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -147,7 +147,7 @@ public abstract class InterfaceProvidingRequiringEntityImpl extends InterfacePro
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -169,7 +169,7 @@ public abstract class InterfaceProvidingRequiringEntityImpl extends InterfacePro
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -187,7 +187,7 @@ public abstract class InterfaceProvidingRequiringEntityImpl extends InterfacePro
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -203,7 +203,7 @@ public abstract class InterfaceProvidingRequiringEntityImpl extends InterfacePro
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -229,7 +229,7 @@ public abstract class InterfaceProvidingRequiringEntityImpl extends InterfacePro
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

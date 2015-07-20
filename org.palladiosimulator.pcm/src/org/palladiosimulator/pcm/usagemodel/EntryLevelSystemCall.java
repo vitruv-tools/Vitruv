@@ -61,7 +61,7 @@ public interface EntryLevelSystemCall extends AbstractUserAction {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -74,7 +74,7 @@ public interface EntryLevelSystemCall extends AbstractUserAction {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Provided Role Entry Level System Call</em>' reference.
      * @see #setProvidedRole_EntryLevelSystemCall(OperationProvidedRole)
      * @see org.palladiosimulator.pcm.usagemodel.UsagemodelPackage#getEntryLevelSystemCall_ProvidedRole_EntryLevelSystemCall()
@@ -88,7 +88,7 @@ public interface EntryLevelSystemCall extends AbstractUserAction {
      * {@link org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall#getProvidedRole_EntryLevelSystemCall
      * <em>Provided Role Entry Level System Call</em>}' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Provided Role Entry Level System Call</em>' reference.
      * @see #getProvidedRole_EntryLevelSystemCall()
@@ -104,7 +104,7 @@ public interface EntryLevelSystemCall extends AbstractUserAction {
      * clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Operation Signature Entry Level System Call</em>' reference.
      * @see #setOperationSignature__EntryLevelSystemCall(OperationSignature)
      * @see org.palladiosimulator.pcm.usagemodel.UsagemodelPackage#getEntryLevelSystemCall_OperationSignature__EntryLevelSystemCall()
@@ -118,7 +118,7 @@ public interface EntryLevelSystemCall extends AbstractUserAction {
      * {@link org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall#getOperationSignature__EntryLevelSystemCall
      * <em>Operation Signature Entry Level System Call</em>}' reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Operation Signature Entry Level System Call</em>'
      *            reference.
@@ -139,7 +139,7 @@ public interface EntryLevelSystemCall extends AbstractUserAction {
      * reference list isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Output Parameter Usages Entry Level System Call</em>'
      *         containment reference list.
      * @see org.palladiosimulator.pcm.usagemodel.UsagemodelPackage#getEntryLevelSystemCall_OutputParameterUsages_EntryLevelSystemCall()
@@ -157,7 +157,7 @@ public interface EntryLevelSystemCall extends AbstractUserAction {
      * of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Priority</em>' attribute.
      * @see #setPriority(int)
      * @see org.palladiosimulator.pcm.usagemodel.UsagemodelPackage#getEntryLevelSystemCall_Priority()
@@ -170,7 +170,7 @@ public interface EntryLevelSystemCall extends AbstractUserAction {
      * Sets the value of the '
      * {@link org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall#getPriority
      * <em>Priority</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Priority</em>' attribute.
      * @see #getPriority()
@@ -190,7 +190,7 @@ public interface EntryLevelSystemCall extends AbstractUserAction {
      * reference list isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Input Parameter Usages Entry Level System Call</em>'
      *         containment reference list.
      * @see org.palladiosimulator.pcm.usagemodel.UsagemodelPackage#getEntryLevelSystemCall_InputParameterUsages_EntryLevelSystemCall()

@@ -33,7 +33,7 @@ public interface AbstractBranchTransition extends Entity {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -48,7 +48,7 @@ public interface AbstractBranchTransition extends Entity {
      * isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Branch Action Abstract Branch Transition</em>' container
      *         reference.
      * @see #setBranchAction_AbstractBranchTransition(BranchAction)
@@ -64,7 +64,7 @@ public interface AbstractBranchTransition extends Entity {
      * {@link org.palladiosimulator.pcm.seff.AbstractBranchTransition#getBranchAction_AbstractBranchTransition
      * <em>Branch Action Abstract Branch Transition</em>}' container reference. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Branch Action Abstract Branch Transition</em>' container
      *            reference.
@@ -83,7 +83,7 @@ public interface AbstractBranchTransition extends Entity {
      * isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Branch Behaviour Branch Transition</em>' containment reference.
      * @see #setBranchBehaviour_BranchTransition(ResourceDemandingBehaviour)
      * @see org.palladiosimulator.pcm.seff.SeffPackage#getAbstractBranchTransition_BranchBehaviour_BranchTransition()
@@ -99,7 +99,7 @@ public interface AbstractBranchTransition extends Entity {
      * {@link org.palladiosimulator.pcm.seff.AbstractBranchTransition#getBranchBehaviour_BranchTransition
      * <em>Branch Behaviour Branch Transition</em>}' containment reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Branch Behaviour Branch Transition</em>' containment
      *            reference.

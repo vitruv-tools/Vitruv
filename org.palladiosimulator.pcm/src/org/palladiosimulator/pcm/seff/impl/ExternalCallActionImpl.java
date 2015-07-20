@@ -62,7 +62,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -79,7 +79,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected ExternalCallActionImpl() {
@@ -88,7 +88,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -98,7 +98,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -111,7 +111,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -124,7 +124,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -138,7 +138,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -149,7 +149,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public OperationSignature basicGetCalledService_ExternalService() {
@@ -159,7 +159,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -171,7 +171,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -182,7 +182,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public OperationRequiredRole basicGetRole_ExternalService() {
@@ -192,7 +192,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -203,7 +203,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -214,7 +214,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -227,7 +227,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
      * The cached OCL expression body for the '
      * {@link #SignatureBelongsToRole(org.eclipse.emf.common.util.DiagnosticChain, java.util.Map)
      * <em>Signature Belongs To Role</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #SignatureBelongsToRole(org.eclipse.emf.common.util.DiagnosticChain, java.util.Map)
      * @generated
      * @ordered
@@ -239,7 +239,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
      * {@link #SignatureBelongsToRole(org.eclipse.emf.common.util.DiagnosticChain, java.util.Map)
      * <em>Signature Belongs To Role</em>}' invariant operation. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @see #SignatureBelongsToRole(org.eclipse.emf.common.util.DiagnosticChain, java.util.Map)
      * @generated
      * @ordered
@@ -248,7 +248,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -306,7 +306,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -342,7 +342,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -362,7 +362,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -379,7 +379,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -409,7 +409,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -443,7 +443,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -473,7 +473,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -497,7 +497,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -531,7 +531,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -566,7 +566,7 @@ public class ExternalCallActionImpl extends AbstractActionImpl implements Extern
     /**
      * The cached environment for evaluating OCL expressions. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */

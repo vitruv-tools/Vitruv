@@ -34,7 +34,7 @@ public interface OpenWorkload extends Workload {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -49,7 +49,7 @@ public interface OpenWorkload extends Workload {
      * clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Inter Arrival Time Open Workload</em>' containment reference.
      * @see #setInterArrivalTime_OpenWorkload(PCMRandomVariable)
      * @see org.palladiosimulator.pcm.usagemodel.UsagemodelPackage#getOpenWorkload_InterArrivalTime_OpenWorkload()
@@ -65,7 +65,7 @@ public interface OpenWorkload extends Workload {
      * {@link org.palladiosimulator.pcm.usagemodel.OpenWorkload#getInterArrivalTime_OpenWorkload
      * <em>Inter Arrival Time Open Workload</em>}' containment reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Inter Arrival Time Open Workload</em>' containment
      *            reference.

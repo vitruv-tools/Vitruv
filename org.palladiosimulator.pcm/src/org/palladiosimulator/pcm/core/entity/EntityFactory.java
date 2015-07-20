@@ -8,7 +8,7 @@ import org.eclipse.emf.ecore.EFactory;
 /**
  * <!-- begin-user-doc --> The <b>Factory</b> for the model. It provides a create method for each
  * non-abstract class of the model. <!-- end-user-doc -->
- *
+ * 
  * @see org.palladiosimulator.pcm.core.entity.EntityPackage
  * @generated
  */
@@ -16,14 +16,14 @@ public interface EntityFactory extends EFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * The singleton instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     EntityFactory eINSTANCE = org.palladiosimulator.pcm.core.entity.impl.EntityFactoryImpl.init();
@@ -31,7 +31,7 @@ public interface EntityFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Resource Provided Role</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @return a new object of class '<em>Resource Provided Role</em>'.
      * @generated
      */
@@ -49,7 +49,7 @@ public interface EntityFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Resource Required Role</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @return a new object of class '<em>Resource Required Role</em>'.
      * @generated
      */
@@ -75,7 +75,7 @@ public interface EntityFactory extends EFactory {
 
     /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @return the package supported by this factory.
      * @generated
      */

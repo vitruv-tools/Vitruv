@@ -22,7 +22,7 @@ import de.uka.ipd.sdq.identifier.Identifier;
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter
  * <code>createXXX</code> method for each class of the model. <!-- end-user-doc -->
- *
+ * 
  * @see org.palladiosimulator.pcm.seff.seff_reliability.SeffReliabilityPackage
  * @generated
  */
@@ -30,21 +30,21 @@ public class SeffReliabilityAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * The cached model package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected static SeffReliabilityPackage modelPackage;
 
     /**
      * Creates an instance of the adapter factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public SeffReliabilityAdapterFactory() {
@@ -57,7 +57,7 @@ public class SeffReliabilityAdapterFactory extends AdapterFactoryImpl {
      * Returns whether this factory is applicable for the type of the object. <!-- begin-user-doc
      * --> This implementation returns <code>true</code> if the object is either the model's package
      * or is an instance object of the model. <!-- end-user-doc -->
-     *
+     * 
      * @return whether this factory is applicable for the type of the object.
      * @generated
      */
@@ -75,11 +75,10 @@ public class SeffReliabilityAdapterFactory extends AdapterFactoryImpl {
     /**
      * The switch that delegates to the <code>createXXX</code> methods. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected SeffReliabilitySwitch<Adapter> modelSwitch = new SeffReliabilitySwitch<Adapter>() {
-
         @Override
         public Adapter caseRecoveryActionBehaviour(final RecoveryActionBehaviour object) {
             return SeffReliabilityAdapterFactory.this.createRecoveryActionBehaviourAdapter();
@@ -133,7 +132,7 @@ public class SeffReliabilityAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates an adapter for the <code>target</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param target
      *            the object to adapt.
      * @return the adapter for the <code>target</code>.
@@ -150,7 +149,7 @@ public class SeffReliabilityAdapterFactory extends AdapterFactoryImpl {
      * <em>Recovery Action Behaviour</em>}'. <!-- begin-user-doc --> This default implementation
      * returns null so that we can easily ignore cases; it's useful to ignore a case when
      * inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
+     * 
      * @return the new adapter.
      * @see org.palladiosimulator.pcm.seff.seff_reliability.RecoveryActionBehaviour
      * @generated
@@ -165,7 +164,7 @@ public class SeffReliabilityAdapterFactory extends AdapterFactoryImpl {
      * <em>Recovery Action</em>}'. <!-- begin-user-doc --> This default implementation returns null
      * so that we can easily ignore cases; it's useful to ignore a case when inheritance will catch
      * all the cases anyway. <!-- end-user-doc -->
-     *
+     * 
      * @return the new adapter.
      * @see org.palladiosimulator.pcm.seff.seff_reliability.RecoveryAction
      * @generated
@@ -180,7 +179,7 @@ public class SeffReliabilityAdapterFactory extends AdapterFactoryImpl {
      * <em>Failure Handling Entity</em>}'. <!-- begin-user-doc --> This default implementation
      * returns null so that we can easily ignore cases; it's useful to ignore a case when
      * inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
+     * 
      * @return the new adapter.
      * @see org.palladiosimulator.pcm.seff.seff_reliability.FailureHandlingEntity
      * @generated
@@ -194,7 +193,7 @@ public class SeffReliabilityAdapterFactory extends AdapterFactoryImpl {
      * <em>Identifier</em>}'. <!-- begin-user-doc --> This default implementation returns null so
      * that we can easily ignore cases; it's useful to ignore a case when inheritance will catch all
      * the cases anyway. <!-- end-user-doc -->
-     *
+     * 
      * @return the new adapter.
      * @see de.uka.ipd.sdq.identifier.Identifier
      * @generated
@@ -223,7 +222,7 @@ public class SeffReliabilityAdapterFactory extends AdapterFactoryImpl {
      * {@link org.palladiosimulator.pcm.core.entity.Entity <em>Entity</em>}'. <!-- begin-user-doc
      * --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
+     * 
      * @return the new adapter.
      * @see org.palladiosimulator.pcm.core.entity.Entity
      * @generated
@@ -238,7 +237,7 @@ public class SeffReliabilityAdapterFactory extends AdapterFactoryImpl {
      * <em>Resource Demanding Behaviour</em>}'. <!-- begin-user-doc --> This default implementation
      * returns null so that we can easily ignore cases; it's useful to ignore a case when
      * inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
+     * 
      * @return the new adapter.
      * @see org.palladiosimulator.pcm.seff.ResourceDemandingBehaviour
      * @generated
@@ -268,7 +267,7 @@ public class SeffReliabilityAdapterFactory extends AdapterFactoryImpl {
      * <em>Abstract Internal Control Flow Action</em>}'. <!-- begin-user-doc --> This default
      * implementation returns null so that we can easily ignore cases; it's useful to ignore a case
      * when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
+     * 
      * @return the new adapter.
      * @see org.palladiosimulator.pcm.seff.AbstractInternalControlFlowAction
      * @generated
@@ -280,7 +279,7 @@ public class SeffReliabilityAdapterFactory extends AdapterFactoryImpl {
     /**
      * Creates a new adapter for the default case. <!-- begin-user-doc --> This default
      * implementation returns null. <!-- end-user-doc -->
-     *
+     * 
      * @return the new adapter.
      * @generated
      */

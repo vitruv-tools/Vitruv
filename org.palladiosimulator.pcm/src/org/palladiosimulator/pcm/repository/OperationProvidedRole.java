@@ -28,7 +28,7 @@ public interface OperationProvidedRole extends ProvidedRole {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -52,7 +52,7 @@ public interface OperationProvidedRole extends ProvidedRole {
      * {@link org.palladiosimulator.pcm.repository.OperationProvidedRole#getProvidedInterface__OperationProvidedRole
      * <em>Provided Interface Operation Provided Role</em>}' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Provided Interface Operation Provided Role</em>'
      *            reference.

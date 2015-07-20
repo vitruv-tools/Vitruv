@@ -51,7 +51,7 @@ public abstract class ImplementationComponentTypeImpl extends RepositoryComponen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -59,7 +59,7 @@ public abstract class ImplementationComponentTypeImpl extends RepositoryComponen
     /**
      * The default value of the '{@link #getComponentType() <em>Component Type</em>}' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #getComponentType()
      * @generated
      * @ordered
@@ -68,7 +68,7 @@ public abstract class ImplementationComponentTypeImpl extends RepositoryComponen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected ImplementationComponentTypeImpl() {
@@ -77,7 +77,7 @@ public abstract class ImplementationComponentTypeImpl extends RepositoryComponen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -87,7 +87,7 @@ public abstract class ImplementationComponentTypeImpl extends RepositoryComponen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -100,7 +100,7 @@ public abstract class ImplementationComponentTypeImpl extends RepositoryComponen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -114,7 +114,7 @@ public abstract class ImplementationComponentTypeImpl extends RepositoryComponen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -125,7 +125,7 @@ public abstract class ImplementationComponentTypeImpl extends RepositoryComponen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -183,7 +183,7 @@ public abstract class ImplementationComponentTypeImpl extends RepositoryComponen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -265,7 +265,7 @@ public abstract class ImplementationComponentTypeImpl extends RepositoryComponen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -331,7 +331,7 @@ public abstract class ImplementationComponentTypeImpl extends RepositoryComponen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -392,7 +392,7 @@ public abstract class ImplementationComponentTypeImpl extends RepositoryComponen
      * {@link #ProvideSameOrMoreInterfacesAsCompleteComponentType(org.eclipse.emf.common.util.DiagnosticChain, java.util.Map)
      * <em>Provide Same Or More Interfaces As Complete Component Type</em>}' invariant operation.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #ProvideSameOrMoreInterfacesAsCompleteComponentType(org.eclipse.emf.common.util.DiagnosticChain,
      *      java.util.Map)
      * @generated
@@ -402,7 +402,7 @@ public abstract class ImplementationComponentTypeImpl extends RepositoryComponen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -463,7 +463,7 @@ public abstract class ImplementationComponentTypeImpl extends RepositoryComponen
      * {@link #RequireSameOrFewerInterfacesAsCompleteComponentType(org.eclipse.emf.common.util.DiagnosticChain, java.util.Map)
      * <em>Require Same Or Fewer Interfaces As Complete Component Type</em>}' invariant operation.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #RequireSameOrFewerInterfacesAsCompleteComponentType(org.eclipse.emf.common.util.DiagnosticChain,
      *      java.util.Map)
      * @generated
@@ -473,7 +473,7 @@ public abstract class ImplementationComponentTypeImpl extends RepositoryComponen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -510,7 +510,7 @@ public abstract class ImplementationComponentTypeImpl extends RepositoryComponen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -526,7 +526,7 @@ public abstract class ImplementationComponentTypeImpl extends RepositoryComponen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -544,7 +544,7 @@ public abstract class ImplementationComponentTypeImpl extends RepositoryComponen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -569,7 +569,7 @@ public abstract class ImplementationComponentTypeImpl extends RepositoryComponen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -590,7 +590,7 @@ public abstract class ImplementationComponentTypeImpl extends RepositoryComponen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -609,7 +609,7 @@ public abstract class ImplementationComponentTypeImpl extends RepositoryComponen
     /**
      * The cached environment for evaluating OCL expressions. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */

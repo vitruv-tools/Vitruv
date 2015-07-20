@@ -66,70 +66,70 @@ import de.uka.ipd.sdq.stoex.StoexPackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
- *
+ * 
  * @generated
  */
 public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityPackage {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private EClass failureOccurrenceDescriptionEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private EClass hardwareInducedFailureTypeEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private EClass softwareInducedFailureTypeEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private EClass internalFailureOccurrenceDescriptionEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private EClass networkInducedFailureTypeEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private EClass externalFailureOccurrenceDescriptionEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private EClass resourceTimeoutFailureTypeEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private EClass failureTypeEClass = null;
@@ -142,7 +142,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
      * Note: the correct way to create the package is via the static factory method {@link #init
      * init()}, which also performs initialization of the package, or returns the registered
      * package, if one already exists. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see org.eclipse.emf.ecore.EPackage.Registry
      * @see org.palladiosimulator.pcm.reliability.ReliabilityPackage#eNS_URI
      * @see #init()
@@ -154,7 +154,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private static boolean isInited = false;
@@ -167,7 +167,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
      * This method is used to initialize {@link ReliabilityPackage#eINSTANCE} when that field is
      * accessed. Clients should not invoke it directly. Instead, they should simply access that
      * field to obtain the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #eNS_URI
      * @see #createPackageContents()
      * @see #initializePackageContents()
@@ -307,7 +307,6 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
         // Register package validator
         EValidator.Registry.INSTANCE.put(theReliabilityPackage, new EValidator.Descriptor() {
-
             @Override
             public EValidator getEValidator() {
                 return ReliabilityValidator.INSTANCE;
@@ -324,7 +323,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -334,7 +333,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -344,7 +343,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -354,7 +353,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -364,7 +363,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -374,7 +373,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -384,7 +383,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -394,7 +393,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -404,7 +403,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -414,7 +413,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -424,7 +423,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -434,7 +433,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -444,7 +443,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -454,7 +453,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -464,7 +463,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -474,7 +473,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -484,7 +483,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -494,7 +493,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -504,7 +503,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -514,7 +513,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private boolean isCreated = false;
@@ -522,7 +521,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
     /**
      * Creates the meta-model objects for the package. This method is guarded to have no affect on
      * any invocation but its first. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public void createPackageContents() {
@@ -570,7 +569,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private boolean isInitialized = false;
@@ -578,7 +577,7 @@ public class ReliabilityPackageImpl extends EPackageImpl implements ReliabilityP
     /**
      * Complete the initialization of the package and its meta-model. This method is guarded to have
      * no affect on any invocation but its first. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public void initializePackageContents() {

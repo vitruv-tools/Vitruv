@@ -25,14 +25,14 @@ public class SinkRoleImpl extends ProvidedRoleImpl implements SinkRole {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected SinkRoleImpl() {
@@ -41,7 +41,7 @@ public class SinkRoleImpl extends ProvidedRoleImpl implements SinkRole {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -51,7 +51,7 @@ public class SinkRoleImpl extends ProvidedRoleImpl implements SinkRole {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -62,7 +62,7 @@ public class SinkRoleImpl extends ProvidedRoleImpl implements SinkRole {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public EventGroup basicGetEventGroup__SinkRole() {
@@ -72,7 +72,7 @@ public class SinkRoleImpl extends ProvidedRoleImpl implements SinkRole {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -83,7 +83,7 @@ public class SinkRoleImpl extends ProvidedRoleImpl implements SinkRole {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -100,7 +100,7 @@ public class SinkRoleImpl extends ProvidedRoleImpl implements SinkRole {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -115,7 +115,7 @@ public class SinkRoleImpl extends ProvidedRoleImpl implements SinkRole {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -130,7 +130,7 @@ public class SinkRoleImpl extends ProvidedRoleImpl implements SinkRole {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

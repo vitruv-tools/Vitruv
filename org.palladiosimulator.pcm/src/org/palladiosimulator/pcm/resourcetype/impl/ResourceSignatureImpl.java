@@ -39,7 +39,7 @@ public class ResourceSignatureImpl extends EntityImpl implements ResourceSignatu
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -47,7 +47,7 @@ public class ResourceSignatureImpl extends EntityImpl implements ResourceSignatu
     /**
      * The default value of the '{@link #getResourceServiceId() <em>Resource Service Id</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #getResourceServiceId()
      * @generated
      * @ordered
@@ -56,7 +56,7 @@ public class ResourceSignatureImpl extends EntityImpl implements ResourceSignatu
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected ResourceSignatureImpl() {
@@ -65,7 +65,7 @@ public class ResourceSignatureImpl extends EntityImpl implements ResourceSignatu
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -75,7 +75,7 @@ public class ResourceSignatureImpl extends EntityImpl implements ResourceSignatu
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -87,7 +87,7 @@ public class ResourceSignatureImpl extends EntityImpl implements ResourceSignatu
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -98,7 +98,7 @@ public class ResourceSignatureImpl extends EntityImpl implements ResourceSignatu
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -109,7 +109,7 @@ public class ResourceSignatureImpl extends EntityImpl implements ResourceSignatu
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -121,7 +121,7 @@ public class ResourceSignatureImpl extends EntityImpl implements ResourceSignatu
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NotificationChain basicSetResourceInterface__ResourceSignature(
@@ -133,7 +133,7 @@ public class ResourceSignatureImpl extends EntityImpl implements ResourceSignatu
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -146,7 +146,7 @@ public class ResourceSignatureImpl extends EntityImpl implements ResourceSignatu
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -167,7 +167,7 @@ public class ResourceSignatureImpl extends EntityImpl implements ResourceSignatu
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -184,7 +184,7 @@ public class ResourceSignatureImpl extends EntityImpl implements ResourceSignatu
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -200,7 +200,7 @@ public class ResourceSignatureImpl extends EntityImpl implements ResourceSignatu
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -218,7 +218,7 @@ public class ResourceSignatureImpl extends EntityImpl implements ResourceSignatu
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -241,7 +241,7 @@ public class ResourceSignatureImpl extends EntityImpl implements ResourceSignatu
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -262,7 +262,7 @@ public class ResourceSignatureImpl extends EntityImpl implements ResourceSignatu
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

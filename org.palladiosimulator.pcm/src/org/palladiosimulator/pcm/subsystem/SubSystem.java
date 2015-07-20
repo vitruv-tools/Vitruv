@@ -39,7 +39,7 @@ public interface SubSystem extends ComposedProvidingRequiringEntity, RepositoryC
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";

@@ -41,7 +41,7 @@ public class ClosedWorkloadImpl extends WorkloadImpl implements ClosedWorkload {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -58,7 +58,7 @@ public class ClosedWorkloadImpl extends WorkloadImpl implements ClosedWorkload {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected ClosedWorkloadImpl() {
@@ -67,7 +67,7 @@ public class ClosedWorkloadImpl extends WorkloadImpl implements ClosedWorkload {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -77,7 +77,7 @@ public class ClosedWorkloadImpl extends WorkloadImpl implements ClosedWorkload {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -88,7 +88,7 @@ public class ClosedWorkloadImpl extends WorkloadImpl implements ClosedWorkload {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -99,7 +99,7 @@ public class ClosedWorkloadImpl extends WorkloadImpl implements ClosedWorkload {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -110,7 +110,7 @@ public class ClosedWorkloadImpl extends WorkloadImpl implements ClosedWorkload {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NotificationChain basicSetThinkTime_ClosedWorkload(final PCMRandomVariable newThinkTime_ClosedWorkload,
@@ -122,7 +122,7 @@ public class ClosedWorkloadImpl extends WorkloadImpl implements ClosedWorkload {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -136,7 +136,7 @@ public class ClosedWorkloadImpl extends WorkloadImpl implements ClosedWorkload {
      * {@link #PopulationInClosedWorkloadNeedsToBeSpecified(org.eclipse.emf.common.util.DiagnosticChain, java.util.Map)
      * <em>Population In Closed Workload Needs To Be Specified</em>}' operation. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
+     * 
      * @see #PopulationInClosedWorkloadNeedsToBeSpecified(org.eclipse.emf.common.util.DiagnosticChain,
      *      java.util.Map)
      * @generated
@@ -159,7 +159,7 @@ public class ClosedWorkloadImpl extends WorkloadImpl implements ClosedWorkload {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -197,7 +197,7 @@ public class ClosedWorkloadImpl extends WorkloadImpl implements ClosedWorkload {
      * {@link #ThinkTimeInClosedWorkloadNeedsToBeSpecified(org.eclipse.emf.common.util.DiagnosticChain, java.util.Map)
      * <em>Think Time In Closed Workload Needs To Be Specified</em>}' operation. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
+     * 
      * @see #ThinkTimeInClosedWorkloadNeedsToBeSpecified(org.eclipse.emf.common.util.DiagnosticChain,
      *      java.util.Map)
      * @generated
@@ -220,7 +220,7 @@ public class ClosedWorkloadImpl extends WorkloadImpl implements ClosedWorkload {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -255,7 +255,7 @@ public class ClosedWorkloadImpl extends WorkloadImpl implements ClosedWorkload {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -275,7 +275,7 @@ public class ClosedWorkloadImpl extends WorkloadImpl implements ClosedWorkload {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -290,7 +290,7 @@ public class ClosedWorkloadImpl extends WorkloadImpl implements ClosedWorkload {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -306,7 +306,7 @@ public class ClosedWorkloadImpl extends WorkloadImpl implements ClosedWorkload {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -324,7 +324,7 @@ public class ClosedWorkloadImpl extends WorkloadImpl implements ClosedWorkload {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -342,7 +342,7 @@ public class ClosedWorkloadImpl extends WorkloadImpl implements ClosedWorkload {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -359,7 +359,7 @@ public class ClosedWorkloadImpl extends WorkloadImpl implements ClosedWorkload {
     /**
      * The cached environment for evaluating OCL expressions. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */

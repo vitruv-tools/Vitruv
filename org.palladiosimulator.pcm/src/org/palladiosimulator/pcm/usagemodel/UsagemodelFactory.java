@@ -8,7 +8,7 @@ import org.eclipse.emf.ecore.EFactory;
 /**
  * <!-- begin-user-doc --> The <b>Factory</b> for the model. It provides a create method for each
  * non-abstract class of the model. <!-- end-user-doc -->
- *
+ * 
  * @see org.palladiosimulator.pcm.usagemodel.UsagemodelPackage
  * @generated
  */
@@ -16,14 +16,14 @@ public interface UsagemodelFactory extends EFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * The singleton instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     UsagemodelFactory eINSTANCE = org.palladiosimulator.pcm.usagemodel.impl.UsagemodelFactoryImpl.init();
@@ -31,7 +31,7 @@ public interface UsagemodelFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Usage Scenario</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @return a new object of class '<em>Usage Scenario</em>'.
      * @generated
      */
@@ -49,7 +49,7 @@ public interface UsagemodelFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Usage Model</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @return a new object of class '<em>Usage Model</em>'.
      * @generated
      */
@@ -58,7 +58,7 @@ public interface UsagemodelFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Entry Level System Call</em>'. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
+     * 
      * @return a new object of class '<em>Entry Level System Call</em>'.
      * @generated
      */
@@ -67,7 +67,7 @@ public interface UsagemodelFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Scenario Behaviour</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @return a new object of class '<em>Scenario Behaviour</em>'.
      * @generated
      */
@@ -76,7 +76,7 @@ public interface UsagemodelFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Branch Transition</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @return a new object of class '<em>Branch Transition</em>'.
      * @generated
      */
@@ -93,7 +93,7 @@ public interface UsagemodelFactory extends EFactory {
 
     /**
      * Returns a new object of class '<em>Loop</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @return a new object of class '<em>Loop</em>'.
      * @generated
      */
@@ -101,7 +101,7 @@ public interface UsagemodelFactory extends EFactory {
 
     /**
      * Returns a new object of class '<em>Stop</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @return a new object of class '<em>Stop</em>'.
      * @generated
      */
@@ -109,7 +109,7 @@ public interface UsagemodelFactory extends EFactory {
 
     /**
      * Returns a new object of class '<em>Start</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @return a new object of class '<em>Start</em>'.
      * @generated
      */
@@ -118,7 +118,7 @@ public interface UsagemodelFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Open Workload</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @return a new object of class '<em>Open Workload</em>'.
      * @generated
      */
@@ -126,7 +126,7 @@ public interface UsagemodelFactory extends EFactory {
 
     /**
      * Returns a new object of class '<em>Delay</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @return a new object of class '<em>Delay</em>'.
      * @generated
      */
@@ -135,7 +135,7 @@ public interface UsagemodelFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Closed Workload</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @return a new object of class '<em>Closed Workload</em>'.
      * @generated
      */
@@ -143,7 +143,7 @@ public interface UsagemodelFactory extends EFactory {
 
     /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @return the package supported by this factory.
      * @generated
      */

@@ -77,7 +77,7 @@ public interface GuardedBranchTransition extends AbstractBranchTransition {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -92,7 +92,7 @@ public interface GuardedBranchTransition extends AbstractBranchTransition {
      * reference isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Branch Condition Guarded Branch Transition</em>' containment
      *         reference.
      * @see #setBranchCondition_GuardedBranchTransition(PCMRandomVariable)

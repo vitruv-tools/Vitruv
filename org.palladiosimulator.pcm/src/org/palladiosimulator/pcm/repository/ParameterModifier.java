@@ -21,7 +21,7 @@ import org.eclipse.emf.common.util.Enumerator;
 public enum ParameterModifier implements Enumerator {
     /**
      * The '<em><b>None</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #NONE_VALUE
      * @generated
      * @ordered
@@ -30,7 +30,7 @@ public enum ParameterModifier implements Enumerator {
 
     /**
      * The '<em><b>In</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #IN_VALUE
      * @generated
      * @ordered
@@ -39,7 +39,7 @@ public enum ParameterModifier implements Enumerator {
 
     /**
      * The '<em><b>Out</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #OUT_VALUE
      * @generated
      * @ordered
@@ -48,7 +48,7 @@ public enum ParameterModifier implements Enumerator {
 
     /**
      * The '<em><b>Inout</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #INOUT_VALUE
      * @generated
      * @ordered
@@ -57,7 +57,7 @@ public enum ParameterModifier implements Enumerator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -110,7 +110,7 @@ public enum ParameterModifier implements Enumerator {
     /**
      * An array of all the '<em><b>Parameter Modifier</b></em>' enumerators. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private static final ParameterModifier[] VALUES_ARRAY = new ParameterModifier[] { NONE, IN, OUT, INOUT, };
@@ -126,7 +126,7 @@ public enum ParameterModifier implements Enumerator {
     /**
      * Returns the '<em><b>Parameter Modifier</b></em>' literal with the specified literal value.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param literal
      *            the literal.
      * @return the matching enumerator or <code>null</code>.
@@ -162,7 +162,7 @@ public enum ParameterModifier implements Enumerator {
     /**
      * Returns the '<em><b>Parameter Modifier</b></em>' literal with the specified integer value.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the integer value.
      * @return the matching enumerator or <code>null</code>.
@@ -184,28 +184,28 @@ public enum ParameterModifier implements Enumerator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private final int value;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private final String name;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private final String literal;
 
     /**
      * Only this class can construct instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private ParameterModifier(final int value, final String name, final String literal) {
@@ -216,7 +216,7 @@ public enum ParameterModifier implements Enumerator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -226,7 +226,7 @@ public enum ParameterModifier implements Enumerator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -236,7 +236,7 @@ public enum ParameterModifier implements Enumerator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

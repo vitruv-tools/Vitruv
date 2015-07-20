@@ -35,7 +35,7 @@ public interface PassiveResource extends Entity {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -63,7 +63,7 @@ public interface PassiveResource extends Entity {
      * {@link org.palladiosimulator.pcm.repository.PassiveResource#getCapacity_PassiveResource
      * <em>Capacity Passive Resource</em>}' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Capacity Passive Resource</em>' containment reference.
      * @see #getCapacity_PassiveResource()
@@ -81,7 +81,7 @@ public interface PassiveResource extends Entity {
      * clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Basic Component Passive Resource</em>' container reference.
      * @see #setBasicComponent_PassiveResource(BasicComponent)
      * @see org.palladiosimulator.pcm.repository.RepositoryPackage#getPassiveResource_BasicComponent_PassiveResource()
@@ -97,7 +97,7 @@ public interface PassiveResource extends Entity {
      * {@link org.palladiosimulator.pcm.repository.PassiveResource#getBasicComponent_PassiveResource
      * <em>Basic Component Passive Resource</em>}' container reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Basic Component Passive Resource</em>' container
      *            reference.
@@ -130,7 +130,7 @@ public interface PassiveResource extends Entity {
      * {@link org.palladiosimulator.pcm.repository.PassiveResource#getResourceTimeoutFailureType__PassiveResource
      * <em>Resource Timeout Failure Type Passive Resource</em>}' reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Resource Timeout Failure Type Passive Resource</em>'
      *            reference.

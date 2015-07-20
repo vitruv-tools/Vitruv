@@ -28,7 +28,7 @@ import org.palladiosimulator.pcm.usagemodel.Workload;
 
 /**
  * <!-- begin-user-doc --> The <b>Validator</b> for the model. <!-- end-user-doc -->
- *
+ * 
  * @see org.palladiosimulator.pcm.usagemodel.UsagemodelPackage
  * @generated
  */
@@ -36,14 +36,14 @@ public class UsagemodelValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * The cached model package <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final UsagemodelValidator INSTANCE = new UsagemodelValidator();
@@ -52,7 +52,7 @@ public class UsagemodelValidator extends EObjectValidator {
      * A constant for the {@link org.eclipse.emf.common.util.Diagnostic#getSource() source} of
      * diagnostic {@link org.eclipse.emf.common.util.Diagnostic#getCode() codes} from this package.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see org.eclipse.emf.common.util.Diagnostic#getSource()
      * @see org.eclipse.emf.common.util.Diagnostic#getCode()
      * @generated
@@ -80,7 +80,7 @@ public class UsagemodelValidator extends EObjectValidator {
     /**
      * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint
      * 'Exactlyonestart' of 'Scenario Behaviour'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final int SCENARIO_BEHAVIOUR__EXACTLYONESTART = 3;
@@ -88,7 +88,7 @@ public class UsagemodelValidator extends EObjectValidator {
     /**
      * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint
      * 'Exactlyonestop' of 'Scenario Behaviour'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final int SCENARIO_BEHAVIOUR__EXACTLYONESTOP = 4;
@@ -97,7 +97,7 @@ public class UsagemodelValidator extends EObjectValidator {
      * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint
      * 'Eachuseractionexcept Startand Stopmusthaveapredecessorandsuccessor' of 'Scenario Behaviour'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final int SCENARIO_BEHAVIOUR__EACHUSERACTIONEXCEPT_STARTAND_STOPMUSTHAVEAPREDECESSORANDSUCCESSOR = 5;
@@ -105,7 +105,7 @@ public class UsagemodelValidator extends EObjectValidator {
     /**
      * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint 'All Branch
      * Probabilities Must Sum Up To1' of 'Branch'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final int BRANCH__ALL_BRANCH_PROBABILITIES_MUST_SUM_UP_TO1 = 6;
@@ -113,7 +113,7 @@ public class UsagemodelValidator extends EObjectValidator {
     /**
      * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint 'Stop Has No
      * Successor' of 'Stop'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final int STOP__STOP_HAS_NO_SUCCESSOR = 7;
@@ -121,7 +121,7 @@ public class UsagemodelValidator extends EObjectValidator {
     /**
      * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint 'Start Has
      * No Predecessor' of 'Start'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final int START__START_HAS_NO_PREDECESSOR = 8;
@@ -130,7 +130,7 @@ public class UsagemodelValidator extends EObjectValidator {
      * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint 'Inter
      * Arrival Time In Open Workload Needs To Be Specified' of 'Open Workload'. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final int OPEN_WORKLOAD__INTER_ARRIVAL_TIME_IN_OPEN_WORKLOAD_NEEDS_TO_BE_SPECIFIED = 9;
@@ -139,7 +139,7 @@ public class UsagemodelValidator extends EObjectValidator {
      * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint 'Population
      * In Closed Workload Needs To Be Specified' of 'Closed Workload'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final int CLOSED_WORKLOAD__POPULATION_IN_CLOSED_WORKLOAD_NEEDS_TO_BE_SPECIFIED = 10;
@@ -148,7 +148,7 @@ public class UsagemodelValidator extends EObjectValidator {
      * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint 'Think Time
      * In Closed Workload Needs To Be Specified' of 'Closed Workload'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final int CLOSED_WORKLOAD__THINK_TIME_IN_CLOSED_WORKLOAD_NEEDS_TO_BE_SPECIFIED = 11;
@@ -156,7 +156,7 @@ public class UsagemodelValidator extends EObjectValidator {
     /**
      * A constant with a fixed name that can be used as the base value for additional hand written
      * constants. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private static final int GENERATED_DIAGNOSTIC_CODE_COUNT = 11;
@@ -164,14 +164,14 @@ public class UsagemodelValidator extends EObjectValidator {
     /**
      * A constant with a fixed name that can be used as the base value for additional hand written
      * constants in a derived class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected static final int DIAGNOSTIC_CODE_COUNT = GENERATED_DIAGNOSTIC_CODE_COUNT;
 
     /**
      * Creates an instance of the switch. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public UsagemodelValidator() {
@@ -180,7 +180,7 @@ public class UsagemodelValidator extends EObjectValidator {
 
     /**
      * Returns the package of this validator switch. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -235,7 +235,7 @@ public class UsagemodelValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateWorkload(final Workload workload, final DiagnosticChain diagnostics,
@@ -245,7 +245,7 @@ public class UsagemodelValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateUsageScenario(final UsageScenario usageScenario, final DiagnosticChain diagnostics,
@@ -255,7 +255,7 @@ public class UsagemodelValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateUserData(final UserData userData, final DiagnosticChain diagnostics,
@@ -265,7 +265,7 @@ public class UsagemodelValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateUsageModel(final UsageModel usageModel, final DiagnosticChain diagnostics,
@@ -275,7 +275,7 @@ public class UsagemodelValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateEntryLevelSystemCall(final EntryLevelSystemCall entryLevelSystemCall,
@@ -316,7 +316,7 @@ public class UsagemodelValidator extends EObjectValidator {
     /**
      * Validates the EntryLevelSystemCallMustReferenceProvidedRoleOfASystem constraint of '
      * <em>Entry Level System Call</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateEntryLevelSystemCall_EntryLevelSystemCallMustReferenceProvidedRoleOfASystem(
@@ -328,7 +328,7 @@ public class UsagemodelValidator extends EObjectValidator {
     /**
      * Validates the EntryLevelSystemCallSignatureMustMatchItsProvidedRole constraint of '
      * <em>Entry Level System Call</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateEntryLevelSystemCall_EntryLevelSystemCallSignatureMustMatchItsProvidedRole(
@@ -339,7 +339,7 @@ public class UsagemodelValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateAbstractUserAction(final AbstractUserAction abstractUserAction,
@@ -349,7 +349,7 @@ public class UsagemodelValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateScenarioBehaviour(final ScenarioBehaviour scenarioBehaviour,
@@ -403,7 +403,7 @@ public class UsagemodelValidator extends EObjectValidator {
     /**
      * Validates the Exactlyonestop constraint of '<em>Scenario Behaviour</em>'. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateScenarioBehaviour_Exactlyonestop(final ScenarioBehaviour scenarioBehaviour,
@@ -414,7 +414,7 @@ public class UsagemodelValidator extends EObjectValidator {
     /**
      * Validates the EachuseractionexceptStartandStopmusthaveapredecessorandsuccessor constraint of
      * '<em>Scenario Behaviour</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateScenarioBehaviour_EachuseractionexceptStartandStopmusthaveapredecessorandsuccessor(
@@ -425,7 +425,7 @@ public class UsagemodelValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateBranchTransition(final BranchTransition branchTransition, final DiagnosticChain diagnostics,
@@ -435,7 +435,7 @@ public class UsagemodelValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateBranch(final Branch branch, final DiagnosticChain diagnostics,
@@ -481,7 +481,7 @@ public class UsagemodelValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateLoop(final Loop loop, final DiagnosticChain diagnostics, final Map<Object, Object> context) {
@@ -490,7 +490,7 @@ public class UsagemodelValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateStop(final Stop stop, final DiagnosticChain diagnostics, final Map<Object, Object> context) {
@@ -525,7 +525,7 @@ public class UsagemodelValidator extends EObjectValidator {
     /**
      * Validates the StopHasNoSuccessor constraint of '<em>Stop</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateStop_StopHasNoSuccessor(final Stop stop, final DiagnosticChain diagnostics,
@@ -535,7 +535,7 @@ public class UsagemodelValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateStart(final Start start, final DiagnosticChain diagnostics,
@@ -571,7 +571,7 @@ public class UsagemodelValidator extends EObjectValidator {
     /**
      * Validates the StartHasNoPredecessor constraint of '<em>Start</em>'. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateStart_StartHasNoPredecessor(final Start start, final DiagnosticChain diagnostics,
@@ -581,7 +581,7 @@ public class UsagemodelValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateOpenWorkload(final OpenWorkload openWorkload, final DiagnosticChain diagnostics,
@@ -618,7 +618,7 @@ public class UsagemodelValidator extends EObjectValidator {
     /**
      * Validates the InterArrivalTimeInOpenWorkloadNeedsToBeSpecified constraint of '
      * <em>Open Workload</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateOpenWorkload_InterArrivalTimeInOpenWorkloadNeedsToBeSpecified(
@@ -628,7 +628,7 @@ public class UsagemodelValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateDelay(final Delay delay, final DiagnosticChain diagnostics,
@@ -638,7 +638,7 @@ public class UsagemodelValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateClosedWorkload(final ClosedWorkload closedWorkload, final DiagnosticChain diagnostics,
@@ -679,7 +679,7 @@ public class UsagemodelValidator extends EObjectValidator {
     /**
      * Validates the PopulationInClosedWorkloadNeedsToBeSpecified constraint of '
      * <em>Closed Workload</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateClosedWorkload_PopulationInClosedWorkloadNeedsToBeSpecified(
@@ -690,7 +690,7 @@ public class UsagemodelValidator extends EObjectValidator {
     /**
      * Validates the ThinkTimeInClosedWorkloadNeedsToBeSpecified constraint of '
      * <em>Closed Workload</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateClosedWorkload_ThinkTimeInClosedWorkloadNeedsToBeSpecified(
@@ -701,7 +701,7 @@ public class UsagemodelValidator extends EObjectValidator {
     /**
      * Returns the resource locator that will be used to fetch messages for this validator's
      * diagnostics. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

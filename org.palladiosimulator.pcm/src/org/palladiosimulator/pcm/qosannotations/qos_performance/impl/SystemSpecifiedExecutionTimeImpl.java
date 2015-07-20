@@ -29,14 +29,14 @@ public class SystemSpecifiedExecutionTimeImpl extends SpecifiedExecutionTimeImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected SystemSpecifiedExecutionTimeImpl() {
@@ -45,7 +45,7 @@ public class SystemSpecifiedExecutionTimeImpl extends SpecifiedExecutionTimeImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -58,7 +58,7 @@ public class SystemSpecifiedExecutionTimeImpl extends SpecifiedExecutionTimeImpl
      * {@link #SystemSpecifiedExecutionTimeMustReferenceRequiredRoleOfASystem(org.eclipse.emf.common.util.DiagnosticChain, java.util.Map)
      * <em>System Specified Execution Time Must Reference Required Role Of ASystem</em>}' operation.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #SystemSpecifiedExecutionTimeMustReferenceRequiredRoleOfASystem(org.eclipse.emf.common.util.DiagnosticChain,
      *      java.util.Map)
      * @generated
@@ -71,7 +71,7 @@ public class SystemSpecifiedExecutionTimeImpl extends SpecifiedExecutionTimeImpl
      * {@link #SystemSpecifiedExecutionTimeMustReferenceRequiredRoleOfASystem(org.eclipse.emf.common.util.DiagnosticChain, java.util.Map)
      * <em>System Specified Execution Time Must Reference Required Role Of ASystem</em>}' invariant
      * operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #SystemSpecifiedExecutionTimeMustReferenceRequiredRoleOfASystem(org.eclipse.emf.common.util.DiagnosticChain,
      *      java.util.Map)
      * @generated
@@ -81,7 +81,7 @@ public class SystemSpecifiedExecutionTimeImpl extends SpecifiedExecutionTimeImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -119,7 +119,7 @@ public class SystemSpecifiedExecutionTimeImpl extends SpecifiedExecutionTimeImpl
     /**
      * The cached environment for evaluating OCL expressions. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */

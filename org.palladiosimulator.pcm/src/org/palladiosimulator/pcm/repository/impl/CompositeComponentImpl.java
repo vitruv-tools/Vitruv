@@ -56,7 +56,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -64,7 +64,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
     /**
      * The default value of the '{@link #getComponentType() <em>Component Type</em>}' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #getComponentType()
      * @generated
      * @ordered
@@ -73,7 +73,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected CompositeComponentImpl() {
@@ -82,7 +82,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -92,7 +92,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -103,7 +103,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NotificationChain basicSetRepository__RepositoryComponent(
@@ -115,7 +115,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -127,7 +127,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -140,7 +140,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -154,7 +154,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -165,7 +165,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -223,7 +223,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -305,7 +305,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -371,7 +371,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -432,7 +432,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
      * {@link #ProvideSameOrMoreInterfacesAsCompleteComponentType(org.eclipse.emf.common.util.DiagnosticChain, java.util.Map)
      * <em>Provide Same Or More Interfaces As Complete Component Type</em>}' invariant operation.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #ProvideSameOrMoreInterfacesAsCompleteComponentType(org.eclipse.emf.common.util.DiagnosticChain,
      *      java.util.Map)
      * @generated
@@ -442,7 +442,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -503,7 +503,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
      * {@link #RequireSameOrFewerInterfacesAsCompleteComponentType(org.eclipse.emf.common.util.DiagnosticChain, java.util.Map)
      * <em>Require Same Or Fewer Interfaces As Complete Component Type</em>}' invariant operation.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #RequireSameOrFewerInterfacesAsCompleteComponentType(org.eclipse.emf.common.util.DiagnosticChain,
      *      java.util.Map)
      * @generated
@@ -513,7 +513,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -550,7 +550,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -567,7 +567,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -585,7 +585,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -600,7 +600,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -620,7 +620,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -648,7 +648,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -672,7 +672,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -692,7 +692,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -722,7 +722,7 @@ public class CompositeComponentImpl extends ComposedProvidingRequiringEntityImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

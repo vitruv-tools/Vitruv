@@ -36,7 +36,7 @@ public interface SourceDelegationConnector extends DelegationConnector {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -109,7 +109,7 @@ public interface SourceDelegationConnector extends DelegationConnector {
      * clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Assembly Context Source Delegation Connector</em>' reference.
      * @see #setAssemblyContext__SourceDelegationConnector(AssemblyContext)
      * @see org.palladiosimulator.pcm.core.composition.CompositionPackage#getSourceDelegationConnector_AssemblyContext__SourceDelegationConnector()
@@ -123,7 +123,7 @@ public interface SourceDelegationConnector extends DelegationConnector {
      * {@link org.palladiosimulator.pcm.core.composition.SourceDelegationConnector#getAssemblyContext__SourceDelegationConnector
      * <em>Assembly Context Source Delegation Connector</em>}' reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Assembly Context Source Delegation Connector</em>'
      *            reference.

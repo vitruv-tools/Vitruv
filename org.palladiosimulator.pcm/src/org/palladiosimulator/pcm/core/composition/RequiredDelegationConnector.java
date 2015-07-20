@@ -38,7 +38,7 @@ public interface RequiredDelegationConnector extends DelegationConnector {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -51,7 +51,7 @@ public interface RequiredDelegationConnector extends DelegationConnector {
      * isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Inner Required Role Required Delegation Connector</em>'
      *         reference.
      * @see #setInnerRequiredRole_RequiredDelegationConnector(OperationRequiredRole)
@@ -66,7 +66,7 @@ public interface RequiredDelegationConnector extends DelegationConnector {
      * {@link org.palladiosimulator.pcm.core.composition.RequiredDelegationConnector#getInnerRequiredRole_RequiredDelegationConnector
      * <em>Inner Required Role Required Delegation Connector</em>}' reference. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Inner Required Role Required Delegation Connector</em>'
      *            reference.
@@ -83,7 +83,7 @@ public interface RequiredDelegationConnector extends DelegationConnector {
      * isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Outer Required Role Required Delegation Connector</em>'
      *         reference.
      * @see #setOuterRequiredRole_RequiredDelegationConnector(OperationRequiredRole)
@@ -98,7 +98,7 @@ public interface RequiredDelegationConnector extends DelegationConnector {
      * {@link org.palladiosimulator.pcm.core.composition.RequiredDelegationConnector#getOuterRequiredRole_RequiredDelegationConnector
      * <em>Outer Required Role Required Delegation Connector</em>}' reference. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Outer Required Role Required Delegation Connector</em>'
      *            reference.
@@ -115,7 +115,7 @@ public interface RequiredDelegationConnector extends DelegationConnector {
      * isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Assembly Context Required Delegation Connector</em>' reference.
      * @see #setAssemblyContext_RequiredDelegationConnector(AssemblyContext)
      * @see org.palladiosimulator.pcm.core.composition.CompositionPackage#getRequiredDelegationConnector_AssemblyContext_RequiredDelegationConnector()
@@ -129,7 +129,7 @@ public interface RequiredDelegationConnector extends DelegationConnector {
      * {@link org.palladiosimulator.pcm.core.composition.RequiredDelegationConnector#getAssemblyContext_RequiredDelegationConnector
      * <em>Assembly Context Required Delegation Connector</em>}' reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Assembly Context Required Delegation Connector</em>'
      *            reference.

@@ -25,7 +25,7 @@ public abstract class NamedElementImpl extends CDOObjectImpl implements NamedEle
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -42,7 +42,7 @@ public abstract class NamedElementImpl extends CDOObjectImpl implements NamedEle
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected NamedElementImpl() {
@@ -51,7 +51,7 @@ public abstract class NamedElementImpl extends CDOObjectImpl implements NamedEle
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -61,7 +61,7 @@ public abstract class NamedElementImpl extends CDOObjectImpl implements NamedEle
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -71,7 +71,7 @@ public abstract class NamedElementImpl extends CDOObjectImpl implements NamedEle
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -82,7 +82,7 @@ public abstract class NamedElementImpl extends CDOObjectImpl implements NamedEle
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -93,7 +93,7 @@ public abstract class NamedElementImpl extends CDOObjectImpl implements NamedEle
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -107,7 +107,7 @@ public abstract class NamedElementImpl extends CDOObjectImpl implements NamedEle
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -122,7 +122,7 @@ public abstract class NamedElementImpl extends CDOObjectImpl implements NamedEle
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -137,7 +137,7 @@ public abstract class NamedElementImpl extends CDOObjectImpl implements NamedEle
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

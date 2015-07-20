@@ -15,21 +15,21 @@ import org.palladiosimulator.pcm.qosannotations.qos_performance.SystemSpecifiedE
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
- *
+ * 
  * @generated
  */
 public class QosPerformanceFactoryImpl extends EFactoryImpl implements QosPerformanceFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static QosPerformanceFactory init() {
@@ -47,7 +47,7 @@ public class QosPerformanceFactoryImpl extends EFactoryImpl implements QosPerfor
 
     /**
      * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public QosPerformanceFactoryImpl() {
@@ -56,7 +56,7 @@ public class QosPerformanceFactoryImpl extends EFactoryImpl implements QosPerfor
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -73,7 +73,7 @@ public class QosPerformanceFactoryImpl extends EFactoryImpl implements QosPerfor
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -84,7 +84,7 @@ public class QosPerformanceFactoryImpl extends EFactoryImpl implements QosPerfor
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -95,7 +95,7 @@ public class QosPerformanceFactoryImpl extends EFactoryImpl implements QosPerfor
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -105,7 +105,7 @@ public class QosPerformanceFactoryImpl extends EFactoryImpl implements QosPerfor
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @deprecated
      * @generated
      */

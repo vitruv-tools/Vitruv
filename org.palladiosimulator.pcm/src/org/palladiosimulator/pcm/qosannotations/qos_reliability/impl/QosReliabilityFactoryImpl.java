@@ -14,21 +14,21 @@ import org.palladiosimulator.pcm.qosannotations.qos_reliability.SpecifiedReliabi
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
- *
+ * 
  * @generated
  */
 public class QosReliabilityFactoryImpl extends EFactoryImpl implements QosReliabilityFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static QosReliabilityFactory init() {
@@ -46,7 +46,7 @@ public class QosReliabilityFactoryImpl extends EFactoryImpl implements QosReliab
 
     /**
      * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public QosReliabilityFactoryImpl() {
@@ -55,7 +55,7 @@ public class QosReliabilityFactoryImpl extends EFactoryImpl implements QosReliab
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -70,7 +70,7 @@ public class QosReliabilityFactoryImpl extends EFactoryImpl implements QosReliab
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -81,7 +81,7 @@ public class QosReliabilityFactoryImpl extends EFactoryImpl implements QosReliab
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -91,7 +91,7 @@ public class QosReliabilityFactoryImpl extends EFactoryImpl implements QosReliab
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @deprecated
      * @generated
      */

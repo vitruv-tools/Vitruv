@@ -31,7 +31,7 @@ import org.palladiosimulator.pcm.core.composition.SourceDelegationConnector;
 
 /**
  * <!-- begin-user-doc --> The <b>Validator</b> for the model. <!-- end-user-doc -->
- *
+ * 
  * @see org.palladiosimulator.pcm.core.composition.CompositionPackage
  * @generated
  */
@@ -39,14 +39,14 @@ public class CompositionValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * The cached model package <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final CompositionValidator INSTANCE = new CompositionValidator();
@@ -55,7 +55,7 @@ public class CompositionValidator extends EObjectValidator {
      * A constant for the {@link org.eclipse.emf.common.util.Diagnostic#getSource() source} of
      * diagnostic {@link org.eclipse.emf.common.util.Diagnostic#getCode() codes} from this package.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see org.eclipse.emf.common.util.Diagnostic#getSource()
      * @see org.eclipse.emf.common.util.Diagnostic#getCode()
      * @generated
@@ -65,7 +65,7 @@ public class CompositionValidator extends EObjectValidator {
     /**
      * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint 'Multiple
      * Connectors Constraint' of 'Composed Structure'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final int COMPOSED_STRUCTURE__MULTIPLE_CONNECTORS_CONSTRAINT = 1;
@@ -74,7 +74,7 @@ public class CompositionValidator extends EObjectValidator {
      * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint 'Multiple
      * Connectors Constraint For Assembly Connectors' of 'Composed Structure'. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final int COMPOSED_STRUCTURE__MULTIPLE_CONNECTORS_CONSTRAINT_FOR_ASSEMBLY_CONNECTORS = 2;
@@ -83,7 +83,7 @@ public class CompositionValidator extends EObjectValidator {
      * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint 'Provided
      * Delegation Connectorandtheconnected Componentmustbepartofthesamecompositestructure' of
      * 'Provided Delegation Connector'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final int PROVIDED_DELEGATION_CONNECTOR__PROVIDED_DELEGATION_CONNECTORANDTHECONNECTED_COMPONENTMUSTBEPARTOFTHESAMECOMPOSITESTRUCTURE = 3;
@@ -92,7 +92,7 @@ public class CompositionValidator extends EObjectValidator {
      * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint 'Component
      * Of Assembly Context And Inner Role Providing Component Need To Be The Same' of 'Provided
      * Delegation Connector'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final int PROVIDED_DELEGATION_CONNECTOR__COMPONENT_OF_ASSEMBLY_CONTEXT_AND_INNER_ROLE_PROVIDING_COMPONENT_NEED_TO_BE_THE_SAME = 4;
@@ -101,7 +101,7 @@ public class CompositionValidator extends EObjectValidator {
      * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint 'Required
      * Delegation Connectorandtheconnected Componentmustbepartofthesamecompositestructure' of
      * 'Required Delegation Connector'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final int REQUIRED_DELEGATION_CONNECTOR__REQUIRED_DELEGATION_CONNECTORANDTHECONNECTED_COMPONENTMUSTBEPARTOFTHESAMECOMPOSITESTRUCTURE = 5;
@@ -110,7 +110,7 @@ public class CompositionValidator extends EObjectValidator {
      * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint 'Component
      * Of Assembly Context And Inner Role Requiring Component Need To Be The Same' of 'Required
      * Delegation Connector'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final int REQUIRED_DELEGATION_CONNECTOR__COMPONENT_OF_ASSEMBLY_CONTEXT_AND_INNER_ROLE_REQUIRING_COMPONENT_NEED_TO_BE_THE_SAME = 6;
@@ -119,7 +119,7 @@ public class CompositionValidator extends EObjectValidator {
      * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint 'Requiring
      * Entity Of Outer Required Role Must Be The Same As The Parent Of The Required Delegation
      * Connector' of 'Required Delegation Connector'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final int REQUIRED_DELEGATION_CONNECTOR__REQUIRING_ENTITY_OF_OUTER_REQUIRED_ROLE_MUST_BE_THE_SAME_AS_THE_PARENT_OF_THE_REQUIRED_DELEGATION_CONNECTOR = 7;
@@ -128,7 +128,7 @@ public class CompositionValidator extends EObjectValidator {
      * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint 'Assembly
      * Connectors Referenced Provided Roles And Child Context Must Match' of 'Assembly Connector'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final int ASSEMBLY_CONNECTOR__ASSEMBLY_CONNECTORS_REFERENCED_PROVIDED_ROLES_AND_CHILD_CONTEXT_MUST_MATCH = 8;
@@ -137,7 +137,7 @@ public class CompositionValidator extends EObjectValidator {
      * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint 'Assembly
      * Connectors Referenced Required Role And Child Context Must Match' of 'Assembly Connector'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final int ASSEMBLY_CONNECTOR__ASSEMBLY_CONNECTORS_REFERENCED_REQUIRED_ROLE_AND_CHILD_CONTEXT_MUST_MATCH = 9;
@@ -146,7 +146,7 @@ public class CompositionValidator extends EObjectValidator {
      * The {@link org.eclipse.emf.common.util.Diagnostic#getCode() code} for constraint 'Assembly
      * Connectors Referenced Interfaces Must Match' of 'Assembly Connector'. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final int ASSEMBLY_CONNECTOR__ASSEMBLY_CONNECTORS_REFERENCED_INTERFACES_MUST_MATCH = 10;
@@ -154,7 +154,7 @@ public class CompositionValidator extends EObjectValidator {
     /**
      * A constant with a fixed name that can be used as the base value for additional hand written
      * constants. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     private static final int GENERATED_DIAGNOSTIC_CODE_COUNT = 10;
@@ -162,14 +162,14 @@ public class CompositionValidator extends EObjectValidator {
     /**
      * A constant with a fixed name that can be used as the base value for additional hand written
      * constants in a derived class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected static final int DIAGNOSTIC_CODE_COUNT = GENERATED_DIAGNOSTIC_CODE_COUNT;
 
     /**
      * Creates an instance of the switch. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public CompositionValidator() {
@@ -178,7 +178,7 @@ public class CompositionValidator extends EObjectValidator {
 
     /**
      * Returns the package of this validator switch. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -244,7 +244,7 @@ public class CompositionValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateDelegationConnector(final DelegationConnector delegationConnector,
@@ -254,7 +254,7 @@ public class CompositionValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateConnector(final Connector connector, final DiagnosticChain diagnostics,
@@ -264,7 +264,7 @@ public class CompositionValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateComposedStructure(final ComposedStructure composedStructure,
@@ -316,7 +316,7 @@ public class CompositionValidator extends EObjectValidator {
     /**
      * Validates the MultipleConnectorsConstraintForAssemblyConnectors constraint of '
      * <em>Composed Structure</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateComposedStructure_MultipleConnectorsConstraintForAssemblyConnectors(
@@ -327,7 +327,7 @@ public class CompositionValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateResourceRequiredDelegationConnector(
@@ -338,7 +338,7 @@ public class CompositionValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateEventChannel(final EventChannel eventChannel, final DiagnosticChain diagnostics,
@@ -348,7 +348,7 @@ public class CompositionValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateEventChannelSourceConnector(final EventChannelSourceConnector eventChannelSourceConnector,
@@ -358,7 +358,7 @@ public class CompositionValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateEventChannelSinkConnector(final EventChannelSinkConnector eventChannelSinkConnector,
@@ -368,7 +368,7 @@ public class CompositionValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateProvidedDelegationConnector(final ProvidedDelegationConnector providedDelegationConnector,
@@ -413,7 +413,7 @@ public class CompositionValidator extends EObjectValidator {
      * ProvidedDelegationConnectorandtheconnectedComponentmustbepartofthesamecompositestructure
      * constraint of '<em>Provided Delegation Connector</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateProvidedDelegationConnector_ProvidedDelegationConnectorandtheconnectedComponentmustbepartofthesamecompositestructure(
@@ -428,7 +428,7 @@ public class CompositionValidator extends EObjectValidator {
      * Validates the ComponentOfAssemblyContextAndInnerRoleProvidingComponentNeedToBeTheSame
      * constraint of '<em>Provided Delegation Connector</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateProvidedDelegationConnector_ComponentOfAssemblyContextAndInnerRoleProvidingComponentNeedToBeTheSame(
@@ -440,7 +440,7 @@ public class CompositionValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateRequiredDelegationConnector(final RequiredDelegationConnector requiredDelegationConnector,
@@ -490,7 +490,7 @@ public class CompositionValidator extends EObjectValidator {
      * RequiredDelegationConnectorandtheconnectedComponentmustbepartofthesamecompositestructure
      * constraint of '<em>Required Delegation Connector</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateRequiredDelegationConnector_RequiredDelegationConnectorandtheconnectedComponentmustbepartofthesamecompositestructure(
@@ -505,7 +505,7 @@ public class CompositionValidator extends EObjectValidator {
      * Validates the ComponentOfAssemblyContextAndInnerRoleRequiringComponentNeedToBeTheSame
      * constraint of '<em>Required Delegation Connector</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateRequiredDelegationConnector_ComponentOfAssemblyContextAndInnerRoleRequiringComponentNeedToBeTheSame(
@@ -520,7 +520,7 @@ public class CompositionValidator extends EObjectValidator {
      * RequiringEntityOfOuterRequiredRoleMustBeTheSameAsTheParentOfTheRequiredDelegationConnector
      * constraint of '<em>Required Delegation Connector</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateRequiredDelegationConnector_RequiringEntityOfOuterRequiredRoleMustBeTheSameAsTheParentOfTheRequiredDelegationConnector(
@@ -533,7 +533,7 @@ public class CompositionValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateAssemblyConnector(final AssemblyConnector assemblyConnector,
@@ -578,7 +578,7 @@ public class CompositionValidator extends EObjectValidator {
     /**
      * Validates the AssemblyConnectorsReferencedProvidedRolesAndChildContextMustMatch constraint of
      * '<em>Assembly Connector</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateAssemblyConnector_AssemblyConnectorsReferencedProvidedRolesAndChildContextMustMatch(
@@ -591,7 +591,7 @@ public class CompositionValidator extends EObjectValidator {
     /**
      * Validates the AssemblyConnectorsReferencedRequiredRoleAndChildContextMustMatch constraint of
      * '<em>Assembly Connector</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateAssemblyConnector_AssemblyConnectorsReferencedRequiredRoleAndChildContextMustMatch(
@@ -603,7 +603,7 @@ public class CompositionValidator extends EObjectValidator {
     /**
      * Validates the AssemblyConnectorsReferencedInterfacesMustMatch constraint of '
      * <em>Assembly Connector</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateAssemblyConnector_AssemblyConnectorsReferencedInterfacesMustMatch(
@@ -614,7 +614,7 @@ public class CompositionValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateAssemblyEventConnector(final AssemblyEventConnector assemblyEventConnector,
@@ -624,7 +624,7 @@ public class CompositionValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateSourceDelegationConnector(final SourceDelegationConnector sourceDelegationConnector,
@@ -634,7 +634,7 @@ public class CompositionValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateSinkDelegationConnector(final SinkDelegationConnector sinkDelegationConnector,
@@ -644,7 +644,7 @@ public class CompositionValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateAssemblyInfrastructureConnector(
@@ -655,7 +655,7 @@ public class CompositionValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateProvidedInfrastructureDelegationConnector(
@@ -666,7 +666,7 @@ public class CompositionValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateRequiredInfrastructureDelegationConnector(
@@ -677,7 +677,7 @@ public class CompositionValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateRequiredResourceDelegationConnector(
@@ -688,7 +688,7 @@ public class CompositionValidator extends EObjectValidator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public boolean validateAssemblyContext(final AssemblyContext assemblyContext, final DiagnosticChain diagnostics,
@@ -699,7 +699,7 @@ public class CompositionValidator extends EObjectValidator {
     /**
      * Returns the resource locator that will be used to fetch messages for this validator's
      * diagnostics. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

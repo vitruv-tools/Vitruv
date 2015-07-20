@@ -32,7 +32,7 @@ public interface InnerDeclaration extends NamedElement {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -73,7 +73,7 @@ public interface InnerDeclaration extends NamedElement {
      * isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Composite Data Type Inner Declaration</em>' container
      *         reference.
      * @see #setCompositeDataType_InnerDeclaration(CompositeDataType)
@@ -90,7 +90,7 @@ public interface InnerDeclaration extends NamedElement {
      * {@link org.palladiosimulator.pcm.repository.InnerDeclaration#getCompositeDataType_InnerDeclaration
      * <em>Composite Data Type Inner Declaration</em>}' container reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Composite Data Type Inner Declaration</em>' container
      *            reference.

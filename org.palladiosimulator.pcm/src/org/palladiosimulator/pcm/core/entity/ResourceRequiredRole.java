@@ -33,7 +33,7 @@ public interface ResourceRequiredRole extends Role {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -46,7 +46,7 @@ public interface ResourceRequiredRole extends Role {
      * isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Required Resource Interface Resource Required Role</em>'
      *         reference.
      * @see #setRequiredResourceInterface__ResourceRequiredRole(ResourceInterface)
@@ -61,7 +61,7 @@ public interface ResourceRequiredRole extends Role {
      * {@link org.palladiosimulator.pcm.core.entity.ResourceRequiredRole#getRequiredResourceInterface__ResourceRequiredRole
      * <em>Required Resource Interface Resource Required Role</em>}' reference. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Required Resource Interface Resource Required Role</em>'
      *            reference.
@@ -82,7 +82,7 @@ public interface ResourceRequiredRole extends Role {
      * container reference isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Resource Interface Requiring Entity Resource Required Role</em>
      *         ' container reference.
      * @see #setResourceInterfaceRequiringEntity__ResourceRequiredRole(ResourceInterfaceRequiringEntity)
@@ -99,7 +99,7 @@ public interface ResourceRequiredRole extends Role {
      * {@link org.palladiosimulator.pcm.core.entity.ResourceRequiredRole#getResourceInterfaceRequiringEntity__ResourceRequiredRole
      * <em>Resource Interface Requiring Entity Resource Required Role</em>}' container reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '
      *            <em>Resource Interface Requiring Entity Resource Required Role</em>' container

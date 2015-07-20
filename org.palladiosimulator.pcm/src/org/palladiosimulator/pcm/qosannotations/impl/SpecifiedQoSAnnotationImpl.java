@@ -37,14 +37,14 @@ public abstract class SpecifiedQoSAnnotationImpl extends CDOObjectImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected SpecifiedQoSAnnotationImpl() {
@@ -53,7 +53,7 @@ public abstract class SpecifiedQoSAnnotationImpl extends CDOObjectImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -63,7 +63,7 @@ public abstract class SpecifiedQoSAnnotationImpl extends CDOObjectImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -73,7 +73,7 @@ public abstract class SpecifiedQoSAnnotationImpl extends CDOObjectImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -85,7 +85,7 @@ public abstract class SpecifiedQoSAnnotationImpl extends CDOObjectImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public Signature basicGetSignature_SpecifiedQoSAnnation() {
@@ -96,7 +96,7 @@ public abstract class SpecifiedQoSAnnotationImpl extends CDOObjectImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -108,7 +108,7 @@ public abstract class SpecifiedQoSAnnotationImpl extends CDOObjectImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -119,7 +119,7 @@ public abstract class SpecifiedQoSAnnotationImpl extends CDOObjectImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public Role basicGetRole_SpecifiedQoSAnnotation() {
@@ -129,7 +129,7 @@ public abstract class SpecifiedQoSAnnotationImpl extends CDOObjectImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -141,7 +141,7 @@ public abstract class SpecifiedQoSAnnotationImpl extends CDOObjectImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -154,7 +154,7 @@ public abstract class SpecifiedQoSAnnotationImpl extends CDOObjectImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NotificationChain basicSetQosAnnotations_SpecifiedQoSAnnotation(
@@ -166,7 +166,7 @@ public abstract class SpecifiedQoSAnnotationImpl extends CDOObjectImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -179,7 +179,7 @@ public abstract class SpecifiedQoSAnnotationImpl extends CDOObjectImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -196,7 +196,7 @@ public abstract class SpecifiedQoSAnnotationImpl extends CDOObjectImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -211,7 +211,7 @@ public abstract class SpecifiedQoSAnnotationImpl extends CDOObjectImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -227,7 +227,7 @@ public abstract class SpecifiedQoSAnnotationImpl extends CDOObjectImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -251,7 +251,7 @@ public abstract class SpecifiedQoSAnnotationImpl extends CDOObjectImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -272,7 +272,7 @@ public abstract class SpecifiedQoSAnnotationImpl extends CDOObjectImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -293,7 +293,7 @@ public abstract class SpecifiedQoSAnnotationImpl extends CDOObjectImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

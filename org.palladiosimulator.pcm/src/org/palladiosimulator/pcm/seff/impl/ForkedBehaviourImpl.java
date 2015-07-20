@@ -31,14 +31,14 @@ public class ForkedBehaviourImpl extends ResourceDemandingBehaviourImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static final String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected ForkedBehaviourImpl() {
@@ -47,7 +47,7 @@ public class ForkedBehaviourImpl extends ResourceDemandingBehaviourImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -57,7 +57,7 @@ public class ForkedBehaviourImpl extends ResourceDemandingBehaviourImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -69,7 +69,7 @@ public class ForkedBehaviourImpl extends ResourceDemandingBehaviourImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NotificationChain basicSetSynchronisationPoint_ForkedBehaviour(
@@ -81,7 +81,7 @@ public class ForkedBehaviourImpl extends ResourceDemandingBehaviourImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -94,7 +94,7 @@ public class ForkedBehaviourImpl extends ResourceDemandingBehaviourImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -105,7 +105,7 @@ public class ForkedBehaviourImpl extends ResourceDemandingBehaviourImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NotificationChain basicSetForkAction_ForkedBehaivour(final ForkAction newForkAction_ForkedBehaivour,
@@ -117,7 +117,7 @@ public class ForkedBehaviourImpl extends ResourceDemandingBehaviourImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -128,7 +128,7 @@ public class ForkedBehaviourImpl extends ResourceDemandingBehaviourImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -150,7 +150,7 @@ public class ForkedBehaviourImpl extends ResourceDemandingBehaviourImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -167,7 +167,7 @@ public class ForkedBehaviourImpl extends ResourceDemandingBehaviourImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -186,7 +186,7 @@ public class ForkedBehaviourImpl extends ResourceDemandingBehaviourImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -202,7 +202,7 @@ public class ForkedBehaviourImpl extends ResourceDemandingBehaviourImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -220,7 +220,7 @@ public class ForkedBehaviourImpl extends ResourceDemandingBehaviourImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -238,7 +238,7 @@ public class ForkedBehaviourImpl extends ResourceDemandingBehaviourImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

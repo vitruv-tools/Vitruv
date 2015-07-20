@@ -29,35 +29,35 @@ public interface QosPerformancePackage extends EPackage {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
 
     /**
      * The package name. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String eNAME = "qos_performance";
 
     /**
      * The package namespace URI. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String eNS_URI = "http://palladiosimulator.org/PalladioComponentModel/QoSAnnotations/QoS_Performance/5.1";
 
     /**
      * The package namespace name. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String eNS_PREFIX = "qos_performance";
 
     /**
      * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     QosPerformancePackage eINSTANCE = org.palladiosimulator.pcm.qosannotations.qos_performance.impl.QosPerformancePackageImpl
@@ -67,7 +67,7 @@ public interface QosPerformancePackage extends EPackage {
      * The meta object id for the '
      * {@link org.palladiosimulator.pcm.qosannotations.qos_performance.impl.SpecifiedExecutionTimeImpl
      * <em>Specified Execution Time</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see org.palladiosimulator.pcm.qosannotations.qos_performance.impl.SpecifiedExecutionTimeImpl
      * @see org.palladiosimulator.pcm.qosannotations.qos_performance.impl.QosPerformancePackageImpl#getSpecifiedExecutionTime()
      * @generated
@@ -95,7 +95,7 @@ public interface QosPerformancePackage extends EPackage {
     /**
      * The feature id for the '<em><b>Qos Annotations Specified Qo SAnnotation</b></em>' container
      * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */
@@ -104,7 +104,7 @@ public interface QosPerformancePackage extends EPackage {
     /**
      * The feature id for the '<em><b>Specification Specified Execution Time</b></em>' containment
      * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */
@@ -154,7 +154,7 @@ public interface QosPerformancePackage extends EPackage {
     /**
      * The feature id for the '<em><b>Qos Annotations Specified Qo SAnnotation</b></em>' container
      * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */
@@ -163,7 +163,7 @@ public interface QosPerformancePackage extends EPackage {
     /**
      * The feature id for the '<em><b>Specification Specified Execution Time</b></em>' containment
      * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */
@@ -172,7 +172,7 @@ public interface QosPerformancePackage extends EPackage {
     /**
      * The number of structural features of the '<em>System Specified Execution Time</em>' class.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */
@@ -183,7 +183,7 @@ public interface QosPerformancePackage extends EPackage {
      * {@link org.palladiosimulator.pcm.qosannotations.qos_performance.impl.ComponentSpecifiedExecutionTimeImpl
      * <em>Component Specified Execution Time</em>}' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @see org.palladiosimulator.pcm.qosannotations.qos_performance.impl.
      *      ComponentSpecifiedExecutionTimeImpl
      * @see org.palladiosimulator.pcm.qosannotations.qos_performance.impl.QosPerformancePackageImpl#getComponentSpecifiedExecutionTime()
@@ -212,7 +212,7 @@ public interface QosPerformancePackage extends EPackage {
     /**
      * The feature id for the '<em><b>Qos Annotations Specified Qo SAnnotation</b></em>' container
      * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */
@@ -221,7 +221,7 @@ public interface QosPerformancePackage extends EPackage {
     /**
      * The feature id for the '<em><b>Specification Specified Execution Time</b></em>' containment
      * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */
@@ -230,7 +230,7 @@ public interface QosPerformancePackage extends EPackage {
     /**
      * The feature id for the '<em><b>Assembly Context Component Specified Execution Time</b></em>'
      * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */
@@ -240,7 +240,7 @@ public interface QosPerformancePackage extends EPackage {
     /**
      * The number of structural features of the '<em>Component Specified Execution Time</em>' class.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */
@@ -250,7 +250,7 @@ public interface QosPerformancePackage extends EPackage {
      * Returns the meta object for class '
      * {@link org.palladiosimulator.pcm.qosannotations.qos_performance.SystemSpecifiedExecutionTime
      * <em>System Specified Execution Time</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @return the meta object for class '<em>System Specified Execution Time</em>'.
      * @see org.palladiosimulator.pcm.qosannotations.qos_performance.SystemSpecifiedExecutionTime
      * @generated
@@ -261,7 +261,7 @@ public interface QosPerformancePackage extends EPackage {
      * Returns the meta object for class '
      * {@link org.palladiosimulator.pcm.qosannotations.qos_performance.SpecifiedExecutionTime
      * <em>Specified Execution Time</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @return the meta object for class '<em>Specified Execution Time</em>'.
      * @see org.palladiosimulator.pcm.qosannotations.qos_performance.SpecifiedExecutionTime
      * @generated
@@ -286,7 +286,7 @@ public interface QosPerformancePackage extends EPackage {
      * Returns the meta object for class '
      * {@link org.palladiosimulator.pcm.qosannotations.qos_performance.ComponentSpecifiedExecutionTime
      * <em>Component Specified Execution Time</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @return the meta object for class '<em>Component Specified Execution Time</em>'.
      * @see org.palladiosimulator.pcm.qosannotations.qos_performance.ComponentSpecifiedExecutionTime
      * @generated
@@ -298,7 +298,7 @@ public interface QosPerformancePackage extends EPackage {
      * {@link org.palladiosimulator.pcm.qosannotations.qos_performance.ComponentSpecifiedExecutionTime#getAssemblyContext_ComponentSpecifiedExecutionTime
      * <em>Assembly Context Component Specified Execution Time</em>}'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @return the meta object for the reference '
      *         <em>Assembly Context Component Specified Execution Time</em>'.
      * @see org.palladiosimulator.pcm.qosannotations.qos_performance.ComponentSpecifiedExecutionTime#getAssemblyContext_ComponentSpecifiedExecutionTime()
@@ -310,7 +310,7 @@ public interface QosPerformancePackage extends EPackage {
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @return the factory that creates the instances of the model.
      * @generated
      */
@@ -325,7 +325,7 @@ public interface QosPerformancePackage extends EPackage {
      * <li>and each data type</li>
      * </ul>
      * <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     interface Literals {
@@ -335,7 +335,7 @@ public interface QosPerformancePackage extends EPackage {
          * {@link org.palladiosimulator.pcm.qosannotations.qos_performance.impl.SystemSpecifiedExecutionTimeImpl
          * <em>System Specified Execution Time</em>}' class. <!-- begin-user-doc --> <!--
          * end-user-doc -->
-         *
+         * 
          * @see org.palladiosimulator.pcm.qosannotations.qos_performance.impl.
          *      SystemSpecifiedExecutionTimeImpl
          * @see org.palladiosimulator.pcm.qosannotations.qos_performance.impl.QosPerformancePackageImpl#getSystemSpecifiedExecutionTime()
@@ -347,7 +347,7 @@ public interface QosPerformancePackage extends EPackage {
          * The meta object literal for the '
          * {@link org.palladiosimulator.pcm.qosannotations.qos_performance.impl.SpecifiedExecutionTimeImpl
          * <em>Specified Execution Time</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
+         * 
          * @see org.palladiosimulator.pcm.qosannotations.qos_performance.impl.
          *      SpecifiedExecutionTimeImpl
          * @see org.palladiosimulator.pcm.qosannotations.qos_performance.impl.QosPerformancePackageImpl#getSpecifiedExecutionTime()
@@ -358,7 +358,7 @@ public interface QosPerformancePackage extends EPackage {
         /**
          * The meta object literal for the '<em><b>Specification Specified Execution Time</b></em>'
          * containment reference feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
+         * 
          * @generated
          */
         EReference SPECIFIED_EXECUTION_TIME__SPECIFICATION_SPECIFIED_EXECUTION_TIME = eINSTANCE
@@ -369,7 +369,7 @@ public interface QosPerformancePackage extends EPackage {
          * {@link org.palladiosimulator.pcm.qosannotations.qos_performance.impl.ComponentSpecifiedExecutionTimeImpl
          * <em>Component Specified Execution Time</em>}' class. <!-- begin-user-doc --> <!--
          * end-user-doc -->
-         *
+         * 
          * @see org.palladiosimulator.pcm.qosannotations.qos_performance.impl.
          *      ComponentSpecifiedExecutionTimeImpl
          * @see org.palladiosimulator.pcm.qosannotations.qos_performance.impl.QosPerformancePackageImpl#getComponentSpecifiedExecutionTime()
@@ -381,7 +381,7 @@ public interface QosPerformancePackage extends EPackage {
          * The meta object literal for the '
          * <em><b>Assembly Context Component Specified Execution Time</b></em>' reference feature.
          * <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
+         * 
          * @generated
          */
         EReference COMPONENT_SPECIFIED_EXECUTION_TIME__ASSEMBLY_CONTEXT_COMPONENT_SPECIFIED_EXECUTION_TIME = eINSTANCE

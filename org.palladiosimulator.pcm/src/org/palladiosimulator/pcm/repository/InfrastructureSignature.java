@@ -29,7 +29,7 @@ public interface InfrastructureSignature extends Signature {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
@@ -46,7 +46,7 @@ public interface InfrastructureSignature extends Signature {
      * list isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Parameters Infrastructure Signature</em>' containment reference
      *         list.
      * @see org.palladiosimulator.pcm.repository.RepositoryPackage#getInfrastructureSignature_Parameters__InfrastructureSignature()
@@ -66,7 +66,7 @@ public interface InfrastructureSignature extends Signature {
      * reference isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Infrastructure Interface Infrastructure Signature</em>'
      *         container reference.
      * @see #setInfrastructureInterface__InfrastructureSignature(InfrastructureInterface)
