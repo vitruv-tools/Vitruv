@@ -13,10 +13,6 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.junit.Test;
 
-import pcm_mockup.Interface;
-import pcm_mockup.Pcm_mockupFactory;
-import pcm_mockup.Repository;
-import uml_mockup.UPackage;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FeatureInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
@@ -26,6 +22,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentRefer
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
+import pcm_mockup.Interface;
+import pcm_mockup.Pcm_mockupFactory;
+import pcm_mockup.Repository;
+import uml_mockup.UPackage;
 
 public class CorrespondenceTest extends VSUMTest {
     private static final String interfaceCRefName = "interfaces";
@@ -174,7 +174,8 @@ public class CorrespondenceTest extends VSUMTest {
     }
 
     private void testRecursiveRemove(final Repository repo, final UPackage pkg, final CorrespondenceInstance corresp,
-            final EObjectCorrespondence repo2pkg, final Pair<FeatureInstance, FeatureInstance> repoIfaceFIAndPkgIfaceFI) {
+            final EObjectCorrespondence repo2pkg,
+            final Pair<FeatureInstance, FeatureInstance> repoIfaceFIAndPkgIfaceFI) {
         corresp.removeCorrespondenceAndAllDependentCorrespondences(repo2pkg);
         Set<Correspondence> repoCorresp = corresp.getAllCorrespondences(repo);
         assertTrue(repoCorresp.isEmpty());
@@ -200,6 +201,7 @@ public class CorrespondenceTest extends VSUMTest {
     private void testUpdate(final Repository repo, final UPackage pkg, final CorrespondenceInstance corresp,
             final EObjectCorrespondence repo2pkg) {
         Repository newRepo = Pcm_mockupFactory.eINSTANCE.createRepository();
+        // TODO AAA MAX: store repo before updating the correspondence
         corresp.update(repo, newRepo);
         Set<Correspondence> repoCorresp = corresp.getAllCorrespondences(repo);
         assertTrue(repoCorresp.isEmpty());

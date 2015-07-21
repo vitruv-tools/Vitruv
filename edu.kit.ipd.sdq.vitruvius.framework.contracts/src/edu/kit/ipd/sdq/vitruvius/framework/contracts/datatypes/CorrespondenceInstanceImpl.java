@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -41,9 +41,6 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     protected final ClaimableMap<TUID, Set<Correspondence>> tuid2CorrespondencesMap;
     protected final ClaimableMap<TUID, Set<TUID>> tuid2CorrespondingTUIDsMap;
     private ClaimableMap<FeatureInstance, Set<FeatureInstance>> featureInstance2CorrespondingFIMap;
-    // the following map (tuid2CorrespondenceSetsWithComprisedFeatureInstanceMap) is only used to
-    // correctly update the previous map (featureInstance2CorrespondingFIMap)
-    private ClaimableMap<TUID, Set<Set<FeatureInstance>>> tuid2CorrespondenceSetsWithComprisedFeatureInstanceMap;
 
     private boolean changedAfterLastSave = false;
 
@@ -56,7 +53,6 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         this.tuid2CorrespondencesMap = new ClaimableHashMap<TUID, Set<Correspondence>>();
         this.tuid2CorrespondingTUIDsMap = new ClaimableHashMap<TUID, Set<TUID>>();
         this.featureInstance2CorrespondingFIMap = new ClaimableHashMap<FeatureInstance, Set<FeatureInstance>>();
-        this.tuid2CorrespondenceSetsWithComprisedFeatureInstanceMap = new ClaimableHashMap<TUID, Set<Set<FeatureInstance>>>();
 
         // TODO implement lazy loading for correspondences because they may get really big
         EObject correspondences = EcoreResourceBridge.getResourceContentRootIfUnique(correspondencesResource);
@@ -466,37 +462,28 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
                 }
             }
         } else if (correspondence instanceof EFeatureCorrespondence) {
-            // EFeatureCorrespondence<?> featureCorrespondence = (EFeatureCorrespondence<?>)
-            // correspondence;
-            // FeatureInstance featureInstanceA =
-            // FeatureInstance.getInstance(featureCorrespondence.getElementA(),
-            // featureCorrespondence.getFeatureA());
-            // FeatureInstance featureInstanceB =
-            // FeatureInstance.getInstance(featureCorrespondence.getElementB(),
-            // featureCorrespondence.getFeatureB());
-            // Set<FeatureInstance> featureInstancesCorrespondingToFIA =
-            // this.featureInstance2CorrespondingFIMap
-            // .get(featureInstanceA);
-            // if (featureInstancesCorrespondingToFIA == null) {
-            // featureInstancesCorrespondingToFIA = new HashSet<FeatureInstance>();
-            // this.featureInstance2CorrespondingFIMap.put(featureInstanceA,
-            // featureInstancesCorrespondingToFIA);
-            // }
-            // featureInstancesCorrespondingToFIA.add(featureInstanceB);
-            // storeFeatureInstancesForTUID(tuidB, featureInstancesCorrespondingToFIA);
-            //
-            // Set<FeatureInstance> featureInstancesCorrespondingToFIB =
-            // this.featureInstance2CorrespondingFIMap
-            // .get(featureInstanceB);
-            // if (featureInstancesCorrespondingToFIB == null) {
-            // featureInstancesCorrespondingToFIB = new HashSet<FeatureInstance>();
-            // this.featureInstance2CorrespondingFIMap.put(featureInstanceB,
-            // featureInstancesCorrespondingToFIB);
-            // }
-            // featureInstancesCorrespondingToFIB.add(featureInstanceA);
-            // // store the usage of a feature instance with a parent object that has the tuid tuidA
-            // storeFeatureInstancesForTUID(tuidA, featureInstancesCorrespondingToFIB);
-            // FIXME AAA MAX reactivate feature instance stuff without EObject
+            EFeatureCorrespondence<?> featureCorrespondence = (EFeatureCorrespondence<?>) correspondence;
+            FeatureInstance featureInstanceA = FeatureInstance.getInstance(
+                    resolveEObjectFromTUID(featureCorrespondence.getElementATUID()),
+                    featureCorrespondence.getFeatureA());
+            FeatureInstance featureInstanceB = FeatureInstance.getInstance(
+                    resolveEObjectFromTUID(featureCorrespondence.getElementBTUID()),
+                    featureCorrespondence.getFeatureB());
+            Set<FeatureInstance> featureInstancesCorrespondingToFIA = this.featureInstance2CorrespondingFIMap
+                    .get(featureInstanceA);
+            if (featureInstancesCorrespondingToFIA == null) {
+                featureInstancesCorrespondingToFIA = new HashSet<FeatureInstance>();
+                this.featureInstance2CorrespondingFIMap.put(featureInstanceA, featureInstancesCorrespondingToFIA);
+            }
+            featureInstancesCorrespondingToFIA.add(featureInstanceB);
+
+            Set<FeatureInstance> featureInstancesCorrespondingToFIB = this.featureInstance2CorrespondingFIMap
+                    .get(featureInstanceB);
+            if (featureInstancesCorrespondingToFIB == null) {
+                featureInstancesCorrespondingToFIB = new HashSet<FeatureInstance>();
+                this.featureInstance2CorrespondingFIMap.put(featureInstanceB, featureInstancesCorrespondingToFIB);
+            }
+            featureInstancesCorrespondingToFIB.add(featureInstanceA);
         }
         setChangeAfterLastSaveFlag();
     }
@@ -527,17 +514,6 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         this.changedAfterLastSave = false;
     }
 
-    private void storeFeatureInstancesForTUID(final TUID tuid,
-            final Set<FeatureInstance> correspondenceSetWithFIofTUID) {
-        Set<Set<FeatureInstance>> correspondeceSetsWithFIsOfTUID = this.tuid2CorrespondenceSetsWithComprisedFeatureInstanceMap
-                .get(tuid);
-        if (correspondeceSetsWithFIsOfTUID == null) {
-            correspondeceSetsWithFIsOfTUID = new HashSet<Set<FeatureInstance>>();
-            this.tuid2CorrespondenceSetsWithComprisedFeatureInstanceMap.put(tuid, correspondeceSetsWithFIsOfTUID);
-        }
-        correspondeceSetsWithFIsOfTUID.add(correspondenceSetWithFIofTUID);
-    }
-
     /*
      * (non-Javadoc)
      *
@@ -562,7 +538,6 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         for (Correspondence correspondence : correspondencesForEObj) {
             removeCorrespondenceAndAllDependentCorrespondences(correspondence);
         }
-        // FIXME: remove feature correspondences
     }
 
     /*
@@ -600,22 +575,32 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         dependencyList.add(correspondence);
         for (Correspondence dependentCorrespondence : correspondence.getDependentCorrespondences()) {
             if (null != dependentCorrespondence && !dependencyList.contains(dependentCorrespondence)) {
-                removeCorrespondenceFromMaps(dependentCorrespondence);
                 markCorrespondenceAndAllDependentCorrespondences(dependentCorrespondence, dependencyList, deletionList);
             }
         }
         deletionList.add(correspondence);
     }
 
-    private void removeCorrespondenceFromMaps(final Correspondence possibleChildCorrespondence) {
-        if (possibleChildCorrespondence instanceof EObjectCorrespondence) {
-            EObjectCorrespondence eObjCorrespondence = (EObjectCorrespondence) possibleChildCorrespondence;
+    private void removeCorrespondenceFromMaps(final Correspondence markedCorrespondence) {
+        if (markedCorrespondence instanceof EObjectCorrespondence) {
+            EObjectCorrespondence eObjCorrespondence = (EObjectCorrespondence) markedCorrespondence;
             TUID elementATUID = eObjCorrespondence.getElementATUID();
             TUID elementBTUID = eObjCorrespondence.getElementBTUID();
             this.tuid2CorrespondencesMap.remove(elementATUID);
             this.tuid2CorrespondencesMap.remove(elementBTUID);
             this.tuid2CorrespondingTUIDsMap.remove(elementATUID);
             this.tuid2CorrespondingTUIDsMap.remove(elementBTUID);
+        }
+        if (markedCorrespondence instanceof EFeatureCorrespondence) {
+            EFeatureCorrespondence<?> featureCorrespondence = (EFeatureCorrespondence<?>) markedCorrespondence;
+            FeatureInstance featureInstanceA = FeatureInstance.getInstance(
+                    resolveEObjectFromTUID(featureCorrespondence.getElementATUID()),
+                    featureCorrespondence.getFeatureA());
+            FeatureInstance featureInstanceB = FeatureInstance.getInstance(
+                    resolveEObjectFromTUID(featureCorrespondence.getElementBTUID()),
+                    featureCorrespondence.getFeatureB());
+            this.featureInstance2CorrespondingFIMap.remove(featureInstanceA);
+            this.featureInstance2CorrespondingFIMap.remove(featureInstanceB);
         }
     }
 
@@ -642,7 +627,12 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
      */
     @Override
     public Set<FeatureInstance> getAllCorrespondingFeatureInstances(final FeatureInstance featureInstance) {
-        return this.featureInstance2CorrespondingFIMap.get(featureInstance);
+        Set<FeatureInstance> correspondingFeatureInstances = this.featureInstance2CorrespondingFIMap
+                .get(featureInstance);
+        if (correspondingFeatureInstances == null) {
+            correspondingFeatureInstances = Collections.emptySet();
+        }
+        return correspondingFeatureInstances;
     }
 
     /*
@@ -728,16 +718,10 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
      */
     @Override
     public void update(final TUID oldTUID, final TUID newTUID) {
-        // TODO Think about feature instances when they work again
-
         boolean sameTUID = oldTUID != null ? oldTUID.equals(newTUID) : newTUID == null;
         if (sameTUID) {
             return;
         }
-
-        // FIXME AAA MAX reactivate feature instance stuff without EObject
-        // updateFeatureInstances(oldTUID, newTUID, oldTUIDUpdate);
-        // updateFeatureInstances(oldEObject, newEObject, oldTUIDUpdate);
 
         TUID.BeforeHashCodeUpdateLambda before = new TUID.BeforeHashCodeUpdateLambda() {
 
@@ -755,9 +739,8 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
                         .remove(tuid);
                 Set<TUID> correspondingTUIDsForOldSegment = CorrespondenceInstanceImpl.this.tuid2CorrespondingTUIDsMap
                         .remove(tuid);
-                // TODO update featureInstance2CorrespondingFIMap and
-                // tuid2CorrespondenceSetsWithComprisedFeatureInstanceMap as soon as they are
-                // used again
+                // because featureInstance2CorrespondingFIMap uses no TUID as key we do not need to
+                // update it
                 return new Triple<TUID, Set<Correspondence>, Set<TUID>>(tuid, correspondencesForOldSegment,
                         correspondingTUIDsForOldSegment);
             }
@@ -797,41 +780,6 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
             updateTUID2CorrespondingEObjectsMap(oldTUIDPrefix, newTUIDPrefix, sameTUID);
         }
 
-    }
-
-    private void updateFeatureInstances(final EObject oldEObject, final EObject newEObject, final TUID oldTUID) {
-        Collection<FeatureInstance> oldFeatureInstances = FeatureInstance.getAllInstances(oldEObject);
-
-        // WARNING: We assume that everybody that uses the FeatureInstance multiton wants to be
-        // informed of this update
-        FeatureInstance.update(oldEObject, newEObject);
-
-        for (FeatureInstance oldFeatureInstance : oldFeatureInstances) {
-            Set<FeatureInstance> correspondingFeatureInstances = this.featureInstance2CorrespondingFIMap
-                    .remove(oldFeatureInstance);
-            if (correspondingFeatureInstances != null) {
-                EStructuralFeature feature = oldFeatureInstance.getFeature();
-                FeatureInstance newFeatureInstance = FeatureInstance.getInstance(newEObject, feature);
-                this.featureInstance2CorrespondingFIMap.put(newFeatureInstance, correspondingFeatureInstances);
-            }
-        }
-
-        Set<Set<FeatureInstance>> correspondenceSetsWithFIofOldTUID = this.tuid2CorrespondenceSetsWithComprisedFeatureInstanceMap
-                .get(oldTUID);
-        if (correspondenceSetsWithFIofOldTUID != null) {
-            for (Set<FeatureInstance> correspondenceSetWithFIofOldTUID : correspondenceSetsWithFIofOldTUID) {
-                for (FeatureInstance featureInstance : correspondenceSetWithFIofOldTUID) {
-                    if (oldFeatureInstances.contains(featureInstance)) {
-                        // featureInstance belongs to oldTUID
-                        correspondenceSetWithFIofOldTUID.remove(featureInstance);
-                        EStructuralFeature feature = featureInstance.getFeature();
-                        FeatureInstance newFeatureInstance = FeatureInstance.getInstance(newEObject, feature);
-                        correspondenceSetWithFIofOldTUID.add(newFeatureInstance);
-                    }
-                }
-            }
-        }
-        setChangeAfterLastSaveFlag();
     }
 
     private void updateTUID2CorrespondingEObjectsMap(final TUID oldTUID, final TUID newTUID, final boolean sameTUID) {

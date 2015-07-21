@@ -10,12 +10,17 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
- * Implements the multiton design pattern.
- * 
+ * Implements the multiton design pattern for a retrievable representation of a feature at the
+ * instance level (equivalent to {@link org.eclipse.emf.ecore.EStructuralFeature.Setting}).
+ *
+ * Represents the instance of a feature (that is defined for a metaclass) for a given metaclass
+ * instance (i.e. EObject) and provides methods for getting and setting the value for this feature
+ * instance without hopping meta level.
+ *
  * WARNING: This multiton is automatically updated whenever the used EObjects are replaced!
- * 
+ *
  * @author kramerm
- * 
+ *
  */
 public class FeatureInstance {
     private static final Map<EObject, Map<EStructuralFeature, FeatureInstance>> INSTANCES = new HashMap<EObject, Map<EStructuralFeature, FeatureInstance>>();
@@ -29,7 +34,18 @@ public class FeatureInstance {
         this.feature = feature;
     }
 
-    public static synchronized FeatureInstance getInstance(final EObject parentEObject, final EStructuralFeature feature) {
+    /**
+     * Retrieves the feature instance for the given parent object and feature if it exists,
+     * otherwise creates and stores a new instance.
+     *
+     * @param parentEObject
+     *            the parent object for which a feature shall be instantiated
+     * @param feature
+     *            the feature to be instantiated
+     * @return the pre-existing or new feature instance
+     */
+    public static synchronized FeatureInstance getInstance(final EObject parentEObject,
+            final EStructuralFeature feature) {
         Map<EStructuralFeature, FeatureInstance> instanceMap = INSTANCES.get(parentEObject);
         FeatureInstance instance;
         if (instanceMap == null) {
@@ -44,6 +60,13 @@ public class FeatureInstance {
         return instance;
     }
 
+    /**
+     * Returns all feature instances that were created so far for the given parent object.
+     *
+     * @param parentEObject
+     *            the parent object for which all feature instances shall be returned
+     * @return all existing feature instances
+     */
     public static synchronized Collection<FeatureInstance> getAllInstances(final EObject parentEObject) {
         Map<EStructuralFeature, FeatureInstance> feature2FeatureInstanceMap = INSTANCES.get(parentEObject);
         if (feature2FeatureInstanceMap == null) {
@@ -53,7 +76,17 @@ public class FeatureInstance {
         }
     }
 
-    public static synchronized void update(final EObject oldEObject, final EObject newEObject) {
+    /**
+     * Replaces all feature instances for the given old object with feature instances for the given
+     * new object. Does not copy and feature value but only recreates the feature instance
+     * representations.
+     *
+     * @param oldEObject
+     *            the old object for which instances shall be removed
+     * @param newEObject
+     *            the new object for which the new instances shall be created
+     */
+    public static synchronized void performParentObjectReplacement(final EObject oldEObject, final EObject newEObject) {
         Map<EStructuralFeature, FeatureInstance> oldFeature2FeatureInstanceMap = INSTANCES.remove(oldEObject);
         if (oldFeature2FeatureInstanceMap != null) {
             Set<EStructuralFeature> mappedFeatures = oldFeature2FeatureInstanceMap.keySet();
@@ -66,14 +99,30 @@ public class FeatureInstance {
         }
     }
 
+    /**
+     * Get the value for the feature from the object.
+     *
+     * @return the value
+     */
     public Object getValue() {
         return this.parentEObject.eGet(this.feature);
     }
 
+    /**
+     * Set the value for the feature of the object.
+     *
+     * @param newValue
+     *            the value to be set
+     */
     public void setValue(final Object newValue) {
         this.parentEObject.eSet(this.feature, newValue);
     }
 
+    /**
+     * Get the feature which instance is represented.
+     *
+     * @return
+     */
     public EStructuralFeature getFeature() {
         return this.feature;
     }
