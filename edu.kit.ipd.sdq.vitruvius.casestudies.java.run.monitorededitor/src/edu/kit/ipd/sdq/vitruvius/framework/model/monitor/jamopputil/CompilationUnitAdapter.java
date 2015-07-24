@@ -29,8 +29,8 @@ import org.emftext.language.java.imports.Import;
 import org.emftext.language.java.instantiations.impl.NewConstructorCallImpl;
 import org.emftext.language.java.members.Field;
 import org.emftext.language.java.members.Member;
-import org.emftext.language.java.members.Method;
 import org.emftext.language.java.parameters.Parameter;
+import org.emftext.language.java.parameters.Parametrizable;
 import org.emftext.language.java.types.ClassifierReference;
 import org.emftext.language.java.types.NamespaceClassifierReference;
 import org.emftext.language.java.types.PrimitiveType;
@@ -78,19 +78,20 @@ public class CompilationUnitAdapter {
         this.compilationUnit = AST2JaMoPP.getCompilationUnitFromAbsolutePath(compilationUnitPath);
     }
 
-    public Method getMethodForMethodDeclaration(final MethodDeclaration methodDeclaration) {
+    public Parametrizable getMethodOrConstructorForMethodDeclaration(final MethodDeclaration methodDeclaration) {
         final ASTNode parent = methodDeclaration.getParent();
         final int nodeType = parent.getNodeType();
         if (nodeType != ASTNode.ANONYMOUS_CLASS_DECLARATION && nodeType != ASTNode.TYPE_DECLARATION) {
             return null;
         }
         if (nodeType == ASTNode.ANONYMOUS_CLASS_DECLARATION) {
-            final List<AnonymousClass> anonymousClasses = this.getAnonymousClassesForAnonymousClassDeclaration(
-                    (AnonymousClassDeclaration) parent);
+            final List<AnonymousClass> anonymousClasses = this
+                    .getAnonymousClassesForAnonymousClassDeclaration((AnonymousClassDeclaration) parent);
             for (final AnonymousClass anonymousClass : anonymousClasses) {
-                for (final Method method : anonymousClass.getMethods()) {
-                    if (AST2JaMoPPCorrespondence.corresponds(methodDeclaration, method, false)) {
-                        return method;
+                for (final Member member : anonymousClass.getMethods()) {
+                    if (member instanceof Parametrizable
+                            && AST2JaMoPPCorrespondence.corresponds(methodDeclaration, member, false)) {
+                        return (Parametrizable) member;
                     }
                 }
             }
@@ -98,9 +99,10 @@ public class CompilationUnitAdapter {
         }
 
         final ConcreteClassifier classifier = this.getConcreteClassifierForTypeDeclaration((TypeDeclaration) parent);
-        for (final Method method : classifier.getMethods()) {
-            if (AST2JaMoPPCorrespondence.corresponds(methodDeclaration, method, false)) {
-                return method;
+        for (final Member member : classifier.getMembers()) {
+            if (member instanceof Parametrizable
+                    && AST2JaMoPPCorrespondence.corresponds(methodDeclaration, member, false)) {
+                return (Parametrizable) member;
             }
         }
         return null;
@@ -142,10 +144,13 @@ public class CompilationUnitAdapter {
     // FIXME what if there are several anonymous classes of the same type?
     private List<AnonymousClass> getAnonymousClassesForAnonymousClassDeclaration(
             final AnonymousClassDeclaration anonymousClassDeclaration) {
-        final MethodDeclaration parentMethodDeclaration = this.getNextParentMethodDeclaration(anonymousClassDeclaration);
-        final ClassInstanceCreation classInstanceCreation = (ClassInstanceCreation) anonymousClassDeclaration.getParent();
-        final Method parentMethod = this.getMethodForMethodDeclaration(parentMethodDeclaration);
-        final List<NewConstructorCallImpl> newConstructorCalls = parentMethod.getChildrenByType(NewConstructorCallImpl.class);
+        final MethodDeclaration parentMethodDeclaration = this
+                .getNextParentMethodDeclaration(anonymousClassDeclaration);
+        final ClassInstanceCreation classInstanceCreation = (ClassInstanceCreation) anonymousClassDeclaration
+                .getParent();
+        final Parametrizable parentMethod = this.getMethodOrConstructorForMethodDeclaration(parentMethodDeclaration);
+        final List<NewConstructorCallImpl> newConstructorCalls = parentMethod
+                .getChildrenByType(NewConstructorCallImpl.class);
         final List<AnonymousClass> anonymousClasses = new LinkedList<AnonymousClass>();
         for (final NewConstructorCallImpl newConstructorCall : newConstructorCalls) {
             if (AST2JaMoPPCorrespondence.corresponds(classInstanceCreation, newConstructorCall)) {
@@ -167,7 +172,8 @@ public class CompilationUnitAdapter {
     }
 
     public Parameter getParameterForVariableDeclaration(final VariableDeclaration parameterDeclaration) {
-        final Method method = this.getMethodForMethodDeclaration((MethodDeclaration) parameterDeclaration.getParent());
+        final Parametrizable method = this
+                .getMethodOrConstructorForMethodDeclaration((MethodDeclaration) parameterDeclaration.getParent());
         for (final Parameter parameter : method.getParameters()) {
             if (parameter.getName().equals(parameterDeclaration.getName().getIdentifier())) {
                 return parameter;
@@ -224,18 +230,18 @@ public class CompilationUnitAdapter {
     }
 
     public TypeReference getImplementsForSuperType(final SimpleType simpleType) {
-        if(null == simpleType.getName() || !simpleType.getName().isSimpleName()){
+        if (null == simpleType.getName() || !simpleType.getName().isSimpleName()) {
             logger.warn("simpleType.getName is null or not a simple name: " + simpleType.getName());
             return null;
         }
         final SimpleName simpleName = (SimpleName) simpleType.getName();
         final String implementsName = simpleName.getIdentifier();
         for (final ConcreteClassifier classifier : this.compilationUnit.getClassifiers()) {
-            if(classifier instanceof org.emftext.language.java.classifiers.Class){
+            if (classifier instanceof org.emftext.language.java.classifiers.Class) {
                 final Class jaMoPPClass = (Class) classifier;
                 for (final TypeReference typeReference : jaMoPPClass.getImplements()) {
                     final String typeRefName = this.getNameFromTypeReference(typeReference);
-                    if(typeRefName.equals(implementsName)){
+                    if (typeRefName.equals(implementsName)) {
                         return typeReference;
                     }
                 }
@@ -246,19 +252,19 @@ public class CompilationUnitAdapter {
     }
 
     private String getNameFromTypeReference(final TypeReference typeReference) {
-        if(typeReference instanceof ClassifierReference){
+        if (typeReference instanceof ClassifierReference) {
             final ClassifierReference cr = (ClassifierReference) typeReference;
             return cr.getTarget().getName();
         }
-        if(typeReference instanceof NamespaceClassifierReference){
+        if (typeReference instanceof NamespaceClassifierReference) {
             final NamespaceClassifierReference ncr = (NamespaceClassifierReference) typeReference;
-            if(!ncr.getClassifierReferences().isEmpty()){
+            if (!ncr.getClassifierReferences().isEmpty()) {
                 return this.getNameFromTypeReference(ncr.getClassifierReferences().get(0));
             }
             logger.info("no ClassifierReference found for NamespaceClassifierReference");
             return "";
         }
-        if(typeReference instanceof PrimitiveType){
+        if (typeReference instanceof PrimitiveType) {
             logger.warn("Type Reference should not be a primitive reference");
             return "";
         }

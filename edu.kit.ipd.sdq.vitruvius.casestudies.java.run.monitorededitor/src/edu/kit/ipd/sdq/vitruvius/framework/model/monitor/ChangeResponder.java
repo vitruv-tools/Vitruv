@@ -21,9 +21,12 @@ import org.emftext.language.java.classifiers.Interface;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.imports.Import;
 import org.emftext.language.java.members.Field;
+import org.emftext.language.java.members.Member;
 import org.emftext.language.java.members.Method;
+import org.emftext.language.java.modifiers.Modifiable;
 import org.emftext.language.java.modifiers.Modifier;
 import org.emftext.language.java.parameters.Parameter;
+import org.emftext.language.java.parameters.Parametrizable;
 import org.emftext.language.java.types.TypeReference;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
@@ -126,12 +129,14 @@ public class ChangeResponder implements ChangeEventVisitor {
     public void visit(final AddMethodEvent addMethodEvent) {
         final MethodDeclaration newMethodDeclaration = addMethodEvent.method;
         final CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(newMethodDeclaration);
-        final Method newMethod = originalCU.getMethodForMethodDeclaration(newMethodDeclaration);
+        final Parametrizable newMethodOrConstructor = originalCU
+                .getMethodOrConstructorForMethodDeclaration(newMethodDeclaration);
         final CompilationUnitAdapter changedCU = this.util
                 .getUnsavedCompilationUnitAdapter(addMethodEvent.typeBeforeAdd);
         final ConcreteClassifier classifierBeforeAdd = changedCU
                 .getConcreteClassifierForTypeDeclaration(addMethodEvent.typeBeforeAdd);
-        final EChange eChange = JaMoPPChangeBuildHelper.createAddMethodChange(newMethod, classifierBeforeAdd);
+        final EChange eChange = JaMoPPChangeBuildHelper.createAddMethodChange(newMethodOrConstructor,
+                classifierBeforeAdd);
         this.util.submitEMFModelChange(eChange, addMethodEvent.method);
     }
 
@@ -166,19 +171,28 @@ public class ChangeResponder implements ChangeEventVisitor {
         this.setLastCallTime();
         final CompilationUnitAdapter originalCU = this.util
                 .getUnsavedCompilationUnitAdapter(changeMethodReturnTypeEvent.original);
-        final Method original = originalCU.getMethodForMethodDeclaration(changeMethodReturnTypeEvent.original);
+        final Parametrizable original = originalCU
+                .getMethodOrConstructorForMethodDeclaration(changeMethodReturnTypeEvent.original);
         final CompilationUnitAdapter cu = this.util
                 .getUnsavedCompilationUnitAdapter(changeMethodReturnTypeEvent.renamed);
-        final Method changed = cu.getMethodForMethodDeclaration(changeMethodReturnTypeEvent.renamed);
-        final EChange eChange = JaMoPPChangeBuildHelper.createChangeMethodReturnTypeChange(original, changed);
-        this.util.submitEMFModelChange(eChange, changeMethodReturnTypeEvent.original);
-
+        final Parametrizable changed = cu
+                .getMethodOrConstructorForMethodDeclaration(changeMethodReturnTypeEvent.renamed);
+        if (changed instanceof Method && original instanceof Method) {
+            final EChange eChange = JaMoPPChangeBuildHelper.createChangeMethodReturnTypeChange((Method) original,
+                    (Method) changed);
+            this.util.submitEMFModelChange(eChange, changeMethodReturnTypeEvent.original);
+        } else {
+            logger.info(
+                    "Change method return type could not be reported. Either original or changed is not instanceof method: orginal: "
+                            + " changed: " + changed);
+        }
     }
 
     @Override
     public void visit(final RemoveMethodEvent removeMethodEvent) {
         final CompilationUnitAdapter originalCU = this.util.getUnsavedCompilationUnitAdapter(removeMethodEvent.method);
-        final Method removedMethod = originalCU.getMethodForMethodDeclaration(removeMethodEvent.method);
+        final Parametrizable removedMethod = originalCU
+                .getMethodOrConstructorForMethodDeclaration(removeMethodEvent.method);
         final CompilationUnitAdapter changedCU = this.util
                 .getUnsavedCompilationUnitAdapter(removeMethodEvent.typeAfterRemove);
         final ConcreteClassifier classifierAfterRemove = changedCU
@@ -225,13 +239,21 @@ public class ChangeResponder implements ChangeEventVisitor {
         this.setLastCallTime();
         final CompilationUnitAdapter originalCU = this.util
                 .getUnsavedCompilationUnitAdapter(renameMethodEvent.original);
-        final Method original = originalCU.getMethodForMethodDeclaration(renameMethodEvent.original);
+        final Parametrizable original = originalCU
+                .getMethodOrConstructorForMethodDeclaration(renameMethodEvent.original);
         final URI uri = this.util.getFirstExistingURI(renameMethodEvent.renamed, renameMethodEvent.original);
         final CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(renameMethodEvent.renamed,
                 uri);
-        final Method changed = changedCU.getMethodForMethodDeclaration(renameMethodEvent.renamed);
-        final EChange eChange = JaMoPPChangeBuildHelper.createRenameMethodChange(original, changed);
-        this.util.submitEMFModelChange(eChange, renameMethodEvent.original);
+        final Parametrizable changed = changedCU.getMethodOrConstructorForMethodDeclaration(renameMethodEvent.renamed);
+        if (changed instanceof Member && original instanceof Member) {
+            final EChange eChange = JaMoPPChangeBuildHelper.createRenameMethodChange((Member) original,
+                    (Member) changed);
+            this.util.submitEMFModelChange(eChange, renameMethodEvent.original);
+        } else {
+            logger.info(
+                    "Could not execute rename method event, cause original or changed is not instance of Member. Original: "
+                            + original + " Changed: " + changed);
+        }
         // this.monitoredEditor.showMessage(UserInteractionType.MODAL,
         // "You just renamed a method.");
     }
@@ -317,17 +339,28 @@ public class ChangeResponder implements ChangeEventVisitor {
                 .getConcreteClassifierForTypeDeclaration(moveMethodEvent.typeMovedFromAfterRemove);
         final ConcreteClassifier classifierMovedToBeforeAdd = originalCU
                 .getConcreteClassifierForTypeDeclaration(moveMethodEvent.typeMovedToBeforeAdd);
-        final Method removedMethod = originalCU.getMethodForMethodDeclaration(moveMethodEvent.original);
-        final Method addedMethod = changedCU.getMethodForMethodDeclaration(moveMethodEvent.moved);
-        final EChange[] eChanges = JaMoPPChangeBuildHelper.createMoveMethodChange(removedMethod,
-                classifierMovedFromAfterRemove, addedMethod, classifierMovedToBeforeAdd);
-        final CompositeChange moveMethodChange = new CompositeChange(new Change[] {});
-        // [0] is remove, [1] is add
-        final EMFModelChange removeMethodChange = this.util.wrapToEMFModelChange(eChanges[0], moveMethodEvent.original);
-        final EMFModelChange addMethodChange = this.util.wrapToEMFModelChange(eChanges[1], moveMethodEvent.moved);
-        moveMethodChange.addChange(removeMethodChange);
-        moveMethodChange.addChange(addMethodChange);
-        this.monitoredEditor.submitChange(moveMethodChange);
+        final Parametrizable removedParametrizable = originalCU
+                .getMethodOrConstructorForMethodDeclaration(moveMethodEvent.original);
+        final Parametrizable addedParametrizable = changedCU
+                .getMethodOrConstructorForMethodDeclaration(moveMethodEvent.moved);
+        if (removedParametrizable instanceof Method && addedParametrizable instanceof Method) {
+            final Method addedMethod = (Method) addedParametrizable;
+            final Method removedMethod = (Method) removedParametrizable;
+
+            final EChange[] eChanges = JaMoPPChangeBuildHelper.createMoveMethodChange(removedMethod,
+                    classifierMovedFromAfterRemove, addedMethod, classifierMovedToBeforeAdd);
+            final CompositeChange moveMethodChange = new CompositeChange(new Change[] {});
+            // [0] is remove, [1] is add
+            final EMFModelChange removeMethodChange = this.util.wrapToEMFModelChange(eChanges[0],
+                    moveMethodEvent.original);
+            final EMFModelChange addMethodChange = this.util.wrapToEMFModelChange(eChanges[1], moveMethodEvent.moved);
+            moveMethodChange.addChange(removeMethodChange);
+            moveMethodChange.addChange(addMethodChange);
+            this.monitoredEditor.submitChange(moveMethodChange);
+        } else {
+            logger.info("could not report move method because either added or removed method is not a method. Added: "
+                    + addedParametrizable + " Removed: " + removedParametrizable);
+        }
     }
 
     @Override
@@ -341,9 +374,12 @@ public class ChangeResponder implements ChangeEventVisitor {
                     + addSuperInterfaceEvent.superType);
             return;
         }
-        final TypeReference implementsTypeRef = changedCU.getImplementsForSuperType((SimpleType) addSuperInterfaceEvent.superType);
-        final ConcreteClassifier affectedClassifier = originalCU.getConcreteClassifierForTypeDeclaration(addSuperInterfaceEvent.baseType);
-        final EChange eChange = JaMoPPChangeBuildHelper.createAddSuperInterfaceChange(affectedClassifier, implementsTypeRef);
+        final TypeReference implementsTypeRef = changedCU
+                .getImplementsForSuperType((SimpleType) addSuperInterfaceEvent.superType);
+        final ConcreteClassifier affectedClassifier = originalCU
+                .getConcreteClassifierForTypeDeclaration(addSuperInterfaceEvent.baseType);
+        final EChange eChange = JaMoPPChangeBuildHelper.createAddSuperInterfaceChange(affectedClassifier,
+                implementsTypeRef);
         this.util.submitEMFModelChange(eChange, addSuperInterfaceEvent.baseType);
     }
 
@@ -358,9 +394,12 @@ public class ChangeResponder implements ChangeEventVisitor {
                     + removeSuperInterfaceEvent.superType);
             return;
         }
-        final TypeReference implementsTypeRef = originalCU.getImplementsForSuperType((SimpleType) removeSuperInterfaceEvent.superType);
-        final ConcreteClassifier affectedClassifier = changedCU.getConcreteClassifierForTypeDeclaration(removeSuperInterfaceEvent.baseType);
-        final EChange eChange = JaMoPPChangeBuildHelper.createRemoveSuperInterfaceChange(affectedClassifier, implementsTypeRef);
+        final TypeReference implementsTypeRef = originalCU
+                .getImplementsForSuperType((SimpleType) removeSuperInterfaceEvent.superType);
+        final ConcreteClassifier affectedClassifier = changedCU
+                .getConcreteClassifierForTypeDeclaration(removeSuperInterfaceEvent.baseType);
+        final EChange eChange = JaMoPPChangeBuildHelper.createRemoveSuperInterfaceChange(affectedClassifier,
+                implementsTypeRef);
         this.util.submitEMFModelChange(eChange, removeSuperInterfaceEvent.baseType);
     }
 
@@ -380,15 +419,17 @@ public class ChangeResponder implements ChangeEventVisitor {
     public void visit(final ChangeMethodParameterEvent changeMethodParameterEvent) {
         final CompilationUnitAdapter originalCU = this.util
                 .getUnsavedCompilationUnitAdapter(changeMethodParameterEvent.original);
-        final Method original = originalCU.getMethodForMethodDeclaration(changeMethodParameterEvent.original);
+        final Parametrizable original = originalCU
+                .getMethodOrConstructorForMethodDeclaration(changeMethodParameterEvent.original);
         final CompilationUnitAdapter cu = this.util
                 .getUnsavedCompilationUnitAdapter(changeMethodParameterEvent.renamed);
-        final Method changed = cu.getMethodForMethodDeclaration(changeMethodParameterEvent.renamed);
+        final Parametrizable changed = cu
+                .getMethodOrConstructorForMethodDeclaration(changeMethodParameterEvent.renamed);
         this.handleParameterChanges(changed, original, original.getParameters(), changed.getParameters(),
                 changeMethodParameterEvent.original);
     }
 
-    private void handleParameterChanges(final Method methodAfterRemove, final Method methodBeforeAdd,
+    private void handleParameterChanges(final Parametrizable methodAfterRemove, final Parametrizable methodBeforeAdd,
             final List<Parameter> oldParameters, final List<Parameter> newParameters, final ASTNode oldNode) {
         final CompositeChange compositeChange = new CompositeChange(new Change[] {});
         for (final Parameter oldParameter : oldParameters) {
@@ -408,14 +449,24 @@ public class ChangeResponder implements ChangeEventVisitor {
         this.setLastCallTime();
         final CompilationUnitAdapter originalCU = this.util
                 .getUnsavedCompilationUnitAdapter(changeMethodModifierEvent.original);
-        final Method originalMethod = originalCU.getMethodForMethodDeclaration(changeMethodModifierEvent.original);
+        final Parametrizable originalMethod = originalCU
+                .getMethodOrConstructorForMethodDeclaration(changeMethodModifierEvent.original);
         final CompilationUnitAdapter changedCU = this.util
                 .getUnsavedCompilationUnitAdapter(changeMethodModifierEvent.renamed);
-        final Method changedMethod = changedCU.getMethodForMethodDeclaration(changeMethodModifierEvent.renamed);
-
-        final CompositeChange change = this.buildModifierChanges(originalMethod, changedMethod,
-                originalMethod.getModifiers(), changedMethod.getModifiers(), changeMethodModifierEvent.original);
-        this.monitoredEditor.submitChange(change);
+        final Parametrizable changedMethod = changedCU
+                .getMethodOrConstructorForMethodDeclaration(changeMethodModifierEvent.renamed);
+        if (originalMethod instanceof Modifiable && changedMethod instanceof Modifiable) {
+            final Modifiable originalModifiable = (Modifiable) originalMethod;
+            final Modifiable changedModifiable = (Modifiable) changedMethod;
+            final CompositeChange change = this.buildModifierChanges(originalMethod, changedMethod,
+                    originalModifiable.getModifiers(), changedModifiable.getModifiers(),
+                    changeMethodModifierEvent.original);
+            this.monitoredEditor.submitChange(change);
+        } else {
+            logger.info(
+                    "ChangeMethodModifiersEvent type could not be reported. Either original or changed is not instanceof Modifiable: orginal: "
+                            + originalMethod + " changed: " + changedMethod);
+        }
     }
 
     @Override

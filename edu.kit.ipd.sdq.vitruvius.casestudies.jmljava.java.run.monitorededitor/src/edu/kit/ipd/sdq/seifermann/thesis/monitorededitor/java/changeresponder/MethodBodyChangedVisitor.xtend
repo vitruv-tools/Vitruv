@@ -16,9 +16,9 @@ class MethodBodyChangedVisitor extends VisitorBase<MethodBodyChangedEvent> {
 	}
 	
 	override protected visitInternal(MethodBodyChangedEvent changeClassifyingEvent, ChangeSubmitter submitter) {
-		val originalMethod = changeClassifyingEvent.originalCompilationUnit.getMethodForMethodDeclaration(changeClassifyingEvent.originalElement)
-		val changedMethod = changeClassifyingEvent.changedCompilationUnit.getMethodForMethodDeclaration(changeClassifyingEvent.changedElement)
-
+		val originalMethod = changeClassifyingEvent.originalCompilationUnit.getMethodOrConstructorForMethodDeclaration(changeClassifyingEvent.originalElement)
+		val changedMethod = changeClassifyingEvent.changedCompilationUnit.getMethodOrConstructorForMethodDeclaration(changeClassifyingEvent.changedElement)
+ 
 		val compositeChange = new CompositeChange()
 		val changeURI = VURI.getInstance(originalMethod.eResource)
 

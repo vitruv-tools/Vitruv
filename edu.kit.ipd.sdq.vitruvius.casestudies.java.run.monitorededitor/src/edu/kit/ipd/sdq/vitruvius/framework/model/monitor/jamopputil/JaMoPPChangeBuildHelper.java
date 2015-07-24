@@ -14,9 +14,11 @@ import org.emftext.language.java.containers.ContainersFactory;
 import org.emftext.language.java.containers.Package;
 import org.emftext.language.java.imports.Import;
 import org.emftext.language.java.members.Field;
+import org.emftext.language.java.members.Member;
 import org.emftext.language.java.members.Method;
 import org.emftext.language.java.modifiers.Modifier;
 import org.emftext.language.java.parameters.Parameter;
+import org.emftext.language.java.parameters.Parametrizable;
 import org.emftext.language.java.types.TypeReference;
 import org.emftext.language.java.types.TypedElement;
 
@@ -36,7 +38,8 @@ public class JaMoPPChangeBuildHelper {
 
     private static final String NAME_ATTRIBUTE = "name";
 
-    private static <T extends NamedElement> EChange createRenameChange(final T originalEObject, final T renamedEObject) {
+    private static <T extends NamedElement> EChange createRenameChange(final T originalEObject,
+            final T renamedEObject) {
         final UpdateSingleValuedEAttribute<String> updateEAttribute = AttributeFactory.eINSTANCE
                 .createUpdateSingleValuedEAttribute();
         updateEAttribute.setOldAffectedEObject(originalEObject);
@@ -51,11 +54,12 @@ public class JaMoPPChangeBuildHelper {
         return updateEAttribute;
     }
 
-    public static EChange createRenameMethodChange(final Method originalMethod, final Method renamedMethod) {
+    public static EChange createRenameMethodChange(final Member originalMethod, final Member renamedMethod) {
         return createRenameChange(originalMethod, renamedMethod);
     }
 
-    public static EChange createRenameParameterChange(final Parameter originalParameter, final Parameter renamedParameter) {
+    public static EChange createRenameParameterChange(final Parameter originalParameter,
+            final Parameter renamedParameter) {
         return createRenameChange(originalParameter, renamedParameter);
     }
 
@@ -67,7 +71,8 @@ public class JaMoPPChangeBuildHelper {
         return createRenameChange(originalClass, renamedClass);
     }
 
-    public static EChange createRenameInterfaceChange(final Interface originalInterface, final Interface renamedInterface) {
+    public static EChange createRenameInterfaceChange(final Interface originalInterface,
+            final Interface renamedInterface) {
         return createRenameChange(originalInterface, renamedInterface);
     }
 
@@ -88,7 +93,8 @@ public class JaMoPPChangeBuildHelper {
     }
 
     private static EChange createChangeTypeChange(final TypedElement original, final TypedElement changed) {
-        final ReplaceNonRootEObjectSingle<TypeReference> updateEReference = ContainmentFactory.eINSTANCE.createReplaceNonRootEObjectSingle();
+        final ReplaceNonRootEObjectSingle<TypeReference> updateEReference = ContainmentFactory.eINSTANCE
+                .createReplaceNonRootEObjectSingle();
         updateEReference.setOldAffectedEObject(original);
         updateEReference.setNewAffectedEObject(changed);
         final EReference typeReference = original.getTypeReference().eContainmentFeature();
@@ -99,7 +105,8 @@ public class JaMoPPChangeBuildHelper {
     }
 
     private static EChange createChangeSuperClassChange(final Class changedClass, final TypeReference superClass) {
-        final ReplaceNonRootEObjectSingle<TypeReference> updateEReference = ContainmentFactory.eINSTANCE.createReplaceNonRootEObjectSingle();
+        final ReplaceNonRootEObjectSingle<TypeReference> updateEReference = ContainmentFactory.eINSTANCE
+                .createReplaceNonRootEObjectSingle();
         updateEReference.setOldAffectedEObject(changedClass);
         updateEReference.setNewAffectedEObject(superClass.eContainer());
         final EReference superClassReference = superClass.eContainmentFeature();
@@ -109,7 +116,8 @@ public class JaMoPPChangeBuildHelper {
         return updateEReference;
     }
 
-    private static EChange createAddSuperTypeChange(final ConcreteClassifier originalBase, final TypeReference superType) {
+    private static EChange createAddSuperTypeChange(final ConcreteClassifier originalBase,
+            final TypeReference superType) {
         return createAddNonRootEObjectInListChange(superType, originalBase);
     }
 
@@ -121,11 +129,13 @@ public class JaMoPPChangeBuildHelper {
         return createDeleteNonRootEObjectInListChange(removedClass, afterChange);
     }
 
-    public static EChange createCreateInterfaceChange(final Interface newInterface, final CompilationUnit beforeChange) {
+    public static EChange createCreateInterfaceChange(final Interface newInterface,
+            final CompilationUnit beforeChange) {
         return createAddNonRootEObjectInListChange(newInterface, beforeChange);
     }
 
-    public static EChange createRemovedInterfaceChange(final Interface removedInterface, final CompilationUnit afterChange) {
+    public static EChange createRemovedInterfaceChange(final Interface removedInterface,
+            final CompilationUnit afterChange) {
         return createDeleteNonRootEObjectInListChange(removedInterface, afterChange);
     }
 
@@ -137,19 +147,20 @@ public class JaMoPPChangeBuildHelper {
         return createDeleteNonRootEObjectInListChange(imp, afterChange);
     }
 
-    public static EChange createAddMethodChange(final Method newMethod, final ConcreteClassifier beforeChange) {
+    public static EChange createAddMethodChange(final Parametrizable newMethod, final ConcreteClassifier beforeChange) {
         return createAddNonRootEObjectInListChange(newMethod, beforeChange);
     }
 
-    public static EChange createRemoveMethodChange(final Method deletedMethod, final ConcreteClassifier afterChange) {
+    public static EChange createRemoveMethodChange(final Parametrizable deletedMethod,
+            final ConcreteClassifier afterChange) {
         return createDeleteNonRootEObjectInListChange(deletedMethod, afterChange);
     }
 
-    public static EChange createAddParameterChange(final Parameter newParameter, final Method beforeChange) {
+    public static EChange createAddParameterChange(final Parameter newParameter, final Parametrizable beforeChange) {
         return createAddNonRootEObjectInListChange(newParameter, beforeChange);
     }
 
-    public static EChange createRemoveParameterChange(final Parameter oldParameter, final Method afterChange) {
+    public static EChange createRemoveParameterChange(final Parameter oldParameter, final Parametrizable afterChange) {
         return createDeleteNonRootEObjectInListChange(oldParameter, afterChange);
     }
 
@@ -169,23 +180,26 @@ public class JaMoPPChangeBuildHelper {
         return createDeleteNonRootEObjectInListChange(field, afterChange);
     }
 
-    public static EChange createAddSuperInterfaceChange(final ConcreteClassifier classifierBeforeAdd, final TypeReference implementsTypeRef) {
+    public static EChange createAddSuperInterfaceChange(final ConcreteClassifier classifierBeforeAdd,
+            final TypeReference implementsTypeRef) {
         return createAddNonRootEObjectInListChange(implementsTypeRef, classifierBeforeAdd);
     }
 
-    public static EChange createRemoveSuperInterfaceChange(final ConcreteClassifier classifierAfterDelete, final TypeReference implementsTypeRef) {
+    public static EChange createRemoveSuperInterfaceChange(final ConcreteClassifier classifierAfterDelete,
+            final TypeReference implementsTypeRef) {
         return createDeleteNonRootEObjectInListChange(implementsTypeRef, classifierAfterDelete);
     }
 
     private static <T extends EObject> EChange createAddNonRootEObjectInListChange(final T createdEObject,
             final EObject containerBeforeAdd) {
-        final CreateNonRootEObjectInList<T> createChange = ContainmentFactory.eINSTANCE.createCreateNonRootEObjectInList();
+        final CreateNonRootEObjectInList<T> createChange = ContainmentFactory.eINSTANCE
+                .createCreateNonRootEObjectInList();
         createChange.setNewAffectedEObject(createdEObject.eContainer());
         createChange.setOldAffectedEObject(containerBeforeAdd);
         final EReference containingReference = (EReference) createdEObject.eContainingFeature();
         @SuppressWarnings("unchecked")
-        final
-        int index = ((EList<EObject>)createChange.getNewAffectedEObject().eGet(containingReference)).indexOf(createdEObject);
+        final int index = ((EList<EObject>) createChange.getNewAffectedEObject().eGet(containingReference))
+                .indexOf(createdEObject);
         createChange.setAffectedFeature(containingReference);
         createChange.setIndex(index);
         createChange.setNewValue(createdEObject);
@@ -194,13 +208,14 @@ public class JaMoPPChangeBuildHelper {
 
     private static <T extends EObject> EChange createDeleteNonRootEObjectInListChange(final T deletedEObject,
             final EObject containerAfterDelete) {
-        final DeleteNonRootEObjectInList<T> deleteChange = ContainmentFactory.eINSTANCE.createDeleteNonRootEObjectInList();
+        final DeleteNonRootEObjectInList<T> deleteChange = ContainmentFactory.eINSTANCE
+                .createDeleteNonRootEObjectInList();
         deleteChange.setOldAffectedEObject(deletedEObject.eContainer());
         deleteChange.setNewAffectedEObject(containerAfterDelete);
         final EReference containingReference = (EReference) deletedEObject.eContainingFeature();
         @SuppressWarnings("unchecked")
-        final
-        int index = ((EList<EObject>)deleteChange.getOldAffectedEObject().eGet(containingReference)).indexOf(deletedEObject);
+        final int index = ((EList<EObject>) deleteChange.getOldAffectedEObject().eGet(containingReference))
+                .indexOf(deletedEObject);
         deleteChange.setAffectedFeature(containingReference);
         deleteChange.setIndex(index);
         deleteChange.setOldValue(deletedEObject);
@@ -231,8 +246,9 @@ public class JaMoPPChangeBuildHelper {
         return createRenameChange(originalPackage, renamedPackage);
     }
 
-    public static EChange[] createMoveMethodChange(final Method removedMethod, final ConcreteClassifier movedFromAfterRemove,
-            final Method addedMethod, final ConcreteClassifier movedToBeforeAdd) {
+    public static EChange[] createMoveMethodChange(final Method removedMethod,
+            final ConcreteClassifier movedFromAfterRemove, final Method addedMethod,
+            final ConcreteClassifier movedToBeforeAdd) {
         final EChange removeMethodChange = JaMoPPChangeBuildHelper.createRemoveMethodChange(removedMethod,
                 movedFromAfterRemove);
         final EChange addMethodChange = JaMoPPChangeBuildHelper.createAddMethodChange(addedMethod, movedToBeforeAdd);

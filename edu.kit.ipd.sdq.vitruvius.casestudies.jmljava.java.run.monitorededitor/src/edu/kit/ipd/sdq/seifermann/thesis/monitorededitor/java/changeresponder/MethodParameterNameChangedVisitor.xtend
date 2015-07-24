@@ -14,11 +14,11 @@ class MethodParameterNameChangedVisitor extends VisitorBase<MethodParameterNameC
 	}
 	
 	override protected visitInternal(MethodParameterNameChangedEvent changeClassifyingEvent, ChangeSubmitter submitter) {
-		val originalMethod = changeClassifyingEvent.originalCompilationUnit.getMethodForMethodDeclaration(changeClassifyingEvent.originalElement)
-		val changedMethod = changeClassifyingEvent.changedCompilationUnit.getMethodForMethodDeclaration(changeClassifyingEvent.changedElement)
+		val originalMethod = changeClassifyingEvent.originalCompilationUnit.getMethodOrConstructorForMethodDeclaration(changeClassifyingEvent.originalElement)
+		val changedMethod = changeClassifyingEvent.changedCompilationUnit.getMethodOrConstructorForMethodDeclaration(changeClassifyingEvent.changedElement)
 		val originalParam = originalMethod.parameters.findFirst[name.equals(changeClassifyingEvent.paramOriginal.name.identifier)]
 		val changedParam = changedMethod.parameters.findFirst[name.equals(changeClassifyingEvent.paramChanged.name.identifier)]
-		
+		 
 		val change = AttributeFactory.eINSTANCE.createUpdateSingleValuedEAttribute
 		change.newAffectedEObject = changedParam
 		change.oldAffectedEObject = originalParam

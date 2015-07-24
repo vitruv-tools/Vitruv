@@ -27,7 +27,7 @@ import org.emftext.language.java.types.NamespaceClassifierReference
 import org.emftext.language.java.types.PrimitiveType
 
 /**
- * TUID calculator and resolver for the JaMoPP meta-model.
+ * TUID calculator and resolver for the JaMoPP meta-model. 
  */
 class JaMoPPTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResolver<JavaRoot> {
 
