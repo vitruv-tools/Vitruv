@@ -46,27 +46,6 @@
          unpack="false"/>
 
    <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.design.mir.language"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.design.mir.language.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.design.mir.language.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="edu.kit.ipd.sdq.vitruvius.framework.design.mir.manager"
          download-size="0"
          install-size="0"
@@ -194,6 +173,27 @@
 
    <plugin
          id="edu.kit.ipd.sdq.vitruvius.framework.vsum"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="edu.kit.ipd.sdq.vitruvius.framework.mir"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="edu.kit.ipd.sdq.vitruvius.framework.mir.executor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="edu.kit.ipd.sdq.vitruvius.framework.mir.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
