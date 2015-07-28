@@ -7,7 +7,7 @@
 	 <rm:locator searchPathRef="vitruv" failOnError="true" pattern="^org\.palladiosimulator\..*" />
 	
    <rm:searchPath name="vitruv">
-	  <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="svn" source="false" mutable="false">
+	  <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="svn" source="true">
 	 	<rm:uri format="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk#{0}">
         <bc:propertyRef key="buckminster.component" />
     	</rm:uri>
