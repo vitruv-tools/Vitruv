@@ -5,11 +5,12 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.emftext.language.java.members.ClassMethod;
 import org.emftext.language.java.members.Method;
-import org.somox.gast2seff.visitors.AbstractFunctionClassificationStrategy;
-
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.OperationSignature;
+import org.somox.gast2seff.visitors.AbstractFunctionClassificationStrategy;
+
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.BasicComponentFinding;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.JaMoPP2PCMUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 
 /**
@@ -20,8 +21,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceIns
  */
 public class FunctionClassificationStrategyForPackageMapping extends AbstractFunctionClassificationStrategy {
 
-    private static final Logger logger = Logger.getLogger(FunctionClassificationStrategyForPackageMapping.class
-            .getSimpleName());
+    private static final Logger logger = Logger
+            .getLogger(FunctionClassificationStrategyForPackageMapping.class.getSimpleName());
 
     private final BasicComponentFinding basicComponentFinding;
     private final CorrespondenceInstance correspondenceInstance;
@@ -40,6 +41,7 @@ public class FunctionClassificationStrategyForPackageMapping extends AbstractFun
      */
     @Override
     protected boolean isExternalCall(final Method method) {
+        JaMoPP2PCMUtils.normalizeURI(method);
         final Set<OperationSignature> correspondingSignatures = this.correspondenceInstance
                 .getCorrespondingEObjectsByType(method, OperationSignature.class);
         if (null != correspondingSignatures && !correspondingSignatures.isEmpty()) {

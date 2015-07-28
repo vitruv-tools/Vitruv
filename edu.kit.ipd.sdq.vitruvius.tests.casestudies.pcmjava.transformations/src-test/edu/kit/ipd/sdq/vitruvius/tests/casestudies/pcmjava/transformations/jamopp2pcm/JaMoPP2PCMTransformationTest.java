@@ -55,6 +55,7 @@ import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.containers.ContainersFactory;
 import org.emftext.language.java.containers.Package;
 import org.emftext.language.java.members.ClassMethod;
+import org.emftext.language.java.members.Field;
 import org.emftext.language.java.members.Member;
 import org.emftext.language.java.members.Method;
 import org.emftext.language.java.types.TypeReference;
@@ -693,10 +694,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     protected OperationProvidedRole addImplementsCorrespondingToOperationProvidedRoleToClass(final String className,
             final String implementingInterfaceName) throws Throwable {
         final ICompilationUnit classCompilationUnit = this.findICompilationUnitWithClassName(className);
-        final ICompilationUnit interfaceCompilationUnit = this
-                .findICompilationUnitWithClassName(implementingInterfaceName);
-        final String namespace = interfaceCompilationUnit.getType(implementingInterfaceName).getFullyQualifiedName();
-        classCompilationUnit.createImport(namespace, null, null);
+        this.importCompilationUnitWithName(implementingInterfaceName, classCompilationUnit);
         final IType classType = classCompilationUnit.getType(className);
         final String newSource = " implements " + implementingInterfaceName;
         int offset = classType.getSourceRange().getOffset();
@@ -716,6 +714,34 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
             }
         }
         throw new RuntimeException("Could not find a operation provided role for the newly created implmenets");
+    }
+
+    private void importCompilationUnitWithName(final String implementingInterfaceName,
+            final ICompilationUnit classCompilationUnit) throws Throwable, JavaModelException {
+        final ICompilationUnit interfaceCompilationUnit = this
+                .findICompilationUnitWithClassName(implementingInterfaceName);
+        final String namespace = interfaceCompilationUnit.getType(implementingInterfaceName).getFullyQualifiedName();
+        classCompilationUnit.createImport(namespace, null, null);
+    }
+
+    protected <T> T addFieldToClassWithName(final String className, final String fieldType, final String fieldName,
+            final Class<T> correspondingType) throws Throwable {
+        final ICompilationUnit icu = this.findICompilationUnitWithClassName(className);
+        this.importCompilationUnitWithName(fieldType, icu);
+        final IType iClass = icu.getAllTypes()[0];
+        final int offset = this.getOffsetForClassifierManipulation(iClass);
+        final String fieldStr = "private " + fieldType + " " + fieldName + ";";
+        final InsertEdit insertEdit = new InsertEdit(offset, fieldStr);
+        this.editCompilationUnit(icu, insertEdit);
+        TestUtil.waitForSynchronization();
+        final Field jaMoPPField = this.getJaMoPPFieldFromClass(icu, fieldName);
+        return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(jaMoPPField, correspondingType);
+    }
+
+    protected Field getJaMoPPFieldFromClass(final ICompilationUnit icu, final String fieldName) {
+        final ConcreteClassifier cc = this.getJaMoPPClassifierForVURI(VURI.getInstance(icu.getResource()));
+        final Field field = (Field) cc.getMembersByName(fieldName).get(0);
+        return field;
     }
 
 }

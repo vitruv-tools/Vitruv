@@ -77,7 +77,7 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
         final ResourceDemandingSEFF newSeffElements = this.executeSoMoXForMethod(basicComponent);
 
         // 3)
-        this.connectCreatedSeffWithOldSEFF(newSeffElements);
+        this.connectCreatedSeffWithOldSEFF(newSeffElements, ci);
 
         // 4)
         this.createNewCorrespondences(ci, emfChangeResult, newSeffElements, basicComponent);
@@ -106,24 +106,44 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
         emfChangeResult.getExistingObjectsToSave().add(bcVURI);
     }
 
-    private void connectCreatedSeffWithOldSEFF(final ResourceDemandingSEFF newSeffElements) {
-        newSeffElements.getSteps_Behaviour();
-        final ResourceDemandingBehaviour rdBehavior = this.insertAfterAbstractAction
-                .getResourceDemandingBehaviour_AbstractAction();
-        final int insertIndex = rdBehavior.getSteps_Behaviour().indexOf(this.insertAfterAbstractAction);
+    private void connectCreatedSeffWithOldSEFF(final ResourceDemandingSEFF newSeffElements,
+            final CorrespondenceInstance ci) {
+        final ResourceDemandingBehaviour rdBehavior = this.findRdBehaviorToInsertElements(ci);
+        if (null == rdBehavior) {
+            return;
+        }
+        int insertIndex = 0;
+        if (null != this.insertAfterAbstractAction
+                && -1 != rdBehavior.getSteps_Behaviour().indexOf(this.insertAfterAbstractAction)) {
+            insertIndex = rdBehavior.getSteps_Behaviour().indexOf(this.insertAfterAbstractAction);
+        }
         if (0 == insertIndex) {
             // add a StartAction
             final AbstractAction startAction = SeffFactory.eINSTANCE.createStartAction();
             newSeffElements.getSteps_Behaviour().add(0, startAction);
         }
-        if (insertIndex == rdBehavior.getSteps_Behaviour().size() - 1) {
-            // add a stop action
-            final AbstractAction stopAction = SeffFactory.eINSTANCE.createStopAction();
-            newSeffElements.getSteps_Behaviour().add(stopAction);
+        if (!this.isLastElementStopAction(rdBehavior)) {
+            if (insertIndex == rdBehavior.getSteps_Behaviour().size() - 1 || null == this.insertAfterAbstractAction) {
+                // add a stop action if the last element is not a stop action and it was inserted at
+                // the
+                // end of the seff or
+                // insertAfterAbstractAction is null (which means there was no correspondence
+                // before)
+                final AbstractAction stopAction = SeffFactory.eINSTANCE.createStopAction();
+                newSeffElements.getSteps_Behaviour().add(stopAction);
+            }
         }
-
         rdBehavior.getSteps_Behaviour().addAll(insertIndex, newSeffElements.getSteps_Behaviour());
         VisitorUtils.connectActions(rdBehavior);
+    }
+
+    private boolean isLastElementStopAction(final ResourceDemandingBehaviour rdBehavior) {
+        if (rdBehavior.getSteps_Behaviour().isEmpty()) {
+            return false;
+        }
+        final AbstractAction lastAction = rdBehavior.getSteps_Behaviour()
+                .get(rdBehavior.getSteps_Behaviour().size() - 1);
+        return lastAction instanceof AbstractAction;
     }
 
     private void removeCorrespondingAbstractActions(final CorrespondenceInstance ci,
@@ -141,6 +161,20 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
                 EcoreUtil.remove(correspondingEObject);
             }
         }
+    }
 
+    private ResourceDemandingBehaviour findRdBehaviorToInsertElements(final CorrespondenceInstance ci) {
+        if (null != this.insertAfterAbstractAction) {
+            final ResourceDemandingBehaviour rdBehavior = this.insertAfterAbstractAction
+                    .getResourceDemandingBehaviour_AbstractAction();
+            return rdBehavior;
+        }
+        final Set<ResourceDemandingSEFF> correspondingSeffs = ci.getCorrespondingEObjectsByType(this.oldMethod,
+                ResourceDemandingSEFF.class);
+        if (null == correspondingSeffs || correspondingSeffs.isEmpty()) {
+            logger.warn("No SEFF found for method " + this.oldMethod
+                    + ". Could not create ResourceDemandingBehavoir to insert SEFF elements");
+        }
+        return correspondingSeffs.iterator().next();
     }
 }

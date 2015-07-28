@@ -74,14 +74,15 @@ public class PCMJaMoPPPOJOTransformationExecuter extends PCMJaMoPPTransformation
         this.changeSynchronizer.addMapping(new ClassMappingTransformation());
         this.changeSynchronizer.addMapping(new InterfaceMappingTransformation());
         this.changeSynchronizer.addMapping(new MethodMappingTransformation());
-        this.changeSynchronizer
-        .addMapping(new edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ParameterMappingTransformation());
+        this.changeSynchronizer.addMapping(
+                new edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ParameterMappingTransformation());
         this.changeSynchronizer.addMapping(new ModifierMappingTransformation());
         this.changeSynchronizer.addMapping(new FieldMappingTransformation());
         this.changeSynchronizer.addMapping(new ClassMethodMappingTransformation());
         this.changeSynchronizer.addMapping(new TypeReferenceMappingTransformation());
 
-        //execute initializeChangeSynchronizer as last statement: it sets the user interactor for all mappings
+        // execute initializeChangeSynchronizer as last statement: it sets the user interactor for
+        // all mappings
         super.initializeChangeSynchronizer();
     }
 

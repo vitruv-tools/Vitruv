@@ -1,9 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
-import org.palladiosimulator.pcm.core.entity.InterfaceProvidingRequiringEntity
-import org.palladiosimulator.pcm.repository.RepositoryComponent
-import org.palladiosimulator.pcm.repository.RepositoryFactory
-import org.palladiosimulator.pcm.system.SystemFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
@@ -24,7 +20,10 @@ import org.emftext.language.java.members.Field
 import org.emftext.language.java.modifiers.Modifier
 import org.emftext.language.java.modifiers.Public
 import org.emftext.language.java.modifiers.impl.PublicImpl
-import org.palladiosimulator.pcm.repository.OperationProvidedRole
+import org.palladiosimulator.pcm.core.entity.InterfaceProvidingRequiringEntity
+import org.palladiosimulator.pcm.repository.RepositoryComponent
+import org.palladiosimulator.pcm.repository.RepositoryFactory
+import org.palladiosimulator.pcm.system.SystemFactory
 
 /**
  * Maps a JaMoPP class to a PCM Components or System. 
@@ -77,7 +76,6 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 		if (!classIsPublic(jaMoPPClass)) {
 			return null;
 		}
-
 		// ii) + iv)
 		val jaMoPPPackage = PCM2JaMoPPUtils.
 			getContainingPackageFromCorrespondenceInstance(jaMoPPClass, correspondenceInstance)

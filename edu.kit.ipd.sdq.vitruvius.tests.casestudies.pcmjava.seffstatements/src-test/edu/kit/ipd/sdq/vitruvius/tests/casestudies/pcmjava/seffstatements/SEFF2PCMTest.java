@@ -10,7 +10,11 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.text.edits.InsertEdit;
 import org.emftext.language.java.members.Method;
 import org.junit.Test;
+import org.palladiosimulator.pcm.repository.OperationRequiredRole;
+import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.repository.Repository;
+import org.palladiosimulator.pcm.seff.AbstractAction;
+import org.palladiosimulator.pcm.seff.ExternalCallAction;
 import org.palladiosimulator.pcm.seff.InternalAction;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.seff.SeffFactory;
@@ -28,7 +32,17 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
     private static final String UPLOAD = "upload";
     private static final String DOWNLOAD = "download";
 
+    @SuppressWarnings("unused")
     private Repository repository;
+    @SuppressWarnings("unused")
+    private OperationSignature httpDownloadOpSig;
+    @SuppressWarnings("unused")
+    private OperationSignature httpUploadOpSig;
+    @SuppressWarnings("unused")
+    private OperationSignature uploadOpSig;
+    @SuppressWarnings("unused")
+    private OperationSignature downloadOpSig;
+    private OperationRequiredRole webGUIRequiresIMediaStoreRole;
 
     /**
      * Set up simple media store, which can be used for the tests. It consists of two components
@@ -46,14 +60,24 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
     public void testAddNormalStatement() throws Throwable {
         final String text = "final int i = 5;\nfinal int j = i + 1;";
 
+        // test SEFF creation
         final ResourceDemandingSEFF seff = this.editWebGUIDownloadMethod(text);
 
-        final ResourceDemandingSEFF expectedSeff = SeffFactory.eINSTANCE.createResourceDemandingSEFF();
-        expectedSeff.getSteps_Behaviour().add(SeffFactory.eINSTANCE.createStartAction());
         final InternalAction ia = SeffFactory.eINSTANCE.createInternalAction();
-        expectedSeff.getSteps_Behaviour().add(ia);
-        expectedSeff.getSteps_Behaviour().add(SeffFactory.eINSTANCE.createStopAction());
+        final ResourceDemandingSEFF expectedSeff = this.createSEFFWithAbstractActions(ia);
+        AssertSEFFHelper.assertSeffEquals(seff, expectedSeff);
+    }
 
+    @Test
+    public void testAddExternalCallStatement() throws Throwable {
+        final String text = "i" + MEDIA_STORE + "." + DOWNLOAD + "();";
+
+        final ResourceDemandingSEFF seff = this.editWebGUIDownloadMethod(text);
+
+        final ExternalCallAction eca = SeffFactory.eINSTANCE.createExternalCallAction();
+        eca.setCalledService_ExternalService(this.downloadOpSig);
+        eca.setRole_ExternalService(this.webGUIRequiresIMediaStoreRole);
+        final ResourceDemandingSEFF expectedSeff = this.createSEFFWithAbstractActions(eca);
         AssertSEFFHelper.assertSeffEquals(seff, expectedSeff);
     }
 
@@ -80,9 +104,21 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
         return pcmJaMoPPTransformationTest.createMediaStore(MEDIA_STORE, WEBGUI, DOWNLOAD, UPLOAD);
     }
 
-    @Test
-    public void createMediaStoreViaCodeTest() throws Throwable {
-        // nothing todo --> Media store is created in before test
+    /*
+     * @Test public void createMediaStoreViaCodeTest() throws Throwable { // nothing todo --> Media
+     * store is created in before test }
+     */
+
+    private ResourceDemandingSEFF createSEFFWithAbstractActions(final AbstractAction... abstractActions) {
+        final ResourceDemandingSEFF expectedSeff = SeffFactory.eINSTANCE.createResourceDemandingSEFF();
+        expectedSeff.getSteps_Behaviour().add(SeffFactory.eINSTANCE.createStartAction());
+
+        for (final AbstractAction abstractAction : abstractActions) {
+            expectedSeff.getSteps_Behaviour().add(abstractAction);
+        }
+
+        expectedSeff.getSteps_Behaviour().add(SeffFactory.eINSTANCE.createStopAction());
+        return expectedSeff;
     }
 
     private Repository createMediaStoreViaCode() throws Throwable {
@@ -108,10 +144,11 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
         final String httpUploadMethodName = "httpUpload";
 
         // create interface methods
-        super.addMethodToInterfaceWithCorrespondence(webGuiInterfaceName, httpDownloadMethodName);
-        super.addMethodToInterfaceWithCorrespondence(webGuiInterfaceName, httpUploadMethodName);
-        super.addMethodToInterfaceWithCorrespondence(mediaStoreInterfaceName, uploadMethodName);
-        super.addMethodToInterfaceWithCorrespondence(mediaStoreInterfaceName, downloadMethodName);
+        this.httpDownloadOpSig = super.addMethodToInterfaceWithCorrespondence(webGuiInterfaceName,
+                httpDownloadMethodName);
+        this.httpUploadOpSig = super.addMethodToInterfaceWithCorrespondence(webGuiInterfaceName, httpUploadMethodName);
+        this.uploadOpSig = super.addMethodToInterfaceWithCorrespondence(mediaStoreInterfaceName, uploadMethodName);
+        this.downloadOpSig = super.addMethodToInterfaceWithCorrespondence(mediaStoreInterfaceName, downloadMethodName);
 
         final String mediaStoreClassName = MEDIA_STORE + "Impl";
         final String webGUIClassName = WEBGUI + "Impl";
@@ -126,6 +163,10 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
         this.addClassMethodToClassThatOverridesInterfaceMethod(webGUIClassName, httpDownloadMethodName);
         this.addClassMethodToClassThatOverridesInterfaceMethod(mediaStoreClassName, uploadMethodName);
         this.addClassMethodToClassThatOverridesInterfaceMethod(mediaStoreClassName, downloadMethodName);
+
+        // create requiredRole from webgui to IMediaStore
+        this.webGUIRequiresIMediaStoreRole = this.addFieldToClassWithName(webGUIClassName, mediaStoreInterfaceName,
+                "i" + MEDIA_STORE, OperationRequiredRole.class);
         return repo;
     }
 

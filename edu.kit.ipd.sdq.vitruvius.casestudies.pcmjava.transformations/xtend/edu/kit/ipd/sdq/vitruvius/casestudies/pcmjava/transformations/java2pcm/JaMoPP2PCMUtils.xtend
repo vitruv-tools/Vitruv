@@ -356,12 +356,12 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 
 	def public static EObject[] checkAndAddOperationRequiredRole(TypedElement typedElement,
 		CorrespondenceInstance correspondenceInstance, UserInteracting userInteracting) {
-		val Type type = getTargetClassifierFromTypeReference(typedElement.typeReference)
+		val Type type = getTargetClassifierFromImplementsReferenceAndNormalizeURI(typedElement.typeReference)
 		if (null == type) {
 			return null
 		}
 		val Set<EObject> newCorrespondingEObjects = new HashSet
-		val fieldTypeCorrespondences = correspondenceInstance.getAllCorrespondingEObjects(typedElement)
+		val fieldTypeCorrespondences = correspondenceInstance.getAllCorrespondingEObjects(type)
 		val correspondingInterfaces = fieldTypeCorrespondences.filter(typeof(OperationInterface))
 		var RepositoryComponent repoComponent = null
 		if (!correspondingInterfaces.nullOrEmpty) {
@@ -422,13 +422,17 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 		if (null == interfaceClassifier) {
 			return null
 		}
-		val resource = interfaceClassifier.eResource
+		normalizeURI(interfaceClassifier)
+		return interfaceClassifier
+	}
+	
+	def public static normalizeURI(EObject eObject){
+		val resource = eObject.eResource
 		val resourceSet = resource.resourceSet
 		val uri = resource.URI
 		val uriConverter = resourceSet.URIConverter
 		val normalizedURI = uriConverter.normalize(uri)
 		resource.URI = normalizedURI
-		return interfaceClassifier
 	}
 	
 }

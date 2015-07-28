@@ -193,7 +193,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 		logger.warn(
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
-				"transformation")
+				"transformation. EObject: " + eObject)
 		return null
 	}
 

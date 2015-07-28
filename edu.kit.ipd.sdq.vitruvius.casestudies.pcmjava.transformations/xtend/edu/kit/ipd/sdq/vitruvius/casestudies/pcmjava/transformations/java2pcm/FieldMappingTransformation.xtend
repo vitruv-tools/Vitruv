@@ -69,19 +69,20 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 		if (null != correspondingOperationRequiredRoles) {
 			newCorrespondingEObjects.addAll(correspondingOperationRequiredRoles)
 		}
-		val correspondingComposedEnitys = fieldContainingClassifierCorrespondences.filter(
+		val correspondingComposedProvidingRequiringEntitys = fieldContainingClassifierCorrespondences.filter(
 			typeof(ComposedProvidingRequiringEntity))
-		if (correspondingComposedEnitys.nullOrEmpty &&
+		if (!correspondingComposedProvidingRequiringEntitys.nullOrEmpty &&
 			null != JaMoPP2PCMUtils.getTargetClassifierFromTypeReference(field.typeReference)) {
 			//new field is in a ComposedProvidingRequiringEntity
 			val classifierOfField = JaMoPP2PCMUtils.getTargetClassifierFromTypeReference(field.typeReference)
 			val correspondingComponents = correspondenceInstance.
 				getCorrespondingEObjectsByType(classifierOfField, RepositoryComponent)
 			if(!correspondingComponents.nullOrEmpty){
+				
 				val AssemblyContext assemblyContext = CompositionFactory.eINSTANCE.createAssemblyContext
 				assemblyContext.entityName = field.name
 				assemblyContext.encapsulatedComponent__AssemblyContext = correspondingComponents.get(0)
-				assemblyContext.parentStructure__AssemblyContext = correspondingComposedEnitys.get(0)
+				assemblyContext.parentStructure__AssemblyContext = correspondingComposedProvidingRequiringEntitys.get(0)
 				newCorrespondingEObjects.addAll(assemblyContext)
 			}
 		}

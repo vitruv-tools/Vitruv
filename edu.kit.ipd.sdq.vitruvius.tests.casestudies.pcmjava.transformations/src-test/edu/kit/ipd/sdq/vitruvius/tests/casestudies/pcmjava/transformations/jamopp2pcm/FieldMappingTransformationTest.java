@@ -1,20 +1,24 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.jamopp2pcm;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Set;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.InsertEdit;
-import org.emftext.language.java.classifiers.ConcreteClassifier;
 import org.emftext.language.java.members.Field;
 import org.junit.Test;
-
 import org.palladiosimulator.pcm.repository.CompositeDataType;
 import org.palladiosimulator.pcm.repository.InnerDeclaration;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import org.palladiosimulator.pcm.repository.OperationRequiredRole;
+
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
@@ -28,7 +32,7 @@ public class FieldMappingTransformationTest extends JaMoPP2PCMTransformationTest
         final String fieldName = "stringField";
 
         final InnerDeclaration innerDeclaration = this.addFieldToClassWithName(cdt.getEntityName(), fieldType,
-                fieldName);
+                fieldName, InnerDeclaration.class);
 
         this.assertInnerDeclaration(innerDeclaration, fieldType, fieldName);
     }
@@ -39,7 +43,7 @@ public class FieldMappingTransformationTest extends JaMoPP2PCMTransformationTest
         final String fieldName = "stringField";
         super.addFirstPackage();
         final CompositeDataType cdt = super.addClassThatCorrespondsToCompositeDatatype();
-        this.addFieldToClassWithName(cdt.getEntityName(), fieldTypeName, fieldName);
+        this.addFieldToClassWithName(cdt.getEntityName(), fieldTypeName, fieldName, InnerDeclaration.class);
 
         final String newFieldName = fieldName + PCM2JaMoPPTestUtils.RENAME;
         final InnerDeclaration newInnerDeclaration = this.renameFieldInClass(cdt.getEntityName(), fieldName,
@@ -54,7 +58,7 @@ public class FieldMappingTransformationTest extends JaMoPP2PCMTransformationTest
         final String fieldName = "stringField";
         super.addFirstPackage();
         final CompositeDataType cdt = super.addClassThatCorrespondsToCompositeDatatype();
-        this.addFieldToClassWithName(cdt.getEntityName(), fieldTypeName, fieldName);
+        this.addFieldToClassWithName(cdt.getEntityName(), fieldTypeName, fieldName, InnerDeclaration.class);
 
         final String newFieldTypeName = "int";
         final InnerDeclaration newInnerDeclaration = this.changeFieldTypeInClass(cdt.getEntityName(), fieldName,
@@ -79,22 +83,59 @@ public class FieldMappingTransformationTest extends JaMoPP2PCMTransformationTest
     }
 
     @Test
-    public void testAddFieldWithTypeOfBasicComponentToClass() {
-        fail("Not yet implemented");
+    public void testAddFieldWithTypeOfInterface() throws Throwable {
+        this.createRepoBasicComponentAndInterface();
+
+        // create required role from PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + "Requiring" to
+        // Interface
+        final OperationRequiredRole orrToInterface = this.addFieldToClassWithName(
+                PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + "Requiring" + "Impl", PCM2JaMoPPTestUtils.INTERFACE_NAME,
+                "i" + PCM2JaMoPPTestUtils.INTERFACE_NAME, OperationRequiredRole.class);
+
+        this.assertOperationRequiredRole(orrToInterface);
     }
 
-    private InnerDeclaration addFieldToClassWithName(final String className, final String fieldType,
-            final String fieldName) throws Throwable {
-        final ICompilationUnit icu = super.findICompilationUnitWithClassName(className);
-        final IType iClass = icu.getAllTypes()[0];
-        final int offset = super.getOffsetForClassifierManipulation(iClass);
-        final String fieldStr = "private " + fieldType + " " + fieldName + ";";
-        final InsertEdit insertEdit = new InsertEdit(offset, fieldStr);
-        super.editCompilationUnit(icu, insertEdit);
-        TestUtil.waitForSynchronization();
-        final Field jaMoPPField = this.getJaMoPPFieldFromClass(icu, fieldName);
-        return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(jaMoPPField,
-                InnerDeclaration.class);
+    @Test
+    public void testAddFieldWithTypeOfBasicComponentToClass() throws Throwable {
+        this.createRepoBasicComponentAndInterface();
+
+        // create required role from PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + "Requiring" to
+        // PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + "Providing"
+        final OperationRequiredRole orrToInterface = this.addFieldToClassWithName(
+                PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + "Requiring" + "Impl",
+                PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + "Providing" + "Impl",
+                PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME.toLowerCase() + "Providing", OperationRequiredRole.class);
+
+        this.assertOperationRequiredRole(orrToInterface);
+    }
+
+    private void createRepoBasicComponentAndInterface() throws Throwable, CoreException, InterruptedException {
+        // create main package
+        super.addFirstPackage();
+        // create package and classes
+        this.addPackageAndImplementingClass(PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + "Providing");
+        this.addPackageAndImplementingClass(PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + "Requiring");
+        // create interface
+        final boolean throwExceptionIfFails = true;
+        super.createInterfaceInPackage("contracts", throwExceptionIfFails, PCM2JaMoPPTestUtils.INTERFACE_NAME);
+        // create provided role from providing compontent to interface
+        super.addImplementsCorrespondingToOperationProvidedRoleToClass(
+                PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + "Providing" + "Impl", PCM2JaMoPPTestUtils.INTERFACE_NAME);
+    }
+
+    private void assertOperationRequiredRole(final OperationRequiredRole operationRequiredRole) throws Throwable {
+        final Set<EObject> correspondingEObjects = this.getCorrespondenceInstance()
+                .getAllCorrespondingEObjects(operationRequiredRole);
+        boolean fieldFound = false;
+        for (final EObject correspondingEObject : correspondingEObjects) {
+            if (correspondingEObject instanceof Field) {
+                fieldFound = true;
+            } else {
+                fail("OperationRequiredRole should correspond to field only, but corresonds also to: "
+                        + correspondingEObject);
+            }
+        }
+        assertTrue("OperationRequiredRole does not correspond to a field", fieldFound);
     }
 
     private InnerDeclaration renameFieldInClass(final String className, final String fieldName,
@@ -134,12 +175,6 @@ public class FieldMappingTransformationTest extends JaMoPP2PCMTransformationTest
         final Field newJaMoPPField = this.getJaMoPPFieldFromClass(icu, fieldName);
         return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(newJaMoPPField,
                 InnerDeclaration.class);
-    }
-
-    private Field getJaMoPPFieldFromClass(final ICompilationUnit icu, final String fieldName) {
-        final ConcreteClassifier cc = super.getJaMoPPClassifierForVURI(VURI.getInstance(icu.getResource()));
-        final Field field = (Field) cc.getMembersByName(fieldName).get(0);
-        return field;
     }
 
     private void assertInnerDeclaration(final InnerDeclaration innerDeclaration, final String fieldType,
