@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="edu.kit.ipd.sdq.vitruvius.buckminster"
-      label="Vitruvius Buckminster"
-      version="0.0.0"
+      label="Vitruvius"
+      version="1.0.0.qualifier"
       provider-name="SDQ">
 
    <description url="http://www.example.com/description">
@@ -16,40 +16,12 @@
       [Enter Copyright Description here.]
    </copyright>
 
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
-   </license>
+   <url>
+      <discovery label="Mars" url="http://download.eclipse.org/releases/mars"/>
+   </url>
 
    <includes
-         id="edu.kit.ipd.sdq.vitruvius.casestudies.emf.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="edu.kit.ipd.sdq.vitruvius.casestudies.gmf.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="edu.kit.ipd.sdq.vitruvius.casestudies.java.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="edu.kit.ipd.sdq.vitruvius.framework.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="edu.kit.ipd.sdq.vitruvius.tests.casestudies.gmf.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="edu.kit.ipd.sdq.vitruvius.tests.casestudies.java.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="edu.kit.ipd.sdq.vitruvius.tests.feature"
+         id="edu.kit.ipd.sdq.vitruvius.feature"
          version="0.0.0"/>
 
 </feature>
