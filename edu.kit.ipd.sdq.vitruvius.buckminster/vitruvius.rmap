@@ -8,7 +8,7 @@
 	
    <rm:searchPath name="vitruv">
 	  <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="svn" source="false" mutable="false">
-	 	<rm:uri format="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/{0}">
+	 	<rm:uri format="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk#{0}">
         <bc:propertyRef key="buckminster.component" />
     	</rm:uri>
 	  </rm:provider>
