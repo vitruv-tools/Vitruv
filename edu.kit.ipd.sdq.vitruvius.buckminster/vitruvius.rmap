@@ -1,97 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rm:rmap xmlns:bc="http://www.eclipse.org/buckminster/Common-1.0" xmlns:rm="http://www.eclipse.org/buckminster/RMap-1.0">
-	 <rm:locator searchPathRef="vitruv" failOnError="false" />
-	 <rm:locator searchPathRef="jamopp" failOnError="false" />
-	 <rm:locator searchPathRef="luna" failOnError="false" />
-	 <rm:locator searchPathRef="modelling" failOnError="false" />
-	 <rm:locator searchPathRef="palladio-core" failOnError="false"/>
-	 <rm:locator searchPathRef="profiles" failOnError="false"/>
-	 <rm:locator pattern="^org\.modelversioning\.*" searchPathRef="EMFProfiles" failOnError="false"/>
-	 <rm:locator pattern="^org\.eclipse\.xtend.*" searchPathRef="xtext" failOnError="false"/>
-	 <rm:locator pattern="^org\.eclipse\.emf\..*" searchPathRef="emf" failOnError="false"/>
-	 
-	 <rm:locator searchPathRef="emftext" failOnError="false"/>
-	 
-   <rm:searchPath name="emftext">
-	  <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
-	 	<rm:property key="buckminster.source" value="false"/>
-	    <rm:property key="buckminster.mutable" value="false"/>
-	  	<rm:uri format="http://emftext.org/update/"/>
-	  </rm:provider>
-  </rm:searchPath>
-   
+
+	<rm:property key="resolveFrom" value="release"/>
+
+	 <rm:locator searchPathRef="vitruv" failOnError="true" pattern="^edu\.kit\.ipd\.sdq\.vitruvius\..*" />
+	 <rm:locator searchPathRef="vitruv" failOnError="true" pattern="^org\.palladiosimulator\..*" />
+	
    <rm:searchPath name="vitruv">
 	  <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="svn" source="false" mutable="false">
 	 	<rm:uri format="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Vitruvius/trunk/{0}">
         <bc:propertyRef key="buckminster.component" />
     	</rm:uri>
 	  </rm:provider>
-  </rm:searchPath>
-   
-   <rm:searchPath name="jamopp">
-	  <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
-	 	<rm:property key="buckminster.source" value="false"/>
-	    <rm:property key="buckminster.mutable" value="false"/>
-	  	<rm:uri format="http://jamopp.org/update_trunk/"/>
-	  </rm:provider>
-  </rm:searchPath>
-  
-  <rm:searchPath name="palladio-core">
-    <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
-      <rm:property key="buckminster.source" value="false"/>
-      <rm:property key="buckminster.mutable" value="false"/>
-      <rm:uri format="http://sdqweb.ipd.kit.edu/eclipse/palladio/nightly/"/>
-    </rm:provider>
-  </rm:searchPath>
-  
-  <rm:searchPath name="profiles">
-    <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
-      <rm:property key="buckminster.source" value="false"/>
-      <rm:property key="buckminster.mutable" value="false"/>
-      <rm:uri format="https://sdqweb.ipd.kit.edu/eclipse/mdsdprofiles/nightly/"/>
-    </rm:provider>
-  </rm:searchPath>
-  
-   <rm:searchPath name="EMFProfiles">
-    <rm:provider readerType="git" componentTypes="osgi.bundle,eclipse.feature" resolutionFilter="">
-        <rm:uri format="{0}/plugins,{1}">
-          <bc:propertyRef key="workspace.root" />
-          <bc:propertyRef key="buckminster.component" />
-        </rm:uri>
-      <rm:property key="git.remote.uri" value="https://code.google.com/a/eclipselabs.org/p/emf-profiles"/>      
-    </rm:provider>
-  </rm:searchPath>
-  
-  <rm:searchPath name="luna">
-    <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
-      <rm:property key="buckminster.source" value="false"/>
-      <rm:property key="buckminster.mutable" value="false"/>
-      <rm:uri format="http://download.eclipse.org/releases/luna/"/>
-    </rm:provider>
-  </rm:searchPath>
-  
-  <rm:searchPath name="modelling">
-    <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
-      <rm:property key="buckminster.source" value="false"/>
-      <rm:property key="buckminster.mutable" value="false"/>
-      <rm:uri format="http://download.eclipse.org/modeling/emf/updates/releases/"/>
-    </rm:provider>
-  </rm:searchPath>
-  
-  <rm:searchPath name="xtext">
-    <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
-      <rm:property key="buckminster.source" value="false"/>
-      <rm:property key="buckminster.mutable" value="false"/>
-      <rm:uri format="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
-    </rm:provider>
-  </rm:searchPath>
-  
-  <rm:searchPath name="emf">
-    <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
-      <rm:property key="buckminster.source" value="false"/>
-      <rm:property key="buckminster.mutable" value="false"/>
-      <rm:uri format="http://download.eclipse.org/modeling/emf/emf/updates/releases/"/>
-    </rm:provider>
-  </rm:searchPath>
-  
+	  <rm:provider resolutionFilter="(resolveFrom=nightly)" componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
+      <rm:uri format="https://sdqweb.ipd.kit.edu/eclipse/vitruvius/nightly/"/>
+	    </rm:provider>
+	    <rm:provider resolutionFilter="(resolveFrom=release)" componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
+	      <rm:uri format="https://sdqweb.ipd.kit.edu/eclipse/vitruvius/releases/latest/"/>
+	    </rm:provider>
+   </rm:searchPath>	 
+
 </rm:rmap>
