@@ -15,6 +15,10 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Test;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
+import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 import pcm_mockup.Component;
 import pcm_mockup.Interface;
 import pcm_mockup.Pcm_mockupFactory;
@@ -22,12 +26,6 @@ import pcm_mockup.Repository;
 import uml_mockup.UClass;
 import uml_mockup.UPackage;
 import uml_mockup.Uml_mockupFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
-import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
-import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 public class VSUMTest extends AbstractVSUMTest {
     protected static final String PCM_INSTANCE_URI = "MockupProject/model/My.pcm_mockup";
@@ -103,9 +101,8 @@ public class VSUMTest extends AbstractVSUMTest {
         mi = vsum.getAndLoadModelInstanceOriginal(vuri);
         foundMockInterface = findInterfaceInModelInstance(mi);
 
-        assertTrue(
-                "no interface found in the model instance with uri: " + vuri.getEMFUri() + " and resource: "
-                        + mi.getResource(), null != foundMockInterface);
+        assertTrue("no interface found in the model instance with uri: " + vuri.getEMFUri() + " and resource: "
+                + mi.getResource(), null != foundMockInterface);
     }
 
     @Test
@@ -153,19 +150,6 @@ public class VSUMTest extends AbstractVSUMTest {
         uPackage.getClasses().add(uClass);
         uml_mockup.Interface uInterface = Uml_mockupFactory.eINSTANCE.createInterface();
         uPackage.getInterfaces().add(uInterface);
-        vsum.saveModelInstanceOriginal(vuriUML);
-
-        // create some correspondences
-        CorrespondenceInstance correspondenceInstance = vsum.getCorrespondenceInstanceOriginal(
-                VURI.getInstance(PCM_MM_URI), VURI.getInstance(UML_MM_URI));
-        assertNotNull("Correspondence instance is null", correspondenceInstance);
-        EObjectCorrespondence parrentCorrespondence = correspondenceInstance.createAndAddEObjectCorrespondence(repo,
-                uPackage);
-        correspondenceInstance.createAndAddEObjectCorrespondence(component, uClass, parrentCorrespondence);
-        correspondenceInstance.createAndAddEObjectCorrespondence(mockIf, uInterface, parrentCorrespondence);
-
-        // save instances again in order to trigger saving for CorrespondenceInstance(s)
-        vsum.saveModelInstanceOriginal(vuri);
         vsum.saveModelInstanceOriginal(vuriUML);
 
         return mi;
