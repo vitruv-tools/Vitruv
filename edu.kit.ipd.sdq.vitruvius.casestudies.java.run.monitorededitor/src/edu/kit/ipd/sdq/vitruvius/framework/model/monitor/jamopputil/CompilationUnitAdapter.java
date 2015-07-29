@@ -11,16 +11,19 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
 import org.eclipse.jdt.core.dom.ClassInstanceCreation;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SimpleType;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
+import org.emftext.language.java.annotations.AnnotationInstance;
 import org.emftext.language.java.classifiers.AnonymousClass;
 import org.emftext.language.java.classifiers.Class;
 import org.emftext.language.java.classifiers.ConcreteClassifier;
@@ -29,6 +32,7 @@ import org.emftext.language.java.imports.Import;
 import org.emftext.language.java.instantiations.impl.NewConstructorCallImpl;
 import org.emftext.language.java.members.Field;
 import org.emftext.language.java.members.Member;
+import org.emftext.language.java.modifiers.AnnotableAndModifiable;
 import org.emftext.language.java.parameters.Parameter;
 import org.emftext.language.java.parameters.Parametrizable;
 import org.emftext.language.java.types.ClassifierReference;
@@ -269,5 +273,26 @@ public class CompilationUnitAdapter {
             return "";
         }
         return "";
+    }
+
+    public AnnotationInstance getAnnotationInstanceForMethodAnnotation(final Annotation annotation) {
+        if (null == annotation.getParent() || !(annotation.getParent() instanceof MethodDeclaration)) {
+            logger.info(
+                    "Annoation is null or parent declaration of annotation is not a method declaration. Annotation: "
+                            + annotation + " Parent: " + annotation.getParent());
+            return null;
+        }
+        final MethodDeclaration methodDeclaration = (MethodDeclaration) annotation.getParent();
+        final Parametrizable parametrizable = this.getMethodOrConstructorForMethodDeclaration(methodDeclaration);
+        final AnnotableAndModifiable annotableAndModifiable = (AnnotableAndModifiable) parametrizable;
+        for (final AnnotationInstance annotationInstance : annotableAndModifiable.getAnnotationInstances()) {
+            final String jaMoPPAnnotationName = annotationInstance.getAnnotation().getName();
+            final Name typeName = annotation.getTypeName();
+            final String astName = typeName.toString();
+            if (astName.contains(jaMoPPAnnotationName)) {
+                return annotationInstance;
+            }
+        }
+        return null;
     }
 }

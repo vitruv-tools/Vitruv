@@ -29,12 +29,12 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
 /**
  * @author messinger
- * 
+ *
  *         Utility class to retrieve {@link ASTNode}s that correspond to given {@link IJavaElement}
  *         s. The purpose is to bridge the gap between JDT Java Model and Java AST. ASTs for
  *         CompilationUnits are built if necessary and AST-JavaModel correspondence on node/element
  *         level is declared in {@link JavaModel2ASTCorrespondence}.
- * 
+ *
  */
 public final class JavaModel2AST {
 
@@ -50,26 +50,26 @@ public final class JavaModel2AST {
 
     // in one CompilationUnit type names are unique
     // has to support anonymous types!
-    public static TypeDeclaration getTypeDeclaration(IType itype, CompilationUnit astUnit) {
+    public static TypeDeclaration getTypeDeclaration(final IType itype, final CompilationUnit astUnit) {
         try {
             if (itype.exists() && itype.isAnonymous()) {
                 return null;
             }
-        } catch (JavaModelException e1) {
+        } catch (final JavaModelException e1) {
             e1.printStackTrace();
         }
         TypeDeclaration[] typeDeclarations = filterTypeDeclaration(astUnit.types());
-        Deque<IType> typeHierarchy = getTypeHierarchy(itype);
+        final Deque<IType> typeHierarchy = getTypeHierarchy(itype);
         TypeDeclaration levelASTType = null;
         while (!typeHierarchy.isEmpty()) {
-            IType levelIType = typeHierarchy.pollFirst();
+            final IType levelIType = typeHierarchy.pollFirst();
             try {
 
                 if (typeDeclarations.length == 0) {
                     return null;
                 }
                 levelASTType = matchITypeWithTypeDeclarations(levelIType, typeDeclarations);
-            } catch (JavaModelException e) {
+            } catch (final JavaModelException e) {
                 e.printStackTrace();
                 return null;
             }
@@ -80,18 +80,19 @@ public final class JavaModel2AST {
         return levelASTType;
     }
 
-    public static TypeDeclaration getAnonymousTypeDeclaration(IType anonymousIType, TypeDeclaration oneLevelUpASTType)
-            throws JavaModelException {
-        IMethod parentMethod = (IMethod) anonymousIType.getParent();
-        for (MethodDeclaration astMethod : oneLevelUpASTType.getMethods()) {
+    public static TypeDeclaration getAnonymousTypeDeclaration(final IType anonymousIType,
+            final TypeDeclaration oneLevelUpASTType) throws JavaModelException {
+        final IMethod parentMethod = (IMethod) anonymousIType.getParent();
+        for (final MethodDeclaration astMethod : oneLevelUpASTType.getMethods()) {
             if (JavaModel2ASTCorrespondence.corresponds(parentMethod, astMethod, false)) {
-                ASTNodeByTypeFinder finder = new ASTNodeByTypeFinder(AnonymousClassDeclaration.class);
+                final ASTNodeByTypeFinder finder = new ASTNodeByTypeFinder(AnonymousClassDeclaration.class);
                 astMethod.accept(finder);
-                List<ASTNode> types = finder.getFoundASTNodes();
-                for (ASTNode anonymousClassDeclaration : types) {
+                final List<ASTNode> types = finder.getFoundASTNodes();
+                for (final ASTNode anonymousClassDeclaration : types) {
                     if (JavaModel2ASTCorrespondence.corresponds(anonymousIType,
-                            (AnonymousClassDeclaration) anonymousClassDeclaration))
+                            (AnonymousClassDeclaration) anonymousClassDeclaration)) {
                         return (TypeDeclaration) anonymousClassDeclaration;
+                    }
                 }
             }
         }
@@ -99,13 +100,13 @@ public final class JavaModel2AST {
     }
 
     // ICompilationUnit not parsed yet
-    public static TypeDeclaration getTypeDeclaration(IType itype, ICompilationUnit unit) {
-        CompilationUnit astUnit = parseCompilationUnit(unit);
+    public static TypeDeclaration getTypeDeclaration(final IType itype, final ICompilationUnit unit) {
+        final CompilationUnit astUnit = parseCompilationUnit(unit);
         return getTypeDeclaration(itype, astUnit);
     }
 
-    private static TypeDeclaration[] filterTypeDeclaration(List<Object> types) {
-        List<Object> typeDeclarations = Util.filterBySupertype(types, TypeDeclaration.class);
+    private static TypeDeclaration[] filterTypeDeclaration(final List<Object> types) {
+        final List<Object> typeDeclarations = Util.filterBySupertype(types, TypeDeclaration.class);
         return typeDeclarations.toArray(new TypeDeclaration[typeDeclarations.size()]);
     }
 
@@ -131,17 +132,18 @@ public final class JavaModel2AST {
     // }
 
     // has to support anonymous types!
-    private static TypeDeclaration matchITypeWithTypeDeclarations(IType itype, TypeDeclaration[] typeDeclarations)
-            throws JavaModelException {
-        for (TypeDeclaration typeDeclaration : typeDeclarations) {
-            if (JavaModel2ASTCorrespondence.corresponds(itype, typeDeclaration))
+    private static TypeDeclaration matchITypeWithTypeDeclarations(final IType itype,
+            final TypeDeclaration[] typeDeclarations) throws JavaModelException {
+        for (final TypeDeclaration typeDeclaration : typeDeclarations) {
+            if (JavaModel2ASTCorrespondence.corresponds(itype, typeDeclaration)) {
                 return typeDeclaration;
+            }
         }
         return null;
     }
 
-    private static Deque<IType> getTypeHierarchy(IType itype) {
-        Deque<IType> typeHierarchy = new LinkedList<IType>();
+    private static Deque<IType> getTypeHierarchy(final IType itype) {
+        final Deque<IType> typeHierarchy = new LinkedList<IType>();
         IType level = itype;
         do {
             typeHierarchy.addFirst(level);
@@ -150,131 +152,141 @@ public final class JavaModel2AST {
         return typeHierarchy;
     }
 
-    public static MethodDeclaration getMethodDeclaration(IMethod imethod, CompilationUnit unit) {
-        IType itype = imethod.getDeclaringType();
+    public static MethodDeclaration getMethodDeclaration(final IMethod imethod, final CompilationUnit unit) {
+        final IType itype = imethod.getDeclaringType();
         try {
             if (itype.exists() && itype.isAnonymous()) {
                 return getMethodDeclarationInAnonymousClass(imethod, unit, itype);
             }
-        } catch (JavaModelException e) {
+        } catch (final JavaModelException e) {
             e.printStackTrace();
         }
 
-        TypeDeclaration type = getTypeDeclaration(itype, unit);
-        for (MethodDeclaration method : type.getMethods()) {
-            if (JavaModel2ASTCorrespondence.corresponds(imethod, method, false))
+        final TypeDeclaration type = getTypeDeclaration(itype, unit);
+        for (final MethodDeclaration method : type.getMethods()) {
+            if (JavaModel2ASTCorrespondence.corresponds(imethod, method, false)) {
                 return method;
+            }
         }
         return null;
     }
 
-    private static MethodDeclaration getMethodDeclarationInAnonymousClass(IMethod imethod, CompilationUnit unit,
-            IType itype) {
-        String anonymousClassToString = itype.toString();
-        int indexOfAnonymousClass = Integer.parseInt(anonymousClassToString.substring(
-                anonymousClassToString.indexOf('#') + 1, anonymousClassToString.indexOf('>'))) - 1;
-        IMethod parentIMethod = (IMethod) itype.getParent();
-        MethodDeclaration parentMethodDeclaration = getMethodDeclaration(parentIMethod, unit);
-        ASTNodeByTypeFinder anonFinder = new ASTNodeByTypeFinder(AnonymousClassDeclaration.class);
+    private static MethodDeclaration getMethodDeclarationInAnonymousClass(final IMethod imethod,
+            final CompilationUnit unit, final IType itype) {
+        final String anonymousClassToString = itype.toString();
+        final int indexOfAnonymousClass = Integer.parseInt(anonymousClassToString
+                .substring(anonymousClassToString.indexOf('#') + 1, anonymousClassToString.indexOf('>'))) - 1;
+        final IMethod parentIMethod = (IMethod) itype.getParent();
+        final MethodDeclaration parentMethodDeclaration = getMethodDeclaration(parentIMethod, unit);
+        final ASTNodeByTypeFinder anonFinder = new ASTNodeByTypeFinder(AnonymousClassDeclaration.class);
         parentMethodDeclaration.accept(anonFinder);
-        AnonymousClassDeclaration astAnonymousClass = (AnonymousClassDeclaration) anonFinder.getFoundASTNodes().get(
-                indexOfAnonymousClass);
-        ASTNodeByTypeFinder methodFinder = new ASTNodeByTypeFinder(MethodDeclaration.class);
-        for (Object method : Util.filterBySupertype(astAnonymousClass.bodyDeclarations(), MethodDeclaration.class)) {
-            MethodDeclaration methodDeclaration = (MethodDeclaration) method;
-            if (JavaModel2ASTCorrespondence.corresponds(imethod, methodDeclaration, false))
+        final AnonymousClassDeclaration astAnonymousClass = (AnonymousClassDeclaration) anonFinder.getFoundASTNodes()
+                .get(indexOfAnonymousClass);
+        final ASTNodeByTypeFinder methodFinder = new ASTNodeByTypeFinder(MethodDeclaration.class);
+        for (final Object method : Util.filterBySupertype(astAnonymousClass.bodyDeclarations(),
+                MethodDeclaration.class)) {
+            final MethodDeclaration methodDeclaration = (MethodDeclaration) method;
+            if (JavaModel2ASTCorrespondence.corresponds(imethod, methodDeclaration, false)) {
                 return methodDeclaration;
+            }
         }
         return null;
     }
 
-    public static MethodDeclaration getMethodDeclaration(IMethod imethod) {
-        CompilationUnit astUnit = parseCompilationUnit(imethod.getCompilationUnit());
+    public static MethodDeclaration getMethodDeclaration(final IMethod imethod) {
+        final CompilationUnit astUnit = parseCompilationUnit(imethod.getCompilationUnit());
         return getMethodDeclaration(imethod, astUnit);
     }
 
     // does NOT ignore comments, but AST from ElementChangedEvent does!!
-    public static CompilationUnit parseCompilationUnit(ICompilationUnit unit) {
+    public static CompilationUnit parseCompilationUnit(final ICompilationUnit unit) {
         parser.setSource(unit);
 
-        ASTNode ast = parser.createAST(null);
-        CompilationUnit astUnit = (CompilationUnit) ast;
+        final ASTNode ast = parser.createAST(null);
+        final CompilationUnit astUnit = (CompilationUnit) ast;
         return astUnit;
     }
 
     // does NOT ignore comments, but AST from ElementChangedEvent does!!
-    public static CompilationUnit parseCompilationUnit(char[] source) {
+    public static CompilationUnit parseCompilationUnit(final char[] source) {
         parser.setSource(source);
 
-        ASTNode ast = parser.createAST(null);
-        CompilationUnit astUnit = (CompilationUnit) ast;
+        final ASTNode ast = parser.createAST(null);
+        final CompilationUnit astUnit = (CompilationUnit) ast;
         return astUnit;
     }
 
-    public static ImportDeclaration getImportDeclaration(IImportDeclaration iimportDeclaration,
-            CompilationUnit compilationUnit) {
+    public static ImportDeclaration getImportDeclaration(final IImportDeclaration iimportDeclaration,
+            final CompilationUnit compilationUnit) {
 
-        for (Object importDeclaration : compilationUnit.imports()) {
-            if (JavaModel2ASTCorrespondence.corresponds(iimportDeclaration, (ImportDeclaration) importDeclaration))
+        for (final Object importDeclaration : compilationUnit.imports()) {
+            if (JavaModel2ASTCorrespondence.corresponds(iimportDeclaration, (ImportDeclaration) importDeclaration)) {
                 return (ImportDeclaration) importDeclaration;
+            }
         }
         return null;
     }
 
-    public static ImportDeclaration getImportDeclaration(String importName, CompilationUnit compilationUnit) {
-        for (Object importDec : compilationUnit.imports()) {
-            ImportDeclaration importDeclaration = (ImportDeclaration) importDec;
-            String name = importDeclaration.getName().toString();
-            if (importName.equals(name))
+    public static ImportDeclaration getImportDeclaration(final String importName,
+            final CompilationUnit compilationUnit) {
+        for (final Object importDec : compilationUnit.imports()) {
+            final ImportDeclaration importDeclaration = (ImportDeclaration) importDec;
+            final String name = importDeclaration.getName().toString();
+            if (importName.equals(name)) {
                 return importDeclaration;
+            }
         }
         return null;
     }
 
-    public static FieldDeclaration getFieldDeclarationByName(IField ifield) {
-        CompilationUnit astUnit = parseCompilationUnit(ifield.getCompilationUnit());
+    public static FieldDeclaration getFieldDeclarationByName(final IField ifield) {
+        final CompilationUnit astUnit = parseCompilationUnit(ifield.getCompilationUnit());
         return getFieldDeclarationByName(ifield, astUnit);
     }
 
-    public static FieldDeclaration getFieldDeclarationByName(IField ifield, CompilationUnit compilationUnit) {
-        IType itype = ifield.getDeclaringType();
-        TypeDeclaration type = getTypeDeclaration(itype, compilationUnit);
+    public static FieldDeclaration getFieldDeclarationByName(final IField ifield,
+            final CompilationUnit compilationUnit) {
+        final IType itype = ifield.getDeclaringType();
+        final TypeDeclaration type = getTypeDeclaration(itype, compilationUnit);
 
-        for (FieldDeclaration field : type.getFields()) {
-            if (JavaModel2ASTCorrespondence.weaklyCorresponds(ifield, field))
+        for (final FieldDeclaration field : type.getFields()) {
+            if (JavaModel2ASTCorrespondence.weaklyCorresponds(ifield, field)) {
                 return field;
+            }
         }
         return null;
     }
 
-    public static VariableDeclarationFragment getVariableDeclarationFragmentByName(IField ifield) {
-        CompilationUnit astUnit = parseCompilationUnit(ifield.getCompilationUnit());
+    public static VariableDeclarationFragment getVariableDeclarationFragmentByName(final IField ifield) {
+        final CompilationUnit astUnit = parseCompilationUnit(ifield.getCompilationUnit());
         return getVariableDeclarationFragmentByName(ifield, astUnit);
     }
 
-    public static VariableDeclarationFragment getVariableDeclarationFragmentByName(IField ifield,
-            CompilationUnit compilationUnit) {
-        FieldDeclaration fieldDeclaration = getFieldDeclarationByName(ifield, compilationUnit);
+    public static VariableDeclarationFragment getVariableDeclarationFragmentByName(final IField ifield,
+            final CompilationUnit compilationUnit) {
+        final FieldDeclaration fieldDeclaration = getFieldDeclarationByName(ifield, compilationUnit);
         @SuppressWarnings("unchecked")
-        Iterator<VariableDeclarationFragment> fragmentIterator = fieldDeclaration.fragments().iterator();
+        final Iterator<VariableDeclarationFragment> fragmentIterator = fieldDeclaration.fragments().iterator();
         while (fragmentIterator.hasNext()) {
-            VariableDeclarationFragment fragment = fragmentIterator.next();
-            if (JavaModel2ASTCorrespondence.correspondsByName(ifield, fragment))
+            final VariableDeclarationFragment fragment = fragmentIterator.next();
+            if (JavaModel2ASTCorrespondence.correspondsByName(ifield, fragment)) {
                 return fragment;
+            }
         }
         return null;
     }
-    
-    public static VariableDeclaration getParameterVariableDeclarationByName(ILocalVariable locVar) {
-        CompilationUnit astUnit = parseCompilationUnit(((IMethod)locVar.getParent()).getCompilationUnit());
+
+    public static VariableDeclaration getParameterVariableDeclarationByName(final ILocalVariable locVar) {
+        final CompilationUnit astUnit = parseCompilationUnit(((IMethod) locVar.getParent()).getCompilationUnit());
         return getParameterVariableDeclarationByName(locVar, astUnit);
     }
-    
-    public static VariableDeclaration getParameterVariableDeclarationByName(ILocalVariable locVar, CompilationUnit cu) {
-        IMethod correspondingMethod = (IMethod)locVar.getParent();
-        MethodDeclaration md = getMethodDeclaration(correspondingMethod, cu);
-        for (Object parameter : md.parameters()) {
-            VariableDeclaration vd = (VariableDeclaration)parameter;
+
+    public static VariableDeclaration getParameterVariableDeclarationByName(final ILocalVariable locVar,
+            final CompilationUnit cu) {
+        final IMethod correspondingMethod = (IMethod) locVar.getParent();
+        final MethodDeclaration md = getMethodDeclaration(correspondingMethod, cu);
+        for (final Object parameter : md.parameters()) {
+            final VariableDeclaration vd = (VariableDeclaration) parameter;
             if (vd.getName().getIdentifier().equals(locVar.getElementName())) {
                 return vd;
             }
@@ -282,25 +294,30 @@ public final class JavaModel2AST {
         return null;
     }
 
-    public static FieldDeclaration getFieldDeclarationByFullSignature(IField ifield, CompilationUnit compilationUnit) {
-        IType itype = ifield.getDeclaringType();
-        TypeDeclaration type = getTypeDeclaration(itype, compilationUnit);
+    public static FieldDeclaration getFieldDeclarationByFullSignature(final IField ifield,
+            final CompilationUnit compilationUnit) {
+        final IType itype = ifield.getDeclaringType();
+        final TypeDeclaration type = getTypeDeclaration(itype, compilationUnit);
 
-        for (FieldDeclaration field : type.getFields()) {
+        for (final FieldDeclaration field : type.getFields()) {
             try {
-                if (JavaModel2ASTCorrespondence.strictlyCorresponds(ifield, field))
+                if (JavaModel2ASTCorrespondence.strictlyCorresponds(ifield, field)) {
                     return field;
-            } catch (IllegalArgumentException e) {
+                }
+            } catch (final IllegalArgumentException e) {
                 e.printStackTrace();
-            } catch (JavaModelException e) {
+            } catch (final JavaModelException e) {
                 e.printStackTrace();
             }
         }
         return null;
     }
 
-    public static Annotation getAnnotation(IAnnotation iannotation, MethodDeclaration methodDeclaration) {
-        for (Object modifier : methodDeclaration.modifiers()) {
+    public static Annotation getAnnotation(final IAnnotation iannotation, final MethodDeclaration methodDeclaration) {
+        if (null == methodDeclaration || null == methodDeclaration.modifiers()) {
+            return null;
+        }
+        for (final Object modifier : methodDeclaration.modifiers()) {
             if (modifier instanceof Annotation) {
                 if (JavaModel2ASTCorrespondence.corresponds(iannotation, (Annotation) modifier)) {
                     return (Annotation) modifier;

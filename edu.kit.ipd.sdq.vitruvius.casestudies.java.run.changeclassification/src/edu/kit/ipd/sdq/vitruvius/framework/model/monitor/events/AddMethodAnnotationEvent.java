@@ -1,11 +1,15 @@
 package edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events;
 
 import org.eclipse.jdt.core.dom.Annotation;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
 
 public class AddMethodAnnotationEvent extends AnnotationEvent {
 
-    public AddMethodAnnotationEvent(Annotation annotation) {
+    public final MethodDeclaration methodBeforeAdd;
+
+    public AddMethodAnnotationEvent(final MethodDeclaration methodBeforeAdd, final Annotation annotation) {
         super(annotation);
+        this.methodBeforeAdd = methodBeforeAdd;
     }
 
     @Override
@@ -14,7 +18,7 @@ public class AddMethodAnnotationEvent extends AnnotationEvent {
     }
 
     @Override
-    public void accept(ChangeEventVisitor visitor) {
+    public void accept(final ChangeEventVisitor visitor) {
         visitor.visit(this);
     }
 

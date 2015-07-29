@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SimpleType;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.emftext.language.java.annotations.AnnotationInstance;
 import org.emftext.language.java.classifiers.Class;
 import org.emftext.language.java.classifiers.ConcreteClassifier;
 import org.emftext.language.java.classifiers.Interface;
@@ -23,7 +24,7 @@ import org.emftext.language.java.imports.Import;
 import org.emftext.language.java.members.Field;
 import org.emftext.language.java.members.Member;
 import org.emftext.language.java.members.Method;
-import org.emftext.language.java.modifiers.Modifiable;
+import org.emftext.language.java.modifiers.AnnotableAndModifiable;
 import org.emftext.language.java.modifiers.Modifier;
 import org.emftext.language.java.parameters.Parameter;
 import org.emftext.language.java.parameters.Parametrizable;
@@ -455,9 +456,9 @@ public class ChangeResponder implements ChangeEventVisitor {
                 .getUnsavedCompilationUnitAdapter(changeMethodModifierEvent.renamed);
         final Parametrizable changedMethod = changedCU
                 .getMethodOrConstructorForMethodDeclaration(changeMethodModifierEvent.renamed);
-        if (originalMethod instanceof Modifiable && changedMethod instanceof Modifiable) {
-            final Modifiable originalModifiable = (Modifiable) originalMethod;
-            final Modifiable changedModifiable = (Modifiable) changedMethod;
+        if (originalMethod instanceof AnnotableAndModifiable && changedMethod instanceof AnnotableAndModifiable) {
+            final AnnotableAndModifiable originalModifiable = (AnnotableAndModifiable) originalMethod;
+            final AnnotableAndModifiable changedModifiable = (AnnotableAndModifiable) changedMethod;
             final CompositeChange change = this.buildModifierChanges(originalMethod, changedMethod,
                     originalModifiable.getModifiers(), changedModifiable.getModifiers(),
                     changeMethodModifierEvent.original);
@@ -509,12 +510,12 @@ public class ChangeResponder implements ChangeEventVisitor {
 
         final CompositeChange modifierChanges = new CompositeChange(new Change[] {});
         for (final Modifier removedModifier : originalModifiers) {
-            final EChange eChange = JaMoPPChangeBuildHelper.createRemoveModifierChange(removedModifier,
+            final EChange eChange = JaMoPPChangeBuildHelper.createRemoveAnnotationOrModifierChange(removedModifier,
                     modifiableAfterChange);
             modifierChanges.addChange(this.util.wrapToEMFModelChange(eChange, oldNode));
         }
         for (final Modifier newModifier : changedModifiers) {
-            final EChange eChange = JaMoPPChangeBuildHelper.createAddModifierChange(newModifier,
+            final EChange eChange = JaMoPPChangeBuildHelper.createAddAnnotationOrModifierChange(newModifier,
                     modifiableBeforeChange);
             modifierChanges.addChange(this.util.wrapToEMFModelChange(eChange, oldNode));
         }
@@ -602,16 +603,37 @@ public class ChangeResponder implements ChangeEventVisitor {
 
     @Override
     public void visit(final AddMethodAnnotationEvent addMethodAnnotationEvent) {
-        // TODO
-        final CompilationUnitAdapter originalCU = this.util
-                .getUnsavedCompilationUnitAdapter(addMethodAnnotationEvent.annotation);
+        final CompilationUnitAdapter oldCU = this.util
+                .getUnsavedCompilationUnitAdapter(addMethodAnnotationEvent.methodBeforeAdd);
+        final Parametrizable methodOrConstructor = oldCU
+                .getMethodOrConstructorForMethodDeclaration(addMethodAnnotationEvent.methodBeforeAdd);
 
+        final CompilationUnitAdapter newCu = this.util
+                .getUnsavedCompilationUnitAdapter(addMethodAnnotationEvent.annotation);
+        final AnnotationInstance annotationInstance = newCu
+                .getAnnotationInstanceForMethodAnnotation(addMethodAnnotationEvent.annotation);
+        if (null != annotationInstance) {
+            final EChange eChange = JaMoPPChangeBuildHelper.createAddAnnotationOrModifierChange(annotationInstance,
+                    methodOrConstructor);
+            this.util.submitEMFModelChange(eChange, addMethodAnnotationEvent.annotation);
+        }
     }
 
     @Override
     public void visit(final RemoveMethodAnnotationEvent removeMethodAnnotationEvent) {
-        // TODO Auto-generated method stub
-
+        final CompilationUnitAdapter cuWithAnnotation = this.util
+                .getUnsavedCompilationUnitAdapter(removeMethodAnnotationEvent.annotation);
+        final AnnotationInstance removedAnnotation = cuWithAnnotation
+                .getAnnotationInstanceForMethodAnnotation(removeMethodAnnotationEvent.annotation);
+        if (null != removedAnnotation) {
+            final CompilationUnitAdapter cuWithoutAnnotation = this.util
+                    .getUnsavedCompilationUnitAdapter(removeMethodAnnotationEvent.methodAfterChange);
+            final Parametrizable afterChangeMethod = cuWithoutAnnotation
+                    .getMethodOrConstructorForMethodDeclaration(removeMethodAnnotationEvent.methodAfterChange);
+            final EChange eChange = JaMoPPChangeBuildHelper.createRemoveAnnotationOrModifierChange(removedAnnotation,
+                    afterChangeMethod);
+            this.util.submitEMFModelChange(eChange, removeMethodAnnotationEvent.annotation);
+        }
     }
 
     @Override

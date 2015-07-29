@@ -16,7 +16,7 @@ import org.emftext.language.java.imports.Import;
 import org.emftext.language.java.members.Field;
 import org.emftext.language.java.members.Member;
 import org.emftext.language.java.members.Method;
-import org.emftext.language.java.modifiers.Modifier;
+import org.emftext.language.java.modifiers.AnnotationInstanceOrModifier;
 import org.emftext.language.java.parameters.Parameter;
 import org.emftext.language.java.parameters.Parametrizable;
 import org.emftext.language.java.types.TypeReference;
@@ -164,11 +164,13 @@ public class JaMoPPChangeBuildHelper {
         return createDeleteNonRootEObjectInListChange(oldParameter, afterChange);
     }
 
-    public static EChange createAddModifierChange(final Modifier newModifier, final EObject beforeChange) {
-        return createAddNonRootEObjectInListChange(newModifier, beforeChange);
+    public static EChange createAddAnnotationOrModifierChange(final AnnotationInstanceOrModifier annotationOrModifier,
+            final EObject beforeChange) {
+        return createAddNonRootEObjectInListChange(annotationOrModifier, beforeChange);
     }
 
-    public static EChange createRemoveModifierChange(final Modifier oldModifier, final EObject afterChange) {
+    public static EChange createRemoveAnnotationOrModifierChange(final AnnotationInstanceOrModifier oldModifier,
+            final EObject afterChange) {
         return createDeleteNonRootEObjectInListChange(oldModifier, afterChange);
     }
 

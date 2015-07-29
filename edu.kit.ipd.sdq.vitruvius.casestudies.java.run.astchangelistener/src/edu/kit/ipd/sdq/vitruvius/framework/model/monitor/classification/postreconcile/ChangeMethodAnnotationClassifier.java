@@ -22,49 +22,53 @@ import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.util.JavaModel2AST;
 public class ChangeMethodAnnotationClassifier extends SingleNodeChangeClassifier {
 
     @Override
-    protected List<? extends ChangeClassifyingEvent> classifyChange(IJavaElementDelta delta,
-            CompilationUnit currentCompilationUnit, CompilationUnit oldCompilationUnit) {
-        List<AnnotationEvent> returns = new ArrayList<AnnotationEvent>(1);
-        IJavaElement element = delta.getElement();
+    protected List<? extends ChangeClassifyingEvent> classifyChange(final IJavaElementDelta delta,
+            final CompilationUnit currentCompilationUnit, final CompilationUnit oldCompilationUnit) {
+        final List<AnnotationEvent> returns = new ArrayList<AnnotationEvent>(1);
+        final IJavaElement element = delta.getElement();
         if (element.getElementType() == IJavaElement.METHOD && delta.getKind() == IJavaElementDelta.CHANGED
                 && (delta.getFlags() & IJavaElementDelta.F_ANNOTATIONS) != 0) {
-            IMethod imethod = (IMethod) element;
-            IType itype = (IType) imethod.getParent();
-            int line = CompilationUnitUtil.getLineNumberOfMethod(imethod, itype.getElementName().toString(),
+            final IMethod imethod = (IMethod) element;
+            final IType itype = (IType) imethod.getParent();
+            final int line = CompilationUnitUtil.getLineNumberOfMethod(imethod, itype.getElementName().toString(),
                     currentCompilationUnit);
-            MethodDeclaration changed = JavaModel2AST.getMethodDeclaration((IMethod) element, currentCompilationUnit);
-            for (IJavaElementDelta annotationDelta : delta.getAnnotationDeltas()) {
+            final MethodDeclaration changed = JavaModel2AST.getMethodDeclaration((IMethod) element,
+                    currentCompilationUnit);
+            for (final IJavaElementDelta annotationDelta : delta.getAnnotationDeltas()) {
                 AnnotationEvent event = null;
+                final MethodDeclaration original = CompilationUnitUtil.findMethodDeclarationOnLine(line,
+                        oldCompilationUnit);
                 if (annotationDelta.getKind() == IJavaElementDelta.ADDED) {
-                    event = createAddMethodAnnotationEvent(changed, annotationDelta);
+                    event = this.createAddMethodAnnotationEvent(changed, annotationDelta, original);
                 } else if (annotationDelta.getKind() == IJavaElementDelta.REMOVED) {
-                    MethodDeclaration original = CompilationUnitUtil.findMethodDeclarationOnLine(line,
-                            oldCompilationUnit);
-                    event = createRemoveMethodAnnotationEvent(original, annotationDelta);
+                    event = this.createRemoveMethodAnnotationEvent(original, annotationDelta, changed);
                 }
-                if (event != null)
+                if (event != null) {
                     returns.add(event);
+                }
             }
 
         }
         return returns;
     }
 
-    private RemoveMethodAnnotationEvent createRemoveMethodAnnotationEvent(MethodDeclaration original,
-            IJavaElementDelta annotationDelta) {
-        IAnnotation iannotation = (IAnnotation) annotationDelta.getElement();
-        Annotation astAnnotation = JavaModel2AST.getAnnotation(iannotation, original);
-        if (astAnnotation != null)
-            return new RemoveMethodAnnotationEvent(astAnnotation);
+    private RemoveMethodAnnotationEvent createRemoveMethodAnnotationEvent(final MethodDeclaration original,
+            final IJavaElementDelta annotationDelta, final MethodDeclaration changed) {
+        final IAnnotation iannotation = (IAnnotation) annotationDelta.getElement();
+        final Annotation astAnnotation = JavaModel2AST.getAnnotation(iannotation, original);
+        if (astAnnotation != null) {
+            return new RemoveMethodAnnotationEvent(astAnnotation, changed);
+        }
         return null;
     }
 
-    private AddMethodAnnotationEvent createAddMethodAnnotationEvent(MethodDeclaration changed,
-            IJavaElementDelta annotationDelta) {
-        IAnnotation iannotation = (IAnnotation) annotationDelta.getElement();
-        Annotation astAnnotation = JavaModel2AST.getAnnotation(iannotation, changed);
-        if (astAnnotation != null)
-            return new AddMethodAnnotationEvent(astAnnotation);
+    private AddMethodAnnotationEvent createAddMethodAnnotationEvent(final MethodDeclaration changed,
+            final IJavaElementDelta annotationDelta, final MethodDeclaration oldMethodDeclaration) {
+        final IAnnotation iannotation = (IAnnotation) annotationDelta.getElement();
+        final Annotation astAnnotation = JavaModel2AST.getAnnotation(iannotation, changed);
+        if (astAnnotation != null) {
+            return new AddMethodAnnotationEvent(oldMethodDeclaration, astAnnotation);
+        }
         return null;
     }
 }
