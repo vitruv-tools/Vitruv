@@ -223,24 +223,6 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getCorrespondence_DependentCorrespondences() {
-		return (EReference)correspondenceEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getCorrespondence_Parent() {
-		return (EReference)correspondenceEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getSameTypeCorrespondence() {
 		return sameTypeCorrespondenceEClass;
 	}
@@ -448,8 +430,6 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		createEReference(correspondencesEClass, CORRESPONDENCES__CORRESPONDENCES);
 
 		correspondenceEClass = createEClass(CORRESPONDENCE);
-		createEReference(correspondenceEClass, CORRESPONDENCE__DEPENDENT_CORRESPONDENCES);
-		createEReference(correspondenceEClass, CORRESPONDENCE__PARENT);
 
 		sameTypeCorrespondenceEClass = createEClass(SAME_TYPE_CORRESPONDENCE);
 		createEAttribute(sameTypeCorrespondenceEClass, SAME_TYPE_CORRESPONDENCE__ELEMENT_ATUID);
@@ -558,8 +538,6 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		initEReference(getCorrespondences_Correspondences(), this.getCorrespondence(), null, "correspondences", null, 0, -1, Correspondences.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(correspondenceEClass, Correspondence.class, "Correspondence", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getCorrespondence_DependentCorrespondences(), this.getCorrespondence(), this.getCorrespondence_Parent(), "dependentCorrespondences", null, 0, -1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getCorrespondence_Parent(), this.getCorrespondence(), this.getCorrespondence_DependentCorrespondences(), "parent", null, 0, 1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(sameTypeCorrespondenceEClass, SameTypeCorrespondence.class, "SameTypeCorrespondence", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getSameTypeCorrespondence_ElementATUID(), this.getTUID(), "elementATUID", null, 1, 1, SameTypeCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

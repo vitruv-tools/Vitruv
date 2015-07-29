@@ -56,7 +56,7 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 	 */
 	override removeEObject(EObject eObject) {
 		val correspondingEObjects = correspondenceInstance.getAllCorrespondingEObjects(eObject)
-		correspondenceInstance.removeAllCorrespondences(eObject)
+		correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(eObject)
 		return correspondingEObjects
 
 	}

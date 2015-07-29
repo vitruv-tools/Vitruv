@@ -66,14 +66,12 @@ class JavaClassTransformations extends Java2JMLTransformationBase {
 					return createTransformationChangeResultAborted
 				}
 				
-				val jmlClassDeclarationCorr = getSingleCorrespondence(oldAffectedEObject, jmlNormalClassDecl)
-				
 				if (newValue instanceof Method) {
 					LOGGER.trace("Creating (Method) " + newValue)
 					
 					val jmlMethod = CommonSynchronizerTasks.createJMLMethod(newValue as Method)
 					jmlNormalClassDecl.bodyDeclarations.add(index, jmlMethod)
-					Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Method, jmlMethod, correspondenceInstance, jmlClassDeclarationCorr)
+					Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Method, jmlMethod, correspondenceInstance)
 					changedObjects.add(jmlMethod)
 					changedObjects.add(jmlNormalClassDecl)
 					
@@ -82,7 +80,7 @@ class JavaClassTransformations extends Java2JMLTransformationBase {
 					
 					val jmlField = CommonSynchronizerTasks.createJMLField(newValue as Field)
 					jmlNormalClassDecl.bodyDeclarations.add(index, jmlField)
-					Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Field, jmlField, correspondenceInstance, jmlClassDeclarationCorr)
+					Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Field, jmlField, correspondenceInstance)
 					changedObjects.add(jmlField)
 					changedObjects.add(jmlNormalClassDecl)
 					
@@ -110,8 +108,8 @@ class JavaClassTransformations extends Java2JMLTransformationBase {
 				
 				val jmlModifier = getSingleCorrespondingEObjectOfType(oldValue, RegularModifier)
 				
-				correspondenceInstance.removeAllCorrespondences(oldValue)
-				correspondenceInstance.removeAllCorrespondences(jmlModifier)
+				correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(oldValue)
+				correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(jmlModifier)
 				
 				jmlClassifierDecl.modifiers.remove(jmlModifier)
 
@@ -129,8 +127,8 @@ class JavaClassTransformations extends Java2JMLTransformationBase {
 				
 				var jmlSpecifiedElement = getSingleCorrespondingEObjectOfType(oldValue, JMLSpecifiedElement)
 
-				correspondenceInstance.removeAllCorrespondences(jmlSpecifiedElement)
-				correspondenceInstance.removeAllCorrespondences(oldValue)
+				correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(jmlSpecifiedElement)
+				correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(oldValue)
 				
 				jmlNormalClassDecl.bodyDeclarations.remove(jmlSpecifiedElement)
 

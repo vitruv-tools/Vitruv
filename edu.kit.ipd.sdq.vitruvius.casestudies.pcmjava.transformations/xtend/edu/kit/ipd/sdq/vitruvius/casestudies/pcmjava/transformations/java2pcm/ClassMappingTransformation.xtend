@@ -181,7 +181,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 				correspondences.forEach[correspondingObj|EcoreUtil.remove(correspondingObj)]
 				eObjectsToDelete.addAll(correspondences)
 			}
-			correspondenceInstance.removeAllCorrespondences(jaMoPPClass)
+			correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(jaMoPPClass)
 		}
 		return null
 	}

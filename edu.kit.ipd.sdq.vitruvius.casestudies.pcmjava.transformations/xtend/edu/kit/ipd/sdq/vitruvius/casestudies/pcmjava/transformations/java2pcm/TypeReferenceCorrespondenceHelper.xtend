@@ -8,7 +8,6 @@ import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
@@ -201,8 +200,7 @@ class TypeReferenceCorrespondenceHelper {
 			tcr.addNewCorrespondence(correspondenceInstance, cdt, classifier,
 				JaMoPP2PCMUtils.findParrentCorrepsondenceForPCMElement(cdt, correspondenceInstance))
 		} else {
-			correspondenceInstance.createAndAddEObjectCorrespondence(cdt, classifier,
-				JaMoPP2PCMUtils.findParrentCorrepsondenceForPCMElement(cdt, correspondenceInstance))
+			correspondenceInstance.createAndAddEObjectCorrespondence(cdt, classifier)
 		}
 
 		/*val String message = "Automatically created the corresponding composite data type " + cdt.entityName +

@@ -30,20 +30,20 @@ class CommonSynchronizerTransformations {
 			LOGGER.trace("Replacing " + javaOldValue + " with " + javaNewValue)
 			
 			val jmlModifiableTUIDOld = TUID.getInstance(Utilities.getTUID(jmlModifiable))
-			val jmlMemberDeclWithModifierCorr = CorrespondenceHelper.getSingleCorrespondence(ci, affectedJavaObject, jmlModifiable)
+			CorrespondenceHelper.getSingleCorrespondence(ci, affectedJavaObject, jmlModifiable)
 			
 			val oldJmlModifier = CorrespondenceHelper.getSingleCorrespondingEObjectOfType(ci, javaOldValue, RegularModifier)
 			val oldIndex = jmlModifiable.modifiers.indexOf(oldJmlModifier)
 			
-			ci.removeAllCorrespondences(oldJmlModifier)
-			ci.removeAllCorrespondences(javaOldValue)
+			ci.removeDirectAndChildrenCorrespondencesOnBothSides(oldJmlModifier)
+			ci.removeDirectAndChildrenCorrespondencesOnBothSides(javaOldValue)
 			
 			jmlModifiable.modifiers.remove(oldJmlModifier)
 			
 			val newJmlModifier = CommonSynchronizerTasks.createJMLModifier(javaNewValue)
 			jmlModifiable.modifiers.add(oldIndex, newJmlModifier)
 			
-			Java2JMLCorrespondenceAdder.addCorrespondences(javaNewValue, newJmlModifier, ci, jmlMemberDeclWithModifierCorr)
+			Java2JMLCorrespondenceAdder.addCorrespondences(javaNewValue, newJmlModifier, ci)
 			ci.update(jmlModifiableTUIDOld, TUID.getInstance(Utilities.getTUID(jmlModifiable)))
 			
 			changedObjects.existingObjectsToSave += jmlModifiable
@@ -59,11 +59,11 @@ class CommonSynchronizerTransformations {
 		if (jmlModifiable != null) {
 			LOGGER.trace("Creating " + javaModifier)
 			
-			val jmlModifiableCorr = CorrespondenceHelper.getSingleCorrespondence(ci, affectedJavaObject, jmlModifiable)
+			CorrespondenceHelper.getSingleCorrespondence(ci, affectedJavaObject, jmlModifiable)
 			val jmlModifier = CommonSynchronizerTasks.createJMLModifier(javaModifier)
 			jmlModifiable.modifiers.add(0, jmlModifier)
 			
-			Java2JMLCorrespondenceAdder.addCorrespondences(javaModifier, jmlModifier, ci, jmlModifiableCorr)
+			Java2JMLCorrespondenceAdder.addCorrespondences(javaModifier, jmlModifier, ci)
 			
 			changedObjects.existingObjectsToSave += jmlModifiable			
 		}

@@ -35,8 +35,8 @@ class Java2JMLCorrespondenceAdder {
 	
 	private static val LOGGER = Logger.getLogger(Java2JMLCorrespondenceAdder)
 
-	static def addCorrespondences(CompilationUnit javaRoot, edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit jmlRoot, CorrespondenceInstance ci) {
-		val cuCorrespondence = ci.createAndAddEObjectCorrespondence(javaRoot, jmlRoot)
+	static def addCorrespondencesForCompilationUnit(CompilationUnit javaRoot, edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit jmlRoot, CorrespondenceInstance ci) {
+		ci.createAndAddEObjectCorrespondence(javaRoot, jmlRoot)
 		
 		LOGGER.debug(
 			"Adding root element correspondence between " + javaRoot.name + " and " +
@@ -45,7 +45,7 @@ class Java2JMLCorrespondenceAdder {
 		for (javaImport : javaRoot.imports) {
 			val jmlImport = MatchingModelElementsFinder.findMatchingImport(javaImport, jmlRoot.importdeclaration)
 			if (jmlImport != null) {
-				addCorrespondences(javaImport, jmlImport, ci, cuCorrespondence)
+				addCorrespondences(javaImport, jmlImport, ci)
 			} else {
 				LOGGER.warn("No matching JML import for Java import (" + StringOperationsJaMoPP.getStringRepresentation(javaImport) + ") found.")
 			}
@@ -54,29 +54,29 @@ class Java2JMLCorrespondenceAdder {
 		for (javaClassifier : javaRoot.classifiers.filter(ConcreteClassifier)) {
 			val jmlClass = MatchingModelElementsFinder.findMatchingClassifier(javaClassifier, jmlRoot.typedeclaration)
 			if (jmlClass != null) {
-				addCorrespondences(javaClassifier, jmlClass, ci, cuCorrespondence)
+				addCorrespondences(javaClassifier, jmlClass, ci)
 			} else {
 				LOGGER.warn("No matching JML classifier for Java classifier (" + StringOperationsJaMoPP.getQualifiedName(javaClassifier) + ") found.")
 			}
 		}
 	}
 
-	static def dispatch Void addCorrespondences(Interface javaInterface, ClassifierDeclarationWithModifier cdwm, CorrespondenceInstance ci, Correspondence parentCorrespondence) {
+	static def dispatch Void addCorrespondences(Interface javaInterface, ClassifierDeclarationWithModifier cdwm, CorrespondenceInstance ci) {
 		// class declaration with modifier
-		val cdwmCorr = ci.createAndAddEObjectCorrespondence(javaInterface, cdwm, parentCorrespondence)
+		val cdwmCorr = ci.createAndAddEObjectCorrespondence(javaInterface, cdwm)
 		
 		// modifiers
 		addCorrespondencesForModifier(javaInterface, cdwm, ci, cdwmCorr)
 		
 		// class declaration
 		val nid = cdwm.classOrInterfaceDeclaration as NormalInterfaceDeclaration
-		val nidCorr = ci.createAndAddEObjectCorrespondence(javaInterface, nid, cdwmCorr)
+		val nidCorr = ci.createAndAddEObjectCorrespondence(javaInterface, nid)
 		
 		// implements
 		for (implementedType : javaInterface.extends) {
 			val jmlImplementedType = MatchingModelElementsFinder.findMatchingType(implementedType, 0, nid.implementedTypes)
 			if (jmlImplementedType != null) {
-				ci.createAndAddEObjectCorrespondence(implementedType, jmlImplementedType, nidCorr)
+				ci.createAndAddEObjectCorrespondence(implementedType, jmlImplementedType)
 			} else {
 				LOGGER.warn("No matching JML implemented type for Java implemented type (" + JaMoPPConcreteSyntax.convertToConcreteSyntax(implementedType) + ") found.")
 			}
@@ -88,29 +88,29 @@ class Java2JMLCorrespondenceAdder {
 		
 		val relevantElements = nid.bodyDeclarations.filter(JMLSpecifiedElement).filter[element != null]
 			
-		javaInterface.fields.forEach[javaField | addCorrespondencesNullableJMLElement(javaField, MatchingModelElementsFinder.findMatchingField(javaField, relevantElements), ci, nidCorr)]
-		javaInterface.methods.forEach[javaMethod | addCorrespondencesNullableJMLElement(javaMethod, MatchingModelElementsFinder.findMatchingMethod(javaMethod, relevantElements), ci, nidCorr)]
+		javaInterface.fields.forEach[javaField | addCorrespondencesNullableJMLElement(javaField, MatchingModelElementsFinder.findMatchingField(javaField, relevantElements), ci)]
+		javaInterface.methods.forEach[javaMethod | addCorrespondencesNullableJMLElement(javaMethod, MatchingModelElementsFinder.findMatchingMethod(javaMethod, relevantElements), ci)]
 		
 		return null
 	}
 
-	static def dispatch Void addCorrespondences(Class javaClass, ClassifierDeclarationWithModifier cdwm, CorrespondenceInstance ci, Correspondence parentCorrespondence) {
+	static def dispatch Void addCorrespondences(Class javaClass, ClassifierDeclarationWithModifier cdwm, CorrespondenceInstance ci) {
 		// class declaration with modifier
-		val cdwmCorr = ci.createAndAddEObjectCorrespondence(javaClass, cdwm, parentCorrespondence)
+		val cdwmCorr = ci.createAndAddEObjectCorrespondence(javaClass, cdwm)
 		
 		// modifiers
 		addCorrespondencesForModifier(javaClass, cdwm, ci, cdwmCorr)
 		
 		// class declaration
 		val ncd = cdwm.classOrInterfaceDeclaration as NormalClassDeclaration
-		val ncdCorr = ci.createAndAddEObjectCorrespondence(javaClass, ncd, cdwmCorr)
+		val ncdCorr = ci.createAndAddEObjectCorrespondence(javaClass, ncd)
 		
 		// implements
 		
 		for (implementedType : javaClass.implements) {
 			val jmlImplementedType = MatchingModelElementsFinder.findMatchingType(implementedType, 0, ncd.implementedTypes)
 			if (jmlImplementedType != null) {
-				ci.createAndAddEObjectCorrespondence(implementedType, jmlImplementedType, ncdCorr)
+				ci.createAndAddEObjectCorrespondence(implementedType, jmlImplementedType)
 			} else {
 				LOGGER.warn("No matching JML implemented type for Java implemented type (" + JaMoPPConcreteSyntax.convertToConcreteSyntax(implementedType) + ") found.")
 			}
@@ -118,7 +118,7 @@ class Java2JMLCorrespondenceAdder {
 		
 		// extends
 		if (javaClass.extends != null && ncd.superType != null) {
-			ci.createAndAddEObjectCorrespondence(javaClass.extends, ncd.superType, ncdCorr)
+			ci.createAndAddEObjectCorrespondence(javaClass.extends, ncd.superType)
 		}
 		
 		//TODO type parameters (if needed)
@@ -127,27 +127,27 @@ class Java2JMLCorrespondenceAdder {
 		
 		val relevantElements = ncd.bodyDeclarations.filter(JMLSpecifiedElement).filter[element != null]
 			
-		javaClass.fields.forEach[javaField | addCorrespondencesNullableJMLElement(javaField, MatchingModelElementsFinder.findMatchingField(javaField, relevantElements), ci, ncdCorr)]
-		javaClass.methods.filter[!javaClass.members.filter(Constructor).toList.contains(it)].forEach[javaMethod | addCorrespondencesNullableJMLElement(javaMethod, MatchingModelElementsFinder.findMatchingMethod(javaMethod, relevantElements), ci, ncdCorr)]
-		javaClass.members.filter(Constructor).forEach[javaConstructor | addCorrespondencesNullableJMLElement(javaConstructor, MatchingModelElementsFinder.findMatchingConstructor(javaConstructor, relevantElements), ci, ncdCorr)]
+		javaClass.fields.forEach[javaField | addCorrespondencesNullableJMLElement(javaField, MatchingModelElementsFinder.findMatchingField(javaField, relevantElements), ci)]
+		javaClass.methods.filter[!javaClass.members.filter(Constructor).toList.contains(it)].forEach[javaMethod | addCorrespondencesNullableJMLElement(javaMethod, MatchingModelElementsFinder.findMatchingMethod(javaMethod, relevantElements), ci)]
+		javaClass.members.filter(Constructor).forEach[javaConstructor | addCorrespondencesNullableJMLElement(javaConstructor, MatchingModelElementsFinder.findMatchingConstructor(javaConstructor, relevantElements), ci)]
 		
 		return null
 	}
 	
-	static def Void addCorrespondencesNullableJMLElement(NamedElement javaObject, EObject jmlObject, CorrespondenceInstance ci, Correspondence parentCorrespondence) {
+	static def Void addCorrespondencesNullableJMLElement(NamedElement javaObject, EObject jmlObject, CorrespondenceInstance ci) {
 		if (jmlObject == null) {
 			LOGGER.warn("No matching JML element for Java element (" + StringOperationsJaMoPP.getQualifiedName(javaObject.containingConcreteClassifier) + "." + javaObject.name + ") found.")
 			return null
 		}
-		return addCorrespondences(javaObject, jmlObject, ci, parentCorrespondence)
+		return addCorrespondences(javaObject, jmlObject, ci)
 	}
 	
-	static def dispatch Void addCorrespondences(Method javaMethod, JMLSpecifiedElement jmlSpecifiedElement, CorrespondenceInstance ci, Correspondence parentCorrespondence) {
-		var topLevelCorr = ci.createAndAddEObjectCorrespondence(javaMethod, jmlSpecifiedElement, parentCorrespondence)
+	static def dispatch Void addCorrespondences(Method javaMethod, JMLSpecifiedElement jmlSpecifiedElement, CorrespondenceInstance ci) {
+		var topLevelCorr = ci.createAndAddEObjectCorrespondence(javaMethod, jmlSpecifiedElement)
 		val jmlMemberDeclWithModifier = jmlSpecifiedElement.element
 		
 		// member declaration with modifier
-		val jmlMemberDeclWithModifierCorrespondence = ci.createAndAddEObjectCorrespondence(javaMethod, jmlMemberDeclWithModifier, topLevelCorr)
+		val jmlMemberDeclWithModifierCorrespondence = ci.createAndAddEObjectCorrespondence(javaMethod, jmlMemberDeclWithModifier)
 
 		// modifiers
 		addCorrespondencesForModifier(javaMethod, jmlMemberDeclWithModifier, ci, jmlMemberDeclWithModifierCorrespondence)
@@ -157,22 +157,22 @@ class Java2JMLCorrespondenceAdder {
 		if (jmlMemberDeclWithModifier.memberdecl instanceof MemberDeclaration) {
 			// member declaration
 			val jmlMemberDecl = jmlMemberDeclWithModifier.memberdecl as MemberDeclaration
-			memberDeclarationCorrespondence = ci.createAndAddEObjectCorrespondence(javaMethod, jmlMemberDecl, jmlMemberDeclWithModifierCorrespondence)
+			memberDeclarationCorrespondence = ci.createAndAddEObjectCorrespondence(javaMethod, jmlMemberDecl)
 			
 			// return type
 			if (javaMethod.typeReference != null && jmlMemberDecl.type != null) {
-				ci.createAndAddEObjectCorrespondence(javaMethod.typeReference, jmlMemberDecl.type, memberDeclarationCorrespondence)
+				ci.createAndAddEObjectCorrespondence(javaMethod.typeReference, jmlMemberDecl.type)
 			}
 			
 			jmlMethodDeclaration = jmlMemberDecl.method
 		} else if (jmlMemberDeclWithModifier.memberdecl instanceof GenericMethodOrConstructorDecl) {
 			// member declaration
 			val jmlMemberDecl = jmlMemberDeclWithModifier.memberdecl as GenericMethodOrConstructorDecl
-			memberDeclarationCorrespondence = ci.createAndAddEObjectCorrespondence(javaMethod, jmlMemberDecl, jmlMemberDeclWithModifierCorrespondence)
+			memberDeclarationCorrespondence = ci.createAndAddEObjectCorrespondence(javaMethod, jmlMemberDecl)
 			
 			// return type
 			if (javaMethod.typeReference != null && jmlMemberDecl.type != null) {
-				ci.createAndAddEObjectCorrespondence(javaMethod.typeReference, jmlMemberDecl.type, memberDeclarationCorrespondence)
+				ci.createAndAddEObjectCorrespondence(javaMethod.typeReference, jmlMemberDecl.type)
 			}
 			
 			jmlMethodDeclaration = jmlMemberDecl.method
@@ -180,13 +180,13 @@ class Java2JMLCorrespondenceAdder {
 
 		
 		// method declaration
-		val methodDeclarationCorrespondence = ci.createAndAddEObjectCorrespondence(javaMethod, jmlMethodDeclaration, memberDeclarationCorrespondence)
+		val methodDeclarationCorrespondence = ci.createAndAddEObjectCorrespondence(javaMethod, jmlMethodDeclaration)
 
 		// exceptions
 		for (javaException : javaMethod.exceptions) {
 			val jmlException = MatchingModelElementsFinder.findMatchingException(javaException, jmlMethodDeclaration.exceptions)
 			if (jmlException != null) {
-				ci.createAndAddEObjectCorrespondence(javaException, jmlException, methodDeclarationCorrespondence)
+				ci.createAndAddEObjectCorrespondence(javaException, jmlException)
 			} else {
 				LOGGER.warn("No matching JML exception for Java exception (" + StringOperationsJaMoPP.getStringRepresentation(javaException, 0) + ") found.")
 			}
@@ -194,31 +194,31 @@ class Java2JMLCorrespondenceAdder {
 		
 		// parameters
 		for (var i = 0; i < javaMethod.parameters.size; i++) {
-			addCorrespondences(javaMethod.parameters.get(i), jmlMethodDeclaration.parameters.get(i), ci, methodDeclarationCorrespondence)
+			addCorrespondences(javaMethod.parameters.get(i), jmlMethodDeclaration.parameters.get(i), ci)
 		}
 		
 		return null
 	}
 	
-	static def dispatch Void addCorrespondences(Constructor javaConstructor, JMLSpecifiedElement jmlSpecifiedElement, CorrespondenceInstance ci, Correspondence parentCorrespondence) {
-		var topLevelCorr = ci.createAndAddEObjectCorrespondence(javaConstructor, jmlSpecifiedElement, parentCorrespondence)
+	static def dispatch Void addCorrespondences(Constructor javaConstructor, JMLSpecifiedElement jmlSpecifiedElement, CorrespondenceInstance ci) {
+		var topLevelCorr = ci.createAndAddEObjectCorrespondence(javaConstructor, jmlSpecifiedElement)
 		val jmlMemberDeclWithModifier = jmlSpecifiedElement.element
 		
 		// member declaration with modifier
-		val jmlMemberDeclWithModifierCorrespondence = ci.createAndAddEObjectCorrespondence(javaConstructor, jmlMemberDeclWithModifier, topLevelCorr)
+		val jmlMemberDeclWithModifierCorrespondence = ci.createAndAddEObjectCorrespondence(javaConstructor, jmlMemberDeclWithModifier)
 
 		// modifiers
 		addCorrespondencesForModifier(javaConstructor, jmlMemberDeclWithModifier, ci, jmlMemberDeclWithModifierCorrespondence)
 		
 		// member declaration
 		val jmlMemberDecl = jmlMemberDeclWithModifier.memberdecl as edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Constructor
-		val memberDeclarationCorrespondence = ci.createAndAddEObjectCorrespondence(javaConstructor, jmlMemberDecl, jmlMemberDeclWithModifierCorrespondence)
+		val memberDeclarationCorrespondence = ci.createAndAddEObjectCorrespondence(javaConstructor, jmlMemberDecl)
 		
 		// exceptions
 		for (javaException : javaConstructor.exceptions) {
 			val jmlException = MatchingModelElementsFinder.findMatchingException(javaException, jmlMemberDecl.exceptions)
 			if (jmlException != null) {
-				ci.createAndAddEObjectCorrespondence(javaException, jmlException, memberDeclarationCorrespondence)
+				ci.createAndAddEObjectCorrespondence(javaException, jmlException)
 			} else {
 				LOGGER.warn("No matching JML exception for Java exception (" + StringOperationsJaMoPP.getStringRepresentation(javaException, 0) + ") found.")
 			}
@@ -226,34 +226,34 @@ class Java2JMLCorrespondenceAdder {
 		
 		// parameters
 		for (var i = 0; i < javaConstructor.parameters.size; i++) {
-			addCorrespondences(javaConstructor.parameters.get(i), jmlMemberDecl.parameters.get(i), ci, memberDeclarationCorrespondence)
+			addCorrespondences(javaConstructor.parameters.get(i), jmlMemberDecl.parameters.get(i), ci)
 		}
 		
 		return null
 	}
 	
-	static def dispatch Void addCorrespondences(Field javaField, JMLSpecifiedElement jmlSpecifiedElement, CorrespondenceInstance ci, Correspondence parentCorrespondence) {
-		var topLevelCorr = ci.createAndAddEObjectCorrespondence(javaField, jmlSpecifiedElement, parentCorrespondence)
+	static def dispatch Void addCorrespondences(Field javaField, JMLSpecifiedElement jmlSpecifiedElement, CorrespondenceInstance ci) {
+		var topLevelCorr = ci.createAndAddEObjectCorrespondence(javaField, jmlSpecifiedElement)
 		val jmlMemberDeclWithModifier = jmlSpecifiedElement.element
 		
 		// member declaration with modifier
-		val jmlMemberDeclWithModifierCorrespondence = ci.createAndAddEObjectCorrespondence(javaField, jmlMemberDeclWithModifier, topLevelCorr)
+		val jmlMemberDeclWithModifierCorrespondence = ci.createAndAddEObjectCorrespondence(javaField, jmlMemberDeclWithModifier)
 		
 		// modifiers
 		addCorrespondencesForModifier(javaField, jmlMemberDeclWithModifier, ci, jmlMemberDeclWithModifierCorrespondence)
 		
 		// member declaration
 		val jmlMemberDecl = jmlMemberDeclWithModifier.memberdecl as MemberDeclaration
-		val memberDeclarationCorrespondence = ci.createAndAddEObjectCorrespondence(javaField, jmlMemberDecl, jmlMemberDeclWithModifierCorrespondence)
+		val memberDeclarationCorrespondence = ci.createAndAddEObjectCorrespondence(javaField, jmlMemberDecl)
 		
 		// type
 		if (javaField.typeReference != null) {
-			ci.createAndAddEObjectCorrespondence(javaField.typeReference, jmlMemberDecl.type, memberDeclarationCorrespondence)
+			ci.createAndAddEObjectCorrespondence(javaField.typeReference, jmlMemberDecl.type)
 		}
 		
 		// field declaration
 		val jmlFieldDeclaration = (jmlMemberDeclWithModifier.memberdecl as MemberDeclaration).field
-		ci.createAndAddEObjectCorrespondence(javaField, jmlFieldDeclaration, memberDeclarationCorrespondence)
+		ci.createAndAddEObjectCorrespondence(javaField, jmlFieldDeclaration)
 		
 		for (variableDeclarator : jmlFieldDeclaration.variabledeclarator) {
 			var EObject javaObject;
@@ -273,28 +273,28 @@ class Java2JMLCorrespondenceAdder {
 		return null
 	}
 	
-	static def dispatch Void addCorrespondences(Parameter javaParameter, FormalParameterDecl jmlParameter, CorrespondenceInstance ci, Correspondence parentCorrespondence) {
-		val parameterCorrespondence = ci.createAndAddEObjectCorrespondence(javaParameter, jmlParameter, parentCorrespondence)
+	static def dispatch Void addCorrespondences(Parameter javaParameter, FormalParameterDecl jmlParameter, CorrespondenceInstance ci) {
+		val parameterCorrespondence = ci.createAndAddEObjectCorrespondence(javaParameter, jmlParameter)
 		
-		ci.createAndAddEObjectCorrespondence(javaParameter.typeReference, jmlParameter.type, parameterCorrespondence)
+		ci.createAndAddEObjectCorrespondence(javaParameter.typeReference, jmlParameter.type)
 		
 		addCorrespondencesForModifier(javaParameter, jmlParameter, ci, parameterCorrespondence)
 		
 		return null
 	}
 	
-	static def dispatch Void addCorrespondences(NamespaceClassifierReference javaException, DeclaredException jmlException, CorrespondenceInstance ci, Correspondence parentCorrespondence) {
-		ci.createAndAddEObjectCorrespondence(javaException, jmlException, parentCorrespondence)
+	static def dispatch Void addCorrespondences(NamespaceClassifierReference javaException, DeclaredException jmlException, CorrespondenceInstance ci) {
+		ci.createAndAddEObjectCorrespondence(javaException, jmlException)
 		return null
 	}
 	
-	static def dispatch Void addCorrespondences(Import javaImport, ImportDeclaration jmlImport, CorrespondenceInstance ci, Correspondence parentCorrespondence) {
-		ci.createAndAddEObjectCorrespondence(javaImport, jmlImport, parentCorrespondence)
+	static def dispatch Void addCorrespondences(Import javaImport, ImportDeclaration jmlImport, CorrespondenceInstance ci) {
+		ci.createAndAddEObjectCorrespondence(javaImport, jmlImport)
 		return null
 	}
 	
-	static def dispatch Void addCorrespondences(org.emftext.language.java.modifiers.Modifier javaModifier, Modifier jmlModifier, CorrespondenceInstance ci, Correspondence parentCorrespondence) {
-		ci.createAndAddEObjectCorrespondence(javaModifier, jmlModifier, parentCorrespondence)
+	static def dispatch Void addCorrespondences(org.emftext.language.java.modifiers.Modifier javaModifier, Modifier jmlModifier, CorrespondenceInstance ci) {
+		ci.createAndAddEObjectCorrespondence(javaModifier, jmlModifier)
 		return null
 	}
 	
@@ -303,7 +303,7 @@ class Java2JMLCorrespondenceAdder {
 		for (javaModifier : javaAnnotable.annotationsAndModifiers) {
 			val jmlModifier = MatchingModelElementsFinder.findMatchingModifier(javaModifier, jmlModifiable.modifiers)
 			if (jmlModifier != null) {
-				ci.createAndAddEObjectCorrespondence(javaModifier, jmlModifier, parentCorr)
+				ci.createAndAddEObjectCorrespondence(javaModifier, jmlModifier)
 			} else {
 				LOGGER.warn("No matching JML modifier for Java modifier (" + javaModifier + ") found.")
 			}

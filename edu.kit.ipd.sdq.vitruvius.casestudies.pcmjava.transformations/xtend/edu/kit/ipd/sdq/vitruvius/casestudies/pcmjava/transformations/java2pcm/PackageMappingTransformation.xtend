@@ -148,7 +148,7 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 			val correspondingObjects = correspondenceInstance.claimCorrespondingEObjects(jaMoPPPackage)
 			for (correspondingObject : correspondingObjects) {
 				EcoreUtil.remove(correspondingObject)
-				correspondenceInstance.removeAllCorrespondences(correspondingObject)
+				correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(correspondingObject)
 			}
 		} catch (RuntimeException rte) {
 			logger.info(rte)

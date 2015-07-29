@@ -96,31 +96,13 @@ public interface CorrespondencePackage extends EPackage {
 	int CORRESPONDENCE = 1;
 
 	/**
-	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CORRESPONDENCE__DEPENDENT_CORRESPONDENCES = 0;
-
-	/**
-	 * The feature id for the '<em><b>Parent</b></em>' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CORRESPONDENCE__PARENT = 1;
-
-	/**
 	 * The number of structural features of the '<em>Correspondence</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CORRESPONDENCE_FEATURE_COUNT = 2;
+	int CORRESPONDENCE_FEATURE_COUNT = 0;
 
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.SameTypeCorrespondenceImpl <em>Same Type Correspondence</em>}' class.
@@ -131,24 +113,6 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 */
 	int SAME_TYPE_CORRESPONDENCE = 2;
-
-	/**
-	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SAME_TYPE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES = CORRESPONDENCE__DEPENDENT_CORRESPONDENCES;
-
-	/**
-	 * The feature id for the '<em><b>Parent</b></em>' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SAME_TYPE_CORRESPONDENCE__PARENT = CORRESPONDENCE__PARENT;
 
 	/**
 	 * The feature id for the '<em><b>Element ATUID</b></em>' attribute.
@@ -188,24 +152,6 @@ public interface CorrespondencePackage extends EPackage {
 	int EOBJECT_CORRESPONDENCE = 3;
 
 	/**
-	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EOBJECT_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES = SAME_TYPE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES;
-
-	/**
-	 * The feature id for the '<em><b>Parent</b></em>' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EOBJECT_CORRESPONDENCE__PARENT = SAME_TYPE_CORRESPONDENCE__PARENT;
-
-	/**
 	 * The feature id for the '<em><b>Element ATUID</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -241,24 +187,6 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 */
 	int EFEATURE_CORRESPONDENCE = 4;
-
-	/**
-	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EFEATURE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES = SAME_TYPE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES;
-
-	/**
-	 * The feature id for the '<em><b>Parent</b></em>' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EFEATURE_CORRESPONDENCE__PARENT = SAME_TYPE_CORRESPONDENCE__PARENT;
 
 	/**
 	 * The feature id for the '<em><b>Element ATUID</b></em>' attribute.
@@ -325,24 +253,6 @@ public interface CorrespondencePackage extends EPackage {
 	int EATTRIBUTE_CORRESPONDENCE = 5;
 
 	/**
-	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EATTRIBUTE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES = EFEATURE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES;
-
-	/**
-	 * The feature id for the '<em><b>Parent</b></em>' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EATTRIBUTE_CORRESPONDENCE__PARENT = EFEATURE_CORRESPONDENCE__PARENT;
-
-	/**
 	 * The feature id for the '<em><b>Element ATUID</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -407,24 +317,6 @@ public interface CorrespondencePackage extends EPackage {
 	int EREFERENCE_CORRESPONDENCE = 6;
 
 	/**
-	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EREFERENCE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES = EFEATURE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES;
-
-	/**
-	 * The feature id for the '<em><b>Parent</b></em>' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EREFERENCE_CORRESPONDENCE__PARENT = EFEATURE_CORRESPONDENCE__PARENT;
-
-	/**
 	 * The feature id for the '<em><b>Element ATUID</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -487,24 +379,6 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 */
 	int ECONTAINMENT_REFERENCE_CORRESPONDENCE = 7;
-
-	/**
-	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ECONTAINMENT_REFERENCE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES = EREFERENCE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES;
-
-	/**
-	 * The feature id for the '<em><b>Parent</b></em>' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ECONTAINMENT_REFERENCE_CORRESPONDENCE__PARENT = EREFERENCE_CORRESPONDENCE__PARENT;
 
 	/**
 	 * The feature id for the '<em><b>Element ATUID</b></em>' attribute.
@@ -590,31 +464,13 @@ public interface CorrespondencePackage extends EPackage {
 	int PARTIAL_EATTRIBUTE_CORRESPONDENCE = 9;
 
 	/**
-	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Parent</b></em>' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__PARENT = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 1;
-
-	/**
 	 * The feature id for the '<em><b>Element ATUID</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__ELEMENT_ATUID = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 2;
+	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__ELEMENT_ATUID = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Element BTUID</b></em>' attribute.
@@ -623,7 +479,7 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__ELEMENT_BTUID = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 3;
+	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__ELEMENT_BTUID = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
@@ -632,7 +488,7 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__TYPE = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 4;
+	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__TYPE = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Feature A</b></em>' reference.
@@ -641,7 +497,7 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__FEATURE_A = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 5;
+	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__FEATURE_A = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Feature B</b></em>' reference.
@@ -650,7 +506,7 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__FEATURE_B = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 6;
+	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__FEATURE_B = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Value A</b></em>' attribute.
@@ -659,7 +515,7 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__VALUE_A = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 7;
+	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__VALUE_A = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Value B</b></em>' attribute.
@@ -668,7 +524,7 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__VALUE_B = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 8;
+	int PARTIAL_EATTRIBUTE_CORRESPONDENCE__VALUE_B = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of structural features of the '<em>Partial EAttribute Correspondence</em>' class.
@@ -677,7 +533,7 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PARTIAL_EATTRIBUTE_CORRESPONDENCE_FEATURE_COUNT = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 9;
+	int PARTIAL_EATTRIBUTE_CORRESPONDENCE_FEATURE_COUNT = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 7;
 
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.PartialEReferenceCorrespondenceImpl <em>Partial EReference Correspondence</em>}' class.
@@ -690,31 +546,13 @@ public interface CorrespondencePackage extends EPackage {
 	int PARTIAL_EREFERENCE_CORRESPONDENCE = 10;
 
 	/**
-	 * The feature id for the '<em><b>Dependent Correspondences</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PARTIAL_EREFERENCE_CORRESPONDENCE__DEPENDENT_CORRESPONDENCES = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Parent</b></em>' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PARTIAL_EREFERENCE_CORRESPONDENCE__PARENT = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 1;
-
-	/**
 	 * The feature id for the '<em><b>Element ATUID</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PARTIAL_EREFERENCE_CORRESPONDENCE__ELEMENT_ATUID = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 2;
+	int PARTIAL_EREFERENCE_CORRESPONDENCE__ELEMENT_ATUID = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Element BTUID</b></em>' attribute.
@@ -723,7 +561,7 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PARTIAL_EREFERENCE_CORRESPONDENCE__ELEMENT_BTUID = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 3;
+	int PARTIAL_EREFERENCE_CORRESPONDENCE__ELEMENT_BTUID = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
@@ -732,7 +570,7 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PARTIAL_EREFERENCE_CORRESPONDENCE__TYPE = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 4;
+	int PARTIAL_EREFERENCE_CORRESPONDENCE__TYPE = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Feature A</b></em>' reference.
@@ -741,7 +579,7 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PARTIAL_EREFERENCE_CORRESPONDENCE__FEATURE_A = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 5;
+	int PARTIAL_EREFERENCE_CORRESPONDENCE__FEATURE_A = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Feature B</b></em>' reference.
@@ -750,7 +588,7 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PARTIAL_EREFERENCE_CORRESPONDENCE__FEATURE_B = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 6;
+	int PARTIAL_EREFERENCE_CORRESPONDENCE__FEATURE_B = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Value ATUID</b></em>' attribute.
@@ -759,7 +597,7 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PARTIAL_EREFERENCE_CORRESPONDENCE__VALUE_ATUID = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 7;
+	int PARTIAL_EREFERENCE_CORRESPONDENCE__VALUE_ATUID = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Value BTUID</b></em>' attribute.
@@ -768,7 +606,7 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PARTIAL_EREFERENCE_CORRESPONDENCE__VALUE_BTUID = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 8;
+	int PARTIAL_EREFERENCE_CORRESPONDENCE__VALUE_BTUID = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of structural features of the '<em>Partial EReference Correspondence</em>' class.
@@ -777,7 +615,7 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PARTIAL_EREFERENCE_CORRESPONDENCE_FEATURE_COUNT = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 9;
+	int PARTIAL_EREFERENCE_CORRESPONDENCE_FEATURE_COUNT = PARTIAL_EFEATURE_CORRESPONDENCE_FEATURE_COUNT + 7;
 
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceType <em>Type</em>}' enum.
@@ -830,28 +668,6 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 */
 	EClass getCorrespondence();
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence#getDependentCorrespondences <em>Dependent Correspondences</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Dependent Correspondences</em>'.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence#getDependentCorrespondences()
-	 * @see #getCorrespondence()
-	 * @generated
-	 */
-	EReference getCorrespondence_DependentCorrespondences();
-
-	/**
-	 * Returns the meta object for the container reference '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence#getParent <em>Parent</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the container reference '<em>Parent</em>'.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence#getParent()
-	 * @see #getCorrespondence()
-	 * @generated
-	 */
-	EReference getCorrespondence_Parent();
 
 	/**
 	 * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence <em>Same Type Correspondence</em>}'.
@@ -1112,22 +928,6 @@ public interface CorrespondencePackage extends EPackage {
 		 * @generated
 		 */
 		EClass CORRESPONDENCE = eINSTANCE.getCorrespondence();
-
-		/**
-		 * The meta object literal for the '<em><b>Dependent Correspondences</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference CORRESPONDENCE__DEPENDENT_CORRESPONDENCES = eINSTANCE.getCorrespondence_DependentCorrespondences();
-
-		/**
-		 * The meta object literal for the '<em><b>Parent</b></em>' container reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference CORRESPONDENCE__PARENT = eINSTANCE.getCorrespondence_Parent();
 
 		/**
 		 * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.SameTypeCorrespondenceImpl <em>Same Type Correspondence</em>}' class.

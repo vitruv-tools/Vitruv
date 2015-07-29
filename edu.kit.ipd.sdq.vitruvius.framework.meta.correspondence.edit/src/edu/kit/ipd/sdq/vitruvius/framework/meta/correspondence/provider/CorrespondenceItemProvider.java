@@ -57,54 +57,8 @@ public class CorrespondenceItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addDependentCorrespondencesPropertyDescriptor(object);
-			addParentPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
-	}
-
-	/**
-	 * This adds a property descriptor for the Dependent Correspondences feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addDependentCorrespondencesPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Correspondence_dependentCorrespondences_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Correspondence_dependentCorrespondences_feature", "_UI_Correspondence_type"),
-				 CorrespondencePackage.Literals.CORRESPONDENCE__DEPENDENT_CORRESPONDENCES,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Parent feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addParentPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Correspondence_parent_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Correspondence_parent_feature", "_UI_Correspondence_type"),
-				 CorrespondencePackage.Literals.CORRESPONDENCE__PARENT,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
 	}
 
 	/**

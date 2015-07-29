@@ -12,8 +12,6 @@ import org.eclipse.emf.ecore.EReference;
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>EReference Correspondence</b></em>'.
  * <!-- end-user-doc -->
- * <p>
- * </p>
  *
  * @generated
  */

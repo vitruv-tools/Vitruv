@@ -60,6 +60,16 @@ public interface CorrespondenceInstance {
     public Set<Correspondence> getAllCorrespondences(EObject eObject);
 
     /**
+     * Returns all correspondences for the object with the specified tuid and an empty set if the
+     * object has no correspondences. Should never return {@link null}.
+     *
+     * @param tuid
+     * @return all correspondences for the object with the specified tuid and an empty set if the
+     *         object has no correspondences.
+     */
+    public Set<Correspondence> getAllCorrespondences(TUID involvedTUID);
+
+    /**
      * Returns the corresponding objects for the specified object and throws a
      * {@link java.lang.RuntimeException} if no correspondence exists.
      *
@@ -143,7 +153,7 @@ public interface CorrespondenceInstance {
      * Returns the SameTypeCorrespondence for the given eObjects a and b and throws a
      * {@link RuntimeException} if there is no such correspondence. Note that a has to be an element
      * of metamodel a and b an instance of metamodel b.
-     * 
+     *
      * @param a
      * @param b
      * @return
@@ -161,36 +171,43 @@ public interface CorrespondenceInstance {
 
     public void addSameTypeCorrespondence(SameTypeCorrespondence correspondence);
 
-    public void addSameTypeCorrespondence(SameTypeCorrespondence correspondence, Correspondence parent);
-
     public boolean changedAfterLastSave();
 
     public void resetChangedAfterLastSave();
 
     /**
-     * Removes all correspondences for the given eObject and all child-correspondences of these
-     * correspondences.
+     * Removes all direct correspondences for the given eObject and all correspondences for children
+     * of the given eObject and for children of the eObjects corresponding to the given eObject.
+     * Does <b>not</b> remove any model elements (only correspondences).
      *
      * @param eObject
-     *            from which all correspondences should be removed
+     *            for which all correspondences should be removed
+     * @return a set containing all removed correspondences
      */
-    public void removeAllCorrespondences(EObject eObject);
+    public Set<Correspondence> removeDirectAndChildrenCorrespondencesOnBothSides(EObject eObject);
 
     /**
-     * Removes all correspondences for the given tuid and all child-correspondences of these
-     * correspondences.
+     * Removes all direct correspondences for the eObject with the given tuid and all
+     * correspondences for children of the eObject and for children of the eObjects corresponding to
+     * the eObject with the given tuid. Does <b>not</b> remove any model elements (only
+     * correspondences).
      *
-     * @param eObject
-     *            from which all correspondences should be removed
+     * @param tuid
+     *            for which all correspondences should be removed
+     * @return a set containing all removed correspondences
      */
-    public void removeCorrespondenceAndAllDependentCorrespondences(TUID tuid);
+    public Set<Correspondence> removeDirectAndChildrenCorrespondencesOnBothSides(TUID tuid);
 
     /**
-     * Removes correspondence and all child Correspondences of this correspondence
+     * Removes the given correspondence, all correspondences for the eObjects of the given
+     * correspondence, and all correspondences for their children on both sides. Does <b>not</b>
+     * remove any model elements (only correspondences).
      *
      * @param correspondence
+     *            that should be removed
+     * @return a set containing all removed correspondences
      */
-    public void removeCorrespondenceAndAllDependentCorrespondences(Correspondence correspondence);
+    public Set<Correspondence> removeNeighborAndChildrenCorrespondencesOnBothSides(Correspondence correspondence);
 
     public Set<FeatureInstance> getAllCorrespondingFeatureInstances(EObject parentEObject, EStructuralFeature feature);
 
@@ -243,18 +260,7 @@ public interface CorrespondenceInstance {
     /**
      * SWAPS a and b if necessary!
      */
-    public EContainmentReferenceCorrespondence createAndAddEContainmentReferenceCorrespondence(EObject a, EObject b,
-            EReference referenceFeatureA, EReference referenceFeatureB, Correspondence parent);
-
-    /**
-     * SWAPS a and b if necessary!
-     */
     public EObjectCorrespondence createAndAddEObjectCorrespondence(EObject a, EObject b);
-
-    /**
-     * SWAPS a and b if necessary!
-     */
-    public EObjectCorrespondence createAndAddEObjectCorrespondence(EObject a, EObject b, Correspondence parent);
 
     public <T> Set<T> getCorrespondingEObjectsByType(EObject eObject, Class<T> type);
 

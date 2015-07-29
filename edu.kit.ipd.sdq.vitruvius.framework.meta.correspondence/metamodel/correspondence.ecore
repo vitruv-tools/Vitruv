@@ -6,12 +6,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="correspondences" upperBound="-1"
         eType="#//Correspondence" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Correspondence" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="dependentCorrespondences"
-        upperBound="-1" eType="#//Correspondence" containment="true" eOpposite="#//Correspondence/parent"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//Correspondence"
-        eOpposite="#//Correspondence/dependentCorrespondences"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Correspondence" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="SameTypeCorrespondence" abstract="true"
       eSuperTypes="#//Correspondence">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">

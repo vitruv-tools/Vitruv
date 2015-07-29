@@ -16,12 +16,12 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EFeatureCorrespondence#getType <em>Type</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EFeatureCorrespondence#getFeatureA <em>Feature A</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EFeatureCorrespondence#getFeatureB <em>Feature B</em>}</li>
  * </ul>
- * </p>
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getEFeatureCorrespondence()
  * @model abstract="true"

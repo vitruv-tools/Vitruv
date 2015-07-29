@@ -129,10 +129,17 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     @Override
     public Set<Correspondence> getAllCorrespondences(final EObject eObject) {
         TUID tuid = calculateTUIDFromEObject(eObject);
-        return getOrCreateCorrespondenceSet(tuid);
+        return getAllCorrespondences(tuid);
     }
 
-    private Set<Correspondence> getOrCreateCorrespondenceSet(final TUID involvedTUID) {
+    /*
+     * (non-Javadoc)
+     *
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
+     * getAllCorrespondences(edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID)
+     */
+    @Override
+    public Set<Correspondence> getAllCorrespondences(final TUID involvedTUID) {
         Set<Correspondence> correspondences = this.tuid2CorrespondencesMap.get(involvedTUID);
         if (correspondences == null) {
             correspondences = new HashSet<Correspondence>();
@@ -310,35 +317,17 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     @Override
     public <T> Set<T> getAllEObjectsInCorrespondencesWithType(final Class<T> type) {
         Set<T> correspondencesWithType = new HashSet<T>();
-        getAllEObjectsInCorrespondenceListWithType(this.correspondences.getCorrespondences(), type,
-                correspondencesWithType);
-        return correspondencesWithType;
-    }
-
-    /**
-     * Iterate recursively through correspondence list and the children of the current
-     * correspondence and add all EObjects from type T to the result set
-     *
-     * @param correspondenceList
-     *            the list to iterate over
-     * @param type
-     *            the type to be found
-     * @param correspondencesWithType
-     *            the result set
-     */
-    private <T> void getAllEObjectsInCorrespondenceListWithType(final List<Correspondence> correspondenceList,
-            final Class<T> type, final Set<T> correspondencesWithType) {
-        for (Correspondence correspondence : correspondenceList) {
-            // first: investigate the current correspondence itself
-            if (correspondence instanceof EObjectCorrespondence) {
-                EObjectCorrespondence eObjectCorrespondence = (EObjectCorrespondence) correspondence;
-                EObject element = resolveEObjectFromTUIDWithoutException(eObjectCorrespondence.getElementATUID());
+        List<Correspondence> allCorrespondences = this.correspondences.getCorrespondences();
+        for (Correspondence correspondence : allCorrespondences) {
+            if (correspondence instanceof SameTypeCorrespondence) {
+                SameTypeCorrespondence sameTypeCorrespondence = (SameTypeCorrespondence) correspondence;
+                EObject element = resolveEObjectFromTUIDWithoutException(sameTypeCorrespondence.getElementATUID());
                 if (null != element && type.isInstance(element)) {
                     @SuppressWarnings("unchecked")
                     T t = (T) element;
                     correspondencesWithType.add(t);
                 } else {
-                    element = resolveEObjectFromTUIDWithoutException(eObjectCorrespondence.getElementBTUID());
+                    element = resolveEObjectFromTUIDWithoutException(sameTypeCorrespondence.getElementBTUID());
                     if (null != element && type.isInstance(element)) {
                         @SuppressWarnings("unchecked")
                         T t = (T) element;
@@ -346,14 +335,9 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
                     }
                 }
             }
-            // Second: investigate the dependent correspondences of the current correspondence (if
-            // list is !nullOrEmpty
-            if (null != correspondence.getDependentCorrespondences()
-                    && 0 < correspondence.getDependentCorrespondences().size()) {
-                getAllEObjectsInCorrespondenceListWithType(correspondence.getDependentCorrespondences(), type,
-                        correspondencesWithType);
-            }
+            // currently nothing else to do as every correspondence is a SameTypeCorrespondence
         }
+        return correspondencesWithType;
     }
 
     private EObject resolveEObjectFromTUIDWithoutException(final TUID tuid) {
@@ -415,53 +399,34 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
      */
     @Override
     public void addSameTypeCorrespondence(final SameTypeCorrespondence correspondence) {
-        addSameTypeCorrespondence(correspondence, null);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
-     * addSameTypeCorrespondence
-     * (edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence,
-     * edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence)
-     */
-    @Override
-    public void addSameTypeCorrespondence(final SameTypeCorrespondence correspondence, final Correspondence parent) {
         TUID tuidA = correspondence.getElementATUID();
         TUID tuidB = correspondence.getElementBTUID();
         correspondence.setElementATUID(tuidA);
         correspondence.setElementBTUID(tuidB);
         // add correspondence to model
-        EList<Correspondence> correspondenceListForAddition;
-        if (parent == null) {
-            correspondenceListForAddition = this.correspondences.getCorrespondences();
-        } else {
-            correspondenceListForAddition = parent.getDependentCorrespondences();
-        }
+        EList<Correspondence> correspondenceListForAddition = this.correspondences.getCorrespondences();
         correspondenceListForAddition.add(correspondence);
         List<TUID> allInvolvedTUIDs = Arrays.asList(tuidA, tuidB);
         // add all involved eObjects to the sets for these objects in the map
         for (TUID involvedTUID : allInvolvedTUIDs) {
-            Set<Correspondence> correspondences = getOrCreateCorrespondenceSet(involvedTUID);
+            Set<Correspondence> correspondences = getAllCorrespondences(involvedTUID);
             if (!correspondences.contains(correspondence)) {
                 correspondences.add(correspondence);
             }
         }
-        if (correspondence instanceof EObjectCorrespondence) {
-            for (TUID involvedTUID : allInvolvedTUIDs) {
-                Set<TUID> correspondingTUIDs = getOrCreateCorrespondingEObjectsSet(involvedTUID);
-                correspondingTUIDs.addAll(allInvolvedTUIDs);
-                if (involvedTUID.equals(tuidA)) {
-                    correspondingTUIDs.remove(tuidA);
-                } else if (involvedTUID.equals(tuidB)) {
-                    correspondingTUIDs.remove(tuidB);
-                } else {
-                    throw new RuntimeException("allInvolvedTUIDs ('" + allInvolvedTUIDs
-                            + "' contained a TUID that is neither '" + tuidA + "' nor '" + tuidB + "'!");
-                }
+        for (TUID involvedTUID : allInvolvedTUIDs) {
+            Set<TUID> correspondingTUIDs = getOrCreateCorrespondingEObjectsSet(involvedTUID);
+            correspondingTUIDs.addAll(allInvolvedTUIDs);
+            if (involvedTUID.equals(tuidA)) {
+                correspondingTUIDs.remove(tuidA);
+            } else if (involvedTUID.equals(tuidB)) {
+                correspondingTUIDs.remove(tuidB);
+            } else {
+                throw new RuntimeException("allInvolvedTUIDs ('" + allInvolvedTUIDs
+                        + "' contained a TUID that is neither '" + tuidA + "' nor '" + tuidB + "'!");
             }
-        } else if (correspondence instanceof EFeatureCorrespondence) {
+        }
+        if (correspondence instanceof EFeatureCorrespondence) {
             EFeatureCorrespondence<?> featureCorrespondence = (EFeatureCorrespondence<?>) correspondence;
             FeatureInstance featureInstanceA = FeatureInstance.getInstance(
                     resolveEObjectFromTUID(featureCorrespondence.getElementATUID()),
@@ -514,78 +479,75 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         this.changedAfterLastSave = false;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
-     * removeAllCorrespondences(org.eclipse.emf.ecore.EObject)
-     */
     @Override
-    public void removeAllCorrespondences(final EObject eObject) {
-        // TODO: Check if it is working, e.g if it is possible to generate a TUID from an old
-        // eObject
+    public Set<Correspondence> removeDirectAndChildrenCorrespondencesOnBothSides(final EObject eObject) {
         TUID tuid = calculateTUIDFromEObject(eObject);
-        removeCorrespondenceAndAllDependentCorrespondences(tuid);
+        return removeDirectAndChildrenCorrespondencesOnBothSides(tuid);
     }
 
     @Override
-    public void removeCorrespondenceAndAllDependentCorrespondences(final TUID tuid) {
-        Set<Correspondence> correspondencesForEObj = this.tuid2CorrespondencesMap.get(tuid);
-        if (null == correspondencesForEObj) {
-            return;
+    public Set<Correspondence> removeDirectAndChildrenCorrespondencesOnBothSides(final TUID tuid) {
+        Set<Correspondence> directCorrespondences = getAllCorrespondences(tuid);
+        Set<Correspondence> directAndChildrenCorrespondences = new HashSet<Correspondence>();
+        for (Correspondence correspondence : directCorrespondences) {
+            directAndChildrenCorrespondences
+                    .addAll(removeNeighborAndChildrenCorrespondencesOnBothSides(correspondence));
         }
-        this.tuid2CorrespondencesMap.remove(tuid);
-        for (Correspondence correspondence : correspondencesForEObj) {
-            removeCorrespondenceAndAllDependentCorrespondences(correspondence);
-        }
+        return directAndChildrenCorrespondences;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
-     * removeCorrespondenceAndAllDependentCorrespondences
-     * (edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence)
-     */
     @Override
-    public void removeCorrespondenceAndAllDependentCorrespondences(final Correspondence correspondence) {
-        Set<Correspondence> dependencyList = new HashSet<Correspondence>();
-        Set<Correspondence> deletionList = new HashSet<Correspondence>();
-        markCorrespondenceAndAllDependentCorrespondences(correspondence, dependencyList, deletionList);
-        for (Correspondence markedCorrespondence : deletionList) {
+    public Set<Correspondence> removeNeighborAndChildrenCorrespondencesOnBothSides(
+            final Correspondence correspondence) {
+        if (correspondence == null) {
+            return Collections.emptySet();
+        }
+        Set<Correspondence> markedCorrespondences = new HashSet<Correspondence>();
+        markNeighborAndChildrenCorrespondences(correspondence, markedCorrespondences);
+        for (Correspondence markedCorrespondence : markedCorrespondences) {
             removeCorrespondenceFromMaps(markedCorrespondence);
             EcoreUtil.remove(markedCorrespondence);
             setChangeAfterLastSaveFlag();
         }
+        return markedCorrespondences;
     }
 
-    /**
-     * Does the removing recursively. Marks all correspondences that will be deleted in a
-     * dependencyList --> Avoid stack overflow with correspondences that have a mutual dependency
-     *
-     * @param correspondence
-     * @param dependencyList
-     * @param deletionList
-     */
-    private void markCorrespondenceAndAllDependentCorrespondences(final Correspondence correspondence,
-            final Set<Correspondence> dependencyList, final Set<Correspondence> deletionList) {
-        if (null == correspondence || null == correspondence.getDependentCorrespondences()) {
-            return;
+    private void markNeighborAndChildrenCorrespondences(final TUID tuid,
+            final Set<Correspondence> markedCorrespondences) {
+        EObject eObject = resolveEObjectFromTUID(tuid);
+        markNeighborAndChildrenCorrespondencesRecursively(eObject, markedCorrespondences);
+    }
+
+    private void markNeighborAndChildrenCorrespondencesRecursively(final EObject eObject,
+            final Set<Correspondence> markedCorrespondences) {
+        Set<Correspondence> allCorrespondences = getAllCorrespondences(eObject);
+        for (Correspondence correspondence : allCorrespondences) {
+            markNeighborAndChildrenCorrespondences(correspondence, markedCorrespondences);
         }
-        dependencyList.add(correspondence);
-        for (Correspondence dependentCorrespondence : correspondence.getDependentCorrespondences()) {
-            if (null != dependentCorrespondence && !dependencyList.contains(dependentCorrespondence)) {
-                markCorrespondenceAndAllDependentCorrespondences(dependentCorrespondence, dependencyList, deletionList);
+        List<EObject> children = eObject.eContents();
+        for (EObject child : children) {
+            markNeighborAndChildrenCorrespondencesRecursively(child, markedCorrespondences);
+        }
+    }
+
+    private void markNeighborAndChildrenCorrespondences(final Correspondence correspondence,
+            final Set<Correspondence> markedCorrespondences) {
+        if (markedCorrespondences.add(correspondence)) {
+            if (correspondence instanceof SameTypeCorrespondence) {
+                SameTypeCorrespondence sameTypeCorrespondence = (SameTypeCorrespondence) correspondence;
+                TUID elementATUID = sameTypeCorrespondence.getElementATUID();
+                markNeighborAndChildrenCorrespondences(elementATUID, markedCorrespondences);
+                TUID elementBTUID = sameTypeCorrespondence.getElementBTUID();
+                markNeighborAndChildrenCorrespondences(elementBTUID, markedCorrespondences);
             }
         }
-        deletionList.add(correspondence);
     }
 
     private void removeCorrespondenceFromMaps(final Correspondence markedCorrespondence) {
-        if (markedCorrespondence instanceof EObjectCorrespondence) {
-            EObjectCorrespondence eObjCorrespondence = (EObjectCorrespondence) markedCorrespondence;
-            TUID elementATUID = eObjCorrespondence.getElementATUID();
-            TUID elementBTUID = eObjCorrespondence.getElementBTUID();
+        if (markedCorrespondence instanceof SameTypeCorrespondence) {
+            SameTypeCorrespondence sameTypeCorrespondence = (SameTypeCorrespondence) markedCorrespondence;
+            TUID elementATUID = sameTypeCorrespondence.getElementATUID();
+            TUID elementBTUID = sameTypeCorrespondence.getElementBTUID();
             this.tuid2CorrespondencesMap.remove(elementATUID);
             this.tuid2CorrespondencesMap.remove(elementBTUID);
             this.tuid2CorrespondingTUIDsMap.remove(elementATUID);
@@ -843,13 +805,9 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         }
     }
 
-    private void setCorrespondenceFeatures(final Correspondence correspondence, final Correspondence parent) {
-        correspondence.setParent(parent);
-    }
-
-    private void setSameTypeCorrespondenceFeatures(final SameTypeCorrespondence correspondence, EObject a, EObject b,
-            final Correspondence parent) {
-        setCorrespondenceFeatures(correspondence, parent);
+    private void setSameTypeCorrespondenceFeatures(final SameTypeCorrespondence correspondence, EObject a, EObject b) {
+        // nothing to set for the Correspondence metaclass
+        // set sametype-specific features
         if (this.mapping.getMetamodelA().hasMetaclassInstance(b)) {
             // swap
             EObject tmp = a;
@@ -865,33 +823,20 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     @Override
     public EContainmentReferenceCorrespondence createAndAddEContainmentReferenceCorrespondence(final EObject a,
             final EObject b, final EReference referenceFeatureA, final EReference referenceFeatureB) {
-        return createAndAddEContainmentReferenceCorrespondence(a, b, referenceFeatureA, referenceFeatureB, null);
-    }
-
-    @Override
-    public EContainmentReferenceCorrespondence createAndAddEContainmentReferenceCorrespondence(final EObject a,
-            final EObject b, final EReference referenceFeatureA, final EReference referenceFeatureB,
-            final Correspondence parent) {
         EContainmentReferenceCorrespondence correspondence = CorrespondenceFactory.eINSTANCE
                 .createEContainmentReferenceCorrespondence();
-        setSameTypeCorrespondenceFeatures(correspondence, a, b, parent);
+        setSameTypeCorrespondenceFeatures(correspondence, a, b);
         correspondence.setFeatureA(referenceFeatureA);
         correspondence.setFeatureB(referenceFeatureB);
-        addSameTypeCorrespondence(correspondence, parent);
+        addSameTypeCorrespondence(correspondence);
         return correspondence;
     }
 
     @Override
     public EObjectCorrespondence createAndAddEObjectCorrespondence(final EObject a, final EObject b) {
-        return createAndAddEObjectCorrespondence(a, b, null);
-    }
-
-    @Override
-    public EObjectCorrespondence createAndAddEObjectCorrespondence(final EObject a, final EObject b,
-            final Correspondence parent) {
         EObjectCorrespondence correspondence = CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence();
-        setSameTypeCorrespondenceFeatures(correspondence, a, b, parent);
-        addSameTypeCorrespondence(correspondence, parent);
+        setSameTypeCorrespondenceFeatures(correspondence, a, b);
+        addSameTypeCorrespondence(correspondence);
         return correspondence;
     }
 

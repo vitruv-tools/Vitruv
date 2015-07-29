@@ -51,11 +51,10 @@ class JavaCompilationUnitTransformations extends Java2JMLTransformationBase {
 			if (jmlCu != null) {
 				LOGGER.trace("Creating " + newValue)
 				
-				val jmlCuCorr = getSingleCorrespondence(oldAffectedEObject, jmlCu)
 				val jmlImport = CommonSynchronizerTasks.createJMLImportDeclaration(newValue as Import)
 				jmlCu.importdeclaration.add(index, jmlImport)
 
-				Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Import, jmlImport, correspondenceInstance, jmlCuCorr)
+				Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Import, jmlImport, correspondenceInstance)
 	
 				changedObjects.add(jmlImport)
 				changedObjects.add(jmlCu)
@@ -72,11 +71,10 @@ class JavaCompilationUnitTransformations extends Java2JMLTransformationBase {
 					return createTransformationChangeResultAborted
 				}
 				
-				val jmlCuCorr = getSingleCorrespondence(oldAffectedEObject, jmlCu)
 				val jmlType = CommonSynchronizerTasks.createJMLClass(newValue as Class)
 				jmlCu.typedeclaration.add(index, jmlType)
 
-				Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Class, jmlType, correspondenceInstance, jmlCuCorr)
+				Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Class, jmlType, correspondenceInstance)
 	
 				changedObjects.add(jmlType)
 				changedObjects.add(jmlCu)
@@ -100,8 +98,8 @@ class JavaCompilationUnitTransformations extends Java2JMLTransformationBase {
 				
 				val jmlImport = getSingleCorrespondingEObjectOfType(oldValue, ImportDeclaration)
 				
-				correspondenceInstance.removeAllCorrespondences(jmlImport)
-				correspondenceInstance.removeAllCorrespondences(oldValue)
+				correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(jmlImport)
+				correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(oldValue)
 				
 				jmlCu.importdeclaration.remove(jmlImport)
 
@@ -114,8 +112,8 @@ class JavaCompilationUnitTransformations extends Java2JMLTransformationBase {
 				
 				val jmlType = getSingleCorrespondingEObjectOfType(oldValue, ClassifierDeclarationWithModifier)
 				
-				correspondenceInstance.removeAllCorrespondences(jmlType)
-				correspondenceInstance.removeAllCorrespondences(oldValue)
+				correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(jmlType)
+				correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(oldValue)
 				
 				jmlCu.typedeclaration.remove(jmlType)
 				

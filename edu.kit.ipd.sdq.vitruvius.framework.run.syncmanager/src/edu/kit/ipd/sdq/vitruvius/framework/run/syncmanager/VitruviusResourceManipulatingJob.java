@@ -19,10 +19,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Quadruple;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple;
 
 /**
  * The VitruviusResourceManipulatingJob is an eclipse job. Its task is to save the changed models. A
@@ -74,8 +73,8 @@ class VitruviusResourceManipulatingJob extends Job {
                 }
 
                 for (Pair<EObject, VURI> createdEObjectVURIPair : emfChangeResult.getNewRootObjectsToSave()) {
-                    ModelInstance mi = this.modelProviding.getAndLoadModelInstanceOriginal(createdEObjectVURIPair
-                            .getSecond());
+                    ModelInstance mi = this.modelProviding
+                            .getAndLoadModelInstanceOriginal(createdEObjectVURIPair.getSecond());
                     Resource resource = mi.getResource();
                     // clear the resource first
                     resource.getContents().clear();
@@ -104,22 +103,20 @@ class VitruviusResourceManipulatingJob extends Job {
     private void removeOldCorrespondences(final Set<Pair<CorrespondenceInstance, TUID>> correspondencesToDelete) {
         for (final Pair<CorrespondenceInstance, TUID> pair : correspondencesToDelete) {
             CorrespondenceInstance correspondenceInstance = pair.getFirst();
-            correspondenceInstance.removeCorrespondenceAndAllDependentCorrespondences(pair.getSecond());
+            correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(pair.getSecond());
         }
     }
 
-    private void addNewCorrespondences(
-            final Set<Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>> newCorrespondences) {
-        for (final Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence> quadruple : newCorrespondences) {
+    private void addNewCorrespondences(final Set<Triple<CorrespondenceInstance, EObject, EObject>> newCorrespondences) {
+        for (final Triple<CorrespondenceInstance, EObject, EObject> quadruple : newCorrespondences) {
             CorrespondenceInstance correspondenceInstance = quadruple.getFirst();
-            correspondenceInstance.createAndAddEObjectCorrespondence(quadruple.getSecond(), quadruple.getThird(),
-                    quadruple.getFourth());
+            correspondenceInstance.createAndAddEObjectCorrespondence(quadruple.getSecond(), quadruple.getThird());
         }
     }
 
     private void updateExistingCorrespondence(
-            final Set<Quadruple<CorrespondenceInstance, TUID, EObject, Correspondence>> correspondencesToUpdate) {
-        for (final Quadruple<CorrespondenceInstance, TUID, EObject, Correspondence> quadruple : correspondencesToUpdate) {
+            final Set<Triple<CorrespondenceInstance, TUID, EObject>> correspondencesToUpdate) {
+        for (final Triple<CorrespondenceInstance, TUID, EObject> quadruple : correspondencesToUpdate) {
             CorrespondenceInstance correspondenceInstance = quadruple.getFirst();
             correspondenceInstance.update(quadruple.getSecond(), quadruple.getThird());
         }

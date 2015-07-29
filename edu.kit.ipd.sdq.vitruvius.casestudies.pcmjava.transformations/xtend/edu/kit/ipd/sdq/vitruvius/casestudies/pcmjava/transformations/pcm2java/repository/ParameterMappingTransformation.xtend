@@ -51,7 +51,7 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override removeEObject(EObject eObject) {
 		val ret = correspondenceInstance.getAllCorrespondences(eObject)
-		correspondenceInstance.removeAllCorrespondences(eObject)
+		correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(eObject)
 		return ret
 	}
 

@@ -36,7 +36,7 @@ class Java2JMLFileCorrespondenceAdder {
 		val javaRoot = javaModel.getUniqueTypedRootEObject(CompilationUnit)
 		val jmlRoot = jmlModel.getUniqueTypedRootEObject(edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit)
 
-		Java2JMLCorrespondenceAdder.addCorrespondences(javaRoot, jmlRoot, corrInst)
+		Java2JMLCorrespondenceAdder.addCorrespondencesForCompilationUnit(javaRoot, jmlRoot, corrInst)
 	}
 
 }

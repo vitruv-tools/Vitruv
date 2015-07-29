@@ -112,11 +112,10 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 			if (jmlMethodDeclaration != null) {
 				LOGGER.trace("Creating " + newValue)
 				val jmlMethodDeclarationTUIDOld = jmlMethodDeclaration.TUID
-				val jmlMethodDeclarationCorr = getSingleCorrespondence(oldAffectedEObject, jmlMethodDeclaration)
 				val jmlParameter = CommonSynchronizerTasks.createJMLParameter(newValue as Parameter)
 				jmlMethodDeclaration.parameters.add(index, jmlParameter)
 				
-				Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Parameter, jmlParameter, correspondenceInstance, jmlMethodDeclarationCorr)
+				Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Parameter, jmlParameter, correspondenceInstance)
 				correspondenceInstance.update(jmlMethodDeclarationTUIDOld, jmlMethodDeclaration.TUID)
 				
 				changedObjects.add(jmlMethodDeclaration)
@@ -128,11 +127,10 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 			if (jmlMethodDeclaration != null) {
 				LOGGER.trace("Creating " + newValue)
 				
-				val jmlMethodDeclarationCorr = getSingleCorrespondence(oldAffectedEObject, jmlMethodDeclaration)
 				val jmlException = CommonSynchronizerTasks.createJMLException(newValue as NamespaceClassifierReference)
 				jmlMethodDeclaration.exceptions.add(index, jmlException)
 				
-				Java2JMLCorrespondenceAdder.addCorrespondences(newValue as NamespaceClassifierReference, jmlException, correspondenceInstance, jmlMethodDeclarationCorr)
+				Java2JMLCorrespondenceAdder.addCorrespondences(newValue as NamespaceClassifierReference, jmlException, correspondenceInstance)
 				
 				changedObjects.add(jmlMethodDeclaration)
 			}
@@ -162,8 +160,8 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 				
 				val jmlParameter = getSingleCorrespondingEObjectOfType(oldValue, FormalParameterDecl)
 				
-				correspondenceInstance.removeAllCorrespondences(jmlParameter)
-				correspondenceInstance.removeAllCorrespondences(oldValue)
+				correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(jmlParameter)
+				correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(oldValue)
 				
 				jmlMethodDeclaration.parameters.remove(jmlParameter)
 				
@@ -178,8 +176,8 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 				
 				val jmlModifier = getSingleCorrespondingEObjectOfType(oldValue, RegularModifier)
 				
-				correspondenceInstance.removeAllCorrespondences(jmlModifier)
-				correspondenceInstance.removeAllCorrespondences(oldValue)
+				correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(jmlModifier)
+				correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(oldValue)
 				
 				jmlMemberDeclWithModifier.modifiers.remove(jmlModifier)
 
@@ -192,8 +190,8 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 				
 				val jmlException = getSingleCorrespondingEObjectOfType(oldValue, DeclaredException)
 				
-				correspondenceInstance.removeAllCorrespondences(jmlException)
-				correspondenceInstance.removeAllCorrespondences(oldValue)
+				correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(jmlException)
+				correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(oldValue)
 				
 				jmlMethodDeclaration.exceptions.remove(jmlException)
 				

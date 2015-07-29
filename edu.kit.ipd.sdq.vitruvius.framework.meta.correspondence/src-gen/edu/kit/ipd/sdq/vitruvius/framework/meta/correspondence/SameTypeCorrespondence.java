@@ -16,11 +16,11 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence#getElementATUID <em>Element ATUID</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence#getElementBTUID <em>Element BTUID</em>}</li>
  * </ul>
- * </p>
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getSameTypeCorrespondence()
  * @model abstract="true"

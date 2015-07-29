@@ -77,7 +77,7 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 		}
 
 		//remove corresponding instance
-		correspondenceInstance.removeAllCorrespondences(repository)
+		correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(repository)
 		return null
 	}
 

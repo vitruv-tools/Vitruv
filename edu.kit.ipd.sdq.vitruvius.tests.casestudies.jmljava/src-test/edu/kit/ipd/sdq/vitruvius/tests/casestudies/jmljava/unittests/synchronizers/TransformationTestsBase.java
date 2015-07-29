@@ -192,7 +192,7 @@ public abstract class TransformationTestsBase {
         edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit jmlCu = modelInstances.getSecond()
                 .getUniqueRootEObjectIfCorrectlyTyped(edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit.class);
 
-        Java2JMLCorrespondenceAdder.addCorrespondences(javaCu, jmlCu, ci);
+        Java2JMLCorrespondenceAdder.addCorrespondencesForCompilationUnit(javaCu, jmlCu, ci);
 
         return new CorrespondenceInstanceProxy(ci);
     }

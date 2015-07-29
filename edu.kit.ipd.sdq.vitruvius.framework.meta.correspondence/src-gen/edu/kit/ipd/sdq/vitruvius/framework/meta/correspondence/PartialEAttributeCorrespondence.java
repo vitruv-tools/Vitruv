@@ -10,11 +10,11 @@ package edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEAttributeCorrespondence#getValueA <em>Value A</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEAttributeCorrespondence#getValueB <em>Value B</em>}</li>
  * </ul>
- * </p>
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage#getPartialEAttributeCorrespondence()
  * @model TValueBounds="org.eclipse.emf.ecore.EJavaObject"

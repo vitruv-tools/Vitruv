@@ -142,7 +142,7 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 			//TODO: check wheather the CompilationUnit is deleted
 			EcoreUtil.remove(correspondingObject)
 		}
-		correspondenceInstance.removeAllCorrespondences(operationInterface)
+		correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(operationInterface)
 		return null
 	}
 
