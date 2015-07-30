@@ -197,8 +197,7 @@ class TypeReferenceCorrespondenceHelper {
 		cdt.entityName = classifier.name
 		cdt.repository__DataType = repo
 		if (null != tcr) {
-			tcr.addNewCorrespondence(correspondenceInstance, cdt, classifier,
-				JaMoPP2PCMUtils.findParrentCorrepsondenceForPCMElement(cdt, correspondenceInstance))
+			tcr.addNewCorrespondence(correspondenceInstance, cdt, classifier)
 		} else {
 			correspondenceInstance.createAndAddEObjectCorrespondence(cdt, classifier)
 		}

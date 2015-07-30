@@ -176,7 +176,7 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 				//TODO: change assignemnt
 				}
 			}
-			tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, method, null)
+			tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, method)
 			tcr.existingObjectsToSave.add(method)
 		}
 		return tcr
@@ -210,7 +210,7 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 
 		val oldFieldTUID = correspondenceInstance.calculateTUIDFromEObject(field)
 		field.typeReference = EcoreUtil.copy(newJaMoPPType)
-		tcr.addCorrespondenceToUpdate(correspondenceInstance, oldFieldTUID, field, null)
+		tcr.addCorrespondenceToUpdate(correspondenceInstance, oldFieldTUID, field)
 
 		//Change method type/parameter
 		val methods = affectedEObjects.filter(typeof(Method))
@@ -224,7 +224,7 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 					parameter.typeReference = EcoreUtil.copy(newJaMoPPType)
 				}
 			}
-			tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, method, null)
+			tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, method)
 			tcr.existingObjectsToSave.add(method)
 		}
 		return tcr

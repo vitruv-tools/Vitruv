@@ -1,7 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
-import org.palladiosimulator.pcm.repository.BasicComponent
-import org.palladiosimulator.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
@@ -15,6 +13,8 @@ import org.emftext.language.java.classifiers.ClassifiersFactory
 import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.JavaRoot
 import org.emftext.language.java.containers.Package
+import org.palladiosimulator.pcm.repository.BasicComponent
+import org.palladiosimulator.pcm.repository.RepositoryFactory
 
 class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -41,24 +41,17 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 		if (null == newCorrespondingEObjects) {
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
-		val BasicComponent basicComponent = newAffectedEObject as BasicComponent
-		val parentCorrespondences = correspondenceInstance.getAllCorrespondences(basicComponent)
-		var Correspondence parentCorrespondence = null
-		if (!parentCorrespondences.nullOrEmpty) {
-			parentCorrespondence = parentCorrespondences.get(0)
-		}
 		val rootObjectsToSave = newCorrespondingEObjects.filter(typeof(JavaRoot))
 		val nonRootEObjectsToSave = newCorrespondingEObjects.filter[correspondingEObject|
 			false == correspondingEObject instanceof JavaRoot]
 		val transformationResult = TransformationUtils.createTransformationChangeResult(rootObjectsToSave, null,
 			nonRootEObjectsToSave)
 		for (jaMoPPElement : newCorrespondingEObjects) {
-			transformationResult.addNewCorrespondence(correspondenceInstance, newValue, jaMoPPElement,
-				parentCorrespondence)
+			transformationResult.addNewCorrespondence(correspondenceInstance, newValue, jaMoPPElement)
 		}
 		return transformationResult
 	}
-
+	
 	override removeEObject(EObject eObject) {
 		return correspondenceInstance.getAllCorrespondingEObjects(eObject)
 	}

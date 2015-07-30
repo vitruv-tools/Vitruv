@@ -73,16 +73,9 @@ class OperationProvidedRoleMappingTransformation extends EmptyEObjectMappingTran
 			}
 			EcoreUtil.remove(oldEObject)
 		}
-		val opr = affectedEObject as OperationProvidedRole
-		val providingEntity = opr.providingEntity_ProvidedRole
-		val parrentCorrespondences = correspondenceInstance.getAllCorrespondences(providingEntity)
-		var Correspondence parrentCorrespondence = null
-		if (!parrentCorrespondences.nullOrEmpty) {
-			parrentCorrespondence = parrentCorrespondences.get(0)
-		}
 		if (null != newEObjects) {
 			for (newEObject : newEObjects) {
-				tcr.addNewCorrespondence(correspondenceInstance, newEObject, affectedEObject, parrentCorrespondence)
+				tcr.addNewCorrespondence(correspondenceInstance, newEObject, affectedEObject)
 				tcr.existingObjectsToSave.add(newEObject)
 			}
 		}

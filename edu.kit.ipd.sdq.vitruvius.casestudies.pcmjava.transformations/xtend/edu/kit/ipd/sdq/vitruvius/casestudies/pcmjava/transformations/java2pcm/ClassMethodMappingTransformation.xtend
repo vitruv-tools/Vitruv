@@ -89,15 +89,7 @@ class ClassMethodMappingTransformation extends EmptyEObjectMappingTransformation
 		val newSEFFs = newClassMethod.createSEFFIfImplementsInterfaceMethod
 		if(!newSEFFs.nullOrEmpty){
 			for(newSEFF : newSEFFs){
-				var Correspondence parrentCorrespondence = null
-				if(newSEFF instanceof ResourceDemandingSEFF){
-					val newRDSEFF = newSEFF as ResourceDemandingSEFF
-					val parrentCorrespondences = correspondenceInstance.getAllCorrespondences(newRDSEFF.basicComponent_ServiceEffectSpecification)
-					if(!parrentCorrespondences.nullOrEmpty){
-						parrentCorrespondence = parrentCorrespondences.get(0)
-					}					
-				}
-				tcr.addNewCorrespondence(correspondenceInstance, newSEFF, newClassMethod, parrentCorrespondence)
+				tcr.addNewCorrespondence(correspondenceInstance, newSEFF, newClassMethod)
 				
 			}			
 		}

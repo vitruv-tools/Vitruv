@@ -56,7 +56,7 @@ class CompilationUnitMappingTransformation extends EmptyEObjectMappingTransforma
 						} else {
 							tcr.existingObjectsToSave.add(system)
 						}
-						tcr.addNewCorrespondence(correspondenceInstance, system, newValue, null)
+						tcr.addNewCorrespondence(correspondenceInstance, system, newValue)
 						return tcr
 					}
 				}

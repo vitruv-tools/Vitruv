@@ -62,7 +62,7 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 		val transResult = TransformationUtils.
 			createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects)
 		for (correspondingEObject : newCorrespondingEObjects) {
-			transResult.addNewCorrespondence(correspondenceInstance, newRootEObject, correspondingEObject, null)
+			transResult.addNewCorrespondence(correspondenceInstance, newRootEObject, correspondingEObject)
 		}
 		return transResult
 	}
@@ -100,42 +100,12 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
-		val Iterable<EObjectCorrespondence> correspondenceCandidates = correspondenceInstance.
-			getAllCorrespondences(newAffectedEObject).filter(typeof(EObjectCorrespondence))
 		val transformationResult = TransformationUtils.
 			createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects.filter(typeof(JavaRoot)))
 		for (jaMoPPElement : newCorrespondingEObjects) {
-			val parrentCorrespondence = getParrentCorrespondence(newValue, correspondenceCandidates)
-			transformationResult.addNewCorrespondence(correspondenceInstance, newValue, jaMoPPElement,
-				parrentCorrespondence)
+			transformationResult.addNewCorrespondence(correspondenceInstance, newValue, jaMoPPElement)
 		}
 		return transformationResult
-	}
-
-	def dispatch getParrentCorrespondence(EObject object, Iterable<EObjectCorrespondence> correspondences) {
-		return null
-	}
-
-	def dispatch getParrentCorrespondence(RepositoryComponent component, Iterable<EObjectCorrespondence> correspondences) {
-		for (correspondence : correspondences) {
-			if (correspondence.elementATUID.equals(
-				correspondenceInstance.calculateTUIDFromEObject(component.repository__RepositoryComponent)) || correspondence.
-				elementBTUID.equals(
-					correspondenceInstance.calculateTUIDFromEObject(component.repository__RepositoryComponent))) {
-				return correspondence
-			}
-		}
-		return null;
-	}
-
-	// package with name "contracts"
-	def dispatch getParrentCorrespondence(Interface pcmIf, Iterable<EObjectCorrespondence> correspondences) {
-		return findPackageWithName("contracts", correspondences)
-	}
-
-	//package with name "datatypes"
-	def dispatch getParrentCorrespondence(DataType dataType, Iterable<EObjectCorrespondence> correspondences) {
-		findPackageWithName("datatypes", correspondences)
 	}
 
 	def findPackageWithName(String packageName, Iterable<EObjectCorrespondence> correspondences) {
@@ -152,14 +122,14 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 		EObject[] newCorrespondingEObjects) {
 		logger.warn(
 			"method createNonRootEObjectSingle should not be called for " + RepositoryMappingTransformation.simpleName +
-				" transformation")
+				" transformation") 
 		return null
 	}
 
 	override unsetContainmentEReference(EObject affectedEObject, EReference affectedReference, EObject oldValue,
 		EObject[] oldCorrespondingEObjectsToDelete) {
 
-		//Called everytime a BasicComponent is removed - does nothing because the actual removing is already don e in deleteNonRootEObjectInList
+		//Called everytime a BasicComponent is removed - does nothing because the actual removing is already done in deleteNonRootEObjectInList
 		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 

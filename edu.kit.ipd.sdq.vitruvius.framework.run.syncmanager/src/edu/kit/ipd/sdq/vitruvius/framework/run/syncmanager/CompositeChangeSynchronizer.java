@@ -31,6 +31,11 @@ public class CompositeChangeSynchronizer extends ConcreteChangeSynchronizer {
     ChangeResult synchronizeChange(final Change change) {
         CompositeChange compositeChange = (CompositeChange) change;
         validateCompositeChange(compositeChange);
+        EMFChangeResult emfChangeResult = new EMFChangeResult();
+        if (compositeChange.getChanges().isEmpty()) {
+            logger.info("Empty CompositeChange. Return empty EMFChangeResult");
+            return emfChangeResult;
+        }
         EMFModelChange emfModelChange = (EMFModelChange) compositeChange.getChanges().get(0);
         Set<CorrespondenceInstance> correspondenceInstances = this.correspondenceProviding
                 .getAllCorrespondenceInstances(emfModelChange.getURI());
@@ -39,7 +44,6 @@ public class CompositeChangeSynchronizer extends ConcreteChangeSynchronizer {
                     + ". Change not sychronized with any other model.");
             return new EMFChangeResult();
         }
-        EMFChangeResult emfChangeResult = new EMFChangeResult();
         for (CorrespondenceInstance correspondenceInstance : correspondenceInstances) {
             ChangeResult currentChangeResult = this.changePropagating.propagateChange(compositeChange,
                     correspondenceInstance);
@@ -52,13 +56,15 @@ public class CompositeChangeSynchronizer extends ConcreteChangeSynchronizer {
      * checks whether a composite Change is valid In our implementation a composite change is valid
      * iff i) it contains only EMFModelChanges and CompositeChanges ii) all changes occured in the
      * same source meta model iii) it contains at least one change
-     * 
+     *
      * @param compositeChange
      */
     private void validateCompositeChange(final CompositeChange compositeChange) {
         if (compositeChange.getChanges().isEmpty()) {
-            throw new RuntimeException("CompositeChange (" + compositeChange
-                    + ") is not valid, because it does not contain any changes.");
+            logger.warn(
+                    "CompositeChange (" + compositeChange + ") is not valid, because it does not contain any changes.");
+            return;
+
         }
         EMFModelChange emfModelChange;
         String fileExtension = null;
@@ -68,8 +74,8 @@ public class CompositeChangeSynchronizer extends ConcreteChangeSynchronizer {
                 continue;
             }
             if (false == change instanceof EMFModelChange) {
-                throw new RuntimeException("composite change is not valid, because the change (" + change
-                        + ") is no EMFModelChange.");
+                throw new RuntimeException(
+                        "composite change is not valid, because the change (" + change + ") is no EMFModelChange.");
             }
             emfModelChange = (EMFModelChange) change;
             if (null == fileExtension) {

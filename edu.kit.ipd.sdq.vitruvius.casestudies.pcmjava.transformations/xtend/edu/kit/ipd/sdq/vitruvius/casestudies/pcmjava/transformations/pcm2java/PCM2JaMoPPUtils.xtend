@@ -169,7 +169,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 			}
 		}
 		
-		tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, classifier, null)
+		tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, classifier)
 	}
 
 	def public static void handleJavaRootNameChange(JavaRoot javaRoot, EStructuralFeature affectedFeature,
@@ -195,7 +195,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 
 		val VURI oldVURI = VURI.getInstance(javaRoot.eResource.getURI)
 		transformationChangeResult.existingObjectsToDelete.add(oldVURI)
-		transformationChangeResult.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, javaRoot, null)
+		transformationChangeResult.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, javaRoot)
 		transformationChangeResult.newRootObjectsToSave.add(javaRoot)
 	}
 
@@ -647,13 +647,8 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		if (newCorrespondingEObjects.nullOrEmpty) {
 			return
 		}
-		var Correspondence parrentCorrespondence = null
-		val parrentCorrespondences = ci.getAllCorrespondences(composedEntity)
-		if (!parrentCorrespondences.nullOrEmpty) {
-			parrentCorrespondence = parrentCorrespondences.get(0)
-		}
 		for (newCorrespondingEObject : newCorrespondingEObjects) {
-			tcr.addNewCorrespondence(ci, namedElement, newCorrespondingEObject, parrentCorrespondence)
+			tcr.addNewCorrespondence(ci, namedElement, newCorrespondingEObject)
 			tcr.existingObjectsToSave.add(newCorrespondingEObject)
 		}
 	}

@@ -27,10 +27,10 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 	 */
 	override createEObject(EObject eObject) {
 		val ComposedProvidingRequiringEntity composedEntity = eObject as ComposedProvidingRequiringEntity
-		val Package parrentPackage = getParentPackage(eObject)
+		val Package parentPackage = getParentPackage(eObject)
 
 		//create all elements
-		val createdEObjects = PCM2JaMoPPUtils.createPackageCompilationUnitAndJaMoPPClass(composedEntity, parrentPackage)
+		val createdEObjects = PCM2JaMoPPUtils.createPackageCompilationUnitAndJaMoPPClass(composedEntity, parentPackage)
 
 		return createdEObjects
 	}

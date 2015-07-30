@@ -47,13 +47,13 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 	override createEObject(EObject eObject) {
 		val field = eObject as Field
 
-		val fieldContainingClassifierCorrespondences = correspondenceInstance.
-			getAllCorrespondingEObjects(field.containingConcreteClassifier)
+		val fieldContainingClassifierCorrespondences = correspondenceInstance.getAllCorrespondingEObjects(
+			field.containingConcreteClassifier)
 		val Set<EObject> newCorrespondingEObjects = new HashSet
 		val compositeDataTypes = fieldContainingClassifierCorrespondences.filter(typeof(CompositeDataType))
 		if (!compositeDataTypes.nullOrEmpty) {
 
-			//i)
+			// i)
 			for (cdt : compositeDataTypes) {
 				val InnerDeclaration innerDeclaration = RepositoryFactory.eINSTANCE.createInnerDeclaration
 				innerDeclaration.entityName = field.name
@@ -73,12 +73,12 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 			typeof(ComposedProvidingRequiringEntity))
 		if (!correspondingComposedProvidingRequiringEntitys.nullOrEmpty &&
 			null != JaMoPP2PCMUtils.getTargetClassifierFromTypeReference(field.typeReference)) {
-			//new field is in a ComposedProvidingRequiringEntity
+			// new field is in a ComposedProvidingRequiringEntity
 			val classifierOfField = JaMoPP2PCMUtils.getTargetClassifierFromTypeReference(field.typeReference)
-			val correspondingComponents = correspondenceInstance.
-				getCorrespondingEObjectsByType(classifierOfField, RepositoryComponent)
-			if(!correspondingComponents.nullOrEmpty){
-				
+			val correspondingComponents = correspondenceInstance.getCorrespondingEObjectsByType(classifierOfField,
+				RepositoryComponent)
+			if (!correspondingComponents.nullOrEmpty) {
+
 				val AssemblyContext assemblyContext = CompositionFactory.eINSTANCE.createAssemblyContext
 				assemblyContext.entityName = field.name
 				assemblyContext.encapsulatedComponent__AssemblyContext = correspondingComponents.get(0)
@@ -117,7 +117,7 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 			newValue instanceof TypeReference) {
 			val newTypeReference = newValue as TypeReference
 
-			//udpate InnerDeclaration
+			// udpate InnerDeclaration
 			val innerDecs = correspondenceInstance.getCorrespondingEObjectsByType(oldAffectedEObject, InnerDeclaration)
 			if (!innerDecs.nullOrEmpty) {
 				for (innerDec : innerDecs) {
@@ -125,21 +125,21 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 						getCorrespondingPCMDataTypeForTypeReference(newTypeReference, correspondenceInstance,
 							userInteracting, null, tcr)
 					val oldTUID = correspondenceInstance.calculateTUIDFromEObject(oldAffectedEObject)
-					tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, newValue, null)
+					tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, newValue)
 					tcr.existingObjectsToSave.add(innerDec)
 				}
 			}
 
-			//Remove all OperationRequiredRole for the field
-			val operationRequiredRoles = correspondenceInstance.
-				getCorrespondingEObjectsByType(oldAffectedEObject, OperationRequiredRole)
+			// Remove all OperationRequiredRole for the field
+			val operationRequiredRoles = correspondenceInstance.getCorrespondingEObjectsByType(oldAffectedEObject,
+				OperationRequiredRole)
 			for (operationRequiredRole : operationRequiredRoles) {
 				val tuidToRemove = correspondenceInstance.calculateTUIDFromEObject(operationRequiredRole)
 				tcr.addCorrespondenceToDelete(correspondenceInstance, tuidToRemove)
 				EcoreUtil.delete(operationRequiredRole)
 			}
 
-			//add new OperationRequiredRoles that correspond to the field now
+			// add new OperationRequiredRoles that correspond to the field now
 			if (newValue instanceof TypeReference) {
 				val classifier = JaMoPP2PCMUtils.getTargetClassifierFromTypeReference(newValue as TypeReference)
 				if (null != classifier) {
@@ -147,10 +147,7 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 					val newCorrespondingEObjects = newField.checkAndAddOperationRequiredRolesCorrepondencesToField()
 					if (!newCorrespondingEObjects.nullOrEmpty) {
 						for (newCorrspondingEObject : newCorrespondingEObjects) {
-							tcr.addNewCorrespondence(correspondenceInstance, newCorrspondingEObject, newAffectedEObject,
-								JaMoPP2PCMUtils.
-									findMainParrentCorrepsondenceForPCMElement(newCorrspondingEObject,
-										correspondenceInstance))
+							tcr.addNewCorrespondence(correspondenceInstance, newCorrspondingEObject, newAffectedEObject)
 							tcr.existingObjectsToSave.add(newCorrspondingEObject)
 						}
 					}

@@ -69,6 +69,7 @@ class VitruviusResourceManipulatingJob extends Job {
                 }
 
                 for (VURI changedVURI : emfChangeResult.getExistingObjectsToSave()) {
+                    // same same
                     this.modelProviding.saveModelInstanceOriginal(changedVURI);
                 }
 
@@ -79,7 +80,11 @@ class VitruviusResourceManipulatingJob extends Job {
                     // clear the resource first
                     resource.getContents().clear();
                     resource.getContents().add(createdEObjectVURIPair.getFirst());
+                    // get old tuid
                     this.modelProviding.saveModelInstanceOriginal(mi.getURI());
+                    // get root
+                    // calculate new TUID for root
+                    // update TUID for root
                 }
 
                 // update correspondenceInstances
@@ -108,9 +113,9 @@ class VitruviusResourceManipulatingJob extends Job {
     }
 
     private void addNewCorrespondences(final Set<Triple<CorrespondenceInstance, EObject, EObject>> newCorrespondences) {
-        for (final Triple<CorrespondenceInstance, EObject, EObject> quadruple : newCorrespondences) {
-            CorrespondenceInstance correspondenceInstance = quadruple.getFirst();
-            correspondenceInstance.createAndAddEObjectCorrespondence(quadruple.getSecond(), quadruple.getThird());
+        for (final Triple<CorrespondenceInstance, EObject, EObject> triple : newCorrespondences) {
+            CorrespondenceInstance correspondenceInstance = triple.getFirst();
+            correspondenceInstance.createAndAddEObjectCorrespondence(triple.getSecond(), triple.getThird());
         }
     }
 

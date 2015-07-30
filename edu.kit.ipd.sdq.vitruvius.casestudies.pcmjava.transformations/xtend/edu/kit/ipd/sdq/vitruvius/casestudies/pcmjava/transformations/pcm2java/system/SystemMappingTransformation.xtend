@@ -26,7 +26,7 @@ class SystemMappingTransformation extends ComposedProvidingRequiringEntityMappin
 		val transResult = TransformationUtils.
 			createTransformationChangeResultForNewRootEObjects(newCorrespondingEObjects)
 		for (correspondingEObject : newCorrespondingEObjects) {
-			transResult.addNewCorrespondence(correspondenceInstance, newRootEObject, correspondingEObject, null)
+			transResult.addNewCorrespondence(correspondenceInstance, newRootEObject, correspondingEObject)
 		}
 		return transResult 
 	}

@@ -89,15 +89,10 @@ class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransforma
 					claimUniqueCorrespondingEObjectByType(newValue as RepositoryComponent, Class)
 
 				//update existing correspondence
-				var Correspondence parrentCorrespondence = null
-				val parrentCorrespondences = correspondenceInstance.getAllCorrespondences(affectedEObject)
-				if (!parrentCorrespondences.nullOrEmpty) {
-					parrentCorrespondence = parrentCorrespondences.get(0)
-				}
 				for (typedElement : typedElementCorrespondences) {
 					val oldTUID = correspondenceInstance.calculateTUIDFromEObject(typedElement)
 					typedElement.typeReference = PCM2JaMoPPUtils.createNamespaceClassifierReference(jaMoPPClass)
-					tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, typedElement, parrentCorrespondence)
+					tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, typedElement)
 					tcr.existingObjectsToSave.add(typedElement)
 				}
 			}

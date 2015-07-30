@@ -97,7 +97,7 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 				correspondingParameter.setTypeReference(typeReference)
 				val oldTUID = correspondenceInstance.calculateTUIDFromEObject(correspondingParameter)
 				val tcr = TransformationUtils.createTransformationChangeResultForEObjectsToSave(correspondingParameter.toArray)
-				tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, correspondingParameter, null)
+				tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, correspondingParameter)
 				return tcr
 			} catch (RuntimeException e) {
 				logger.warn("Could not find correspondence for PCM data type " + oldValue + " . " + e)

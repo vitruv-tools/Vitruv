@@ -59,15 +59,8 @@ class SEFFMappingTransformation extends DefaultEObjectMappingTransformation {
 		}
 		val affectedSEFF = affectedEObject as ResourceDemandingSEFF
 		val newEObjects = affectedSEFF.checkSEFFAndCreateCorrespondences
-		var Correspondence parrentCorrespondence = null
-		val parrentCorrespondences = correspondenceInstance.getAllCorrespondences(
-			affectedSEFF.basicComponent_ServiceEffectSpecification)
-		if (!parrentCorrespondences.nullOrEmpty) {
-			parrentCorrespondence = parrentCorrespondences.get(0)
-		}
 		for (newCorrespondingEObject : newEObjects) {
-			tcr.addNewCorrespondence(correspondenceInstance, affectedSEFF, newCorrespondingEObject,
-				parrentCorrespondence)
+			tcr.addNewCorrespondence(correspondenceInstance, affectedSEFF, newCorrespondingEObject)
 		}
 		return tcr
 	}
@@ -84,7 +77,7 @@ class SEFFMappingTransformation extends DefaultEObjectMappingTransformation {
 		val sigIsOpSig = signature instanceof OperationSignature
 		if (!sigIsOpSig) {
 			return null
-		}
+		} 
 		val correspondingClasses = correspondenceInstance.getCorrespondingEObjectsByType(basicComponent,
 			ConcreteClassifier)
 		if (!correspondingClasses.isNullOrEmpty) {

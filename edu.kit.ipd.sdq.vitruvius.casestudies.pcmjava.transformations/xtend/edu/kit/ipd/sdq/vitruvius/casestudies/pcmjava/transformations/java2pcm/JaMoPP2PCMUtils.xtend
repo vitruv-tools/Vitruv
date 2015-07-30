@@ -64,82 +64,6 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 		return repos.get(0)
 	}
 
-	/**
-	 * Tries to find the correct (main) correspondence for the given repository.
-	 * Since the main repository has at least three corresponding packages (the main package as well as the datatypes
-	 * and contracts packages) we try to find the corresondence that is the one to the main package - if it can not
-	 * be found we return the first parent correspondence   
-	 */
-	def static public findMainParrentCorrepsondenceForRepository(Repository repo,
-		CorrespondenceInstance correspondenceInstance) {
-		val correspondences = correspondenceInstance.getAllCorrespondences(repo)
-		if (!correspondences.nullOrEmpty) {
-			for (correspondence : correspondences) {
-				if (correspondence instanceof EObjectCorrespondence) {
-					val eoc = correspondence as EObjectCorrespondence
-					if (isTUIDMainPackageCorrespondence(eoc.elementBTUID, repo, correspondenceInstance) ||
-						isTUIDMainPackageCorrespondence(eoc.elementATUID, repo, correspondenceInstance)) {
-						return correspondence
-					}
-				}
-			}
-			return correspondences.get(0)
-		}
-		logger.info(
-			"Could not find any correspondence for repository " + repo +
-				". The newly created correspondence will not have a parent correspondence")
-		return null
-	}
-
-	def static public dispatch findMainParrentCorrepsondenceForPCMElement(RepositoryComponent repoComponent,
-		CorrespondenceInstance correspondenceInstance) {
-		findMainParrentCorrepsondenceForRepository(repoComponent.repository__RepositoryComponent, correspondenceInstance)
-	}
-
-	def static public dispatch findMainParrentCorrepsondenceForPCMElement(Repository repo,
-		CorrespondenceInstance correspondenceInstance) {
-		findMainParrentCorrepsondenceForRepository(repo, correspondenceInstance)
-	}
-
-	def static public dispatch findMainParrentCorrepsondenceForPCMElement(Interface pcmInterface,
-		CorrespondenceInstance correspondenceInstance) {
-		findMainParrentCorrepsondenceForRepository(pcmInterface.repository__Interface, correspondenceInstance)
-	}
-
-	def static public dispatch findMainParrentCorrepsondenceForPCMElement(System pcmSystem,
-		CorrespondenceInstance correspondenceInstance) {
-		return null
-	}
-
-	def static public dispatch findMainParrentCorrepsondenceForPCMElement(NamedElement pcmNamedElement,
-		CorrespondenceInstance correspondenceInstance) {
-		logger.info(
-			"No specific parrent correspondence found for PCM Element " + pcmNamedElement.entityName + " - use null")
-		return null
-	}
-
-	def static public dispatch findMainParrentCorrepsondenceForPCMElement(EObject eObject,
-		CorrespondenceInstance correspondenceInstance) {
-		logger.warn(
-			"EObject " + eObject +
-				" is not a PCM element. No parrent correspondence can be found for the Object - returning null")
-		return null
-	}
-
-	def static private boolean isTUIDMainPackageCorrespondence(TUID tuid, Repository repo,
-		CorrespondenceInstance correspondenceInstance) {
-		val EObject eObject = correspondenceInstance.resolveEObjectFromTUID(tuid)
-		if (eObject instanceof Package) {
-			val jaMoPPPackage = eObject as Package
-			if (jaMoPPPackage.name.equals(repo.entityName)) {
-
-				// found correspondence for main package
-				return true
-			}
-		}
-		return false
-	}
-
 	def static addJaMoPP2PCMCorrespondenceToFeatureCorrespondenceMap(String jaMoPPFeatureName, String pcmFeatureName,
 		Map<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap) {
 		var nameAttribute = ClassifiersFactory.eINSTANCE.createInterface.eClass.getEAllAttributes.filter[attribute|
@@ -184,7 +108,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 
 				val VURI oldVURI = VURI.getInstance(pcmRoot.eResource.getURI)
 				transformationChangeResult.existingObjectsToDelete.add(oldVURI)
-				transformationChangeResult.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, pcmRoot, null)
+				transformationChangeResult.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, pcmRoot)
 				transformationChangeResult.newRootObjectsToSave.add(pcmRoot)
 			}
 		}
@@ -221,73 +145,15 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
 		val tcr = new TransformationChangeResult
-		var Correspondence parrentCorrespondence = null
 		for (pcmElement : newCorrespondingEObjects) {
-			parrentCorrespondence = null
 			if (pcmElement instanceof Repository || pcmElement instanceof System) {
 				tcr.newRootObjectsToSave.add(pcmElement)
 			} else {
-				parrentCorrespondence = JaMoPP2PCMUtils.
-					findParrentCorrepsondenceForPCMElement(pcmElement, correspondenceInstance)
 				tcr.existingObjectsToSave.add(pcmElement)
 			}
-			tcr.addNewCorrespondence(correspondenceInstance, pcmElement, newEObject, parrentCorrespondence)
+			tcr.addNewCorrespondence(correspondenceInstance, pcmElement, newEObject)
 		}
 		tcr
-	}
-
-	def dispatch public static Correspondence findParrentCorrepsondenceForPCMElement(EObject object,
-		CorrespondenceInstance correspondenceInstance) {
-		return null
-	}
-
-	def dispatch public static Correspondence findParrentCorrepsondenceForPCMElement(
-		RepositoryComponent repoComponent, CorrespondenceInstance correspondenceInstance) {
-		return findMainParrentCorrepsondenceForRepository(repoComponent.repository__RepositoryComponent,
-			correspondenceInstance)
-	}
-
-	def dispatch public static Correspondence findParrentCorrepsondenceForPCMElement(
-		InnerDeclaration innerDeclaration, CorrespondenceInstance correspondenceInstance) {
-		val correspondences = correspondenceInstance.getAllCorrespondences(
-			innerDeclaration.compositeDataType_InnerDeclaration)
-		if (correspondences.nullOrEmpty) {
-			return null
-		}
-		return correspondences.iterator.next
-	}
-
-	def dispatch public static Correspondence findParrentCorrepsondenceForPCMElement(CompositeDataType cdt,
-		CorrespondenceInstance correspondenceInstance) {
-		return findMainParrentCorrepsondenceForRepository(cdt.repository__DataType, correspondenceInstance)
-	}
-
-	def dispatch public static Correspondence findParrentCorrepsondenceForPCMElement(CollectionDataType cdt,
-		CorrespondenceInstance correspondenceInstance) {
-		return findMainParrentCorrepsondenceForRepository(cdt.repository__DataType, correspondenceInstance)
-	}
-
-	def dispatch public static Correspondence findParrentCorrepsondenceForPCMElement(OperationSignature opSig,
-		CorrespondenceInstance correspondenceInstance) {
-		val correspondences = correspondenceInstance.getAllCorrespondences(opSig.interface__OperationSignature)
-		if (correspondences.nullOrEmpty) {
-			return null
-		}
-		return correspondences.iterator.next
-	}
-
-	def dispatch public static Correspondence findParrentCorrepsondenceForPCMElement(OperationInterface opInterface,
-		CorrespondenceInstance correspondenceInstance) {
-		return findMainParrentCorrepsondenceForRepository(opInterface.repository__Interface, correspondenceInstance)
-	}
-
-	def dispatch public static findParrentCorrepsondenceForPCMElement(Parameter pcmParameter,
-		CorrespondenceInstance correspondenceInstance) {
-		val correspondences = correspondenceInstance.getAllCorrespondences(pcmParameter.operationSignature__Parameter)
-		if (correspondences.nullOrEmpty) {
-			return null
-		}
-		return correspondences.iterator.next
 	}
 
 	def dispatch static Classifier getTargetClassifierFromTypeReference(TypeReference reference) {

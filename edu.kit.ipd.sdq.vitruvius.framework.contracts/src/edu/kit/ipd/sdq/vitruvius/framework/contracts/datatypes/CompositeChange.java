@@ -8,6 +8,10 @@ public class CompositeChange extends Change {
 
     private List<Change> changes;
 
+    public CompositeChange() {
+        this.changes = new LinkedList<Change>();
+    }
+
     public CompositeChange(final Change... changes) {
         this.changes = new LinkedList<Change>(Arrays.asList(changes));
     }

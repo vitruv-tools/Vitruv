@@ -100,7 +100,7 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
     private void createNewCorrespondences(final CorrespondenceInstance ci, final EMFChangeResult emfChangeResult,
             final ResourceDemandingSEFF newSeffElements, final BasicComponent basicComponent) {
         for (final AbstractAction abstractAction : newSeffElements.getSteps_Behaviour()) {
-            emfChangeResult.addNewCorrespondence(ci, abstractAction, this.newMethod, null);
+            emfChangeResult.addNewCorrespondence(ci, abstractAction, this.newMethod);
         }
         final VURI bcVURI = VURI.getInstance(basicComponent.eResource());
         emfChangeResult.getExistingObjectsToSave().add(bcVURI);

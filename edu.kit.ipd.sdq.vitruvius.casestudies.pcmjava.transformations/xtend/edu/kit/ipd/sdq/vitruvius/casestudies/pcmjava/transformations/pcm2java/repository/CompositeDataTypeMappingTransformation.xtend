@@ -96,11 +96,6 @@ class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransfor
 		val compositeDataType = newAffectedEObject as CompositeDataType
 		val jaMoPPDataType = correspondenceInstance.claimUniqueCorrespondingEObjectByType(compositeDataType, Class)
 		val tcr = TransformationUtils.createEmptyTransformationChangeResult
-		val correspondences = correspondenceInstance.getAllCorrespondences(compositeDataType)
-		var Correspondence correspondence = null
-		if (!correspondences.nullOrEmpty) {
-			correspondence = correspondences.get(0)
-		}
 		var rootObjectsAffected = false
 		val rootObjects = newCorrespondingEObjects.filter(typeof(JavaRoot))
 		if (!rootObjects.nullOrEmpty) {
@@ -108,7 +103,7 @@ class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransfor
 			rootObjectsAffected = true
 		}
 		for (newCorrespondingEObject : newCorrespondingEObjects) {
-			tcr.addNewCorrespondence(correspondenceInstance, newValue, newCorrespondingEObject, correspondence)
+			tcr.addNewCorrespondence(correspondenceInstance, newValue, newCorrespondingEObject)
 			if (!rootObjectsAffected) {
 				tcr.existingObjectsToSave.add(newCorrespondingEObject)
 			}

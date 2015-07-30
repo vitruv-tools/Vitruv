@@ -80,17 +80,14 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 			for (correspondingSignature : correspondingPCMSignatures) {
 				val Repository repo = correspondingSignature.interface__OperationSignature.repository__Interface
 				val oldTUID = correspondenceInstance.calculateTUIDFromEObject(correspondingSignature)
-				val parrentCorrespondence = JaMoPP2PCMUtils.
-					findMainParrentCorrepsondenceForPCMElement(correspondingSignature, correspondenceInstance)
 				val DataType newReturnValue = TypeReferenceCorrespondenceHelper.
 					getCorrespondingPCMDataTypeForTypeReference(newValue as TypeReference, correspondenceInstance,
 						userInteracting, repo, tcr)
 				correspondingSignature.returnType__OperationSignature = newReturnValue
 				tcr.existingObjectsToSave.add(correspondingSignature)
 
-				// guess this is not necessary since the id stays the same
-				tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, correspondingSignature,
-					parrentCorrespondence)
+				// guess this is not necessary since the id stay the same
+				tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, correspondingSignature)
 			}
 		}
 		return tcr

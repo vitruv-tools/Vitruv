@@ -100,13 +100,12 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 		}
 		val Interface jaMoPPIf = correspondenceInstance.getCorrespondingEObjectsByType(newAffectedEObject, Interface).
 			get(0)
-		val parrentCorrespondence = correspondenceInstance.getAllCorrespondences(newAffectedEObject).get(0)
 		val transformationResult = TransformationUtils.
 			createTransformationChangeResultForEObjectsToSave(jaMoPPIf.toArray)
 		for (eObject : newMethods) {
 			val InterfaceMethod newMethod = eObject as InterfaceMethod;
 			jaMoPPIf.members.add(newMethod)
-			transformationResult.addNewCorrespondence(correspondenceInstance, newValue, newMethod, parrentCorrespondence)
+			transformationResult.addNewCorrespondence(correspondenceInstance, newValue, newMethod)
 
 		//the code jaMoPPIf.methods.add(index, newMethod); does not work, because adding a method 
 		//to interface methods does not cause an update of the resource.

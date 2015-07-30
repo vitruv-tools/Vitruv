@@ -65,7 +65,7 @@ class PCMJaMoPPUtils {
 				val TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(correspondingObject)
 				correspondingObject.eSet(eStructuralFeature, newValue)
 				transformationChangeResult.addCorrespondenceToUpdate(correspondenceInstance, oldTUID,
-					correspondingObject, null)
+					correspondingObject)
 				if (markFilesOfChangedEObjectsAsFilesToSave) {
 					transformationChangeResult.existingObjectsToSave.add(correspondingObject)
 				}

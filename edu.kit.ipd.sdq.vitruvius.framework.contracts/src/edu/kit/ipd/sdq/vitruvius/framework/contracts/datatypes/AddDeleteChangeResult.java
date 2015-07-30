@@ -5,10 +5,8 @@ import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Quadruple;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple;
 
 /**
@@ -93,9 +91,9 @@ public class AddDeleteChangeResult<T, U, V> extends ChangeResult {
     }
 
     public void addNewCorrespondence(final CorrespondenceInstance correspondenceInstance, final EObject elementA,
-            final EObject elementB, final Correspondence parrentCorrespondence) {
-        this.newCorrespondences.add(new Quadruple<CorrespondenceInstance, EObject, EObject, Correspondence>(
-                correspondenceInstance, elementA, elementB, parrentCorrespondence));
+            final EObject elementB) {
+        this.newCorrespondences
+                .add(new Triple<CorrespondenceInstance, EObject, EObject>(correspondenceInstance, elementA, elementB));
     }
 
     public void addCorrespondenceToDelete(final CorrespondenceInstance correspondenceInstance,
@@ -104,9 +102,9 @@ public class AddDeleteChangeResult<T, U, V> extends ChangeResult {
     }
 
     public void addCorrespondenceToUpdate(final CorrespondenceInstance correspondenceInstance, final TUID oldTUID,
-            final EObject elementB, final Correspondence correspondence) {
-        this.existingCorrespondencesToUpdate.add(new Quadruple<CorrespondenceInstance, TUID, EObject, Correspondence>(
-                correspondenceInstance, oldTUID, elementB, correspondence));
+            final EObject elementB) {
+        this.existingCorrespondencesToUpdate
+                .add(new Triple<CorrespondenceInstance, TUID, EObject>(correspondenceInstance, oldTUID, elementB));
     }
 
     public Set<Triple<CorrespondenceInstance, EObject, EObject>> getNewCorrespondences() {

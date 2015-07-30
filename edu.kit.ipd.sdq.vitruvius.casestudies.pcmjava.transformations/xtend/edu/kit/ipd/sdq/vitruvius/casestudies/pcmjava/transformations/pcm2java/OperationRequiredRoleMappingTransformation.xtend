@@ -111,16 +111,9 @@ class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTran
 			EcoreUtil.remove(oldEObject)
 		}
 		val EObject[] newEObjects = createEObject(affectedEObject)
-		val opr = affectedEObject as OperationRequiredRole
-		val interfaceRequiringEntity = opr.requiringEntity_RequiredRole
-		val parrentCorrespondences = correspondenceInstance.getAllCorrespondences(interfaceRequiringEntity)
-		var Correspondence parrentCorrespondence = null
-		if (!parrentCorrespondences.nullOrEmpty) {
-			parrentCorrespondence = parrentCorrespondences.get(0)
-		}
 		if (null != newEObjects) {
 			for (newEObject : newEObjects) {
-				tcr.addNewCorrespondence(correspondenceInstance, newEObject, affectedEObject, parrentCorrespondence)
+				tcr.addNewCorrespondence(correspondenceInstance, newEObject, affectedEObject)
 				tcr.existingObjectsToSave.add(newEObject)
 			}
 		}

@@ -77,7 +77,6 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 					" Returning empty transformation result")
 			return TransformationUtils.createEmptyTransformationChangeResult
 		}
-		val parrentCorrespondence = correspondenceInstance.getAllCorrespondences(newAffectedEObject)
 		val tcr = TransformationUtils.createTransformationChangeResultForEObjectsToSave(jaMoPPIfMethods)
 		val Parameter newParameter = newCorrespondingParameter.get(0) as Parameter
 		val paramType = newParameter.typeReference
@@ -90,8 +89,8 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 					paramType)
 			}
 			interfaceMethod.parameters.add(index, newParameter)
-			tcr.addNewCorrespondence(correspondenceInstance, newValue, newParameter, parrentCorrespondence.get(0))
-			tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, interfaceMethod, null)
+			tcr.addNewCorrespondence(correspondenceInstance, newValue, newParameter)
+			tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, interfaceMethod)
 		}
 		return tcr
 	}
@@ -147,7 +146,7 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 		correspondingInterfaceMethod.typeReference = newTypeReference;
 		val tcr = TransformationUtils.
 			createTransformationChangeResultForEObjectsToSave(correspondingInterfaceMethod.toArray)
-		tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, correspondingInterfaceMethod, null)
+		tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, correspondingInterfaceMethod)
 		if(newTypeReference instanceof NamespaceClassifierReference){
 			PCM2JaMoPPUtils.addImportToCompilationUnitOfClassifier(correspondingInterfaceMethod.containingConcreteClassifier, newTypeReference)
 		}
