@@ -293,12 +293,16 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 	}
 	
 	def public static normalizeURI(EObject eObject){
+		if(null == eObject.eResource || null == eObject.eResource.resourceSet){
+			return false
+		}
 		val resource = eObject.eResource
 		val resourceSet = resource.resourceSet
 		val uri = resource.URI
 		val uriConverter = resourceSet.URIConverter
 		val normalizedURI = uriConverter.normalize(uri)
 		resource.URI = normalizedURI
+		return true
 	}
 	
 }

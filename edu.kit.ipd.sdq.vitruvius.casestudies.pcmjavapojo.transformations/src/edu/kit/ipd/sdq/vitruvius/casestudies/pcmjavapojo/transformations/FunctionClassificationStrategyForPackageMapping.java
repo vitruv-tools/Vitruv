@@ -41,7 +41,11 @@ public class FunctionClassificationStrategyForPackageMapping extends AbstractFun
      */
     @Override
     protected boolean isExternalCall(final Method method) {
-        JaMoPP2PCMUtils.normalizeURI(method);
+        if (!JaMoPP2PCMUtils.normalizeURI(method)) {
+            logger.info("Could not normalize URI for method " + method
+                    + ". Method call is not considered as as external call");
+            return false;
+        }
         final Set<OperationSignature> correspondingSignatures = this.correspondenceInstance
                 .getCorrespondingEObjectsByType(method, OperationSignature.class);
         if (null != correspondingSignatures && !correspondingSignatures.isEmpty()) {

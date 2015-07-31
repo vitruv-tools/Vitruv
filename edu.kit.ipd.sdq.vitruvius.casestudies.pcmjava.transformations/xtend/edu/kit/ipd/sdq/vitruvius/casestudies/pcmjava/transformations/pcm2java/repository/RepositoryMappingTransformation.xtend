@@ -28,10 +28,12 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 	}
 
 	override void setCorrespondenceForFeatures() {
-		var repositoryNameAttribute = RepositoryFactory.eINSTANCE.createRepository.eClass.getEAllAttributes.filter[attribute|
-			attribute.name.equalsIgnoreCase(PCMJaMoPPNamespace.PCM::PCM_ATTRIBUTE_ENTITY_NAME)].iterator.next
-		var packageNameAttribute = ContainersFactory.eINSTANCE.createPackage.eClass.getEAllAttributes.filter[attribute|
-			attribute.name.equalsIgnoreCase(PCMJaMoPPNamespace.JaMoPP::JAMOPP_ATTRIBUTE_NAME)].iterator.next
+		var repositoryNameAttribute = RepositoryFactory.eINSTANCE.createRepository.eClass.getEAllAttributes.filter [ attribute |
+			attribute.name.equalsIgnoreCase(PCMJaMoPPNamespace.PCM::PCM_ATTRIBUTE_ENTITY_NAME)
+		].iterator.next
+		var packageNameAttribute = ContainersFactory.eINSTANCE.createPackage.eClass.getEAllAttributes.filter [ attribute |
+			attribute.name.equalsIgnoreCase(PCMJaMoPPNamespace.JaMoPP::JAMOPP_ATTRIBUTE_NAME)
+		].iterator.next
 		featureCorrespondenceMap.put(repositoryNameAttribute, packageNameAttribute)
 	}
 
@@ -70,13 +72,13 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 	override removeEObject(EObject eObject) {
 		val Repository repository = eObject as Repository
 
-		//Remove corresponding packages
+		// Remove corresponding packages
 		val jaMoPPPackages = correspondenceInstance.getCorrespondingEObjectsByType(repository, Package)
 		for (jaMoPPPackage : jaMoPPPackages) {
 			EcoreUtil.remove(jaMoPPPackage)
 		}
 
-		//remove corresponding instance
+		// remove corresponding instance
 		correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(repository)
 		return null
 	}
@@ -85,8 +87,8 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 
-	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
-		int index, EObject[] oldCorrespondingEObjectsToDelete) {
+	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
+		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
 		return PCM2JaMoPPUtils.
 			deleteCorrespondingEObjectsAndGetTransformationChangeResult(oldCorrespondingEObjectsToDelete,
 				correspondenceInstance)
@@ -122,15 +124,15 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 		EObject[] newCorrespondingEObjects) {
 		logger.warn(
 			"method createNonRootEObjectSingle should not be called for " + RepositoryMappingTransformation.simpleName +
-				" transformation") 
-		return null
-	}
+				" transformation")
+				return null
+			}
 
-	override unsetContainmentEReference(EObject affectedEObject, EReference affectedReference, EObject oldValue,
-		EObject[] oldCorrespondingEObjectsToDelete) {
+			override unsetContainmentEReference(EObject affectedEObject, EReference affectedReference, EObject oldValue,
+				EObject[] oldCorrespondingEObjectsToDelete) {
 
-		//Called everytime a BasicComponent is removed - does nothing because the actual removing is already done in deleteNonRootEObjectInList
-		return TransformationUtils.createEmptyTransformationChangeResult
-	}
+				// Called everytime a BasicComponent is removed - does nothing because the actual removing is already done in deleteNonRootEObjectInList
+				return TransformationUtils.createEmptyTransformationChangeResult
+			}
 
-}
+		}

@@ -506,7 +506,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         return this.findOperationSignatureForJaMoPPMethodInCompilationUnit(methodName, interfaceName, cu);
     }
 
-    private ICompilationUnit addMethodToCompilationUnit(final String compilationUnitName, final String methodString)
+    protected ICompilationUnit addMethodToCompilationUnit(final String compilationUnitName, final String methodString)
             throws Throwable, JavaModelException {
         final ICompilationUnit cu = this.findICompilationUnitWithClassName(compilationUnitName);
         final IType firstType = cu.getAllTypes()[0];

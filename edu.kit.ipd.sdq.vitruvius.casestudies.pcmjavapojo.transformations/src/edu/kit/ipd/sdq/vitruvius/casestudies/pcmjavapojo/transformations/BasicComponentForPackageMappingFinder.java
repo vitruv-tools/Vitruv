@@ -12,8 +12,8 @@ import org.emftext.language.java.containers.ContainersFactory;
 import org.emftext.language.java.containers.JavaRoot;
 import org.emftext.language.java.containers.Package;
 import org.emftext.language.java.members.Method;
-
 import org.palladiosimulator.pcm.repository.BasicComponent;
+
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.BasicComponentFinding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
@@ -42,6 +42,11 @@ public class BasicComponentForPackageMappingFinder implements BasicComponentFind
     @Override
     public BasicComponent findBasicComponentForMethod(final Method newMethod, final CorrespondenceInstance ci) {
         final CompilationUnit cu = newMethod.getContainingCompilationUnit();
+        if (null == cu) {
+            logger.info("Could not find basic component for method " + newMethod
+                    + " cause the compilation of the method is null");
+            return null;
+        }
         final Package jaMoPPPackage = this.createPackage(cu, cu.getNamespaces());
         final BasicComponent correspondingBc = this.findCorrespondingBasicComponentForPackage(jaMoPPPackage, ci);
         if (null == correspondingBc) {

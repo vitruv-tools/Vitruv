@@ -69,6 +69,11 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
     public EMFChangeResult execute(final CorrespondenceInstance ci, final UserInteracting userInteracting,
             final SynchronisationAbortedListener abortListener) {
         final EMFChangeResult emfChangeResult = new EMFChangeResult();
+        if (!this.isArchitectureRelevantChange(ci)) {
+            logger.debug("Change with oldMethod " + this.oldMethod + " and newMethod: " + this.newMethod
+                    + " is not an architecture relevant change");
+            return emfChangeResult;
+        }
         // 1)
         this.removeCorrespondingAbstractActions(ci, emfChangeResult);
 
@@ -84,6 +89,29 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
 
         return emfChangeResult;
 
+    }
+
+    /**
+     * checks whether the change is considered architecture relevant. This is the case if either the
+     * new or the old method does have a corresponding SEFF
+     *
+     * @param ci
+     * @return
+     */
+    private boolean isArchitectureRelevantChange(final CorrespondenceInstance ci) {
+        return this.isMethodArchitectureRelevant(this.oldMethod, ci)
+                || this.isMethodArchitectureRelevant(this.newMethod, ci);
+    }
+
+    private boolean isMethodArchitectureRelevant(final ClassMethod method, final CorrespondenceInstance ci) {
+        if (null != method) {
+            final Set<ResourceDemandingSEFF> correspondingEObjectsByType = ci.getCorrespondingEObjectsByType(method,
+                    ResourceDemandingSEFF.class);
+            if (null != correspondingEObjectsByType && !correspondingEObjectsByType.isEmpty()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private ResourceDemandingSEFF executeSoMoXForMethod(final BasicComponent basicComponent) {
@@ -174,6 +202,7 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
         if (null == correspondingSeffs || correspondingSeffs.isEmpty()) {
             logger.warn("No SEFF found for method " + this.oldMethod
                     + ". Could not create ResourceDemandingBehavoir to insert SEFF elements");
+            return null;
         }
         return correspondingSeffs.iterator().next();
     }
