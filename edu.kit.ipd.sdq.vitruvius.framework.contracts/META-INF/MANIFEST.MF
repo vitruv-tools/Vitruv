@@ -7,6 +7,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.internal,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes
 Require-Bundle: org.eclipse.emf.ecore,
  org.eclipse.core.resources,

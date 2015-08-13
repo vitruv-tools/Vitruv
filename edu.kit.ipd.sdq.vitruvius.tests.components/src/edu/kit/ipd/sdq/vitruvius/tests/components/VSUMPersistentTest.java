@@ -12,11 +12,11 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
@@ -59,9 +59,9 @@ public class VSUMPersistentTest extends VSUMTest {
         VSUMImpl newVSUM = testMetaRepositoryAndVSUMCreation();
 
         // assert Maps
-        Map<Metamodel, Set<CorrespondenceInstance>> oldMetamodel2CorrespondenceInstancesMap = TestUtil
+        Map<Metamodel, Set<InternalCorrespondenceInstance>> oldMetamodel2CorrespondenceInstancesMap = TestUtil
                 .getFieldFromClass(VSUMImpl.class, "metamodel2CorrespondenceInstancesMap", vsum);
-        Map<Metamodel, Set<CorrespondenceInstance>> newMetamodel2CorrespondenceInstancesMap = TestUtil
+        Map<Metamodel, Set<InternalCorrespondenceInstance>> newMetamodel2CorrespondenceInstancesMap = TestUtil
                 .getFieldFromClass(VSUMImpl.class, "metamodel2CorrespondenceInstancesMap", newVSUM);
         assertEquals("Metamodel maps must have the same size", oldMetamodel2CorrespondenceInstancesMap.size(),
                 newMetamodel2CorrespondenceInstancesMap.size());
@@ -72,20 +72,23 @@ public class VSUMPersistentTest extends VSUMTest {
                     // found metamodel
                     foundMetamodel = true;
                     // Check Set of CorrespondenceInstances
-                    Set<CorrespondenceInstance> oldCIs = oldMetamodel2CorrespondenceInstancesMap.get(oldMetamodel);
-                    Set<CorrespondenceInstance> newCIs = newMetamodel2CorrespondenceInstancesMap.get(newMetamodel);
+                    Set<InternalCorrespondenceInstance> oldCIs = oldMetamodel2CorrespondenceInstancesMap
+                            .get(oldMetamodel);
+                    Set<InternalCorrespondenceInstance> newCIs = newMetamodel2CorrespondenceInstancesMap
+                            .get(newMetamodel);
                     assertEquals("Correspondence sets for metamodel " + oldMetamodel + " have to have the same size",
                             oldCIs.size(), newCIs.size());
-                    for (CorrespondenceInstance oldCi : oldCIs) {
+                    for (InternalCorrespondenceInstance oldCi : oldCIs) {
                         boolean foundCorrespondenceInstance = false;
-                        for (CorrespondenceInstance newCi : newCIs) {
+                        for (InternalCorrespondenceInstance newCi : newCIs) {
                             if (correspondenceInstanceEquals(oldCi, newCi)) {
                                 foundCorrespondenceInstance = true;
                                 break;
                             }
                         }
-                        assertTrue("CorrespondenceInstance " + oldCi
-                                + " not found in the new CorrespondenceInstance set", foundCorrespondenceInstance);
+                        assertTrue(
+                                "CorrespondenceInstance " + oldCi + " not found in the new CorrespondenceInstance set",
+                                foundCorrespondenceInstance);
                     }
                     break;
                 }
@@ -93,10 +96,10 @@ public class VSUMPersistentTest extends VSUMTest {
             assertTrue("Metamodel " + oldMetamodel + " not found in the new metamodel map", foundMetamodel);
         }
 
-        Map<Mapping, CorrespondenceInstance> oldMapping2CorrespondenceInstanceMap = TestUtil.getFieldFromClass(
-                VSUMImpl.class, "mapping2CorrespondenceInstanceMap", vsum);
-        Map<Mapping, CorrespondenceInstance> newMapping2CorrespondenceInstanceMap = TestUtil.getFieldFromClass(
-                VSUMImpl.class, "mapping2CorrespondenceInstanceMap", newVSUM);
+        Map<Mapping, InternalCorrespondenceInstance> oldMapping2CorrespondenceInstanceMap = TestUtil
+                .getFieldFromClass(VSUMImpl.class, "mapping2CorrespondenceInstanceMap", vsum);
+        Map<Mapping, InternalCorrespondenceInstance> newMapping2CorrespondenceInstanceMap = TestUtil
+                .getFieldFromClass(VSUMImpl.class, "mapping2CorrespondenceInstanceMap", newVSUM);
         assertEquals("Mapping maps must have the same size", oldMetamodel2CorrespondenceInstancesMap.size(),
                 newMetamodel2CorrespondenceInstancesMap.size());
         for (Mapping oldMapping : oldMapping2CorrespondenceInstanceMap.keySet()) {
@@ -104,8 +107,8 @@ public class VSUMPersistentTest extends VSUMTest {
             for (Mapping newMapping : newMapping2CorrespondenceInstanceMap.keySet()) {
                 if (mappingEquals(oldMapping, newMapping)) {
                     mappingFound = true;
-                    CorrespondenceInstance oldCi = oldMapping2CorrespondenceInstanceMap.get(oldMapping);
-                    CorrespondenceInstance newCi = newMapping2CorrespondenceInstanceMap.get(newMapping);
+                    InternalCorrespondenceInstance oldCi = oldMapping2CorrespondenceInstanceMap.get(oldMapping);
+                    InternalCorrespondenceInstance newCi = newMapping2CorrespondenceInstanceMap.get(newMapping);
                     assertTrue("Old correspondence instance " + oldCi + " does not equal new CorrespondenceInstance "
                             + newCi, correspondenceInstanceEquals(oldCi, newCi));
                 }
@@ -128,7 +131,8 @@ public class VSUMPersistentTest extends VSUMTest {
         fail("TODO: check whether correspondence instances and the maps within the correspondence instances are equal.");
     }
 
-    private boolean correspondenceInstanceEquals(final CorrespondenceInstance oldCi, final CorrespondenceInstance newCi) {
+    private boolean correspondenceInstanceEquals(final InternalCorrespondenceInstance oldCi,
+            final InternalCorrespondenceInstance newCi) {
         VURI oldVURI = VURI.getInstance(oldCi.getResource().getURI());
         VURI newVURI = VURI.getInstance(newCi.getResource().getURI());
         return oldVURI == newVURI && mappingEquals(oldCi.getMapping(), newCi.getMapping());
@@ -146,8 +150,8 @@ public class VSUMPersistentTest extends VSUMTest {
     }
 
     @SuppressWarnings("unchecked")
-    protected Map<VURI, ModelInstance> getModelInstancesFieldFromVSUM(final VSUMImpl vsum) throws NoSuchFieldException,
-    IllegalAccessException {
+    protected Map<VURI, ModelInstance> getModelInstancesFieldFromVSUM(final VSUMImpl vsum)
+            throws NoSuchFieldException, IllegalAccessException {
         Field modelInstancesField = VSUMImpl.class.getDeclaredField("modelInstances");
         modelInstancesField.setAccessible(true);
         return (Map<VURI, ModelInstance>) modelInstancesField.get(vsum);

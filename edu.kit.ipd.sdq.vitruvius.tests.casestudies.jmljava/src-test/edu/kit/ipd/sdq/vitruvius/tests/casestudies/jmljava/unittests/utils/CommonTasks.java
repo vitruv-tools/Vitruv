@@ -30,8 +30,8 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.Shad
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JMLMetaModelProvider;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JaMoPPMetaModelProvider;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.extensions.ModelURIProvider;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ContractsBuilder;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
@@ -76,7 +76,7 @@ public class CommonTasks {
             Pair<ModelInstance, ModelInstance> modelInstances) throws IOException {
         URI dummyURICorrespondenceInstance = getDummyURI();
 
-        CorrespondenceInstance ci = new CorrespondenceInstanceImpl(mapping, modelProviding,
+        CorrespondenceInstance ci = ContractsBuilder.createCorrespondenceInstance(mapping, modelProviding,
                 VURI.getInstance(dummyURICorrespondenceInstance), new ResourceImpl(dummyURICorrespondenceInstance));
 
         CompilationUnit javaCu = modelInstances.getFirst().getUniqueRootEObjectIfCorrectlyTyped(CompilationUnit.class);

@@ -5,7 +5,6 @@ import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.resource.Resource;
 
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentReferenceCorrespondence;
@@ -25,8 +24,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
  *
  */
 public interface CorrespondenceInstance {
-
-    public Resource getResource();
 
     public Mapping getMapping();
 
@@ -170,10 +167,6 @@ public interface CorrespondenceInstance {
     public <T> Set<T> getAllEObjectsInCorrespondencesWithType(Class<T> type);
 
     public void addSameTypeCorrespondence(SameTypeCorrespondence correspondence);
-
-    public boolean changedAfterLastSave();
-
-    public void resetChangedAfterLastSave();
 
     /**
      * Removes all direct correspondences for the given eObject and all correspondences for children

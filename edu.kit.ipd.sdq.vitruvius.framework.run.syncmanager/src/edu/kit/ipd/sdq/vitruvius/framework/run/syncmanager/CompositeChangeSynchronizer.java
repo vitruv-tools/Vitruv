@@ -13,6 +13,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePropagating;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceInstance;
 
 public class CompositeChangeSynchronizer extends ConcreteChangeSynchronizer {
 
@@ -37,7 +38,7 @@ public class CompositeChangeSynchronizer extends ConcreteChangeSynchronizer {
             return emfChangeResult;
         }
         EMFModelChange emfModelChange = (EMFModelChange) compositeChange.getChanges().get(0);
-        Set<CorrespondenceInstance> correspondenceInstances = this.correspondenceProviding
+        Set<InternalCorrespondenceInstance> correspondenceInstances = this.correspondenceProviding
                 .getAllCorrespondenceInstances(emfModelChange.getURI());
         if (null == correspondenceInstances || 0 == correspondenceInstances.size()) {
             logger.info("No correspondenceInstance found for model: " + emfModelChange.getURI()

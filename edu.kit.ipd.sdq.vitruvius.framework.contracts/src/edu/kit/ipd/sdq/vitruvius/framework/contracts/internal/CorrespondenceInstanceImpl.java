@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
+package edu.kit.ipd.sdq.vitruvius.framework.contracts.internal;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,6 +14,11 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FeatureInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory;
@@ -31,7 +36,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple;
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
-public class CorrespondenceInstanceImpl extends ModelInstance implements CorrespondenceInstance {
+public class CorrespondenceInstanceImpl extends ModelInstance implements InternalCorrespondenceInstance {
 
     private static final Logger logger = Logger.getLogger(CorrespondenceInstanceImpl.class.getSimpleName());
 

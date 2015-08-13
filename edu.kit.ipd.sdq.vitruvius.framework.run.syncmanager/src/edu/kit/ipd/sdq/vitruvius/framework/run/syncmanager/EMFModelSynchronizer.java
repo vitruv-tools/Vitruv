@@ -14,6 +14,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePropagatin
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceInstance;
 
 class EMFModelSynchronizer extends ConcreteChangeSynchronizer {
 
@@ -35,7 +36,7 @@ class EMFModelSynchronizer extends ConcreteChangeSynchronizer {
         VURI sourceModelURI = emfModelChange.getURI();
         // called in order to create the source model URI if it's not existing already
         this.modelProviding.getAndLoadModelInstanceOriginal(sourceModelURI);
-        Set<CorrespondenceInstance> correspondenceInstances = this.correspondenceProviding
+        Set<InternalCorrespondenceInstance> correspondenceInstances = this.correspondenceProviding
                 .getAllCorrespondenceInstances(sourceModelURI);
         if (null == correspondenceInstances || 0 == correspondenceInstances.size()) {
             logger.info("No correspondenceInstance found for model: " + sourceModelURI

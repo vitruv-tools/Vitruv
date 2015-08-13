@@ -49,8 +49,8 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.Synchronisati
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.extensions.ModelURIProvider;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ContractsBuilder;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
@@ -185,7 +185,7 @@ public abstract class TransformationTestsBase {
             Pair<ModelInstance, ModelInstance> modelInstances) throws IOException {
         URI dummyURICorrespondenceInstance = getDummyURI();
 
-        CorrespondenceInstance ci = new CorrespondenceInstanceImpl(MAPPING_JAVA2JML, modelProviding,
+        CorrespondenceInstance ci = ContractsBuilder.createCorrespondenceInstance(MAPPING_JAVA2JML, modelProviding,
                 VURI.getInstance(dummyURICorrespondenceInstance), new ResourceImpl(dummyURICorrespondenceInstance));
 
         CompilationUnit javaCu = modelInstances.getFirst().getUniqueRootEObjectIfCorrectlyTyped(CompilationUnit.class);
