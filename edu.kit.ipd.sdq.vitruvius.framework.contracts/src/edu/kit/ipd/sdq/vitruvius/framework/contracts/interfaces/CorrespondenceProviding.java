@@ -9,5 +9,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespond
 public interface CorrespondenceProviding extends CorrespondenceCopyProviding {
     CorrespondenceInstance getCorrespondenceInstanceOriginal(VURI model1URI, VURI model2URI);
 
+    void decorateCorrespondenceInstance(VURI mmAVURI, VURI mmBVURI, InternalCorrespondenceInstance originalCI,
+            InternalCorrespondenceInstance decoratedCI);
+
     Set<InternalCorrespondenceInstance> getAllCorrespondenceInstances(VURI model1uri);
 }

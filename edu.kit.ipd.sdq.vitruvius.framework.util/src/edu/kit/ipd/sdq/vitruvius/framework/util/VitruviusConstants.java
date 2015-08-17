@@ -4,11 +4,17 @@ public class VitruviusConstants {
 
     private static final String EXTENSION_PROPERTY_NAME = "provider";
     private static final String PLATFORM_RESOURCE_PREFIX = "platform:/resource/";
-    private static final String CORRESPONDENCE_INSTANCE_FILE_EXT = ".correspondence_instance";
-    private static final String CORRESPONDENCES_FILE_EXT = ".correspondence";
+    private static final String CORRESPONDENCES_FILE_EXT = "correspondence";
     private static final String DEFAULT_NAME_OF_IDENTIFIER_FEATURE = "id";
     private static final String TUID_SEGMENT_SEPERATOR = "#";
     private static final String DEFAULT_NAME_OF_NAME_FEAUTRE = "entityName";
+	private static final String FILE_EXT_SEPARATOR = ".";
+    /**
+     * Fields are needed as options to save correspondence instance (we need to ignore dangling
+     * HREFs) Copied from XMLResource.java
+     */
+    private static final String OPTION_PROCESS_DANGLING_HREF = "PROCESS_DANGLING_HREF";
+    private static final String OPTION_PROCESS_DANGLING_HREF_DISCARD = "DISCARD";
 
     /**
      * @return the name of the executable property of extension points
@@ -19,10 +25,6 @@ public class VitruviusConstants {
 
     public static String getPlatformResourcePrefix() {
         return PLATFORM_RESOURCE_PREFIX;
-    }
-
-    public static String getCorrespondenceInstanceFileExt() {
-        return CORRESPONDENCE_INSTANCE_FILE_EXT;
     }
 
     public static String getCorrespondencesFileExt() {
@@ -41,4 +43,15 @@ public class VitruviusConstants {
         return DEFAULT_NAME_OF_NAME_FEAUTRE;
     }
 
+	public static String getFileExtSeparator() {
+		return FILE_EXT_SEPARATOR;
+	}
+
+    public static String getOptionProcessDanglingHref() {
+		return OPTION_PROCESS_DANGLING_HREF;
+	}
+
+	public static String getOptionProcessDanglingHrefDiscard() {
+		return OPTION_PROCESS_DANGLING_HREF_DISCARD;
+	}
 }

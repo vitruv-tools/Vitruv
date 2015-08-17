@@ -1,9 +1,12 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.internal;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -14,6 +17,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FeatureInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
@@ -28,6 +32,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EFeatureCorrespon
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
@@ -36,7 +41,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple;
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
-public class CorrespondenceInstanceImpl extends ModelInstance implements InternalCorrespondenceInstance {
+public class CorrespondenceInstanceImpl extends ModelInstance implements CorrespondenceInstanceDecorator {
 
     private static final Logger logger = Logger.getLogger(CorrespondenceInstanceImpl.class.getSimpleName());
 
@@ -49,6 +54,8 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Interna
 
     private boolean changedAfterLastSave = false;
 
+    private final Map<String, String> saveCorrespondenceOptions;
+
     public CorrespondenceInstanceImpl(final Mapping mapping, final ModelProviding modelProviding,
             final VURI correspondencesVURI, final Resource correspondencesResource) {
         super(correspondencesVURI, correspondencesResource);
@@ -59,19 +66,54 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Interna
         this.tuid2CorrespondingTUIDsMap = new ClaimableHashMap<TUID, Set<TUID>>();
         this.featureInstance2CorrespondingFIMap = new ClaimableHashMap<FeatureInstance, Set<FeatureInstance>>();
 
+        this.saveCorrespondenceOptions = new HashMap<String, String>();
+        this.saveCorrespondenceOptions.put(VitruviusConstants.getOptionProcessDanglingHref(),
+                VitruviusConstants.getOptionProcessDanglingHrefDiscard());
+
+        try {
+            correspondencesResource.load(this.saveCorrespondenceOptions);
+        } catch (Exception e) {
+            logger.trace("Could not load correspondence resource - creating new correspondence instance resource.");
+        }
+
         // TODO implement lazy loading for correspondences because they may get really big
-        EObject correspondences = EcoreResourceBridge.getResourceContentRootIfUnique(correspondencesResource);
+        EObject correspondences = EcoreResourceBridge.getResourceContentRootIfUnique(getResource());
         if (correspondences == null) {
             this.correspondences = CorrespondenceFactory.eINSTANCE.createCorrespondences();
             correspondencesResource.getContents().add(this.correspondences);
         } else if (correspondences instanceof Correspondences) {
             this.correspondences = (Correspondences) correspondences;
-            // FIXME implement loading of existing correspondences from resources (fill maps)
+            // FIXME AAA implement loading of existing correspondences from resources (fill maps)
             // FIXME create TUIDs during loading of existing corresponding from resource
         } else {
             throw new RuntimeException("The unique root object '" + correspondences + "' of the correspondence model '"
-                    + correspondencesVURI + "' is not correctly typed!");
+                    + getURI() + "' is not correctly typed!");
         }
+    }
+
+    @Override
+    public Map<String, Object> getFileExtPrefix2ObjectMapForSave() {
+        try {
+            EcoreResourceBridge.saveResource(getResource(), this.saveCorrespondenceOptions);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not save correspondence instance '" + this + "' using the resource '"
+                    + getResource() + "' and the options '" + this.saveCorrespondenceOptions + "': " + e);
+        }
+        // we do not need to save anything else in a correspondence instance because the
+        // involved mapping is fix and everything else can be recomputed from the model
+        return new HashMap<String, Object>();
+        // do _not_ return an immutable empty map as decorators will add entries
+    }
+
+    @Override
+    public Set<String> getFileExtPrefixesForObjectsToLoad() {
+        return new HashSet<String>();
+        // do _not_ return an immutable empty map as decorators will add entries
+    }
+
+    @Override
+    public void initialize(final Map<String, Object> fileExtPrefix2ObjectMap) {
+        // nothing to initialize, everything was done based on the correspondence model
     }
 
     /*
@@ -83,6 +125,11 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Interna
     @Override
     public Mapping getMapping() {
         return this.mapping;
+    }
+
+    @Override
+    public boolean hasCorrespondences() {
+        return !this.tuid2CorrespondencesMap.isEmpty();
     }
 
     /*
@@ -844,5 +891,4 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Interna
         addSameTypeCorrespondence(correspondence);
         return correspondence;
     }
-
 }

@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.tests.components;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -11,16 +12,19 @@ import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FeatureInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentReferenceCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.api.MappedCorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import pcm_mockup.Interface;
@@ -35,60 +39,92 @@ public class CorrespondenceTest extends VSUMTest {
     @Test
     public void testAll() {
         VSUMImpl vsum = testMetaRepositoryVSUMAndModelInstancesCreation();
-        VURI pcmVURI = VURI.getInstance(PCM_INSTANCE_URI);
-        VURI umlVURI = VURI.getInstance(UML_INSTANCE_URI);
-        ModelInstance pcmInstance = vsum.getAndLoadModelInstanceOriginal(pcmVURI);
-        ModelInstance umlInstance = vsum.getAndLoadModelInstanceOriginal(umlVURI);
-        Repository repo = pcmInstance.getUniqueRootEObjectIfCorrectlyTyped(Repository.class);
-        UPackage pkg = umlInstance.getUniqueRootEObjectIfCorrectlyTyped(UPackage.class);
-        VURI pcmMMVURI = VURI.getInstance(PCM_MM_URI);
-        VURI umlMMVURI = VURI.getInstance(UML_MM_URI);
-        CorrespondenceInstance corresp = vsum.getCorrespondenceInstanceOriginal(pcmMMVURI, umlMMVURI);
-        assertNotNull(corresp);
-
-        EObjectCorrespondence repo2pkg = testAllClaimersAndGettersForEObjectCorrespondences(repo, pkg, corresp);
+        Repository repo = testLoadObject(vsum, PCM_INSTANCE_URI, Repository.class);
+        UPackage pkg = testLoadObject(vsum, UML_INSTANCE_URI, UPackage.class);
+        InternalCorrespondenceInstance corresp = testCorrespondenceInstanceCreation(vsum);
+        // FIXME AAA automatically decorate correspondence instance based on a new extension point
+        MappedCorrespondenceInstance mappedCorrespondenceInstance = new MappedCorrespondenceInstance(
+                (CorrespondenceInstanceDecorator) corresp);
+        vsum.decorateCorrespondenceInstance(VURI.getInstance(PCM_MM_URI), VURI.getInstance(UML_MM_URI), corresp,
+                mappedCorrespondenceInstance);
+        assertFalse(mappedCorrespondenceInstance.hasCorrespondences());
+        EObjectCorrespondence repo2pkg = createRepo2PkgCorrespondence(repo, pkg, mappedCorrespondenceInstance);
         // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
+        testAllClaimersAndGettersForEObjectCorrespondences(repo, pkg, mappedCorrespondenceInstance, repo2pkg);
 
         Pair<FeatureInstance, FeatureInstance> repoIfaceFIAndPkgIfaceFI = testAllClaimersAndGettersForFeatureCorrespondences(
-                repo, pkg, corresp, repo2pkg);
+                repo, pkg, mappedCorrespondenceInstance, repo2pkg);
         // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
         // 2. CRC: repo.ifaces _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg.ifaces _sJD6YPxjEeOD3p0i_uuRbQ
 
-        Interface repoInterface = testHasCorrespondences(repo, pkg, corresp);
+        Interface repoInterface = testHasCorrespondences(repo, pkg, mappedCorrespondenceInstance);
 
-        testSimpleRemove(pkg, corresp, repo2pkg, repoInterface);
+        testSimpleRemove(pkg, mappedCorrespondenceInstance, repo2pkg, repoInterface);
         // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
         // 2. CRC: repo.ifaces _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg.ifaces _sJD6YPxjEeOD3p0i_uuRbQ
 
-        testRecursiveRemove(repo, pkg, corresp, repo2pkg, repoIfaceFIAndPkgIfaceFI);
+        testRecursiveRemove(repo, pkg, mappedCorrespondenceInstance, repo2pkg, repoIfaceFIAndPkgIfaceFI);
         // now the correspondence instance should be empty
 
-        // TODO reactivate after TUID cache is working
-        // testUpdate(repo, pkg, corresp, repo2pkg);
+        // FIXME reactivate testUpdate in CorrespondenceTest after TUID cache is working
+        // testUpdate(repo, pkg, mappedCorrespondenceInstance, repo2pkg);
 
-        // TODO test persistence
-        // create some correspondences
-        // from VSUMTest
-        // CorrespondenceInstance correspondenceInstance = vsum
-        // .getCorrespondenceInstanceOriginal(VURI.getInstance(PCM_MM_URI),
-        // VURI.getInstance(UML_MM_URI));
-        // assertNotNull("Correspondence instance is null", correspondenceInstance);
-        // correspondenceInstance.createAndAddEObjectCorrespondence(repo, uPackage);
-        // correspondenceInstance.createAndAddEObjectCorrespondence(component, uClass);
-        // correspondenceInstance.createAndAddEObjectCorrespondence(mockIf, uInterface);
-        //
-        // // save instances again in order to trigger saving for CorrespondenceInstance(s)
-        // vsum.saveModelInstanceOriginal(vuri);
-        // vsum.saveModelInstanceOriginal(vuriUML);
-
+        testCorrespondencePersistence(vsum, repo, pkg, mappedCorrespondenceInstance);
     }
 
-    private EObjectCorrespondence testAllClaimersAndGettersForEObjectCorrespondences(final Repository repo,
-            final UPackage pkg, final CorrespondenceInstance corresp) {
-        // until this point the correspondence instance is empty
-        Correspondence repo2pkg = corresp.createAndAddEObjectCorrespondence(repo, pkg);
+    private void testCorrespondencePersistence(final VSUMImpl vsum, final Repository repo, final UPackage pkg,
+            final CorrespondenceInstance corresp) {
+        assertNotNull("Correspondence instance is null", corresp);
+        // recreate the same correspondence as before
+        EObjectCorrespondence repo2pkg = createRepo2PkgCorrespondence(repo, pkg, corresp);
         // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 
+        // save instances in order to trigger saving for CorrespondenceInstance(s)
+        VURI pcmVURI = VURI.getInstance(PCM_INSTANCE_URI);
+        vsum.saveModelInstanceOriginal(pcmVURI);
+        // create a new vsum from disk and load correspondence instance from disk
+        VSUMImpl vsum2 = testMetaRepositoryVSUMAndModelInstancesCreation();
+        Repository repo2 = testLoadObject(vsum2, PCM_INSTANCE_URI, Repository.class);
+        UPackage pkg2 = testLoadObject(vsum2, UML_INSTANCE_URI, UPackage.class);
+        InternalCorrespondenceInstance corresp2 = testCorrespondenceInstanceCreation(vsum2);
+        MappedCorrespondenceInstance mappedCorrespondenceInstance2 = new MappedCorrespondenceInstance(
+                (CorrespondenceInstanceDecorator) corresp2);
+        vsum2.decorateCorrespondenceInstance(VURI.getInstance(PCM_MM_URI), VURI.getInstance(UML_MM_URI), corresp2,
+                mappedCorrespondenceInstance2);
+        // do not create correspondences they have to be restored from disk
+        assertTrue(corresp2.hasCorrespondences());
+        // obtain
+        SameTypeCorrespondence repo2pkg2 = corresp2.claimUniqueSameTypeCorrespondence(repo2, pkg2);
+        // test everything as if the correspondence would just have been created
+        testAllClaimersAndGettersForEObjectCorrespondences(repo2, pkg2, corresp2, repo2pkg2);
+    }
+
+    private <T extends EObject> T testLoadObject(final VSUMImpl vsum, final String uri, final Class<T> clazz) {
+        VURI vURI = VURI.getInstance(uri);
+        ModelInstance instance = vsum.getAndLoadModelInstanceOriginal(vURI);
+        T obj = instance.getUniqueRootEObjectIfCorrectlyTyped(clazz);
+        assertNotNull(obj);
+        return obj;
+    }
+
+    private InternalCorrespondenceInstance testCorrespondenceInstanceCreation(final VSUMImpl vsum) {
+        VURI pcmMMVURI = VURI.getInstance(PCM_MM_URI);
+        VURI umlMMVURI = VURI.getInstance(UML_MM_URI);
+        InternalCorrespondenceInstance corresp = vsum.getCorrespondenceInstanceOriginal(pcmMMVURI, umlMMVURI);
+        assertNotNull(corresp);
+        return corresp;
+    }
+
+    private EObjectCorrespondence createRepo2PkgCorrespondence(final Repository repo, final UPackage pkg,
+            final CorrespondenceInstance corresp) {
+        // until this point the correspondence instance is empty
+        EObjectCorrespondence repo2pkg = corresp.createAndAddEObjectCorrespondence(repo, pkg);
+        // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
+        return repo2pkg;
+    }
+
+    private void testAllClaimersAndGettersForEObjectCorrespondences(final Repository repo, final UPackage pkg,
+            final CorrespondenceInstance corresp, final Correspondence repo2pkg) {
         // claimAllCorrespondence is already indirectly tested via claimUniqueCorrespondence
         Correspondence uniqueRepoCorrespondence = corresp.claimUniqueCorrespondence(repo);
         assertEquals(uniqueRepoCorrespondence, repo2pkg);
@@ -127,8 +163,6 @@ public class CorrespondenceTest extends VSUMTest {
         Set<EObject> allCorrespForPkg = corresp.getAllCorrespondingEObjects(pkg);
         assertEquals(allCorrespForPkg.size(), 1);
         assertTrue(allCorrespForPkg.contains(repo));
-
-        return (EObjectCorrespondence) repo2pkg;
     }
 
     private Pair<FeatureInstance, FeatureInstance> testAllClaimersAndGettersForFeatureCorrespondences(
@@ -235,9 +269,10 @@ public class CorrespondenceTest extends VSUMTest {
         assertTrue(correspForRepoIfaceFI.isEmpty());
         Set<FeatureInstance> correspForPkgIfaceFI = corresp.getAllCorrespondingFeatureInstances(pkgIfaceFI);
         assertTrue(correspForPkgIfaceFI.isEmpty());
+        // FIXME AAA fix incomplete removal
+        // assertFalse(corresp.hasCorrespondences());
     }
 
-    @Ignore
     private void testUpdate(final Repository repo, final UPackage pkg, final CorrespondenceInstance corresp,
             final EObjectCorrespondence repo2pkg) {
         Repository newRepo = Pcm_mockupFactory.eINSTANCE.createRepository();

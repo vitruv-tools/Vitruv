@@ -41,17 +41,6 @@ public final class EMFBridge {
     }
 
     /**
-     * Returns the path of an IResource
-     *
-     * @param iResource
-     * @return
-     */
-    public static String getPathForIResource(final IResource iResource) {
-        URI emfURI = getEMFPlatformUriForIResource(iResource);
-        return emfURI.toString();
-    }
-
-    /**
      * Creates and returns an EMF platform resource URI for the given Eclipse resource.
      *
      * @param iResource

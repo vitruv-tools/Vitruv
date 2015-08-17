@@ -31,5 +31,6 @@ Require-Bundle: org.junit,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.emf,
- org.apache.commons.lang;bundle-version="2.6.0"
+ org.apache.commons.lang;bundle-version="2.6.0",
+ edu.kit.ipd.sdq.vitruvius.framework.mir
 Bundle-ActivationPolicy: lazy

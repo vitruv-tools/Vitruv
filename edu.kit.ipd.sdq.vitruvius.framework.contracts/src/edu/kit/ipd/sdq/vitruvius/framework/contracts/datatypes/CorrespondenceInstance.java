@@ -32,9 +32,16 @@ public interface CorrespondenceInstance {
      *
      * @param eObject
      *            the object for which correspondences should be looked up
-     * @return # of corresponding objects > 0
+     * @return true if # of corresponding objects > 0
      */
     public boolean hasCorrespondences(EObject eObject);
+
+    /**
+     * Returns whether at least one object corresponds to another object.
+     *
+     * @return true if # of correspondences > 0
+     */
+    public boolean hasCorrespondences();
 
     /**
      * Returns the correspondences for the specified object and throws a

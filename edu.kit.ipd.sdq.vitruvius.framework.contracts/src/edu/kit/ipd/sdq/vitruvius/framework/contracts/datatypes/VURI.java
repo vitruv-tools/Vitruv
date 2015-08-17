@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.emf.common.CommonPlugin;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 
@@ -11,9 +12,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 
 /**
  * Implements the multiton design pattern.
- * 
+ *
  * @author kramerm
- * 
+ *
  */
 public class VURI implements Comparable<VURI> {
     private static final Map<String, VURI> INSTANCES = new HashMap<String, VURI>();
@@ -74,6 +75,10 @@ public class VURI implements Comparable<VURI> {
         return this.emfURI.toString();
     }
 
+    public String toResolvedAbsolutePath() {
+        return CommonPlugin.resolve(this.emfURI).toFileString();
+    }
+
     public URI getEMFUri() {
         return this.emfURI;
     }
@@ -85,6 +90,17 @@ public class VURI implements Comparable<VURI> {
     public String getLastSegment() {
         String lastSegment = this.emfURI.lastSegment();
         return (lastSegment == null ? "" : lastSegment);
+    }
+
+    /**
+     * Returns a new VURI that is created from the actual VURI by replacing its file extension with
+     * newFileExt
+     *
+     * @param newFileExt
+     * @return the new VURI with the replaced file extension
+     */
+    public VURI replaceFileExtension(final String newFileExt) {
+        return VURI.getInstance(this.emfURI.trimFileExtension().appendFileExtension(newFileExt));
     }
 
     @Override

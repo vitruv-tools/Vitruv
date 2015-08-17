@@ -17,4 +17,6 @@ public interface MIRMappingRealization {
 	 * @return the resulting change
 	 */
 	public MIRMappingChangeResult applyEChange(EChange eChange, MappedCorrespondenceInstance correspondenceInstance);
+	
+	public String getMappingID();
 }

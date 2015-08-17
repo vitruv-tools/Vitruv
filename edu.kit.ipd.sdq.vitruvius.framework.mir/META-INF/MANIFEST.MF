@@ -29,10 +29,12 @@ Require-Bundle: org.eclipse.xtext;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.0.0",
  org.eclipse.pde.core;bundle-version="3.10.2",
  edu.kit.ipd.sdq.vitruvius.framework.util;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.framework.meta.change;bundle-version="1.0.0"
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.mir,
+ edu.kit.ipd.sdq.vitruvius.framework.mir.api,
  edu.kit.ipd.sdq.vitruvius.framework.mir.formatting,
  edu.kit.ipd.sdq.vitruvius.framework.mir.generator,
  edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate,

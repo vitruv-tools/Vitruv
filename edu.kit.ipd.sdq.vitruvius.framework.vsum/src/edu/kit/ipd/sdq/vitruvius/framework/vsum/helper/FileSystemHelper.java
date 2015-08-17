@@ -40,9 +40,20 @@ public class FileSystemHelper {
     }
 
     public static IFile getCorrespondenceIFile(final VURI[] mmURIs) {
-        String fileExt = VitruviusConstants.getCorrespondencesFileExt();
+        String fileName = getCorrespondenceFileName(mmURIs);
+        return getCorrespondenceIFile(fileName);
+    }
+
+    public static IFile getCorrespondenceIFile(final String fileName) {
         IProject correspondenceProject = getVSUMProject();
         IFolder correspondenceFolder = getCorrespondenceFolder(correspondenceProject);
+        IFile correspondenceFile = correspondenceFolder.getFile(fileName);
+        return correspondenceFile;
+    }
+
+    private static String getCorrespondenceFileName(final VURI[] mmURIs) {
+        String fileExtSeparator = VitruviusConstants.getFileExtSeparator();
+        String fileExt = VitruviusConstants.getCorrespondencesFileExt();
         VURI[] copyOfMMURIs = Arrays.copyOf(mmURIs, mmURIs.length);
         Arrays.sort(copyOfMMURIs);
         String fileName = "";
@@ -57,9 +68,8 @@ public class FileSystemHelper {
             }
             fileName += uri.toString().hashCode();
         }
-        fileName += fileExt;
-        IFile correspondenceFile = correspondenceFolder.getFile(fileName);
-        return correspondenceFile;
+        fileName = fileName + fileExtSeparator + fileExt;
+        return fileName;
     }
 
     public static void saveVSUMvURIsToFile(final Set<VURI> vuris) {
@@ -72,20 +82,20 @@ public class FileSystemHelper {
         for (VURI vuri : vuris) {
             stringSet.add(vuri.getEMFUri().toString());
         }
-        saveStringSetToFile(stringSet, fileName);
+        saveObjectToFile(stringSet, fileName);
     }
 
-    private static void saveStringSetToFile(final Set<String> stringSet, final String fileName) {
+    public static void saveObjectToFile(final Object object, final String fileName) {
         try {
-            // TODO: this code could be optimized in a way that it only appends the new strings to
-            // the file
+            // TODO: this code could be optimized in a way that a new method is provide for sets of
+            // strings where only the new strings are appended to the file
             FileOutputStream fileOutputStream = new FileOutputStream(fileName);
             ObjectOutputStream oos = new ObjectOutputStream(fileOutputStream);
-            oos.writeObject(stringSet);
+            oos.writeObject(object);
             oos.flush();
             oos.close();
         } catch (IOException e) {
-            throw new RuntimeException("Could not save map: " + stringSet + "to file " + fileName + e);
+            throw new RuntimeException("Could not save '" + object + "' to file '" + fileName + "':  " + e);
         }
     }
 
@@ -96,7 +106,7 @@ public class FileSystemHelper {
     }
 
     private static Set<VURI> loadVURISetFromFile(final String fileName) {
-        Set<String> stringSet = loadStringSetFromFile(fileName, String.class);
+        Set<String> stringSet = loadStringSetFromFile(fileName);
         Set<VURI> vuris = new HashSet<VURI>(stringSet.size() * 2);
         for (String str : stringSet) {
             vuris.add(VURI.getInstance(str));
@@ -104,15 +114,19 @@ public class FileSystemHelper {
         return vuris;
     }
 
-    private static <T> Set<T> loadStringSetFromFile(final String fileName, final Class<T> clazz) {
+    @SuppressWarnings("unchecked")
+    private static Set<String> loadStringSetFromFile(final String fileName) {
+        Object obj = loadObjectFromFile(fileName);
+        return (Set<String>) obj;
+    }
+
+    public static Object loadObjectFromFile(final String fileName) {
         try {
             FileInputStream fileInputStream = new FileInputStream(fileName);
             ObjectInputStream ois = new ObjectInputStream(fileInputStream);
             Object obj = ois.readObject();
             ois.close();
-            @SuppressWarnings("unchecked")
-            Set<T> stringSet = (Set<T>) obj;
-            return stringSet;
+            return obj;
         } catch (FileNotFoundException e) {
             return Collections.emptySet();
         } catch (IOException e) {
@@ -173,8 +187,8 @@ public class FileSystemHelper {
     }
 
     private static String getVSUMMapFileName() {
-        IFile file = getVSUMProject().getFolder(VSUMConstants.VSUM_FOLDER_NAME).getFile(
-                VSUMConstants.VSUM_INSTANCES_FILE_NAME);
+        IFile file = getVSUMProject().getFolder(VSUMConstants.VSUM_FOLDER_NAME)
+                .getFile(VSUMConstants.VSUM_INSTANCES_FILE_NAME);
         return file.getLocation().toOSString();
     }
 

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -14,6 +15,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Invariants;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
@@ -28,6 +30,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ViewTypeManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalContractsBuilder;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.helper.FileSystemHelper;
 
@@ -41,20 +44,16 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
 
     protected final Map<VURI, ModelInstance> modelInstances;
     private final ResourceSet resourceSet;
+    // FIXME replace metamodel2CorrespondenceInstancesMap with metamodel2Mappings map so that CIs
+    // are no longer stored redundantly in the following two maps
     private final Map<Metamodel, Set<InternalCorrespondenceInstance>> metamodel2CorrespondenceInstancesMap;
     private final Map<Mapping, InternalCorrespondenceInstance> mapping2CorrespondenceInstanceMap;
-
-    private Map<String, String> saveCorrespondenceOptions;
 
     public VSUMImpl(final MetamodelManaging metamodelManaging, final ViewTypeManaging viewTypeManaging,
             final MappingManaging mappingManaging) {
         this.metamodelManaging = metamodelManaging;
         this.viewTypeManaging = viewTypeManaging;
         this.mappingManaging = mappingManaging;
-
-        this.saveCorrespondenceOptions = new HashMap<String, String>();
-        this.saveCorrespondenceOptions.put(VSUMConstants.OPTION_PROCESS_DANGLING_HREF,
-                VSUMConstants.OPTION_PROCESS_DANGLING_HREF_DISCARD);
 
         this.resourceSet = new ResourceSetImpl();
 
@@ -63,7 +62,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         this.mapping2CorrespondenceInstanceMap = new HashMap<Mapping, InternalCorrespondenceInstance>();
 
         loadVURIsOfVSMUModelInstances();
-        fillCorrepondenceInstanceMaps();
+        loadAndMapCorrepondenceInstances();
     }
 
     @Override
@@ -135,19 +134,29 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
                 metamodel);
         for (InternalCorrespondenceInstance correspondenceInstance : allCorrespondenceInstances) {
             if (correspondenceInstance.changedAfterLastSave()) {
-                try {
-                    EcoreResourceBridge.saveResource(correspondenceInstance.getResource(),
-                            this.saveCorrespondenceOptions);
-                    correspondenceInstance.resetChangedAfterLastSave();
-                    // we do not need to save anything else in a correspondence instance because the
-                    // involved mapping is fix and everything else can be recomputed from the model
-                } catch (IOException e) {
-                    throw new RuntimeException("Could not save correspondence instance  + " + correspondenceInstance
-                            + " for the model instance " + modelInstanceToSave + ": " + e);
+                if (correspondenceInstance instanceof CorrespondenceInstanceDecorator) {
+                    saveCorrespondenceInstanceDecorators((CorrespondenceInstanceDecorator) correspondenceInstance);
                 }
-
+                correspondenceInstance.resetChangedAfterLastSave();
             }
         }
+    }
+
+    private void saveCorrespondenceInstanceDecorators(final CorrespondenceInstanceDecorator correspondenceInstance) {
+        Map<String, Object> fileExtPrefix2ObjectMap = correspondenceInstance.getFileExtPrefix2ObjectMapForSave();
+        for (Entry<String, Object> fileExtPrefixAndObject : fileExtPrefix2ObjectMap.entrySet()) {
+            String fileExtPrefix = fileExtPrefixAndObject.getKey();
+            String fileName = getFileNameForCorrespondenceInstanceDecorator(correspondenceInstance, fileExtPrefix);
+            Object object = fileExtPrefixAndObject.getValue();
+            FileSystemHelper.saveObjectToFile(object, fileName);
+        }
+    }
+
+    private String getFileNameForCorrespondenceInstanceDecorator(
+            final InternalCorrespondenceInstance correspondenceInstance, final String fileExtPrefix) {
+        VURI vuri = correspondenceInstance.getURI();
+        VURI newVURI = vuri.replaceFileExtension(fileExtPrefix + VitruviusConstants.getCorrespondencesFileExt());
+        return newVURI.toResolvedAbsolutePath();
     }
 
     private ModelInstance getOrCreateUnregisteredModelInstance(final VURI modelURI) {
@@ -200,6 +209,10 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
                 VURI correspondencesVURI = FileSystemHelper.getCorrespondencesVURI(mmURIs);
                 FileSystemHelper.saveCorrespondenceInstanceMMURIs(mmURIs);
                 correspondenceInstance = createCorrespondenceInstance(mapping, correspondencesVURI);
+                if (correspondenceInstance instanceof CorrespondenceInstanceDecorator) {
+                    loadAndInitializeCorrespondenceInstanceDecorators(
+                            (CorrespondenceInstanceDecorator) correspondenceInstance);
+                }
                 this.mapping2CorrespondenceInstanceMap.put(mapping, correspondenceInstance);
             }
             correspondenceInstances.add(correspondenceInstance);
@@ -207,16 +220,23 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         return correspondenceInstances;
     }
 
-    protected InternalCorrespondenceInstance createCorrespondenceInstance(final Mapping mapping,
+    private InternalCorrespondenceInstance createCorrespondenceInstance(final Mapping mapping,
             final VURI correspondencesVURI) {
         Resource correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri());
-        try {
-            correspondencesResource.load(this.saveCorrespondenceOptions);
-        } catch (Exception e) {
-            logger.trace("Could not load correspondence resource - creating new correspondence instance resource.");
-        }
         return InternalContractsBuilder.createCorrespondenceInstance(mapping, this, correspondencesVURI,
                 correspondencesResource);
+    }
+
+    private void loadAndInitializeCorrespondenceInstanceDecorators(
+            final CorrespondenceInstanceDecorator correspondenceInstance) {
+        Set<String> fileExtPrefixesForObjects = correspondenceInstance.getFileExtPrefixesForObjectsToLoad();
+        Map<String, Object> fileExtPrefix2ObjectMap = new HashMap<String, Object>();
+        for (String fileExtPrefix : fileExtPrefixesForObjects) {
+            String fileName = getFileNameForCorrespondenceInstanceDecorator(correspondenceInstance, fileExtPrefix);
+            Object loadedObject = FileSystemHelper.loadObjectFromFile(fileName);
+            fileExtPrefix2ObjectMap.put(fileExtPrefix, loadedObject);
+        }
+        correspondenceInstance.initialize(fileExtPrefix2ObjectMap);
     }
 
     // @Override
@@ -232,7 +252,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
      * @return the found correspondenceInstance or null if there is none
      */
     @Override
-    public CorrespondenceInstance getCorrespondenceInstanceOriginal(final VURI mmAVURI, final VURI mmBVURI) {
+    public InternalCorrespondenceInstance getCorrespondenceInstanceOriginal(final VURI mmAVURI, final VURI mmBVURI) {
         Metamodel metamodelA = this.metamodelManaging.getMetamodel(mmAVURI);
         Metamodel metamodelB = this.metamodelManaging.getMetamodel(mmBVURI);
         Mapping mapping = this.mappingManaging.getMapping(metamodelA, metamodelB);
@@ -245,6 +265,33 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         }
         logger.warn("no mapping found from the metamodel at: " + mmAVURI + " to the metamodel at: " + mmBVURI);
         return null;
+    }
+
+    @Override
+    public void decorateCorrespondenceInstance(final VURI mmAVURI, final VURI mmBVURI,
+            final InternalCorrespondenceInstance originalCI, final InternalCorrespondenceInstance decoratedCI) {
+        Metamodel metamodelA = this.metamodelManaging.getMetamodel(mmAVURI);
+        Set<InternalCorrespondenceInstance> correspondenceInstancesForMMA = this.metamodel2CorrespondenceInstancesMap
+                .get(metamodelA);
+        correspondenceInstancesForMMA.remove(originalCI);
+        correspondenceInstancesForMMA.add(decoratedCI);
+        Metamodel metamodelB = this.metamodelManaging.getMetamodel(mmBVURI);
+        Set<InternalCorrespondenceInstance> correspondenceInstancesForMMB = this.metamodel2CorrespondenceInstancesMap
+                .get(metamodelB);
+        correspondenceInstancesForMMB.remove(originalCI);
+        correspondenceInstancesForMMB.add(decoratedCI);
+        Mapping mapping = this.mappingManaging.getMapping(metamodelA, metamodelB);
+        if (this.mapping2CorrespondenceInstanceMap.containsKey(mapping)) {
+            this.mapping2CorrespondenceInstanceMap.put(mapping, decoratedCI);
+        }
+        mapping = this.mappingManaging.getMapping(metamodelB, metamodelA);
+        if (this.mapping2CorrespondenceInstanceMap.containsKey(mapping)) {
+            this.mapping2CorrespondenceInstanceMap.put(mapping, decoratedCI);
+        } else {
+            throw new RuntimeException("The original correspondence instance '" + originalCI
+                    + "' was not registered for the mapping of '" + mmAVURI + "' and '" + mmBVURI
+                    + "' and therefore it cannot be decorated with " + decoratedCI + "'!");
+        }
     }
 
     /**
@@ -305,7 +352,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         return this.metamodelManaging.getMetamodel(fileExtension);
     }
 
-    private void fillCorrepondenceInstanceMaps() {
+    private void loadAndMapCorrepondenceInstances() {
         Metamodel[] metamodels = this.metamodelManaging.getAllMetamodels();
         for (Metamodel metamodel : metamodels) {
             Collection<Mapping> mappings = this.mappingManaging.getAllMappings(metamodel);
