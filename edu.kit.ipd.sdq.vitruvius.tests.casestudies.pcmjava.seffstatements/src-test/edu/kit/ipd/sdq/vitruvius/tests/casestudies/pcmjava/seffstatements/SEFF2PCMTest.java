@@ -4,6 +4,7 @@ import static org.junit.Assert.fail;
 
 import java.util.Set;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.JavaModelException;
@@ -46,6 +47,8 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
     private OperationSignature uploadOpSig;
     private OperationSignature downloadOpSig;
     private OperationRequiredRole webGUIRequiresIMediaStoreRole;
+    private final String MEDIA_STORE_CLASSNAME = MEDIA_STORE + "Impl";;
+    private final String WEBGUI_CLASSNAME = WEBGUI + "Impl";;
 
     /**
      * Set up simple media store, which can be used for the tests. It consists of two components
@@ -73,18 +76,16 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
 
     @Test
     public void testAddExternalCallStatement() throws Throwable {
-        final String code = this.getExternalCallContent();
+        final String code = this.getExternalCallCode();
 
         final ResourceDemandingSEFF seff = this.editWebGUIDownloadMethod(code);
 
-        final ExternalCallAction eca = this.createSimpleExternalCallAction();
-        final ResourceDemandingSEFF expectedSeff = this.createSEFFWithAbstractActions(eca);
-        AssertSEFFHelper.assertSeffEquals(seff, expectedSeff);
+        this.assertSEFFWithExternalCall(seff, false);
     }
 
     @Test
     public void testAddForWithExternalCallStatement() throws Throwable {
-        final String code = "for(int i = 0; i < 10; i++){\n" + this.getExternalCallContent() + "\n" + "}";
+        final String code = "for(int i = 0; i < 10; i++){\n" + this.getExternalCallCode() + "\n" + "}";
 
         final ResourceDemandingSEFF seff = this.editWebGUIDownloadMethod(code);
 
@@ -109,19 +110,17 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
 
     @Test
     public void testAddInternalMethodCallContainingExternalCall() throws Throwable {
-        this.addInternalMethodToWebGUI("internalMethod", this.getExternalCallContent());
+        this.addInternalMethodToWebGUI("internalMethod", this.getExternalCallCode());
         final String code = "internalMethod();";
 
         final ResourceDemandingSEFF seff = this.editWebGUIDownloadMethod(code);
 
-        final ExternalCallAction eca = this.createSimpleExternalCallAction();
-        final ResourceDemandingSEFF expectedSeff = this.createSEFFWithAbstractActions(eca);
-        AssertSEFFHelper.assertSeffEquals(seff, expectedSeff);
+        this.assertSEFFWithExternalCall(seff, false);
     }
 
     @Test
     public void testAddIfStatementContainingExternalCall() throws Throwable {
-        final String code = "int i =5;\nif(i<10){\n" + this.getExternalCallContent() + "\n}\n";
+        final String code = "int i =5;\nif(i<10){\n" + this.getExternalCallCode() + "\n}\n";
 
         final ResourceDemandingSEFF seff = this.editWebGUIDownloadMethod(code);
 
@@ -134,6 +133,117 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
         bt.setBranchBehaviour_BranchTransition(behaviour);
         final ResourceDemandingSEFF expectedSEFF = this.createSEFFWithAbstractActions(ia, ba);
         AssertSEFFHelper.assertSeffEquals(seff, expectedSEFF);
+    }
+
+    @Test
+    public void testForLoopStatementContainingExternalCall() throws Throwable {
+        final String code = "for(int i = 0; i < 5; i++){\n" + this.getExternalCallCode() + "\n\n" + "}";
+
+        final ResourceDemandingSEFF seff = this.editWebGUIDownloadMethod(code);
+
+        final ExternalCallAction eca = this.createSimpleExternalCallAction();
+        final ResourceDemandingBehaviour behaviour = this.createResourceBehaviourWithAbstractActions(eca);
+        final LoopAction loopAction = SeffFactory.eINSTANCE.createLoopAction();
+        loopAction.setEntityName("expectedLoopBehaviour");
+        loopAction.setBodyBehaviour_Loop(behaviour);
+        final ResourceDemandingSEFF expectedSEFF = this.createSEFFWithAbstractActions(loopAction);
+        AssertSEFFHelper.assertSeffEquals(seff, expectedSEFF);
+    }
+
+    @Test
+    public void testSwitchContainingExternalCall() throws Throwable {
+        final String code = "final int i = 5;\n" + "switch (i) {\n" + "case 1: System.out.println(1);\n"
+                + "    break;\n" + "case 2: System.out.println(2);\n" + "    break;\n" + "case 3:"
+                + this.getExternalCallCode() + "\n" + "    break;\n" + "case 4: " + this.getExternalCallCode()
+                + "\nbreak;\n" + "default:\n" + "System.out.println(-1);\n" + "break;\n" + "}\n";
+
+        final ResourceDemandingSEFF seff = this.editWebGUIDownloadMethod(code);
+
+        // internal action for int i
+        final InternalAction ia = SeffFactory.eINSTANCE.createInternalAction();
+        // behaviour for branches
+        final ResourceDemandingBehaviour behaviourForCase1 = this
+                .createResourceBehaviourWithAbstractActions(SeffFactory.eINSTANCE.createInternalAction());
+        final ResourceDemandingBehaviour behaviourForCase2 = this
+                .createResourceBehaviourWithAbstractActions(SeffFactory.eINSTANCE.createInternalAction());
+        final ExternalCallAction ecaCase3 = this.createSimpleExternalCallAction();
+        final ResourceDemandingBehaviour behaviourForCase3 = this.createResourceBehaviourWithAbstractActions(ecaCase3);
+        final ExternalCallAction ecaCase4 = this.createSimpleExternalCallAction();
+        final ResourceDemandingBehaviour behaviourForCase4 = this.createResourceBehaviourWithAbstractActions(ecaCase4);
+        final ResourceDemandingBehaviour behaviourForDefaultCase = this
+                .createResourceBehaviourWithAbstractActions(SeffFactory.eINSTANCE.createInternalAction());
+        final BranchAction ba = SeffFactory.eINSTANCE.createBranchAction();
+        final ProbabilisticBranchTransition btCase1 = SeffFactory.eINSTANCE.createProbabilisticBranchTransition();
+        final ProbabilisticBranchTransition btCase2 = SeffFactory.eINSTANCE.createProbabilisticBranchTransition();
+        final ProbabilisticBranchTransition btCase3 = SeffFactory.eINSTANCE.createProbabilisticBranchTransition();
+        final ProbabilisticBranchTransition btCase4 = SeffFactory.eINSTANCE.createProbabilisticBranchTransition();
+        final ProbabilisticBranchTransition btDefaultCase = SeffFactory.eINSTANCE.createProbabilisticBranchTransition();
+        btCase1.setBranchBehaviour_BranchTransition(behaviourForCase1);
+        btCase2.setBranchBehaviour_BranchTransition(behaviourForCase2);
+        btCase3.setBranchBehaviour_BranchTransition(behaviourForCase3);
+        btCase4.setBranchBehaviour_BranchTransition(behaviourForCase4);
+        btDefaultCase.setBranchBehaviour_BranchTransition(behaviourForDefaultCase);
+        ba.getBranches_Branch().add(btCase1);
+        ba.getBranches_Branch().add(btCase2);
+        ba.getBranches_Branch().add(btCase3);
+        ba.getBranches_Branch().add(btCase4);
+        ba.getBranches_Branch().add(btDefaultCase);
+        final ResourceDemandingSEFF expectedSEFF = this.createSEFFWithAbstractActions(ia, ba);
+        AssertSEFFHelper.assertSeffEquals(seff, expectedSEFF);
+    }
+
+    @Test
+    public void testExternalCallToOtherComponentClass() throws Throwable {
+        final String code = this.getExternalCallToOtherComponentClassCode();
+
+        final ResourceDemandingSEFF seff = this.editWebGUIDownloadMethod(code);
+
+        this.assertSEFFWithExternalCall(seff, true);
+    }
+
+    @Test
+    public void testComponentInternalCallInSameComponent() throws Throwable {
+        final String codeForHelper = "System.out.println(\"Test\");";
+        final String webGuiHelper = "WebGUIHelper";
+        final String downloadHelper = "downloadHelper";
+        this.createHelperClassAndMethod(WEBGUI, webGuiHelper, downloadHelper, codeForHelper);
+        final String code = "WebGUIHelper webGuiHelper = new WebGUIHelper();\nwebGuiHelper.downloadHelper();";
+
+        final ResourceDemandingSEFF seff = this.editWebGUIDownloadMethod(code);
+
+        final InternalAction ia = SeffFactory.eINSTANCE.createInternalAction();
+        final ResourceDemandingSEFF expectedSEFF = this.createSEFFWithAbstractActions(ia);
+        AssertSEFFHelper.assertSeffEquals(seff, expectedSEFF);
+    }
+
+    @Test
+    public void testComponentInternalCallWithExternalCallInSameComponent() throws Throwable {
+        final String codeForHelper = "System.out.println(\"Test\");";
+        final String webGuiHelper = "WebGUIHelper";
+        final String downloadHelper = "\npublic void downloadHelper(){\n}\n";
+        this.createHelperClassAndMethod(WEBGUI, webGuiHelper, downloadHelper, codeForHelper);
+
+    }
+
+    private void createHelperClassAndMethod(final String packageName, final String className, final String methodName,
+            final String codeForHelper) throws Throwable, CoreException, InterruptedException, JavaModelException {
+        final String downloadHelperCode = "\npublic void " + methodName + "(){\n}\n";
+        this.addClassInPackage(this.getPackageWithName(packageName), className);
+        this.addMethodToCompilationUnit(className, downloadHelperCode);
+        this.editMethod(codeForHelper, className, methodName, false);
+    }
+
+    private void assertSEFFWithExternalCall(final ResourceDemandingSEFF seff,
+            final boolean addInternalActionBeforeExternalCall) {
+        final ExternalCallAction eca = this.createSimpleExternalCallAction();
+        ResourceDemandingSEFF expectedSeff = null;
+        if (addInternalActionBeforeExternalCall) {
+            final InternalAction ia = SeffFactory.eINSTANCE.createInternalAction();
+            expectedSeff = this.createSEFFWithAbstractActions(ia, eca);
+        } else {
+            expectedSeff = this.createSEFFWithAbstractActions(eca);
+        }
+        AssertSEFFHelper.assertSeffEquals(seff, expectedSeff);
     }
 
     private void addInternalMethodToWebGUI(final String methodName, final String methodContent) throws Throwable {
@@ -151,8 +261,17 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
         return eca;
     }
 
-    private String getExternalCallContent() {
+    private String getExternalCallCode() {
         final String code = "i" + MEDIA_STORE + "." + DOWNLOAD + "();";
+        return code;
+    }
+
+    private String getExternalCallToOtherComponentClassCode() throws Throwable {
+        final ICompilationUnit icu = super.findICompilationUnitWithClassName(this.WEBGUI_CLASSNAME);
+        super.importCompilationUnitWithName(this.MEDIA_STORE_CLASSNAME, icu);
+        String code = this.MEDIA_STORE_CLASSNAME + " " + this.MEDIA_STORE_CLASSNAME.toLowerCase() + " = " + "new "
+                + this.MEDIA_STORE_CLASSNAME + "();";
+        code += this.MEDIA_STORE_CLASSNAME.toLowerCase() + "." + DOWNLOAD + "();";
         return code;
     }
 
@@ -254,23 +373,21 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
         this.uploadOpSig = super.addMethodToInterfaceWithCorrespondence(mediaStoreInterfaceName, uploadMethodName);
         this.downloadOpSig = super.addMethodToInterfaceWithCorrespondence(mediaStoreInterfaceName, downloadMethodName);
 
-        final String mediaStoreClassName = MEDIA_STORE + "Impl";
-        final String webGUIClassName = WEBGUI + "Impl";
-
         // create implements
-        super.addImplementsCorrespondingToOperationProvidedRoleToClass(webGUIClassName, webGuiInterfaceName);
-        super.addImplementsCorrespondingToOperationProvidedRoleToClass(mediaStoreClassName, mediaStoreInterfaceName);
+        super.addImplementsCorrespondingToOperationProvidedRoleToClass(this.WEBGUI_CLASSNAME, webGuiInterfaceName);
+        super.addImplementsCorrespondingToOperationProvidedRoleToClass(this.MEDIA_STORE_CLASSNAME,
+                mediaStoreInterfaceName);
 
         // create class methods in component implementing classes in order to create SEFF
         // correspondences
-        this.addClassMethodToClassThatOverridesInterfaceMethod(webGUIClassName, httpUploadMethodName);
-        this.addClassMethodToClassThatOverridesInterfaceMethod(webGUIClassName, httpDownloadMethodName);
-        this.addClassMethodToClassThatOverridesInterfaceMethod(mediaStoreClassName, uploadMethodName);
-        this.addClassMethodToClassThatOverridesInterfaceMethod(mediaStoreClassName, downloadMethodName);
+        this.addClassMethodToClassThatOverridesInterfaceMethod(this.WEBGUI_CLASSNAME, httpUploadMethodName);
+        this.addClassMethodToClassThatOverridesInterfaceMethod(this.WEBGUI_CLASSNAME, httpDownloadMethodName);
+        this.addClassMethodToClassThatOverridesInterfaceMethod(this.MEDIA_STORE_CLASSNAME, uploadMethodName);
+        this.addClassMethodToClassThatOverridesInterfaceMethod(this.MEDIA_STORE_CLASSNAME, downloadMethodName);
 
         // create requiredRole from webgui to IMediaStore
-        this.webGUIRequiresIMediaStoreRole = this.addFieldToClassWithName(webGUIClassName, mediaStoreInterfaceName,
-                "i" + MEDIA_STORE, OperationRequiredRole.class);
+        this.webGUIRequiresIMediaStoreRole = this.addFieldToClassWithName(this.WEBGUI_CLASSNAME,
+                mediaStoreInterfaceName, "i" + MEDIA_STORE, OperationRequiredRole.class);
         return repo;
     }
 

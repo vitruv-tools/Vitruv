@@ -335,6 +335,13 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 
     protected <T> T addClassInPackage(final Package packageForClass, final Class<T> classOfCorrespondingObject,
             final String implementingClassName) throws Throwable, CoreException, InterruptedException {
+        final Classifier jaMoPPClass = this.addClassInPackage(packageForClass, implementingClassName);
+        return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(jaMoPPClass,
+                classOfCorrespondingObject);
+    }
+
+    protected Classifier addClassInPackage(final Package packageForClass, final String implementingClassName)
+            throws Throwable, CoreException, InterruptedException {
         final IPackageFragmentRoot packageRoot = this.getIJavaProject();
         final IPackageFragment packageFragment = this.getPackageFragmentToForJaMoPPPackage(packageForClass);
         final NewClassWizardPage classWizard = new NewClassWizardPage();
@@ -346,8 +353,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         final VURI vuri = this.getVURIForElementInPackage(packageFragment, implementingClassName);
         final Classifier jaMoPPClass = this.getJaMoPPClassifierForVURI(vuri);
         TestUtil.waitForSynchronization();
-        return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(jaMoPPClass,
-                classOfCorrespondingObject);
+        return jaMoPPClass;
     }
 
     private VURI getVURIForElementInPackage(final IPackageFragment packageFragment, final String elementName) {
@@ -716,7 +722,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         throw new RuntimeException("Could not find a operation provided role for the newly created implmenets");
     }
 
-    private void importCompilationUnitWithName(final String implementingInterfaceName,
+    protected void importCompilationUnitWithName(final String implementingInterfaceName,
             final ICompilationUnit classCompilationUnit) throws Throwable, JavaModelException {
         final ICompilationUnit interfaceCompilationUnit = this
                 .findICompilationUnitWithClassName(implementingInterfaceName);

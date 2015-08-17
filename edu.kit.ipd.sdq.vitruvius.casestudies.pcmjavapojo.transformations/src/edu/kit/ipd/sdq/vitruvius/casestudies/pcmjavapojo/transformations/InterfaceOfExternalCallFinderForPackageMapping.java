@@ -4,13 +4,14 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.emftext.language.java.members.Method;
-import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding;
-
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.OperationRequiredRole;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.repository.RequiredRole;
+import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
+import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 
 /**
@@ -21,8 +22,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceIns
  */
 public class InterfaceOfExternalCallFinderForPackageMapping implements InterfaceOfExternalCallFinding {
 
-    private static final Logger logger = Logger.getLogger(InterfaceOfExternalCallFinderForPackageMapping.class
-            .getSimpleName());
+    private static final Logger logger = Logger
+            .getLogger(InterfaceOfExternalCallFinderForPackageMapping.class.getSimpleName());
 
     private final CorrespondenceInstance correspondenceInstance;
     private final BasicComponent myBasicComponent;
@@ -35,10 +36,10 @@ public class InterfaceOfExternalCallFinderForPackageMapping implements Interface
     }
 
     /**
-     * A InterfacePortOperationTupleis found by finding the corresponding operation signature to the
-     * called method. The required role is found by looking at all required roles of the component
-     * and return the first one that requires the same interface the operation signature is in.
-     * Current limitations: 1) the called method has to be an interface method/a method that
+     * A InterfacePortOperationTuple is found by finding the corresponding operation signature to
+     * the called method. The required role is found by looking at all required roles of the
+     * component and return the first one that requires the same interface the operation signature
+     * is in. Current limitations: 1) the called method has to be an interface method/a method that
      * directly corresponds to a operation signature, and 2) each interface can only be required
      * once by a given component. Both limitations are, however, OK for the beginning.
      */
@@ -63,11 +64,29 @@ public class InterfaceOfExternalCallFinderForPackageMapping implements Interface
         return interfacePortOperationTuple;
     }
 
+    /**
+     * Returns the OperationSignature for the invoked method. If the invoked method directly
+     * corresponds to an OperationSignature we are finished already. If the invoked method
+     * corresponds to a SEFF (aka. it is a class method that implements an interface method, that
+     * corresponds to an operation signature) we can use the operation signature from the SEFF.
+     *
+     * @param invokedMethod
+     * @return
+     */
     private OperationSignature queryInterfaceOperation(final Method invokedMethod) {
-        final Set<OperationSignature> correspondingOpSigs = this.correspondenceInstance.getCorrespondingEObjectsByType(
-                invokedMethod, OperationSignature.class);
+        final Set<OperationSignature> correspondingOpSigs = this.correspondenceInstance
+                .getCorrespondingEObjectsByType(invokedMethod, OperationSignature.class);
         if (null != correspondingOpSigs && 0 < correspondingOpSigs.size()) {
             return correspondingOpSigs.iterator().next();
+        }
+        final Set<ResourceDemandingSEFF> correspondingRDSEFFs = this.correspondenceInstance
+                .getCorrespondingEObjectsByType(invokedMethod, ResourceDemandingSEFF.class);
+        if (null != correspondingRDSEFFs && 0 < correspondingRDSEFFs.size()) {
+            for (final ResourceDemandingSEFF seff : correspondingRDSEFFs) {
+                if (seff.getDescribedService__SEFF() instanceof OperationSignature) {
+                    return (OperationSignature) seff.getDescribedService__SEFF();
+                }
+            }
         }
         logger.warn("Could not find operation signature for method " + invokedMethod);
         return null;
