@@ -603,6 +603,7 @@ public class ChangeResponder implements ChangeEventVisitor {
 
     @Override
     public void visit(final AddMethodAnnotationEvent addMethodAnnotationEvent) {
+        logger.info("React to AddMethodAnnotationEvent");
         final CompilationUnitAdapter oldCU = this.util
                 .getUnsavedCompilationUnitAdapter(addMethodAnnotationEvent.methodBeforeAdd);
         final Parametrizable methodOrConstructor = oldCU
