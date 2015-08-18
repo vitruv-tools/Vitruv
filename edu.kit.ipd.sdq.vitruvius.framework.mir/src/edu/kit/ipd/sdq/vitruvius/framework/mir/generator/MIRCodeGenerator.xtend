@@ -10,7 +10,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransfor
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRMappingRealization
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRTransformationExecuting
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRModelInformationProvider
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EMFHelper
@@ -39,7 +38,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRMappingHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MappedCorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMappedCorrespondenceInstance
 import org.apache.log4j.Logger
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.MIRMappingChangeResult
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRChange2CommandTransforming
 
 /**
  * @author Dominik Werle
@@ -129,7 +128,7 @@ class MIRCodeGenerator implements IGenerator {
 		EObject, Map, HashMap, List, ArrayList,
 		IllegalArgumentException,
 		Pair, EMFModelTransformationExecuting, EMFChangeResult, VURI,
-		AbstractMIRTransformationExecuting,
+		AbstractMIRChange2CommandTransforming,
 		CorrespondenceInstance, EMFModelChange, Change,
 		EChange, EcoreHelper,
 		Logger
@@ -138,9 +137,9 @@ class MIRCodeGenerator implements IGenerator {
 	private static final List<? extends Class<?>> IMPORTED_CLASSES_MAPPING = #[
 		MIRMappingRealization, AbstractMIRMappingRealization, EMFChangeResult,
 		EChange, CorrespondenceInstance, MIRModelInformationProvider, EStructuralFeature,
-		EClass, AbstractMIRTransformationExecuting, EObject, List, ArrayList,
+		EClass, AbstractMIRChange2CommandTransforming, EObject, List, ArrayList,
 		Set, HashSet, EPackage, Pair, MIRMappingHelper, MappedCorrespondenceInstance,
-		Logger, MIRMappingChangeResult
+		Logger
 	]
 	
 	private static final List<? extends Class<?>> IMPORTED_CLASSES_CORRESPONDENCE_INSTANCE = #[
@@ -229,13 +228,13 @@ class MIRCodeGenerator implements IGenerator {
 			«getImportStatements(IMPORTED_CLASSES_TRANSFORMATION_EXECUTING)»
 			
 			/**
-			 * {@link EMFModelTransformationExecuting} for keeping the following meta models consistent:
+			 * {@link AbstractMIRChange2CommandTransforming} for keeping the following meta models consistent:
 			 * <ol>
 			 *   <li>«file.packages.get(0).nsURI»</li>
 			 *   <li>«file.packages.get(1).nsURI»</li>
 			 * </ol>.
 			 */
-			public class «file.configuration.type» extends «AbstractMIRTransformationExecuting.simpleName» {
+			public class «file.configuration.type» extends «AbstractMIRChange2CommandTransforming.simpleName» {
 				«createLoggerField(file.configuration.type)»
 				
 				/** The first mapped metamodel. **/
