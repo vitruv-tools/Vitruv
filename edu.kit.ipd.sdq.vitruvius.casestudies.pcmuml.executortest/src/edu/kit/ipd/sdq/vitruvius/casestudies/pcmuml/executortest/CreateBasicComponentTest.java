@@ -68,7 +68,7 @@ public class CreateBasicComponentTest implements SynchronisationListener {
 			createAttributeTUIDMetamodel("http://www.eclipse.org/uml2/5.0.0/UML", "uml"));
 		
 		TransformationExecutingProvidingImplCustom transformationProvider = new TransformationExecutingProvidingImplCustom();
-        transformationProvider.addEMFModelTransformationExecuting(new PCM2UMLExecutor());
+        //transformationProvider.addEMFModelTransformationExecuting(new PCM2UMLExecutor());
         
         EMFModelPropagationEngineImpl propagationEngine = new EMFModelPropagationEngineImpl(
         		transformationProvider);

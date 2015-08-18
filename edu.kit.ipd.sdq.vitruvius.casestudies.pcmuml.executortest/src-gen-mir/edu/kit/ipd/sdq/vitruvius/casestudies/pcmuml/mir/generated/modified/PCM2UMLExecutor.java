@@ -5,20 +5,18 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRTransformationExecuting;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRChange2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 /**
- * {@link EMFModelTransformationExecuting} for keeping the following meta models consistent:
+ * {@link AbstractMIRChange2CommandTransforming} for keeping the following meta models consistent:
  * <ol>
  *   <li>http://palladiosimulator.org/PalladioComponentModel/Repository/5.1</li>
  *   <li>http://www.eclipse.org/uml2/5.0.0/UML</li>
  * </ol>.
  */
-public class PCM2UMLExecutor extends AbstractMIRTransformationExecuting {
+public class PCM2UMLExecutor extends AbstractMIRChange2CommandTransforming {
 	private static final Logger LOGGER = Logger.getLogger(PCM2UMLExecutor.class);
 	
 	/** The first mapped metamodel. **/
@@ -49,7 +47,7 @@ public class PCM2UMLExecutor extends AbstractMIRTransformationExecuting {
 //		addMIRMapping(edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.Mapping1.INSTANCE);
 	}
 	
-	@Override
+	/*@Override
 	public List<Pair<VURI, VURI>> getTransformableMetamodels() {
 		return transformableMetamodels;
 	}
@@ -62,5 +60,5 @@ public class PCM2UMLExecutor extends AbstractMIRTransformationExecuting {
 	@Override
 	protected void setCorrespondenceInstance(CorrespondenceInstance correspondenceInstance) {
 		this.mappedCorrespondenceInstance.setCorrespondenceInstance(correspondenceInstance);
-	}
+	}*/
 }
