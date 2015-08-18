@@ -30,7 +30,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceIns
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.ChangeSynchronizer
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
@@ -45,13 +44,14 @@ import org.emftext.language.java.statements.Statement
 import org.emftext.language.java.types.Type
 import org.emftext.language.java.types.TypeReference
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.compositerefiners.JavaMethodParameterNumberChangedByOneCompositeChangeRefiner
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
 
 /**
  * Synchronizer for Java and JML. It initializes the transformations and composite
  * change refiners. Additionally creates the transformation result, which is relevant
  * for the model handling (e.g. which model has to be saved).
  */
-class CSSynchronizer extends ChangeSynchronizer implements EMFModelTransformationExecuting {
+class CSSynchronizer extends ChangeSynchronizer implements Change2CommandTransforming {
 	
 	static val Logger LOGGER = Logger.getLogger(CSSynchronizer)
 	val compositeChangeRefiners = new ArrayList<CompositeChangeRefiner>()
@@ -104,7 +104,7 @@ class CSSynchronizer extends ChangeSynchronizer implements EMFModelTransformatio
 		return result;
 	}
 	
-	override executeTransformation(EMFModelChange change, CorrespondenceInstance correspondenceInstance) {
+	override transformChanges2Commands(EMFModelChange change, CorrespondenceInstance correspondenceInstance) {
 		LOGGER.info("Synchronization of change " + change.class.simpleName + " started.")
 		
 		this.setCorrespondenceInstance(correspondenceInstance)

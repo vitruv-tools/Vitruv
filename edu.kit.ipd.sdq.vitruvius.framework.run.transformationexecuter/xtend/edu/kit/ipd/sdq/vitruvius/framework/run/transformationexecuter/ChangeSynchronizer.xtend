@@ -1,7 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetContainmentEReference
@@ -22,6 +23,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.contain
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectSingle
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectInList
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectSingle
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.InsertNonRootEObjectInContainmentList
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.PermuteContainmentEReferenceValues
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ReplaceNonRootEObjectInList
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ReplaceNonRootEObjectSingle
@@ -34,24 +36,22 @@ import java.util.Deque
 import java.util.LinkedList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.InsertNonRootEObjectInContainmentList
 
 public class ChangeSynchronizer {
 
 	val private static final Logger logger = Logger.getLogger(ChangeSynchronizer.simpleName)
 
 	val private ClaimableMap<Class<?>, EObjectMappingTransformation> mappingTransformations
-	var protected CorrespondenceInstance correspondenceInstance
+	var protected Blackboard blackboard
 
 	new() {
 		mappingTransformations = new ClaimableHashMap<Class<?>, EObjectMappingTransformation>()
 	}
 
-	def setCorrespondenceInstance(CorrespondenceInstance correspondenceInstance) {
-		this.correspondenceInstance = correspondenceInstance
+	def void setBlackboard(Blackboard blackboard) {
+		this.blackboard = blackboard
 		for (mappingTransformation : mappingTransformations.values) {
-			mappingTransformation.setCorrespondenceInstance(correspondenceInstance)
+			mappingTransformation.setBlackboard(blackboard)
 		}
 	}
 
@@ -75,7 +75,7 @@ public class ChangeSynchronizer {
 			val EObject oldAffectedEObject = eFeatureChange.oldAffectedEObject
 			val EObject newAffectedEObject = eFeatureChange.newAffectedEObject
 			if (null != oldAffectedEObject && null != newAffectedEObject) {
-				CorrespondenceUtils.updateCorrespondence(correspondenceInstance, oldAffectedEObject, newAffectedEObject)
+				CorrespondenceUtils.updateCorrespondence(blackboard.correspondenceInstance, oldAffectedEObject, newAffectedEObject)
 			}
 		}
 	}
@@ -332,8 +332,8 @@ public class ChangeSynchronizer {
 	}
 
 	def public addMapping(EObjectMappingTransformation transformation) {
-		if (null != correspondenceInstance) {
-			transformation.setCorrespondenceInstance(correspondenceInstance)
+		if (null != blackboard) {
+			transformation.setBlackboard(blackboard)
 		}
 		mappingTransformations.putClaimingNullOrSameMapped(transformation.classOfMappedEObject, transformation)
 	}

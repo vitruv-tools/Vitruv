@@ -25,11 +25,11 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePropagating;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MappingManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.TransformationExecutingProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine.EMFModelPropagationEngineImpl;
@@ -164,7 +164,7 @@ public class VitruviusChangeSynchronizer implements ChangeSynchronizing {
 
         for (final EMFModelTransformationExecutingProvider transProvider : JavaJMLExtensionProvider
                 .getEMFModelTransformationExecutingProviders()) {
-            for (final EMFModelTransformationExecuting trans : transProvider.getEMFModelTransformationExecutings()) {
+            for (final Change2CommandTransforming trans : transProvider.getEMFModelTransformationExecutings()) {
                 result.addEMFModelTransformationExecuting(trans);
                 LOGGER.debug("EMFModelTransformationExecuting registered: " + trans.getClass().getSimpleName());
             }
@@ -181,7 +181,7 @@ public class VitruviusChangeSynchronizer implements ChangeSynchronizing {
      * @return The initialized propagation engine.
      */
     protected EMFModelPropagationEngineImpl constructPropagationEngineImpl(
-            final TransformationExecutingProviding syncTransformationProviding) {
+            final Change2CommandTransformingProviding syncTransformationProviding) {
         LOGGER.info("Constructing propagation engine.");
 
         final EMFModelPropagationEngineImpl result = new EMFModelPropagationEngineImpl(syncTransformationProviding);

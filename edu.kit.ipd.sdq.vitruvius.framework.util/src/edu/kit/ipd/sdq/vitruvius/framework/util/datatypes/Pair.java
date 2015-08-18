@@ -13,7 +13,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.util.datatypes;
 
 /**
  * A 2-tuple (also called double).
- * 
+ *
  * @param <A>
  *            the type of the first element
  * @param <B>
@@ -28,7 +28,7 @@ public class Pair<A, B> {
 
     /**
      * Constructs a new Pair using the given first and second element.
-     * 
+     *
      * @param first
      *            the first element
      * @param second
@@ -41,7 +41,7 @@ public class Pair<A, B> {
 
     @Override
     public String toString() {
-        return "Pair [first=" + getFirst() + ", second=" + getSecond() + "]";
+        return "Pair [first=" + this.getFirst() + ", second=" + this.getSecond() + "]";
     }
 
     /**
@@ -67,8 +67,8 @@ public class Pair<A, B> {
         if (null == otherObj || !(otherObj instanceof Pair<?, ?>)) {
             return false;
         }
-        Pair<?, ?> otherPair = (Pair<?, ?>) otherObj;
-        return this.equal(getFirst(), otherPair.getFirst()) && this.equal(getSecond(), this.getSecond());
+        final Pair<?, ?> otherPair = (Pair<?, ?>) otherObj;
+        return this.equal(this.getFirst(), otherPair.getFirst()) && this.equal(this.getSecond(), this.getSecond());
     }
 
     private boolean equal(final Object o1, final Object o2) {
@@ -84,8 +84,8 @@ public class Pair<A, B> {
      */
     @Override
     public int hashCode() {
-        int first = getFirst() == null ? 0 : getFirst().hashCode();
-        int second = getSecond() == null ? 0 : getSecond().hashCode();
+        final int first = this.getFirst() == null ? 0 : this.getFirst().hashCode();
+        final int second = this.getSecond() == null ? 0 : this.getSecond().hashCode();
 
         return first + (37 * second);
     }

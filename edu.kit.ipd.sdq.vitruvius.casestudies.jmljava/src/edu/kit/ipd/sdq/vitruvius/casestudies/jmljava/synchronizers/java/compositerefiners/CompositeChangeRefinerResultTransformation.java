@@ -4,7 +4,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.CustomTransfo
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 
 /**
@@ -28,7 +28,7 @@ public class CompositeChangeRefinerResultTransformation implements CompositeChan
     }
 
     @Override
-    public EMFChangeResult apply(EMFModelTransformationExecuting transformationExecuting, CorrespondenceInstance ci,
+    public EMFChangeResult apply(Change2CommandTransforming transformationExecuting, CorrespondenceInstance ci,
             UserInteracting ui, SynchronisationAbortedListener abortListener) {
         return transformation.execute(ci, ui, abortListener);
     }

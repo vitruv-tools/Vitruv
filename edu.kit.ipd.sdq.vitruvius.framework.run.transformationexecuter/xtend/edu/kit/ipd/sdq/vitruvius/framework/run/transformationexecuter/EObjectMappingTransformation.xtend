@@ -1,7 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
@@ -10,7 +11,6 @@ import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 
 abstract class EObjectMappingTransformation {
 
@@ -21,7 +21,7 @@ abstract class EObjectMappingTransformation {
 		featureCorrespondenceMap = new ClaimableHashMap<EStructuralFeature, EStructuralFeature>();
 	}
 
-	var protected CorrespondenceInstance correspondenceInstance
+	var protected Blackboard blackboard
 
 	def Class<?> getClassOfMappedEObject()
 
@@ -102,9 +102,9 @@ abstract class EObjectMappingTransformation {
 
 	def void setCorrespondenceForFeatures()
 
-	def void setCorrespondenceInstance(CorrespondenceInstance correspondenceInstance) {
-		this.correspondenceInstance = correspondenceInstance
-		if (null != correspondenceInstance) {
+	def void setBlackboard(Blackboard blackboard) {
+		this.blackboard = blackboard
+		if (null != blackboard) {
 			setCorrespondenceForFeatures()
 		}
 	}

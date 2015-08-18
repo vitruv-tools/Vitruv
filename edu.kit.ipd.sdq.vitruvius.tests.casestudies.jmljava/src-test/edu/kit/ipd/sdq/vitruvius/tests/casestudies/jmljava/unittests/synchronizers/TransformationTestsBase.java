@@ -248,7 +248,7 @@ public abstract class TransformationTestsBase {
     
     private EMFChangeResult callSynchronizerInternal(Change change) {
         if (change instanceof EMFModelChange) {
-            return synchronizer.executeTransformation((EMFModelChange)change, correspondenceInstance);
+            return synchronizer.transformChanges2Commands(null);
         }
         if (change instanceof CompositeChange) {
             return synchronizer.executeTransformation((CompositeChange)change, correspondenceInstance);

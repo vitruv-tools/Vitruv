@@ -7,25 +7,26 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.emftext.language.java.containers.JavaRoot;
 import org.emftext.language.java.containers.Package;
-
 import org.palladiosimulator.pcm.core.entity.NamedElement;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.system.System;
+
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor;
@@ -33,9 +34,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.ChangeSync
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
-public abstract class PCMJaMoPPTransformationExecuterBase implements EMFModelTransformationExecuting {
+public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2CommandTransforming {
 
-    private static final Logger logger = Logger.getLogger(PCMJaMoPPTransformationExecuterBase.class.getSimpleName());
+    private static final Logger logger = Logger.getLogger(PCMJaMoPPChange2CommandTransformerBase.class.getSimpleName());
 
     protected final ChangeSynchronizer changeSynchronizer;
 
@@ -43,7 +44,7 @@ public abstract class PCMJaMoPPTransformationExecuterBase implements EMFModelTra
 
     protected UserInteractor userInteracting;
 
-    public PCMJaMoPPTransformationExecuterBase() {
+    public PCMJaMoPPChange2CommandTransformerBase() {
         this.changeSynchronizer = new ChangeSynchronizer();
         this.initializeChangeSynchronizer();
         final VURI pcmVURI = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
@@ -66,19 +67,25 @@ public abstract class PCMJaMoPPTransformationExecuterBase implements EMFModelTra
     }
 
     /**
-     * Executes the Java2PCM and PCM2Java transformations and returns the changed VURIs
-     *
-     * @param change
-     *            the occurred change
-     * @param correspondenceInstance
-     *            the correspondence model
-     * @return set of changed VURIs
+     * Executes the Java2PCM and PCM2Java transformations.
      */
     @Override
-    public EMFChangeResult executeTransformation(final EMFModelChange emfModelChange,
-            final CorrespondenceInstance correspondenceInstance) {
+    public void transformChanges2Commands(final Blackboard blackboard) {
+        final List<Change> changesForTransformation = blackboard.getChangesForTransformation();
+        final List<Command> commands = new ArrayList<Command>();
+        for (final Change change : changesForTransformation) {
+            if (change instanceof EMFModelChange) {
+                commands.add(this.transformChange2Command((EMFModelChange) change, blackboard));
+            } else if (change instanceof CompositeChange) {
+                commands.addAll(this.transformCompositeChange((CompositeChange) change, blackboard));
+            }
+        }
+        blackboard.pushCommands(commands);
+    }
+
+    private Command transformChange2Command(final EMFModelChange emfModelChange, final Blackboard blackboard) {
         this.handlePackageInEChange(emfModelChange);
-        this.changeSynchronizer.setCorrespondenceInstance(correspondenceInstance);
+        this.changeSynchronizer.setBlackboard(blackboard);
 
         // execute actual Transformation
         final TransformationChangeResult transformationChangeResult = this.changeSynchronizer
@@ -94,26 +101,21 @@ public abstract class PCMJaMoPPTransformationExecuterBase implements EMFModelTra
                 emfChangeResult.getNewRootObjectsToSave(), emfModelChange.getURI());
 
         emfChangeResult.addCorrespondenceChanges(transformationChangeResult);
-
-        return emfChangeResult;
+        return null;
     }
 
-    @Override
-    public EMFChangeResult executeTransformation(final CompositeChange compositeChange,
-            final CorrespondenceInstance correspondenceInstance) {
-        final EMFChangeResult emfChangeResult = new EMFChangeResult();
+    public List<Command> transformCompositeChange(final CompositeChange compositeChange, final Blackboard blackboard) {
+        final List<Command> commands = new ArrayList<Command>();
         for (final Change change : compositeChange.getChanges()) {
             // handle CompositeChanges in CompositeChanges
             if (change instanceof CompositeChange) {
-                emfChangeResult.addChangeResult(this.executeTransformation((EMFModelChange) change,
-                        correspondenceInstance));
+                commands.addAll(this.transformCompositeChange((CompositeChange) change, blackboard));
                 continue;
+            } else if (change instanceof EMFModelChange) {
+                this.transformChange2Command((EMFModelChange) change, blackboard);
             }
-            final EMFChangeResult currentResult = this.executeTransformation((EMFModelChange) change,
-                    correspondenceInstance);
-            emfChangeResult.addChangeResult(currentResult);
         }
-        return emfChangeResult;
+        return commands;
     }
 
     @Override
@@ -136,7 +138,7 @@ public abstract class PCMJaMoPPTransformationExecuterBase implements EMFModelTra
             final UpdateSingleValuedEAttribute<?> updateSingleValuedEAttribute = (UpdateSingleValuedEAttribute<?>) change
                     .getEChange();
             this.prepareRenamePackageInfos(updateSingleValuedEAttribute, change.getURI());
-        }// TODO: package deletion
+        } // TODO: package deletion
     }
 
     private void prepareRenamePackageInfos(final UpdateSingleValuedEAttribute<?> updateSingleValuedEAttribute,

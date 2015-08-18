@@ -23,7 +23,7 @@ public interface Blackboard {
 
     List<Change> popChangesForPreparation();
 
-    List<Change> getAndArchiveChangesForTransformation();
+    List<Change> getChangesForTransformation();
 
     void pushCommands(List<Command> commands);
 
@@ -34,5 +34,9 @@ public interface Blackboard {
     CheckResult popCheckResult();
 
     Pair<List<Change>, List<Command>> getArchivedChangesAndCommandsForUndo();
+
+    void setCorrespondenceInstance(InternalCorrespondenceInstance correspondenceInstance);
+
+    void archiveChanges();
 
 }

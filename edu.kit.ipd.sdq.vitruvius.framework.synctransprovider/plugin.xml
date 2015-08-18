@@ -4,7 +4,7 @@
    <extension
          point="edu.kit.ipd.sdq.vitruvius.framework.contracts.transformationexecutingproviding">
       <provides
-            provider="edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.TransformationExecutingProvidingImpl">
+            provider="edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.Change2CommandTransformingProvidingImpl">
       </provides>
    </extension>
 

@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.composi
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 
 /**
@@ -29,7 +29,7 @@ public interface CompositeChangeRefinerResult {
      *            A listener for aborted synchronisations.
      * @return The result of the application process.
      */
-    public EMFChangeResult apply(EMFModelTransformationExecuting transformationExecuting, CorrespondenceInstance ci,
+    public EMFChangeResult apply(Change2CommandTransforming transformationExecuting, CorrespondenceInstance ci,
             UserInteracting ui, SynchronisationAbortedListener abortListener);
 
 }

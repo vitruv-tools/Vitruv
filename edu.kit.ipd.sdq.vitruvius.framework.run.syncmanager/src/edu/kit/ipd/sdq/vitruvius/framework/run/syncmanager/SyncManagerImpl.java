@@ -1,102 +1,106 @@
 package edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager;
 
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 import org.apache.log4j.Logger;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePropagating;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.InvariantProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.BlackboardImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceInstance;
 
 public class SyncManagerImpl implements ChangeSynchronizing {
 
     private static Logger logger = Logger.getLogger(SyncManagerImpl.class.getSimpleName());
 
     private final ModelProviding modelProviding;
-    private final ChangePropagating changePropagating;
+    private final Change2CommandTransformingProviding change2CommandTransformingProviding;
     private final CorrespondenceProviding correspondenceProviding;
     private final InvariantProviding invariantProviding;
     private final Validating validating;
     private final VitruviusResourceManipulatingJob vitruviusResourceManipulatingJob;
-
-    private Map<Class<?>, ConcreteChangeSynchronizer> changeSynchonizerMap;
+    private final ChangePreparing changePreparing;
+    private final CommandExecuting commandExecuting;
 
     private Set<SynchronisationListener> synchronisationListeners;
+    private Stack<Blackboard> blackboardHistory;
 
-    public SyncManagerImpl(final ModelProviding modelProviding, final ChangePropagating changePropagating,
+    public SyncManagerImpl(final ModelProviding modelProviding,
+            final Change2CommandTransformingProviding change2CommandTransformingProviding,
             final CorrespondenceProviding correspondenceProviding, final InvariantProviding invariantProviding,
-            final Validating validating, final SynchronisationListener synchronisationListener) {
+            final Validating validating, final SynchronisationListener synchronisationListener,
+            final ChangePreparing changePreparing, final CommandExecuting commandExecuting) {
         this.modelProviding = modelProviding;
-        this.changePropagating = changePropagating;
+        this.change2CommandTransformingProviding = change2CommandTransformingProviding;
         this.correspondenceProviding = correspondenceProviding;
+        this.changePreparing = changePreparing;
         this.synchronisationListeners = new HashSet<SynchronisationListener>();
         if (null != synchronisationListener) {
             this.synchronisationListeners.add(synchronisationListener);
         }
-        this.changeSynchonizerMap = new HashMap<Class<?>, ConcreteChangeSynchronizer>();
-        EMFModelSynchronizer emfModelSynchronizer = new EMFModelSynchronizer(modelProviding, this,
-                this.changePropagating, this.correspondenceProviding);
-        this.changeSynchonizerMap.put(EMFModelChange.class, emfModelSynchronizer);
-        this.changeSynchonizerMap.put(FileChange.class,
-                new FileChangeSynchronizer(modelProviding, emfModelSynchronizer));
-        this.changeSynchonizerMap.put(CompositeChange.class, new CompositeChangeSynchronizer(modelProviding,
-                this.changePropagating, this.correspondenceProviding));
         this.invariantProviding = invariantProviding;
         this.validating = validating;
+        this.commandExecuting = commandExecuting;
         this.vitruviusResourceManipulatingJob = new VitruviusResourceManipulatingJob(this.modelProviding,
                 this.synchronisationListeners);
     }
 
     @Override
-    public synchronized void synchronizeChanges(final List<Change> changes) {
-        boolean isListSynchronization = true;
-        for (Change change : changes) {
-            boolean isFirstSynchronizationInList = changes.indexOf(change) == 0;
-            boolean isLastSynchronizationInList = changes.indexOf(change) == changes.size() - 1;
-            synchronizeChange(change, isListSynchronization, isFirstSynchronizationInList, isLastSynchronizationInList);
-        }
+    public synchronized void synchronizeChange(final Change change) {
+        synchronizeChanges(Arrays.asList(change));
     }
 
     @Override
-    public synchronized void synchronizeChange(final Change change) {
-        synchronizeChange(change, false, true, true);
-    }
-
-    public void synchronizeChange(final Change change, final boolean isListSynchronization,
-            final boolean isFirstSynchronisationInList, final boolean isLastSynchroisationInList) {
-        if (!isListSynchronization || (isListSynchronization && isFirstSynchronisationInList)) {
-            for (SynchronisationListener syncListener : this.synchronisationListeners) {
-                syncListener.syncStarted();
-            }
-        }
-        if (changeCausedByResourceManipultingJob()) {
-            logger.info("Change " + change
-                    + " not syncrhonized, cause it was caused by the resource manipulating job itself.");
+    public synchronized void synchronizeChanges(final List<Change> changes) {
+        if (null == changes || 0 == changes.size()) {
+            logger.warn("The change list does not contain any changes to synchronize." + changes);
             return;
         }
-        if (!this.changeSynchonizerMap.containsKey(change.getClass())) {
-            logger.warn("Could not find ChangeSynchronizer for change " + change.getClass().getSimpleName()
-                    + ". Can not synchronize change " + change);
+        Blackboard blackboard = new BlackboardImpl();
+        this.blackboardHistory.push(blackboard);
+        blackboard.pushChanges(changes);
+        for (SynchronisationListener syncListener : this.synchronisationListeners) {
+            syncListener.syncStarted();
         }
-        EMFChangeResult emfChangeResult = (EMFChangeResult) this.changeSynchonizerMap.get(change.getClass())
-                .synchronizeChange(change);
-        boolean isLastChangeResultInList = (!isListSynchronization || (isListSynchronization && isLastSynchroisationInList));
-        emfChangeResult.setLastChangeResultInList(isLastChangeResultInList);
-        this.vitruviusResourceManipulatingJob.addEMFChangeResult(emfChangeResult);
-        this.vitruviusResourceManipulatingJob.runSynchron();
+        this.changePreparing.prepareAllChanges(blackboard);
+
+        List<Change> changesForTransformation = blackboard.getChangesForTransformation();
+        validateChanges(changesForTransformation);
+        VURI sourceModelVURI = getSourceModelVURI(changesForTransformation);
+        Set<InternalCorrespondenceInstance> correspondenceInstances = this.correspondenceProviding
+                .getAllCorrespondenceInstances(sourceModelVURI);
+        for (InternalCorrespondenceInstance correspondenceInstance : correspondenceInstances) {
+            VURI mmURI1 = correspondenceInstance.getMapping().getMetamodelA().getURI();
+            VURI mmURI2 = correspondenceInstance.getMapping().getMetamodelB().getURI();
+            Change2CommandTransforming change2CommandTransforming = this.change2CommandTransformingProviding
+                    .getChange2CommandTransforming(mmURI1, mmURI2);
+            blackboard.setCorrespondenceInstance(correspondenceInstance);
+            change2CommandTransforming.transformChanges2Commands(blackboard);
+        }
+        blackboard.archiveChanges();
+        this.commandExecuting.executeCommands(blackboard);
+
+        // TODO: check invariants and execute undo if necessary
+
+        for (SynchronisationListener syncListener : this.synchronisationListeners) {
+            syncListener.syncFinished();
+        }
     }
 
     /**
@@ -107,6 +111,35 @@ public class SyncManagerImpl implements ChangeSynchronizing {
      */
     private boolean changeCausedByResourceManipultingJob() {
         return this.vitruviusResourceManipulatingJob.getThread() == Thread.currentThread();
+    }
+
+    private void validateChanges(final List<Change> changesForTransformation) {
+        VURI sourceModelURI = null;
+        for (Change change : changesForTransformation) {
+            if (!(change instanceof EMFModelChange)) {
+                throw new RuntimeException(
+                        "The change " + change + " is not an instanceof EMFModelChange. Can not transform change");
+            }
+            EMFModelChange emfModelChange = (EMFModelChange) change;
+            if (null == sourceModelURI) {
+                sourceModelURI = emfModelChange.getURI();
+            } else {
+                if (!sourceModelURI.equals(emfModelChange.getURI())) {
+                    throw new RuntimeException(
+                            "The change " + change + " has a different URI (" + emfModelChange.getURI()
+                                    + ") as expected (" + sourceModelURI + "). Can not transform change");
+                }
+            }
+        }
+
+    }
+
+    private VURI getSourceModelVURI(final List<Change> changesForTransformation) {
+        if (null != changesForTransformation && 0 < changesForTransformation.size()) {
+            EMFModelChange modelChange = (EMFModelChange) changesForTransformation.get(0);
+            return modelChange.getURI();
+        }
+        return null;
     }
 
 }

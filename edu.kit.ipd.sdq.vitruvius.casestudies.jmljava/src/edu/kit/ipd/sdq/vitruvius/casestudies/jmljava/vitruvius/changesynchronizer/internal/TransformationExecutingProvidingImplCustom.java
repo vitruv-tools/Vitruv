@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.internal;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
-import edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.TransformationExecutingProvidingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
+import edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 /**
@@ -11,7 +11,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
  * usual Eclipse extension point mechanism of Eclipse.
  */
 public class TransformationExecutingProvidingImplCustom extends
-		TransformationExecutingProvidingImpl {
+		Change2CommandTransformingProvidingImpl {
 
 	/**
 	 * Constructor
@@ -27,7 +27,7 @@ public class TransformationExecutingProvidingImplCustom extends
 	 *            The transformation executing to be added.
 	 */
 	public void addEMFModelTransformationExecuting(
-			EMFModelTransformationExecuting transformationExecuting) {
+			Change2CommandTransforming transformationExecuting) {
 		for (Pair<VURI, VURI> transformableMetamodel : transformationExecuting
 				.getTransformableMetamodels()) {
 			this.transformationExecuterMap.put(transformableMetamodel,

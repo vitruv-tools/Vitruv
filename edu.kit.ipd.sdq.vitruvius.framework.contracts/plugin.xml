@@ -15,6 +15,8 @@
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.synctransformationgenerating" name="SyncTransformationGenerating" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.synctransformationgenerating.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.projectgenerating" name="ProjectGenerating" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.projectgenerating.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.projectpreparing" name="ProjectPreparing" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.projectpreparing.exsd"/>
-   <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.transformationexecuting" name="EMFModelTransformationExecuting" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.transformationexecuting.exsd"/>
+   <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.change2commandtransforming" name="Change2CommandTransforming" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.change2commandtransforming.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.synchronizationlistening" name="SynchronizationListening" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.synchronizationlistening.exsd"/>
+   <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.changepreparing" name="ChangePreparing" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.changepreparing.exsd"/>
+   <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.commandexecuting" name="CommandExecuting" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.commandexecuting.exsd"/>
 </plugin>

@@ -11,7 +11,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceIns
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
@@ -37,14 +37,14 @@ public class CompositeChangeRefinerResultAtomicTransformations implements Compos
     }
 
     @Override
-    public EMFChangeResult apply(EMFModelTransformationExecuting transformationExecuting, CorrespondenceInstance ci,
+    public EMFChangeResult apply(Change2CommandTransforming transformationExecuting, CorrespondenceInstance ci,
             UserInteracting ui, SynchronisationAbortedListener abortListener) {
         Set<VURI> vurisToDelete = new HashSet<VURI>();
         Set<VURI> vurisToSave = new HashSet<VURI>();
         Set<Pair<EObject, VURI>> newRootObjectsToSave = new HashSet<Pair<EObject, VURI>>();
 
         for (EMFModelChange change : changes) {
-            EMFChangeResult result = transformationExecuting.executeTransformation(change, ci);
+            EMFChangeResult result = transformationExecuting.transformChanges2Commands(null);
             vurisToDelete.addAll(result.getExistingObjectsToDelete());
             vurisToSave.addAll(result.getExistingObjectsToSave());
             newRootObjectsToSave.addAll(result.getNewRootObjectsToSave());

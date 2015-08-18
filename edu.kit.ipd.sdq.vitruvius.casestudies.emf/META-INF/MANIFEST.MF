@@ -21,9 +21,10 @@ Require-Bundle: org.eclipse.core.resources,
  edu.kit.ipd.sdq.vitruvius.framework.design.viewtype.manager,
  edu.kit.ipd.sdq.vitruvius.framework.vsum,
  edu.kit.ipd.sdq.vitruvius.framework.synctransprovider,
- edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine,
  edu.kit.ipd.sdq.vitruvius.casestudies.gmf.run.monitorededitor,
- edu.kit.ipd.sdq.vitruvius.framework.util
+ edu.kit.ipd.sdq.vitruvius.framework.util,
+ edu.kit.ipd.sdq.vitruvius.framework.changepreparer,
+ edu.kit.ipd.sdq.vitruvius.commandexecuter
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder,
  edu.kit.ipd.sdq.vitruvius.casestudies.emf.util
 

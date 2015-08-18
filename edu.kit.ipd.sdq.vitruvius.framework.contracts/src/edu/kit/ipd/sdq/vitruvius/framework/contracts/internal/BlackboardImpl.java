@@ -1,54 +1,61 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.internal;
 
 import java.util.List;
+import java.util.Stack;
 
 import org.eclipse.emf.common.command.Command;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CheckResult;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 public class BlackboardImpl implements Blackboard {
 
-    @Override
-    public InternalCorrespondenceInstance getCorrespondenceInstance() {
-        // TODO Auto-generated method stub
-        return null;
+    private InternalCorrespondenceInstance correspondenceInstance;
+    private Stack<List<Change>> changes;
+    private Stack<List<Command>> commands;
+    private List<Change> archivedChanges;
+    private List<Command> archivedCommands;
+
+    public BlackboardImpl() {
+        this.changes = new Stack<List<Change>>();
+        this.commands = new Stack<List<Command>>();
     }
 
     @Override
-    public void pushChanges(List<Change> changes) {
-        // TODO Auto-generated method stub
+    public InternalCorrespondenceInstance getCorrespondenceInstance() {
+        return this.correspondenceInstance;
+    }
 
+    @Override
+    public void pushChanges(final List<Change> changes) {
+        this.changes.push(changes);
     }
 
     @Override
     public List<Change> popChangesForPreparation() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.changes.pop();
     }
 
     @Override
-    public List<Change> getAndArchiveChangesForTransformation() {
-        // TODO Auto-generated method stub
-        return null;
+    public List<Change> getChangesForTransformation() {
+        return this.changes.peek();
     }
 
     @Override
-    public void pushCommands(List<Command> commands) {
-        // TODO Auto-generated method stub
-
+    public void pushCommands(final List<Command> commands) {
+        this.commands.push(commands);
     }
 
     @Override
     public List<Command> getAndArchiveCommandsForExecution() {
-        // TODO Auto-generated method stub
-        return null;
+        this.archivedCommands = this.commands.pop();
+        return this.archivedCommands;
     }
 
     @Override
-    public void pushCheckResult(CheckResult checkResult) {
+    public void pushCheckResult(final CheckResult checkResult) {
         // TODO Auto-generated method stub
 
     }
@@ -61,8 +68,18 @@ public class BlackboardImpl implements Blackboard {
 
     @Override
     public Pair<List<Change>, List<Command>> getArchivedChangesAndCommandsForUndo() {
-        // TODO Auto-generated method stub
-        return null;
+        return new Pair<List<Change>, List<Command>>(this.archivedChanges, this.archivedCommands);
+    }
+
+    @Override
+    public void setCorrespondenceInstance(final InternalCorrespondenceInstance correspondenceInstance) {
+        this.correspondenceInstance = correspondenceInstance;
+
+    }
+
+    @Override
+    public void archiveChanges() {
+        this.archivedChanges = this.changes.pop();
     }
 
 }
