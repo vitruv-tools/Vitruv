@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="edu.kit.ipd.sdq.vitruvius.framework.contracts.commandexecuting">
+      <provides
+            provider="edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl">
+      </provides>
+      <provides
+            provider="edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecuting1">
+      </provides>
+   </extension>
+
+</plugin>
