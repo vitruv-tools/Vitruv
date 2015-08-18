@@ -9,9 +9,12 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRMappingHelper
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRChange2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRMappingRealization
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRModelInformationProvider
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MappedCorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EMFHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassMapping
@@ -26,6 +29,7 @@ import java.util.HashSet
 import java.util.List
 import java.util.Map
 import java.util.Set
+import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
@@ -34,11 +38,6 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRMappingHelper
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MappedCorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMappedCorrespondenceInstance
-import org.apache.log4j.Logger
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRChange2CommandTransforming
 
 /**
  * @author Dominik Werle
@@ -81,7 +80,6 @@ class MIRCodeGenerator implements IGenerator {
 			generateMappingClass(mapping, il.configuration.package, fsa)
 		}
 		
-		generateMappedCorrespondenceInstance(il, resourcePath, fsa)
 		generateTransformationExecuting(il, resourcePath, fsa)
 	}
 	
@@ -91,14 +89,6 @@ class MIRCodeGenerator implements IGenerator {
 	
 	private def getSimpleName(MIR mir) {
 		mir.configuration.type
-	}
-	
-	private def getMappedCorrespondenceName(MIR mir) {
-		mir.simpleName + "Correspondence"
-	}
-	
-	private def getMappedCorrespondenceFQN(MIR mir) {
-		mir.configuration.package + "." + mir.mappedCorrespondenceName
 	}
 	
 	private def classNameToJavaPath(String name) {
@@ -142,11 +132,6 @@ class MIRCodeGenerator implements IGenerator {
 		Logger
 	]
 	
-	private static final List<? extends Class<?>> IMPORTED_CLASSES_CORRESPONDENCE_INSTANCE = #[
-		CorrespondenceInstance, AbstractMappedCorrespondenceInstance, EObject,
-		Logger
-	]
-	
 	/**
 	 * Creates the import statements for {@link #IMPORTED_CLASSES}.
 	 */
@@ -158,65 +143,8 @@ class MIRCodeGenerator implements IGenerator {
 		'''
 	}
 
-	def generateMappedCorrespondenceInstance(MIR mir, URI resourcePath, IFileSystemAccess fsa) {
-		fsa.generateFile(SRC_GEN_FOLDER + mir.mappedCorrespondenceFQN.classNameToJavaPath, '''
-			package «mir.configuration.package»;
-			
-			«getImportStatements(IMPORTED_CLASSES_CORRESPONDENCE_INSTANCE)»
-			
-			public class «mir.mappedCorrespondenceName» extends AbstractMappedCorrespondenceInstance {
-				«createLoggerField(mir.mappedCorrespondenceName)»
-				
-				private CorrespondenceInstance correspondenceInstance;
-				
-				@Override
-				public CorrespondenceInstance getCorrespondenceInstance() {
-					return correspondenceInstance;
-				}
-				
-				public void setCorrespondenceInstance(CorrespondenceInstance correspondenceInstance) {
-					this.correspondenceInstance = correspondenceInstance;
-				}
-				
-				public «mir.mappedCorrespondenceName»() {
-				}
-				
-				public «mir.mappedCorrespondenceName»(CorrespondenceInstance correspondenceInstance) {
-					this.correspondenceInstance = correspondenceInstance;
-				}
-				
-				«FOR mapping : mappingClassNames.keySet»
-				«mappingCorrespondenceMethods(mapping)»
-				«ENDFOR»
-			}
-			
-		''')
-	}
-	
 	def createLoggerField(String className) {
 		'''private static final Logger «LOGGER_NAME» = Logger.getLogger(«className».class);'''
-	}
-	
-	def mappingCorrespondenceMethods(Mapping mapping) {
-		if (!mappingClassNames.containsKey(mapping)) {
-			throw new IllegalStateException("Mapping class for mapping " + mapping.toString + " not created yet")
-		}
-		
-		val mappingName = mappingClassNames.get(mapping)
-		
-		if (mapping instanceof ClassMapping) {
-			'''
-				public boolean isMappedBy«mappingName»(«mapping.left.type.instanceTypeName» «mapping.left.name») {
-					«LOGGER_NAME».trace("isMappedBy«mappingName»(" + «mapping.left.name».toString() +")");
-					return false;
-				}
-				
-				public «mapping.right.type.instanceTypeName» getMappingTargetFor«mappingName»(«mapping.left.type.instanceTypeName» «mapping.left.name») {
-					«LOGGER_NAME».trace("getMappingTargetFor«mappingName»(" + «mapping.left.name».toString() +")");
-					return null;
-				}
-			'''
-		}
 	}
 
 	private def generateTransformationExecuting(MIR file, URI resourcePath, IFileSystemAccess fsa) {
@@ -243,7 +171,6 @@ class MIRCodeGenerator implements IGenerator {
 				public final String MM_TWO = "«file.packages.get(1).nsURI»";
 				
 				/** The correspondence instance for this TransformationExecuting. */
-				private final «file.mappedCorrespondenceName» mappedCorrespondenceInstance;
 				
 				private final VURI VURI_ONE = VURI.getInstance(MM_ONE);
 				private final VURI VURI_TWO = VURI.getInstance(MM_TWO);
@@ -255,8 +182,6 @@ class MIRCodeGenerator implements IGenerator {
 					transformableMetamodels = new ArrayList<Pair<VURI, VURI>>();
 					transformableMetamodels.add(new Pair<VURI, VURI>(VURI_ONE, VURI_TWO));
 					transformableMetamodels.add(new Pair<VURI, VURI>(VURI_TWO, VURI_ONE));
-					
-					this.mappedCorrespondenceInstance = new «file.mappedCorrespondenceName»();
 				}
 				
 				@Override
@@ -271,11 +196,6 @@ class MIRCodeGenerator implements IGenerator {
 					return transformableMetamodels;
 				}
 				
-				@Override
-				protected «file.mappedCorrespondenceName» getMappedCorrespondenceInstance() {
-					return this.mappedCorrespondenceInstance;
-				}
-			
 				@Override
 				protected void setCorrespondenceInstance(CorrespondenceInstance correspondenceInstance) {
 					this.mappedCorrespondenceInstance.setCorrespondenceInstance(correspondenceInstance);
