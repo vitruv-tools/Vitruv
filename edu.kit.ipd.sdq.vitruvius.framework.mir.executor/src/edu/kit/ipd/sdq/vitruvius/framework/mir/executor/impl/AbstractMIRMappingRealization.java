@@ -14,21 +14,17 @@ import java.util.stream.Stream;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.transaction.RecordingCommand;
-import org.eclipse.xtext.xbase.lib.Functions;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EclipseHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRMappingHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MappedCorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFCommandBridge;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 /**
  * {@link AbstractMIRMappingRealization} is extended by the code generated from
@@ -94,7 +90,16 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 	 */
 	protected List<Command> deleteCorresponding(EObject eObject, EObject target, Blackboard blackboard) {
 		// TODO: implement
+		
+		List<Command> result = new ArrayList<Command>();
+
+		result.add(commandBridge.createCommand(() -> {
+			EcoreUtil.delete(target);
+		}));
+		
 		throw new UnsupportedOperationException("Not implemented");
+
+		//return result;
 	}
 
 	/**

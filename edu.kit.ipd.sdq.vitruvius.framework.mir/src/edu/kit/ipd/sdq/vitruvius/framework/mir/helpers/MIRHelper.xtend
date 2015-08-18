@@ -145,10 +145,6 @@ class MIRHelper {
 	static def getProjectName(MIRFile mir) {
 		return mir.generatedPackage
 	}
-	
-	static def getCorrespondenceDecoratorFileExtPrefix() {
-		return "mapped_"
-	}
 }
 	
 	

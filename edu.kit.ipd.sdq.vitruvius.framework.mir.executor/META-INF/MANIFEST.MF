@@ -19,9 +19,11 @@ Require-Bundle: org.eclipse.xtext.xbase.lib,
  edu.kit.ipd.sdq.vitruvius.framework.vsum,
  org.eclipse.core.resources,
  org.eclipse.equinox.registry,
- org.eclipse.emf.common.ui
-Export-Package: edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl,
+ org.eclipse.emf.common.ui,
+ org.eclipse.emf.transaction
+Export-Package: edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api,
+ edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers,
+ edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl,
  edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces,
- edu.kit.ipd.sdq.vitruvius.framework.mir.executor.reflection,
- edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers
+ edu.kit.ipd.sdq.vitruvius.framework.mir.executor.reflection
 
