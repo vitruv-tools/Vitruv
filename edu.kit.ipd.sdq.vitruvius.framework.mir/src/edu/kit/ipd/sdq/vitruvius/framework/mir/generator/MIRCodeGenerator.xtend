@@ -6,7 +6,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceIns
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRChange2CommandTransforming
@@ -117,7 +116,7 @@ class MIRCodeGenerator implements IGenerator {
 	private static final List<? extends Class<?>> IMPORTED_CLASSES_TRANSFORMATION_EXECUTING = #[
 		EObject, Map, HashMap, List, ArrayList,
 		IllegalArgumentException,
-		Pair, EMFModelTransformationExecuting, EMFChangeResult, VURI,
+		Pair, EMFChangeResult, VURI,
 		AbstractMIRChange2CommandTransforming,
 		CorrespondenceInstance, EMFModelChange, Change,
 		EChange, EcoreHelper,

@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.generator
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.EMFModelTransformationExecuting
 import org.eclipse.xtext.generator.IFileSystemAccess
 import java.util.Collection
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
 
 /**
  * Helper class containing methods for setting up the plugin project to generate
@@ -36,7 +36,7 @@ class MIRPluginProjectCreator{
 		<?eclipse version="3.4"?>
 		<plugin>
 		   <extension
-		         point="«EMFModelTransformationExecuting.ID»">
+		         point="«Change2CommandTransforming.ID»">
 		      <provides
 		            provider="«classFQN»">
 		      </provides>
