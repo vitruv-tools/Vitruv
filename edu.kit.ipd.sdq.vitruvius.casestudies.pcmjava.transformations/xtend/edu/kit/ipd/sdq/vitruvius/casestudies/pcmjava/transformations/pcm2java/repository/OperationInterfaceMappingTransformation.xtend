@@ -1,12 +1,10 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
-import org.palladiosimulator.pcm.repository.OperationInterface
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import java.util.List
 import java.util.Set
@@ -22,6 +20,7 @@ import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.Package
 import org.emftext.language.java.members.InterfaceMethod
 import org.emftext.language.java.modifiers.ModifiersFactory
+import org.palladiosimulator.pcm.repository.OperationInterface
 
 class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -48,8 +47,8 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 		correspondingCompilationUnit.classifiers.add(correspondingInterface)
 
 		// add compilation unit to contracts package, which correspondent to the repository
-		val packages = correspondenceInstance.getCorrespondingEObjectsByType(operationInterface.repository__Interface,
-			Package)
+		val packages = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(
+			operationInterface.repository__Interface, Package)
 		logger.info("found " + packages + " packages ")
 		if (!packages.nullOrEmpty) {
 			for (containingPackage : packages) {
@@ -63,17 +62,17 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 			}
 		}
 
-		//package with name "contracts" not found --> ask user
+		// package with name "contracts" not found --> ask user
 		val List<String> stringList = new ArrayList<String>()
 		if (!packages.nullOrEmpty) {
 			for (candidate : packages) {
 				stringList.add(candidate.name)
 			}
-		}else{
+		} else {
 			val package = PCM2JaMoPPUtils.createPackage("contracts")
 			stringList.add(package.name)
 		}
-		
+
 		var String ifName = "";
 		if (null != correspondingInterface && null != correspondingInterface.name) {
 			ifName = correspondingInterface.name
@@ -98,20 +97,18 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 			throw new RuntimeException(
 				"unexpeceted value in newMethods parameter " + newMethods.size + " (expected 1):" + newMethods)
 		}
-		val Interface jaMoPPIf = correspondenceInstance.getCorrespondingEObjectsByType(newAffectedEObject, Interface).
-			get(0)
-		val transformationResult = TransformationUtils.
-			createTransformationChangeResultForEObjectsToSave(jaMoPPIf.toArray)
+		val Interface jaMoPPIf = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(newAffectedEObject,
+			Interface).get(0)
+		PCMJaMoPPUtils.saveNonRootEObject(jaMoPPIf)
 		for (eObject : newMethods) {
 			val InterfaceMethod newMethod = eObject as InterfaceMethod;
 			jaMoPPIf.members.add(newMethod)
-			transformationResult.addNewCorrespondence(correspondenceInstance, newValue, newMethod)
+			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newValue, newMethod)
 
-		//the code jaMoPPIf.methods.add(index, newMethod); does not work, because adding a method 
-		//to interface methods does not cause an update of the resource.
-		//I guess only members list is a containment list (this is why we do it 2 lines above)
+		// the code jaMoPPIf.methods.add(index, newMethod); does not work, because adding a method 
+		// to interface methods does not cause an update of the resource.
+		// I guess only members list is a containment list (this is why we do it 2 lines above)
 		}
-		return transformationResult
 	}
 
 	/**
@@ -124,64 +121,64 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 			throw new RuntimeException(
 				"unexpeceted value in oldMethods parameter " + oldMethods.size + " (expected 1):" + oldMethods)
 		}
-		val Interface jaMoPPIf = correspondenceInstance.getCorrespondingEObjectsByType(newAffectedEObject, Interface).
+		val Interface jaMoPPIf = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(newAffectedEObject, Interface).
 			get(0)
 		for (eObject : oldMethods) {
 			val InterfaceMethod oldMethod = eObject as InterfaceMethod;
 			jaMoPPIf.methods.remove(oldMethod)
 		}
-		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(jaMoPPIf.toArray)
+		PCMJaMoPPUtils.saveNonRootEObject(jaMoPPIf)	
 	}
 
 	override removeEObject(EObject eObject) {
 		val OperationInterface operationInterface = eObject as OperationInterface
-		val correspondingObjects = correspondenceInstance.claimCorrespondingEObjects(operationInterface)
+		val correspondingObjects = blackboard.correspondenceInstance.claimCorrespondingEObjects(operationInterface)
 		for (correspondingObject : correspondingObjects) {
 
-			//TODO: check wheather the CompilationUnit is deleted
+			// TODO: check wheather the CompilationUnit is deleted
 			EcoreUtil.remove(correspondingObject)
 		}
-		correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(operationInterface)
+		blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(operationInterface)
 		return null
 	}
 
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
 		var Set<EObject> correspondingEObjects = PCM2JaMoPPUtils.
-			checkKeyAndCorrespondingObjects(eObject, affectedAttribute, featureCorrespondenceMap, correspondenceInstance);
-		if (correspondingEObjects.nullOrEmpty) {
-			return TransformationUtils.createEmptyTransformationChangeResult;
-		}
-		val cu = correspondingEObjects.filter(typeof(CompilationUnit)).get(0)
-		val tcr = new TransformationChangeResult
-		PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, tcr, correspondenceInstance, false)
-		return tcr
+			checkKeyAndCorrespondingObjects(eObject, affectedAttribute, featureCorrespondenceMap,
+				blackboard.correspondenceInstance);
+			if (correspondingEObjects.nullOrEmpty) {
+				return 
+			}
+			val cu = correspondingEObjects.filter(typeof(CompilationUnit)).get(0)
+			PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, blackboard,
+				false)
+			return 
 
-	//TODO: Code refactoring anstossen
-	/* 		val Map<String, RoleMapping> roleMappings = IRoleMappingRegistry.INSTANCE.
-			getRoleMappingsForUri(JavaPackage.eNS_URI);
-		jaMoPPInterface.eSet(affectedInterfaceFeature, newValue )
-		val IRefactorer refactorer = RefactorerFactory.eINSTANCE.getRefactorer(jaMoPPInterface.eResource,
-			roleMappings.get("RenameElement"))
-		
-		val jaMoPPValueProviderFactory = new TestValueProviderFactory()
-		jaMoPPValueProviderFactory.setNewMethodName(newValue.toString)
-		val BasicEList<EObject> elementToRefactor = new BasicEList<EObject>();
-		elementToRefactor.add(jaMoPPInterface)
-		refactorer.setValueProviderFactory(jaMoPPValueProviderFactory)
-		refactorer.setInput(elementToRefactor)
-		val EObject refactoredEObj = refactorer.refactor()
-		for( resourceToSave : refactorer.resourcesToSave){
-			resourceToSave.save(null)
+		// TODO: Code refactoring anstossen
+		/* 		val Map<String, RoleMapping> roleMappings = IRoleMappingRegistry.INSTANCE.
+		 * 		getRoleMappingsForUri(JavaPackage.eNS_URI);
+		 * 	jaMoPPInterface.eSet(affectedInterfaceFeature, newValue )
+		 * 	val IRefactorer refactorer = RefactorerFactory.eINSTANCE.getRefactorer(jaMoPPInterface.eResource,
+		 * 		roleMappings.get("RenameElement"))
+		 * 	
+		 * 	val jaMoPPValueProviderFactory = new TestValueProviderFactory()
+		 * 	jaMoPPValueProviderFactory.setNewMethodName(newValue.toString)
+		 * 	val BasicEList<EObject> elementToRefactor = new BasicEList<EObject>();
+		 * 	elementToRefactor.add(jaMoPPInterface)
+		 * 	refactorer.setValueProviderFactory(jaMoPPValueProviderFactory)
+		 * 	refactorer.setInput(elementToRefactor)
+		 * 	val EObject refactoredEObj = refactorer.refactor()
+		 * 	for( resourceToSave : refactorer.resourcesToSave){
+		 * 		resourceToSave.save(null)
+		 * 	}
+		 return refactoredEObj.toArray*/
 		}
-		return refactoredEObj.toArray*/
-	}
 
-	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue,
-		EObject[] newCorrespondingEObjects) {
-		logger.warn(
-			"method createNonRootEObjectSingle should not be called for " +
-				OperationInterfaceMappingTransformation.simpleName + " transformation")
-		return null
+		override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue,
+			EObject[] newCorrespondingEObjects) {
+			logger.warn(
+				"method createNonRootEObjectSingle should not be called for " +
+					OperationInterfaceMappingTransformation.simpleName + " transformation")
+		}
 	}
-}

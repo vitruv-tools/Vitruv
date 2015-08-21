@@ -33,16 +33,16 @@ class RequiredDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 		val requiredDelegationConnector = eObject as RequiredDelegationConnector
 		val assemblyContext = requiredDelegationConnector.assemblyContext_RequiredDelegationConnector
 		try {
-			val field = correspondenceInstance.claimUniqueCorrespondingEObjectByType(assemblyContext, Field)
-			val parameters = correspondenceInstance.getCorrespondingEObjectsByType(
+			val field = blackboard.correspondenceInstance.claimUniqueCorrespondingEObjectByType(assemblyContext, Field)
+			val parameters = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(
 				requiredDelegationConnector.innerRequiredRole_RequiredDelegationConnector, Parameter)
 			if (parameters.nullOrEmpty) {
 				return null
 			}
-			val constructorCallForField = correspondenceInstance.
+			val constructorCallForField = blackboard.correspondenceInstance.
 				claimUniqueCorrespondingEObjectByType(assemblyContext, NewConstructorCall)
 			var parametersToUse = emptyList
-			val correspondingConstructors = correspondenceInstance.
+			val correspondingConstructors = blackboard.correspondenceInstance.
 				getCorrespondingEObjectsByType(assemblyContext, Constructor)
 			if (null != correspondingConstructors) {
 				parametersToUse = correspondingConstructors.get(0).parameters
@@ -61,7 +61,8 @@ class RequiredDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 	}
 
 	override removeEObject(EObject eObject) {
-		return correspondenceInstance.getAllCorrespondingEObjects(eObject)
+		TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
+		return null
 	}
 
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
@@ -70,7 +71,6 @@ class RequiredDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 	
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
@@ -79,7 +79,6 @@ class RequiredDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 
 	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue,
@@ -88,7 +87,6 @@ class RequiredDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 
 }

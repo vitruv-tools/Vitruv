@@ -36,33 +36,26 @@ class SEFFMappingTransformation extends DefaultEObjectMappingTransformation {
 	}
 
 	override removeEObject(EObject eObject) {
-		return correspondenceInstance.getAllCorrespondences(eObject)
+		TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
+		return null
 	}
 
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject newValue) {
-		val tcr = TransformationUtils.createEmptyTransformationChangeResult
 		if (oldValue == newValue) {
-			return tcr
+			return 
 		}
 		val signatureAffected = oldValue instanceof OperationSignature || newValue instanceof OperationSignature
 		if (!signatureAffected) {
-			return tcr
+			return 
 		}
-		val eObjectsToRemove = removeEObject(affectedEObject)
-		if (!eObjectsToRemove.nullOrEmpty) {
-			for (eObjectToRemove : eObjectsToRemove) {
-				val oldTUID = correspondenceInstance.calculateTUIDFromEObject(eObjectToRemove)
-				tcr.addCorrespondenceToDelete(correspondenceInstance, oldTUID)
-				EcoreUtil.remove(eObjectToRemove)
-			}
-		}
+		removeEObject(affectedEObject)
+		
 		val affectedSEFF = affectedEObject as ResourceDemandingSEFF
 		val newEObjects = affectedSEFF.checkSEFFAndCreateCorrespondences
 		for (newCorrespondingEObject : newEObjects) {
-			tcr.addNewCorrespondence(correspondenceInstance, affectedSEFF, newCorrespondingEObject)
+			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(affectedSEFF, newCorrespondingEObject)
 		}
-		return tcr
 	}
 
 	private def EObject[] checkSEFFAndCreateCorrespondences(ResourceDemandingSEFF seff) {
@@ -78,11 +71,11 @@ class SEFFMappingTransformation extends DefaultEObjectMappingTransformation {
 		if (!sigIsOpSig) {
 			return null
 		} 
-		val correspondingClasses = correspondenceInstance.getCorrespondingEObjectsByType(basicComponent,
+		val correspondingClasses = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(basicComponent,
 			ConcreteClassifier)
 		if (!correspondingClasses.isNullOrEmpty) {
 			// create method
-			val correspondingMethods = correspondenceInstance.getCorrespondingEObjectsByType(signature, Method)
+			val correspondingMethods = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(signature, Method)
 			if (correspondingMethods.nullOrEmpty) {
 				logger.info("No corresponding method for seffs operation signature " + signature + " found")
 				return null

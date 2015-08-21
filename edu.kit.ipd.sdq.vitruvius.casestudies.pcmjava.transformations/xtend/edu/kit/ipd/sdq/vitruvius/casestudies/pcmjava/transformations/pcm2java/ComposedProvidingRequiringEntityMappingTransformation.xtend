@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.emftext.language.java.containers.Package
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 
 /**
  * base class for RepositoryComponentMappingTransformation and SystemMappingTransformation
@@ -36,13 +37,14 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 	}
 
 	override removeEObject(EObject eObject) {
-		return correspondenceInstance.getAllCorrespondingEObjects(eObject)
+		TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
+		return null
 	}
 
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
-		return PCM2JaMoPPUtils.updateNameAsSingleValuedEAttribute(eObject, affectedAttribute, oldValue, newValue,
-			featureCorrespondenceMap, correspondenceInstance)
+		PCM2JaMoPPUtils.updateNameAsSingleValuedEAttribute(eObject, affectedAttribute, oldValue, newValue,
+			featureCorrespondenceMap, blackboard)
 	}
 
 	/**
@@ -50,16 +52,15 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 	 */
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
-		val tcr = TransformationUtils.createEmptyTransformationChangeResult
 		if ((affectedReference.name.equals(PCMJaMoPPNamespace.PCM.SYSTEM_ASSEMBLY_CONTEXTS__COMPOSED_STRUCTURE) ||
 			affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
 			affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) &&
 			newValue instanceof NamedElement) {
 			PCM2JaMoPPUtils.
 				handleAssemblyContextAddedAsNonRootEObjectInList(newAffectedEObject as ComposedProvidingRequiringEntity,
-					newValue as NamedElement, newCorrespondingEObjects, tcr, correspondenceInstance)
+					newValue as NamedElement, newCorrespondingEObjects, blackboard)
 		} 
-		return tcr
+		return
 	}
 	
 	/**
@@ -72,9 +73,9 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 		//provided role removed - deletion of eobject should already be done in OperationProvidedRoleMappingTransformation - mark bc to save
 		if (affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
 			affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
-			return TransformationUtils.createTransformationChangeResultForEObjectsToSave(affectedEObject.toArray)
+			PCMJaMoPPUtils.saveNonRootEObject(affectedEObject)
 		}
-		return TransformationUtils.createEmptyTransformationChangeResult
+
 	}
 
 	/**
@@ -86,10 +87,9 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 		if (affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
 			affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
 			if (null != newAffectedEObject) {
-				return TransformationUtils.createTransformationChangeResultForEObjectsToSave(newAffectedEObject.toArray)
+				PCMJaMoPPUtils.saveNonRootEObject(newAffectedEObject)
 			}
 		}
-		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 
 }

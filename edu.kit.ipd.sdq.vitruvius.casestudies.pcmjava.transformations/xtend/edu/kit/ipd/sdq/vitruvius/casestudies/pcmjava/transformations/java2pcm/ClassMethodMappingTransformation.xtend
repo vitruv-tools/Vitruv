@@ -42,6 +42,11 @@ class ClassMethodMappingTransformation extends EmptyEObjectMappingTransformation
 		classMethod.createSEFFIfImplementsInterfaceMethod()
 	}
 	
+	override removeEObject(EObject eObject){
+		TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
+		return null
+	}
+	
 	/**
 	 * Called when the name of the method has been changed
 	 * Check if the class method implements an interface an update/generate a new seff if necessary
@@ -75,30 +80,22 @@ class ClassMethodMappingTransformation extends EmptyEObjectMappingTransformation
 
 
 	def private checkAndUpdateCorrespondence(EObject newAffectedEObject, EObject oldAffectedEObject) {
-		val rdSEFFs = correspondenceInstance.getCorrespondingEObjectsByType(oldAffectedEObject, ResourceDemandingSEFF)
-		val tcr = TransformationUtils.createEmptyTransformationChangeResult
+		val rdSEFFs = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(oldAffectedEObject, ResourceDemandingSEFF)
 		if(!rdSEFFs.nullOrEmpty){
-			val eObjectsToRemove = removeEObject(oldAffectedEObject)
-			for(eObjectToRemove : eObjectsToRemove){
-				val tuid = correspondenceInstance.calculateTUIDFromEObject(eObjectToRemove)
-				tcr.addCorrespondenceToDelete(correspondenceInstance, tuid)
-				EcoreUtil.remove(eObjectToRemove)
-			}
+			removeEObject(oldAffectedEObject)
 		}
 		val newClassMethod = newAffectedEObject as ClassMethod
 		val newSEFFs = newClassMethod.createSEFFIfImplementsInterfaceMethod
 		if(!newSEFFs.nullOrEmpty){
 			for(newSEFF : newSEFFs){
-				tcr.addNewCorrespondence(correspondenceInstance, newSEFF, newClassMethod)
-				
+				blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newSEFF, newClassMethod)
 			}			
 		}
-		return tcr
 	}
 
 	def private EObject[] createSEFFIfImplementsInterfaceMethod(ClassMethod classMethod) {
 		val classifier = classMethod.containingConcreteClassifier
-		val basicComponents = correspondenceInstance.getCorrespondingEObjectsByType(classifier, BasicComponent)
+		val basicComponents = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(classifier, BasicComponent)
 		if (basicComponents.nullOrEmpty) {
 			return null
 		}
@@ -115,7 +112,7 @@ class ClassMethodMappingTransformation extends EmptyEObjectMappingTransformation
 		// check if one of the implmenenting interfaces has a correspondence to an OperationInterface
 		// if yes: all methods in the Interface are potential methods, which are implmeneted by the new class method    
 		for (interface : implementingInterfaces) {
-			val opInterfaces = correspondenceInstance.getCorrespondingEObjectsByType(interface, OperationInterface)
+			val opInterfaces = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(interface, OperationInterface)
 			if (!opInterfaces.nullOrEmpty) {
 				interfaceMethods.addAll(interface.methods)
 			}
@@ -127,7 +124,7 @@ class ClassMethodMappingTransformation extends EmptyEObjectMappingTransformation
 		}
 		val returnSeffs = new ArrayList<ResourceDemandingSEFF>
 		for (method : equalMethods) {
-			val opSigs = correspondenceInstance.getCorrespondingEObjectsByType(method, OperationSignature)
+			val opSigs = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(method, OperationSignature)
 			if (!opSigs.nullOrEmpty) {
 				// create seff for first corresponding OpSig (note: there should be only one)
 				val ResourceDemandingSEFF rdSEFF = SeffFactory.eINSTANCE.createResourceDemandingSEFF

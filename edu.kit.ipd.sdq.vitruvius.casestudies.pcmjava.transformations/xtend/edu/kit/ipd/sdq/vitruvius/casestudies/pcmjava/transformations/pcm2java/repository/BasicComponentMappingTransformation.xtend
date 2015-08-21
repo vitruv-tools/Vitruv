@@ -2,16 +2,13 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.r
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.classifiers.ClassifiersFactory
 import org.emftext.language.java.containers.ContainersFactory
-import org.emftext.language.java.containers.JavaRoot
 import org.emftext.language.java.containers.Package
 import org.palladiosimulator.pcm.repository.BasicComponent
 import org.palladiosimulator.pcm.repository.RepositoryFactory
@@ -28,7 +25,7 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 		val BasicComponent basicComponent = eObject as BasicComponent
 
 		var Package rootPackage = PCM2JaMoPPUtils.findCorrespondingPackageByName(
-			basicComponent.repository__RepositoryComponent.entityName, correspondenceInstance,
+			basicComponent.repository__RepositoryComponent.entityName, blackboard.correspondenceInstance,
 			basicComponent.repository__RepositoryComponent)
 
 		//create all necessary elements
@@ -39,38 +36,27 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
 		if (null == newCorrespondingEObjects) {
-			return TransformationUtils.createEmptyTransformationChangeResult
+			return 
 		}
-		val rootObjectsToSave = newCorrespondingEObjects.filter(typeof(JavaRoot))
-		val nonRootEObjectsToSave = newCorrespondingEObjects.filter[correspondingEObject|
-			false == correspondingEObject instanceof JavaRoot]
-		val transformationResult = TransformationUtils.createTransformationChangeResult(rootObjectsToSave, null,
-			nonRootEObjectsToSave)
+		
 		for (jaMoPPElement : newCorrespondingEObjects) {
-			transformationResult.addNewCorrespondence(correspondenceInstance, newValue, jaMoPPElement)
+			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newValue, jaMoPPElement)
 		}
-		return transformationResult
 	}
 	
 	override removeEObject(EObject eObject) {
-		return correspondenceInstance.getAllCorrespondingEObjects(eObject)
+		TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
+		null
 	}
 
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
 		int index, EObject[] oldCorrespondingEObjectsToDelete) {
 		if (oldCorrespondingEObjectsToDelete.nullOrEmpty) {
-			return TransformationUtils.createEmptyTransformationChangeResult
+			return 
 		}
-		val tcr = TransformationUtils.createEmptyTransformationChangeResult
 		for (oldEObject : oldCorrespondingEObjectsToDelete) {
-			val tuidToRemove = correspondenceInstance.calculateTUIDFromEObject(oldEObject)
-			tcr.addCorrespondenceToDelete(correspondenceInstance, tuidToRemove)
-			if (null != oldEObject.eContainer) {
-				tcr.existingObjectsToSave.add(oldEObject.eContainer)
-			}
-			EcoreUtil.remove(oldEObject)
+			TransformationUtils.removeCorrespondenceAndAllObjects(oldEObject, blackboard)
 		}
-		return tcr
 	}
 
 	/**
@@ -83,7 +69,7 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
 		PCM2JaMoPPUtils.updateNameAsSingleValuedEAttribute(eObject, affectedAttribute, oldValue, newValue,
-			featureCorrespondenceMap, correspondenceInstance)
+			featureCorrespondenceMap, blackboard)
 	}
 
 	override setCorrespondenceForFeatures() {
@@ -107,9 +93,9 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 		//provided role removed - deletion of eobject should already be done in OperationProvidedRoleMappingTransformation - mark bc to save
 		if (affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
 			affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
-			return TransformationUtils.createTransformationChangeResultForEObjectsToSave(affectedEObject.toArray)
+			return
 		}
-		return TransformationUtils.createEmptyTransformationChangeResult
+		return 
 	}
 
 	/**
@@ -119,11 +105,8 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 		EReference affectedReference, EObject newValue) {
 		if (affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
 			affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
-			if (null != newAffectedEObject) {
-				return TransformationUtils.createTransformationChangeResultForEObjectsToSave(newAffectedEObject.toArray)
-			}
+			return
 		}
-		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 
 	/**
@@ -134,12 +117,10 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 		if (affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
 			affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
 			if (null != affectedEObject) {
-
-				// no deletion of old values here because the deletion should have been done in OperationProvidedRoleMapping already
-				return TransformationUtils.createTransformationChangeResultForEObjectsToSave(affectedEObject.toArray)
+				return
 			}
 		}
-		return TransformationUtils.createEmptyTransformationChangeResult
+		return 
 	}
 	
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
@@ -148,6 +129,6 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		return TransformationUtils.createEmptyTransformationChangeResult
+		return 
 	}
 }

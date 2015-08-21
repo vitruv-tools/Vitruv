@@ -10,6 +10,8 @@ import org.eclipse.emf.ecore.EReference
 import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.Interface
 import org.emftext.language.java.containers.CompilationUnit
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 
 class CompilationUnitMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -33,7 +35,6 @@ class CompilationUnitMappingTransformation extends EmptyEObjectMappingTransforma
 		logger.trace(
 			"Compilation unit " + newRootEObject +
 				" created as root EObject. Currently nothing is done for compilation unit")
-		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 
 	/**
@@ -49,23 +50,20 @@ class CompilationUnitMappingTransformation extends EmptyEObjectMappingTransforma
 			if (!newCorrespondingEObjects.nullOrEmpty) {
 				val systems = newCorrespondingEObjects.filter(typeof(System))
 				if (!systems.nullOrEmpty) {
-					val tcr = new TransformationChangeResult
 					for (system : systems) {
 						if (null == system.eResource) {
-							tcr.newRootObjectsToSave.add(system)
+							PCMJaMoPPUtils.saveEObject(system, blackboard, PCMJaMoPPUtils.getSourceModelVURI(newAffectedEObject))
 						} else {
-							tcr.existingObjectsToSave.add(system)
+							PCM2JaMoPPUtils.saveNonRootEObject(system)
 						}
-						tcr.addNewCorrespondence(correspondenceInstance, system, newValue)
-						return tcr
+						blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(system, newValue)
 					}
 				}
 			}
-			return JaMoPP2PCMUtils.
-				createTransformationChangeResultForNewCorrespondingEObjects(newValue, newCorrespondingEObjects,
-					correspondenceInstance)
+			JaMoPP2PCMUtils.
+				createNewCorrespondingEObjects(newValue, newCorrespondingEObjects,
+					blackboard)
 		}
-		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 
 	override setCorrespondenceForFeatures() {

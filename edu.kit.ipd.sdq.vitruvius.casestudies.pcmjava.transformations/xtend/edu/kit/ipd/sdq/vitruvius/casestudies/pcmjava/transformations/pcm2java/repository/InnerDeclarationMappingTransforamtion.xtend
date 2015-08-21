@@ -1,15 +1,10 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
 import com.google.common.collect.Sets
-import org.palladiosimulator.pcm.repository.DataType
-import org.palladiosimulator.pcm.repository.InnerDeclaration
-import org.palladiosimulator.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import java.util.List
 import org.apache.log4j.Logger
@@ -23,6 +18,9 @@ import org.emftext.language.java.members.MembersFactory
 import org.emftext.language.java.members.Method
 import org.emftext.language.java.types.TypeReference
 import org.emftext.language.java.types.Void
+import org.palladiosimulator.pcm.repository.DataType
+import org.palladiosimulator.pcm.repository.InnerDeclaration
+import org.palladiosimulator.pcm.repository.RepositoryFactory
 
 class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransformation {
 
@@ -49,7 +47,7 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 		val InnerDeclaration innerDec = eObject as InnerDeclaration
 		val DataType innerType = innerDec.datatype_InnerDeclaration
 		val TypeReference typeRef = DataTypeCorrespondenceHelper.
-			claimUniqueCorrespondingJaMoPPDataTypeReference(innerType, correspondenceInstance)
+			claimUniqueCorrespondingJaMoPPDataTypeReference(innerType, blackboard.correspondenceInstance)
 		val members = addFieldGetterAndSetterToClassifier(typeRef, innerDec.entityName)
 		PCM2JaMoPPUtils.sortMembers(members)
 		return members
@@ -147,21 +145,21 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(eObject, affectedAttribute,
-			featureCorrespondenceMap, correspondenceInstance)
+			featureCorrespondenceMap, blackboard.correspondenceInstance)
 		if (affectedEObjects.nullOrEmpty) {
-			return TransformationUtils.createEmptyTransformationChangeResult
+			return
 		}
 		val fields = affectedEObjects.filter(typeof(Field))
 		if(fields.nullOrEmpty){
 			logger.error("No field found in corresponding EObjects for PCM Type " + eObject + " Change not sznchronized!")
-			return TransformationUtils.createEmptyTransformationChangeResult
+			return
 		}
 		val field = fields.get(0)
-		val tcr = PCM2JaMoPPUtils.updateNameAttribute(Sets.newHashSet(field), newValue, affectedAttribute,
-			featureCorrespondenceMap, correspondenceInstance, true)
+		PCM2JaMoPPUtils.updateNameAttribute(Sets.newHashSet(field), newValue, affectedAttribute,
+			featureCorrespondenceMap, blackboard.correspondenceInstance, true)
 		val methods = affectedEObjects.filter(typeof(ClassMethod))
 		for (method : methods) {
-			val TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(method)
+			val TUID oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(method)
 			if (isGetter(method)) {
 				method.name = "get" + newValue.toString.toFirstUpper
 
@@ -176,10 +174,9 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 				//TODO: change assignemnt
 				}
 			}
-			tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, method)
-			tcr.existingObjectsToSave.add(method)
+			blackboard.correspondenceInstance.update(oldTUID, method)
+			PCM2JaMoPPUtils.saveNonRootEObject(method)
 		}
-		return tcr
 	}
 
 	/**
@@ -188,34 +185,33 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject newValue) {
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(affectedEObject, affectedReference,
-			featureCorrespondenceMap, correspondenceInstance)
+			featureCorrespondenceMap, blackboard.correspondenceInstance)
 		if (affectedEObjects.nullOrEmpty) {
-			return TransformationUtils.createEmptyTransformationChangeResult
+			return 
 		}
 		if (false == newValue instanceof DataType) {
 			logger.warn("NewValue is not an instance of DataType: " + newValue + " - change not synchronized")
 		}
-		val tcr = new TransformationChangeResult
 		val newDataType = newValue as DataType
 		val newJaMoPPType = DataTypeCorrespondenceHelper.
-			claimUniqueCorrespondingJaMoPPDataTypeReference(newDataType, correspondenceInstance)
+			claimUniqueCorrespondingJaMoPPDataTypeReference(newDataType, blackboard.correspondenceInstance)
 
 		//Change field Type
 		val fields = affectedEObjects.filter(typeof(Field))
 		if(fields.nullOrEmpty){
 			logger.error("No field found in corresponding EObjects for PCM Type " + affectedEObject + " Change not sznchronized!")
-			return TransformationUtils.createEmptyTransformationChangeResult
+			return 
 		}
 		val field = fields.get(0)
 
-		val oldFieldTUID = correspondenceInstance.calculateTUIDFromEObject(field)
+		val oldFieldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(field)
 		field.typeReference = EcoreUtil.copy(newJaMoPPType)
-		tcr.addCorrespondenceToUpdate(correspondenceInstance, oldFieldTUID, field)
-
+		blackboard.correspondenceInstance.update(oldFieldTUID, field)
+		
 		//Change method type/parameter
 		val methods = affectedEObjects.filter(typeof(Method))
 		for (method : methods) {
-			val TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(method)
+			val TUID oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(method)
 			if (isGetter(method)) {
 				method.typeReference = EcoreUtil.copy(newJaMoPPType)
 			} else if (isSetter(method)) {
@@ -224,10 +220,9 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 					parameter.typeReference = EcoreUtil.copy(newJaMoPPType)
 				}
 			}
-			tcr.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, method)
-			tcr.existingObjectsToSave.add(method)
+			blackboard.correspondenceInstance.update(oldTUID, method)
+			PCM2JaMoPPUtils.saveNonRootEObject(method)
 		}
-		return tcr
 	}
 	
 	

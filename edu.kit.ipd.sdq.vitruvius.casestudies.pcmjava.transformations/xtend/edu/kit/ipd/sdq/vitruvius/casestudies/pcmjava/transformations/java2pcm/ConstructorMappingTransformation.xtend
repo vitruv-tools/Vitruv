@@ -28,7 +28,7 @@ class ConstructorMappingTransformation extends MethodMappingTransformation {
 
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
-		return super.updateSingleValuedEAttribute(affectedEObject, affectedAttribute, oldValue, newValue)
+		super.updateSingleValuedEAttribute(affectedEObject, affectedAttribute, oldValue, newValue)
 	}
 
 	/**
@@ -38,7 +38,7 @@ class ConstructorMappingTransformation extends MethodMappingTransformation {
      */
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
-		return super.createNonRootEObjectInList(newAffectedEObject, oldAffectedEObject, affectedReference, newValue,
+		super.createNonRootEObjectInList(newAffectedEObject, oldAffectedEObject, affectedReference, newValue,
 			index, newCorrespondingEObjects)
 	}
 

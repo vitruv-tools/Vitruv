@@ -37,14 +37,14 @@ class AssemblyConnectorMappingTransformation extends EmptyEObjectMappingTransfor
 	
 	private def EObject[] updateConstructorForCorrespondingField(AssemblyContext assemblyContext, NamedElement pcmElement) {
 		try {
-			val field = correspondenceInstance.claimUniqueCorrespondingEObjectByType(assemblyContext, Field)
+			val field = blackboard.correspondenceInstance.claimUniqueCorrespondingEObjectByType(assemblyContext, Field)
 			val fields = (field.containingConcreteClassifier as org.emftext.language.java.classifiers.Class).fields
 			var List<Parameter> parameters = newArrayList()
-			val constructors = correspondenceInstance.getCorrespondingEObjectsByType(assemblyContext, Constructor)
+			val constructors = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(assemblyContext, Constructor)
 			if (!constructors.nullOrEmpty) {
 				parameters = constructors.get(0).parameters
 			}
-			val constructorCall = correspondenceInstance.
+			val constructorCall = blackboard.correspondenceInstance.
 				claimUniqueCorrespondingEObjectByType(assemblyContext, NewConstructorCall)
 			PCM2JaMoPPUtils.updateArgumentsOfConstructorCall(field, fields, parameters, constructorCall)
 		} catch (RuntimeException re) {

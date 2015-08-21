@@ -52,7 +52,7 @@ class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransfo
 		var String jaMoPPInnerDataTypeName = "?"
 		if (null != cdt.innerType_CollectionDataType) {
 			var jaMoPPInnerDataType = DataTypeCorrespondenceHelper.
-				claimUniqueCorrespondingJaMoPPDataTypeReference(cdt.innerType_CollectionDataType, correspondenceInstance)
+				claimUniqueCorrespondingJaMoPPDataTypeReference(cdt.innerType_CollectionDataType, blackboard.correspondenceInstance)
 			if(jaMoPPInnerDataType instanceof PrimitiveType){
 				//get class object for inner type, e.g, for int get the class Integer
 				jaMoPPInnerDataType = PCM2JaMoPPUtils.getWrapperTypeReferenceForPrimitiveType(jaMoPPInnerDataType)
@@ -95,7 +95,7 @@ class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransfo
 			collectionDataTypeNames)
 		val Class<? extends Collection> selectedClass = collectionDataTypes.get(selectedType)
 		if (createOwnClass) {
-			var datatypePackage = PCM2JaMoPPUtils.getDatatypePackage(correspondenceInstance,
+			var datatypePackage = PCM2JaMoPPUtils.getDatatypePackage(blackboard.correspondenceInstance,
 				cdt.repository__DataType, cdt.entityName, userInteracting)
 			val String content = '''package «datatypePackage.namespacesAsString + datatypePackage.name»;
 
@@ -130,32 +130,30 @@ public class «cdt.entityName» extends «selectedClass.simpleName»<«jaMoPPInn
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(affectedEObject, affectedAttribute,
-			featureCorrespondenceMap, correspondenceInstance)
+			featureCorrespondenceMap, blackboard.correspondenceInstance)
 		if (affectedEObjects.nullOrEmpty) {
-			return TransformationUtils.createEmptyTransformationChangeResult
+			return 
 		}
-		val tcr = new TransformationChangeResult
 		val cus = affectedEObjects.filter(typeof(CompilationUnit))
 		if (!cus.nullOrEmpty) {
 			val CompilationUnit cu = cus.get(0)
-			PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, tcr, correspondenceInstance,
+			PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, blackboard,
 				false)
 		}
-		return tcr
 	}
 
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject newValue) {
 		val innerType = DataTypeCorrespondenceHelper.
-			claimUniqueCorrespondingJaMoPPDataType(newValue as DataType, correspondenceInstance)
+			claimUniqueCorrespondingJaMoPPDataType(newValue as DataType, blackboard.correspondenceInstance)
 		if (null == innerType || !(innerType instanceof ConcreteClassifier)) {
-			return TransformationUtils.createEmptyTransformationChangeResult
+			return
 		}
 		val innerClassifier = innerType as ConcreteClassifier
-		val concreteClass = correspondenceInstance.
+		val concreteClass = blackboard.correspondenceInstance.
 			claimUniqueCorrespondingEObjectByType(affectedEObject, org.emftext.language.java.classifiers.Class)
 		if (!(concreteClass.extends instanceof NamespaceClassifierReference)) {
-			return TransformationUtils.createEmptyTransformationChangeResult
+			return 
 		}
 		val extendsReference = concreteClass.extends as NamespaceClassifierReference
 		val QualifiedTypeArgument qtr = GenericsFactory.eINSTANCE.createQualifiedTypeArgument
@@ -163,7 +161,6 @@ public class «cdt.entityName» extends «selectedClass.simpleName»<«jaMoPPInn
 		PCM2JaMoPPUtils.addImportToCompilationUnitOfClassifier(concreteClass, innerClassifier)
 		extendsReference.classifierReferences.get(0).typeArguments.clear
 		extendsReference.classifierReferences.get(0).typeArguments.add(qtr)
-		return TransformationUtils.createTransformationChangeResultForEObjectsToSave(concreteClass.toArray)
 	}
 
 }

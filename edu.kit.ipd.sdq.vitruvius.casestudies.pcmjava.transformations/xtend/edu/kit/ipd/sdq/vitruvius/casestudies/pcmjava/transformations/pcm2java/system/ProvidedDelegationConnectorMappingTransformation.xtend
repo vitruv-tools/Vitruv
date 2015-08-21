@@ -46,12 +46,12 @@ class ProvidedDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 		val operationInterface = providedDelegationRole.innerProvidedRole_ProvidedDelegationConnector.
 			providedInterface__OperationProvidedRole
 		try {
-			val field = correspondenceInstance.claimUniqueCorrespondingEObjectByType(assemblyContext, Field)
+			val field = blackboard.correspondenceInstance.claimUniqueCorrespondingEObjectByType(assemblyContext, Field)
 			val Set<EObject> newEObjects = newHashSet()
 			for (opSig : operationInterface.signatures__OperationInterface) {
 
 				// get corresponding (interface) method and find or create a similar class method in the current class
-				val correspondingMethods = correspondenceInstance.claimCorrespondingEObjectsByType(opSig, Method)
+				val correspondingMethods = blackboard.correspondenceInstance.claimCorrespondingEObjectsByType(opSig, Method)
 				for (correspondingMethod : correspondingMethods) {
 					val methodInClassifier = findOrCreateMethodDeclarationInClassifier(correspondingMethod,
 						field.containingConcreteClassifier)
@@ -71,7 +71,8 @@ class ProvidedDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 	}
 
 	override removeEObject(EObject eObject) {
-		return correspondenceInstance.getAllCorrespondingEObjects(eObject)
+		TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
+		return null
 	}
 
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
@@ -79,7 +80,6 @@ class ProvidedDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 		logger.warn("method " + new Object() {
 		}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 			"transformation")
-		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 
 	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue,
@@ -87,7 +87,6 @@ class ProvidedDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 		logger.warn("method " + new Object() {
 		}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 			"transformation")
-		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 
 	/**

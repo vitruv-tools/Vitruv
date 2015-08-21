@@ -1,12 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
-import org.palladiosimulator.pcm.repository.CompositeDataType
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
@@ -15,9 +12,9 @@ import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.ClassifiersFactory
 import org.emftext.language.java.containers.CompilationUnit
 import org.emftext.language.java.containers.ContainersFactory
-import org.emftext.language.java.containers.JavaRoot
 import org.emftext.language.java.members.Member
 import org.emftext.language.java.modifiers.ModifiersFactory
+import org.palladiosimulator.pcm.repository.CompositeDataType
 
 /**
  * Maps a composite DataType to a class in the data types package.
@@ -51,7 +48,7 @@ class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransfor
 		compUnit.classifiers.add(classifier)
 		classifier.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPublic)
 
-		var datatypePackage = PCM2JaMoPPUtils.getDatatypePackage(correspondenceInstance, cdt.repository__DataType,
+		var datatypePackage = PCM2JaMoPPUtils.getDatatypePackage(blackboard.correspondenceInstance, cdt.repository__DataType,
 			cdt.entityName, userInteracting)
 		compUnit.name = cdt.entityName + "." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION
 		if (null != datatypePackage) {
@@ -72,17 +69,15 @@ class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransfor
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(eObject, affectedAttribute,
-			featureCorrespondenceMap, correspondenceInstance)
+			featureCorrespondenceMap, blackboard.correspondenceInstance)
 		if (affectedEObjects.nullOrEmpty) {
-			return TransformationUtils.createEmptyTransformationChangeResult
+			return 
 		}
-		val tcr = new TransformationChangeResult
 		val cus = affectedEObjects.filter(typeof(CompilationUnit))
 		if (!cus.nullOrEmpty) {
 			val CompilationUnit cu = cus.get(0)
-			PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, tcr, correspondenceInstance, false)
+			PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, blackboard, false)
 		}
-		return tcr
 	}
 
 	/**
@@ -91,27 +86,17 @@ class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransfor
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
 		if (!affectedReference.name.equals(PCMJaMoPPNamespace.PCM.INNER_DECLARATION_COMPOSITE_DATA_TYPE)) {
-			return TransformationUtils.createEmptyTransformationChangeResult
+			return 
 		}
 		val compositeDataType = newAffectedEObject as CompositeDataType
-		val jaMoPPDataType = correspondenceInstance.claimUniqueCorrespondingEObjectByType(compositeDataType, Class)
-		val tcr = TransformationUtils.createEmptyTransformationChangeResult
-		var rootObjectsAffected = false
-		val rootObjects = newCorrespondingEObjects.filter(typeof(JavaRoot))
-		if (!rootObjects.nullOrEmpty) {
-			tcr.newRootObjectsToSave.addAll(rootObjects)
-			rootObjectsAffected = true
-		}
+		val jaMoPPDataType = blackboard.correspondenceInstance.claimUniqueCorrespondingEObjectByType(compositeDataType, Class)
 		for (newCorrespondingEObject : newCorrespondingEObjects) {
-			tcr.addNewCorrespondence(correspondenceInstance, newValue, newCorrespondingEObject)
-			if (!rootObjectsAffected) {
-				tcr.existingObjectsToSave.add(newCorrespondingEObject)
-			}
+			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newValue, newCorrespondingEObject)
+			PCMJaMoPPUtils.saveEObjects(newCorrespondingEObject, blackboard, PCM2JaMoPPUtils.getSourceModelVURI(newAffectedEObject))
 			if (newCorrespondingEObject instanceof Member) {
 				jaMoPPDataType.members.add(newCorrespondingEObject)
 			}
 		}
-		return tcr
 	}
 
 }

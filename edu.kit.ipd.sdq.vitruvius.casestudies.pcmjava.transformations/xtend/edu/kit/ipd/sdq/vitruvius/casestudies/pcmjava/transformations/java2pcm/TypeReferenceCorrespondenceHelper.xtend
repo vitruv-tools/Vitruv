@@ -102,33 +102,31 @@ class TypeReferenceCorrespondenceHelper {
 	}
 
 	public def static DataType getCorrespondingPCMDataTypeForTypeReference(TypeReference typeReference,
-		CorrespondenceInstance correspondenceInstance, UserInteracting userInteracting, Repository repo,
-		TransformationChangeResult tcr) {
+		CorrespondenceInstance correspondenceInstance, UserInteracting userInteracting, Repository repo) {
 		if (typeReference instanceof PrimitiveType) {
 			return claimPCMDataTypeForJaMoPPPrimitiveType(typeReference as PrimitiveType)
 		}
 		if (typeReference instanceof ClassifierReference) {
 			return getPCMDataTypeForClassifierReference(typeReference as ClassifierReference, correspondenceInstance,
-				userInteracting, repo, tcr)
+				userInteracting, repo)
 		}
 		if (typeReference instanceof NamespaceClassifierReference) {
 			return getPCMDataTypeForNamespaceClassifierReference(typeReference as NamespaceClassifierReference,
-				correspondenceInstance, userInteracting, repo, tcr)
+				correspondenceInstance, userInteracting, repo)
 		}
 		logger.error("Could not find a PCM data type for type reference " + typeReference)
 		return null
 	}
 
 	def private static DataType getPCMDataTypeForNamespaceClassifierReference(NamespaceClassifierReference reference,
-		CorrespondenceInstance correspondenceInstance, UserInteracting userInteracting, Repository repo,
-		TransformationChangeResult tcr) {
+		CorrespondenceInstance correspondenceInstance, UserInteracting userInteracting, Repository repo) {
 		if (!reference.classifierReferences.nullOrEmpty) {
 
 			//just create the data type from the first classifier that is non null
 			for (classifierRef : reference.classifierReferences) {
 				if (null != classifierRef) {
 					return getPCMDataTypeForClassifierReference(classifierRef, correspondenceInstance,
-						userInteracting, repo, tcr)
+						userInteracting, repo)
 				}
 			}
 		}
@@ -139,8 +137,7 @@ class TypeReferenceCorrespondenceHelper {
 	}
 
 	def private static DataType getPCMDataTypeForClassifierReference(ClassifierReference classifierReference,
-		CorrespondenceInstance correspondenceInstance, UserInteracting userInteracting, Repository repo,
-		TransformationChangeResult tcr) {
+		CorrespondenceInstance correspondenceInstance, UserInteracting userInteracting, Repository repo) {
 		val Classifier classifier = classifierReference.target
 		if (null != classifier) {
 
@@ -168,15 +165,14 @@ class TypeReferenceCorrespondenceHelper {
 
 			// no data type found -->create one from the class
 			val DataType newDataType = createDataTypeForClassifier(classifier, correspondenceInstance,
-				userInteracting, repo, tcr)
+				userInteracting, repo)
 			return newDataType
 		}
 		return null
 	}
 
 	def private static DataType createDataTypeForClassifier(Classifier classifier,
-		CorrespondenceInstance correspondenceInstance, UserInteracting userInteracting, Repository repo,
-		TransformationChangeResult tcr) {
+		CorrespondenceInstance correspondenceInstance, UserInteracting userInteracting, Repository repo) {
 		if (null == classifier) {
 			logger.warn("Classifier is null! Can not create a data type for the classifier")
 			return null
@@ -196,12 +192,8 @@ class TypeReferenceCorrespondenceHelper {
 		val CompositeDataType cdt = RepositoryFactory.eINSTANCE.createCompositeDataType
 		cdt.entityName = classifier.name
 		cdt.repository__DataType = repo
-		if (null != tcr) {
-			tcr.addNewCorrespondence(correspondenceInstance, cdt, classifier)
-		} else {
-			correspondenceInstance.createAndAddEObjectCorrespondence(cdt, classifier)
-		}
-
+		correspondenceInstance.createAndAddEObjectCorrespondence(cdt, classifier)
+		
 		/*val String message = "Automatically created the corresponding composite data type " + cdt.entityName +
 			" for classifier " + classifier.name + correspondingWarning
 		userInteracting.showMessage(UserInteractionType.MODELESS, message)*/

@@ -1,29 +1,13 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
 import com.google.common.collect.Sets
-import org.palladiosimulator.pcm.core.entity.NamedElement
-import org.palladiosimulator.pcm.repository.CollectionDataType
-import org.palladiosimulator.pcm.repository.CompositeDataType
-import org.palladiosimulator.pcm.repository.InnerDeclaration
-import org.palladiosimulator.pcm.repository.Interface
-import org.palladiosimulator.pcm.repository.OperationInterface
-import org.palladiosimulator.pcm.repository.OperationProvidedRole
-import org.palladiosimulator.pcm.repository.OperationRequiredRole
-import org.palladiosimulator.pcm.repository.OperationSignature
-import org.palladiosimulator.pcm.repository.Parameter
-import org.palladiosimulator.pcm.repository.Repository
-import org.palladiosimulator.pcm.repository.RepositoryComponent
-import org.palladiosimulator.pcm.repository.RepositoryFactory
-import org.palladiosimulator.pcm.system.System
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
@@ -39,13 +23,20 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.emftext.language.java.classifiers.Classifier
 import org.emftext.language.java.classifiers.ClassifiersFactory
 import org.emftext.language.java.classifiers.ConcreteClassifier
-import org.emftext.language.java.containers.Package
 import org.emftext.language.java.types.ClassifierReference
 import org.emftext.language.java.types.NamespaceClassifierReference
 import org.emftext.language.java.types.PrimitiveType
 import org.emftext.language.java.types.Type
 import org.emftext.language.java.types.TypeReference
 import org.emftext.language.java.types.TypedElement
+import org.palladiosimulator.pcm.core.entity.NamedElement
+import org.palladiosimulator.pcm.repository.OperationInterface
+import org.palladiosimulator.pcm.repository.OperationProvidedRole
+import org.palladiosimulator.pcm.repository.OperationRequiredRole
+import org.palladiosimulator.pcm.repository.Repository
+import org.palladiosimulator.pcm.repository.RepositoryComponent
+import org.palladiosimulator.pcm.repository.RepositoryFactory
+import org.palladiosimulator.pcm.system.System
 
 abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 	private new() {
@@ -84,16 +75,16 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 		EStructuralFeature affectedFeature,
 		ClaimableMap<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap,
 		CorrespondenceInstance correspondenceInstance,
-		boolean markFilesOfChangedEObjectsAsFilesToSave
+		boolean saveFilesOfChangedEObjects
 	) {
 		val Set<Class<? extends EObject>> pcmRootClasses = Sets.newHashSet(Repository, System)
 		updateNameAttribute(correspondingEObjects, newValue, affectedFeature, featureCorrespondenceMap,
-			correspondenceInstance, markFilesOfChangedEObjectsAsFilesToSave, pcmRootClasses)
+			correspondenceInstance, saveFilesOfChangedEObjects, pcmRootClasses)
 	}
 
 	def static void updateNameAttributeForPCMRootObjects(Iterable<NamedElement> pcmRootElements,
-		EStructuralFeature affectedFeature, Object newValue, TransformationChangeResult transformationChangeResult,
-		CorrespondenceInstance correspondenceInstance) {
+		EStructuralFeature affectedFeature, Object newValue,
+		Blackboard blackboard) {
 		for (pcmRoot : pcmRootElements) {
 			if (!(pcmRoot instanceof Repository) && !(pcmRoot instanceof System)) {
 				logger.warn(
@@ -101,59 +92,57 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 						"will not be renamed")
 
 			} else {
-				val TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(pcmRoot)
+				val TUID oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(pcmRoot)
 
 				//change name		
 				pcmRoot.entityName = newValue.toString;
 
 				val VURI oldVURI = VURI.getInstance(pcmRoot.eResource.getURI)
-				transformationChangeResult.existingObjectsToDelete.add(oldVURI)
-				transformationChangeResult.addCorrespondenceToUpdate(correspondenceInstance, oldTUID, pcmRoot)
-				transformationChangeResult.newRootObjectsToSave.add(pcmRoot)
+				TransformationUtils.deleteFile(oldVURI)
+				blackboard.correspondenceInstance.update(oldTUID, pcmRoot)
+				PCMJaMoPPUtils.saveEObject(pcmRoot, blackboard, oldVURI)
 			}
 		}
 	}
 
-	def static TransformationChangeResult updateNameAsSingleValuedEAttribute(EObject eObject,
+	def static void updateNameAsSingleValuedEAttribute(EObject eObject,
 		EAttribute affectedAttribute, Object oldValue, Object newValue,
 		ClaimableMap<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap,
-		CorrespondenceInstance correspondenceInstance) {
+		Blackboard blackboard) {
 		val correspondingEObjects = PCMJaMoPPUtils.checkKeyAndCorrespondingObjects(eObject, affectedAttribute,
-			featureCorrespondenceMap, correspondenceInstance)
+			featureCorrespondenceMap,blackboard.correspondenceInstance)
 		if (correspondingEObjects.nullOrEmpty) {
-			return TransformationUtils.createEmptyTransformationChangeResult
+			return 
 		}
 		val Set<NamedElement> rootPCMEObjects = new HashSet
 		rootPCMEObjects.addAll(correspondingEObjects.filter(typeof(Repository)))
 		rootPCMEObjects.addAll(correspondingEObjects.filter(typeof(System)))
-		var boolean markFilesOfChangedEObjectsAsFilesToSave = true
+		var boolean saveFilesOfChangedEObjects = true
 		if (!rootPCMEObjects.nullOrEmpty) {
-			markFilesOfChangedEObjectsAsFilesToSave = false
+			saveFilesOfChangedEObjects = false
 		}
-		val tcr = JaMoPP2PCMUtils.updateNameAttribute(correspondingEObjects, newValue, affectedAttribute,
-			featureCorrespondenceMap, correspondenceInstance, markFilesOfChangedEObjectsAsFilesToSave)
+		JaMoPP2PCMUtils.updateNameAttribute(correspondingEObjects, newValue, affectedAttribute,
+			featureCorrespondenceMap, blackboard.correspondenceInstance, saveFilesOfChangedEObjects)
 		if (!rootPCMEObjects.nullOrEmpty) {
-			JaMoPP2PCMUtils.updateNameAttributeForPCMRootObjects(rootPCMEObjects, affectedAttribute, newValue, tcr,
-				correspondenceInstance)
+			JaMoPP2PCMUtils.updateNameAttributeForPCMRootObjects(rootPCMEObjects, affectedAttribute, newValue,
+				blackboard)
 		}
-		return tcr
+		return
 	}
 
-	def static TransformationChangeResult createTransformationChangeResultForNewCorrespondingEObjects(EObject newEObject,
-		EObject[] newCorrespondingEObjects, CorrespondenceInstance correspondenceInstance) {
+	def static createNewCorrespondingEObjects(EObject newEObject,
+		EObject[] newCorrespondingEObjects, Blackboard blackboard) {
 		if (newCorrespondingEObjects.nullOrEmpty) {
-			return TransformationUtils.createEmptyTransformationChangeResult
+			return 
 		}
-		val tcr = new TransformationChangeResult
 		for (pcmElement : newCorrespondingEObjects) {
 			if (pcmElement instanceof Repository || pcmElement instanceof System) {
-				tcr.newRootObjectsToSave.add(pcmElement)
+				PCMJaMoPPUtils.saveEObject(pcmElement, blackboard, PCMJaMoPPUtils.getSourceModelVURI(newEObject))
 			} else {
-				tcr.existingObjectsToSave.add(pcmElement)
+				PCMJaMoPPUtils.saveNonRootEObject(pcmElement)
 			}
-			tcr.addNewCorrespondence(correspondenceInstance, pcmElement, newEObject)
+			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(pcmElement, newEObject)
 		}
-		tcr
 	}
 
 	def dispatch static Classifier getTargetClassifierFromTypeReference(TypeReference reference) {
