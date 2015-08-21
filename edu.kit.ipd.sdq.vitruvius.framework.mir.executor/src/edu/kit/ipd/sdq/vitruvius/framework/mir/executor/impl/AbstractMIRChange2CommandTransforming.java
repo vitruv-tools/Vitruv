@@ -49,7 +49,7 @@ public abstract class AbstractMIRChange2CommandTransforming implements Change2Co
 
     @Override
     public void transformChanges2Commands(Blackboard blackboard) {
-    	final List<Change> changes = blackboard.getChangesForTransformation();
+    	final List<Change> changes = blackboard.getAndArchiveChangesForTransformation();
     	final List<Command> commands = new ArrayList<Command>();
     	
     	for (final Change change : changes) {

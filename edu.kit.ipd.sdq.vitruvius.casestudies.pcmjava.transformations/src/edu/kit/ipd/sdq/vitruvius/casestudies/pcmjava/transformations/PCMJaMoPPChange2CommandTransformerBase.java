@@ -71,7 +71,7 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
      */
     @Override
     public void transformChanges2Commands(final Blackboard blackboard) {
-        final List<Change> changesForTransformation = blackboard.getChangesForTransformation();
+        final List<Change> changesForTransformation = blackboard.getAndArchiveChangesForTransformation();
         final List<Command> commands = new ArrayList<Command>();
         for (final Change change : changesForTransformation) {
             if (change instanceof EMFModelChange) {

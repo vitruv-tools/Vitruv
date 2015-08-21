@@ -1,85 +1,116 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.internal;
 
 import java.util.List;
-import java.util.Stack;
 
 import org.eclipse.emf.common.command.Command;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CheckResult;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 public class BlackboardImpl implements Blackboard {
 
-    private InternalCorrespondenceInstance correspondenceInstance;
-    private Stack<List<Change>> changes;
-    private Stack<List<Command>> commands;
+    private BlackboardState state;
+    private final CorrespondenceInstance correspondenceInstance;
+    private final ModelProviding modelProviding;
+    private List<Change> changes;
+    private List<Command> commands;
     private List<Change> archivedChanges;
     private List<Command> archivedCommands;
+    private CheckResult checkResult;
 
-    public BlackboardImpl() {
-        this.changes = new Stack<List<Change>>();
-        this.commands = new Stack<List<Command>>();
+    public BlackboardImpl(final CorrespondenceInstance correspondenceInstance, final ModelProviding modelProviding) {
+        this.state = BlackboardState.WAITING4CHANGES;
+        this.correspondenceInstance = correspondenceInstance;
+        this.modelProviding = modelProviding;
+    }
+
+    private void checkTransitionFromTo(final BlackboardState expectedSource, final BlackboardState target,
+            final String actionDescription) {
+        if (this.state == expectedSource) {
+            this.state = target;
+        } else {
+            throw new IllegalStateException("Cannot " + actionDescription + " in blackboard state '" + this.state
+                    + "! Expected source for this transition: '" + expectedSource + "'");
+        }
     }
 
     @Override
-    public InternalCorrespondenceInstance getCorrespondenceInstance() {
+    public CorrespondenceInstance getCorrespondenceInstance() {
         return this.correspondenceInstance;
     }
 
     @Override
+    public ModelProviding getModelProviding() {
+        return this.modelProviding;
+    }
+
+    @Override
     public void pushChanges(final List<Change> changes) {
-        this.changes.push(changes);
+        checkTransitionFromTo(BlackboardState.WAITING4CHANGES, BlackboardState.WAITING4TRANSFORMATION, "push changes");
+        this.changes = changes;
     }
 
     @Override
     public List<Change> popChangesForPreparation() {
-        return this.changes.pop();
+        checkTransitionFromTo(BlackboardState.WAITING4TRANSFORMATION, BlackboardState.WAITING4CHANGES,
+                "pop changes for preparation");
+        // no need to set changes to null as transition checking ensures setting before getting
+        return this.changes;
     }
 
     @Override
-    public List<Change> getChangesForTransformation() {
-        return this.changes.peek();
+    public List<Change> getAndArchiveChangesForTransformation() {
+        checkTransitionFromTo(BlackboardState.WAITING4TRANSFORMATION, BlackboardState.WAITING4COMMANDS,
+                "get changes for transformation");
+        this.archivedChanges = this.changes;
+        return this.archivedChanges;
     }
 
     @Override
     public void pushCommands(final List<Command> commands) {
-        this.commands.push(commands);
+        checkTransitionFromTo(BlackboardState.WAITING4COMMANDS, BlackboardState.WAITING4EXECUTION, "push commands");
+        this.commands = commands;
     }
 
     @Override
     public List<Command> getAndArchiveCommandsForExecution() {
-        this.archivedCommands = this.commands.pop();
+        checkTransitionFromTo(BlackboardState.WAITING4EXECUTION, BlackboardState.WAITING4CHECK,
+                "get and archive commands for execution");
+        this.archivedCommands = this.commands;
         return this.archivedCommands;
     }
 
     @Override
     public void pushCheckResult(final CheckResult checkResult) {
-        // TODO Auto-generated method stub
-
+        checkTransitionFromTo(BlackboardState.WAITING4CHECK, BlackboardState.WAITING4UNDO, "push check result");
+        this.checkResult = checkResult;
     }
 
     @Override
-    public CheckResult popCheckResult() {
-        // TODO Auto-generated method stub
-        return null;
+    public CheckResult getCheckResult() {
+        checkTransitionFromTo(BlackboardState.WAITING4UNDO, BlackboardState.WAITING4UNDO,
+                "pop check result for evaluation");
+        return this.checkResult;
     }
 
     @Override
     public Pair<List<Change>, List<Command>> getArchivedChangesAndCommandsForUndo() {
+        checkTransitionFromTo(BlackboardState.WAITING4UNDO, BlackboardState.WAITING4REDO,
+                "get archived changes and commands for undo");
+        // no need to clear check result and archives as transition checking ensures setting before
+        // getting
         return new Pair<List<Change>, List<Command>>(this.archivedChanges, this.archivedCommands);
     }
 
     @Override
-    public void setCorrespondenceInstance(final InternalCorrespondenceInstance correspondenceInstance) {
-        this.correspondenceInstance = correspondenceInstance;
-
+    public void unarchiveChangesAndCommandsForRedo() {
+        checkTransitionFromTo(BlackboardState.WAITING4REDO, BlackboardState.WAITING4EXECUTION,
+                "unarchive changes and commands for redo");
+        this.changes = this.archivedChanges;
+        this.commands = this.archivedCommands;
     }
-
-    @Override
-    public void archiveChanges() {
-        this.archivedChanges = this.changes.pop();
-    }
-
 }

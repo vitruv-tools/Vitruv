@@ -80,7 +80,7 @@ public class SyncManagerImpl implements ChangeSynchronizing {
         }
         this.changePreparing.prepareAllChanges(blackboard);
 
-        List<Change> changesForTransformation = blackboard.getChangesForTransformation();
+        List<Change> changesForTransformation = blackboard.getAndArchiveChangesForTransformation();
         validateChanges(changesForTransformation);
         VURI sourceModelVURI = getSourceModelVURI(changesForTransformation);
         Set<InternalCorrespondenceInstance> correspondenceInstances = this.correspondenceProviding
