@@ -91,7 +91,7 @@ public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2Comm
 
     @Override
     public void transformChanges2Commands(final Blackboard blackboard) {
-        final List<Change> changesForTransformation = blackboard.getChangesForTransformation();
+        final List<Change> changesForTransformation = blackboard.getAndArchiveChangesForTransformation();
         // TODO: kind of hack to execute the ClassMethodBodyChangedTransformation
         if (1 == changesForTransformation.size() && changesForTransformation.get(0) instanceof CompositeChange) {
             final CompositeChange compositeChange = (CompositeChange) changesForTransformation.get(0);

@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.system
 
-import org.palladiosimulator.pcm.core.composition.RequiredDelegationConnector
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
@@ -13,6 +12,7 @@ import org.emftext.language.java.instantiations.NewConstructorCall
 import org.emftext.language.java.members.Constructor
 import org.emftext.language.java.members.Field
 import org.emftext.language.java.parameters.Parameter
+import org.palladiosimulator.pcm.core.composition.RequiredDelegationConnector
 
 class RequiredDelegationConnectorMappingTransformation extends EmptyEObjectMappingTransformation {
 

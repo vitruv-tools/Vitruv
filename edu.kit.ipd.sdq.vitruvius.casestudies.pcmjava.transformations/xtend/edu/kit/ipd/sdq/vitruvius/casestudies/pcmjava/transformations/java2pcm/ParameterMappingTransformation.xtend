@@ -5,6 +5,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObje
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.parameters.Parameter
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 
 class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -19,7 +20,7 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
 		JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(affectedEObject, affectedAttribute, oldValue, newValue,
-			featureCorrespondenceMap, correspondenceInstance)
+			featureCorrespondenceMap, blackboard)
 	}
 
 	/**
@@ -29,8 +30,8 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 		var jaMoPPParam = eObject as Parameter
 		val pcmParameter = RepositoryFactory.eINSTANCE.createParameter
 		pcmParameter.dataType__Parameter = TypeReferenceCorrespondenceHelper.
-			getCorrespondingPCMDataTypeForTypeReference(jaMoPPParam.typeReference, correspondenceInstance,
-				userInteracting, null, null)
+			getCorrespondingPCMDataTypeForTypeReference(jaMoPPParam.typeReference, blackboard.correspondenceInstance,
+				userInteracting, null)
 		pcmParameter.entityName = jaMoPPParam.name
 		return pcmParameter.toArray
 	}
@@ -39,6 +40,7 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 	 * called when a parameter type has been changed
 	 */
 	 override removeEObject(EObject eObject){
-	 	return correspondenceInstance.getAllCorrespondingEObjects(eObject) 
+	 	TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
+	 	return null 
 	 }
 }

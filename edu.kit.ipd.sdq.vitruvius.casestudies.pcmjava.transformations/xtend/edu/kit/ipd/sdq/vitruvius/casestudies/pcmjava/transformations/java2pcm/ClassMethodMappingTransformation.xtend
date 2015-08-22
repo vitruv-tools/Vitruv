@@ -1,27 +1,25 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
+import java.util.ArrayList
+import java.util.LinkedList
+import org.eclipse.emf.common.util.EList
+import org.eclipse.emf.ecore.EAttribute
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.util.EcoreUtil
+import org.emftext.language.java.classifiers.Class
+import org.emftext.language.java.classifiers.Interface
+import org.emftext.language.java.members.ClassMethod
+import org.emftext.language.java.members.Method
+import org.emftext.language.java.types.TypeReference
 import org.palladiosimulator.pcm.repository.BasicComponent
 import org.palladiosimulator.pcm.repository.OperationInterface
 import org.palladiosimulator.pcm.repository.OperationSignature
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF
 import org.palladiosimulator.pcm.seff.SeffFactory
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
-import java.util.ArrayList
-import java.util.LinkedList
-import org.eclipse.emf.ecore.EAttribute
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.util.EcoreUtil
-import org.emftext.language.java.members.ClassMethod
-import org.emftext.language.java.members.Method
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
-import org.eclipse.emf.common.util.EList
-import org.emftext.language.java.types.TypeReference
-import org.emftext.language.java.classifiers.Interface
-import java.util.prefs.PreferenceChangeEvent
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 
 class ClassMethodMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -99,10 +97,10 @@ class ClassMethodMappingTransformation extends EmptyEObjectMappingTransformation
 		if (basicComponents.nullOrEmpty) {
 			return null
 		}
-		if(!(classifier instanceof org.emftext.language.java.classifiers.Class)){
+		if(!(classifier instanceof Class)){
 			return null
 		}
-		val jaMoPPClass = classifier as org.emftext.language.java.classifiers.Class
+		val jaMoPPClass = classifier as Class
 		val implementingInterfacesTypeRefs = jaMoPPClass.implements
 		val implementingInterfaces = findImplementingInterfacesFromTypeRefs(implementingInterfacesTypeRefs)
 		if (implementingInterfaces.nullOrEmpty) {

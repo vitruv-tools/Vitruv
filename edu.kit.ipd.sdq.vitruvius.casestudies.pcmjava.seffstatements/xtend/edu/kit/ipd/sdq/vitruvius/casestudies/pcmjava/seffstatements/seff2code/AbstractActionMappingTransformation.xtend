@@ -47,7 +47,7 @@ class AbstractActionMappingTransformation extends DefaultEObjectMappingTransform
 	def Method getMethodForAbstractAction(AbstractAction action) {
 		val predecssor = action.predecessor_AbstractAction
 		while (null != predecssor) {
-			val methods = correspondenceInstance.getCorrespondingEObjectsByType(action, Method)
+			val methods = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(action, Method)
 			if (!methods.nullOrEmpty) {
 				return methods.get(0)
 			}

@@ -72,17 +72,11 @@ public class SyncManagerImpl implements ChangeSynchronizing {
             logger.warn("The change list does not contain any changes to synchronize." + changes);
             return;
         }
-        Blackboard blackboard = new BlackboardImpl();
-        this.blackboardHistory.push(blackboard);
-        blackboard.pushChanges(changes);
         for (SynchronisationListener syncListener : this.synchronisationListeners) {
             syncListener.syncStarted();
         }
-        this.changePreparing.prepareAllChanges(blackboard);
 
-        List<Change> changesForTransformation = blackboard.getAndArchiveChangesForTransformation();
-        validateChanges(changesForTransformation);
-        VURI sourceModelVURI = getSourceModelVURI(changesForTransformation);
+        VURI sourceModelVURI = getSourceModelVURI(changes);
         Set<InternalCorrespondenceInstance> correspondenceInstances = this.correspondenceProviding
                 .getAllCorrespondenceInstances(sourceModelVURI);
         for (InternalCorrespondenceInstance correspondenceInstance : correspondenceInstances) {
@@ -90,11 +84,15 @@ public class SyncManagerImpl implements ChangeSynchronizing {
             VURI mmURI2 = correspondenceInstance.getMapping().getMetamodelB().getURI();
             Change2CommandTransforming change2CommandTransforming = this.change2CommandTransformingProviding
                     .getChange2CommandTransforming(mmURI1, mmURI2);
-            blackboard.setCorrespondenceInstance(correspondenceInstance);
+            Blackboard blackboard = new BlackboardImpl(correspondenceInstance, this.modelProviding);
+            this.changePreparing.prepareAllChanges(blackboard);
+            this.blackboardHistory.push(blackboard);
+            blackboard.pushChanges(changes);
+            List<Change> changesForTransformation = blackboard.getAndArchiveChangesForTransformation();
+            validateChanges(changesForTransformation);
             change2CommandTransforming.transformChanges2Commands(blackboard);
+            this.commandExecuting.executeCommands(blackboard);
         }
-        blackboard.archiveChanges();
-        this.commandExecuting.executeCommands(blackboard);
 
         // TODO: check invariants and execute undo if necessary
 

@@ -9,6 +9,7 @@ import org.emftext.language.java.types.TypeReference
 import org.palladiosimulator.pcm.repository.BasicComponent
 import org.palladiosimulator.pcm.repository.OperationInterface
 import org.palladiosimulator.pcm.repository.RepositoryFactory
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 
 class TypeReferenceMappingTransformation extends DefaultEObjectMappingTransformation {
 
@@ -32,13 +33,13 @@ class TypeReferenceMappingTransformation extends DefaultEObjectMappingTransforma
 			if(null == interfaceClassifier){
 				return null
 			}
-			val correspondingInterfaces = correspondenceInstance.getCorrespondingEObjectsByType(interfaceClassifier,
+			val correspondingInterfaces = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(interfaceClassifier,
 				OperationInterface)
 			if (correspondingInterfaces.nullOrEmpty) {
 				return null
 			}
 			val operationInterface = correspondingInterfaces.get(0)
-			val correspondingBasicComponents = correspondenceInstance.
+			val correspondingBasicComponents = blackboard.correspondenceInstance.
 				getCorrespondingEObjectsByType(jaMoPPClass, BasicComponent)
 			if (correspondingBasicComponents.nullOrEmpty) {
 				return null
@@ -54,7 +55,7 @@ class TypeReferenceMappingTransformation extends DefaultEObjectMappingTransforma
 	 */
 	override removeEObject(EObject eObject) {
 		if (implementsChanged(eObject)) {
-			return correspondenceInstance.getAllCorrespondingEObjects(eObject)
+			TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
 		}
 		return null
 	}

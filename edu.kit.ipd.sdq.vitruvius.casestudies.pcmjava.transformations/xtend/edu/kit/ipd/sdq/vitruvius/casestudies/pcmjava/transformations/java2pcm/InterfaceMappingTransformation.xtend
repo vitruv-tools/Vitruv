@@ -41,7 +41,7 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 		val Interface jaMoPPInterface = eObject as Interface
 		try {
 			val Package jaMoPPPackage = PCM2JaMoPPUtils::
-				getContainingPackageFromCorrespondenceInstance(jaMoPPInterface, correspondenceInstance)
+				getContainingPackageFromCorrespondenceInstance(jaMoPPInterface, blackboard.correspondenceInstance)
 			var boolean createInterface = false
 			if (null != jaMoPPPackage && jaMoPPPackage.name.equals("contracts")) {
 
@@ -57,7 +57,7 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 			if (createInterface) {
 				var OperationInterface opInterface = RepositoryFactory.eINSTANCE.createOperationInterface
 				opInterface.setEntityName(jaMoPPInterface.name)
-				val Repository repo = JaMoPP2PCMUtils.getRepository(correspondenceInstance)
+				val Repository repo = JaMoPP2PCMUtils.getRepository(blackboard.correspondenceInstance)
 				opInterface.setRepository__Interface(repo)
 				return opInterface.toArray
 			}
@@ -74,9 +74,9 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject newValue,
 		int index, EObject[] newCorrespondingEObjects) {
-		return JaMoPP2PCMUtils.
-			createTransformationChangeResultForNewCorrespondingEObjects(newValue, newCorrespondingEObjects,
-				correspondenceInstance)
+		JaMoPP2PCMUtils.
+			createNewCorrespondingEObjects(newValue, newCorrespondingEObjects,
+				blackboard)
 	}
 
 	/**
@@ -84,25 +84,8 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 	 * Does not ask the developer whether the PCM interface should be removed also.
 	 */
 	override removeEObject(EObject eObject) {
-		val Interface jaMoPPInterface = eObject as Interface
-		val CompilationUnit jaMoPPCompilationUnit = jaMoPPInterface.containingCompilationUnit
 		try {
-			var EObject correspondingOpInterface = correspondenceInstance.
-				claimUniqueCorrespondingEObjectByType(jaMoPPInterface, OperationInterface)
-			var EObject correspondingOpInterface2CompilationUnit = correspondenceInstance.
-				claimUniqueCorrespondingEObjectByType(jaMoPPCompilationUnit, OperationInterface)
-			if (null == correspondingOpInterface && null == correspondingOpInterface2CompilationUnit) {
-				return null
-			}
-			if (correspondingOpInterface != correspondingOpInterface2CompilationUnit) {
-				logger.warn(
-					"corresponding interface " + correspondingOpInterface +
-						"is not the same interface as the interface corresponding to the compilation unit " +
-						correspondingOpInterface2CompilationUnit)
-				return null
-			}
-			EcoreUtil.remove(correspondingOpInterface)
-			correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(jaMoPPInterface)
+			TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
 		} catch (RuntimeException rte) {
 			logger.info(rte)
 		}
@@ -116,13 +99,12 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
 		int index, EObject[] oldCorrespondingEObjectsToDelete) {
-		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
-		return JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(eObject, affectedAttribute, oldValue, newValue,
-			featureCorrespondenceMap, correspondenceInstance)
+		JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(eObject, affectedAttribute, oldValue, newValue,
+			featureCorrespondenceMap, blackboard)
 	}
 
 	override setCorrespondenceForFeatures() {
@@ -138,7 +120,6 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 		logger.warn(
 			"method createNonRootEObjectSingle should not be called for " + InterfaceMappingTransformation.simpleName +
 				" transformation")
-		return null
 	}
 
 }

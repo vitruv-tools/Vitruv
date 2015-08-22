@@ -1,10 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
-import org.palladiosimulator.pcm.repository.OperationSignature
-import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.DefaultEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
@@ -15,6 +12,8 @@ import org.emftext.language.java.members.ClassMethod
 import org.emftext.language.java.members.MembersFactory
 import org.emftext.language.java.members.Method
 import org.emftext.language.java.modifiers.ModifiersFactory
+import org.palladiosimulator.pcm.repository.OperationSignature
+import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF
 
 class SEFFMappingTransformation extends DefaultEObjectMappingTransformation {
 

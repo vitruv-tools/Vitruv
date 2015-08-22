@@ -1,13 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
-import org.palladiosimulator.pcm.repository.CollectionDataType
-import org.palladiosimulator.pcm.repository.DataType
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.JaMoPP2PCMUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.lang.reflect.Modifier
 import java.util.ArrayList
 import java.util.Collection
@@ -25,8 +21,9 @@ import org.emftext.language.java.containers.CompilationUnit
 import org.emftext.language.java.generics.GenericsFactory
 import org.emftext.language.java.generics.QualifiedTypeArgument
 import org.emftext.language.java.types.NamespaceClassifierReference
-import org.emftext.language.java.types.impl.IntImpl
 import org.emftext.language.java.types.PrimitiveType
+import org.palladiosimulator.pcm.repository.CollectionDataType
+import org.palladiosimulator.pcm.repository.DataType
 
 class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransformation {
 

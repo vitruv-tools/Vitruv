@@ -1,17 +1,18 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.system
 
-import org.palladiosimulator.pcm.core.composition.AssemblyConnector
-import org.palladiosimulator.pcm.core.composition.AssemblyContext
-import org.palladiosimulator.pcm.core.entity.NamedElement
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import java.util.List
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
+import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.instantiations.NewConstructorCall
 import org.emftext.language.java.members.Constructor
 import org.emftext.language.java.members.Field
 import org.emftext.language.java.parameters.Parameter
+import org.palladiosimulator.pcm.core.composition.AssemblyConnector
+import org.palladiosimulator.pcm.core.composition.AssemblyContext
+import org.palladiosimulator.pcm.core.entity.NamedElement
 
 class AssemblyConnectorMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -38,7 +39,7 @@ class AssemblyConnectorMappingTransformation extends EmptyEObjectMappingTransfor
 	private def EObject[] updateConstructorForCorrespondingField(AssemblyContext assemblyContext, NamedElement pcmElement) {
 		try {
 			val field = blackboard.correspondenceInstance.claimUniqueCorrespondingEObjectByType(assemblyContext, Field)
-			val fields = (field.containingConcreteClassifier as org.emftext.language.java.classifiers.Class).fields
+			val fields = (field.containingConcreteClassifier as Class).fields
 			var List<Parameter> parameters = newArrayList()
 			val constructors = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(assemblyContext, Constructor)
 			if (!constructors.nullOrEmpty) {

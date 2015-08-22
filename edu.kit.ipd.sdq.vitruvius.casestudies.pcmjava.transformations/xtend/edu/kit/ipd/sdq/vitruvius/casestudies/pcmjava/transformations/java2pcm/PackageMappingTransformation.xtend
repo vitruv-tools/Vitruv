@@ -1,12 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
-import org.palladiosimulator.pcm.repository.BasicComponent
-import org.palladiosimulator.pcm.repository.CompositeComponent
-import org.palladiosimulator.pcm.repository.Repository
-import org.palladiosimulator.pcm.repository.RepositoryFactory
-import org.palladiosimulator.pcm.system.System
-import org.palladiosimulator.pcm.system.SystemFactory
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
@@ -15,6 +9,12 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.containers.Package
+import org.palladiosimulator.pcm.repository.BasicComponent
+import org.palladiosimulator.pcm.repository.CompositeComponent
+import org.palladiosimulator.pcm.repository.Repository
+import org.palladiosimulator.pcm.repository.RepositoryFactory
+import org.palladiosimulator.pcm.system.System
+import org.palladiosimulator.pcm.system.SystemFactory
 
 class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -33,13 +33,13 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 	 * If yes set correspondenceRepositoryAlreadyExists to true otherwise to false.
 	 * If a repository exists we do not have to create a new one in addEObject
 	 */
-	override void setCorrespondenceInstance(CorrespondenceInstance correspondenceInstance) {
-		super.setCorrespondenceInstance(correspondenceInstance)
+	override void setBlackboard(Blackboard blackboard) {
+		super.setBlackboard(blackboard)
 		checkCorrespondenceRepository()
 	}
 
 	def boolean checkCorrespondenceRepository() {
-		val repositorys = correspondenceInstance.getAllEObjectsInCorrespondencesWithType(Repository)
+		val repositorys = blackboard.correspondenceInstance.getAllEObjectsInCorrespondencesWithType(Repository)
 		if (null == repositorys || 0 == repositorys.size) {
 			correspondenceRepositoryAlreadyExists = false
 		} else {
@@ -72,7 +72,7 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 
 		//if the package already has already a correspondence 
 		//(which can happen when the package was created by the PCM2JaMoPP transformation) nothing has do be done 
-		if (!correspondenceInstance.getAllCorrespondences(jaMoPPPackage).nullOrEmpty) {
+		if (!blackboard.correspondenceInstance.getAllCorrespondences(jaMoPPPackage).nullOrEmpty) {
 			return null
 		}
 		var packageName = jaMoPPPackage.name
@@ -127,14 +127,14 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 	}
 
 	override createRootEObject(EObject newRootEObject, EObject[] newCorrespondingEObjects) {
-		return JaMoPP2PCMUtils.
-			createTransformationChangeResultForNewCorrespondingEObjects(newRootEObject, newCorrespondingEObjects,
-				correspondenceInstance)
+		JaMoPP2PCMUtils.
+			createNewCorrespondingEObjects(newRootEObject, newCorrespondingEObjects,
+				blackboard)
 	}
 
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
-		return createRootEObject(newValue, newCorrespondingEObjects)
+		createRootEObject(newValue, newCorrespondingEObjects)
 	}
 
 	/**
@@ -145,11 +145,7 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 	override removeEObject(EObject eObject) {
 		val Package jaMoPPPackage = eObject as Package
 		try {
-			val correspondingObjects = correspondenceInstance.claimCorrespondingEObjects(jaMoPPPackage)
-			for (correspondingObject : correspondingObjects) {
-				EcoreUtil.remove(correspondingObject)
-				correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(correspondingObject)
-			}
+			TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
 		} catch (RuntimeException rte) {
 			logger.info(rte)
 		}
@@ -157,12 +153,10 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 	}
 
 	override deleteRootEObject(EObject oldRootEObject, EObject[] oldCorrespondingEObjectsToDelete) {
-		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
 		int index, EObject[] oldCorrespondingEObjectsToDelete) {
-		return TransformationUtils.createEmptyTransformationChangeResult
 	}
 
 	/**
@@ -182,7 +176,7 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 			}
 		}
 		JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(eObject, affectedAttribute, oldValue, newVarValue,
-			featureCorrespondenceMap, correspondenceInstance)
+			featureCorrespondenceMap, blackboard)
 	}
 
 	override setCorrespondenceForFeatures() {
