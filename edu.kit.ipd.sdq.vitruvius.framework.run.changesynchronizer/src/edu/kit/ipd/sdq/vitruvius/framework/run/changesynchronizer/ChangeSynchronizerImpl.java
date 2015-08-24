@@ -10,7 +10,9 @@ import org.apache.log4j.Logger;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.URIHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
@@ -134,8 +136,14 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
 
     private VURI getSourceModelVURI(final List<Change> changesForTransformation) {
         if (null != changesForTransformation && 0 < changesForTransformation.size()) {
-            EMFModelChange modelChange = (EMFModelChange) changesForTransformation.get(0);
-            return modelChange.getURI();
+            Change firstChange = changesForTransformation.get(0);
+            if (firstChange instanceof URIHaving) {
+                return ((URIHaving) firstChange).getURI();
+            }
+            if (firstChange instanceof CompositeChange) {
+                return getSourceModelVURI(((CompositeChange) firstChange).getChanges());
+            }
+
         }
         return null;
     }
