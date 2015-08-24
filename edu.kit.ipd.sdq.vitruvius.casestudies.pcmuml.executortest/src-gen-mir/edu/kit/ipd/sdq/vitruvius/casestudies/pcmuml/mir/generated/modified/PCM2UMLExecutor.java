@@ -46,15 +46,4 @@ public class PCM2UMLExecutor extends AbstractMIRChange2CommandTransforming {
 	public List<Pair<VURI, VURI>> getTransformableMetamodels() {
 		return transformableMetamodels;
 	}
-	
-	/*
-	@Override
-	protected PCM2UMLExecutorCorrespondence getMappedCorrespondenceInstance() {
-		return this.mappedCorrespondenceInstance;
-	}
-
-	@Override
-	protected void setCorrespondenceInstance(CorrespondenceInstance correspondenceInstance) {
-		this.mappedCorrespondenceInstance.setCorrespondenceInstance(correspondenceInstance);
-	}*/
 }
