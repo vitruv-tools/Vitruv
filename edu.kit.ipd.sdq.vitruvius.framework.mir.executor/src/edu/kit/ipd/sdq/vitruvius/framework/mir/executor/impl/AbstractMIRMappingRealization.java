@@ -36,9 +36,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFCommandBridge;
  *
  */
 public abstract class AbstractMIRMappingRealization implements MIRMappingRealization {
-	// TODO: get instance of command bridge
-	private EMFCommandBridge commandBridge = null;
-
 	private final static Logger LOGGER = Logger.getLogger(AbstractMIRMappingRealization.class);
 
 	/**
@@ -93,7 +90,7 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 		
 		List<Command> result = new ArrayList<Command>();
 
-		result.add(commandBridge.createCommand(() -> {
+		result.add(EMFCommandBridge.createCommand(() -> {
 			EcoreUtil.delete(target);
 		}));
 		
@@ -183,7 +180,7 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 		for (final EObject eObject : affectedEObjects) {
 			if (eObject.eContainer() == null) {
 				Runnable saveRunnable = () -> EclipseHelper.askAndSaveResource(eObject);
-				result.add(commandBridge.createCommand(saveRunnable));
+				result.add(EMFCommandBridge.createCommand(saveRunnable));
 			}
 		}
 		
