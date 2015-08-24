@@ -1,9 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
+	<list key="installedFeatures">
+		<item value="org.eclipse.draw2d.sdk:3.10.0.201506010206"/>
+		<item value="org.eclipse.draw2d:3.10.0.201506010206"/>
+		<item value="org.eclipse.emf.cdo:4.4.0.v20150610-1925"/>
+		<item value="org.eclipse.emf.codegen.ecore:2.11.0.v20150601-0402"/>
+		<item value="org.eclipse.emf.codegen:2.11.0.v20150601-0402"/>
+		<item value="org.eclipse.emf.common.ui:2.10.0.v20150601-0402"/>
+		<item value="org.eclipse.emf.common:2.11.0.v20150512-0501"/>
+		<item value="org.eclipse.emf.compare.source:3.1.0.201506080833"/>
+		<item value="org.eclipse.emf.compare:3.1.0.201506080833"/>
+		<item value="org.eclipse.emf.ecore.edit:2.9.0.v20150601-0402"/>
+		<item value="org.eclipse.emf.ecore.editor:2.11.0.v20150601-0402"/>
+		<item value="org.eclipse.emf.ecore:2.11.0.v20150512-0501"/>
+		<item value="org.eclipse.emf.edit.ui:2.11.0.v20150601-0402"/>
+		<item value="org.eclipse.emf.edit:2.11.0.v20150601-0402"/>
+		<item value="org.eclipse.emf.emfstore.common.feature:1.5.0.v20150609-1145"/>
+		<item value="org.eclipse.emf.transaction:1.9.0.201506010221"/>
+		<item value="org.eclipse.emf.validation:1.9.0.201505312255"/>
+		<item value="org.eclipse.emf.workspace:1.9.0.201506010221"/>
+		<item value="org.eclipse.emf:2.11.0.v20150601-0402"/>
+		<item value="org.eclipse.gef.sdk:3.10.0.201506010206"/>
+		<item value="org.eclipse.gef:3.10.0.201506010206"/>
+		<item value="org.eclipse.gmf.runtime.notation:1.9.0.201505312221"/>
+		<item value="org.eclipse.help:2.1.0.v20150603-2000"/>
+		<item value="org.eclipse.net4j.util:4.4.0.v20150610-1925"/>
+		<item value="org.eclipse.ocl:3.5.0.v20150525-1635"/>
+		<item value="org.eclipse.platform:4.5.0.v20150603-2358"/>
+		<item value="org.eclipse.uml2.common:2.1.0.v20150601-0733"/>
+		<item value="org.eclipse.uml2.uml:5.1.0.v20150601-0733"/>
+		<item value="org.eclipse.xtext.sdk:2.8.3.v201506010551"/>
+		<item value="org.eclipse.xtext.ui:2.8.3.v201506010551"/>
+		<item value="org.eclipse.xtext.xbase.lib:2.8.3.v201506010551"/>
+		<item value="org.eclipse.xtext.xbase:2.8.3.v201506010551"/>
+		<item value="org.emftext.commons.antlr3_4_0:3.4.0.v201409301909"/>
+		<item value="org.emftext.commons.layout:1.4.2.v201409301909"/>
+		<item value="org.emftext.language.java:1.4.1.v201508071602"/>
+	</list>
 	<section name="ExternalProjectImportWizard">
-		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
-		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
 		<item value="false" key="WizardProjectsImportPage.STORE_NESTED_PROJECTS"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
 			<item value="C:/Eclipse/workspaces/VitruviusSVN18030215/edu.kit.ipd.sdq.vitruvius.tests.components/test-workspace/MockupProject"/>
 		</list>

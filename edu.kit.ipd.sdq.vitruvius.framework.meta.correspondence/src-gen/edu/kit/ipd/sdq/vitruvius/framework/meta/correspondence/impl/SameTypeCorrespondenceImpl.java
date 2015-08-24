@@ -7,6 +7,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespon
 
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 
+import java.io.Serializable;
+
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
@@ -27,7 +29,13 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public abstract class SameTypeCorrespondenceImpl extends CorrespondenceImpl implements SameTypeCorrespondence {
+// FIXME MAX (deco): try to generate use of serializable marker interface from ecore mm 
+public abstract class SameTypeCorrespondenceImpl extends CorrespondenceImpl implements SameTypeCorrespondence, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7466155986033309271L;
+
 	/**
 	 * The default value of the '{@link #getElementATUID() <em>Element ATUID</em>}' attribute.
 	 * <!-- begin-user-doc -->

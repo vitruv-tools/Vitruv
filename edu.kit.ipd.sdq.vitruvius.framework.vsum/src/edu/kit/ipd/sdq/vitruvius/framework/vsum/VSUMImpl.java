@@ -48,10 +48,16 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     private final ResourceSet resourceSet;
     private final Map<Mapping, InternalCorrespondenceInstance> mapping2CorrespondenceInstanceMap;
 
+    private ClassLoader classLoader;
     private final TransactionalEditingDomain editingDomain;
 
     public VSUMImpl(final MetamodelManaging metamodelManaging, final ViewTypeManaging viewTypeManaging,
             final MappingManaging mappingManaging) {
+        this(metamodelManaging, viewTypeManaging, mappingManaging, null);
+    }
+
+    public VSUMImpl(final MetamodelManaging metamodelManaging, final ViewTypeManaging viewTypeManaging,
+            final MappingManaging mappingManaging, final ClassLoader classLoader) {
         this.metamodelManaging = metamodelManaging;
         this.viewTypeManaging = viewTypeManaging;
         this.mappingManaging = mappingManaging;
@@ -61,6 +67,8 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
 
         this.modelInstances = new HashMap<VURI, ModelInstance>();
         this.mapping2CorrespondenceInstanceMap = new HashMap<Mapping, InternalCorrespondenceInstance>();
+
+        this.classLoader = classLoader;
 
         loadVURIsOfVSMUModelInstances();
         loadAndMapCorrepondenceInstances();
@@ -232,7 +240,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         Map<String, Object> fileExtPrefix2ObjectMap = new HashMap<String, Object>();
         for (String fileExtPrefix : fileExtPrefixesForObjects) {
             String fileName = getFileNameForCorrespondenceInstanceDecorator(correspondenceInstance, fileExtPrefix);
-            Object loadedObject = FileSystemHelper.loadObjectFromFile(fileName);
+            Object loadedObject = FileSystemHelper.loadObjectFromFile(fileName, this.classLoader);
             fileExtPrefix2ObjectMap.put(fileExtPrefix, loadedObject);
         }
         correspondenceInstance.initialize(fileExtPrefix2ObjectMap);

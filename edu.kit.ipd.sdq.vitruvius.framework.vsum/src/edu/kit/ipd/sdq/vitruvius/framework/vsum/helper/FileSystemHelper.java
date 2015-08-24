@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.ObjectStreamClass;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -127,9 +128,28 @@ public class FileSystemHelper {
     }
 
     public static Object loadObjectFromFile(final String fileName) {
+        return loadObjectFromFile(fileName, null);
+    }
+
+    public static Object loadObjectFromFile(final String fileName, final ClassLoader cl) {
         try {
             FileInputStream fileInputStream = new FileInputStream(fileName);
-            ObjectInputStream ois = new ObjectInputStream(fileInputStream);
+            ObjectInputStream ois = new ObjectInputStream(fileInputStream) {
+                @Override
+                protected Class<?> resolveClass(final ObjectStreamClass desc)
+                        throws IOException, ClassNotFoundException {
+                    try {
+                        return super.resolveClass(desc);
+                    } catch (ClassNotFoundException e) {
+                        if (cl != null) {
+                            String name = desc.getName();
+                            return Class.forName(name, false, cl);
+                        } else {
+                            throw e;
+                        }
+                    }
+                }
+            };
             Object obj = ois.readObject();
             ois.close();
             return obj;

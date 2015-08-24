@@ -1,5 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes;
 
+import java.io.ObjectStreamException;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -55,7 +57,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple;
  * @author kramerm
  *
  */
-public class TUID {
+public class TUID implements Serializable {
     private static final ForwardHashedBackwardLinkedTree<String> SEGMENTS = new ForwardHashedBackwardLinkedTree<String>();
     private static final Map<ForwardHashedBackwardLinkedTree<String>.Segment, TUID> LAST_SEGMENT_2_TUID_INSTANCES_MAP = new HashMap<ForwardHashedBackwardLinkedTree<String>.Segment, TUID>();
 
@@ -395,5 +397,11 @@ public class TUID {
     public interface AfterHashCodeUpdateLambda {
 		void performPostAction(
 				Triple<TUID, Set<Correspondence>, Set<TUID>> removedMapEntries);
+    }
+    
+    private Object writeReplace() throws ObjectStreamException {
+    	TUID4Serialization tuid4Serialization = new TUID4Serialization();
+    	tuid4Serialization.setTUIDString(this.toString());
+    	return tuid4Serialization;
     }
 }

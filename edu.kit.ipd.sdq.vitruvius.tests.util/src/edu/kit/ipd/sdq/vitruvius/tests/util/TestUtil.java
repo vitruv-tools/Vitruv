@@ -40,7 +40,7 @@ public final class TestUtil {
      */
     private TestUtil() {
     }
-
+    
     /**
      * creates and returns a VSUM with the given meta repository
      *
@@ -49,7 +49,18 @@ public final class TestUtil {
      * @return vsum
      */
     public static VSUMImpl createVSUM(final MetaRepositoryImpl metaRepository) {
-        final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository);
+    	return createVSUM(metaRepository, null);
+    }
+
+    /**
+     * creates and returns a VSUM with the given meta repository
+     *
+     * @param metaRepository
+     *            metaRepository for the VSUM
+     * @return vsum
+     */
+    public static VSUMImpl createVSUM(final MetaRepositoryImpl metaRepository, ClassLoader classLoader) {
+        final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository, classLoader);
         return vsum;
     }
 

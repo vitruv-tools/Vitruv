@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.junit.Test;
 
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.Mapping0;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FeatureInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
@@ -23,6 +24,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentReferenceCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import pcm_mockup.Interface;
@@ -71,6 +74,14 @@ public class CorrespondenceTest extends VSUMTest {
         assertNotNull("Correspondence instance is null", corresp);
         // recreate the same correspondence as before
         EObjectCorrespondence repo2pkg = createRepo2PkgCorrespondence(repo, pkg, corresp);
+        if (corresp instanceof MappedCorrespondenceInstance) {
+            // EObjectCorrespondence c =
+            // CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence();
+            // c.setElementATUID(TUID.getInstance("tuidA"));
+            // c.setElementBTUID(TUID.getInstance("tuidB"));
+            MIRMappingRealization mapping = Mapping0.INSTANCE;
+            ((MappedCorrespondenceInstance) corresp).registerMappingForCorrespondence(repo2pkg, mapping);
+        }
         // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 
         // save instances in order to trigger saving for CorrespondenceInstance(s)

@@ -5,6 +5,8 @@ package edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
 
+import java.io.Serializable;
+
 import org.eclipse.emf.ecore.EClass;
 
 /**
@@ -14,7 +16,13 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class EObjectCorrespondenceImpl extends SameTypeCorrespondenceImpl implements EObjectCorrespondence {
+//FIXME MAX (deco): try to generate use of serializable marker interface from ecore mm 
+public class EObjectCorrespondenceImpl extends SameTypeCorrespondenceImpl implements EObjectCorrespondence, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6183080556480686548L;
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
