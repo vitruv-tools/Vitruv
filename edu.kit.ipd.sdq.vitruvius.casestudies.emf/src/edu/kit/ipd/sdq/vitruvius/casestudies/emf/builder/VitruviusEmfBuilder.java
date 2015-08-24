@@ -116,14 +116,13 @@ public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder impl
         final MetamodelManagerImpl metaModelManager = new MetamodelManagerImpl(metaRepositoryImpl);
         final ViewTypeManagerImpl viewTypeManager = new ViewTypeManagerImpl();
         this.vsum = new VSUMImpl(metaModelManager, viewTypeManager, metaRepositoryImpl);
-        // create syncTransformationProvider
         final Change2CommandTransformingProvidingImpl change2CommandTransformingProviding = new Change2CommandTransformingProvidingImpl();
         final ChangePreparing changePreparing = new ChangePreparingImpl(this.vsum, this.vsum);
         final CommandExecuting commandExecuting = new CommandExecutingImpl();
-        final ChangeSynchronizerImpl smi = new ChangeSynchronizerImpl(this.vsum, change2CommandTransformingProviding, this.vsum,
-                metaRepositoryImpl, this.vsum, this, changePreparing, commandExecuting);
-        // create syncManager
-        this.changeSynchronizing = smi;
+        final ChangeSynchronizerImpl changeSynchronizerImpl = new ChangeSynchronizerImpl(this.vsum,
+                change2CommandTransformingProviding, this.vsum, metaRepositoryImpl, this.vsum, this, changePreparing,
+                commandExecuting);
+        this.changeSynchronizing = changeSynchronizerImpl;
         return this.vsum;
     }
 

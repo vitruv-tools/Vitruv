@@ -10,7 +10,9 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.emf.changedescription2change.ChangeDescription2ChangeConverter;
+import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.changepreparer.ChangePreparingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
@@ -19,11 +21,13 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileCh
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine.EMFModelPropagationEngineImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
@@ -37,7 +41,7 @@ import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest implements SynchronisationListener {
 
     protected VSUMImpl vsum;
-    protected ChangeSynchronizerImpl syncManager;
+    protected ChangeSynchronizerImpl changeSynchronizer;
     protected MetaRepositoryImpl metaRepository;
     protected ChangeRecorder changeRecorder;
     private ChangeDescription2ChangeConverter changeDescrition2ChangeConverter;
@@ -53,13 +57,13 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
     public void setUpTest() throws Throwable {
         this.metaRepository = this.createMetaRepository();
         this.vsum = TestUtil.createVSUM(this.metaRepository);
-        final Change2CommandTransformingProvidingImpl syncTransformationProvider = new Change2CommandTransformingProvidingImpl();
-        final EMFModelPropagationEngineImpl propagatingChange = new EMFModelPropagationEngineImpl(
-                syncTransformationProvider);
-        this.syncManager = new ChangeSynchronizerImpl(this.vsum, propagatingChange, this.vsum, this.metaRepository, this.vsum,
-                this);
+        final Change2CommandTransformingProviding syncTransformationProvider = new Change2CommandTransformingProvidingImpl();
+        final CommandExecuting commandExecuter = new CommandExecutingImpl();
+        final ChangePreparing changePreparer = new ChangePreparingImpl(this.vsum, this.vsum);
+        this.changeSynchronizer = new ChangeSynchronizerImpl(this.vsum, syncTransformationProvider, this.vsum,
+                this.metaRepository, this.vsum, this, changePreparer, commandExecuter);
         this.testUserInteractor = new TestUserInteractor();
-        super.setUserInteractor(this.testUserInteractor, this.syncManager);
+        super.setUserInteractor(this.testUserInteractor, this.changeSynchronizer);
         this.resourceSet = new ResourceSetImpl();
         this.changeRecorder = new ChangeRecorder();
         this.changeDescrition2ChangeConverter = new ChangeDescription2ChangeConverter();
@@ -86,7 +90,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
         cd.applyAndReverse();
         final List<Change> changes = this.changeDescrition2ChangeConverter.getChanges(cd, vuri);
         cd.applyAndReverse();
-        this.syncManager.synchronizeChanges(changes);
+        this.changeSynchronizer.synchronizeChanges(changes);
         this.changeRecorder.beginRecording(Collections.EMPTY_LIST);
     }
 
@@ -97,7 +101,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 
     protected void synchronizeFileChange(final FileChangeKind fileChangeKind, final VURI vuri) {
         final FileChange fileChange = new FileChange(fileChangeKind, vuri);
-        this.syncManager.synchronizeChange(fileChange);
+        this.changeSynchronizer.synchronizeChange(fileChange);
     }
 
     @Override

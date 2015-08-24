@@ -51,7 +51,7 @@ import org.palladiosimulator.pcm.repository.RepositoryFactory;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.seff.SeffFactory;
 import org.palladiosimulator.pcm.system.System;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPTransformationExecuterBase;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPChange2CommandTransformerBase;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.DataTypeCorrespondenceHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
@@ -563,7 +563,7 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
     }
 
     @Override
-    protected java.lang.Class<?> getEMFModelTransformationExecuterClass() {
-        return PCMJaMoPPTransformationExecuterBase.class;
+    protected java.lang.Class<?> getChange2CommandTransformerClass() {
+        return PCMJaMoPPChange2CommandTransformerBase.class;
     }
 }

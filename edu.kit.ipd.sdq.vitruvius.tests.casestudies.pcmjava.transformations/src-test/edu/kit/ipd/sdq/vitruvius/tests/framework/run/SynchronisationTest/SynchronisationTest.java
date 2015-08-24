@@ -22,19 +22,25 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestWatcher;
-
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryFactory;
 import org.palladiosimulator.pcm.util.PcmResourceFactoryImpl;
+
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
-import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.TransformationExecutingProvidingImpl;
+import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.changepreparer.ChangePreparingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
@@ -42,7 +48,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitru
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.monitor.DefaultEditorPartAdapterFactoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.monitor.EMFEditorMonitorFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine.EMFModelPropagationEngineImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.tests.jamopppcm.util.JaMoPPPCMTestUtil;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
@@ -59,7 +64,7 @@ public class SynchronisationTest {
     private static final String PCM_INTERFACE_RENAME_NAME = "TestRenameInterface";
 
     private IVitruviusEMFEditorMonitor monitor;
-    private ChangeSynchronizerImpl syncManager;
+    private ChangeSynchronizing changeSynchronizer;
     private VSUMImpl vsum;
 
     private VURI sourceModelURI;
@@ -76,10 +81,11 @@ public class SynchronisationTest {
         // set up syncManager, monitor and metaRepostitory
         final MetaRepositoryImpl metaRepository = JaMoPPPCMTestUtil.createJaMoPPPCMMetaRepository();
         this.vsum = TestUtil.createVSUM(metaRepository);
-        final TransformationExecutingProvidingImpl syncTransformationProvider = new TransformationExecutingProvidingImpl();
-        final EMFModelPropagationEngineImpl propagatingChange = new EMFModelPropagationEngineImpl(
-                syncTransformationProvider);
-        this.syncManager = new ChangeSynchronizerImpl(this.vsum, propagatingChange, this.vsum, metaRepository, this.vsum, null);
+        final Change2CommandTransformingProviding change2CommandTransformationProvider = new Change2CommandTransformingProvidingImpl();
+        final CommandExecuting commandExecuting = new CommandExecutingImpl();
+        final ChangePreparing changePreparing = new ChangePreparingImpl(this.vsum, this.vsum);
+        this.changeSynchronizer = new ChangeSynchronizerImpl(this.vsum, change2CommandTransformationProvider, this.vsum,
+                metaRepository, this.vsum, null, changePreparing, commandExecuting);
 
         final EMFEditorMonitorFactory monitorFactory = new EMFEditorMonitorFactory();
         final IEditorPartAdapterFactory epaFactory = new DefaultEditorPartAdapterFactoryImpl(
@@ -90,8 +96,8 @@ public class SynchronisationTest {
                 return true;
             }
         };
-        this.monitor = monitorFactory.createVitruviusModelEditorSyncMgr(epaFactory, this.syncManager, null /* TODO */,
-                vitruvAccessor);
+        this.monitor = monitorFactory.createVitruviusModelEditorSyncMgr(epaFactory, this.changeSynchronizer,
+                null /* TODO */, vitruvAccessor);
         this.monitor.initialize();
 
         // create pcm model instance
@@ -100,8 +106,8 @@ public class SynchronisationTest {
         this.sourceModelURI = VURI.getInstance(TestUtil.PROJECT_URI + "/" + PCM_REPOSITORY_FILE_NAME);
 
         final ResourceSet resourceSet = new ResourceSetImpl();
-        resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-                .put("repository", new PcmResourceFactoryImpl());
+        resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("repository",
+                new PcmResourceFactoryImpl());
         final Resource resource = resourceSet.createResource(this.sourceModelURI.getEMFUri());
         if (null == resource) {
             fail("Could not create resource with URI: " + this.sourceModelURI);
@@ -147,8 +153,8 @@ public class SynchronisationTest {
         this.monitor.triggerSynchronisation(this.sourceModelURI);
 
         // a java interface in the package "testRepository" should have been created
-        final String javaInterfaceLocation = this.getSrcPath() + PCM_REPOSITORY_NAME + "/"
-                + PCM_INTERFACE_CREATION_NAME + ".java";
+        final String javaInterfaceLocation = this.getSrcPath() + PCM_REPOSITORY_NAME + "/" + PCM_INTERFACE_CREATION_NAME
+                + ".java";
         final VURI interfaceVURI = VURI.getInstance(javaInterfaceLocation);
         final ModelInstance newInterface = this.vsum.getAndLoadModelInstanceOriginal(interfaceVURI);
         final CompilationUnit cu = newInterface.getUniqueRootEObjectIfCorrectlyTyped(CompilationUnit.class);
@@ -248,6 +254,6 @@ public class SynchronisationTest {
         final FileChange fileChange = new FileChange(FileChangeKind.CREATE, vuri);
         final List<Change> changes = new ArrayList<Change>(1);
         changes.add(fileChange);
-        this.syncManager.synchronizeChanges(changes);
+        this.changeSynchronizer.synchronizeChanges(changes);
     }
 }

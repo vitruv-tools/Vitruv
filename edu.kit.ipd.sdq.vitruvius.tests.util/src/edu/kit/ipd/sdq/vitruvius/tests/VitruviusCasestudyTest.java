@@ -10,9 +10,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Ch
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine.EMFModelPropagationEngineImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationExecuter;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
@@ -68,16 +68,14 @@ public abstract class VitruviusCasestudyTest {
         return TestUtil.PROJECT_URI + "/";
     }
 
-    protected void setUserInteractor(final UserInteracting newUserInteracting, final ChangeSynchronizerImpl syncManagerImpl)
-            throws Throwable {
-        final EMFModelPropagationEngineImpl emfModelPropagationEngineImpl = TestUtil.getFieldFromClass(
-                ChangeSynchronizerImpl.class, "changePropagating", syncManagerImpl);
-        final Change2CommandTransformingProvidingImpl transformationExecutingProvidingImpl = TestUtil.getFieldFromClass(
-                EMFModelPropagationEngineImpl.class, "transformationExecutingProviding", emfModelPropagationEngineImpl);
+    protected void setUserInteractor(final UserInteracting newUserInteracting,
+            final ChangeSynchronizerImpl changeSynchronizerImpl) throws Throwable {
+        final Change2CommandTransformingProviding change2CommandProviding = TestUtil.getFieldFromClass(
+                ChangeSynchronizerImpl.class, "change2CommandTransformingProviding", changeSynchronizerImpl);
         final ClaimableMap<Pair<VURI, VURI>, Change2CommandTransforming> transformationExecuterMap = TestUtil
                 .getFieldFromClass(Change2CommandTransformingProvidingImpl.class, "transformationExecuterMap",
-                        transformationExecutingProvidingImpl);
-        final Class<?> emfModelTransformationExecuterClass = this.getEMFModelTransformationExecuterClass();
+                        change2CommandProviding);
+        final Class<?> emfModelTransformationExecuterClass = this.getChange2CommandTransformerClass();
         final String nameOfChangeSynchronizerField = this.getNameOfChangeSynchronizerField();
         Change2CommandTransforming emfTransformationExecuter = null;
         for (final Change2CommandTransforming emfModelTransformationExecuting : transformationExecuterMap.values()) {
@@ -89,12 +87,12 @@ public abstract class VitruviusCasestudyTest {
         if (null == emfTransformationExecuter) {
             throw new RuntimeException("Could not find an EMFModelTransformationExecuting that is currently active.");
         }
-        final TransformationExecuter changeSynchronizer = TestUtil.getFieldFromClass(emfModelTransformationExecuterClass,
-                nameOfChangeSynchronizerField, emfTransformationExecuter);
+        final TransformationExecuter changeSynchronizer = TestUtil.getFieldFromClass(
+                emfModelTransformationExecuterClass, nameOfChangeSynchronizerField, emfTransformationExecuter);
         changeSynchronizer.setUserInteracting(newUserInteracting);
     }
 
-    protected abstract Class<?> getEMFModelTransformationExecuterClass();
+    protected abstract Class<?> getChange2CommandTransformerClass();
 
     protected String getNameOfChangeSynchronizerField() {
         return "changeSynchronizer";

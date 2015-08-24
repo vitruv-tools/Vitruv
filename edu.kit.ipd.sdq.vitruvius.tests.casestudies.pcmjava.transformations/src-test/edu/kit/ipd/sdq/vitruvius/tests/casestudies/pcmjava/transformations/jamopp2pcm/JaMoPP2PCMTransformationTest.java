@@ -81,7 +81,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaAddBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaRemoveBuilder;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPTransformationExecuterBase;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPChange2CommandTransformerBase;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
@@ -392,9 +392,9 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
      */
     private void setUserInteractor(final UserInteracting newUserInteracting) throws Throwable {
         final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
-        final ChangeSynchronizerImpl syncManagerImpl = TestUtil.getFieldFromClass(VitruviusEmfBuilder.class,
+        final ChangeSynchronizerImpl changeSynchronizerImpl = TestUtil.getFieldFromClass(VitruviusEmfBuilder.class,
                 "changeSynchronizing", pcmJavaBuilder);
-        this.setUserInteractor(newUserInteracting, syncManagerImpl);
+        this.setUserInteractor(newUserInteracting, changeSynchronizerImpl);
     }
 
     protected CompositeComponent addSecondPackageCorrespondsToCompositeComponent() throws Throwable {
@@ -684,8 +684,8 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     }
 
     @Override
-    protected java.lang.Class<?> getEMFModelTransformationExecuterClass() {
-        return PCMJaMoPPTransformationExecuterBase.class;
+    protected java.lang.Class<?> getChange2CommandTransformerClass() {
+        return PCMJaMoPPChange2CommandTransformerBase.class;
     }
 
     protected void addPackageAndImplementingClass(final String componentName)

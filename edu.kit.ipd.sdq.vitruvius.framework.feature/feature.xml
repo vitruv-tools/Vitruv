@@ -129,15 +129,9 @@
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
-         id="edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager"
+         id="edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer"
          download-size="0"
          install-size="0"
          version="0.0.0"

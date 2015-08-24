@@ -74,316 +74,324 @@ import edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.plugintests.util.Proj
 
 public abstract class FrameworkTestBase {
 
-	private static final class BooleanContainer {
-		private boolean value;
-		public BooleanContainer(boolean value) {
-			super();
-			this.value = value;
-		}
-		public boolean isValue() {
-			return value;
-		}
-		public void setValue(boolean value) {
-			this.value = value;
-		}
-	}
-	
-	private static File jmlRuntimeLib;
-	private static File jmlSpecsLib;
-	private static final File diffDir = getOrCreateDiffDir();
-	private static final ActivateHandler activator = new ActivateHandler();
-	private static final DeactivateHandler deactivator = new DeactivateHandler();
-	private static final File originalProjectFilesLocation = extractOriginalProjectFiles();
-	private final BooleanContainer synchronisationHasBeenStarted = new BooleanContainer(false);
-	private final BooleanContainer synchronisationInProgress = new BooleanContainer(false);
-	private IProject project;
-	private boolean synchronisationAborted;
-	
-	protected static final EditorManipulator editorManipulator = new EditorManipulator();
-	protected CodeElementUtil codeElementUtil;
-	protected ProjectModelsUtils projectModelUtils;
+    private static final class BooleanContainer {
+        private boolean value;
 
-	@BeforeClass
-	public static void init() throws IOException {
-		File tmpDir = Files.createTempDir();
-		FileUtils.forceDeleteOnExit(tmpDir);
-		
-		jmlRuntimeLib = writeToDir(tmpDir, "resources/jmlruntime.jar.resource", "jmlruntime.jar");
-		jmlSpecsLib = writeToDir(tmpDir, "resources/jmlspecs.jar.resource", "jmlspecs.jar");
-	}
-	
-	private static File writeToDir(File dir, String resourceString, String fileName) throws IOException {
-		InputStream libIn = null;
-		OutputStream libOut = null;
-		File createdFile = new File(dir, fileName);
-		
-		try {
-			 libIn = FrameworkTestBase.class.getResourceAsStream(resourceString);
-			 libOut = new FileOutputStream(createdFile);
-			 IOUtils.copy(libIn, libOut);
-			 return createdFile;
-		} finally {
-			IOUtils.closeQuietly(libIn);
-			IOUtils.closeQuietly(libOut);
-		}
-	}
-	
-	@Before
-	public void setup() throws Exception {
-		project = createNewProject();
-		FileUtils.forceDeleteOnExit(project.getLocation().makeAbsolute().toFile());
-		codeElementUtil = new CodeElementUtil(project);
-		projectModelUtils = new ProjectModelsUtils(project);
-		synchronisationAborted = false;
-		
-		synchronized(synchronisationInProgress) {
-			synchronisationHasBeenStarted.setValue(false);
-		}
-		
-		activator.activate(project.getName());
-		ChangeSynchronizerRegistry.getInstance().getChangeSynchronizer().register(new SynchronisationListener() {
-			@Override
-			public void syncStarted() {
-				synchronized(synchronisationInProgress) {
-					synchronisationHasBeenStarted.setValue(true);
-					synchronisationInProgress.setValue(true);
-					synchronisationInProgress.notifyAll();
-				}
-			}
-			@Override
-			public void syncFinished() {
-				synchronized(synchronisationInProgress) {
-					synchronisationInProgress.setValue(false);
-					synchronisationInProgress.notifyAll();
-				}
-			}
-			@Override
-			public void syncAborted(TransformationAbortCause cause) {
-				synchronisationAborted = true;
-			}
-			@Override
-			public void syncAborted(EMFModelChange abortedChange) {
-				synchronisationAborted = true;
-			}
-		});
-	}
+        public BooleanContainer(final boolean value) {
+            super();
+            this.value = value;
+        }
 
-	@After
-	public void teardown() throws Exception {
-		deactivator.deactivate();
-		project.delete(true, true, null);
-	}
-	
-	@AfterClass
-	public static void deinitialize() throws IOException {
-		FileUtils.forceDelete(jmlRuntimeLib);
-		FileUtils.forceDelete(jmlSpecsLib);
-	}
-	
-	protected void waitForSynchronisationToFinish() throws InterruptedException {
-		Stopwatch waitingTime = Stopwatch.createStarted();
-		synchronized(synchronisationInProgress) {
-			while (!synchronisationHasBeenStarted.isValue() || synchronisationInProgress.isValue()) {
-				if (!synchronisationHasBeenStarted.isValue() && waitingTime.elapsed(TimeUnit.MINUTES) > 1) {
-					fail("No synchronisation has been started.");
-				}
-				synchronisationInProgress.wait(10000);
-			}	
-		}
-		Thread.sleep(5000); // Wait for the model serialization to finish
-		//TODO add observer to serialization job in SyncManager and wait for event
-	}
-	
-	protected void assertTransformationAborted() {
-		assertTrue(synchronisationAborted);
-	}
-	
-	protected void createAndCompareDiff(String testMethodName) throws IOException, InterruptedException, ExecutionException, TimeoutException {
-		createAndCompareDiff(testMethodName, true);
-	}
-	
-	protected void createAndCompareDiff(String testMethodName, boolean failIfNoReference) throws IOException, InterruptedException, ExecutionException, TimeoutException {
-		final File diffFilePath = createDiffFilePath(testMethodName);
-		final String patchStringActual = createPatch();
-		
-		if (!diffFilePath.exists()) {
-			final File diffFilePathIntermediate = new File(diffFilePath.getAbsolutePath() + ".intermediate");
-			OutputStream os = new FileOutputStream(diffFilePathIntermediate);
-			IOUtils.write(patchStringActual, os);
-			os.close();
-		}
-		
-		// we try to compile it after we serialized the diff, so we can examine the cause of the problem
-		assertCompilable();
-		
-		if (diffFilePath.exists()) {
-			InputStream is = new FileInputStream(diffFilePath);
-			String patchStringExpected = StringUtils.join(IOUtils.readLines(is), '\n');
-			IOUtils.closeQuietly(is);
-			assertEquals(patchStringExpected.trim(), patchStringActual.trim());
-		} else if (!failIfNoReference) {
-			return;
-		} else {
-			fail("There is no reference diff.");			
-		}
-	}
-	
-	private File createDiffFilePath(String testMethodName) {
-		String fileName = getClass().getSimpleName() + "_" + testMethodName + ".diff";
-		return new File(diffDir, fileName);
-	}
-	
-	private void assertCompilable() throws InterruptedException, ExecutionException, TimeoutException {
-		ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-		
-		final File baseDirChanged = project.getLocation().makeAbsolute().toFile();
-		Iterator<File> filesIter = FileUtils.iterateFiles(baseDirChanged, new SuffixFileFilter(".java"), DirectoryFileFilter.INSTANCE);
-		Collection<Future<Pair<Integer, String>>> futures = new Vector<Future<Pair<Integer, String>>>();
-		while(filesIter.hasNext()) {
-			final File javaFile = filesIter.next();
-			Callable<Pair<Integer, String>> compileTask = new Callable<Pair<Integer, String>>() {
-				@Override
-				public Pair<Integer, String> call() throws Exception {
-					IAPI openjmlAPI;
-					PrintWriter discardPrintWriter = new PrintWriter(new NullOutputStream());
-					StringWriter outputStringWriter = new StringWriter();
-					PrintWriter outputPrintWriter = new PrintWriter(outputStringWriter);
-					try {
-						openjmlAPI = Factory.makeAPI(discardPrintWriter, null, null, new String[0]);
-						String[] params = new String[]{
-								"-check",
-								"-jml",
-								"-nullableByDefault=false",
-								"-no-internalSpecs",
-								"-no-internalRuntime",
-								"-purityCheck=true" ,
-								"-d",  new File(baseDirChanged.getAbsolutePath(), "bin").getAbsolutePath(),
-								"-sourcepath", new File(baseDirChanged.getAbsolutePath(), "src").getAbsolutePath(),
-								"-specspath", new File(baseDirChanged.getAbsolutePath(), "specs").getAbsolutePath(),
-								"-cp", new File(baseDirChanged.getAbsolutePath(), "bin").getAbsolutePath() + File.pathSeparatorChar + jmlSpecsLib.getAbsolutePath() + File.pathSeparatorChar + jmlRuntimeLib.getAbsolutePath(),
-								javaFile.getAbsolutePath()	
-						};
-						int returnCode = openjmlAPI.execute(outputPrintWriter, null, null, params);
-						return new Pair<Integer, String>(returnCode, outputStringWriter.getBuffer().toString());
-					} catch (Exception e) {
-						return new Pair<Integer, String>(-1, e.getMessage());
-					} finally {
-						IOUtils.closeQuietly(discardPrintWriter);
-						IOUtils.closeQuietly(outputPrintWriter);
-						IOUtils.closeQuietly(outputStringWriter);
-					}
-				}
-			};
-			futures.add(executor.submit(compileTask));
-		}
-		executor.shutdown();
-		
-		// assert compilation result
-		for (Future<Pair<Integer, String>> future : futures) {
-			Pair<Integer, String> result = future.get(5, TimeUnit.MINUTES);
-			assertEquals(result.getSecond(), 0, result.getFirst().intValue());
-		}
-		
-		// assert termination
-		assertTrue(executor.awaitTermination(5, TimeUnit.MINUTES));
-	}
-	
-	private String createPatch() throws IOException, InterruptedException {
-		File baseDirOriginal = originalProjectFilesLocation;
-		File baseDirChanged = project.getLocation().makeAbsolute().toFile();
+        public boolean isValue() {
+            return this.value;
+        }
 
-		DirDiffer differ = new DirDiffer(baseDirOriginal, baseDirChanged, ".java", ".jml");
-		return differ.getPatch();
-	}
-	
-	private static File getOrCreateDiffDir() {
-		File baseDir = Paths.get("diffs").toAbsolutePath().toFile();
-		if (!baseDir.exists()) {
-			baseDir.mkdirs();
-		}
-		return baseDir;
-	}
-	
-	private static File extractOriginalProjectFiles() {
-		try {
-			File tmpDir = Files.createTempDir();
-			FileUtils.forceDeleteOnExit(tmpDir);
-			
-			InputStream is = null;
-			ZipArchiveInputStream zais = null;
-			try {			
-				is = FrameworkTestBase.class.getResourceAsStream("resources/edu.kit.ipd.sdq.seifermann.casestudies.javacard.zip");
-				zais = new ZipArchiveInputStream(is);
-				for (ZipArchiveEntry entry = zais.getNextZipEntry(); entry != null; entry = zais.getNextZipEntry()) {
-					File destinationFile = new File(tmpDir, entry.getName());
-					if (entry.isDirectory()) {
-						destinationFile.mkdirs();
-						continue;
-					}
-					FileOutputStream fos = null;
-					try {
-						fos = new FileOutputStream(destinationFile);
-						IOUtils.copy(zais, fos);				
-					} finally {
-						IOUtils.closeQuietly(fos);
-					}
-				}
-			} finally {
-				IOUtils.closeQuietly(zais);
-				IOUtils.closeQuietly(is);
-			}
-			
-			return tmpDir;			
-		} catch (IOException e) {
-			return null;
-		}
-	}
-	
-	protected static IProject createNewProject() throws CoreException, IOException {
-		// https://sdqweb.ipd.kit.edu/wiki/JDT_Tutorial:_Creating_Eclipse_Java_Projects_Programmatically
-		
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IProject project = root.getProject(RandomStringUtils.random(10, true, true));
-		project.create(null);
-		project.open(null);
-		
-		IProjectDescription description = project.getDescription();
-		description.setNatureIds(new String[] { JavaCore.NATURE_ID });
-		project.setDescription(description, null);
-		
-		IJavaProject javaProject = JavaCore.create(project);
-		
-		IFolder binFolder = project.getFolder("bin");
-		if (!binFolder.exists()) {
-			binFolder.create(false, true, null);			
-		}
-		javaProject.setOutputLocation(binFolder.getFullPath(), null);
-		
-		List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>();
-		IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
-		LibraryLocation[] locations = JavaRuntime.getLibraryLocations(vmInstall);
-		for (LibraryLocation element : locations) {
-		 entries.add(JavaCore.newLibraryEntry(element.getSystemLibraryPath(), null, null));
-		}
-		//add libs to project class path
-		javaProject.setRawClasspath(entries.toArray(new IClasspathEntry[entries.size()]), null);
-		
-		IFolder sourceFolder = project.getFolder("src");
-		sourceFolder.create(false, true, null);
+        public void setValue(final boolean value) {
+            this.value = value;
+        }
+    }
 
-		IPackageFragmentRoot pgkRoot = javaProject.getPackageFragmentRoot(sourceFolder);
-		IClasspathEntry[] oldEntries = javaProject.getRawClasspath();
-		IClasspathEntry[] newEntries = new IClasspathEntry[oldEntries.length + 1];
-		System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
-		newEntries[oldEntries.length] = JavaCore.newSourceEntry(pgkRoot.getPath());
-		javaProject.setRawClasspath(newEntries, null);
-		
-		final File baseDirForExtraction = project.getLocation().makeAbsolute().toFile();
-		FileUtils.copyDirectory(originalProjectFilesLocation, baseDirForExtraction);
-		
-		project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-		
-		return project;
-	}
-	
+    private static File jmlRuntimeLib;
+    private static File jmlSpecsLib;
+    private static final File diffDir = getOrCreateDiffDir();
+    private static final ActivateHandler activator = new ActivateHandler();
+    private static final DeactivateHandler deactivator = new DeactivateHandler();
+    private static final File originalProjectFilesLocation = extractOriginalProjectFiles();
+    private final BooleanContainer synchronisationHasBeenStarted = new BooleanContainer(false);
+    private final BooleanContainer synchronisationInProgress = new BooleanContainer(false);
+    private IProject project;
+    private boolean synchronisationAborted;
+
+    protected static final EditorManipulator editorManipulator = new EditorManipulator();
+    protected CodeElementUtil codeElementUtil;
+    protected ProjectModelsUtils projectModelUtils;
+
+    @BeforeClass
+    public static void init() throws IOException {
+        final File tmpDir = Files.createTempDir();
+        FileUtils.forceDeleteOnExit(tmpDir);
+
+        jmlRuntimeLib = writeToDir(tmpDir, "resources/jmlruntime.jar.resource", "jmlruntime.jar");
+        jmlSpecsLib = writeToDir(tmpDir, "resources/jmlspecs.jar.resource", "jmlspecs.jar");
+    }
+
+    private static File writeToDir(final File dir, final String resourceString, final String fileName)
+            throws IOException {
+        InputStream libIn = null;
+        OutputStream libOut = null;
+        final File createdFile = new File(dir, fileName);
+
+        try {
+            libIn = FrameworkTestBase.class.getResourceAsStream(resourceString);
+            libOut = new FileOutputStream(createdFile);
+            IOUtils.copy(libIn, libOut);
+            return createdFile;
+        } finally {
+            IOUtils.closeQuietly(libIn);
+            IOUtils.closeQuietly(libOut);
+        }
+    }
+
+    @Before
+    public void setup() throws Exception {
+        this.project = createNewProject();
+        FileUtils.forceDeleteOnExit(this.project.getLocation().makeAbsolute().toFile());
+        this.codeElementUtil = new CodeElementUtil(this.project);
+        this.projectModelUtils = new ProjectModelsUtils(this.project);
+        this.synchronisationAborted = false;
+
+        synchronized (this.synchronisationInProgress) {
+            this.synchronisationHasBeenStarted.setValue(false);
+        }
+
+        activator.activate(this.project.getName());
+        ChangeSynchronizerRegistry.getInstance().getChangeSynchronizer().register(new SynchronisationListener() {
+            @Override
+            public void syncStarted() {
+                synchronized (FrameworkTestBase.this.synchronisationInProgress) {
+                    FrameworkTestBase.this.synchronisationHasBeenStarted.setValue(true);
+                    FrameworkTestBase.this.synchronisationInProgress.setValue(true);
+                    FrameworkTestBase.this.synchronisationInProgress.notifyAll();
+                }
+            }
+
+            @Override
+            public void syncFinished() {
+                synchronized (FrameworkTestBase.this.synchronisationInProgress) {
+                    FrameworkTestBase.this.synchronisationInProgress.setValue(false);
+                    FrameworkTestBase.this.synchronisationInProgress.notifyAll();
+                }
+            }
+
+            @Override
+            public void syncAborted(final TransformationAbortCause cause) {
+                FrameworkTestBase.this.synchronisationAborted = true;
+            }
+
+            @Override
+            public void syncAborted(final EMFModelChange abortedChange) {
+                FrameworkTestBase.this.synchronisationAborted = true;
+            }
+        });
+    }
+
+    @After
+    public void teardown() throws Exception {
+        deactivator.deactivate();
+        this.project.delete(true, true, null);
+    }
+
+    @AfterClass
+    public static void deinitialize() throws IOException {
+        FileUtils.forceDelete(jmlRuntimeLib);
+        FileUtils.forceDelete(jmlSpecsLib);
+    }
+
+    protected void waitForSynchronisationToFinish() throws InterruptedException {
+        final Stopwatch waitingTime = Stopwatch.createStarted();
+        synchronized (this.synchronisationInProgress) {
+            while (!this.synchronisationHasBeenStarted.isValue() || this.synchronisationInProgress.isValue()) {
+                if (!this.synchronisationHasBeenStarted.isValue() && waitingTime.elapsed(TimeUnit.MINUTES) > 1) {
+                    fail("No synchronisation has been started.");
+                }
+                this.synchronisationInProgress.wait(10000);
+            }
+        }
+        Thread.sleep(5000); // Wait for the model serialization to finish
+        // TODO add observer to serialization job in ChangeSynchronizer and wait for event
+    }
+
+    protected void assertTransformationAborted() {
+        assertTrue(this.synchronisationAborted);
+    }
+
+    protected void createAndCompareDiff(final String testMethodName)
+            throws IOException, InterruptedException, ExecutionException, TimeoutException {
+        this.createAndCompareDiff(testMethodName, true);
+    }
+
+    protected void createAndCompareDiff(final String testMethodName, final boolean failIfNoReference)
+            throws IOException, InterruptedException, ExecutionException, TimeoutException {
+        final File diffFilePath = this.createDiffFilePath(testMethodName);
+        final String patchStringActual = this.createPatch();
+
+        if (!diffFilePath.exists()) {
+            final File diffFilePathIntermediate = new File(diffFilePath.getAbsolutePath() + ".intermediate");
+            final OutputStream os = new FileOutputStream(diffFilePathIntermediate);
+            IOUtils.write(patchStringActual, os);
+            os.close();
+        }
+
+        // we try to compile it after we serialized the diff, so we can examine the cause of the
+        // problem
+        this.assertCompilable();
+
+        if (diffFilePath.exists()) {
+            final InputStream is = new FileInputStream(diffFilePath);
+            final String patchStringExpected = StringUtils.join(IOUtils.readLines(is), '\n');
+            IOUtils.closeQuietly(is);
+            assertEquals(patchStringExpected.trim(), patchStringActual.trim());
+        } else if (!failIfNoReference) {
+            return;
+        } else {
+            fail("There is no reference diff.");
+        }
+    }
+
+    private File createDiffFilePath(final String testMethodName) {
+        final String fileName = this.getClass().getSimpleName() + "_" + testMethodName + ".diff";
+        return new File(diffDir, fileName);
+    }
+
+    private void assertCompilable() throws InterruptedException, ExecutionException, TimeoutException {
+        final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        final File baseDirChanged = this.project.getLocation().makeAbsolute().toFile();
+        final Iterator<File> filesIter = FileUtils.iterateFiles(baseDirChanged, new SuffixFileFilter(".java"),
+                DirectoryFileFilter.INSTANCE);
+        final Collection<Future<Pair<Integer, String>>> futures = new Vector<Future<Pair<Integer, String>>>();
+        while (filesIter.hasNext()) {
+            final File javaFile = filesIter.next();
+            final Callable<Pair<Integer, String>> compileTask = new Callable<Pair<Integer, String>>() {
+                @Override
+                public Pair<Integer, String> call() throws Exception {
+                    IAPI openjmlAPI;
+                    final PrintWriter discardPrintWriter = new PrintWriter(new NullOutputStream());
+                    final StringWriter outputStringWriter = new StringWriter();
+                    final PrintWriter outputPrintWriter = new PrintWriter(outputStringWriter);
+                    try {
+                        openjmlAPI = Factory.makeAPI(discardPrintWriter, null, null, new String[0]);
+                        final String[] params = new String[] { "-check", "-jml", "-nullableByDefault=false",
+                                "-no-internalSpecs", "-no-internalRuntime", "-purityCheck=true", "-d",
+                                new File(baseDirChanged.getAbsolutePath(), "bin").getAbsolutePath(), "-sourcepath",
+                                new File(baseDirChanged.getAbsolutePath(), "src").getAbsolutePath(), "-specspath",
+                                new File(baseDirChanged.getAbsolutePath(), "specs").getAbsolutePath(), "-cp",
+                                new File(baseDirChanged.getAbsolutePath(), "bin").getAbsolutePath()
+                                        + File.pathSeparatorChar + jmlSpecsLib.getAbsolutePath()
+                                        + File.pathSeparatorChar + jmlRuntimeLib.getAbsolutePath(),
+                                javaFile.getAbsolutePath() };
+                        final int returnCode = openjmlAPI.execute(outputPrintWriter, null, null, params);
+                        return new Pair<Integer, String>(returnCode, outputStringWriter.getBuffer().toString());
+                    } catch (final Exception e) {
+                        return new Pair<Integer, String>(-1, e.getMessage());
+                    } finally {
+                        IOUtils.closeQuietly(discardPrintWriter);
+                        IOUtils.closeQuietly(outputPrintWriter);
+                        IOUtils.closeQuietly(outputStringWriter);
+                    }
+                }
+            };
+            futures.add(executor.submit(compileTask));
+        }
+        executor.shutdown();
+
+        // assert compilation result
+        for (final Future<Pair<Integer, String>> future : futures) {
+            final Pair<Integer, String> result = future.get(5, TimeUnit.MINUTES);
+            assertEquals(result.getSecond(), 0, result.getFirst().intValue());
+        }
+
+        // assert termination
+        assertTrue(executor.awaitTermination(5, TimeUnit.MINUTES));
+    }
+
+    private String createPatch() throws IOException, InterruptedException {
+        final File baseDirOriginal = originalProjectFilesLocation;
+        final File baseDirChanged = this.project.getLocation().makeAbsolute().toFile();
+
+        final DirDiffer differ = new DirDiffer(baseDirOriginal, baseDirChanged, ".java", ".jml");
+        return differ.getPatch();
+    }
+
+    private static File getOrCreateDiffDir() {
+        final File baseDir = Paths.get("diffs").toAbsolutePath().toFile();
+        if (!baseDir.exists()) {
+            baseDir.mkdirs();
+        }
+        return baseDir;
+    }
+
+    private static File extractOriginalProjectFiles() {
+        try {
+            final File tmpDir = Files.createTempDir();
+            FileUtils.forceDeleteOnExit(tmpDir);
+
+            InputStream is = null;
+            ZipArchiveInputStream zais = null;
+            try {
+                is = FrameworkTestBase.class
+                        .getResourceAsStream("resources/edu.kit.ipd.sdq.seifermann.casestudies.javacard.zip");
+                zais = new ZipArchiveInputStream(is);
+                for (ZipArchiveEntry entry = zais.getNextZipEntry(); entry != null; entry = zais.getNextZipEntry()) {
+                    final File destinationFile = new File(tmpDir, entry.getName());
+                    if (entry.isDirectory()) {
+                        destinationFile.mkdirs();
+                        continue;
+                    }
+                    FileOutputStream fos = null;
+                    try {
+                        fos = new FileOutputStream(destinationFile);
+                        IOUtils.copy(zais, fos);
+                    } finally {
+                        IOUtils.closeQuietly(fos);
+                    }
+                }
+            } finally {
+                IOUtils.closeQuietly(zais);
+                IOUtils.closeQuietly(is);
+            }
+
+            return tmpDir;
+        } catch (final IOException e) {
+            return null;
+        }
+    }
+
+    protected static IProject createNewProject() throws CoreException, IOException {
+        // https://sdqweb.ipd.kit.edu/wiki/JDT_Tutorial:_Creating_Eclipse_Java_Projects_Programmatically
+
+        final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+        final IProject project = root.getProject(RandomStringUtils.random(10, true, true));
+        project.create(null);
+        project.open(null);
+
+        final IProjectDescription description = project.getDescription();
+        description.setNatureIds(new String[] { JavaCore.NATURE_ID });
+        project.setDescription(description, null);
+
+        final IJavaProject javaProject = JavaCore.create(project);
+
+        final IFolder binFolder = project.getFolder("bin");
+        if (!binFolder.exists()) {
+            binFolder.create(false, true, null);
+        }
+        javaProject.setOutputLocation(binFolder.getFullPath(), null);
+
+        final List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>();
+        final IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
+        final LibraryLocation[] locations = JavaRuntime.getLibraryLocations(vmInstall);
+        for (final LibraryLocation element : locations) {
+            entries.add(JavaCore.newLibraryEntry(element.getSystemLibraryPath(), null, null));
+        }
+        // add libs to project class path
+        javaProject.setRawClasspath(entries.toArray(new IClasspathEntry[entries.size()]), null);
+
+        final IFolder sourceFolder = project.getFolder("src");
+        sourceFolder.create(false, true, null);
+
+        final IPackageFragmentRoot pgkRoot = javaProject.getPackageFragmentRoot(sourceFolder);
+        final IClasspathEntry[] oldEntries = javaProject.getRawClasspath();
+        final IClasspathEntry[] newEntries = new IClasspathEntry[oldEntries.length + 1];
+        System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
+        newEntries[oldEntries.length] = JavaCore.newSourceEntry(pgkRoot.getPath());
+        javaProject.setRawClasspath(newEntries, null);
+
+        final File baseDirForExtraction = project.getLocation().makeAbsolute().toFile();
+        FileUtils.copyDirectory(originalProjectFilesLocation, baseDirForExtraction);
+
+        project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+
+        return project;
+    }
+
 }

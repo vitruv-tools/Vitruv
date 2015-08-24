@@ -37,8 +37,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor.AbstractMonitored
  *         propagate changes to other with the code affiliated EMF models.
  *
  */
-public class MonitoredEditor extends AbstractMonitoredEditor implements UserInteracting, ChangeOperationListener,
-ChangeSubmitter, IStartup {
+public class MonitoredEditor extends AbstractMonitoredEditor
+        implements UserInteracting, ChangeOperationListener, ChangeSubmitter, IStartup {
 
     private final Logger log = Logger.getLogger(MonitoredEditor.class);
 
@@ -121,8 +121,6 @@ ChangeSubmitter, IStartup {
 
         }, null, MY_MONITORED_PROJECT);
         this.reportChanges = true;
-        // this(SyncManagerImpl.getSyncManagerInstance(), SyncManagerImpl
-        // .getSyncManagerInstance().getModelProviding());
     }
 
     protected void stopCollectInCompositeChange() {
@@ -168,11 +166,11 @@ ChangeSubmitter, IStartup {
     private void configureLogger() {
         Logger.getRootLogger().setLevel(Level.DEBUG);
         Logger.getRootLogger().removeAllAppenders();
-        Logger.getRootLogger().addAppender(
-                new ConsoleAppender(new PatternLayout("[%-5p] %d{HH:mm:ss,SSS} %-30C{1} - %m%n")));
+        Logger.getRootLogger()
+                .addAppender(new ConsoleAppender(new PatternLayout("[%-5p] %d{HH:mm:ss,SSS} %-30C{1} - %m%n")));
         try {
             final TimeFileLogAppender appender = TimeFileLogAppender.createInstanceFor(MY_MONITORED_PROJECT,
-            // "C:/Users/messinger/DominikMessinger/EvaluationData/hadoop-hdfs_monitor-overhead-measurements/time_measurements");
+                    // "C:/Users/messinger/DominikMessinger/EvaluationData/hadoop-hdfs_monitor-overhead-measurements/time_measurements");
                     "EvaluationData/hadoop-hdfs_monitor-overhead-measurements/time_measurements");
             this.log.addAppender(appender);
         } catch (final IOException e) {
