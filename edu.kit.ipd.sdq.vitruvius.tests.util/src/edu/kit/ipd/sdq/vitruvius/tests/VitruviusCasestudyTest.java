@@ -13,7 +13,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTr
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine.EMFModelPropagationEngineImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.ChangeSynchronizer;
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationExecuter;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
@@ -89,7 +89,7 @@ public abstract class VitruviusCasestudyTest {
         if (null == emfTransformationExecuter) {
             throw new RuntimeException("Could not find an EMFModelTransformationExecuting that is currently active.");
         }
-        final ChangeSynchronizer changeSynchronizer = TestUtil.getFieldFromClass(emfModelTransformationExecuterClass,
+        final TransformationExecuter changeSynchronizer = TestUtil.getFieldFromClass(emfModelTransformationExecuterClass,
                 nameOfChangeSynchronizerField, emfTransformationExecuter);
         changeSynchronizer.setUserInteracting(newUserInteracting);
     }

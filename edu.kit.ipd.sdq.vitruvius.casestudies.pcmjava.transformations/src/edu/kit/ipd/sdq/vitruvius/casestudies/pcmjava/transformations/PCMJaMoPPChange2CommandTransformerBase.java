@@ -21,7 +21,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTr
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor;
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.ChangeSynchronizer;
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationExecuter;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
@@ -29,14 +29,14 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
 
     private static final Logger logger = Logger.getLogger(PCMJaMoPPChange2CommandTransformerBase.class.getSimpleName());
 
-    protected final ChangeSynchronizer changeSynchronizer;
+    protected final TransformationExecuter changeSynchronizer;
 
     private final List<Pair<VURI, VURI>> pairList;
 
     protected UserInteractor userInteracting;
 
     public PCMJaMoPPChange2CommandTransformerBase() {
-        this.changeSynchronizer = new ChangeSynchronizer();
+        this.changeSynchronizer = new TransformationExecuter();
         this.initializeChangeSynchronizer();
         final VURI pcmVURI = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
         final VURI jaMoPPVURI = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE);
@@ -89,7 +89,7 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
             public void run() {
                 // execute command converting
                 PCMJaMoPPChange2CommandTransformerBase.this.changeSynchronizer
-                        .synchronizeChange(emfModelChange.getEChange());
+                        .executeTransformationForChange(emfModelChange.getEChange());
             }
         });
 

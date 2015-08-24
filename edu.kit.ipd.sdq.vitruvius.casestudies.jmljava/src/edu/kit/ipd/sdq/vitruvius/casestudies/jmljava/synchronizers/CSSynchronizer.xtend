@@ -31,7 +31,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.ChangeSynchronizer
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.ArrayList
 import java.util.HashSet
@@ -45,13 +44,14 @@ import org.emftext.language.java.types.Type
 import org.emftext.language.java.types.TypeReference
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.compositerefiners.JavaMethodParameterNumberChangedByOneCompositeChangeRefiner
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationExecuter
 
 /**
  * Synchronizer for Java and JML. It initializes the transformations and composite
  * change refiners. Additionally creates the transformation result, which is relevant
  * for the model handling (e.g. which model has to be saved).
  */
-class CSSynchronizer extends ChangeSynchronizer implements Change2CommandTransforming {
+class CSSynchronizer extends TransformationExecuter implements Change2CommandTransforming {
 	
 	static val Logger LOGGER = Logger.getLogger(CSSynchronizer)
 	val compositeChangeRefiners = new ArrayList<CompositeChangeRefiner>()
@@ -110,7 +110,7 @@ class CSSynchronizer extends ChangeSynchronizer implements Change2CommandTransfo
 		this.setCorrespondenceInstance(correspondenceInstance)
 		
 		val modelChange = (change as EMFModelChange).EChange
-		val result = synchronizeChange(modelChange)
+		val result = executeTransformationForChange(modelChange)
 		if (result.transformationAborted) {
 			syncAbortedListener.synchronisationAborted(change as EMFModelChange)
 		}
