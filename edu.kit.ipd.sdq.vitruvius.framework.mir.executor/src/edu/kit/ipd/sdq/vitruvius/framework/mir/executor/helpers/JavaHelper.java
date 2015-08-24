@@ -1,6 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers;
 
+import java.util.Collection;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * Helper class for casting, assertions, etc...
@@ -21,5 +23,14 @@ public final class JavaHelper {
 		} else {
 			return (Sub) object;
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <Sub extends Sup, Sup> Stream<Sub> filterType(Stream<Sup> stream, Class<Sub> type) {
+		return (Stream<Sub>) stream.filter(it -> type.isInstance(it));
+	}
+	
+	public static <Sub extends Sup, Sup> Stream<Sub> filterType(Collection<Sup> collection, Class<Sub> type) {
+		return filterType(collection.stream(), type);
 	}
 }
