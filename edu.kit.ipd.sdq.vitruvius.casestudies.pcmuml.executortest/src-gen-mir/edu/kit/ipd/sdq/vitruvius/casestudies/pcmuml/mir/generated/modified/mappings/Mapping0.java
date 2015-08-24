@@ -23,9 +23,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFCommandBridge;
  * Class Mapping
  */
 public class Mapping0 extends AbstractMIRMappingRealization {
-	// TODO: get EMFCommandBridge instance
-	private final EMFCommandBridge commandBridge = null;
-	
 	private static final Logger LOGGER = Logger.getLogger(Mapping0.class);
 	
 	// Singleton
@@ -60,7 +57,7 @@ public class Mapping0 extends AbstractMIRMappingRealization {
 		Package pkg = JavaHelper.requireType(eObject, Package.class);
 		final BasicComponent bc = JavaHelper.requireType(target, BasicComponent.class);
 
-		result.add(commandBridge.createCommand(() -> {
+		result.add(EMFCommandBridge.createCommand(() -> {
 			bc.setEntityName(pkg.getName());	
 		}));
 		
@@ -88,7 +85,7 @@ public class Mapping0 extends AbstractMIRMappingRealization {
 		LOGGER.trace("createCorresponding(" + eObject.toString() + ", " + blackboard.toString() + ")");
 
 		org.eclipse.uml2.uml.Package iface = (org.eclipse.uml2.uml.Package) eObject;
-		result.add(commandBridge.createCommand(() -> {
+		result.add(EMFCommandBridge.createCommand(() -> {
 			BasicComponent bc = RepositoryFactory.eINSTANCE.createBasicComponent();
 		}));
 		

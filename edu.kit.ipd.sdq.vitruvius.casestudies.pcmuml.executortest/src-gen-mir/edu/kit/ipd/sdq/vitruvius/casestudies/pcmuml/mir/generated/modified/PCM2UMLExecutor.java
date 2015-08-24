@@ -24,9 +24,6 @@ public class PCM2UMLExecutor extends AbstractMIRChange2CommandTransforming {
 	/** The second mapped metamodel. **/
 	public final String MM_TWO = "http://www.eclipse.org/uml2/5.0.0/UML";
 	
-	/** The correspondence instance for this TransformationExecuting. */
-	private final PCM2UMLExecutorCorrespondence mappedCorrespondenceInstance;
-	
 	private final VURI VURI_ONE = VURI.getInstance(MM_ONE);
 	private final VURI VURI_TWO = VURI.getInstance(MM_TWO);
 	
@@ -35,10 +32,8 @@ public class PCM2UMLExecutor extends AbstractMIRChange2CommandTransforming {
 	
 	public PCM2UMLExecutor() {
 		transformableMetamodels = new ArrayList<Pair<VURI, VURI>>();
-		transformableMetamodels.add(new Pair<VURI, VURI>(VURI_ONE, VURI_TWO));
+//		transformableMetamodels.add(new Pair<VURI, VURI>(VURI_ONE, VURI_TWO));
 		transformableMetamodels.add(new Pair<VURI, VURI>(VURI_TWO, VURI_ONE));
-		
-		this.mappedCorrespondenceInstance = new PCM2UMLExecutorCorrespondence();
 	}
 	
 	@Override
@@ -46,12 +41,13 @@ public class PCM2UMLExecutor extends AbstractMIRChange2CommandTransforming {
 		addMIRMapping(edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.Mapping0.INSTANCE);
 //		addMIRMapping(edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.Mapping1.INSTANCE);
 	}
-	
-	/*@Override
+
+	@Override
 	public List<Pair<VURI, VURI>> getTransformableMetamodels() {
 		return transformableMetamodels;
 	}
 	
+	/*
 	@Override
 	protected PCM2UMLExecutorCorrespondence getMappedCorrespondenceInstance() {
 		return this.mappedCorrespondenceInstance;
