@@ -1,9 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces;
 
-import java.util.List;
-
-import org.eclipse.emf.common.command.Command;
-
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 
@@ -20,7 +16,7 @@ public interface MIRMappingRealization {
 	 * @param correspondenceInstance
 	 * @return the resulting change
 	 */
-	public List<Command> applyEChange(EChange eChange, Blackboard blackboard);
+	public void applyEChange(EChange eChange, Blackboard blackboard);
 	
 	/**
 	 * Returns an ID that is unique for all mapping realizations.

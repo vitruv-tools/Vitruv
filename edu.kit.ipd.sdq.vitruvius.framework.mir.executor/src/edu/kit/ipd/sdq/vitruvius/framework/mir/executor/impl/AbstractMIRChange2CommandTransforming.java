@@ -19,6 +19,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.InvariantRegi
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.Response;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.ResponseRegistry;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFCommandBridge;
 
 public abstract class AbstractMIRChange2CommandTransforming implements Change2CommandTransforming {
     private final static Logger LOGGER = Logger.getLogger(AbstractMIRChange2CommandTransforming.class);
@@ -78,7 +79,7 @@ public abstract class AbstractMIRChange2CommandTransforming implements Change2Co
         final List<Command> result = new ArrayList<Command>();
         final Collection<MIRMappingRealization> relevantMappings = this.getCandidateMappings(eChange);
         for (final MIRMappingRealization mapping : relevantMappings) {
-            result.addAll(mapping.applyEChange(eChange, blackboard));
+            result.add(EMFCommandBridge.createCommand(() -> mapping.applyEChange(eChange, blackboard)));
         }
         return result;
     }

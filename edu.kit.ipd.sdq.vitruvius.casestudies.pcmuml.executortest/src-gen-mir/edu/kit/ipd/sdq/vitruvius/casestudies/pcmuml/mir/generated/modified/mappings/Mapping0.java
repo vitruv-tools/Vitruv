@@ -1,10 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.Collections;
 
 import org.apache.log4j.Logger;
-import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.uml2.uml.Package;
@@ -16,7 +15,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRMappingRealization;
-import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFCommandBridge;
 
 
 /**
@@ -50,27 +48,22 @@ public class Mapping0 extends AbstractMIRMappingRealization {
 	}
 
 	@Override
-	protected List<Command> restorePostConditions(EObject eObject, EObject target, EChange change) {
-		final List<Command> result = new ArrayList<Command>();
+	protected void restorePostConditions(EObject eObject, EObject target, EChange change) {
 		LOGGER.trace("restorePostConditions(" + eObject.toString() + ", " + target.toString() + ", " + change.toString() + ")");
 		
 		Package pkg = JavaHelper.requireType(eObject, Package.class);
 		final BasicComponent bc = JavaHelper.requireType(target, BasicComponent.class);
 
-		result.add(EMFCommandBridge.createCommand(() -> {
-			bc.setEntityName(pkg.getName());	
-		}));
-		
-		return result;
+		bc.setEntityName(pkg.getName());	
 	}
 	
 	@Override
-	protected List<Command> deleteCorresponding(EObject eObject, EObject target, Blackboard blackboard) {
+	protected void deleteCorresponding(EObject eObject, EObject target, Blackboard blackboard) {
 		LOGGER.trace("deleteCorresponding(" + eObject.toString()
 			+ ", " + target.toString()
 			+ ", " + blackboard.toString() + ")");
 		
-		return super.deleteCorresponding(eObject, target, blackboard);
+		super.deleteCorresponding(eObject, target, blackboard);
 	}
 
 	@Override
@@ -79,17 +72,13 @@ public class Mapping0 extends AbstractMIRMappingRealization {
 	}
 
 	@Override
-	protected List<Command> createCorresponding(EObject eObject, Blackboard blackboard) {
-		List<Command> result = new ArrayList<Command>();
-		
+	protected Collection<EObject> createCorresponding(EObject eObject, Blackboard blackboard) {
 		LOGGER.trace("createCorresponding(" + eObject.toString() + ", " + blackboard.toString() + ")");
 
-		org.eclipse.uml2.uml.Package iface = (org.eclipse.uml2.uml.Package) eObject;
-		result.add(EMFCommandBridge.createCommand(() -> {
-			BasicComponent bc = RepositoryFactory.eINSTANCE.createBasicComponent();
-			
-		}));
+		org.eclipse.uml2.uml.Package pkg = (org.eclipse.uml2.uml.Package) eObject;
+		BasicComponent bc = RepositoryFactory.eINSTANCE.createBasicComponent();
+		getMappedCorrespondenceInstanceFromBlackboard(blackboard).createMappedCorrespondence(pkg, bc, this);
 		
-		return result;
+		return Collections.singleton(bc);
 	}
 }

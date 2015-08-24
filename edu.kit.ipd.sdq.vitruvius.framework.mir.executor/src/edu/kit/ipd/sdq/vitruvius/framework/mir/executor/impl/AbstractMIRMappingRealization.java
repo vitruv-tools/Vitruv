@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EclipseHelper;
@@ -70,13 +71,14 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 	 *            the change that was applied
 	 * @return
 	 */
-	protected abstract List<Command> restorePostConditions(EObject eObject, EObject target, EChange change);
+	protected abstract void restorePostConditions(EObject eObject, EObject target, EChange change);
 
 	/**
 	 * Creates a corresponding object for <code>eObject</code> and a
 	 * correspondence in the mapped meta model and registers it
+	 * @return the created objects
 	 */
-	protected abstract List<Command> createCorresponding(EObject eObject, Blackboard blackboard);
+	protected abstract Collection<EObject> createCorresponding(EObject eObject, Blackboard blackboard);
 
 	/**
 	 * Deletes the corresponding object (and its children) and the
@@ -85,15 +87,10 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 	 * @param eObject
 	 * @param correspondenceInstance
 	 */
-	protected List<Command> deleteCorresponding(EObject eObject, EObject target, Blackboard blackboard) {
+	protected void deleteCorresponding(EObject eObject, EObject target, Blackboard blackboard) {
 		// TODO: implement
 		
-		List<Command> result = new ArrayList<Command>();
-
-		result.add(EMFCommandBridge.createCommand(() -> {
-			EcoreUtil.delete(target);
-		}));
-		
+		EcoreUtil.delete(target);
 		throw new UnsupportedOperationException("Not implemented");
 
 		//return result;
@@ -112,13 +109,17 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 		return toList(filter(affectedObjects, p -> p.eClass().equals(mappedEClass)));
 	}
 
-	private MappedCorrespondenceInstance getMappedCorrespondenceInstanceFromBlackboard(Blackboard blackboard) {
-		// TODO: implement
-		throw new UnsupportedOperationException("Not implemented");
+	protected MappedCorrespondenceInstance getMappedCorrespondenceInstanceFromBlackboard(Blackboard blackboard) {
+		CorrespondenceInstance correspondenceInstance = blackboard.getCorrespondenceInstance();
+		if (!(correspondenceInstance instanceof MappedCorrespondenceInstance)) {
+			throw new IllegalArgumentException("The given correspondence instance " + correspondenceInstance + " is not a " + MappedCorrespondenceInstance.class.getSimpleName());
+		} else {
+			return (MappedCorrespondenceInstance) correspondenceInstance;
+		}
 	}
 
 	@Override
-	public List<Command> applyEChange(EChange eChange, Blackboard blackboard) {
+	public void applyEChange(EChange eChange, Blackboard blackboard) {
 		MappedCorrespondenceInstance correspondenceInstance = getMappedCorrespondenceInstanceFromBlackboard(blackboard);
 
 		/*
@@ -126,7 +127,6 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 		 * still, remove), Mapping) in AbstractMIRChange2CommandTransforming.
 		 */
 		Collection<EObject> candidates = getCandidates(eChange);
-		List<Command> result = new ArrayList<Command>();
 
 		for (EObject candidate : candidates) {
 			LOGGER.trace("Checking candidate " + candidate.toString());
@@ -136,54 +136,38 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 
 			EObject mappingTarget = null;
 			final Collection<EObject> affectedEObjects = new HashSet<EObject>();
+			affectedEObjects.add(candidate);
 
 			if (mappedBefore) {
 				mappingTarget = Objects.requireNonNull(correspondenceInstance.getMappingTarget(candidate, this));
 
 				if (!mappedAfter) {
-					result.addAll(deleteCorresponding(candidate, mappingTarget, blackboard));
+					deleteCorresponding(candidate, mappingTarget, blackboard);
 				}
 			}
 
 			if (!mappedBefore && mappedAfter) {
-				List<Command> createCorrespondingCommands = createCorresponding(candidate, blackboard);
-				affectedEObjects.addAll(
-						createCorrespondingCommands.stream()
-							.flatMap(it -> (Stream<EObject>)
-								(it.getAffectedObjects().stream()
-								   .filter(object -> object instanceof EObject)))
-							.collect(Collectors.toList()));
-				result.addAll(createCorrespondingCommands);
+				affectedEObjects.addAll(createCorresponding(candidate, blackboard));
 				mappingTarget = Objects.requireNonNull(correspondenceInstance.getMappingTarget(candidate, this));
 			}
 
 			if (mappedAfter) {
-				result.addAll(restorePostConditions(candidate, mappingTarget, eChange));
+				restorePostConditions(candidate, mappingTarget, eChange);
 			}
 
-			result.addAll(handleNonContainedEObjects(affectedEObjects));
+			handleNonContainedEObjects(affectedEObjects);
 		}
-
-		return result;
 	}
 
 	/**
 	 * Asks the user and creates new resources for EObjects in <code>affectedEObjects</code>
 	 * that do not have a container.
 	 */
-	private List<Command> handleNonContainedEObjects(Collection<EObject> affectedEObjects) {
-		if (affectedEObjects.isEmpty()) 
-			return Collections.emptyList();
-		
-		final List<Command> result = new ArrayList<Command>();
-		
+	private void handleNonContainedEObjects(Collection<EObject> affectedEObjects) {
 		for (final EObject eObject : affectedEObjects) {
 			if (eObject.eContainer() == null) {
-				Runnable saveRunnable = () -> EclipseHelper.askAndSaveResource(eObject);
-				result.add(EMFCommandBridge.createCommand(saveRunnable));
+				EclipseHelper.askAndSaveResource(eObject);
 			}
 		}
-		
-		return result;
 	}
 }
