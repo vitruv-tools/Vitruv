@@ -87,6 +87,7 @@ public class Mapping0 extends AbstractMIRMappingRealization {
 		org.eclipse.uml2.uml.Package iface = (org.eclipse.uml2.uml.Package) eObject;
 		result.add(EMFCommandBridge.createCommand(() -> {
 			BasicComponent bc = RepositoryFactory.eINSTANCE.createBasicComponent();
+			
 		}));
 		
 		return result;

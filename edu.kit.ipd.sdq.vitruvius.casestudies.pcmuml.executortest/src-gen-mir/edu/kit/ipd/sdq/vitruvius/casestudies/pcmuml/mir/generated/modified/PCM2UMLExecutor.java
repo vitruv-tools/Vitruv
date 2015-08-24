@@ -32,7 +32,7 @@ public class PCM2UMLExecutor extends AbstractMIRChange2CommandTransforming {
 	
 	public PCM2UMLExecutor() {
 		transformableMetamodels = new ArrayList<Pair<VURI, VURI>>();
-//		transformableMetamodels.add(new Pair<VURI, VURI>(VURI_ONE, VURI_TWO));
+		transformableMetamodels.add(new Pair<VURI, VURI>(VURI_ONE, VURI_TWO));
 		transformableMetamodels.add(new Pair<VURI, VURI>(VURI_TWO, VURI_ONE));
 	}
 	
