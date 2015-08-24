@@ -21,10 +21,10 @@ Require-Bundle: org.eclipse.core.resources;bundle-version="3.9.0",
  edu.kit.ipd.sdq.vitruvius.framework.meta.change;bundle-version="1.0.0";visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor;bundle-version="1.0.0";visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine,
- edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager,
+ edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer,
  edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.run.userinteractor;bundle-version="1.0.0";visibility:=reexport,
- edu.kit.ipd.sdq.vitruvius.framework.synctransprovider,
+ edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider,
  edu.kit.ipd.sdq.vitruvius.framework.vsum,
  edu.kit.ipd.sdq.vitruvius.framework.util;bundle-version="1.0.0";visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

@@ -4,18 +4,17 @@
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.viewtypemanaging" name="MetaReposiotry" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.viewtypemanaging.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.metamodelmanaging" name="MetamodelManaging" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.metamodelmanaging.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.mappingmanaging" name="MappingManaging" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.mappingmanaging.exsd"/>
-   <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.correspondencemmproviding" name="CorrespondenceMMProviding" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.correspondencemmproviding.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.modelcopyproviding" name="ModelCopyProviding" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.modelcopyproviding.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.modelproviding" name="ModelProviding" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.modelproviding.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.changepropagating" name="ChangePropagating" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.changepropagating.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.changesynchronizing" name="ChangeSynchronizing" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.changesynchronizing.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.modelexandimporting" name="ModelExAndImporting" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.modelexandimporting.exsd"/>
-   <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.transformationexecutingproviding" name="SyncTransformationProviding" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.synctransformationproviding.exsd"/>
-   <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.mirmanaging" name="MIRManaging" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.mirmanaging.exsd"/>
+<extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.mirmanaging" name="MIRManaging" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.mirmanaging.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.synctransformationgenerating" name="SyncTransformationGenerating" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.synctransformationgenerating.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.projectgenerating" name="ProjectGenerating" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.projectgenerating.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.projectpreparing" name="ProjectPreparing" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.projectpreparing.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.change2commandtransforming" name="Change2CommandTransforming" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.change2commandtransforming.exsd"/>
+   <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.change2commandtransformingproviding" name="Change2CommandTransformingProviding" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.change2commandtransformingproviding.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.synchronizationlistening" name="SynchronizationListening" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.synchronizationlistening.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.changepreparing" name="ChangePreparing" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.changepreparing.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.commandexecuting" name="CommandExecuting" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.commandexecuting.exsd"/>

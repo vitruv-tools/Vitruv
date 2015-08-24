@@ -32,8 +32,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine.EMFModelPropagationEngineImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager.SyncManagerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMConstants;
 
 /**
@@ -49,7 +49,7 @@ public class VitruviusChangeSynchronizer implements ChangeSynchronizing {
     protected final VSUMImplCustom vsumImpl;
     protected final TransformationExecutingProvidingImplCustom transformationExecutingProvidingImpl;
     protected final EMFModelPropagationEngineImpl propagationEngineImpl;
-    protected final SyncManagerImpl syncManagerImpl;
+    protected final ChangeSynchronizerImpl syncManagerImpl;
 
     /**
      * Constructor.
@@ -202,12 +202,12 @@ public class VitruviusChangeSynchronizer implements ChangeSynchronizing {
      *            An initialized implementation of a validating.
      * @return An initialized sync manager.
      */
-    protected SyncManagerImpl constructSyncManagerImpl(final ModelProviding modelProviding,
+    protected ChangeSynchronizerImpl constructSyncManagerImpl(final ModelProviding modelProviding,
             final ChangePropagating changePropagating, final CorrespondenceProviding correspondenceProviding,
             final Validating validating) {
         LOGGER.info("Constructing sync manager.");
 
-        final SyncManagerImpl result = new SyncManagerImpl(modelProviding, changePropagating, correspondenceProviding,
+        final ChangeSynchronizerImpl result = new ChangeSynchronizerImpl(modelProviding, changePropagating, correspondenceProviding,
                 null, validating, null);
 
         return result;

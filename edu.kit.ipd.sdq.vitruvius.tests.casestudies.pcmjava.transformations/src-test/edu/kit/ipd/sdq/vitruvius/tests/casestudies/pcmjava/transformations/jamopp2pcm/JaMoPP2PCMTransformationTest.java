@@ -87,7 +87,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PC
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager.SyncManagerImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
@@ -392,7 +392,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
      */
     private void setUserInteractor(final UserInteracting newUserInteracting) throws Throwable {
         final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
-        final SyncManagerImpl syncManagerImpl = TestUtil.getFieldFromClass(VitruviusEmfBuilder.class,
+        final ChangeSynchronizerImpl syncManagerImpl = TestUtil.getFieldFromClass(VitruviusEmfBuilder.class,
                 "changeSynchronizing", pcmJavaBuilder);
         this.setUserInteractor(newUserInteracting, syncManagerImpl);
     }

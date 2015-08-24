@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.changepreparer.ChangePreparingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
@@ -28,13 +29,12 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationL
 import edu.kit.ipd.sdq.vitruvius.framework.design.metamodelmanager.MetamodelManagerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.design.viewtype.manager.ViewTypeManagerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitruviusEMFEditorMonitor;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.monitor.DefaultEditorPartAdapterFactoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.monitor.EMFEditorMonitorFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager.SyncManagerImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
@@ -120,7 +120,7 @@ public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder impl
         final Change2CommandTransformingProvidingImpl change2CommandTransformingProviding = new Change2CommandTransformingProvidingImpl();
         final ChangePreparing changePreparing = new ChangePreparingImpl(this.vsum, this.vsum);
         final CommandExecuting commandExecuting = new CommandExecutingImpl();
-        final SyncManagerImpl smi = new SyncManagerImpl(this.vsum, change2CommandTransformingProviding, this.vsum,
+        final ChangeSynchronizerImpl smi = new ChangeSynchronizerImpl(this.vsum, change2CommandTransformingProviding, this.vsum,
                 metaRepositoryImpl, this.vsum, this, changePreparing, commandExecuting);
         // create syncManager
         this.changeSynchronizing = smi;

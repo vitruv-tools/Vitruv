@@ -6,14 +6,14 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 
+import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine.EMFModelPropagationEngineImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager.SyncManagerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.ChangeSynchronizer;
-import edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
@@ -68,10 +68,10 @@ public abstract class VitruviusCasestudyTest {
         return TestUtil.PROJECT_URI + "/";
     }
 
-    protected void setUserInteractor(final UserInteracting newUserInteracting, final SyncManagerImpl syncManagerImpl)
+    protected void setUserInteractor(final UserInteracting newUserInteracting, final ChangeSynchronizerImpl syncManagerImpl)
             throws Throwable {
         final EMFModelPropagationEngineImpl emfModelPropagationEngineImpl = TestUtil.getFieldFromClass(
-                SyncManagerImpl.class, "changePropagating", syncManagerImpl);
+                ChangeSynchronizerImpl.class, "changePropagating", syncManagerImpl);
         final Change2CommandTransformingProvidingImpl transformationExecutingProvidingImpl = TestUtil.getFieldFromClass(
                 EMFModelPropagationEngineImpl.class, "transformationExecutingProviding", emfModelPropagationEngineImpl);
         final ClaimableMap<Pair<VURI, VURI>, Change2CommandTransforming> transformationExecuterMap = TestUtil

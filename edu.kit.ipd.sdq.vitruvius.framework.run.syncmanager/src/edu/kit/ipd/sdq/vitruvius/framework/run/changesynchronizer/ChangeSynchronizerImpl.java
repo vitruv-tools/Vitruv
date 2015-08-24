@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager;
+package edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -25,9 +25,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.BlackboardImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceInstance;
 
-public class SyncManagerImpl implements ChangeSynchronizing {
+public class ChangeSynchronizerImpl implements ChangeSynchronizing {
 
-    private static Logger logger = Logger.getLogger(SyncManagerImpl.class.getSimpleName());
+    private static Logger logger = Logger.getLogger(ChangeSynchronizerImpl.class.getSimpleName());
 
     private final ModelProviding modelProviding;
     private final Change2CommandTransformingProviding change2CommandTransformingProviding;
@@ -41,7 +41,7 @@ public class SyncManagerImpl implements ChangeSynchronizing {
     private Set<SynchronisationListener> synchronisationListeners;
     private Stack<Blackboard> blackboardHistory;
 
-    public SyncManagerImpl(final ModelProviding modelProviding,
+    public ChangeSynchronizerImpl(final ModelProviding modelProviding,
             final Change2CommandTransformingProviding change2CommandTransformingProviding,
             final CorrespondenceProviding correspondenceProviding, final InvariantProviding invariantProviding,
             final Validating validating, final SynchronisationListener synchronisationListener,

@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager;
+package edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer;
 
 import java.io.IOException;
 import java.util.Set;
@@ -26,7 +26,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple;
 /**
  * The VitruviusResourceManipulatingJob is an eclipse job. Its task is to save the changed models. A
  * own job is used since it is not always possible to save or manipulate elements using the same
- * thread that calls {@link SyncManagerImpl} ::synchronizeChange (e.g. when the manipulation is
+ * thread that calls {@link ChangeSynchronizerImpl} ::synchronizeChange (e.g. when the manipulation is
  * caused during a build).
  *
  */

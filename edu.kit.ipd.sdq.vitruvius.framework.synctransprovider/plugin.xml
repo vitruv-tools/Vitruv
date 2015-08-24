@@ -2,9 +2,9 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="edu.kit.ipd.sdq.vitruvius.framework.contracts.transformationexecutingproviding">
+         point="edu.kit.ipd.sdq.vitruvius.framework.contracts.change2commandtransformingproviding">
       <provides
-            provider="edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.Change2CommandTransformingProvidingImpl">
+            provider="edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl">
       </provides>
    </extension>
 

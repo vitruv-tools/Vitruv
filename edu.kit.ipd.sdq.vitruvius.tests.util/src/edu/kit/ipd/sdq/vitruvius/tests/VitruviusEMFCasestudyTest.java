@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.emf.changedescription2change.ChangeDescription2ChangeConverter;
+import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
@@ -21,9 +22,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine.EMFModelPropagationEngineImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager.SyncManagerImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
@@ -37,7 +37,7 @@ import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest implements SynchronisationListener {
 
     protected VSUMImpl vsum;
-    protected SyncManagerImpl syncManager;
+    protected ChangeSynchronizerImpl syncManager;
     protected MetaRepositoryImpl metaRepository;
     protected ChangeRecorder changeRecorder;
     private ChangeDescription2ChangeConverter changeDescrition2ChangeConverter;
@@ -56,7 +56,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
         final Change2CommandTransformingProvidingImpl syncTransformationProvider = new Change2CommandTransformingProvidingImpl();
         final EMFModelPropagationEngineImpl propagatingChange = new EMFModelPropagationEngineImpl(
                 syncTransformationProvider);
-        this.syncManager = new SyncManagerImpl(this.vsum, propagatingChange, this.vsum, this.metaRepository, this.vsum,
+        this.syncManager = new ChangeSynchronizerImpl(this.vsum, propagatingChange, this.vsum, this.metaRepository, this.vsum,
                 this);
         this.testUserInteractor = new TestUserInteractor();
         super.setUserInteractor(this.testUserInteractor, this.syncManager);

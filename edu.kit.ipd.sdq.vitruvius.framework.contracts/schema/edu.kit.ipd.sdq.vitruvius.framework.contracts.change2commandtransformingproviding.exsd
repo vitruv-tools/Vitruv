@@ -3,7 +3,7 @@
 <schema targetNamespace="edu.kit.ipd.sdq.vitruvius.framework.contracts" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="edu.kit.ipd.sdq.vitruvius.framework.contracts" id="edu.kit.ipd.sdq.vitruvius.framework.contracts.synctransformationproviding" name="SyncTransformationProviding"/>
+         <meta.schema plugin="edu.kit.ipd.sdq.vitruvius.framework.contracts" id="edu.kit.ipd.sdq.vitruvius.framework.contracts.change2commandtransformingproviding" name="Change2CommandTransformingProviding"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -55,7 +55,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SyncTransformationProviding"/>
+                  <meta.attribute kind="java" basedOn=":edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding"/>
                </appinfo>
             </annotation>
          </attribute>
