@@ -195,22 +195,17 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         for (Mapping mapping : mappings) {
             InternalCorrespondenceInstance correspondenceInstance = this.mapping2CorrespondenceInstanceMap.get(mapping);
             if (correspondenceInstance == null) {
-                // FIXME MK (cip): TMP SET TO TRUE IF ERRORS OCCUR
-                correspondenceInstance = createAndRegisterCorrespondenceInstance(mapping, false);
+                correspondenceInstance = createAndRegisterCorrespondenceInstance(mapping);
             }
             correspondenceInstances.add(correspondenceInstance);
         }
         return correspondenceInstances;
     }
 
-    private InternalCorrespondenceInstance createAndRegisterCorrespondenceInstance(final Mapping mapping,
-            final boolean save) {
+    private InternalCorrespondenceInstance createAndRegisterCorrespondenceInstance(final Mapping mapping) {
         InternalCorrespondenceInstance correspondenceInstance;
         VURI[] mmURIs = mapping.getMetamodelURIs();
         VURI correspondencesVURI = FileSystemHelper.getCorrespondencesVURI(mmURIs);
-        if (save) {
-            FileSystemHelper.saveCorrespondenceInstanceMMURIs(mmURIs);
-        }
         correspondenceInstance = createCorrespondenceInstance(mapping, correspondencesVURI);
         if (correspondenceInstance instanceof CorrespondenceInstanceDecorator) {
             loadAndInitializeCorrespondenceInstanceDecorators((CorrespondenceInstanceDecorator) correspondenceInstance);
