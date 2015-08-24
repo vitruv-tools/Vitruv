@@ -27,10 +27,10 @@ public class Metamodel extends AbstractURIHaving {
         this(nsURIs, uri, new DefaultTUIDCalculatorAndResolver(), fileExtensions);
     }
 
-    public Metamodel(final String nsURI, final String nameOfIDFeature, final String nameOfNameAttribute,
-            final VURI uri, final String... fileExtensions) {
-        this(new HashSet<String>(Arrays.asList(nsURI)), uri, new DefaultTUIDCalculatorAndResolver(nameOfIDFeature,
-                nameOfNameAttribute), fileExtensions);
+    public Metamodel(final String nsURI, final String nameOfIDFeature, final String nameOfNameAttribute, final VURI uri,
+            final String... fileExtensions) {
+        this(new HashSet<String>(Arrays.asList(nsURI)), uri,
+                new DefaultTUIDCalculatorAndResolver(nameOfIDFeature, nameOfNameAttribute), fileExtensions);
     }
 
     public Metamodel(final Set<String> nsURIs, final String nameOfIDFeature, final VURI uri,

@@ -34,7 +34,7 @@ public class MappedCorrespondenceInstance extends AbstractDelegatingCorresponden
 	
 	@Override
 	protected Map<String, Map<String, String>> getDecoratorObject() {
-		// FIXME create map for persistence by traversing correspondence2MappingMap
+		// FIXME MK (deco): create map for persistence by traversing correspondence2MappingMap
 		// BEGIN MOCKUP
 		Map<String, Map<String, String>> map = new HashMap<String, Map<String,String>>();
 		Map<String,String> secondmap = new HashMap<String, String>();
@@ -46,7 +46,7 @@ public class MappedCorrespondenceInstance extends AbstractDelegatingCorresponden
 
 	@Override
 	protected void initializeFromDecoratorObject(Map<String, Map<String, String>> object) {
-		// FIXME build correspondence2MappingMap from object
+		// FIXME MK (deco): build correspondence2MappingMap from object
 		for (Entry<String, Map<String,String>> e : object.entrySet()) {
 			for (Entry<String,String> e2 : e.getValue().entrySet()) {
 				System.out.println("correspondence for " + e.getKey() + " and " + e2.getKey() + " created by mapping " + e2.getValue());
@@ -57,7 +57,7 @@ public class MappedCorrespondenceInstance extends AbstractDelegatingCorresponden
 	@Override
 	public void addSameTypeCorrespondence(SameTypeCorrespondence correspondence) {
 		super.addSameTypeCorrespondence(correspondence);
-		// FIXME store correct mapping realization
+		// FIXME MK (deco): store correct mapping realization
 		// this.correspondence2MappingMap.put(correspondence, mapping);
 	}
 	

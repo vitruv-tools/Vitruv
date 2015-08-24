@@ -73,7 +73,7 @@ public final class JavaModel2AST {
                 e.printStackTrace();
                 return null;
             }
-            // FIXME AST type does not link anonymous type as child -> ASTNodeFinder search type
+            // FIXME DM: AST type does not link anonymous type as child -> ASTNodeFinder search type
             // "ClassInstanceCreation"
             typeDeclarations = levelASTType.getTypes();
         }

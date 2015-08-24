@@ -145,7 +145,7 @@ public class CompilationUnitAdapter {
         return null;
     }
 
-    // FIXME what if there are several anonymous classes of the same type?
+    // FIXME DM: what if there are several anonymous classes of the same type?
     private List<AnonymousClass> getAnonymousClassesForAnonymousClassDeclaration(
             final AnonymousClassDeclaration anonymousClassDeclaration) {
         final MethodDeclaration parentMethodDeclaration = this

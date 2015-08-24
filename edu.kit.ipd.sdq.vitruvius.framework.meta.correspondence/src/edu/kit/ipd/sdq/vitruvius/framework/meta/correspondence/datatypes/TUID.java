@@ -386,8 +386,6 @@ public class TUID {
         }
         return this.lastSegment == ((TUID) obj).lastSegment;
     }
-
-    // FIXME generate or write new hashCode (also for last segment)
     
     public interface BeforeHashCodeUpdateLambda {
 		Triple<TUID, Set<Correspondence>, Set<TUID>> performPreAction(TUID tuid,

@@ -29,7 +29,7 @@ public class CompositeChangePreparer extends ConcreteChangePreparer {
         }
         final EMFModelChange emfModelChange = (EMFModelChange) compositeChange.getChanges().get(0);
         final Set<InternalCorrespondenceInstance> correspondenceInstances = this.correspondenceProviding
-                .getAllCorrespondenceInstances(emfModelChange.getURI());
+                .getOrCreateAllCorrespondenceInstances(emfModelChange.getURI());
         if (null == correspondenceInstances || 0 == correspondenceInstances.size()) {
             logger.info("No correspondenceInstance found for model: " + emfModelChange.getURI()
                     + ". Change not sychronized with any other model.");

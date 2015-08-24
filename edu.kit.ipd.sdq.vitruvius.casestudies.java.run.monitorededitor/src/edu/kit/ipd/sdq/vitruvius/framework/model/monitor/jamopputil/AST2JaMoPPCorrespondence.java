@@ -181,7 +181,7 @@ public final class AST2JaMoPPCorrespondence {
         return false;
     }
 
-    // FIXME only checks simple names not fully qualified
+    // FIXME DM: only checks simple names not fully qualified
     public static boolean corresponds(final ClassInstanceCreation classInstanceCreation,
             final NewConstructorCallImpl newConstructorCall) {
         final String astTypeName = ((SimpleType) classInstanceCreation.getType()).getName().getFullyQualifiedName();

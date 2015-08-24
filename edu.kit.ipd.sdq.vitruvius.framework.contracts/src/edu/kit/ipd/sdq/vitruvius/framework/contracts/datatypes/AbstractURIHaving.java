@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
-public abstract class AbstractURIHaving implements URIHaving {
+public abstract class AbstractURIHaving implements URIHaving, Comparable<URIHaving> {
     private VURI uri;
 
     public AbstractURIHaving(final VURI uri) {
@@ -12,4 +12,8 @@ public abstract class AbstractURIHaving implements URIHaving {
         return this.uri;
     }
 
+    @Override
+    public int compareTo(final URIHaving o) {
+        return getURI().compareTo(o.getURI());
+    }
 }

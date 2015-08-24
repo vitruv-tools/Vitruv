@@ -42,7 +42,8 @@ public class CorrespondenceTest extends VSUMTest {
         Repository repo = testLoadObject(vsum, PCM_INSTANCE_URI, Repository.class);
         UPackage pkg = testLoadObject(vsum, UML_INSTANCE_URI, UPackage.class);
         InternalCorrespondenceInstance corresp = testCorrespondenceInstanceCreation(vsum);
-        // FIXME AAA automatically decorate correspondence instance based on a new extension point
+        // FIXME MK (deco): automatically decorate correspondence instance based on a new extension
+        // point
         MappedCorrespondenceInstance mappedCorrespondenceInstance = new MappedCorrespondenceInstance(
                 (CorrespondenceInstanceDecorator) corresp);
         vsum.decorateCorrespondenceInstance(VURI.getInstance(PCM_MM_URI), VURI.getInstance(UML_MM_URI), corresp,
@@ -66,7 +67,8 @@ public class CorrespondenceTest extends VSUMTest {
         testRecursiveRemove(repo, pkg, mappedCorrespondenceInstance, repo2pkg, repoIfaceFIAndPkgIfaceFI);
         // now the correspondence instance should be empty
 
-        // FIXME reactivate testUpdate in CorrespondenceTest after TUID cache is working
+        // FIXME MK (tuid cache): reactivate testUpdate in CorrespondenceTest after TUID cache is
+        // working
         // testUpdate(repo, pkg, mappedCorrespondenceInstance, repo2pkg);
 
         testCorrespondencePersistence(vsum, repo, pkg, mappedCorrespondenceInstance);
@@ -275,10 +277,11 @@ public class CorrespondenceTest extends VSUMTest {
     private void testUpdate(final Repository repo, final UPackage pkg, final CorrespondenceInstance corresp,
             final EObjectCorrespondence repo2pkg) {
         Repository newRepo = Pcm_mockupFactory.eINSTANCE.createRepository();
-        // TODO currently no correspondences are existing, therefore a new one has to be created
+        // FIXME MK (cache): currently no correspondences are existing, therefore a new one has to
+        // be created
         // before it can be updated!
         // create new corresp
-        // TODO AAA MAX: store repo before updating the correspondence
+        // store repo before updating the correspondence
         corresp.update(repo, newRepo);
         Set<Correspondence> repoCorresp = corresp.getAllCorrespondences(repo);
         assertTrue(repoCorresp.isEmpty());

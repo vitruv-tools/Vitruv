@@ -108,7 +108,7 @@ public class «cdt.entityName» extends «selectedClass.simpleName»<«jaMoPPInn
 			return #[cu, classifier, superTypeRef]
 		} else {
 
-			//TODO
+			//TODO ML:
 			throw new UnsupportedOperationException(
 				"Not creating a class for collection data type is currently not supported")
 		}

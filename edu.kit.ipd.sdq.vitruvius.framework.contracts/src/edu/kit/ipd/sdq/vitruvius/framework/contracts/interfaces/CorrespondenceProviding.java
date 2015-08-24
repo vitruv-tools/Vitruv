@@ -12,5 +12,5 @@ public interface CorrespondenceProviding extends CorrespondenceCopyProviding {
     void decorateCorrespondenceInstance(VURI mmAVURI, VURI mmBVURI, InternalCorrespondenceInstance originalCI,
             InternalCorrespondenceInstance decoratedCI);
 
-    Set<InternalCorrespondenceInstance> getAllCorrespondenceInstances(VURI model1uri);
+    Set<InternalCorrespondenceInstance> getOrCreateAllCorrespondenceInstances(VURI model1uri);
 }

@@ -10,7 +10,7 @@ import org.eclipse.ltk.core.refactoring.participants.RefactoringArguments;
 import org.eclipse.ltk.core.refactoring.participants.RefactoringProcessor;
 
 /**
- * FIXME proof of concept, not used
+ * FIXME DM: proof of concept, not used
  * 
  */
 public class MoveMethodParticipant extends MoveParticipant {

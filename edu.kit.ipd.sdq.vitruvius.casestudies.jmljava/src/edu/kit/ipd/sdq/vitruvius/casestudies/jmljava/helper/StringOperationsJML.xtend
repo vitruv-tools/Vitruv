@@ -51,7 +51,7 @@ class StringOperationsJML {
 	}
 
 	static def dispatch String getStringRepresentation(MemberDeclaration memberDecl) {
-		//FIXME this method obviously does not what we expect...
+		//FIXME SS: this method obviously does not what we expect...
 		if (memberDecl.type == null) {
 			return "void"
 		}

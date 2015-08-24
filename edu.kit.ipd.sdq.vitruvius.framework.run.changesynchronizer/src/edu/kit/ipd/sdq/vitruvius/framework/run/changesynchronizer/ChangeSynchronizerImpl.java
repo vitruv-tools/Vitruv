@@ -78,7 +78,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
 
         VURI sourceModelVURI = getSourceModelVURI(changes);
         Set<InternalCorrespondenceInstance> correspondenceInstances = this.correspondenceProviding
-                .getAllCorrespondenceInstances(sourceModelVURI);
+                .getOrCreateAllCorrespondenceInstances(sourceModelVURI);
         for (InternalCorrespondenceInstance correspondenceInstance : correspondenceInstances) {
             VURI mmURI1 = correspondenceInstance.getMapping().getMetamodelA().getURI();
             VURI mmURI2 = correspondenceInstance.getMapping().getMetamodelB().getURI();

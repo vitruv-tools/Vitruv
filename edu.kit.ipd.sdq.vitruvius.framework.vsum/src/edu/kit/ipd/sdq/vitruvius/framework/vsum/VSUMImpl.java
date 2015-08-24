@@ -44,9 +44,6 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
 
     protected final Map<VURI, ModelInstance> modelInstances;
     private final ResourceSet resourceSet;
-    // FIXME replace metamodel2CorrespondenceInstancesMap with metamodel2Mappings map so that CIs
-    // are no longer stored redundantly in the following two maps
-    private final Map<Metamodel, Set<InternalCorrespondenceInstance>> metamodel2CorrespondenceInstancesMap;
     private final Map<Mapping, InternalCorrespondenceInstance> mapping2CorrespondenceInstanceMap;
 
     public VSUMImpl(final MetamodelManaging metamodelManaging, final ViewTypeManaging viewTypeManaging,
@@ -58,7 +55,6 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         this.resourceSet = new ResourceSetImpl();
 
         this.modelInstances = new HashMap<VURI, ModelInstance>();
-        this.metamodel2CorrespondenceInstancesMap = new HashMap<Metamodel, Set<InternalCorrespondenceInstance>>();
         this.mapping2CorrespondenceInstanceMap = new HashMap<Mapping, InternalCorrespondenceInstance>();
 
         loadVURIsOfVSMUModelInstances();
@@ -130,7 +126,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     private void saveAllChangedCorrespondences(final ModelInstance modelInstanceToSave) {
         VURI metamodeURI = modelInstanceToSave.getMetamodeURI();
         Metamodel metamodel = this.metamodelManaging.getMetamodel(metamodeURI);
-        Set<InternalCorrespondenceInstance> allCorrespondenceInstances = getOrCreateAllCorrespondenceInstances(
+        Set<InternalCorrespondenceInstance> allCorrespondenceInstances = getOrCreateAllCorrespondenceInstancesForMM(
                 metamodel);
         for (InternalCorrespondenceInstance correspondenceInstance : allCorrespondenceInstances) {
             if (correspondenceInstance.changedAfterLastSave()) {
@@ -171,7 +167,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
 
     private ModelInstance getOrCreateUnregisteredModelInstance(final VURI modelURI, final Metamodel metamodel) {
         ModelInstance modelInstance = loadModelInstance(modelURI, metamodel);
-        getOrCreateAllCorrespondenceInstances(metamodel);
+        getOrCreateAllCorrespondenceInstancesForMM(metamodel);
         return modelInstance;
     }
 
@@ -183,18 +179,12 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         return modelInstance;
     }
 
-    public Set<InternalCorrespondenceInstance> getOrCreateAllCorrespondenceInstances(final Metamodel metamodel) {
-        Set<InternalCorrespondenceInstance> correspondenceInstances = this.metamodel2CorrespondenceInstancesMap
-                .get(metamodel);
-        if (correspondenceInstances == null || 0 == correspondenceInstances.size()) {
-            correspondenceInstances = createAndRegisterAllCorrespondenceInstances(metamodel);
-            this.metamodel2CorrespondenceInstancesMap.put(metamodel, correspondenceInstances);
-        }
-        return correspondenceInstances;
+    private Collection<Mapping> getAllMappings(final Metamodel metamodel) {
+        return this.mappingManaging.getAllMappings(metamodel);
     }
 
-    private Set<InternalCorrespondenceInstance> createAndRegisterAllCorrespondenceInstances(final Metamodel metamodel) {
-        Collection<Mapping> mappings = this.mappingManaging.getAllMappings(metamodel);
+    public Set<InternalCorrespondenceInstance> getOrCreateAllCorrespondenceInstancesForMM(final Metamodel metamodel) {
+        Collection<Mapping> mappings = getAllMappings(metamodel);
         Set<InternalCorrespondenceInstance> correspondenceInstances = new HashSet<InternalCorrespondenceInstance>(
                 null == mappings ? 0 : mappings.size());
         if (null == mappings) {
@@ -205,19 +195,28 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         for (Mapping mapping : mappings) {
             InternalCorrespondenceInstance correspondenceInstance = this.mapping2CorrespondenceInstanceMap.get(mapping);
             if (correspondenceInstance == null) {
-                VURI[] mmURIs = mapping.getMetamodelURIs();
-                VURI correspondencesVURI = FileSystemHelper.getCorrespondencesVURI(mmURIs);
-                FileSystemHelper.saveCorrespondenceInstanceMMURIs(mmURIs);
-                correspondenceInstance = createCorrespondenceInstance(mapping, correspondencesVURI);
-                if (correspondenceInstance instanceof CorrespondenceInstanceDecorator) {
-                    loadAndInitializeCorrespondenceInstanceDecorators(
-                            (CorrespondenceInstanceDecorator) correspondenceInstance);
-                }
-                this.mapping2CorrespondenceInstanceMap.put(mapping, correspondenceInstance);
+                // FIXME MK (cip): TMP SET TO TRUE IF ERRORS OCCUR
+                correspondenceInstance = createAndRegisterCorrespondenceInstance(mapping, false);
             }
             correspondenceInstances.add(correspondenceInstance);
         }
         return correspondenceInstances;
+    }
+
+    private InternalCorrespondenceInstance createAndRegisterCorrespondenceInstance(final Mapping mapping,
+            final boolean save) {
+        InternalCorrespondenceInstance correspondenceInstance;
+        VURI[] mmURIs = mapping.getMetamodelURIs();
+        VURI correspondencesVURI = FileSystemHelper.getCorrespondencesVURI(mmURIs);
+        if (save) {
+            FileSystemHelper.saveCorrespondenceInstanceMMURIs(mmURIs);
+        }
+        correspondenceInstance = createCorrespondenceInstance(mapping, correspondencesVURI);
+        if (correspondenceInstance instanceof CorrespondenceInstanceDecorator) {
+            loadAndInitializeCorrespondenceInstanceDecorators((CorrespondenceInstanceDecorator) correspondenceInstance);
+        }
+        this.mapping2CorrespondenceInstanceMap.put(mapping, correspondenceInstance);
+        return correspondenceInstance;
     }
 
     private InternalCorrespondenceInstance createCorrespondenceInstance(final Mapping mapping,
@@ -253,38 +252,18 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
      */
     @Override
     public InternalCorrespondenceInstance getCorrespondenceInstanceOriginal(final VURI mmAVURI, final VURI mmBVURI) {
-        Metamodel metamodelA = this.metamodelManaging.getMetamodel(mmAVURI);
-        Metamodel metamodelB = this.metamodelManaging.getMetamodel(mmBVURI);
-        Mapping mapping = this.mappingManaging.getMapping(metamodelA, metamodelB);
+        Mapping mapping = this.mappingManaging.getMapping(mmAVURI, mmBVURI);
         if (this.mapping2CorrespondenceInstanceMap.containsKey(mapping)) {
             return this.mapping2CorrespondenceInstanceMap.get(mapping);
         }
-        mapping = this.mappingManaging.getMapping(metamodelB, metamodelA);
-        if (this.mapping2CorrespondenceInstanceMap.containsKey(mapping)) {
-            return this.mapping2CorrespondenceInstanceMap.get(mapping);
-        }
-        logger.warn("no mapping found from the metamodel at: " + mmAVURI + " to the metamodel at: " + mmBVURI);
+        logger.warn("no mapping found for the metamodel at: " + mmAVURI + " and the metamodel at: " + mmBVURI);
         return null;
     }
 
     @Override
     public void decorateCorrespondenceInstance(final VURI mmAVURI, final VURI mmBVURI,
             final InternalCorrespondenceInstance originalCI, final InternalCorrespondenceInstance decoratedCI) {
-        Metamodel metamodelA = this.metamodelManaging.getMetamodel(mmAVURI);
-        Set<InternalCorrespondenceInstance> correspondenceInstancesForMMA = this.metamodel2CorrespondenceInstancesMap
-                .get(metamodelA);
-        correspondenceInstancesForMMA.remove(originalCI);
-        correspondenceInstancesForMMA.add(decoratedCI);
-        Metamodel metamodelB = this.metamodelManaging.getMetamodel(mmBVURI);
-        Set<InternalCorrespondenceInstance> correspondenceInstancesForMMB = this.metamodel2CorrespondenceInstancesMap
-                .get(metamodelB);
-        correspondenceInstancesForMMB.remove(originalCI);
-        correspondenceInstancesForMMB.add(decoratedCI);
-        Mapping mapping = this.mappingManaging.getMapping(metamodelA, metamodelB);
-        if (this.mapping2CorrespondenceInstanceMap.containsKey(mapping)) {
-            this.mapping2CorrespondenceInstanceMap.put(mapping, decoratedCI);
-        }
-        mapping = this.mappingManaging.getMapping(metamodelB, metamodelA);
+        Mapping mapping = this.mappingManaging.getMapping(mmAVURI, mmBVURI);
         if (this.mapping2CorrespondenceInstanceMap.containsKey(mapping)) {
             this.mapping2CorrespondenceInstanceMap.put(mapping, decoratedCI);
         } else {
@@ -304,9 +283,9 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
      * @return set that contains all CorrespondenceInstances for the VURI or null if there is non
      */
     @Override
-    public Set<InternalCorrespondenceInstance> getAllCorrespondenceInstances(final VURI model1uri) {
+    public Set<InternalCorrespondenceInstance> getOrCreateAllCorrespondenceInstances(final VURI model1uri) {
         Metamodel metamodelForUri = this.metamodelManaging.getMetamodel(model1uri.getFileExtension());
-        return this.metamodel2CorrespondenceInstancesMap.get(metamodelForUri);
+        return getOrCreateAllCorrespondenceInstancesForMM(metamodelForUri);
     }
 
     @Override
@@ -355,19 +334,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     private void loadAndMapCorrepondenceInstances() {
         Metamodel[] metamodels = this.metamodelManaging.getAllMetamodels();
         for (Metamodel metamodel : metamodels) {
-            Collection<Mapping> mappings = this.mappingManaging.getAllMappings(metamodel);
-            Set<InternalCorrespondenceInstance> correspondenceInstances = new HashSet<InternalCorrespondenceInstance>();
-            for (Mapping mapping : mappings) {
-                InternalCorrespondenceInstance newCorrespondenceInstance = this.mapping2CorrespondenceInstanceMap
-                        .get(mapping);
-                if (null == newCorrespondenceInstance) {
-                    VURI correspondencesVURI = FileSystemHelper.getCorrespondencesVURI(mapping.getMetamodelURIs());
-                    newCorrespondenceInstance = createCorrespondenceInstance(mapping, correspondencesVURI);
-                    this.mapping2CorrespondenceInstanceMap.put(mapping, newCorrespondenceInstance);
-                }
-                correspondenceInstances.add(newCorrespondenceInstance);
-            }
-            this.metamodel2CorrespondenceInstancesMap.put(metamodel, correspondenceInstances);
+            getOrCreateAllCorrespondenceInstancesForMM(metamodel);
         }
     }
 }

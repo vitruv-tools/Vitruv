@@ -253,7 +253,7 @@ public final class EclipseBridge {
                 System.err.println("Exception while running in protected mode:");
                 // soften
                 throw new RuntimeException(e);
-                // FIXME MK dynamically remove extension once they threw an exception
+                // TODO MK: dynamically remove extension once they threw an exception
                 // e.g. using Platform.getExtensionRegistry().removeExtension(extension, token)
             }
 

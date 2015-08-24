@@ -120,7 +120,7 @@ class CSSynchronizer extends TransformationExecuter implements Change2CommandTra
 		
 		//TODO vurisToAdd is not supported because no URI affecting changes are supported atm
 		
-		//FIXME remove the following workaround after a concept for this has been added to Vitruvius
+		//FIXME SS: remove the following workaround after a concept for this has been added to Vitruvius
 //		if (!result.transformationAborted && ChangeSynchronizerRegistry.getInstance != null) {
 //			ChangeSynchronizerRegistry.getInstance.changeSynchronizer.modelProvidingDirtyMarker.markAllModelInstancesDirty(JaMoPPMetaModelProvider.URI)
 //		}
