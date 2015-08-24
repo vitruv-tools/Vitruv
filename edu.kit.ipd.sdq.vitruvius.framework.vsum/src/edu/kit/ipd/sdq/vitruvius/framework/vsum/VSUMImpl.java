@@ -325,6 +325,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         }
     }
 
+    @Override
     public TransactionalEditingDomain getEditingDomain() {
         return this.editingDomain;
     }
