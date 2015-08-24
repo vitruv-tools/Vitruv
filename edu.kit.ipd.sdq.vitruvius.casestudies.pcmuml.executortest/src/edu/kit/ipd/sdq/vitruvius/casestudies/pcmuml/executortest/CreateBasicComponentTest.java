@@ -115,12 +115,12 @@ public class CreateBasicComponentTest extends VitruviusEMFCasestudyTest implemen
 
 	@Override
 	public void syncAborted(EMFModelChange abortedChange) {
-		LOGGER.trace("syncAborted 1");		
+		LOGGER.trace("syncAborted: " + abortedChange.toString());
 	}
 
 	@Override
 	public void syncAborted(TransformationAbortCause cause) {
-		LOGGER.trace("syncAborted 2");		
+		LOGGER.trace("syncAborted: " + cause.toString());
 	}
 
 	@Override
