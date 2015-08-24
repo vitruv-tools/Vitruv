@@ -255,19 +255,6 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         return null;
     }
 
-    @Override
-    public void decorateCorrespondenceInstance(final VURI mmAVURI, final VURI mmBVURI,
-            final InternalCorrespondenceInstance originalCI, final InternalCorrespondenceInstance decoratedCI) {
-        Mapping mapping = this.mappingManaging.getMapping(mmAVURI, mmBVURI);
-        if (this.mapping2CorrespondenceInstanceMap.containsKey(mapping)) {
-            this.mapping2CorrespondenceInstanceMap.put(mapping, decoratedCI);
-        } else {
-            throw new RuntimeException("The original correspondence instance '" + originalCI
-                    + "' was not registered for the mapping of '" + mmAVURI + "' and '" + mmBVURI
-                    + "' and therefore it cannot be decorated with " + decoratedCI + "'!");
-        }
-    }
-
     /**
      * Returns all correspondences instances for a given VURI. null will be returned. We are not
      * creating new CorrespondenceInstance here, cause we can not guess the linked model. The method

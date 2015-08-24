@@ -3,6 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.util;
 public class VitruviusConstants {
 
     private static final String EXTENSION_PROPERTY_NAME = "provider";
+    private static final String EXTENSION_PRIORITY_PROPERTY_NAME = "priority";
     private static final String PLATFORM_RESOURCE_PREFIX = "platform:/resource/";
     private static final String CORRESPONDENCES_FILE_EXT = "correspondence";
     private static final String DEFAULT_NAME_OF_IDENTIFIER_FEATURE = "id";
@@ -22,6 +23,10 @@ public class VitruviusConstants {
     public static String getExtensionPropertyName() {
         return EXTENSION_PROPERTY_NAME;
     }
+    
+	public static String getExtensionPriorityPropertyName() {
+		return EXTENSION_PRIORITY_PROPERTY_NAME;
+	}
 
     public static String getPlatformResourcePrefix() {
         return PLATFORM_RESOURCE_PREFIX;

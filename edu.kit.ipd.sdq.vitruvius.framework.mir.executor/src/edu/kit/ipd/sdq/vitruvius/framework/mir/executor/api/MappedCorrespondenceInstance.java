@@ -22,8 +22,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 public class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInstanceDecorator<Map<String,Map<String,String>>> {
 	private final Map<SameTypeCorrespondence,MIRMappingRealization> correspondence2MappingMap;
  
+	@SuppressWarnings("unchecked")
 	public MappedCorrespondenceInstance(CorrespondenceInstanceDecorator correspondenceInstance) {
-		super(correspondenceInstance);
+		// this seems to be the only way to provide the correct instance of the map class to the ADCID
+		super(correspondenceInstance, (Class<Map<String,Map<String,String>>>) new HashMap<String,Map<String,String>>().getClass());
 		this.correspondence2MappingMap = new HashMap<SameTypeCorrespondence, MIRMappingRealization>();
 	}
 
@@ -52,6 +54,12 @@ public class MappedCorrespondenceInstance extends AbstractDelegatingCorresponden
 				System.out.println("correspondence for " + e.getKey() + " and " + e2.getKey() + " created by mapping " + e2.getValue());
 			}
 		}
+	}
+	
+	@Override
+	protected void initializeWithoutDecoratorObject() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

@@ -117,7 +117,13 @@ public class FileSystemHelper {
     @SuppressWarnings("unchecked")
     private static Set<String> loadStringSetFromFile(final String fileName) {
         Object obj = loadObjectFromFile(fileName);
-        return (Set<String>) obj;
+        if (obj == null) {
+            return Collections.emptySet();
+        } else if (obj instanceof Set<?>) {
+            return (Set<String>) obj;
+        } else {
+            throw new RuntimeException("The file with the name '" + fileName + "' does not contain a set of strings!");
+        }
     }
 
     public static Object loadObjectFromFile(final String fileName) {
@@ -128,7 +134,7 @@ public class FileSystemHelper {
             ois.close();
             return obj;
         } catch (FileNotFoundException e) {
-            return Collections.emptySet();
+            return null;
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {

@@ -16,10 +16,12 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 
 public abstract class AbstractDelegatingCorrespondenceInstanceDecorator<D> implements CorrespondenceInstanceDecorator {
     protected CorrespondenceInstanceDecorator correspondenceInstance;
+    private final Class<D> decoratorObjectType;
 
     public AbstractDelegatingCorrespondenceInstanceDecorator(
-            final CorrespondenceInstanceDecorator correspondenceInstance) {
+            final CorrespondenceInstanceDecorator correspondenceInstance, final Class<D> decoratorObjectType) {
         this.correspondenceInstance = correspondenceInstance;
+        this.decoratorObjectType = decoratorObjectType;
     }
 
     protected abstract String getDecoratorFileExtPrefix();
@@ -27,6 +29,8 @@ public abstract class AbstractDelegatingCorrespondenceInstanceDecorator<D> imple
     protected abstract D getDecoratorObject();
 
     protected abstract void initializeFromDecoratorObject(D object);
+
+    protected abstract void initializeWithoutDecoratorObject();
 
     @Override
     public Map<String, Object> getFileExtPrefix2ObjectMapForSave() {
@@ -42,11 +46,17 @@ public abstract class AbstractDelegatingCorrespondenceInstanceDecorator<D> imple
         return fileExtPrefixes;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void initialize(final Map<String, Object> fileExtPrefix2ObjectMap) {
         Object object = fileExtPrefix2ObjectMap.get(getDecoratorFileExtPrefix());
-        initializeFromDecoratorObject((D) object);
+        if (this.decoratorObjectType.isInstance(object)) {
+            initializeFromDecoratorObject(this.decoratorObjectType.cast(object));
+        } else if (object == null) {
+            initializeWithoutDecoratorObject();
+        } else {
+            throw new RuntimeException("Cannot initialize decorator '" + this + "' with the decorator object '" + object
+                    + "' because it is not an instance of '" + this.decoratorObjectType + "'!");
+        }
     }
 
     @Override
