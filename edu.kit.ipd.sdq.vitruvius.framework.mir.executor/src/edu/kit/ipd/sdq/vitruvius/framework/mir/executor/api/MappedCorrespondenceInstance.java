@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api;
 
+import static edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.filterType;
 import static edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.requireType;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -62,13 +62,6 @@ public class MappedCorrespondenceInstance extends AbstractDelegatingCorresponden
 		
 	}
 
-	@Override
-	public void addSameTypeCorrespondence(SameTypeCorrespondence correspondence) {
-		super.addSameTypeCorrespondence(correspondence);
-		// FIXME MK (deco): store correct mapping realization
-		// this.correspondence2MappingMap.put(correspondence, mapping);
-	}
-	
 	// TODO: clean up methods copied from edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMappedCorrespondenceInstance
 	public Pair<TUID, EObject> getCorrespondenceTarget(EObject eObject, Correspondence correspondence) {
 		SameTypeCorrespondence sameTypeCorrespondence = requireType(correspondence, SameTypeCorrespondence.class);
@@ -88,15 +81,10 @@ public class MappedCorrespondenceInstance extends AbstractDelegatingCorresponden
 	public SameTypeCorrespondence getMappedCorrespondence(EObject eObject,
 			MIRMappingRealization mapping) {
 		
-		Collection<Correspondence> correspondences = getAllCorrespondences(eObject);
-		for (Correspondence correspondence : correspondences) {
-			MIRMappingRealization mappingForCorrespondence = getMappingForCorrespondence(correspondence);
-			if (mappingForCorrespondence.equals(mapping)) {
-				return requireType(correspondence, SameTypeCorrespondence.class);
-			}
-		}
-		
-		return null;
+		return filterType(getAllCorrespondences(eObject), SameTypeCorrespondence.class)
+				.filter(it -> mapping.equals(getMappingForCorrespondence(it)))
+				.findFirst()
+				.orElse(null);
 	}
 	
 	/**
@@ -105,7 +93,7 @@ public class MappedCorrespondenceInstance extends AbstractDelegatingCorresponden
 	 * EObject, first get all correspondences from the {@link CorrespondenceInstance},
 	 * then use this method.
 	 */
-	public MIRMappingRealization getMappingForCorrespondence(Correspondence correspondence) {
+	public MIRMappingRealization getMappingForCorrespondence(SameTypeCorrespondence correspondence) {
 		return correspondence2MappingMap.get(correspondence);
 	}
 	
@@ -116,17 +104,23 @@ public class MappedCorrespondenceInstance extends AbstractDelegatingCorresponden
 	 * @param correspondence
 	 */
 	public void registerMappingForCorrespondence(MIRMappingRealization mapping,
-			Correspondence correspondence) {
-		throw new UnsupportedOperationException("not implemented");
+			SameTypeCorrespondence correspondence) {
+		correspondence2MappingMap.put(correspondence, mapping);
 	}
 	
-	public void createMappedCorrespondence(EObject eObjectA, EObject eObjectB, MIRMappingRealization mappingRealization) {
-		throw new UnsupportedOperationException("not implemented");
+	public SameTypeCorrespondence createMappedCorrespondence(EObject eObjectA, EObject eObjectB, MIRMappingRealization mappingRealization) {
+		SameTypeCorrespondence stc = createAndAddEObjectCorrespondence(eObjectA, eObjectB);
+		registerMappingForCorrespondence(mappingRealization, stc);
+		return stc;
 	}
 	
-	public boolean unregisterMappingForCorrespondence(MIRMappingRealization mapping,
-			Correspondence correspondence) {
-		throw new UnsupportedOperationException("not implemented");
+	public void unregisterMappingForCorrespondence(MIRMappingRealization mapping,
+			SameTypeCorrespondence correspondence) {
+		if (correspondence2MappingMap.get(correspondence) != mapping) {
+			throw new IllegalArgumentException("Mapping " + mapping.getMappingID() + " is not registered for correspondence " + correspondence.toString());
+		} else {
+			correspondence2MappingMap.remove(correspondence);
+		}
 	}
 	
 	/**
@@ -138,15 +132,11 @@ public class MappedCorrespondenceInstance extends AbstractDelegatingCorresponden
 	 * 	<code>null</code> otherwise.
 	 */
 	public EObject getMappingTarget(EObject eObject, MIRMappingRealization mapping) {
-		Collection<Correspondence> correspondences = correspondenceInstance.getAllCorrespondences(eObject);
-		for (Correspondence correspondence : correspondences) {
-			MIRMappingRealization mappingForCorrespondence = getMappingForCorrespondence(correspondence);
-			if (mappingForCorrespondence.equals(mapping)) {
-				return getCorrespondenceTarget(eObject, correspondence).getSecond();
-			}
-		}
-		
-		return null;
+		return filterType(correspondenceInstance.getAllCorrespondences(eObject), SameTypeCorrespondence.class)
+			.filter(it -> mapping.equals(getMappingForCorrespondence(it)))
+			.findFirst()
+			.map(it -> getCorrespondenceTarget(eObject, it).getSecond())
+			.orElse(null);
 	}
 	
 	/**
@@ -157,30 +147,6 @@ public class MappedCorrespondenceInstance extends AbstractDelegatingCorresponden
 	 * @return <code>true</code> if this mapping maps <code>eObject</code>
 	 */
 	public boolean checkIfMappedBy(EObject eObject, MIRMappingRealization mapping) {
-		Collection<Correspondence> correspondences = getAllCorrespondences(eObject);
-		for (Correspondence correspondence : correspondences) {
-			MIRMappingRealization mappingsForCorrespondence = getMappingForCorrespondence(correspondence);
-			if (mappingsForCorrespondence.equals(mapping)) {
-				return true;
-			}
-		}
-		
-		return false;
+		return (getMappingTarget(eObject, mapping) != null);
 	}
-	
-	/*
-	 * boolean checkIfMappedBy(EObject eObject, MIRMappingRealization mapping);
-	 * CorrespondenceInstance getCorrespondenceInstance(); EObject
-	 * getMappingTarget(EObject eObject, CorrespondenceInstance
-	 * correspondenceInstance, MIRMappingRealization mapping); boolean
-	 * unregisterMappingForCorrespondence(MIRMappingRealization mapping,
-	 * Correspondence correspondence); void
-	 * registerMappingForCorrespondence(MIRMappingRealization mapping,
-	 * Correspondence correspondence); Collection<MIRMappingRealization>
-	 * getMappingsForCorrespondence(Correspondence correspondence);
-	 * 
-	 * SameTypeCorrespondence getMappedCorrespondence(EObject eObject,
-	 * MIRMappingRealization abstractMIRMappingRealization); Pair<TUID, EObject>
-	 * getCorrespondenceTarget(EObject eObject, Correspondence correspondence);
-	 */
 }
