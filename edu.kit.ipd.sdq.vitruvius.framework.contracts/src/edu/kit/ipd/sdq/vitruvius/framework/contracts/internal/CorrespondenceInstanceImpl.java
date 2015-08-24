@@ -70,24 +70,37 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         this.saveCorrespondenceOptions.put(VitruviusConstants.getOptionProcessDanglingHref(),
                 VitruviusConstants.getOptionProcessDanglingHrefDiscard());
 
+        this.correspondences = loadAndRegisterCorrespondences(correspondencesResource);
+    }
+
+    private Correspondences loadAndRegisterCorrespondences(final Resource correspondencesResource) {
         try {
             correspondencesResource.load(this.saveCorrespondenceOptions);
         } catch (Exception e) {
             logger.trace("Could not load correspondence resource - creating new correspondence instance resource.");
         }
-
         // TODO implement lazy loading for correspondences because they may get really big
         EObject correspondences = EcoreResourceBridge.getResourceContentRootIfUnique(getResource());
         if (correspondences == null) {
-            this.correspondences = CorrespondenceFactory.eINSTANCE.createCorrespondences();
-            correspondencesResource.getContents().add(this.correspondences);
+            correspondences = CorrespondenceFactory.eINSTANCE.createCorrespondences();
+            correspondencesResource.getContents().add(correspondences);
         } else if (correspondences instanceof Correspondences) {
-            this.correspondences = (Correspondences) correspondences;
-            // FIXME AAA implement loading of existing correspondences from resources (fill maps)
-            // FIXME create TUIDs during loading of existing corresponding from resource
+            registerLoadedCorrespondences((Correspondences) correspondences);
         } else {
             throw new RuntimeException("The unique root object '" + correspondences + "' of the correspondence model '"
                     + getURI() + "' is not correctly typed!");
+        }
+        return (Correspondences) correspondences;
+    }
+
+    private void registerLoadedCorrespondences(final Correspondences correspondences) {
+        for (Correspondence correspondence : correspondences.getCorrespondences()) {
+            if (correspondence instanceof SameTypeCorrespondence) {
+                SameTypeCorrespondence sameTypeCorrespondence = (SameTypeCorrespondence) correspondence;
+                TUID tuidA = sameTypeCorrespondence.getElementATUID();
+                TUID tuidB = sameTypeCorrespondence.getElementBTUID();
+                registerSameTypeCorrespondence(sameTypeCorrespondence, tuidA, tuidB);
+            }
         }
     }
 
@@ -129,7 +142,13 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     @Override
     public boolean hasCorrespondences() {
-        return !this.tuid2CorrespondencesMap.isEmpty();
+        for (Set<Correspondence> correspondences : this.tuid2CorrespondencesMap.values()) {
+            if (!correspondences.isEmpty()) {
+                return true;
+            }
+        }
+        ;
+        return false;
     }
 
     /*
@@ -455,9 +474,18 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         TUID tuidB = correspondence.getElementBTUID();
         correspondence.setElementATUID(tuidA);
         correspondence.setElementBTUID(tuidB);
-        // add correspondence to model
+        addCorrespondenceToModel(correspondence);
+        registerSameTypeCorrespondence(correspondence, tuidA, tuidB);
+        setChangeAfterLastSaveFlag();
+    }
+
+    private void addCorrespondenceToModel(final Correspondence correspondence) {
         EList<Correspondence> correspondenceListForAddition = this.correspondences.getCorrespondences();
         correspondenceListForAddition.add(correspondence);
+    }
+
+    private void registerSameTypeCorrespondence(final SameTypeCorrespondence correspondence, final TUID tuidA,
+            final TUID tuidB) {
         List<TUID> allInvolvedTUIDs = Arrays.asList(tuidA, tuidB);
         // add all involved eObjects to the sets for these objects in the map
         for (TUID involvedTUID : allInvolvedTUIDs) {
@@ -502,7 +530,6 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
             }
             featureInstancesCorrespondingToFIB.add(featureInstanceA);
         }
-        setChangeAfterLastSaveFlag();
     }
 
     private void setChangeAfterLastSaveFlag() {

@@ -269,8 +269,7 @@ public class CorrespondenceTest extends VSUMTest {
         assertTrue(correspForRepoIfaceFI.isEmpty());
         Set<FeatureInstance> correspForPkgIfaceFI = corresp.getAllCorrespondingFeatureInstances(pkgIfaceFI);
         assertTrue(correspForPkgIfaceFI.isEmpty());
-        // FIXME AAA fix incomplete removal
-        // assertFalse(corresp.hasCorrespondences());
+        assertFalse(corresp.hasCorrespondences());
     }
 
     private void testUpdate(final Repository repo, final UPackage pkg, final CorrespondenceInstance corresp,
