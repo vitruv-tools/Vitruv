@@ -30,13 +30,21 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
 
     @Override
     public String calculateTUIDFromEObject(final EObject eObject) {
+        // FIXME MAX (cache c1): HERE access to resource, called from various places so cannot be
+        // moved
+        // to callees
         if (eObject.eResource() == null) {
+            // FIXME MAX (cache c2): get root and his resource, if no resource is there then cache
+            // root
+            // and keep on calculating
+            // if there is a resource check if there is also a cache entry and if yes remove it
             LOGGER.warn("The given EObject " + eObject
                     + " has no resource attached, which is necessary to generate a TUID.");
             return getDefaultTUID();
         }
 
         String tuidPrefix = getDefaultTUID() + VURI.getInstance(eObject.eResource());
+        // FIXME MAX (cache c3): only JML tests call this with virtualRoot != null
         return calculateTUIDFromEObject(eObject, null, tuidPrefix);
     }
 
@@ -53,11 +61,12 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
         String[] ids = tuid.split(VitruviusConstants.getTUIDSegmentSeperator());
         String vuriKey = ids[0];
         return VURI.getInstance(vuriKey);
-
+        // FIXME MAX (cache r2): has to return null for cached tuids
     }
 
     @Override
     public EObject resolveEObjectFromRootAndFullTUID(final EObject root, final String extTuid) {
+        // FIXME MAX (cache r5) if root is null try to get one from the cache, keep on going with it
         String identifier = getTUIDWithoutRootObjectPart(root, extTuid);
         if (identifier == null) {
             return null;

@@ -84,7 +84,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
      * instance that contains more than one element exists at the uri.
      *
      * DECISION Since we do not throw an exception (which can happen in 3) we always return a valid
-     * model. Hence the caller do not have to check whether the retrived model is null.
+     * model. Hence the caller do not have to check whether the retrieved model is null.
      */
     @Override
     public ModelInstance getAndLoadModelInstanceOriginal(final VURI modelURI) {

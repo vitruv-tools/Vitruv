@@ -422,6 +422,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     @Override
     public EObject resolveEObjectFromTUID(final TUID tuid) {
+        // FIXME MAX (cache r0)
         String tuidString = tuid.toString();
         Metamodel metamodel = null;
         if (this.mapping.getMetamodelA().hasTUID(tuidString)) {
@@ -434,11 +435,17 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
             throw new IllegalArgumentException("The TUID '" + tuid + "' is neither valid for "
                     + this.mapping.getMetamodelA() + " nor " + this.mapping.getMetamodelB());
         } else {
+            // FIXME MAX (cache r1): vuri for cached tuid will be null
             VURI vuri = metamodel.getModelVURIContainingIdentifiedEObject(tuidString);
+            // FIXME MAX (cache r3): do not try to load or create a model instance if vuri is null
+            // but set root to null
             ModelInstance modelInstance = this.modelProviding.getAndLoadModelInstanceOriginal(vuri);
             EObject rootEObject = modelInstance.getFirstRootEObject();
             EObject resolvedEobject = null;
             try {
+                // FIXME MAX (cache r4): call with root = null for cached objects (called from
+                // nowhere
+                // else, so we are fine)
                 resolvedEobject = metamodel.resolveEObjectFromRootAndFullTUID(rootEObject, tuidString);
             } catch (IllegalArgumentException iae) {
                 // do nothing - just try the solving again
@@ -718,6 +725,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
             logger.warn("EObject: '" + eObject + "' is neither an instance of MM1 nor an instance of MM2. ");
             return null;
         } else {
+            // FIXME MAX (cache c0): HERE call to calculateTUIDFromEObject and from nowhere else
             return TUID.getInstance(metamodel.calculateTUIDFromEObject(eObject));
         }
     }

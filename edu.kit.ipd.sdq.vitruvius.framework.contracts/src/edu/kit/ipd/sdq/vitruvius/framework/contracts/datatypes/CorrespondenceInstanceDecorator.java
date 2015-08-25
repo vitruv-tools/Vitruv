@@ -14,6 +14,7 @@ public interface CorrespondenceInstanceDecorator extends InternalCorrespondenceI
      *
      * @return
      */
+    // FIXME MAX (deco): Serializable instead of Object?
     Map<String, Object> getFileExtPrefix2ObjectMapForSave();
 
     /**
