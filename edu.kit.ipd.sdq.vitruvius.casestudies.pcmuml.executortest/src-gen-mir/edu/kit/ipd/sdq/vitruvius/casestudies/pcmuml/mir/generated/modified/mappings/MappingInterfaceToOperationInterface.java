@@ -49,8 +49,7 @@ public class MappingInterfaceToOperationInterface extends AbstractMIRMappingReal
 		}
 		
 		/*
-		 * Paste code (references to upc and up possible) here.
-		 * Or call method with arguments upc, up.
+		 * call method with arguments upc, up, bc.
 		 */
 
 		return true;
@@ -74,7 +73,8 @@ public class MappingInterfaceToOperationInterface extends AbstractMIRMappingReal
 
 		bcopr.setEntityName(upc.getName());
 		/*
-		 * Call method here that references upc, bcopr, up & bc ???
+		 * Instead:
+		 * call method here that references upc, bcopr, up & bc ???
 		 */
 	}
 
@@ -134,21 +134,4 @@ public class MappingInterfaceToOperationInterface extends AbstractMIRMappingReal
 		
 		return bc;
 	}
-
-	/*
-	 * public static Optional<BasicComponent> getCorresponding(Package pkg,
-	 * Blackboard blackboard) { final MappedCorrespondenceInstance ci =
-	 * getMappedCorrespondenceInstanceFromBlackboard(blackboard); final
-	 * Optional<BasicComponent> bc = JavaHelper.tryCast(ci.getMappingTarget(pkg,
-	 * MappingPackageToBasicComponent.INSTANCE), BasicComponent.class);
-	 * 
-	 * return bc; }
-	 * 
-	 * public static BasicComponent claimCorresponding(Package pkg, Blackboard
-	 * blackboard) { final BasicComponent bc = getCorresponding(pkg, blackboard)
-	 * .orElseThrow(() -> new IllegalStateException(
-	 * "Could not find mapped BasicComponent for Package " + pkg.toString()));
-	 * 
-	 * return bc; }
-	 */
 }

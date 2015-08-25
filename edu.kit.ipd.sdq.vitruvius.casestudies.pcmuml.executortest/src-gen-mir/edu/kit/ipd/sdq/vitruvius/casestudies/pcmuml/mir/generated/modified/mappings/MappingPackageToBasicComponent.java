@@ -41,6 +41,10 @@ public class MappingPackageToBasicComponent extends AbstractMIRMappingRealizatio
 		org.eclipse.uml2.uml.Package up =
 			(org.eclipse.uml2.uml.Package) context;
 		
+		/*
+		 * call method with arguments up.
+		 */
+		
 		return true;
 	}
 
@@ -56,7 +60,11 @@ public class MappingPackageToBasicComponent extends AbstractMIRMappingRealizatio
 		Package pkg = JavaHelper.requireType(eObject, Package.class);
 		final BasicComponent bc = JavaHelper.requireType(target, BasicComponent.class);
 
-		bc.setEntityName(pkg.getName());	
+		bc.setEntityName(pkg.getName());
+		/*
+		 * Instead:
+		 * call method here that references pkg, bc
+		 */
 	}
 	
 	@Override
