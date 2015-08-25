@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -94,6 +95,10 @@ public class ModelInstance extends AbstractURIHaving {
      */
     public <T extends EObject> T getUniqueTypedRootEObject(final Class<T> rootElementClass) {
         return EcoreResourceBridge.getUniqueTypedRootEObject(this.resource, getURI().toString(), rootElementClass);
+    }
+
+    public List<EObject> getRootElements() {
+        return this.resource.getContents();
     }
 
     /**

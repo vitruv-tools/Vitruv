@@ -32,6 +32,6 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.emf,
  org.apache.commons.lang;bundle-version="2.6.0",
  edu.kit.ipd.sdq.vitruvius.framework.mir,
- edu.kit.ipd.sdq.vitruvius.framework.mir.executor,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.executortest
+ edu.kit.ipd.sdq.vitruvius.framework.mir.executor
 Bundle-ActivationPolicy: lazy
+Import-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings

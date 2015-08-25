@@ -1,11 +1,15 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreBridge;
 
 /**
  * Base class for TUID calculators and resolvers. It handles the default parts of the TUID like
@@ -18,6 +22,14 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
 
     private static final Logger LOGGER = Logger.getLogger(TUIDCalculatorAndResolverBase.class.getSimpleName());
 
+    private final Map<Integer, EObject> cachedResourcelessRoots;
+    // FIXME MK (cache): if necessary remove objects that were created and cached but never stored,
+    // as this is the only way to have something in the cache that should no longer be there
+
+    public TUIDCalculatorAndResolverBase() {
+        this.cachedResourcelessRoots = new HashMap<Integer, EObject>();
+    }
+
     @Override
     public boolean isValidTUID(final String tuid) {
         return tuid.startsWith(getDefaultTUIDPrefix());
@@ -25,31 +37,85 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
 
     @Override
     public String calculateTUIDFromEObject(final EObject eObject) {
-        // FIXME MAX (cache c1): HERE access to resource, called from various places so cannot be
-        // moved
-        // to callees
-        if (eObject.eResource() == null) {
-            // FIXME MAX (cache c2): get root and his resource, if no resource is there then cache
-            // root
-            // and keep on calculating
-            // if there is a resource check if there is also a cache entry and if yes remove it
+        EObject root = EcoreBridge.getRootEObject(eObject);
+        if (root.eResource() == null) {
+            // the root has no resource and therefore it has to be cached for correct TUID
+            // resolution and calculation
+            addRootToCache(root);
             LOGGER.warn("The given EObject " + eObject
                     + " has no resource attached, which is necessary to generate a TUID.");
-            return getDefaultTUIDPrefix();
+            return getDefaultTUIDPrefix() + getVURIReplacementForCachedRoot(root);
+        } else {
+            if (isCached(root)) {
+                // the root has a resource but was cached before, so it should be removed from the
+                // cache
+                removeRootFromCache(root);
+            }
         }
-        // return defaulttuidprefix + hashCode as prefix for cached objects
         String tuidPrefix = getDefaultTUIDPrefix() + VURI.getInstance(eObject.eResource());
-        // FIXME MAX (cache c3): only JML tests call this with virtualRoot != null
         return calculateTUIDFromEObject(eObject, null, tuidPrefix);
     }
 
-    // FIXME MK (cache): if cache does not get emptied provide a removeFromCache(rootThatIsNowSaved)
-    // and call it during saving
+    private void addRootToCache(final EObject root) {
+        int key = getCacheKey(root);
+        this.cachedResourcelessRoots.put(key, root);
+    }
 
-    // FIXME MK (cache): during update of tuidsremove entry for old tuid from cache
+    private boolean isCached(final EObject root) {
+        int key = getCacheKey(root);
+        return this.cachedResourcelessRoots.containsKey(key);
+    }
 
-    // TODO MK the only way to have something in the cache that should no longer be there is if you
-    // create objects that are never stored
+    @Override
+    public void removeRootFromCache(final EObject root) {
+        int key = getCacheKey(root);
+        removeCacheEntryForKey(key);
+    }
+
+    private void removeCacheEntryForKey(final int key) {
+        this.cachedResourcelessRoots.remove(key);
+    }
+
+    @Override
+    public void removeRootIfCached(final String tuid) {
+        Integer key = getCacheKey(tuid);
+        if (key != null) {
+            removeCacheEntryForKey(key);
+        }
+    }
+
+    private String getVURIReplacementForCachedRoot(final EObject root) {
+        return VitruviusConstants.getCachedTUIDMarker() + getCacheKey(root);
+    }
+
+    private Integer getCacheKey(final EObject root) {
+        return root.hashCode();
+    }
+
+    private Integer claimCacheKey(final String tuid) {
+        Integer key = getCacheKey(tuid);
+        if (key == null) {
+            throw new IllegalArgumentException("Cannot get the cache key for the tuid '" + tuid
+                    + "' because it is not of the form '{marker}{key}...'!");
+        } else {
+            return key;
+        }
+    }
+
+    private Integer getCacheKey(final String tuid) {
+        String cachedTUIDMarker = VitruviusConstants.getCachedTUIDMarker();
+        if (tuid.startsWith(cachedTUIDMarker)) {
+            int markerEndIndex = cachedTUIDMarker.length() - 1;
+            String suffixAfterMarker = tuid.substring(markerEndIndex);
+            String[] suffixSegments = getSegments(suffixAfterMarker);
+            if (suffixSegments.length > 0) {
+                String keyString = suffixSegments[0];
+                return Integer.parseInt(keyString);
+            }
+        }
+        return null;
+    }
+
     /**
      * @return The default prefix for all TUIDs of this calculator.
      */
@@ -59,33 +125,51 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
 
     @Override
     public VURI getModelVURIContainingIdentifiedEObject(final String extTuid) {
-        String tuid = getTUIDWithoutDefaultPart(extTuid);
-        String[] ids = tuid.split(VitruviusConstants.getTUIDSegmentSeperator());
-        String vuriKey = ids[0];
-        return VURI.getInstance(vuriKey);
-        // FIXME MAX (cache r2): has to return null for cached tuids
+        String tuidSuffix = getTUIDWithoutDefaultPrefix(extTuid);
+        String[] segments = getSegments(tuidSuffix);
+        String firstSegmentOfSuffix = segments[0];
+        if (isCached(firstSegmentOfSuffix)) {
+            return null;
+        } else {
+            return VURI.getInstance(firstSegmentOfSuffix);
+        }
+    }
+
+    private String[] getSegments(final String tuid) {
+        return tuid.split(VitruviusConstants.getTUIDSegmentSeperator());
+    }
+
+    private boolean isCached(final String firstSegmentOfSuffix) {
+        return firstSegmentOfSuffix.startsWith(VitruviusConstants.getCachedTUIDMarker());
     }
 
     @Override
-    public EObject resolveEObjectFromRootAndFullTUID(final EObject root, final String extTuid) {
-        // FIXME MAX (cache r5) if root is null try to get one from the cache, keep on going with it
-        String identifier = getTUIDWithoutRootObjectPart(root, extTuid);
+    public EObject resolveEObjectFromRootAndFullTUID(EObject root, final String tuid) {
+        if (root == null) {
+            root = claimRootFromCache(tuid);
+        }
+        String identifier = getTUIDWithoutRootObjectPrefix(root, tuid);
         if (identifier == null) {
             return null;
         }
 
-        String[] ids = identifier.split(VitruviusConstants.getTUIDSegmentSeperator());
+        String[] segments = getSegments(identifier);
         if (identifier.length() == 0) {
-            ids = new String[0];
+            segments = new String[0];
         }
 
-        EObject foundElement = getIdentifiedEObjectWithinRootEObjectInternal(root, ids);
+        EObject foundElement = getIdentifiedEObjectWithinRootEObjectInternal(root, segments);
         if (foundElement != null) {
             return foundElement;
         }
 
-        LOGGER.warn("No EObject found for TUID: " + extTuid + " in root object: " + root);
+        LOGGER.warn("No EObject found for TUID: " + tuid + " in root object: " + root);
         return null;
+    }
+
+    private EObject claimRootFromCache(final String tuid) {
+        int key = claimCacheKey(tuid);
+        return this.cachedResourcelessRoots.get(key);
     }
 
     /**
@@ -97,7 +181,7 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
      *            The TUID to process.
      * @return The TUID without the root object prefix.
      */
-    private String getTUIDWithoutRootObjectPart(final EObject root, final String extTuid) {
+    private String getTUIDWithoutRootObjectPrefix(final EObject root, final String extTuid) {
         String rootTUID = calculateTUIDFromEObject(root);
         if (!extTuid.startsWith(rootTUID)) {
             LOGGER.warn("TUID " + extTuid + " is not in EObject " + root);
@@ -127,7 +211,7 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
      *            The TUID.
      * @return The given TUID without the default part.
      */
-    private String getTUIDWithoutDefaultPart(final String tuid) {
+    private String getTUIDWithoutDefaultPrefix(final String tuid) {
         if (!isValidTUID(tuid)) {
             throw new IllegalArgumentException("TUID: " + tuid + " not generated by class " + getTUIDIdentifier());
         }

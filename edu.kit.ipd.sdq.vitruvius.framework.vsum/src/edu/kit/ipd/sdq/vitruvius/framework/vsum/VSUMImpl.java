@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -128,6 +129,9 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         try {
             EcoreResourceBridge.saveResource(resourceToSave, metamodel.getDefaultSaveOptions());
             saveAllChangedCorrespondences(modelInstanceToSave);
+            for (EObject root : modelInstanceToSave.getRootElements()) {
+                metamodel.removeRootFromTUIDCache(root);
+            }
         } catch (IOException e) {
             throw new RuntimeException("Could not save VURI + " + vuri + ": " + e);
         }

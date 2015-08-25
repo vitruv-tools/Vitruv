@@ -16,6 +16,8 @@ public class VitruviusConstants {
      */
     private static final String OPTION_PROCESS_DANGLING_HREF = "PROCESS_DANGLING_HREF";
     private static final String OPTION_PROCESS_DANGLING_HREF_DISCARD = "DISCARD";
+    
+	private static final String CACHED_TUID_MARKER = "45gBeLT4L9BWQtesOVNdXzAZP4RBPBRdxL8wGJV+jyo=";
 
     /**
      * @return the name of the executable property of extension points
@@ -58,5 +60,9 @@ public class VitruviusConstants {
 
 	public static String getOptionProcessDanglingHrefDiscard() {
 		return OPTION_PROCESS_DANGLING_HREF_DISCARD;
+	}
+
+	public static String getCachedTUIDMarker() {
+		return CACHED_TUID_MARKER;
 	}
 }

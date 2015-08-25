@@ -422,50 +422,56 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
     @Override
     public EObject resolveEObjectFromTUID(final TUID tuid) {
-        // FIXME MAX (cache r0)
         String tuidString = tuid.toString();
-        Metamodel metamodel = null;
-        if (this.mapping.getMetamodelA().hasTUID(tuidString)) {
-            metamodel = this.mapping.getMetamodelA();
+        Metamodel metamodel = getMetamodelHavingTUID(tuidString);
+
+        VURI vuri = metamodel.getModelVURIContainingIdentifiedEObject(tuidString);
+        EObject rootEObject = null;
+        ModelInstance modelInstance = null;
+        if (vuri != null) {
+            modelInstance = this.modelProviding.getAndLoadModelInstanceOriginal(vuri);
+            rootEObject = modelInstance.getFirstRootEObject();
         }
-        if (this.mapping.getMetamodelB().hasTUID(tuidString)) {
-            metamodel = this.mapping.getMetamodelB();
+        EObject resolvedEobject = null;
+        try {
+            // if the tuid is cached because it has no resource the rootEObject is null
+            resolvedEobject = metamodel.resolveEObjectFromRootAndFullTUID(rootEObject, tuidString);
+        } catch (IllegalArgumentException iae) {
+            // do nothing - just try the solving again
+        }
+        if (null == resolvedEobject && modelInstance != null) {
+            // reload the model and try to solve it again
+            modelInstance.load(null, true);
+            rootEObject = modelInstance.getUniqueRootEObject();
+            resolvedEobject = metamodel.resolveEObjectFromRootAndFullTUID(rootEObject, tuidString);
+            if (null == resolvedEobject) {
+                // if resolved EObject is still null throw an exception
+                // TODO think about something more lightweight than throwing an exception
+                throw new RuntimeException("Could not resolve TUID " + tuidString + " in eObject " + rootEObject);
+            }
+        }
+        if (resolvedEobject.eIsProxy()) {
+            EcoreUtil.resolve(resolvedEobject, getResource());
+        }
+        return resolvedEobject;
+
+    }
+
+    private Metamodel getMetamodelHavingTUID(final String tuidString) {
+        Metamodel metamodel = null;
+        Metamodel metamodelA = this.mapping.getMetamodelA();
+        if (metamodelA.hasTUID(tuidString)) {
+            metamodel = metamodelA;
+        }
+        Metamodel metamodelB = this.mapping.getMetamodelB();
+        if (metamodelB.hasTUID(tuidString)) {
+            metamodel = metamodelB;
         }
         if (metamodel == null) {
-            throw new IllegalArgumentException("The TUID '" + tuid + "' is neither valid for "
-                    + this.mapping.getMetamodelA() + " nor " + this.mapping.getMetamodelB());
-        } else {
-            // FIXME MAX (cache r1): vuri for cached tuid will be null
-            VURI vuri = metamodel.getModelVURIContainingIdentifiedEObject(tuidString);
-            // FIXME MAX (cache r3): do not try to load or create a model instance if vuri is null
-            // but set root to null
-            ModelInstance modelInstance = this.modelProviding.getAndLoadModelInstanceOriginal(vuri);
-            EObject rootEObject = modelInstance.getFirstRootEObject();
-            EObject resolvedEobject = null;
-            try {
-                // FIXME MAX (cache r4): call with root = null for cached objects (called from
-                // nowhere
-                // else, so we are fine)
-                resolvedEobject = metamodel.resolveEObjectFromRootAndFullTUID(rootEObject, tuidString);
-            } catch (IllegalArgumentException iae) {
-                // do nothing - just try the solving again
-            }
-            if (null == resolvedEobject) {
-                // reload the model and try to solve it again
-                modelInstance.load(null, true);
-                rootEObject = modelInstance.getUniqueRootEObject();
-                resolvedEobject = metamodel.resolveEObjectFromRootAndFullTUID(rootEObject, tuidString);
-                if (null == resolvedEobject) {
-                    // if resolved EObject is still null throw an exception
-                    // TODO think about something more lightweight than throwing an exception
-                    throw new RuntimeException("Could not resolve TUID " + tuid + " in eObject " + rootEObject);
-                }
-            }
-            if (resolvedEobject.eIsProxy()) {
-                EcoreUtil.resolve(resolvedEobject, getResource());
-            }
-            return resolvedEobject;
+            throw new IllegalArgumentException(
+                    "The TUID '" + tuidString + "' is neither valid for " + metamodelA + " nor " + metamodelB);
         }
+        return metamodel;
     }
 
     /*
@@ -725,7 +731,6 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
             logger.warn("EObject: '" + eObject + "' is neither an instance of MM1 nor an instance of MM2. ");
             return null;
         } else {
-            // FIXME MAX (cache c0): HERE call to calculateTUIDFromEObject and from nowhere else
             return TUID.getInstance(metamodel.calculateTUIDFromEObject(eObject));
         }
     }
@@ -829,6 +834,9 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
             updateTUID2CorrespondingEObjectsMap(oldTUIDPrefix, newTUIDPrefix, sameTUID);
         }
 
+        String oldTUIDString = oldTUID.toString();
+        Metamodel metamodel = getMetamodelHavingTUID(oldTUIDString);
+        metamodel.removeRootIfCached(oldTUIDString);
     }
 
     private void updateTUID2CorrespondingEObjectsMap(final TUID oldTUID, final TUID newTUID, final boolean sameTUID) {

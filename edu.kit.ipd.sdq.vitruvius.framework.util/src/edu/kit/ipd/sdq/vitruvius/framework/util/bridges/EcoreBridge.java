@@ -422,4 +422,14 @@ public final class EcoreBridge {
                + "' reference would exceed the upper bound of '" + upperBound + "'!");
       }
    }
+   
+   /**
+    * Return the root eObject of the tree that contains the given eObject if this tree exists and otherwise the given eObject 
+    * itself (beeing the root of a containment tree of depth 0).
+    * @param eObject
+    * @return the root
+    */
+   public static EObject getRootEObject(EObject eObject) {
+	   return EcoreUtil.getRootContainer(eObject);
+   }
 }

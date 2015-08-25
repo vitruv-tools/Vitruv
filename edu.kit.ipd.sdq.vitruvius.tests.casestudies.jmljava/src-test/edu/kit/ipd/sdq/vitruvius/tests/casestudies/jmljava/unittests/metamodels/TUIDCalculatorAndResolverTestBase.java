@@ -41,7 +41,7 @@ public abstract class TUIDCalculatorAndResolverTestBase<T extends TUIDCalculator
     
     private void testCalculationAndResolution(EObject originalObject) {
         String tuid = tuidGenerator.calculateTUIDFromEObject(originalObject);
-        assertNotEquals(tuidGenerator.getDefaultTUID(), tuid);
+        assertNotEquals(tuidGenerator.getDefaultTUIDPrefix(), tuid);
         
         EObject possibleMatch = tuidGenerator.resolveEObjectFromRootAndFullTUID(rootObject, tuid);
         

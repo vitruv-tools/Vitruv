@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.Mapping0;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.MappingInterfaceToOperationInterface;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FeatureInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
@@ -79,7 +79,7 @@ public class CorrespondenceTest extends VSUMTest {
             // CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence();
             // c.setElementATUID(TUID.getInstance("tuidA"));
             // c.setElementBTUID(TUID.getInstance("tuidB"));
-            MIRMappingRealization mapping = Mapping0.INSTANCE;
+            MIRMappingRealization mapping = MappingInterfaceToOperationInterface.INSTANCE;
             ((MappedCorrespondenceInstance) corresp).registerMappingForCorrespondence(repo2pkg, mapping);
         }
         // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ

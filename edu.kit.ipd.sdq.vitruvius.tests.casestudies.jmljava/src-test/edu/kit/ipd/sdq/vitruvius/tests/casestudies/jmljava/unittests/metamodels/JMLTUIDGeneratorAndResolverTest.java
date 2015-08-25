@@ -250,7 +250,7 @@ public class JMLTUIDGeneratorAndResolverTest extends
     @Test
     public void testInvalidEObject() {
         String tuid = tuidGenerator.calculateTUIDFromEObject(EcoreFactory.eINSTANCE.createEObject());
-        assertEquals(tuidGenerator.getDefaultTUID(), tuid);
+        assertEquals(tuidGenerator.getDefaultTUIDPrefix(), tuid);
     }
     
     @Test

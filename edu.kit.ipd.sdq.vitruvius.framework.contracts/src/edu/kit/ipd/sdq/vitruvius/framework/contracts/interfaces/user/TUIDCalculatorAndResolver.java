@@ -24,9 +24,32 @@ public interface TUIDCalculatorAndResolver {
      */
     String calculateTUIDFromEObject(EObject eObject, EObject virtualRootObject, String prefix);
 
+    /**
+     * Returns the VURI for the model that contains the EObject with the given TUID if it exists and
+     * otherwise <code>null</code>.
+     *
+     * @param tuid
+     * @return the VURI if it exists, otherwise <code>null</code>
+     */
     VURI getModelVURIContainingIdentifiedEObject(String tuid);
 
     EObject resolveEObjectFromRootAndFullTUID(EObject root, String tuid);
 
     boolean isValidTUID(String tuid);
+
+    /**
+     * Notifies the calculator and resolver that the given root EObject should be removed from the
+     * cache.
+     *
+     * @param root
+     *            the root EObject that shall be removed
+     */
+    void removeRootFromCache(EObject root);
+
+    /**
+     * Removes the root for the given tuid from the cache if it is cached.
+     *
+     * @param tuid
+     */
+    void removeRootIfCached(String tuid);
 }
