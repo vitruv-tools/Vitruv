@@ -38,7 +38,7 @@ public class PCM2UMLExecutor extends AbstractMIRChange2CommandTransforming {
 	
 	@Override
 	protected void setup() {
-		addMIRMapping(edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.Mapping0.INSTANCE);
+		addMIRMapping(edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.MappingPackageToBasicComponent.INSTANCE);
 //		addMIRMapping(edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.Mapping1.INSTANCE);
 	}
 

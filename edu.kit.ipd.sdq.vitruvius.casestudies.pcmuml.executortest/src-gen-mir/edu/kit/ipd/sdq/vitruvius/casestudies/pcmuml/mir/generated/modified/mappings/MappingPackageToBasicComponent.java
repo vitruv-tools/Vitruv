@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mapp
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EClass;
@@ -13,6 +14,7 @@ import org.palladiosimulator.pcm.repository.RepositoryFactory;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRMappingRealization;
 
@@ -20,13 +22,13 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRMappingR
 /**
  * Class Mapping
  */
-public class Mapping0 extends AbstractMIRMappingRealization {
-	private static final Logger LOGGER = Logger.getLogger(Mapping0.class);
+public class MappingPackageToBasicComponent extends AbstractMIRMappingRealization {
+	private static final Logger LOGGER = Logger.getLogger(MappingPackageToBasicComponent.class);
 	
 	// Singleton
-	public final static Mapping0 INSTANCE = new Mapping0();
+	public final static MappingPackageToBasicComponent INSTANCE = new MappingPackageToBasicComponent();
 	
-	private Mapping0() {}
+	private MappingPackageToBasicComponent() {}
 	
 	@Override
 	protected boolean checkConditions(EObject context,
@@ -48,7 +50,7 @@ public class Mapping0 extends AbstractMIRMappingRealization {
 	}
 
 	@Override
-	protected void restorePostConditions(EObject eObject, EObject target, EChange change) {
+	protected void restorePostConditions(EObject eObject, EObject target, EChange change, Blackboard blackboard) {
 		LOGGER.trace("restorePostConditions(" + eObject.toString() + ", " + target.toString() + ", " + change.toString() + ")");
 		
 		Package pkg = JavaHelper.requireType(eObject, Package.class);
@@ -68,7 +70,7 @@ public class Mapping0 extends AbstractMIRMappingRealization {
 
 	@Override
 	public String getMappingID() {
-		return Mapping0.class.getName();
+		return MappingPackageToBasicComponent.class.getName();
 	}
 
 	@Override
@@ -80,5 +82,19 @@ public class Mapping0 extends AbstractMIRMappingRealization {
 		getMappedCorrespondenceInstanceFromBlackboard(blackboard).createMappedCorrespondence(pkg, bc, this);
 		
 		return Collections.singleton(bc);
+	}
+	
+	public static Optional<BasicComponent> getCorresponding(Package pkg, Blackboard blackboard) {
+		final MappedCorrespondenceInstance ci = getMappedCorrespondenceInstanceFromBlackboard(blackboard);
+		final Optional<BasicComponent> bc = JavaHelper.tryCast(ci.getMappingTarget(pkg, MappingPackageToBasicComponent.INSTANCE), BasicComponent.class);
+				
+		return bc;
+	}
+	
+	public static BasicComponent claimCorresponding(Package pkg, Blackboard blackboard) {
+		final BasicComponent bc = getCorresponding(pkg, blackboard)
+				.orElseThrow(() -> new IllegalStateException("Could not find mapped BasicComponent for Package " + pkg.toString()));
+		
+		return bc;
 	}
 }
