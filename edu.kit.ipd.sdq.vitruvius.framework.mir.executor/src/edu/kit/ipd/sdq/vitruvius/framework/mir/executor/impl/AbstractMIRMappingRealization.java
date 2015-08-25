@@ -71,7 +71,7 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 	 *            the change that was applied
 	 * @return
 	 */
-	protected abstract void restorePostConditions(EObject eObject, EObject target, EChange change);
+	protected abstract void restorePostConditions(EObject eObject, EObject target, EChange change, Blackboard blackboard);
 
 	/**
 	 * Creates a corresponding object for <code>eObject</code> and a
@@ -109,7 +109,8 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 		return toList(filter(affectedObjects, p -> p.eClass().equals(mappedEClass)));
 	}
 
-	protected MappedCorrespondenceInstance getMappedCorrespondenceInstanceFromBlackboard(Blackboard blackboard) {
+	// FIXME DW: protected? move to MappedCorrespondenceInstance?
+	protected static MappedCorrespondenceInstance getMappedCorrespondenceInstanceFromBlackboard(Blackboard blackboard) {
 		CorrespondenceInstance correspondenceInstance = blackboard.getCorrespondenceInstance();
 		if (!(correspondenceInstance instanceof MappedCorrespondenceInstance)) {
 			throw new IllegalArgumentException("The given correspondence instance " + correspondenceInstance + " is not a " + MappedCorrespondenceInstance.class.getSimpleName());
@@ -152,7 +153,7 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 			}
 
 			if (mappedAfter) {
-				restorePostConditions(candidate, mappingTarget, eChange);
+				restorePostConditions(candidate, mappingTarget, eChange, blackboard);
 			}
 
 			handleNonContainedEObjects(affectedEObjects);
