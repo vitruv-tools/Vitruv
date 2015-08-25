@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.MappingInterfaceToOperationInterface;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRChange2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
@@ -39,6 +40,7 @@ public class PCM2UMLExecutor extends AbstractMIRChange2CommandTransforming {
 	@Override
 	protected void setup() {
 		addMIRMapping(edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.MappingPackageToBasicComponent.INSTANCE);
+		addMIRMapping(edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.MappingInterfaceToOperationInterface.INSTANCE);
 //		addMIRMapping(edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.Mapping1.INSTANCE);
 	}
 
