@@ -14,7 +14,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
-import org.eclipse.emf.transaction.util.TransactionUtil;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator;
@@ -49,7 +48,6 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     private final Map<Mapping, InternalCorrespondenceInstance> mapping2CorrespondenceInstanceMap;
 
     private ClassLoader classLoader;
-    private final TransactionalEditingDomain editingDomain;
 
     public VSUMImpl(final MetamodelManaging metamodelManaging, final ViewTypeManaging viewTypeManaging,
             final MappingManaging mappingManaging) {
@@ -63,7 +61,6 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         this.mappingManaging = mappingManaging;
 
         this.resourceSet = new ResourceSetImpl();
-        this.editingDomain = TransactionUtil.getEditingDomain(this.resourceSet);
 
         this.modelInstances = new HashMap<VURI, ModelInstance>();
         this.mapping2CorrespondenceInstanceMap = new HashMap<Mapping, InternalCorrespondenceInstance>();
@@ -334,7 +331,19 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     }
 
     @Override
-    public TransactionalEditingDomain getEditingDomain() {
-        return this.editingDomain;
+    public TransactionalEditingDomain getTransactionalEditingDomain() {
+        return TransactionalEditingDomain.Factory.INSTANCE.getEditingDomain(this.resourceSet);
+    }
+
+    @Override
+    public void attachTransactionalEditingDomain() {
+        TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain(this.resourceSet);
+    }
+
+    @Override
+    public void detachTransactionalEditingDomain() {
+        TransactionalEditingDomain domain = TransactionalEditingDomain.Factory.INSTANCE
+                .getEditingDomain(this.resourceSet);
+        domain.dispose();
     }
 }

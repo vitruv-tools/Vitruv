@@ -10,5 +10,10 @@ public interface ModelProviding extends ModelCopyProviding {
 
     void saveModelInstanceOriginal(VURI vuri);
 
-    TransactionalEditingDomain getEditingDomain();
+    TransactionalEditingDomain getTransactionalEditingDomain();
+
+    void attachTransactionalEditingDomain();
+
+    void detachTransactionalEditingDomain();
+
 }
