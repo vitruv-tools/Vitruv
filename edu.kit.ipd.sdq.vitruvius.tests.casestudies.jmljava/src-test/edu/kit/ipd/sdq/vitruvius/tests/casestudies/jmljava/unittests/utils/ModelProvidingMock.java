@@ -32,7 +32,17 @@ public class ModelProvidingMock implements ModelProviding {
     }
 
     @Override
-    public TransactionalEditingDomain getEditingDomain() {
+    public TransactionalEditingDomain getTransactionalEditingDomain() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void attachTransactionalEditingDomain() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void detachTransactionalEditingDomain() {
         throw new UnsupportedOperationException();
     }
 }
