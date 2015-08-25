@@ -1,14 +1,12 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.members.Method
 import org.emftext.language.java.types.TypeReference
 import org.emftext.language.java.types.TypedElement
@@ -84,7 +82,7 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 					getCorrespondingPCMDataTypeForTypeReference(newValue as TypeReference,
 						blackboard.correspondenceInstance, userInteracting, repo)
 				correspondingSignature.returnType__OperationSignature = newReturnValue
-				PCMJaMoPPUtils.saveNonRootEObject(correspondingSignature)
+				TransformationUtils.saveNonRootEObject(correspondingSignature)
 
 				// guess this is not necessary since the id stay the same
 				blackboard.correspondenceInstance.update(oldTUID, correspondingSignature)

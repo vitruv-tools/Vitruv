@@ -1,10 +1,10 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import java.util.List
 import java.util.Set
@@ -99,7 +99,7 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 		}
 		val Interface jaMoPPIf = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(newAffectedEObject,
 			Interface).get(0)
-		PCMJaMoPPUtils.saveNonRootEObject(jaMoPPIf)
+		TransformationUtils.saveNonRootEObject(jaMoPPIf)
 		for (eObject : newMethods) {
 			val InterfaceMethod newMethod = eObject as InterfaceMethod;
 			jaMoPPIf.members.add(newMethod)
@@ -127,7 +127,7 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 			val InterfaceMethod oldMethod = eObject as InterfaceMethod;
 			jaMoPPIf.methods.remove(oldMethod)
 		}
-		PCMJaMoPPUtils.saveNonRootEObject(jaMoPPIf)	
+		TransformationUtils.saveNonRootEObject(jaMoPPIf)	
 	}
 
 	override removeEObject(EObject eObject) {

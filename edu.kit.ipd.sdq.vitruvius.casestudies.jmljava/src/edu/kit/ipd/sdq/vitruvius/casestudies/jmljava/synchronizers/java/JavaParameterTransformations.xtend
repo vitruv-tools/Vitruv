@@ -1,10 +1,12 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java
 
 import com.google.inject.Inject
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.FormalParameterDecl
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLPackage
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
@@ -18,8 +20,8 @@ class JavaParameterTransformations extends Java2JMLTransformationBase {
 	static val LOGGER = Logger.getLogger(JavaParameterTransformations)
 
 	@Inject
-	new(ShadowCopyFactory shadowCopyFactory) {
-		super(shadowCopyFactory)
+	new(ShadowCopyFactory shadowCopyFactory, SynchronisationAbortedListener synchronisationAbortedListener) {
+		super(shadowCopyFactory, synchronisationAbortedListener)
 	}
 
 	override protected getLogger() {
@@ -49,12 +51,10 @@ class JavaParameterTransformations extends Java2JMLTransformationBase {
 		val jmlFeature = featureCorrespondenceMap.claimValueForKey(affectedReference)
 
 		if (jmlFeature == JMLPackage.eINSTANCE.typed_Type) {
-			changedObjects.addAll(
 				CommonSynchronizerTransformations.replaceNonRootEObjectSingleType(javaParameter,
-					oldValue as TypeReference, newValue as TypeReference, correspondenceInstance))
+					oldValue as TypeReference, newValue as TypeReference, blackboard.correspondenceInstance)
 		}
-
-		return createTransformationChangeResultForEObjectsToSave(changedObjects)
+		TransformationUtils.saveNonRootEObject(changedObjects)
 	}
 
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
@@ -68,7 +68,7 @@ class JavaParameterTransformations extends Java2JMLTransformationBase {
 		val jmlFeature = featureCorrespondenceMap.claimValueForKey(affectedAttribute)
 
 		if (jmlFeature == JMLPackage.eINSTANCE.formalParameterDecl_Identifier) {
-			val jmlParameterDecls = correspondenceInstance.getAllCorrespondingEObjects(affectedEObject).filter(
+			val jmlParameterDecls = blackboard.correspondenceInstance.getAllCorrespondingEObjects(affectedEObject).filter(
 				FormalParameterDecl)
 			for (jmlParameterDecl : jmlParameterDecls) {
 				LOGGER.trace("Updating " + jmlParameterDecl)
@@ -80,12 +80,11 @@ class JavaParameterTransformations extends Java2JMLTransformationBase {
 
 				val jmlParameterDeclTUIDOld = jmlParameterDecl.TUID
 				jmlParameterDecl.identifier = newValue as String
-				correspondenceInstance.update(jmlParameterDeclTUIDOld, jmlParameterDecl.TUID)
+				blackboard.correspondenceInstance.update(jmlParameterDeclTUIDOld, jmlParameterDecl.TUID)
 				changedObjects.add(jmlParameterDecl)
 			}
 		}
-
-		return createTransformationChangeResultForEObjectsToSave(changedObjects)
+		TransformationUtils.saveNonRootEObject(changedObjects)
 	}
 
 }

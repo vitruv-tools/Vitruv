@@ -48,45 +48,46 @@ public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2Comm
     }
 
     @Override
-    protected void initializeChangeSynchronizer() {
+    protected void initializeTransformationExecuter() {
         // PCM2JaMoPP
         // Repository
-        this.changeSynchronizer.addMapping(new RepositoryMappingTransformation());
-        this.changeSynchronizer.addMapping(new BasicComponentMappingTransformation());
-        this.changeSynchronizer.addMapping(new CompositeComponentMappingTransformation());
-        this.changeSynchronizer.addMapping(new OperationInterfaceMappingTransformation());
-        this.changeSynchronizer.addMapping(new OperationSignatureMappingTransformation());
-        this.changeSynchronizer.addMapping(new ParameterMappingTransformation());
-        this.changeSynchronizer.addMapping(new CollectionDataTypeMappingTransformation());
-        this.changeSynchronizer.addMapping(new CompositeDataTypeMappingTransformation());
-        this.changeSynchronizer.addMapping(new InnerDeclarationMappingTransforamtion());
-        this.changeSynchronizer.addMapping(new SEFFMappingTransformation());
+        this.transformationExecuter.addMapping(new RepositoryMappingTransformation());
+        this.transformationExecuter.addMapping(new BasicComponentMappingTransformation());
+        this.transformationExecuter.addMapping(new CompositeComponentMappingTransformation());
+        this.transformationExecuter.addMapping(new OperationInterfaceMappingTransformation());
+        this.transformationExecuter.addMapping(new OperationSignatureMappingTransformation());
+        this.transformationExecuter.addMapping(new ParameterMappingTransformation());
+        this.transformationExecuter.addMapping(new CollectionDataTypeMappingTransformation());
+        this.transformationExecuter.addMapping(new CompositeDataTypeMappingTransformation());
+        this.transformationExecuter.addMapping(new InnerDeclarationMappingTransforamtion());
+        this.transformationExecuter.addMapping(new SEFFMappingTransformation());
         // System
-        this.changeSynchronizer.addMapping(new SystemMappingTransformation());
-        this.changeSynchronizer.addMapping(new AssemblyContextMappingTransformation());
-        this.changeSynchronizer.addMapping(new AssemblyConnectorMappingTransformation());
-        this.changeSynchronizer.addMapping(new ProvidedDelegationConnectorMappingTransformation());
-        this.changeSynchronizer.addMapping(new RequiredDelegationConnectorMappingTransformation());
+        this.transformationExecuter.addMapping(new SystemMappingTransformation());
+        this.transformationExecuter.addMapping(new AssemblyContextMappingTransformation());
+        this.transformationExecuter.addMapping(new AssemblyConnectorMappingTransformation());
+        this.transformationExecuter.addMapping(new ProvidedDelegationConnectorMappingTransformation());
+        this.transformationExecuter.addMapping(new RequiredDelegationConnectorMappingTransformation());
         // Repository and System
-        this.changeSynchronizer.addMapping(new OperationProvidedRoleMappingTransformation());
-        this.changeSynchronizer.addMapping(new OperationRequiredRoleMappingTransformation());
+        this.transformationExecuter.addMapping(new OperationProvidedRoleMappingTransformation());
+        this.transformationExecuter.addMapping(new OperationRequiredRoleMappingTransformation());
 
         // JaMoPP2PCM
-        this.changeSynchronizer.addMapping(new PackageMappingTransformation());
-        this.changeSynchronizer.addMapping(new CompilationUnitMappingTransformation());
-        this.changeSynchronizer.addMapping(new ClassMappingTransformation());
-        this.changeSynchronizer.addMapping(new InterfaceMappingTransformation());
-        this.changeSynchronizer.addMapping(new MethodMappingTransformation());
-        this.changeSynchronizer.addMapping(
+        this.transformationExecuter.addMapping(new PackageMappingTransformation());
+        this.transformationExecuter.addMapping(new CompilationUnitMappingTransformation());
+        this.transformationExecuter.addMapping(new ClassMappingTransformation());
+        this.transformationExecuter.addMapping(new InterfaceMappingTransformation());
+        this.transformationExecuter.addMapping(new MethodMappingTransformation());
+        this.transformationExecuter.addMapping(
                 new edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ParameterMappingTransformation());
-        this.changeSynchronizer.addMapping(new ModifierMappingTransformation());
-        this.changeSynchronizer.addMapping(new FieldMappingTransformation());
-        this.changeSynchronizer.addMapping(new ClassMethodMappingTransformation());
-        this.changeSynchronizer.addMapping(new TypeReferenceMappingTransformation());
+        this.transformationExecuter.addMapping(new ModifierMappingTransformation());
+        this.transformationExecuter.addMapping(new FieldMappingTransformation());
+        this.transformationExecuter.addMapping(new ClassMethodMappingTransformation());
+        this.transformationExecuter.addMapping(new TypeReferenceMappingTransformation());
 
-        // execute initializeChangeSynchronizer as last statement: it sets the user interactor for
+        // execute initializetransformationExecuter as last statement: it sets the user interactor
+        // for
         // all mappings
-        super.initializeChangeSynchronizer();
+        super.initializeTransformationExecuter();
     }
 
     @Override
@@ -120,6 +121,6 @@ public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2Comm
                 correspondenceInstance, myBasicComponent);
         final ClassMethodBodyChangedTransformation methodBodyChanged = new ClassMethodBodyChangedTransformation(
                 oldMethod, newMethod, basicComponentFinder, classification, interfaceOfExternalCallFinder);
-        methodBodyChanged.execute(correspondenceInstance, this.userInteracting, null);
+        methodBodyChanged.execute(blackboard, this.userInteracting, null);
     }
 }

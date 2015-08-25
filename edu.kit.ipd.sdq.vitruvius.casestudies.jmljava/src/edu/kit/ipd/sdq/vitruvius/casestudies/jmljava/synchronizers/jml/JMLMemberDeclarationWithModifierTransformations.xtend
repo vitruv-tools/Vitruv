@@ -1,14 +1,17 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.jml
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyCorrespondences
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.ConcreteSyntaxHelper
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLInvariantExpression
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMemberModifier
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLPackage
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecMemberModifier
+import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyCorrespondences
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import java.util.Collection
 import org.apache.log4j.Logger
@@ -17,43 +20,43 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature.Setting
 import org.emftext.language.java.members.ClassMethod
 import org.emftext.language.java.statements.LocalVariableStatement
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement
 
 class JMLMemberDeclarationWithModifierTransformations extends JML2JavaTransformationsBase {
-	
+
 	private static val LOGGER = Logger.getLogger(JMLMemberDeclarationWithModifierTransformations)
-	
-	public new(ShadowCopyFactory shadowCopyFactory) {
-		super(shadowCopyFactory)
+
+	public new(ShadowCopyFactory shadowCopyFactory, SynchronisationAbortedListener synchronisationAbortedListener) {
+		super(shadowCopyFactory, synchronisationAbortedListener)
 	}
-	
+
 	override protected getLogger() {
 		LOGGER
 	}
-	
+
 	override getClassOfMappedEObject() {
 		MemberDeclWithModifier
 	}
-	
+
 	override setCorrespondenceForFeatures() {
 		// nothing to do here
 	}
-	
-	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject newValue,
-		int index, EObject[] newCorrespondingEObjects) {
-			
+
+	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
+		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
+
 		val changedObjects = new ArrayList<EObject>()
-		LOGGER.trace("CreateNonRootEObjectInList\t" + oldAffectedEObject + "." + affectedReference.name + " (" + newValue + " @ " + index + ")")
-		
+		LOGGER.trace(
+			"CreateNonRootEObjectInList\t" + oldAffectedEObject + "." + affectedReference.name + " (" + newValue +
+				" @ " + index + ")")
+
 		if (affectedReference == JMLPackage.eINSTANCE.memberDeclWithModifier_JmlModifiers) {
-			
+
 			val newJMLMemberModifier = newValue as JMLMemberModifier
 			if (newJMLMemberModifier.modifier == JMLSpecMemberModifier.HELPER) {
 				val memberDecl = (oldAffectedEObject as MemberDeclWithModifier).modelInstanceElement
 				memberDecl.jmlModifiers.add(index, newJMLMemberModifier)
 				changedObjects.add(memberDecl)
-			}
-			else if (newJMLMemberModifier.modifier == JMLSpecMemberModifier.PURE) {
+			} else if (newJMLMemberModifier.modifier == JMLSpecMemberModifier.PURE) {
 //				// handle Java methods and model methods
 //				val correspondingJavaMethod = getSingleCorrespondingEObjectOfType(affectedEObject, ClassMethod)
 //				if (correspondingJavaMethod == null) {
@@ -65,69 +68,82 @@ class JMLMemberDeclarationWithModifierTransformations extends JML2JavaTransforma
 //						return createTransformationChangeResultAborted()
 //					}
 //				}
-				
-				val shadowCopy = shadowCopyFactory.create(correspondenceInstance)
-				val affectedObj = shadowCopy.shadowCopyCorrespondences.getJMLElement(oldAffectedEObject as MemberDeclWithModifier)
+				val shadowCopy = shadowCopyFactory.create(blackboard.correspondenceInstance)
+				val affectedObj = shadowCopy.shadowCopyCorrespondences.getJMLElement(
+					oldAffectedEObject as MemberDeclWithModifier)
 				shadowCopy.setupShadowCopyWithJMLSpecifications(false)
-				val javaMember = shadowCopy.shadowCopyCorrespondences.getMember(affectedObj.eContainer as JMLSpecifiedElement)
-				val result = CommonSynchronizerTasksJML.adjustPureModifiersForMethod(false, true, javaMember as ClassMethod, shadowCopy, correspondenceInstance)
+				val javaMember = shadowCopy.shadowCopyCorrespondences.getMember(
+					affectedObj.eContainer as JMLSpecifiedElement)
+				val result = CommonSynchronizerTasksJML.adjustPureModifiersForMethod(false, true,
+					javaMember as ClassMethod, shadowCopy, blackboard.correspondenceInstance)
 				if (result.size() == 0) {
-					userInteracting.showMessage(UserInteractionType.MODAL, "The modifier can not be added since the method does not have the query property.")
-					return createTransformationChangeResultAborted()
+					userInteracting.showMessage(UserInteractionType.MODAL,
+						"The modifier can not be added since the method does not have the query property.")
+					syncAbortedListener.synchronisationAborted(super.getSynchAbortChange());
+					return
 				}
 				changedObjects.addAll(result)
-				
+
 //				val memberDecl = (affectedEObject as MemberDeclWithModifier).modelInstanceElement
 //				memberDecl.jmlModifiers.add(index, newJMLMemberModifier)
 //				changedObjects.add(memberDecl)
 			}
 		}
-		
-		return createTransformationChangeResultForEObjectsToSave(changedObjects)
+		TransformationUtils.saveNonRootEObject(changedObjects)
 	}
-	
-	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
-		int index, EObject[] oldCorrespondingEObjectsToDelete) {
-		
+
+	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
+		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
+
 		val changedObjects = new ArrayList<EObject>()
-		LOGGER.trace("DeleteNonRootEObjectInList\t" + oldAffectedEObject + "." + affectedReference.name + " (" + oldValue + " @ " + index + ")")
-		
+		LOGGER.trace(
+			"DeleteNonRootEObjectInList\t" + oldAffectedEObject + "." + affectedReference.name + " (" + oldValue +
+				" @ " + index + ")")
+
 		if (affectedReference == JMLPackage.eINSTANCE.memberDeclWithModifier_JmlModifiers) {
-			
+
 			val oldJMLMemberModifier = oldValue as JMLMemberModifier
 			if (oldJMLMemberModifier.modifier == JMLSpecMemberModifier.HELPER) {
-				val shadowCopy = shadowCopyFactory.create(correspondenceInstance)
-				val affectedObj = shadowCopy.shadowCopyCorrespondences.getJMLElement(oldAffectedEObject as MemberDeclWithModifier)
+				val shadowCopy = shadowCopyFactory.create(blackboard.correspondenceInstance)
+				val affectedObj = shadowCopy.shadowCopyCorrespondences.getJMLElement(
+					oldAffectedEObject as MemberDeclWithModifier)
 				shadowCopy.setupShadowCopyWithJMLSpecifications(false)
-				val javaMember = shadowCopy.shadowCopyCorrespondences.getMember(affectedObj.eContainer as JMLSpecifiedElement)
+				val javaMember = shadowCopy.shadowCopyCorrespondences.getMember(
+					affectedObj.eContainer as JMLSpecifiedElement)
 				val references = shadowCopy.shadowCopyCorrespondences.findReferencesToJavaObject(javaMember)
 				if (references.exists[isReferenceFromInvariant(shadowCopy.shadowCopyCorrespondences)]) {
-					userInteracting.showMessage(UserInteractionType.MODAL, "The modifier can not be deleted since this element is referenced by an invariant.")
-					return createTransformationChangeResultAborted()
+					userInteracting.showMessage(UserInteractionType.MODAL,
+						"The modifier can not be deleted since this element is referenced by an invariant.")
+					syncAbortedListener.synchronisationAborted(super.getSynchAbortChange());
+					return
 				}
 				val memberDecl = (oldAffectedEObject as MemberDeclWithModifier).modelInstanceElement
 				memberDecl.jmlModifiers.remove(index)
 				changedObjects.add(memberDecl)
-			}
-			else if (oldJMLMemberModifier.modifier == JMLSpecMemberModifier.PURE) {
-				val shadowCopy = shadowCopyFactory.create(correspondenceInstance)
-				val affectedObj = shadowCopy.shadowCopyCorrespondences.getJMLElement(oldAffectedEObject as MemberDeclWithModifier)
+			} else if (oldJMLMemberModifier.modifier == JMLSpecMemberModifier.PURE) {
+				val shadowCopy = shadowCopyFactory.create(blackboard.correspondenceInstance)
+				val affectedObj = shadowCopy.shadowCopyCorrespondences.getJMLElement(
+					oldAffectedEObject as MemberDeclWithModifier)
 				shadowCopy.setupShadowCopyWithJMLSpecifications(false)
-				val javaMember = shadowCopy.shadowCopyCorrespondences.getMember(affectedObj.eContainer as JMLSpecifiedElement)
+				val javaMember = shadowCopy.shadowCopyCorrespondences.getMember(
+					affectedObj.eContainer as JMLSpecifiedElement)
 				var Collection<EObject> result;
 				try {
-					result = CommonSynchronizerTasksJML.adjustPureModifiersForMethod(true, false, javaMember as ClassMethod, shadowCopy, correspondenceInstance)
+					result = CommonSynchronizerTasksJML.adjustPureModifiersForMethod(true, false,
+						javaMember as ClassMethod, shadowCopy, blackboard.correspondenceInstance)
 				} catch (CommonSynchronizerTasksJML.OperationNotApplicableException e) {
-					userInteracting.showMessage(UserInteractionType.MODAL, "The modifier can not be removed since the method is used in the specification " + ConcreteSyntaxHelper.convertToConcreteSyntax(e.causingObject as EObject) + ".")
-					return createTransformationChangeResultAborted()
+					userInteracting.showMessage(UserInteractionType.MODAL,
+						"The modifier can not be removed since the method is used in the specification " +
+							ConcreteSyntaxHelper.convertToConcreteSyntax(e.causingObject as EObject) + ".")
+					syncAbortedListener.synchronisationAborted(super.getSynchAbortChange());
+					return
 				}
 				changedObjects.addAll(result)
 			}
 		}
-		
-		return createTransformationChangeResultForEObjectsToSave(changedObjects)
+		TransformationUtils.saveNonRootEObject(changedObjects)
 	}
-	
+
 	/**
 	 * Checks if the given reference is inside an invariant.
 	 */
@@ -136,13 +152,13 @@ class JMLMemberDeclarationWithModifierTransformations extends JML2JavaTransforma
 		if (possibleJMLDummy == null) {
 			return false
 		}
-		
+
 		val jmlExpression = correspondences.get(possibleJMLDummy)
 		if (jmlExpression == null) {
 			return false
 		}
-		
+
 		return jmlExpression instanceof JMLInvariantExpression
 	}
-	
+
 }

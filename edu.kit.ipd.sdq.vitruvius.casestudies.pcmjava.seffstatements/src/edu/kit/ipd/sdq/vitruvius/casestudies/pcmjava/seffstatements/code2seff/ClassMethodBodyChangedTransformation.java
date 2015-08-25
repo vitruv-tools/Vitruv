@@ -18,11 +18,11 @@ import org.somox.gast2seff.visitors.VisitorUtils;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.CustomTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils;
 
 /**
  * Class that keeps changes within a class method body consistent with the architecture. Has
@@ -66,29 +66,26 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
      *
      */
     @Override
-    public EMFChangeResult execute(final CorrespondenceInstance ci, final UserInteracting userInteracting,
+    public void execute(final Blackboard blackboard, final UserInteracting userInteracting,
             final SynchronisationAbortedListener abortListener) {
-        final EMFChangeResult emfChangeResult = new EMFChangeResult();
-        if (!this.isArchitectureRelevantChange(ci)) {
+        if (!this.isArchitectureRelevantChange(blackboard.getCorrespondenceInstance())) {
             logger.debug("Change with oldMethod " + this.oldMethod + " and newMethod: " + this.newMethod
                     + " is not an architecture relevant change");
-            return emfChangeResult;
+            return;
         }
         // 1)
-        this.removeCorrespondingAbstractActions(ci, emfChangeResult);
+        this.removeCorrespondingAbstractActions(blackboard.getCorrespondenceInstance());
 
         // 2)
-        final BasicComponent basicComponent = this.basicComponentFinder.findBasicComponentForMethod(this.newMethod, ci);
+        final BasicComponent basicComponent = this.basicComponentFinder.findBasicComponentForMethod(this.newMethod,
+                blackboard.getCorrespondenceInstance());
         final ResourceDemandingSEFF newSeffElements = this.executeSoMoXForMethod(basicComponent);
 
         // 3)
-        this.connectCreatedSeffWithOldSEFF(newSeffElements, ci);
+        this.connectCreatedSeffWithOldSEFF(newSeffElements, blackboard.getCorrespondenceInstance());
 
         // 4)
-        this.createNewCorrespondences(ci, emfChangeResult, newSeffElements, basicComponent);
-
-        return emfChangeResult;
-
+        this.createNewCorrespondences(blackboard.getCorrespondenceInstance(), newSeffElements, basicComponent);
     }
 
     /**
@@ -125,13 +122,12 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
         return newSeffElements;
     }
 
-    private void createNewCorrespondences(final CorrespondenceInstance ci, final EMFChangeResult emfChangeResult,
-            final ResourceDemandingSEFF newSeffElements, final BasicComponent basicComponent) {
+    private void createNewCorrespondences(final CorrespondenceInstance ci, final ResourceDemandingSEFF newSeffElements,
+            final BasicComponent basicComponent) {
         for (final AbstractAction abstractAction : newSeffElements.getSteps_Behaviour()) {
-            emfChangeResult.addNewCorrespondence(ci, abstractAction, this.newMethod);
+            ci.createAndAddEObjectCorrespondence(abstractAction, this.newMethod);
         }
-        final VURI bcVURI = VURI.getInstance(basicComponent.eResource());
-        emfChangeResult.getExistingObjectsToSave().add(bcVURI);
+        TransformationUtils.saveNonRootEObject(basicComponent);
     }
 
     private void connectCreatedSeffWithOldSEFF(final ResourceDemandingSEFF newSeffElements,
@@ -174,8 +170,7 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
         return lastAction instanceof AbstractAction;
     }
 
-    private void removeCorrespondingAbstractActions(final CorrespondenceInstance ci,
-            final EMFChangeResult emfChangeResult) {
+    private void removeCorrespondingAbstractActions(final CorrespondenceInstance ci) {
         final Set<EObject> correspondingEObjects = ci.getAllCorrespondingEObjects(this.oldMethod);
         for (final EObject correspondingEObject : correspondingEObjects) {
             if (correspondingEObject instanceof AbstractAction) {
@@ -185,7 +180,7 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
                     this.insertAfterAbstractAction = predecessor;
                 }
                 final TUID tuidToRemove = ci.calculateTUIDFromEObject(correspondingEObject);
-                emfChangeResult.addCorrespondenceToDelete(ci, tuidToRemove);
+                ci.removeDirectAndChildrenCorrespondencesOnBothSides(tuidToRemove);
                 EcoreUtil.remove(correspondingEObject);
             }
         }

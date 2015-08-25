@@ -1,13 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
-import org.palladiosimulator.pcm.core.entity.NamedElement
-import org.palladiosimulator.pcm.repository.CompositeDataType
-import org.palladiosimulator.pcm.repository.DataType
-import org.palladiosimulator.pcm.repository.PrimitiveDataType
-import org.palladiosimulator.pcm.repository.Repository
-import org.palladiosimulator.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationChangeResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
@@ -42,6 +35,12 @@ import org.emftext.language.java.types.impl.FloatImpl
 import org.emftext.language.java.types.impl.IntImpl
 import org.emftext.language.java.types.impl.LongImpl
 import org.emftext.language.java.types.impl.ShortImpl
+import org.palladiosimulator.pcm.core.entity.NamedElement
+import org.palladiosimulator.pcm.repository.CompositeDataType
+import org.palladiosimulator.pcm.repository.DataType
+import org.palladiosimulator.pcm.repository.PrimitiveDataType
+import org.palladiosimulator.pcm.repository.Repository
+import org.palladiosimulator.pcm.repository.RepositoryFactory
 
 /**
  * Helper to map type References to PCM data types

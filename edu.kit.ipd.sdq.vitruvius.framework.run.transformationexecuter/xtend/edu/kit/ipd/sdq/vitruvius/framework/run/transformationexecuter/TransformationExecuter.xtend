@@ -40,7 +40,7 @@ public class TransformationExecuter {
 
 	val private static final Logger logger = Logger.getLogger(TransformationExecuter.simpleName)
 
-	val private ClaimableMap<Class<?>, EObjectMappingTransformation> mappingTransformations
+	val protected ClaimableMap<Class<?>, EObjectMappingTransformation> mappingTransformations
 	var protected Blackboard blackboard
 
 	new() {

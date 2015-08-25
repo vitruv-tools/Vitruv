@@ -78,7 +78,7 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 					" Returning empty transformation result")
 			return 
 		}
-		PCMJaMoPPUtils.saveNonRootEObject(jaMoPPIfMethods)
+		TransformationUtils.saveNonRootEObject(jaMoPPIfMethods)
 		val Parameter newParameter = newCorrespondingParameter.get(0) as Parameter
 		val paramType = newParameter.typeReference
 		for (interfaceMethod : jaMoPPIfMethods) {
@@ -104,7 +104,7 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 		for (correspondingEObject : oldCorrespondingEObjectsToDelete) {
 			EcoreUtil.delete(correspondingEObject, true)
 		}
-		PCM2JaMoPPUtils.saveNonRootEObject(jaMoPPIfMethod)
+		TransformationUtils.saveNonRootEObject(jaMoPPIfMethod)
 	}
 
 	/**
@@ -148,7 +148,7 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 		if(newTypeReference instanceof NamespaceClassifierReference){
 			PCM2JaMoPPUtils.addImportToCompilationUnitOfClassifier(correspondingInterfaceMethod.containingConcreteClassifier, newTypeReference)
 		}
-		PCMJaMoPPUtils.saveNonRootEObject(correspondingInterfaceMethod)
+		TransformationUtils.saveNonRootEObject(correspondingInterfaceMethod)
 	}
 
 	/**

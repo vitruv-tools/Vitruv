@@ -1,14 +1,16 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.jml
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.Utilities
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopy
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.ConcreteSyntaxHelper
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Expression
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLInvariantExpression
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLPackage
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecMemberModifier
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.Utilities
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopy
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
@@ -23,8 +25,8 @@ class JMLInvariantExpressionTransformations extends JML2JavaTransformationsBase 
 
 	private static val LOGGER = Logger.getLogger(JMLInvariantExpressionTransformations)
 
-	new(ShadowCopyFactory shadowCopyFactory) {
-		super(shadowCopyFactory)
+	new(ShadowCopyFactory shadowCopyFactory, SynchronisationAbortedListener synchronisationAbortedListener) {
+		super(shadowCopyFactory, synchronisationAbortedListener)
 	}
 
 	override protected getLogger() {
@@ -54,14 +56,14 @@ class JMLInvariantExpressionTransformations extends JML2JavaTransformationsBase 
 					" has been changed to " + ConcreteSyntaxHelper.convertToConcreteSyntax(newValue) + ".")
 
 			LOGGER.trace("Finding references to other elements in original expression.")
-			val shadowCopy = shadowCopyFactory.create(correspondenceInstance, true)
+			val shadowCopy = shadowCopyFactory.create(blackboard.correspondenceInstance, true)
 			val affectedObj = shadowCopy.shadowCopyCorrespondences.getJMLElement(affectedModelInstanceObject);
 			shadowCopy.setupShadowCopyWithJMLSpecifications(true)
 			val shadowCopyStatement = shadowCopy.shadowCopyCorrespondences.get(affectedObj)
 			val elementReferencesOriginal = shadowCopyStatement.getChildrenOfType(ElementReference)
 
 			LOGGER.trace("Finding references to other elements in changed expression.")
-			val shadowCopy2 = shadowCopyFactory.create(correspondenceInstance, true)
+			val shadowCopy2 = shadowCopyFactory.create(blackboard.correspondenceInstance, true)
 			val dummyElement = shadowCopy2.shadowCopyCorrespondences.getJMLElement(affectedModelInstanceObject);
 			dummyElement.expr = EcoreUtil.copy(newValue) as Expression
 			shadowCopy2.setupShadowCopyWithJMLSpecifications(true)
@@ -106,8 +108,7 @@ class JMLInvariantExpressionTransformations extends JML2JavaTransformationsBase 
 			affectedModelInstanceObject.expr = EcoreUtil.copy(newValue) as Expression
 
 		}
-
-		return createTransformationChangeResultForEObjectsToSave(changedObjects)
+		TransformationUtils.saveNonRootEObject(changedObjects)
 	}
 
 	private def hasJMLHelperModifier(Member member, ShadowCopy shadowCopy) {

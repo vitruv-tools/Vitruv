@@ -1,16 +1,18 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.custom
 
+import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.ConcreteSyntaxHelper
+import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMethodExpression
+import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.JavaTransformation
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.Utilities
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.helpers.CorrespondenceHelper
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.jml.CommonSynchronizerTasksJML
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.ConcreteSyntaxHelper
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMethodExpression
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.Collection
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
@@ -29,19 +31,19 @@ class JavaMethodBodyChangedTransformation extends CustomTransformationsBase impl
 		this.newMethod = newMethod
 	}
 
-	override executeInternal(CorrespondenceInstance ci, UserInteracting userInteracting) {
+	override executeInternal(Blackboard blackboard, UserInteracting userInteracting) {
 		LOGGER.info(
 			"Starting custom transformation " + JavaMethodBodyChangedTransformation.simpleName + " for method " +
 				oldMethod.name)
 
-		val oldMethodIsPure = oldMethod.isMethodDeclaredPure(ci)
+		val oldMethodIsPure = oldMethod.isMethodDeclaredPure(blackboard.correspondenceInstance)
 
-		val newShadowCopy = shadowCopyFactory.create(ci)
+		val newShadowCopy = shadowCopyFactory.create(blackboard.correspondenceInstance)
 		val newJavaMember = newShadowCopy.shadowCopyCorrespondences.getShadow(newMethod as ClassMethod)
 		newJavaMember.statements.clear()
 		newMethod.statements.forEach[newJavaMember.statements.add(Utilities.<Statement>clone(it))]
 		newShadowCopy.setupShadowCopyWithJMLSpecifications(false)
-		val newMethodIsPure = newJavaMember.isMethodPure(ci)
+		val newMethodIsPure = newJavaMember.isMethodPure(blackboard.correspondenceInstance)
 
 		LOGGER.trace("Original method considered pure: " + oldMethodIsPure)
 		LOGGER.trace("Changed method is pure: " + newMethodIsPure)
@@ -53,7 +55,7 @@ class JavaMethodBodyChangedTransformation extends CustomTransformationsBase impl
 				newMethodIsPure,
 				newJavaMember,
 				newShadowCopy,
-				ci
+				blackboard.correspondenceInstance
 			)
 		} catch (CommonSynchronizerTasksJML.OperationNotApplicableException e) {
 			LOGGER.trace("Transformation aborted since change is not applicable.")
@@ -62,11 +64,13 @@ class JavaMethodBodyChangedTransformation extends CustomTransformationsBase impl
 				"Since the method is (transitively) used in the specification\n\"" +
 				ConcreteSyntaxHelper.convertToConcreteSyntax(e.causingObject as JMLMethodExpression) +
 				"\"\nthis is not allowed.")
-			return createAbortTransformationChangeResult
+			if(null != abortListener){
+				this.abortListener.synchronisationAborted(this)
+			}
 		}
 
 		LOGGER.trace("Transformation changed " + changedEObjects.size + " objects.")
-		return createTransformationChangeResult(changedEObjects)
+		TransformationUtils.saveNonRootEObject(changedEObjects)
 	}
 
 	private static def isMethodDeclaredPure(ClassMethod method, CorrespondenceInstance ci) {

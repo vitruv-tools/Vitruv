@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.HashSet
@@ -125,7 +124,7 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 						getCorrespondingPCMDataTypeForTypeReference(newTypeReference, blackboard.correspondenceInstance,
 							userInteracting, null)
 					blackboard.correspondenceInstance.update(oldAffectedEObject, newValue)
-					PCMJaMoPPUtils.saveNonRootEObject(innerDec)
+					TransformationUtils.saveNonRootEObject(innerDec)
 				}
 			}
 
@@ -144,7 +143,7 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 					val newCorrespondingEObjects = newField.checkAndAddOperationRequiredRolesCorrepondencesToField()
 					if (!newCorrespondingEObjects.nullOrEmpty) {
 						for (newCorrspondingEObject : newCorrespondingEObjects) {
-							PCMJaMoPPUtils.saveNonRootEObject(newCorrspondingEObject)
+							TransformationUtils.saveNonRootEObject(newCorrspondingEObject)
 							blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newCorrspondingEObject, newAffectedEObject)
 						}
 					}

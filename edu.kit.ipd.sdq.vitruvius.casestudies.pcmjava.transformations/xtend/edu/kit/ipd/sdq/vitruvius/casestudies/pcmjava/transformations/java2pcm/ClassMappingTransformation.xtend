@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
@@ -193,7 +192,6 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 		val components = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(newAffectedEObject, RepositoryComponent)
 		var EObject eObjectToSave = null
 		val affectedClass = newAffectedEObject as ConcreteClassifier
-		val tcr = TransformationUtils.createEmptyTransformationChangeResult
 		if (!components.nullOrEmpty &&
 			PCMJaMoPPNamespace.JaMoPP.JAMOPP_ANNOTATIONS_AND_MODIFIERS_REFERENCE_NAME.equals(affectedReference.name) &&
 			(oldValue instanceof PublicImpl)) {
@@ -208,7 +206,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 				}
 				case 1: {
 					blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(component)
-					PCMJaMoPPUtils.saveNonRootEObject(component.repository__RepositoryComponent)
+					TransformationUtils.saveNonRootEObject(component.repository__RepositoryComponent)
 					EcoreUtil.remove(component)
 				}
 			}

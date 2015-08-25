@@ -75,26 +75,26 @@ public abstract class VitruviusCasestudyTest {
         final ClaimableMap<Pair<VURI, VURI>, Change2CommandTransforming> transformationExecuterMap = TestUtil
                 .getFieldFromClass(Change2CommandTransformingProvidingImpl.class, "transformationExecuterMap",
                         change2CommandProviding);
-        final Class<?> emfModelTransformationExecuterClass = this.getChange2CommandTransformerClass();
+        final Class<?> change2CommandTransformerClass = this.getChange2CommandTransformerClass();
         final String nameOfChangeSynchronizerField = this.getNameOfChangeSynchronizerField();
-        Change2CommandTransforming emfTransformationExecuter = null;
-        for (final Change2CommandTransforming emfModelTransformationExecuting : transformationExecuterMap.values()) {
-            if (emfModelTransformationExecuterClass.isInstance(emfModelTransformationExecuting)) {
-                emfTransformationExecuter = emfModelTransformationExecuting;
+        Change2CommandTransforming change2CommandTransforming = null;
+        for (final Change2CommandTransforming currentChange2CommandTransforming : transformationExecuterMap.values()) {
+            if (change2CommandTransformerClass.isInstance(currentChange2CommandTransforming)) {
+                change2CommandTransforming = currentChange2CommandTransforming;
                 break;
             }
         }
-        if (null == emfTransformationExecuter) {
-            throw new RuntimeException("Could not find an EMFModelTransformationExecuting that is currently active.");
+        if (null == change2CommandTransforming) {
+            throw new RuntimeException("Could not find a Change2CommandTransforming that is currently active.");
         }
-        final TransformationExecuter changeSynchronizer = TestUtil.getFieldFromClass(
-                emfModelTransformationExecuterClass, nameOfChangeSynchronizerField, emfTransformationExecuter);
-        changeSynchronizer.setUserInteracting(newUserInteracting);
+        final TransformationExecuter transformationExecuter = TestUtil.getFieldFromClass(change2CommandTransformerClass,
+                nameOfChangeSynchronizerField, change2CommandTransforming);
+        transformationExecuter.setUserInteracting(newUserInteracting);
     }
 
     protected abstract Class<?> getChange2CommandTransformerClass();
 
     protected String getNameOfChangeSynchronizerField() {
-        return "changeSynchronizer";
+        return "transformationExecuter";
     }
 }

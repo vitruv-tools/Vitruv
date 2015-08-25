@@ -1,8 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.jml
 
 import com.google.inject.Inject
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.Utilities
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ClassOrInterfaceDeclaration
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.FieldDeclaration
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLPackage
@@ -10,7 +8,11 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecificationOn
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclaration
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.VariableDeclarator
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.Utilities
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
@@ -24,8 +26,8 @@ class JMLVariableDeclarationTransformations extends JML2JavaTransformationsBase 
 	static val LOGGER = Logger.getLogger(JMLMethodDeclarationTransformations)
 	
 	@Inject
-	new (ShadowCopyFactory shadowCopyFactory) {
-		super(shadowCopyFactory)
+	new (ShadowCopyFactory shadowCopyFactory, SynchronisationAbortedListener synchronisationAbortedListener) {
+		super(shadowCopyFactory, synchronisationAbortedListener)
 	}
 	
 	override protected getLogger() {
@@ -53,7 +55,8 @@ class JMLVariableDeclarationTransformations extends JML2JavaTransformationsBase 
 			if (jmlSpecOnlyElement == null) {
 				LOGGER.info("Aborted transformation because of violated restriction on model elements.")
 				userInteracting.showMessage(UserInteractionType.MODAL, "You must NOT edit non model elements.");
-				return createTransformationChangeResultAborted
+				syncAbortedListener.synchronisationAborted(super.getSynchAbortChange());
+				return
 			}
 			
 			val dummy = jmlSpecOnlyElement.element.clone;
@@ -64,14 +67,16 @@ class JMLVariableDeclarationTransformations extends JML2JavaTransformationsBase 
 			if (javaClassifier.getMembersByName(newValue as String).filter(Field).exists[Utilities.corresponds(it, dummy)]) {
 				LOGGER.info("Aborted transformation because of name clash with Java.")
 				userInteracting.showMessage(UserInteractionType.MODAL, "There already is a field in Java, which has the same name.");
-				return createTransformationChangeResultAborted
+				syncAbortedListener.synchronisationAborted(super.getSynchAbortChange());
+				return
 			}
 			
 			val jmlFields = coid.getChildrenOfType(MemberDeclWithModifier).filter[memberdecl instanceof MemberDeclaration].filter[(memberdecl as MemberDeclaration).field != null]
 			if (jmlFields.exists[Utilities.corresponds(it, dummy)]) {
 				LOGGER.info("Aborted transformation because of name clash with JML.")
 				userInteracting.showMessage(UserInteractionType.MODAL, "There already is a field in JML, which has the same name.");
-				return createTransformationChangeResultAborted
+				syncAbortedListener.synchronisationAborted(super.getSynchAbortChange());
+				return
 			}
 			
 			changedObjects.addAll(affectedModelInstanceObject.renameModelElementInAllSpecifications(newValue as String))
@@ -79,8 +84,7 @@ class JMLVariableDeclarationTransformations extends JML2JavaTransformationsBase 
 			affectedModelInstanceObject.identifier = newValue as String
 			changedObjects.add(affectedModelInstanceObject)
 		}
-		
-		return createTransformationChangeResultForEObjectsToSave(changedObjects)
+		TransformationUtils.saveNonRootEObject(changedObjects)
 	}	
 	
 }

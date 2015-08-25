@@ -8,7 +8,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.models.JMLModelURIProvider;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.models.JavaModelURIProvider;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.CSTEMFModelTransformationExecutingProvider;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.extensions.CorrespondenceProvider;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.extensions.EMFModelTransformationExecutingProvider;
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.extensions.Change2CommandTransformingProvider;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.extensions.MappingProvider;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.extensions.MetaModelProvider;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.extensions.ModelURIProvider;
@@ -31,7 +31,7 @@ public class JavaJMLExtensionProvider {
 		return getArray(new JavaModelURIProvider(), new JMLModelURIProvider());
 	}
 	
-	public static EMFModelTransformationExecutingProvider[] getEMFModelTransformationExecutingProviders() {
+	public static Change2CommandTransformingProvider[] getEMFModelTransformationExecutingProviders() {
 		return getArray(new CSTEMFModelTransformationExecutingProvider());
 	}
 	

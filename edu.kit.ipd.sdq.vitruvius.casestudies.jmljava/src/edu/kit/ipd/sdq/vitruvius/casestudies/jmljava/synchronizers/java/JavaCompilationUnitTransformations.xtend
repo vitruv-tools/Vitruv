@@ -1,12 +1,15 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java
 
 import com.google.inject.Inject
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences.Java2JMLCorrespondenceAdder
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ClassifierDeclarationWithModifier
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ImportDeclaration
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLPackage
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences.Java2JMLCorrespondenceAdder
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
@@ -15,15 +18,14 @@ import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.Classifier
 import org.emftext.language.java.containers.ContainersPackage
 import org.emftext.language.java.imports.Import
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 
 class JavaCompilationUnitTransformations extends Java2JMLTransformationBase {
 	
 	private static val LOGGER = Logger.getLogger(JavaCompilationUnitTransformations)
 	
 	@Inject
-	new(ShadowCopyFactory shadowCopyFactory) {
-		super(shadowCopyFactory)
+	new(ShadowCopyFactory shadowCopyFactory, SynchronisationAbortedListener synchronisationAbortedListener) {
+		super(shadowCopyFactory, synchronisationAbortedListener)
 	}
 	
 	override protected getLogger() {
@@ -54,7 +56,7 @@ class JavaCompilationUnitTransformations extends Java2JMLTransformationBase {
 				val jmlImport = CommonSynchronizerTasks.createJMLImportDeclaration(newValue as Import)
 				jmlCu.importdeclaration.add(index, jmlImport)
 
-				Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Import, jmlImport, correspondenceInstance)
+				Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Import, jmlImport, blackboard.correspondenceInstance)
 	
 				changedObjects.add(jmlImport)
 				changedObjects.add(jmlCu)
@@ -68,20 +70,21 @@ class JavaCompilationUnitTransformations extends Java2JMLTransformationBase {
 				if (javaCu.classifiers.exists[name.equals((newValue as Classifier).name)]) {
 					LOGGER.info("Aborted transformation because of name clash.")
 					userInteracting.showMessage(UserInteractionType.MODAL, "There already is a classifier, which has the same name.");
-					return createTransformationChangeResultAborted
+					syncAbortedListener.synchronisationAborted(super.getSynchAbortChange());
+					return
 				}
 				
 				val jmlType = CommonSynchronizerTasks.createJMLClass(newValue as Class)
 				jmlCu.typedeclaration.add(index, jmlType)
 
-				Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Class, jmlType, correspondenceInstance)
+				Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Class, jmlType, blackboard.correspondenceInstance)
 	
 				changedObjects.add(jmlType)
 				changedObjects.add(jmlCu)
 			}
 		}
 		
-		return createTransformationChangeResultForEObjectsToSave(changedObjects)
+		TransformationUtils.saveNonRootEObject(changedObjects)
 	}
 	
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
@@ -98,8 +101,8 @@ class JavaCompilationUnitTransformations extends Java2JMLTransformationBase {
 				
 				val jmlImport = getSingleCorrespondingEObjectOfType(oldValue, ImportDeclaration)
 				
-				correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(jmlImport)
-				correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(oldValue)
+				blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(jmlImport)
+				blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(oldValue)
 				
 				jmlCu.importdeclaration.remove(jmlImport)
 
@@ -112,16 +115,15 @@ class JavaCompilationUnitTransformations extends Java2JMLTransformationBase {
 				
 				val jmlType = getSingleCorrespondingEObjectOfType(oldValue, ClassifierDeclarationWithModifier)
 				
-				correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(jmlType)
-				correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(oldValue)
+				blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(jmlType)
+				blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(oldValue)
 				
 				jmlCu.typedeclaration.remove(jmlType)
 				
 				changedObjects.add(jmlCu)
 			}
 		}
-		
-		return createTransformationChangeResultForEObjectsToSave(changedObjects)
+		TransformationUtils.saveNonRootEObject(changedObjects)
 	}
 	
 }

@@ -2,10 +2,10 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.s
 
 import com.google.common.collect.Lists
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import java.util.List
 import org.eclipse.emf.ecore.EAttribute
@@ -89,7 +89,7 @@ class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransforma
 					val oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(typedElement)
 					typedElement.typeReference = PCM2JaMoPPUtils.createNamespaceClassifierReference(jaMoPPClass)
 					blackboard.correspondenceInstance.update(oldTUID, typedElement)
-					PCMJaMoPPUtils.saveNonRootEObject(typedElement)
+					TransformationUtils.saveNonRootEObject(typedElement)
 				}
 			}
 		}

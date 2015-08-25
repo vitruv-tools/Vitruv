@@ -139,7 +139,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 			if (pcmElement instanceof Repository || pcmElement instanceof System) {
 				PCMJaMoPPUtils.saveEObject(pcmElement, blackboard, PCMJaMoPPUtils.getSourceModelVURI(newEObject))
 			} else {
-				PCMJaMoPPUtils.saveNonRootEObject(pcmElement)
+				TransformationUtils.saveNonRootEObject(pcmElement)
 			}
 			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(pcmElement, newEObject)
 		}

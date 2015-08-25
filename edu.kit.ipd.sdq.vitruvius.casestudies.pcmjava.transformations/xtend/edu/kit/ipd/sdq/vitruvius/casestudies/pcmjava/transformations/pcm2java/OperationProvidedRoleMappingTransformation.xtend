@@ -65,14 +65,14 @@ class OperationProvidedRoleMappingTransformation extends EmptyEObjectMappingTran
 		for (oldEObject : oldEObjects) {
 			blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(oldEObject)
 			if (null != oldEObject.eContainer) {
-				PCMJaMoPPUtils.saveNonRootEObject(oldEObject)
+				TransformationUtils.saveNonRootEObject(oldEObject)
 			}
 			EcoreUtil.remove(oldEObject)
 		}
 		if (null != newEObjects) {
 			for (newEObject : newEObjects) {
 				blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newEObject, affectedEObject)
-				PCMJaMoPPUtils.saveNonRootEObject(newEObject)
+				TransformationUtils.saveNonRootEObject(newEObject)
 			}
 		}
 	}

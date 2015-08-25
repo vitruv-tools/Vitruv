@@ -626,7 +626,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 			return
 		}
 		for (newCorrespondingEObject : newCorrespondingEObjects) {
-			PCMJaMoPPUtils.saveNonRootEObject(newCorrespondingEObject)
+			TransformationUtils.saveNonRootEObject(newCorrespondingEObject)
 			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(namedElement, newCorrespondingEObject)
 		}
 	}

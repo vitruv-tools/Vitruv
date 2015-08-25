@@ -2,14 +2,13 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.composi
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.CustomTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 
 /**
  * Base class for composite change refiner results, which are custom transformations.
- * 
+ *
  * @author Stephan Seifermann
  *
  */
@@ -19,18 +18,18 @@ public class CompositeChangeRefinerResultTransformation implements CompositeChan
 
     /**
      * Constructor.
-     * 
+     *
      * @param transformation
      *            The transformation, which shall be executed.
      */
-    public CompositeChangeRefinerResultTransformation(CustomTransformation transformation) {
+    public CompositeChangeRefinerResultTransformation(final CustomTransformation transformation) {
         this.transformation = transformation;
     }
 
     @Override
-    public EMFChangeResult apply(Change2CommandTransforming transformationExecuting, CorrespondenceInstance ci,
-            UserInteracting ui, SynchronisationAbortedListener abortListener) {
-        return transformation.execute(ci, ui, abortListener);
+    public void apply(final Change2CommandTransforming transformationExecuting, final Blackboard blackboard,
+            final UserInteracting ui, final SynchronisationAbortedListener abortListener) {
+        this.transformation.execute(blackboard, ui, abortListener);
     }
 
 }

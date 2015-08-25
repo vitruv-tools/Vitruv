@@ -5,7 +5,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTr
 /**
  * A provider for transformation executings. 
  */
-public interface EMFModelTransformationExecutingProvider {
+public interface Change2CommandTransformingProvider {
 
 	/**
 	 * @return A set of transformation executings.

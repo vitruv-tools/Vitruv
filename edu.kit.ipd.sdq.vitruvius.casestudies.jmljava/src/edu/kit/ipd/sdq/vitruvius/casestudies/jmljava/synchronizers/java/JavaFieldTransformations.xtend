@@ -1,12 +1,15 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java
 
 import com.google.inject.Inject
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ClassOrInterfaceDeclaration
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLPackage
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.VariableDeclarator
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences.MatchingModelElementsFinder
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
@@ -16,15 +19,14 @@ import org.emftext.language.java.members.Field
 import org.emftext.language.java.members.MembersPackage
 import org.emftext.language.java.modifiers.Modifier
 import org.emftext.language.java.types.TypeReference
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences.MatchingModelElementsFinder
 
 class JavaFieldTransformations extends Java2JMLTransformationBase {
 
 	static val LOGGER = Logger.getLogger(JavaFieldTransformations)
 
 	@Inject
-	new(ShadowCopyFactory shadowCopyFactory) {
-		super(shadowCopyFactory)
+	new(ShadowCopyFactory shadowCopyFactory, SynchronisationAbortedListener synchronisationAbortedListener) {
+		super(shadowCopyFactory, synchronisationAbortedListener)
 	}
 
 	override protected getLogger() {
@@ -65,25 +67,25 @@ class JavaFieldTransformations extends Java2JMLTransformationBase {
 			if (jmlCoid != null && MatchingModelElementsFinder.findMatchingMember(dummy, jmlCoid.getChildrenOfType(MemberDeclWithModifier)) != null) {
 				LOGGER.info("Aborted transformation because of name clash with JML.")
 				userInteracting.showMessage(UserInteractionType.MODAL, "There already is a field in JML, which has the same name.");
-				return createTransformationChangeResultAborted
+				syncAbortedListener.synchronisationAborted(super.getSynchAbortChange());
+				return
 			}
 
 			changedObjects.addAll((affectedEObject as Field).renameInAllJMLSpecifications(newValue as String))
 			
 			// rename the corresponding fields
-			val jmlVariableDeclarations = correspondenceInstance.getAllCorrespondingEObjects(affectedEObject).
+			val jmlVariableDeclarations = blackboard.correspondenceInstance.getAllCorrespondingEObjects(affectedEObject).
 				filter(VariableDeclarator).filter[identifier.equals(oldValue as String)]
 			for (jmlVariableDeclaration : jmlVariableDeclarations) {
 				LOGGER.trace("Updating " + jmlVariableDeclaration)
 				val oldTUID = jmlVariableDeclaration.TUID
 				jmlVariableDeclaration.identifier = newValue as String
 				val newTUID = jmlVariableDeclaration.TUID
-				correspondenceInstance.update(oldTUID, newTUID)
+				blackboard.correspondenceInstance.update(oldTUID, newTUID)
 				changedObjects.add(jmlVariableDeclaration)
 			}
 		}
-
-		return createTransformationChangeResultForEObjectsToSave(changedObjects)
+		TransformationUtils.saveNonRootEObject(changedObjects)
 	}
 
 	override replaceNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue,
@@ -97,11 +99,12 @@ class JavaFieldTransformations extends Java2JMLTransformationBase {
 		val jmlFeature = featureCorrespondenceMap.claimValueForKey(affectedReference)
 
 		if (jmlFeature == JMLPackage.eINSTANCE.modifiable_Modifiers) {
-			return CommonSynchronizerTransformations.replaceNonRootEObjectInList(affectedEObject, oldValue as Modifier,
-				newValue as Modifier, correspondenceInstance)
+			CommonSynchronizerTransformations.replaceNonRootEObjectInList(affectedEObject, oldValue as Modifier,
+				newValue as Modifier, blackboard.correspondenceInstance)
+			return 
 		}
 
-		return createTransformationChangeResultForEObjectsToSave(changedObjects)
+		TransformationUtils.saveNonRootEObject(changedObjects)
 	}
 
 	override replaceNonRootEObjectSingle(EObject newAffectedEobejct, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
@@ -116,12 +119,10 @@ class JavaFieldTransformations extends Java2JMLTransformationBase {
 		val jmlFeature = featureCorrespondenceMap.claimValueForKey(affectedReference)
 
 		if (jmlFeature == JMLPackage.eINSTANCE.typed_Type) {
-			changedObjects.addAll(
 				CommonSynchronizerTransformations.replaceNonRootEObjectSingleType(javaField, oldValue as TypeReference,
-					newValue as TypeReference, correspondenceInstance))
+					newValue as TypeReference, blackboard.correspondenceInstance)
 		}
-
-		return createTransformationChangeResultForEObjectsToSave(changedObjects)
+		TransformationUtils.saveNonRootEObject(changedObjects)
 	}
 
 }

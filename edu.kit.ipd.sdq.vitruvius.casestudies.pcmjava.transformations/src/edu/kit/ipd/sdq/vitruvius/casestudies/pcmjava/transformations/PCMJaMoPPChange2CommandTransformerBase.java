@@ -3,7 +3,6 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -27,17 +26,18 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2CommandTransforming {
 
-    private static final Logger logger = Logger.getLogger(PCMJaMoPPChange2CommandTransformerBase.class.getSimpleName());
+    // private static final Logger logger =
+    // Logger.getLogger(PCMJaMoPPChange2CommandTransformerBase.class.getSimpleName());
 
-    protected final TransformationExecuter changeSynchronizer;
+    protected final TransformationExecuter transformationExecuter;
 
     private final List<Pair<VURI, VURI>> pairList;
 
     protected UserInteractor userInteracting;
 
     public PCMJaMoPPChange2CommandTransformerBase() {
-        this.changeSynchronizer = new TransformationExecuter();
-        this.initializeChangeSynchronizer();
+        this.transformationExecuter = new TransformationExecuter();
+        this.initializeTransformationExecuter();
         final VURI pcmVURI = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
         final VURI jaMoPPVURI = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE);
         final Pair<VURI, VURI> pcm2JaMoPP = new Pair<VURI, VURI>(pcmVURI, jaMoPPVURI);
@@ -47,14 +47,14 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
         this.pairList.add(pcm2JaMoPP);
     }
 
-    protected void initializeChangeSynchronizer() {
+    protected void initializeTransformationExecuter() {
         this.userInteracting = new UserInteractor();
 
         // Mapping for EObjects in order to avoid runtime exceptions
-        this.changeSynchronizer.addMapping(new DefaultEObjectMappingTransformation());
+        this.transformationExecuter.addMapping(new DefaultEObjectMappingTransformation());
 
         // set userInteractor
-        this.changeSynchronizer.setUserInteracting(this.userInteracting);
+        this.transformationExecuter.setUserInteracting(this.userInteracting);
     }
 
     /**
@@ -81,14 +81,14 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
 
     private Command transformChange2Command(final EMFModelChange emfModelChange, final Blackboard blackboard) {
         this.handlePackageInEChange(emfModelChange);
-        this.changeSynchronizer.setBlackboard(blackboard);
+        this.transformationExecuter.setBlackboard(blackboard);
 
         final Command command = EMFCommandBridge.createCommand(new Runnable() {
 
             @Override
             public void run() {
                 // execute command converting
-                PCMJaMoPPChange2CommandTransformerBase.this.changeSynchronizer
+                PCMJaMoPPChange2CommandTransformerBase.this.transformationExecuter
                         .executeTransformationForChange(emfModelChange.getEChange());
             }
         });

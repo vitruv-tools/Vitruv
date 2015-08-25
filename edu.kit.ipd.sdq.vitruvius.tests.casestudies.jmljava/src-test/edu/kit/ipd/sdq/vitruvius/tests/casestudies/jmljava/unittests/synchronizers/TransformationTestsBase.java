@@ -47,11 +47,11 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JaMoPPMetaModelP
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.CSSynchronizer;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.extensions.ModelURIProvider;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ContractsBuilder;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
@@ -59,23 +59,25 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.BlackboardImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.unittests.utils.Initializer;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.unittests.utils.ModelLoader;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.unittests.utils.ModelProvidingMock;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.unittests.utils.ModelLoader.IResourceFiles;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.unittests.utils.ModelProvidingMock;
 
 public abstract class TransformationTestsBase {
-    
+
     private static class CSSynchronizerModule extends AbstractModule {
 
         private final ShadowCopyFactory shadowCopyFactory;
         private final UserInteracting userInteracting;
         private final SynchronisationAbortedListener syncAbortedListener;
 
-        CSSynchronizerModule(ShadowCopyFactory shadowCopyFactory, UserInteracting userInteracting, SynchronisationAbortedListener syncAbortedListener) {
+        CSSynchronizerModule(final ShadowCopyFactory shadowCopyFactory, final UserInteracting userInteracting,
+                final SynchronisationAbortedListener syncAbortedListener) {
             this.shadowCopyFactory = shadowCopyFactory;
             this.userInteracting = userInteracting;
             this.syncAbortedListener = syncAbortedListener;
@@ -83,9 +85,9 @@ public abstract class TransformationTestsBase {
 
         @Override
         protected void configure() {
-            bind(ShadowCopyFactory.class).toInstance(shadowCopyFactory);
-            bind(UserInteracting.class).toInstance(userInteracting);
-            bind(SynchronisationAbortedListener.class).toInstance(syncAbortedListener);
+            this.bind(ShadowCopyFactory.class).toInstance(this.shadowCopyFactory);
+            this.bind(UserInteracting.class).toInstance(this.userInteracting);
+            this.bind(SynchronisationAbortedListener.class).toInstance(this.syncAbortedListener);
         }
 
     }
@@ -94,13 +96,13 @@ public abstract class TransformationTestsBase {
 
         private final List<VURI> uris = new ArrayList<VURI>();
 
-        public JavaModelURIProvider(VURI modelUri) {
-            uris.add(modelUri);
+        public JavaModelURIProvider(final VURI modelUri) {
+            this.uris.add(modelUri);
         }
 
         @Override
         public List<VURI> getAllRelevantURIs() {
-            return uris;
+            return this.uris;
         }
 
     }
@@ -109,33 +111,33 @@ public abstract class TransformationTestsBase {
         private final CorrespondenceInstance ci;
         private final List<Pair<String, String>> updateCalls = new ArrayList<Pair<String, String>>();
 
-        public CorrespondenceInstanceProxy(CorrespondenceInstance ci) {
+        public CorrespondenceInstanceProxy(final CorrespondenceInstance ci) {
             this.ci = ci;
         }
 
         @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
             if (method.getName().equals("update") && args.length == 2) {
-                String firstTUIDString = getTUIDString(args[0]);
-                String secondTUIDString = getTUIDString(args[1]);
-                updateCalls.add(new Pair<String, String>(firstTUIDString, secondTUIDString));
+                final String firstTUIDString = this.getTUIDString(args[0]);
+                final String secondTUIDString = this.getTUIDString(args[1]);
+                this.updateCalls.add(new Pair<String, String>(firstTUIDString, secondTUIDString));
             }
-            
-            return method.invoke(ci, args);
+
+            return method.invoke(this.ci, args);
         }
-        
-        private String getTUIDString(Object arg) {
+
+        private String getTUIDString(final Object arg) {
             if (arg instanceof EObject) {
-                return ci.calculateTUIDFromEObject((EObject)arg).toString();
+                return this.ci.calculateTUIDFromEObject((EObject) arg).toString();
             }
             if (arg instanceof TUID) {
-                return ((TUID)arg).toString();
+                return ((TUID) arg).toString();
             }
             throw new IllegalArgumentException();
         }
 
         public List<Pair<String, String>> getUpdateCalls() {
-            return updateCalls;
+            return this.updateCalls;
         }
     }
 
@@ -146,26 +148,36 @@ public abstract class TransformationTestsBase {
     protected CorrespondenceInstance correspondenceInstance;
     protected UserInteracting userInteracting;
     protected SynchronisationAbortedListener syncAbortedListener;
+    private Blackboard blackboard;
 
     private static Mapping constructMapping() {
         Initializer.initLogging();
         Initializer.initJaMoPP();
         Initializer.initJML();
 
-        Metamodel mmJava = new JaMoPPMetaModelProvider().getMetaModel();
-        Metamodel mmJml = new JMLMetaModelProvider().getMetaModel();
+        final Metamodel mmJava = new JaMoPPMetaModelProvider().getMetaModel();
+        final Metamodel mmJml = new JMLMetaModelProvider().getMetaModel();
         return new Mapping(mmJava, mmJml);
     }
 
     @Before
     public void setup() throws Exception {
-        Pair<ModelInstance, ModelInstance> modelInstances = getModelInstances();
-        modelProviding = createModelProviding(modelInstances);
-        correspondenceInstanceUpdateRecorder = createCorrespondenceInstanceProxy(modelProviding, modelInstances);
-        correspondenceInstance = createCorrespondenceInstance(correspondenceInstanceUpdateRecorder);
-        userInteracting = createUserInteracting();
-        syncAbortedListener = createSyncAbortedListener();
-        synchronizer = createChangeSynchronizer(correspondenceInstance, userInteracting, syncAbortedListener, modelInstances);
+        final Pair<ModelInstance, ModelInstance> modelInstances = this.getModelInstances();
+        this.modelProviding = createModelProviding(modelInstances);
+        this.correspondenceInstanceUpdateRecorder = createCorrespondenceInstanceProxy(this.modelProviding,
+                modelInstances);
+        this.correspondenceInstance = createCorrespondenceInstance(this.correspondenceInstanceUpdateRecorder);
+        this.userInteracting = createUserInteracting();
+        this.syncAbortedListener = createSyncAbortedListener();
+        this.blackboard = this.createBlackboard(this.correspondenceInstance, this.modelProviding);
+        this.synchronizer = createChangeSynchronizer(this.blackboard, this.userInteracting, this.syncAbortedListener,
+                modelInstances);
+    }
+
+    private Blackboard createBlackboard(final CorrespondenceInstance correspondenceInstance,
+            final ModelProvidingMock modelProviding) {
+        final Blackboard blackboard = new BlackboardImpl(correspondenceInstance, modelProviding);
+        return blackboard;
     }
 
     private static SynchronisationAbortedListener createSyncAbortedListener() {
@@ -176,30 +188,33 @@ public abstract class TransformationTestsBase {
         return EasyMock.createStrictMock(UserInteracting.class);
     }
 
-    private static CorrespondenceInstance createCorrespondenceInstance(CorrespondenceInstanceProxy proxy) {
+    private static CorrespondenceInstance createCorrespondenceInstance(final CorrespondenceInstanceProxy proxy) {
         return (CorrespondenceInstance) Proxy.newProxyInstance(CorrespondenceInstanceProxy.class.getClassLoader(),
                 new Class[] { CorrespondenceInstance.class }, proxy);
     }
 
-    private static CorrespondenceInstanceProxy createCorrespondenceInstanceProxy(ModelProviding modelProviding,
-            Pair<ModelInstance, ModelInstance> modelInstances) throws IOException {
-        URI dummyURICorrespondenceInstance = getDummyURI();
+    private static CorrespondenceInstanceProxy createCorrespondenceInstanceProxy(final ModelProviding modelProviding,
+            final Pair<ModelInstance, ModelInstance> modelInstances) throws IOException {
+        final URI dummyURICorrespondenceInstance = getDummyURI();
 
-        CorrespondenceInstance ci = ContractsBuilder.createCorrespondenceInstance(MAPPING_JAVA2JML, modelProviding,
-                VURI.getInstance(dummyURICorrespondenceInstance), new ResourceImpl(dummyURICorrespondenceInstance));
+        final CorrespondenceInstance ci = ContractsBuilder.createCorrespondenceInstance(MAPPING_JAVA2JML,
+                modelProviding, VURI.getInstance(dummyURICorrespondenceInstance),
+                new ResourceImpl(dummyURICorrespondenceInstance));
 
-        CompilationUnit javaCu = modelInstances.getFirst().getUniqueRootEObjectIfCorrectlyTyped(CompilationUnit.class);
-        edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit jmlCu = modelInstances.getSecond()
-                .getUniqueRootEObjectIfCorrectlyTyped(edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit.class);
+        final CompilationUnit javaCu = modelInstances.getFirst()
+                .getUniqueRootEObjectIfCorrectlyTyped(CompilationUnit.class);
+        final edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit jmlCu = modelInstances.getSecond()
+                .getUniqueRootEObjectIfCorrectlyTyped(
+                        edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit.class);
 
         Java2JMLCorrespondenceAdder.addCorrespondencesForCompilationUnit(javaCu, jmlCu, ci);
 
         return new CorrespondenceInstanceProxy(ci);
     }
 
-    private static ModelProvidingMock createModelProviding(Pair<ModelInstance, ModelInstance> modelInstances)
+    private static ModelProvidingMock createModelProviding(final Pair<ModelInstance, ModelInstance> modelInstances)
             throws IOException {
-        ModelProvidingMock modelProviding = new ModelProvidingMock();
+        final ModelProvidingMock modelProviding = new ModelProvidingMock();
         modelProviding.add(modelInstances.getFirst());
         EcoreResourceBridge.saveResource(modelInstances.getFirst().getResource());
         modelProviding.add(modelInstances.getSecond());
@@ -207,29 +222,31 @@ public abstract class TransformationTestsBase {
         return modelProviding;
     }
 
-    private static CSSynchronizer createChangeSynchronizer(final CorrespondenceInstance correspondenceInstance,
-            UserInteracting userInteracting, SynchronisationAbortedListener syncAbortedListener, final Pair<ModelInstance, ModelInstance> modelInstances) throws IOException {
+    private static CSSynchronizer createChangeSynchronizer(final Blackboard blackboard,
+            final UserInteracting userInteracting, final SynchronisationAbortedListener syncAbortedListener,
+            final Pair<ModelInstance, ModelInstance> modelInstances) throws IOException {
 
-        ShadowCopyFactory shadowCopyFactory = new ShadowCopyFactory() {
+        final ShadowCopyFactory shadowCopyFactory = new ShadowCopyFactory() {
             @Override
-            public ShadowCopy create(CorrespondenceInstance ci, boolean useJMLCopy) {
+            public ShadowCopy create(final CorrespondenceInstance ci, final boolean useJMLCopy) {
                 return new ShadowCopyImpl(ci, new JavaModelURIProvider(modelInstances.getFirst().getURI()), useJMLCopy);
             }
 
             @Override
-            public ShadowCopy create(CorrespondenceInstance ci) {
+            public ShadowCopy create(final CorrespondenceInstance ci) {
                 return new ShadowCopyImpl(ci, new JavaModelURIProvider(modelInstances.getFirst().getURI()));
             }
         };
-        Injector injector = Guice.createInjector(new CSSynchronizerModule(shadowCopyFactory, userInteracting, syncAbortedListener));
+        final Injector injector = Guice
+                .createInjector(new CSSynchronizerModule(shadowCopyFactory, userInteracting, syncAbortedListener));
 
-        CSSynchronizer synchronizer = injector.getInstance(CSSynchronizer.class);
-        synchronizer.setCorrespondenceInstance(correspondenceInstance);
+        final CSSynchronizer synchronizer = injector.getInstance(CSSynchronizer.class);
+        synchronizer.setBlackboard(blackboard);
         return synchronizer;
     }
 
     private static URI getDummyURI() throws IOException {
-        File tmpFile = File.createTempFile("dummyuri", Utilities.getRandomString());
+        final File tmpFile = File.createTempFile("dummyuri", Utilities.getRandomString());
         tmpFile.deleteOnExit();
         tmpFile.delete();
         return URI.createFileURI(tmpFile.getAbsolutePath());
@@ -237,97 +254,100 @@ public abstract class TransformationTestsBase {
 
     abstract protected Pair<ModelInstance, ModelInstance> getModelInstances() throws Exception;
 
-    protected EMFChangeResult callSynchronizer(Change change) {
-        replay(userInteracting);
-        replay(syncAbortedListener);
-        EMFChangeResult result = callSynchronizerInternal(change);
-        verify(userInteracting);
-        verify(syncAbortedListener);
-        return result;
-    }
-    
-    private EMFChangeResult callSynchronizerInternal(Change change) {
-        if (change instanceof EMFModelChange) {
-            return synchronizer.transformChanges2Commands(null);
-        }
-        if (change instanceof CompositeChange) {
-            return synchronizer.executeTransformation((CompositeChange)change, correspondenceInstance);
-        }
-        throw new IllegalArgumentException("The synchronizer can only be called with EMFModelChanges or with CompositeChanges!");
+    protected void callSynchronizer(final Change change) {
+        replay(this.userInteracting);
+        replay(this.syncAbortedListener);
+        this.callSynchronizerInternal(change);
+        verify(this.userInteracting);
+        verify(this.syncAbortedListener);
     }
 
-    protected ModelInstance loadModelInstance(IResourceFiles resourceFile) throws IOException {
-        Resource resource = ModelLoader.loadRelativeResource(resourceFile, this.getClass());
+    private void callSynchronizerInternal(final Change change) {
+        if (change instanceof EMFModelChange) {
+            this.synchronizer.transformChanges2Commands(this.blackboard);
+            return;
+        }
+        if (change instanceof CompositeChange) {
+            this.synchronizer.executeTransformation((CompositeChange) change, this.blackboard);
+            return;
+        }
+        throw new IllegalArgumentException(
+                "The synchronizer can only be called with EMFModelChanges or with CompositeChanges!");
+    }
+
+    protected ModelInstance loadModelInstance(final IResourceFiles resourceFile) throws IOException {
+        final Resource resource = ModelLoader.loadRelativeResource(resourceFile, this.getClass());
         return new ModelInstance(VURI.getInstance(resource), resource);
     }
 
-    protected static void assertEqualsModel(EObject expectedRoot, EObject actualRoot) throws IOException {
-        IComparisonScope comparisonScope = new DefaultComparisonScope(actualRoot, expectedRoot, null);
-        Comparison comparison = EMFCompare.builder().build().compare(comparisonScope);
-        EList<Diff> differences = comparison.getDifferences();
+    protected static void assertEqualsModel(final EObject expectedRoot, final EObject actualRoot) throws IOException {
+        final IComparisonScope comparisonScope = new DefaultComparisonScope(actualRoot, expectedRoot, null);
+        final Comparison comparison = EMFCompare.builder().build().compare(comparisonScope);
+        final EList<Diff> differences = comparison.getDifferences();
         if (differences.size() > 0) {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            PrintStream ps = new PrintStream(baos);
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final PrintStream ps = new PrintStream(baos);
             EMFComparePrettyPrinter.printDifferences(comparison, ps);
-            String failString = "Differences detected:\n\n" + baos.toString("UTF-8");
+            final String failString = "Differences detected:\n\n" + baos.toString("UTF-8");
             fail(failString);
         }
     }
 
-    protected void assertEqualsModel(IResourceFiles expectedResourceFile, EObject actualRoot) throws IOException {
-        EObject expectedRoot = ModelLoader.loadRelativeResourceModel(expectedResourceFile,
-                this.getClass());
+    protected void assertEqualsModel(final IResourceFiles expectedResourceFile, final EObject actualRoot)
+            throws IOException {
+        final EObject expectedRoot = ModelLoader.loadRelativeResourceModel(expectedResourceFile, this.getClass());
         assertEqualsModel(expectedRoot, actualRoot);
     }
 
-    protected void assertNumberOfCorrespondences(int expected, EObject object) {
-        Assert.assertEquals(expected, correspondenceInstance.getAllCorrespondences(object).size());
+    protected void assertNumberOfCorrespondences(final int expected, final EObject object) {
+        Assert.assertEquals(expected, this.correspondenceInstance.getAllCorrespondences(object).size());
     }
-    
-    protected void assertNumberOfRealUpdateCalls(int expected) {
+
+    protected void assertNumberOfRealUpdateCalls(final int expected) {
         int realUpdateCalls = 0;
-        for (Pair<String, String> call : correspondenceInstanceUpdateRecorder.getUpdateCalls()) {
+        for (final Pair<String, String> call : this.correspondenceInstanceUpdateRecorder.getUpdateCalls()) {
             if (!call.getFirst().equals(call.getSecond())) {
                 ++realUpdateCalls;
             }
         }
         assertEquals(expected, realUpdateCalls);
     }
-    
-    protected <T extends EObject> CloneContainer<T> createClones(T original) {
+
+    protected <T extends EObject> CloneContainer<T> createClones(final T original) {
         return new CloneContainer<T>(original);
     }
-    
-    protected <T extends EObject> CloneContainer<T> createClonesForSerializedObject(T original) throws IOException {
+
+    protected <T extends EObject> CloneContainer<T> createClonesForSerializedObject(final T original)
+            throws IOException {
         return new CloneContainer<T>(reloadModel(original), reloadModel(original));
     }
-    
-    private static <T extends EObject> T reloadModel(T original) throws IOException {
-        URI modelUri = original.eResource().getURI();
-        Resource resource = new ResourceSetImpl().createResource(modelUri);
+
+    private static <T extends EObject> T reloadModel(final T original) throws IOException {
+        final URI modelUri = original.eResource().getURI();
+        final Resource resource = new ResourceSetImpl().createResource(modelUri);
         resource.load(Collections.EMPTY_MAP);
         return Utilities.getChildEqualToEObject(resource.getContents().get(0), original);
     }
-   
+
     public static class CloneContainer<T extends EObject> {
         private final T oldObject;
         private final T newObject;
-        
-        public CloneContainer(T original) {
+
+        public CloneContainer(final T original) {
             this(Utilities.clone(original), Utilities.clone(original));
         }
-        
-        public CloneContainer(T firstCopy, T secondCopy) {
-            oldObject = firstCopy;
-            newObject = secondCopy;
+
+        public CloneContainer(final T firstCopy, final T secondCopy) {
+            this.oldObject = firstCopy;
+            this.newObject = secondCopy;
         }
-        
+
         public T changed() {
-            return newObject;
+            return this.newObject;
         }
-        
+
         public T original() {
-            return oldObject;
+            return this.oldObject;
         }
     }
 }

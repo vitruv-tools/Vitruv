@@ -5,6 +5,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import java.util.List
 import org.apache.log4j.Logger
@@ -175,7 +176,7 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 				}
 			}
 			blackboard.correspondenceInstance.update(oldTUID, method)
-			PCM2JaMoPPUtils.saveNonRootEObject(method)
+			TransformationUtils.saveNonRootEObject(method)
 		}
 	}
 
@@ -221,7 +222,7 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 				}
 			}
 			blackboard.correspondenceInstance.update(oldTUID, method)
-			PCM2JaMoPPUtils.saveNonRootEObject(method)
+			TransformationUtils.saveNonRootEObject(method)
 		}
 	}
 	

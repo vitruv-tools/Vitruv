@@ -6,8 +6,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceIns
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
-import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
 import java.util.Map
 import java.util.Set
@@ -77,7 +77,7 @@ class PCMJaMoPPUtils {
 					correspondingObject.eSet(eStructuralFeature, newValue)
 					correspondenceInstance.update(oldTUID, correspondingObject)
 					if (saveFilesOfChangedEObjects) {
-						PCMJaMoPPUtils.saveNonRootEObject(correspondingObject)
+						TransformationUtils.saveNonRootEObject(correspondingObject)
 					}
 				}
 			}
@@ -148,14 +148,6 @@ class PCMJaMoPPUtils {
 			saveRootEObject(cuVURI, blackboard, newJavaRoot)
 		}
 
-		def static saveNonRootEObject(EObject... eObjects) {
-			eObjects.forEach[eObject|
-			if (null == eObject || null == eObject.eResource) {
-				logger.warn("Can not save eObject " + eObject + " cause the resource of the eObject is null")
-			}
-			EcoreResourceBridge.saveResource(eObject.eResource)]
-		}
-		
 		def static VURI getSourceModelVURI(EObject eObject){
 			if(null == eObject ||null == eObject.eResource){
 				logger.warn("can not get SourceModelVURI cause eObject or its resource is null: " + eObject)

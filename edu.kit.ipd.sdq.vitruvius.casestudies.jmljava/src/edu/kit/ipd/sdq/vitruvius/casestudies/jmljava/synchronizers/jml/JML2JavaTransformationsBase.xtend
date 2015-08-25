@@ -1,24 +1,26 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.jml
 
 import com.google.inject.Inject
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.EObjectMappingTransformationBase
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.FieldDeclaration
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLModelElement
+import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MethodDeclaration
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.VariableDeclarator
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.Utilities
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.AbortableEObjectMappingTransformationBase
 import java.util.ArrayList
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.Utilities
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener
 
-abstract class JML2JavaTransformationsBase extends EObjectMappingTransformationBase {
+abstract class JML2JavaTransformationsBase extends AbortableEObjectMappingTransformationBase {
 	
 	protected val ShadowCopyFactory shadowCopyFactory
 	
 	@Inject
-	protected new(ShadowCopyFactory shadowCopyFactory) {
+	protected new(ShadowCopyFactory shadowCopyFactory, SynchronisationAbortedListener synchronisationAbortedListener) {
+		super(synchronisationAbortedListener)
 		this.shadowCopyFactory = shadowCopyFactory
 	}
 	
@@ -46,7 +48,7 @@ abstract class JML2JavaTransformationsBase extends EObjectMappingTransformationB
 		
 		
 		//TODO this only works if the old state of the model is serialized to a file
-		val shadowCopy = shadowCopyFactory.create(correspondenceInstance)
+		val shadowCopy = shadowCopyFactory.create(blackboard.correspondenceInstance)
 		shadowCopy.setupShadowCopyWithJMLSpecifications(true)
 		val obj = shadowCopy.shadowCopyCorrespondences.getMember(tmpSpecifiedElement)
 		obj.name = newName

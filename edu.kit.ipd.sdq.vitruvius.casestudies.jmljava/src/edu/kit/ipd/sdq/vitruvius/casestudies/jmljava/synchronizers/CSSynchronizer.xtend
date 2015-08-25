@@ -1,6 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers
 
 import com.google.inject.Inject
+import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Expression
+import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMemberModifier
+import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JMLMetaModelProvider
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JaMoPPMetaModelProvider
@@ -16,24 +19,22 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.composit
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.compositerefiners.JavaFieldModifierChangeRefiner
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.compositerefiners.JavaMethodBodyChangedChangeRefiner
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.compositerefiners.JavaMethodModifierChangeRefiner
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.compositerefiners.JavaMethodParameterNumberChangedByOneCompositeChangeRefiner
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.compositerefiners.JavaMethodParameterNumberNotChangedCompositeChangeRefiner
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.jml.JMLInvariantExpressionTransformations
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.jml.JMLMemberDeclarationWithModifierTransformations
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.jml.JMLMethodDeclarationTransformations
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.jml.JMLVariableDeclarationTransformations
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Expression
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMemberModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationExecuter
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.ArrayList
-import java.util.HashSet
 import java.util.LinkedList
 import java.util.List
 import org.apache.log4j.Logger
@@ -42,9 +43,7 @@ import org.emftext.language.java.modifiers.Modifier
 import org.emftext.language.java.statements.Statement
 import org.emftext.language.java.types.Type
 import org.emftext.language.java.types.TypeReference
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.compositerefiners.JavaMethodParameterNumberChangedByOneCompositeChangeRefiner
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationExecuter
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.AbortableEObjectMappingTransformationBase
 
 /**
  * Synchronizer for Java and JML. It initializes the transformations and composite
@@ -52,34 +51,35 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.Transforma
  * for the model handling (e.g. which model has to be saved).
  */
 class CSSynchronizer extends TransformationExecuter implements Change2CommandTransforming {
-	
+
 	static val Logger LOGGER = Logger.getLogger(CSSynchronizer)
 	val compositeChangeRefiners = new ArrayList<CompositeChangeRefiner>()
 	val SynchronisationAbortedListener syncAbortedListener;
 	val UserInteracting userinteracting;
-	
+
 	@Inject
-	new(ShadowCopyFactory shadowCopyFactory, UserInteracting userInteracting, SynchronisationAbortedListener syncAbortedListener) {
+	new(ShadowCopyFactory shadowCopyFactory, UserInteracting userInteracting,
+		SynchronisationAbortedListener syncAbortedListener) {
 		// Java -> JML
-		addMapping(new JavaCompilationUnitTransformations(shadowCopyFactory))
-		addMapping(new JavaClassTransformations(shadowCopyFactory))
-		addMapping(new JavaMethodTransformations(shadowCopyFactory))
-		addMapping(new JavaParameterTransformations(shadowCopyFactory))
-		addMapping(new JavaFieldTransformations(shadowCopyFactory))
-		
+		addMapping(new JavaCompilationUnitTransformations(shadowCopyFactory, syncAbortedListener))
+		addMapping(new JavaClassTransformations(shadowCopyFactory, syncAbortedListener))
+		addMapping(new JavaMethodTransformations(shadowCopyFactory, syncAbortedListener))
+		addMapping(new JavaParameterTransformations(shadowCopyFactory, syncAbortedListener))
+		addMapping(new JavaFieldTransformations(shadowCopyFactory, syncAbortedListener))
+
 		addCompositeChangeRefiner(new JavaMethodParameterNumberNotChangedCompositeChangeRefiner(shadowCopyFactory))
 		addCompositeChangeRefiner(new JavaMethodParameterNumberChangedByOneCompositeChangeRefiner(shadowCopyFactory))
 		addCompositeChangeRefiner(new JavaMethodModifierChangeRefiner(shadowCopyFactory))
 		addCompositeChangeRefiner(new JavaFieldModifierChangeRefiner(shadowCopyFactory))
 		addCompositeChangeRefiner(new JavaClassifierModifierChangeRefiner(shadowCopyFactory))
 		addCompositeChangeRefiner(new JavaMethodBodyChangedChangeRefiner(shadowCopyFactory))
-		
+
 		// JML -> JML / JML -> Java
-		addMapping(new JMLMethodDeclarationTransformations(shadowCopyFactory))
-		addMapping(new JMLInvariantExpressionTransformations(shadowCopyFactory))
-		addMapping(new JMLMemberDeclarationWithModifierTransformations(shadowCopyFactory))
-		addMapping(new JMLVariableDeclarationTransformations(shadowCopyFactory))
-		
+		addMapping(new JMLMethodDeclarationTransformations(shadowCopyFactory, syncAbortedListener))
+		addMapping(new JMLInvariantExpressionTransformations(shadowCopyFactory, syncAbortedListener))
+		addMapping(new JMLMemberDeclarationWithModifierTransformations(shadowCopyFactory, syncAbortedListener))
+		addMapping(new JMLVariableDeclarationTransformations(shadowCopyFactory, syncAbortedListener))
+
 		// dummy transformations for create/remove EObject calls from base class	
 		addMapping(new DummyTransformations(Type))
 		addMapping(new DummyTransformations(TypeReference))
@@ -89,7 +89,7 @@ class CSSynchronizer extends TransformationExecuter implements Change2CommandTra
 		addMapping(new DummyTransformations(Expression))
 		addMapping(new DummyTransformations(JMLSpecifiedElement))
 		addMapping(new DummyTransformations(JMLMemberModifier))
-		
+
 		this.userInteracting = userInteracting
 		this.userinteracting = userInteracting
 		this.syncAbortedListener = syncAbortedListener
@@ -103,36 +103,41 @@ class CSSynchronizer extends TransformationExecuter implements Change2CommandTra
 
 		return result;
 	}
-	
-	override transformChanges2Commands(EMFModelChange change, CorrespondenceInstance correspondenceInstance) {
-		LOGGER.info("Synchronization of change " + change.class.simpleName + " started.")
-		
-		this.setCorrespondenceInstance(correspondenceInstance)
-		
-		val modelChange = (change as EMFModelChange).EChange
-		val result = executeTransformationForChange(modelChange)
-		if (result.transformationAborted) {
-			syncAbortedListener.synchronisationAborted(change as EMFModelChange)
+
+	override transformChanges2Commands(Blackboard blackboard) {
+		val changes = blackboard.getAndArchiveChangesForTransformation
+		for (change : changes) {
+			if (change instanceof CompositeChange) {
+				executeTransformation(change as CompositeChange, blackboard)
+			} else {
+				LOGGER.info("Synchronization of change " + change.class.simpleName + " started.")
+
+				this.setBlackboard(blackboard)
+
+				val modelChange = (change as EMFModelChange).EChange
+				this.setSyncAbortChange(change as EMFModelChange)
+				executeTransformationForChange(modelChange)
+			}
 		}
-		
-		val vurisToSave = new HashSet<VURI>()
-		result.existingObjectsToSave.forEach[vurisToSave.add(VURI.getInstance(eResource))]
-		
-		//TODO vurisToAdd is not supported because no URI affecting changes are supported atm
-		
-		//FIXME SS: remove the following workaround after a concept for this has been added to Vitruvius
-//		if (!result.transformationAborted && ChangeSynchronizerRegistry.getInstance != null) {
-//			ChangeSynchronizerRegistry.getInstance.changeSynchronizer.modelProvidingDirtyMarker.markAllModelInstancesDirty(JaMoPPMetaModelProvider.URI)
-//		}
-		
-		return new EMFChangeResult(vurisToSave, #[].toSet, result.existingObjectsToDelete)
+	// TODO vurisToAdd is not supported because no URI affecting changes are supported atm
+	// FIXME SS: remove the following workaround after a concept for this has been added to Vitruvius
+	// if (!result.transformationAborted && ChangeSynchronizerRegistry.getInstance != null) {
+	// ChangeSynchronizerRegistry.getInstance.changeSynchronizer.modelProvidingDirtyMarker.markAllModelInstancesDirty(JaMoPPMetaModelProvider.URI)
+	// }
 	}
-	
-	override executeTransformation(CompositeChange compositeChange, CorrespondenceInstance correspondenceInstance) {
-		LOGGER.info("Synchronization of composite change (" + compositeChange.allChanges.size + " changes included) started.")
-		
-		this.setCorrespondenceInstance(correspondenceInstance)
-		
+
+	def void setSyncAbortChange(EMFModelChange change) {
+		this.mappingTransformations.values.filter(AbortableEObjectMappingTransformationBase).forEach [
+			setSyncAbortChange(change)
+		]
+	}
+
+	def executeTransformation(CompositeChange compositeChange, Blackboard blackboard) {
+		LOGGER.info("Synchronization of composite change (" + compositeChange.allChanges.size +
+			" changes included) started.")
+
+		this.setBlackboard(blackboard)
+
 		var CompositeChangeRefinerResult refinementResult;
 		val matchingProcessor = compositeChangeRefiners.findFirst[match(compositeChange)]
 		if (matchingProcessor != null) {
@@ -142,14 +147,14 @@ class CSSynchronizer extends TransformationExecuter implements Change2CommandTra
 			LOGGER.info("Using default handling for composite change.")
 			refinementResult = new CompositeChangeRefinerResultAtomicTransformations(compositeChange.allChanges)
 		}
-		
-		return refinementResult.apply(this, correspondenceInstance, userinteracting, syncAbortedListener)
+
+		refinementResult.apply(this, blackboard, userinteracting, syncAbortedListener)
 	}
-	
+
 	private def addCompositeChangeRefiner(CompositeChangeRefiner refiner) {
 		compositeChangeRefiners.add(refiner)
 	}
-	
+
 	private static def getAllChanges(CompositeChange compositeChange) {
 		val changes = new ArrayList<EMFModelChange>()
 		val queue = new LinkedList<Change>()

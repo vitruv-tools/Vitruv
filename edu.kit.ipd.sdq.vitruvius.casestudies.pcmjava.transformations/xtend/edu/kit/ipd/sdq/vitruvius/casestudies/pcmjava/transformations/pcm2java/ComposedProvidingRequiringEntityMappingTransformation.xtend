@@ -1,7 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java
 
-import org.palladiosimulator.pcm.core.entity.ComposedProvidingRequiringEntity
-import org.palladiosimulator.pcm.core.entity.NamedElement
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
@@ -9,7 +7,8 @@ import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.emftext.language.java.containers.Package
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
+import org.palladiosimulator.pcm.core.entity.ComposedProvidingRequiringEntity
+import org.palladiosimulator.pcm.core.entity.NamedElement
 
 /**
  * base class for RepositoryComponentMappingTransformation and SystemMappingTransformation
@@ -73,7 +72,7 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 		//provided role removed - deletion of eobject should already be done in OperationProvidedRoleMappingTransformation - mark bc to save
 		if (affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
 			affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
-			PCMJaMoPPUtils.saveNonRootEObject(affectedEObject)
+			TransformationUtils.saveNonRootEObject(affectedEObject)
 		}
 
 	}
@@ -87,7 +86,7 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 		if (affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
 			affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
 			if (null != newAffectedEObject) {
-				PCMJaMoPPUtils.saveNonRootEObject(newAffectedEObject)
+				TransformationUtils.saveNonRootEObject(newAffectedEObject)
 			}
 		}
 	}

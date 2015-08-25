@@ -1,22 +1,18 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
-import org.palladiosimulator.pcm.repository.OperationInterface
-import org.palladiosimulator.pcm.repository.Repository
-import org.palladiosimulator.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.EStructuralFeature
-import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.classifiers.ClassifiersFactory
 import org.emftext.language.java.classifiers.Interface
-import org.emftext.language.java.containers.CompilationUnit
 import org.emftext.language.java.containers.Package
+import org.palladiosimulator.pcm.repository.OperationInterface
+import org.palladiosimulator.pcm.repository.Repository
+import org.palladiosimulator.pcm.repository.RepositoryFactory
 
 /**
  * Maps a JaMoPP interface to a PCM interface 

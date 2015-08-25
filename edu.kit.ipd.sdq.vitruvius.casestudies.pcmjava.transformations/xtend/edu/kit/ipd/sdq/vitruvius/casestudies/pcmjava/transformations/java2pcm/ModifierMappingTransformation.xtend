@@ -12,7 +12,7 @@ import org.emftext.language.java.modifiers.Modifier
  */
 class ModifierMappingTransformation extends EmptyEObjectMappingTransformation {
 
-	private static val Logger logger = Logger.getLogger(ModifierMappingTransformation.simpleName)
+	//private static val Logger logger = Logger.getLogger(ModifierMappingTransformation.simpleName)
 
 	override getClassOfMappedEObject() {
 		return Modifier

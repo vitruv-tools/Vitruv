@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
@@ -52,7 +52,7 @@ class CompilationUnitMappingTransformation extends EmptyEObjectMappingTransforma
 						if (null == system.eResource) {
 							PCMJaMoPPUtils.saveEObject(system, blackboard, PCMJaMoPPUtils.getSourceModelVURI(newAffectedEObject))
 						} else {
-							PCM2JaMoPPUtils.saveNonRootEObject(system)
+							TransformationUtils.saveNonRootEObject(system)
 						}
 						blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(system, newValue)
 					}
