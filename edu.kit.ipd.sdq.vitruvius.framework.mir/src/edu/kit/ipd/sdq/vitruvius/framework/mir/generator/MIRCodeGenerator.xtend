@@ -3,11 +3,12 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.generator
 import com.google.inject.Inject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFChangeResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRMappingHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRChange2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRMappingRealization
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization
@@ -35,8 +36,6 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRMappingHelper
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance
 
 /**
  * @author Dominik Werle
@@ -116,7 +115,7 @@ class MIRCodeGenerator implements IGenerator {
 	private static final List<? extends Class<?>> IMPORTED_CLASSES_TRANSFORMATION_EXECUTING = #[
 		EObject, Map, HashMap, List, ArrayList,
 		IllegalArgumentException,
-		Pair, EMFChangeResult, VURI,
+		Pair, VURI,
 		AbstractMIRChange2CommandTransforming,
 		CorrespondenceInstance, EMFModelChange, Change,
 		EChange, EcoreHelper,
@@ -124,7 +123,7 @@ class MIRCodeGenerator implements IGenerator {
 	]
 	
 	private static final List<? extends Class<?>> IMPORTED_CLASSES_MAPPING = #[
-		MIRMappingRealization, AbstractMIRMappingRealization, EMFChangeResult,
+		MIRMappingRealization, AbstractMIRMappingRealization,
 		EChange, CorrespondenceInstance, MIRModelInformationProvider, EStructuralFeature,
 		EClass, AbstractMIRChange2CommandTransforming, EObject, List, ArrayList,
 		Set, HashSet, EPackage, Pair, MIRMappingHelper, MappedCorrespondenceInstance,
