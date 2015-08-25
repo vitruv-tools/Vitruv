@@ -1,0 +1,21 @@
+import "http://edu.kit.ipd.sdq.vitruvius.examples.pcm_mockup" as repo
+import "http://edu.kit.ipd.sdq.vitruvius.examples.uml_mockup" as umlcd
+
+map repo::Interface to umlcd::Interface {
+	when 
+	with a to b {
+		
+	}
+}
+
+context repo::Repository
+inv uniqueComponentNames(c:repo::BasicComponent, d:repo::BasicComponent):
+ self.components->forAll(c,d | c <> d implies c.entityName <> d.entityName)  
+ 
+var componentNameCount : Integer
+
+on creation of class:umlcd::Class
+restore inv uniqueComponentNames(c:repo::BasicComponent, d:repo::BasicComponent)
+by {
+	
+}
