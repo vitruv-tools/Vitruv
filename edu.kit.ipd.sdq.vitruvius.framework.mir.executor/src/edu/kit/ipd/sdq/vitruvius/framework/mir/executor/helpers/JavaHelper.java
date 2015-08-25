@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -32,5 +33,13 @@ public final class JavaHelper {
 	
 	public static <Sub extends Sup, Sup> Stream<Sub> filterType(Collection<Sup> collection, Class<Sub> type) {
 		return filterType(collection.stream(), type);
+	}
+	
+	public static <T> Optional<T> tryCast(Object object, Class<T> type) {
+		if ((object != null) && type.isInstance(object)) {
+			return Optional.of(type.cast(object));
+		} else {
+			return Optional.empty();
+		}
 	}
 }
