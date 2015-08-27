@@ -3,6 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces;
 import java.io.Serializable;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 
 /**
@@ -16,9 +17,10 @@ public interface MIRMappingRealization extends Serializable {
 	 * Applies the mapping.
 	 * @param eChange
 	 * @param correspondenceInstance
+	 * @return TODO
 	 * @return the resulting change
 	 */
-	public void applyEChange(EChange eChange, Blackboard blackboard);
+	public TransformationResult applyEChange(EChange eChange, Blackboard blackboard);
 	
 	/**
 	 * Returns an ID that is unique for all mapping realizations.

@@ -12,8 +12,8 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences.Java2JMLCor
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences.MatchingModelElementsFinder
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
@@ -74,7 +74,7 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 			CommonSynchronizerTransformations.replaceNonRootEObjectSingleType(javaMethod, oldValue as TypeReference,
 				newValue as TypeReference, blackboard.correspondenceInstance)
 		}
-		TransformationUtils.saveNonRootEObject(changedObjects)
+		return new TransformationResult
 	}
 
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
@@ -101,7 +101,7 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 				userInteracting.showMessage(UserInteractionType.MODAL,
 					"There already is a method in JML, which has the same name.");
 				this.syncAbortedListener.synchronisationAborted(super.synchAbortChange)
-				return
+				return new TransformationResult
 			}
 
 			changedObjects.addAll((affectedEObject as Method).renameInAllJMLSpecifications(newValue as String))
@@ -116,7 +116,7 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 				changedObjects.add(jmlMethodDeclaration)
 			}
 		}
-		TransformationUtils.saveNonRootEObject(changedObjects)
+		return new TransformationResult
 	}
 
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
@@ -146,7 +146,7 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 		} else if (jmlFeature == JMLPackage.eINSTANCE.modifiable_Modifiers) {
 			CommonSynchronizerTransformations.createNonRootEObjectInList(oldAffectedEObject, newValue as Modifier,
 				blackboard.correspondenceInstance)
-			return
+			return new TransformationResult
 		} else if (jmlFeature == JMLPackage.eINSTANCE.methodDeclaration_Exceptions) {
 			val jmlMethodDeclaration = getSingleCorrespondingEObjectOfType(oldAffectedEObject, MethodDeclaration)
 			if (jmlMethodDeclaration != null) {
@@ -161,7 +161,7 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 				changedObjects.add(jmlMethodDeclaration)
 			}
 		}
-		TransformationUtils.saveNonRootEObject(changedObjects)
+		return new TransformationResult
 	}
 
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
@@ -184,7 +184,7 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 						"The change is not allowed since this parameter is referenced in this method or in specifications."
 					);
 					syncAbortedListener.synchronisationAborted(super.getSynchAbortChange());
-					return
+					return new TransformationResult
 				}
 
 				val jmlMethodDeclarationOldTUID = jmlMethodDeclaration.TUID
@@ -230,7 +230,7 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 				changedObjects.add(jmlMethodDeclaration)
 			}
 		}
-		TransformationUtils.saveNonRootEObject(changedObjects)
+		return new TransformationResult
 	}
 
 	override replaceNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue,
@@ -246,9 +246,9 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 		if (jmlFeature == JMLPackage.eINSTANCE.modifiable_Modifiers) {
 			CommonSynchronizerTransformations.replaceNonRootEObjectInList(affectedEObject, oldValue as Modifier,
 				newValue as Modifier, blackboard.correspondenceInstance)
-			return
+			return new TransformationResult
 		}
 
-		TransformationUtils.saveNonRootEObject(changedObjects)
+		return new TransformationResult
 	}
 }

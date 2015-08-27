@@ -6,6 +6,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUt
 import edu.kit.ipd.sdq.vitruvius.framework.code.jamopp.JaMoPPParser
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
@@ -173,521 +174,530 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	}
 
 	def public static void handleJavaRootNameChange(JavaRoot javaRoot, EStructuralFeature affectedFeature,
-		Object newValue, Blackboard blackboard, boolean changeNamespanceIfCompilationUnit) {
-		val TUID oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(javaRoot)
+		Object newValue, Blackboard blackboard, boolean changeNamespanceIfCompilationUnit,
+		TransformationResult transformationResult) {
+			val TUID oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(javaRoot)
 
-		// change name
-		var String newName = newValue.toString
-		if (javaRoot instanceof CompilationUnit) {
-			if (changeNamespanceIfCompilationUnit) {
+			// change name
+			var String newName = newValue.toString
+			if (javaRoot instanceof CompilationUnit) {
+				if (changeNamespanceIfCompilationUnit) {
 
-				// change package if compilation unit and change new Name
-				javaRoot.namespaces.remove(javaRoot.namespaces.size - 1)
-				javaRoot.namespaces.add(newValue.toString)
-				newName = newName + "Impl"
-			}
-			newName = newName + "." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION
-			handleClassifierNameChange(javaRoot.classifiers.get(0), newValue,
-				blackboard.correspondenceInstance, changeNamespanceIfCompilationUnit)
-		}
-		javaRoot.name = newName;
-
-		val VURI oldVURI = VURI.getInstance(javaRoot.eResource.getURI)
-		blackboard.correspondenceInstance.update(oldTUID, javaRoot)
-		TransformationUtils.deleteFile(oldVURI)
-		PCMJaMoPPUtils.saveEObject(javaRoot, blackboard, PCMJaMoPPUtils.getSourceModelVURI(javaRoot))
-	}
-
-	def static createPrivateField(TypeReference reference, String name) {
-		val Field field = MembersFactory.eINSTANCE.createField
-		field.typeReference = EcoreUtil.copy(reference)
-		field.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPrivate)
-		var String fieldName = name
-		if (fieldName.nullOrEmpty) {
-			fieldName = "field_" + PCM2JaMoPPUtils.getNameFromJaMoPPType(reference)
-		}
-		field.name = fieldName
-		return field
-	}
-
-	def static createPrivateFieldUsingDummyPrinting(TypeReference reference, String name) {
-		try {
-			val String cuContent = "class Dummy{ private " + PCM2JaMoPPUtils.getNameFromJaMoPPType(reference) + " " +
-				name + "; }"
-			val String fileName = "vitruvius.meta/src/dummy.java";
-			val cu = createJavaRoot(fileName, cuContent) as CompilationUnit
-			return cu.classifiers.get(0).fields.get(0)
-		} catch (Throwable t) {
-			logger.info("Could not create field: " + name)
-			return null
-		}
-	}
-
-	def static Parameter createOrdinaryParameter(TypeReference typeReference, String name) {
-		val parameter = ParametersFactory.eINSTANCE.createOrdinaryParameter
-		parameter.name = name
-		parameter.typeReference = typeReference
-		return parameter
-	}
-
-	def static Statement createAssignmentFromParameterToField(Field field, Parameter parameter) {
-		val expressionStatement = StatementsFactory.eINSTANCE.createExpressionStatement
-		val assigmentExpression = ExpressionsFactory.eINSTANCE.createAssignmentExpression
-
-		// this.
-		val selfReference = ReferencesFactory.eINSTANCE.createSelfReference
-		selfReference.self = LiteralsFactory.eINSTANCE.createThis
-		assigmentExpression.child = selfReference
-
-		// .fieldname
-		val fieldReference = ReferencesFactory.eINSTANCE.createIdentifierReference
-		fieldReference.target = EcoreUtil.copy(field)
-		selfReference.next = fieldReference
-
-		// =
-		assigmentExpression.assignmentOperator = OperatorsFactory.eINSTANCE.createAssignment
-
-		// name		
-		val identifierReference = ReferencesFactory.eINSTANCE.createIdentifierReference
-		identifierReference.target = parameter
-
-		assigmentExpression.value = identifierReference
-		expressionStatement.expression = assigmentExpression
-		return expressionStatement
-	}
-
-	/**
-	 * sorts the member list to ensure that fields occure before constructors and constructors before methods
-	 */
-	def static sortMembers(List<? extends EObject> members) {
-		members.sort(new Comparator<EObject> {
-
-			override compare(EObject o1, EObject o2) {
-
-				// fields before constructors and methods
-				if (o1 instanceof Field && (o2 instanceof Method || o2 instanceof Constructor)) {
-					return 1
-				} else if ((o1 instanceof Method || o1 instanceof Constructor) && o2 instanceof Field) {
-					return -1
-
-				// constructors before Methods	
-				} else if (o1 instanceof Constructor && o2 instanceof Method) {
-					return 1
-				} else if (o1 instanceof Method && o2 instanceof Constructor) {
-					return -1
+					// change package if compilation unit and change new Name
+					javaRoot.namespaces.remove(javaRoot.namespaces.size - 1)
+					javaRoot.namespaces.add(newValue.toString)
+					newName = newName + "Impl"
 				}
-				return 0;
+				newName = newName + "." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION
+				handleClassifierNameChange(javaRoot.classifiers.get(0), newValue, blackboard.correspondenceInstance,
+					changeNamespanceIfCompilationUnit)
 			}
+			javaRoot.name = newName;
 
-			override equals(Object obj) {
-				return this == obj;
+			val VURI oldVURI = VURI.getInstance(javaRoot.eResource.getURI)
+			blackboard.correspondenceInstance.update(oldTUID, javaRoot)
+			TransformationUtils.deleteFile(oldVURI)
+			PCMJaMoPPUtils.addRootChangeToTransformationResult(javaRoot, blackboard,
+				PCMJaMoPPUtils.getSourceModelVURI(javaRoot), transformationResult)
+		}
+
+		def static createPrivateField(TypeReference reference, String name) {
+			val Field field = MembersFactory.eINSTANCE.createField
+			field.typeReference = EcoreUtil.copy(reference)
+			field.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPrivate)
+			var String fieldName = name
+			if (fieldName.nullOrEmpty) {
+				fieldName = "field_" + PCM2JaMoPPUtils.getNameFromJaMoPPType(reference)
 			}
-
-		})
-	}
-
-	def static NamespaceClassifierReference createNamespaceClassifierReference(ConcreteClassifier concreteClassifier) {
-		val namespaceClassifierReference = TypesFactory.eINSTANCE.createNamespaceClassifierReference
-		val classifierRef = TypesFactory.eINSTANCE.createClassifierReference
-		classifierRef.target = EcoreUtil.copy(concreteClassifier)
-		namespaceClassifierReference.classifierReferences.add(classifierRef)
-
-		// namespaceClassifierReference.namespaces.addAll(concreteClassifier.containingCompilationUnit.namespaces)
-		return namespaceClassifierReference
-	}
-
-	def static Import addImportToCompilationUnitOfClassifier(Classifier classifier,
-		ConcreteClassifier classifierToImport) {
-		val classifierImport = ImportsFactory.eINSTANCE.createClassifierImport
-		if (null != classifierToImport.containingCompilationUnit) {
-			if (null != classifierToImport.containingCompilationUnit.namespaces) {
-				classifierImport.namespaces.addAll(classifierToImport.containingCompilationUnit.namespaces)
-			}
-			classifier.containingCompilationUnit.imports.add(classifierImport)
-		}
-		classifierImport.classifier = classifierToImport
-		return classifierImport
-	}
-
-	def static Import addImportToCompilationUnitOfClassifier(Classifier classifier,
-		NamespaceClassifierReference namespaceClassifierReference) {
-		val classifierToImport = namespaceClassifierReference.target
-		if (classifierToImport instanceof ConcreteClassifier) {
-			return addImportToCompilationUnitOfClassifier(classifier, classifierToImport)
+			field.name = fieldName
+			return field
 		}
 
-		// return empty import - should not change class at all
-		return ImportsFactory.eINSTANCE.createClassifierImport
-	}
-
-	def static addConstructorToClass(Class jaMoPPClass) {
-		val Constructor constructor = MembersFactory.eINSTANCE.createConstructor
-		constructor.name = jaMoPPClass.name
-		constructor.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPublic)
-		jaMoPPClass.members.add(constructor)
-		return constructor
-	}
-
-	def static Package getContainingPackageFromCorrespondenceInstance(Classifier classifier,
-		CorrespondenceInstance correspondenceInstance) {
-		var namespace = classifier.containingCompilationUnit.namespacesAsString
-		if (namespace.endsWith("$") || namespace.endsWith(".")) {
-			namespace = namespace.substring(0, namespace.length - 1)
-		}
-		val finalNamespace = namespace
-		var Set<Package> packagesWithCorrespondences = correspondenceInstance.
-			getAllEObjectsInCorrespondencesWithType(Package)
-		val packagesWithNamespace = packagesWithCorrespondences.filter [ pack |
-			finalNamespace.equals(pack.namespacesAsString + pack.name)
-		]
-		if (null != packagesWithNamespace && 0 < packagesWithNamespace.size &&
-			null != packagesWithNamespace.iterator.next) {
-			return packagesWithNamespace.iterator.next
-		}
-		return null;
-	}
-
-	def public static Package findCorrespondingPackageByName(String name, CorrespondenceInstance correspondenceInstance,
-		Repository repo) {
-		val packages = correspondenceInstance.getCorrespondingEObjectsByType(repo, Package)
-		if (null == packages) {
-			return null
-		}
-		for (package : packages) {
-			if (package.name.equalsIgnoreCase(name)) {
-				return package
+		def static createPrivateFieldUsingDummyPrinting(TypeReference reference, String name) {
+			try {
+				val String cuContent = "class Dummy{ private " + PCM2JaMoPPUtils.getNameFromJaMoPPType(reference) +
+					" " + name + "; }"
+				val String fileName = "vitruvius.meta/src/dummy.java";
+				val cu = createJavaRoot(fileName, cuContent) as CompilationUnit
+				return cu.classifiers.get(0).fields.get(0)
+			} catch (Throwable t) {
+				logger.info("Could not create field: " + name)
+				return null
 			}
 		}
-		return null
-	}
 
-	def static CompilationUnit createCompilationUnit(String name, String content) {
-		return createJavaRoot(name, content) as CompilationUnit
-	}
+		def static Parameter createOrdinaryParameter(TypeReference typeReference, String name) {
+			val parameter = ParametersFactory.eINSTANCE.createOrdinaryParameter
+			parameter.name = name
+			parameter.typeReference = typeReference
+			return parameter
+		}
 
-	def static Package createPackage(String namespace) {
-		val String content = '''package «namespace»;'''
-		return createJavaRoot("package-info", content) as Package
-	}
+		def static Statement createAssignmentFromParameterToField(Field field, Parameter parameter) {
+			val expressionStatement = StatementsFactory.eINSTANCE.createExpressionStatement
+			val assigmentExpression = ExpressionsFactory.eINSTANCE.createAssignmentExpression
 
-	def static JavaRoot createJavaRoot(String name, String content) {
-		val JaMoPPParser jaMoPPParser = new JaMoPPParser
-		val inStream = new ByteArrayInputStream(content.bytes)
-		val javaRoot = jaMoPPParser.parseCompilationUnitFromInputStream(VURI.getInstance(name + ".java").getEMFUri,
-			inStream)
-		javaRoot.name = name + ".java"
-		return javaRoot
-	}
+			// this.
+			val selfReference = ReferencesFactory.eINSTANCE.createSelfReference
+			selfReference.self = LiteralsFactory.eINSTANCE.createThis
+			assigmentExpression.child = selfReference
 
-	def public static createJaMoPPMethod(String content) {
-		try {
-			val String cuContent = "class Dummy{" + content + "}"
-			val String name = "vitruvius.meta/src/dummy.java";
-			val cu = createJavaRoot(name, cuContent) as CompilationUnit
-			return cu.classifiers.get(0).methods.get(0)
-		} catch (Throwable t) {
-			logger.warn("Exception during createJaMoPPMethod with content " + content + " Exception: " + t)
+			// .fieldname
+			val fieldReference = ReferencesFactory.eINSTANCE.createIdentifierReference
+			fieldReference.target = EcoreUtil.copy(field)
+			selfReference.next = fieldReference
+
+			// =
+			assigmentExpression.assignmentOperator = OperatorsFactory.eINSTANCE.createAssignment
+
+			// name		
+			val identifierReference = ReferencesFactory.eINSTANCE.createIdentifierReference
+			identifierReference.target = parameter
+
+			assigmentExpression.value = identifierReference
+			expressionStatement.expression = assigmentExpression
+			return expressionStatement
+		}
+
+		/**
+		 * sorts the member list to ensure that fields occure before constructors and constructors before methods
+		 */
+		def static sortMembers(List<? extends EObject> members) {
+			members.sort(new Comparator<EObject> {
+
+				override compare(EObject o1, EObject o2) {
+
+					// fields before constructors and methods
+					if (o1 instanceof Field && (o2 instanceof Method || o2 instanceof Constructor)) {
+						return 1
+					} else if ((o1 instanceof Method || o1 instanceof Constructor) && o2 instanceof Field) {
+						return -1
+
+					// constructors before Methods	
+					} else if (o1 instanceof Constructor && o2 instanceof Method) {
+						return 1
+					} else if (o1 instanceof Method && o2 instanceof Constructor) {
+						return -1
+					}
+					return 0;
+				}
+
+				override equals(Object obj) {
+					return this == obj;
+				}
+
+			})
+		}
+
+		def static NamespaceClassifierReference createNamespaceClassifierReference(
+			ConcreteClassifier concreteClassifier) {
+			val namespaceClassifierReference = TypesFactory.eINSTANCE.createNamespaceClassifierReference
+			val classifierRef = TypesFactory.eINSTANCE.createClassifierReference
+			classifierRef.target = EcoreUtil.copy(concreteClassifier)
+			namespaceClassifierReference.classifierReferences.add(classifierRef)
+
+			// namespaceClassifierReference.namespaces.addAll(concreteClassifier.containingCompilationUnit.namespaces)
+			return namespaceClassifierReference
+		}
+
+		def static Import addImportToCompilationUnitOfClassifier(Classifier classifier,
+			ConcreteClassifier classifierToImport) {
+			val classifierImport = ImportsFactory.eINSTANCE.createClassifierImport
+			if (null != classifierToImport.containingCompilationUnit) {
+				if (null != classifierToImport.containingCompilationUnit.namespaces) {
+					classifierImport.namespaces.addAll(classifierToImport.containingCompilationUnit.namespaces)
+				}
+				classifier.containingCompilationUnit.imports.add(classifierImport)
+			}
+			classifierImport.classifier = classifierToImport
+			return classifierImport
+		}
+
+		def static Import addImportToCompilationUnitOfClassifier(Classifier classifier,
+			NamespaceClassifierReference namespaceClassifierReference) {
+			val classifierToImport = namespaceClassifierReference.target
+			if (classifierToImport instanceof ConcreteClassifier) {
+				return addImportToCompilationUnitOfClassifier(classifier, classifierToImport)
+			}
+
+			// return empty import - should not change class at all
+			return ImportsFactory.eINSTANCE.createClassifierImport
+		}
+
+		def static addConstructorToClass(Class jaMoPPClass) {
+			val Constructor constructor = MembersFactory.eINSTANCE.createConstructor
+			constructor.name = jaMoPPClass.name
+			constructor.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPublic)
+			jaMoPPClass.members.add(constructor)
+			return constructor
+		}
+
+		def static Package getContainingPackageFromCorrespondenceInstance(Classifier classifier,
+			CorrespondenceInstance correspondenceInstance) {
+			var namespace = classifier.containingCompilationUnit.namespacesAsString
+			if (namespace.endsWith("$") || namespace.endsWith(".")) {
+				namespace = namespace.substring(0, namespace.length - 1)
+			}
+			val finalNamespace = namespace
+			var Set<Package> packagesWithCorrespondences = correspondenceInstance.
+				getAllEObjectsInCorrespondencesWithType(Package)
+			val packagesWithNamespace = packagesWithCorrespondences.filter [ pack |
+				finalNamespace.equals(pack.namespacesAsString + pack.name)
+			]
+			if (null != packagesWithNamespace && 0 < packagesWithNamespace.size &&
+				null != packagesWithNamespace.iterator.next) {
+				return packagesWithNamespace.iterator.next
+			}
 			return null;
 		}
-	}
 
-	def dispatch static getNameFromJaMoPPType(ClassifierReference reference) {
-		return reference.target.name
-	}
-
-	def dispatch static getNameFromJaMoPPType(NamespaceClassifierReference reference) {
-		val classRef = reference.pureClassifierReference
-		return classRef.target.name
-
-	// is currently not possible: see: https://bugs.eclipse.org/bugs/show_bug.cgi?id=404817
-	// return getNameFromJaMoPPType(classRef)
-	}
-
-	def dispatch static getNameFromJaMoPPType(Boolean reference) {
-		return "boolean"
-	}
-
-	def dispatch static getNameFromJaMoPPType(Byte reference) {
-		return "byte"
-	}
-
-	def dispatch static getNameFromJaMoPPType(Char reference) {
-		return "char"
-	}
-
-	def dispatch static getNameFromJaMoPPType(Double reference) {
-		return "double"
-	}
-
-	def dispatch static getNameFromJaMoPPType(Float reference) {
-		return "float"
-	}
-
-	def dispatch static getNameFromJaMoPPType(Int reference) {
-		return "int"
-	}
-
-	def dispatch static getNameFromJaMoPPType(Long reference) {
-		return "long"
-	}
-
-	def dispatch static getNameFromJaMoPPType(Short reference) {
-		return "short"
-	}
-
-	def dispatch static getNameFromJaMoPPType(Void reference) {
-		return "void"
-	}
-
-	def static askUserForPackage(CorrespondenceInstance correspondenceInstance, Repository repository,
-		UserInteracting userInteractiong, String message) {
-		val packages = correspondenceInstance.getAllCorrespondingEObjects(repository).filter(typeof(Package))
-		val List<String> options = new ArrayList<String>
-		for (pack : packages) {
-			options.add(pack.name)
+		def public static Package findCorrespondingPackageByName(String name,
+			CorrespondenceInstance correspondenceInstance, Repository repo) {
+			val packages = correspondenceInstance.getCorrespondingEObjectsByType(repo, Package)
+			if (null == packages) {
+				return null
+			}
+			for (package : packages) {
+				if (package.name.equalsIgnoreCase(name)) {
+					return package
+				}
+			}
+			return null
 		}
-		val int selection = userInteractiong.selectFromMessage(UserInteractionType.MODAL, message, options)
-		return packages.findFirst[pack|pack.name.equals(options.get(selection))]
-	}
 
-	def static createPackageProgrammatically(NamedElement pcmNamedElement, Package rootPackage) {
-		val Package jaMoPPPackage = ContainersFactory.eINSTANCE.createPackage
-		jaMoPPPackage.name = pcmNamedElement.entityName
-		if (null != rootPackage) {
-			jaMoPPPackage.namespaces.addAll(rootPackage.namespaces)
-			jaMoPPPackage.namespaces.add(rootPackage.name)
+		def static CompilationUnit createCompilationUnit(String name, String content) {
+			return createJavaRoot(name, content) as CompilationUnit
 		}
-		return jaMoPPPackage
-	}
 
-	def static EObject[] createCompilationUnitAndJaMoPPClass(NamedElement pcmNamedElement, Package jaMoPPPackage) {
-		val Class jaMoPPClass = ClassifiersFactory.eINSTANCE.createClass
-		jaMoPPClass.name = pcmNamedElement.entityName + "Impl"
-		jaMoPPClass.addModifier(ModifiersFactory.eINSTANCE.createPublic)
-		val CompilationUnit jaMoPPCompilationUnit = ContainersFactory.eINSTANCE.createCompilationUnit
-		jaMoPPCompilationUnit.name = jaMoPPClass.name + ".java"
-
-		// add classifier to compilation unit
-		jaMoPPCompilationUnit.classifiers.add(jaMoPPClass)
-
-		// add compilation unit to package		
-		jaMoPPPackage.compilationUnits.add(jaMoPPCompilationUnit)
-		jaMoPPCompilationUnit.namespaces.addAll(jaMoPPPackage.namespaces)
-		jaMoPPCompilationUnit.namespaces.add(jaMoPPPackage.name)
-		jaMoPPPackage.compilationUnits.add(jaMoPPCompilationUnit)
-		return #[jaMoPPCompilationUnit, jaMoPPClass]
-	}
-
-	def static EObject[] createPackageCompilationUnitAndJaMoPPClass(NamedElement pcmNamedElement, Package rootPackage) {
-
-		// create JaMoPP Package
-		val Package jaMoPPPackage = PCM2JaMoPPUtils.createPackageProgrammatically(pcmNamedElement, rootPackage)
-
-		// create JaMoPP compilation unit and JaMoPP class in package
-		val List<EObject> newEObjects = new ArrayList
-		newEObjects.addAll(PCM2JaMoPPUtils.createCompilationUnitAndJaMoPPClass(pcmNamedElement, jaMoPPPackage))
-
-		newEObjects.add(jaMoPPPackage)
-		return newEObjects
-	}
-
-	def static void updateNameAsSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
-		Object newValue, ClaimableMap<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap,
-		Blackboard blackboard) {
-		if (oldValue == newValue) {
-			return
+		def static Package createPackage(String namespace) {
+			val String content = '''package «namespace»;'''
+			return createJavaRoot("package-info", content) as Package
 		}
-		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(eObject, affectedAttribute,
-			featureCorrespondenceMap, blackboard.correspondenceInstance)
-		if (affectedEObjects.nullOrEmpty) {
-			return
+
+		def static JavaRoot createJavaRoot(String name, String content) {
+			val JaMoPPParser jaMoPPParser = new JaMoPPParser
+			val inStream = new ByteArrayInputStream(content.bytes)
+			val javaRoot = jaMoPPParser.parseCompilationUnitFromInputStream(VURI.getInstance(name + ".java").getEMFUri,
+				inStream)
+			javaRoot.name = name + ".java"
+			return javaRoot
 		}
-		val jaMoPPPackages = affectedEObjects.filter(typeof(Package))
-		if (!jaMoPPPackages.nullOrEmpty) {
 
-			// filter contracts and datatypes packages
-			val jaMoPPPackage = jaMoPPPackages.filter [ pack |
-				!pack.name.equals("contracts") && !pack.name.equals("datatypes")
-			].get(0)
-			PCM2JaMoPPUtils.handleJavaRootNameChange(jaMoPPPackage, affectedAttribute, newValue, blackboard,
-				true)
+		def public static createJaMoPPMethod(String content) {
+			try {
+				val String cuContent = "class Dummy{" + content + "}"
+				val String name = "vitruvius.meta/src/dummy.java";
+				val cu = createJavaRoot(name, cuContent) as CompilationUnit
+				return cu.classifiers.get(0).methods.get(0)
+			} catch (Throwable t) {
+				logger.warn("Exception during createJaMoPPMethod with content " + content + " Exception: " + t)
+				return null;
+			}
 		}
-		val cus = affectedEObjects.filter(typeof(CompilationUnit))
-		if (!cus.nullOrEmpty) {
-			val CompilationUnit cu = cus.get(0)
-			PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, blackboard, true)
+
+		def dispatch static getNameFromJaMoPPType(ClassifierReference reference) {
+			return reference.target.name
 		}
-	}
 
-	/**
-	 * creates this.<fieldName> = new <typeOfField>(params)
-	 */
-	def static NewConstructorCall addNewStatementToConstructor(Constructor constructor, Field field,
-		Field[] fieldsToUseAsArgument, Parameter[] parametersToUseAsArgument) {
-		val expressionStatement = StatementsFactory.eINSTANCE.createExpressionStatement
-		val assigmentExpression = ExpressionsFactory.eINSTANCE.createAssignmentExpression
+		def dispatch static getNameFromJaMoPPType(NamespaceClassifierReference reference) {
+			val classRef = reference.pureClassifierReference
+			return classRef.target.name
 
-		// this.
-		val selfReference = ReferencesFactory.eINSTANCE.createSelfReference
-		selfReference.self = LiteralsFactory.eINSTANCE.createThis
-		assigmentExpression.child = selfReference
+		// is currently not possible: see: https://bugs.eclipse.org/bugs/show_bug.cgi?id=404817
+		// return getNameFromJaMoPPType(classRef)
+		}
 
-		// .fieldname
-		val fieldReference = ReferencesFactory.eINSTANCE.createIdentifierReference
-		fieldReference.target = EcoreUtil.copy(field)
-		selfReference.next = EcoreUtil.copy(fieldReference)
+		def dispatch static getNameFromJaMoPPType(Boolean reference) {
+			return "boolean"
+		}
 
-		// =
-		assigmentExpression.assignmentOperator = OperatorsFactory.eINSTANCE.createAssignment
+		def dispatch static getNameFromJaMoPPType(Byte reference) {
+			return "byte"
+		}
 
-		// new fieldType
-		val newConstructorCall = InstantiationsFactory.eINSTANCE.createNewConstructorCall
-		newConstructorCall.typeReference = EcoreUtil.copy(field.typeReference)
+		def dispatch static getNameFromJaMoPPType(Char reference) {
+			return "char"
+		}
 
-		// get order of type references of the constructor
-		updateArgumentsOfConstructorCall(field, fieldsToUseAsArgument, parametersToUseAsArgument, newConstructorCall)
+		def dispatch static getNameFromJaMoPPType(Double reference) {
+			return "double"
+		}
 
-		assigmentExpression.value = newConstructorCall
-		expressionStatement.expression = assigmentExpression
-		constructor.statements.add(expressionStatement)
-		return newConstructorCall
-	}
+		def dispatch static getNameFromJaMoPPType(Float reference) {
+			return "float"
+		}
 
-	def static updateArgumentsOfConstructorCall(Field field, Field[] fieldsToUseAsArgument,
-		Parameter[] parametersToUseAsArgument, NewConstructorCall newConstructorCall) {
-		val List<TypeReference> typeListForConstructor = new ArrayList<TypeReference>
-		if (null != field.typeReference && null != field.typeReference.pureClassifierReference &&
-			null != field.typeReference.pureClassifierReference.target) {
-			val classifier = EcoreUtil.copy(field.typeReference.pureClassifierReference.target)
-			if (classifier instanceof Class) {
-				val jaMoPPClass = classifier as Class
-				val constructorsForClass = jaMoPPClass.members.filter(typeof(Constructor))
-				if (!constructorsForClass.nullOrEmpty) {
-					val constructorForClass = constructorsForClass.get(0)
-					for (parameter : constructorForClass.parameters) {
-						typeListForConstructor.add(parameter.typeReference)
+		def dispatch static getNameFromJaMoPPType(Int reference) {
+			return "int"
+		}
+
+		def dispatch static getNameFromJaMoPPType(Long reference) {
+			return "long"
+		}
+
+		def dispatch static getNameFromJaMoPPType(Short reference) {
+			return "short"
+		}
+
+		def dispatch static getNameFromJaMoPPType(Void reference) {
+			return "void"
+		}
+
+		def static askUserForPackage(CorrespondenceInstance correspondenceInstance, Repository repository,
+			UserInteracting userInteractiong, String message) {
+			val packages = correspondenceInstance.getAllCorrespondingEObjects(repository).filter(typeof(Package))
+			val List<String> options = new ArrayList<String>
+			for (pack : packages) {
+				options.add(pack.name)
+			}
+			val int selection = userInteractiong.selectFromMessage(UserInteractionType.MODAL, message, options)
+			return packages.findFirst[pack|pack.name.equals(options.get(selection))]
+		}
+
+		def static createPackageProgrammatically(NamedElement pcmNamedElement, Package rootPackage) {
+			val Package jaMoPPPackage = ContainersFactory.eINSTANCE.createPackage
+			jaMoPPPackage.name = pcmNamedElement.entityName
+			if (null != rootPackage) {
+				jaMoPPPackage.namespaces.addAll(rootPackage.namespaces)
+				jaMoPPPackage.namespaces.add(rootPackage.name)
+			}
+			return jaMoPPPackage
+		}
+
+		def static EObject[] createCompilationUnitAndJaMoPPClass(NamedElement pcmNamedElement, Package jaMoPPPackage) {
+			val Class jaMoPPClass = ClassifiersFactory.eINSTANCE.createClass
+			jaMoPPClass.name = pcmNamedElement.entityName + "Impl"
+			jaMoPPClass.addModifier(ModifiersFactory.eINSTANCE.createPublic)
+			val CompilationUnit jaMoPPCompilationUnit = ContainersFactory.eINSTANCE.createCompilationUnit
+			jaMoPPCompilationUnit.name = jaMoPPClass.name + ".java"
+
+			// add classifier to compilation unit
+			jaMoPPCompilationUnit.classifiers.add(jaMoPPClass)
+
+			// add compilation unit to package		
+			jaMoPPPackage.compilationUnits.add(jaMoPPCompilationUnit)
+			jaMoPPCompilationUnit.namespaces.addAll(jaMoPPPackage.namespaces)
+			jaMoPPCompilationUnit.namespaces.add(jaMoPPPackage.name)
+			jaMoPPPackage.compilationUnits.add(jaMoPPCompilationUnit)
+			return #[jaMoPPCompilationUnit, jaMoPPClass]
+		}
+
+		def static EObject[] createPackageCompilationUnitAndJaMoPPClass(NamedElement pcmNamedElement,
+			Package rootPackage) {
+
+			// create JaMoPP Package
+			val Package jaMoPPPackage = PCM2JaMoPPUtils.createPackageProgrammatically(pcmNamedElement, rootPackage)
+
+			// create JaMoPP compilation unit and JaMoPP class in package
+			val List<EObject> newEObjects = new ArrayList
+			newEObjects.addAll(PCM2JaMoPPUtils.createCompilationUnitAndJaMoPPClass(pcmNamedElement, jaMoPPPackage))
+
+			newEObjects.add(jaMoPPPackage)
+			return newEObjects
+		}
+
+		def static TransformationResult updateNameAsSingleValuedEAttribute(EObject eObject,
+			EAttribute affectedAttribute, Object oldValue, Object newValue,
+			ClaimableMap<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap, Blackboard blackboard) {
+			val transformationResult = new TransformationResult
+			if (oldValue == newValue) {
+				return transformationResult
+			}
+			val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(eObject, affectedAttribute,
+				featureCorrespondenceMap, blackboard.correspondenceInstance)
+			if (affectedEObjects.nullOrEmpty) {
+				return transformationResult
+			}
+			val jaMoPPPackages = affectedEObjects.filter(typeof(Package))
+			if (!jaMoPPPackages.nullOrEmpty) {
+
+				// filter contracts and datatypes packages
+				val jaMoPPPackage = jaMoPPPackages.filter [ pack |
+					!pack.name.equals("contracts") && !pack.name.equals("datatypes")
+				].get(0)
+				PCM2JaMoPPUtils.handleJavaRootNameChange(jaMoPPPackage, affectedAttribute, newValue, blackboard, true,
+					transformationResult)
+			}
+			val cus = affectedEObjects.filter(typeof(CompilationUnit))
+			if (!cus.nullOrEmpty) {
+				val CompilationUnit cu = cus.get(0)
+				PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, blackboard, true,
+					transformationResult)
+			}
+			return transformationResult
+		}
+
+		/**
+		 * creates this.<fieldName> = new <typeOfField>(params)
+		 */
+		def static NewConstructorCall addNewStatementToConstructor(Constructor constructor, Field field,
+			Field[] fieldsToUseAsArgument, Parameter[] parametersToUseAsArgument) {
+			val expressionStatement = StatementsFactory.eINSTANCE.createExpressionStatement
+			val assigmentExpression = ExpressionsFactory.eINSTANCE.createAssignmentExpression
+
+			// this.
+			val selfReference = ReferencesFactory.eINSTANCE.createSelfReference
+			selfReference.self = LiteralsFactory.eINSTANCE.createThis
+			assigmentExpression.child = selfReference
+
+			// .fieldname
+			val fieldReference = ReferencesFactory.eINSTANCE.createIdentifierReference
+			fieldReference.target = EcoreUtil.copy(field)
+			selfReference.next = EcoreUtil.copy(fieldReference)
+
+			// =
+			assigmentExpression.assignmentOperator = OperatorsFactory.eINSTANCE.createAssignment
+
+			// new fieldType
+			val newConstructorCall = InstantiationsFactory.eINSTANCE.createNewConstructorCall
+			newConstructorCall.typeReference = EcoreUtil.copy(field.typeReference)
+
+			// get order of type references of the constructor
+			updateArgumentsOfConstructorCall(field, fieldsToUseAsArgument, parametersToUseAsArgument,
+				newConstructorCall)
+
+			assigmentExpression.value = newConstructorCall
+			expressionStatement.expression = assigmentExpression
+			constructor.statements.add(expressionStatement)
+			return newConstructorCall
+		}
+
+		def static updateArgumentsOfConstructorCall(Field field, Field[] fieldsToUseAsArgument,
+			Parameter[] parametersToUseAsArgument, NewConstructorCall newConstructorCall) {
+			val List<TypeReference> typeListForConstructor = new ArrayList<TypeReference>
+			if (null != field.typeReference && null != field.typeReference.pureClassifierReference &&
+				null != field.typeReference.pureClassifierReference.target) {
+				val classifier = EcoreUtil.copy(field.typeReference.pureClassifierReference.target)
+				if (classifier instanceof Class) {
+					val jaMoPPClass = classifier as Class
+					val constructorsForClass = jaMoPPClass.members.filter(typeof(Constructor))
+					if (!constructorsForClass.nullOrEmpty) {
+						val constructorForClass = constructorsForClass.get(0)
+						for (parameter : constructorForClass.parameters) {
+							typeListForConstructor.add(parameter.typeReference)
+						}
 					}
 				}
 			}
-		}
 
-		// find type with same name in fields or parameters (start with parameter)
-		for (typeRef : typeListForConstructor) {
-			val refElement = typeRef.findMatchingTypeInParametersOrFields(fieldsToUseAsArgument,
-				parametersToUseAsArgument)
-			if (refElement != null) {
-				val IdentifierReference identifierReference = ReferencesFactory.eINSTANCE.createIdentifierReference
-				identifierReference.target = refElement
-			} else {
-				newConstructorCall.arguments.add(LiteralsFactory.eINSTANCE.createNullLiteral)
+			// find type with same name in fields or parameters (start with parameter)
+			for (typeRef : typeListForConstructor) {
+				val refElement = typeRef.findMatchingTypeInParametersOrFields(fieldsToUseAsArgument,
+					parametersToUseAsArgument)
+				if (refElement != null) {
+					val IdentifierReference identifierReference = ReferencesFactory.eINSTANCE.createIdentifierReference
+					identifierReference.target = refElement
+				} else {
+					newConstructorCall.arguments.add(LiteralsFactory.eINSTANCE.createNullLiteral)
+				}
 			}
 		}
-	}
 
-	def static ReferenceableElement findMatchingTypeInParametersOrFields(TypeReference typeReferenceToFind,
-		Field[] fieldsToUseAsArgument, Parameter[] parametersToUseAsArgument) {
-		for (parameter : parametersToUseAsArgument) {
-			if (parameter.typeReference.target == typeReferenceToFind.target) {
-				return parameter
+		def static ReferenceableElement findMatchingTypeInParametersOrFields(TypeReference typeReferenceToFind,
+			Field[] fieldsToUseAsArgument, Parameter[] parametersToUseAsArgument) {
+			for (parameter : parametersToUseAsArgument) {
+				if (parameter.typeReference.target == typeReferenceToFind.target) {
+					return parameter
+				}
 			}
-		}
-		for (field : fieldsToUseAsArgument) {
-			if (field.typeReference.target == typeReferenceToFind.target) {
-				return field
+			for (field : fieldsToUseAsArgument) {
+				if (field.typeReference.target == typeReferenceToFind.target) {
+					return field
+				}
 			}
-		}
-		return null
-	}
-
-	def static createNewForFieldInConstructor(Field field) {
-		val classifier = field.containingConcreteClassifier
-		if (!(classifier instanceof Class)) {
 			return null
 		}
-		val jaMoPPClass = classifier as Class
 
-		// create constructor if none exists
-		if (classifier.members.filter(typeof(Constructor)).nullOrEmpty) {
-			PCM2JaMoPPUtils.addConstructorToClass(jaMoPPClass)
+		def static createNewForFieldInConstructor(Field field) {
+			val classifier = field.containingConcreteClassifier
+			if (!(classifier instanceof Class)) {
+				return null
+			}
+			val jaMoPPClass = classifier as Class
+
+			// create constructor if none exists
+			if (classifier.members.filter(typeof(Constructor)).nullOrEmpty) {
+				PCM2JaMoPPUtils.addConstructorToClass(jaMoPPClass)
+			}
+			val newObjects = new HashSet<EObject>
+			for (constructor : classifier.members.filter(typeof(Constructor))) {
+				newObjects.add(
+					PCM2JaMoPPUtils.addNewStatementToConstructor(constructor, field, jaMoPPClass.fields,
+						constructor.parameters))
+			}
+			return newObjects
 		}
-		val newObjects = new HashSet<EObject>
-		for (constructor : classifier.members.filter(typeof(Constructor))) {
-			newObjects.add(
-				PCM2JaMoPPUtils.addNewStatementToConstructor(constructor, field, jaMoPPClass.fields,
-					constructor.parameters))
+
+		def static void handleAssemblyContextAddedAsNonRootEObjectInList(ComposedStructure composedEntity,
+			NamedElement namedElement, EObject[] newCorrespondingEObjects, Blackboard blackboard) {
+			if (newCorrespondingEObjects.nullOrEmpty) {
+				return
+			}
+			for (newCorrespondingEObject : newCorrespondingEObjects) {
+				blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(namedElement,
+					newCorrespondingEObject)
+			}
 		}
-		return newObjects
-	}
 
-	def static void handleAssemblyContextAddedAsNonRootEObjectInList(ComposedStructure composedEntity,
-		NamedElement namedElement, EObject[] newCorrespondingEObjects,
-		Blackboard blackboard) {
-		if (newCorrespondingEObjects.nullOrEmpty) {
-			return
+		def static getDatatypePackage(CorrespondenceInstance correspondenceInstance, Repository repo,
+			String dataTypeName, UserInteracting userInteracting) {
+			var datatypePackage = PCM2JaMoPPUtils.findCorrespondingPackageByName("datatypes", correspondenceInstance,
+				repo)
+			if (null == datatypePackage) {
+				logger.info("datatype package not found")
+				val String message = "Datatype " + dataTypeName +
+					" created. Please specify to which package the datatype should be added"
+				datatypePackage = PCM2JaMoPPUtils.askUserForPackage(correspondenceInstance, repo, userInteracting,
+					message)
+			} else {
+				logger.info("found datatype package")
+			}
+			datatypePackage
 		}
-		for (newCorrespondingEObject : newCorrespondingEObjects) {
-			TransformationUtils.saveNonRootEObject(newCorrespondingEObject)
-			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(namedElement, newCorrespondingEObject)
+
+		/**
+		 * returns the class object for a primitive type, e.g, Integer for int
+		 */
+		def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(PrimitiveType type) {
+			logger.warn("no dispatch method found for type: " + type)
+			return null
 		}
-	}
 
-	def static getDatatypePackage(CorrespondenceInstance correspondenceInstance, Repository repo, String dataTypeName,
-		UserInteracting userInteracting) {
-		var datatypePackage = PCM2JaMoPPUtils.findCorrespondingPackageByName("datatypes", correspondenceInstance, repo)
-		if (null == datatypePackage) {
-			logger.info("datatype package not found")
-			val String message = "Datatype " + dataTypeName +
-				" created. Please specify to which package the datatype should be added"
-			datatypePackage = PCM2JaMoPPUtils.askUserForPackage(correspondenceInstance, repo, userInteracting, message)
-		} else {
-			logger.info("found datatype package")
+		def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Boolean type) {
+			PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Boolean")
 		}
-		datatypePackage
-	}
 
-	/**
-	 * returns the class object for a primitive type, e.g, Integer for int
-	 */
-	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(PrimitiveType type) {
-		logger.warn("no dispatch method found for type: " + type)
-		return null
-	}
+		def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Byte type) {
+			PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Byte")
+		}
 
-	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Boolean type) {
-		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Boolean")
-	}
+		def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Char type) {
+			PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Character")
+		}
 
-	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Byte type) {
-		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Byte")
-	}
+		def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Double type) {
+			PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Double")
+		}
 
-	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Char type) {
-		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Character")
-	}
+		def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Float type) {
+			PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Float")
+		}
 
-	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Double type) {
-		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Double")
-	}
+		def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Int type) {
+			PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Integer")
+		}
 
-	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Float type) {
-		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Float")
-	}
+		def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Long type) {
+			PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Long")
+		}
 
-	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Int type) {
-		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Integer")
-	}
+		def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Short type) {
+			PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Short")
+		}
 
-	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Long type) {
-		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Long")
-	}
+		def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(
+			org.emftext.language.java.types.Void type) {
+			PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Void")
+		}
 
-	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Short type) {
-		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Short")
 	}
-
-	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(
-		org.emftext.language.java.types.Void type) {
-		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Void")
-	}
-	
-}

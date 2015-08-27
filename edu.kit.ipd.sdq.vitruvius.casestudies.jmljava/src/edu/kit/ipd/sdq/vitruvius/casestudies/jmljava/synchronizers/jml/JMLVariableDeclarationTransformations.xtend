@@ -11,8 +11,8 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.VariableDeclarator
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.Utilities
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
@@ -56,7 +56,7 @@ class JMLVariableDeclarationTransformations extends JML2JavaTransformationsBase 
 				LOGGER.info("Aborted transformation because of violated restriction on model elements.")
 				userInteracting.showMessage(UserInteractionType.MODAL, "You must NOT edit non model elements.");
 				syncAbortedListener.synchronisationAborted(super.getSynchAbortChange());
-				return
+				return new TransformationResult
 			}
 			
 			val dummy = jmlSpecOnlyElement.element.clone;
@@ -68,7 +68,7 @@ class JMLVariableDeclarationTransformations extends JML2JavaTransformationsBase 
 				LOGGER.info("Aborted transformation because of name clash with Java.")
 				userInteracting.showMessage(UserInteractionType.MODAL, "There already is a field in Java, which has the same name.");
 				syncAbortedListener.synchronisationAborted(super.getSynchAbortChange());
-				return
+				return new TransformationResult
 			}
 			
 			val jmlFields = coid.getChildrenOfType(MemberDeclWithModifier).filter[memberdecl instanceof MemberDeclaration].filter[(memberdecl as MemberDeclaration).field != null]
@@ -76,7 +76,7 @@ class JMLVariableDeclarationTransformations extends JML2JavaTransformationsBase 
 				LOGGER.info("Aborted transformation because of name clash with JML.")
 				userInteracting.showMessage(UserInteractionType.MODAL, "There already is a field in JML, which has the same name.");
 				syncAbortedListener.synchronisationAborted(super.getSynchAbortChange());
-				return
+				return new TransformationResult
 			}
 			
 			changedObjects.addAll(affectedModelInstanceObject.renameModelElementInAllSpecifications(newValue as String))
@@ -84,7 +84,7 @@ class JMLVariableDeclarationTransformations extends JML2JavaTransformationsBase 
 			affectedModelInstanceObject.identifier = newValue as String
 			changedObjects.add(affectedModelInstanceObject)
 		}
-		TransformationUtils.saveNonRootEObject(changedObjects)
+		return new TransformationResult
 	}	
 	
 }

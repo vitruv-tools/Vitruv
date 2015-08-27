@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.r
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.JaMoPP2PCMUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import java.lang.reflect.Modifier
@@ -126,31 +127,34 @@ public class «cdt.entityName» extends «selectedClass.simpleName»<«jaMoPPInn
 
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
+		val transformationResult = new TransformationResult
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(affectedEObject, affectedAttribute,
 			featureCorrespondenceMap, blackboard.correspondenceInstance)
 		if (affectedEObjects.nullOrEmpty) {
-			return 
+			return transformationResult
 		}
 		val cus = affectedEObjects.filter(typeof(CompilationUnit))
 		if (!cus.nullOrEmpty) {
 			val CompilationUnit cu = cus.get(0)
 			PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, blackboard,
-				false)
+				false, transformationResult)
 		}
+		transformationResult
 	}
 
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject newValue) {
+		val transformationResult = new TransformationResult
 		val innerType = DataTypeCorrespondenceHelper.
 			claimUniqueCorrespondingJaMoPPDataType(newValue as DataType, blackboard.correspondenceInstance)
 		if (null == innerType || !(innerType instanceof ConcreteClassifier)) {
-			return
+			return transformationResult
 		}
 		val innerClassifier = innerType as ConcreteClassifier
 		val concreteClass = blackboard.correspondenceInstance.
 			claimUniqueCorrespondingEObjectByType(affectedEObject, org.emftext.language.java.classifiers.Class)
 		if (!(concreteClass.extends instanceof NamespaceClassifierReference)) {
-			return 
+			return transformationResult
 		}
 		val extendsReference = concreteClass.extends as NamespaceClassifierReference
 		val QualifiedTypeArgument qtr = GenericsFactory.eINSTANCE.createQualifiedTypeArgument
@@ -158,6 +162,7 @@ public class «cdt.entityName» extends «selectedClass.simpleName»<«jaMoPPInn
 		PCM2JaMoPPUtils.addImportToCompilationUnitOfClassifier(concreteClass, innerClassifier)
 		extendsReference.classifierReferences.get(0).typeArguments.clear
 		extendsReference.classifierReferences.get(0).typeArguments.add(qtr)
+		transformationResult
 	}
 
 }

@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
@@ -89,7 +90,7 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 		val String userMsg = "A package has been created. Please decide whether and which corresponding architectural element should be created"
 		val String[] selections = #["Create basic component", "Create composite component", "Create system",
 			"Do nothing/Decide later"]
-		switch (selection : super.modalTextUserinteracting(userMsg, selections)) {
+		switch (super.modalTextUserinteracting(userMsg, selections)) {
 			case 0: {
 
 				// case i)
@@ -126,9 +127,11 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 	}
 
 	override createRootEObject(EObject newRootEObject, EObject[] newCorrespondingEObjects) {
+		val transformationResult = new TransformationResult
 		JaMoPP2PCMUtils.
 			createNewCorrespondingEObjects(newRootEObject, newCorrespondingEObjects,
-				blackboard)
+				blackboard, transformationResult)
+		return transformationResult
 	}
 
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
@@ -142,7 +145,6 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 	 * package is removed.
 	 */
 	override removeEObject(EObject eObject) {
-		val Package jaMoPPPackage = eObject as Package
 		try {
 			TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
 		} catch (RuntimeException rte) {
@@ -174,8 +176,10 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 				newVarValue = newStringValue.toString()
 			}
 		}
+		val transformationResult = new TransformationResult
 		JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(eObject, affectedAttribute, oldValue, newVarValue,
-			featureCorrespondenceMap, blackboard)
+			featureCorrespondenceMap, blackboard, transformationResult)
+		return transformationResult
 	}
 
 	override setCorrespondenceForFeatures() {

@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
@@ -151,7 +152,10 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
-		JaMoPP2PCMUtils.createNewCorrespondingEObjects(newValue, newCorrespondingEObjects, blackboard)
+		val transformationResult = new TransformationResult
+		JaMoPP2PCMUtils.createNewCorrespondingEObjects(newValue, newCorrespondingEObjects, blackboard,
+			transformationResult)
+		return transformationResult
 	}
 
 	/**
@@ -189,7 +193,9 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
-		val components = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(newAffectedEObject, RepositoryComponent)
+		val transformationResult = new TransformationResult
+		val components = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(newAffectedEObject,
+			RepositoryComponent)
 		var EObject eObjectToSave = null
 		val affectedClass = newAffectedEObject as ConcreteClassifier
 		if (!components.nullOrEmpty &&
@@ -206,7 +212,6 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 				}
 				case 1: {
 					blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(component)
-					TransformationUtils.saveNonRootEObject(component.repository__RepositoryComponent)
 					EcoreUtil.remove(component)
 				}
 			}
@@ -214,7 +219,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 			PCMJaMoPPNamespace.JaMoPP.JAMOPP_MEMBERS_REFERENCE.equals(affectedReference.name) &&
 			oldValue instanceof Field) {
 				TransformationUtils.removeCorrespondenceAndAllObjects(oldCorrespondingEObjectsToDelete, blackboard)
-				
+
 			} // TODO implement code for methods that are corresponding to architectural signatures  
 			else {
 				logger.warn(
@@ -222,7 +227,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 						oldValue)
 					}
 
-					return 
+					return transformationResult
 				}
 
 				/**
@@ -230,20 +235,22 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 				 */
 				override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute,
 					Object oldValue, Object newValue) {
+					val transformationResult = new TransformationResult
 					JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(affectedEObject, affectedAttribute, oldValue,
-						newValue, featureCorrespondenceMap, blackboard)
+						newValue, featureCorrespondenceMap, blackboard, transformationResult)
+					return transformationResult
 				}
 
 				override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference,
 					EObject newValue, EObject[] newCorrespondingEObjects) {
 					logger.warn("method should not be called for ClassMappingTransformation transformation")
-					return 
+					return new TransformationResult
 				}
 
 				def private createDatatype(Classifier jaMoPPClass) {
 					val String msg = "Class " + jaMoPPClass.name +
 						"has been created in the datatypes pacakage. Please decide which kind of data type should be created."
-					switch (selection : super.modalTextUserinteracting(msg, #["Create CompositeDataType", "CreateCollectionDataType", "Do not create a data type (not recommended)"])) {
+					switch (super.modalTextUserinteracting(msg, #["Create CompositeDataType", "CreateCollectionDataType", "Do not create a data type (not recommended)"])) {
 						case SELECT_CREATE_COMPOSITE_DATA_TYPE: {
 							val repo = JaMoPP2PCMUtils.getRepository(blackboard.correspondenceInstance)
 							val compositeDataType = RepositoryFactory.eINSTANCE.createCompositeDataType

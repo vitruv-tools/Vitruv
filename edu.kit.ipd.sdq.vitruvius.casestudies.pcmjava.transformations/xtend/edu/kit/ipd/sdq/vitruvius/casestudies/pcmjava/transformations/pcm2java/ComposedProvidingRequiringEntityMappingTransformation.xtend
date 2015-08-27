@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.EReference
 import org.emftext.language.java.containers.Package
 import org.palladiosimulator.pcm.core.entity.ComposedProvidingRequiringEntity
 import org.palladiosimulator.pcm.core.entity.NamedElement
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 
 /**
  * base class for RepositoryComponentMappingTransformation and SystemMappingTransformation
@@ -59,7 +60,7 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 				handleAssemblyContextAddedAsNonRootEObjectInList(newAffectedEObject as ComposedProvidingRequiringEntity,
 					newValue as NamedElement, newCorrespondingEObjects, blackboard)
 		} 
-		return
+		return new TransformationResult
 	}
 	
 	/**
@@ -72,9 +73,8 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 		//provided role removed - deletion of eobject should already be done in OperationProvidedRoleMappingTransformation - mark bc to save
 		if (affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
 			affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
-			TransformationUtils.saveNonRootEObject(affectedEObject)
 		}
-
+		return new TransformationResult
 	}
 
 	/**
@@ -85,10 +85,9 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 		EReference affectedReference, EObject newValue) {
 		if (affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
 			affectedReference.name.equals(PCMJaMoPPNamespace.PCM.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
-			if (null != newAffectedEObject) {
-				TransformationUtils.saveNonRootEObject(newAffectedEObject)
-			}
+			
 		}
+		return new TransformationResult
 	}
 
 }

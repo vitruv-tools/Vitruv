@@ -3,9 +3,9 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.r
 import com.google.common.collect.Sets
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import java.util.List
 import org.apache.log4j.Logger
@@ -145,15 +145,16 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 	 */
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
+		val transformationResult = new TransformationResult 
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(eObject, affectedAttribute,
 			featureCorrespondenceMap, blackboard.correspondenceInstance)
 		if (affectedEObjects.nullOrEmpty) {
-			return
+			return transformationResult
 		}
 		val fields = affectedEObjects.filter(typeof(Field))
 		if(fields.nullOrEmpty){
 			logger.error("No field found in corresponding EObjects for PCM Type " + eObject + " Change not sznchronized!")
-			return
+			return transformationResult
 		}
 		val field = fields.get(0)
 		PCM2JaMoPPUtils.updateNameAttribute(Sets.newHashSet(field), newValue, affectedAttribute,
@@ -176,8 +177,8 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 				}
 			}
 			blackboard.correspondenceInstance.update(oldTUID, method)
-			TransformationUtils.saveNonRootEObject(method)
 		}
+		transformationResult
 	}
 
 	/**
@@ -185,10 +186,11 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 	 */
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject newValue) {
+		val transformationResult = new TransformationResult
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(affectedEObject, affectedReference,
 			featureCorrespondenceMap, blackboard.correspondenceInstance)
 		if (affectedEObjects.nullOrEmpty) {
-			return 
+			return transformationResult
 		}
 		if (false == newValue instanceof DataType) {
 			logger.warn("NewValue is not an instance of DataType: " + newValue + " - change not synchronized")
@@ -201,7 +203,7 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 		val fields = affectedEObjects.filter(typeof(Field))
 		if(fields.nullOrEmpty){
 			logger.error("No field found in corresponding EObjects for PCM Type " + affectedEObject + " Change not sznchronized!")
-			return 
+			return transformationResult
 		}
 		val field = fields.get(0)
 
@@ -222,8 +224,8 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 				}
 			}
 			blackboard.correspondenceInstance.update(oldTUID, method)
-			TransformationUtils.saveNonRootEObject(method)
 		}
+		transformationResult
 	}
 	
 	

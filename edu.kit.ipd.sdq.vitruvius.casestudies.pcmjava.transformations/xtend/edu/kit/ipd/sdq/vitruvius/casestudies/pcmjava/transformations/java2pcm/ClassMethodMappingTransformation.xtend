@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
@@ -54,6 +55,7 @@ class ClassMethodMappingTransformation extends EmptyEObjectMappingTransformation
 		val oldAffectedEObject = EcoreUtil.copy(affectedEObject) as ClassMethod
 		oldAffectedEObject.eSet(affectedAttribute, oldValue)
 		checkAndUpdateCorrespondence(affectedEObject, oldAffectedEObject)
+		return new TransformationResult
 	}
 	
 	
@@ -64,6 +66,7 @@ class ClassMethodMappingTransformation extends EmptyEObjectMappingTransformation
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
 		checkAndUpdateCorrespondence(newAffectedEObject, oldAffectedEObject)
+		return new TransformationResult
 	}
 	
 
@@ -74,6 +77,7 @@ class ClassMethodMappingTransformation extends EmptyEObjectMappingTransformation
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
 		checkAndUpdateCorrespondence(newAffectedEObject, oldAffectedEObject)
+		return new TransformationResult
 	}
 
 

@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
@@ -33,6 +33,7 @@ class CompilationUnitMappingTransformation extends EmptyEObjectMappingTransforma
 		logger.trace(
 			"Compilation unit " + newRootEObject +
 				" created as root EObject. Currently nothing is done for compilation unit")
+		return new TransformationResult
 	}
 
 	/**
@@ -41,6 +42,7 @@ class CompilationUnitMappingTransformation extends EmptyEObjectMappingTransforma
 	 */
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
+		val transformationResult = new TransformationResult
 		if (newValue instanceof Class || newValue instanceof Interface) {
 
 			// if it is a class that should correspond to a system and the system already has a container 
@@ -50,9 +52,9 @@ class CompilationUnitMappingTransformation extends EmptyEObjectMappingTransforma
 				if (!systems.nullOrEmpty) {
 					for (system : systems) {
 						if (null == system.eResource) {
-							PCMJaMoPPUtils.saveEObject(system, blackboard, PCMJaMoPPUtils.getSourceModelVURI(newAffectedEObject))
+							PCMJaMoPPUtils.addRootChangeToTransformationResult(system, blackboard, PCMJaMoPPUtils.getSourceModelVURI(newAffectedEObject), transformationResult)
 						} else {
-							TransformationUtils.saveNonRootEObject(system)
+							//do nothing, cause save is done later
 						}
 						blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(system, newValue)
 					}
@@ -60,8 +62,9 @@ class CompilationUnitMappingTransformation extends EmptyEObjectMappingTransforma
 			}
 			JaMoPP2PCMUtils.
 				createNewCorrespondingEObjects(newValue, newCorrespondingEObjects,
-					blackboard)
+					blackboard, transformationResult)
 		}
+		transformationResult
 	}
 
 	override setCorrespondenceForFeatures() {

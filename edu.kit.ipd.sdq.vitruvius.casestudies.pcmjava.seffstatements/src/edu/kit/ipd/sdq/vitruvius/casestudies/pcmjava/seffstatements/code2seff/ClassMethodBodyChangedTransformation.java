@@ -20,9 +20,9 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.CustomTransfo
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils;
 
 /**
  * Class that keeps changes within a class method body consistent with the architecture. Has
@@ -66,12 +66,12 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
      *
      */
     @Override
-    public void execute(final Blackboard blackboard, final UserInteracting userInteracting,
+    public TransformationResult execute(final Blackboard blackboard, final UserInteracting userInteracting,
             final SynchronisationAbortedListener abortListener) {
         if (!this.isArchitectureRelevantChange(blackboard.getCorrespondenceInstance())) {
             logger.debug("Change with oldMethod " + this.oldMethod + " and newMethod: " + this.newMethod
                     + " is not an architecture relevant change");
-            return;
+            return new TransformationResult();
         }
         // 1)
         this.removeCorrespondingAbstractActions(blackboard.getCorrespondenceInstance());
@@ -86,6 +86,8 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
 
         // 4)
         this.createNewCorrespondences(blackboard.getCorrespondenceInstance(), newSeffElements, basicComponent);
+
+        return new TransformationResult();
     }
 
     /**
@@ -127,7 +129,6 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
         for (final AbstractAction abstractAction : newSeffElements.getSteps_Behaviour()) {
             ci.createAndAddEObjectCorrespondence(abstractAction, this.newMethod);
         }
-        TransformationUtils.saveNonRootEObject(basicComponent);
     }
 
     private void connectCreatedSeffWithOldSEFF(final ResourceDemandingSEFF newSeffElements,

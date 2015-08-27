@@ -3,9 +3,9 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.s
 import com.google.common.collect.Lists
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import java.util.List
 import org.eclipse.emf.ecore.EAttribute
@@ -59,11 +59,11 @@ class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransforma
 	 * Creates a new field2AssemblyCorrespondence if no correspondence exists. 
 	 * If a correspondence already exists the TypeReference of the field will be updated
 	 */
-	override void replaceNonContainmentEReference(EObject affectedEObject,
+	override replaceNonContainmentEReference(EObject affectedEObject,
 		EReference affectedReference, EObject oldValue, EObject newValue, int index) {
 		if(oldValue == newValue){
 			// if the object has not changed we do not do anything
-			return 
+			return new TransformationResult 
 		}
 		if (affectedReference.name.equals(PCMJaMoPPNamespace.PCM.ASSEMBLY_CONTEXT_ENCAPSULATED_COMPONENT) &&
 			newValue instanceof RepositoryComponent && affectedEObject instanceof AssemblyContext) {
@@ -89,10 +89,10 @@ class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransforma
 					val oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(typedElement)
 					typedElement.typeReference = PCM2JaMoPPUtils.createNamespaceClassifierReference(jaMoPPClass)
 					blackboard.correspondenceInstance.update(oldTUID, typedElement)
-					TransformationUtils.saveNonRootEObject(typedElement)
 				}
 			}
 		}
+		return new TransformationResult
 	}
 
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,

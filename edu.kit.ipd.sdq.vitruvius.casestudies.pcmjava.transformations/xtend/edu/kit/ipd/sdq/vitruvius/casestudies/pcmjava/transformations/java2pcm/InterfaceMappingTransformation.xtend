@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
@@ -70,9 +71,11 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject newValue,
 		int index, EObject[] newCorrespondingEObjects) {
+		val transformationResult = new TransformationResult
 		JaMoPP2PCMUtils.
 			createNewCorrespondingEObjects(newValue, newCorrespondingEObjects,
-				blackboard)
+				blackboard, transformationResult)
+		return transformationResult
 	}
 
 	/**
@@ -99,8 +102,10 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
+		val transformationResult = new TransformationResult
 		JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(eObject, affectedAttribute, oldValue, newValue,
-			featureCorrespondenceMap, blackboard)
+			featureCorrespondenceMap, blackboard, transformationResult)
+		return transformationResult
 	}
 
 	override setCorrespondenceForFeatures() {
@@ -116,6 +121,7 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 		logger.warn(
 			"method createNonRootEObjectSingle should not be called for " + InterfaceMappingTransformation.simpleName +
 				" transformation")
+		return new TransformationResult
 	}
 
 }

@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
@@ -58,8 +59,10 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
+		val transformationResult = new TransformationResult
 		JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(affectedEObject, affectedAttribute, oldValue, newValue,
-			featureCorrespondenceMap, blackboard)
+			featureCorrespondenceMap, blackboard, transformationResult)
+		return transformationResult
 	}
 
 	/**
@@ -67,13 +70,14 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override replaceNonRootEObjectSingle(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, EObject newValue) {
+		val transformationResult = new TransformationResult
 		if (oldAffectedEObject instanceof Method &&
 			affectedReference.name.equals(PCMJaMoPPNamespace.JaMoPP.JAMOPP_REFERENCE_TYPE_REFERENCE) &&
 			newValue instanceof TypeReference) {
 			val correspondingPCMSignatures = blackboard.correspondenceInstance.
 				getCorrespondingEObjectsByType(oldAffectedEObject, OperationSignature)
 			if (correspondingPCMSignatures.nullOrEmpty) {
-				return
+				return transformationResult
 			}
 			for (correspondingSignature : correspondingPCMSignatures) {
 				val Repository repo = correspondingSignature.interface__OperationSignature.repository__Interface
@@ -82,12 +86,12 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 					getCorrespondingPCMDataTypeForTypeReference(newValue as TypeReference,
 						blackboard.correspondenceInstance, userInteracting, repo)
 				correspondingSignature.returnType__OperationSignature = newReturnValue
-				TransformationUtils.saveNonRootEObject(correspondingSignature)
 
 				// guess this is not necessary since the id stay the same
 				blackboard.correspondenceInstance.update(oldTUID, correspondingSignature)
 			}
 		}
+		transformationResult
 	}
 
 	/**
@@ -97,6 +101,7 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
+		val transformationResult = new TransformationResult
 		if (!newCorrespondingEObjects.nullOrEmpty) {
 			val operationSignatues = blackboard.correspondenceInstance.
 				getCorrespondingEObjectsByType(oldAffectedEObject, OperationSignature)
@@ -114,13 +119,14 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 			}
 		}
 
-		JaMoPP2PCMUtils.createNewCorrespondingEObjects(newValue, newCorrespondingEObjects, blackboard)
+		JaMoPP2PCMUtils.createNewCorrespondingEObjects(newValue, newCorrespondingEObjects, blackboard, transformationResult)
 		if (newValue instanceof TypedElement) {
 			val newCorrespondingOperationProvidedRoles = JaMoPP2PCMUtils.
 				checkAndAddOperationRequiredRole(newValue as TypedElement, blackboard.correspondenceInstance,
 					userInteracting)
-			JaMoPP2PCMUtils.createNewCorrespondingEObjects(newValue, newCorrespondingOperationProvidedRoles, blackboard)
+			JaMoPP2PCMUtils.createNewCorrespondingEObjects(newValue, newCorrespondingOperationProvidedRoles, blackboard, transformationResult)
 		}
+		return transformationResult
 	}
 
 	/**
@@ -132,6 +138,7 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 		if (!oldCorrespondingEObjectsToDelete.nullOrEmpty) {
 			TransformationUtils.removeCorrespondenceAndAllObjects(oldCorrespondingEObjectsToDelete, blackboard)
 		}
+		return new TransformationResult
 	}
 
 }

@@ -10,7 +10,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.Utilities
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopy
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import java.util.ArrayList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
@@ -108,7 +108,7 @@ class JMLInvariantExpressionTransformations extends JML2JavaTransformationsBase 
 			affectedModelInstanceObject.expr = EcoreUtil.copy(newValue) as Expression
 
 		}
-		TransformationUtils.saveNonRootEObject(changedObjects)
+		return new TransformationResult
 	}
 
 	private def hasJMLHelperModifier(Member member, ShadowCopy shadowCopy) {

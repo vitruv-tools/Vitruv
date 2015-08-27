@@ -13,13 +13,13 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.Invariant;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.InvariantRegistry;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.Response;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.ResponseRegistry;
-import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFCommandBridge;
 
 public abstract class AbstractMIRChange2CommandTransforming implements Change2CommandTransforming {
     private final static Logger LOGGER = Logger.getLogger(AbstractMIRChange2CommandTransforming.class);
@@ -49,43 +49,43 @@ public abstract class AbstractMIRChange2CommandTransforming implements Change2Co
     }
 
     @Override
-    public void transformChanges2Commands(Blackboard blackboard) {
-    	final List<Change> changes = blackboard.getAndArchiveChangesForTransformation();
-    	final List<Command> commands = new ArrayList<Command>();
-    	
-    	for (final Change change : changes) {
-    		commands.addAll(handleChange(change, blackboard)); 
-    	}
-    	
-    	blackboard.pushCommands(commands);
+    public void transformChanges2Commands(final Blackboard blackboard) {
+        final List<Change> changes = blackboard.getAndArchiveChangesForTransformation();
+        final List<Command> commands = new ArrayList<Command>();
+
+        for (final Change change : changes) {
+            commands.addAll(this.handleChange(change, blackboard));
+        }
+
+        blackboard.pushCommands(commands);
     }
 
-    private List<Command> handleChange(Change change, Blackboard blackboard) {
-    	final List<Command> result = new ArrayList<Command>();
+    private List<Command> handleChange(final Change change, final Blackboard blackboard) {
+        final List<Command> result = new ArrayList<Command>();
         if (change instanceof CompositeChange) {
             for (final Change c : ((CompositeChange) change).getChanges()) {
-            	result.addAll(handleChange(c, blackboard));
+                result.addAll(this.handleChange(c, blackboard));
             }
         } else if (change instanceof EMFModelChange) {
-            result.addAll(handleEChange(((EMFModelChange) change).getEChange(), blackboard));
+            result.addAll(this.handleEChange(((EMFModelChange) change).getEChange(), blackboard));
         } else {
             throw new IllegalArgumentException("Change subtype " + change.getClass().getName() + " not handled");
         }
-        
-        return result;
-	}
 
-    protected List<Command> callRelevantMappings(final EChange eChange, Blackboard blackboard) {
+        return result;
+    }
+
+    protected List<Command> callRelevantMappings(final EChange eChange, final Blackboard blackboard) {
         final List<Command> result = new ArrayList<Command>();
         final Collection<MIRMappingRealization> relevantMappings = this.getCandidateMappings(eChange);
         for (final MIRMappingRealization mapping : relevantMappings) {
-            result.add(EMFCommandBridge.createCommand(() -> mapping.applyEChange(eChange, blackboard)));
+            result.add(EMFCommandBridge.createVitruviusRecordingCommand(() -> mapping.applyEChange(eChange, blackboard)));
         }
         return result;
     }
 
-    protected List<Command> handleEChange(final EChange eChange, Blackboard blackboard) {
-        return callRelevantMappings(eChange, blackboard);
+    protected List<Command> handleEChange(final EChange eChange, final Blackboard blackboard) {
+        return this.callRelevantMappings(eChange, blackboard);
     }
 
     /**

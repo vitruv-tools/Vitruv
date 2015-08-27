@@ -3,10 +3,9 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.JaMoPP2PCMUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
 import java.util.Map
@@ -16,7 +15,6 @@ import org.eclipse.core.resources.IFile
 import org.eclipse.core.resources.IProject
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
-import org.eclipse.emf.ecore.resource.Resource
 import org.emftext.language.java.containers.JavaRoot
 import org.emftext.language.java.containers.Package
 import org.emftext.language.java.members.Method
@@ -56,8 +54,7 @@ class PCMJaMoPPUtils {
 			ClaimableMap<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap,
 			CorrespondenceInstance correspondenceInstance,
 			boolean saveFilesOfChangedEObjects,
-			Set<Class<? extends EObject>> classesOfRootObjects
-		) {
+			Set<Class<? extends EObject>> classesOfRootObjects) {
 			val EStructuralFeature eStructuralFeature = featureCorrespondenceMap.claimValueForKey(affectedFeature)
 
 			val boolean rootAffected = correspondingEObjects.exists [ eObject |
@@ -65,7 +62,7 @@ class PCMJaMoPPUtils {
 			]
 			if (rootAffected) {
 				logger.error("The method updateNameattribut is not able to rename root objects")
-				return 
+				return
 			}
 			for (EObject correspondingObject : correspondingEObjects) {
 				if (null == correspondingObject || null == correspondingObject.eResource) {
@@ -77,7 +74,8 @@ class PCMJaMoPPUtils {
 					correspondingObject.eSet(eStructuralFeature, newValue)
 					correspondenceInstance.update(oldTUID, correspondingObject)
 					if (saveFilesOfChangedEObjects) {
-						TransformationUtils.saveNonRootEObject(correspondingObject)
+						//nothing to do here?
+						
 					}
 				}
 			}
@@ -128,15 +126,18 @@ class PCMJaMoPPUtils {
 			return target1 == target2 || target1.equals(target2)
 		}
 
-		def dispatch static saveEObject(Repository repo, Blackboard blackboard, VURI sourceModelVURI) {
-			handlePCMRootEObject(repo, sourceModelVURI, blackboard, "repostiory")
+		def dispatch static addRootChangeToTransformationResult(Repository repo, Blackboard blackboard, VURI sourceModelVURI,
+			TransformationResult transformationResult) {
+			handlePCMRootEObject(repo, sourceModelVURI, blackboard, "repostiory", transformationResult)
 		}
 
-		def dispatch static saveEObject(System system, Blackboard blackboard, VURI sourceModelVURI) {
-			handlePCMRootEObject(system, sourceModelVURI, blackboard, "system")
+		def dispatch static addRootChangeToTransformationResult(System system, Blackboard blackboard, VURI sourceModelVURI,
+			TransformationResult transformationResult) {
+			handlePCMRootEObject(system, sourceModelVURI, blackboard, "system", transformationResult)
 		}
 
-		def dispatch static saveEObject(JavaRoot newJavaRoot, Blackboard blackboard, VURI sourceModelVURI) {
+		def dispatch static addRootChangeToTransformationResult(JavaRoot newJavaRoot, Blackboard blackboard, VURI sourceModelVURI,
+			TransformationResult transformationResult) {
 			// TODO: use configured src-folder path instead of hardcoded "src"
 			val String srcFolderPath = getFolderPathInProjectOfResource(sourceModelVURI, "src");
 			var String javaRootPath = newJavaRoot.getNamespacesAsString().replace(".", "/").replace("$", "/") +
@@ -145,11 +146,11 @@ class PCMJaMoPPUtils {
 				javaRootPath = javaRootPath + "/package-info.java";
 			}
 			val VURI cuVURI = VURI.getInstance(srcFolderPath + javaRootPath);
-			saveRootEObject(cuVURI, blackboard, newJavaRoot)
+			transformationResult.addRootEObjectToSave(newJavaRoot, cuVURI)
 		}
 
-		def static VURI getSourceModelVURI(EObject eObject){
-			if(null == eObject ||null == eObject.eResource){
+		def static VURI getSourceModelVURI(EObject eObject) {
+			if (null == eObject || null == eObject.eResource) {
 				logger.warn("can not get SourceModelVURI cause eObject or its resource is null: " + eObject)
 				return VURI.getInstance("")
 			}
@@ -158,22 +159,23 @@ class PCMJaMoPPUtils {
 		}
 
 		def private static void handlePCMRootEObject(NamedElement namedElement, VURI sourceModelVURI,
-			Blackboard blackboard, String fileExt) {
+			Blackboard blackboard, String fileExt, TransformationResult transformationResult) {
 			var String folderName = getFolderPathInProjectOfResource(sourceModelVURI, "model");
 			val String fileName = namedElement.getEntityName() + "." + fileExt;
 			if (!folderName.endsWith("/")) {
 				folderName = folderName + "/";
 			}
 			val VURI vuri = VURI.getInstance(folderName + fileName);
-			saveRootEObject(vuri, blackboard, namedElement)
+			transformationResult.addRootEObjectToSave(namedElement, vuri)
 		}
 
-		def dispatch static saveEObjects(Iterable<EObject> eObjects, Blackboard blackboard, VURI sourceModelVURI) {
-			eObjects.forEach[saveEObject(blackboard, sourceModelVURI)]
+		def dispatch static handleRootChanges(Iterable<EObject> eObjects, Blackboard blackboard, VURI sourceModelVURI,
+			TransformationResult transformationResult) {
+			eObjects.forEach[addRootChangeToTransformationResult(blackboard, sourceModelVURI, transformationResult)]
 		}
 
-		def dispatch static saveEObjects(EObject eObject, Blackboard blackboard, VURI sourceModelVURI) {
-			saveEObject(eObject, blackboard, sourceModelVURI)
+		def dispatch static handleRootChanges(EObject eObject, Blackboard blackboard, VURI sourceModelVURI, TransformationResult transformationResult) {
+			PCMJaMoPPUtils.addRootChangeToTransformationResult(eObject, blackboard, sourceModelVURI, transformationResult)
 		}
 
 		private static def String getFolderPathInProjectOfResource(VURI sourceModelVURI, String folderName) {
@@ -186,14 +188,5 @@ class PCMJaMoPPUtils {
 			return srcFolderPath;
 		}
 
-		private static def saveRootEObject(VURI vuri, Blackboard blackboard, EObject eObject) {
-			val ModelInstance mi = blackboard.modelProviding.getAndLoadModelInstanceOriginal(vuri)
-			val Resource resource = mi.getResource()
-			// clear the resource first
-			resource.getContents().clear()
-			resource.getContents().add(eObject)
-			// get old tuid
-			blackboard.modelProviding.saveModelInstanceOriginal(mi.getURI())
-		}
 
 	}

@@ -1,11 +1,12 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
-import org.palladiosimulator.pcm.repository.RepositoryFactory
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.parameters.Parameter
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
+import org.palladiosimulator.pcm.repository.RepositoryFactory
 
 class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -19,8 +20,10 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
+		val transformationResult = new TransformationResult
 		JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(affectedEObject, affectedAttribute, oldValue, newValue,
-			featureCorrespondenceMap, blackboard)
+			featureCorrespondenceMap, blackboard, transformationResult)
+		return transformationResult
 	}
 
 	/**

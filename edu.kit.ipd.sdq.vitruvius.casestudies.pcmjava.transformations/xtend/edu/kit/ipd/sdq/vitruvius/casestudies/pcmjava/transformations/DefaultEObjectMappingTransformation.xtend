@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EAttribute
@@ -29,6 +29,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
+		new TransformationResult
 	}
 
 	override createRootEObject(EObject newRootEObject, EObject[] newCorrespondingEObjects) {
@@ -36,7 +37,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult
 	}
 
 	override deleteNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject oldValue,
@@ -45,7 +46,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult	
 	}
 
 	override insertEAttributeValue(EObject affectedEObject, EAttribute affectedAttribute, Object newValue, int index) {
@@ -53,7 +54,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult	
 	}
 
 	override removeEAttributeValue(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue, int index) {
@@ -61,7 +62,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult		
 	}
 
 	override insertNonContaimentEReference(EObject affectedEObject, EReference affectedReference, EObject newValue,
@@ -70,7 +71,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult
 	}
 
 	override permuteContainmentEReferenceValues(EObject affectedEObject, EReference affectedReference,
@@ -79,7 +80,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult		
 	}
 
 	override permuteEAttributeValues(EObject affectedEObject, EAttribute affectedAttribute,
@@ -88,7 +89,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult		
 	}
 
 	override permuteNonContainmentEReferenceValues(EObject affectedEObject, EReference affectedReference,
@@ -97,7 +98,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult		
 	}
 
 	override removeNonContainmentEReference(EObject affectedEObject, EReference affectedReference, EObject oldValue,
@@ -106,7 +107,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult
 	}
 
 	override replaceNonRootEObjectSingle(EObject newAffectedEObject, EObject oldAffectedEObject,
@@ -115,7 +116,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult		
 	}
 
 	override replaceEAttributeValue(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
@@ -124,7 +125,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult		
 	}
 
 	override replaceNonContainmentEReference(EObject affectedEObject, EReference affectedReference, EObject oldValue,
@@ -133,7 +134,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult		
 	}
 
 	override replaceNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue,
@@ -142,7 +143,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult		
 	}
 
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
@@ -151,7 +152,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult		
 	}
 
 	override unsetNonContainmentEReference(EObject affectedEObject, EReference affectedReference, EObject oldValue) {
@@ -159,7 +160,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult
 	}
 
 	override unsetContainmentEReference(EObject affectedEObject, EReference affectedReference, EObject oldValue,
@@ -168,7 +169,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult		
 	}
 
 	override unsetEAttribute(EObject affectedEObject, EStructuralFeature affectedFeature, Object oldValue) {
@@ -176,7 +177,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult		
 	}
 
 	override replaceRoot(EObject oldRootEObject, EObject newRootEObject, EObject[] oldCorrespondingEObjectsToDelete,
@@ -185,7 +186,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult		
 	}
 
 	override createEObject(EObject eObject) {
@@ -210,7 +211,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult		
 	}
 
 	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue,
@@ -219,7 +220,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult		
 	}
 
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
@@ -228,7 +229,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult		
 	}
 
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
@@ -237,7 +238,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult		
 	}
 
 	override insertNonRootEObjectInContainmentList(EObject object, EObject object2, EReference reference,
@@ -246,7 +247,7 @@ class DefaultEObjectMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		
+		new TransformationResult		
 	}
 	
 }

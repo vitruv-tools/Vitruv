@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.DefaultEObjectMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
@@ -41,12 +42,13 @@ class SEFFMappingTransformation extends DefaultEObjectMappingTransformation {
 
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject newValue) {
+		val transformationResult = new TransformationResult
 		if (oldValue == newValue) {
-			return 
+			return transformationResult
 		}
 		val signatureAffected = oldValue instanceof OperationSignature || newValue instanceof OperationSignature
 		if (!signatureAffected) {
-			return 
+			return transformationResult
 		}
 		removeEObject(affectedEObject)
 		
@@ -55,6 +57,7 @@ class SEFFMappingTransformation extends DefaultEObjectMappingTransformation {
 		for (newCorrespondingEObject : newEObjects) {
 			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(affectedSEFF, newCorrespondingEObject)
 		}
+		transformationResult
 	}
 
 	private def EObject[] checkSEFFAndCreateCorrespondences(ResourceDemandingSEFF seff) {

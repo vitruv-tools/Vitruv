@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 
 abstract class EObjectMappingTransformation {
 
@@ -28,75 +29,75 @@ abstract class EObjectMappingTransformation {
 
 	def EObject[] removeEObject(EObject eObject)
 
-	def void createRootEObject(EObject newRootEObject, EObject[] newCorrespondingEObjects)
+	def TransformationResult createRootEObject(EObject newRootEObject, EObject[] newCorrespondingEObjects)
 
-	def void deleteRootEObject(EObject oldRootEObject, EObject[] oldCorrespondingEObjectsToDelete)
+	def TransformationResult deleteRootEObject(EObject oldRootEObject, EObject[] oldCorrespondingEObjectsToDelete)
 
-	def void replaceRoot(EObject oldRootEObject, EObject newRootEObject,
+	def TransformationResult replaceRoot(EObject oldRootEObject, EObject newRootEObject,
 		EObject[] oldCorrespondingEObjectsToDelete, EObject[] newCorrespondingEObjects)
 
-	def void createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
+	def TransformationResult createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects)
 
-	def void deleteNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference,
+	def TransformationResult deleteNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject[] eObjectsToDelete)
 
-	def void createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference,
+	def TransformationResult createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference,
 		EObject newValue, EObject[] newCorrespondingEObjects)
 
-	def void replaceNonRootEObjectInList(EObject affectedEObject, EReference affectedReference,
+	def TransformationResult replaceNonRootEObjectInList(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject newValue, int index, EObject[] oldCorrespondingEObjectsToDelete,
 		EObject[] newCorrespondingEObjects)
 
-	def void deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
+	def TransformationResult deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete)
 
-	def void replaceNonRootEObjectSingle(EObject newAffectedEObject, EObject oldAffectedEObject,
+	def TransformationResult replaceNonRootEObjectSingle(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, EObject newValue)
 
-	def void permuteContainmentEReferenceValues(EObject affectedEObject,
+	def TransformationResult permuteContainmentEReferenceValues(EObject affectedEObject,
 		EReference affectedReference, EList<Integer> newIndexForElementAt)
 
-	def void insertNonContaimentEReference(EObject affectedEObject, EReference affectedReference,
+	def TransformationResult insertNonContaimentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject newValue, int index)
 
-	def void updateSingleValuedNonContainmentEReference(EObject affectedEObject,
+	def TransformationResult updateSingleValuedNonContainmentEReference(EObject affectedEObject,
 		EReference affectedReference, EObject oldValue, EObject newValue)
 
-	def void permuteNonContainmentEReferenceValues(EObject affectedEObject,
+	def TransformationResult permuteNonContainmentEReferenceValues(EObject affectedEObject,
 		EReference affectedReference, EList<Integer> newIndexForElementAt)
 
-	def void replaceNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
+	def TransformationResult replaceNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject newValue, int index)
 
-	def void removeNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
+	def TransformationResult removeNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, int index)
 
-	def void updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute,
+	def TransformationResult updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute,
 		Object oldValue, Object newValue)
 
-	def void removeEAttributeValue(EObject affectedEObject, EAttribute affectedAttribute,
+	def TransformationResult removeEAttributeValue(EObject affectedEObject, EAttribute affectedAttribute,
 		Object oldValue, int index)
 
-	def void insertEAttributeValue(EObject affectedEObject, EAttribute affectedAttribute,
+	def TransformationResult insertEAttributeValue(EObject affectedEObject, EAttribute affectedAttribute,
 		Object newValue, int index)
 
-	def void unsetEAttribute(EObject affectedEObject, EStructuralFeature affectedFeature,
+	def TransformationResult unsetEAttribute(EObject affectedEObject, EStructuralFeature affectedFeature,
 		Object oldValue)
 
-	def void unsetContainmentEReference(EObject affectedEObject, EReference affectedReference,
+	def TransformationResult unsetContainmentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject[] oldCorrespondingEObjectsToDelete)
 
-	def void unsetNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
+	def TransformationResult unsetNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue)
 
-	def void replaceEAttributeValue(EObject affectedEObject, EAttribute affectedAttribute,
+	def TransformationResult replaceEAttributeValue(EObject affectedEObject, EAttribute affectedAttribute,
 		Object oldValue, Object newValue, int index)
 
-	def void permuteEAttributeValues(EObject affectedEObject, EAttribute affectedAttribute,
+	def TransformationResult permuteEAttributeValues(EObject affectedEObject, EAttribute affectedAttribute,
 		EList<Integer> newIndexForElementAt)
 
-	def void insertNonRootEObjectInContainmentList(EObject oldAffectedEObject,
+	def TransformationResult insertNonRootEObjectInContainmentList(EObject oldAffectedEObject,
 		EObject newAffectedEObject, EReference reference, EObject newValue)
 
 	def void setCorrespondenceForFeatures()

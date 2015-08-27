@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
 
@@ -22,9 +23,10 @@ public interface CustomTransformation extends TransformationAbortCause {
      *            A user interacting, which can be used to communicate with the user.
      * @param abortListener
      *            The listener, which has to be notified on aborted transformations.
+     * @return TODO
      * @return The transformation result represented by URIs.
      */
-    public void execute(Blackboard blackboard, UserInteracting userInteracting,
+    public TransformationResult execute(Blackboard blackboard, UserInteracting userInteracting,
             SynchronisationAbortedListener abortListener);
 
 }

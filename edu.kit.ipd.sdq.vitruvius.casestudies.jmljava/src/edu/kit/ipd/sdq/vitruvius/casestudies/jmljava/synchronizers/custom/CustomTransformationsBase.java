@@ -4,6 +4,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.Shad
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.CustomTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EObjectMappingTransformation;
 
@@ -30,10 +31,10 @@ public abstract class CustomTransformationsBase implements CustomTransformation 
     }
 
     @Override
-    public void execute(final Blackboard blackboard, final UserInteracting userInteracting,
+    public TransformationResult execute(final Blackboard blackboard, final UserInteracting userInteracting,
             final SynchronisationAbortedListener abortListener) {
         this.abortListener = abortListener;
-        this.executeInternal(blackboard, userInteracting);
+        return this.executeInternal(blackboard, userInteracting);
     }
 
     /**
@@ -43,7 +44,7 @@ public abstract class CustomTransformationsBase implements CustomTransformation 
      *            The matching correspondence instance.
      * @param userInteracting
      *            A user interacting.
-     * @return The set of changed, deleted and added EObjects.
+     * @return The transformationresult
      */
-    protected abstract void executeInternal(Blackboard ci, UserInteracting userInteracting);
+    protected abstract TransformationResult executeInternal(Blackboard ci, UserInteracting userInteracting);
 }

@@ -4,9 +4,10 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUt
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.ComposedProvidingRequiringEntityMappingTransformation
 import org.eclipse.emf.ecore.EObject
 import org.palladiosimulator.pcm.system.System
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 
-class SystemMappingTransformation extends ComposedProvidingRequiringEntityMappingTransformation{
-	
+class SystemMappingTransformation extends ComposedProvidingRequiringEntityMappingTransformation {
+
 	/**
 	 * called when a system has been created.
 	 * system has no parent package --> return null
@@ -14,20 +15,22 @@ class SystemMappingTransformation extends ComposedProvidingRequiringEntityMappin
 	override getParentPackage(EObject eObject) {
 		return null
 	}
-	
+
 	override getClassOfMappedEObject() {
 		return System
 	}
-	
+
 	override createRootEObject(EObject newRootEObject, EObject[] newCorrespondingEObjects) {
+		val transformationResult = new TransformationResult
 		if (newCorrespondingEObjects.nullOrEmpty) {
-			return 
+			return transformationResult
 		}
-		PCMJaMoPPUtils.saveEObjects(newCorrespondingEObjects, blackboard, PCMJaMoPPUtils.getSourceModelVURI(newRootEObject))
+		PCMJaMoPPUtils.handleRootChanges(newCorrespondingEObjects, blackboard,
+			PCMJaMoPPUtils.getSourceModelVURI(newRootEObject), transformationResult)
 		for (correspondingEObject : newCorrespondingEObjects) {
 			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newRootEObject, correspondingEObject)
 		}
+		return transformationResult
 	}
 
-	
 }

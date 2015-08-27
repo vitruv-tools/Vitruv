@@ -8,8 +8,8 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.VariableDeclarator
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences.MatchingModelElementsFinder
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
@@ -68,7 +68,7 @@ class JavaFieldTransformations extends Java2JMLTransformationBase {
 				LOGGER.info("Aborted transformation because of name clash with JML.")
 				userInteracting.showMessage(UserInteractionType.MODAL, "There already is a field in JML, which has the same name.");
 				syncAbortedListener.synchronisationAborted(super.getSynchAbortChange());
-				return
+				return new TransformationResult
 			}
 
 			changedObjects.addAll((affectedEObject as Field).renameInAllJMLSpecifications(newValue as String))
@@ -85,7 +85,7 @@ class JavaFieldTransformations extends Java2JMLTransformationBase {
 				changedObjects.add(jmlVariableDeclaration)
 			}
 		}
-		TransformationUtils.saveNonRootEObject(changedObjects)
+		return new TransformationResult
 	}
 
 	override replaceNonRootEObjectInList(EObject affectedEObject, EReference affectedReference, EObject oldValue,
@@ -101,10 +101,10 @@ class JavaFieldTransformations extends Java2JMLTransformationBase {
 		if (jmlFeature == JMLPackage.eINSTANCE.modifiable_Modifiers) {
 			CommonSynchronizerTransformations.replaceNonRootEObjectInList(affectedEObject, oldValue as Modifier,
 				newValue as Modifier, blackboard.correspondenceInstance)
-			return 
+			return new TransformationResult 
 		}
 
-		TransformationUtils.saveNonRootEObject(changedObjects)
+		return new TransformationResult
 	}
 
 	override replaceNonRootEObjectSingle(EObject newAffectedEobejct, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
@@ -122,7 +122,7 @@ class JavaFieldTransformations extends Java2JMLTransformationBase {
 				CommonSynchronizerTransformations.replaceNonRootEObjectSingleType(javaField, oldValue as TypeReference,
 					newValue as TypeReference, blackboard.correspondenceInstance)
 		}
-		TransformationUtils.saveNonRootEObject(changedObjects)
+		return new TransformationResult
 	}
 
 }

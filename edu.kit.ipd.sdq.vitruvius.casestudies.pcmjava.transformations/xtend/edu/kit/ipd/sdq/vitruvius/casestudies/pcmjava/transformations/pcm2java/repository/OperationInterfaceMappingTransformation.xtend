@@ -21,6 +21,7 @@ import org.emftext.language.java.containers.Package
 import org.emftext.language.java.members.InterfaceMethod
 import org.emftext.language.java.modifiers.ModifiersFactory
 import org.palladiosimulator.pcm.repository.OperationInterface
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 
 class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -99,7 +100,7 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 		}
 		val Interface jaMoPPIf = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(newAffectedEObject,
 			Interface).get(0)
-		TransformationUtils.saveNonRootEObject(jaMoPPIf)
+		
 		for (eObject : newMethods) {
 			val InterfaceMethod newMethod = eObject as InterfaceMethod;
 			jaMoPPIf.members.add(newMethod)
@@ -109,6 +110,7 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 		// to interface methods does not cause an update of the resource.
 		// I guess only members list is a containment list (this is why we do it 2 lines above)
 		}
+		return new TransformationResult
 	}
 
 	/**
@@ -127,7 +129,7 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 			val InterfaceMethod oldMethod = eObject as InterfaceMethod;
 			jaMoPPIf.methods.remove(oldMethod)
 		}
-		TransformationUtils.saveNonRootEObject(jaMoPPIf)	
+		return new TransformationResult	
 	}
 
 	override removeEObject(EObject eObject) {
@@ -144,16 +146,17 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
+		val transformationResult = new TransformationResult
 		var Set<EObject> correspondingEObjects = PCM2JaMoPPUtils.
 			checkKeyAndCorrespondingObjects(eObject, affectedAttribute, featureCorrespondenceMap,
 				blackboard.correspondenceInstance);
 			if (correspondingEObjects.nullOrEmpty) {
-				return 
+				return transformationResult
 			}
 			val cu = correspondingEObjects.filter(typeof(CompilationUnit)).get(0)
 			PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, blackboard,
-				false)
-			return 
+				false, transformationResult)
+			return transformationResult
 
 		// TODO: Code refactoring anstossen
 		/* 		val Map<String, RoleMapping> roleMappings = IRoleMappingRegistry.INSTANCE.
@@ -180,5 +183,6 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 			logger.warn(
 				"method createNonRootEObjectSingle should not be called for " +
 					OperationInterfaceMappingTransformation.simpleName + " transformation")
+			return new TransformationResult
 		}
 	}

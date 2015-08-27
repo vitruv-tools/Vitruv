@@ -15,13 +15,15 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationRunnable;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor;
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationExecuter;
-import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2CommandTransforming {
@@ -83,13 +85,14 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
         this.handlePackageInEChange(emfModelChange);
         this.transformationExecuter.setBlackboard(blackboard);
 
-        final Command command = EMFCommandBridge.createCommand(new Runnable() {
+        final Command command = EMFCommandBridge.createVitruviusRecordingCommand(new TransformationRunnable() {
 
             @Override
-            public void run() {
+            public TransformationResult runTransformation() {
                 // execute command converting
-                PCMJaMoPPChange2CommandTransformerBase.this.transformationExecuter
+                final TransformationResult transformationResult = PCMJaMoPPChange2CommandTransformerBase.this.transformationExecuter
                         .executeTransformationForChange(emfModelChange.getEChange());
+                return transformationResult;
             }
         });
 

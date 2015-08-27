@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.system
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.Collection
@@ -51,7 +52,8 @@ class ProvidedDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 			for (opSig : operationInterface.signatures__OperationInterface) {
 
 				// get corresponding (interface) method and find or create a similar class method in the current class
-				val correspondingMethods = blackboard.correspondenceInstance.claimCorrespondingEObjectsByType(opSig, Method)
+				val correspondingMethods = blackboard.correspondenceInstance.
+					claimCorrespondingEObjectsByType(opSig, Method)
 				for (correspondingMethod : correspondingMethods) {
 					val methodInClassifier = findOrCreateMethodDeclarationInClassifier(correspondingMethod,
 						field.containingConcreteClassifier)
@@ -80,6 +82,7 @@ class ProvidedDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 		logger.warn("method " + new Object() {
 		}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 			"transformation")
+		return new TransformationResult
 	}
 
 	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue,
@@ -87,6 +90,7 @@ class ProvidedDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 		logger.warn("method " + new Object() {
 		}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 			"transformation")
+		return new TransformationResult
 	}
 
 	/**

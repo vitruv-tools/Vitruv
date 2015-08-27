@@ -11,6 +11,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.Interface
 import org.palladiosimulator.pcm.repository.OperationProvidedRole
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 
 class OperationProvidedRoleMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -64,17 +65,14 @@ class OperationProvidedRoleMappingTransformation extends EmptyEObjectMappingTran
 		val EObject[] newEObjects = createEObject(affectedEObject)
 		for (oldEObject : oldEObjects) {
 			blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(oldEObject)
-			if (null != oldEObject.eContainer) {
-				TransformationUtils.saveNonRootEObject(oldEObject)
-			}
 			EcoreUtil.remove(oldEObject)
 		}
 		if (null != newEObjects) {
 			for (newEObject : newEObjects) {
 				blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newEObject, affectedEObject)
-				TransformationUtils.saveNonRootEObject(newEObject)
 			}
 		}
+		return new TransformationResult
 	}
 
 	/**

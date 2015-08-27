@@ -54,15 +54,4 @@ class TransformationUtils {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
-	def static saveNonRootEObject(EObject... eObjects) {
-		val resources = new HashSet
-		eObjects.forEach [ eObject |
-			if (null == eObject || null == eObject.eResource) {
-				logger.warn("Can not save eObject " + eObject + " cause the resource of the eObject is null")
-			}
-			resources.add(eObject.eResource)
-		]
-		resources.forEach[resource|EcoreResourceBridge.saveResource(resource)]
-	}
-
 }

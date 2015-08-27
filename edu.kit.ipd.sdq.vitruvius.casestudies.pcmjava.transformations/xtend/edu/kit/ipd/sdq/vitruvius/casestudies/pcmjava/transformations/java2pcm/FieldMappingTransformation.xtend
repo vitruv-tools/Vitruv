@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.HashSet
@@ -98,8 +99,10 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
+		val transformationResult = new TransformationResult
 		JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(affectedEObject, affectedAttribute, oldValue, newValue,
-			featureCorrespondenceMap, blackboard)
+			featureCorrespondenceMap, blackboard, transformationResult)
+		return transformationResult
 	}
 
 	/**
@@ -112,6 +115,7 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override replaceNonRootEObjectSingle(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, EObject newValue) {
+		val transformationResult = new TransformationResult
 		if (affectedReference.name.equals(PCMJaMoPPNamespace.JaMoPP.JAMOPP_REFERENCE_TYPE_REFERENCE) &&
 			newValue instanceof TypeReference) {
 			val newTypeReference = newValue as TypeReference
@@ -124,7 +128,6 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 						getCorrespondingPCMDataTypeForTypeReference(newTypeReference, blackboard.correspondenceInstance,
 							userInteracting, null)
 					blackboard.correspondenceInstance.update(oldAffectedEObject, newValue)
-					TransformationUtils.saveNonRootEObject(innerDec)
 				}
 			}
 
@@ -143,13 +146,13 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 					val newCorrespondingEObjects = newField.checkAndAddOperationRequiredRolesCorrepondencesToField()
 					if (!newCorrespondingEObjects.nullOrEmpty) {
 						for (newCorrspondingEObject : newCorrespondingEObjects) {
-							TransformationUtils.saveNonRootEObject(newCorrspondingEObject)
 							blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newCorrspondingEObject, newAffectedEObject)
 						}
 					}
 				}
 			}
 		}
+		return transformationResult
 	}
 
 	def private EObject[] checkAndAddOperationRequiredRolesCorrepondencesToField(Field field) {

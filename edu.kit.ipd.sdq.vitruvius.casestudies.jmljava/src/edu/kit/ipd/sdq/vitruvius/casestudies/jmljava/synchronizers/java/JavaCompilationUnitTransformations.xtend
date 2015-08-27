@@ -8,6 +8,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLPackage
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences.Java2JMLCorrespondenceAdder
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
@@ -71,7 +72,7 @@ class JavaCompilationUnitTransformations extends Java2JMLTransformationBase {
 					LOGGER.info("Aborted transformation because of name clash.")
 					userInteracting.showMessage(UserInteractionType.MODAL, "There already is a classifier, which has the same name.");
 					syncAbortedListener.synchronisationAborted(super.getSynchAbortChange());
-					return
+					return new TransformationResult
 				}
 				
 				val jmlType = CommonSynchronizerTasks.createJMLClass(newValue as Class)
@@ -83,8 +84,7 @@ class JavaCompilationUnitTransformations extends Java2JMLTransformationBase {
 				changedObjects.add(jmlCu)
 			}
 		}
-		
-		TransformationUtils.saveNonRootEObject(changedObjects)
+		return new TransformationResult
 	}
 	
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
@@ -123,7 +123,7 @@ class JavaCompilationUnitTransformations extends Java2JMLTransformationBase {
 				changedObjects.add(jmlCu)
 			}
 		}
-		TransformationUtils.saveNonRootEObject(changedObjects)
+		return new TransformationResult
 	}
 	
 }

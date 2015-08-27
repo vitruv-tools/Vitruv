@@ -35,6 +35,7 @@ import java.util.Deque
 import java.util.LinkedList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 
 public class TransformationExecuter {
 
@@ -60,9 +61,10 @@ public class TransformationExecuter {
 		}
 	}
 
-	def public void executeTransformationForChange(EChange change) {
-		executeTransformation(change)
+	def public TransformationResult executeTransformationForChange(EChange change) {
+		val TransformationResult transformationResult = executeTransformation(change)
 		updateTUIDOfAffectedEObjectInEChange(change)
+		return transformationResult
 	}
 
 	def protected updateTUIDOfAffectedEObjectInEChange(EChange change) {
@@ -76,11 +78,12 @@ public class TransformationExecuter {
 		}
 	}
 
-	def private dispatch void executeTransformation(EChange change) {
+	def private dispatch TransformationResult executeTransformation(EChange change) {
 		logger.error("No executeTransformation method found for change " + change + ". Change not synchronized")
+		return null
 	}
 
-	def private dispatch void executeTransformation(CreateRootEObject<?> createRootEObject) {
+	def private dispatch TransformationResult executeTransformation(CreateRootEObject<?> createRootEObject) {
 		val EObject[] createdObjects = mappingTransformations.
 			claimForMappedClassOrImplementingInterface(createRootEObject.newValue.class).createEObject(
 				createRootEObject.newValue)
@@ -88,7 +91,7 @@ public class TransformationExecuter {
 			createRootEObject(createRootEObject.newValue, createdObjects)
 	}
 
-	def private dispatch void executeTransformation(DeleteRootEObject<?> deleteRootEObject) {
+	def private dispatch TransformationResult executeTransformation(DeleteRootEObject<?> deleteRootEObject) {
 		val EObject[] removedEObjects = mappingTransformations.
 			claimForMappedClassOrImplementingInterface(deleteRootEObject.oldValue.class).removeEObject(
 				deleteRootEObject.oldValue)
@@ -96,7 +99,7 @@ public class TransformationExecuter {
 			deleteRootEObject(deleteRootEObject.oldValue, removedEObjects)
 	}
 
-	def private dispatch void executeTransformation(ReplaceRootEObject<?> replaceRootEObject) {
+	def private dispatch TransformationResult executeTransformation(ReplaceRootEObject<?> replaceRootEObject) {
 		val EObject[] createdObjects = mappingTransformations.
 			claimForMappedClassOrImplementingInterface(replaceRootEObject.newValue.class).createEObject(
 				replaceRootEObject.newValue)
@@ -107,7 +110,7 @@ public class TransformationExecuter {
 			replaceRoot(replaceRootEObject.oldValue, replaceRootEObject.newValue, removedEObjects, createdObjects)
 	}
 
-	def private dispatch void executeTransformation(CreateNonRootEObjectInList<?> createNonRootEObjectInList) {
+	def private dispatch TransformationResult executeTransformation(CreateNonRootEObjectInList<?> createNonRootEObjectInList) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(createNonRootEObjectInList.newValue.class)
 
 		val EObject[] createdEObjects = mappingTransformations.
@@ -120,7 +123,7 @@ public class TransformationExecuter {
 			createNonRootEObjectInList.index, createdEObjects)
 	}
 
-	def private dispatch void executeTransformation(DeleteNonRootEObjectInList<?> deleteNonRootEObjectInList) {
+	def private dispatch TransformationResult executeTransformation(DeleteNonRootEObjectInList<?> deleteNonRootEObjectInList) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(deleteNonRootEObjectInList.oldValue.class)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			deleteNonRootEObjectInList.oldAffectedEObject.class)
@@ -135,7 +138,7 @@ public class TransformationExecuter {
 			deleteNonRootEObjectInList.index, eObjectsToDelete)
 	}
 
-	def private dispatch void executeTransformation(
+	def private dispatch TransformationResult executeTransformation(
 		ReplaceNonRootEObjectInList<?> replaceNonRootEObjectInList) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(replaceNonRootEObjectInList.newValue.class)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(replaceNonRootEObjectInList.oldValue.class)
@@ -155,7 +158,7 @@ public class TransformationExecuter {
 			replaceNonRootEObjectInList.index, eObjectsToDelete, createdEObjects)
 	}
 
-	def private dispatch void executeTransformation(CreateNonRootEObjectSingle<?> createNonRootEObjectSingle) {
+	def private dispatch TransformationResult executeTransformation(CreateNonRootEObjectSingle<?> createNonRootEObjectSingle) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(createNonRootEObjectSingle.newValue.class)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			createNonRootEObjectSingle.oldAffectedEObject.class)
@@ -169,7 +172,7 @@ public class TransformationExecuter {
 			createNonRootEObjectSingle.newValue, createdEObjects)
 	}
 
-	def private dispatch void executeTransformation(DeleteNonRootEObjectSingle<?> deleteNonRootEObjectSingle) {
+	def private dispatch TransformationResult executeTransformation(DeleteNonRootEObjectSingle<?> deleteNonRootEObjectSingle) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(deleteNonRootEObjectSingle.oldValue.class)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			deleteNonRootEObjectSingle.oldAffectedEObject.class)
@@ -183,7 +186,7 @@ public class TransformationExecuter {
 			deleteNonRootEObjectSingle.oldValue, eObjectsToDelete)
 	}
 
-	def private dispatch void executeTransformation(
+	def private dispatch TransformationResult executeTransformation(
 		ReplaceNonRootEObjectSingle<?> replaceNonRootEObjectSingle) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			replaceNonRootEObjectSingle.oldAffectedEObject.class)
@@ -195,7 +198,7 @@ public class TransformationExecuter {
 			replaceNonRootEObjectSingle.newValue)
 	}
 
-	def private dispatch void executeTransformation(
+	def private dispatch TransformationResult executeTransformation(
 		PermuteContainmentEReferenceValues<?> permuteContainmentEReferenceValues) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			permuteContainmentEReferenceValues.oldAffectedEObject.class).
@@ -204,7 +207,7 @@ public class TransformationExecuter {
 				permuteContainmentEReferenceValues.newIndexForElementAt)
 	}
 
-	def private dispatch void executeTransformation(
+	def private dispatch TransformationResult executeTransformation(
 		InsertNonContainmentEReference<?> insertNonContaimentEReference) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			insertNonContaimentEReference.oldAffectedEObject.class).
@@ -213,7 +216,7 @@ public class TransformationExecuter {
 				insertNonContaimentEReference.index)
 	}
 
-	def private dispatch void executeTransformation(
+	def private dispatch TransformationResult executeTransformation(
 		RemoveNonContainmentEReference<?> removeNonContainmentEReference) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			removeNonContainmentEReference.oldAffectedEObject.class).
@@ -222,7 +225,7 @@ public class TransformationExecuter {
 				removeNonContainmentEReference.index)
 	}
 
-	def private dispatch void executeTransformation(
+	def private dispatch TransformationResult executeTransformation(
 		ReplaceNonContainmentEReference<?> replaceNonContainmentEReference) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			replaceNonContainmentEReference.oldAffectedEObject.class).
@@ -231,7 +234,7 @@ public class TransformationExecuter {
 				replaceNonContainmentEReference.newValue, replaceNonContainmentEReference.index)
 	}
 
-	def private dispatch void executeTransformation(
+	def private dispatch TransformationResult executeTransformation(
 		PermuteNonContainmentEReferenceValues<?> permuteNonContainmentEReferenceValues) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			permuteNonContainmentEReferenceValues.oldAffectedEObject.class).
@@ -240,7 +243,7 @@ public class TransformationExecuter {
 				permuteNonContainmentEReferenceValues.newIndexForElementAt)
 	}
 
-	def private dispatch void executeTransformation(
+	def private dispatch TransformationResult executeTransformation(
 		UpdateSingleValuedNonContainmentEReference<?> updateSingleValuedNonContainmentEReference) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			updateSingleValuedNonContainmentEReference.oldAffectedEObject.class).
@@ -249,7 +252,7 @@ public class TransformationExecuter {
 				updateSingleValuedNonContainmentEReference.oldValue, updateSingleValuedNonContainmentEReference.newValue)
 	}
 
-	def private dispatch void executeTransformation(
+	def private dispatch TransformationResult executeTransformation(
 		UpdateSingleValuedEAttribute<?> updateSingleValuedEAttribute) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			updateSingleValuedEAttribute.oldAffectedEObject.class).updateSingleValuedEAttribute(
@@ -257,39 +260,39 @@ public class TransformationExecuter {
 			updateSingleValuedEAttribute.oldValue, updateSingleValuedEAttribute.newValue)
 	}
 
-	def private dispatch void executeTransformation(InsertEAttributeValue<?> insertEAttributeValue) {
+	def private dispatch TransformationResult executeTransformation(InsertEAttributeValue<?> insertEAttributeValue) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(insertEAttributeValue.oldAffectedEObject.class).
 			insertEAttributeValue(insertEAttributeValue.oldAffectedEObject, insertEAttributeValue.affectedFeature,
 				insertEAttributeValue.newValue, insertEAttributeValue.index)
 	}
 
-	def private dispatch void executeTransformation(RemoveEAttributeValue<?> removeEAttributeValue) {
+	def private dispatch TransformationResult executeTransformation(RemoveEAttributeValue<?> removeEAttributeValue) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(removeEAttributeValue.oldAffectedEObject.class).
 			removeEAttributeValue(removeEAttributeValue.oldAffectedEObject, removeEAttributeValue.affectedFeature,
 				removeEAttributeValue.oldValue, removeEAttributeValue.index)
 	}
 
-	def private dispatch void executeTransformation(ReplaceEAttributeValue<?> replaceEAttributeValue) {
+	def private dispatch TransformationResult executeTransformation(ReplaceEAttributeValue<?> replaceEAttributeValue) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			replaceEAttributeValue.oldAffectedEObject.class).replaceEAttributeValue(
 			replaceEAttributeValue.oldAffectedEObject, replaceEAttributeValue.affectedFeature,
 			replaceEAttributeValue.oldValue, replaceEAttributeValue.newValue, replaceEAttributeValue.index)
 	}
 
-	def private dispatch void executeTransformation(PermuteEAttributeValues<?> permuteEAttributeValues) {
+	def private dispatch TransformationResult executeTransformation(PermuteEAttributeValues<?> permuteEAttributeValues) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			permuteEAttributeValues.oldAffectedEObject.class).permuteEAttributeValues(
 			permuteEAttributeValues.oldAffectedEObject, permuteEAttributeValues.affectedFeature,
 			permuteEAttributeValues.newIndexForElementAt)
 	}
 
-	def private dispatch void executeTransformation(UnsetEAttribute<?> unsetEAttribute) {
+	def private dispatch TransformationResult executeTransformation(UnsetEAttribute<?> unsetEAttribute) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(unsetEAttribute.oldAffectedEObject.class).
 			unsetEAttribute(unsetEAttribute.oldAffectedEObject, unsetEAttribute.affectedFeature,
 				unsetEAttribute.oldValue)
 	}
 
-	def private dispatch void executeTransformation(
+	def private dispatch TransformationResult executeTransformation(
 		UnsetNonContainmentEReference<?> unsetNonContainmentEReference) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			unsetNonContainmentEReference.oldAffectedEObject.class).
@@ -297,7 +300,7 @@ public class TransformationExecuter {
 				unsetNonContainmentEReference.affectedFeature, unsetNonContainmentEReference.oldValue)
 	}
 
-	def private dispatch void executeTransformation(UnsetContainmentEReference<?> unsetContainmentEReference) {
+	def private dispatch TransformationResult executeTransformation(UnsetContainmentEReference<?> unsetContainmentEReference) {
 		var EObject[] eObjectsToDelete = null
 		if (null != unsetContainmentEReference.oldValue) {
 			eObjectsToDelete = mappingTransformations.
@@ -310,7 +313,7 @@ public class TransformationExecuter {
 			unsetContainmentEReference.oldValue, eObjectsToDelete)
 	}
 
-	def private dispatch void executeTransformation(
+	def private dispatch TransformationResult executeTransformation(
 		InsertNonRootEObjectInContainmentList<?> insertNonRootEObjectInContainmentList) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			insertNonRootEObjectInContainmentList.newAffectedEObject.class).insertNonRootEObjectInContainmentList(
@@ -321,8 +324,9 @@ public class TransformationExecuter {
 		)
 	}
 
-	def private dispatch void executeTransformation(UnsetEFeature<?> unsetEFeature) {
+	def private dispatch TransformationResult executeTransformation(UnsetEFeature<?> unsetEFeature) {
 		logger.error("executeTransformation for UnsetEFeature<?> is not implemented yet...")
+		return null
 	}
 
 	def public addMapping(EObjectMappingTransformation transformation) {

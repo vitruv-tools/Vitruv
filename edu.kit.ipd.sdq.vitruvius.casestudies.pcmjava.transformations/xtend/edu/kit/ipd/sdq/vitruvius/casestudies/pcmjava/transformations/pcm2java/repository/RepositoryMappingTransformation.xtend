@@ -16,6 +16,7 @@ import org.emftext.language.java.containers.JavaRoot
 import org.emftext.language.java.containers.Package
 import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.repository.RepositoryFactory
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 
 class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -56,15 +57,16 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 	}
 
 	override createRootEObject(EObject newRootEObject, EObject[] newCorrespondingEObjects) {
+		val transformationResult = new TransformationResult
 		if (newCorrespondingEObjects.nullOrEmpty) {
-			return
+			return transformationResult
 		}
-		PCMJaMoPPUtils.saveEObjects(newCorrespondingEObjects, blackboard,
-			PCMJaMoPPUtils.getSourceModelVURI(newRootEObject))
+		PCMJaMoPPUtils.handleRootChanges(newCorrespondingEObjects, blackboard,
+			PCMJaMoPPUtils.getSourceModelVURI(newRootEObject), transformationResult)
 		for (correspondingEObject : newCorrespondingEObjects) {
 			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newRootEObject, correspondingEObject)
 		}
-		return
+		return transformationResult
 	}
 
 	override removeEObject(EObject eObject) {
@@ -80,10 +82,11 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
-		if(null != oldCorrespondingEObjectsToDelete){
+		if (null != oldCorrespondingEObjectsToDelete) {
 			oldCorrespondingEObjectsToDelete.forEach[eObject|EcoreUtil.delete(eObject)]
 		}
-		
+		return new TransformationResult
+
 	}
 
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
@@ -94,12 +97,15 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
+		val transformationResult = new TransformationResult
 		val javaRoots = newCorrespondingEObjects.filter(typeof(JavaRoot))
-		PCMJaMoPPUtils.saveEObjects(javaRoots, blackboard, PCMJaMoPPUtils.getSourceModelVURI(newAffectedEObject))
+		PCMJaMoPPUtils.handleRootChanges(javaRoots, blackboard, PCMJaMoPPUtils.getSourceModelVURI(newAffectedEObject),
+			transformationResult)
 
 		for (jaMoPPElement : newCorrespondingEObjects) {
 			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newValue, jaMoPPElement)
 		}
+		return transformationResult
 	}
 
 	def findPackageWithName(String packageName, Iterable<EObjectCorrespondence> correspondences) {
@@ -114,17 +120,18 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 
 	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue,
 		EObject[] newCorrespondingEObjects) {
+		val transformationResult = new TransformationResult
 		logger.warn(
 			"method createNonRootEObjectSingle should not be called for " + RepositoryMappingTransformation.simpleName +
 				" transformation")
-				return
-	}
+				return transformationResult
+			}
 
 	override unsetContainmentEReference(EObject affectedEObject, EReference affectedReference, EObject oldValue,
 		EObject[] oldCorrespondingEObjectsToDelete) {
 
 		// Called everytime a BasicComponent is removed - does nothing because the actual removing is already done in deleteNonRootEObjectInList
-		return
+		return new TransformationResult
 	}
 
 }

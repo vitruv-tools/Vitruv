@@ -10,9 +10,9 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.helpers.Corre
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.jml.CommonSynchronizerTasksJML
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.Collection
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
@@ -31,7 +31,7 @@ class JavaMethodBodyChangedTransformation extends CustomTransformationsBase impl
 		this.newMethod = newMethod
 	}
 
-	override executeInternal(Blackboard blackboard, UserInteracting userInteracting) {
+	override TransformationResult executeInternal(Blackboard blackboard, UserInteracting userInteracting) {
 		LOGGER.info(
 			"Starting custom transformation " + JavaMethodBodyChangedTransformation.simpleName + " for method " +
 				oldMethod.name)
@@ -70,7 +70,7 @@ class JavaMethodBodyChangedTransformation extends CustomTransformationsBase impl
 		}
 
 		LOGGER.trace("Transformation changed " + changedEObjects.size + " objects.")
-		TransformationUtils.saveNonRootEObject(changedEObjects)
+		return new TransformationResult
 	}
 
 	private static def isMethodDeclaredPure(ClassMethod method, CorrespondenceInstance ci) {

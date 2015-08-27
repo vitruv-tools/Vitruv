@@ -1,11 +1,16 @@
-package edu.kit.ipd.sdq.vitruvius.framework.util.datatypes;
+package edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes;
 
 import java.lang.reflect.Modifier;
 
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
+
 public abstract class VitruviusRecordingCommand extends RecordingCommand {
+
+    protected TransformationResult transformationResult;
+
     public VitruviusRecordingCommand() {
         super(null);
     }
@@ -27,5 +32,9 @@ public abstract class VitruviusRecordingCommand extends RecordingCommand {
         } catch (SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public TransformationResult getTransformationResult() {
+        return this.transformationResult;
     }
 }

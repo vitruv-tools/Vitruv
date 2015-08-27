@@ -48,7 +48,6 @@ class CommonSynchronizerTransformations {
 			
 			changedObjects.add(jmlModifiable)
 		}
-		TransformationUtils.saveNonRootEObject(changedObjects)
 	}
 	
 	static def createNonRootEObjectInList(EObject affectedJavaObject, Modifier javaModifier, CorrespondenceInstance ci) {
@@ -66,7 +65,6 @@ class CommonSynchronizerTransformations {
 			
 			changedObjects.add(jmlModifiable)			
 		}
-		TransformationUtils.saveNonRootEObject(changedObjects)
 	}
 	
 	static def replaceNonRootEObjectSingleType(EObject affectedJavaObject, TypeReference javaOldValue, TypeReference javaNewValue, CorrespondenceInstance ci) {
@@ -83,7 +81,6 @@ class CommonSynchronizerTransformations {
 			ci.update(jmlTypedTUIDOld, TUID.getInstance(Utilities.getTUID(jmlTyped)))
 			changedObjects.add(jmlTyped)
 		}
-		TransformationUtils.saveNonRootEObject(changedObjects)		
 	}
 	
 	private static def dispatch getArrayDimensions(Method javaMethod) {

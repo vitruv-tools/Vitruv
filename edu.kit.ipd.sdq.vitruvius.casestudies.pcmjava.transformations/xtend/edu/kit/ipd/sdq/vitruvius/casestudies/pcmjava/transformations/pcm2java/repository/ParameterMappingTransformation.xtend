@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.Set
@@ -60,17 +60,19 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
+		val transformationResult = new TransformationResult
 		val Set<EObject> correspondingObjects = PCM2JaMoPPUtils.
 			checkKeyAndCorrespondingObjects(affectedEObject, affectedAttribute, featureCorrespondenceMap,
 				blackboard.correspondenceInstance)
 		if (correspondingObjects.nullOrEmpty || correspondingObjects.filter(typeof(org.emftext.language.java.parameters.Parameter)).nullOrEmpty) {
-			return 
+			return transformationResult
 		}
 		if (affectedAttribute.name.equals(PCMJaMoPPNamespace.PCM.PCM_ATTRIBUTE_ENTITY_NAME)) {
 			val boolean saveFilesOfChangedEObjects = true
 			PCM2JaMoPPUtils.updateNameAttribute(correspondingObjects, newValue, affectedAttribute,
 				featureCorrespondenceMap, blackboard.correspondenceInstance, saveFilesOfChangedEObjects)
 		}
+		return transformationResult
 	}
 
 	/**
@@ -78,12 +80,13 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject newValue) {
+		val transformationResult = new TransformationResult
 		val Set<EObject> correspondingEObjects = PCM2JaMoPPUtils.
 			checkKeyAndCorrespondingObjects(affectedEObject, affectedReference, featureCorrespondenceMap,
 				blackboard.correspondenceInstance)
 		if (correspondingEObjects.nullOrEmpty ||
 			correspondingEObjects.filter(typeof(org.emftext.language.java.parameters.Parameter)).nullOrEmpty) {
-			return 
+			return transformationResult
 		}
 		val correspondingParameter = correspondingEObjects.filter(typeof(org.emftext.language.java.parameters.Parameter)).
 			get(0)
@@ -94,12 +97,12 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 					claimUniqueCorrespondingJaMoPPDataTypeReference(newValue as DataType, blackboard.correspondenceInstance)
 				correspondingParameter.setTypeReference(typeReference)
 				val oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(correspondingParameter)
-				TransformationUtils.saveNonRootEObject(correspondingParameter)
 				blackboard.correspondenceInstance.update(oldTUID, correspondingParameter)
 			} catch (RuntimeException e) {
 				logger.warn("Could not find correspondence for PCM data type " + oldValue + " . " + e)
 			}
 		}
+		transformationResult
 	}
 
 	/**

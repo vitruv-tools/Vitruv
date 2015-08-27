@@ -13,6 +13,7 @@ import org.emftext.language.java.members.Constructor
 import org.emftext.language.java.members.Field
 import org.emftext.language.java.parameters.Parameter
 import org.palladiosimulator.pcm.core.composition.RequiredDelegationConnector
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 
 class RequiredDelegationConnectorMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -71,6 +72,7 @@ class RequiredDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
+		return new TransformationResult
 	}
 	
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
@@ -79,6 +81,7 @@ class RequiredDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
+		return new TransformationResult
 	}
 
 	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue,
@@ -87,6 +90,7 @@ class RequiredDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
+		return new TransformationResult
 	}
 
 }

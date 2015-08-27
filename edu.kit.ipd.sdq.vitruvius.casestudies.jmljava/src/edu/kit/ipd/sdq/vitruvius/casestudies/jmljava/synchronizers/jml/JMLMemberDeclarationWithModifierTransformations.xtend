@@ -10,8 +10,8 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModi
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyCorrespondences
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import java.util.Collection
 import org.apache.log4j.Logger
@@ -80,7 +80,7 @@ class JMLMemberDeclarationWithModifierTransformations extends JML2JavaTransforma
 					userInteracting.showMessage(UserInteractionType.MODAL,
 						"The modifier can not be added since the method does not have the query property.")
 					syncAbortedListener.synchronisationAborted(super.getSynchAbortChange());
-					return
+					return new TransformationResult
 				}
 				changedObjects.addAll(result)
 
@@ -89,7 +89,7 @@ class JMLMemberDeclarationWithModifierTransformations extends JML2JavaTransforma
 //				changedObjects.add(memberDecl)
 			}
 		}
-		TransformationUtils.saveNonRootEObject(changedObjects)
+		return new TransformationResult
 	}
 
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
@@ -115,7 +115,7 @@ class JMLMemberDeclarationWithModifierTransformations extends JML2JavaTransforma
 					userInteracting.showMessage(UserInteractionType.MODAL,
 						"The modifier can not be deleted since this element is referenced by an invariant.")
 					syncAbortedListener.synchronisationAborted(super.getSynchAbortChange());
-					return
+					return new TransformationResult
 				}
 				val memberDecl = (oldAffectedEObject as MemberDeclWithModifier).modelInstanceElement
 				memberDecl.jmlModifiers.remove(index)
@@ -136,12 +136,12 @@ class JMLMemberDeclarationWithModifierTransformations extends JML2JavaTransforma
 						"The modifier can not be removed since the method is used in the specification " +
 							ConcreteSyntaxHelper.convertToConcreteSyntax(e.causingObject as EObject) + ".")
 					syncAbortedListener.synchronisationAborted(super.getSynchAbortChange());
-					return
+					return new TransformationResult
 				}
 				changedObjects.addAll(result)
 			}
 		}
-		TransformationUtils.saveNonRootEObject(changedObjects)
+		return new TransformationResult
 	}
 
 	/**
