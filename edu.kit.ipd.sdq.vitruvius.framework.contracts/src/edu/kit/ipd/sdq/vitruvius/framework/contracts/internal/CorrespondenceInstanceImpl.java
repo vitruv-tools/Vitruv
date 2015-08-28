@@ -450,7 +450,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
                 throw new RuntimeException("Could not resolve TUID " + tuidString + " in eObject " + rootEObject);
             }
         }
-        if (resolvedEobject.eIsProxy()) {
+        if (null != resolvedEobject && resolvedEobject.eIsProxy()) {
             EcoreUtil.resolve(resolvedEobject, getResource());
         }
         return resolvedEobject;

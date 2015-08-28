@@ -34,7 +34,7 @@ public class VSUMPersistentTest extends VSUMTest {
         Set<VURI> vuris = PersistentTestUtil.createDummyVURIs(nrOfVURIs);
         // PersistentTestUtil.createResources(vuris);
         for (VURI vuri : vuris) {
-            vsum.saveModelInstanceOriginal(vuri);
+            vsum.saveExistingModelInstanceOriginal(vuri);
         }
 
         // 2.create VSUM again (should read all model instances from disk)

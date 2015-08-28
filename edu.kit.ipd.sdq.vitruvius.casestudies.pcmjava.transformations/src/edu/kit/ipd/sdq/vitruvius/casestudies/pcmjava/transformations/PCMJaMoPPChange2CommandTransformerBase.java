@@ -66,11 +66,15 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
     public void transformChanges2Commands(final Blackboard blackboard) {
         final List<Change> changesForTransformation = blackboard.getAndArchiveChangesForTransformation();
         final List<Command> commands = new ArrayList<Command>();
-        for (final Change change : changesForTransformation) {
-            if (change instanceof EMFModelChange) {
-                commands.add(this.transformChange2Command((EMFModelChange) change, blackboard));
-            } else if (change instanceof CompositeChange) {
-                commands.addAll(this.transformCompositeChange((CompositeChange) change, blackboard));
+        if (this.hasChangeRefinerForChanges(changesForTransformation)) {
+            commands.add(this.executeChangeRefiner(changesForTransformation, blackboard));
+        } else {
+            for (final Change change : changesForTransformation) {
+                if (change instanceof EMFModelChange) {
+                    commands.add(this.transformChange2Command((EMFModelChange) change, blackboard));
+                } else if (change instanceof CompositeChange) {
+                    commands.addAll(this.transformCompositeChange((CompositeChange) change, blackboard));
+                }
             }
         }
         blackboard.pushCommands(commands);
@@ -156,5 +160,19 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
             final Resource resource = resourceSet.createResource(vuri.getEMFUri());
             resource.getContents().add(newPackage);
         }
+    }
+
+    protected boolean hasChangeRefinerForChanges(final List<Change> changesForTransformation) {
+        return false;
+    }
+
+    protected Command executeChangeRefiner(final List<Change> changesForTransformation, final Blackboard blackboard) {
+        return EMFCommandBridge.createVitruviusRecordingCommand(new TransformationRunnable() {
+
+            @Override
+            public TransformationResult runTransformation() {
+                return null;
+            }
+        });
     }
 }

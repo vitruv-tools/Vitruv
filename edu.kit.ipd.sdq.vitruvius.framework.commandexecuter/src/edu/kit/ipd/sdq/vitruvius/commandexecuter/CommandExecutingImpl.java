@@ -1,31 +1,32 @@
 package edu.kit.ipd.sdq.vitruvius.commandexecuter;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusRecordingCommand;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 public class CommandExecutingImpl implements CommandExecuting {
+
+    private static final Logger logger = Logger.getLogger(CommandExecutingImpl.class.getSimpleName());
+
     @Override
     public void executeCommands(final Blackboard blackboard) {
         final ModelProviding modelProviding = blackboard.getModelProviding();
-        modelProviding.attachTransactionalEditingDomain();
         final TransactionalEditingDomain domain = modelProviding.getTransactionalEditingDomain();
 
         final ArrayList<Object> affectedObjects = new ArrayList<>();
@@ -39,9 +40,8 @@ public class CommandExecutingImpl implements CommandExecuting {
                 transformationResults.add(((VitruviusRecordingCommand) command).getTransformationResult());
             }
             affectedObjects.addAll(command.getAffectedObjects());
-            this.executeTransformationResults(transformationResults, blackboard.getModelProviding());
         }
-
+        this.executeTransformationResults(transformationResults, blackboard);
         this.saveAffectedEObjects(affectedObjects, blackboard.getModelProviding());
         modelProviding.detachTransactionalEditingDomain();
     }
@@ -62,33 +62,25 @@ public class CommandExecutingImpl implements CommandExecuting {
     }
 
     private void executeTransformationResults(final ArrayList<TransformationResult> transformationResults,
-            final ModelProviding modelProviding) {
+            final Blackboard blackboard) {
+        if (null == transformationResults) {
+            return;
+        }
         for (final TransformationResult transformationResult : transformationResults) {
+            if (null == transformationResult) {
+                logger.info("Current TransformationResult is null. Can not save new root EObjects or delete VURIs.");
+                return;
+            }
             for (final VURI vuriToDelete : transformationResult.getVUIRsToDelete()) {
-                // TODO: Check wheather we need a deleteModelInstanceOriginal in VSUM.
-                // Here we usually do not need it because we usually delete JaMoPP resource that are
-                // renamed. Hence we do not need to remove the correspondence models etc.However the
-                // question is what happens if we delete, e.g. a PCM instance
-                final ModelInstance mi = modelProviding.getAndLoadModelInstanceOriginal(vuriToDelete);
-                final Resource resource = mi.getResource();
-                try {
-                    resource.delete(null);
-                } catch (final IOException e) {
-                    throw new RuntimeException("Could not delete VURI: " + vuriToDelete + ". Exception: " + e);
-                }
+                blackboard.getModelProviding().deleteModelInstanceOriginal(vuriToDelete);
             }
             for (final Pair<EObject, VURI> createdEObjectVURIPair : transformationResult.getRootEObjectsToSave()) {
-                final ModelInstance mi = modelProviding
-                        .getAndLoadModelInstanceOriginal(createdEObjectVURIPair.getSecond());
-                final Resource resource = mi.getResource();
-                // clear the resource first
-                resource.getContents().clear();
-                resource.getContents().add(createdEObjectVURIPair.getFirst());
-                // get old tuid
-                modelProviding.saveModelInstanceOriginal(mi.getURI());
+                final TUID oldTUID = blackboard.getCorrespondenceInstance()
+                        .calculateTUIDFromEObject(createdEObjectVURIPair.getFirst());
+                blackboard.getModelProviding().saveModelInstanceOriginalWithEObjectAsOnlyContent(
+                        createdEObjectVURIPair.getSecond(), createdEObjectVURIPair.getFirst(), oldTUID);
             }
         }
-
     }
 
     private void saveAffectedEObjects(final ArrayList<Object> affectedObjects, final ModelProviding modelProviding) {
@@ -102,7 +94,7 @@ public class CommandExecutingImpl implements CommandExecuting {
             }
         }
         for (final VURI vuri : vurisToSave) {
-            modelProviding.saveModelInstanceOriginal(vuri);
+            modelProviding.saveExistingModelInstanceOriginal(vuri);
         }
     }
 

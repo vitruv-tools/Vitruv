@@ -38,8 +38,8 @@ public abstract class HierarchicalTUIDCalculatorAndResolver<T extends EObject> e
     @Override
     protected EObject getIdentifiedEObjectWithinRootEObjectInternal(final EObject root, final String[] ids) {
         if (!getRootObjectClass().isAssignableFrom(root.getClass())) {
-            LOGGER.error("TUID resolving is only possible with root object of type "
-                    + getRootObjectClass().getSimpleName());
+            LOGGER.error(
+                    "TUID resolving is only possible with root object of type " + getRootObjectClass().getSimpleName());
             return null;
         }
 
@@ -59,7 +59,8 @@ public abstract class HierarchicalTUIDCalculatorAndResolver<T extends EObject> e
     private EObject findById(final EObject rootObject, final String[] ids) {
         // finds EObjects using brute force approach
         EObject obj = rootObject;
-        for (String[] runningIds = ids; obj != null && runningIds.length > 0; runningIds = removeFirstElement(runningIds)) {
+        for (String[] runningIds = ids; obj != null
+                && runningIds.length > 0; runningIds = removeFirstElement(runningIds)) {
             obj = findById(obj, runningIds[0]);
         }
         return obj;
@@ -150,7 +151,8 @@ public abstract class HierarchicalTUIDCalculatorAndResolver<T extends EObject> e
     // TUID generation
     // ============================================================================
     @Override
-    public String calculateTUIDFromEObject(final EObject eObject, final EObject virtualRootObject, final String prefix) {
+    public String calculateTUIDFromEObject(final EObject eObject, final EObject virtualRootObject,
+            final String prefix) {
         if (!isValidTUID(prefix) || prefix.endsWith(VitruviusConstants.getTUIDSegmentSeperator())) {
             throw new IllegalArgumentException(
                     "The given prefix is invalid (must contain URI and default segment and must NOT end with a separator.");
@@ -164,6 +166,7 @@ public abstract class HierarchicalTUIDCalculatorAndResolver<T extends EObject> e
                 segments.push(currentSegment);
             }
         }
+        // at this position parent is null || parent == virtualRootObject
         segments.push(prefix);
         return StringUtils.join(segments, VitruviusConstants.getTUIDSegmentSeperator());
     }

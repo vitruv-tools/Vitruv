@@ -38,21 +38,22 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
     @Override
     public String calculateTUIDFromEObject(final EObject eObject) {
         EObject root = EcoreBridge.getRootEObject(eObject);
+        String tuidPrefix = null;
         if (root.eResource() == null) {
             // the root has no resource and therefore it has to be cached for correct TUID
             // resolution and calculation
             addRootToCache(root);
-            LOGGER.warn("The given EObject " + eObject
-                    + " has no resource attached, which is necessary to generate a TUID.");
-            return getDefaultTUIDPrefix() + getVURIReplacementForCachedRoot(root);
+            LOGGER.trace("The given EObject " + eObject
+                    + " has no resource attached. Chaching the EObject within the TUID cache.");
+            tuidPrefix = getDefaultTUIDPrefix() + getVURIReplacementForCachedRoot(root);
         } else {
             if (isCached(root)) {
                 // the root has a resource but was cached before, so it should be removed from the
                 // cache
                 removeRootFromCache(root);
             }
+            tuidPrefix = getDefaultTUIDPrefix() + VURI.getInstance(eObject.eResource());
         }
-        String tuidPrefix = getDefaultTUIDPrefix() + VURI.getInstance(eObject.eResource());
         return calculateTUIDFromEObject(eObject, null, tuidPrefix);
     }
 

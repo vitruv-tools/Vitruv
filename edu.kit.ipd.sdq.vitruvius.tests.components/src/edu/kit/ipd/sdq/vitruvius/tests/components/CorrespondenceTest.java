@@ -86,7 +86,7 @@ public class CorrespondenceTest extends VSUMTest {
 
         // save instances in order to trigger saving for CorrespondenceInstance(s)
         VURI pcmVURI = VURI.getInstance(PCM_INSTANCE_URI);
-        vsum.saveModelInstanceOriginal(pcmVURI);
+        vsum.saveExistingModelInstanceOriginal(pcmVURI);
         // create a new vsum from disk and load correspondence instance from disk
         VSUMImpl vsum2 = testMetaRepositoryVSUMAndModelInstancesCreation();
         Repository repo2 = testLoadObject(vsum2, PCM_INSTANCE_URI, Repository.class);

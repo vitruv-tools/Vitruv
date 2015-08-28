@@ -1,11 +1,14 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.compositerefiners;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.command.Command;
+
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.CSSynchronizer;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 
 /**
@@ -30,8 +33,13 @@ public class CompositeChangeRefinerResultAtomicTransformations implements Compos
     }
 
     @Override
-    public void apply(final Change2CommandTransforming transformationExecuting, final Blackboard blackboard,
+    public List<Command> apply(final CSSynchronizer transformationExecuting, final Blackboard blackboard,
             final UserInteracting ui, final SynchronisationAbortedListener abortListener) {
-        transformationExecuting.transformChanges2Commands(blackboard);
+        final List<Command> commands = new ArrayList<Command>(this.changes.size());
+        for (final EMFModelChange change : this.changes) {
+            final Command command = transformationExecuting.transformEMFModelChange2Command(change, blackboard);
+            commands.add(command);
+        }
+        return commands;
     }
 }

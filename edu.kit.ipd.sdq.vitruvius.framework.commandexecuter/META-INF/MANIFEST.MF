@@ -8,5 +8,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
  org.eclipse.emf.common,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  org.eclipse.emf.ecore,
- org.eclipse.emf.transaction
+ org.eclipse.emf.transaction,
+ org.apache.log4j,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence
 Export-Package: edu.kit.ipd.sdq.vitruvius.commandexecuter

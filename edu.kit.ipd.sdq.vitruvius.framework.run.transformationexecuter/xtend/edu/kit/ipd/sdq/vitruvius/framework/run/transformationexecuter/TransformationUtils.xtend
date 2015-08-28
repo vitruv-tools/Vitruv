@@ -49,9 +49,4 @@ class TransformationUtils {
 			EcoreUtil.remove(eObject)
 		}
 	}
-
-	def static deleteFile(VURI vuri) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-
 }

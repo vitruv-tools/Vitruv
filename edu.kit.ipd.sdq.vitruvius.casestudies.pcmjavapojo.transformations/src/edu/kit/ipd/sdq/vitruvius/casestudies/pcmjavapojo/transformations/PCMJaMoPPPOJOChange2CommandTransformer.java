@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavapojo.transformations;
 
 import java.util.List;
 
+import org.eclipse.emf.common.command.Command;
 import org.emftext.language.java.members.ClassMethod;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding;
@@ -40,6 +41,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationRunnable;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange;
 
 public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2CommandTransformerBase {
@@ -91,21 +95,31 @@ public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2Comm
     }
 
     @Override
-    public void transformChanges2Commands(final Blackboard blackboard) {
-        final List<Change> changesForTransformation = blackboard.getAndArchiveChangesForTransformation();
-        // TODO: kind of hack to execute the ClassMethodBodyChangedTransformation
+    protected boolean hasChangeRefinerForChanges(final List<Change> changesForTransformation) {
         if (1 == changesForTransformation.size() && changesForTransformation.get(0) instanceof CompositeChange) {
             final CompositeChange compositeChange = (CompositeChange) changesForTransformation.get(0);
             final JavaMethodBodyChangedChangeRefiner refiner = new JavaMethodBodyChangedChangeRefiner(null);
-            if (refiner.match(compositeChange)) {
-                this.executeClassMethodBodyChangeRefiner(blackboard, compositeChange);
-            }
-        } else {
-            super.transformChanges2Commands(blackboard);
+            return refiner.match(compositeChange);
         }
+        return false;
     }
 
-    private void executeClassMethodBodyChangeRefiner(final Blackboard blackboard,
+    @Override
+    protected Command executeChangeRefiner(final List<Change> changesForTransformation, final Blackboard blackboard) {
+        final CompositeChange compositeChange = (CompositeChange) changesForTransformation.get(0);
+        final Command vitruviusCommand = EMFCommandBridge.createVitruviusRecordingCommand(new TransformationRunnable() {
+
+            @Override
+            public TransformationResult runTransformation() {
+                return PCMJaMoPPPOJOChange2CommandTransformer.this.executeClassMethodBodyChangeRefiner(blackboard,
+                        compositeChange);
+
+            }
+        });
+        return vitruviusCommand;
+    }
+
+    private TransformationResult executeClassMethodBodyChangeRefiner(final Blackboard blackboard,
             final CompositeChange compositeChange) {
         final CorrespondenceInstance correspondenceInstance = blackboard.getCorrespondenceInstance();
         final EMFModelChange emfChange = (EMFModelChange) compositeChange.getChanges().get(0);
@@ -121,6 +135,6 @@ public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2Comm
                 correspondenceInstance, myBasicComponent);
         final ClassMethodBodyChangedTransformation methodBodyChanged = new ClassMethodBodyChangedTransformation(
                 oldMethod, newMethod, basicComponentFinder, classification, interfaceOfExternalCallFinder);
-        methodBodyChanged.execute(blackboard, this.userInteracting, null);
+        return methodBodyChanged.execute(blackboard, this.userInteracting, null);
     }
 }

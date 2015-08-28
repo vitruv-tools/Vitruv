@@ -1,10 +1,19 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.compositerefiners;
 
+import java.util.List;
+
+import org.eclipse.emf.common.command.Command;
+
+import com.google.common.collect.Lists;
+
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.CSSynchronizer;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.CustomTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationRunnable;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 
 /**
  * Base class for composite change refiner results, which are custom transformations.
@@ -27,9 +36,18 @@ public class CompositeChangeRefinerResultTransformation implements CompositeChan
     }
 
     @Override
-    public void apply(final Change2CommandTransforming transformationExecuting, final Blackboard blackboard,
+    public List<Command> apply(final CSSynchronizer transformationExecuting, final Blackboard blackboard,
             final UserInteracting ui, final SynchronisationAbortedListener abortListener) {
-        this.transformation.execute(blackboard, ui, abortListener);
+        final Command command = EMFCommandBridge.createVitruviusRecordingCommand(new TransformationRunnable() {
+            @Override
+            public TransformationResult runTransformation() {
+                // TODO Auto-generated method stub
+                return CompositeChangeRefinerResultTransformation.this.transformation.execute(blackboard, ui,
+                        abortListener);
+            }
+        });
+        return Lists.newArrayList(command);
+
     }
 
 }

@@ -50,12 +50,12 @@ public class VSUMTest extends AbstractVSUMTest {
         Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
         mi.getResource().getContents().clear();
         mi.getResource().getContents().add(repo);
-        vsum.saveModelInstanceOriginal(vuri);
+        vsum.saveExistingModelInstanceOriginal(vuri);
         Component component = Pcm_mockupFactory.eINSTANCE.createComponent();
         repo.getComponents().add(component);
 
         // save test model
-        vsum.saveModelInstanceOriginal(vuri);
+        vsum.saveExistingModelInstanceOriginal(vuri);
 
         // this is fine, the component is contained in the resource
         assertTrue("Resource of component is null", null != component.eResource());
@@ -88,7 +88,7 @@ public class VSUMTest extends AbstractVSUMTest {
         mi.getResource().getContents().add(repo);
         Component component = Pcm_mockupFactory.eINSTANCE.createComponent();
         repo.getComponents().add(component);
-        vsum.saveModelInstanceOriginal(vuri);
+        vsum.saveExistingModelInstanceOriginal(vuri);
         // simulate external change
         changeTestModelExternally(vuri);
 
@@ -135,10 +135,10 @@ public class VSUMTest extends AbstractVSUMTest {
         mi.getResource().getContents().add(repo);
         Component component = Pcm_mockupFactory.eINSTANCE.createComponent();
         repo.getComponents().add(component);
-        vsum.saveModelInstanceOriginal(vuri);
+        vsum.saveExistingModelInstanceOriginal(vuri);
         Interface mockIf = Pcm_mockupFactory.eINSTANCE.createInterface();
         repo.getInterfaces().add(mockIf);
-        vsum.saveModelInstanceOriginal(vuri);
+        vsum.saveExistingModelInstanceOriginal(vuri);
 
         // create UML
         VURI vuriUML = VURI.getInstance(UML_INSTANCE_TO_CREATE_URI);
@@ -150,7 +150,7 @@ public class VSUMTest extends AbstractVSUMTest {
         uPackage.getClasses().add(uClass);
         uml_mockup.Interface uInterface = Uml_mockupFactory.eINSTANCE.createInterface();
         uPackage.getInterfaces().add(uInterface);
-        vsum.saveModelInstanceOriginal(vuriUML);
+        vsum.saveExistingModelInstanceOriginal(vuriUML);
 
         return mi;
     }

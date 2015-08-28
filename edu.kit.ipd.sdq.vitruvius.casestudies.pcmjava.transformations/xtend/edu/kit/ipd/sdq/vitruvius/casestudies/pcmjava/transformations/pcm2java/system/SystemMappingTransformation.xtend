@@ -25,8 +25,10 @@ class SystemMappingTransformation extends ComposedProvidingRequiringEntityMappin
 		if (newCorrespondingEObjects.nullOrEmpty) {
 			return transformationResult
 		}
-		PCMJaMoPPUtils.handleRootChanges(newCorrespondingEObjects, blackboard,
-			PCMJaMoPPUtils.getSourceModelVURI(newRootEObject), transformationResult)
+		newCorrespondingEObjects.forEach [ newCorrespondingEObject |
+			PCMJaMoPPUtils.addRootChangeToTransformationResult(newCorrespondingEObject, blackboard,
+				PCMJaMoPPUtils.getSourceModelVURI(newRootEObject), transformationResult)
+		]
 		for (correspondingEObject : newCorrespondingEObjects) {
 			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newRootEObject, correspondingEObject)
 		}

@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
@@ -32,8 +33,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ViewTypeManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalContractsBuilder;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.helper.FileSystemHelper;
 
 public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Validating {
@@ -122,27 +125,62 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
      *            The VURI to save
      */
     @Override
-    public void saveModelInstanceOriginal(final VURI vuri) {
-        ModelInstance modelInstanceToSave = getModelInstanceOriginal(vuri);
-        Metamodel metamodel = getMetamodelByURI(vuri);
-        Resource resourceToSave = modelInstanceToSave.getResource();
-        try {
-            EcoreResourceBridge.saveResource(resourceToSave, metamodel.getDefaultSaveOptions());
-            saveAllChangedCorrespondences(modelInstanceToSave);
-            for (EObject root : modelInstanceToSave.getRootElements()) {
-                metamodel.removeRootFromTUIDCache(root);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Could not save VURI + " + vuri + ": " + e);
-        }
+    public void saveExistingModelInstanceOriginal(final VURI vuri) {
+        saveExistingModelInstanceOriginal(vuri, null);
     }
 
-    private void saveAllChangedCorrespondences(final ModelInstance modelInstanceToSave) {
+    private void saveExistingModelInstanceOriginal(final VURI vuri,
+            final Pair<EObject, TUID> tuidToUpdateWithRootEObjectPair) {
+        final TransactionalEditingDomain transactionalEditingDomain = getTransactionalEditingDomain();
+        transactionalEditingDomain.getCommandStack().execute(new RecordingCommand(transactionalEditingDomain) {
+            @Override
+            protected void doExecute() {
+                ModelInstance modelInstanceToSave = getModelInstanceOriginal(vuri);
+                Metamodel metamodel = getMetamodelByURI(vuri);
+                Resource resourceToSave = modelInstanceToSave.getResource();
+                try {
+                    EcoreResourceBridge.saveResource(resourceToSave, metamodel.getDefaultSaveOptions());
+                } catch (IOException e) {
+                    throw new RuntimeException("Could not save VURI + " + vuri + ": " + e);
+                }
+                saveAllChangedCorrespondences(modelInstanceToSave, tuidToUpdateWithRootEObjectPair);
+                for (EObject root : modelInstanceToSave.getRootElements()) {
+                    metamodel.removeRootFromTUIDCache(root);
+                }
+
+            }
+        });
+    }
+
+    @Override
+    public void saveModelInstanceOriginalWithEObjectAsOnlyContent(final VURI vuri, final EObject rootEObject,
+            final TUID oldTUID) {
+        final ModelInstance modelInstance = getAndLoadModelInstanceOriginal(vuri);
+        getTransactionalEditingDomain().getCommandStack()
+                .execute(new RecordingCommand(getTransactionalEditingDomain()) {
+                    @Override
+                    protected void doExecute() {
+                        final Resource resource = modelInstance.getResource();
+                        // clear the resource first
+                        resource.getContents().clear();
+                        resource.getContents().add(rootEObject);
+                        VSUMImpl.this.saveExistingModelInstanceOriginal(vuri,
+                                new Pair<EObject, TUID>(rootEObject, oldTUID));
+                    }
+                });
+    }
+
+    private void saveAllChangedCorrespondences(final ModelInstance modelInstanceToSave,
+            final Pair<EObject, TUID> tuidToUpdateNewRootEObjectPair) {
         VURI metamodeURI = modelInstanceToSave.getMetamodeURI();
         Metamodel metamodel = this.metamodelManaging.getMetamodel(metamodeURI);
         Set<InternalCorrespondenceInstance> allCorrespondenceInstances = getOrCreateAllCorrespondenceInstancesForMM(
                 metamodel);
         for (InternalCorrespondenceInstance correspondenceInstance : allCorrespondenceInstances) {
+            if (null != tuidToUpdateNewRootEObjectPair) {
+                correspondenceInstance.update(tuidToUpdateNewRootEObjectPair.getSecond(),
+                        tuidToUpdateNewRootEObjectPair.getFirst());
+            }
             if (correspondenceInstance.changedAfterLastSave()) {
                 if (correspondenceInstance instanceof CorrespondenceInstanceDecorator) {
                     saveCorrespondenceInstanceDecorators((CorrespondenceInstanceDecorator) correspondenceInstance);
@@ -335,12 +373,14 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     }
 
     @Override
-    public TransactionalEditingDomain getTransactionalEditingDomain() {
+    public synchronized TransactionalEditingDomain getTransactionalEditingDomain() {
+        if (null == TransactionalEditingDomain.Factory.INSTANCE.getEditingDomain(this.resourceSet)) {
+            attachTransactionalEditingDomain();
+        }
         return TransactionalEditingDomain.Factory.INSTANCE.getEditingDomain(this.resourceSet);
     }
 
-    @Override
-    public void attachTransactionalEditingDomain() {
+    private void attachTransactionalEditingDomain() {
         TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain(this.resourceSet);
     }
 
@@ -349,5 +389,23 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         TransactionalEditingDomain domain = TransactionalEditingDomain.Factory.INSTANCE
                 .getEditingDomain(this.resourceSet);
         domain.dispose();
+    }
+
+    @Override
+    public void deleteModelInstanceOriginal(final VURI vuri) {
+        final ModelInstance modelInstance = getModelInstanceOriginal(vuri);
+        final Resource resource = modelInstance.getResource();
+        getTransactionalEditingDomain().getCommandStack()
+                .execute(new RecordingCommand(getTransactionalEditingDomain()) {
+                    @Override
+                    protected void doExecute() {
+                        try {
+                            resource.delete(null);
+                            VSUMImpl.this.modelInstances.remove(modelInstance);
+                        } catch (final IOException e) {
+                            logger.info("Deletion of resource " + resource + " did not work. Reason: " + e);
+                        }
+                    }
+                });
     }
 }

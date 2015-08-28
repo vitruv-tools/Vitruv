@@ -61,8 +61,10 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 		if (newCorrespondingEObjects.nullOrEmpty) {
 			return transformationResult
 		}
-		PCMJaMoPPUtils.handleRootChanges(newCorrespondingEObjects, blackboard,
-			PCMJaMoPPUtils.getSourceModelVURI(newRootEObject), transformationResult)
+		newCorrespondingEObjects.forEach [ newCorrespondingEObject |
+			PCMJaMoPPUtils.addRootChangeToTransformationResult(newCorrespondingEObject, blackboard,
+				PCMJaMoPPUtils.getSourceModelVURI(newRootEObject), transformationResult)
+		]
 		for (correspondingEObject : newCorrespondingEObjects) {
 			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newRootEObject, correspondingEObject)
 		}
@@ -99,8 +101,10 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
 		val transformationResult = new TransformationResult
 		val javaRoots = newCorrespondingEObjects.filter(typeof(JavaRoot))
-		PCMJaMoPPUtils.handleRootChanges(javaRoots, blackboard, PCMJaMoPPUtils.getSourceModelVURI(newAffectedEObject),
-			transformationResult)
+		javaRoots.forEach [ javaRoot |
+			PCMJaMoPPUtils.addRootChangeToTransformationResult(javaRoot, blackboard,
+				PCMJaMoPPUtils.getSourceModelVURI(newAffectedEObject), transformationResult)
+		]
 
 		for (jaMoPPElement : newCorrespondingEObjects) {
 			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newValue, jaMoPPElement)
@@ -127,11 +131,11 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 				return transformationResult
 			}
 
-	override unsetContainmentEReference(EObject affectedEObject, EReference affectedReference, EObject oldValue,
-		EObject[] oldCorrespondingEObjectsToDelete) {
+			override unsetContainmentEReference(EObject affectedEObject, EReference affectedReference, EObject oldValue,
+				EObject[] oldCorrespondingEObjectsToDelete) {
 
-		// Called everytime a BasicComponent is removed - does nothing because the actual removing is already done in deleteNonRootEObjectInList
-		return new TransformationResult
-	}
+				// Called everytime a BasicComponent is removed - does nothing because the actual removing is already done in deleteNonRootEObjectInList
+				return new TransformationResult
+			}
 
-}
+		}

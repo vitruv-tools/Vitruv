@@ -2,12 +2,15 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes;
 
 import java.lang.reflect.Modifier;
 
+import org.apache.log4j.Logger;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 
 public abstract class VitruviusRecordingCommand extends RecordingCommand {
+
+    protected static final Logger logger = Logger.getLogger(VitruviusRecordingCommand.class.getSimpleName());
 
     protected TransformationResult transformationResult;
 

@@ -8,7 +8,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationRes
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationRunnable;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusRecordingCommand;
 
-// if a blackboard parameter is needed this class should be move to contracts.util.bridges
 public class EMFCommandBridge {
 
     private EMFCommandBridge() {
@@ -19,6 +18,10 @@ public class EMFCommandBridge {
             @Override
             protected void doExecute() {
                 TransformationResult transformationResult = transformationRunnable.runTransformation();
+                if (null == transformationResult) {
+                    logger.warn(
+                            "Transformation change result is null. This indicates that the previous transformation had an error.");
+                }
                 this.transformationResult = transformationResult;
             }
         };

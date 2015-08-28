@@ -11,7 +11,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionTy
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
 import java.io.ByteArrayInputStream
 import java.util.ArrayList
@@ -177,7 +176,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		Object newValue, Blackboard blackboard, boolean changeNamespanceIfCompilationUnit,
 		TransformationResult transformationResult) {
 			val TUID oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(javaRoot)
-
+			val vuriToDelete = VURI.getInstance(javaRoot.eResource)
 			// change name
 			var String newName = newValue.toString
 			if (javaRoot instanceof CompilationUnit) {
@@ -193,12 +192,8 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 					changeNamespanceIfCompilationUnit)
 			}
 			javaRoot.name = newName;
-
-			val VURI oldVURI = VURI.getInstance(javaRoot.eResource.getURI)
-			blackboard.correspondenceInstance.update(oldTUID, javaRoot)
-			TransformationUtils.deleteFile(oldVURI)
-			PCMJaMoPPUtils.addRootChangeToTransformationResult(javaRoot, blackboard,
-				PCMJaMoPPUtils.getSourceModelVURI(javaRoot), transformationResult)
+			PCMJaMoPPUtils.handleRootChanges(javaRoot, blackboard,
+				PCMJaMoPPUtils.getSourceModelVURI(javaRoot), transformationResult, vuriToDelete, oldTUID)
 		}
 
 		def static createPrivateField(TypeReference reference, String name) {
@@ -474,11 +469,10 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 			// add classifier to compilation unit
 			jaMoPPCompilationUnit.classifiers.add(jaMoPPClass)
 
-			// add compilation unit to package		
-			jaMoPPPackage.compilationUnits.add(jaMoPPCompilationUnit)
+			// do not add compilation unit to package --> would cause problems by TUID calculation
+			/*jaMoPPPackage.compilationUnits.add(jaMoPPCompilationUnit)*/
 			jaMoPPCompilationUnit.namespaces.addAll(jaMoPPPackage.namespaces)
 			jaMoPPCompilationUnit.namespaces.add(jaMoPPPackage.name)
-			jaMoPPPackage.compilationUnits.add(jaMoPPCompilationUnit)
 			return #[jaMoPPCompilationUnit, jaMoPPClass]
 		}
 

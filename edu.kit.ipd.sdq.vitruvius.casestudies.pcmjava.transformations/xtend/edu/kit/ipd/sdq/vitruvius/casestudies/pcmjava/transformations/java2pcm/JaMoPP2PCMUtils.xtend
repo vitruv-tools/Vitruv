@@ -5,11 +5,11 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
 import java.util.ArrayList
 import java.util.HashSet
@@ -37,7 +37,6 @@ import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.repository.RepositoryComponent
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 import org.palladiosimulator.pcm.system.System
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 
 abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 	private new() {
@@ -100,9 +99,8 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 					pcmRoot.entityName = newValue.toString;
 
 					val VURI oldVURI = VURI.getInstance(pcmRoot.eResource.getURI)
-					TransformationUtils.deleteFile(oldVURI)
-					blackboard.correspondenceInstance.update(oldTUID, pcmRoot)
-					PCMJaMoPPUtils.handleRootChanges(pcmRoot, blackboard, oldVURI, transformationResult)
+					PCMJaMoPPUtils.handleRootChanges(pcmRoot, blackboard, oldVURI, transformationResult, oldVURI, oldTUID)
+					transformationResult.addVURIToDelete(oldVURI)
 				}
 			}
 		}
@@ -139,7 +137,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 			}
 			for (pcmElement : newCorrespondingEObjects) {
 				if (pcmElement instanceof Repository || pcmElement instanceof System) {
-					PCMJaMoPPUtils.handleRootChanges(pcmElement, blackboard,
+					PCMJaMoPPUtils.addRootChangeToTransformationResult(pcmElement, blackboard,
 						PCMJaMoPPUtils.getSourceModelVURI(newEObject), transformationResult)
 				} else {
 					// do nothing. save will be done later
