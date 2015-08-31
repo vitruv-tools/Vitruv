@@ -9,9 +9,11 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.MappingInterfaceToOperationInterface;
@@ -24,6 +26,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentReferenceCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
@@ -35,6 +38,9 @@ import uml_mockup.UPackage;
 
 public class CorrespondenceTest extends VSUMTest {
     private static final String interfaceCRefName = "interfaces";
+    private static final String NEW_UML_INSTANCE_URI = "MockupProject/model/MyNewUML.uml_mockup";
+
+    private static final Logger logger = Logger.getLogger(CorrespondenceTest.class.getSimpleName());
 
     @Override
     @Test
@@ -67,6 +73,52 @@ public class CorrespondenceTest extends VSUMTest {
         // testUpdate(repo, pkg, mappedCorrespondenceInstance, repo2pkg);
 
         testCorrespondencePersistence(vsum, repo, pkg, correspondenceInstance);
+    }
+
+    @Test
+    public void correspondenceUpdateTest() {
+        // create vsum and Repo and UPackag
+        VSUMImpl vsum = testMetaRepositoryAndVSUMCreation();
+        Repository repo = testLoadObject(vsum, PCM_INSTANCE_URI, Repository.class);
+        UPackage pkg = testLoadObject(vsum, UML_INSTANCE_URI, UPackage.class);
+        // create correspondence
+        InternalCorrespondenceInstance correspondenceInstance = testCorrespondenceInstanceCreation(vsum);
+        correspondenceInstance.createAndAddEObjectCorrespondence(repo, pkg);
+
+        removePkgFromFileAndUpdateCorrespondence(pkg, correspondenceInstance);
+
+        saveUPackageInNewFileAndUpdateCorrespondence(vsum, pkg, correspondenceInstance);
+
+        // get the correspondence of repo
+        Set<Correspondence> correspondences = correspondenceInstance.getAllCorrespondences(repo);
+        assertEquals("Only one correspondence is expected for the repository.", 1, correspondences.size());
+        for (Correspondence correspondence : correspondences) {
+            assertTrue("Correspondence is not from the type EObjectCorrespondence",
+                    correspondence instanceof EObjectCorrespondence);
+            EObjectCorrespondence eoc = (EObjectCorrespondence) correspondence;
+            logger.info("EObject with TUID: " + eoc.getElementATUID() + " corresponds to EObject with TUID: "
+                    + eoc.getElementBTUID());
+            EObject a = correspondenceInstance.resolveEObjectFromTUID(eoc.getElementATUID());
+            EObject b = correspondenceInstance.resolveEObjectFromTUID(eoc.getElementBTUID());
+            assertNotNull("Left Object is null", a);
+            assertNotNull("Right Object is null", b);
+            logger.info("A: " + a + " corresponds to B: " + b);
+        }
+    }
+
+    private void saveUPackageInNewFileAndUpdateCorrespondence(final VSUMImpl vsum, final UPackage pkg,
+            final InternalCorrespondenceInstance correspondenceInstance) {
+        TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(pkg);
+        VURI newVURI = VURI.getInstance(NEW_UML_INSTANCE_URI);
+        vsum.saveModelInstanceOriginalWithEObjectAsOnlyContent(newVURI, pkg, oldTUID);
+        correspondenceInstance.update(oldTUID, pkg);
+    }
+
+    private void removePkgFromFileAndUpdateCorrespondence(final UPackage pkg,
+            final InternalCorrespondenceInstance correspondenceInstance) {
+        TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(pkg);
+        EcoreUtil.remove(pkg);
+        correspondenceInstance.update(oldTUID, pkg);
     }
 
     private void testCorrespondencePersistence(final VSUMImpl vsum, final Repository repo, final UPackage pkg,
