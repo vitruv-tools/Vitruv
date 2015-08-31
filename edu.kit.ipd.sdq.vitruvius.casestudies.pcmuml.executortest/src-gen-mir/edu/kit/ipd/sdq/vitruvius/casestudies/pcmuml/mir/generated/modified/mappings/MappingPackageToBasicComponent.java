@@ -13,8 +13,12 @@ import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.RepositoryFactory;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EclipseHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRMappingRealization;
 
@@ -87,7 +91,15 @@ public class MappingPackageToBasicComponent extends AbstractMIRMappingRealizatio
 
 		org.eclipse.uml2.uml.Package pkg = (org.eclipse.uml2.uml.Package) eObject;
 		BasicComponent bc = RepositoryFactory.eINSTANCE.createBasicComponent();
-		getMappedCorrespondenceInstanceFromBlackboard(blackboard).createMappedCorrespondence(pkg, bc, this);
+		VURI resourceVURI = VURI.getInstance(EclipseHelper.askForNewResource(bc));
+		
+		// FIXME DW add to Mapping...
+		final ModelProviding modelProviding = blackboard.getModelProviding();
+		final ModelInstance modelInstance = modelProviding.getAndLoadModelInstanceOriginal(resourceVURI);
+		modelInstance.getRootElements().add(bc);
+		
+		final MappedCorrespondenceInstance correspondenceInstance = getMappedCorrespondenceInstanceFromBlackboard(blackboard);
+		correspondenceInstance.createMappedCorrespondence(pkg, bc, this);
 		
 		return Collections.singleton(bc);
 	}
