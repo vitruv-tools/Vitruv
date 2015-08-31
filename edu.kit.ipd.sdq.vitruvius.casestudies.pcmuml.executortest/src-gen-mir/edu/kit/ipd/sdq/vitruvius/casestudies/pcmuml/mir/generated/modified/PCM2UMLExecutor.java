@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.MappingInterfaceToOperationInterface;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.MappingUClassToInterface;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRChange2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
@@ -13,17 +13,17 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 /**
  * {@link AbstractMIRChange2CommandTransforming} for keeping the following meta models consistent:
  * <ol>
- *   <li>http://palladiosimulator.org/PalladioComponentModel/Repository/5.1</li>
- *   <li>http://www.eclipse.org/uml2/5.0.0/UML</li>
+ *   <li>http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.uml_mockup</li>
+ *   <li>http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.pcm_mockup</li>
  * </ol>.
  */
 public class PCM2UMLExecutor extends AbstractMIRChange2CommandTransforming {
 	private static final Logger LOGGER = Logger.getLogger(PCM2UMLExecutor.class);
 	
 	/** The first mapped metamodel. **/
-	public final String MM_ONE = "http://palladiosimulator.org/PalladioComponentModel/Repository/5.1";
+	public final String MM_ONE = "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.uml_mockup";
 	/** The second mapped metamodel. **/
-	public final String MM_TWO = "http://www.eclipse.org/uml2/5.0.0/UML";
+	public final String MM_TWO = "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.pcm_mockup";
 	
 	private final VURI VURI_ONE = VURI.getInstance(MM_ONE);
 	private final VURI VURI_TWO = VURI.getInstance(MM_TWO);
@@ -39,9 +39,8 @@ public class PCM2UMLExecutor extends AbstractMIRChange2CommandTransforming {
 	
 	@Override
 	protected void setup() {
-		addMIRMapping(edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.MappingPackageToBasicComponent.INSTANCE);
-		addMIRMapping(edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.MappingInterfaceToOperationInterface.INSTANCE);
-//		addMIRMapping(edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.Mapping1.INSTANCE);
+		addMIRMapping(edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.MappingUPackageToRepository.INSTANCE);
+		addMIRMapping(edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.MappingUClassToInterface.INSTANCE);
 	}
 
 	@Override

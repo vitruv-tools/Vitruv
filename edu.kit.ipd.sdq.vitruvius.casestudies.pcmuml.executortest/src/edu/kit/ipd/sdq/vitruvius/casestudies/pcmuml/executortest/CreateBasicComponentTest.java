@@ -11,65 +11,72 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.uml2.uml.Package;
-import org.eclipse.uml2.uml.UMLFactory;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.PCM2UMLExecutor;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util.MIRTestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.VitruviusEMFCasestudyTest;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
+import uml_mockup.UClass;
+import uml_mockup.UPackage;
+import uml_mockup.Uml_mockupFactory;
 
 public class CreateBasicComponentTest extends VitruviusEMFCasestudyTest implements SynchronisationListener {
 	private static final Logger LOGGER = Logger.getLogger(CreateBasicComponentTest.class);
 	private static final String MODEL_PATH = TestUtil.PROJECT_URI + "/model";
 	
-	private <T extends EObject> T createManipulateSaveAndSyncResource(String resourcePath, Blackboard blackboard, Supplier<T> manipulate) {
+	@Override
+	protected void synchronizeFileChange(FileChangeKind fileChangeKind, VURI vuri) {
+		LOGGER.trace("synchronizing file change for " + vuri.toString());
+		super.synchronizeFileChange(fileChangeKind, vuri);
+	}
+	
+	@Override
+	protected void triggerSynchronization(VURI vuri) {
+		LOGGER.trace("triggering synchronization for " + vuri.toString());
+		super.triggerSynchronization(vuri);
+	}
+	
+	private <T extends EObject> T createManipulateSaveAndSyncResource(String resourcePath, Supplier<T> manipulate) throws IOException {
         final VURI resourceVURI = VURI.getInstance(resourcePath);
-        final ModelProviding modelProviding = blackboard.getModelProviding();
         
         final T result = manipulate.get();
-        final TUID tuid = blackboard.getCorrespondenceInstance().calculateTUIDFromEObject(result);
-		modelProviding.saveModelInstanceOriginalWithEObjectAsOnlyContent(resourceVURI, result, tuid);
+        final URI resourceURI = URI.createPlatformResourceURI(resourcePath, false);
+		final Resource resource = EcoreResourceBridge.loadResourceAtURI(resourceURI, resourceSet);
+		EcoreResourceBridge.saveEObjectAsOnlyContent(result, resource);
         
         this.synchronizeFileChange(FileChangeKind.CREATE, resourceVURI);
-        
-        // FIXME DW are the two following lines needed?
-//        changeRecorder.beginRecording(Collections.singletonList(resource));
-//        this.triggerSynchronization(resourceVURI);
         
         return result;
 	}
 	
-	private Blackboard getBlackboard() {
-		throw new UnsupportedOperationException("Not implemented.");
+	private EObject createAndSyncResourceWithRootObject(String resourcePath, EObject rootEObject) throws IOException {
+		return createManipulateSaveAndSyncResource(resourcePath, () -> rootEObject);
 	}
 	
-	private EObject createAndSyncResourceWithRootObject(String resourcePath, Blackboard blackboard, EObject rootEObject) {
-		return createManipulateSaveAndSyncResource(resourcePath, blackboard, () -> rootEObject);
-	}
-	
-	private <T extends EObject> void recordManipulateSaveAndSync(T input, Blackboard blackboard, Consumer<T> manipulate) {
+	private <T extends EObject> void recordManipulateSaveAndSync(T input, Consumer<T> manipulate) throws IOException {
 		changeRecorder.beginRecording(Collections.singletonList(input));
 		manipulate.accept(input);
-		blackboard.getModelProviding().saveExistingModelInstanceOriginal(VURI.getInstance(input.eResource()));
+		EcoreResourceBridge.saveResource(input.eResource());
+		this.triggerSynchronization(input);
 	}
 	
-	private Package createPackage(String name) {
-		Package pkg = UMLFactory.eINSTANCE.createPackage();
+	private UPackage createPackage(String name) {
+		UPackage pkg = Uml_mockupFactory.eINSTANCE.createUPackage();
 		pkg.setName(name);
 		return pkg;
 	}
@@ -89,19 +96,41 @@ public class CreateBasicComponentTest extends VitruviusEMFCasestudyTest implemen
 		PropertyConfigurator.configure("log4j.properties");
 		Logger.getRootLogger().setLevel(Level.ALL);
 	}
+
+	@Ignore
+	@Test
+	public void createPackage() throws IOException {
+		LOGGER.trace("Starting: createPackage");		
+		UPackage pkg = createPackage("FirstPackageName1");
+		createAndSyncResourceWithRootObject(MODEL_PATH + "/uml1.uml", pkg);		
+		LOGGER.trace("Finished: createPackage");		
+	}
 	
 	@Test
-	public void createSimpleUML() throws IOException {
-		LOGGER.trace("Starting first change");		
-
-		Package pkg = createPackage("FirstPackageName");
-		createAndSyncResourceWithRootObject(MODEL_PATH + "/uml1.uml", getBlackboard(), pkg);		
-		LOGGER.trace("Finished first change");
+	public void createPackageAndRename() throws IOException {
+		LOGGER.trace("Starting: createPackageAndRename");		
+		LOGGER.trace("creating Package");
+		UPackage pkg = createPackage("FirstPackageName2");
+		createAndSyncResourceWithRootObject(MODEL_PATH + "/uml2.uml", pkg);		
 		
-		LOGGER.trace("Starting second change");
-		recordManipulateSaveAndSync(pkg, getBlackboard(),
-			it -> { it.setName("SecondPackageName"); });
-		LOGGER.trace("Finished second change");
+		LOGGER.trace("Renaming Package");
+		recordManipulateSaveAndSync(pkg, it -> { it.setName("SecondPackageName2"); });
+		LOGGER.trace("Finished: createPackageAndRename");
+	}
+	
+	@Ignore
+	@Test
+	public void createPackageAndNestedInterface() throws IOException {
+		LOGGER.trace("Starting: createPackageAndNestedInterface");		
+		LOGGER.trace("creating Package");
+		UPackage pkg = createPackage("FirstPackageName3");
+		createAndSyncResourceWithRootObject(MODEL_PATH + "/uml3.uml", pkg);		
+		recordManipulateSaveAndSync(pkg, it -> {
+			UClass clazz = Uml_mockupFactory.eINSTANCE.createUClass();
+			clazz.setName("TestNestedClass");
+			it.getClasses().add(clazz);
+		});
+		LOGGER.trace("Finished: createPackageAndNestedInterface");
 	}
 	
 	@Override
