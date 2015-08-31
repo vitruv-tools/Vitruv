@@ -14,7 +14,6 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.emf.changedescription2change.helpe
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateEAttribute;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
@@ -34,14 +33,14 @@ final class InitializeEChange {
 
     protected static <T extends EObject> void setupUpdateEReference(UpdateEReference<T> update, EObject affectedObject,
             EReference affectedFeature) {
-        update.setOldAffectedEObject(EcoreUtil.copy(affectedObject));
+        update.setOldAffectedEObject(affectedObject);
         update.setNewAffectedEObject(affectedObject);
         update.setAffectedFeature(affectedFeature);
     }
 
     protected static <T extends Object> void setupUpdateEAttribute(UpdateEAttribute<T> update, EObject affectedObject,
             EAttribute affectedFeature) {
-        update.setOldAffectedEObject(EcoreUtil.copy(affectedObject));
+        update.setOldAffectedEObject(affectedObject);
         update.setNewAffectedEObject(affectedObject);
         update.setAffectedFeature(affectedFeature);
     }
