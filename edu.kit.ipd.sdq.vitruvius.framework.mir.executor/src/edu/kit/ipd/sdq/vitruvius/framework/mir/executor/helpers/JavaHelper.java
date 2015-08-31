@@ -3,6 +3,8 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
@@ -41,5 +43,13 @@ public final class JavaHelper {
 		} else {
 			return Optional.empty();
 		}
+	}
+	
+	public static <T> Consumer<T> emptyConsumer() {
+		return it -> {};
+	}
+	
+	public static <T> Supplier<T> nullSupplier() {
+		return () -> null;
 	}
 }
