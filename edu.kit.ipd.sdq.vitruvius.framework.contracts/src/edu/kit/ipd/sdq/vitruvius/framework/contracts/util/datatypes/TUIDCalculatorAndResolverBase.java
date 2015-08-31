@@ -105,9 +105,10 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
 
     private Integer getCacheKey(final String tuid) {
         String cachedTUIDMarker = VitruviusConstants.getCachedTUIDMarker();
-        if (tuid.startsWith(cachedTUIDMarker)) {
-            int markerEndIndex = cachedTUIDMarker.length() - 1;
-            String suffixAfterMarker = tuid.substring(markerEndIndex);
+        String tuidSuffix = getTUIDWithoutDefaultPrefix(tuid);
+        if (tuidSuffix.startsWith(cachedTUIDMarker)) {
+            int markerEndIndex = cachedTUIDMarker.length();
+            String suffixAfterMarker = tuidSuffix.substring(markerEndIndex);
             String[] suffixSegments = getSegments(suffixAfterMarker);
             if (suffixSegments.length > 0) {
                 String keyString = suffixSegments[0];
