@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated uml_mockup -->
+      <package
+            uri="http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.uml_mockup"
+            class="uml_mockup.Uml_mockupPackage"
+            genModel="metamodels/uml_mockup.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated pcm_mockup -->
+      <package
+            uri="http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.pcm_mockup"
+            class="pcm_mockup.Pcm_mockupPackage"
+            genModel="metamodels/pcm_mockup.genmodel"/>
+   </extension>
+
+</plugin>
