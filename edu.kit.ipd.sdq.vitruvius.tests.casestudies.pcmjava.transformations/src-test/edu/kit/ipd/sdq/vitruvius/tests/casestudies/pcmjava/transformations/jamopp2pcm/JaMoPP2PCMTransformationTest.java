@@ -23,8 +23,10 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jdt.core.IBuffer;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
@@ -48,7 +50,10 @@ import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.text.edits.TextEdit;
+import org.emftext.language.java.annotations.AnnotationInstance;
+import org.emftext.language.java.annotations.AnnotationsFactory;
 import org.emftext.language.java.classifiers.Classifier;
+import org.emftext.language.java.classifiers.ClassifiersFactory;
 import org.emftext.language.java.classifiers.ConcreteClassifier;
 import org.emftext.language.java.classifiers.Interface;
 import org.emftext.language.java.containers.CompilationUnit;
@@ -58,6 +63,7 @@ import org.emftext.language.java.members.ClassMethod;
 import org.emftext.language.java.members.Field;
 import org.emftext.language.java.members.Member;
 import org.emftext.language.java.members.Method;
+import org.emftext.language.java.modifiers.AnnotableAndModifiable;
 import org.emftext.language.java.types.TypeReference;
 import org.palladiosimulator.pcm.core.entity.NamedElement;
 import org.palladiosimulator.pcm.repository.BasicComponent;
@@ -85,11 +91,16 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPCh
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
 import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.tests.TestUserInteractor;
 import edu.kit.ipd.sdq.vitruvius.tests.VitruviusCasestudyTest;
@@ -141,7 +152,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         if (null == pcmJavaBuilder) {
             return null;
         }
-        final VSUMImpl vsum = TestUtil.getFieldFromClass(VitruviusEmfBuilder.class, "vsum", pcmJavaBuilder);
+        final VSUMImpl vsum = JavaBridge.getFieldFromClass(VitruviusEmfBuilder.class, "vsum", pcmJavaBuilder);
         final VURI jaMoPPVURI = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE);
         final VURI pcmVURI = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
         final CorrespondenceInstance corresponcenceInstance = vsum.getCorrespondenceInstanceOriginal(pcmVURI,
@@ -392,7 +403,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
      */
     private void setUserInteractor(final UserInteracting newUserInteracting) throws Throwable {
         final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
-        final ChangeSynchronizerImpl changeSynchronizerImpl = TestUtil.getFieldFromClass(VitruviusEmfBuilder.class,
+        final ChangeSynchronizerImpl changeSynchronizerImpl = JavaBridge.getFieldFromClass(VitruviusEmfBuilder.class,
                 "changeSynchronizing", pcmJavaBuilder);
         this.setUserInteractor(newUserInteracting, changeSynchronizerImpl);
     }
@@ -750,4 +761,45 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         return field;
     }
 
+    /**
+     * Create change for annotation manually and notify change synchonizer
+     *
+     * @param annotableAndModifiable
+     * @throws Throwable
+     */
+    protected void addAnnotationToMember(final AnnotableAndModifiable annotableAndModifiable,
+            final String annotationName) throws Throwable {
+        final CreateNonRootEObjectInList<EObject> createChange = ContainmentFactory.eINSTANCE
+                .createCreateNonRootEObjectInList();
+        createChange.setOldAffectedEObject(annotableAndModifiable);
+        final AnnotationInstance newAnnotation = AnnotationsFactory.eINSTANCE.createAnnotationInstance();
+        final Classifier classifier = this.createClassifierFromName(annotationName);
+        newAnnotation.setAnnotation(classifier);
+        annotableAndModifiable.getAnnotationsAndModifiers().add(newAnnotation);
+        createChange.setNewAffectedEObject(EcoreUtil.copy(annotableAndModifiable));
+        final EReference containingReference = (EReference) newAnnotation.eContainingFeature();
+        @SuppressWarnings("unchecked")
+        final int index = ((EList<EObject>) createChange.getNewAffectedEObject().eGet(containingReference))
+                .indexOf(newAnnotation);
+        createChange.setAffectedFeature(containingReference);
+        createChange.setIndex(index);
+        createChange.setNewValue(newAnnotation);
+        final ChangeSynchronizing cs = this.getChangeSynchronizing();
+        final VURI vuri = VURI.getInstance(annotableAndModifiable.eResource());
+        final EMFModelChange change = new EMFModelChange(createChange, vuri);
+        cs.synchronizeChange(change);
+    }
+
+    private ChangeSynchronizing getChangeSynchronizing() throws Throwable {
+        final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
+        final ChangeSynchronizing changeSynchronizing = JavaBridge.getFieldFromClass(VitruviusEmfBuilder.class,
+                "changeSynchronizing", pcmJavaBuilder);
+        return changeSynchronizing;
+    }
+
+    private Classifier createClassifierFromName(final String annotationName) {
+        final org.emftext.language.java.classifiers.Class jaMoPPClass = ClassifiersFactory.eINSTANCE.createClass();
+        jaMoPPClass.setName(annotationName);
+        return jaMoPPClass;
+    }
 }

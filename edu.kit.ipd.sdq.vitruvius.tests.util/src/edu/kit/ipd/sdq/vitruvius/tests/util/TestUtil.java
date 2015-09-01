@@ -255,15 +255,6 @@ public final class TestUtil {
         TestUtil.waitForSynchronization(WAITING_TIME_FOR_SYNCHRONIZATION);
     }
 
-    public static <T> T getFieldFromClass(final Class<?> classWithField, final String fieldName, final Object instance)
-            throws Throwable {
-        final java.lang.reflect.Field field = classWithField.getDeclaredField(fieldName);
-        field.setAccessible(true);
-        @SuppressWarnings("unchecked")
-        final T t = (T) field.get(instance);
-        return t;
-    }
-
     public static IProject getTestProject() {
         final IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProject(PROJECT_URI);
         return iProject;

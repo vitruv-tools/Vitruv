@@ -8,9 +8,9 @@ import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.InsertEdit;
 import org.emftext.language.java.members.Method;
 import org.junit.Test;
-
 import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.OperationSignature;
+
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
@@ -35,8 +35,8 @@ public class MethodMappingTransformationTest extends JaMoPP2PCMTransformationTes
         final OperationSignature newOpSig = super.renameMethodInClassWithName(opInterface.getEntityName(),
                 opSig.getEntityName());
 
-        this.assertOperationSignature(newOpSig, opInterface, PCM2JaMoPPTestUtils.OPERATION_SIGNATURE_1_NAME
-                + PCM2JaMoPPTestUtils.RENAME);
+        this.assertOperationSignature(newOpSig, opInterface,
+                PCM2JaMoPPTestUtils.OPERATION_SIGNATURE_1_NAME + PCM2JaMoPPTestUtils.RENAME);
     }
 
     @Test
@@ -69,8 +69,8 @@ public class MethodMappingTransformationTest extends JaMoPP2PCMTransformationTes
 
     private void assertOperationSignature(final OperationSignature opSig, final OperationInterface opInterface,
             final String expectedName) throws Throwable {
-        assertEquals("OperationSignature " + opSig + " is not in OperationInterface " + opInterface, opSig
-                .getInterface__OperationSignature().getId(), opInterface.getId());
+        assertEquals("OperationSignature " + opSig + " is not in OperationInterface " + opInterface,
+                opSig.getInterface__OperationSignature().getId(), opInterface.getId());
         this.assertPCMNamedElement(opSig, expectedName);
 
         final Method jaMoPPMethod = this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(opSig,
