@@ -5,6 +5,7 @@ import static edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util.MIRTest
 import java.io.IOException;
 import java.util.Collections;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.apache.log4j.BasicConfigurator;
@@ -69,11 +70,17 @@ public class CreateBasicComponentTest extends VitruviusEMFCasestudyTest implemen
 		return createManipulateSaveAndSyncResource(resourcePath, () -> rootEObject);
 	}
 	
-	private <T extends EObject> void recordManipulateSaveAndSync(T input, Consumer<T> manipulate) throws IOException {
+	private <T extends EObject, R> R recordManipulateSaveAndSync(T input, Function<T, R> manipulate) throws IOException {
 		changeRecorder.beginRecording(Collections.singletonList(input));
-		manipulate.accept(input);
+		R result = manipulate.apply(input);
 		EcoreResourceBridge.saveResource(input.eResource());
 		this.triggerSynchronization(input);
+		
+		return result;
+	}
+	
+	private <T extends EObject> void recordManipulateSaveAndSync(T input, Consumer<T> manipulate) throws IOException {
+		recordManipulateSaveAndSync(input, it -> { manipulate.accept(it); return null; } );
 	}
 	
 	private UPackage createPackage(String name) {
@@ -132,16 +139,21 @@ public class CreateBasicComponentTest extends VitruviusEMFCasestudyTest implemen
 			it.getClasses().add(clazz);
 		});
 		
-		recordManipulateSaveAndSync(pkg, it -> {
+		final UClass classToRename = recordManipulateSaveAndSync(pkg, it -> {
 			UClass clazz = Uml_mockupFactory.eINSTANCE.createUClass();
 			clazz.setName("TestNestedClass2");
 			it.getClasses().add(clazz);
+			return clazz;
 		});
 
 		recordManipulateSaveAndSync(pkg, it -> {
 			UClass clazz = Uml_mockupFactory.eINSTANCE.createUClass();
 			clazz.setName("TestNestedClass3_nomap");
 			it.getClasses().add(clazz);
+		});
+		
+		recordManipulateSaveAndSync(classToRename, it -> {
+			it.setName("TestNestedClass2_nomap");
 		});
 
 		LOGGER.trace("Finished: createPackageAndNestedInterface");

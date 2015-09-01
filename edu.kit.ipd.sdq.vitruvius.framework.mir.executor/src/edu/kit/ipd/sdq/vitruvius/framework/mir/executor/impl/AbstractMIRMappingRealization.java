@@ -20,11 +20,14 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationRes
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EclipseHelper;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRMappingHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 /**
  * {@link AbstractMIRMappingRealization} is extended by the code generated from
@@ -79,22 +82,22 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 	 * 
 	 * @return the created objects
 	 */
-	protected abstract Collection<EObject> createCorresponding(EObject eObject, Blackboard blackboard);
+	protected abstract Collection<Pair<EObject, VURI>> createCorresponding(EObject eObject, Blackboard blackboard);
 
 	/**
-	 * Deletes the corresponding object (and its children) and the
-	 * correspondence.
+	 * Deletes the corresponding object to <code>eObject</code>, which is <code>target</code>,
+	 * (and its children) and the correspondence itself. This method does not delete <code>eObject</code>.
 	 * 
 	 * @param eObject
+	 * @param transformationResult 
 	 * @param correspondenceInstance
 	 */
-	protected void deleteCorresponding(EObject eObject, EObject target, Blackboard blackboard) {
-		// TODO: implement
-
+	protected void deleteCorresponding(EObject eObject, EObject target, Blackboard blackboard, TransformationResult transformationResult) {
+		if (EcoreHelper.isRoot(eObject)) {
+			transformationResult.addVURIToDelete(VURI.getInstance(target.eResource()));
+		}
 		EcoreUtil.delete(target);
-		throw new UnsupportedOperationException("Not implemented");
-
-		// return result;
+		throw new UnsupportedOperationException("not implemented yet");
 	}
 
 	/**
@@ -124,7 +127,7 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 	@Override
 	public TransformationResult applyEChange(EChange eChange, Blackboard blackboard) {
 		MappedCorrespondenceInstance correspondenceInstance = getMappedCorrespondenceInstanceFromBlackboard(blackboard);
-		final ModelProviding modelProviding = blackboard.getModelProviding();
+		TransformationResult transformationResult = new TransformationResult();
 		
 		/*
 		 * TODO: change to create candidates (EObject, PotentialTransition(new,
@@ -139,51 +142,48 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 			boolean mappedAfter = checkConditions(candidate, blackboard);
 
 			EObject mappingTarget = null;
-			final Collection<EObject> affectedEObjects = new HashSet<EObject>();
-			affectedEObjects.add(candidate);
 
 			if (mappedBefore) {
+				LOGGER.trace(candidate.toString() + " was already mapped.");
 				mappingTarget = Objects.requireNonNull(correspondenceInstance.getMappingTarget(candidate, this));
 
 				if (!mappedAfter) {
-					deleteCorresponding(candidate, mappingTarget, blackboard);
+					LOGGER.trace("... and is not mapped anymore.");
+					deleteCorresponding(candidate, mappingTarget, blackboard, transformationResult);
 				}
 			}
 
 			if (!mappedBefore && mappedAfter) {
-				affectedEObjects.addAll(createCorresponding(candidate, blackboard));
+				LOGGER.trace("Create new correspondence for " + candidate.toString() + ":");
+				final Collection<Pair<EObject, VURI>> newRootObjects = createCorresponding(candidate, blackboard);
+				for (Pair<EObject, VURI> newRootObject : newRootObjects) {
+					LOGGER.trace(" -- " + newRootObject.getFirst().toString() + " -> " + newRootObject.getSecond().toString());
+				}
+				transformationResult.getRootEObjectsToSave().addAll(newRootObjects);
 				mappingTarget = Objects.requireNonNull(correspondenceInstance.getMappingTarget(candidate, this));
 			}
 
 			if (mappedAfter) {
+				LOGGER.trace("Still mapped.");
 				restorePostConditions(candidate, mappingTarget, eChange, blackboard);
-			}
-
-			handleNonContainedEObjects(affectedEObjects, blackboard);
-
-			// FIXME DW do not save everything again, should be done in ChangeSynchronizingImpl
-			final Iterator<Resource> resources = affectedEObjects.stream().map(it -> it.eResource()).distinct()
-					.iterator();
-			while (resources.hasNext()) {
-				modelProviding.saveExistingModelInstanceOriginal(VURI.getInstance(resources.next()));
 			}
 		}
 		
-		throw new UnsupportedOperationException("implement return of TransformationResult");
+		return transformationResult;
 	}
 
 	/**
 	 * Asks the user and creates new resources for EObjects in
 	 * <code>affectedEObjects</code> that do not have a container.
 	 * @param blackboard TODO
+	 * @param transformationResult 
 	 */
-	private void handleNonContainedEObjects(Collection<EObject> affectedEObjects, Blackboard blackboard) {
+	private void handleNonContainedEObjects(Collection<EObject> affectedEObjects, Blackboard blackboard, TransformationResult transformationResult) {
 		final ModelProviding modelProviding = blackboard.getModelProviding();
 		for (final EObject eObject : affectedEObjects) {
 			if (eObject.eResource() == null) {
 				VURI resourceVURI = VURI.getInstance(EclipseHelper.askForNewResource(eObject));
-				final TUID tuid = blackboard.getCorrespondenceInstance().calculateTUIDFromEObject(eObject);
-				modelProviding.saveModelInstanceOriginalWithEObjectAsOnlyContent(resourceVURI, eObject, tuid);
+				transformationResult.addRootEObjectToSave(eObject, resourceVURI);
 			}
 		}
 	}
