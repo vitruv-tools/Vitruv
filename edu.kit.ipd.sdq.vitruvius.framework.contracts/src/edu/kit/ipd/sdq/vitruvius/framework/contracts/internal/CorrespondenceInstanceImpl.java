@@ -773,7 +773,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     @Override
     public void update(final TUID oldTUID, final TUID newTUID) {
         boolean sameTUID = oldTUID != null ? oldTUID.equals(newTUID) : newTUID == null;
-        if (sameTUID) {
+        if (sameTUID || oldTUID == null) {
             return;
         }
 
