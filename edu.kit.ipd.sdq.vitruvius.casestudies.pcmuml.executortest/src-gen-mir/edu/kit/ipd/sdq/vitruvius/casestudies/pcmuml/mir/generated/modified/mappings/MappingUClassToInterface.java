@@ -54,6 +54,10 @@ public class MappingUClassToInterface extends AbstractMIRMappingRealization {
 		/*
 		 * call method with arguments upc, up, bc.
 		 */
+		
+		if (upc.getName().endsWith("nomap")) {
+			return false;
+		}
 
 		return true;
 	}
@@ -81,13 +85,13 @@ public class MappingUClassToInterface extends AbstractMIRMappingRealization {
 		 */
 	}
 
-	@Override
-	protected void deleteCorresponding(EObject eObject, EObject target, Blackboard blackboard) {
-		LOGGER.trace("deleteCorresponding(" + eObject.toString() + ", " + target.toString() + ", "
-				+ blackboard.toString() + ")");
-
-		super.deleteCorresponding(eObject, target, blackboard);
-	}
+//	@Override
+//	protected void deleteCorresponding(EObject eObject, EObject target, Blackboard blackboard) {
+//		LOGGER.trace("deleteCorresponding(" + eObject.toString() + ", " + target.toString() + ", "
+//				+ blackboard.toString() + ")");
+//
+//		super.deleteCorresponding(eObject, target, blackboard);
+//	}
 
 	@Override
 	public String getMappingID() {

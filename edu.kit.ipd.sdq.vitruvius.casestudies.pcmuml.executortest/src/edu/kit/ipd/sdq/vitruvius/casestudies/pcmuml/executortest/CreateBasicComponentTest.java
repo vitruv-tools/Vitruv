@@ -31,6 +31,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchron
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.VitruviusEMFCasestudyTest;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
+import uml_mockup.Interface;
 import uml_mockup.UClass;
 import uml_mockup.UPackage;
 import uml_mockup.Uml_mockupFactory;
@@ -106,6 +107,7 @@ public class CreateBasicComponentTest extends VitruviusEMFCasestudyTest implemen
 		LOGGER.trace("Finished: createPackage");		
 	}
 	
+	@Ignore
 	@Test
 	public void createPackageAndRename() throws IOException {
 		LOGGER.trace("Starting: createPackageAndRename");		
@@ -118,7 +120,6 @@ public class CreateBasicComponentTest extends VitruviusEMFCasestudyTest implemen
 		LOGGER.trace("Finished: createPackageAndRename");
 	}
 	
-	@Ignore
 	@Test
 	public void createPackageAndNestedInterface() throws IOException {
 		LOGGER.trace("Starting: createPackageAndNestedInterface");		
@@ -130,6 +131,19 @@ public class CreateBasicComponentTest extends VitruviusEMFCasestudyTest implemen
 			clazz.setName("TestNestedClass");
 			it.getClasses().add(clazz);
 		});
+		
+		recordManipulateSaveAndSync(pkg, it -> {
+			UClass clazz = Uml_mockupFactory.eINSTANCE.createUClass();
+			clazz.setName("TestNestedClass2");
+			it.getClasses().add(clazz);
+		});
+
+		recordManipulateSaveAndSync(pkg, it -> {
+			UClass clazz = Uml_mockupFactory.eINSTANCE.createUClass();
+			clazz.setName("TestNestedClass3_nomap");
+			it.getClasses().add(clazz);
+		});
+
 		LOGGER.trace("Finished: createPackageAndNestedInterface");
 	}
 	
@@ -156,8 +170,8 @@ public class CreateBasicComponentTest extends VitruviusEMFCasestudyTest implemen
 	@Override
 	protected MetaRepositoryImpl createMetaRepository() {
 		return MIRTestUtil.createEmptyMetaRepository(
-				createAttributeTUIDMetamodel("http://palladiosimulator.org/PalladioComponentModel/Repository/5.1", "repository"),
-				createAttributeTUIDMetamodel("http://www.eclipse.org/uml2/5.0.0/UML", "uml"));
+				createAttributeTUIDMetamodel("http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.pcm_mockup", "repository"),
+				createAttributeTUIDMetamodel("http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.uml_mockup", "uml"));
 	}
 
 	@Override

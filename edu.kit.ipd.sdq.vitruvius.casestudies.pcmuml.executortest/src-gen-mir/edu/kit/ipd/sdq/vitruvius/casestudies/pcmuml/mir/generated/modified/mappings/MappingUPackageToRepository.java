@@ -69,14 +69,14 @@ public class MappingUPackageToRepository extends AbstractMIRMappingRealization {
 		 */
 	}
 	
-	@Override
-	protected void deleteCorresponding(EObject eObject, EObject target, Blackboard blackboard) {
-		LOGGER.trace("deleteCorresponding(" + eObject.toString()
-			+ ", " + target.toString()
-			+ ", " + blackboard.toString() + ")");
-		
-		super.deleteCorresponding(eObject, target, blackboard);
-	}
+//	@Override
+//	protected void deleteCorresponding(EObject eObject, EObject target, Blackboard blackboard) {
+//		LOGGER.trace("deleteCorresponding(" + eObject.toString()
+//			+ ", " + target.toString()
+//			+ ", " + blackboard.toString() + ")");
+//		
+//		super.deleteCorresponding(eObject, target, blackboard);
+//	}
 
 	@Override
 	public String getMappingID() {
