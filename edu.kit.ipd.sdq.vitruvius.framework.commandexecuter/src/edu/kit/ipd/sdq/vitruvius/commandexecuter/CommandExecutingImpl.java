@@ -39,7 +39,6 @@ public class CommandExecutingImpl implements CommandExecuting {
             if (command instanceof VitruviusRecordingCommand) {
                 final TransformationResult transformationResult = ((VitruviusRecordingCommand) command).getTransformationResult();
 				transformationResults.add(transformationResult);
-				affectedObjects.addAll(transformationResult.getAffectedEObjects());
             }
             affectedObjects.addAll(command.getAffectedObjects());
         }
