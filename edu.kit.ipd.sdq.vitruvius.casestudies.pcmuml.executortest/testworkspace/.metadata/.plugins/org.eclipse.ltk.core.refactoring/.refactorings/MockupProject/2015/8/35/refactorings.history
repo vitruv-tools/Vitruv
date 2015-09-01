@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;MockupProject/models&apos; to &apos;model&apos;" description="Rename resource &apos;models&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="models" name="model" stamp="1440420852760" updateReferences="true"/>
-</session>
