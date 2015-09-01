@@ -17,8 +17,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
-import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 public class VSUMPersistentTest extends VSUMTest {
 
@@ -59,9 +59,9 @@ public class VSUMPersistentTest extends VSUMTest {
         VSUMImpl newVSUM = testMetaRepositoryAndVSUMCreation();
 
         // assert Maps
-        Map<Metamodel, Set<InternalCorrespondenceInstance>> oldMetamodel2CorrespondenceInstancesMap = TestUtil
+        Map<Metamodel, Set<InternalCorrespondenceInstance>> oldMetamodel2CorrespondenceInstancesMap = JavaBridge
                 .getFieldFromClass(VSUMImpl.class, "metamodel2CorrespondenceInstancesMap", vsum);
-        Map<Metamodel, Set<InternalCorrespondenceInstance>> newMetamodel2CorrespondenceInstancesMap = TestUtil
+        Map<Metamodel, Set<InternalCorrespondenceInstance>> newMetamodel2CorrespondenceInstancesMap = JavaBridge
                 .getFieldFromClass(VSUMImpl.class, "metamodel2CorrespondenceInstancesMap", newVSUM);
         assertEquals("Metamodel maps must have the same size", oldMetamodel2CorrespondenceInstancesMap.size(),
                 newMetamodel2CorrespondenceInstancesMap.size());
@@ -96,9 +96,9 @@ public class VSUMPersistentTest extends VSUMTest {
             assertTrue("Metamodel " + oldMetamodel + " not found in the new metamodel map", foundMetamodel);
         }
 
-        Map<Mapping, InternalCorrespondenceInstance> oldMapping2CorrespondenceInstanceMap = TestUtil
+        Map<Mapping, InternalCorrespondenceInstance> oldMapping2CorrespondenceInstanceMap = JavaBridge
                 .getFieldFromClass(VSUMImpl.class, "mapping2CorrespondenceInstanceMap", vsum);
-        Map<Mapping, InternalCorrespondenceInstance> newMapping2CorrespondenceInstanceMap = TestUtil
+        Map<Mapping, InternalCorrespondenceInstance> newMapping2CorrespondenceInstanceMap = JavaBridge
                 .getFieldFromClass(VSUMImpl.class, "mapping2CorrespondenceInstanceMap", newVSUM);
         assertEquals("Mapping maps must have the same size", oldMetamodel2CorrespondenceInstancesMap.size(),
                 newMetamodel2CorrespondenceInstancesMap.size());
