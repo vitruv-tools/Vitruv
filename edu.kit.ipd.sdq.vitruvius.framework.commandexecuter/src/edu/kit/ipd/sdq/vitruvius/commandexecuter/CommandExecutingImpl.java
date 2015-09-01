@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.command.Command;
@@ -17,6 +18,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusRecordingCommand;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondences;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
@@ -40,7 +43,7 @@ public class CommandExecutingImpl implements CommandExecuting {
                 final TransformationResult transformationResult = ((VitruviusRecordingCommand) command).getTransformationResult();
 				transformationResults.add(transformationResult);
             }
-            affectedObjects.addAll(command.getAffectedObjects());
+            affectedObjects.addAll(command.getAffectedObjects().stream().filter(it -> !(it instanceof Correspondence) && !(it instanceof Correspondences)).collect(Collectors.toList()));
         }
         this.executeTransformationResults(transformationResults, blackboard);
         this.saveAffectedEObjects(affectedObjects, blackboard.getModelProviding());
