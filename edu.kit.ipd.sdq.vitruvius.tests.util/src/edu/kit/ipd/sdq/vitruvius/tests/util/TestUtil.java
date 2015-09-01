@@ -6,6 +6,8 @@ import java.util.Date;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -14,13 +16,21 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationRunnable;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusRecordingCommand;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.vsum.helper.FileSystemHelper;
 
 /**
  * Utility class for all Vitruvius test cases
@@ -34,6 +44,7 @@ public final class TestUtil {
     public static final String PROJECT_URI = "MockupProject";
     public static final int WAITING_TIME_FOR_SYNCHRONIZATION = 1 * 1000;
     public static final String SOURCE_FOLDER = "src";
+    public static final String ORIGINAL_FILE_PREFIX = "ORIGINAL_";
 
     /**
      * Utility classes should not have a public constructor
@@ -218,8 +229,7 @@ public final class TestUtil {
      *            name that will be included in to VSUM project folder
      */
     public static void moveVSUMProjectToOwnFolderWithTimepstamp(final String addtionalName) {
-        final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        final IProject project = root.getProject(VSUMConstants.VSUM_PROJECT_NAME);
+        final IProject project = FileSystemHelper.getVSUMProject();
         final String timestamp = getStringWithTimestamp("");
         final IPath destinationPath = new Path("/" + VSUMConstants.VSUM_PROJECT_NAME + "_" + addtionalName + "_"
                 + timestamp);
@@ -259,4 +269,85 @@ public final class TestUtil {
         final IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProject(PROJECT_URI);
         return iProject;
     }
+    
+    public static void createAndExecuteVitruviusRecordingCommand(final Runnable runnable, ModelProviding modelProviding) {
+    	VitruviusRecordingCommand command = EMFCommandBridge.createVitruviusRecordingCommand(new TransformationRunnable() {
+            @Override
+            public TransformationResult runTransformation() {
+            	runnable.run();
+                return null;
+            }
+        });
+        final TransactionalEditingDomain domain = modelProviding.getTransactionalEditingDomain();
+        command.setTransactionDomain(domain);
+        domain.getCommandStack().execute(command);
+    }
+
+	public static void deleteAllProjectFolderCopies(String originalProjectName) {
+		IProject[] allProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects(0);
+		for (IProject project : allProjects) {
+			boolean copyOfOriginalProject = isCopyWithEqualPrefix(originalProjectName, project);
+//			boolean copyOfMetaProject = isCopyWithEqualPrefix(VSUMConstants.VSUM_PROJECT_NAME, project);
+			if (copyOfOriginalProject) {// || copyOfMetaProject) {
+				try {
+					project.delete(true, new NullProgressMonitor());
+				} catch (CoreException e) {
+					// soften
+					throw new RuntimeException(e);
+				}
+			}
+		}
+	}
+
+	private static boolean isCopyWithEqualPrefix(String originalProjectName, IProject project) {
+		String currentProjectName = project.getName();
+		boolean samePrefix = currentProjectName.startsWith(originalProjectName);
+		boolean copyOfOriginalProject = samePrefix && !currentProjectName.equals(originalProjectName);
+		return copyOfOriginalProject;
+	}
+
+	public static String copyProjectFolder(String projectFolderName) {
+		String timestamp = ""+System.currentTimeMillis();
+		try {
+			IProject originalProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectFolderName);
+			return copyProjectWithSuffix(originalProject, timestamp);
+//			IProject metaProject = FileSystemHelper.getVSUMProject();
+//			copyProjectWithSuffix(metaProject, timestamp);
+		} catch (CoreException e) {
+			// soften
+			throw new RuntimeException(e);
+		}
+	}
+
+	private static String copyProjectWithSuffix(IProject originalProject, String suffix) throws CoreException {
+		IPath originalPath = originalProject.getFullPath();
+		String lastSegment = originalPath.lastSegment();
+		String projectCopyName = lastSegment + suffix;
+		IProject project = FileSystemHelper.getProject(projectCopyName);
+		int count = 0;
+		while (project.exists()) {
+			count++;
+			project = FileSystemHelper.getProject(projectCopyName + count);
+		}
+		projectCopyName += count;
+		IPath copyPath = originalPath.removeLastSegments(1).append(projectCopyName);
+		originalProject.copy(copyPath, true, new NullProgressMonitor());
+		return projectCopyName;
+	}
+
+	public static void clearMetaProject() {
+		try {
+			IFolder correspondenceFolder = FileSystemHelper.getCorrespondenceFolder();
+			correspondenceFolder.delete(true, new NullProgressMonitor());
+			FileSystemHelper.createFolder(correspondenceFolder);
+			IFile originalInstancesFile = FileSystemHelper.getVSUMInstancesFile(ORIGINAL_FILE_PREFIX);
+			IFile currentInstancesFile = FileSystemHelper.getVSUMInstancesFile();
+			currentInstancesFile.delete(true, new NullProgressMonitor());
+			IPath currentPath = currentInstancesFile.getFullPath();
+			originalInstancesFile.copy(currentPath, true, new NullProgressMonitor());
+		} catch (CoreException e) {
+			// soften
+			throw new RuntimeException(e);
+		}
+	}
 }

@@ -20,6 +20,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationRunnable;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusRecordingCommand;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor;
@@ -67,11 +68,11 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
         final List<Change> changesForTransformation = blackboard.getAndArchiveChangesForTransformation();
         final List<Command> commands = new ArrayList<Command>();
         if (this.hasChangeRefinerForChanges(changesForTransformation)) {
-            commands.add(this.executeChangeRefiner(changesForTransformation, blackboard));
+            commands.add((Command) this.executeChangeRefiner(changesForTransformation, blackboard));
         } else {
             for (final Change change : changesForTransformation) {
                 if (change instanceof EMFModelChange) {
-                    commands.add(this.transformChange2Command((EMFModelChange) change, blackboard));
+                    commands.add((Command) this.transformChange2Command((EMFModelChange) change, blackboard));
                 } else if (change instanceof CompositeChange) {
                     commands.addAll(this.transformCompositeChange((CompositeChange) change, blackboard));
                 }
@@ -85,11 +86,11 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
         return this.pairList;
     }
 
-    private Command transformChange2Command(final EMFModelChange emfModelChange, final Blackboard blackboard) {
+    private VitruviusRecordingCommand transformChange2Command(final EMFModelChange emfModelChange, final Blackboard blackboard) {
         this.handlePackageInEChange(emfModelChange);
         this.transformationExecuter.setBlackboard(blackboard);
 
-        final Command command = EMFCommandBridge.createVitruviusRecordingCommand(new TransformationRunnable() {
+        final VitruviusRecordingCommand command = EMFCommandBridge.createVitruviusRecordingCommand(new TransformationRunnable() {
 
             @Override
             public TransformationResult runTransformation() {
@@ -166,7 +167,7 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
         return false;
     }
 
-    protected Command executeChangeRefiner(final List<Change> changesForTransformation, final Blackboard blackboard) {
+    protected VitruviusRecordingCommand executeChangeRefiner(final List<Change> changesForTransformation, final Blackboard blackboard) {
         return EMFCommandBridge.createVitruviusRecordingCommand(new TransformationRunnable() {
 
             @Override

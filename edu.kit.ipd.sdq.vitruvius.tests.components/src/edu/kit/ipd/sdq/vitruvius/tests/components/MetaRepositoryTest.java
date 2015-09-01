@@ -3,8 +3,9 @@ package edu.kit.ipd.sdq.vitruvius.tests.components;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.apache.log4j.Logger;
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -20,20 +21,31 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 public class MetaRepositoryTest {
-
-    private static final Logger logger = Logger.getLogger(MetaRepositoryTest.class.getSimpleName());
-
-    public static final String PCM_FILE_EXT = "pcm_mockup";
+    protected static final String PROJECT_FOLDER_NAME = "MockupProject";
 
     protected static final String PCM_MM_URI = "http://edu.kit.ipd.sdq.vitruvius.examples.pcm_mockup";
     protected static final String UML_MM_URI = "http://edu.kit.ipd.sdq.vitruvius.examples.uml_mockup";
+    protected static final String PCM_FILE_EXT = "pcm_mockup";
     protected static final String UML_FILE_EXT = "uml_mockup";
     protected static final String PCM_UML_VT_URI = "http://edu.kit.ipd.sdq.vitruvius.examples.pcm_uml_mockup_VT";
+
+    private String currentProjectFolderName = null;
+
+    public String getCurrentProjectFolderName() {
+        return this.currentProjectFolderName;
+    }
 
     @BeforeClass
     public static void beforeClass() {
         // initialize Logger when not done yet
         TestUtil.initializeLogger();
+        TestUtil.deleteAllProjectFolderCopies(PROJECT_FOLDER_NAME);
+        TestUtil.clearMetaProject();
+    }
+
+    @Before
+    public void beforeTest() {
+        this.currentProjectFolderName = TestUtil.copyProjectFolder(PROJECT_FOLDER_NAME);
     }
 
     @Test
@@ -46,13 +58,16 @@ public class MetaRepositoryTest {
         testGetProjectInput(PCM_MM_URI, PCM_FILE_EXT, UML_MM_URI, UML_FILE_EXT, PCM_UML_VT_URI);
 
         // generiere VSUM plugins (jetzt erst mal hart verdrahtet)
+    }
 
-        // TODO BBB KEEP ON WORKING HERE
+    @After
+    public void afterTest() {
+        // empty
     }
 
     @AfterClass
-    public static void tearDown() {
-        TestUtil.moveVSUMProjectToOwnFolder();
+    public static void afterClass() {
+        // TestUtil.moveVSUMProjectToOwnFolder();
     }
 
     public MetaRepositoryImpl testMetaRepository() {

@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.MappingInterfaceToOperationInterface;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.MappingUPackageToRepository;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FeatureInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
@@ -46,8 +46,8 @@ public class CorrespondenceTest extends VSUMTest {
     @Test
     public void testAll() {
         VSUMImpl vsum = testMetaRepositoryVSUMAndModelInstancesCreation();
-        Repository repo = testLoadObject(vsum, PCM_INSTANCE_URI, Repository.class);
-        UPackage pkg = testLoadObject(vsum, UML_INSTANCE_URI, UPackage.class);
+        Repository repo = testLoadObject(vsum, getPCMInstanceUri(), Repository.class);
+        UPackage pkg = testLoadObject(vsum, getUMLInstanceURI(), UPackage.class);
         InternalCorrespondenceInstance correspondenceInstance = testCorrespondenceInstanceCreation(vsum);
         assertFalse(correspondenceInstance.hasCorrespondences());
         EObjectCorrespondence repo2pkg = createRepo2PkgCorrespondence(repo, pkg, correspondenceInstance);
@@ -70,17 +70,17 @@ public class CorrespondenceTest extends VSUMTest {
 
         // FIXME MK (tuid cache): reactivate testUpdate in CorrespondenceTest after TUID cache is
         // working
-        // testUpdate(repo, pkg, mappedCorrespondenceInstance, repo2pkg);
+        // testUpdate(repo, pkg, correspondenceInstance, repo2pkg);
 
         testCorrespondencePersistence(vsum, repo, pkg, correspondenceInstance);
     }
 
-    @Test
+    // @Test
     public void correspondenceUpdateTest() {
         // create vsum and Repo and UPackag
         VSUMImpl vsum = testMetaRepositoryAndVSUMCreation();
-        Repository repo = testLoadObject(vsum, PCM_INSTANCE_URI, Repository.class);
-        UPackage pkg = testLoadObject(vsum, UML_INSTANCE_URI, UPackage.class);
+        Repository repo = testLoadObject(vsum, getPCMInstanceUri(), Repository.class);
+        UPackage pkg = testLoadObject(vsum, getUMLInstanceURI(), UPackage.class);
         // create correspondence
         InternalCorrespondenceInstance correspondenceInstance = testCorrespondenceInstanceCreation(vsum);
         correspondenceInstance.createAndAddEObjectCorrespondence(repo, pkg);
@@ -131,18 +131,18 @@ public class CorrespondenceTest extends VSUMTest {
             // CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence();
             // c.setElementATUID(TUID.getInstance("tuidA"));
             // c.setElementBTUID(TUID.getInstance("tuidB"));
-            MIRMappingRealization mapping = MappingInterfaceToOperationInterface.INSTANCE;
+            MIRMappingRealization mapping = MappingUPackageToRepository.INSTANCE;
             ((MappedCorrespondenceInstance) corresp).registerMappingForCorrespondence(repo2pkg, mapping);
         }
         // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 
         // save instances in order to trigger saving for CorrespondenceInstance(s)
-        VURI pcmVURI = VURI.getInstance(PCM_INSTANCE_URI);
+        VURI pcmVURI = VURI.getInstance(getPCMInstanceUri());
         vsum.saveExistingModelInstanceOriginal(pcmVURI);
         // create a new vsum from disk and load correspondence instance from disk
         VSUMImpl vsum2 = testMetaRepositoryVSUMAndModelInstancesCreation();
-        Repository repo2 = testLoadObject(vsum2, PCM_INSTANCE_URI, Repository.class);
-        UPackage pkg2 = testLoadObject(vsum2, UML_INSTANCE_URI, UPackage.class);
+        Repository repo2 = testLoadObject(vsum2, getPCMInstanceUri(), Repository.class);
+        UPackage pkg2 = testLoadObject(vsum2, getUMLInstanceURI(), UPackage.class);
         InternalCorrespondenceInstance corresp2 = testCorrespondenceInstanceCreation(vsum2);
         // do not create correspondences they have to be restored from disk
         assertTrue(corresp2.hasCorrespondences());

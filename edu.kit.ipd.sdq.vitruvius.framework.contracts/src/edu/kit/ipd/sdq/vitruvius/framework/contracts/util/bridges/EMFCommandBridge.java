@@ -13,7 +13,8 @@ public class EMFCommandBridge {
     private EMFCommandBridge() {
     }
 
-    public static Command createVitruviusRecordingCommand(final TransformationRunnable transformationRunnable) {
+    public static VitruviusRecordingCommand createVitruviusRecordingCommand(
+            final TransformationRunnable transformationRunnable) {
         final VitruviusRecordingCommand recordingCommand = new VitruviusRecordingCommand() {
             @Override
             protected void doExecute() {

@@ -46,8 +46,7 @@ public class FileSystemHelper {
     }
 
     public static IFile getCorrespondenceIFile(final String fileName) {
-        IProject correspondenceProject = getVSUMProject();
-        IFolder correspondenceFolder = getCorrespondenceFolder(correspondenceProject);
+        IFolder correspondenceFolder = getCorrespondenceFolder();
         IFile correspondenceFile = correspondenceFolder.getFile(fileName);
         return correspondenceFile;
     }
@@ -162,9 +161,13 @@ public class FileSystemHelper {
         }
     }
 
-    private static IProject getVSUMProject() {
+    public static IProject getProject(final String projectName) {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        IProject vsumProject = root.getProject(VSUMConstants.VSUM_PROJECT_NAME);
+        return root.getProject(projectName);
+    }
+
+    public static IProject getVSUMProject() {
+        IProject vsumProject = getProject(VSUMConstants.VSUM_PROJECT_NAME);
         if (!vsumProject.exists()) {
             createProject(vsumProject);
         } else if (!vsumProject.isAccessible()) {
@@ -192,19 +195,24 @@ public class FileSystemHelper {
             // description.setNatureIds(new String[] { VITRUVIUSNATURE.ID });
             // project.setDescription(description, null);
             createFolder(getCorrespondenceFolder(project));
-            createFolder(getVSMUFolder(project));
+            createFolder(getVSUMFolder(project));
         } catch (CoreException e) {
             // soften
             throw new RuntimeException(e);
         }
     }
 
-    private static IFolder getVSMUFolder(final IProject project) {
+    private static IFolder getVSUMFolder(final IProject project) {
         return project.getFolder(VSUMConstants.VSUM_FOLDER_NAME);
     }
 
-    private static void createFolder(final IFolder folder) throws CoreException {
+    public static void createFolder(final IFolder folder) throws CoreException {
         folder.create(false, true, null);
+    }
+
+    public static IFolder getCorrespondenceFolder() {
+        IProject vsumProject = getVSUMProject();
+        return getCorrespondenceFolder(vsumProject);
     }
 
     private static IFolder getCorrespondenceFolder(final IProject project) {
@@ -213,9 +221,18 @@ public class FileSystemHelper {
     }
 
     private static String getVSUMMapFileName() {
-        IFile file = getVSUMProject().getFolder(VSUMConstants.VSUM_FOLDER_NAME)
-                .getFile(VSUMConstants.VSUM_INSTANCES_FILE_NAME);
+        IFile file = getVSUMInstancesFile();
         return file.getLocation().toOSString();
+    }
+
+    public static IFile getVSUMInstancesFile() {
+        return getVSUMInstancesFile("");
+    }
+
+    public static IFile getVSUMInstancesFile(final String prefix) {
+        IFile file = getVSUMProject().getFolder(VSUMConstants.VSUM_FOLDER_NAME)
+                .getFile(prefix + VSUMConstants.VSUM_INSTANCES_FILE_NAME);
+        return file;
     }
 
 }

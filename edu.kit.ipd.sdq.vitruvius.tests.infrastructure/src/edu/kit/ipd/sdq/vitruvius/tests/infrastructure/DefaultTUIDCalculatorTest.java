@@ -23,7 +23,7 @@ public class DefaultTUIDCalculatorTest extends VSUMTest {
     @Test
     public void testAll() {
         VSUMImpl vsum = testMetaRepositoryVSUMAndModelInstancesCreation();
-        VURI model1URI = VURI.getInstance(PCM_INSTANCE_URI);
+        VURI model1URI = VURI.getInstance(getPCMInstanceUri());
         ModelInstance model1 = vsum.getAndLoadModelInstanceOriginal(model1URI);
         EObject pcmRoot = model1.getResource().getContents().get(0);
         String expectedTUID = PCM_REPO_ID;
