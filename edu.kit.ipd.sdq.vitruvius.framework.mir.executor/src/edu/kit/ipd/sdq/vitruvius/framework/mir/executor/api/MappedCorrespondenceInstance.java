@@ -54,17 +54,16 @@ public class MappedCorrespondenceInstance extends AbstractDelegatingCorresponden
 	}
 	
 	// TODO: clean up methods copied from edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMappedCorrespondenceInstance
-	public Pair<TUID, EObject> getCorrespondenceTarget(EObject eObject, Correspondence correspondence) {
+	public TUID getCorrespondenceTarget(EObject eObject, Correspondence correspondence) {
 		SameTypeCorrespondence sameTypeCorrespondence = requireType(correspondence, SameTypeCorrespondence.class);
+		TUID tuid = calculateTUIDFromEObject(eObject);
 		
 		TUID elementATUID = sameTypeCorrespondence.getElementATUID();
-		EObject eObjectA = resolveEObjectFromTUID(elementATUID);
 		TUID elementBTUID = sameTypeCorrespondence.getElementBTUID();
-		EObject eObjectB = resolveEObjectFromTUID(elementBTUID);
 		
 		// return the other side of the correspondence
-		if (eObjectA.equals(eObject)) { return new Pair<TUID, EObject>(elementBTUID, eObjectB); }
-		if (eObjectB.equals(eObject)) { return new Pair<TUID, EObject>(elementATUID, eObjectA); }
+		if (tuid.equals(elementATUID)) { return elementBTUID; }
+		if (tuid.equals(elementBTUID)) { return elementATUID; }
 		
 		throw new IllegalArgumentException(eObject.toString() + " is not part of correspondence " + correspondence.toString());
 	}
@@ -126,7 +125,7 @@ public class MappedCorrespondenceInstance extends AbstractDelegatingCorresponden
 		return filterType(correspondenceInstance.getAllCorrespondences(eObject), SameTypeCorrespondence.class)
 			.filter(it -> mapping.equals(getMappingForCorrespondence(it)))
 			.findFirst()
-			.map(it -> getCorrespondenceTarget(eObject, it).getSecond())
+			.map(it -> resolveEObjectFromTUID(getCorrespondenceTarget(eObject, it)))
 			.orElse(null);
 	}
 	
