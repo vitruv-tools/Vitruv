@@ -78,9 +78,9 @@ class JavaFieldTransformations extends Java2JMLTransformationBase {
 				filter(VariableDeclarator).filter[identifier.equals(oldValue as String)]
 			for (jmlVariableDeclaration : jmlVariableDeclarations) {
 				LOGGER.trace("Updating " + jmlVariableDeclaration)
-				val oldTUID = jmlVariableDeclaration.TUID
+				val oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(jmlVariableDeclaration)
 				jmlVariableDeclaration.identifier = newValue as String
-				val newTUID = jmlVariableDeclaration.TUID
+				val newTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(jmlVariableDeclaration)
 				blackboard.correspondenceInstance.update(oldTUID, newTUID)
 				changedObjects.add(jmlVariableDeclaration)
 			}

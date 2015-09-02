@@ -10,35 +10,23 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.Hierarchical
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 
 public class DefaultTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResolver<EObject> {
-
-    // private static final Logger logger =
-    // Logger.getLogger(DefaultTUIDCalculatorAndResolver.class.getSimpleName());
     private String nameOfIdFeature;
     private String nameOfNameFeauture;
 
-    public DefaultTUIDCalculatorAndResolver() {
-        this(VitruviusConstants.getDefaultNameOfIdentifierFeature(), VitruviusConstants.getDefaultNameOfNameFeature());
+    public DefaultTUIDCalculatorAndResolver(final String tuidPrefix) {
+        this(tuidPrefix, VitruviusConstants.getDefaultNameOfIdentifierFeature(),
+                VitruviusConstants.getDefaultNameOfNameFeature());
     }
 
-    public DefaultTUIDCalculatorAndResolver(final String nameOfIDFeature) {
-        this(nameOfIDFeature, VitruviusConstants.getDefaultNameOfNameFeature());
+    public DefaultTUIDCalculatorAndResolver(final String tuidPrefix, final String nameOfIDFeature) {
+        this(tuidPrefix, nameOfIDFeature, VitruviusConstants.getDefaultNameOfNameFeature());
     }
 
-    public DefaultTUIDCalculatorAndResolver(final String nameOfIDFeature, final String nameOfNameFeautre,
-            final String... fileExtensions) {
+    public DefaultTUIDCalculatorAndResolver(final String tuidPrefix, final String nameOfIDFeature,
+            final String nameOfNameFeautre, final String... fileExtensions) {
+        super(tuidPrefix);
         this.nameOfIdFeature = nameOfIDFeature;
         this.nameOfNameFeauture = nameOfNameFeautre;
-    }
-
-    /**
-     * class name is used as prefix for every TUID to determine whether an TUID was created using
-     * this class
-     */
-    private static final String TUIDIdentifier = DefaultTUIDCalculatorAndResolver.class.getSimpleName();
-
-    @Override
-    protected String getTUIDIdentifier() {
-        return TUIDIdentifier;
     }
 
     /**

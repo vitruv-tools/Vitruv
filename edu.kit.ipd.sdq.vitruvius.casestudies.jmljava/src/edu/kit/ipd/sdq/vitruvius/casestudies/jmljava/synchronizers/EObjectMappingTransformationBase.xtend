@@ -25,10 +25,6 @@ abstract class EObjectMappingTransformationBase extends EObjectMappingTransforma
 		return Utilities.clone(obj)
 	}
 
-	protected static def getTUID(EObject obj) {
-		return TUID.getInstance(Utilities.getTUID(obj))
-	}
-
 	protected static def <T extends EObject> getParentOfType(EObject eobject, Class<T> type) {
 		return Utilities.getParentOfType(eobject, type)
 	}

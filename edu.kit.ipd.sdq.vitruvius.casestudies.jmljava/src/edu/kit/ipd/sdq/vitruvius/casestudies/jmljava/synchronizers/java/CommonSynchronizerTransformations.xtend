@@ -29,7 +29,7 @@ class CommonSynchronizerTransformations {
 		if (jmlModifiable != null) {
 			LOGGER.trace("Replacing " + javaOldValue + " with " + javaNewValue)
 			
-			val jmlModifiableTUIDOld = TUID.getInstance(Utilities.getTUID(jmlModifiable))
+			val jmlModifiableTUIDOld = ci.calculateTUIDFromEObject(jmlModifiable)
 			CorrespondenceHelper.getSingleCorrespondence(ci, affectedJavaObject, jmlModifiable)
 			
 			val oldJmlModifier = CorrespondenceHelper.getSingleCorrespondingEObjectOfType(ci, javaOldValue, RegularModifier)
@@ -44,7 +44,7 @@ class CommonSynchronizerTransformations {
 			jmlModifiable.modifiers.add(oldIndex, newJmlModifier)
 			
 			Java2JMLCorrespondenceAdder.addCorrespondences(javaNewValue, newJmlModifier, ci)
-			ci.update(jmlModifiableTUIDOld, TUID.getInstance(Utilities.getTUID(jmlModifiable)))
+			ci.update(jmlModifiableTUIDOld, jmlModifiable)
 			
 			changedObjects.add(jmlModifiable)
 		}
@@ -75,10 +75,10 @@ class CommonSynchronizerTransformations {
 		val jmlTyped = CorrespondenceHelper.getSingleCorrespondingEObjectOfType(ci, affectedJavaObject, Typed)
 		if (jmlTyped != null) {
 			LOGGER.trace("Updating " + jmlTyped)
-			val jmlTypedTUIDOld = TUID.getInstance(Utilities.getTUID(jmlTyped))
+			val jmlTypedTUIDOld = ci.calculateTUIDFromEObject(jmlTyped)
 			val typeArrayDimensions = getArrayDimensions(affectedJavaObject as Commentable)
 			jmlTyped.type = CommonSynchronizerTasks.createJMLType(javaNewValue, typeArrayDimensions)
-			ci.update(jmlTypedTUIDOld, TUID.getInstance(Utilities.getTUID(jmlTyped)))
+			ci.update(jmlTypedTUIDOld, jmlTyped)
 			changedObjects.add(jmlTyped)
 		}
 	}

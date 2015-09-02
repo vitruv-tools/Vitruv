@@ -23,20 +23,20 @@ import org.emftext.language.java.members.Constructor
 class JaMoPPTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResolver<CompilationUnit> {
 
 	private val static Logger logger = Logger.getLogger(JaMoPPTUIDCalculatorAndResolver);
-	private val String TUIDIdentifier = JaMoPPTUIDCalculatorAndResolver.simpleName
 	private val String CLASSIFIER_SELECTOR = "classifier"
 	private val String IMPORT_SELECTOR = "import"
 	private val String METHOD_SELECTOR = "method"
 	private val String FIELD_SELECTOR = "field"
 	private val String CONSTRUCTOR_SELECTOR = Constructor.simpleName
+	private static val String NS_URI = "http://www.emftext.org/java"
+	
+	new() {
+		super(NS_URI)
+	}
 
 	// ============================================================================
 	// Base class stuff
 	// ============================================================================
-
-	override protected getTUIDIdentifier() {
-		return TUIDIdentifier
-	}
 
 	override protected getRootObjectClass() {
 		return CompilationUnit

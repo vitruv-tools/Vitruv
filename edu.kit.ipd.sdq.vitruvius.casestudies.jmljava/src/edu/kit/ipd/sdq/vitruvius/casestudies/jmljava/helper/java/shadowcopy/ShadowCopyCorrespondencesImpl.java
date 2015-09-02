@@ -22,11 +22,10 @@ import org.emftext.language.java.statements.Statement;
 
 import com.google.common.collect.BiMap;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.Utilities;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JMLTUIDCalculatorAndResolver;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JaMoPPTUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLExpressionHaving;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement;
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JMLTUIDCalculatorAndResolver;
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JaMoPPTUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TUIDCalculatorAndResolver;
@@ -88,7 +87,7 @@ public class ShadowCopyCorrespondencesImpl implements ShadowCopyCorrespondencesW
     @Override
     public <T extends NamedElement> T getShadow(T original) {
             if (!javaToShadowElement.containsKey(original)) {
-                String originalTUID = Utilities.getTUID(original);
+                String originalTUID = ci.calculateTUIDFromEObject(original).toString();
                 ModelInstance shadowModelInstance = modelInstanceHelperShadow.loadModelInstance(original.eResource()
                         .getURI());
                 EObject shadowModelRoot = shadowModelInstance.getUniqueTypedRootEObject(CompilationUnit.class);
@@ -106,7 +105,7 @@ public class ShadowCopyCorrespondencesImpl implements ShadowCopyCorrespondencesW
     @Override
     public <T extends NamedElement> T getOriginal(T shadow) {
             if (!javaToShadowElement.inverse().containsKey(shadow)) {
-                String shadowTUID = Utilities.getTUID(shadow);
+                String shadowTUID = ci.calculateTUIDFromEObject(shadow).toString();
                 CompilationUnit originalRoot = null;
                 for (CompilationUnit cu : javaCUs) {
                     if (cu.eResource().equals(shadow.eResource())) {
@@ -138,8 +137,8 @@ public class ShadowCopyCorrespondencesImpl implements ShadowCopyCorrespondencesW
         for (T correspondingElement : correspondingElements) {
             ModelInstance mi = modelInstanceHelperJMLCopies
                     .loadModelInstance(correspondingElement.eResource().getURI());
-            T correspondingElementCopy = (T) Utilities.resolve(mi.getUniqueRootEObject(),
-                    Utilities.getTUID(correspondingElement));
+            T correspondingElementCopy = (T) ci.resolveEObjectFromRootAndFullTUID(mi.getUniqueRootEObject(),
+                    ci.calculateTUIDFromEObject(correspondingElement).toString());
             copies.add(correspondingElementCopy);
         }
         return copies;
@@ -148,7 +147,7 @@ public class ShadowCopyCorrespondencesImpl implements ShadowCopyCorrespondencesW
     @SuppressWarnings("unchecked")
     @Override
     public <T extends EObject> T getJMLElement(T original) {
-        TUID originalTUID = TUID.getInstance(Utilities.getTUID(original));
+        TUID originalTUID = ci.calculateTUIDFromEObject(original);
         if (!useJMLCopies) {
             return (T) ci.resolveEObjectFromTUID(originalTUID);
         }

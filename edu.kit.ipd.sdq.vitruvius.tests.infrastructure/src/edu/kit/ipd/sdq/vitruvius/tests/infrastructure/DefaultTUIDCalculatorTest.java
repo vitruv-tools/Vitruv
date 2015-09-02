@@ -27,16 +27,16 @@ public class DefaultTUIDCalculatorTest extends VSUMTest {
         ModelInstance model1 = vsum.getAndLoadModelInstanceOriginal(model1URI);
         EObject pcmRoot = model1.getResource().getContents().get(0);
         String expectedTUID = PCM_REPO_ID;
-        EObject resolvedEObject = testTUIDCalculator(pcmRoot, pcmRoot, expectedTUID);
+        EObject resolvedEObject = testTUIDCalculator(PCM_MM_URI, pcmRoot, pcmRoot, expectedTUID);
         assertEquals(resolvedEObject, pcmRoot);
         EObject pcmComponent = pcmRoot.eContents().get(1);
         expectedTUID = PCM_COMPONENT_ID;
-        resolvedEObject = testTUIDCalculator(pcmRoot, pcmComponent, expectedTUID);
+        resolvedEObject = testTUIDCalculator(PCM_MM_URI, pcmRoot, pcmComponent, expectedTUID);
         assertEquals(resolvedEObject, pcmComponent);
     }
 
-    public EObject testTUIDCalculator(final EObject rootEObject, final EObject eObject, final String expectedTUID) {
-        TUIDCalculatorAndResolver defaultTUIDCalculatorAndResolver = new DefaultTUIDCalculatorAndResolver();
+    public EObject testTUIDCalculator(final String tuidPrefix, final EObject rootEObject, final EObject eObject, final String expectedTUID) {
+        TUIDCalculatorAndResolver defaultTUIDCalculatorAndResolver = new DefaultTUIDCalculatorAndResolver(tuidPrefix);
         String calculatedTuid = defaultTUIDCalculatorAndResolver.calculateTUIDFromEObject(eObject);
         // Calculated TUID contains more than just the UUID itself. It also contains the resource
         // and the class name that was used to create the TUID. Hence, we just compare with contains

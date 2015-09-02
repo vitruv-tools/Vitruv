@@ -1,11 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.helpers
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JMLTUIDCalculatorAndResolver
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JaMoPPTUIDCalculatorAndResolver
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TUIDCalculatorAndResolver
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil
@@ -28,24 +24,17 @@ class CorrespondenceHelper {
 	public static def getSingleCorrespondence(CorrespondenceInstance ci, EObject srcElement, EObject dstElement) {
 		val corrs = ci.getAllCorrespondences(srcElement)
 		val sameTypeCorrs = corrs.filter(SameTypeCorrespondence)
-		val result =  sameTypeCorrs.findFirst[elementBTUID.equals(dstElement.TUID) || elementATUID.equals(dstElement.TUID)]
+		val dstTUID = ci.calculateTUIDFromEObject(dstElement)
+		val result =  sameTypeCorrs.findFirst[elementBTUID.equals(dstTUID) || elementATUID.equals(dstTUID)]
 		return result
 		
 		//return ci.getAllCorrespondences(srcElement).filter(SameTypeCorrespondence).findFirst[elementBTUID == dstElement.TUID || elementATUID == dstElement.TUID]
 	}
 	
-	public static def getTUID(EObject obj) {
-		var TUIDCalculatorAndResolver tuidGenerator = null
-		if (obj.eClass.getEPackage.nsURI.toLowerCase.contains("jml")) {
-			tuidGenerator = new JMLTUIDCalculatorAndResolver()
-		} else {
-			tuidGenerator = new JaMoPPTUIDCalculatorAndResolver()
-		}
-		return TUID.getInstance(tuidGenerator.calculateTUIDFromEObject(obj))
-	} 
-	
 	public static def <T extends EObject> T resolveEObjectByItsTUID(CorrespondenceInstance ci, T objectToFind) {
 		val root = EcoreUtil.getRootContainer(objectToFind)
-		return ci.resolveEObjectFromTUID(objectToFind.TUID) as T;
+		// TODO SS does CorrespondenceHelper.resolveEObjectByItsTUID return its input objectToFind?
+		val tuid = ci.calculateTUIDFromEObject(objectToFind);
+		return ci.resolveEObjectFromTUID(tuid) as T;
 	}
 }

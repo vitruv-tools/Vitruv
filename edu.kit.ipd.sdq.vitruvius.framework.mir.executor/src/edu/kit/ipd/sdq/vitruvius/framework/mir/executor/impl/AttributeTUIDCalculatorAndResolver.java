@@ -28,11 +28,13 @@ public class AttributeTUIDCalculatorAndResolver extends HierarchicalTUIDCalculat
      */
     private static final String TUIDIdentifier = AttributeTUIDCalculatorAndResolver.class.getSimpleName();
 	
-	public AttributeTUIDCalculatorAndResolver(String... attributeNames) {
+	public AttributeTUIDCalculatorAndResolver(String tuidPrefix, String... attributeNames) {
+		super(tuidPrefix);
 		this.attributeNames = Arrays.asList(attributeNames);
 	}
 	
-	public AttributeTUIDCalculatorAndResolver(Collection<String> attributeNames) {
+	public AttributeTUIDCalculatorAndResolver(String tuidPrefix, Collection<String> attributeNames) {
+		super(tuidPrefix);
 		this.attributeNames = new ArrayList<String>(attributeNames);
 	}
 	
@@ -57,10 +59,4 @@ public class AttributeTUIDCalculatorAndResolver extends HierarchicalTUIDCalculat
 		
 		throw new RuntimeException("None of '" + String.join("', '", attributeNames) + "' found for eObject '" + obj + "'");		
 	}
-
-	@Override
-	protected String getTUIDIdentifier() {
-		return TUIDIdentifier;
-	}
-
 }

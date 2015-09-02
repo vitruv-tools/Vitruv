@@ -33,6 +33,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.TUIDCalculat
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.GenericMethodOrConstructorDecl
+import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLPackage
 
 /**
  * TUID calculator and resolver for the JML meta-model.
@@ -59,14 +60,14 @@ class JMLTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResolver
 	private static val JMLTYPEEXPR = "jmltypeexpression"
 
 	private static val Logger LOGGER = Logger.getLogger(JMLTUIDCalculatorAndResolver);
-	private static val String TUIDIdentifier = JMLTUIDCalculatorAndResolver.getSimpleName();
-
+	
+	new() {
+		super(JMLPackage.eINSTANCE.getNsURI())
+	}
+	
 	// ============================================================================
 	// Base class stuff
 	// ============================================================================
-	override protected getTUIDIdentifier() {
-		return TUIDIdentifier
-	}
 
 	override protected getRootObjectClass() {
 		return CompilationUnit

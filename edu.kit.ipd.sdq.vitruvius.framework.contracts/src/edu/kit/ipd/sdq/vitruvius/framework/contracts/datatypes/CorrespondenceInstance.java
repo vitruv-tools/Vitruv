@@ -264,4 +264,5 @@ public interface CorrespondenceInstance {
 
     public <T> Set<T> getCorrespondingEObjectsByType(EObject eObject, Class<T> type);
 
+    EObject resolveEObjectFromRootAndFullTUID(EObject root, String tuidString);
 }

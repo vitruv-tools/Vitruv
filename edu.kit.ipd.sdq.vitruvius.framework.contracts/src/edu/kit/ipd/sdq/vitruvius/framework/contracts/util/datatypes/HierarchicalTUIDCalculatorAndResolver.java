@@ -27,6 +27,10 @@ public abstract class HierarchicalTUIDCalculatorAndResolver<T extends EObject> e
     private static final Logger LOGGER = Logger.getLogger(HierarchicalTUIDCalculatorAndResolver.class);
     protected static final String SUBDIVIDER = "-_-";
 
+    public HierarchicalTUIDCalculatorAndResolver(final String tuidPrefix) {
+        super(tuidPrefix);
+    }
+
     /**
      * @return Class of the root object.
      */

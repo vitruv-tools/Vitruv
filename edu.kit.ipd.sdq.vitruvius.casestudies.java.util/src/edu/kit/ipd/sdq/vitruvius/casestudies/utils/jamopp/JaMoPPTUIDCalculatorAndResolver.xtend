@@ -33,7 +33,6 @@ class JaMoPPTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResol
 
 	private val static Logger logger = Logger.getLogger(JaMoPPTUIDCalculatorAndResolver);
 
-	private val String TUIDIdentifier = JaMoPPTUIDCalculatorAndResolver.simpleName
 	private val String CLASSIFIER_SELECTOR = "classifier"
 	private val String IMPORT_SELECTOR = "import"
 	private val String METHOD_SELECTOR = "method"
@@ -45,13 +44,15 @@ class JaMoPPTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResol
 	private val String IDENTIFIER_REFERENCE_SELECTOR = "identifierReference"
 	private val String NEW_CONSTRUCTOR_CALL_SELECTOR = "newConstructorCall"
 	private val String CONDITIONAL_EXPRESSION_SELECTOR = "conditionalExpression"
+	private static val String NS_URI = "http://www.emftext.org/java"
+	
+	new() {
+		super(NS_URI)
+	}
 
 	// ============================================================================
 	// Base class stuff
 	// ============================================================================
-	override protected getTUIDIdentifier() {
-		return TUIDIdentifier
-	}
 
 	override protected getRootObjectClass() {
 		return JavaRoot

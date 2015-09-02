@@ -242,4 +242,9 @@ public abstract class AbstractDelegatingCorrespondenceInstanceDecorator<D> imple
     public VURI getURI() {
         return this.correspondenceInstance.getURI();
     }
+
+    @Override
+    public EObject resolveEObjectFromRootAndFullTUID(final EObject root, final String tuidString) {
+        return this.correspondenceInstance.resolveEObjectFromRootAndFullTUID(root, tuidString);
+    }
 }

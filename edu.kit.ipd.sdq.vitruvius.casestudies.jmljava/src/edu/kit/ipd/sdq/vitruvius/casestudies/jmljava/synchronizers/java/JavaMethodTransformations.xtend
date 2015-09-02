@@ -110,9 +110,9 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 				filter(MethodDeclaration)
 			for (jmlMethodDeclaration : jmlMethodDeclarations) {
 				LOGGER.trace("Updating " + jmlMethodDeclaration)
-				val jmlMethodDeclarationTUIDOld = jmlMethodDeclaration.TUID
+				val jmlMethodDeclarationTUIDOld = blackboard.correspondenceInstance.calculateTUIDFromEObject(jmlMethodDeclaration)
 				jmlMethodDeclaration.identifier = newValue as String
-				blackboard.correspondenceInstance.update(jmlMethodDeclarationTUIDOld, jmlMethodDeclaration.TUID);
+				blackboard.correspondenceInstance.update(jmlMethodDeclarationTUIDOld, blackboard.correspondenceInstance.calculateTUIDFromEObject(jmlMethodDeclaration));
 				changedObjects.add(jmlMethodDeclaration)
 			}
 		}
@@ -133,13 +133,13 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 			val jmlMethodDeclaration = getSingleCorrespondingEObjectOfType(oldAffectedEObject, MethodDeclaration)
 			if (jmlMethodDeclaration != null) {
 				LOGGER.trace("Creating " + newValue)
-				val jmlMethodDeclarationTUIDOld = jmlMethodDeclaration.TUID
+				val jmlMethodDeclarationTUIDOld = blackboard.correspondenceInstance.calculateTUIDFromEObject(jmlMethodDeclaration)
 				val jmlParameter = CommonSynchronizerTasks.createJMLParameter(newValue as Parameter)
 				jmlMethodDeclaration.parameters.add(index, jmlParameter)
 
 				Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Parameter, jmlParameter,
 					blackboard.correspondenceInstance)
-				blackboard.correspondenceInstance.update(jmlMethodDeclarationTUIDOld, jmlMethodDeclaration.TUID)
+				blackboard.correspondenceInstance.update(jmlMethodDeclarationTUIDOld, blackboard.correspondenceInstance.calculateTUIDFromEObject(jmlMethodDeclaration))
 
 				changedObjects.add(jmlMethodDeclaration)
 			}
@@ -187,7 +187,7 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 					return new TransformationResult
 				}
 
-				val jmlMethodDeclarationOldTUID = jmlMethodDeclaration.TUID
+				val jmlMethodDeclarationOldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(jmlMethodDeclaration)
 
 				val jmlParameter = getSingleCorrespondingEObjectOfType(oldValue, FormalParameterDecl)
 
@@ -196,7 +196,7 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 
 				jmlMethodDeclaration.parameters.remove(jmlParameter)
 
-				blackboard.correspondenceInstance.update(jmlMethodDeclarationOldTUID, jmlMethodDeclaration.TUID)
+				blackboard.correspondenceInstance.update(jmlMethodDeclarationOldTUID, blackboard.correspondenceInstance.calculateTUIDFromEObject(jmlMethodDeclaration))
 
 				changedObjects.add(jmlMethodDeclaration)
 			}

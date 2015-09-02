@@ -1,43 +1,41 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JMLTUIDCalculatorAndResolver
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JaMoPPTUIDCalculatorAndResolver
+import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Constructor
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.FieldDeclaration
+import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.GenericMethodOrConstructorDecl
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMultilineSpec
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSinglelineSpec
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier
+import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifierRegular
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclaration
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MethodDeclaration
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
 import java.util.Collection
 import org.apache.commons.lang.RandomStringUtils
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
+import org.emftext.language.java.members.Field
 import org.emftext.language.java.members.Method
 import org.emftext.language.java.modifiers.Modifier
 import org.emftext.language.java.modifiers.Private
 import org.emftext.language.java.modifiers.Protected
 import org.emftext.language.java.modifiers.Public
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Constructor
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifierRegular
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.GenericMethodOrConstructorDecl
-import org.emftext.language.java.members.Field
 
 class Utilities {
 	
 	public static def <T extends EObject> T getModelInstanceElement(T obj, CorrespondenceInstance ci) {
 		val rootObject = EcoreUtil.getRootContainer(obj)
-		val modelInstanceRoot = ci.resolveEObjectFromTUID(TUID.getInstance(rootObject.TUID));
-		return Utilities.getChildEqualToEObject(modelInstanceRoot, obj);
+//		val modelInstanceRoot = ci.resolveEObjectFromTUID(TUID.getInstance(rootObject.TUID));
+		return Utilities.getChildEqualToEObject(rootObject, obj);
 	}
 	
 	public static def <T extends EObject> T getModelInstanceElementByTUID(T obj, CorrespondenceInstance ci) {
 		val rootObject = EcoreUtil.getRootContainer(obj)
-		val modelInstanceRoot = ci.resolveEObjectFromTUID(TUID.getInstance(rootObject.TUID));
-		return resolve(modelInstanceRoot, getTUID(obj)) as T
+//		val modelInstanceRoot = ci.resolveEObjectFromTUID(TUID.getInstance(rootObject.TUID));
+//		return resolve(modelInstanceRoot, getTUID(obj)) as T
+		return rootObject as T
 	}
 	
 	public static def <T extends EObject> getChildEqualToEObject(EObject rootObject, T objectToSearch) {
@@ -46,22 +44,6 @@ class Utilities {
 	
 	public static def <T extends EObject> getFirstChildOfType(EObject rootObject, Class<T> type) {
 		return ModelSearchAlgorithms.breadthFirstSearch(rootObject, [EObject obj | type.isAssignableFrom(obj.class)]) as T
-	}
-	
-	private static def getTUIDCalculatorAndResolver(EObject obj) {
-		if (obj.eClass.EPackage.nsURI.toLowerCase.contains("jml")) {
-			return new JMLTUIDCalculatorAndResolver()
-		} else {
-			return new JaMoPPTUIDCalculatorAndResolver()
-		}
-	}
-	
-	public static def String getTUID(EObject obj) {
-		return obj.getTUIDCalculatorAndResolver.calculateTUIDFromEObject(obj);
-	}
-	
-	public static def EObject resolve(EObject rootObject, String tuid) {
-		return getTUIDCalculatorAndResolver(rootObject).resolveEObjectFromRootAndFullTUID(rootObject, tuid)
 	}
 	
 	public static def <T extends EObject> clone(T obj) {

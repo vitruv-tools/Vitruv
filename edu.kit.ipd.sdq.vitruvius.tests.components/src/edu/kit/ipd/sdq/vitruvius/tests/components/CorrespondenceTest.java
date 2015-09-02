@@ -72,10 +72,12 @@ public class CorrespondenceTest extends VSUMTest {
         repo2pkg = createRepo2PkgCorrespondence(repo, pkg, correspondenceInstance);
         // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 
-        // testCreateRepo2PkgCorrespondenceAndUpdateTUID(repo, pkg, correspondenceInstance,
-        // repo2pkg);
+        testCreateRepo2PkgCorrespondenceAndUpdateTUID(repo, pkg, correspondenceInstance, repo2pkg);
 
-        testCorrespondencePersistence(vsum, repo, pkg, correspondenceInstance, repo2pkg);
+        correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(pkg);
+        // now the correspondence instance should be empty
+
+        testCorrespondencePersistence(vsum, repo, pkg, correspondenceInstance);
     }
 
     // @Test
@@ -125,7 +127,11 @@ public class CorrespondenceTest extends VSUMTest {
     }
 
     private void testCorrespondencePersistence(final VSUMImpl vsum, final Repository repo, final UPackage pkg,
-            final CorrespondenceInstance corresp, final SameTypeCorrespondence repo2pkg) {
+            final CorrespondenceInstance corresp) {
+        // recreate the same correspondence as before
+        EObjectCorrespondence repo2pkg = createRepo2PkgCorrespondence(repo, pkg, corresp);
+        // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
+
         assertNotNull("Correspondence instance is null", corresp);
         if (corresp instanceof MappedCorrespondenceInstance) {
             MIRMappingRealization mapping = MappingUPackageToRepository.INSTANCE;

@@ -78,9 +78,9 @@ class JavaParameterTransformations extends Java2JMLTransformationBase {
 						(affectedEObject as Parameter).renameInAllJMLSpecifications(newValue as String))
 				}
 
-				val jmlParameterDeclTUIDOld = jmlParameterDecl.TUID
+				val jmlParameterDeclTUIDOld = blackboard.correspondenceInstance.calculateTUIDFromEObject(jmlParameterDecl)
 				jmlParameterDecl.identifier = newValue as String
-				blackboard.correspondenceInstance.update(jmlParameterDeclTUIDOld, jmlParameterDecl.TUID)
+				blackboard.correspondenceInstance.update(jmlParameterDeclTUIDOld, blackboard.correspondenceInstance.calculateTUIDFromEObject(jmlParameterDecl))
 				changedObjects.add(jmlParameterDecl)
 			}
 		}

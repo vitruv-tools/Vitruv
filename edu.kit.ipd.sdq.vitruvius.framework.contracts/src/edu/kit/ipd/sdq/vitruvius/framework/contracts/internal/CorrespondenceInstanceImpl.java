@@ -933,4 +933,9 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         addSameTypeCorrespondence(correspondence);
         return correspondence;
     }
+
+    @Override
+    public EObject resolveEObjectFromRootAndFullTUID(final EObject root, final String tuidString) {
+        return getMetamodelHavingTUID(tuidString).resolveEObjectFromRootAndFullTUID(root, tuidString);
+    }
 }

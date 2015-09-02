@@ -21,9 +21,6 @@ public final class MIRTestUtil {
 		"id", "name", "entityName"
 	};
 	
-	public static final TUIDCalculatorAndResolver DEFAULT_ATTRIBUTE_TUID_RESOLVER =
-			new AttributeTUIDCalculatorAndResolver(DEFAULT_ATTRIBUTE_NAMES);
-	
 	/**
 	 * Constructs an empty VSUM that contains the meta models for the given
 	 * URIs.
@@ -87,6 +84,6 @@ public final class MIRTestUtil {
 	}
 	
 	public static Metamodel createAttributeTUIDMetamodel(String nsURI, String... extensions) {
-		return new Metamodel(nsURI, VURI.getInstance(nsURI), DEFAULT_ATTRIBUTE_TUID_RESOLVER, extensions);
+		return new Metamodel(nsURI, VURI.getInstance(nsURI), new AttributeTUIDCalculatorAndResolver(nsURI, DEFAULT_ATTRIBUTE_NAMES), extensions);
 	}
 }
