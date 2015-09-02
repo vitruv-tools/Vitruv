@@ -68,11 +68,14 @@ public class CorrespondenceTest extends VSUMTest {
         testRecursiveRemove(repo, pkg, correspondenceInstance, repo2pkg, repoIfaceFIAndPkgIfaceFI);
         // now the correspondence instance should be empty
 
-        // FIXME MK (tuid cache): reactivate testUpdate in CorrespondenceTest after TUID cache is
-        // working
-        // testUpdate(repo, pkg, correspondenceInstance, repo2pkg);
+        // recreate the same correspondence as before
+        repo2pkg = createRepo2PkgCorrespondence(repo, pkg, correspondenceInstance);
+        // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 
-        testCorrespondencePersistence(vsum, repo, pkg, correspondenceInstance);
+        // testCreateRepo2PkgCorrespondenceAndUpdateTUID(repo, pkg, correspondenceInstance,
+        // repo2pkg);
+
+        testCorrespondencePersistence(vsum, repo, pkg, correspondenceInstance, repo2pkg);
     }
 
     // @Test
@@ -122,19 +125,12 @@ public class CorrespondenceTest extends VSUMTest {
     }
 
     private void testCorrespondencePersistence(final VSUMImpl vsum, final Repository repo, final UPackage pkg,
-            final CorrespondenceInstance corresp) {
+            final CorrespondenceInstance corresp, final SameTypeCorrespondence repo2pkg) {
         assertNotNull("Correspondence instance is null", corresp);
-        // recreate the same correspondence as before
-        EObjectCorrespondence repo2pkg = createRepo2PkgCorrespondence(repo, pkg, corresp);
         if (corresp instanceof MappedCorrespondenceInstance) {
-            // EObjectCorrespondence c =
-            // CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence();
-            // c.setElementATUID(TUID.getInstance("tuidA"));
-            // c.setElementBTUID(TUID.getInstance("tuidB"));
             MIRMappingRealization mapping = MappingUPackageToRepository.INSTANCE;
             ((MappedCorrespondenceInstance) corresp).registerMappingForCorrespondence(repo2pkg, mapping);
         }
-        // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 
         // save instances in order to trigger saving for CorrespondenceInstance(s)
         VURI pcmVURI = VURI.getInstance(getPCMInstanceUri());
@@ -325,15 +321,9 @@ public class CorrespondenceTest extends VSUMTest {
         assertFalse(corresp.hasCorrespondences());
     }
 
-    private void testUpdate(final Repository repo, final UPackage pkg, final CorrespondenceInstance corresp,
-            final EObjectCorrespondence repo2pkg) {
+    private void testCreateRepo2PkgCorrespondenceAndUpdateTUID(final Repository repo, final UPackage pkg,
+            final CorrespondenceInstance corresp, final EObjectCorrespondence repo2pkg) {
         Repository newRepo = Pcm_mockupFactory.eINSTANCE.createRepository();
-        // FIXME MK (tuid cache): currently no correspondences are existing, therefore a new one has
-        // to
-        // be created
-        // before it can be updated!
-        // create new corresp
-        // store repo before updating the correspondence
         corresp.update(repo, newRepo);
         Set<Correspondence> repoCorresp = corresp.getAllCorrespondences(repo);
         assertTrue(repoCorresp.isEmpty());
