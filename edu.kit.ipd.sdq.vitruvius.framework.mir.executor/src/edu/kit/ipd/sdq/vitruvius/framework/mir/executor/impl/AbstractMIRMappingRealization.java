@@ -7,8 +7,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -21,6 +23,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EclipseHelper;
@@ -88,16 +92,44 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 	 * Deletes the corresponding object to <code>eObject</code>, which is <code>target</code>,
 	 * (and its children) and the correspondence itself. This method does not delete <code>eObject</code>.
 	 * 
-	 * @param eObject
+	 * @param source
 	 * @param transformationResult 
 	 * @param correspondenceInstance
 	 */
-	protected void deleteCorresponding(EObject eObject, EObject target, Blackboard blackboard, TransformationResult transformationResult) {
-		if (EcoreHelper.isRoot(eObject)) {
-			transformationResult.addVURIToDelete(VURI.getInstance(target.eResource()));
+	protected void deleteCorresponding(EObject source, EObject target, Blackboard blackboard, TransformationResult transformationResult) {
+		final MappedCorrespondenceInstance correspondenceInstance = getMappedCorrespondenceInstanceFromBlackboard(blackboard);
+		final Set<Correspondence> removedCorrespondences = correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(target);
+		final TUID sourceTUID = correspondenceInstance.calculateTUIDFromEObject(source);
+		
+		for (final Correspondence correspondence : removedCorrespondences) {
+			final Collection<TUID> eObjectsInCorrespondence = getTUIDsInCorrespondence(correspondence, correspondenceInstance);
+			eObjectsInCorrespondence.stream()
+				.filter(it -> !(it.equals(sourceTUID)))
+				.forEach(it -> {
+					final EObject itEObject = correspondenceInstance.resolveEObjectFromTUID(it);
+					deleteEObjectAndResourceIfRoot(itEObject, transformationResult);
+				});
 		}
-		EcoreUtil.delete(target);
-		throw new UnsupportedOperationException("not implemented yet");
+	}
+	
+	private void deleteEObjectAndResourceIfRoot(EObject eObjectToDelete, TransformationResult transformationResult) {
+		LOGGER.trace("Deleting " + eObjectToDelete.toString());
+		if (EcoreHelper.isRoot(eObjectToDelete)) {
+			transformationResult.addVURIToDelete(VURI.getInstance(eObjectToDelete.eResource()));
+		}
+		EcoreUtil.delete(eObjectToDelete);	}
+
+	private Collection<TUID> getTUIDsInCorrespondence(Correspondence correspondence, CorrespondenceInstance correspondenceInstance) {
+		Set<TUID> result = new HashSet<TUID>();
+		if (correspondence instanceof EObjectCorrespondence) {
+			final EObjectCorrespondence eObjectCorrespondence = (EObjectCorrespondence) correspondence;
+			result.add(eObjectCorrespondence.getElementATUID());
+			result.add(eObjectCorrespondence.getElementBTUID());
+		} else {
+			LOGGER.info("Correspondence is not EObjectCorrespondence. Returning empty set.");
+		}
+		
+		return result;
 	}
 
 	/**
