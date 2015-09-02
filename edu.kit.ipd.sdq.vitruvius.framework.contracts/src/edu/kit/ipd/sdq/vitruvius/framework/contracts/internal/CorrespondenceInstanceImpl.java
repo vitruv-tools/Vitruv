@@ -836,7 +836,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
 
         String oldTUIDString = oldTUID.toString();
         Metamodel metamodel = getMetamodelHavingTUID(oldTUIDString);
-        metamodel.removeRootIfCached(oldTUIDString);
+        metamodel.removeIfRootAndCached(oldTUIDString);
     }
 
     private void updateTUID2CorrespondingEObjectsMap(final TUID oldTUID, final TUID newTUID, final boolean sameTUID) {

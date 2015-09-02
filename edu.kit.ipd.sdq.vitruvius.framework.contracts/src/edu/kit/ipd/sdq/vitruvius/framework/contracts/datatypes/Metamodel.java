@@ -79,8 +79,8 @@ public class Metamodel extends AbstractURIHaving {
         this.tuidCalculatorAndResolver.removeRootFromCache(root);
     }
 
-    public void removeRootIfCached(final String tuid) {
-        this.tuidCalculatorAndResolver.removeRootIfCached(tuid);
+    public void removeIfRootAndCached(final String tuid) {
+        this.tuidCalculatorAndResolver.removeIfRootAndCached(tuid);
     }
 
     public boolean hasMetaclassInstance(final EObject eObject) {

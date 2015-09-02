@@ -1,8 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 
@@ -10,6 +7,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
 
 /**
  * Base class for TUID calculators and resolvers. It handles the default parts of the TUID like
@@ -22,12 +21,12 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
 
     private static final Logger LOGGER = Logger.getLogger(TUIDCalculatorAndResolverBase.class.getSimpleName());
 
-    private final Map<Integer, EObject> cachedResourcelessRoots;
+    private final ClaimableMap<Integer, EObject> cachedResourcelessRoots;
     // FIXME MK (cache): if necessary remove objects that were created and cached but never stored,
     // as this is the only way to have something in the cache that should no longer be there
 
     public TUIDCalculatorAndResolverBase() {
-        this.cachedResourcelessRoots = new HashMap<Integer, EObject>();
+        this.cachedResourcelessRoots = new ClaimableHashMap<Integer, EObject>();
     }
 
     @Override
@@ -40,12 +39,15 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
         EObject root = EcoreBridge.getRootEObject(eObject);
         String tuidPrefix = null;
         if (root.eResource() == null) {
-            // the root has no resource and therefore it has to be cached for correct TUID
-            // resolution and calculation
-            addRootToCache(root);
-            LOGGER.trace("The given EObject " + eObject
-                    + " has no resource attached. Chaching the EObject within the TUID cache.");
             tuidPrefix = getDefaultTUIDPrefix() + getVURIReplacementForCachedRoot(root);
+            if (!isCached(root)) {
+                // the root has no resource and therefore it has to be cached for correct TUID
+                // resolution and calculation
+                addRootToCache(root);
+                LOGGER.trace("The given EObject " + eObject
+                        + " has no resource attached. Added it to the TUID cache using the prefix '" + tuidPrefix
+                        + "'.");
+            }
         } else {
             if (isCached(root)) {
                 // the root has a resource but was cached before, so it should be removed from the
@@ -78,10 +80,14 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
     }
 
     @Override
-    public void removeRootIfCached(final String tuid) {
-        Integer key = getCacheKey(tuid);
-        if (key != null) {
-            removeCacheEntryForKey(key);
+    public void removeIfRootAndCached(final String tuid) {
+        String[] segmentsAfterMarker = getSegmentsAfterCachedTUIDMarker(tuid);
+        boolean isTUIDOfRoot = segmentsAfterMarker != null && segmentsAfterMarker.length == 1;
+        if (isTUIDOfRoot) {
+            Integer key = getCacheKey(tuid);
+            if (key != null) {
+                removeCacheEntryForKey(key);
+            }
         }
     }
 
@@ -104,18 +110,25 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
     }
 
     private Integer getCacheKey(final String tuid) {
+        String[] segmentsAfterMarker = getSegmentsAfterCachedTUIDMarker(tuid);
+        if (segmentsAfterMarker != null && segmentsAfterMarker.length > 0) {
+            String keyString = segmentsAfterMarker[0];
+            return Integer.parseInt(keyString);
+        } else {
+            return null;
+        }
+    }
+
+    private String[] getSegmentsAfterCachedTUIDMarker(final String tuid) {
         String cachedTUIDMarker = VitruviusConstants.getCachedTUIDMarker();
         String tuidSuffix = getTUIDWithoutDefaultPrefix(tuid);
         if (tuidSuffix.startsWith(cachedTUIDMarker)) {
             int markerEndIndex = cachedTUIDMarker.length();
             String suffixAfterMarker = tuidSuffix.substring(markerEndIndex);
-            String[] suffixSegments = getSegments(suffixAfterMarker);
-            if (suffixSegments.length > 0) {
-                String keyString = suffixSegments[0];
-                return Integer.parseInt(keyString);
-            }
+            return getSegments(suffixAfterMarker);
+        } else {
+            return null;
         }
-        return null;
     }
 
     /**
@@ -171,7 +184,7 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
 
     private EObject claimRootFromCache(final String tuid) {
         int key = claimCacheKey(tuid);
-        return this.cachedResourcelessRoots.get(key);
+        return this.cachedResourcelessRoots.claimValueForKey(key);
     }
 
     /**

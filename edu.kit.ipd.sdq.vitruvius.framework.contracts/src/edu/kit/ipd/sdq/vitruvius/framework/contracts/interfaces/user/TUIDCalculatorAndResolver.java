@@ -51,5 +51,5 @@ public interface TUIDCalculatorAndResolver {
      *
      * @param tuid
      */
-    void removeRootIfCached(String tuid);
+    void removeIfRootAndCached(String tuid);
 }
