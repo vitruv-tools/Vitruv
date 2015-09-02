@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance;
@@ -85,13 +86,14 @@ public class MappingUClassToInterface extends AbstractMIRMappingRealization {
 		 */
 	}
 
-//	@Override
-//	protected void deleteCorresponding(EObject eObject, EObject target, Blackboard blackboard) {
-//		LOGGER.trace("deleteCorresponding(" + eObject.toString() + ", " + target.toString() + ", "
-//				+ blackboard.toString() + ")");
-//
-//		super.deleteCorresponding(eObject, target, blackboard);
-//	}
+	@Override
+	protected void deleteCorresponding(EObject eObject, EObject target, Blackboard blackboard, TransformationResult transformationResult) {
+		LOGGER.trace("deleteCorresponding(" + eObject.toString()
+			+ ", " + target.toString()
+			+ ", " + blackboard.toString() + ")");
+		
+		super.deleteCorresponding(eObject, target, blackboard, transformationResult);
+	}
 
 	@Override
 	public String getMappingID() {

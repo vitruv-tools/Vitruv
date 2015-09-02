@@ -40,64 +40,69 @@ import uml_mockup.Uml_mockupFactory;
 public class CreateBasicComponentTest extends VitruviusEMFCasestudyTest implements SynchronisationListener {
 	private static final Logger LOGGER = Logger.getLogger(CreateBasicComponentTest.class);
 	private static final String MODEL_PATH = TestUtil.PROJECT_URI + "/model";
-	
+
 	@Override
 	protected void synchronizeFileChange(FileChangeKind fileChangeKind, VURI vuri) {
 		LOGGER.trace("synchronizing file change for " + vuri.toString());
 		super.synchronizeFileChange(fileChangeKind, vuri);
 	}
-	
+
 	@Override
 	protected void triggerSynchronization(VURI vuri) {
 		LOGGER.trace("triggering synchronization for " + vuri.toString());
 		super.triggerSynchronization(vuri);
 	}
-	
-	private <T extends EObject> T createManipulateSaveAndSyncResource(String resourcePath, Supplier<T> manipulate) throws IOException {
-        final VURI resourceVURI = VURI.getInstance(resourcePath);
-        
-        final T result = manipulate.get();
-        final URI resourceURI = URI.createPlatformResourceURI(resourcePath, false);
+
+	private <T extends EObject> T createManipulateSaveAndSyncResource(String resourcePath, Supplier<T> manipulate)
+			throws IOException {
+		final VURI resourceVURI = VURI.getInstance(resourcePath);
+
+		final T result = manipulate.get();
+		final URI resourceURI = URI.createPlatformResourceURI(resourcePath, false);
 		final Resource resource = EcoreResourceBridge.loadResourceAtURI(resourceURI, resourceSet);
 		EcoreResourceBridge.saveEObjectAsOnlyContent(result, resource);
-        
-        this.synchronizeFileChange(FileChangeKind.CREATE, resourceVURI);
-        
-        return result;
+
+		this.synchronizeFileChange(FileChangeKind.CREATE, resourceVURI);
+
+		return result;
 	}
-	
+
 	private EObject createAndSyncResourceWithRootObject(String resourcePath, EObject rootEObject) throws IOException {
 		return createManipulateSaveAndSyncResource(resourcePath, () -> rootEObject);
 	}
-	
-	private <T extends EObject, R> R recordManipulateSaveAndSync(T input, Function<T, R> manipulate) throws IOException {
+
+	private <T extends EObject, R> R recordManipulateSaveAndSync(T input, Function<T, R> manipulate)
+			throws IOException {
 		changeRecorder.beginRecording(Collections.singletonList(input));
 		R result = manipulate.apply(input);
 		EcoreResourceBridge.saveResource(input.eResource());
 		this.triggerSynchronization(input);
-		
+
 		return result;
 	}
-	
+
 	private <T extends EObject> void recordManipulateSaveAndSync(T input, Consumer<T> manipulate) throws IOException {
-		recordManipulateSaveAndSync(input, it -> { manipulate.accept(it); return null; } );
+		recordManipulateSaveAndSync(input, it -> {
+			manipulate.accept(it);
+			return null;
+		});
 	}
-	
+
 	private UPackage createPackage(String name) {
 		UPackage pkg = Uml_mockupFactory.eINSTANCE.createUPackage();
 		pkg.setName(name);
 		return pkg;
 	}
-	
+
 	@Override
 	protected void setUserInteractor(final UserInteracting newUserInteracting,
-            final ChangeSynchronizerImpl changeSynchronizerImpl) throws Throwable {	
+			final ChangeSynchronizerImpl changeSynchronizerImpl) throws Throwable {
 	};
 
 	@Before
 	public void setUpTest() throws Throwable {
 		super.setUpTest();
-		
+
 		// reset log4j
 		BasicConfigurator.resetConfiguration();
 		BasicConfigurator.configure();
@@ -105,40 +110,41 @@ public class CreateBasicComponentTest extends VitruviusEMFCasestudyTest implemen
 		Logger.getRootLogger().setLevel(Level.ALL);
 	}
 
-	@Ignore
 	@Test
-	public void createPackage() throws IOException {
-		LOGGER.trace("Starting: createPackage");		
-		UPackage pkg = createPackage("FirstPackageName1");
-		createAndSyncResourceWithRootObject(MODEL_PATH + "/uml1.uml", pkg);		
-		LOGGER.trace("Finished: createPackage");		
+	public void createMapAndUnmapPackage() throws IOException {
+		UPackage pkg = createPackage("FirstPackageName_mapped");
+		createAndSyncResourceWithRootObject(MODEL_PATH + "/uml.uml", pkg);
+		recordManipulateSaveAndSync(pkg, it -> {
+			it.setName("FirstPackageName_nomap");
+		});
 	}
-	
-	@Ignore
-	@Test
-	public void createPackageAndRename() throws IOException {
-		LOGGER.trace("Starting: createPackageAndRename");		
-		LOGGER.trace("creating Package");
-		UPackage pkg = createPackage("FirstPackageName2");
-		createAndSyncResourceWithRootObject(MODEL_PATH + "/uml2.uml", pkg);		
+
+	private void doNStepsOfTest(int n) throws IOException {
+		LOGGER.trace("Executing " + n + " steps of test workflow.");
 		
-		LOGGER.trace("Renaming Package");
-		recordManipulateSaveAndSync(pkg, it -> { it.setName("SecondPackageName2"); });
-		LOGGER.trace("Finished: createPackageAndRename");
-	}
-	
-	@Test
-	public void createPackageAndNestedInterface() throws IOException {
-		LOGGER.trace("Starting: createPackageAndNestedInterface");		
-		LOGGER.trace("creating Package");
-		UPackage pkg = createPackage("FirstPackageName3");
-		createAndSyncResourceWithRootObject(MODEL_PATH + "/uml3.uml", pkg);		
+		// step 0
+		LOGGER.trace("Step 0");
+		UPackage pkg = createPackage("FirstPackageName");
+		createAndSyncResourceWithRootObject(MODEL_PATH + "/uml.uml", pkg);
+
+		if (n < 1) {
+			return;
+		}
+
+		// step 1
+		LOGGER.trace("Step 1");
 		recordManipulateSaveAndSync(pkg, it -> {
 			UClass clazz = Uml_mockupFactory.eINSTANCE.createUClass();
 			clazz.setName("TestNestedClass");
 			it.getClasses().add(clazz);
 		});
-		
+
+		if (n < 2) {
+			return;
+		}
+
+		// step 2
+		LOGGER.trace("Step 2");
 		final UClass classToRename = recordManipulateSaveAndSync(pkg, it -> {
 			UClass clazz = Uml_mockupFactory.eINSTANCE.createUClass();
 			clazz.setName("TestNestedClass2");
@@ -146,19 +152,102 @@ public class CreateBasicComponentTest extends VitruviusEMFCasestudyTest implemen
 			return clazz;
 		});
 
+		if (n < 3) {
+			return;
+		}
+
+		// step 3
+		LOGGER.trace("Step 3");
 		recordManipulateSaveAndSync(pkg, it -> {
 			UClass clazz = Uml_mockupFactory.eINSTANCE.createUClass();
 			clazz.setName("TestNestedClass3_nomap");
 			it.getClasses().add(clazz);
 		});
-		
+
+		if (n < 4) {
+			return;
+		}
+
+		// step 4
+		LOGGER.trace("Step 4");
 		recordManipulateSaveAndSync(classToRename, it -> {
 			it.setName("TestNestedClass2_nomap");
 		});
 
-		LOGGER.trace("Finished: createPackageAndNestedInterface");
+		if (n < 5) {
+			return;
+		}
+
+		// step 5
+		LOGGER.trace("Step 5");
+		recordManipulateSaveAndSync(classToRename, it -> {
+			it.setName("TestNestedClass2_remapped");
+		});
+
+		if (n < 6) {
+			return;
+		}
+
+		// step 6
+		LOGGER.trace("Step 6");
+		recordManipulateSaveAndSync(pkg, it -> {
+			pkg.setName("FirstPackageName_nomap");
+		});
+
+		if (n < 7) {
+			return;
+		}
+
+		// step 7
+		LOGGER.trace("Step 7");
+		recordManipulateSaveAndSync(pkg, it -> {
+			pkg.setName("FirstPackageName");
+		});
 	}
-	
+
+	@Ignore
+	@Test
+	public void step_0_createPackage() throws IOException {
+		doNStepsOfTest(0);
+	}
+
+	@Ignore
+	@Test
+	public void step_1_AddClass() throws IOException {
+		doNStepsOfTest(1);
+	}
+
+	@Ignore
+	@Test
+	public void step_2_AddSecondClass() throws IOException {
+		doNStepsOfTest(2);
+	}
+
+	@Test
+	public void step_3_AddUnmappedClass() throws IOException {
+		doNStepsOfTest(3);
+	}
+
+	@Test
+	public void step_4_UnmapSecondClass() throws IOException {
+		doNStepsOfTest(4);
+	}
+
+	@Test
+	public void step_5_RemapSecondClass() throws IOException {
+		doNStepsOfTest(5);
+	}
+
+	@Test
+	public void step_6_UnmapPackage() throws IOException {
+		doNStepsOfTest(6);
+	}
+
+	@Test
+	public void step_7_RemapPackage() throws IOException {
+		doNStepsOfTest(7);
+	}
+
 	@Override
 	public void syncStarted() {
 		LOGGER.trace("syncStarted");
@@ -166,7 +255,7 @@ public class CreateBasicComponentTest extends VitruviusEMFCasestudyTest implemen
 
 	@Override
 	public void syncFinished() {
-		LOGGER.trace("syncFinished");		
+		LOGGER.trace("syncFinished");
 	}
 
 	@Override
@@ -182,7 +271,8 @@ public class CreateBasicComponentTest extends VitruviusEMFCasestudyTest implemen
 	@Override
 	protected MetaRepositoryImpl createMetaRepository() {
 		return MIRTestUtil.createEmptyMetaRepository(
-				createAttributeTUIDMetamodel("http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.pcm_mockup", "repository"),
+				createAttributeTUIDMetamodel("http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.pcm_mockup",
+						"repository"),
 				createAttributeTUIDMetamodel("http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.uml_mockup", "uml"));
 	}
 
