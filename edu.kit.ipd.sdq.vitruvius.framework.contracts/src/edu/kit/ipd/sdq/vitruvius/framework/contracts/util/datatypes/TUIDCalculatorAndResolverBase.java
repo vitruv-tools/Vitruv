@@ -24,7 +24,7 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
     private final String tuidPrefix;
 
     private final ClaimableMap<Integer, EObject> cachedResourcelessRoots;
-    // FIXME MK (cache): if necessary remove objects that were created and cached but never stored,
+    // TODO MK (cache): if necessary remove objects that were created and cached but never stored,
     // as this is the only way to have something in the cache that should no longer be there
 
     public TUIDCalculatorAndResolverBase(final String tuidPrefix) {

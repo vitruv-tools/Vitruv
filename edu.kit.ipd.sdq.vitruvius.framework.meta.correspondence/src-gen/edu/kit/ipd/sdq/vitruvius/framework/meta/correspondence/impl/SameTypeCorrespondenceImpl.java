@@ -29,7 +29,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-// FIXME MAX (deco): try to generate use of serializable marker interface from ecore mm 
+// TODO MK (deco): try to generate use of serializable marker interface from ecore mm 
 public abstract class SameTypeCorrespondenceImpl extends CorrespondenceImpl implements SameTypeCorrespondence, Serializable {
 	/**
 	 * 

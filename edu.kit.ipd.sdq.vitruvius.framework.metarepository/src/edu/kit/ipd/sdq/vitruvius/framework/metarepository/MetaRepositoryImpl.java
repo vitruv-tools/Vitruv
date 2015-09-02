@@ -25,7 +25,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
 public class MetaRepositoryImpl
         implements MetamodelManaging, ViewTypeManaging, MappingManaging, ProjectPreparing, InvariantProviding {
 
-    // TODO Max: either rename all gets in interfaces to claim... instead of get... or change
+    // TODO MK (meta repo): either rename all gets in interfaces to claim... instead of get... or
+    // change
     // implementations so that they do
     // not claim but only get elements
 
