@@ -776,7 +776,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         if (sameTUID || oldTUID == null) {
             return;
         }
-
+        String oldTUIDString = oldTUID.toString();
         TUID.BeforeHashCodeUpdateLambda before = new TUID.BeforeHashCodeUpdateLambda() {
 
             /**
@@ -834,7 +834,6 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
             updateTUID2CorrespondingEObjectsMap(oldTUIDPrefix, newTUIDPrefix, sameTUID);
         }
 
-        String oldTUIDString = oldTUID.toString();
         Metamodel metamodel = getMetamodelHavingTUID(oldTUIDString);
         metamodel.removeIfRootAndCached(oldTUIDString);
     }
