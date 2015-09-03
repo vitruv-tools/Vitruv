@@ -69,7 +69,9 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
 
     private boolean isCached(final EObject root) {
         int key = getCacheKey(root);
-        return this.cachedResourcelessRoots.containsKey(key);
+        boolean cached = this.cachedResourcelessRoots.containsKey(key);
+        LOGGER.debug("The key '" + key + "' is currently " + (cached ? "" : "not") + " in the tuid cache.");
+        return cached;
     }
 
     @Override
@@ -79,7 +81,8 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
     }
 
     private void removeCacheEntryForKey(final int key) {
-        this.cachedResourcelessRoots.remove(key);
+        EObject value = this.cachedResourcelessRoots.remove(key);
+        LOGGER.debug("Removed the value '" + value + "'for the key '" + key + "' from the tuid cache.");
     }
 
     @Override
@@ -90,7 +93,6 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
             Integer key = getCacheKey(tuid);
             if (key != null) {
                 removeCacheEntryForKey(key);
-                LOGGER.debug("Removed the entry for the tuid '" + tuid + "' of a root element from the cache.");
             }
         }
     }

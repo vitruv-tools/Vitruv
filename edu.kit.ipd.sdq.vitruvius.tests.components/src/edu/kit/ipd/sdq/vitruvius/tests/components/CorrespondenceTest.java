@@ -39,7 +39,7 @@ import uml_mockup.UPackage;
 public class CorrespondenceTest extends VSUMTest {
     private static final String interfaceCRefName = "interfaces";
 
-    private static final Logger logger = Logger.getLogger(CorrespondenceTest.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(CorrespondenceTest.class.getSimpleName());
 
     @Override
     @Test
@@ -89,9 +89,15 @@ public class CorrespondenceTest extends VSUMTest {
         InternalCorrespondenceInstance correspondenceInstance = testCorrespondenceInstanceCreation(vsum);
         correspondenceInstance.createAndAddEObjectCorrespondence(repo, pkg);
 
+        LOGGER.trace("Before we remove the pkg from the resource it has the tuid '"
+                + correspondenceInstance.calculateTUIDFromEObject(pkg) + "'.");
         removePkgFromFileAndUpdateCorrespondence(pkg, correspondenceInstance);
+        LOGGER.trace("After removing the pkg from the resource it has the tuid '"
+                + correspondenceInstance.calculateTUIDFromEObject(pkg) + "'.");
 
         saveUPackageInNewFileAndUpdateCorrespondence(vsum, pkg, correspondenceInstance);
+        LOGGER.trace("After adding the pkg to the new resource it has the tuid '"
+                + correspondenceInstance.calculateTUIDFromEObject(pkg) + "'.");
 
         assertRepositoryCorrespondences(repo, correspondenceInstance);
     }
@@ -123,19 +129,18 @@ public class CorrespondenceTest extends VSUMTest {
             assertTrue("Correspondence is not from the type EObjectCorrespondence",
                     correspondence instanceof EObjectCorrespondence);
             EObjectCorrespondence eoc = (EObjectCorrespondence) correspondence;
-            logger.info("EObject with TUID: " + eoc.getElementATUID() + " corresponds to EObject with TUID: "
+            LOGGER.info("EObject with TUID: " + eoc.getElementATUID() + " corresponds to EObject with TUID: "
                     + eoc.getElementBTUID());
             EObject a = correspondenceInstance.resolveEObjectFromTUID(eoc.getElementATUID());
             EObject b = correspondenceInstance.resolveEObjectFromTUID(eoc.getElementBTUID());
             assertNotNull("Left Object is null", a);
             assertNotNull("Right Object is null", b);
-            logger.info("A: " + a + " corresponds to B: " + b);
+            LOGGER.info("A: " + a + " corresponds to B: " + b);
         }
     }
 
     private void moveUMLPackageTo(final UPackage pkg, final String string, final VSUMImpl vsum,
             final InternalCorrespondenceInstance correspondenceInstance) {
-        EcoreUtil.remove(pkg);
         saveUPackageInNewFileAndUpdateCorrespondence(vsum, pkg, correspondenceInstance);
 
     }
