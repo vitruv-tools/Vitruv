@@ -22,8 +22,14 @@ public class TransformationResult {
         return this.vurisToDelete;
     }
 
-    public void addVURIToDelete(final VURI... vuriToDelete) {
-        this.vurisToDelete.addAll(Arrays.asList(vuriToDelete));
+    public void addVURIToDeleteIfNotNull(final VURI... vuriToDelete) {
+        if (null != vuriToDelete) {
+            for (VURI vuri : vuriToDelete) {
+                if (null != vuri) {
+                    this.vurisToDelete.addAll(Arrays.asList(vuri));
+                }
+            }
+        }
     }
 
     public List<Pair<EObject, VURI>> getRootEObjectsToSave() {

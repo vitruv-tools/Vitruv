@@ -155,7 +155,7 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 			}
 			val cu = correspondingEObjects.filter(typeof(CompilationUnit)).get(0)
 			PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, blackboard,
-				false, transformationResult)
+				false, transformationResult, eObject)
 			return transformationResult
 
 		// TODO: Code refactoring anstossen

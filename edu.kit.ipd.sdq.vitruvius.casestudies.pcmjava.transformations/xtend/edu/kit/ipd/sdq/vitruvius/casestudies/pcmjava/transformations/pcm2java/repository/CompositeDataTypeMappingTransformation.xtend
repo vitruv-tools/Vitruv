@@ -79,7 +79,7 @@ class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransfor
 		if (!cus.nullOrEmpty) {
 			val CompilationUnit cu = cus.get(0)
 			PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, blackboard, false,
-				transformationResult)
+				transformationResult, eObject)
 		}
 		transformationResult
 	}

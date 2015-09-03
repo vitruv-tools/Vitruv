@@ -137,7 +137,7 @@ public class «cdt.entityName» extends «selectedClass.simpleName»<«jaMoPPInn
 		if (!cus.nullOrEmpty) {
 			val CompilationUnit cu = cus.get(0)
 			PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, blackboard,
-				false, transformationResult)
+				false, transformationResult, affectedEObject)
 		}
 		transformationResult
 	}

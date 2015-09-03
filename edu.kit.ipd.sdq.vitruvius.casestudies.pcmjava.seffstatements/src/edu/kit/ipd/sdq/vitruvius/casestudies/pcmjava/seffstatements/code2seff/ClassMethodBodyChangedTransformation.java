@@ -118,8 +118,10 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
                 this.iFunctionClassificationStrategy);
         final ResourceDemandingSEFF newSeffElements = SeffFactory.eINSTANCE.createResourceDemandingSEFF();
 
+        final boolean createResourceDemandingInternalBehaviourForClassMethods = true;
         VisitorUtils.visitJaMoPPMethod(newSeffElements, basicComponent, this.newMethod, null,
-                functionCallClassificationVisitor, this.interfaceOfExternalCallFinder);
+                functionCallClassificationVisitor, this.interfaceOfExternalCallFinder,
+                createResourceDemandingInternalBehaviourForClassMethods);
 
         return newSeffElements;
     }

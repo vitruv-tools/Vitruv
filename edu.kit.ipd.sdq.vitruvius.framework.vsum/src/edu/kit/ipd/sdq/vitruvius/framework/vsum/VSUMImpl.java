@@ -92,13 +92,20 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
      */
     @Override
     public ModelInstance getAndLoadModelInstanceOriginal(final VURI modelURI) {
-        ModelInstance modelInstance = getModelInstanceOriginal(modelURI);
+        final ModelInstance modelInstance = getModelInstanceOriginal(modelURI);
         try {
-            modelInstance.load(getMetamodelByURI(modelURI).getDefaultLoadOptions());
+            final TransactionalEditingDomain transactionalEditingDomain = getTransactionalEditingDomain();
+            RecordingCommand recordingCommand = new RecordingCommand(transactionalEditingDomain) {
+                @Override
+                protected void doExecute() {
+                    modelInstance.load(getMetamodelByURI(modelURI).getDefaultLoadOptions());
+                }
+            };
+            transactionalEditingDomain.getCommandStack().execute(recordingCommand);
         } catch (RuntimeException re) {
             // could not load model instance --> this should only be the case when the model is not
             // Existing yet
-            logger.info("Exception during loading of model instance " + modelInstance + " occured: " + re);
+            logger.info("Exception during loading of model instance " + modelInstance + " occured: " + re, re);
         }
         return modelInstance;
     }
@@ -106,10 +113,18 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     public ModelInstance getModelInstanceOriginal(final VURI modelURI) {
         ModelInstance modelInstance = this.modelInstances.get(modelURI);
         if (modelInstance == null) {
-            // case 2 or 3
-            modelInstance = getOrCreateUnregisteredModelInstance(modelURI);
-            this.modelInstances.put(modelURI, modelInstance);
-            saveVURIsOfVSUMModelInstances();
+            final TransactionalEditingDomain transactionalEditingDomain = getTransactionalEditingDomain();
+            RecordingCommand recordingCommand = new RecordingCommand(transactionalEditingDomain) {
+                @Override
+                protected void doExecute() {
+                    // case 2 or 3
+                    ModelInstance internalModelInstance = getOrCreateUnregisteredModelInstance(modelURI);
+                    VSUMImpl.this.modelInstances.put(modelURI, internalModelInstance);
+                    saveVURIsOfVSUMModelInstances();
+                }
+            };
+            transactionalEditingDomain.getCommandStack().execute(recordingCommand);
+            modelInstance = this.modelInstances.get(modelURI);
         }
         return modelInstance;
     }

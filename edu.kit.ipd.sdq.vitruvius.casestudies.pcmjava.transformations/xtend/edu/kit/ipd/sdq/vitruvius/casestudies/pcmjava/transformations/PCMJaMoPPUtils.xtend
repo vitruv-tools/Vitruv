@@ -23,6 +23,8 @@ import org.emftext.language.java.types.TypeReference
 import org.palladiosimulator.pcm.core.entity.NamedElement
 import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.system.System
+import org.emftext.language.java.containers.CompilationUnit
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 
 class PCMJaMoPPUtils {
 	private static val Logger logger = Logger.getLogger(PCMJaMoPPUtils.simpleName)
@@ -168,15 +170,17 @@ class PCMJaMoPPUtils {
 
 		def dispatch static handleRootChanges(Iterable<EObject> eObjects, Blackboard blackboard, VURI sourceModelVURI,
 			TransformationResult transformationResult, VURI vuriToDelete, TUID oldTUID) {
-			eObjects.forEach [eObject|
-				handleSingleRootChange(eObject, blackboard, sourceModelVURI, transformationResult, vuriToDelete, oldTUID)
+			eObjects.forEach [ eObject |
+				handleSingleRootChange(eObject, blackboard, sourceModelVURI, transformationResult, vuriToDelete,
+					oldTUID)
 			]
 		}
 
 		def dispatch static handleRootChanges(EObject[] eObjects, Blackboard blackboard, VURI sourceModelVURI,
 			TransformationResult transformationResult, VURI vuriToDelete, TUID oldTUID) {
-			eObjects.forEach [eObject|
-				handleSingleRootChange(eObject, blackboard, sourceModelVURI, transformationResult, vuriToDelete, oldTUID)
+			eObjects.forEach [ eObject |
+				handleSingleRootChange(eObject, blackboard, sourceModelVURI, transformationResult, vuriToDelete,
+					oldTUID)
 			]
 		}
 
@@ -184,14 +188,15 @@ class PCMJaMoPPUtils {
 			TransformationResult transformationResult, VURI vuriToDelete, TUID oldTUID) {
 			handleSingleRootChange(eObject, blackboard, sourceModelVURI, transformationResult, vuriToDelete, oldTUID)
 		}
-	
-	def static handleSingleRootChange(EObject eObject, Blackboard blackboard, VURI sourceModelVURI, TransformationResult transformationResult, VURI vuriToDelete, TUID oldTUID) {
-		EcoreUtil.remove(eObject)
-		PCMJaMoPPUtils.addRootChangeToTransformationResult(eObject, blackboard, sourceModelVURI,
+
+		def static handleSingleRootChange(EObject eObject, Blackboard blackboard, VURI sourceModelVURI,
+			TransformationResult transformationResult, VURI vuriToDelete, TUID oldTUID) {
+			EcoreUtil.remove(eObject)
+			PCMJaMoPPUtils.addRootChangeToTransformationResult(eObject, blackboard, sourceModelVURI,
 				transformationResult)
-		blackboard.correspondenceInstance.update(oldTUID, eObject)
-		transformationResult.addVURIToDelete(vuriToDelete)
-	}
+			blackboard.correspondenceInstance.update(oldTUID, eObject)
+			transformationResult.addVURIToDeleteIfNotNull(vuriToDelete)
+		}
 
 		private static def String getFolderPathInProjectOfResource(VURI sourceModelVURI, String folderName) {
 			val IFile fileSourceModel = EMFBridge.getIFileForEMFUri(sourceModelVURI.getEMFUri());

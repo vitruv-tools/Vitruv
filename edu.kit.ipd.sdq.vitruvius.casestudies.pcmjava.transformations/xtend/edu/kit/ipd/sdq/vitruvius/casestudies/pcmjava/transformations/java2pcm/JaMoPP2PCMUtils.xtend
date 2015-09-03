@@ -100,7 +100,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 
 					val VURI oldVURI = VURI.getInstance(pcmRoot.eResource.getURI)
 					PCMJaMoPPUtils.handleRootChanges(pcmRoot, blackboard, oldVURI, transformationResult, oldVURI, oldTUID)
-					transformationResult.addVURIToDelete(oldVURI)
+					transformationResult.addVURIToDeleteIfNotNull(oldVURI)
 				}
 			}
 		}

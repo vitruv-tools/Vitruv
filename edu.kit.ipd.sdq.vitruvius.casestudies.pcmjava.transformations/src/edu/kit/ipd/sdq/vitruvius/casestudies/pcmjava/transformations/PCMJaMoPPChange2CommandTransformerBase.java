@@ -68,11 +68,11 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
         final List<Change> changesForTransformation = blackboard.getAndArchiveChangesForTransformation();
         final List<Command> commands = new ArrayList<Command>();
         if (this.hasChangeRefinerForChanges(changesForTransformation)) {
-            commands.add((Command) this.executeChangeRefiner(changesForTransformation, blackboard));
+            commands.add(this.executeChangeRefiner(changesForTransformation, blackboard));
         } else {
             for (final Change change : changesForTransformation) {
                 if (change instanceof EMFModelChange) {
-                    commands.add((Command) this.transformChange2Command((EMFModelChange) change, blackboard));
+                    commands.add(this.transformChange2Command((EMFModelChange) change, blackboard));
                 } else if (change instanceof CompositeChange) {
                     commands.addAll(this.transformCompositeChange((CompositeChange) change, blackboard));
                 }
@@ -86,20 +86,22 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
         return this.pairList;
     }
 
-    private VitruviusRecordingCommand transformChange2Command(final EMFModelChange emfModelChange, final Blackboard blackboard) {
+    private VitruviusRecordingCommand transformChange2Command(final EMFModelChange emfModelChange,
+            final Blackboard blackboard) {
         this.handlePackageInEChange(emfModelChange);
         this.transformationExecuter.setBlackboard(blackboard);
 
-        final VitruviusRecordingCommand command = EMFCommandBridge.createVitruviusRecordingCommand(new TransformationRunnable() {
+        final VitruviusRecordingCommand command = EMFCommandBridge
+                .createVitruviusRecordingCommand(new TransformationRunnable() {
 
-            @Override
-            public TransformationResult runTransformation() {
-                // execute command converting
-                final TransformationResult transformationResult = PCMJaMoPPChange2CommandTransformerBase.this.transformationExecuter
-                        .executeTransformationForChange(emfModelChange.getEChange());
-                return transformationResult;
-            }
-        });
+                    @Override
+                    public TransformationResult runTransformation() {
+                        // execute command converting
+                        final TransformationResult transformationResult = PCMJaMoPPChange2CommandTransformerBase.this.transformationExecuter
+                                .executeTransformationForChange(emfModelChange.getEChange());
+                        return transformationResult;
+                    }
+                });
 
         return command;
     }
@@ -167,7 +169,8 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
         return false;
     }
 
-    protected VitruviusRecordingCommand executeChangeRefiner(final List<Change> changesForTransformation, final Blackboard blackboard) {
+    protected VitruviusRecordingCommand executeChangeRefiner(final List<Change> changesForTransformation,
+            final Blackboard blackboard) {
         return EMFCommandBridge.createVitruviusRecordingCommand(new TransformationRunnable() {
 
             @Override

@@ -157,8 +157,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	}
 
 	def public static void handleClassifierNameChange(Classifier classifier, Object newValue,
-		CorrespondenceInstance correspondenceInstance, boolean appendImpl) {
-		val TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(classifier)
+		CorrespondenceInstance correspondenceInstance, boolean appendImpl, TUID oldClassifierTUID) {
 		classifier.name = newValue.toString
 		if (classifier instanceof Class) {
 			if (appendImpl) {
@@ -169,31 +168,41 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 				c.name = classifier.name
 			}
 		}
-		correspondenceInstance.update(oldTUID, classifier)
+		correspondenceInstance.update(oldClassifierTUID, classifier)
 	}
 
 	def public static void handleJavaRootNameChange(JavaRoot javaRoot, EStructuralFeature affectedFeature,
 		Object newValue, Blackboard blackboard, boolean changeNamespanceIfCompilationUnit,
-		TransformationResult transformationResult) {
+		TransformationResult transformationResult, EObject affectedEObject) {
 			val TUID oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(javaRoot)
-			val vuriToDelete = VURI.getInstance(javaRoot.eResource)
+			var TUID oldClassifierTUID = null
+			if (javaRoot instanceof CompilationUnit && !(javaRoot as CompilationUnit).classifiers.nullOrEmpty) {
+				oldClassifierTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(
+					(javaRoot as CompilationUnit).classifiers.get(0))
+			}
+			var VURI vuriToDelete = null
+			if(null != javaRoot.eResource){
+				vuriToDelete = VURI.getInstance(javaRoot.eResource)	
+			}
 			// change name
 			var String newName = newValue.toString
 			if (javaRoot instanceof CompilationUnit) {
 				if (changeNamespanceIfCompilationUnit) {
-
 					// change package if compilation unit and change new Name
 					javaRoot.namespaces.remove(javaRoot.namespaces.size - 1)
 					javaRoot.namespaces.add(newValue.toString)
 					newName = newName + "Impl"
 				}
 				newName = newName + "." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION
-				handleClassifierNameChange(javaRoot.classifiers.get(0), newValue, blackboard.correspondenceInstance,
-					changeNamespanceIfCompilationUnit)
+				handleClassifierNameChange((javaRoot as CompilationUnit).classifiers.get(0), newValue,
+					blackboard.correspondenceInstance, changeNamespanceIfCompilationUnit, oldClassifierTUID)
 			}
 			javaRoot.name = newName;
-			PCMJaMoPPUtils.handleRootChanges(javaRoot, blackboard,
-				PCMJaMoPPUtils.getSourceModelVURI(javaRoot), transformationResult, vuriToDelete, oldTUID)
+			PCMJaMoPPUtils.handleRootChanges(javaRoot, blackboard, PCMJaMoPPUtils.getSourceModelVURI(affectedEObject),
+				transformationResult, vuriToDelete, oldTUID)
+//			if (javaRoot instanceof CompilationUnit && !(javaRoot as CompilationUnit).classifiers.nullOrEmpty ){
+//				
+//			}
 		}
 
 		def static createPrivateField(TypeReference reference, String name) {
@@ -510,13 +519,13 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 					!pack.name.equals("contracts") && !pack.name.equals("datatypes")
 				].get(0)
 				PCM2JaMoPPUtils.handleJavaRootNameChange(jaMoPPPackage, affectedAttribute, newValue, blackboard, true,
-					transformationResult)
+					transformationResult, eObject)
 			}
 			val cus = affectedEObjects.filter(typeof(CompilationUnit))
 			if (!cus.nullOrEmpty) {
 				val CompilationUnit cu = cus.get(0)
 				PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, blackboard, true,
-					transformationResult)
+					transformationResult, eObject)
 			}
 			return transformationResult
 		}
