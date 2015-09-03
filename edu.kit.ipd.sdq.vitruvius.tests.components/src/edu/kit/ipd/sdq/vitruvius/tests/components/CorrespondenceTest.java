@@ -81,7 +81,7 @@ public class CorrespondenceTest extends VSUMTest {
 
     @Test
     public void correspondenceUpdateTest() {
-        // create vsum and Repo and UPackag
+        // create vsum and Repo and UPackage
         VSUMImpl vsum = testMetaRepositoryAndVSUMCreation();
         Repository repo = testLoadObject(vsum, getPCMInstanceUri(), Repository.class);
         UPackage pkg = testLoadObject(vsum, getUMLInstanceURI(), UPackage.class);
@@ -93,6 +93,29 @@ public class CorrespondenceTest extends VSUMTest {
 
         saveUPackageInNewFileAndUpdateCorrespondence(vsum, pkg, correspondenceInstance);
 
+        assertRepositoryCorrespondences(repo, correspondenceInstance);
+    }
+
+    @Test
+    public void testMoveRootEObjectBetweenResource() {
+        // create vsum and Repo and UPackage
+        VSUMImpl vsum = testMetaRepositoryAndVSUMCreation();
+        Repository repo = testLoadObject(vsum, getPCMInstanceUri(), Repository.class);
+        UPackage pkg = testLoadObject(vsum, getUMLInstanceURI(), UPackage.class);
+
+        // create correspondence
+        InternalCorrespondenceInstance correspondenceInstance = testCorrespondenceInstanceCreation(vsum);
+        correspondenceInstance.createAndAddEObjectCorrespondence(repo, pkg);
+
+        // execute the test
+        moveUMLPackageTo(pkg, getTmpUMLInstanceURI(), vsum, correspondenceInstance);
+        moveUMLPackageTo(pkg, getNewUMLInstanceURI(), vsum, correspondenceInstance);
+
+        assertRepositoryCorrespondences(repo, correspondenceInstance);
+    }
+
+    private void assertRepositoryCorrespondences(final Repository repo,
+            final InternalCorrespondenceInstance correspondenceInstance) {
         // get the correspondence of repo
         Set<Correspondence> correspondences = correspondenceInstance.getAllCorrespondences(repo);
         assertEquals("Only one correspondence is expected for the repository.", 1, correspondences.size());
@@ -110,6 +133,13 @@ public class CorrespondenceTest extends VSUMTest {
         }
     }
 
+    private void moveUMLPackageTo(final UPackage pkg, final String string, final VSUMImpl vsum,
+            final InternalCorrespondenceInstance correspondenceInstance) {
+        EcoreUtil.remove(pkg);
+        saveUPackageInNewFileAndUpdateCorrespondence(vsum, pkg, correspondenceInstance);
+
+    }
+
     private void saveUPackageInNewFileAndUpdateCorrespondence(final VSUMImpl vsum, final UPackage pkg,
             final InternalCorrespondenceInstance correspondenceInstance) {
         TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(pkg);
@@ -120,6 +150,10 @@ public class CorrespondenceTest extends VSUMTest {
 
     private String getNewUMLInstanceURI() {
         return getCurrentProjectModelFolder() + "MyNewUML.uml_mockup";
+    }
+
+    private String getTmpUMLInstanceURI() {
+        return getCurrentProjectFolderName() + "MyTmpUML.uml_mockup";
     }
 
     private void removePkgFromFileAndUpdateCorrespondence(final UPackage pkg,
