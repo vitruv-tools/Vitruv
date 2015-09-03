@@ -423,13 +423,24 @@ public interface RepositoryPackage extends EPackage {
     int BASIC_COMPONENT__PASSIVE_RESOURCE_BASIC_COMPONENT = IMPLEMENTATION_COMPONENT_TYPE_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '
+     * <em><b>Resource Demanding Internal Behaviours Basic Component</b></em>' containment reference
+     * list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int BASIC_COMPONENT__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS_BASIC_COMPONENT = IMPLEMENTATION_COMPONENT_TYPE_FEATURE_COUNT
+            + 2;
+
+    /**
      * The number of structural features of the '<em>Basic Component</em>' class. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int BASIC_COMPONENT_FEATURE_COUNT = IMPLEMENTATION_COMPONENT_TYPE_FEATURE_COUNT + 2;
+    int BASIC_COMPONENT_FEATURE_COUNT = IMPLEMENTATION_COMPONENT_TYPE_FEATURE_COUNT + 3;
 
     /**
      * The meta object id for the '{@link org.palladiosimulator.pcm.repository.impl.RoleImpl
@@ -2412,6 +2423,20 @@ public interface RepositoryPackage extends EPackage {
     EReference getBasicComponent_PassiveResource_BasicComponent();
 
     /**
+     * Returns the meta object for the containment reference list '
+     * {@link org.palladiosimulator.pcm.repository.BasicComponent#getResourceDemandingInternalBehaviours__BasicComponent
+     * <em>Resource Demanding Internal Behaviours Basic Component</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @return the meta object for the containment reference list '
+     *         <em>Resource Demanding Internal Behaviours Basic Component</em>'.
+     * @see org.palladiosimulator.pcm.repository.BasicComponent#getResourceDemandingInternalBehaviours__BasicComponent()
+     * @see #getBasicComponent()
+     * @generated
+     */
+    EReference getBasicComponent_ResourceDemandingInternalBehaviours__BasicComponent();
+
+    /**
      * Returns the meta object for class '
      * {@link org.palladiosimulator.pcm.repository.ImplementationComponentType
      * <em>Implementation Component Type</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3527,6 +3552,16 @@ public interface RepositoryPackage extends EPackage {
          */
         EReference BASIC_COMPONENT__PASSIVE_RESOURCE_BASIC_COMPONENT = eINSTANCE
                 .getBasicComponent_PassiveResource_BasicComponent();
+
+        /**
+         * The meta object literal for the '
+         * <em><b>Resource Demanding Internal Behaviours Basic Component</b></em>' containment
+         * reference list feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         * 
+         * @generated
+         */
+        EReference BASIC_COMPONENT__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS_BASIC_COMPONENT = eINSTANCE
+                .getBasicComponent_ResourceDemandingInternalBehaviours__BasicComponent();
 
         /**
          * The meta object literal for the '

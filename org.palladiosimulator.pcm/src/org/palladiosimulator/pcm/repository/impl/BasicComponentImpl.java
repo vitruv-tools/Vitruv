@@ -23,6 +23,7 @@ import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.PassiveResource;
 import org.palladiosimulator.pcm.repository.RepositoryPackage;
 import org.palladiosimulator.pcm.repository.util.RepositoryValidator;
+import org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour;
 import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
 
 /**
@@ -38,6 +39,9 @@ import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
  * <li>
  * {@link org.palladiosimulator.pcm.repository.impl.BasicComponentImpl#getPassiveResource_BasicComponent
  * <em>Passive Resource Basic Component</em>}</li>
+ * <li>
+ * {@link org.palladiosimulator.pcm.repository.impl.BasicComponentImpl#getResourceDemandingInternalBehaviours__BasicComponent
+ * <em>Resource Demanding Internal Behaviours Basic Component</em>}</li>
  * </ul>
  *
  * @generated
@@ -94,6 +98,20 @@ public class BasicComponentImpl extends ImplementationComponentTypeImpl implemen
         return (EList<PassiveResource>) this.eDynamicGet(
                 RepositoryPackage.BASIC_COMPONENT__PASSIVE_RESOURCE_BASIC_COMPONENT,
                 RepositoryPackage.Literals.BASIC_COMPONENT__PASSIVE_RESOURCE_BASIC_COMPONENT, true, true);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public EList<ResourceDemandingInternalBehaviour> getResourceDemandingInternalBehaviours__BasicComponent() {
+        return (EList<ResourceDemandingInternalBehaviour>) this.eDynamicGet(
+                RepositoryPackage.BASIC_COMPONENT__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS_BASIC_COMPONENT,
+                RepositoryPackage.Literals.BASIC_COMPONENT__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS_BASIC_COMPONENT,
+                true, true);
     }
 
     /**
@@ -167,6 +185,9 @@ public class BasicComponentImpl extends ImplementationComponentTypeImpl implemen
         case RepositoryPackage.BASIC_COMPONENT__PASSIVE_RESOURCE_BASIC_COMPONENT:
             return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getPassiveResource_BasicComponent())
                     .basicAdd(otherEnd, msgs);
+        case RepositoryPackage.BASIC_COMPONENT__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS_BASIC_COMPONENT:
+            return ((InternalEList<InternalEObject>) (InternalEList<?>) this
+                    .getResourceDemandingInternalBehaviours__BasicComponent()).basicAdd(otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
     }
@@ -185,6 +206,9 @@ public class BasicComponentImpl extends ImplementationComponentTypeImpl implemen
                     msgs);
         case RepositoryPackage.BASIC_COMPONENT__PASSIVE_RESOURCE_BASIC_COMPONENT:
             return ((InternalEList<?>) this.getPassiveResource_BasicComponent()).basicRemove(otherEnd, msgs);
+        case RepositoryPackage.BASIC_COMPONENT__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS_BASIC_COMPONENT:
+            return ((InternalEList<?>) this.getResourceDemandingInternalBehaviours__BasicComponent())
+                    .basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -201,6 +225,8 @@ public class BasicComponentImpl extends ImplementationComponentTypeImpl implemen
             return this.getServiceEffectSpecifications__BasicComponent();
         case RepositoryPackage.BASIC_COMPONENT__PASSIVE_RESOURCE_BASIC_COMPONENT:
             return this.getPassiveResource_BasicComponent();
+        case RepositoryPackage.BASIC_COMPONENT__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS_BASIC_COMPONENT:
+            return this.getResourceDemandingInternalBehaviours__BasicComponent();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -223,6 +249,11 @@ public class BasicComponentImpl extends ImplementationComponentTypeImpl implemen
             this.getPassiveResource_BasicComponent().clear();
             this.getPassiveResource_BasicComponent().addAll((Collection<? extends PassiveResource>) newValue);
             return;
+        case RepositoryPackage.BASIC_COMPONENT__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS_BASIC_COMPONENT:
+            this.getResourceDemandingInternalBehaviours__BasicComponent().clear();
+            this.getResourceDemandingInternalBehaviours__BasicComponent()
+                    .addAll((Collection<? extends ResourceDemandingInternalBehaviour>) newValue);
+            return;
         }
         super.eSet(featureID, newValue);
     }
@@ -241,6 +272,9 @@ public class BasicComponentImpl extends ImplementationComponentTypeImpl implemen
         case RepositoryPackage.BASIC_COMPONENT__PASSIVE_RESOURCE_BASIC_COMPONENT:
             this.getPassiveResource_BasicComponent().clear();
             return;
+        case RepositoryPackage.BASIC_COMPONENT__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS_BASIC_COMPONENT:
+            this.getResourceDemandingInternalBehaviours__BasicComponent().clear();
+            return;
         }
         super.eUnset(featureID);
     }
@@ -257,6 +291,8 @@ public class BasicComponentImpl extends ImplementationComponentTypeImpl implemen
             return !this.getServiceEffectSpecifications__BasicComponent().isEmpty();
         case RepositoryPackage.BASIC_COMPONENT__PASSIVE_RESOURCE_BASIC_COMPONENT:
             return !this.getPassiveResource_BasicComponent().isEmpty();
+        case RepositoryPackage.BASIC_COMPONENT__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS_BASIC_COMPONENT:
+            return !this.getResourceDemandingInternalBehaviours__BasicComponent().isEmpty();
         }
         return super.eIsSet(featureID);
     }

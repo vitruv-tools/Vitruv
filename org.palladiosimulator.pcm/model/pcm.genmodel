@@ -492,6 +492,8 @@
             createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/BasicComponent/serviceEffectSpecifications__BasicComponent"/>
         <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
             createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/BasicComponent/passiveResource_BasicComponent"/>
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//repository/BasicComponent/resourceDemandingInternalBehaviours__BasicComponent"/>
         <genOperations xsi:type="genmodel:GenOperation" ecoreOperation="pcm.ecore#//repository/BasicComponent/NoSeffTypeUsedTwice">
           <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/BasicComponent/NoSeffTypeUsedTwice/diagnostics"/>
           <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//repository/BasicComponent/NoSeffTypeUsedTwice/context"/>
@@ -940,13 +942,10 @@
           <genParameters xsi:type="genmodel:GenParameter" ecoreParameter="pcm.ecore#//seff/ServiceEffectSpecification/ReferencedSignatureMustBelongToInterfaceReferencedByProvidedRole/context"/>
         </genOperations>
       </genClasses>
-      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/ResourceDemandingSEFF">
-        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
-            createChild="true" ecoreFeature="ecore:EReference pcm.ecore#//seff/ResourceDemandingSEFF/resourceDemandingInternalBehaviours"/>
-      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/ResourceDemandingSEFF"/>
       <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/ResourceDemandingInternalBehaviour">
         <genFeatures xsi:type="genmodel:GenFeature" property="None" notify="false"
-            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//seff/ResourceDemandingInternalBehaviour/resourceDemandingSEFF_ResourceDemandingInternalBehaviour"/>
+            createChild="false" ecoreFeature="ecore:EReference pcm.ecore#//seff/ResourceDemandingInternalBehaviour/basicComponent_ResourceDemandingInternalBehaviour"/>
       </genClasses>
       <genClasses xsi:type="genmodel:GenClass" ecoreClass="pcm.ecore#//seff/ReleaseAction">
         <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"

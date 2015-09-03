@@ -3,8 +3,6 @@
  */
 package org.palladiosimulator.pcm.seff;
 
-import org.eclipse.emf.common.util.EList;
-
 import de.uka.ipd.sdq.identifier.Identifier;
 
 /**
@@ -22,14 +20,6 @@ import de.uka.ipd.sdq.identifier.Identifier;
  * themselves to describe loop bodies or branched behaviours (explained later), and these inner
  * behaviours should not be RDSEFFs themselves <!-- end-model-doc -->
  *
- * <p>
- * The following features are supported:
- * </p>
- * <ul>
- * <li>
- * {@link org.palladiosimulator.pcm.seff.ResourceDemandingSEFF#getResourceDemandingInternalBehaviours
- * <em>Resource Demanding Internal Behaviours</em>}</li>
- * </ul>
  *
  * @see org.palladiosimulator.pcm.seff.SeffPackage#getResourceDemandingSEFF()
  * @model
@@ -43,29 +33,5 @@ public interface ResourceDemandingSEFF extends Identifier, ServiceEffectSpecific
      * @generated
      */
     String copyright = "Copyright 2005-2015 by palladiosimulator.org";
-
-    /**
-     * Returns the value of the '<em><b>Resource Demanding Internal Behaviours</b></em>' containment
-     * reference list. The list contents are of type
-     * {@link org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour}. It is
-     * bidirectional and its opposite is '
-     * {@link org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour#getResourceDemandingSEFF_ResourceDemandingInternalBehaviour
-     * <em>Resource Demanding SEFF Resource Demanding Internal Behaviour</em>}'. <!-- begin-user-doc
-     * -->
-     * <p>
-     * If the meaning of the '<em>Resource Demanding Internal Behaviours</em>' containment reference
-     * list isn't clear, there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * 
-     * @return the value of the '<em>Resource Demanding Internal Behaviours</em>' containment
-     *         reference list.
-     * @see org.palladiosimulator.pcm.seff.SeffPackage#getResourceDemandingSEFF_ResourceDemandingInternalBehaviours()
-     * @see org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour#getResourceDemandingSEFF_ResourceDemandingInternalBehaviour
-     * @model opposite="resourceDemandingSEFF_ResourceDemandingInternalBehaviour" containment="true"
-     *        ordered="false"
-     * @generated
-     */
-    EList<ResourceDemandingInternalBehaviour> getResourceDemandingInternalBehaviours();
 
 } // ResourceDemandingSEFF

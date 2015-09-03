@@ -760,16 +760,6 @@ public class SeffPackageImpl extends EPackageImpl implements SeffPackage {
      * @generated
      */
     @Override
-    public EReference getResourceDemandingSEFF_ResourceDemandingInternalBehaviours() {
-        return (EReference) this.resourceDemandingSEFFEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    @Override
     public EClass getResourceDemandingInternalBehaviour() {
         return this.resourceDemandingInternalBehaviourEClass;
     }
@@ -780,7 +770,7 @@ public class SeffPackageImpl extends EPackageImpl implements SeffPackage {
      * @generated
      */
     @Override
-    public EReference getResourceDemandingInternalBehaviour_ResourceDemandingSEFF_ResourceDemandingInternalBehaviour() {
+    public EReference getResourceDemandingInternalBehaviour_BasicComponent_ResourceDemandingInternalBehaviour() {
         return (EReference) this.resourceDemandingInternalBehaviourEClass.getEStructuralFeatures().get(0);
     }
 
@@ -1251,12 +1241,10 @@ public class SeffPackageImpl extends EPackageImpl implements SeffPackage {
                 SERVICE_EFFECT_SPECIFICATION__BASIC_COMPONENT_SERVICE_EFFECT_SPECIFICATION);
 
         this.resourceDemandingSEFFEClass = this.createEClass(RESOURCE_DEMANDING_SEFF);
-        this.createEReference(this.resourceDemandingSEFFEClass,
-                RESOURCE_DEMANDING_SEFF__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS);
 
         this.resourceDemandingInternalBehaviourEClass = this.createEClass(RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR);
         this.createEReference(this.resourceDemandingInternalBehaviourEClass,
-                RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR__RESOURCE_DEMANDING_SEFF_RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR);
+                RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR__BASIC_COMPONENT_RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR);
 
         this.releaseActionEClass = this.createEClass(RELEASE_ACTION);
         this.createEReference(this.releaseActionEClass, RELEASE_ACTION__PASSIVE_RESOURCE_RELEASE_ACTION);
@@ -1600,19 +1588,14 @@ public class SeffPackageImpl extends EPackageImpl implements SeffPackage {
 
         this.initEClass(this.resourceDemandingSEFFEClass, ResourceDemandingSEFF.class, "ResourceDemandingSEFF",
                 !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getResourceDemandingSEFF_ResourceDemandingInternalBehaviours(),
-                this.getResourceDemandingInternalBehaviour(),
-                this.getResourceDemandingInternalBehaviour_ResourceDemandingSEFF_ResourceDemandingInternalBehaviour(),
-                "resourceDemandingInternalBehaviours", null, 0, -1, ResourceDemandingSEFF.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
-                !IS_ORDERED);
 
         this.initEClass(this.resourceDemandingInternalBehaviourEClass, ResourceDemandingInternalBehaviour.class,
                 "ResourceDemandingInternalBehaviour", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(
-                this.getResourceDemandingInternalBehaviour_ResourceDemandingSEFF_ResourceDemandingInternalBehaviour(),
-                this.getResourceDemandingSEFF(), this.getResourceDemandingSEFF_ResourceDemandingInternalBehaviours(),
-                "resourceDemandingSEFF_ResourceDemandingInternalBehaviour", null, 1, 1,
+                this.getResourceDemandingInternalBehaviour_BasicComponent_ResourceDemandingInternalBehaviour(),
+                theRepositoryPackage.getBasicComponent(),
+                theRepositoryPackage.getBasicComponent_ResourceDemandingInternalBehaviours__BasicComponent(),
+                "basicComponent_ResourceDemandingInternalBehaviour", null, 1, 1,
                 ResourceDemandingInternalBehaviour.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
@@ -1771,9 +1754,9 @@ public class SeffPackageImpl extends EPackageImpl implements SeffPackage {
         this.initEClass(this.internalCallActionEClass, InternalCallAction.class, "InternalCallAction", !IS_ABSTRACT,
                 !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getInternalCallAction_CalledResourceDemandingInternalBehaviour(),
-                this.getResourceDemandingInternalBehaviour(), null, "calledResourceDemandingInternalBehaviour", null, 1,
-                1, InternalCallAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
-                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+                this.getResourceDemandingBehaviour(), null, "calledResourceDemandingInternalBehaviour", null, 1, 1,
+                InternalCallAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
         this.initEClass(this.emitEventActionEClass, EmitEventAction.class, "EmitEventAction", !IS_ABSTRACT,
                 !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

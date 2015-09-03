@@ -12,7 +12,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.palladiosimulator.pcm.seff.AbstractInternalControlFlowAction;
 import org.palladiosimulator.pcm.seff.InternalCallAction;
-import org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour;
+import org.palladiosimulator.pcm.seff.ResourceDemandingBehaviour;
 import org.palladiosimulator.pcm.seff.SeffPackage;
 import org.palladiosimulator.pcm.seff.seff_performance.InfrastructureCall;
 import org.palladiosimulator.pcm.seff.seff_performance.ParametricResourceDemand;
@@ -111,8 +111,8 @@ public class InternalCallActionImpl extends CallActionImpl implements InternalCa
      * @generated
      */
     @Override
-    public ResourceDemandingInternalBehaviour getCalledResourceDemandingInternalBehaviour() {
-        return (ResourceDemandingInternalBehaviour) this.eDynamicGet(
+    public ResourceDemandingBehaviour getCalledResourceDemandingInternalBehaviour() {
+        return (ResourceDemandingBehaviour) this.eDynamicGet(
                 SeffPackage.INTERNAL_CALL_ACTION__CALLED_RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR,
                 SeffPackage.Literals.INTERNAL_CALL_ACTION__CALLED_RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR, true, true);
     }
@@ -122,8 +122,8 @@ public class InternalCallActionImpl extends CallActionImpl implements InternalCa
      * 
      * @generated
      */
-    public ResourceDemandingInternalBehaviour basicGetCalledResourceDemandingInternalBehaviour() {
-        return (ResourceDemandingInternalBehaviour) this.eDynamicGet(
+    public ResourceDemandingBehaviour basicGetCalledResourceDemandingInternalBehaviour() {
+        return (ResourceDemandingBehaviour) this.eDynamicGet(
                 SeffPackage.INTERNAL_CALL_ACTION__CALLED_RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR,
                 SeffPackage.Literals.INTERNAL_CALL_ACTION__CALLED_RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR, false, true);
     }
@@ -135,7 +135,7 @@ public class InternalCallActionImpl extends CallActionImpl implements InternalCa
      */
     @Override
     public void setCalledResourceDemandingInternalBehaviour(
-            final ResourceDemandingInternalBehaviour newCalledResourceDemandingInternalBehaviour) {
+            final ResourceDemandingBehaviour newCalledResourceDemandingInternalBehaviour) {
         this.eDynamicSet(SeffPackage.INTERNAL_CALL_ACTION__CALLED_RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR,
                 SeffPackage.Literals.INTERNAL_CALL_ACTION__CALLED_RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR,
                 newCalledResourceDemandingInternalBehaviour);
@@ -228,7 +228,7 @@ public class InternalCallActionImpl extends CallActionImpl implements InternalCa
             this.getResourceCall__Action().addAll((Collection<? extends ResourceCall>) newValue);
             return;
         case SeffPackage.INTERNAL_CALL_ACTION__CALLED_RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR:
-            this.setCalledResourceDemandingInternalBehaviour((ResourceDemandingInternalBehaviour) newValue);
+            this.setCalledResourceDemandingInternalBehaviour((ResourceDemandingBehaviour) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -252,7 +252,7 @@ public class InternalCallActionImpl extends CallActionImpl implements InternalCa
             this.getResourceCall__Action().clear();
             return;
         case SeffPackage.INTERNAL_CALL_ACTION__CALLED_RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR:
-            this.setCalledResourceDemandingInternalBehaviour((ResourceDemandingInternalBehaviour) null);
+            this.setCalledResourceDemandingInternalBehaviour((ResourceDemandingBehaviour) null);
             return;
         }
         super.eUnset(featureID);

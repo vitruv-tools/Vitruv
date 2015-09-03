@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.EList;
+import org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour;
 import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
 
 /**
@@ -28,6 +29,9 @@ import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
  * <em>Service Effect Specifications Basic Component</em>}</li>
  * <li>{@link org.palladiosimulator.pcm.repository.BasicComponent#getPassiveResource_BasicComponent
  * <em>Passive Resource Basic Component</em>}</li>
+ * <li>
+ * {@link org.palladiosimulator.pcm.repository.BasicComponent#getResourceDemandingInternalBehaviours__BasicComponent
+ * <em>Resource Demanding Internal Behaviours Basic Component</em>}</li>
  * </ul>
  *
  * @see org.palladiosimulator.pcm.repository.RepositoryPackage#getBasicComponent()
@@ -81,6 +85,30 @@ public interface BasicComponent extends ImplementationComponentType {
      * @generated
      */
     EList<PassiveResource> getPassiveResource_BasicComponent();
+
+    /**
+     * Returns the value of the '
+     * <em><b>Resource Demanding Internal Behaviours Basic Component</b></em>' containment reference
+     * list. The list contents are of type
+     * {@link org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour}. It is
+     * bidirectional and its opposite is '
+     * {@link org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour#getBasicComponent_ResourceDemandingInternalBehaviour
+     * <em>Basic Component Resource Demanding Internal Behaviour</em>}'. <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Resource Demanding Internal Behaviours Basic Component</em>'
+     * containment reference list isn't clear, there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * 
+     * @return the value of the '<em>Resource Demanding Internal Behaviours Basic Component</em>'
+     *         containment reference list.
+     * @see org.palladiosimulator.pcm.repository.RepositoryPackage#getBasicComponent_ResourceDemandingInternalBehaviours__BasicComponent()
+     * @see org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour#getBasicComponent_ResourceDemandingInternalBehaviour
+     * @model opposite="basicComponent_ResourceDemandingInternalBehaviour" containment="true"
+     *        ordered="false"
+     * @generated
+     */
+    EList<ResourceDemandingInternalBehaviour> getResourceDemandingInternalBehaviours__BasicComponent();
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc --> <!-- begin-model-doc -->

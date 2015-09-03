@@ -26,7 +26,6 @@ import org.palladiosimulator.pcm.seff.AbstractAction;
 import org.palladiosimulator.pcm.seff.AbstractBranchTransition;
 import org.palladiosimulator.pcm.seff.AbstractLoopAction;
 import org.palladiosimulator.pcm.seff.ResourceDemandingBehaviour;
-import org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.seff.SeffPackage;
 import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
@@ -57,9 +56,6 @@ import de.uka.ipd.sdq.identifier.impl.IdentifierImpl;
  * <em>Abstract Branch Transition Resource Demanding Behaviour</em>}</li>
  * <li>{@link org.palladiosimulator.pcm.seff.impl.ResourceDemandingSEFFImpl#getSteps_Behaviour
  * <em>Steps Behaviour</em>}</li>
- * <li>
- * {@link org.palladiosimulator.pcm.seff.impl.ResourceDemandingSEFFImpl#getResourceDemandingInternalBehaviours
- * <em>Resource Demanding Internal Behaviours</em>}</li>
  * </ul>
  *
  * @generated
@@ -281,19 +277,6 @@ public class ResourceDemandingSEFFImpl extends IdentifierImpl implements Resourc
     public EList<AbstractAction> getSteps_Behaviour() {
         return (EList<AbstractAction>) this.eDynamicGet(SeffPackage.RESOURCE_DEMANDING_SEFF__STEPS_BEHAVIOUR,
                 SeffPackage.Literals.RESOURCE_DEMANDING_BEHAVIOUR__STEPS_BEHAVIOUR, true, true);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    public EList<ResourceDemandingInternalBehaviour> getResourceDemandingInternalBehaviours() {
-        return (EList<ResourceDemandingInternalBehaviour>) this.eDynamicGet(
-                SeffPackage.RESOURCE_DEMANDING_SEFF__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS,
-                SeffPackage.Literals.RESOURCE_DEMANDING_SEFF__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS, true, true);
     }
 
     /**
@@ -565,9 +548,6 @@ public class ResourceDemandingSEFFImpl extends IdentifierImpl implements Resourc
         case SeffPackage.RESOURCE_DEMANDING_SEFF__STEPS_BEHAVIOUR:
             return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getSteps_Behaviour()).basicAdd(otherEnd,
                     msgs);
-        case SeffPackage.RESOURCE_DEMANDING_SEFF__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS:
-            return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getResourceDemandingInternalBehaviours())
-                    .basicAdd(otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
     }
@@ -589,8 +569,6 @@ public class ResourceDemandingSEFFImpl extends IdentifierImpl implements Resourc
             return this.basicSetAbstractBranchTransition_ResourceDemandingBehaviour(null, msgs);
         case SeffPackage.RESOURCE_DEMANDING_SEFF__STEPS_BEHAVIOUR:
             return ((InternalEList<?>) this.getSteps_Behaviour()).basicRemove(otherEnd, msgs);
-        case SeffPackage.RESOURCE_DEMANDING_SEFF__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS:
-            return ((InternalEList<?>) this.getResourceDemandingInternalBehaviours()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -641,8 +619,6 @@ public class ResourceDemandingSEFFImpl extends IdentifierImpl implements Resourc
             return this.getAbstractBranchTransition_ResourceDemandingBehaviour();
         case SeffPackage.RESOURCE_DEMANDING_SEFF__STEPS_BEHAVIOUR:
             return this.getSteps_Behaviour();
-        case SeffPackage.RESOURCE_DEMANDING_SEFF__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS:
-            return this.getResourceDemandingInternalBehaviours();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -675,11 +651,6 @@ public class ResourceDemandingSEFFImpl extends IdentifierImpl implements Resourc
             this.getSteps_Behaviour().clear();
             this.getSteps_Behaviour().addAll((Collection<? extends AbstractAction>) newValue);
             return;
-        case SeffPackage.RESOURCE_DEMANDING_SEFF__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS:
-            this.getResourceDemandingInternalBehaviours().clear();
-            this.getResourceDemandingInternalBehaviours()
-                    .addAll((Collection<? extends ResourceDemandingInternalBehaviour>) newValue);
-            return;
         }
         super.eSet(featureID, newValue);
     }
@@ -710,9 +681,6 @@ public class ResourceDemandingSEFFImpl extends IdentifierImpl implements Resourc
         case SeffPackage.RESOURCE_DEMANDING_SEFF__STEPS_BEHAVIOUR:
             this.getSteps_Behaviour().clear();
             return;
-        case SeffPackage.RESOURCE_DEMANDING_SEFF__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS:
-            this.getResourceDemandingInternalBehaviours().clear();
-            return;
         }
         super.eUnset(featureID);
     }
@@ -738,8 +706,6 @@ public class ResourceDemandingSEFFImpl extends IdentifierImpl implements Resourc
             return this.getAbstractBranchTransition_ResourceDemandingBehaviour() != null;
         case SeffPackage.RESOURCE_DEMANDING_SEFF__STEPS_BEHAVIOUR:
             return !this.getSteps_Behaviour().isEmpty();
-        case SeffPackage.RESOURCE_DEMANDING_SEFF__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS:
-            return !this.getResourceDemandingInternalBehaviours().isEmpty();
         }
         return super.eIsSet(featureID);
     }

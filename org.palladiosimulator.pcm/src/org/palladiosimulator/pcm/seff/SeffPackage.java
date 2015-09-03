@@ -918,23 +918,13 @@ public interface SeffPackage extends EPackage {
     int RESOURCE_DEMANDING_SEFF__STEPS_BEHAVIOUR = IdentifierPackage.IDENTIFIER_FEATURE_COUNT + 5;
 
     /**
-     * The feature id for the '<em><b>Resource Demanding Internal Behaviours</b></em>' containment
-     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     * @ordered
-     */
-    int RESOURCE_DEMANDING_SEFF__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS = IdentifierPackage.IDENTIFIER_FEATURE_COUNT
-            + 6;
-
-    /**
      * The number of structural features of the '<em>Resource Demanding SEFF</em>' class. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int RESOURCE_DEMANDING_SEFF_FEATURE_COUNT = IdentifierPackage.IDENTIFIER_FEATURE_COUNT + 7;
+    int RESOURCE_DEMANDING_SEFF_FEATURE_COUNT = IdentifierPackage.IDENTIFIER_FEATURE_COUNT + 6;
 
     /**
      * The meta object id for the '
@@ -986,14 +976,13 @@ public interface SeffPackage extends EPackage {
     int RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR__STEPS_BEHAVIOUR = RESOURCE_DEMANDING_BEHAVIOUR__STEPS_BEHAVIOUR;
 
     /**
-     * The feature id for the '
-     * <em><b>Resource Demanding SEFF Resource Demanding Internal Behaviour</b></em>' container
-     * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Basic Component Resource Demanding Internal Behaviour</b></em>
+     * ' container reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      * 
      * @generated
      * @ordered
      */
-    int RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR__RESOURCE_DEMANDING_SEFF_RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR = RESOURCE_DEMANDING_BEHAVIOUR_FEATURE_COUNT
+    int RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR__BASIC_COMPONENT_RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR = RESOURCE_DEMANDING_BEHAVIOUR_FEATURE_COUNT
             + 0;
 
     /**
@@ -2753,20 +2742,6 @@ public interface SeffPackage extends EPackage {
     EClass getResourceDemandingSEFF();
 
     /**
-     * Returns the meta object for the containment reference list '
-     * {@link org.palladiosimulator.pcm.seff.ResourceDemandingSEFF#getResourceDemandingInternalBehaviours
-     * <em>Resource Demanding Internal Behaviours</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @return the meta object for the containment reference list '
-     *         <em>Resource Demanding Internal Behaviours</em>'.
-     * @see org.palladiosimulator.pcm.seff.ResourceDemandingSEFF#getResourceDemandingInternalBehaviours()
-     * @see #getResourceDemandingSEFF()
-     * @generated
-     */
-    EReference getResourceDemandingSEFF_ResourceDemandingInternalBehaviours();
-
-    /**
      * Returns the meta object for class '
      * {@link org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour
      * <em>Resource Demanding Internal Behaviour</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
@@ -2780,17 +2755,17 @@ public interface SeffPackage extends EPackage {
 
     /**
      * Returns the meta object for the container reference '
-     * {@link org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour#getResourceDemandingSEFF_ResourceDemandingInternalBehaviour
-     * <em>Resource Demanding SEFF Resource Demanding Internal Behaviour</em>}'. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * {@link org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour#getBasicComponent_ResourceDemandingInternalBehaviour
+     * <em>Basic Component Resource Demanding Internal Behaviour</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      * 
      * @return the meta object for the container reference '
-     *         <em>Resource Demanding SEFF Resource Demanding Internal Behaviour</em>'.
-     * @see org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour#getResourceDemandingSEFF_ResourceDemandingInternalBehaviour()
+     *         <em>Basic Component Resource Demanding Internal Behaviour</em>'.
+     * @see org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour#getBasicComponent_ResourceDemandingInternalBehaviour()
      * @see #getResourceDemandingInternalBehaviour()
      * @generated
      */
-    EReference getResourceDemandingInternalBehaviour_ResourceDemandingSEFF_ResourceDemandingInternalBehaviour();
+    EReference getResourceDemandingInternalBehaviour_BasicComponent_ResourceDemandingInternalBehaviour();
 
     /**
      * Returns the meta object for class '{@link org.palladiosimulator.pcm.seff.ReleaseAction
@@ -3557,15 +3532,6 @@ public interface SeffPackage extends EPackage {
         EClass RESOURCE_DEMANDING_SEFF = eINSTANCE.getResourceDemandingSEFF();
 
         /**
-         * The meta object literal for the '<em><b>Resource Demanding Internal Behaviours</b></em>'
-         * containment reference list feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
-         * @generated
-         */
-        EReference RESOURCE_DEMANDING_SEFF__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS = eINSTANCE
-                .getResourceDemandingSEFF_ResourceDemandingInternalBehaviours();
-
-        /**
          * The meta object literal for the '
          * {@link org.palladiosimulator.pcm.seff.impl.ResourceDemandingInternalBehaviourImpl
          * <em>Resource Demanding Internal Behaviour</em>}' class. <!-- begin-user-doc --> <!--
@@ -3579,13 +3545,13 @@ public interface SeffPackage extends EPackage {
 
         /**
          * The meta object literal for the '
-         * <em><b>Resource Demanding SEFF Resource Demanding Internal Behaviour</b></em>' container
+         * <em><b>Basic Component Resource Demanding Internal Behaviour</b></em>' container
          * reference feature. <!-- begin-user-doc --> <!-- end-user-doc -->
          * 
          * @generated
          */
-        EReference RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR__RESOURCE_DEMANDING_SEFF_RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR = eINSTANCE
-                .getResourceDemandingInternalBehaviour_ResourceDemandingSEFF_ResourceDemandingInternalBehaviour();
+        EReference RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR__BASIC_COMPONENT_RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR = eINSTANCE
+                .getResourceDemandingInternalBehaviour_BasicComponent_ResourceDemandingInternalBehaviour();
 
         /**
          * The meta object literal for the '

@@ -42,12 +42,12 @@ public interface InternalCallAction extends CallAction, AbstractInternalControlF
      * <!-- end-user-doc -->
      * 
      * @return the value of the '<em>Called Resource Demanding Internal Behaviour</em>' reference.
-     * @see #setCalledResourceDemandingInternalBehaviour(ResourceDemandingInternalBehaviour)
+     * @see #setCalledResourceDemandingInternalBehaviour(ResourceDemandingBehaviour)
      * @see org.palladiosimulator.pcm.seff.SeffPackage#getInternalCallAction_CalledResourceDemandingInternalBehaviour()
      * @model required="true" ordered="false"
      * @generated
      */
-    ResourceDemandingInternalBehaviour getCalledResourceDemandingInternalBehaviour();
+    ResourceDemandingBehaviour getCalledResourceDemandingInternalBehaviour();
 
     /**
      * Sets the value of the '
@@ -61,6 +61,6 @@ public interface InternalCallAction extends CallAction, AbstractInternalControlF
      * @see #getCalledResourceDemandingInternalBehaviour()
      * @generated
      */
-    void setCalledResourceDemandingInternalBehaviour(ResourceDemandingInternalBehaviour value);
+    void setCalledResourceDemandingInternalBehaviour(ResourceDemandingBehaviour value);
 
 } // InternalCallAction

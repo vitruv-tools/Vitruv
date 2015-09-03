@@ -3,6 +3,8 @@
  */
 package org.palladiosimulator.pcm.seff;
 
+import org.palladiosimulator.pcm.repository.BasicComponent;
+
 /**
  * <!-- begin-user-doc --> A representation of the model object '
  * <em><b>Resource Demanding Internal Behaviour</b></em>'. <!-- end-user-doc -->
@@ -17,8 +19,8 @@ package org.palladiosimulator.pcm.seff;
  * </p>
  * <ul>
  * <li>
- * {@link org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour#getResourceDemandingSEFF_ResourceDemandingInternalBehaviour
- * <em>Resource Demanding SEFF Resource Demanding Internal Behaviour</em>}</li>
+ * {@link org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour#getBasicComponent_ResourceDemandingInternalBehaviour
+ * <em>Basic Component Resource Demanding Internal Behaviour</em>}</li>
  * </ul>
  *
  * @see org.palladiosimulator.pcm.seff.SeffPackage#getResourceDemandingInternalBehaviour()
@@ -36,41 +38,40 @@ public interface ResourceDemandingInternalBehaviour extends ResourceDemandingBeh
 
     /**
      * Returns the value of the '
-     * <em><b>Resource Demanding SEFF Resource Demanding Internal Behaviour</b></em>' container
-     * reference. It is bidirectional and its opposite is '
-     * {@link org.palladiosimulator.pcm.seff.ResourceDemandingSEFF#getResourceDemandingInternalBehaviours
-     * <em>Resource Demanding Internal Behaviours</em>}'. <!-- begin-user-doc -->
+     * <em><b>Basic Component Resource Demanding Internal Behaviour</b></em>' container reference.
+     * It is bidirectional and its opposite is '
+     * {@link org.palladiosimulator.pcm.repository.BasicComponent#getResourceDemandingInternalBehaviours__BasicComponent
+     * <em>Resource Demanding Internal Behaviours Basic Component</em>}'. <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Resource Demanding SEFF Resource Demanding Internal Behaviour</em>
-     * ' container reference isn't clear, there really should be more of a description here...
+     * If the meaning of the '<em>Basic Component Resource Demanding Internal Behaviour</em>'
+     * container reference isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
      * 
-     * @return the value of the '
-     *         <em>Resource Demanding SEFF Resource Demanding Internal Behaviour</em>' container
-     *         reference.
-     * @see #setResourceDemandingSEFF_ResourceDemandingInternalBehaviour(ResourceDemandingSEFF)
-     * @see org.palladiosimulator.pcm.seff.SeffPackage#getResourceDemandingInternalBehaviour_ResourceDemandingSEFF_ResourceDemandingInternalBehaviour()
-     * @see org.palladiosimulator.pcm.seff.ResourceDemandingSEFF#getResourceDemandingInternalBehaviours
-     * @model opposite="resourceDemandingInternalBehaviours" required="true" transient="false"
-     *        ordered="false"
+     * @return the value of the '<em>Basic Component Resource Demanding Internal Behaviour</em>'
+     *         container reference.
+     * @see #setBasicComponent_ResourceDemandingInternalBehaviour(BasicComponent)
+     * @see org.palladiosimulator.pcm.seff.SeffPackage#getResourceDemandingInternalBehaviour_BasicComponent_ResourceDemandingInternalBehaviour()
+     * @see org.palladiosimulator.pcm.repository.BasicComponent#getResourceDemandingInternalBehaviours__BasicComponent
+     * @model opposite="resourceDemandingInternalBehaviours__BasicComponent" required="true"
+     *        transient="false" ordered="false"
      * @generated
      */
-    ResourceDemandingSEFF getResourceDemandingSEFF_ResourceDemandingInternalBehaviour();
+    BasicComponent getBasicComponent_ResourceDemandingInternalBehaviour();
 
     /**
      * Sets the value of the '
-     * {@link org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour#getResourceDemandingSEFF_ResourceDemandingInternalBehaviour
-     * <em>Resource Demanding SEFF Resource Demanding Internal Behaviour</em>}' container reference.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * {@link org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour#getBasicComponent_ResourceDemandingInternalBehaviour
+     * <em>Basic Component Resource Demanding Internal Behaviour</em>}' container reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
      * @param value
      *            the new value of the '
-     *            <em>Resource Demanding SEFF Resource Demanding Internal Behaviour</em>' container
+     *            <em>Basic Component Resource Demanding Internal Behaviour</em>' container
      *            reference.
-     * @see #getResourceDemandingSEFF_ResourceDemandingInternalBehaviour()
+     * @see #getBasicComponent_ResourceDemandingInternalBehaviour()
      * @generated
      */
-    void setResourceDemandingSEFF_ResourceDemandingInternalBehaviour(ResourceDemandingSEFF value);
+    void setBasicComponent_ResourceDemandingInternalBehaviour(BasicComponent value);
 
 } // ResourceDemandingInternalBehaviour

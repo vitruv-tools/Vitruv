@@ -1019,6 +1019,9 @@
           <details key="documentation" value="This property represents the passive resources, e.g., semaphores, that are owned by this basic component."/>
         </eAnnotations>
       </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="resourceDemandingInternalBehaviours__BasicComponent"
+          ordered="false" upperBound="-1" eType="#//seff/ResourceDemandingInternalBehaviour"
+          containment="true" eOpposite="#//seff/ResourceDemandingInternalBehaviour/basicComponent_ResourceDemandingInternalBehaviour"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ImplementationComponentType" abstract="true"
         eSuperTypes="#//repository/RepositoryComponent">
@@ -2292,17 +2295,14 @@
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="A resource demanding service effect specification (RDSEFF) is a special type of SEFF designed for performance and reliability predictions. Besides dependencies between provided and required services of a component, it additionally includes notions of resource usage, data flow, and parametric dependencies for more accurate predictions. Its control flow is hierarchically structured and can be enhanced with transition probabilities on branches and numbers of iterations on loops.&#xD;&#xA;A ResourceDemandingSEFF is a ServiceEffectSpecification and a Resource-DemandingBehaviour at the same time inheriting from both classes. The reason for this construct lies in the fact, that ResourceDemandingBehaviours can be used recursively inside themselves to describe loop bodies or branched behaviours (explained later), and these inner behaviours should not be RDSEFFs themselves"/>
       </eAnnotations>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="resourceDemandingInternalBehaviours"
-          ordered="false" upperBound="-1" eType="#//seff/ResourceDemandingInternalBehaviour"
-          containment="true" eOpposite="#//seff/ResourceDemandingInternalBehaviour/resourceDemandingSEFF_ResourceDemandingInternalBehaviour"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ResourceDemandingInternalBehaviour"
         eSuperTypes="#//seff/ResourceDemandingBehaviour">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Class representing component-internal behaviour not accessible from the component's interface. Comparable to internal method in object-oriented programming. This behaviour can be called from within a resource demanding behaviour using an InternalCallAction."/>
       </eAnnotations>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="resourceDemandingSEFF_ResourceDemandingInternalBehaviour"
-          ordered="false" lowerBound="1" eType="#//seff/ResourceDemandingSEFF" eOpposite="#//seff/ResourceDemandingSEFF/resourceDemandingInternalBehaviours"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="basicComponent_ResourceDemandingInternalBehaviour"
+          ordered="false" lowerBound="1" eType="#//repository/BasicComponent" eOpposite="#//repository/BasicComponent/resourceDemandingInternalBehaviours__BasicComponent"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ReleaseAction" eSuperTypes="#//seff/AbstractInternalControlFlowAction">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -2489,7 +2489,7 @@
         <details key="documentation" value="A &quot;SubSEFF&quot;-Action: Realises an internal method call within a SEFF."/>
       </eAnnotations>
       <eStructuralFeatures xsi:type="ecore:EReference" name="calledResourceDemandingInternalBehaviour"
-          ordered="false" lowerBound="1" eType="#//seff/ResourceDemandingInternalBehaviour"/>
+          ordered="false" lowerBound="1" eType="#//seff/ResourceDemandingBehaviour"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="EmitEventAction" eSuperTypes="#//seff/AbstractAction #//seff/CallAction">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">

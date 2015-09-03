@@ -622,6 +622,16 @@ public class RepositoryPackageImpl extends EPackageImpl implements RepositoryPac
      * @generated
      */
     @Override
+    public EReference getBasicComponent_ResourceDemandingInternalBehaviours__BasicComponent() {
+        return (EReference) this.basicComponentEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
     public EClass getImplementationComponentType() {
         return this.implementationComponentTypeEClass;
     }
@@ -1526,6 +1536,8 @@ public class RepositoryPackageImpl extends EPackageImpl implements RepositoryPac
         this.createEReference(this.basicComponentEClass,
                 BASIC_COMPONENT__SERVICE_EFFECT_SPECIFICATIONS_BASIC_COMPONENT);
         this.createEReference(this.basicComponentEClass, BASIC_COMPONENT__PASSIVE_RESOURCE_BASIC_COMPONENT);
+        this.createEReference(this.basicComponentEClass,
+                BASIC_COMPONENT__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS_BASIC_COMPONENT);
 
         this.implementationComponentTypeEClass = this.createEClass(IMPLEMENTATION_COMPONENT_TYPE);
         this.createEReference(this.implementationComponentTypeEClass,
@@ -1766,6 +1778,13 @@ public class RepositoryPackageImpl extends EPackageImpl implements RepositoryPac
                 this.getPassiveResource_BasicComponent_PassiveResource(), "passiveResource_BasicComponent", null, 0, -1,
                 BasicComponent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+        this.initEReference(this.getBasicComponent_ResourceDemandingInternalBehaviours__BasicComponent(),
+                theSeffPackage.getResourceDemandingInternalBehaviour(),
+                theSeffPackage
+                        .getResourceDemandingInternalBehaviour_BasicComponent_ResourceDemandingInternalBehaviour(),
+                "resourceDemandingInternalBehaviours__BasicComponent", null, 0, -1, BasicComponent.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
+                !IS_ORDERED);
 
         EOperation op = this.addEOperation(this.basicComponentEClass, this.ecorePackage.getEBoolean(),
                 "NoSeffTypeUsedTwice", 0, 1, IS_UNIQUE, IS_ORDERED);
