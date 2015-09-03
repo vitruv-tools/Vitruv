@@ -28,7 +28,7 @@ import uml_mockup.UPackage;
 import uml_mockup.Uml_mockupFactory;
 
 public class VSUMTest extends AbstractVSUMTest {
-    private String getCurrentProjectModelFolder() {
+    protected String getCurrentProjectModelFolder() {
         return getCurrentProjectFolderName() + "/model/";
     }
 

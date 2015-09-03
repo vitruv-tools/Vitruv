@@ -38,7 +38,6 @@ import uml_mockup.UPackage;
 
 public class CorrespondenceTest extends VSUMTest {
     private static final String interfaceCRefName = "interfaces";
-    private static final String NEW_UML_INSTANCE_URI = "MockupProject/model/MyNewUML.uml_mockup";
 
     private static final Logger logger = Logger.getLogger(CorrespondenceTest.class.getSimpleName());
 
@@ -80,7 +79,7 @@ public class CorrespondenceTest extends VSUMTest {
         testCorrespondencePersistence(vsum, repo, pkg, correspondenceInstance);
     }
 
-    // @Test
+    @Test
     public void correspondenceUpdateTest() {
         // create vsum and Repo and UPackag
         VSUMImpl vsum = testMetaRepositoryAndVSUMCreation();
@@ -114,9 +113,13 @@ public class CorrespondenceTest extends VSUMTest {
     private void saveUPackageInNewFileAndUpdateCorrespondence(final VSUMImpl vsum, final UPackage pkg,
             final InternalCorrespondenceInstance correspondenceInstance) {
         TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(pkg);
-        VURI newVURI = VURI.getInstance(NEW_UML_INSTANCE_URI);
+        VURI newVURI = VURI.getInstance(getNewUMLInstanceURI());
         vsum.saveModelInstanceOriginalWithEObjectAsOnlyContent(newVURI, pkg, oldTUID);
         correspondenceInstance.update(oldTUID, pkg);
+    }
+
+    private String getNewUMLInstanceURI() {
+        return getCurrentProjectModelFolder() + "MyNewUML.uml_mockup";
     }
 
     private void removePkgFromFileAndUpdateCorrespondence(final UPackage pkg,
