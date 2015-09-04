@@ -41,6 +41,18 @@ public class CorrespondenceTest extends VSUMTest {
 
     private static final Logger LOGGER = Logger.getLogger(CorrespondenceTest.class.getSimpleName());
 
+    // @Override
+    // @Test
+    // public void testInCommand() {
+    // VSUMImpl vsum = testMetaRepositoryVSUMAndModelInstancesCreation();
+    // TestUtil.createAndExecuteVitruviusRecordingCommand(new Runnable() {
+    // @Override
+    // public void run() {
+    // testAll();
+    // }
+    // }, vsum);
+    // }
+
     @Override
     @Test
     public void testAll() {
@@ -106,6 +118,7 @@ public class CorrespondenceTest extends VSUMTest {
     public void testMoveRootEObjectBetweenResource() {
         // create vsum and Repo and UPackage
         VSUMImpl vsum = testMetaRepositoryAndVSUMCreation();
+        vsum.detachTransactionalEditingDomain();
         Repository repo = testLoadObject(vsum, getPCMInstanceUri(), Repository.class);
         UPackage pkg = testLoadObject(vsum, getUMLInstanceURI(), UPackage.class);
 
@@ -114,6 +127,8 @@ public class CorrespondenceTest extends VSUMTest {
         correspondenceInstance.createAndAddEObjectCorrespondence(repo, pkg);
 
         // execute the test
+        LOGGER.trace("Before we remove the pkg from the resource it has the tuid '"
+                + correspondenceInstance.calculateTUIDFromEObject(pkg) + "'.");
         moveUMLPackageTo(pkg, getTmpUMLInstanceURI(), vsum, correspondenceInstance);
         moveUMLPackageTo(pkg, getNewUMLInstanceURI(), vsum, correspondenceInstance);
 
