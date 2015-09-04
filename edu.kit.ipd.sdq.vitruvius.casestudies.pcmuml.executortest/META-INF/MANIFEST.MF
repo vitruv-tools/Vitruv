@@ -18,7 +18,7 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.casestudies.emf.changedescription2change;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.meta.change,
- edu.kit.ipd.sdq.vitruvius.tests.casestudies.emf,
+ edu.kit.ipd.sdq.vitruvius.tests.util,
  edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer,
  edu.kit.ipd.sdq.vitruvius.tests.metamodels;bundle-version="1.0.0"
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings
