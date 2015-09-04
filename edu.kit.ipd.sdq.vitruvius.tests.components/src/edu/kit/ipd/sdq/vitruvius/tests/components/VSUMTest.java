@@ -101,11 +101,15 @@ public class VSUMTest extends AbstractVSUMTest {
         // create test model
         VURI vuri = VURI.getInstance(getPCMInstanceToCreateURI());
         ModelInstance mi = vsum.getAndLoadModelInstanceOriginal(vuri);
-        Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
-        mi.getResource().getContents().clear();
-        mi.getResource().getContents().add(repo);
-        Component component = Pcm_mockupFactory.eINSTANCE.createComponent();
-        repo.getComponents().add(component);
+        final Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
+        vsum.saveModelInstanceOriginalWithEObjectAsOnlyContent(vuri, repo, null);
+        final Component component = Pcm_mockupFactory.eINSTANCE.createComponent();
+        TestUtil.createAndExecuteVitruviusRecordingCommand(new Runnable() {
+            @Override
+            public void run() {
+                repo.getComponents().add(component);
+            }
+        }, vsum);
         vsum.saveExistingModelInstanceOriginal(vuri);
         // simulate external change
         changeTestModelExternally(vuri);
