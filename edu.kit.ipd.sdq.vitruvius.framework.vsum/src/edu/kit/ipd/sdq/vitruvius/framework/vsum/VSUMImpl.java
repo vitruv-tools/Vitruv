@@ -403,7 +403,9 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     public void detachTransactionalEditingDomain() {
         TransactionalEditingDomain domain = TransactionalEditingDomain.Factory.INSTANCE
                 .getEditingDomain(this.resourceSet);
-        domain.dispose();
+        if (domain != null) {
+            domain.dispose();
+        }
     }
 
     @Override
