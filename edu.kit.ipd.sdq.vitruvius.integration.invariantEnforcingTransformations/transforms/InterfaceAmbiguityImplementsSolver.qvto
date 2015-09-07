@@ -1,0 +1,165 @@
+modeltype PCM uses pcm('http://sdq.ipd.uka.de/PalladioComponentModel/5.0');
+
+transformation StructuralConflictSolver(in Source: PCM, out Target: PCM);
+
+property  renameCounter = 0;
+
+main() {
+ 
+var repository := Source.objectsOfType(pcm::repository::Repository);
+
+repository->map repoTransform();
+
+	
+//Source.rootObjects()->deepclone();
+
+//Target.rootObjects()[PCM::repository::BasicComponent]-> map transfo();
+
+}
+
+mapping PCM::repository::Repository::repoTransform() : PCM::repository::Repository
+{
+	 result.id := self.id;
+	 result.entityName := self.entityName;
+	 result.interfaces__Repository := self.interfaces__Repository.oclAsType(PCM::repository::OperationInterface)->map interfaceTransform();
+	 result.failureTypes__Repository := self.failureTypes__Repository;
+	 result.dataTypes__Repository := self.dataTypes__Repository;
+	 
+ 	 result.components__Repository:= self.components__Repository->map compoTransform();
+}
+
+mapping PCM::repository::OperationInterface::interfaceTransform() : PCM::repository::OperationInterface
+{
+	init
+	{
+		if(self.oclIsTypeOf(PCM::repository::OperationInterface))
+		result := self;	
+	}
+	
+	result.id := self.id;
+	result.entityName := self.entityName;
+	result.parentInterfaces__Interface :=self.parentInterfaces__Interface;
+	result.protocols__Interface := self.protocols__Interface;
+	result.requiredCharacterisations := self.requiredCharacterisations;
+	result.repository__Interface := self.repository__Interface;
+	
+	result.signatures__OperationInterface := self.signatures__OperationInterface->map signatureTransform();
+
+		
+}
+
+mapping PCM::repository::OperationSignature::signatureTransform() : PCM::repository::OperationSignature
+{
+	init
+	{
+		result := self;
+	}
+	
+	result.id := self.id;
+	result.entityName := self.getUniqueSignatureName();
+	result.exceptions__Signature := self.exceptions__Signature;
+	result.failureType := self.failureType;
+	result.interface__OperationSignature := self.interface__OperationSignature;
+	result.parameters__OperationSignature := self.parameters__OperationSignature;
+	result.returnType__OperationSignature := self.returnType__OperationSignature;
+		
+}
+
+
+//returns a unique signature name
+//applies if a component provides two interfaces that have signatures with the same name (does not consider parameters!)
+//TODO: consider parameters of methods across signatures (currently: checks only exact signature inside one interface)
+query PCM::repository::OperationSignature::getUniqueSignatureName() : String
+{
+	var allInterfaces := Source.objectsOfType(pcm::repository::OperationInterface);
+	//these interfaces share at least one method with the same name
+	var filteredInterfaces := allInterfaces->select( o : PCM::repository::OperationInterface | o.signatures__OperationInterface->collect(entityName)->intersection(self.oclAsSet().entityName)->size() > 0);
+	//excludes the "self" interface		
+	var filteredInterfacesWithoutSelf := filteredInterfaces->excluding(self.interface__OperationSignature);
+	
+	var allComponents := Source.objectsOfType(pcm::repository::Repository).components__Repository;
+	var allComponentsWhereMultipleFilteredInterfacesAreProvided := allComponents->select(comp : pcm::repository::RepositoryComponent | comp.providedRoles_InterfaceProvidingEntity.oclAsType(pcm::repository::OperationProvidedRole).providedInterface__OperationProvidedRole->includesAll(filteredInterfaces));
+		
+		
+	if(not self.isSignatureUniqueInsideInterface())
+	{
+			var newName := self.entityName.concat(renameCounter.toString());
+			renameCounter := renameCounter +1;
+			return newName;	
+			
+	};
+	
+	if(filteredInterfacesWithoutSelf->size() > 0 )
+	{
+		if(allComponentsWhereMultipleFilteredInterfacesAreProvided->size() > 0)
+		{
+			var newName := self.entityName.concat(renameCounter.toString());
+			renameCounter := renameCounter +1;
+			return newName;		
+		}
+		else
+		{
+			return self.entityName;
+		}
+	
+	}
+	else
+	{
+		return self.entityName;
+	}	
+}
+
+//checks if the signature is unique. Should be unique within each interface, not across interfaces.
+//this helps to avoid unneccessary renaming of overloading methods
+query PCM::repository::OperationSignature::isSignatureUniqueInsideInterface() : Boolean
+{
+	var params := self.parameters__OperationSignature;
+	var currentInterface := self.interface__OperationSignature;
+	var methodsWithSameNumberOfParameters := currentInterface.signatures__OperationInterface->select( sig : pcm::repository::OperationSignature | sig.parameters__OperationSignature->size() = self.parameters__OperationSignature->size())->excluding(self);
+	var selfParameterTypesAsSet := self.parameters__OperationSignature.dataType__Parameter->asSet();
+	var identicalToSelfSignatures := methodsWithSameNumberOfParameters->select(sig : pcm::repository::OperationSignature | sig.parameters__OperationSignature.dataType__Parameter->asSet()->intersection(selfParameterTypesAsSet)->size() <> 0 and self.entityName = sig.entityName) ;
+	
+	if(identicalToSelfSignatures->size() = 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	};
+	
+	return false;
+	
+	
+}
+
+
+
+mapping PCM::repository::RepositoryComponent::compoTransform() : PCM::repository::RepositoryComponent
+{
+	init
+	{
+		if(self.oclIsTypeOf(pcm::repository::BasicComponent))
+		{
+			result := self;
+		}
+		else if(self.oclIsTypeOf(pcm::repository::CompositeComponent))
+		{
+			result := self;
+		}
+	}
+	
+	
+	result.id := self.id;
+	result.entityName := self.entityName;
+	result.providedRoles_InterfaceProvidingEntity := self.providedRoles_InterfaceProvidingEntity;
+	result.resourceRequiredRoles__ResourceInterfaceRequiringEntity := self.resourceRequiredRoles__ResourceInterfaceRequiringEntity;
+	result.requiredRoles_InterfaceRequiringEntity := self.requiredRoles_InterfaceRequiringEntity;
+	result.repository__RepositoryComponent := self.repository__RepositoryComponent;
+	
+	end
+	{
+		result.entityName <> null;
+	}
+}
+

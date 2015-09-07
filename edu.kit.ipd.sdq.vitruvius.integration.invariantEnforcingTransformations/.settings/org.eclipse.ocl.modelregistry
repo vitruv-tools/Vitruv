@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ASCII"?>
+<mreg:ModelRegistrySettings xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:mreg="http://www.eclipse.org/ocl/1.0/ModelRegistry">
+  <resource name="">
+    <entry accessor="xxx" kind="Model Name" uri="platform:/resource/de.uka.ipd.sdq.pcm/model/pcm.ecore"/>
+  </resource>
+</mreg:ModelRegistrySettings>

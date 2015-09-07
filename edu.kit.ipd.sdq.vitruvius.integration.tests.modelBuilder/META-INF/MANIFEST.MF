@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ModelBuilder
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.integration.tests.modelBuilder
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.0.0",
+ de.uka.ipd.sdq.pcm;bundle-version="3.6.0"
+Export-Package: edu.kit.ipd.sdq.vitruvius.integration.tests.modelBuilder
+

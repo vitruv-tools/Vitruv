@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="xtend"/>
+	<classpathentry kind="src" path="xtend-gen"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.somox.sourcecodedecorator"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.somox.kdmhelper"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/edu.kit.ipd.sdq.vitruvius.framework.contracts"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/de.uka.ipd.sdq.pcm"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

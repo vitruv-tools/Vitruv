@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" xsi:schemaLocation="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0 http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//repository" xmi:id="_R0wh0WQ6EeSiO4MX-GG07A" type="PCM Repository Model" name="testcasemodel.repository_diagram" measurementUnit="Pixel">
+  <children xmi:type="notation:Shape" xmi:id="_U-0qEWQ6EeSiO4MX-GG07A" type="2107" fontName="Segoe UI">
+    <children xmi:type="notation:DecorationNode" xmi:id="_U-0qE2Q6EeSiO4MX-GG07A" type="5108"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_U-0qFGQ6EeSiO4MX-GG07A" type="7106">
+      <children xmi:type="notation:Node" xmi:id="_xX5_gWQ6EeSiO4MX-GG07A" type="3106">
+        <element xmi:type="repository:OperationSignature" href="testcasemodel.repository#_xX5_gGQ6EeSiO4MX-GG07A"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_xX5_gmQ6EeSiO4MX-GG07A"/>
+      </children>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_U-0qFWQ6EeSiO4MX-GG07A"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_U-0qFmQ6EeSiO4MX-GG07A"/>
+    </children>
+    <element xmi:type="repository:OperationInterface" href="testcasemodel.repository#_U-0qEGQ6EeSiO4MX-GG07A"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_U-0qEmQ6EeSiO4MX-GG07A" x="145" y="100" width="101" height="78"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_bkn5YWQ6EeSiO4MX-GG07A" type="2102" fontName="Segoe UI">
+    <children xmi:type="notation:DecorationNode" xmi:id="_bkn5Y2Q6EeSiO4MX-GG07A" type="5102"/>
+    <children xmi:type="notation:DecorationNode" xmi:id="_bkn5ZGQ6EeSiO4MX-GG07A" type="7102">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_bkn5ZWQ6EeSiO4MX-GG07A"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_bkn5ZmQ6EeSiO4MX-GG07A"/>
+    </children>
+    <element xmi:type="repository:BasicComponent" href="testcasemodel.repository#_bkn5YGQ6EeSiO4MX-GG07A"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_bkn5YmQ6EeSiO4MX-GG07A" x="375" y="70" width="130" height="77"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_mIhV8WQ6EeSiO4MX-GG07A" type="2105" fontName="Segoe UI">
+    <children xmi:type="notation:DecorationNode" xmi:id="_mIhV82Q6EeSiO4MX-GG07A" type="5105"/>
+    <element xmi:type="repository:ProvidesComponentType" href="testcasemodel.repository#_mIhV8GQ6EeSiO4MX-GG07A"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_mIhV8mQ6EeSiO4MX-GG07A" x="130" y="275" width="137" height="53"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_tyXcMWQ6EeSiO4MX-GG07A" type="2104" fontName="Segoe UI">
+    <children xmi:type="notation:DecorationNode" xmi:id="_tyXcM2Q6EeSiO4MX-GG07A" type="5104"/>
+    <element xmi:type="repository:CompleteComponentType" href="testcasemodel.repository#_tyXcMGQ6EeSiO4MX-GG07A"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_tyXcMmQ6EeSiO4MX-GG07A" x="360" y="265" width="149" height="52"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_LgJ6wGQ7EeSiO4MX-GG07A" type="2107" fontName="Segoe UI">
+    <children xmi:type="notation:DecorationNode" xmi:id="_LgJ6wmQ7EeSiO4MX-GG07A" type="5108"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_LgJ6w2Q7EeSiO4MX-GG07A" type="7106">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_LgJ6xGQ7EeSiO4MX-GG07A"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_LgJ6xWQ7EeSiO4MX-GG07A"/>
+    </children>
+    <element xmi:type="repository:OperationInterface" href="testcasemodel.repository#_LgAw0GQ7EeSiO4MX-GG07A"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_LgJ6wWQ7EeSiO4MX-GG07A" x="78" y="32"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_Q1HNQWQ7EeSiO4MX-GG07A" type="2107" fontName="Segoe UI">
+    <children xmi:type="notation:DecorationNode" xmi:id="_Q1HNQ2Q7EeSiO4MX-GG07A" type="5108"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_Q1HNRGQ7EeSiO4MX-GG07A" type="7106">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_Q1HNRWQ7EeSiO4MX-GG07A"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_Q1HNRmQ7EeSiO4MX-GG07A"/>
+    </children>
+    <element xmi:type="repository:OperationInterface" href="testcasemodel.repository#_Q1HNQGQ7EeSiO4MX-GG07A"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Q1HNQmQ7EeSiO4MX-GG07A" x="590" y="75"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_T_e3gWQ7EeSiO4MX-GG07A" type="2107" fontName="Segoe UI">
+    <children xmi:type="notation:DecorationNode" xmi:id="_T_e3g2Q7EeSiO4MX-GG07A" type="5108"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_T_e3hGQ7EeSiO4MX-GG07A" type="7106">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_T_e3hWQ7EeSiO4MX-GG07A"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_T_e3hmQ7EeSiO4MX-GG07A"/>
+    </children>
+    <element xmi:type="repository:OperationInterface" href="testcasemodel.repository#_T_e3gGQ7EeSiO4MX-GG07A"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_T_e3gmQ7EeSiO4MX-GG07A" x="675" y="165"/>
+  </children>
+  <styles xmi:type="notation:DiagramStyle" xmi:id="_R0wh0mQ6EeSiO4MX-GG07A"/>
+  <element xmi:type="repository:Repository" href="testcasemodel.repository#_R0wh0GQ6EeSiO4MX-GG07A"/>
+  <edges xmi:type="notation:Connector" xmi:id="_f740kGQ6EeSiO4MX-GG07A" type="4106" source="_bkn5YWQ6EeSiO4MX-GG07A" target="_U-0qEWQ6EeSiO4MX-GG07A">
+    <children xmi:type="notation:DecorationNode" xmi:id="_f740k2Q6EeSiO4MX-GG07A" type="6106">
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_f740lGQ6EeSiO4MX-GG07A"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_f740lWQ6EeSiO4MX-GG07A" x="-7" y="14"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_f740kWQ6EeSiO4MX-GG07A" fontName="Segoe UI"/>
+    <element xmi:type="repository:OperationRequiredRole" href="testcasemodel.repository#_f6_csGQ6EeSiO4MX-GG07A"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_f740kmQ6EeSiO4MX-GG07A" points="[-65, 8, 71, 0]$[-120, 13, 16, 5]"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_f8ClkGQ6EeSiO4MX-GG07A" id="(0.8415841584158416,0.6410256410256411)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_hWo7UWQ6EeSiO4MX-GG07A" type="4105" source="_bkn5YWQ6EeSiO4MX-GG07A" target="_U-0qEWQ6EeSiO4MX-GG07A">
+    <children xmi:type="notation:DecorationNode" xmi:id="_hWo7VGQ6EeSiO4MX-GG07A" type="6105">
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_hWo7VWQ6EeSiO4MX-GG07A"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_hWo7VmQ6EeSiO4MX-GG07A" x="-10" y="-19"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_hWo7UmQ6EeSiO4MX-GG07A" fontName="Segoe UI"/>
+    <element xmi:type="repository:OperationProvidedRole" href="testcasemodel.repository#_hWo7UGQ6EeSiO4MX-GG07A"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_hWo7U2Q6EeSiO4MX-GG07A" points="[-26, 5, 144, -28]$[-155, 43, 15, 10]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_hWo7V2Q6EeSiO4MX-GG07A" id="(0.2,0.8051948051948052)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_hWo7WGQ6EeSiO4MX-GG07A" id="(0.8514851485148515,0.8333333333333334)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_sqDJQWQ6EeSiO4MX-GG07A" type="4105" source="_mIhV8WQ6EeSiO4MX-GG07A" target="_U-0qEWQ6EeSiO4MX-GG07A">
+    <children xmi:type="notation:DecorationNode" xmi:id="_sqDJRGQ6EeSiO4MX-GG07A" type="6105">
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_sqDJRWQ6EeSiO4MX-GG07A"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_sqDJRmQ6EeSiO4MX-GG07A" y="40"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_sqDJQmQ6EeSiO4MX-GG07A" fontName="Segoe UI"/>
+    <element xmi:type="repository:OperationProvidedRole" href="testcasemodel.repository#_sqDJQGQ6EeSiO4MX-GG07A"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_sqDJQ2Q6EeSiO4MX-GG07A" points="[3, -26, 6, 136]$[48, -124, 51, 38]"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_vcEk8WQ6EeSiO4MX-GG07A" type="4106" source="_tyXcMWQ6EeSiO4MX-GG07A" target="_U-0qEWQ6EeSiO4MX-GG07A">
+    <children xmi:type="notation:DecorationNode" xmi:id="_vcEk9GQ6EeSiO4MX-GG07A" type="6106">
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_vcEk9WQ6EeSiO4MX-GG07A"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_vcEk9mQ6EeSiO4MX-GG07A" x="-18" y="23"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_vcEk8mQ6EeSiO4MX-GG07A" fontName="Segoe UI"/>
+    <element xmi:type="repository:OperationRequiredRole" href="testcasemodel.repository#_vcEk8GQ6EeSiO4MX-GG07A"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_vcEk82Q6EeSiO4MX-GG07A" points="[-49, -26, 267, 145]$[-266, -132, 50, 39]"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_Q1Q-QGQ7EeSiO4MX-GG07A" type="4113" source="_U-0qEWQ6EeSiO4MX-GG07A" target="_LgJ6wGQ7EeSiO4MX-GG07A">
+    <children xmi:type="notation:DecorationNode" xmi:id="_Q1Q-Q2Q7EeSiO4MX-GG07A" type="6113">
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_Q1aIMGQ7EeSiO4MX-GG07A"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_Q1aIMWQ7EeSiO4MX-GG07A" y="40"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_Q1Q-QWQ7EeSiO4MX-GG07A" fontName="Segoe UI"/>
+    <element xsi:nil="true"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_Q1Q-QmQ7EeSiO4MX-GG07A" points="[-30, -39, 37, 48]$[-52, -67, 15, 20]"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_h9V5gWQ7EeSiO4MX-GG07A" type="4106" source="_tyXcMWQ6EeSiO4MX-GG07A" target="_Q1HNQWQ7EeSiO4MX-GG07A">
+    <children xmi:type="notation:DecorationNode" xmi:id="_h9V5hGQ7EeSiO4MX-GG07A" type="6106">
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_h9V5hWQ7EeSiO4MX-GG07A"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_h9V5hmQ7EeSiO4MX-GG07A" y="40"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_h9V5gmQ7EeSiO4MX-GG07A" fontName="Segoe UI"/>
+    <element xmi:type="repository:OperationRequiredRole" href="testcasemodel.repository#_h9V5gGQ7EeSiO4MX-GG07A"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_h9V5g2Q7EeSiO4MX-GG07A" points="[15, -24, -134, 186]$[96, -211, -53, -1]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_h9fDcGQ7EeSiO4MX-GG07A" id="(0.8993288590604027,0.7692307692307693)"/>
+  </edges>
+</notation:Diagram>
