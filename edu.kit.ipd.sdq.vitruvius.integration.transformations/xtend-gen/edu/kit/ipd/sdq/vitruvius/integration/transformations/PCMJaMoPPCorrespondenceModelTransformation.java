@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.integration.transformations;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.Iterables;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
@@ -9,6 +10,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.integration.transformations.BasicCorrespondenceModelTransformation;
+import edu.kit.ipd.sdq.vitruvius.integration.util.ResourceHelper;
 import java.util.HashSet;
 import java.util.Set;
 import org.apache.log4j.Level;
@@ -18,17 +20,29 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.xbase.lib.Conversions;
+import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.emftext.language.java.classifiers.ConcreteClassifier;
+import org.emftext.language.java.classifiers.impl.ClassImpl;
 import org.emftext.language.java.commons.Commentable;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.members.Field;
+import org.emftext.language.java.members.Member;
+import org.emftext.language.java.members.Method;
+import org.emftext.language.java.parameters.OrdinaryParameter;
 import org.emftext.language.java.types.Type;
+import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.DataType;
 import org.palladiosimulator.pcm.repository.InnerDeclaration;
 import org.palladiosimulator.pcm.repository.Interface;
+import org.palladiosimulator.pcm.repository.OperationInterface;
+import org.palladiosimulator.pcm.repository.OperationSignature;
+import org.palladiosimulator.pcm.repository.Parameter;
+import org.palladiosimulator.pcm.repository.Repository;
+import org.palladiosimulator.pcm.repository.RepositoryComponent;
+import org.palladiosimulator.pcm.repository.Signature;
 import org.somox.sourcecodedecorator.ComponentImplementingClassesLink;
 import org.somox.sourcecodedecorator.DataTypeSourceCodeLink;
 import org.somox.sourcecodedecorator.InnerDatatypeSourceCodeLink;
@@ -55,7 +69,7 @@ public class PCMJaMoPPCorrespondenceModelTransformation extends BasicCorresponde
   
   private ResourceSet jaMoppResourceSet;
   
-  private /* Repository */Object pcmRepo;
+  private Repository pcmRepo;
   
   private CorrespondenceInstance cInstance;
   
@@ -91,8 +105,29 @@ public class PCMJaMoPPCorrespondenceModelTransformation extends BasicCorresponde
    * Loads PCM, SDCDM and JaMoPP resources.
    */
   private void prepareTransformation() {
-    throw new Error("Unresolved compilation problems:"
-      + "\nRepository cannot be resolved to a type.");
+    try {
+      Resource _loadSCDMResource = ResourceHelper.loadSCDMResource(this.scdmPath);
+      this.scdm = _loadSCDMResource;
+      Resource _loadPCMRepositoryResource = ResourceHelper.loadPCMRepositoryResource(this.pcmPath);
+      this.pcm = _loadPCMRepositoryResource;
+      EList<EObject> _contents = this.pcm.getContents();
+      EObject _get = _contents.get(0);
+      this.pcmRepo = ((Repository) _get);
+      ResourceSet _loadJaMoPPResourceSet = ResourceHelper.loadJaMoPPResourceSet(this.jamoppPath);
+      this.jaMoppResourceSet = _loadJaMoPPResourceSet;
+      EList<Resource> _resources = this.jaMoppResourceSet.getResources();
+      final Procedure1<Resource> _function = new Procedure1<Resource>() {
+        @Override
+        public void apply(final Resource it) {
+          EList<EObject> _contents = it.getContents();
+          Iterable<org.emftext.language.java.containers.Package> _filter = Iterables.<org.emftext.language.java.containers.Package>filter(_contents, org.emftext.language.java.containers.Package.class);
+          Iterables.<org.emftext.language.java.containers.Package>addAll(PCMJaMoPPCorrespondenceModelTransformation.this.packages, _filter);
+        }
+      };
+      IterableExtensions.<Resource>forEach(_resources, _function);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
   }
   
   /**
@@ -158,8 +193,30 @@ public class PCMJaMoPPCorrespondenceModelTransformation extends BasicCorresponde
   }
   
   private Correspondence createComponentClassCorrespondence(final ComponentImplementingClassesLink componentClassLink) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nBasicComponent cannot be resolved to a type.");
+    Correspondence _xblockexpression = null;
+    {
+      RepositoryComponent pcmComponent = componentClassLink.getComponent();
+      Correspondence _xifexpression = null;
+      if ((pcmComponent instanceof BasicComponent)) {
+        Correspondence _xblockexpression_1 = null;
+        {
+          EList<ConcreteClassifier> _implementingClasses = componentClassLink.getImplementingClasses();
+          ConcreteClassifier _get = _implementingClasses.get(0);
+          EObject _resolveJaMoppProxy = this.resolveJaMoppProxy(_get);
+          ClassImpl jamoppClass = ((ClassImpl) _resolveJaMoppProxy);
+          final org.emftext.language.java.containers.Package package_ = this.getPackageForCommentable(jamoppClass);
+          org.emftext.language.java.containers.Package _rootPackage = this.getRootPackage();
+          SameTypeCorrespondence parentRepoPackageCorr = this.getUniqueSameTypeCorrespondence(this.pcmRepo, _rootPackage);
+          this.addCorrespondence(pcmComponent, package_, parentRepoPackageCorr);
+          CompilationUnit _containingCompilationUnit = jamoppClass.getContainingCompilationUnit();
+          this.addCorrespondence(pcmComponent, _containingCompilationUnit, parentRepoPackageCorr);
+          _xblockexpression_1 = this.addCorrespondence(pcmComponent, jamoppClass, parentRepoPackageCorr);
+        }
+        _xifexpression = _xblockexpression_1;
+      }
+      _xblockexpression = _xifexpression;
+    }
+    return _xblockexpression;
   }
   
   private Correspondence createInterfaceCorrespondence(final InterfaceSourceCodeLink interfaceLink) {
@@ -179,11 +236,34 @@ public class PCMJaMoPPCorrespondenceModelTransformation extends BasicCorresponde
   }
   
   private void createMethodCorrespondence(final MethodLevelSourceCodeLink methodLink) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nOperationSignature cannot be resolved to a type."
-      + "\ninterface__OperationSignature cannot be resolved"
-      + "\nparameters__OperationSignature cannot be resolved"
-      + "\nentityName cannot be resolved");
+    Member _function = methodLink.getFunction();
+    EObject _resolveJaMoppProxy = this.resolveJaMoppProxy(_function);
+    Method jamoppMethod = ((Method) _resolveJaMoppProxy);
+    Signature _operation = methodLink.getOperation();
+    OperationSignature pcmMethod = ((OperationSignature) _operation);
+    ConcreteClassifier jamoppInterface = jamoppMethod.getContainingConcreteClassifier();
+    OperationInterface pcmInterface = pcmMethod.getInterface__OperationSignature();
+    SameTypeCorrespondence interfaceCorrespondence = this.getUniqueSameTypeCorrespondence(pcmInterface, jamoppInterface);
+    Correspondence methodCorrespondence = this.addCorrespondence(pcmMethod, jamoppMethod, interfaceCorrespondence);
+    EList<Parameter> _parameters__OperationSignature = pcmMethod.getParameters__OperationSignature();
+    for (final Parameter pcmParam : _parameters__OperationSignature) {
+      {
+        EList<org.emftext.language.java.parameters.Parameter> _parameters = jamoppMethod.getParameters();
+        final Function1<org.emftext.language.java.parameters.Parameter, Boolean> _function_1 = new Function1<org.emftext.language.java.parameters.Parameter, Boolean>() {
+          @Override
+          public Boolean apply(final org.emftext.language.java.parameters.Parameter jp) {
+            String _name = jp.getName();
+            String _entityName = pcmParam.getEntityName();
+            return Boolean.valueOf(_name.equals(_entityName));
+          }
+        };
+        org.emftext.language.java.parameters.Parameter jamoppParam = IterableExtensions.<org.emftext.language.java.parameters.Parameter>findFirst(_parameters, _function_1);
+        boolean _notEquals = (!Objects.equal(jamoppParam, null));
+        if (_notEquals) {
+          this.addCorrespondence(pcmParam, ((OrdinaryParameter) jamoppParam), methodCorrespondence);
+        }
+      }
+    }
   }
   
   private void createDataTypeCorrespondence(final DataTypeSourceCodeLink dataTypeLink) {

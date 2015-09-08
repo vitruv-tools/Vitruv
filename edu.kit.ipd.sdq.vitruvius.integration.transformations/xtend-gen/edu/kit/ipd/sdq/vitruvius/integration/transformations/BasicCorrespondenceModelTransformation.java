@@ -1,9 +1,11 @@
 package edu.kit.ipd.sdq.vitruvius.integration.transformations;
 
+import com.google.common.base.Objects;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.integration.transformations.ICreateCorrespondenceModel;
 import java.util.HashSet;
@@ -42,8 +44,36 @@ public abstract class BasicCorrespondenceModelTransformation implements ICreateC
    * and adds it to the {@link CorrespondenceInstance}
    */
   protected Correspondence addCorrespondence(final EObject objectA, final EObject objectB, final Correspondence parent) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nInvalid number of arguments. The method createAndAddEObjectCorrespondence(EObject, EObject) is not applicable for the arguments (EObject,EObject,Correspondence)");
+    boolean _or = false;
+    boolean _equals = Objects.equal(objectA, null);
+    if (_equals) {
+      _or = true;
+    } else {
+      boolean _equals_1 = Objects.equal(objectB, null);
+      _or = _equals_1;
+    }
+    if (_or) {
+      throw new IllegalArgumentException("Corresponding elements must not be null!");
+    }
+    EObject deresolvedA = this.deresolveIfNesessary(objectA);
+    EObject deresolvedB = this.deresolveIfNesessary(objectB);
+    CorrespondenceInstance _correspondenceInstance = this.getCorrespondenceInstance();
+    TUID _calculateTUIDFromEObject = _correspondenceInstance.calculateTUIDFromEObject(deresolvedA);
+    String _string = _calculateTUIDFromEObject.toString();
+    CorrespondenceInstance _correspondenceInstance_1 = this.getCorrespondenceInstance();
+    TUID _calculateTUIDFromEObject_1 = _correspondenceInstance_1.calculateTUIDFromEObject(deresolvedB);
+    String _string_1 = _calculateTUIDFromEObject_1.toString();
+    String identifier = (_string + _string_1);
+    boolean _contains = this.existingEntries.contains(identifier);
+    boolean _not = (!_contains);
+    if (_not) {
+      CorrespondenceInstance _correspondenceInstance_2 = this.getCorrespondenceInstance();
+      EObjectCorrespondence correspondence = _correspondenceInstance_2.createAndAddEObjectCorrespondence(deresolvedA, deresolvedB);
+      this.existingEntries.add(identifier);
+      this.logger.info(((("Created Correspondence for element: " + objectA) + " and Element: ") + objectB));
+      return correspondence;
+    }
+    return null;
   }
   
   /**

@@ -3,8 +3,8 @@ package edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.pcmjamoppenforce
 import java.util.ArrayList;
 import java.util.List;
 
-import de.uka.ipd.sdq.pcm.repository.Interface;
-import de.uka.ipd.sdq.pcm.repository.RepositoryComponent;
+import org.palladiosimulator.pcm.repository.Interface;
+import org.palladiosimulator.pcm.repository.RepositoryComponent;
 import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.PCMRepositorytoJaMoPPInvariantEnforcer;
 
 /**

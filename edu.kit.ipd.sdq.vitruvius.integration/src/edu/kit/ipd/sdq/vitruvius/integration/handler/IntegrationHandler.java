@@ -24,23 +24,19 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.palladiosimulator.pcm.core.composition.AssemblyContext;
+import org.palladiosimulator.pcm.repository.Repository;
+import org.palladiosimulator.pcm.repository.RepositoryComponent;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
-import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.changepreparer.ChangePreparingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor;
-import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
@@ -50,7 +46,13 @@ import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.PCMRepositoryExtr
 import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.PCMSystemExtractor;
 import edu.kit.ipd.sdq.vitruvius.integration.strategies.PCMRepositoryIntegrationStrategy;
 import edu.kit.ipd.sdq.vitruvius.integration.strategies.PCMSystemIntegrationStrategy;
+import edu.kit.ipd.sdq.vitruvius.integration.transformations.ICreateCorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.integration.transformations.PCMJaMoPPCorrespondenceModelTransformation;
 import edu.kit.ipd.sdq.vitruvius.integration.traversal.util.UnorderedReferencesRespectingEqualityHelper;
+import edu.kit.ipd.sdq.vitruvius.integration.util.IntegrationUtil;
+import edu.kit.ipd.sdq.vitruvius.integration.util.PCMMetaModelConverter;
+import edu.kit.ipd.sdq.vitruvius.integration.util.RepositoryModelLoader;
+import edu.kit.ipd.sdq.vitruvius.integration.util.ResourceHelper;
 
 /**
  * Handler for the context menu event created when a user rightclicks a model and selects
@@ -110,10 +112,10 @@ public class IntegrationHandler extends AbstractHandler {
      *
      * @param resource
      *            : the model which the user selected in eclipse
-     * @param syncManager
+     * @param changeSynchronizing
      *            : the synchronization provider used for synchronizing the generated changes
      */
-    private void integratePCMRepository(IResource resource, ChangeSynchronizing syncManager) {
+    private void integratePCMRepository(IResource resource, ChangeSynchronizing changeSynchronizing) {
 
         Logger.getRootLogger().setLevel(Level.ALL);
 
@@ -129,12 +131,13 @@ public class IntegrationHandler extends AbstractHandler {
 
         final PCMRepositoryIntegrationStrategy integrator = new PCMRepositoryIntegrationStrategy();
 
-        if (syncManager == null) {
-            syncManager = this.createVitruviusCore();
+        if (changeSynchronizing == null) {
+            this.vsum = IntegrationUtil.createVSUM();
+            changeSynchronizing = IntegrationUtil.createVitruviusCore(this.vsum);
         }
 
         try {
-            integrator.integrateModel(resource, syncManager);
+            integrator.integrateModel(resource, changeSynchronizing);
         } catch (final Exception e) {
             e.printStackTrace();
         }
@@ -180,7 +183,7 @@ public class IntegrationHandler extends AbstractHandler {
         }
 
         // create underlying elements (MetaRepo, VSUM,...)
-        final SyncManagerImpl syncManager = this.createVitruviusCore();
+        final ChangeSynchronizing changeSynchronizing = IntegrationUtil.createVitruviusCore();
 
         // find all referenced repositories and integrate them first
         final EList<Repository> linkedRepositories = this.extractRepositories(resource);
@@ -191,13 +194,13 @@ public class IntegrationHandler extends AbstractHandler {
             final IResource repositoryResource = ResourceHelper
                     .absoluteEmfResourceToWorkspaceRelativeIResource(repository.eResource());
 
-            this.integratePCMRepository(repositoryResource, syncManager);
+            this.integratePCMRepository(repositoryResource, changeSynchronizing);
         }
 
         final PCMSystemIntegrationStrategy integrator = new PCMSystemIntegrationStrategy();
 
         try {
-            integrator.integrateModel(resource, syncManager);
+            integrator.integrateModel(resource, changeSynchronizing);
         } catch (final Exception e) {
             e.printStackTrace();
         }
@@ -234,7 +237,7 @@ public class IntegrationHandler extends AbstractHandler {
 
         final MetaRepositoryImpl metaRepository = PCMJavaUtils.createPCMJavaMetarepository();
         final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository);
-        vsum.getOrCreateAllCorrespondenceInstances(
+        vsum.getOrCreateAllCorrespondenceInstancesForMM(
                 metaRepository.getMetamodel(VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE)));
 
         final ICreateCorrespondenceModel transformation = new PCMJaMoPPCorrespondenceModelTransformation(
@@ -316,10 +319,10 @@ public class IntegrationHandler extends AbstractHandler {
      */
     private EList<Repository> extractRepositories(final IResource resource) {
 
-        final IMModelImplExtractor<System> extractor = new PCMSystemExtractor();
+        final IMModelImplExtractor<org.palladiosimulator.pcm.system.System> extractor = new PCMSystemExtractor();
         final Resource model = RepositoryModelLoader.loadPCMResource(resource.getLocation().toString());
 
-        final System system = extractor.getImpl(model);
+        final org.palladiosimulator.pcm.system.System system = extractor.getImpl(model);
 
         final EList<Repository> linkedRepositories = new UniqueEList<Repository>();
         final EList<AssemblyContext> contexts = system.getAssemblyContexts__ComposedStructure();
@@ -332,35 +335,6 @@ public class IntegrationHandler extends AbstractHandler {
             linkedRepositories.add(repository);
         }
         return linkedRepositories;
-    }
-
-    /**
-     * Create underlying elements (MetaRepo, VSUM, ...)
-     *
-     * @return : SyncManager for synchronizing changes
-     */
-    private ChangeSynchronizing createVitruviusCore() {
-
-        final MetaRepositoryImpl metaRepository = PCMJavaUtils.createPCMJavaMetarepository();
-
-        this.vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository);
-
-        final Change2CommandTransformingProviding change2CommandTransformingProviding = new Change2CommandTransformingProvidingImpl();
-
-        final EMFModelPropagationEngineImpl propagatingChange = new EMFModelPropagationEngineImpl(
-                change2CommandTransformingProviding);
-
-        final SyncManagerImpl syncManager = new SyncManagerImpl(this.vsum, propagatingChange, this.vsum, metaRepository,
-                this.vsum, null);
-        final ChangePreparing changePreparing = new ChangePreparingImpl(this.vsum, this.vsum);
-        final CommandExecuting commandExecuting = new CommandExecutingImpl();
-
-        final ChangeSynchronizing changeSynchronizing = new ChangeSynchronizerImpl(this.vsum,
-                change2CommandTransformingProviding, this.vsum, this.vsum, validating, synchronisationListener,
-                changePreparing, commandExecuting);
-
-        return syncManager;
-
     }
 
     /**

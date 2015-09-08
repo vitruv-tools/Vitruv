@@ -8,29 +8,33 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.palladiosimulator.pcm.repository.Repository;
 
-import de.uka.ipd.sdq.pcm.repository.Repository;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
+import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.changepreparer.ChangePreparingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine.EMFModelPropagationEngineImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager.SyncManagerImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.TransformationExecutingProvidingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.integration.traversal.ITraversalStrategy;
 import edu.kit.ipd.sdq.vitruvius.integration.traversal.repository.RepositoryTraversalStrategy;
 import edu.kit.ipd.sdq.vitruvius.integration.util.RepositoryModelLoader;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
- 
 /**
  * The Class TraversalHandlerTest.
  */
 public class TraversalHandlerTest {
 
     private VSUMImpl vsum;
-    private SyncManagerImpl syncManager;
+    private ChangeSynchronizing changeSynchronizing;
 
     private CorrespondenceInstance correspondenceInstance;
     protected ResourceSet resourceSet;
@@ -54,12 +58,12 @@ public class TraversalHandlerTest {
 
         final MetaRepositoryImpl metaRepository = PCMJavaUtils.createPCMJavaMetarepository();
         final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository);
-        final TransformationExecutingProvidingImpl syncTransformationProvider = new TransformationExecutingProvidingImpl();
-        final EMFModelPropagationEngineImpl propagatingChange = new EMFModelPropagationEngineImpl(
-                syncTransformationProvider);
-        this.syncManager = new SyncManagerImpl(this.vsum, propagatingChange, this.vsum, metaRepository, this.vsum, null);
+        final Change2CommandTransformingProviding change2CommandTransformingProviding = new Change2CommandTransformingProvidingImpl();
+        final ChangePreparing changePreparing = new ChangePreparingImpl(vsum, vsum);
+        final CommandExecuting commandExecuting = new CommandExecutingImpl();
+        this.changeSynchronizing = new ChangeSynchronizerImpl(this.vsum, change2CommandTransformingProviding, this.vsum,
+                metaRepository, this.vsum, null, changePreparing, commandExecuting);
         this.resourceSet = new ResourceSetImpl();
-
     }
 
     /**
@@ -85,7 +89,7 @@ public class TraversalHandlerTest {
             e.printStackTrace();
         }
 
-        this.syncManager.synchronizeChanges(changes);
+        this.changeSynchronizing.synchronizeChanges(changes);
 
     }
 

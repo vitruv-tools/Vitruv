@@ -8,9 +8,9 @@ import java.util.Iterator;
 import org.emftext.language.java.members.Method;
 import org.junit.Test;
 
-import de.uka.ipd.sdq.pcm.repository.Interface;
-import de.uka.ipd.sdq.pcm.repository.OperationInterface;
-import de.uka.ipd.sdq.pcm.repository.OperationSignature;
+import org.palladiosimulator.pcm.repository.Interface;
+import org.palladiosimulator.pcm.repository.OperationInterface;
+import org.palladiosimulator.pcm.repository.OperationSignature;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 
 /**

@@ -2,7 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
-import de.uka.ipd.sdq.pcm.repository.Repository;
+import org.palladiosimulator.pcm.repository.Repository;
 
 /**
  * returns Repository-"Root"

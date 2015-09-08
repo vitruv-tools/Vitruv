@@ -1,18 +1,18 @@
 package edu.kit.ipd.sdq.vitruvius.integration.tests.modelBuilder
 
-import de.uka.ipd.sdq.pcm.core.entity.Entity
-import de.uka.ipd.sdq.pcm.repository.BasicComponent
-import de.uka.ipd.sdq.pcm.repository.CollectionDataType
-import de.uka.ipd.sdq.pcm.repository.CompositeDataType
-import de.uka.ipd.sdq.pcm.repository.InnerDeclaration
-import de.uka.ipd.sdq.pcm.repository.Interface
-import de.uka.ipd.sdq.pcm.repository.OperationInterface
-import de.uka.ipd.sdq.pcm.repository.OperationProvidedRole
-import de.uka.ipd.sdq.pcm.repository.OperationRequiredRole
-import de.uka.ipd.sdq.pcm.repository.OperationSignature
-import de.uka.ipd.sdq.pcm.repository.Parameter
-import de.uka.ipd.sdq.pcm.repository.Repository
-import de.uka.ipd.sdq.pcm.repository.RepositoryFactory
+import org.palladiosimulator.pcm.core.entity.Entity
+import org.palladiosimulator.pcm.repository.BasicComponent
+import org.palladiosimulator.pcm.repository.CollectionDataType
+import org.palladiosimulator.pcm.repository.CompositeDataType
+import org.palladiosimulator.pcm.repository.InnerDeclaration
+import org.palladiosimulator.pcm.repository.Interface
+import org.palladiosimulator.pcm.repository.OperationInterface
+import org.palladiosimulator.pcm.repository.OperationProvidedRole
+import org.palladiosimulator.pcm.repository.OperationRequiredRole
+import org.palladiosimulator.pcm.repository.OperationSignature
+import org.palladiosimulator.pcm.repository.Parameter
+import org.palladiosimulator.pcm.repository.Repository
+import org.palladiosimulator.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
@@ -20,15 +20,15 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.contain
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.common.util.BasicEList
-import de.uka.ipd.sdq.pcm.repository.CompositeComponent
-import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext
-import de.uka.ipd.sdq.pcm.system.SystemFactory
-import de.uka.ipd.sdq.pcm.core.composition.CompositionFactory
-import de.uka.ipd.sdq.pcm.core.entity.ComposedProvidingRequiringEntity
-import de.uka.ipd.sdq.pcm.core.composition.ProvidedDelegationConnector
+import org.palladiosimulator.pcm.repository.CompositeComponent
+import org.palladiosimulator.pcm.core.composition.AssemblyContext
+import org.palladiosimulator.pcm.system.SystemFactory
+import org.palladiosimulator.pcm.core.composition.CompositionFactory
+import org.palladiosimulator.pcm.core.entity.ComposedProvidingRequiringEntity
+import org.palladiosimulator.pcm.core.composition.ProvidedDelegationConnector
 import javax.swing.plaf.basic.BasicEditorPaneUI
-import de.uka.ipd.sdq.pcm.core.composition.RequiredDelegationConnector
-import de.uka.ipd.sdq.pcm.core.composition.AssemblyConnector
+import org.palladiosimulator.pcm.core.composition.RequiredDelegationConnector
+import org.palladiosimulator.pcm.core.composition.AssemblyConnector
 
 class PCMModelBuilder {
 	

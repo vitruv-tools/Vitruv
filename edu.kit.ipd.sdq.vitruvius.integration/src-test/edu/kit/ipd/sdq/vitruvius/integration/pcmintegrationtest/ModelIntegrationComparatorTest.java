@@ -17,22 +17,18 @@ import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.palladiosimulator.pcm.repository.BasicComponent;
+import org.palladiosimulator.pcm.repository.Repository;
+import org.palladiosimulator.pcm.repository.RepositoryComponent;
 
-import de.uka.ipd.sdq.pcm.repository.BasicComponent;
-import de.uka.ipd.sdq.pcm.repository.Repository;
-import de.uka.ipd.sdq.pcm.repository.RepositoryComponent;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.run.propagationengine.EMFModelPropagationEngineImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager.SyncManagerImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.synctransprovider.TransformationExecutingProvidingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
-import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.PCMRepositoryExtractor;
 import edu.kit.ipd.sdq.vitruvius.integration.strategies.PCMRepositoryIntegrationStrategy;
 import edu.kit.ipd.sdq.vitruvius.integration.tests.modelBuilder.PCMModelBuilder;
 import edu.kit.ipd.sdq.vitruvius.integration.traversal.util.UnorderedReferencesRespectingEqualityHelper;
+import edu.kit.ipd.sdq.vitruvius.integration.util.IntegrationUtil;
 import edu.kit.ipd.sdq.vitruvius.integration.util.PCMMetaModelConverter;
 
 /**
@@ -41,8 +37,6 @@ import edu.kit.ipd.sdq.vitruvius.integration.util.PCMMetaModelConverter;
  * of that, some model elements will not be compared.
  */
 public class ModelIntegrationComparatorTest {
-    private VSUMImpl vsum = null; // needed as attribute, because we need to get the new model
-                                  // inside the VSUM,
 
     /**
      * Sets the up before class.
@@ -59,7 +53,7 @@ public class ModelIntegrationComparatorTest {
      * before running the test again
      *
      * TODO: does not work as of 15.3.15
-     * 
+     *
      * @throws Exception
      *             the exception
      */
@@ -82,7 +76,7 @@ public class ModelIntegrationComparatorTest {
             testProject.refreshLocal(10, null);
             testProject.getFolder("src").delete(true, false, null);
             testProject.getFolder("bin").delete(true, false, null);
-            IFolder srcFolder = testProject.getFolder("src");
+            final IFolder srcFolder = testProject.getFolder("src");
             srcFolder.create(true, true, null);
             root.refreshLocal(10, null);
 
@@ -110,28 +104,28 @@ public class ModelIntegrationComparatorTest {
         // update the PCM parameter definitions
         resource = this.updateParameterDef(resource, uri);
         final PCMRepositoryIntegrationStrategy integrator = new PCMRepositoryIntegrationStrategy();
-        SyncManagerImpl syncManager = null;
-        if (syncManager == null) {
-            syncManager = this.createVitruviusCore();
+        ChangeSynchronizing changeSynchronizing = null;
+        if (changeSynchronizing == null) {
+            changeSynchronizing = IntegrationUtil.createVitruviusCore();
         }
 
         EList<Change> changes = null;
 
         try {
-            changes = integrator.integrateModel(resource, syncManager);
+            changes = integrator.integrateModel(resource, changeSynchronizing);
         } catch (final Exception e) {
             e.printStackTrace();
         }
 
-        PCMRepositoryExtractor pre = new PCMRepositoryExtractor();
+        final PCMRepositoryExtractor pre = new PCMRepositoryExtractor();
 
-        Repository originalRepo = pre.getImpl(integrator.getModel());
-        PCMModelBuilder builder = new PCMModelBuilder(changes);
-        Repository integratedRepo = builder.createPCMModel();
+        final Repository originalRepo = pre.getImpl(integrator.getModel());
+        final PCMModelBuilder builder = new PCMModelBuilder(changes);
+        final Repository integratedRepo = builder.createPCMModel();
 
         // remove excluded elements from original model or else EqualityHelper will always say
         // 'false'
-        for (RepositoryComponent comp : originalRepo.getComponents__Repository()) {
+        for (final RepositoryComponent comp : originalRepo.getComponents__Repository()) {
             if (comp instanceof BasicComponent) {
                 ((BasicComponent) comp).getServiceEffectSpecifications__BasicComponent().clear();
                 ((BasicComponent) comp).getComponentParameterUsage_ImplementationComponentType().clear();
@@ -161,32 +155,9 @@ public class ModelIntegrationComparatorTest {
         // }
 
         // compare
-        UnorderedReferencesRespectingEqualityHelper comparator = new UnorderedReferencesRespectingEqualityHelper();
-        boolean equal = comparator.equals(originalRepo, integratedRepo);
+        final UnorderedReferencesRespectingEqualityHelper comparator = new UnorderedReferencesRespectingEqualityHelper();
+        final boolean equal = comparator.equals(originalRepo, integratedRepo);
         assertTrue(equal);
-    }
-
-    /**
-     * Create underlying elements (MetaRepo, VSUM, ...) DUPLICATE CODE FROM INTEGRATIONHANDLER
-     * 
-     * @return : SyncManager for synchronizing changes
-     */
-    private SyncManagerImpl createVitruviusCore() {
-
-        final MetaRepositoryImpl metaRepository = PCMJavaUtils.createPCMJavaMetarepository();
-
-        vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository);
-
-        final TransformationExecutingProvidingImpl syncTransformationProvider = new TransformationExecutingProvidingImpl();
-
-        final EMFModelPropagationEngineImpl propagatingChange = new EMFModelPropagationEngineImpl(
-                syncTransformationProvider);
-
-        final SyncManagerImpl syncManager = new SyncManagerImpl(vsum, propagatingChange, vsum, metaRepository, vsum,
-                null);
-
-        return syncManager;
-
     }
 
     /**

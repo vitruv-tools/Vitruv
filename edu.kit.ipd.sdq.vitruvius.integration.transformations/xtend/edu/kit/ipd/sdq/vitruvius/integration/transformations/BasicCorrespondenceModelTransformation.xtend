@@ -49,7 +49,7 @@ abstract class BasicCorrespondenceModelTransformation implements ICreateCorrespo
 		var identifier = getCorrespondenceInstance.calculateTUIDFromEObject(deresolvedA).toString +
 			getCorrespondenceInstance.calculateTUIDFromEObject(deresolvedB).toString
 		if (!existingEntries.contains(identifier)) {
-			var correspondence = getCorrespondenceInstance.createAndAddEObjectCorrespondence(deresolvedA, deresolvedB, parent);
+			var correspondence = getCorrespondenceInstance.createAndAddEObjectCorrespondence(deresolvedA, deresolvedB);
 			existingEntries.add(identifier);
 			logger.info("Created Correspondence for element: " + objectA + " and Element: " + objectB);
 			return correspondence;

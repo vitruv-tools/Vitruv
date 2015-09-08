@@ -22,30 +22,15 @@ Require-Bundle: org.apache.commons.logging,
  org.eclipse.emf.ecore,
  org.eclipse.emf.common,
  org.apache.log4j;bundle-version="1.2.15",
- edu.kit.ipd.sdq.mdsd.profiles;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.vsum;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.0.0",
  org.somox.sourcecodedecorator;bundle-version="1.0.1",
  org.somox.kdmhelper;bundle-version="1.0.0",
- de.uka.ipd.sdq.pcm,
  org.eclipse.core.resources;bundle-version="3.9.0",
- edu.kit.ipd.sdq.vitruvius.framework.util;bundle-version="1.0.0"
+ edu.kit.ipd.sdq.vitruvius.framework.util;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.integration.util;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: de.uka.ipd.sdq.pcm.repository,
- de.uka.ipd.sdq.pcm.repository.impl,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava,
- edu.kit.ipd.sdq.vitruvius.casestudies.utils.jamopp,
- edu.kit.ipd.sdq.vitruvius.framework.metarepository,
- edu.kit.ipd.sdq.vitruvius.framework.vsum,
- edu.kit.ipd.sdq.vitruvius.integration.util,
- edu.kit.ipd.sdq.vitruvius.tests.jamopppcm.util,
- edu.kit.ipd.sdq.vitruvius.tests.util,
- org.emftext.language.java,
- org.emftext.language.java.commons,
- org.emftext.language.java.impl,
- org.emftext.language.java.members,
- org.emftext.language.java.members.impl,
- org.emftext.language.java.resource
 Export-Package: edu.kit.ipd.sdq.vitruvius.integration.transformations
 

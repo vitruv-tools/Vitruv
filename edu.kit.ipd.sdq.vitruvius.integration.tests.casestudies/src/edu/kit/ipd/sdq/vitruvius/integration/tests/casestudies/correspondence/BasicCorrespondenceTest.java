@@ -10,8 +10,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.junit.After;
 import org.junit.Before;
+import org.palladiosimulator.pcm.repository.Repository;
 
-import de.uka.ipd.sdq.pcm.repository.Repository;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
@@ -22,7 +22,7 @@ import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 /*
  * HOW TO USE THIS UNITTESTS:
- * 
+ *
  * 1. Create folder "junit-workspace" as sibling to your vitruvius folder (or run the testcase which will create the folder for you)
  * 2. Create the project "MockupProject" which contains your src folder in the junit-workspace
  * 3. Run Somox on this project
@@ -68,50 +68,51 @@ public class BasicCorrespondenceTest extends PCM2JaMoPPTransformationTest {
 
     /**
      * Sets up the correspondence model that should be tested.
-     * 
+     *
      * @throws CoreException
      */
     @Before
     public void setUp() throws CoreException {
 
         // Initialize workspace
-        workspace = ResourcesPlugin.getWorkspace();
-        IPath root = workspace.getRoot().getLocation();
-        IPath projectPath = root.append(PROJECT_NAME);
+        this.workspace = ResourcesPlugin.getWorkspace();
+        final IPath root = this.workspace.getRoot().getLocation();
+        final IPath projectPath = root.append(PROJECT_NAME);
 
         // Copy MockupProject and rename it in order to have valid a instance for each test
-        final IProject mockupProject = workspace.getRoot().getProject(PROJECT_NAME);
-        renameFoldersIfNecessary(mockupProject);
-        IPath copyPath = new Path(PROJECT_NAME_COPY);
+        final IProject mockupProject = this.workspace.getRoot().getProject(PROJECT_NAME);
+        this.renameFoldersIfNecessary(mockupProject);
+        final IPath copyPath = new Path(PROJECT_NAME_COPY);
         mockupProject.copy(copyPath, true, null);
 
         // Initialize vsum
-        vsum.getOrCreateAllCorrespondenceInstances(metaRepository.getMetamodel(pcmMMUri));
+        this.vsum.getOrCreateAllCorrespondenceInstancesForMM(this.metaRepository.getMetamodel(pcmMMUri));
 
         // Create and execute the transformation
-        transformation = new PCMJaMoPPCorrespondenceModelTransformation(projectPath + SCDM_PATH, projectPath
-                + PCM_REPOSITORY, projectPath + CODE_PATH, vsum);
+        this.transformation = new PCMJaMoPPCorrespondenceModelTransformation(projectPath + SCDM_PATH,
+                projectPath + PCM_REPOSITORY, projectPath + CODE_PATH, this.vsum);
         try {
-            transformation.createCorrespondences();
-        } catch (Exception ex) {
+            this.transformation.createCorrespondences();
+        } catch (final Exception ex) {
             ex.printStackTrace();
         }
 
         // Add the PCM model to Vitruvius
-        VURI sourceModelURI = VURI.getInstance(TestUtil.PROJECT_URI + "/" + PCM_REPOSITORY);
-        ModelInstance pcmInstance = vsum.getAndLoadModelInstanceOriginal(sourceModelURI);
+        final VURI sourceModelURI = VURI.getInstance(TestUtil.PROJECT_URI + "/" + PCM_REPOSITORY);
+        final ModelInstance pcmInstance = this.vsum.getAndLoadModelInstanceOriginal(sourceModelURI);
 
-        pcmRepo = pcmInstance.getUniqueRootEObjectIfCorrectlyTyped(Repository.class);
+        this.pcmRepo = pcmInstance.getUniqueRootEObjectIfCorrectlyTyped(Repository.class);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.
      * PCM2JaMoPPTransformationTest#getCorrespondenceInstance()
      */
+    @Override
     protected CorrespondenceInstance getCorrespondenceInstance() throws Throwable {
-        CorrespondenceInstance correspondenceInstance2 = transformation.getCorrespondenceInstance();
+        final CorrespondenceInstance correspondenceInstance2 = this.transformation.getCorrespondenceInstance();
         return correspondenceInstance2;
     }
 
@@ -123,28 +124,28 @@ public class BasicCorrespondenceTest extends PCM2JaMoPPTransformationTest {
         this.correspondenceInstance = null;
 
         // Delete modified project
-        final IWorkspaceRoot root = workspace.getRoot();
+        final IWorkspaceRoot root = this.workspace.getRoot();
         final IProject modifiedProject = root.getProject(PROJECT_NAME);
         modifiedProject.delete(true, null);
 
         // Move copy back
         final IProject ProjectCopy = root.getProject(PROJECT_NAME_COPY);
-        IPath oldPath = new Path(PROJECT_NAME);
+        final IPath oldPath = new Path(PROJECT_NAME);
         ProjectCopy.move(oldPath, true, null);
     }
 
     /**
      * Rename src and model folder of the given project, as their names sometimes get changed during
      * a test
-     * 
+     *
      * @param project
      * @throws CoreException
      */
-    private void renameFoldersIfNecessary(IProject project) throws CoreException {
-        IResource[] projectMembers = project.members();
-        for (IResource member : projectMembers) {
+    private void renameFoldersIfNecessary(final IProject project) throws CoreException {
+        final IResource[] projectMembers = project.members();
+        for (final IResource member : projectMembers) {
             if (member.getType() == IResource.FOLDER) {
-                String folderName = member.getName();
+                final String folderName = member.getName();
                 if (folderName.startsWith("modeltest") && folderName.length() > 20) {
                     // model folder
                     member.move(project.getProjectRelativePath().append(IPath.SEPARATOR + MODEL_PATH), true, null);

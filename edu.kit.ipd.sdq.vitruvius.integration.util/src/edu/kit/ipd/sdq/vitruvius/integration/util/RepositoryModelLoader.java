@@ -10,7 +10,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
-import de.uka.ipd.sdq.pcm.repository.RepositoryPackage;
+import org.palladiosimulator.pcm.repository.RepositoryPackage;
 
 /**
  * Helper class for loading PCM Repositories from file system.

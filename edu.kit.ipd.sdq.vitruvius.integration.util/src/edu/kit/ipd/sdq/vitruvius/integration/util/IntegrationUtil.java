@@ -1,0 +1,58 @@
+package edu.kit.ipd.sdq.vitruvius.integration.util;
+
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
+import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.changepreparer.ChangePreparingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
+import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
+
+public class IntegrationUtil {
+
+    private IntegrationUtil() {
+    }
+
+    /**
+     * Create underlying elements (MetaRepo, VSUM, ...)
+     *
+     * @return : ChangeSynchronizing for synchronizing changes
+     */
+    public static ChangeSynchronizing createVitruviusCore() {
+        return createVitruviusCore(createVSUM());
+    }
+
+    public static ChangeSynchronizing createVitruviusCore(final VSUMImpl vsum) {
+        final MetaRepositoryImpl metaRepository = createMetaRepository();
+        final Change2CommandTransformingProviding change2CommandTransformingProviding = new Change2CommandTransformingProvidingImpl();
+
+        final ChangePreparing changePreparing = new ChangePreparingImpl(vsum, vsum);
+        final CommandExecuting commandExecuting = new CommandExecutingImpl();
+
+        final ChangeSynchronizerImpl changeSynchronizerImpl = new ChangeSynchronizerImpl(vsum,
+                change2CommandTransformingProviding, vsum, metaRepository, vsum, null, changePreparing,
+                commandExecuting);
+
+        return changeSynchronizerImpl;
+    }
+
+    public static MetaRepositoryImpl createMetaRepository() {
+        final MetaRepositoryImpl metaRepository = PCMJavaUtils.createPCMJavaMetarepository();
+        return metaRepository;
+    }
+
+    public static VSUMImpl createVSUM() {
+        final MetaRepositoryImpl metaRepository = createMetaRepository();
+        return createVSUM(metaRepository);
+    }
+
+    public static VSUMImpl createVSUM(final MetaRepositoryImpl metaRepository) {
+        final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository);
+        return vsum;
+    }
+
+}
