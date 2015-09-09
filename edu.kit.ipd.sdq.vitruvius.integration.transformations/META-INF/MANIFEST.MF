@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: edu.kit.ipd.sdq.vitruvius.integration.transformations
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.integration.transformations; singleton:=true
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.integration.transformations;singleton:=true
 Bundle-Version: 1.0.0
 Require-Bundle: org.apache.commons.logging,
  org.eclipse.jdt.core;bundle-version="3.5.0",
@@ -30,7 +30,8 @@ Require-Bundle: org.apache.commons.logging,
  org.eclipse.core.resources;bundle-version="3.9.0",
  edu.kit.ipd.sdq.vitruvius.framework.util;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.integration.util;bundle-version="1.0.0"
+ edu.kit.ipd.sdq.vitruvius.integration.util;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.integration
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: edu.kit.ipd.sdq.vitruvius.integration.transformations
 

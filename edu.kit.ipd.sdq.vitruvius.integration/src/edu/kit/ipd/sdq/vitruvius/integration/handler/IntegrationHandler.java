@@ -1,14 +1,10 @@
 package edu.kit.ipd.sdq.vitruvius.integration.handler;
 
-import java.io.File;
-
-import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
@@ -16,55 +12,35 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.common.util.UniqueEList;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
-import org.palladiosimulator.pcm.core.composition.AssemblyContext;
-import org.palladiosimulator.pcm.repository.Repository;
-import org.palladiosimulator.pcm.repository.RepositoryComponent;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor;
-import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.integration.LoggerConfigurator;
-import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.IMModelImplExtractor;
-import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.PCMRepositoryExtractor;
-import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.PCMSystemExtractor;
-import edu.kit.ipd.sdq.vitruvius.integration.strategies.PCMRepositoryIntegrationStrategy;
-import edu.kit.ipd.sdq.vitruvius.integration.strategies.PCMSystemIntegrationStrategy;
-import edu.kit.ipd.sdq.vitruvius.integration.transformations.ICreateCorrespondenceModel;
-import edu.kit.ipd.sdq.vitruvius.integration.transformations.PCMJaMoPPCorrespondenceModelTransformation;
-import edu.kit.ipd.sdq.vitruvius.integration.traversal.util.UnorderedReferencesRespectingEqualityHelper;
-import edu.kit.ipd.sdq.vitruvius.integration.util.IntegrationUtil;
-import edu.kit.ipd.sdq.vitruvius.integration.util.PCMMetaModelConverter;
-import edu.kit.ipd.sdq.vitruvius.integration.util.RepositoryModelLoader;
-import edu.kit.ipd.sdq.vitruvius.integration.util.ResourceHelper;
 
 /**
  * Handler for the context menu event created when a user rightclicks a model and selects
  * "integrate".
  *
  * @author Sven Leonhardt
+ * @param <T>
  */
-public class IntegrationHandler extends AbstractHandler {
+public abstract class IntegrationHandler<T> extends AbstractHandler {
 
-    private int keepOldModel;
+    private final Class<T> type;
+
+    public IntegrationHandler(final Class<T> type) {
+        this.type = type;
+    }
+
     private final Logger logger = LogManager.getRootLogger();
-    private VSUMImpl vsum;
+    protected int keepOldModel;
+    protected VSUMImpl vsum;
 
     /*
      * (non-Javadoc)
@@ -85,18 +61,8 @@ public class IntegrationHandler extends AbstractHandler {
         final UserInteracting dialog = new UserInteractor();
         this.keepOldModel = dialog.selectFromMessage(UserInteractionType.MODAL, "Keep old model?", "No", "Yes");
 
-        // selection was single file -> repository or system
-        if (firstElement instanceof IFile) {
-            if (((IFile) firstElement).getFileExtension().equals("repository")) {
-                this.integratePCMRepository((IResource) firstElement, null);
-            }
-            if (((IFile) firstElement).getFileExtension().equals("system")) {
-                this.integratePCMSystem((IResource) firstElement);
-            }
-
-            // selection was JavaProject -> code integration
-        } else if (firstElement instanceof IJavaProject) {
-            this.integrateCode(firstElement);
+        if (this.type.isInstance(firstElement)) {
+            this.handleSelectedElement((T) firstElement);
         } else {
             throw new IllegalArgumentException("Selected entry must be a file or project");
         }
@@ -107,177 +73,7 @@ public class IntegrationHandler extends AbstractHandler {
         return null;
     }
 
-    /**
-     * Integrates a PCM respository model into Vitruvius.
-     *
-     * @param resource
-     *            : the model which the user selected in eclipse
-     * @param changeSynchronizing
-     *            : the synchronization provider used for synchronizing the generated changes
-     */
-    private void integratePCMRepository(IResource resource, ChangeSynchronizing changeSynchronizing) {
-
-        Logger.getRootLogger().setLevel(Level.ALL);
-
-        // get URI from resource
-        final URI uri = EMFBridge.getEMFPlatformUriForIResource(resource);
-
-        // update the PCM parameter definitions
-        resource = this.updateParameterDef(resource, uri);
-
-        if (this.keepOldModel == 1) {
-            this.saveOldModel(resource);
-        }
-
-        final PCMRepositoryIntegrationStrategy integrator = new PCMRepositoryIntegrationStrategy();
-
-        if (changeSynchronizing == null) {
-            this.vsum = IntegrationUtil.createVSUM();
-            changeSynchronizing = IntegrationUtil.createVitruviusCore(this.vsum);
-        }
-
-        try {
-            integrator.integrateModel(resource, changeSynchronizing);
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
-
-        if (this.keepOldModel == 1) {
-            this.compareWithNewModel(resource, uri);
-        }
-
-    }
-
-    private void compareWithNewModel(final IResource resource, final URI uri) {
-        // get integrated pcm model instance
-        final ModelInstance integratedModelInstance = this.vsum.getModelInstanceOriginal(VURI.getInstance(uri));
-        final IPath oldModelPath = this.createPathToOldModel(resource.getLocation());
-
-        // load copy of the model before integration
-        final Resource originalResource = RepositoryModelLoader.loadPCMResource(oldModelPath.toString());
-
-        // load the two root objects from the model
-        final PCMRepositoryExtractor pre = new PCMRepositoryExtractor();
-        final Repository integratedRepo = pre.getImpl(integratedModelInstance.getResource());
-        final Repository originalRepo = pre.getImpl(originalResource);
-
-        // compare
-        final UnorderedReferencesRespectingEqualityHelper comparator = new UnorderedReferencesRespectingEqualityHelper();
-
-        this.logger.info(
-                "Original Model and Integrated Model identical? " + comparator.equals(originalRepo, integratedRepo));
-    }
-
-    /**
-     * Integrates a PCM System model into Vitruvius.
-     *
-     * @param resource
-     *            : the model which the user selected in eclipse
-     */
-    private void integratePCMSystem(final IResource resource) {
-
-        Logger.getRootLogger().setLevel(Level.ALL);
-
-        if (this.keepOldModel == 1) {
-            this.saveOldModel(resource);
-        }
-
-        // create underlying elements (MetaRepo, VSUM,...)
-        final ChangeSynchronizing changeSynchronizing = IntegrationUtil.createVitruviusCore();
-
-        // find all referenced repositories and integrate them first
-        final EList<Repository> linkedRepositories = this.extractRepositories(resource);
-
-        for (final Repository repository : linkedRepositories) {
-
-            // convert EMF resource -> Eclipse IResource
-            final IResource repositoryResource = ResourceHelper
-                    .absoluteEmfResourceToWorkspaceRelativeIResource(repository.eResource());
-
-            this.integratePCMRepository(repositoryResource, changeSynchronizing);
-        }
-
-        final PCMSystemIntegrationStrategy integrator = new PCMSystemIntegrationStrategy();
-
-        try {
-            integrator.integrateModel(resource, changeSynchronizing);
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    /**
-     * Integrate source code into Vitruvius 1. Create JavaProject with src folder 2. Run SoMoX on
-     * this project 3. Update PCM Parameter definition 4. Extract all necessary models from the
-     * model folder
-     *
-     * @param firstElement
-     *            : the project containing the source code
-     */
-    private void integrateCode(final Object firstElement) {
-
-        Logger.getRootLogger().setLevel(Level.ALL);
-
-        final IJavaProject javaProject = (IJavaProject) firstElement;
-        final IProject project = javaProject.getProject();
-
-        // IPath projectPath = project.getFullPath(); // workspace relative Path
-        final IPath projectPath = project.getLocation(); // absolute path
-        final IPath models = projectPath.append("model").addTrailingSeparator().append("internal_architecture_model");
-
-        final IPath scdmPath = models.addFileExtension("sourcecodedecorator");
-        final IPath pcmPath = models.addFileExtension("repository");
-        final IPath srcPath = projectPath.append("src");
-
-        final File f = scdmPath.toFile();
-        if (!f.exists()) {
-            throw new IllegalArgumentException("Run SoMoX first!");
-        }
-
-        final MetaRepositoryImpl metaRepository = PCMJavaUtils.createPCMJavaMetarepository();
-        final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository);
-        vsum.getOrCreateAllCorrespondenceInstancesForMM(
-                metaRepository.getMetamodel(VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE)));
-
-        final ICreateCorrespondenceModel transformation = new PCMJaMoPPCorrespondenceModelTransformation(
-                scdmPath.toString(), pcmPath.toString(), srcPath.toString(), vsum);
-
-        transformation.createCorrespondences();
-    }
-
-    /**
-     * Updates PCM parameter definitions.
-     *
-     * @param resource
-     *            : PCM repository
-     * @param uri
-     *            : PCM repository uri
-     * @return : IResource to file with new parameter definitions
-     */
-    private IResource updateParameterDef(IResource resource, URI uri) {
-        // 1. Update model to current PCM version
-        final File updatedModel = PCMMetaModelConverter.convertPCM(resource.getLocation(), false);
-
-        // 2. update resource if model got updated
-        if (PCMMetaModelConverter.isModelUpdated()) {
-
-            // create new uri
-            uri = uri.trimSegments(1);
-            final String fileName = updatedModel.getName();
-            uri = uri.appendSegment(fileName);
-
-            // set resource to new file
-            final IProject project = resource.getProject();
-            IPath iPathForEMFUri = EMFBridge.getIPathForEMFUri(uri);
-
-            // remove project folder from path
-            iPathForEMFUri = iPathForEMFUri.removeFirstSegments(1);
-            final IFile file = project.getFile(iPathForEMFUri);
-            resource = file;
-        }
-        return resource;
-    }
+    protected abstract void handleSelectedElement(T firstElement);
 
     /**
      * Save the old model
@@ -285,7 +81,7 @@ public class IntegrationHandler extends AbstractHandler {
      * @param resource
      *            old model
      */
-    private void saveOldModel(final IResource resource) {
+    protected void saveOldModel(final IResource resource) {
 
         IPath newPath = resource.getFullPath();
         newPath = this.createPathToOldModel(newPath);
@@ -298,7 +94,7 @@ public class IntegrationHandler extends AbstractHandler {
         }
     }
 
-    private IPath createPathToOldModel(final IPath path) {
+    protected IPath createPathToOldModel(final IPath path) {
         final String extension = "_beforeIntegration.repository";
         IPath newPath = path.removeFileExtension();
 
@@ -308,33 +104,6 @@ public class IntegrationHandler extends AbstractHandler {
         newPath = newPath.removeLastSegments(1);
         newPath = newPath.append(fileName);
         return newPath;
-    }
-
-    /**
-     * Extracts all repositories referenced by a system model.
-     *
-     * @param resource
-     *            : PCM System
-     * @return : List of referenced repositories
-     */
-    private EList<Repository> extractRepositories(final IResource resource) {
-
-        final IMModelImplExtractor<org.palladiosimulator.pcm.system.System> extractor = new PCMSystemExtractor();
-        final Resource model = RepositoryModelLoader.loadPCMResource(resource.getLocation().toString());
-
-        final org.palladiosimulator.pcm.system.System system = extractor.getImpl(model);
-
-        final EList<Repository> linkedRepositories = new UniqueEList<Repository>();
-        final EList<AssemblyContext> contexts = system.getAssemblyContexts__ComposedStructure();
-
-        for (final AssemblyContext context : contexts) {
-
-            final RepositoryComponent component = context.getEncapsulatedComponent__AssemblyContext();
-            final Repository repository = component.getRepository__RepositoryComponent();
-
-            linkedRepositories.add(repository);
-        }
-        return linkedRepositories;
     }
 
     /**

@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.resource.Resource;
  */
 public abstract class InvariantEnforcer {
 
-    protected Logger logger = LogManager.getRootLogger();
+    public Logger logger = LogManager.getRootLogger();
     protected Resource model;
 
     /**
@@ -40,8 +40,8 @@ public abstract class InvariantEnforcer {
 
         /*
          * final ConsoleAppender ca = new ConsoleAppender(); ca.setName("cAppender");
-         * ca.setWriter(new OutputStreamWriter(System.out)); ca.setLayout(new
-         * PatternLayout("%-5p [%t]: %m%n")); if (this.logger.getAppender("cAppender") == null) {
+         * ca.setWriter(new OutputStreamWriter(System.out)); ca.setLayout(new PatternLayout(
+         * "%-5p [%t]: %m%n")); if (this.logger.getAppender("cAppender") == null) {
          * this.logger.addAppender(ca); // TODO: find better way to prevent duplicate output }
          */
 

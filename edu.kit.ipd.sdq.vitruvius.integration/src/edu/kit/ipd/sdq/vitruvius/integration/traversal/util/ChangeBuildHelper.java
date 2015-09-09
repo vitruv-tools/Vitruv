@@ -4,12 +4,9 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 
-import org.palladiosimulator.pcm.core.entity.Entity;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ObjectFactory;
 
 /**
  * A helper class that provides methods for creating atomic change models from EMF elements
@@ -53,20 +50,6 @@ public abstract class ChangeBuildHelper {
         change.setIndex(index);
         change.setNewValue(source);
 
-        return change;
-    }
-
-    /**
-     * Creates the change from root entity.
-     *
-     * @param source
-     *            the source
-     * @return the e change
-     */
-    protected static EChange createChangeFromRootEntity(final Entity source) {
-
-        final CreateRootEObject<EObject> change = ObjectFactory.eINSTANCE.createCreateRootEObject();
-        change.setNewValue(source);
         return change;
     }
 

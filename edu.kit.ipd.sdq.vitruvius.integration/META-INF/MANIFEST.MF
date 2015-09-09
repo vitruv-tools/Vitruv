@@ -19,7 +19,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jface,
  org.eclipse.ui.workbench,
  org.eclipse.emf.ecore,
- edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  org.eclipse.emf.emfstore.common,
  org.eclipse.m2m.qvt.oml,
@@ -29,10 +29,13 @@ Require-Bundle: org.eclipse.core.runtime,
  edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer,
  edu.kit.ipd.sdq.vitruvius.framework.commandexecuter,
  edu.kit.ipd.sdq.vitruvius.framework.changepreparer,
- org.palladiosimulator.pcm,
- edu.kit.ipd.sdq.vitruvius.integration.util,
- edu.kit.ipd.sdq.vitruvius.integration.transformations
+ edu.kit.ipd.sdq.vitruvius.integration.util
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Export-Package: edu.kit.ipd.sdq.vitruvius.integration.traversal,
- edu.kit.ipd.sdq.vitruvius.integration.traversal.repository
+Export-Package: edu.kit.ipd.sdq.vitruvius.integration.handler,
+ edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers,
+ edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.pcmjamoppenforcer,
+ edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.pcmjamoppenforcer.withocl,
+ edu.kit.ipd.sdq.vitruvius.integration.strategies,
+ edu.kit.ipd.sdq.vitruvius.integration.traversal,
+ edu.kit.ipd.sdq.vitruvius.integration.traversal.util
