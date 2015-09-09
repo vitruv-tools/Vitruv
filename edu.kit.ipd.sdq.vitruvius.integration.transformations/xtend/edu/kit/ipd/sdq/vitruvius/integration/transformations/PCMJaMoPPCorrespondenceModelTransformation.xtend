@@ -1,12 +1,10 @@
 package edu.kit.ipd.sdq.vitruvius.integration.transformations
 
-import org.palladiosimulator.pcm.repository.BasicComponent
-import org.palladiosimulator.pcm.repository.OperationSignature
-import org.palladiosimulator.pcm.repository.Repository
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl
+import edu.kit.ipd.sdq.vitruvius.integration.util.JaMoPPResourceHelper
 import java.util.HashSet
 import java.util.Set
 import org.apache.log4j.Level
@@ -21,12 +19,14 @@ import org.emftext.language.java.members.Field
 import org.emftext.language.java.members.Method
 import org.emftext.language.java.parameters.OrdinaryParameter
 import org.emftext.language.java.types.Type
+import org.palladiosimulator.pcm.repository.BasicComponent
+import org.palladiosimulator.pcm.repository.OperationSignature
+import org.palladiosimulator.pcm.repository.Repository
 import org.somox.sourcecodedecorator.ComponentImplementingClassesLink
 import org.somox.sourcecodedecorator.DataTypeSourceCodeLink
 import org.somox.sourcecodedecorator.InterfaceSourceCodeLink
 import org.somox.sourcecodedecorator.MethodLevelSourceCodeLink
 import org.somox.sourcecodedecorator.impl.SourceCodeDecoratorRepositoryImpl
-import edu.kit.ipd.sdq.vitruvius.integration.util.ResourceHelper
 
 /**
  * Class that creates correspondences between PCM and JaMopp model elements.
@@ -79,10 +79,10 @@ class PCMJaMoPPCorrespondenceModelTransformation extends BasicCorrespondenceMode
 	private def prepareTransformation() {
 
 		// Load pcm, scdm and jamopp resourceSet
-		scdm = ResourceHelper.loadSCDMResource(scdmPath)
-		pcm = ResourceHelper.loadPCMRepositoryResource(pcmPath)
+		scdm = JaMoPPResourceHelper.loadSCDMResource(scdmPath)
+		pcm = JaMoPPResourceHelper.loadPCMRepositoryResource(pcmPath)
 		pcmRepo = pcm.contents.get(0) as Repository;
-		jaMoppResourceSet = ResourceHelper.loadJaMoPPResourceSet(jamoppPath)
+		jaMoppResourceSet = JaMoPPResourceHelper.loadJaMoPPResourceSet(jamoppPath)
 
 		// Get all jaMopp packages from resourceSet  
 		jaMoppResourceSet.resources.forEach[packages.addAll((contents.filter(typeof(Package))))]

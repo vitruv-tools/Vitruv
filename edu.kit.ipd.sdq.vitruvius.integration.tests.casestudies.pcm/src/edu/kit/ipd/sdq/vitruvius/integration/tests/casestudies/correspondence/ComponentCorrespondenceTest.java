@@ -7,12 +7,13 @@ import org.emftext.language.java.classifiers.Class;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.containers.Package;
 import org.junit.Test;
-
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.RepositoryComponent;
 import org.palladiosimulator.pcm.repository.RepositoryPackage;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.integration.BasicCorrespondenceTest;
 
 /**
  * Class for testing correspondences between PCM components and Java classes.
@@ -29,8 +30,8 @@ public class ComponentCorrespondenceTest extends BasicCorrespondenceTest {
     public void testRenameBasicComponent() throws Throwable {
 
         // Get a component and rename it
-        this.changeRecorder.beginRecording(Collections.singletonList(pcmRepo));
-        BasicComponent basicComponent = (BasicComponent) EcoreUtil.getObjectByType(pcmRepo.eContents(),
+        this.changeRecorder.beginRecording(Collections.singletonList(this.pcmRepo));
+        final BasicComponent basicComponent = (BasicComponent) EcoreUtil.getObjectByType(this.pcmRepo.eContents(),
                 RepositoryPackage.eINSTANCE.getBasicComponent());
         basicComponent.setEntityName("ComponentRenamed");
 
@@ -51,10 +52,9 @@ public class ComponentCorrespondenceTest extends BasicCorrespondenceTest {
      */
     @SuppressWarnings("unchecked")
     private void assertBasicComponentCorrespondences(final RepositoryComponent basicComponent) throws Throwable {
-        this.assertCorrespondnecesAndCompareNames(basicComponent, 3, new java.lang.Class[] { CompilationUnit.class,
-                Package.class, Class.class },
-                new String[] { basicComponent.getEntityName() + "Impl", basicComponent.getEntityName(),
-                        "package-info.java" });
+        this.assertCorrespondnecesAndCompareNames(basicComponent, 3,
+                new java.lang.Class[] { CompilationUnit.class, Package.class, Class.class }, new String[] {
+                        basicComponent.getEntityName() + "Impl", basicComponent.getEntityName(), "package-info.java" });
 
     }
 

@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.EObject
  * 
  * @author Benjamin Hettwer
  */
-abstract class BasicCorrespondenceModelTransformation implements ICreateCorrespondenceModel {
+abstract class BasicCorrespondenceModelTransformation implements ICreateCorrespondenceModel { 
 
 	// Used to avoid duplicated entries
 	private HashSet<String> existingEntries = new HashSet; 

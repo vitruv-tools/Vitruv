@@ -16,9 +16,11 @@ import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryComponent;
 
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
+import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.integration.handler.IntegrationHandler;
 import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.IMModelImplExtractor;
@@ -65,8 +67,9 @@ public class PCMIntegrationHandler extends IntegrationHandler<IFile> {
         final PCMRepositoryIntegrationStrategy integrator = new PCMRepositoryIntegrationStrategy();
 
         if (changeSynchronizing == null) {
-            this.vsum = IntegrationUtil.createVSUM();
-            changeSynchronizing = IntegrationUtil.createVitruviusCore(this.vsum);
+            final MetaRepositoryImpl pcmJavaMetarepository = PCMJavaUtils.createPCMJavaMetarepository();
+            this.vsum = IntegrationUtil.createVSUM(pcmJavaMetarepository);
+            changeSynchronizing = IntegrationUtil.createVitruviusCore(this.vsum, pcmJavaMetarepository);
         }
 
         try {
@@ -96,7 +99,8 @@ public class PCMIntegrationHandler extends IntegrationHandler<IFile> {
         }
 
         // create underlying elements (MetaRepo, VSUM,...)
-        final ChangeSynchronizing changeSynchronizing = IntegrationUtil.createVitruviusCore();
+        final MetaRepositoryImpl metaRepository = PCMJavaUtils.createPCMJavaMetarepository();
+        final ChangeSynchronizing changeSynchronizing = IntegrationUtil.createVitruviusCore(metaRepository);
 
         // find all referenced repositories and integrate them first
         final EList<Repository> linkedRepositories = this.extractRepositories(resource);

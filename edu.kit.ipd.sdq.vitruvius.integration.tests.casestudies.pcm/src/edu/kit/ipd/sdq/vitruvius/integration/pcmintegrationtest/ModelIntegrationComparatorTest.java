@@ -21,6 +21,7 @@ import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryComponent;
 
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
@@ -106,7 +107,7 @@ public class ModelIntegrationComparatorTest {
         final PCMRepositoryIntegrationStrategy integrator = new PCMRepositoryIntegrationStrategy();
         ChangeSynchronizing changeSynchronizing = null;
         if (changeSynchronizing == null) {
-            changeSynchronizing = IntegrationUtil.createVitruviusCore();
+            changeSynchronizing = IntegrationUtil.createVitruviusCore(PCMJavaUtils.createPCMJavaMetarepository());
         }
 
         EList<Change> changes = null;

@@ -5,19 +5,15 @@ Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.integration.tests.casestudies
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.junit,
- edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations,
+ org.eclipse.core.resources,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore.change;bundle-version="2.10.0",
  edu.kit.ipd.sdq.vitruvius.integration.transformations,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava,
- org.eclipse.core.resources,
  edu.kit.ipd.sdq.vitruvius.integration.util,
- org.eclipse.emf.ecore,
  edu.kit.ipd.sdq.vitruvius.framework.metarepository,
  edu.kit.ipd.sdq.vitruvius.tests.util,
- org.palladiosimulator.pcm,
  edu.kit.ipd.sdq.vitruvius.framework.vsum;bundle-version="1.0.0",
- org.eclipse.emf.ecore.change;bundle-version="2.10.0",
- org.emftext.language.java;bundle-version="1.4.0",
  edu.kit.ipd.sdq.vitruvius.framework.util
 Import-Package: junit.framework;version="3.8.2",
  org.eclipse.core.runtime;version="3.4.0",

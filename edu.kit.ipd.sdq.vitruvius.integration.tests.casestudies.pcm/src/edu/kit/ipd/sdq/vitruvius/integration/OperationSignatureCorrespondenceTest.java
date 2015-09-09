@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.integration.tests.casestudies.correspondence;
+package edu.kit.ipd.sdq.vitruvius.integration;
 
 import static org.junit.Assert.assertNotNull;
 

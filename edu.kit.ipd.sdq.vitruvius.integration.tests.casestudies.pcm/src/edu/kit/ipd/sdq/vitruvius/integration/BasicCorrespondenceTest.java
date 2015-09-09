@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.integration.tests.casestudies.correspondence;
+package edu.kit.ipd.sdq.vitruvius.integration;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;

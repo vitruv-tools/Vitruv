@@ -16,7 +16,11 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.integration.tests.modelBuilder,
  edu.kit.ipd.sdq.vitruvius.framework.meta.change,
- edu.kit.ipd.sdq.vitruvius.integration.casestudies.pcm
+ edu.kit.ipd.sdq.vitruvius.integration.casestudies.pcm,
+ edu.kit.ipd.sdq.vitruvius.integration.transformations,
+ edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations,
+ org.emftext.language.java,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava
 Import-Package: edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers,
  edu.kit.ipd.sdq.vitruvius.integration.traversal,
  edu.kit.ipd.sdq.vitruvius.integration.traversal.util
