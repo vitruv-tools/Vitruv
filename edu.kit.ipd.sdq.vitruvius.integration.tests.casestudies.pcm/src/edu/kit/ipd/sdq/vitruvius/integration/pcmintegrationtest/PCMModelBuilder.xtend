@@ -1,8 +1,22 @@
-package edu.kit.ipd.sdq.vitruvius.integration.tests.modelBuilder
+package edu.kit.ipd.sdq.vitruvius.integration.pcmintegrationtest
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject
+import org.eclipse.emf.common.util.BasicEList
+import org.eclipse.emf.common.util.EList
+import org.palladiosimulator.pcm.core.composition.AssemblyConnector
+import org.palladiosimulator.pcm.core.composition.AssemblyContext
+import org.palladiosimulator.pcm.core.composition.CompositionFactory
+import org.palladiosimulator.pcm.core.composition.ProvidedDelegationConnector
+import org.palladiosimulator.pcm.core.composition.RequiredDelegationConnector
+import org.palladiosimulator.pcm.core.entity.ComposedProvidingRequiringEntity
 import org.palladiosimulator.pcm.core.entity.Entity
 import org.palladiosimulator.pcm.repository.BasicComponent
 import org.palladiosimulator.pcm.repository.CollectionDataType
+import org.palladiosimulator.pcm.repository.CompositeComponent
 import org.palladiosimulator.pcm.repository.CompositeDataType
 import org.palladiosimulator.pcm.repository.InnerDeclaration
 import org.palladiosimulator.pcm.repository.Interface
@@ -13,24 +27,8 @@ import org.palladiosimulator.pcm.repository.OperationSignature
 import org.palladiosimulator.pcm.repository.Parameter
 import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.repository.RepositoryFactory
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject
-import org.eclipse.emf.common.util.EList
-import org.eclipse.emf.common.util.BasicEList
-import org.palladiosimulator.pcm.repository.CompositeComponent
-import org.palladiosimulator.pcm.core.composition.AssemblyContext
-import org.palladiosimulator.pcm.system.SystemFactory
-import org.palladiosimulator.pcm.core.composition.CompositionFactory
-import org.palladiosimulator.pcm.core.entity.ComposedProvidingRequiringEntity
-import org.palladiosimulator.pcm.core.composition.ProvidedDelegationConnector
-import javax.swing.plaf.basic.BasicEditorPaneUI
-import org.palladiosimulator.pcm.core.composition.RequiredDelegationConnector
-import org.palladiosimulator.pcm.core.composition.AssemblyConnector
 
-class PCMModelBuilder {
+class PCMModelBuilder { 
 	
 	private EList<Change> changes
 	private EList<CompositeDataType> compositeDataTypes = new BasicEList<CompositeDataType>
@@ -44,7 +42,7 @@ class PCMModelBuilder {
 		this.changes = changes
 		repo = RepositoryFactory.eINSTANCE.createRepository
 		val repoChange = changes.get(0) as EMFModelChange
-		val rootChange = repoChange.EChange as CreateRootEObject
+		val rootChange = repoChange.getEChange as CreateRootEObject
 		val oldRepo = rootChange.newValue as Repository
 		repo.entityName = oldRepo.entityName
 		repo.id = oldRepo.id
@@ -84,7 +82,7 @@ class PCMModelBuilder {
 	
 	def createModelElementFromChange(EMFModelChange change) {
 		
-		val innerChange = change.EChange as CreateNonRootEObjectInList
+		val innerChange = change.getEChange as CreateNonRootEObjectInList
 		val newValue = innerChange.newValue
 		switch newValue {
 			CompositeDataType : newValue.createCompositeDataType

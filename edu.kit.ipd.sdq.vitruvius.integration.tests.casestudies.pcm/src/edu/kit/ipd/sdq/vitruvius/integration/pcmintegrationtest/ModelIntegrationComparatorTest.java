@@ -27,7 +27,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchroniz
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.PCMRepositoryExtractor;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.strategies.PCMRepositoryIntegrationStrategy;
-import edu.kit.ipd.sdq.vitruvius.integration.tests.modelBuilder.PCMModelBuilder;
 import edu.kit.ipd.sdq.vitruvius.integration.traversal.util.UnorderedReferencesRespectingEqualityHelper;
 import edu.kit.ipd.sdq.vitruvius.integration.util.IntegrationUtil;
 import edu.kit.ipd.sdq.vitruvius.integration.util.PCMMetaModelConverter;
