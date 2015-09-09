@@ -14,6 +14,7 @@ import org.palladiosimulator.pcm.seff.SeffFactory;
 import org.somox.gast2seff.visitors.FunctionCallClassificationVisitor;
 import org.somox.gast2seff.visitors.IFunctionClassificationStrategy;
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding;
+import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding;
 import org.somox.gast2seff.visitors.VisitorUtils;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.CustomTransformation;
@@ -46,15 +47,19 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
 
     private final InterfaceOfExternalCallFinding interfaceOfExternalCallFinder;
 
+    private final ResourceDemandingBehaviourForClassMethodFinding resourceDemandingBehaviourForClassMethodFinding;
+
     public ClassMethodBodyChangedTransformation(final ClassMethod oldMethod, final ClassMethod newMethod,
             final BasicComponentFinding basicComponentFinder,
             final IFunctionClassificationStrategy iFunctionClassificationStrategy,
-            final InterfaceOfExternalCallFinding interfaceOfExternalCallFinder) {
+            final InterfaceOfExternalCallFinding interfaceOfExternalCallFinder,
+            final ResourceDemandingBehaviourForClassMethodFinding resourceDemandingBehaviourForClassMethodFinding) {
         this.oldMethod = oldMethod;
         this.newMethod = newMethod;
         this.basicComponentFinder = basicComponentFinder;
         this.iFunctionClassificationStrategy = iFunctionClassificationStrategy;
         this.interfaceOfExternalCallFinder = interfaceOfExternalCallFinder;
+        this.resourceDemandingBehaviourForClassMethodFinding = resourceDemandingBehaviourForClassMethodFinding;
     }
 
     /**
@@ -118,10 +123,9 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
                 this.iFunctionClassificationStrategy);
         final ResourceDemandingSEFF newSeffElements = SeffFactory.eINSTANCE.createResourceDemandingSEFF();
 
-        final boolean createResourceDemandingInternalBehaviourForClassMethods = true;
         VisitorUtils.visitJaMoPPMethod(newSeffElements, basicComponent, this.newMethod, null,
                 functionCallClassificationVisitor, this.interfaceOfExternalCallFinder,
-                createResourceDemandingInternalBehaviourForClassMethods);
+                this.resourceDemandingBehaviourForClassMethodFinding);
 
         return newSeffElements;
     }
