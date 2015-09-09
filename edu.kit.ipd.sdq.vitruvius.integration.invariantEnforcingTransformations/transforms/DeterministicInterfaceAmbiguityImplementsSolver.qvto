@@ -1,4 +1,4 @@
-modeltype PCM uses pcm('http://sdq.ipd.uka.de/PalladioComponentModel/5.0');
+modeltype PCM uses pcm('http://palladiosimulator.org/PalladioComponentModel/5.1');
 
 
 // sortedBy operations in this transformation are needed in order to provide a deterministic behavior.
