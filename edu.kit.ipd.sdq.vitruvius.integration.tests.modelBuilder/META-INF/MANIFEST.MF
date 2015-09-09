@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: ModelBuilder
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.integration.tests.modelBuilder
-Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: 
-
