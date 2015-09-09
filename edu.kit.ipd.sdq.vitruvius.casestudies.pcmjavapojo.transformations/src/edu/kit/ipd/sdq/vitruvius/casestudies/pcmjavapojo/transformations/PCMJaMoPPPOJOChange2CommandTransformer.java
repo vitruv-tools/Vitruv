@@ -5,6 +5,7 @@ import java.util.List;
 import org.emftext.language.java.members.ClassMethod;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding;
+import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.compositerefiners.JavaMethodBodyChangedChangeRefiner;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.ClassMethodBodyChangedTransformation;
@@ -135,8 +136,11 @@ public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2Comm
                 basicComponentFinder, correspondenceInstance, myBasicComponent);
         final InterfaceOfExternalCallFinding interfaceOfExternalCallFinder = new InterfaceOfExternalCallFinderForPackageMapping(
                 correspondenceInstance, myBasicComponent);
+        final ResourceDemandingBehaviourForClassMethodFinding resourceDemandingBehaviourForClassMethodFinding = new ResourceDemandingBehaviourForClassMethodFinderForPackageMapping(
+                correspondenceInstance);
         final ClassMethodBodyChangedTransformation methodBodyChanged = new ClassMethodBodyChangedTransformation(
-                oldMethod, newMethod, basicComponentFinder, classification, interfaceOfExternalCallFinder);
+                oldMethod, newMethod, basicComponentFinder, classification, interfaceOfExternalCallFinder,
+                resourceDemandingBehaviourForClassMethodFinding);
         return methodBodyChanged.execute(blackboard, this.userInteracting, null);
     }
 }
