@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: PCM JaMoPP Integration project
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.integration.casestudies.pcm;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.core.resources,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts,
+ org.palladiosimulator.pcm,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change,
+ edu.kit.ipd.sdq.vitruvius.framework.util,
+ edu.kit.ipd.sdq.vitruvius.framework.vsum,
+ org.eclipse.jdt.core,
+ edu.kit.ipd.sdq.vitruvius.integration,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava,
+ edu.kit.ipd.sdq.vitruvius.framework.metarepository,
+ edu.kit.ipd.sdq.vitruvius.integration.util,
+ edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider,
+ edu.kit.ipd.sdq.vitruvius.framework.changepreparer,
+ edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer,
+ edu.kit.ipd.sdq.vitruvius.framework.commandexecuter,
+ org.apache.log4j;bundle-version="1.2.15",
+ org.eclipse.core.commands;bundle-version="3.7.0"
+Export-Package: edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.composite,
+ edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.repository
+

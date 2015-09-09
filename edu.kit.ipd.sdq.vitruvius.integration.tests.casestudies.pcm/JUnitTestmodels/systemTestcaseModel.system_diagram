@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" type="CompositeModel" name="systemTestcaseModel.system_diagram" measurementUnit="Pixel">
+  <children xsi:type="notation:Shape" type="2002" fontName="Segoe UI">
+    <children xsi:type="notation:DecorationNode" type="5012"/>
+    <children xsi:type="notation:DecorationNode" type="7002">
+      <children xsi:type="notation:Shape" type="3006" fontName="Segoe UI">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="compositeTestcaseModel.repository#_Ipz9v6SPEeSog9_tMitgaA"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="compositeTestcaseModel.repository#_2ibk06SSEeSVEJcCUfjH2Q"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="systemTestcaseModel.system#_s8ta0KYKEeS1R4FUSvxJvA"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="95" y="35" width="236"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName="Segoe UI">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="compositeTestcaseModel.repository#_hbRpAaSLEeSbnMsEKXLSVg"/>
+          <layoutConstraint xsi:type="notation:Bounds" x="-29" y="25"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="compositeTestcaseModel.repository#_lSfyNaSLEeSbnMsEKXLSVg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="systemTestcaseModel.system#_ufjGkKYKEeS1R4FUSvxJvA"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="340" y="240" width="166"/>
+      </children>
+    </children>
+    <children xsi:type="notation:Shape" type="3011" fontName="Segoe UI">
+      <children xsi:type="notation:DecorationNode" type="5013">
+        <layoutConstraint xsi:type="notation:Location" y="5"/>
+      </children>
+      <element href="systemTestcaseModel.system#_zTNC0KYKEeS1R4FUSvxJvA"/>
+      <layoutConstraint xsi:type="notation:Bounds"/>
+    </children>
+    <children xsi:type="notation:Shape" type="3012" fontName="Segoe UI">
+      <children xsi:type="notation:DecorationNode" type="5014">
+        <layoutConstraint xsi:type="notation:Location" y="5"/>
+      </children>
+      <element href="systemTestcaseModel.system#_04atIKYKEeS1R4FUSvxJvA"/>
+      <layoutConstraint xsi:type="notation:Bounds"/>
+    </children>
+    <element href="systemTestcaseModel.system#_aER8QKYKEeS1R4FUSvxJvA"/>
+    <layoutConstraint xsi:type="notation:Bounds" x="235" y="25" width="640" height="485"/>
+  </children>
+  <styles xsi:type="notation:DiagramStyle"/>
+  <element href="systemTestcaseModel.system#_aER8QKYKEeS1R4FUSvxJvA"/>
+  <edges xsi:type="notation:Connector" type="4006" source="//@children.0/@children.2" target="//@children.0/@children.1/@children.0/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Segoe UI"/>
+    <element href="systemTestcaseModel.system#_5V0FgKYKEeS1R4FUSvxJvA"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[30, 0, -136, 109]$[160, -107, -6, 2]"/>
+    <targetAnchor xsi:type="notation:IdentityAnchor" id="(0.2,0.6)"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4005" source="//@children.0/@children.1/@children.1/@children.2" target="//@children.0/@children.3">
+    <styles xsi:type="notation:FontStyle" fontName="Segoe UI"/>
+    <element href="systemTestcaseModel.system#_8WTbAKYKEeS1R4FUSvxJvA"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[7, 0, -177, 78]$[154, -78, -30, 0]"/>
+    <sourceAnchor xsi:type="notation:IdentityAnchor" id="(0.7666666666666667,0.5)"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.0/@children.2" target="//@children.0/@children.1/@children.1/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Segoe UI"/>
+    <element href="systemTestcaseModel.system#_9MuFoKYKEeS1R4FUSvxJvA"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[7, 0, 126, -190]$[-124, 182, -5, -8]"/>
+  </edges>
+</notation:Diagram>

@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: PCM Integration Test
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.integration.tests.casestudies.pcm
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.junit,
+ org.eclipse.emf.ecore,
+ edu.kit.ipd.sdq.vitruvius.integration.util,
+ org.apache.log4j,
+ edu.kit.ipd.sdq.vitruvius.integration,
+ org.eclipse.core.resources,
+ org.eclipse.core.runtime;bundle-version="3.11.0",
+ org.palladiosimulator.pcm,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts,
+ edu.kit.ipd.sdq.vitruvius.framework.util,
+ edu.kit.ipd.sdq.vitruvius.integration.tests.modelBuilder,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change,
+ edu.kit.ipd.sdq.vitruvius.integration.casestudies.pcm
+Import-Package: edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers,
+ edu.kit.ipd.sdq.vitruvius.integration.traversal,
+ edu.kit.ipd.sdq.vitruvius.integration.traversal.util
