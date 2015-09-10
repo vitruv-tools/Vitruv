@@ -20,9 +20,11 @@ public abstract class VitruviusRecordingCommand extends RecordingCommand {
     protected static final Logger logger = Logger.getLogger(VitruviusRecordingCommand.class.getSimpleName());
 
     protected TransformationResult transformationResult;
+    private RuntimeException runtimeException;
 
     public VitruviusRecordingCommand() {
         super(null);
+        this.runtimeException = null;
     }
 
     public void setTransactionDomain(final TransactionalEditingDomain domain) {
@@ -60,5 +62,21 @@ public abstract class VitruviusRecordingCommand extends RecordingCommand {
         final Collection<EObject> affectedEObjects = EMFChangeBridge.getAffectedObjects(changeDescription);
 
         return affectedEObjects;
+    }
+
+    @Override
+    protected void preExecute() {
+        this.runtimeException = null;
+        super.preExecute();
+    }
+
+    public void setRuntimeException(final RuntimeException e) {
+        this.runtimeException = e;
+    }
+
+    public void rethrowRuntimeExceptionIfExisting() {
+        if (this.runtimeException != null) {
+            throw (this.runtimeException);
+        }
     }
 }

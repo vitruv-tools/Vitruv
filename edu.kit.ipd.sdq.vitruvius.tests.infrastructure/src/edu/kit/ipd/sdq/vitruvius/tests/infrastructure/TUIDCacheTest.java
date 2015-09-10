@@ -28,7 +28,7 @@ public class TUIDCacheTest {
     }
     
     @Test
-	public void testCache() throws IOException {
+	public void testCacheCreateSaveCalcRemoveCalcSaveCalc() throws IOException {
     	EcoreResourceBridge.registerMetamodelPackages(Pcm_mockupPackage.eNS_URI, Pcm_mockupFactory.eINSTANCE);
     	EcoreResourceBridge.registerDefaultXMIExtensionFactory("pcm_mockup");
     	

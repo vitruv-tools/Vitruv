@@ -31,6 +31,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondence
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
+import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 import pcm_mockup.Interface;
 import pcm_mockup.Pcm_mockupFactory;
 import pcm_mockup.Repository;
@@ -41,22 +42,18 @@ public class CorrespondenceTest extends VSUMTest {
 
     private static final Logger LOGGER = Logger.getLogger(CorrespondenceTest.class.getSimpleName());
 
-    // @Override
-    // @Test
-    // public void testInCommand() {
-    // VSUMImpl vsum = testMetaRepositoryVSUMAndModelInstancesCreation();
-    // TestUtil.createAndExecuteVitruviusRecordingCommand(new Runnable() {
-    // @Override
-    // public void run() {
-    // testAll();
-    // }
-    // }, vsum);
-    // }
-
-    @Override
     @Test
-    public void testAll() {
-        VSUMImpl vsum = testMetaRepositoryVSUMAndModelInstancesCreation();
+    public void testAllInCommand() {
+        final VSUMImpl vsum = testMetaRepositoryAndVSUMCreation();
+        TestUtil.createAndExecuteVitruviusRecordingCommand(new Runnable() {
+            @Override
+            public void run() {
+                testAll(vsum);
+            }
+        }, vsum);
+    }
+
+    private void testAll(final VSUMImpl vsum) {
         Repository repo = testLoadObject(vsum, getPCMInstanceUri(), Repository.class);
         UPackage pkg = testLoadObject(vsum, getUMLInstanceURI(), UPackage.class);
         InternalCorrespondenceInstance correspondenceInstance = testCorrespondenceInstanceCreation(vsum);
@@ -92,47 +89,55 @@ public class CorrespondenceTest extends VSUMTest {
     }
 
     @Test
-    public void correspondenceUpdateTest() {
-        // create vsum and Repo and UPackage
-        VSUMImpl vsum = testMetaRepositoryAndVSUMCreation();
-        Repository repo = testLoadObject(vsum, getPCMInstanceUri(), Repository.class);
-        UPackage pkg = testLoadObject(vsum, getUMLInstanceURI(), UPackage.class);
-        // create correspondence
-        InternalCorrespondenceInstance correspondenceInstance = testCorrespondenceInstanceCreation(vsum);
-        correspondenceInstance.createAndAddEObjectCorrespondence(repo, pkg);
+    public void testCorrespondenceUpdate() {
+        final VSUMImpl vsum = testMetaRepositoryAndVSUMCreation();
+        TestUtil.createAndExecuteVitruviusRecordingCommand(new Runnable() {
+            @Override
+            public void run() {
+                // create vsum and Repo and UPackage
+                Repository repo = testLoadObject(vsum, getPCMInstanceUri(), Repository.class);
+                UPackage pkg = testLoadObject(vsum, getUMLInstanceURI(), UPackage.class);
+                // create correspondence
+                InternalCorrespondenceInstance correspondenceInstance = testCorrespondenceInstanceCreation(vsum);
+                correspondenceInstance.createAndAddEObjectCorrespondence(repo, pkg);
 
-        LOGGER.trace("Before we remove the pkg from the resource it has the tuid '"
-                + correspondenceInstance.calculateTUIDFromEObject(pkg) + "'.");
-        removePkgFromFileAndUpdateCorrespondence(pkg, correspondenceInstance);
-        LOGGER.trace("After removing the pkg from the resource it has the tuid '"
-                + correspondenceInstance.calculateTUIDFromEObject(pkg) + "'.");
+                LOGGER.trace("Before we remove the pkg from the resource it has the tuid '"
+                        + correspondenceInstance.calculateTUIDFromEObject(pkg) + "'.");
+                removePkgFromFileAndUpdateCorrespondence(pkg, correspondenceInstance);
+                LOGGER.trace("After removing the pkg from the resource it has the tuid '"
+                        + correspondenceInstance.calculateTUIDFromEObject(pkg) + "'.");
 
-        saveUPackageInNewFileAndUpdateCorrespondence(vsum, pkg, correspondenceInstance);
-        LOGGER.trace("After adding the pkg to the new resource it has the tuid '"
-                + correspondenceInstance.calculateTUIDFromEObject(pkg) + "'.");
+                saveUPackageInNewFileAndUpdateCorrespondence(vsum, pkg, correspondenceInstance);
+                LOGGER.trace("After adding the pkg to the new resource it has the tuid '"
+                        + correspondenceInstance.calculateTUIDFromEObject(pkg) + "'.");
 
-        assertRepositoryCorrespondences(repo, correspondenceInstance);
+                assertRepositoryCorrespondences(repo, correspondenceInstance);
+            }
+        }, vsum);
     }
 
     @Test
     public void testMoveRootEObjectBetweenResource() {
-        // create vsum and Repo and UPackage
-        VSUMImpl vsum = testMetaRepositoryAndVSUMCreation();
-        vsum.detachTransactionalEditingDomain();
-        Repository repo = testLoadObject(vsum, getPCMInstanceUri(), Repository.class);
-        UPackage pkg = testLoadObject(vsum, getUMLInstanceURI(), UPackage.class);
+        final VSUMImpl vsum = testMetaRepositoryAndVSUMCreation();
+        TestUtil.createAndExecuteVitruviusRecordingCommand(new Runnable() {
+            @Override
+            public void run() {
+                Repository repo = testLoadObject(vsum, getPCMInstanceUri(), Repository.class);
+                UPackage pkg = testLoadObject(vsum, getUMLInstanceURI(), UPackage.class);
 
-        // create correspondence
-        InternalCorrespondenceInstance correspondenceInstance = testCorrespondenceInstanceCreation(vsum);
-        correspondenceInstance.createAndAddEObjectCorrespondence(repo, pkg);
+                // create correspondence
+                InternalCorrespondenceInstance correspondenceInstance = testCorrespondenceInstanceCreation(vsum);
+                correspondenceInstance.createAndAddEObjectCorrespondence(repo, pkg);
 
-        // execute the test
-        LOGGER.trace("Before we remove the pkg from the resource it has the tuid '"
-                + correspondenceInstance.calculateTUIDFromEObject(pkg) + "'.");
-        moveUMLPackageTo(pkg, getTmpUMLInstanceURI(), vsum, correspondenceInstance);
-        moveUMLPackageTo(pkg, getNewUMLInstanceURI(), vsum, correspondenceInstance);
+                // execute the test
+                LOGGER.trace("Before we remove the pkg from the resource it has the tuid '"
+                        + correspondenceInstance.calculateTUIDFromEObject(pkg) + "'.");
+                moveUMLPackageTo(pkg, getTmpUMLInstanceURI(), vsum, correspondenceInstance);
+                moveUMLPackageTo(pkg, getNewUMLInstanceURI(), vsum, correspondenceInstance);
 
-        assertRepositoryCorrespondences(repo, correspondenceInstance);
+                assertRepositoryCorrespondences(repo, correspondenceInstance);
+            }
+        }, vsum);
     }
 
     private void assertRepositoryCorrespondences(final Repository repo,
@@ -215,7 +220,6 @@ public class CorrespondenceTest extends VSUMTest {
         VURI vURI = VURI.getInstance(uri);
         ModelInstance instance = vsum.getAndLoadModelInstanceOriginal(vURI);
         T obj = instance.getUniqueRootEObjectIfCorrectlyTyped(clazz);
-        assertNotNull(obj);
         return obj;
     }
 

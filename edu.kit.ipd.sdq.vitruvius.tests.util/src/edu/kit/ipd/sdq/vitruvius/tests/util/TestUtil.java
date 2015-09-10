@@ -16,7 +16,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
@@ -281,6 +280,7 @@ public final class TestUtil {
         final TransactionalEditingDomain domain = modelProviding.getTransactionalEditingDomain();
         command.setTransactionDomain(domain);
         domain.getCommandStack().execute(command);
+        command.rethrowRuntimeExceptionIfExisting();
     }
 
 	public static void deleteAllProjectFolderCopies(String originalProjectName) {
