@@ -37,7 +37,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ForwardHashedBackwardLinkedTree;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple;
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
@@ -815,6 +814,25 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
                 Set<TUID> correspondingTUIDsForOldSegment = removedMapEntry.getThird();
                 // re-add the entries using the tuid with the new hashcode
                 if (correspondencesForOldSegment != null) {
+                    for (Correspondence correspondence : correspondencesForOldSegment) {
+                        if (correspondence instanceof SameTypeCorrespondence) {
+                            SameTypeCorrespondence stc = (SameTypeCorrespondence) correspondence;
+                            if (oldTUID != null && oldTUID.equals(stc.getElementATUID())) {
+                                stc.setElementATUID(newTUID);
+                                // update incoming links in tuid2CorrespondingEObjectsMap
+                                TUID elementBTUID = stc.getElementBTUID();
+                                updateCorrespondingLinksForUpdatedTUID(newTUID, oldTUID, elementBTUID);
+                            } else if (oldTUID != null && oldTUID.equals(stc.getElementBTUID())) {
+                                stc.setElementBTUID(newTUID);
+                                // update incoming links in tuid2CorrespondingEObjectsMap
+                                TUID elementATUID = stc.getElementATUID();
+                                updateCorrespondingLinksForUpdatedTUID(newTUID, oldTUID, elementATUID);
+                            } else {
+                                throw new RuntimeException("None of the corresponding elements in '" + correspondence
+                                        + "' has the TUID '" + oldTUID + "'!");
+                            }
+                        }
+                    }
                     CorrespondenceInstanceImpl.this.tuid2CorrespondencesMap.put(tuid, correspondencesForOldSegment);
                 }
                 if (correspondingTUIDsForOldSegment != null) {
@@ -824,15 +842,16 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
             }
         };
 
-        List<Pair<String, String>> changedPairs = oldTUID.renameSegments(newTUID, before, after);
-        for (Pair<String, String> changedPair : changedPairs) {
-            String oldTUIDPrefixString = changedPair.getFirst();
-            String newTUIDPrefixString = changedPair.getSecond();
-            TUID oldTUIDPrefix = TUID.getInstance(oldTUIDPrefixString);
-            TUID newTUIDPrefix = TUID.getInstance(newTUIDPrefixString);
-            updateTUID2CorrespondencesMap(oldTUIDPrefix, newTUIDPrefix, sameTUID);
-            updateTUID2CorrespondingEObjectsMap(oldTUIDPrefix, newTUIDPrefix, sameTUID);
-        }
+        oldTUID.renameSegments(newTUID, before, after);
+        // List<Pair<String, String>> changedPairs = oldTUID.renameSegments(newTUID, before, after);
+        // for (Pair<String, String> changedPair : changedPairs) {
+        // String oldTUIDPrefixString = changedPair.getFirst();
+        // String newTUIDPrefixString = changedPair.getSecond();
+        // TUID oldTUIDPrefix = TUID.getInstance(oldTUIDPrefixString);
+        // TUID newTUIDPrefix = TUID.getInstance(newTUIDPrefixString);
+        // updateTUID2CorrespondencesMap(oldTUIDPrefix, newTUIDPrefix, false);
+        // updateTUID2CorrespondingEObjectsMap(oldTUIDPrefix, newTUIDPrefix, false);
+        // }
 
         Metamodel metamodel = getMetamodelHavingTUID(oldTUIDString);
         metamodel.removeIfRootAndCached(oldTUIDString);
