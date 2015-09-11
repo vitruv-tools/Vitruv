@@ -29,8 +29,8 @@ public class TestUserInteractor implements UserInteracting {
 
     public TestUserInteractor(final int minWaittime, final int maxWaittime) {
         if (minWaittime > maxWaittime) {
-            throw new RuntimeException("Configure min and max waittime properly: Min" + minWaittime + " Max: "
-                    + maxWaittime);
+            throw new RuntimeException(
+                    "Configure min and max waittime properly: Min" + minWaittime + " Max: " + maxWaittime);
         }
         this.minWaittime = minWaittime;
         this.maxWaittime = maxWaittime;
@@ -44,6 +44,7 @@ public class TestUserInteractor implements UserInteracting {
     }
 
     public void addNextSelections(final Integer... nextSelections) {
+        this.concurrentLinkedQueue.clear();
         this.concurrentLinkedQueue.addAll(Arrays.asList(nextSelections));
     }
 
