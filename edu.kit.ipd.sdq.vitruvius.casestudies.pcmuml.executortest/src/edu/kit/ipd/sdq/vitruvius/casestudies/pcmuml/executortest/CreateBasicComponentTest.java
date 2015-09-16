@@ -223,26 +223,31 @@ public class CreateBasicComponentTest extends VitruviusEMFCasestudyTest implemen
 		doNStepsOfTest(2);
 	}
 
+	@Ignore
 	@Test
 	public void step_3_AddUnmappedClass() throws IOException {
 		doNStepsOfTest(3);
 	}
 
+	@Ignore
 	@Test
 	public void step_4_UnmapSecondClass() throws IOException {
 		doNStepsOfTest(4);
 	}
 
+	@Ignore
 	@Test
 	public void step_5_RemapSecondClass() throws IOException {
 		doNStepsOfTest(5);
 	}
 
+	@Ignore
 	@Test
 	public void step_6_UnmapPackage() throws IOException {
 		doNStepsOfTest(6);
 	}
 
+	@Ignore
 	@Test
 	public void step_7_RemapPackage() throws IOException {
 		doNStepsOfTest(7);
