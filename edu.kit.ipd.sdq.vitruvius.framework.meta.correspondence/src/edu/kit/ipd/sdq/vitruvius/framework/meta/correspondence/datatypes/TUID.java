@@ -20,7 +20,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ForwardHashedBackwardLinkedTree;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple;
 
 /**
  * A class for Temporarily Unique IDentifiers (TUIDs) that internally uses a
@@ -218,14 +217,14 @@ public class TUID implements Serializable {
     	Collection<Pair<ForwardHashedBackwardLinkedTree<String>.Segment, ForwardHashedBackwardLinkedTree<String>.Segment>> segmentPairs = SEGMENTS.mergeSegmentIntoAnother(this.lastSegment, fullDestinationTUID.lastSegment);
         	for (Pair<ForwardHashedBackwardLinkedTree<String>.Segment, ForwardHashedBackwardLinkedTree<String>.Segment> segmentPair : segmentPairs) {
         		ForwardHashedBackwardLinkedTree<String>.Segment oldSegment = segmentPair.getFirst();
-            	TUID tuid = LAST_SEGMENT_2_TUID_INSTANCES_MAP.get(oldSegment);
+            	TUID oldTUID = LAST_SEGMENT_2_TUID_INSTANCES_MAP.get(oldSegment);
             	ForwardHashedBackwardLinkedTree<String>.Segment newSegment = segmentPair.getSecond();
-            	Triple<TUID, Set<Correspondence>, Set<TUID>> removedMapEntries = null;
+            	Pair<TUID, Set<Correspondence>>  removedMapEntries = null;
             	if (before != null) {
-            		removedMapEntries = before.performPreAction(tuid, newSegment);
+            		removedMapEntries = before.performPreAction(oldTUID);
             	}
             	// this update changes the hashcode of the given tuid
-                TUID.updateInstance(tuid, newSegment);
+                TUID.updateInstance(oldTUID, newSegment);
             	if (after != null && removedMapEntries != null) {
             		after.performPostAction(removedMapEntries);
             	}
@@ -390,13 +389,12 @@ public class TUID implements Serializable {
     }
     
     public interface BeforeHashCodeUpdateLambda {
-		Triple<TUID, Set<Correspondence>, Set<TUID>> performPreAction(TUID tuid,
-				ForwardHashedBackwardLinkedTree<String>.Segment newSegment);
+    	Pair<TUID, Set<Correspondence>> performPreAction(TUID oldTUID);
     }
     
     public interface AfterHashCodeUpdateLambda {
 		void performPostAction(
-				Triple<TUID, Set<Correspondence>, Set<TUID>> removedMapEntries);
+				Pair<TUID, Set<Correspondence>> removedMapEntries);
     }
     
     private Object writeReplace() throws ObjectStreamException {

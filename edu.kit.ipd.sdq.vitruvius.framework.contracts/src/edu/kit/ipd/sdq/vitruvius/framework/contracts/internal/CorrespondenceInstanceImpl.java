@@ -36,8 +36,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ForwardHashedBackwardLinkedTree;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 public class CorrespondenceInstanceImpl extends ModelInstance implements CorrespondenceInstanceDecorator {
@@ -96,9 +95,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         for (Correspondence correspondence : correspondences.getCorrespondences()) {
             if (correspondence instanceof SameTypeCorrespondence) {
                 SameTypeCorrespondence sameTypeCorrespondence = (SameTypeCorrespondence) correspondence;
-                TUID tuidA = sameTypeCorrespondence.getElementATUID();
-                TUID tuidB = sameTypeCorrespondence.getElementBTUID();
-                registerSameTypeCorrespondence(sameTypeCorrespondence, tuidA, tuidB);
+                registerSameTypeCorrespondence(sameTypeCorrespondence);
             }
         }
     }
@@ -250,16 +247,16 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     @Override
     public Set<EObject> getAllCorrespondingEObjects(final EObject eObject) {
         TUID tuid = calculateTUIDFromEObject(eObject);
-        return resolveEObjectsFromTUIDs(getOrCreateCorrespondingEObjectsSet(tuid));
+        return resolveEObjectsFromTUIDs(getOrCreateCorrespondingTUIDSet(tuid));
     }
 
-    private Set<TUID> getOrCreateCorrespondingEObjectsSet(final TUID tuid) {
-        Set<TUID> correspondingEObjects = this.tuid2CorrespondingTUIDsMap.get(tuid);
-        if (correspondingEObjects == null) {
-            correspondingEObjects = new HashSet<TUID>();
-            this.tuid2CorrespondingTUIDsMap.put(tuid, correspondingEObjects);
+    private Set<TUID> getOrCreateCorrespondingTUIDSet(final TUID tuid) {
+        Set<TUID> correspondingTUIDs = this.tuid2CorrespondingTUIDsMap.get(tuid);
+        if (correspondingTUIDs == null) {
+            correspondingTUIDs = new HashSet<TUID>();
+            this.tuid2CorrespondingTUIDsMap.put(tuid, correspondingTUIDs);
         }
-        return correspondingEObjects;
+        return correspondingTUIDs;
     }
 
     /*
@@ -482,12 +479,8 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
      */
     @Override
     public void addSameTypeCorrespondence(final SameTypeCorrespondence correspondence) {
-        TUID tuidA = correspondence.getElementATUID();
-        TUID tuidB = correspondence.getElementBTUID();
-        correspondence.setElementATUID(tuidA);
-        correspondence.setElementBTUID(tuidB);
         addCorrespondenceToModel(correspondence);
-        registerSameTypeCorrespondence(correspondence, tuidA, tuidB);
+        registerSameTypeCorrespondence(correspondence);
         setChangeAfterLastSaveFlag();
     }
 
@@ -496,26 +489,13 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
         correspondenceListForAddition.add(correspondence);
     }
 
-    private void registerSameTypeCorrespondence(final SameTypeCorrespondence correspondence, final TUID tuidA,
-            final TUID tuidB) {
-        List<TUID> allInvolvedTUIDs = Arrays.asList(tuidA, tuidB);
+    private void registerSameTypeCorrespondence(final SameTypeCorrespondence correspondence) {
+        List<TUID> allInvolvedTUIDs = registerInCorrespondingTUIDSets(correspondence);
         // add all involved eObjects to the sets for these objects in the map
         for (TUID involvedTUID : allInvolvedTUIDs) {
             Set<Correspondence> correspondences = getAllCorrespondences(involvedTUID);
             if (!correspondences.contains(correspondence)) {
                 correspondences.add(correspondence);
-            }
-        }
-        for (TUID involvedTUID : allInvolvedTUIDs) {
-            Set<TUID> correspondingTUIDs = getOrCreateCorrespondingEObjectsSet(involvedTUID);
-            correspondingTUIDs.addAll(allInvolvedTUIDs);
-            if (involvedTUID.equals(tuidA)) {
-                correspondingTUIDs.remove(tuidA);
-            } else if (involvedTUID.equals(tuidB)) {
-                correspondingTUIDs.remove(tuidB);
-            } else {
-                throw new RuntimeException("allInvolvedTUIDs ('" + allInvolvedTUIDs
-                        + "' contained a TUID that is neither '" + tuidA + "' nor '" + tuidB + "'!");
             }
         }
         if (correspondence instanceof EFeatureCorrespondence) {
@@ -542,6 +522,25 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
             }
             featureInstancesCorrespondingToFIB.add(featureInstanceA);
         }
+    }
+
+    private List<TUID> registerInCorrespondingTUIDSets(final SameTypeCorrespondence correspondence) {
+        TUID tuidA = correspondence.getElementATUID();
+        TUID tuidB = correspondence.getElementBTUID();
+        List<TUID> allInvolvedTUIDs = Arrays.asList(tuidA, tuidB);
+        for (TUID involvedTUID : allInvolvedTUIDs) {
+            Set<TUID> correspondingTUIDs = getOrCreateCorrespondingTUIDSet(involvedTUID);
+            correspondingTUIDs.addAll(allInvolvedTUIDs);
+            if (involvedTUID.equals(tuidA)) {
+                correspondingTUIDs.remove(tuidA);
+            } else if (involvedTUID.equals(tuidB)) {
+                correspondingTUIDs.remove(tuidB);
+            } else {
+                throw new RuntimeException("allInvolvedTUIDs ('" + allInvolvedTUIDs
+                        + "' contained a TUID that is neither '" + tuidA + "' nor '" + tuidB + "'!");
+            }
+        }
+        return allInvolvedTUIDs;
     }
 
     private void setChangeAfterLastSaveFlag() {
@@ -785,17 +784,21 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
              * @return
              */
             @Override
-            public Triple<TUID, Set<Correspondence>, Set<TUID>> performPreAction(final TUID tuid,
-                    final ForwardHashedBackwardLinkedTree<String>.Segment newSegmentPair) {
+            public Pair<TUID, Set<Correspondence>> performPreAction(final TUID oldTUID) {
                 // remove the old map entries for the tuid before its hashcode changes
-                Set<Correspondence> correspondencesForOldSegment = CorrespondenceInstanceImpl.this.tuid2CorrespondencesMap
-                        .remove(tuid);
-                Set<TUID> correspondingTUIDsForOldSegment = CorrespondenceInstanceImpl.this.tuid2CorrespondingTUIDsMap
-                        .remove(tuid);
+                Set<Correspondence> correspondencesForOldTUID = CorrespondenceInstanceImpl.this.tuid2CorrespondencesMap
+                        .remove(oldTUID);
+                // The TUID is used as key in this map. Therefore the entry has to be removed before
+                // the hashCode of the TUID changes.
+                // We can re-calculate the set of corresponding TUIDs from the set of
+                // correspondences after the hashCode change.
+                // Additionally storing the set of corresponding TUIDs would only create additional
+                // problems with the hashCode change.
+                // Therefore, we simply remove it and do not store it in the lambda.
+                CorrespondenceInstanceImpl.this.tuid2CorrespondingTUIDsMap.remove(oldTUID);
                 // because featureInstance2CorrespondingFIMap uses no TUID as key we do not need to
                 // update it
-                return new Triple<TUID, Set<Correspondence>, Set<TUID>>(tuid, correspondencesForOldSegment,
-                        correspondingTUIDsForOldSegment);
+                return new Pair<TUID, Set<Correspondence>>(oldTUID, correspondencesForOldTUID);
             }
 
         };
@@ -808,36 +811,33 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
              * @param removedMapEntries
              */
             @Override
-            public void performPostAction(final Triple<TUID, Set<Correspondence>, Set<TUID>> removedMapEntry) {
-                TUID tuid = removedMapEntry.getFirst();
+            public void performPostAction(final Pair<TUID, Set<Correspondence>> removedMapEntry) {
+                // FIXME MK AAA WHERE DOES NEWTUID COME FROM?
+                TUID oldTUID = removedMapEntry.getFirst();
                 Set<Correspondence> correspondencesForOldSegment = removedMapEntry.getSecond();
-                Set<TUID> correspondingTUIDsForOldSegment = removedMapEntry.getThird();
                 // re-add the entries using the tuid with the new hashcode
                 if (correspondencesForOldSegment != null) {
                     for (Correspondence correspondence : correspondencesForOldSegment) {
                         if (correspondence instanceof SameTypeCorrespondence) {
                             SameTypeCorrespondence stc = (SameTypeCorrespondence) correspondence;
+
                             if (oldTUID != null && oldTUID.equals(stc.getElementATUID())) {
                                 stc.setElementATUID(newTUID);
-                                // update incoming links in tuid2CorrespondingEObjectsMap
-                                TUID elementBTUID = stc.getElementBTUID();
-                                updateCorrespondingLinksForUpdatedTUID(newTUID, oldTUID, elementBTUID);
                             } else if (oldTUID != null && oldTUID.equals(stc.getElementBTUID())) {
                                 stc.setElementBTUID(newTUID);
-                                // update incoming links in tuid2CorrespondingEObjectsMap
-                                TUID elementATUID = stc.getElementATUID();
-                                updateCorrespondingLinksForUpdatedTUID(newTUID, oldTUID, elementATUID);
                             } else {
                                 throw new RuntimeException("None of the corresponding elements in '" + correspondence
                                         + "' has the TUID '" + oldTUID + "'!");
                             }
+
+                            registerInCorrespondingTUIDSets(stc);
+
+                            // FIXME MK AAA ALSO UPDATE THE TUID IN THE SETS OF THE CORRESPONDING
+                            // TUIDs!!!
+
                         }
                     }
-                    CorrespondenceInstanceImpl.this.tuid2CorrespondencesMap.put(tuid, correspondencesForOldSegment);
-                }
-                if (correspondingTUIDsForOldSegment != null) {
-                    CorrespondenceInstanceImpl.this.tuid2CorrespondingTUIDsMap.put(tuid,
-                            correspondingTUIDsForOldSegment);
+                    CorrespondenceInstanceImpl.this.tuid2CorrespondencesMap.put(newTUID, correspondencesForOldSegment);
                 }
             }
         };
