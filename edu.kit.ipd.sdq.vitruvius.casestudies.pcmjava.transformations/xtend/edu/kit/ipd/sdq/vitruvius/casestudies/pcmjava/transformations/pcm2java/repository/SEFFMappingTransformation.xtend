@@ -1,18 +1,16 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.DefaultEObjectMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.classifiers.ConcreteClassifier
 import org.emftext.language.java.members.ClassMethod
-import org.emftext.language.java.members.MembersFactory
 import org.emftext.language.java.members.Method
-import org.emftext.language.java.modifiers.ModifiersFactory
 import org.palladiosimulator.pcm.repository.OperationSignature
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF
 
@@ -51,7 +49,7 @@ class SEFFMappingTransformation extends DefaultEObjectMappingTransformation {
 			return transformationResult
 		}
 		removeEObject(affectedEObject)
-		
+
 		val affectedSEFF = affectedEObject as ResourceDemandingSEFF
 		val newEObjects = affectedSEFF.checkSEFFAndCreateCorrespondences
 		for (newCorrespondingEObject : newEObjects) {
@@ -72,22 +70,19 @@ class SEFFMappingTransformation extends DefaultEObjectMappingTransformation {
 		val sigIsOpSig = signature instanceof OperationSignature
 		if (!sigIsOpSig) {
 			return null
-		} 
+		}
 		val correspondingClasses = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(basicComponent,
 			ConcreteClassifier)
 		if (!correspondingClasses.isNullOrEmpty) {
 			// create method
-			val correspondingMethods = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(signature, Method)
+			val correspondingMethods = blackboard.correspondenceInstance.
+				getCorrespondingEObjectsByType(signature, Method)
 			if (correspondingMethods.nullOrEmpty) {
 				logger.info("No corresponding method for seffs operation signature " + signature + " found")
 				return null
 			}
 			val correspondingInterfaceMethod = correspondingMethods.get(0)
-			val ClassMethod classMethod = MembersFactory.eINSTANCE.createClassMethod
-			classMethod.name = correspondingInterfaceMethod.name
-			classMethod.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPublic)
-			classMethod.typeReference = EcoreUtil.copy(correspondingInterfaceMethod.typeReference)
-			classMethod.parameters.addAll(EcoreUtil.copyAll(correspondingInterfaceMethod.parameters))
+			val ClassMethod classMethod = PCM2JaMoPPUtils.createClassMethod(correspondingInterfaceMethod)
 			val correspondingClass = correspondingClasses.get(0)
 			var ClassMethod correspondinClassgMethod = correspondingClass.findMethodInClass(classMethod)
 			if (null == correspondinClassgMethod) {

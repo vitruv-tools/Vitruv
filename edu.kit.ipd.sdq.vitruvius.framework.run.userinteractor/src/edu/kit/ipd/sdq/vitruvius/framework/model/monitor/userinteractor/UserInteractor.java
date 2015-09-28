@@ -1,5 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor;
 
+import javax.swing.JOptionPane;
+
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
@@ -10,18 +12,19 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 
 /**
  * @author messinger
- * 
+ *
  *         Implements {@link UserInteracting} and decouples {@link UserInteractorDialog} from
  *         Platform.
- * 
+ *
  */
 public class UserInteractor implements UserInteracting {
 
+    private static final String VITRUVIUS_TEXT_INPUT_DIALOG = "Vitruvius Text Input Dialog";
     protected Display display;
     protected Shell shell;
 
     public UserInteractor() {
-        init();
+        this.init();
     }
 
     public void init() {
@@ -68,8 +71,8 @@ public class UserInteractor implements UserInteracting {
                             selectionDescriptions);
                     break;
                 case MODELESS:
-                    result[0] = UserInteractorDialog.selectFromMessage(UserInteractor.this.shell, false, false,
-                            message, selectionDescriptions);
+                    result[0] = UserInteractorDialog.selectFromMessage(UserInteractor.this.shell, false, false, message,
+                            selectionDescriptions);
                     break;
                 default:
                     result[0] = -1;
@@ -81,7 +84,15 @@ public class UserInteractor implements UserInteracting {
     }
 
     @Override
-    public int selectFromModel(UserInteractionType type, String message, ModelInstance... modelInstances) {
+    public String getTextInput(final String msg) {
+        final String textInput = JOptionPane.showInputDialog(null, msg, VITRUVIUS_TEXT_INPUT_DIALOG,
+                JOptionPane.OK_OPTION);
+        return textInput;
+    }
+
+    @Override
+    public int selectFromModel(final UserInteractionType type, final String message,
+            final ModelInstance... modelInstances) {
         // TODO Auto-generated method stub
         return 0;
     }

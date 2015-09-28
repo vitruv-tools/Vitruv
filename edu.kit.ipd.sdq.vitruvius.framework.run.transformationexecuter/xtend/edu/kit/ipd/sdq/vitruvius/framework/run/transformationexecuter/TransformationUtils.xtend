@@ -46,7 +46,7 @@ class TransformationUtils {
 	def private static resolveAndRemoveEObject(TUID tuid, Blackboard blackboard) {
 		val eObject = blackboard.correspondenceInstance.resolveEObjectFromTUID(tuid)
 		if (null != eObject) {
-			EcoreUtil.remove(eObject)
+			EcoreUtil.delete(eObject)
 		}
 	}
 }

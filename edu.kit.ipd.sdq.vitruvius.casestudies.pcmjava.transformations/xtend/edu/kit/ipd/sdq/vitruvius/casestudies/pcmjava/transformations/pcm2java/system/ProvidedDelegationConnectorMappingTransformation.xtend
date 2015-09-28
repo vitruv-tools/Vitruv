@@ -25,6 +25,9 @@ import org.emftext.language.java.references.SelfReference
 import org.emftext.language.java.statements.ExpressionStatement
 import org.emftext.language.java.statements.StatementsFactory
 import org.palladiosimulator.pcm.core.composition.ProvidedDelegationConnector
+import org.emftext.language.java.modifiers.Modifier
+import org.emftext.language.java.types.TypeReference
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 
 class ProvidedDelegationConnectorMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -124,12 +127,8 @@ class ProvidedDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 		}
 
 		// no method found: create it in classifier
-		val ClassMethod classMethod = MembersFactory.eINSTANCE.createClassMethod
-		classMethod.name = method.name
-		classMethod.typeReference = EcoreUtil.copy(method.typeReference)
-		classMethod.modifiers.addAll(EcoreUtil.copyAll(classMethod.modifiers))
-		classMethod.parameters.addAll(EcoreUtil.copyAll(method.parameters))
+		val ClassMethod classMethod = PCM2JaMoPPUtils.createClassMethod(method)
 		return classMethod
 	}
-
+	
 }

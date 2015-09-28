@@ -241,6 +241,11 @@ public class MonitoredEditor extends AbstractMonitoredEditor
         return this.userInteractor.selectFromModel(type, message, modelInstances);
     }
 
+    @Override
+    public String getTextInput(final String msg) {
+        return this.userInteractor.getTextInput(msg);
+    }
+
     public void startASTListening() {
         this.astListener.startListening();
     }
@@ -273,6 +278,6 @@ public class MonitoredEditor extends AbstractMonitoredEditor
 
     public void setReportChanges(final boolean reportChanges) {
         this.reportChanges = reportChanges;
-
     }
+
 }

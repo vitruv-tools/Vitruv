@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -21,7 +22,8 @@ public class TestUserInteractor implements UserInteracting {
 
     private static final Logger logger = Logger.getLogger(TestUserInteractor.class);
 
-    private final ConcurrentLinkedQueue<Integer> concurrentLinkedQueue;
+    private final ConcurrentLinkedQueue<Integer> concurrentIntLinkedQueue;
+    private final ConcurrentLinkedQueue<String> concurrentStringLinkedQueue;
     private final Random random;
     private final int minWaittime;
     private final int maxWaittime;
@@ -35,7 +37,8 @@ public class TestUserInteractor implements UserInteracting {
         this.minWaittime = minWaittime;
         this.maxWaittime = maxWaittime;
         this.waitTimeRange = maxWaittime - minWaittime;
-        this.concurrentLinkedQueue = new ConcurrentLinkedQueue<Integer>();
+        this.concurrentIntLinkedQueue = new ConcurrentLinkedQueue<Integer>();
+        this.concurrentStringLinkedQueue = new ConcurrentLinkedQueue<String>();
         this.random = new Random();
     }
 
@@ -44,8 +47,13 @@ public class TestUserInteractor implements UserInteracting {
     }
 
     public void addNextSelections(final Integer... nextSelections) {
-        this.concurrentLinkedQueue.clear();
-        this.concurrentLinkedQueue.addAll(Arrays.asList(nextSelections));
+        this.concurrentIntLinkedQueue.clear();
+        this.concurrentIntLinkedQueue.addAll(Arrays.asList(nextSelections));
+    }
+
+    public void addNextSelections(final String... nextSelections) {
+        this.concurrentStringLinkedQueue.clear();
+        this.concurrentStringLinkedQueue.addAll(Arrays.asList(nextSelections));
     }
 
     @Override
@@ -70,13 +78,12 @@ public class TestUserInteractor implements UserInteracting {
     }
 
     private int selectFromMessage(final int maxLength) {
-        if (-1 < this.maxWaittime) {
-            this.simulateUserThinktime();
-        }
+        this.simulateUserThinktime();
+
         int currentSelection;
         String randomly = "";
-        if (!this.concurrentLinkedQueue.isEmpty()) {
-            currentSelection = this.concurrentLinkedQueue.poll();
+        if (!this.concurrentIntLinkedQueue.isEmpty()) {
+            currentSelection = this.concurrentIntLinkedQueue.poll();
             if (currentSelection >= maxLength) {
                 logger.warn("currentSelection>maxLength - could lead to array out of bounds exception later on.");
             }
@@ -89,12 +96,35 @@ public class TestUserInteractor implements UserInteracting {
     }
 
     private void simulateUserThinktime() {
-        final int currentWaittime = this.random.nextInt(this.waitTimeRange + 1) + this.minWaittime;
-        try {
-            Thread.sleep(currentWaittime);
-        } catch (final InterruptedException e) {
-            logger.trace("User think time simulation thread interrupted: " + e, e);
+        if (-1 < this.maxWaittime) {
+            final int currentWaittime = this.random.nextInt(this.waitTimeRange + 1) + this.minWaittime;
+            try {
+                Thread.sleep(currentWaittime);
+            } catch (final InterruptedException e) {
+                logger.trace("User think time simulation thread interrupted: " + e, e);
+            }
         }
+    }
+
+    @Override
+    public String getTextInput(final String msg) {
+        this.simulateUserThinktime();
+        String text = "";
+        String randomlyInfo = "";
+        if (!this.concurrentStringLinkedQueue.isEmpty()) {
+            text = this.concurrentStringLinkedQueue.poll();
+        } else {
+            text = this.getRandomText();
+            randomlyInfo = "randomly";
+        }
+        logger.info(TestUserInteractor.class.getSimpleName() + randomlyInfo + " selecteded " + text);
+        return text;
+    }
+
+    private String getRandomText() {
+        final int length = this.random.nextInt(16) + 1;
+        return RandomStringUtils.random(length, true, true);
+
     }
 
 }

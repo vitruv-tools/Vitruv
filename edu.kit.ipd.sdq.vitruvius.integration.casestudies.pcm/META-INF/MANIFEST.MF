@@ -20,7 +20,8 @@ Require-Bundle: org.eclipse.core.resources,
  edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer,
  edu.kit.ipd.sdq.vitruvius.framework.commandexecuter,
  org.apache.log4j;bundle-version="1.2.15",
- org.eclipse.core.commands;bundle-version="3.7.0"
+ org.eclipse.core.commands;bundle-version="3.7.0",
+ org.eclipse.m2m.qvt.oml;bundle-version="3.5.0"
 Export-Package: edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.composite,
  edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.repository
 

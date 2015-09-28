@@ -9,4 +9,6 @@ public interface UserInteracting {
     int selectFromMessage(UserInteractionType type, String message, String... selectionDescriptions);
 
     int selectFromModel(UserInteractionType type, String message, ModelInstance... modelInstances);
+
+    String getTextInput(String msg);
 }

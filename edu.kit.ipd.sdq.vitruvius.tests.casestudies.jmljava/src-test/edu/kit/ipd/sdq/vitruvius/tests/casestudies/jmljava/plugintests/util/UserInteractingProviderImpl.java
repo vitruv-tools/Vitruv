@@ -7,27 +7,32 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 
 public class UserInteractingProviderImpl implements UserInteractingProvider {
 
-	@Override
-	public UserInteracting get() {
-		return new UserInteracting() {
-			
-			@Override
-			public void showMessage(UserInteractionType type, String message) {
-				// ignore the message
-			}
-			
-			@Override
-			public int selectFromModel(UserInteractionType type, String message,
-					ModelInstance... modelInstances) {
-				throw new UnsupportedOperationException();
-			}
-			
-			@Override
-			public int selectFromMessage(UserInteractionType type, String message,
-					String... selectionDescriptions) {
-				throw new UnsupportedOperationException();
-			}
-		};
-	}
+    @Override
+    public UserInteracting get() {
+        return new UserInteracting() {
+
+            @Override
+            public void showMessage(final UserInteractionType type, final String message) {
+                // ignore the message
+            }
+
+            @Override
+            public int selectFromModel(final UserInteractionType type, final String message,
+                    final ModelInstance... modelInstances) {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public int selectFromMessage(final UserInteractionType type, final String message,
+                    final String... selectionDescriptions) {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public String getTextInput(final String msg) {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
 
 }
