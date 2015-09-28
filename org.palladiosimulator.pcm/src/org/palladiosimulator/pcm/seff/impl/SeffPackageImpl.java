@@ -1374,6 +1374,7 @@ public class SeffPackageImpl extends EPackageImpl implements SeffPackage {
         this.resourceDemandingSEFFEClass.getESuperTypes().add(this.getServiceEffectSpecification());
         this.resourceDemandingSEFFEClass.getESuperTypes().add(this.getResourceDemandingBehaviour());
         this.resourceDemandingInternalBehaviourEClass.getESuperTypes().add(this.getResourceDemandingBehaviour());
+        this.resourceDemandingInternalBehaviourEClass.getESuperTypes().add(theEntityPackage.getEntity());
         this.releaseActionEClass.getESuperTypes().add(this.getAbstractInternalControlFlowAction());
         this.loopActionEClass.getESuperTypes().add(this.getAbstractLoopAction());
         this.forkActionEClass.getESuperTypes().add(this.getAbstractInternalControlFlowAction());

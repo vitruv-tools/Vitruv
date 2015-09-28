@@ -969,11 +969,20 @@ public interface SeffPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Steps Behaviour</b></em>' containment reference list. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */
     int RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR__STEPS_BEHAVIOUR = RESOURCE_DEMANDING_BEHAVIOUR__STEPS_BEHAVIOUR;
+
+    /**
+     * The feature id for the '<em><b>Entity Name</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     * 
+     * @generated
+     * @ordered
+     */
+    int RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR__ENTITY_NAME = RESOURCE_DEMANDING_BEHAVIOUR_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Basic Component Resource Demanding Internal Behaviour</b></em>
@@ -983,7 +992,7 @@ public interface SeffPackage extends EPackage {
      * @ordered
      */
     int RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR__BASIC_COMPONENT_RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR = RESOURCE_DEMANDING_BEHAVIOUR_FEATURE_COUNT
-            + 0;
+            + 1;
 
     /**
      * The number of structural features of the '<em>Resource Demanding Internal Behaviour</em>'
@@ -992,7 +1001,7 @@ public interface SeffPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR_FEATURE_COUNT = RESOURCE_DEMANDING_BEHAVIOUR_FEATURE_COUNT + 1;
+    int RESOURCE_DEMANDING_INTERNAL_BEHAVIOUR_FEATURE_COUNT = RESOURCE_DEMANDING_BEHAVIOUR_FEATURE_COUNT + 2;
 
     /**
      * The meta object id for the '{@link org.palladiosimulator.pcm.seff.impl.ReleaseActionImpl

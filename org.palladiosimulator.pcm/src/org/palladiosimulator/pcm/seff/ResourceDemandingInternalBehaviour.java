@@ -3,6 +3,7 @@
  */
 package org.palladiosimulator.pcm.seff;
 
+import org.palladiosimulator.pcm.core.entity.Entity;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 
 /**
@@ -27,7 +28,7 @@ import org.palladiosimulator.pcm.repository.BasicComponent;
  * @model
  * @generated
  */
-public interface ResourceDemandingInternalBehaviour extends ResourceDemandingBehaviour {
+public interface ResourceDemandingInternalBehaviour extends ResourceDemandingBehaviour, Entity {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->

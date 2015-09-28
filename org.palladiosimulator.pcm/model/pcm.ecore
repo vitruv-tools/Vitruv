@@ -2297,7 +2297,7 @@
       </eAnnotations>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ResourceDemandingInternalBehaviour"
-        eSuperTypes="#//seff/ResourceDemandingBehaviour">
+        eSuperTypes="#//seff/ResourceDemandingBehaviour #//core/entity/Entity">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Class representing component-internal behaviour not accessible from the component's interface. Comparable to internal method in object-oriented programming. This behaviour can be called from within a resource demanding behaviour using an InternalCallAction."/>
       </eAnnotations>

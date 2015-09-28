@@ -323,7 +323,13 @@ public class SeffSwitch<T> {
                 result = this.caseResourceDemandingBehaviour(resourceDemandingInternalBehaviour);
             }
             if (result == null) {
+                result = this.caseEntity(resourceDemandingInternalBehaviour);
+            }
+            if (result == null) {
                 result = this.caseIdentifier(resourceDemandingInternalBehaviour);
+            }
+            if (result == null) {
+                result = this.caseNamedElement(resourceDemandingInternalBehaviour);
             }
             if (result == null) {
                 result = this.defaultCase(theEObject);
