@@ -233,7 +233,12 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     public Set<EObject> resolveEObjectsFromTUIDs(final Set<TUID> tuids) {
         Set<EObject> eObjects = new HashSet<EObject>(tuids.size());
         for (TUID tuid : tuids) {
-            eObjects.add(resolveEObjectFromTUID(tuid));
+            EObject resolvedEObject = resolveEObjectFromTUID(tuid);
+            boolean alreadyContained = !eObjects.add(resolvedEObject);
+            if (alreadyContained) {
+                throw new RuntimeException("The eObject '" + resolvedEObject + "' was resolved for the TUID '" + tuid
+                        + "' and for another TUID in the set '" + tuids + "'!");
+            }
         }
         return eObjects;
     }
