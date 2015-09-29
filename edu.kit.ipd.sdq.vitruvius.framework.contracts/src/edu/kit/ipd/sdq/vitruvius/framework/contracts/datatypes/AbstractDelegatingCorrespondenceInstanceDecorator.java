@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -212,7 +213,7 @@ public abstract class AbstractDelegatingCorrespondenceInstanceDecorator<D> imple
     }
 
     @Override
-    public Set<EObject> resolveEObjectsFromTUIDs(final Set<TUID> tuid) {
+    public Set<EObject> resolveEObjectsFromTUIDs(final Collection<TUID> tuid) {
         return this.correspondenceInstance.resolveEObjectsFromTUIDs(tuid);
     }
 

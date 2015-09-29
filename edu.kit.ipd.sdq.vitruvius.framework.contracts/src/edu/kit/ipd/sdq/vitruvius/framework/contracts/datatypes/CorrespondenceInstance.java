@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
+import java.util.Collection;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
@@ -247,7 +248,7 @@ public interface CorrespondenceInstance {
 
     public EObject resolveEObjectFromTUID(final TUID tuid);
 
-    public Set<EObject> resolveEObjectsFromTUIDs(final Set<TUID> tuid);
+    public Set<EObject> resolveEObjectsFromTUIDs(final Collection<TUID> tuid);
 
     public TUID calculateTUIDFromEObject(final EObject eObject);
 
