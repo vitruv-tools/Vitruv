@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.internal;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -203,17 +204,16 @@ public class VitruviusChangeSynchronizer implements ChangeSynchronizing {
     }
 
     @Override
-    public void synchronizeChanges(final List<Change> changes) {
+    public List<List<Change>> synchronizeChanges(final List<Change> changes) {
         if (changes == null) {
             LOGGER.warn("Ignoring null changes.");
-            return;
         }
-
         try {
-            this.syncManagerImpl.synchronizeChanges(changes);
+            return this.syncManagerImpl.synchronizeChanges(changes);
         } catch (final Exception e) {
             LOGGER.error("Exception thrown during synchronisation.", e);
         }
+        return Collections.emptyList();
     }
 
     @Override

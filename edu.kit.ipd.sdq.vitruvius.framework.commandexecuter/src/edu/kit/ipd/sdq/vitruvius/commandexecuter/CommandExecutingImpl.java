@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.commandexecuter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,7 +29,7 @@ public class CommandExecutingImpl implements CommandExecuting {
     private static final Logger logger = Logger.getLogger(CommandExecutingImpl.class.getSimpleName());
 
     @Override
-    public void executeCommands(final Blackboard blackboard) {
+    public List<Change> executeCommands(final Blackboard blackboard) {
         final ModelProviding modelProviding = blackboard.getModelProviding();
         final TransactionalEditingDomain domain = modelProviding.getTransactionalEditingDomain();
 
@@ -48,6 +49,8 @@ public class CommandExecutingImpl implements CommandExecuting {
         this.executeTransformationResults(transformationResults, blackboard);
         this.saveAffectedEObjects(affectedObjects, blackboard.getModelProviding());
         modelProviding.detachTransactionalEditingDomain();
+        // FIXME
+        return Collections.emptyList();
     }
 
     /**

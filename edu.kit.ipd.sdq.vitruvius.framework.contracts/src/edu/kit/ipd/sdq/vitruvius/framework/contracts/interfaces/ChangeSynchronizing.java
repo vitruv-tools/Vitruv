@@ -10,8 +10,9 @@ public interface ChangeSynchronizing {
      *
      * @param change
      *            list of changes
+     * @return TODO
      */
-    void synchronizeChanges(List<Change> changes);
+    List<List<Change>> synchronizeChanges(List<Change> changes);
 
     // @HideableComfort
     void synchronizeChange(Change change);

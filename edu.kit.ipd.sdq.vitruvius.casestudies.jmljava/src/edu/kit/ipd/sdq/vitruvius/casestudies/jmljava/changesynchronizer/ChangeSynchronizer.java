@@ -48,7 +48,7 @@ public final class ChangeSynchronizer implements ChangeSynchronizing, Synchronis
     }
 
     @Override
-    public void synchronizeChanges(List<Change> changes) {
+    public List<List<Change>> synchronizeChanges(List<Change> changes) {
     	if (doNotAcceptNewChanges) {
     		return;
     	}

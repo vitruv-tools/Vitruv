@@ -92,7 +92,7 @@ public class JavaMonitoredEditor extends MonitoredEditor implements Synchronisat
     public JavaMonitoredEditor() {
         super(new ChangeSynchronizing() {
             @Override
-            public void synchronizeChanges(final List<Change> changes) {
+            public List<List<Change>> synchronizeChanges(final List<Change> changes) {
                 // new Thread() {
                 // @Override
                 // public void run() {

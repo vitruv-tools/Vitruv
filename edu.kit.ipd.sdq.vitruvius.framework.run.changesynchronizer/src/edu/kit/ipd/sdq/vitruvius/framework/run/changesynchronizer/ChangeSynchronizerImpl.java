@@ -1,6 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -66,10 +68,10 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
     }
 
     @Override
-    public synchronized void synchronizeChanges(final List<Change> changes) {
+    public synchronized List<List<Change>> synchronizeChanges(final List<Change> changes) {
         if (null == changes || 0 == changes.size()) {
             logger.warn("The change list does not contain any changes to synchronize." + changes);
-            return;
+            return Collections.emptyList();
         }
         for (SynchronisationListener syncListener : this.synchronisationListeners) {
             syncListener.syncStarted();
@@ -78,6 +80,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         VURI sourceModelVURI = getSourceModelVURI(changes);
         Set<InternalCorrespondenceInstance> correspondenceInstances = this.correspondenceProviding
                 .getOrCreateAllCorrespondenceInstances(sourceModelVURI);
+        List<List<Change>> commandExecutionChanges = new ArrayList<List<Change>>(correspondenceInstances.size());
         for (InternalCorrespondenceInstance correspondenceInstance : correspondenceInstances) {
             VURI mmURI1 = correspondenceInstance.getMapping().getMetamodelA().getURI();
             VURI mmURI2 = correspondenceInstance.getMapping().getMetamodelB().getURI();
@@ -88,7 +91,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
             this.changePreparing.prepareAllChanges(blackboard);
             this.blackboardHistory.push(blackboard);
             change2CommandTransforming.transformChanges2Commands(blackboard);
-            this.commandExecuting.executeCommands(blackboard);
+            commandExecutionChanges.add(this.commandExecuting.executeCommands(blackboard));
         }
 
         // TODO: check invariants and execute undo if necessary
@@ -96,6 +99,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         for (SynchronisationListener syncListener : this.synchronisationListeners) {
             syncListener.syncFinished();
         }
+        return commandExecutionChanges;
     }
 
     private VURI getSourceModelVURI(final List<Change> changesForTransformation) {
