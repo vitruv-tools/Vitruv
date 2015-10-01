@@ -26,69 +26,69 @@ public final class ChangeSynchronizer implements ChangeSynchronizing, Synchronis
     private final VitruviusChangeSynchronizer vitruviusSynchronizer = new VitruviusChangeSynchronizer();
     private final Set<SynchronisationListener> listeners = new HashSet<SynchronisationListener>();
     private boolean doNotAcceptNewChanges = false;
-    
+
     /**
      * Registers a listener for the synchronization status.
-     * 
+     *
      * @param listener
      *            The listener to register.
      */
-    public synchronized void register(SynchronisationListener listener) {
-        listeners.add(listener);
+    public synchronized void register(final SynchronisationListener listener) {
+        this.listeners.add(listener);
     }
 
     /**
      * Unregisters a listener for the synchronization status.
-     * 
+     *
      * @param listener
      *            The listener to unregister.
      */
-    public synchronized void unregister(SynchronisationListener listener) {
-        listeners.remove(listener);
+    public synchronized void unregister(final SynchronisationListener listener) {
+        this.listeners.remove(listener);
     }
 
     @Override
-    public List<List<Change>> synchronizeChanges(List<Change> changes) {
-    	if (doNotAcceptNewChanges) {
-    		return;
-    	}
-        synchronized (vitruviusSynchronizer) {
-            notifyListenersSynchronisationStarted();
-            vitruviusSynchronizer.synchronizeChanges(changes);
-            notifyListenersSynchronisationFinished();
+    public List<List<Change>> synchronizeChanges(final List<Change> changes) {
+        if (this.doNotAcceptNewChanges) {
+            return null;
+        }
+        synchronized (this.vitruviusSynchronizer) {
+            this.notifyListenersSynchronisationStarted();
+            final List<List<Change>> ret = this.vitruviusSynchronizer.synchronizeChanges(changes);
+            this.notifyListenersSynchronisationFinished();
+            return ret;
         }
     }
 
     @Override
-    public void synchronizeChange(Change change) {
-    	if (doNotAcceptNewChanges) {
-    		return;
-    	}
-        synchronized (vitruviusSynchronizer) {
-            notifyListenersSynchronisationStarted();
-            vitruviusSynchronizer.synchronizeChange(change);
-            notifyListenersSynchronisationFinished();
+    public void synchronizeChange(final Change change) {
+        if (this.doNotAcceptNewChanges) {
+            return;
+        }
+        synchronized (this.vitruviusSynchronizer) {
+            this.notifyListenersSynchronisationStarted();
+            this.vitruviusSynchronizer.synchronizeChange(change);
+            this.notifyListenersSynchronisationFinished();
         }
     }
 
     @Override
-    public void synchronisationAborted(EMFModelChange abortedChange) {
-        notifyListenersSynchronisationAborted(abortedChange);
+    public void synchronisationAborted(final EMFModelChange abortedChange) {
+        this.notifyListenersSynchronisationAborted(abortedChange);
     }
-    
 
     @Override
-    public void synchronisationAborted(TransformationAbortCause cause) {
-        notifyListenersSynchronisationAborted(cause);
+    public void synchronisationAborted(final TransformationAbortCause cause) {
+        this.notifyListenersSynchronisationAborted(cause);
     }
 
     /**
      * Informs all listeners about the start of a synchronization.
      */
     private void notifyListenersSynchronisationStarted() {
-        notifyListeners(new ListenerCaller<SynchronisationListener>() {
+        this.notifyListeners(new ListenerCaller<SynchronisationListener>() {
             @Override
-            public void notifyListener(SynchronisationListener listener) {
+            public void notifyListener(final SynchronisationListener listener) {
                 listener.syncStarted();
             }
         });
@@ -98,9 +98,9 @@ public final class ChangeSynchronizer implements ChangeSynchronizing, Synchronis
      * Informs all listeners about the end of a synchronization.
      */
     private void notifyListenersSynchronisationFinished() {
-        notifyListeners(new ListenerCaller<SynchronisationListener>() {
+        this.notifyListeners(new ListenerCaller<SynchronisationListener>() {
             @Override
-            public void notifyListener(SynchronisationListener listener) {
+            public void notifyListener(final SynchronisationListener listener) {
                 listener.syncFinished();
             }
         });
@@ -108,29 +108,29 @@ public final class ChangeSynchronizer implements ChangeSynchronizing, Synchronis
 
     /**
      * Informs all listeners that the synchronisation has been aborted.
-     * 
+     *
      * @param abortedChange
      *            The unprocessed change because of the aborted transformation.
      */
     private void notifyListenersSynchronisationAborted(final EMFModelChange abortedChange) {
-        notifyListeners(new ListenerCaller<SynchronisationListener>() {
+        this.notifyListeners(new ListenerCaller<SynchronisationListener>() {
             @Override
-            public void notifyListener(SynchronisationListener listener) {
+            public void notifyListener(final SynchronisationListener listener) {
                 listener.syncAborted(abortedChange);
             }
         });
     }
-    
+
     /**
      * Informs all listeners that the synchronisation has been aborted.
-     * 
+     *
      * @param cause
      *            The cause for the abortion.
      */
     private void notifyListenersSynchronisationAborted(final TransformationAbortCause cause) {
-        notifyListeners(new ListenerCaller<SynchronisationListener>() {
+        this.notifyListeners(new ListenerCaller<SynchronisationListener>() {
             @Override
-            public void notifyListener(SynchronisationListener listener) {
+            public void notifyListener(final SynchronisationListener listener) {
                 listener.syncAborted(cause);
             }
         });
@@ -138,7 +138,7 @@ public final class ChangeSynchronizer implements ChangeSynchronizing, Synchronis
 
     /**
      * Informs the given listener by calling one or more methods of it.
-     * 
+     *
      * @author Stephan Seifermann
      *
      * @param <T>
@@ -148,7 +148,7 @@ public final class ChangeSynchronizer implements ChangeSynchronizing, Synchronis
 
         /**
          * Informs the given listener.
-         * 
+         *
          * @param listener
          *            The listener to be informed.
          */
@@ -157,26 +157,26 @@ public final class ChangeSynchronizer implements ChangeSynchronizing, Synchronis
 
     /**
      * Notifies all listeners by passing the listener to the notify method of the given parameter.
-     * 
+     *
      * @param notifiable
      *            The notifier, which informs the listener.
      */
-    private void notifyListeners(ListenerCaller<SynchronisationListener> notifiable) {
-        for (SynchronisationListener listener : listeners) {
+    private void notifyListeners(final ListenerCaller<SynchronisationListener> notifiable) {
+        for (final SynchronisationListener listener : this.listeners) {
             try {
                 notifiable.notifyListener(listener);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 LOGGER.warn("Exception thrown by " + listener + " after notifying it.", e);
             }
         }
     }
-    
+
     public ModelProvidingDirtyMarker getModelProvidingDirtyMarker() {
-    	return vitruviusSynchronizer.getModelProvidingDirtyMarker();
+        return this.vitruviusSynchronizer.getModelProvidingDirtyMarker();
     }
-    
+
     public void doNotAcceptNewChanges() {
-    	doNotAcceptNewChanges = true;
+        this.doNotAcceptNewChanges = true;
     }
 
 }
