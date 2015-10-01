@@ -74,10 +74,9 @@ public class JavaMonitoredEditor extends MonitoredEditor implements Synchronisat
                     }
                 }
             } catch (final JavaModelException e) {
-                LOGGER.warn(
-                        "Could not determine source directories of "
-                                + StringUtils.join(MonitoredProjectsRegistry.getInstance().getRegisteredElements(),
-                                        ", ") + ".", e);
+                LOGGER.warn("Could not determine source directories of "
+                        + StringUtils.join(MonitoredProjectsRegistry.getInstance().getRegisteredElements(), ", ") + ".",
+                        e);
             }
 
             return sourceDirs.toArray(new IResource[0]);
@@ -96,7 +95,7 @@ public class JavaMonitoredEditor extends MonitoredEditor implements Synchronisat
                 // new Thread() {
                 // @Override
                 // public void run() {
-                ChangeSynchronizerRegistry.getInstance().getChangeSynchronizer().synchronizeChanges(changes);
+                return ChangeSynchronizerRegistry.getInstance().getChangeSynchronizer().synchronizeChanges(changes);
                 // }
                 // } .start();
             }
