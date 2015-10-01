@@ -12,5 +12,5 @@ Require-Bundle: org.junit,
  org.eclipse.jdt.core,
  org.eclipse.text,
  org.somox.test.gast2seff,
- edu.kit.ipd.sdq.vitruvius.tests.casestudies.emf,
- org.palladiosimulator.pcm;bundle-version="4.0.0"
+ org.palladiosimulator.pcm;bundle-version="4.0.0",
+ edu.kit.ipd.sdq.vitruvius.tests.util

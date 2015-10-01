@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.concurrent.Callable;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -17,8 +18,8 @@ import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
-import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 import pcm_mockup.Component;
 import pcm_mockup.Interface;
 import pcm_mockup.Pcm_mockupFactory;
@@ -65,10 +66,11 @@ public class VSUMTest extends AbstractVSUMTest {
         final Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
         vsum.saveModelInstanceOriginalWithEObjectAsOnlyContent(vuri, repo, null);
         final Component component = Pcm_mockupFactory.eINSTANCE.createComponent();
-        TestUtil.createAndExecuteVitruviusRecordingCommand(new Runnable() {
+        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
             @Override
-            public void run() {
+            public Void call() {
                 repo.getComponents().add(component);
+                return null;
             }
         }, vsum);
 
@@ -104,10 +106,11 @@ public class VSUMTest extends AbstractVSUMTest {
         final Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
         vsum.saveModelInstanceOriginalWithEObjectAsOnlyContent(vuri, repo, null);
         final Component component = Pcm_mockupFactory.eINSTANCE.createComponent();
-        TestUtil.createAndExecuteVitruviusRecordingCommand(new Runnable() {
+        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
             @Override
-            public void run() {
+            public Void call() {
                 repo.getComponents().add(component);
+                return null;
             }
         }, vsum);
         vsum.saveExistingModelInstanceOriginal(vuri);
@@ -154,19 +157,21 @@ public class VSUMTest extends AbstractVSUMTest {
         ModelInstance mi = vsum.getAndLoadModelInstanceOriginal(vuri);
         final Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
         vsum.saveModelInstanceOriginalWithEObjectAsOnlyContent(vuri, repo, null);
-        TestUtil.createAndExecuteVitruviusRecordingCommand(new Runnable() {
+        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
             @Override
-            public void run() {
+            public Void call() {
                 Component component = Pcm_mockupFactory.eINSTANCE.createComponent();
                 repo.getComponents().add(component);
+                return null;
             }
         }, vsum);
         vsum.saveExistingModelInstanceOriginal(vuri);
-        TestUtil.createAndExecuteVitruviusRecordingCommand(new Runnable() {
+        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
             @Override
-            public void run() {
+            public Void call() {
                 Interface mockIf = Pcm_mockupFactory.eINSTANCE.createInterface();
                 repo.getInterfaces().add(mockIf);
+                return null;
             }
         }, vsum);
         vsum.saveExistingModelInstanceOriginal(vuri);
@@ -176,13 +181,14 @@ public class VSUMTest extends AbstractVSUMTest {
         ModelInstance umlMi = vsum.getAndLoadModelInstanceOriginal(vuriUML);
         final UPackage uPackage = Uml_mockupFactory.eINSTANCE.createUPackage();
         vsum.saveModelInstanceOriginalWithEObjectAsOnlyContent(vuriUML, uPackage, null);
-        TestUtil.createAndExecuteVitruviusRecordingCommand(new Runnable() {
+        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
             @Override
-            public void run() {
+            public Void call() {
                 UClass uClass = Uml_mockupFactory.eINSTANCE.createUClass();
                 uPackage.getClasses().add(uClass);
                 uml_mockup.Interface uInterface = Uml_mockupFactory.eINSTANCE.createInterface();
                 uPackage.getInterfaces().add(uInterface);
+                return null;
             }
         }, vsum);
         vsum.saveExistingModelInstanceOriginal(vuriUML);

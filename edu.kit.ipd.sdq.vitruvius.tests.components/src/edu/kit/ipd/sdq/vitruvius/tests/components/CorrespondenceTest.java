@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
@@ -22,6 +23,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FeatureInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentReferenceCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
@@ -31,7 +33,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondence
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
-import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 import pcm_mockup.Interface;
 import pcm_mockup.Pcm_mockupFactory;
 import pcm_mockup.Repository;
@@ -45,10 +46,11 @@ public class CorrespondenceTest extends VSUMTest {
     @Test
     public void testAllInCommand() {
         final VSUMImpl vsum = testMetaRepositoryAndVSUMCreation();
-        TestUtil.createAndExecuteVitruviusRecordingCommand(new Runnable() {
+        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
             @Override
-            public void run() {
+            public Void call() {
                 testAll(vsum);
+                return null;
             }
         }, vsum);
     }
@@ -91,9 +93,9 @@ public class CorrespondenceTest extends VSUMTest {
     @Test
     public void testCorrespondenceUpdate() {
         final VSUMImpl vsum = testMetaRepositoryAndVSUMCreation();
-        TestUtil.createAndExecuteVitruviusRecordingCommand(new Runnable() {
+        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
             @Override
-            public void run() {
+            public Void call() {
                 // create vsum and Repo and UPackage
                 Repository repo = testLoadObject(vsum, getPCMInstanceUri(), Repository.class);
                 UPackage pkg = testLoadObject(vsum, getUMLInstanceURI(), UPackage.class);
@@ -112,6 +114,7 @@ public class CorrespondenceTest extends VSUMTest {
                         + correspondenceInstance.calculateTUIDFromEObject(pkg) + "'.");
 
                 assertRepositoryCorrespondences(repo, correspondenceInstance);
+                return null;
             }
         }, vsum);
     }
@@ -119,9 +122,9 @@ public class CorrespondenceTest extends VSUMTest {
     @Test
     public void testMoveRootEObjectBetweenResource() {
         final VSUMImpl vsum = testMetaRepositoryAndVSUMCreation();
-        TestUtil.createAndExecuteVitruviusRecordingCommand(new Runnable() {
+        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
             @Override
-            public void run() {
+            public Void call() {
                 Repository repo = testLoadObject(vsum, getPCMInstanceUri(), Repository.class);
                 UPackage pkg = testLoadObject(vsum, getUMLInstanceURI(), UPackage.class);
 
@@ -136,6 +139,7 @@ public class CorrespondenceTest extends VSUMTest {
                 moveUMLPackageTo(pkg, getNewUMLInstanceURI(), vsum, correspondenceInstance);
 
                 assertRepositoryCorrespondences(repo, correspondenceInstance);
+                return null;
             }
         }, vsum);
     }
