@@ -25,7 +25,7 @@ public class JaMoPPParameterMappingTransformationTest extends JaMoPP2PCMTransfor
 
     @Test
     public void testAddParameter() throws Throwable {
-        super.addFirstPackage();
+        super.addRepoContractsAndDatatypesPackage();
         final OperationInterface opInterface = super.addInterfaceInContractsPackage();
         final OperationSignature opSig = super.addMethodToInterfaceWithCorrespondence(opInterface.getEntityName());
 
@@ -41,7 +41,7 @@ public class JaMoPPParameterMappingTransformationTest extends JaMoPP2PCMTransfor
      */
     @Test
     public void testRenameParameter() throws Throwable {
-        super.addFirstPackage();
+        super.addRepoContractsAndDatatypesPackage();
         final OperationInterface opInterface = super.addInterfaceInContractsPackage();
         final OperationSignature opSig = super.addMethodToInterfaceWithCorrespondence(opInterface.getEntityName());
         final Parameter parameter = super.addParameterToSignature(opInterface.getEntityName(), opSig.getEntityName(),
@@ -57,7 +57,7 @@ public class JaMoPPParameterMappingTransformationTest extends JaMoPP2PCMTransfor
 
     @Test
     public void testChangeParameterType() throws Throwable {
-        super.addFirstPackage();
+        super.addRepoContractsAndDatatypesPackage();
         final OperationInterface opInterface = super.addInterfaceInContractsPackage();
         final OperationSignature opSig = super.addMethodToInterfaceWithCorrespondence(opInterface.getEntityName());
         final Parameter parameter = super.addParameterToSignature(opInterface.getEntityName(), opSig.getEntityName(),

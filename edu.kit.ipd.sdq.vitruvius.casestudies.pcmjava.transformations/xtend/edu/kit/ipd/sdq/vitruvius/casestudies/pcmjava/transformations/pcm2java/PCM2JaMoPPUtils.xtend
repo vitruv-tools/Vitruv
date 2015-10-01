@@ -444,7 +444,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		return "short"
 	}
 
-	def dispatch static getNameFromJaMoPPType(Void reference) {
+	def dispatch static getNameFromJaMoPPType(org.emftext.language.java.types.Void reference) {
 		return "void"
 	}
 

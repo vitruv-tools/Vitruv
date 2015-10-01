@@ -18,7 +18,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationRes
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusRecordingCommand;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusTransformationRecordingCommand;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondences;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
@@ -36,15 +37,16 @@ public class CommandExecutingImpl implements CommandExecuting {
         final ArrayList<Object> affectedObjects = new ArrayList<>();
         final ArrayList<TransformationResult> transformationResults = new ArrayList<>();
         for (final Command command : blackboard.getAndArchiveCommandsForExecution()) {
-            if (command instanceof VitruviusRecordingCommand) {
-                ((VitruviusRecordingCommand) command).setTransactionDomain(domain);
+            if (command instanceof VitruviusTransformationRecordingCommand) {
+                final TransformationResult transformationResult = EMFCommandBridge.executeVitruviusRecordingCommand(
+                        modelProviding, (VitruviusTransformationRecordingCommand) command);
+                transformationResults.add(transformationResult);
+            } else {
+                domain.getCommandStack().execute(command);
             }
-            domain.getCommandStack().execute(command);
-            if (command instanceof VitruviusRecordingCommand) {
-                final TransformationResult transformationResult = ((VitruviusRecordingCommand) command).getTransformationResult();
-				transformationResults.add(transformationResult);
-            }
-            affectedObjects.addAll(command.getAffectedObjects().stream().filter(it -> !(it instanceof Correspondence) && !(it instanceof Correspondences)).collect(Collectors.toList()));
+            affectedObjects.addAll(command.getAffectedObjects().stream()
+                    .filter(it -> !(it instanceof Correspondence) && !(it instanceof Correspondences))
+                    .collect(Collectors.toList()));
         }
         this.executeTransformationResults(transformationResults, blackboard);
         this.saveAffectedEObjects(affectedObjects, blackboard.getModelProviding());

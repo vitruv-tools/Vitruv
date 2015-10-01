@@ -14,7 +14,7 @@ public class ClassMethodMappingTransformationTest extends JaMoPP2PCMTransformati
     @Test
     public void testAddClassMethodWithCorrespondence() throws Throwable {
         // create repo
-        final Repository repo = super.addFirstPackage();
+        final Repository repo = super.addRepoContractsAndDatatypesPackage();
         this.testUserInteractor.addNextSelections(JaMoPP2PCMTransformationTest.SELECT_NOTHING_DECIDE_LATER);
         super.createPackageWithPackageInfo(repo.getEntityName(), "contracts");
         // create component implementing class

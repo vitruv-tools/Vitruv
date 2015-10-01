@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.compositerefiners;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import org.eclipse.emf.common.command.Command;
 
@@ -12,7 +13,6 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.Synchronisati
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationRunnable;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 
 /**
@@ -38,14 +38,14 @@ public class CompositeChangeRefinerResultTransformation implements CompositeChan
     @Override
     public List<Command> apply(final CSSynchronizer transformationExecuting, final Blackboard blackboard,
             final UserInteracting ui, final SynchronisationAbortedListener abortListener) {
-        final Command command = EMFCommandBridge.createVitruviusRecordingCommand(new TransformationRunnable() {
-            @Override
-            public TransformationResult runTransformation() {
-                // TODO Auto-generated method stub
-                return CompositeChangeRefinerResultTransformation.this.transformation.execute(blackboard, ui,
-                        abortListener);
-            }
-        });
+        final Command command = EMFCommandBridge
+                .createVitruviusTransformationRecordingCommand(new Callable<TransformationResult>() {
+                    @Override
+                    public TransformationResult call() {
+                        return CompositeChangeRefinerResultTransformation.this.transformation.execute(blackboard, ui,
+                                abortListener);
+                    }
+                });
         return Lists.newArrayList(command);
 
     }

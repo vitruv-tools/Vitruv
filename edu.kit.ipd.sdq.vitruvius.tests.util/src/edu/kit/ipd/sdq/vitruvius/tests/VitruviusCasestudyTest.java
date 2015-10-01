@@ -36,6 +36,15 @@ public abstract class VitruviusCasestudyTest {
     protected abstract CorrespondenceInstance getCorrespondenceInstance() throws Throwable;
 
     protected void beforeTest() throws Throwable {
+        // clear VURI
+        /*
+         * final Map<String, VURI> instances = JavaBridge.getFieldFromClass(VURI.class, "INSTANCES",
+         * null); instances.clear(); // clear TUID JavaBridge.setFieldInClass(TUID.class,
+         * "SEGMENTS", null, new ForwardHashedBackwardLinkedTree<String>()); final
+         * Map<ForwardHashedBackwardLinkedTree<String>.Segment, TUID> lastSegment2TUIDInstancesMap =
+         * JavaBridge .getFieldFromClass(TUID.class, "LAST_SEGMENT_2_TUID_INSTANCES_MAP", null);
+         * lastSegment2TUIDInstancesMap.clear();
+         */
     }
 
     @Before
@@ -88,8 +97,8 @@ public abstract class VitruviusCasestudyTest {
         if (null == change2CommandTransforming) {
             throw new RuntimeException("Could not find a Change2CommandTransforming that is currently active.");
         }
-        final TransformationExecuter transformationExecuter = JavaBridge.getFieldFromClass(change2CommandTransformerClass,
-                nameOfChangeSynchronizerField, change2CommandTransforming);
+        final TransformationExecuter transformationExecuter = JavaBridge.getFieldFromClass(
+                change2CommandTransformerClass, nameOfChangeSynchronizerField, change2CommandTransforming);
         transformationExecuter.setUserInteracting(newUserInteracting);
     }
 

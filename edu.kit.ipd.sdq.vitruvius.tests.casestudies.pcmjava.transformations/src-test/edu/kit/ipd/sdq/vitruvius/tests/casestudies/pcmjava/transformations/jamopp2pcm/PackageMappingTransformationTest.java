@@ -22,7 +22,7 @@ public class PackageMappingTransformationTest extends JaMoPP2PCMTransformationTe
      */
     @Test
     public void testAddFirstPackage() throws Throwable {
-        final Repository repo = super.addFirstPackage();
+        final Repository repo = super.addRepoContractsAndDatatypesPackage();
         assertEquals("Name of the repository is not the same as the name of the package",
                 PCM2JaMoPPTestUtils.REPOSITORY_NAME, repo.getEntityName());
     }
@@ -43,7 +43,7 @@ public class PackageMappingTransformationTest extends JaMoPP2PCMTransformationTe
      */
     @Test
     public void testAddSecondPackage() throws Throwable {
-        final Repository repo = super.addFirstPackage();
+        final Repository repo = super.addRepoContractsAndDatatypesPackage();
         final BasicComponent bc = super.addSecondPackageCorrespondsToBasicComponent();
 
         this.assertRepositoryAndPCMName(repo, bc, PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME);
@@ -51,7 +51,7 @@ public class PackageMappingTransformationTest extends JaMoPP2PCMTransformationTe
 
     @Test
     public void testCreateCompositeComponent() throws Throwable {
-        final Repository repo = super.addFirstPackage();
+        final Repository repo = super.addRepoContractsAndDatatypesPackage();
 
         final CompositeComponent cc = super.addSecondPackageCorrespondsToCompositeComponent();
 
@@ -60,7 +60,7 @@ public class PackageMappingTransformationTest extends JaMoPP2PCMTransformationTe
 
     @Test
     public void testCreateSystem() throws Throwable {
-        super.addFirstPackage();
+        super.addRepoContractsAndDatatypesPackage();
         final System system = super.addSecondPackageCorrespondsToSystem();
 
         this.assertPCMNamedElement(system, PCM2JaMoPPTestUtils.SYSTEM_NAME);
@@ -68,7 +68,7 @@ public class PackageMappingTransformationTest extends JaMoPP2PCMTransformationTe
 
     @Test
     public void testCreateNoCorrespondingObject() throws Throwable {
-        final Repository repo = super.addFirstPackage();
+        final Repository repo = super.addRepoContractsAndDatatypesPackage();
 
         super.addSecondPackageCorrespondsWithoutCorrespondences();
 
@@ -77,7 +77,7 @@ public class PackageMappingTransformationTest extends JaMoPP2PCMTransformationTe
 
     @Test
     public void testRenamePackage() throws Throwable {
-        final Repository repo = super.addFirstPackage();
+        final Repository repo = super.addRepoContractsAndDatatypesPackage();
         final BasicComponent bc = super.addSecondPackageCorrespondsToBasicComponent();
 
         final String packageName = PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + PCM2JaMoPPTestUtils.RENAME;

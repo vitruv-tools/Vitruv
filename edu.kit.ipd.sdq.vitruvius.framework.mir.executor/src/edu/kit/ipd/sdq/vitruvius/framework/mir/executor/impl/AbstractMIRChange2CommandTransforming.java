@@ -79,7 +79,7 @@ public abstract class AbstractMIRChange2CommandTransforming implements Change2Co
         final List<Command> result = new ArrayList<Command>();
         final Collection<MIRMappingRealization> relevantMappings = this.getCandidateMappings(eChange);
         for (final MIRMappingRealization mapping : relevantMappings) {
-            result.add(EMFCommandBridge.createVitruviusRecordingCommand(() -> mapping.applyEChange(eChange, blackboard)));
+            result.add(EMFCommandBridge.createVitruviusTransformationRecordingCommand(() -> mapping.applyEChange(eChange, blackboard)));
         }
         return result;
     }

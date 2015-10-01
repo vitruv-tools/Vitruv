@@ -346,7 +346,7 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
 
     private Repository createMediaStoreViaCode() throws Throwable {
         // create main package
-        final Repository repo = super.addFirstPackage();
+        final Repository repo = super.addRepoContractsAndDatatypesPackage();
 
         // create packages
         this.addPackageAndImplementingClass(MEDIA_STORE);

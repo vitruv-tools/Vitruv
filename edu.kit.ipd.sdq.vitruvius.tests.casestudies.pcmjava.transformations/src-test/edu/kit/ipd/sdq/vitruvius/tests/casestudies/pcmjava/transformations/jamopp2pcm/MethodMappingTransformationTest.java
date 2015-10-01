@@ -2,6 +2,8 @@ package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.jamo
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.concurrent.Callable;
+
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.text.edits.DeleteEdit;
@@ -11,6 +13,7 @@ import org.junit.Test;
 import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
@@ -18,7 +21,7 @@ public class MethodMappingTransformationTest extends JaMoPP2PCMTransformationTes
 
     @Test
     public void testAddMethod() throws Throwable {
-        super.addFirstPackage();
+        super.addRepoContractsAndDatatypesPackage();
         final OperationInterface opInterface = super.addInterfaceInContractsPackage();
 
         final OperationSignature opSig = super.addMethodToInterfaceWithCorrespondence(opInterface.getEntityName());
@@ -28,7 +31,7 @@ public class MethodMappingTransformationTest extends JaMoPP2PCMTransformationTes
 
     @Test
     public void testRenameMethod() throws Throwable {
-        this.addFirstPackage();
+        this.addRepoContractsAndDatatypesPackage();
         final OperationInterface opInterface = super.addInterfaceInContractsPackage();
         final OperationSignature opSig = super.addMethodToInterfaceWithCorrespondence(opInterface.getEntityName());
 
@@ -41,7 +44,7 @@ public class MethodMappingTransformationTest extends JaMoPP2PCMTransformationTes
 
     @Test
     public void testAddReturnType() throws Throwable {
-        this.addFirstPackage();
+        this.addRepoContractsAndDatatypesPackage();
 
         final OperationInterface opInterface = super.addInterfaceInContractsPackage();
         final OperationSignature opSig = super.addMethodToInterfaceWithCorrespondence(opInterface.getEntityName());
@@ -73,8 +76,21 @@ public class MethodMappingTransformationTest extends JaMoPP2PCMTransformationTes
                 opSig.getInterface__OperationSignature().getId(), opInterface.getId());
         this.assertPCMNamedElement(opSig, expectedName);
 
-        final Method jaMoPPMethod = this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(opSig,
-                Method.class);
-        super.assertDataTypeName(jaMoPPMethod.getTypeReference(), opSig.getReturnType__OperationSignature());
+        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
+
+            @Override
+            public Void call() {
+                Method jaMoPPMethod;
+                try {
+                    jaMoPPMethod = MethodMappingTransformationTest.this.getCorrespondenceInstance()
+                            .claimUniqueCorrespondingEObjectByType(opSig, Method.class);
+                } catch (final Throwable e) {
+                    throw new RuntimeException(e);
+                }
+                MethodMappingTransformationTest.this.assertDataTypeName(jaMoPPMethod.getTypeReference(),
+                        opSig.getReturnType__OperationSignature());
+                return null;
+            }
+        }, this.getVSUM());
     }
 }

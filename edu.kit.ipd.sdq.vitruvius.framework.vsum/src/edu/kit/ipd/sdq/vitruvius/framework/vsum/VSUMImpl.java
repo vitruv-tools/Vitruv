@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
@@ -14,7 +15,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
@@ -33,6 +33,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ViewTypeManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalContractsBuilder;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
@@ -93,37 +94,37 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     @Override
     public ModelInstance getAndLoadModelInstanceOriginal(final VURI modelURI) {
         final ModelInstance modelInstance = getModelInstanceOriginal(modelURI);
-        try {
-            final TransactionalEditingDomain transactionalEditingDomain = getTransactionalEditingDomain();
-            RecordingCommand recordingCommand = new RecordingCommand(transactionalEditingDomain) {
-                @Override
-                protected void doExecute() {
+        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
+            @Override
+            public Void call() {
+                try {
                     modelInstance.load(getMetamodelByURI(modelURI).getDefaultLoadOptions());
+                } catch (RuntimeException re) {
+                    // could not load model instance --> this should only be the case when the model
+                    // is not
+                    // Existing yet
+                    logger.info("Exception during loading of model instance " + modelInstance + " occured: " + re);
                 }
-            };
-            transactionalEditingDomain.getCommandStack().execute(recordingCommand);
-        } catch (RuntimeException re) {
-            // could not load model instance --> this should only be the case when the model is not
-            // Existing yet
-            logger.info("Exception during loading of model instance " + modelInstance + " occured: " + re, re);
-        }
+                return null;
+            }
+        }, this);
+
         return modelInstance;
     }
 
     public ModelInstance getModelInstanceOriginal(final VURI modelURI) {
         ModelInstance modelInstance = this.modelInstances.get(modelURI);
         if (modelInstance == null) {
-            final TransactionalEditingDomain transactionalEditingDomain = getTransactionalEditingDomain();
-            RecordingCommand recordingCommand = new RecordingCommand(transactionalEditingDomain) {
+            EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
                 @Override
-                protected void doExecute() {
+                public Void call() {
                     // case 2 or 3
                     ModelInstance internalModelInstance = getOrCreateUnregisteredModelInstance(modelURI);
                     VSUMImpl.this.modelInstances.put(modelURI, internalModelInstance);
                     saveVURIsOfVSUMModelInstances();
+                    return null;
                 }
-            };
-            transactionalEditingDomain.getCommandStack().execute(recordingCommand);
+            }, this);
             modelInstance = this.modelInstances.get(modelURI);
         }
         return modelInstance;
@@ -146,10 +147,9 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
 
     private void saveExistingModelInstanceOriginal(final VURI vuri,
             final Pair<EObject, TUID> tuidToUpdateWithRootEObjectPair) {
-        final TransactionalEditingDomain transactionalEditingDomain = getTransactionalEditingDomain();
-        transactionalEditingDomain.getCommandStack().execute(new RecordingCommand(transactionalEditingDomain) {
+        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
             @Override
-            protected void doExecute() {
+            public Void call() throws Exception {
                 ModelInstance modelInstanceToSave = getModelInstanceOriginal(vuri);
                 Metamodel metamodel = getMetamodelByURI(vuri);
                 Resource resourceToSave = modelInstanceToSave.getResource();
@@ -162,27 +162,28 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
                 for (EObject root : modelInstanceToSave.getRootElements()) {
                     metamodel.removeRootFromTUIDCache(root);
                 }
-
+                return null;
             }
-        });
+
+        }, this);
     }
 
     @Override
     public void saveModelInstanceOriginalWithEObjectAsOnlyContent(final VURI vuri, final EObject rootEObject,
             final TUID oldTUID) {
         final ModelInstance modelInstance = getAndLoadModelInstanceOriginal(vuri);
-        getTransactionalEditingDomain().getCommandStack()
-                .execute(new RecordingCommand(getTransactionalEditingDomain()) {
-                    @Override
-                    protected void doExecute() {
-                        final Resource resource = modelInstance.getResource();
-                        // clear the resource first
-                        resource.getContents().clear();
-                        resource.getContents().add(rootEObject);
-                        VSUMImpl.this.saveExistingModelInstanceOriginal(vuri,
-                                new Pair<EObject, TUID>(rootEObject, oldTUID));
-                    }
-                });
+
+        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                final Resource resource = modelInstance.getResource();
+                // clear the resource first
+                resource.getContents().clear();
+                resource.getContents().add(rootEObject);
+                VSUMImpl.this.saveExistingModelInstanceOriginal(vuri, new Pair<EObject, TUID>(rootEObject, oldTUID));
+                return null;
+            }
+        }, this);
     }
 
     private void saveAllChangedCorrespondences(final ModelInstance modelInstanceToSave,
@@ -412,17 +413,17 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     public void deleteModelInstanceOriginal(final VURI vuri) {
         final ModelInstance modelInstance = getModelInstanceOriginal(vuri);
         final Resource resource = modelInstance.getResource();
-        getTransactionalEditingDomain().getCommandStack()
-                .execute(new RecordingCommand(getTransactionalEditingDomain()) {
-                    @Override
-                    protected void doExecute() {
-                        try {
-                            resource.delete(null);
-                            VSUMImpl.this.modelInstances.remove(modelInstance);
-                        } catch (final IOException e) {
-                            logger.info("Deletion of resource " + resource + " did not work. Reason: " + e);
-                        }
-                    }
-                });
+        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                try {
+                    resource.delete(null);
+                    VSUMImpl.this.modelInstances.remove(modelInstance);
+                } catch (final IOException e) {
+                    logger.info("Deletion of resource " + resource + " did not work. Reason: " + e);
+                }
+                return null;
+            }
+        }, this);
     }
 }

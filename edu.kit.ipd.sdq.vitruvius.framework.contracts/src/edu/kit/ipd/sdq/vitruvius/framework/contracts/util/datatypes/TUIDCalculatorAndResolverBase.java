@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.change.ChangeDescription;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TUIDCalculatorAndResolver;
@@ -37,9 +38,35 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
         return tuid.startsWith(getTUIDPrefixAndSeparator());
     }
 
+    /**
+     * Return the most distant parent eObject of the tree that contains the given eObject if this
+     * tree exists and otherwise the given eObject itself (beeing the root of a containment tree of
+     * depth 0).
+     *
+     * @param eObject
+     * @return the root
+     */
+    public static EObject getMostDistantParentOfSameMetamodel(final EObject eObject) {
+        EObject root = EcoreBridge.getRootEObject(eObject);
+        if (!(root instanceof ChangeDescription)) {
+            return root;
+        } else {
+            return getMostDistantParentOfSameMetamodelRecirsivly(eObject);
+        }
+    }
+
+    private static EObject getMostDistantParentOfSameMetamodelRecirsivly(final EObject eObject) {
+        EObject parent = eObject.eContainer();
+        if (null == parent || (parent instanceof ChangeDescription)) {
+            return eObject;
+        }
+        return getMostDistantParentOfSameMetamodelRecirsivly(parent);
+    }
+
     @Override
     public String calculateTUIDFromEObject(final EObject eObject) {
-        EObject root = EcoreBridge.getRootEObject(eObject);
+        EObject root = getMostDistantParentOfSameMetamodel(eObject);
+
         String tuidPrefix = null;
         if (root.eResource() == null) {
             tuidPrefix = getTUIDPrefixAndSeparator() + getVURIReplacementForCachedRoot(root);
@@ -59,7 +86,8 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
             }
             tuidPrefix = getTUIDPrefixAndSeparator() + VURI.getInstance(eObject.eResource());
         }
-        return calculateTUIDFromEObject(eObject, null, tuidPrefix);
+        EObject virtualRootEObject = root.eContainer();
+        return calculateTUIDFromEObject(eObject, virtualRootEObject, tuidPrefix);
     }
 
     private void addRootToCache(final EObject root) {

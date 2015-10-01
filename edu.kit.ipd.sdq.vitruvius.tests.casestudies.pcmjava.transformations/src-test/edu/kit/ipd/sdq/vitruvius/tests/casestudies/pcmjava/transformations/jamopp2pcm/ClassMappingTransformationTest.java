@@ -24,7 +24,7 @@ public class ClassMappingTransformationTest extends JaMoPP2PCMTransformationTest
      */
     @Test
     public void testAddComponentClassInPackageWithCorrespondingComponent() throws Throwable {
-        final Repository repo = super.addFirstPackage();
+        final Repository repo = super.addRepoContractsAndDatatypesPackage();
         final BasicComponent bc = super.addSecondPackageCorrespondsToBasicComponent();
 
         this.testUserInteractor.addNextSelections(0);
@@ -35,7 +35,7 @@ public class ClassMappingTransformationTest extends JaMoPP2PCMTransformationTest
 
     @Test
     public void testAddCompositeComponentClassInPackageWithCorrespondingCompositeComponent() throws Throwable {
-        final Repository repo = super.addFirstPackage();
+        final Repository repo = super.addRepoContractsAndDatatypesPackage();
         final CompositeComponent cc = super.addSecondPackageCorrespondsToCompositeComponent();
 
         this.testUserInteractor.addNextSelections(0);
@@ -46,7 +46,7 @@ public class ClassMappingTransformationTest extends JaMoPP2PCMTransformationTest
 
     @Test
     public void testAddSystemClassInPackageWithCorrespondingSystem() throws Throwable {
-        super.addFirstPackage();
+        super.addRepoContractsAndDatatypesPackage();
         final System pcmSystem = super.addSecondPackageCorrespondsToSystem();
 
         this.testUserInteractor.addNextSelections(0);
@@ -62,7 +62,7 @@ public class ClassMappingTransformationTest extends JaMoPP2PCMTransformationTest
      */
     @Test
     public void testAddClassInPackageWithoutCorrespondingComponent() throws Throwable {
-        super.addFirstPackage();
+        super.addRepoContractsAndDatatypesPackage();
         super.addSecondPackageCorrespondsWithoutCorrespondences();
 
         this.testUserInteractor.addNextSelections(ClassMappingTransformation.SELECT_NO_CORRESPONDENCE);
@@ -76,7 +76,7 @@ public class ClassMappingTransformationTest extends JaMoPP2PCMTransformationTest
 
     @Test
     public void testAddBasicComponentClassInPackageWithoutCorrespondence() throws Throwable {
-        final Repository repo = this.addFirstPackage();
+        final Repository repo = this.addRepoContractsAndDatatypesPackage();
         super.addSecondPackageCorrespondsWithoutCorrespondences();
 
         this.testUserInteractor.addNextSelections(ClassMappingTransformation.SELECT_CREATE_BASIC_COMPONENT);
@@ -87,7 +87,7 @@ public class ClassMappingTransformationTest extends JaMoPP2PCMTransformationTest
 
     @Test
     public void testAddCompositeComponentClassInPackageWithoutCorrespondence() throws Throwable {
-        final Repository repo = this.addFirstPackage();
+        final Repository repo = this.addRepoContractsAndDatatypesPackage();
         super.addSecondPackageCorrespondsWithoutCorrespondences();
 
         this.testUserInteractor.addNextSelections(ClassMappingTransformation.SELECT_CREATE_COMPOSITE_COMPONENT);
@@ -98,7 +98,7 @@ public class ClassMappingTransformationTest extends JaMoPP2PCMTransformationTest
 
     @Test
     public void testAddSystemClassInPackageWithoutCorrespondence() throws Throwable {
-        this.addFirstPackage();
+        this.addRepoContractsAndDatatypesPackage();
         super.addSecondPackageCorrespondsWithoutCorrespondences();
 
         this.testUserInteractor.addNextSelections(ClassMappingTransformation.SELECT_CREATE_SYSTEM);
@@ -109,7 +109,7 @@ public class ClassMappingTransformationTest extends JaMoPP2PCMTransformationTest
 
     @Test
     public void testAddCompsiteDatatypeClassInDatatypePackage() throws Throwable {
-        final Repository repo = this.addFirstPackage();
+        final Repository repo = this.addRepoContractsAndDatatypesPackage();
 
         final CompositeDataType cdt = this.addClassThatCorrespondsToCompositeDatatype();
 
@@ -118,7 +118,7 @@ public class ClassMappingTransformationTest extends JaMoPP2PCMTransformationTest
 
     @Test
     public void testAddCollectionDatatypeClassInDatatypePackage() throws Throwable {
-        final Repository repo = this.addFirstPackage();
+        final Repository repo = this.addRepoContractsAndDatatypesPackage();
 
         this.testUserInteractor.addNextSelections(ClassMappingTransformation.SELECT_CREATE_COLLECTION_DATA_TYPE);
         final CollectionDataType collection = super.addClassInPackage(this.getDatatypesPackage(),
@@ -129,7 +129,7 @@ public class ClassMappingTransformationTest extends JaMoPP2PCMTransformationTest
 
     @Test
     public void testAddClassInDatatypePackage() throws Throwable {
-        this.addFirstPackage();
+        this.addRepoContractsAndDatatypesPackage();
         try {
             this.testUserInteractor.addNextSelections(ClassMappingTransformation.SELECT_DO_NOT_CREATE_DATA_TYPE);
             final EObject eObject = super.addClassInPackage(this.getDatatypesPackage(), EObject.class);
@@ -142,7 +142,7 @@ public class ClassMappingTransformationTest extends JaMoPP2PCMTransformationTest
 
     @Test
     public void testRenameBasicComponentClass() throws Throwable {
-        final Repository repo = this.addFirstPackage();
+        final Repository repo = this.addRepoContractsAndDatatypesPackage();
         this.addSecondPackageCorrespondsWithoutCorrespondences();
         this.testUserInteractor.addNextSelections(ClassMappingTransformation.SELECT_CREATE_BASIC_COMPONENT);
         final BasicComponent basicComponent = this.addClassInSecondPackage(BasicComponent.class);

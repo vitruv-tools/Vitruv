@@ -11,6 +11,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.util.bridges;
 
 import java.io.File;
+import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -314,8 +315,7 @@ public final class JavaBridge {
             final Object instance) {
         java.lang.reflect.Field field;
         try {
-            field = classWithField.getDeclaredField(fieldName);
-            field.setAccessible(true);
+            field = getField(classWithField, fieldName);
             @SuppressWarnings("unchecked")
             final T t = (T) field.get(instance);
             return t;
@@ -323,5 +323,33 @@ public final class JavaBridge {
             throw new RuntimeException("Could not get Field " + fieldName + " from class " + classWithField
                     + ". Instance was: " + instance, e);
         }
+    }
+
+    private static java.lang.reflect.Field getField(final Class<?> classWithField, final String fieldName)
+            throws NoSuchFieldException {
+        java.lang.reflect.Field field;
+        field = classWithField.getDeclaredField(fieldName);
+        field.setAccessible(true);
+        return field;
+    }
+
+    public static void setFieldInClass(final Class<?> classWithField, final String fieldName, final Object instance,
+            final Object newValue) {
+        java.lang.reflect.Field field;
+        try {
+            field = getField(classWithField, fieldName);
+            // copied from:
+            // http://stackoverflow.com/questions/2474017/using-reflection-to-change-static-final-file-separatorchar-for-unit-testing
+            // and http://zarnekow.blogspot.de/2013/01/java-hacks-changing-final-fields.html
+            int modifiers = field.getModifiers();
+            modifiers = modifiers & ~Modifier.FINAL;
+            final java.lang.reflect.Field modifiersField = getField(field.getClass(), "modifiers");
+            modifiersField.setInt(field, modifiers);
+            field.set(instance, newValue);
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+            throw new RuntimeException("Could not set Field " + fieldName + " from class " + classWithField
+                    + ". Instance was: " + instance, e);
+        }
+
     }
 }

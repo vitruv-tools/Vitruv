@@ -16,7 +16,7 @@ public class TypeReferenceMappingTransformationTest extends JaMoPP2PCMTransforma
     @Test
     public void testAddImplementsToClassWithCorrespondingComponent() throws Throwable {
         // crete repo
-        final Repository repo = this.addFirstPackage();
+        final Repository repo = this.addRepoContractsAndDatatypesPackage();
         // create class
         this.addSecondPackageCorrespondsWithoutCorrespondences();
         this.testUserInteractor.addNextSelections(ClassMappingTransformation.SELECT_CREATE_BASIC_COMPONENT);

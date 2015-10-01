@@ -33,7 +33,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationRunnable
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationExecuter
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
@@ -47,6 +46,8 @@ import org.emftext.language.java.modifiers.Modifier
 import org.emftext.language.java.statements.Statement
 import org.emftext.language.java.types.Type
 import org.emftext.language.java.types.TypeReference
+import java.util.concurrent.Callable
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 
 /**
  * Synchronizer for Java and JML. It initializes the transformations and composite
@@ -138,8 +139,8 @@ class CSSynchronizer extends TransformationExecuter implements Change2CommandTra
 
 		val modelChange = (change as EMFModelChange).EChange
 		this.setSyncAbortChange(change as EMFModelChange)
-		val command = EMFCommandBridge.createVitruviusRecordingCommand(new TransformationRunnable() {
-			override runTransformation() {
+		val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand(new Callable<TransformationResult>() {
+			override call() {
 				val res = executeTransformationForChange(modelChange)
 				return res
 			}

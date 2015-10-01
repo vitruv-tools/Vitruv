@@ -20,7 +20,7 @@ public class InterfaceMappingTransformationTest extends JaMoPP2PCMTransformation
      */
     @Test
     public void testAddInterfaceInContractsPackage() throws Throwable {
-        final Repository repo = super.addFirstPackage();
+        final Repository repo = super.addRepoContractsAndDatatypesPackage();
 
         final OperationInterface opIf = super.addInterfaceInContractsPackage();
 
@@ -34,7 +34,7 @@ public class InterfaceMappingTransformationTest extends JaMoPP2PCMTransformation
      */
     @Test
     public void testAddArchitecturalInterfaceInNonRepositoryPackage() throws Throwable {
-        final Repository repo = super.addFirstPackage();
+        final Repository repo = super.addRepoContractsAndDatatypesPackage();
         final BasicComponent bc = super.addSecondPackageCorrespondsToBasicComponent();
 
         final OperationInterface opInterface = super.addInterfaceInSecondPackageWithCorrespondence(bc.getEntityName());
@@ -49,7 +49,7 @@ public class InterfaceMappingTransformationTest extends JaMoPP2PCMTransformation
      */
     @Test
     public void testAddTechnicalInterfaceInNonRepositoryPackage() throws Throwable {
-        super.addFirstPackage();
+        super.addRepoContractsAndDatatypesPackage();
         final BasicComponent bc = super.addSecondPackageCorrespondsToBasicComponent();
 
         final EObject eObject = super.addInterfaceInSecondPackageWithoutCorrespondence(bc.getEntityName());
@@ -60,7 +60,7 @@ public class InterfaceMappingTransformationTest extends JaMoPP2PCMTransformation
 
     @Test
     public void testRenameInterfaceWithCorrespondence() throws Throwable {
-        final Repository repo = super.addFirstPackage();
+        final Repository repo = super.addRepoContractsAndDatatypesPackage();
         super.addSecondPackageCorrespondsToBasicComponent();
         final OperationInterface opInterface = super.addInterfaceInContractsPackage();
 

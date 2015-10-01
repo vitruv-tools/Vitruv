@@ -20,7 +20,7 @@ public class EMFChangeBridge {
 
         Collection<EObject> result = new HashSet<EObject>();
         result.addAll(changeDescription.getObjectsToAttach());
-        result.addAll(changeDescription.getObjectsToDetach());
+        // result.addAll(changeDescription.getObjectsToDetach());
 
         changeDescription.getObjectChanges().stream().map(oc -> oc.getKey()).forEach(result::add);
 

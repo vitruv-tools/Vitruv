@@ -148,16 +148,21 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 
     @Override
     protected CorrespondenceInstance getCorrespondenceInstance() throws Throwable {
-        final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
-        if (null == pcmJavaBuilder) {
-            return null;
-        }
-        final VSUMImpl vsum = JavaBridge.getFieldFromClass(VitruviusEmfBuilder.class, "vsum", pcmJavaBuilder);
+        final VSUMImpl vsum = this.getVSUM();
         final VURI jaMoPPVURI = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE);
         final VURI pcmVURI = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
         final CorrespondenceInstance corresponcenceInstance = vsum.getCorrespondenceInstanceOriginal(pcmVURI,
                 jaMoPPVURI);
         return corresponcenceInstance;
+    }
+
+    protected VSUMImpl getVSUM() throws Throwable {
+        final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
+        if (null == pcmJavaBuilder) {
+            return null;
+        }
+        final VSUMImpl vsum = JavaBridge.getFieldFromClass(VitruviusEmfBuilder.class, "vsum", pcmJavaBuilder);
+        return vsum;
     }
 
     private PCMJavaBuilder getPCMJavaBuilderFromProject() throws Throwable {
@@ -178,8 +183,12 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         return null;
     }
 
-    protected Repository addFirstPackage() throws Throwable {
+    protected Repository addRepoContractsAndDatatypesPackage() throws Throwable {
         this.mainPackage = this.createPackageWithPackageInfo(new String[] { PCM2JaMoPPTestUtils.REPOSITORY_NAME });
+        this.mainPackage = this
+                .createPackageWithPackageInfo(new String[] { PCM2JaMoPPTestUtils.REPOSITORY_NAME, "contracts" });
+        this.mainPackage = this
+                .createPackageWithPackageInfo(new String[] { PCM2JaMoPPTestUtils.REPOSITORY_NAME, "datatypes" });
         final CorrespondenceInstance ci = this.getCorrespondenceInstance();
         if (null == ci) {
             throw new RuntimeException("Could not get correspondence instance.");

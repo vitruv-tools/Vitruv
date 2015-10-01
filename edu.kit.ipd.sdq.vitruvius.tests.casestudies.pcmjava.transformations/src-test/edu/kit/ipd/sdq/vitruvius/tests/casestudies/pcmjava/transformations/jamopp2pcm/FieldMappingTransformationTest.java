@@ -26,7 +26,7 @@ public class FieldMappingTransformationTest extends JaMoPP2PCMTransformationTest
 
     @Test
     public void testAddFieldToClassThatCorrespondsToCompositeDatatype() throws Throwable {
-        super.addFirstPackage();
+        super.addRepoContractsAndDatatypesPackage();
         final CompositeDataType cdt = super.addClassThatCorrespondsToCompositeDatatype();
         final String fieldType = "String";
         final String fieldName = "stringField";
@@ -41,7 +41,7 @@ public class FieldMappingTransformationTest extends JaMoPP2PCMTransformationTest
     public void testRenameFieldInClassThatCorrespondsToCompositeDatatype() throws Throwable {
         final String fieldTypeName = "String";
         final String fieldName = "stringField";
-        super.addFirstPackage();
+        super.addRepoContractsAndDatatypesPackage();
         final CompositeDataType cdt = super.addClassThatCorrespondsToCompositeDatatype();
         this.addFieldToClassWithName(cdt.getEntityName(), fieldTypeName, fieldName, InnerDeclaration.class);
 
@@ -56,7 +56,7 @@ public class FieldMappingTransformationTest extends JaMoPP2PCMTransformationTest
     public void testChangeTypeOfFieldInClassThatCorrespondsToCompositeDatatype() throws Throwable {
         final String fieldTypeName = "String";
         final String fieldName = "stringField";
-        super.addFirstPackage();
+        super.addRepoContractsAndDatatypesPackage();
         final CompositeDataType cdt = super.addClassThatCorrespondsToCompositeDatatype();
         this.addFieldToClassWithName(cdt.getEntityName(), fieldTypeName, fieldName, InnerDeclaration.class);
 
@@ -111,7 +111,7 @@ public class FieldMappingTransformationTest extends JaMoPP2PCMTransformationTest
 
     private void createRepoBasicComponentAndInterface() throws Throwable, CoreException, InterruptedException {
         // create main package
-        super.addFirstPackage();
+        super.addRepoContractsAndDatatypesPackage();
         // create package and classes
         this.addPackageAndImplementingClass(PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + "Providing");
         this.addPackageAndImplementingClass(PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + "Requiring");

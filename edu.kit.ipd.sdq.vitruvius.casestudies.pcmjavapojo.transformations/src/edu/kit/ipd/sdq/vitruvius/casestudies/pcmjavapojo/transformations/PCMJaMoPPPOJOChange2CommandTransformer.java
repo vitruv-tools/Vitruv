@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavapojo.transformations;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import org.emftext.language.java.members.ClassMethod;
 import org.palladiosimulator.pcm.repository.BasicComponent;
@@ -42,9 +43,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationRunnable;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusRecordingCommand;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusTransformationRecordingCommand;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange;
 
 public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2CommandTransformerBase {
@@ -106,14 +106,14 @@ public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2Comm
     }
 
     @Override
-    protected VitruviusRecordingCommand executeChangeRefiner(final List<Change> changesForTransformation,
+    protected VitruviusTransformationRecordingCommand executeChangeRefiner(final List<Change> changesForTransformation,
             final Blackboard blackboard) {
         final CompositeChange compositeChange = (CompositeChange) changesForTransformation.get(0);
-        final VitruviusRecordingCommand vitruviusCommand = EMFCommandBridge
-                .createVitruviusRecordingCommand(new TransformationRunnable() {
+        final VitruviusTransformationRecordingCommand vitruviusCommand = EMFCommandBridge
+                .createVitruviusTransformationRecordingCommand(new Callable<TransformationResult>() {
 
                     @Override
-                    public TransformationResult runTransformation() {
+                    public TransformationResult call() {
                         return PCMJaMoPPPOJOChange2CommandTransformer.this
                                 .executeClassMethodBodyChangeRefiner(blackboard, compositeChange);
 

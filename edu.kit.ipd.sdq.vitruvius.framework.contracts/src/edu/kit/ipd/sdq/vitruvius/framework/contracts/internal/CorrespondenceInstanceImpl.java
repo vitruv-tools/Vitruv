@@ -823,7 +823,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
                             }
                         }
                     }
-                    CorrespondenceInstanceImpl.this.tuid2CorrespondencesMap.put(newTUID, correspondencesForOldSegment);
+                    CorrespondenceInstanceImpl.this.tuid2CorrespondencesMap.put(oldTUID, correspondencesForOldSegment);
                 }
             }
         };

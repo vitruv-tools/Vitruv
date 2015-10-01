@@ -87,6 +87,11 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 			correspondenceRepositoryAlreadyExists = true
 			return repository.toArray
 		}
+		//if the contracts or datatypes packages has been created we simply create the correspondence to the repository
+		if(packageName == "contracts" ||packageName == "datatypes"){
+			logger.debug("created " + packageName + " package - create correspondence to the repository" )
+			return repository.toArray
+		}
 		val String userMsg = "A package has been created. Please decide whether and which corresponding architectural element should be created"
 		val String[] selections = #["Create basic component", "Create composite component", "Create system",
 			"Do nothing/Decide later"]
