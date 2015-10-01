@@ -36,10 +36,11 @@ public class DefaultImplementations {
     public static final ChangeSynchronizing EFFECTLESS_EXTERNAL_CHANGESYNC = new ChangeSynchronizing() {
         @Override
         public List<List<Change>> synchronizeChanges(List<Change> changes) {
+            return null;
         }
 
         @Override
-        public void synchronizeChange(Change change) {
+        public void synchronizeChange(Change changee) {
         }
     };
 
@@ -101,6 +102,7 @@ public class DefaultImplementations {
         @Override
         public List<List<Change>> synchronizeChanges(List<Change> changes) {
             synchronizeChanges(changes, null, null);
+            return null;
         }
 
         @Override
