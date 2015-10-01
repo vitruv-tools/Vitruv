@@ -109,8 +109,7 @@ public class MonitoredEditor extends AbstractMonitoredEditor
 
             @Override
             public List<List<Change>> synchronizeChanges(final List<Change> changes) {
-                // TODO Auto-generated method stub
-
+                return null;
             }
 
             @Override
