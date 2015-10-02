@@ -11,8 +11,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreBridge;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableArrayList;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableList;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
 
 /**
  * Base class for TUID calculators and resolvers. It handles the default parts of the TUID like
@@ -27,14 +27,17 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
 
     private final String tuidPrefix;
 
-    private final ClaimableList<EObject> cachedResourcelessRoots;
+    // FIXME MK check whether cachedResourcelessRoots and cachedRoot2KeyMap can be replaced with a
+    // BiMap
+    private final ClaimableMap<Integer, EObject> cachedResourcelessRoots;
+    private int nextCacheKey = 0;
     // TODO MK (cache): if necessary remove objects that were created and cached but never stored,
     // as this is the only way to have something in the cache that should no longer be there
     private final Map<EObject, Integer> cachedRoot2KeyMap;
 
     public TUIDCalculatorAndResolverBase(final String tuidPrefix) {
         this.tuidPrefix = tuidPrefix;
-        this.cachedResourcelessRoots = new ClaimableArrayList<EObject>();
+        this.cachedResourcelessRoots = new ClaimableHashMap<Integer, EObject>();
         this.cachedRoot2KeyMap = new HashMap<EObject, Integer>();
     }
 
@@ -97,12 +100,12 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
 
     private void addRootToCache(final EObject root) {
         int key = getCacheKey(root);
-        this.cachedResourcelessRoots.setClaimingNullOrSameListed(key, root);
+        this.cachedResourcelessRoots.putClaimingNullOrSameMapped(key, root);
     }
 
     private boolean isCached(final EObject root) {
         int key = getCacheKey(root);
-        boolean cached = this.cachedResourcelessRoots.containsElementAtPosition(key);
+        boolean cached = this.cachedResourcelessRoots.containsKey(key);
         LOGGER.debug("The key '" + key + "' is currently " + (cached ? "" : "not") + " in the tuid cache.");
         return cached;
     }
@@ -162,13 +165,14 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
         Integer key = this.cachedRoot2KeyMap.get(root);
         if (key == null) {
             key = getNextCacheKey();
-            this.cachedResourcelessRoots.setClaimingNullOrSameListed(key, root);
+            this.cachedResourcelessRoots.putClaimingNullOrSameMapped(key, root);
+            this.cachedRoot2KeyMap.put(root, key);
         }
         return key;
     }
 
-    private Integer getNextCacheKey() {
-        return this.cachedResourcelessRoots.size();
+    private int getNextCacheKey() {
+        return this.nextCacheKey++;
     }
 
     private String[] getSegmentsAfterCachedTUIDMarker(final String tuid) {
@@ -233,7 +237,7 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
 
     private EObject claimRootFromCache(final String tuid) {
         int key = claimCacheKey(tuid);
-        return this.cachedResourcelessRoots.claimValueForIndex(key);
+        return this.cachedResourcelessRoots.claimValueForKey(key);
     }
 
     /**

@@ -29,9 +29,19 @@ public class ClaimableArrayList<E> extends ArrayList<E> implements ClaimableList
 
 	@Override
 	public E setClaimingNullOrSameListed(int index, E element) {
-		E previouslyListed = set(index, element);
-		boolean bothNull = element == null && previouslyListed == null;
-		boolean nullOrSameListed = bothNull || element.equals(previouslyListed);
+		// check whether the element to set will be next to the last index
+		boolean isNextToLastIndex = index == size();
+		E previouslyListed = null;
+		if (isNextToLastIndex) {
+			add(index, element);
+		} else if (index < size()) {
+			previouslyListed = set(index, element);
+		} else {
+			throw new RuntimeException("aaaaa");
+		}
+		
+		boolean previouslyNull = previouslyListed == null;
+		boolean nullOrSameListed = previouslyNull || previouslyListed.equals(element);
 		if (!nullOrSameListed) {
 			throw new RuntimeException(getIndexViolationMsg(index, "the element '" + element + "'"));
 		}
