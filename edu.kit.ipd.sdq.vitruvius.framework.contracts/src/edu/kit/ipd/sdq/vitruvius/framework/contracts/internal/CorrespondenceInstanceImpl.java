@@ -784,15 +784,15 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
              * @return
              */
             @Override
-            public Pair<TUID, Set<Correspondence>> performPreAction(final TUID oldTUID) {
+            public Pair<TUID, Set<Correspondence>> performPreAction(final TUID oldCurrentTUID) {
                 // The TUID is used as key in this map. Therefore the entry has to be removed before
                 // the hashCode of the TUID changes.
                 // remove the old map entries for the tuid before its hashcode changes
                 Set<Correspondence> correspondencesForOldTUID = CorrespondenceInstanceImpl.this.tuid2CorrespondencesMap
-                        .remove(oldTUID);
+                        .remove(oldCurrentTUID);
                 // because featureInstance2CorrespondingFIMap uses no TUID as key we do not need to
                 // update it
-                return new Pair<TUID, Set<Correspondence>>(oldTUID, correspondencesForOldTUID);
+                return new Pair<TUID, Set<Correspondence>>(oldCurrentTUID, correspondencesForOldTUID);
             }
 
         };
@@ -806,24 +806,27 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
              */
             @Override
             public void performPostAction(final Pair<TUID, Set<Correspondence>> removedMapEntry) {
-                TUID oldTUID = removedMapEntry.getFirst();
+                TUID oldCurrentTUID = removedMapEntry.getFirst();
                 Set<Correspondence> correspondencesForOldSegment = removedMapEntry.getSecond();
                 // re-add the entries using the tuid with the new hashcode
                 if (correspondencesForOldSegment != null) {
-                    for (Correspondence correspondence : correspondencesForOldSegment) {
-                        if (correspondence instanceof SameTypeCorrespondence) {
-                            SameTypeCorrespondence stc = (SameTypeCorrespondence) correspondence;
-                            if (oldTUID != null && oldTUID.equals(stc.getElementATUID())) {
-                                stc.setElementATUID(newTUID);
-                            } else if (oldTUID != null && oldTUID.equals(stc.getElementBTUID())) {
-                                stc.setElementBTUID(newTUID);
-                            } else {
-                                throw new RuntimeException("None of the corresponding elements in '" + correspondence
-                                        + "' has the TUID '" + oldTUID + "'!");
-                            }
-                        }
-                    }
-                    CorrespondenceInstanceImpl.this.tuid2CorrespondencesMap.put(oldTUID, correspondencesForOldSegment);
+                    // for (Correspondence correspondence : correspondencesForOldSegment) {
+                    // if (correspondence instanceof SameTypeCorrespondence) {
+                    // SameTypeCorrespondence stc = (SameTypeCorrespondence) correspondence;
+                    // if (oldCurrentTUID != null && oldCurrentTUID.equals(stc.getElementATUID())) {
+                    // stc.setElementATUID(newTUID);
+                    // } else if (oldCurrentTUID != null &&
+                    // oldCurrentTUID.equals(stc.getElementBTUID())) {
+                    // stc.setElementBTUID(newTUID);
+                    // } else {
+                    // throw new RuntimeException("None of the corresponding elements in '" +
+                    // correspondence
+                    // + "' has the TUID '" + oldCurrentTUID + "'!");
+                    // }
+                    // }
+                    // }
+                    CorrespondenceInstanceImpl.this.tuid2CorrespondencesMap.put(oldCurrentTUID,
+                            correspondencesForOldSegment);
                 }
             }
         };

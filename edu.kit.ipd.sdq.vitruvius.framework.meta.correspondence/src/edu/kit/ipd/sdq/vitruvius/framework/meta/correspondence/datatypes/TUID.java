@@ -96,7 +96,7 @@ public class TUID implements Serializable {
         LAST_SEGMENT_2_TUID_INSTANCES_MAP.remove(oldSegment);
     }
 
-    private static TUID getInstance(final String tuidString, final boolean recursively) {
+    private static synchronized TUID getInstance(final String tuidString, final boolean recursively) {
         if (tuidString == null) {
             throw new IllegalArgumentException("The null string is no TUID!");
         } else {
@@ -119,10 +119,10 @@ public class TUID implements Serializable {
             } // a real prefix of the specified tuidString or nothing was already mapped (but not
               // the complete tuidString)
             instance = new TUID(splitTUIDString);
-            lastSegmentOrPrefix = instance.getLastSegment();
-            LAST_SEGMENT_2_TUID_INSTANCES_MAP.put(lastSegmentOrPrefix, instance);
+            ForwardHashedBackwardLinkedTree<String>.Segment lastSegment = instance.getLastSegment();
+            LAST_SEGMENT_2_TUID_INSTANCES_MAP.put(lastSegment, instance);
             // also create TUIDs for all prefixes of the specified tuidString and register them
-            final Iterator<ForwardHashedBackwardLinkedTree<String>.Segment> segmentIterator = lastSegmentOrPrefix
+            final Iterator<ForwardHashedBackwardLinkedTree<String>.Segment> segmentIterator = lastSegment
                     .iterator();
             ForwardHashedBackwardLinkedTree<String>.Segment pivot;
             while (segmentIterator.hasNext()) {
@@ -143,10 +143,6 @@ public class TUID implements Serializable {
 
     private ForwardHashedBackwardLinkedTree<String>.Segment getLastSegment() {
         return this.lastSegment;
-    }
-
-    private String getLastSegmentString() {
-        return this.lastSegment.getValueString();
     }
 
     /**
@@ -183,37 +179,24 @@ public class TUID implements Serializable {
      *             {@link IllegalArgumentException} if the specified {@link newLastSegmentString}
      *             contains the TUID separator
      */
-    public void renameLastSegment(final String newLastSegmentString, final BeforeHashCodeUpdateLambda before,
+    private void renameLastSegment(final String newLastSegmentString, final BeforeHashCodeUpdateLambda before,
             final AfterHashCodeUpdateLambda after) {
         final String segmentSeperator = VitruviusConstants.getTUIDSegmentSeperator();
         final boolean containsSeparator = newLastSegmentString.indexOf(segmentSeperator) != -1;
         if (!containsSeparator) {
             final ForwardHashedBackwardLinkedTree<String>.Segment ancestor = this.lastSegment.iterator().next();
-            String destinationTUIDString = "";
+            String fullDestinationTUIDString = "";
             if (ancestor != null) {
-                destinationTUIDString = ancestor.toString(segmentSeperator) + segmentSeperator;
+            	fullDestinationTUIDString = ancestor.toString(segmentSeperator) + segmentSeperator;
             }
-            destinationTUIDString += newLastSegmentString;
-            this.moveLastSegment(destinationTUIDString, before, after);
+            fullDestinationTUIDString += newLastSegmentString;
+            final TUID fullDestinationTUID = getInstance(fullDestinationTUIDString);
+            this.moveLastSegment(fullDestinationTUID, before, after);
         } else {
             throw new IllegalArgumentException("The last segment '" + this.lastSegment + "' of the TUID '" + this
                     + "' cannot be renamed to '" + newLastSegmentString
                     + "' because this String contains the TUID separator '" + segmentSeperator + "'!");
         }
-    }
-
-    /**
-     * Moves the last segment of this TUID instance to the specified destination. If the destination
-     * already exists, then all depending TUIDs of this instance and the destination instance are
-     * merged. If the specified destination is identical to
-     *
-     * @param fullDestinationTUIDString
-     *            the full TUID string of the move destination
-     */
-    private void moveLastSegment(final String fullDestinationTUIDString, final BeforeHashCodeUpdateLambda before,
-            final AfterHashCodeUpdateLambda after) {
-        final TUID fullDestinationTUID = getInstance(fullDestinationTUIDString);
-        this.moveLastSegment(fullDestinationTUID, before, after);
     }
 
     /**
@@ -317,7 +300,7 @@ public class TUID implements Serializable {
     }
 
     /**
-     * Renames a single segments or multiple segments of this TUID instance so that it represents
+     * Renames a single segment or multiple segments of this TUID instance so that it represents
      * the specified new TUID. It is <b>not</b> possible to remove or add segments, i.e. the number
      * of segments has to stay unchanged. The position and number of segments that should be changed
      * are not restricted. <br/>
@@ -338,15 +321,15 @@ public class TUID implements Serializable {
         while (-1 != firstSegmentToChange) {
             final TUID oldPrefixPlusFirstSegmentToChange = TUID.getTUIDPrefix(this, firstSegmentToChange);
             final TUID newPrefixPlusFirstChangedSegment = TUID.getTUIDPrefix(newTUID, firstSegmentToChange);
-            final String newSegment = newPrefixPlusFirstChangedSegment.getLastSegmentString();
             changedPairs.add(new Pair<String, String>(oldPrefixPlusFirstSegmentToChange.toString(),
                     newPrefixPlusFirstChangedSegment.toString()));
-            oldPrefixPlusFirstSegmentToChange.renameLastSegment(newSegment, before, after);
+            oldPrefixPlusFirstSegmentToChange.moveLastSegment(newPrefixPlusFirstChangedSegment, before, after);
             // enjoy the side-effect of TUID: the right segment of this and newTUID will be changed
             // too
             firstSegmentToChange = this.getFirstSegmentToChange(newTUID);
         }
         return changedPairs;
+        // FIXME MK REMOVE CHANGEDPAIRS
     }
 
     @Override
@@ -397,19 +380,28 @@ public class TUID implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        return 31 + this.lastSegment.hashCode();
-    }
+	public int hashCode() {
+		return 31 + ((lastSegment == null) ? 0 : lastSegment.hashCode());
+	}
 
-    @Override
-    public boolean equals(final Object obj) {
-        if (obj == null || !(obj instanceof TUID)) {
-            return false;
-        }
-        return this.lastSegment == ((TUID) obj).lastSegment;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TUID other = (TUID) obj;
+		if (lastSegment == null) {
+			if (other.lastSegment != null)
+				return false;
+		} else if (!lastSegment.equals(other.lastSegment))
+			return false;
+		return true;
+	}
 
-    public interface BeforeHashCodeUpdateLambda {
+	public interface BeforeHashCodeUpdateLambda {
         Pair<TUID, Set<Correspondence>> performPreAction(TUID oldTUID);
     }
 

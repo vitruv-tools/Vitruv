@@ -125,16 +125,6 @@ public class ForwardHashedBackwardLinkedTree<T> {
                 }
             };
         }
-
-        @Override
-        public int hashCode() {
-            return System.identityHashCode(this);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            return this == obj;
-        }
     }
 
     private class SegmentCreatorAndLinker implements ValueCreatorAndLinker<T, Segment> {

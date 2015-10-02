@@ -1,5 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.change.ChangeDescription;
@@ -8,8 +11,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreBridge;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableArrayList;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableList;
 
 /**
  * Base class for TUID calculators and resolvers. It handles the default parts of the TUID like
@@ -24,13 +27,15 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
 
     private final String tuidPrefix;
 
-    private final ClaimableMap<Integer, EObject> cachedResourcelessRoots;
+    private final ClaimableList<EObject> cachedResourcelessRoots;
     // TODO MK (cache): if necessary remove objects that were created and cached but never stored,
     // as this is the only way to have something in the cache that should no longer be there
+    private final Map<EObject, Integer> cachedRoot2KeyMap;
 
     public TUIDCalculatorAndResolverBase(final String tuidPrefix) {
         this.tuidPrefix = tuidPrefix;
-        this.cachedResourcelessRoots = new ClaimableHashMap<Integer, EObject>();
+        this.cachedResourcelessRoots = new ClaimableArrayList<EObject>();
+        this.cachedRoot2KeyMap = new HashMap<EObject, Integer>();
     }
 
     @Override
@@ -92,12 +97,12 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
 
     private void addRootToCache(final EObject root) {
         int key = getCacheKey(root);
-        this.cachedResourcelessRoots.put(key, root);
+        this.cachedResourcelessRoots.setClaimingNullOrSameListed(key, root);
     }
 
     private boolean isCached(final EObject root) {
         int key = getCacheKey(root);
-        boolean cached = this.cachedResourcelessRoots.containsKey(key);
+        boolean cached = this.cachedResourcelessRoots.containsElementAtPosition(key);
         LOGGER.debug("The key '" + key + "' is currently " + (cached ? "" : "not") + " in the tuid cache.");
         return cached;
     }
@@ -118,7 +123,7 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
         String[] segmentsAfterMarker = getSegmentsAfterCachedTUIDMarker(tuid);
         boolean isTUIDOfRoot = segmentsAfterMarker != null && segmentsAfterMarker.length == 1;
         if (isTUIDOfRoot) {
-            Integer key = getCacheKey(tuid);
+            Integer key = getCacheKeyForTUIDString(tuid);
             if (key != null) {
                 removeCacheEntryForKey(key);
             }
@@ -129,12 +134,8 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
         return VitruviusConstants.getCachedTUIDMarker() + getCacheKey(root);
     }
 
-    private Integer getCacheKey(final EObject root) {
-        return root.hashCode();
-    }
-
     private Integer claimCacheKey(final String tuid) {
-        Integer key = getCacheKey(tuid);
+        Integer key = getCacheKeyForTUIDString(tuid);
         if (key == null) {
             throw new IllegalArgumentException("Cannot get the cache key for the tuid '" + tuid
                     + "' because it is not of the form '{marker}{key}...'!");
@@ -143,14 +144,31 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
         }
     }
 
-    private Integer getCacheKey(final String tuid) {
+    private Integer getCacheKeyForTUIDString(final String tuid) {
         String[] segmentsAfterMarker = getSegmentsAfterCachedTUIDMarker(tuid);
         if (segmentsAfterMarker != null && segmentsAfterMarker.length > 0) {
             String keyString = segmentsAfterMarker[0];
-            return Integer.parseInt(keyString);
+            return getCacheKeyForKeySegment(keyString);
         } else {
             return null;
         }
+    }
+
+    private int getCacheKeyForKeySegment(final String keySegment) {
+        return Integer.parseInt(keySegment);
+    }
+
+    private Integer getCacheKey(final EObject root) {
+        Integer key = this.cachedRoot2KeyMap.get(root);
+        if (key == null) {
+            key = getNextCacheKey();
+            this.cachedResourcelessRoots.setClaimingNullOrSameListed(key, root);
+        }
+        return key;
+    }
+
+    private Integer getNextCacheKey() {
+        return this.cachedResourcelessRoots.size();
     }
 
     private String[] getSegmentsAfterCachedTUIDMarker(final String tuid) {
@@ -215,7 +233,7 @@ public abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAnd
 
     private EObject claimRootFromCache(final String tuid) {
         int key = claimCacheKey(tuid);
-        return this.cachedResourcelessRoots.claimValueForKey(key);
+        return this.cachedResourcelessRoots.claimValueForIndex(key);
     }
 
     /**
