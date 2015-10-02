@@ -38,7 +38,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple;
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 public class CorrespondenceInstanceImpl extends ModelInstance implements CorrespondenceInstanceDecorator {
@@ -784,7 +784,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
              * @return
              */
             @Override
-            public Pair<TUID, Set<Correspondence>> performPreAction(final TUID oldCurrentTUID) {
+            public Triple<TUID, String, Set<Correspondence>> performPreAction(final TUID oldCurrentTUID) {
                 // The TUID is used as key in this map. Therefore the entry has to be removed before
                 // the hashCode of the TUID changes.
                 // remove the old map entries for the tuid before its hashcode changes
@@ -792,7 +792,8 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
                         .remove(oldCurrentTUID);
                 // because featureInstance2CorrespondingFIMap uses no TUID as key we do not need to
                 // update it
-                return new Pair<TUID, Set<Correspondence>>(oldCurrentTUID, correspondencesForOldTUID);
+                return new Triple<TUID, String, Set<Correspondence>>(oldCurrentTUID, oldCurrentTUID.toString(),
+                        correspondencesForOldTUID);
             }
 
         };
@@ -805,26 +806,28 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
              * @param removedMapEntries
              */
             @Override
-            public void performPostAction(final Pair<TUID, Set<Correspondence>> removedMapEntry) {
+            public void performPostAction(final Triple<TUID, String, Set<Correspondence>> removedMapEntry) {
                 TUID oldCurrentTUID = removedMapEntry.getFirst();
-                Set<Correspondence> correspondencesForOldSegment = removedMapEntry.getSecond();
+                String oldCurrentTUIDString = removedMapEntry.getSecond();
+                Set<Correspondence> correspondencesForOldSegment = removedMapEntry.getThird();
                 // re-add the entries using the tuid with the new hashcode
                 if (correspondencesForOldSegment != null) {
-                    // for (Correspondence correspondence : correspondencesForOldSegment) {
-                    // if (correspondence instanceof SameTypeCorrespondence) {
-                    // SameTypeCorrespondence stc = (SameTypeCorrespondence) correspondence;
-                    // if (oldCurrentTUID != null && oldCurrentTUID.equals(stc.getElementATUID())) {
-                    // stc.setElementATUID(newTUID);
-                    // } else if (oldCurrentTUID != null &&
-                    // oldCurrentTUID.equals(stc.getElementBTUID())) {
-                    // stc.setElementBTUID(newTUID);
-                    // } else {
-                    // throw new RuntimeException("None of the corresponding elements in '" +
-                    // correspondence
-                    // + "' has the TUID '" + oldCurrentTUID + "'!");
-                    // }
-                    // }
-                    // }
+                    for (Correspondence correspondence : correspondencesForOldSegment) {
+                        if (correspondence instanceof SameTypeCorrespondence) {
+                            SameTypeCorrespondence stc = (SameTypeCorrespondence) correspondence;
+                            if (oldCurrentTUIDString != null
+                                    && oldCurrentTUIDString.equals(stc.getElementATUID().toString())) {
+                                stc.setElementATUID(oldCurrentTUID);
+                            } else if (oldCurrentTUIDString != null
+                                    && oldCurrentTUIDString.equals(stc.getElementBTUID().toString())) {
+                                stc.setElementBTUID(oldCurrentTUID);
+                            } else if (oldCurrentTUID == null || (!oldCurrentTUID.equals(stc.getElementATUID())
+                                    && !oldCurrentTUID.equals(stc.getElementBTUID()))) {
+                                throw new RuntimeException("None of the corresponding elements in '" + correspondence
+                                        + "' has the TUID '" + oldCurrentTUID + "'!");
+                            }
+                        }
+                    }
                     CorrespondenceInstanceImpl.this.tuid2CorrespondencesMap.put(oldCurrentTUID,
                             correspondencesForOldSegment);
                 }

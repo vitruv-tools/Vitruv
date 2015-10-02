@@ -20,6 +20,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ForwardHashedBackwardLinkedTree;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple;
 
 /**
  * A class for Temporarily Unique IDentifiers (TUIDs) that internally uses a
@@ -216,7 +217,7 @@ public class TUID implements Serializable {
             final ForwardHashedBackwardLinkedTree<String>.Segment oldSegment = segmentPair.getFirst();
             final TUID oldTUID = LAST_SEGMENT_2_TUID_INSTANCES_MAP.get(oldSegment);
             final ForwardHashedBackwardLinkedTree<String>.Segment newSegment = segmentPair.getSecond();
-            Pair<TUID, Set<Correspondence>> removedMapEntries = null;
+            Triple<TUID, String, Set<Correspondence>> removedMapEntries = null;
             if (before != null) {
                 removedMapEntries = before.performPreAction(oldTUID);
             }
@@ -402,11 +403,11 @@ public class TUID implements Serializable {
 	}
 
 	public interface BeforeHashCodeUpdateLambda {
-        Pair<TUID, Set<Correspondence>> performPreAction(TUID oldTUID);
+        Triple<TUID, String, Set<Correspondence>> performPreAction(TUID oldTUID);
     }
 
     public interface AfterHashCodeUpdateLambda {
-        void performPostAction(Pair<TUID, Set<Correspondence>> removedMapEntries);
+        void performPostAction(Triple<TUID, String, Set<Correspondence>> removedMapEntries);
     }
 
     private Object writeReplace() throws ObjectStreamException {
