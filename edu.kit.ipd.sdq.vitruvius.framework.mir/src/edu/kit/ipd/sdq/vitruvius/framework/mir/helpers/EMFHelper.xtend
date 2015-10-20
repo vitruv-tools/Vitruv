@@ -40,6 +40,13 @@ class EMFHelper {
 		return '''((«eClassName») «packageExpression».getEClassifiers().get(«classifierID»))'''
 	}
 	
+	static def getJavaExpressionThatCreates(EClass eClass) {
+		val eClassCode = "(" + eClass.getJavaExpressionThatReturns(true) + ")"
+		val ePackageCode = "(" + eClass.EPackage.getJavaExpressionThatReturns(true) + ")"
+		
+		return '''((«eClass.instanceTypeName») «ePackageCode».getEFactoryInstance().create(«eClassCode»))'''
+	}
+	
 	/**
 	 * Returns a Java expression that when evaluated returns the given
 	 * EStructuralFeature.

@@ -36,6 +36,13 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper
+import java.util.Collections
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
+import java.util.Optional
+import java.util.Collection
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EclipseHelper
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 
 /**
  * @author Dominik Werle
@@ -54,7 +61,7 @@ class MIRCodeGenerator implements IGenerator {
 	var Map<Mapping, String> mappingClassNames;
 
 
-	var List<ClassMapping> ClassMappings
+	var List<ClassMapping> classMappings
 	
 	@Override
 	public override doGenerate(Resource input, IFileSystemAccess fsa) {
@@ -127,7 +134,8 @@ class MIRCodeGenerator implements IGenerator {
 		EChange, CorrespondenceInstance, MIRModelInformationProvider, EStructuralFeature,
 		EClass, AbstractMIRChange2CommandTransforming, EObject, List, ArrayList,
 		Set, HashSet, EPackage, Pair, MIRMappingHelper, MappedCorrespondenceInstance,
-		Logger
+		Logger, JavaHelper, Collections, Blackboard, Optional, EcoreHelper,
+		Collection, VURI, EclipseHelper, TransformationResult
 	]
 	
 	/**
@@ -146,7 +154,7 @@ class MIRCodeGenerator implements IGenerator {
 	}
 
 	private def generateTransformationExecuting(MIR file, URI resourcePath, IFileSystemAccess fsa) {
-		ClassMappings = file.classMappings
+		classMappings = file.classMappings
 		
 		fsa.generateFile(SRC_GEN_FOLDER + file.fqn.classNameToJavaPath, '''
 			package «file.configuration.package»;
@@ -193,11 +201,6 @@ class MIRCodeGenerator implements IGenerator {
 				public List<Pair<VURI, VURI>> getTransformableMetamodels() {
 					return transformableMetamodels;
 				}
-				
-				@Override
-				protected void setCorrespondenceInstance(CorrespondenceInstance correspondenceInstance) {
-					this.mappedCorrespondenceInstance.setCorrespondenceInstance(correspondenceInstance);
-				}
 			}
 		''')
 	}
@@ -218,12 +221,38 @@ class MIRCodeGenerator implements IGenerator {
 		val className = nextMappingClassName
 		mappingClassNames.put(mapping, className)
 		
+		val leftFQN = mapping.left.type.instanceTypeName
+		val leftType = mapping.left.type
+		val leftName = mapping.left.name
+		
+		val rightFQN = mapping.right.type.instanceTypeName
+		val rightType = mapping.right.type
+		val rightName = mapping.right.name
+		
+		val hasParent = (mapping.featureMapping != null)
+		
+		val parentClassMapping = mapping.featureMapping?.parent
+		val parentClassMappingClass = mappingClassNames.get(parentClassMapping)
+		
+		// TODO: DW - Direction important here?
+		val parent = mapping.featureMapping?.parent?.left
+		val parentFQN = parent?.type?.instanceTypeName
+		val parentType = parent?.type
+		val parentName = parent?.name
+		
+		// TODO: DW - multiple hops. non-list...
+		val parentReference = mapping.featureMapping?.left?.get(0)?.feature
+		
+		val parentRight = mapping.featureMapping?.parent?.right
+		val parentRightFQN = parentRight?.type?.instanceTypeName
+		val parentRightType = parentRight?.type
+		val parentRightName = parentRight?.name
+		
 		fsa.generateFile(SRC_GEN_FOLDER + (pkgName.mappingPackageName + "." + className).classNameToJavaPath,
 		'''
 			package «pkgName.mappingPackageName»;
 			
 			«getImportStatements(IMPORTED_CLASSES_MAPPING)»
-
 			
 			/**
 			 * Class Mapping
@@ -237,14 +266,14 @@ class MIRCodeGenerator implements IGenerator {
 				private «className»() {}
 				
 				protected boolean checkConditions(EObject context,
-					MappedCorrespondenceInstance correspondenceInstance) {
+					Blackboard blackboard) {
 
-					if (!(context instanceof «mapping.left.type.instanceTypeName»)) {
+					if (!(context instanceof «leftFQN»)) {
 						return false;
 					}
 					
-					«mapping.left.type.instanceTypeName» «mapping.left.name» =
-						(«mapping.left.type.instanceTypeName») context;
+					«leftFQN» «leftName» =
+						(«leftFQN») context;
 
 					«featureMappingCheckAndBindingJava(mapping, 0)»
 					
@@ -263,19 +292,109 @@ class MIRCodeGenerator implements IGenerator {
 			
 				@Override
 				protected EClass getMappedEClass() {
-					throw new UnsupportedOperationException();
+					return «EMFHelper.getJavaExpressionThatReturns(leftType, true)»;
+				}
+				
+				@Override
+				public String getMappingID() {
+					return «className».class.getName();
 				}
 			
 				@Override
-				protected MIRMappingChangeResult restorePostConditions(EObject eObject, EObject target, EChange change) {
-					throw new UnsupportedOperationException();
+				protected void restorePostConditions(EObject eObject, EObject target, EChange change,
+						Blackboard blackboard) {
+					LOGGER.trace("restorePostConditions(" + eObject.toString() + ", " + target.toString() + ", " + change.toString() + ")");
+					
+					final «leftFQN» «leftName» = «JavaHelper.simpleName».requireType(eObject, «leftFQN».class);
+					final «rightFQN» «rightName» = «JavaHelper.simpleName».requireType(target, «rightFQN».class);
+					
+					// TODO: restore post conditions
 				}
 			
 				@Override
-				protected MIRMappingChangeResult createCorresponding(EObject eObject,
-						MappedCorrespondenceInstance correspondenceInstance) {
-					throw new UnsupportedOperationException();
+				protected Collection<Pair<EObject, VURI>> createCorresponding(EObject eObject,
+						Blackboard blackboard) {
+					LOGGER.trace("createCorresponding(" + eObject.toString() + ", " + blackboard.toString() + ")");
+					final «MappedCorrespondenceInstance.name» ci = getMappedCorrespondenceInstanceFromBlackboard(blackboard);
+					
+					final Collection<Pair<EObject, VURI>> result = new HashSet<Pair<EObject, VURI>>();
+					
+					«leftFQN» «leftName» = «JavaHelper.simpleName».requireType(eObject, «leftFQN».class);
+					«rightFQN» «rightName» = «EMFHelper.getJavaExpressionThatCreates(rightType)»;
+					
+					«IF hasParent»
+					final «parentRightFQN» «parentRightName» = claimParentCorresponding(«leftName», blackboard);
+					«parentRightName».get«parentReference.name.toFirstUpper»().add(«rightName»);
+					«ENDIF»
+					
+					if («rightName».eContainer() == null) {
+						VURI resourceVURI = VURI.getInstance(EclipseHelper.askForNewResource(«rightName»));
+						
+						result.add(new Pair<EObject, VURI>((EObject) «rightName», resourceVURI));
+					}
+					
+					// create here, since containment is decided here
+					ci.createMappedCorrespondence(«leftName», «rightName», this);
+					
+					return result;
 				}
+				
+				@Override
+				protected void deleteCorresponding(EObject eObject, EObject target, Blackboard blackboard, TransformationResult transformationResult) {
+					LOGGER.trace("deleteCorresponding(" + eObject.toString()
+						+ ", " + target.toString()
+						+ ", " + blackboard.toString() + ")");
+					
+					super.deleteCorresponding(eObject, target, blackboard, transformationResult);
+				}
+				
+				public static Optional<«rightFQN»> getCorresponding(«leftFQN» «leftName», «Blackboard.simpleName» blackboard) {
+					final «MappedCorrespondenceInstance.simpleName» ci =
+						getMappedCorrespondenceInstanceFromBlackboard(blackboard);
+						
+					final Optional<«rightFQN»> «rightName» = JavaHelper.tryCast(
+						ci.getMappingTarget(«leftName», «className».INSTANCE), «rightFQN».class);
+						
+					return «rightName»;
+				}
+				
+				public static «rightFQN» claimCorresponding(«leftFQN» «leftName», «Blackboard.simpleName» blackboard) {
+					final «rightFQN» «rightName» = getCorresponding(«leftName», blackboard)
+						.orElseThrow(() ->
+							new IllegalStateException("Could not find mapped «rightFQN» for «leftFQN» " + «leftName».toString()));
+					
+					return «rightName»;
+				}
+				
+				«IF hasParent»
+				private Optional<«parentFQN»> getParent(«leftFQN» «leftName») {
+					final Optional<«parentFQN»> «parentName» = EcoreHelper.findOneReferencee(«leftName»,
+						«EMFHelper.getJavaExpressionThatReturns(parentReference, true)», «parentFQN».class);
+						
+					return «parentName»;
+				}
+				
+				private «parentFQN» claimParent(«leftFQN» «leftName») {
+					final Optional<«parentFQN»> «parentName»_opt = getParent(«leftName»);
+					final «parentName» = «parentName»_opc.orElseThrow(() -> new IllegalStateException(
+						"Could not find a referencing «parentFQN» for «leftFQN» " + «leftName».toString()));
+						
+					return «parentName»;
+				}
+				
+				private Optional<«parentRightFQN»> getParentCorresponding(«leftFQN» «leftName», Blackboard blackboard) {
+					return getParent(«leftName»).map(it ->
+						«parentClassMappingClass».getCorresponding(it, blackboard).orElse(null));
+				}
+				
+				private «parentRightFQN» claimParentCorresponding(«leftFQN» «leftName», Blackboard blackboard) {
+					final «parentFQN» «parentName» = claimParent(«leftName»);
+					final «parentRightFQN» «parentRightName» =
+						«parentClassMappingClass».claimCorresponding(«parentName», blackboard);
+						
+					return «parentRightName»;
+				}
+				«ENDIF»
 			}
 		'''
 		)
