@@ -6,6 +6,7 @@ import java.util.Collections;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.emf.common.ui.dialogs.WorkspaceResourceDialog;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -24,8 +25,8 @@ public class EclipseHelper {
 	public static URI askForNewResource(String message) {
 		// FIXME make interchangable or move to UserInteractor
 //		return new URI(random.nextInt();
-		final URI resourceURI = URI.createPlatformResourceURI("MockupProject/model/repository_tmp_" + (repositoryCounter++) + ".repository", false); 
-//		final URI resourceURI = toURI(WorkspaceResourceDialog.openNewFile(getShell(), "Select new resource", message, null, null));
+//		final URI resourceURI = URI.createPlatformResourceURI("MockupProject/model/repository_tmp_" + (repositoryCounter++) + ".repository", false); 
+		final URI resourceURI = toURI(WorkspaceResourceDialog.openNewFile(getShell(), "Select new resource", message, null, null));
 		return resourceURI;
 	}
 	

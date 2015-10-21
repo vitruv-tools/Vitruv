@@ -27,6 +27,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EclipseHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRMappingHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRUserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 /**
@@ -40,7 +41,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
  */
 public abstract class AbstractMIRMappingRealization implements MIRMappingRealization {
     private final static Logger LOGGER = Logger.getLogger(AbstractMIRMappingRealization.class);
-
+    
     /**
      * Returns the {@link EClass} mapped by this mapping.
      * 
@@ -222,5 +223,18 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
                 transformationResult.addRootEObjectToSave(eObject, resourceVURI);
             }
         }
+    }
+    
+    
+	private MIRUserInteracting userInteracting;
+    /**
+     * Sets the user interacting for asking for resources etc.
+     */
+    protected void setMIRUserInteracting(MIRUserInteracting userInteracting) {
+    	this.userInteracting = userInteracting;
+    }
+    
+    protected MIRUserInteracting getUserInteracting() {
+    	return this.userInteracting;
     }
 }
