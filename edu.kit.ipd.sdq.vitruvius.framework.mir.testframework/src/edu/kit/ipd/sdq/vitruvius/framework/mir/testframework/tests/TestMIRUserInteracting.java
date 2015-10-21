@@ -38,4 +38,7 @@ public class TestMIRUserInteracting implements MIRUserInteracting {
 		return(takeInputOfType(URI.class));
 	}
 
+	public void assertEmpty() {
+		assertTrue("Input Queue must be empty", inputQueue.isEmpty());
+	}
 }

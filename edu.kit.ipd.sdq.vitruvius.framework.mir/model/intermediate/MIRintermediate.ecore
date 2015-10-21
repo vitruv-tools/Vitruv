@@ -59,8 +59,10 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PostCondition" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="WithBlockPostCondition" eSuperTypes="#//PostCondition">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="classFQN" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="methodFQN" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral=""/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="parameterNames" lowerBound="1"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NamedEClass" eSuperTypes="#//NamedTyped"/>
   <eClassifiers xsi:type="ecore:EClass" name="NamedTyped" abstract="true">

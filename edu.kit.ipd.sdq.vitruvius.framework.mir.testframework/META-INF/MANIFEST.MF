@@ -24,6 +24,8 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.mir;bundle-version="1.0.0",
  org.eclipse.emf.ecore.change,
  org.apache.log4j,
  org.eclipse.jdt.core,
- edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer
+ edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer,
+ org.eclipse.ocl,
+ org.eclipse.ocl.ecore
 Bundle-ActivationPolicy: lazy
 

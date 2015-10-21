@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.xml.ws.ServiceMode;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -233,5 +235,5 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 	}
 
 	// TODO: DW remove private field that can only be changed throughg reflection / dependency injection?
-	private MIRUserInteracting userInteracting = new EclipseDialogMIRUserInteracting();
+	private transient MIRUserInteracting userInteracting = new EclipseDialogMIRUserInteracting();
 }

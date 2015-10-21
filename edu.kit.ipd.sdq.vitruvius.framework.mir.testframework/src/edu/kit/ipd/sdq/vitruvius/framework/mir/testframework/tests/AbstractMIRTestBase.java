@@ -9,8 +9,16 @@ import java.util.function.Supplier;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.ocl.ParserException;
+import org.eclipse.ocl.ecore.Constraint;
+import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
+import org.eclipse.ocl.ecore.OCL;
+import org.eclipse.ocl.expressions.OCLExpression;
+import org.eclipse.ocl.helper.OCLHelper;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
@@ -37,16 +45,7 @@ public abstract class AbstractMIRTestBase extends VitruviusEMFCasestudyTest {
 	private static final Logger LOGGER = Logger.getLogger(AbstractMIRTestBase.class);
 	private static final String MODEL_PATH = TestUtil.PROJECT_URI + "/model";
 	
-	protected MIRUserInteracting userInteracting = new TestMIRUserInteracting();
-
-	/**
-	 * @see JavaHelper#requireType(Object, Class)
-	 * @see JavaHelper#requireType(Object, Class, String)
-	 */
-	protected static void assertType(String message, Object object, Class<?> type) {
-		assertNotNull(object);
-		assertTrue(message, type.isInstance(object));
-	}
+	protected TestMIRUserInteracting userInteracting = new TestMIRUserInteracting();
 
 	@Override
 	protected void setUserInteractor(UserInteracting newUserInteracting, ChangeSynchronizerImpl changeSynchronizerImpl)
@@ -62,6 +61,10 @@ public abstract class AbstractMIRTestBase extends VitruviusEMFCasestudyTest {
 		eph.reinitializeProject();
 		eph.getProject().getFolder("model").create(true, true, null);
 
+		super.setUpTest();
+
+		// The Change2CommandTransfomer class has to be loaded here to determine the
+		// mappings for injection.
 		@SuppressWarnings("unchecked")
 		Set<MIRMappingRealization> mappings = Collections
 				.checkedSet(JavaHelper.requireType(
@@ -73,8 +76,6 @@ public abstract class AbstractMIRTestBase extends VitruviusEMFCasestudyTest {
 			JavaBridge.setFieldInClass(AbstractMIRMappingRealization.class, "userInteracting", mapping,
 					userInteracting);
 		}
-
-		super.setUpTest();
 	}
 
 	// Utility functions
@@ -117,6 +118,34 @@ public abstract class AbstractMIRTestBase extends VitruviusEMFCasestudyTest {
 			manipulate.accept(it);
 			return null;
 		});
+	}
+	
+	protected static URI createModelURI(String fileName) {
+		return URI.createPlatformResourceURI(MODEL_PATH + "/" + fileName, false);
+	}
+	
+	/**
+	 * @see JavaHelper#requireType(Object, Class)
+	 * @see JavaHelper#requireType(Object, Class, String)
+	 */
+	protected static void assertType(String message, Object object, Class<?> type) {
+		assertNotNull(object);
+		assertTrue(message, type.isInstance(object));
+	}
+	
+	protected static void assertOCL(String message, EObject context, String oclPredicate) {
+		OCL ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);
+		OCLHelper<EClassifier, ?, ?, Constraint> helper = ocl.createOCLHelper();
+
+		OCLExpression<EClassifier> predicate = null;
+		try {
+			predicate = helper.createQuery(oclPredicate);
+		} catch (ParserException e) {
+			predicate = null;
+			e.printStackTrace();
+		}
+		
+		assertTrue(message, ocl.check(context, predicate));
 	}
 
 }

@@ -124,7 +124,7 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 					mir.predicates += newPredicate
 					newPredicate.methodFQN =
 						generatorStatus.getJvmName(mapping.constraints.whenwhere)
-							+ "." + equalitiesMethodName(reverse)
+							+ "." + assignmentMethodName(reverse)
 					newPredicate.parameterNames +=
 						mapping.constraints.whenwhere
 							.createParameterList
@@ -140,9 +140,13 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 			newMapping.postconditions +=
 				mapping.constraints.withBlocks.map [
 					val newPostcondition = createWithBlockPostCondition
-					newPostcondition.classFQN =
+					newPostcondition.methodFQN =
 						generatorStatus.getJvmName(it)
-							+ "." + equalitiesMethodName(reverse)
+							+ "." + assignmentMethodName(reverse)
+					newPostcondition.parameterNames +=		
+						it.createParameterList
+						  .map[tryGetName]
+							
 					newPostcondition
 				]
 				
