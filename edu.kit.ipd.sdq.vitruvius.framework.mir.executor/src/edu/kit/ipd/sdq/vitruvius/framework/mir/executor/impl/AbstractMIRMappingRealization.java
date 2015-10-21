@@ -3,6 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl;
 import static org.eclipse.xtext.xbase.lib.IterableExtensions.filter;
 import static org.eclipse.xtext.xbase.lib.IterableExtensions.toList;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
@@ -31,8 +32,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRUserIntera
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 /**
- * {@link AbstractMIRMappingRealization} is extended by the code generated from the intermediate
- * language.
+ * {@link AbstractMIRMappingRealization} is extended by the code generated from
+ * the intermediate language.
  * <p>
  * A mapping is instantiated for two model instances.
  *
@@ -40,201 +41,197 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
  *
  */
 public abstract class AbstractMIRMappingRealization implements MIRMappingRealization {
-    private final static Logger LOGGER = Logger.getLogger(AbstractMIRMappingRealization.class);
-    
-    /**
-     * Returns the {@link EClass} mapped by this mapping.
-     * 
-     * @return the {@link EClass} mapped by this mapping
-     */
-    protected abstract EClass getMappedEClass();
+	private final static Logger LOGGER = Logger.getLogger(AbstractMIRMappingRealization.class);
 
-    /**
-     * Check if the conditions of the mapping hold for the given {@link EObject} .
-     * 
-     * @param eObject
-     *            the object to check
-     * @return true if the mapping holds for the given object.
-     */
-    protected abstract boolean checkConditions(EObject eObject, Blackboard blackboard);
+	/**
+	 * Returns the {@link EClass} mapped by this mapping.
+	 * 
+	 * @return the {@link EClass} mapped by this mapping
+	 */
+	protected abstract EClass getMappedEClass();
 
-    /**
-     * Ensure that the postconditions ("where") still hold for the mapping.
-     * <p>
-     * The given {@link EChange} can be used to select the conditions that have to be checked.
-     * 
-     * @param eObject
-     *            the {@link EObject} that has been changed
-     * @param target
-     *            the {@link EObject} that <code>eObject</code> is corresponding to
-     * @param eChange
-     *            the change that was applied
-     * @return
-     */
-    protected abstract void restorePostConditions(EObject eObject, EObject target, EChange change,
-            Blackboard blackboard);
+	/**
+	 * Check if the conditions of the mapping hold for the given {@link EObject}
+	 * .
+	 * 
+	 * @param eObject
+	 *            the object to check
+	 * @return true if the mapping holds for the given object.
+	 */
+	protected abstract boolean checkConditions(EObject eObject, Blackboard blackboard);
 
-    /**
-     * Creates a corresponding object for <code>eObject</code> and a correspondence in the mapped
-     * meta model and registers it
-     * 
-     * @return the created objects
-     */
-    protected abstract Collection<Pair<EObject, VURI>> createCorresponding(EObject eObject, Blackboard blackboard);
+	/**
+	 * Ensure that the postconditions ("where") still hold for the mapping.
+	 * <p>
+	 * The given {@link EChange} can be used to select the conditions that have
+	 * to be checked.
+	 * 
+	 * @param eObject
+	 *            the {@link EObject} that has been changed
+	 * @param target
+	 *            the {@link EObject} that <code>eObject</code> is corresponding
+	 *            to
+	 * @param eChange
+	 *            the change that was applied
+	 * @return
+	 */
+	protected abstract void restorePostConditions(EObject eObject, EObject target, EChange change,
+			Blackboard blackboard);
 
-    /**
-     * Deletes the corresponding object to <code>eObject</code>, which is <code>target</code>, (and
-     * its children) and the correspondence itself. This method does not delete <code>eObject</code>
-     * .
-     * 
-     * @param source
-     * @param transformationResult
-     * @param correspondenceInstance
-     */
-    protected void deleteCorresponding(final EObject source, final EObject target, final Blackboard blackboard,
-            final TransformationResult transformationResult) {
-        final MappedCorrespondenceInstance correspondenceInstance = getMappedCorrespondenceInstanceFromBlackboard(
-                blackboard);
-        final Set<Correspondence> removedCorrespondences = correspondenceInstance
-                .removeDirectAndChildrenCorrespondencesOnBothSides(target);
-        final TUID sourceTUID = correspondenceInstance.calculateTUIDFromEObject(source);
+	/**
+	 * Creates a corresponding object for <code>eObject</code> and a
+	 * correspondence in the mapped meta model and registers it
+	 * 
+	 * @return the created objects
+	 */
+	protected abstract Collection<Pair<EObject, VURI>> createCorresponding(EObject eObject, Blackboard blackboard);
 
-        for (final Correspondence correspondence : removedCorrespondences) {
-            final Collection<TUID> eObjectsInCorrespondence = this.getTUIDsInCorrespondence(correspondence,
-                    correspondenceInstance);
-            eObjectsInCorrespondence.stream().filter(it -> !(it.equals(sourceTUID))).forEach(it -> {
-                final EObject itEObject = correspondenceInstance.resolveEObjectFromTUID(it);
-                this.deleteEObjectAndResourceIfRoot(itEObject, transformationResult);
-            });
-        }
-    }
+	/**
+	 * Deletes the corresponding object to <code>eObject</code>, which is
+	 * <code>target</code>, (and its children) and the correspondence itself.
+	 * This method does not delete <code>eObject</code> .
+	 * 
+	 * @param source
+	 * @param transformationResult
+	 * @param correspondenceInstance
+	 */
+	protected void deleteCorresponding(final EObject source, final EObject target, final Blackboard blackboard,
+			final TransformationResult transformationResult) {
+		final MappedCorrespondenceInstance correspondenceInstance = getMappedCorrespondenceInstanceFromBlackboard(
+				blackboard);
+		final Set<Correspondence> removedCorrespondences = correspondenceInstance
+				.removeDirectAndChildrenCorrespondencesOnBothSides(target);
+		final TUID sourceTUID = correspondenceInstance.calculateTUIDFromEObject(source);
 
-    private void deleteEObjectAndResourceIfRoot(final EObject eObjectToDelete,
-            final TransformationResult transformationResult) {
-        LOGGER.trace("Deleting " + eObjectToDelete.toString());
-        if (EcoreHelper.isRoot(eObjectToDelete)) {
-            transformationResult.addVURIToDeleteIfNotNull(VURI.getInstance(eObjectToDelete.eResource()));
-        }
-        EcoreUtil.delete(eObjectToDelete);
-    }
+		for (final Correspondence correspondence : removedCorrespondences) {
+			final Collection<TUID> eObjectsInCorrespondence = this.getTUIDsInCorrespondence(correspondence,
+					correspondenceInstance);
+			eObjectsInCorrespondence.stream().filter(it -> !(it.equals(sourceTUID))).forEach(it -> {
+				final EObject itEObject = correspondenceInstance.resolveEObjectFromTUID(it);
+				this.deleteEObjectAndResourceIfRoot(itEObject, transformationResult);
+			});
+		}
+	}
 
-    private Collection<TUID> getTUIDsInCorrespondence(final Correspondence correspondence,
-            final CorrespondenceInstance correspondenceInstance) {
-        final Set<TUID> result = new HashSet<TUID>();
-        if (correspondence instanceof EObjectCorrespondence) {
-            final EObjectCorrespondence eObjectCorrespondence = (EObjectCorrespondence) correspondence;
-            result.add(eObjectCorrespondence.getElementATUID());
-            result.add(eObjectCorrespondence.getElementBTUID());
-        } else {
-            LOGGER.info("Correspondence is not EObjectCorrespondence. Returning empty set.");
-        }
+	private void deleteEObjectAndResourceIfRoot(final EObject eObjectToDelete,
+			final TransformationResult transformationResult) {
+		LOGGER.trace("Deleting " + eObjectToDelete.toString());
+		if (EcoreHelper.isRoot(eObjectToDelete)) {
+			transformationResult.addVURIToDeleteIfNotNull(VURI.getInstance(eObjectToDelete.eResource()));
+		}
+		EcoreUtil.delete(eObjectToDelete);
+	}
 
-        return result;
-    }
+	private Collection<TUID> getTUIDsInCorrespondence(final Correspondence correspondence,
+			final CorrespondenceInstance correspondenceInstance) {
+		final Set<TUID> result = new HashSet<TUID>();
+		if (correspondence instanceof EObjectCorrespondence) {
+			final EObjectCorrespondence eObjectCorrespondence = (EObjectCorrespondence) correspondence;
+			result.add(eObjectCorrespondence.getElementATUID());
+			result.add(eObjectCorrespondence.getElementBTUID());
+		} else {
+			LOGGER.info("Correspondence is not EObjectCorrespondence. Returning empty set.");
+		}
 
-    /**
-     * Returns {@link EObject EObjects} that are possibly affected by this change.
-     * 
-     * @param eChange
-     * @return
-     */
-    protected Collection<EObject> getCandidates(final EChange eChange) {
-        final EClass mappedEClass = this.getMappedEClass();
-        final Collection<EObject> affectedObjects = MIRMappingHelper.getAllAffectedObjects(eChange);
-        return toList(filter(affectedObjects, p -> p.eClass().equals(mappedEClass)));
-    }
+		return result;
+	}
 
-    // FIXME DW: protected? move to MappedCorrespondenceInstance?
-    protected static MappedCorrespondenceInstance getMappedCorrespondenceInstanceFromBlackboard(
-            final Blackboard blackboard) {
-        final CorrespondenceInstance correspondenceInstance = blackboard.getCorrespondenceInstance();
-        if (!(correspondenceInstance instanceof MappedCorrespondenceInstance)) {
-            throw new IllegalArgumentException("The given correspondence instance " + correspondenceInstance
-                    + " is not a " + MappedCorrespondenceInstance.class.getSimpleName());
-        } else {
-            return (MappedCorrespondenceInstance) correspondenceInstance;
-        }
-    }
+	/**
+	 * Returns {@link EObject EObjects} that are possibly affected by this
+	 * change.
+	 * 
+	 * @param eChange
+	 * @return
+	 */
+	protected Collection<EObject> getCandidates(final EChange eChange) {
+		final EClass mappedEClass = this.getMappedEClass();
+		final Collection<EObject> affectedObjects = MIRMappingHelper.getAllAffectedObjects(eChange);
+		return toList(filter(affectedObjects, p -> p.eClass().equals(mappedEClass)));
+	}
 
-    @Override
-    public TransformationResult applyEChange(final EChange eChange, final Blackboard blackboard) {
-        final MappedCorrespondenceInstance correspondenceInstance = getMappedCorrespondenceInstanceFromBlackboard(
-                blackboard);
-        final TransformationResult transformationResult = new TransformationResult();
+	// FIXME DW: protected? move to MappedCorrespondenceInstance?
+	protected static MappedCorrespondenceInstance getMappedCorrespondenceInstanceFromBlackboard(
+			final Blackboard blackboard) {
+		final CorrespondenceInstance correspondenceInstance = blackboard.getCorrespondenceInstance();
+		if (!(correspondenceInstance instanceof MappedCorrespondenceInstance)) {
+			throw new IllegalArgumentException("The given correspondence instance " + correspondenceInstance
+					+ " is not a " + MappedCorrespondenceInstance.class.getSimpleName());
+		} else {
+			return (MappedCorrespondenceInstance) correspondenceInstance;
+		}
+	}
 
-        /*
-         * TODO: change to create candidates (EObject, PotentialTransition(new, still, remove),
-         * Mapping) in AbstractMIRChange2CommandTransforming.
-         */
-        final Collection<EObject> candidates = this.getCandidates(eChange);
+	@Override
+	public TransformationResult applyEChange(final EChange eChange, final Blackboard blackboard) {
+		final MappedCorrespondenceInstance correspondenceInstance = getMappedCorrespondenceInstanceFromBlackboard(
+				blackboard);
+		final TransformationResult transformationResult = new TransformationResult();
 
-        for (final EObject candidate : candidates) {
-            LOGGER.trace("Checking candidate " + candidate.toString());
+		/*
+		 * TODO: change to create candidates (EObject, PotentialTransition(new,
+		 * still, remove), Mapping) in AbstractMIRChange2CommandTransforming.
+		 */
+		final Collection<EObject> candidates = this.getCandidates(eChange);
 
-            final boolean mappedBefore = correspondenceInstance.checkIfMappedBy(candidate, this);
-            final boolean mappedAfter = this.checkConditions(candidate, blackboard);
+		for (final EObject candidate : candidates) {
+			LOGGER.trace("Checking candidate " + candidate.toString());
 
-            EObject mappingTarget = null;
+			final boolean mappedBefore = correspondenceInstance.checkIfMappedBy(candidate, this);
+			final boolean mappedAfter = this.checkConditions(candidate, blackboard);
 
-            if (mappedBefore) {
-                LOGGER.trace(candidate.toString() + " was already mapped.");
-                mappingTarget = Objects.requireNonNull(correspondenceInstance.getMappingTarget(candidate, this));
+			EObject mappingTarget = null;
 
-                if (!mappedAfter) {
-                    LOGGER.trace("... and is not mapped anymore.");
-                    this.deleteCorresponding(candidate, mappingTarget, blackboard, transformationResult);
-                }
-            }
+			if (mappedBefore) {
+				LOGGER.trace(candidate.toString() + " was already mapped.");
+				mappingTarget = Objects.requireNonNull(correspondenceInstance.getMappingTarget(candidate, this));
 
-            if (!mappedBefore && mappedAfter) {
-                LOGGER.trace("Create new correspondence for " + candidate.toString() + ":");
-                final Collection<Pair<EObject, VURI>> newRootObjects = this.createCorresponding(candidate, blackboard);
-                for (final Pair<EObject, VURI> newRootObject : newRootObjects) {
-                    LOGGER.trace(" -- " + newRootObject.getFirst().toString() + " -> "
-                            + newRootObject.getSecond().toString());
-                }
-                transformationResult.getRootEObjectsToSave().addAll(newRootObjects);
-                mappingTarget = Objects.requireNonNull(correspondenceInstance.getMappingTarget(candidate, this));
-            }
+				if (!mappedAfter) {
+					LOGGER.trace("... and is not mapped anymore.");
+					this.deleteCorresponding(candidate, mappingTarget, blackboard, transformationResult);
+				}
+			}
 
-            if (mappedAfter) {
-                LOGGER.trace("Still mapped.");
-                this.restorePostConditions(candidate, mappingTarget, eChange, blackboard);
-            }
-        }
+			if (!mappedBefore && mappedAfter) {
+				LOGGER.trace("Create new correspondence for " + candidate.toString() + ":");
+				final Collection<Pair<EObject, VURI>> newRootObjects = this.createCorresponding(candidate, blackboard);
+				for (final Pair<EObject, VURI> newRootObject : newRootObjects) {
+					LOGGER.trace(" -- " + newRootObject.getFirst().toString() + " -> "
+							+ newRootObject.getSecond().toString());
+				}
+				transformationResult.getRootEObjectsToSave().addAll(newRootObjects);
+				mappingTarget = Objects.requireNonNull(correspondenceInstance.getMappingTarget(candidate, this));
+			}
 
-        return transformationResult;
-    }
+			if (mappedAfter) {
+				LOGGER.trace("Still mapped.");
+				this.restorePostConditions(candidate, mappingTarget, eChange, blackboard);
+			}
+		}
 
-    /**
-     * Asks the user and creates new resources for EObjects in <code>affectedEObjects</code> that do
-     * not have a container.
-     * 
-     * @param blackboard
-     *            TODO
-     * @param transformationResult
-     */
-    private void handleNonContainedEObjects(final Collection<EObject> affectedEObjects, final Blackboard blackboard,
-            final TransformationResult transformationResult) {
-        final ModelProviding modelProviding = blackboard.getModelProviding();
-        for (final EObject eObject : affectedEObjects) {
-            if (eObject.eResource() == null) {
-                final VURI resourceVURI = VURI.getInstance(EclipseHelper.askForNewResource(eObject));
-                transformationResult.addRootEObjectToSave(eObject, resourceVURI);
-            }
-        }
-    }
-    
-    
-	private MIRUserInteracting userInteracting;
-    /**
-     * Sets the user interacting for asking for resources etc.
-     */
-    protected void setMIRUserInteracting(MIRUserInteracting userInteracting) {
-    	this.userInteracting = userInteracting;
-    }
-    
-    protected MIRUserInteracting getUserInteracting() {
-    	return this.userInteracting;
-    }
+		return transformationResult;
+	}
+
+	/**
+	 * Asks the user and creates new resources for EObjects in
+	 * <code>affectedEObjects</code> that do not have a container.
+	 * 
+	 * @param blackboard
+	 *            TODO
+	 * @param transformationResult
+	 */
+	protected Collection<Pair<EObject, VURI>> handleNonContainedEObjects(final Collection<EObject> eObjects) {
+		Collection<Pair<EObject, VURI>> result = new ArrayList<>();
+		for (final EObject eObject : eObjects) {
+			if (eObject.eResource() == null) {
+				final VURI resourceVURI = VURI
+						.getInstance(userInteracting.askForNewResource(EcoreHelper.createSensibleString(eObject)));
+				result.add(new Pair<>(eObject, resourceVURI));
+			}
+		}
+		
+		return result;
+	}
+
+	// TODO: DW remove private field that can only be changed throughg reflection / dependency injection?
+	private MIRUserInteracting userInteracting = new EclipseDialogMIRUserInteracting();
 }

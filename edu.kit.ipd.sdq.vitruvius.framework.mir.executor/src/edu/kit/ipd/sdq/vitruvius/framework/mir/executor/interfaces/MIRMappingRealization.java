@@ -17,7 +17,6 @@ public interface MIRMappingRealization extends Serializable {
 	 * Applies the mapping.
 	 * @param eChange
 	 * @param correspondenceInstance
-	 * @return TODO
 	 * @return the resulting change
 	 */
 	public TransformationResult applyEChange(EChange eChange, Blackboard blackboard);

@@ -1,8 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.executortest;
 
-import static edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util.MIRTestUtil.createAttributeTUIDMetamodel;
+import static edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util.MIRTestFrameworkUtil.createAttributeTUIDMetamodel;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -27,7 +28,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationL
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util.MIRTestUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.tests.AbstractMIRTestBase;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util.MIRTestFrameworkUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.VitruviusEMFCasestudyTest;
@@ -37,7 +39,7 @@ import uml_mockup.UClass;
 import uml_mockup.UPackage;
 import uml_mockup.Uml_mockupFactory;
 
-public class CreateBasicComponentTest extends VitruviusEMFCasestudyTest implements SynchronisationListener {
+public class CreateBasicComponentTest extends AbstractMIRTestBase implements SynchronisationListener {
 	private static final Logger LOGGER = Logger.getLogger(CreateBasicComponentTest.class);
 	private static final String MODEL_PATH = TestUtil.PROJECT_URI + "/model";
 
@@ -53,40 +55,6 @@ public class CreateBasicComponentTest extends VitruviusEMFCasestudyTest implemen
 		super.triggerSynchronization(vuri);
 	}
 
-	private <T extends EObject> T createManipulateSaveAndSyncResource(String resourcePath, Supplier<T> manipulate)
-			throws IOException {
-		final VURI resourceVURI = VURI.getInstance(resourcePath);
-
-		final T result = manipulate.get();
-		final URI resourceURI = URI.createPlatformResourceURI(resourcePath, false);
-		final Resource resource = EcoreResourceBridge.loadResourceAtURI(resourceURI, resourceSet);
-		EcoreResourceBridge.saveEObjectAsOnlyContent(result, resource);
-
-		this.synchronizeFileChange(FileChangeKind.CREATE, resourceVURI);
-
-		return result;
-	}
-
-	private EObject createAndSyncResourceWithRootObject(String resourcePath, EObject rootEObject) throws IOException {
-		return createManipulateSaveAndSyncResource(resourcePath, () -> rootEObject);
-	}
-
-	private <T extends EObject, R> R recordManipulateSaveAndSync(T input, Function<T, R> manipulate)
-			throws IOException {
-		changeRecorder.beginRecording(Collections.singletonList(input));
-		R result = manipulate.apply(input);
-		EcoreResourceBridge.saveResource(input.eResource());
-		this.triggerSynchronization(input);
-
-		return result;
-	}
-
-	private <T extends EObject> void recordManipulateSaveAndSync(T input, Consumer<T> manipulate) throws IOException {
-		recordManipulateSaveAndSync(input, it -> {
-			manipulate.accept(it);
-			return null;
-		});
-	}
 
 	private UPackage createPackage(String name) {
 		UPackage pkg = Uml_mockupFactory.eINSTANCE.createUPackage();
@@ -110,10 +78,11 @@ public class CreateBasicComponentTest extends VitruviusEMFCasestudyTest implemen
 		Logger.getRootLogger().setLevel(Level.ALL);
 	}
 
+	@Ignore
 	@Test
 	public void createMapAndUnmapPackage() throws IOException {
 		UPackage pkg = createPackage("FirstPackageName_mapped");
-		createAndSyncResourceWithRootObject(MODEL_PATH + "/uml.uml", pkg);
+		createAndSyncModelWithRootObject(MODEL_PATH + "/uml.uml", pkg);
 		recordManipulateSaveAndSync(pkg, it -> {
 			it.setName("FirstPackageName_nomap");
 		});
@@ -125,7 +94,7 @@ public class CreateBasicComponentTest extends VitruviusEMFCasestudyTest implemen
 		// step 0
 		LOGGER.trace("Step 0");
 		UPackage pkg = createPackage("FirstPackageName");
-		createAndSyncResourceWithRootObject(MODEL_PATH + "/uml.uml", pkg);
+		createAndSyncModelWithRootObject(MODEL_PATH + "/uml.uml", pkg);
 
 		if (n < 1) {
 			return;
@@ -205,7 +174,6 @@ public class CreateBasicComponentTest extends VitruviusEMFCasestudyTest implemen
 		});
 	}
 
-	@Ignore
 	@Test
 	public void step_0_createPackage() throws IOException {
 		doNStepsOfTest(0);
@@ -275,7 +243,7 @@ public class CreateBasicComponentTest extends VitruviusEMFCasestudyTest implemen
 
 	@Override
 	protected MetaRepositoryImpl createMetaRepository() {
-		return MIRTestUtil.createEmptyMetaRepository(
+		return MIRTestFrameworkUtil.createEmptyMetaRepository(
 				createAttributeTUIDMetamodel("http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.pcm_mockup",
 						"repository"),
 				createAttributeTUIDMetamodel("http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.uml_mockup", "uml"));

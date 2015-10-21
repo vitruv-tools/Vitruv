@@ -22,17 +22,24 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.Response;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.ResponseRegistry;
 
 public abstract class AbstractMIRChange2CommandTransforming implements Change2CommandTransforming {
+	// static field names in generated code
+	public static final String MAPPINGS_FIELD_NAME = "MAPPINGS";
+	public static final String MM_ONE_FIELD_NAME = "MM_ONE";
+	public static final String MM_TWO_FIELD_NAME = "MM_TWO";
+	public static final String VURI_ONE_FIELD_NAME = "VURI_ONE";
+	public static final String VURI_TWO_FIELD_NAME = "VURI_TWO";
+	
     private final static Logger LOGGER = Logger.getLogger(AbstractMIRChange2CommandTransforming.class);
 
     private final ResponseRegistry responseRegistry;
     private final InvariantRegistry invariantRegistry;
     private final Collection<MIRMappingRealization> mappings;
-
+    
     public AbstractMIRChange2CommandTransforming() {
         this.responseRegistry = new ResponseRegistryImpl();
         this.invariantRegistry = new InvariantRegistryImpl();
         this.mappings = new HashSet<MIRMappingRealization>();
-
+        
         this.setup();
     }
 

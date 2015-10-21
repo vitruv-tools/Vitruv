@@ -1,13 +1,17 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.generator
 
 import com.google.inject.Inject
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EclipseHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRMappingHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRChange2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRMappingRealization
@@ -22,29 +26,27 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Mapp
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.WhenWhereJavaClass
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.ArrayList
+import java.util.Collection
+import java.util.Collections
 import java.util.HashMap
 import java.util.HashSet
 import java.util.List
 import java.util.Map
+import java.util.Objects
+import java.util.Optional
 import java.util.Set
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper
-import java.util.Collections
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import java.util.Optional
-import java.util.Collection
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EclipseHelper
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
-import org.eclipse.emf.ecore.EReference
-import java.util.Objects
+
+import static edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRChange2CommandTransforming.*
 
 /**
  * @author Dominik Werle
@@ -122,13 +124,14 @@ class MIRCodeGenerator implements IGenerator {
 	 * The classes that are imported <strong>inside the generated class</strong>.
 	 */
 	private static final List<? extends Class<?>> IMPORTED_CLASSES_TRANSFORMATION_EXECUTING = #[
-		EObject, Map, HashMap, List, ArrayList,
+		EObject, Map, HashMap, List, ArrayList, Set, HashSet,
 		IllegalArgumentException,
 		Pair, VURI,
 		AbstractMIRChange2CommandTransforming,
 		CorrespondenceInstance, EMFModelChange, Change,
 		EChange, EcoreHelper,
-		Logger
+		Logger,
+		MIRMappingRealization
 	]
 	
 	private static final List<? extends Class<?>> IMPORTED_CLASSES_MAPPING = #[
@@ -174,22 +177,30 @@ class MIRCodeGenerator implements IGenerator {
 				«createLoggerField(file.configuration.type)»
 				
 				/** The first mapped metamodel. **/
-				public final String MM_ONE = "«file.packages.get(0).nsURI»";
+				public final static String «MM_ONE_FIELD_NAME» = "«file.packages.get(0).nsURI»";
 				/** The second mapped metamodel. **/
-				public final String MM_TWO = "«file.packages.get(1).nsURI»";
+				public final static String «MM_TWO_FIELD_NAME» = "«file.packages.get(1).nsURI»";
+				
+				/** The mappings. **/
+				public final static Set<«MIRMappingRealization.simpleName»> «MAPPINGS_FIELD_NAME» = new HashSet<«MIRMappingRealization.simpleName»>();
+				{
+					«FOR name : mappingClassNames.values»
+					«MAPPINGS_FIELD_NAME».add(«file.configuration.package».mappings.«name».INSTANCE);
+					«ENDFOR»
+				}
 				
 				/** The correspondence instance for this TransformationExecuting. */
 				
-				private final VURI VURI_ONE = VURI.getInstance(MM_ONE);
-				private final VURI VURI_TWO = VURI.getInstance(MM_TWO);
+				public final static VURI «VURI_ONE_FIELD_NAME» = VURI.getInstance(«MM_ONE_FIELD_NAME»);
+				public final static VURI «VURI_TWO_FIELD_NAME» = VURI.getInstance(«MM_TWO_FIELD_NAME»);
 				
 				/* Transformable metamodels. */
 				private final List<Pair<VURI, VURI>> transformableMetamodels;
 				
 				public «file.configuration.type»() {
 					transformableMetamodels = new ArrayList<Pair<VURI, VURI>>();
-					transformableMetamodels.add(new Pair<VURI, VURI>(VURI_ONE, VURI_TWO));
-					transformableMetamodels.add(new Pair<VURI, VURI>(VURI_TWO, VURI_ONE));
+					transformableMetamodels.add(new Pair<VURI, VURI>(«VURI_ONE_FIELD_NAME», «VURI_TWO_FIELD_NAME»));
+					transformableMetamodels.add(new Pair<VURI, VURI>(«VURI_TWO_FIELD_NAME», «VURI_ONE_FIELD_NAME»));
 				}
 				
 				@Override
@@ -334,11 +345,7 @@ class MIRCodeGenerator implements IGenerator {
 					«parentRightName».get«parentReference.name.toFirstUpper»().add(«rightName»);
 					«ENDIF»
 					
-					if («rightName».eContainer() == null) {
-						VURI resourceVURI = VURI.getInstance(EclipseHelper.askForNewResource(«rightName»));
-						
-						result.add(new Pair<EObject, VURI>((EObject) «rightName», resourceVURI));
-					}
+					result.addAll(handleNonContainedEObjects(Collections.singleton(«rightName»)));
 					
 					// create here, since containment is decided here
 					ci.createMappedCorrespondence(«leftName», «rightName», this);

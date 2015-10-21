@@ -118,14 +118,14 @@ public class MappingUClassToInterface extends AbstractMIRMappingRealization {
 		return Collections.emptySet();
 	}
 
-	private Optional<UPackage> getParent(UClass upc) {
+	public static Optional<UPackage> getParent(UClass upc) {
 		final Optional<UPackage> upcParent = EcoreHelper.findOneReferencee(upc,
 				Uml_mockupPackage.eINSTANCE.getUPackage_Classes(), UPackage.class);
 
 		return upcParent;
 	}
 
-	private UPackage claimParent(UClass upc) {
+	public static UPackage claimParent(UClass upc) {
 		final Optional<UPackage> upcParent = getParent(upc);
 		final UPackage pkg = upcParent.orElseThrow(
 				() -> new IllegalStateException("Could not find a referencing UPackage for " + upc.toString()));
@@ -133,11 +133,11 @@ public class MappingUClassToInterface extends AbstractMIRMappingRealization {
 		return pkg;
 	}
 	
-	private Optional<Repository> getParentCorresponding(UClass upc, Blackboard blackboard) {
+	public static Optional<Repository> getParentCorresponding(UClass upc, Blackboard blackboard) {
 		return getParent(upc).map(it -> MappingUPackageToRepository.getCorresponding(it, blackboard).orElse(null));
 	}
 	
-	private Repository claimParentCorresponding(UClass upc, Blackboard blackboard) {
+	public static Repository claimParentCorresponding(UClass upc, Blackboard blackboard) {
 		final UPackage parent = claimParent(upc);
 		final Repository bc = MappingUPackageToRepository.claimCorresponding(parent, blackboard);
 		

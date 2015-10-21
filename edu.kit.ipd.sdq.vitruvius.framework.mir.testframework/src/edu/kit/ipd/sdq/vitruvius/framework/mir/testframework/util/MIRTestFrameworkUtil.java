@@ -13,7 +13,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AttributeTUIDCalcul
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
 /**
- * Utility class for tests for the MIR language.
+ * Utility class for the testing framework for the MIR language.
  * @author Dominik Werle
  */
 public final class MIRTestFrameworkUtil {
