@@ -7,12 +7,7 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: SimpleAtoBTest_SimplestA,
- SimpleAtoBTest_SimplestA.impl,
- SimpleAtoBTest_SimplestA.util,
- SimpleAtoBTest_SimplestB,
- SimpleAtoBTest_SimplestB.impl,
- SimpleAtoBTest_SimplestB.util,
+Export-Package: edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.tests,
  edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.mir;bundle-version="1.0.0",
  org.eclipse.core.runtime,
@@ -23,6 +18,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.mir;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.metarepository;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  org.eclipse.core.resources;bundle-version="3.9.0",
- edu.kit.ipd.sdq.vitruvius.framework.vsum
+ edu.kit.ipd.sdq.vitruvius.framework.vsum,
+ edu.kit.ipd.sdq.vitruvius.tests.util
 Bundle-ActivationPolicy: lazy
 

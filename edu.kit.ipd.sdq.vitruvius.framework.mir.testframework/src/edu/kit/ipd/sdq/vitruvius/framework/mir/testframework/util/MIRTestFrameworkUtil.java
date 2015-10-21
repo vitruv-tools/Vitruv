@@ -16,7 +16,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
  * Utility class for tests for the MIR language.
  * @author Dominik Werle
  */
-public final class MIRTestUtil {
+public final class MIRTestFrameworkUtil {
 	public static final String[] DEFAULT_ATTRIBUTE_NAMES = new String[] {
 		"id", "name", "entityName"
 	};
