@@ -98,12 +98,6 @@ public class MappedCorrespondenceInstance extends AbstractDelegatingCorresponden
 		correspondence2MappingMap.put(correspondence, mapping);
 	}
 	
-	public SameTypeCorrespondence createMappedCorrespondence(EObject eObjectA, EObject eObjectB, MIRMappingRealization mappingRealization) {
-		SameTypeCorrespondence stc = createAndAddEObjectCorrespondence(eObjectA, eObjectB);
-		registerMappingForCorrespondence(mappingRealization, stc);
-		return stc;
-	}
-	
 	public void unregisterMappingForCorrespondence(MIRMappingRealization mapping,
 			SameTypeCorrespondence correspondence) {
 		if (correspondence2MappingMap.get(correspondence) != mapping) {
