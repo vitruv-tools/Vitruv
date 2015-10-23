@@ -172,6 +172,8 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 		/*
 		 * TODO: change to create candidates (EObject, PotentialTransition(new,
 		 * still, remove), Mapping) in AbstractMIRChange2CommandTransforming.
+		 * Create -> cannot be mapped before
+		 * Delete -> cannot be mapped after
 		 */
 		final Collection<EObject> candidates = this.getCandidates(eChange);
 
