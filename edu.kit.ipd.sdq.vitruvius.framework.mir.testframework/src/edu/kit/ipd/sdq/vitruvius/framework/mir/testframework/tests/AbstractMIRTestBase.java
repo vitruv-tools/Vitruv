@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.tests;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -12,6 +13,8 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.transaction.RecordingCommand;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
@@ -22,12 +25,15 @@ import org.eclipse.ocl.helper.OCLHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusRecordingCommand;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusTransformationRecordingCommand;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRChange2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRMappingRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRUserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EclipseProjectHelper;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util.ClaimableSingletonContainer;
 import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge;
@@ -103,12 +109,27 @@ public abstract class AbstractMIRTestBase extends VitruviusEMFCasestudyTest {
 		return createManipulateSaveAndSyncModel(modelPath, () -> rootEObject);
 	}
 
-	protected <T extends EObject, R> R recordManipulateSaveAndSync(T input, Function<T, R> manipulate)
+	protected <T extends EObject, R> R recordManipulateSaveAndSync(final T input, final Function<T, R> manipulate)
 			throws IOException {
 		changeRecorder.beginRecording(Collections.singletonList(input));
-		R result = manipulate.apply(input);
+		
+		vsum.detachTransactionalEditingDomain();
+		
+		final ClaimableSingletonContainer<R> resultContainer = new ClaimableSingletonContainer<>(true); // is set inside the closure
+		// TODO: should we create a command on the stack here
+		// instead of detaching the transactional editing domain?
+//		domain.getCommandStack().execute(new RecordingCommand(domain) {
+//			@Override
+//			protected void doExecute() {
+		
+				resultContainer.put(manipulate.apply(input));				
+
+//			}
+//		});
 		EcoreResourceBridge.saveResource(input.eResource());
-		this.triggerSynchronization(input);
+		triggerSynchronization(input);
+		
+		R result = resultContainer.claim();
 
 		return result;
 	}

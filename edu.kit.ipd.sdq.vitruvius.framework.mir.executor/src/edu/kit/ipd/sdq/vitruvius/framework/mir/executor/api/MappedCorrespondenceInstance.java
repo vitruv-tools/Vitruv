@@ -3,7 +3,9 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api;
 import static edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.filterType;
 import static edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.requireType;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
@@ -18,14 +20,14 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
-public class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInstanceDecorator<Map<SameTypeCorrespondence,MIRMappingRealization>> {
-	private Map<SameTypeCorrespondence,MIRMappingRealization> correspondence2MappingMap;
+public class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInstanceDecorator<Map<SameTypeCorrespondence,Collection<MIRMappingRealization>>> {
+	private Map<SameTypeCorrespondence,Collection<MIRMappingRealization>> correspondence2MappingMap;
  
 	@SuppressWarnings("unchecked")
 	public MappedCorrespondenceInstance(CorrespondenceInstanceDecorator correspondenceInstance) {
 		// this seems to be the only way to provide the correct instance of the map class to the ADCID
-		super(correspondenceInstance, (Class<Map<SameTypeCorrespondence,MIRMappingRealization>>) new HashMap<SameTypeCorrespondence,MIRMappingRealization>().getClass());
-		this.correspondence2MappingMap = new HashMap<SameTypeCorrespondence, MIRMappingRealization>();
+		super(correspondenceInstance, (Class<Map<SameTypeCorrespondence,Collection<MIRMappingRealization>>>) new HashMap<SameTypeCorrespondence,MIRMappingRealization>().getClass());
+		this.correspondence2MappingMap = new HashMap<SameTypeCorrespondence, Collection<MIRMappingRealization>>();
 	}
 
 	@Override
@@ -34,12 +36,12 @@ public class MappedCorrespondenceInstance extends AbstractDelegatingCorresponden
 	}
 	
 	@Override
-	protected Map<SameTypeCorrespondence,MIRMappingRealization> getDecoratorObject() {
+	protected Map<SameTypeCorrespondence,Collection<MIRMappingRealization>> getDecoratorObject() {
 		return this.correspondence2MappingMap;
 	}
 
 	@Override
-	protected void initializeFromDecoratorObject(Map<SameTypeCorrespondence,MIRMappingRealization> object) {
+	protected void initializeFromDecoratorObject(Map<SameTypeCorrespondence,Collection<MIRMappingRealization>> object) {
 		this.correspondence2MappingMap = object;
 	}
 	
@@ -48,9 +50,18 @@ public class MappedCorrespondenceInstance extends AbstractDelegatingCorresponden
 		// empty
 	}
 
+	/**
+	 * Register a mapping for a correspondence that can then be retrieved by calling
+	 * {@link #getMappingsForCorrespondence(Correspondence)}.
+	 * @param correspondence
+	 * @param mapping
+	 */
 	public void registerMappingForCorrespondence(SameTypeCorrespondence correspondence, MIRMappingRealization mapping) {
 		// FIXME MK (deco): store mapping realization automatically
-		 this.correspondence2MappingMap.put(correspondence, mapping);
+		if (!this.correspondence2MappingMap.containsKey(correspondence))
+			this.correspondence2MappingMap.put(correspondence, new HashSet<>());
+		
+		this.correspondence2MappingMap.get(correspondence).add(mapping);
 	}
 	
 	// TODO: clean up methods copied from edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMappedCorrespondenceInstance
@@ -72,7 +83,7 @@ public class MappedCorrespondenceInstance extends AbstractDelegatingCorresponden
 			MIRMappingRealization mapping) {
 		
 		return filterType(getAllCorrespondences(eObject), SameTypeCorrespondence.class)
-				.filter(it -> mapping.equals(getMappingForCorrespondence(it)))
+				.filter(it -> getMappingsForCorrespondence(it).contains(mapping))
 				.findFirst()
 				.orElse(null);
 	}
@@ -83,19 +94,8 @@ public class MappedCorrespondenceInstance extends AbstractDelegatingCorresponden
 	 * EObject, first get all correspondences from the {@link CorrespondenceInstance},
 	 * then use this method.
 	 */
-	public MIRMappingRealization getMappingForCorrespondence(SameTypeCorrespondence correspondence) {
+	public Collection<MIRMappingRealization> getMappingsForCorrespondence(SameTypeCorrespondence correspondence) {
 		return correspondence2MappingMap.get(correspondence);
-	}
-	
-	/**
-	 * Register a mapping for a correspondence that can then be retrieved by calling
-	 * {@link #getMappingForCorrespondence(Correspondence)}.
-	 * @param mapping
-	 * @param correspondence
-	 */
-	public void registerMappingForCorrespondence(MIRMappingRealization mapping,
-			SameTypeCorrespondence correspondence) {
-		correspondence2MappingMap.put(correspondence, mapping);
 	}
 	
 	public void unregisterMappingForCorrespondence(MIRMappingRealization mapping,
@@ -117,7 +117,7 @@ public class MappedCorrespondenceInstance extends AbstractDelegatingCorresponden
 	 */
 	public EObject getMappingTarget(EObject eObject, MIRMappingRealization mapping) {
 		return filterType(correspondenceInstance.getAllCorrespondences(eObject), SameTypeCorrespondence.class)
-			.filter(it -> mapping.equals(getMappingForCorrespondence(it)))
+			.filter(it -> getMappingsForCorrespondence(it).contains(mapping))
 			.findFirst()
 			.map(it -> resolveEObjectFromTUID(getCorrespondenceTarget(eObject, it)))
 			.orElse(null);

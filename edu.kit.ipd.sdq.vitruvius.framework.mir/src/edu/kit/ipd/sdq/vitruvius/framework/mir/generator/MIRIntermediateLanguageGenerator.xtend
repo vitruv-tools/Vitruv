@@ -10,18 +10,22 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Mapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.TypedElement
 import java.util.Collections
+import java.util.List
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
+import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper.*
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureCall
 
 /**
  * Generates the intermediate language form of the model
@@ -33,7 +37,7 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 
 	@Inject IGeneratorStatus generatorStatus;
 
-	extension MIRintermediateFactory mirILfactory = MIRintermediateFactory.eINSTANCE
+	static extension MIRintermediateFactory mirILfactory = MIRintermediateFactory.eINSTANCE
 
 	/**
 	 * Entry point of the generator, dispatches to transform
@@ -100,14 +104,35 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		mirfile.mappings.forEach[it.mapMapping(mir)]
 	}
 
-	def void mapMapping(Mapping mapping, MIR mir) {
+	def ClassMapping mapMapping(Mapping mapping, MIR mir) {
+		val fstMapping = mapMappingAndReverse(mapping, mir)
+		
+		mapping.constraints.withs
+			// for typing
+			.filter(FeatureMapping)
+			// ensures, that the mappings are between EClasses 
+			.filter[mappedElements.forall [ mE | mE.typeRecursive instanceof EClass ] ]
+			.forEach [
+				val classMappingFromFeature = mapMappingAndReverse(it, mir)
+				classMappingFromFeature
+					.addFeatureConditions(it, fstMapping, mir, false)
+				classMappingFromFeature.opposite
+					.addFeatureConditions(it, fstMapping.opposite, mir, true)
+			]
+					
+		return fstMapping
+	}
+	
+	def ClassMapping mapMappingAndReverse(Mapping mapping, MIR mir) {
 		val fstMapping = mapping.mapToClassMapping(mir, false)
 		val sndMapping = mapping.mapToClassMapping(mir, true)
 
 		fstMapping.opposite = sndMapping
 		sndMapping.opposite = fstMapping
+		
+		fstMapping
 	}
-
+	
 	def ClassMapping mapToClassMapping(
 		Mapping mapping, MIR mir, boolean reverse) {
 		
@@ -119,48 +144,65 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 
 		if (mapping.constraints != null) {
 			if (mapping.constraints.whenwhere != null) {
-				newMapping.predicates += {
-					val newPredicate = createWhenWhereJavaClass
-					mir.predicates += newPredicate
-					newPredicate.methodFQN =
-						generatorStatus.getJvmName(mapping.constraints.whenwhere)
-							+ "." + assignmentMethodName(reverse)
-					newPredicate.parameterNames +=
-						mapping.constraints.whenwhere
-							.createParameterList
-							// filter out the element to map with, since it can't be
-							// checked in the predicate
-							.filter[it != mapping.getRight(reverse)]
-							.map[tryGetName]
-							
-					newPredicate
-				}
+				val newPredicate = createWhenWhereJavaPredicate(mapping, reverse)
+				newMapping.predicates += newPredicate
+				mir.predicates += newPredicate
 			}
 			
 			newMapping.postconditions +=
 				mapping.constraints.withBlocks.map [
-					val newPostcondition = createWithBlockPostCondition
-					newPostcondition.methodFQN =
-						generatorStatus.getJvmName(it)
-							+ "." + assignmentMethodName(reverse)
-					newPostcondition.parameterNames +=		
-						it.createParameterList
-						  .map[tryGetName]
-							
-					newPostcondition
+					createWithBlockPostCondition(reverse)
 				]
-				
-			mapping.constraints.withs
-					// for typing
-				.filter(FeatureMapping)
-					// ensures, that the mappings are between EClasses 
-				.filter[mappedElements.forall [ mE | mE.typeRecursive instanceof EClass ] ]
-				.forEach [
-					mapToClassMapping(mir, reverse)
-						.addFeatureConditions(it, newMapping, mir, reverse) ]
 		}
 
 		return newMapping
+	}
+	
+	def private createWithBlockPostCondition(EObject context, boolean reverse) {
+		val newPostcondition = createWithBlockPostCondition
+		newPostcondition.assignmentExpression = createStaticMethodCall(
+			generatorStatus.getJvmName(context)
+				+ "." + assignmentMethodName(reverse),
+			context.createParameterList
+			  .map[tryGetName])
+			  
+		newPostcondition
+	}
+	
+	def private createWhenWhereJavaPredicate(Mapping mapping, boolean reverse) {
+		val newPredicate = createWhenWhereJavaPredicate
+		newPredicate.assignmentExpression = createStaticMethodCall(
+			generatorStatus.getJvmName(mapping.constraints.whenwhere)
+				+ "." + assignmentMethodName(reverse),
+			mapping.constraints.whenwhere
+				.createParameterList
+				// filter out the element to map with, since it can't be
+				// checked in the predicate
+				.filter[it != mapping.getRight(reverse)]
+				.map[tryGetName]
+				.toList
+		)
+		
+		newPredicate.checkExpression = createStaticMethodCall(
+			generatorStatus.getJvmName(mapping.constraints.whenwhere)
+				+ "." + equalitiesMethodName(reverse),
+			mapping.constraints.whenwhere
+				.createParameterList
+				// filter out the element to map with, since it can't be
+				// checked in the predicate
+				.filter[it != mapping.getRight(reverse)]
+				.map[tryGetName]
+				.toList					
+		)
+				
+		newPredicate
+	}
+	
+	def private static createStaticMethodCall(String methodFQN, List<String> parameterNames) {
+		val smc = createStaticMethodCall
+		smc.methodFQN = methodFQN
+		smc.parameterNames.addAll(parameterNames)
+		smc
 	}
 	
 	def assignmentMethodName(boolean reverse) {
@@ -186,6 +228,8 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 			                              .createEClassFeatures
 			                              
 		newMapping.parent = parent
+		
+		// also automatically sets opposite classMapping.featureMapping
 		newMapping.classMapping = classMapping
 	}
 	

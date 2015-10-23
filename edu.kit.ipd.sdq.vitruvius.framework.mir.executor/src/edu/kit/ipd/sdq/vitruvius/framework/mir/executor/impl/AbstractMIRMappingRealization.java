@@ -182,6 +182,8 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 
 			final boolean mappedBefore = correspondenceInstance.checkIfMappedBy(candidate, this);
 			final boolean mappedAfter = this.checkConditions(candidate, blackboard);
+			
+			LOGGER.trace("... mapped before: " + mappedBefore + ", after: " + mappedAfter);
 
 			EObject mappingTarget = null;
 

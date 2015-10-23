@@ -23,7 +23,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Clas
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.FeatureMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Mapping
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.WhenWhereJavaClass
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.ArrayList
 import java.util.Collection
@@ -49,6 +48,12 @@ import org.eclipse.xtext.generator.IGenerator
 import static edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRChange2CommandTransforming.*
 import org.eclipse.emf.ecore.EClassifier
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.WithBlockPostCondition
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
+import java.util.AbstractMap
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.StaticMethodCall
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.WhenWhereJavaPredicate
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence
 
 /**
  * @author Dominik Werle
@@ -64,7 +69,7 @@ class MIRCodeGenerator implements IGenerator {
 	var Map<ClassMapping, String> predicateCheckMethodNames
 	var Map<ClassMapping, String> createMethodNames
 
-	var Map<Mapping, String> mappingClassNames;
+	var ClaimableMap<Mapping, String> mappingClassNames;
 
 
 	var List<ClassMapping> classMappings
@@ -88,6 +93,10 @@ class MIRCodeGenerator implements IGenerator {
 		)
 		
 		for (mapping : il.classMappings) {
+			allocateMappingClassName(mapping)
+		}
+		
+		for (mapping : il.classMappings) {
 			generateMappingClass(mapping, il.configuration.package, fsa)
 		}
 		
@@ -109,7 +118,7 @@ class MIRCodeGenerator implements IGenerator {
 	private def resetState() {
 		predicateCheckMethodNames = new HashMap<ClassMapping, String>()
 		createMethodNames = new HashMap<ClassMapping, String>()
-		mappingClassNames = new HashMap<Mapping, String>()
+		mappingClassNames = new ClaimableHashMap<Mapping, String>()
 	}
 	
 	new() {
@@ -142,7 +151,8 @@ class MIRCodeGenerator implements IGenerator {
 		EClass, AbstractMIRChange2CommandTransforming, EObject, List, ArrayList,
 		Set, HashSet, EPackage, Pair, MIRMappingHelper, MappedCorrespondenceInstance,
 		Logger, JavaHelper, Collections, Blackboard, Optional, EcoreHelper,
-		Collection, VURI, EclipseHelper, TransformationResult, EReference
+		Collection, VURI, EclipseHelper, TransformationResult, EReference,
+		SameTypeCorrespondence
 	]
 	
 	/**
@@ -224,16 +234,29 @@ class MIRCodeGenerator implements IGenerator {
 		'''Mapping''' + mappingClassNames.size
 	}
 	
-	def String createMappingClassName(String leftTypeName, String rightTypeName) {
-		nextMappingClassName + "_" + leftTypeName + "_" + rightTypeName
+	def dispatch String createMappingClassName(ClassMapping mapping) {
+		val leftTypeName = mapping.left.type.name
+		val rightTypeName = mapping.right.type.name
+		nextMappingClassName + "_Class_" + leftTypeName + "_" + rightTypeName
+	}
+	
+	def dispatch String createMappingClassName(FeatureMapping mapping) {
+		val leftTypeName = mapping.left.get(0).name
+		val rightTypeName = mapping.right.get(0).name
+		nextMappingClassName + "_Feature_" + leftTypeName + "_" + rightTypeName
 	}
 	
 	def String mappingPackageName(String rootPkgName) {
 		rootPkgName + "." + MAPPING_PKG_NAME
 	}
 	
-	def String checkWhenWhereJava(WhenWhereJavaClass predicate) {
-		'''«predicate.methodFQN»(«predicate.parameterNames.join(", ")»)'''
+	def String checkWhenWhereJava(WhenWhereJavaPredicate predicate) '''
+		«predicate.checkExpression.toJavaExpression»
+	'''
+	
+	def private void allocateMappingClassName(Mapping mapping) {
+		val className = createMappingClassName(mapping)
+		mappingClassNames.put(mapping, className)
 	}
 	
 	def dispatch generateMappingClass(ClassMapping mapping, String pkgName, IFileSystemAccess fsa) {
@@ -265,8 +288,8 @@ class MIRCodeGenerator implements IGenerator {
 		val parentRightType = parentRight?.type
 		val parentRightName = parentRight?.name
 		
-		val className = createMappingClassName(leftType.name, rightType.name)
-		mappingClassNames.put(mapping, className)
+		val className = mappingClassNames.claimValueForKey(mapping)
+		val reverseClassName = mappingClassNames.claimValueForKey(mapping.opposite)
 
 		fsa.generateFile(SRC_GEN_FOLDER + (pkgName.mappingPackageName + "." + className).classNameToJavaPath,
 		'''
@@ -275,7 +298,13 @@ class MIRCodeGenerator implements IGenerator {
 			«getImportStatements(IMPORTED_CLASSES_MAPPING)»
 			
 			/**
-			 * Class Mapping
+			 * Class Mapping from
+			 * <ul>
+			 *   <li>{@link «leftFQN»} to</li>
+			 *   <li>{@link «rightFQN»}</li>
+			 * </ul>.
+			 *
+			 * Reverse mapping is {@link «reverseClassName»}.
 			 */
 			public class «className» extends «AbstractMIRMappingRealization.simpleName» {
 				«createLoggerField(className)»
@@ -284,6 +313,8 @@ class MIRCodeGenerator implements IGenerator {
 				public final static «className» INSTANCE = new «className»();
 				
 				private «className»() {}
+				
+				private final static «MIRMappingRealization.simpleName» REVERSE = «reverseClassName».INSTANCE;
 				
 				protected boolean checkConditions(EObject context,
 					Blackboard blackboard) {
@@ -297,13 +328,13 @@ class MIRCodeGenerator implements IGenerator {
 
 					«featureMappingCheckAndBindingJava(mapping)»
 					
-					«FOR predicate : mapping.predicates.filter(WhenWhereJavaClass)»
+					«FOR predicate : mapping.predicates.filter(WhenWhereJavaPredicate)»
 					if (!(«predicate.checkWhenWhereJava»)) {
 						return false;
 					}
 					«ENDFOR»
 					
-					«FOR predicate : mapping.predicates.filter[!(it instanceof WhenWhereJavaClass)]»
+					«FOR predicate : mapping.predicates.filter[!(it instanceof WhenWhereJavaPredicate)]»
 						// unsupported predicate: «predicate»
 					«ENDFOR»
 					
@@ -333,7 +364,7 @@ class MIRCodeGenerator implements IGenerator {
 					
 					// TODO: restore post conditions
 					«FOR with_block : mapping.postconditions.filter(WithBlockPostCondition)»
-					«restorePostCondition(with_block)»;
+					«restorePostCondition(with_block)»
 					«ENDFOR»
 				}
 			
@@ -358,7 +389,9 @@ class MIRCodeGenerator implements IGenerator {
 					result.addAll(handleNonContainedEObjects(Collections.singleton(«rightName»)));
 					
 					// create here, since containment is decided here
-					ci.createMappedCorrespondence(«leftName», «rightName», this);
+					SameTypeCorrespondence stc = ci.createAndAddEObjectCorrespondence(«leftName», «rightName»);
+					ci.registerMappingForCorrespondence(stc, this);
+					ci.registerMappingForCorrespondence(stc, «className».REVERSE);
 					
 					return result;
 				}
@@ -428,8 +461,12 @@ class MIRCodeGenerator implements IGenerator {
 		)
 	}
 	
-	def restorePostCondition(WithBlockPostCondition pc) {
-		return '''«pc.methodFQN»(«String.join(", ", pc.parameterNames)»)'''
+	def restorePostCondition(WithBlockPostCondition pc) '''
+		«pc.assignmentExpression.toJavaExpression»;
+	'''
+	
+	def toJavaExpression(StaticMethodCall smc) {
+		return '''«smc.methodFQN»(«String.join(", ", smc.parameterNames)»)'''
 	}
 	
 	
