@@ -26,6 +26,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper.*
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureCall
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
 
 /**
  * Generates the intermediate language form of the model
@@ -33,7 +34,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureCall
  */
 class MIRIntermediateLanguageGenerator implements IGenerator {
 	private static final Logger logger = Logger.getLogger(MIRIntermediateLanguageGenerator)
-	public static final String DEFAULT_CLASS_NAME = "ChangeSynchronizer"
+	public static final String DEFAULT_CLASS_NAME = "Concrete" + Change2CommandTransforming.simpleName
 
 	@Inject IGeneratorStatus generatorStatus;
 
