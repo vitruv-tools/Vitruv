@@ -29,6 +29,13 @@ class EMFHelper {
 		return result
 	}
 	
+	static def hasContainer(EObject obj, EObject container) {
+		// TODO: possibly optimize, so iteration is stopped
+		// when container is found
+		
+		return obj.getContainerHierarchy(true).contains(container)
+	}
+	
 	static def getJavaExpressionThatReturns(EClassifier classifier, boolean fqn) {
 		val classifierID = classifier.classifierID
 		val ePackage = classifier.EPackage

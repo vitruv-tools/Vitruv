@@ -50,7 +50,6 @@ import org.eclipse.emf.ecore.EClassifier
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.WithBlockPostCondition
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
-import java.util.AbstractMap
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.StaticMethodCall
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.WhenWhereJavaPredicate
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence
@@ -280,7 +279,10 @@ class MIRCodeGenerator implements IGenerator {
 		val parentName = parent?.name
 		
 		// TODO: DW - multiple hops. non-list...
-		val parentReference = mapping.featureMapping?.left?.get(0)?.feature
+		val parentReference = JavaHelper.requireTypeOrNull(mapping.featureMapping?.left?.get(0)?.feature, EReference)
+		val parentReferenceContainment = if (parentReference != null) parentReference.isContainment
+		val parentReferenceCollection = if (parentReference != null) parentReference.isMany
+		
 		val parentRightReference = mapping.featureMapping?.right?.get(0)?.feature
 		
 		val parentRight = mapping.featureMapping?.parent?.right
@@ -381,11 +383,27 @@ class MIRCodeGenerator implements IGenerator {
 					«rightFQN» «rightName» = «EMFHelper.getJavaExpressionThatCreates(rightType)»;
 					
 					«IF hasParent»
-					final «parentRightFQN» «parentRightName» = claimParentCorresponding(«leftName», blackboard);
-					// TODO DW: correct referencing...
-					«parentRightName».get«parentRightReference.name.toFirstUpper»().add(«rightName»);
+						final «parentRightFQN» «parentRightName» = claimParentCorresponding(«leftName», blackboard);
+						// TODO DW: correct referencing...
+						
+						// «parentRightReference.name»
+						EReference parentReference = «JavaHelper.simpleName».requireType(
+							«EMFHelper.getJavaExpressionThatReturns(parentRightReference, false)»,
+							«EReference.simpleName».class);
+							
+						«IF parentReferenceCollection»
+							«JavaHelper.simpleName».requireCollectionType(
+								«parentRightName».eGet(parentReference),
+								«rightFQN».class)
+								.add(«rightName»);
+						«ELSE»
+							«parentRightName».eSet(parentReference, «rightName»);
+						«ENDIF»
 					«ENDIF»
-					
+
+					«IF parentReferenceContainment»
+					// TODO: omit, parent reference is containment
+					«ENDIF»
 					result.addAll(handleNonContainedEObjects(Collections.singleton(«rightName»)));
 					
 					// create here, since containment is decided here

@@ -22,11 +22,13 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
-import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
-
-import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper.*
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureCall
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
+import org.eclipse.emf.ecore.EPackage
+
+import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EMFHelper.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.jvmmodel.MIRJvmModelInferrer.*
 
 /**
  * Generates the intermediate language form of the model
@@ -99,6 +101,10 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 			throw new IllegalStateException("MIR currently only supports exactly two metamodels");
 		}
 
+		// convention: the mappings inside are all ordered, so
+		// the first mapped element is part of the first package, and so on.
+		// it is currently unclear what happens, if there are more than
+		// two metamodels.
 		mir.packages.clear
 		mir.packages += mirfile.imports.map[it.package]
 
@@ -108,6 +114,9 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 	def ClassMapping mapMapping(Mapping mapping, MIR mir) {
 		val fstMapping = mapMappingAndReverse(mapping, mir)
 		
+		val source = mir.packages.get(0)
+		val target = mir.packages.get(1)
+		
 		mapping.constraints.withs
 			// for typing
 			.filter(FeatureMapping)
@@ -116,17 +125,20 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 			.forEach [
 				val classMappingFromFeature = mapMappingAndReverse(it, mir)
 				classMappingFromFeature
-					.addFeatureConditions(it, fstMapping, mir, false)
+					.addFeatureConditions(it, fstMapping, mir, source, target)
 				classMappingFromFeature.opposite
-					.addFeatureConditions(it, fstMapping.opposite, mir, true)
+					.addFeatureConditions(it, fstMapping.opposite, mir, target, source)
 			]
 					
 		return fstMapping
 	}
 	
 	def ClassMapping mapMappingAndReverse(Mapping mapping, MIR mir) {
-		val fstMapping = mapping.mapToClassMapping(mir, false)
-		val sndMapping = mapping.mapToClassMapping(mir, true)
+		val source = mir.packages.get(0)
+		val target = mir.packages.get(1)
+		
+		val fstMapping = mapping.mapToClassMapping(mir, source, target)
+		val sndMapping = mapping.mapToClassMapping(mir, target, source)
 
 		fstMapping.opposite = sndMapping
 		sndMapping.opposite = fstMapping
@@ -135,63 +147,63 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 	}
 	
 	def ClassMapping mapToClassMapping(
-		Mapping mapping, MIR mir, boolean reverse) {
+		Mapping mapping, MIR mir, EPackage source, EPackage target) {
 		
 		val newMapping = createClassMapping
-		newMapping.left = mapping.getLeft(reverse).createNamedEClass
-		newMapping.right = mapping.getRight(reverse).createNamedEClass
+		newMapping.left  = mapping.getMappedElementInPackage(source).createNamedEClass
+		newMapping.right = mapping.getMappedElementInPackage(target).createNamedEClass
 
 		mir.classMappings += newMapping
 
 		if (mapping.constraints != null) {
 			if (mapping.constraints.whenwhere != null) {
-				val newPredicate = createWhenWhereJavaPredicate(mapping, reverse)
+				val newPredicate = createWhenWhereJavaPredicate(mapping, target)
 				newMapping.predicates += newPredicate
 				mir.predicates += newPredicate
 			}
 			
 			newMapping.postconditions +=
 				mapping.constraints.withBlocks.map [
-					createWithBlockPostCondition(reverse)
+					createWithBlockPostCondition(target)
 				]
 		}
 
 		return newMapping
 	}
 	
-	def private createWithBlockPostCondition(EObject context, boolean reverse) {
+	def private createWithBlockPostCondition(EObject context, EPackage target) {
 		val newPostcondition = createWithBlockPostCondition
 		newPostcondition.assignmentExpression = createStaticMethodCall(
 			generatorStatus.getJvmName(context)
-				+ "." + assignmentMethodName(reverse),
+				+ "." + target.assignmentMethodName,
 			context.createParameterList
 			  .map[tryGetName])
 			  
 		newPostcondition
 	}
 	
-	def private createWhenWhereJavaPredicate(Mapping mapping, boolean reverse) {
+	def private createWhenWhereJavaPredicate(Mapping mapping, EPackage target) {
 		val newPredicate = createWhenWhereJavaPredicate
 		newPredicate.assignmentExpression = createStaticMethodCall(
 			generatorStatus.getJvmName(mapping.constraints.whenwhere)
-				+ "." + assignmentMethodName(reverse),
+				+ "." + target.assignmentMethodName,
 			mapping.constraints.whenwhere
 				.createParameterList
 				// filter out the element to map with, since it can't be
 				// checked in the predicate
-				.filter[it != mapping.getRight(reverse)]
+				.filter[it != mapping.getMappedElementInPackage(target)]
 				.map[tryGetName]
 				.toList
 		)
 		
 		newPredicate.checkExpression = createStaticMethodCall(
 			generatorStatus.getJvmName(mapping.constraints.whenwhere)
-				+ "." + equalitiesMethodName(reverse),
+				+ "." + target.equalitiesMethodName,
 			mapping.constraints.whenwhere
 				.createParameterList
 				// filter out the element to map with, since it can't be
 				// checked in the predicate
-				.filter[it != mapping.getRight(reverse)]
+				.filter[it != mapping.getMappedElementInPackage(target)]
 				.map[tryGetName]
 				.toList					
 		)
@@ -206,26 +218,18 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		smc
 	}
 	
-	def assignmentMethodName(boolean reverse) {
-		return if (!reverse) "assignmentsSecond" else "assignmentsFirst"
-	}
-	
-	def equalitiesMethodName(boolean reverse) {
-		return if (!reverse) "equalitiesSecond" else "equalitiesFirst"
-	}
-
 	def addFeatureConditions(
 		ClassMapping classMapping,
 		FeatureMapping featureMapping, ClassMapping parent,
-		MIR mir, boolean reverse) {
+		MIR mir, EPackage source, EPackage target) {
 			
 		val newMapping = createFeatureMapping
 		mir.featureMappings += newMapping
 		
-		newMapping.left += featureMapping.getLeft(reverse)
+		newMapping.left += featureMapping.getMappedElementInPackage(source)
 			                             .createEClassFeatures
 			                             
-		newMapping.right += featureMapping.getRight(reverse)
+		newMapping.right += featureMapping.getMappedElementInPackage(target)
 			                              .createEClassFeatures
 			                              
 		newMapping.parent = parent
@@ -258,15 +262,21 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		else
 			throw new IllegalStateException(eClassifier.toString + " should be EClass at this point.")
 	}
-
-	def TypedElement getLeft(Mapping mapping, boolean reverse) {
-		(mapping.mappedElements.get(if(!reverse) 1 else 0))
-	}
-
-	def TypedElement getRight(Mapping mapping, boolean reverse) {
-		(mapping.mappedElements.get(if(!reverse) 0 else 1))
-	}
 	
+	def TypedElement getMappedElementInPackage(Mapping mapping, EPackage pkg) {
+		mapping.mappedElements.forEach[
+			logger.debug("Mapped element: " + it.tryGetName + " (" + it.typeRecursive.getContainerHierarchy(true).map[it.toString].join(", ") + ")")
+		]
+		
+		val mappedElementsInPkg = (mapping.mappedElements.filter[typeRecursive.hasContainer(pkg)])
+		
+		if (mappedElementsInPkg.size != 1) {
+			throw new RuntimeException("Mapping " + mapping + " has " + mappedElementsInPkg.size + " mapped elements in package " + pkg.name)
+		}
+		
+		return mappedElementsInPkg.head
+	}
+
 	def createNamedEClass(TypedElement element) {
 		val result = createNamedEClass
 		result.name =
@@ -277,26 +287,15 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 			       
 		return result
 	}
-
-	def EClass getLeftEClass(Mapping mapping, boolean reverse) {
-		mapping.getLeft(reverse)
-		       .typeRecursive
-		       .ensureEClass
-	}
-
-	def EClass getRightEClass(Mapping mapping, boolean reverse) {
-		mapping.getRight(reverse)
+	
+	private def EClass getEClassOfElementInPackage(Mapping mapping, EPackage pkg) {
+		mapping.getMappedElementInPackage(pkg)
 		       .typeRecursive
 		       .ensureEClass
 	}
 	
-	def String getLeftName(Mapping mapping, boolean reverse) {
-		mapping.getLeft(reverse)
-		       .tryGetName
-	}
-	
-	def String getRightName(Mapping mapping, boolean reverse) {
-		mapping.getRight(reverse)
+	private def String getNameOfElementInPackage(Mapping mapping, EPackage pkg) {
+		mapping.getMappedElementInPackage(pkg)
 		       .tryGetName
 	}
 }

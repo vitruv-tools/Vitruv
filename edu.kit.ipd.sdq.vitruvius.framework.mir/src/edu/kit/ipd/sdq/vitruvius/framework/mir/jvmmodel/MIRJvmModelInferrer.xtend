@@ -2,15 +2,12 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.jvmmodel
 
 import com.google.inject.Inject
 import edu.kit.ipd.sdq.vitruvius.framework.mir.generator.IGeneratorStatus
-import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EMFHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.inferrer.ClosureProvider
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Mapping
-import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass
-import java.util.ArrayList
 import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
@@ -90,9 +87,9 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 		val withBlockName = pkgName + "." + withBlock.classPrefix + "WithInferred" + withBlock.hexHash
 		acceptor.accept(withBlock.toClass(withBlockName)) [
 			members += #[
-				withBlock.createAssignmentClosureMethod("assignmentsFirst", firstPackage, parameters,
+				withBlock.createAssignmentClosureMethod(firstPackage.assignmentMethodName, firstPackage, parameters,
 					"To be called when " + firstPackage.name + " has been changed"),
-				withBlock.createAssignmentClosureMethod("assignmentsSecond", secondPackage, parameters,
+				withBlock.createAssignmentClosureMethod(secondPackage.assignmentMethodName, secondPackage, parameters,
 					"To be called when " + secondPackage.name + " has been changed") ]
 			it.makeStaticClass(withBlock)
 		]
@@ -176,13 +173,13 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 		acceptor.accept(
 			whenWhere.toClass(whenWhereName)) [ inferredClass |
 			inferredClass.members += #[
-				whenWhere.createClosureMethod("equalitiesFirst", firstParameters, firstPackage, true,
+				whenWhere.createClosureMethod(firstPackage.equalitiesMethodName, firstParameters, firstPackage, true,
 					"To be called when " + firstPackage.name + " has been changed"),
-				whenWhere.createClosureMethod("assignmentsFirst", firstParameters, firstPackage, false,
+				whenWhere.createClosureMethod(firstPackage.assignmentMethodName, firstParameters, firstPackage, false,
 					"To be called when " + firstPackage.name + " has been changed"),
-				whenWhere.createClosureMethod("equalitiesSecond", secondParameters, secondPackage, true,
+				whenWhere.createClosureMethod(secondPackage.equalitiesMethodName, secondParameters, secondPackage, true,
 					"To be called when " + secondPackage.name + " has been changed"),
-				whenWhere.createClosureMethod("assignmentsSecond", secondParameters, secondPackage, false,
+				whenWhere.createClosureMethod(secondPackage.assignmentMethodName, secondParameters, secondPackage, false,
 					"To be called when " + secondPackage.name + " has been changed")
 			]
 			inferredClass.makeStaticClass(whenWhere)
@@ -191,7 +188,15 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 		generatorStatus.addWhenWhereToInfer(whenWhere)
 		generatorStatus.putJvmName(whenWhere, whenWhereName)
 	}
-
+	
+	public static def String getAssignmentMethodName(EPackage pkg) {
+		'''assignments_«pkg.name»'''		
+	}
+	
+	public static def String getEqualitiesMethodName(EPackage pkg) {
+		'''equalities_«pkg.name»'''		
+	}
+	
 	def throwExceptionIfUnknown(JvmTypeReference reference) {
 		if (reference instanceof JvmUnknownTypeReference)
 			throw new IllegalStateException(
