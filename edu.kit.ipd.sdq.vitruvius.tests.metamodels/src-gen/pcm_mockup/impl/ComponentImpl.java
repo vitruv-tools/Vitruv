@@ -5,8 +5,10 @@ package pcm_mockup.impl;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import pcm_mockup.Component;
+import pcm_mockup.Interface;
 import pcm_mockup.PNamedElement;
 import pcm_mockup.Pcm_mockupPackage;
 
@@ -19,6 +21,7 @@ import pcm_mockup.Pcm_mockupPackage;
  * </p>
  * <ul>
  *   <li>{@link pcm_mockup.impl.ComponentImpl#getName <em>Name</em>}</li>
+ *   <li>{@link pcm_mockup.impl.ComponentImpl#getProvidedInterfaces <em>Provided Interfaces</em>}</li>
  * </ul>
  *
  * @generated
@@ -42,6 +45,16 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getProvidedInterfaces() <em>Provided Interfaces</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getProvidedInterfaces()
+	 * @generated
+	 * @ordered
+	 */
+	protected Interface providedInterfaces;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -88,11 +101,52 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Interface getProvidedInterfaces() {
+		if (providedInterfaces != null && providedInterfaces.eIsProxy()) {
+			InternalEObject oldProvidedInterfaces = (InternalEObject)providedInterfaces;
+			providedInterfaces = (Interface)eResolveProxy(oldProvidedInterfaces);
+			if (providedInterfaces != oldProvidedInterfaces) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES, oldProvidedInterfaces, providedInterfaces));
+			}
+		}
+		return providedInterfaces;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Interface basicGetProvidedInterfaces() {
+		return providedInterfaces;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setProvidedInterfaces(Interface newProvidedInterfaces) {
+		Interface oldProvidedInterfaces = providedInterfaces;
+		providedInterfaces = newProvidedInterfaces;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES, oldProvidedInterfaces, providedInterfaces));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Pcm_mockupPackage.COMPONENT__NAME:
 				return getName();
+			case Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES:
+				if (resolve) return getProvidedInterfaces();
+				return basicGetProvidedInterfaces();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -107,6 +161,9 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 		switch (featureID) {
 			case Pcm_mockupPackage.COMPONENT__NAME:
 				setName((String)newValue);
+				return;
+			case Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES:
+				setProvidedInterfaces((Interface)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -123,6 +180,9 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 			case Pcm_mockupPackage.COMPONENT__NAME:
 				setName(NAME_EDEFAULT);
 				return;
+			case Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES:
+				setProvidedInterfaces((Interface)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -137,6 +197,8 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 		switch (featureID) {
 			case Pcm_mockupPackage.COMPONENT__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES:
+				return providedInterfaces != null;
 		}
 		return super.eIsSet(featureID);
 	}

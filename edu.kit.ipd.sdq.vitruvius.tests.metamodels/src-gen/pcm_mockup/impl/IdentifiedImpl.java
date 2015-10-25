@@ -8,8 +8,6 @@ import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-
 import pcm_mockup.Identified;
 import pcm_mockup.Pcm_mockupPackage;
 
@@ -54,7 +52,6 @@ public abstract class IdentifiedImpl extends MinimalEObjectImpl.Container implem
 	 */
 	protected IdentifiedImpl() {
 		super();
-		setId(EcoreUtil.generateUUID());
 	}
 
 	/**

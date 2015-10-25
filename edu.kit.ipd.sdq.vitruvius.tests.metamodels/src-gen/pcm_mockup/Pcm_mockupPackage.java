@@ -232,13 +232,22 @@ public interface Pcm_mockupPackage extends EPackage {
 	int COMPONENT__NAME = IDENTIFIED_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Provided Interfaces</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPONENT__PROVIDED_INTERFACES = IDENTIFIED_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Component</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPONENT_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 1;
+	int COMPONENT_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Component</em>' class.
@@ -362,6 +371,17 @@ public interface Pcm_mockupPackage extends EPackage {
 	EClass getComponent();
 
 	/**
+	 * Returns the meta object for the reference '{@link pcm_mockup.Component#getProvidedInterfaces <em>Provided Interfaces</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Provided Interfaces</em>'.
+	 * @see pcm_mockup.Component#getProvidedInterfaces()
+	 * @see #getComponent()
+	 * @generated
+	 */
+	EReference getComponent_ProvidedInterfaces();
+
+	/**
 	 * Returns the meta object for class '{@link pcm_mockup.PNamedElement <em>PNamed Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -468,6 +488,14 @@ public interface Pcm_mockupPackage extends EPackage {
 		 * @generated
 		 */
 		EClass COMPONENT = eINSTANCE.getComponent();
+
+		/**
+		 * The meta object literal for the '<em><b>Provided Interfaces</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference COMPONENT__PROVIDED_INTERFACES = eINSTANCE.getComponent_ProvidedInterfaces();
 
 		/**
 		 * The meta object literal for the '{@link pcm_mockup.impl.PNamedElementImpl <em>PNamed Element</em>}' class.
