@@ -45,18 +45,17 @@ public class EcoreHelper {
 
 				if (reference.getEContainingClass().isSuperTypeOf(eobj.eClass())) {
 					Object referencedObject = eobj.eGet(reference);
-					if (referencedObject instanceof EList<?>) {
-						if (((EList<?>) referencedObject).contains(target)) {
-							result.add(eobj);
-						} else if (referencedObject.equals(target)) {
-							result.add(eobj);
-						}
+					if ((referencedObject instanceof EList<?>) && (((EList<?>) referencedObject).contains(target))) {
+						result.add(eobj);
+					} else if (referencedObject.equals(target)) {
+						result.add(eobj);
 					}
 				}
 			}
 		}
 
 		return result;
+
 	}
 
 	public static Set<EObject> findOppositeForFeatures(EObject target, EReference... references) {
