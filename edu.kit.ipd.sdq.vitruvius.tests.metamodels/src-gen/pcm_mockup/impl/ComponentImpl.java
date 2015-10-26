@@ -3,6 +3,7 @@
 package pcm_mockup.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.InternalEObject;
@@ -47,7 +48,7 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getProvidedInterfaces() <em>Provided Interfaces</em>}' reference.
+	 * The cached value of the '{@link #getProvidedInterfaces() <em>Provided Interfaces</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getProvidedInterfaces()
@@ -102,14 +103,6 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 	 * @generated
 	 */
 	public Interface getProvidedInterfaces() {
-		if (providedInterfaces != null && providedInterfaces.eIsProxy()) {
-			InternalEObject oldProvidedInterfaces = (InternalEObject)providedInterfaces;
-			providedInterfaces = (Interface)eResolveProxy(oldProvidedInterfaces);
-			if (providedInterfaces != oldProvidedInterfaces) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES, oldProvidedInterfaces, providedInterfaces));
-			}
-		}
 		return providedInterfaces;
 	}
 
@@ -118,8 +111,14 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Interface basicGetProvidedInterfaces() {
-		return providedInterfaces;
+	public NotificationChain basicSetProvidedInterfaces(Interface newProvidedInterfaces, NotificationChain msgs) {
+		Interface oldProvidedInterfaces = providedInterfaces;
+		providedInterfaces = newProvidedInterfaces;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES, oldProvidedInterfaces, newProvidedInterfaces);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
 	}
 
 	/**
@@ -128,10 +127,31 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 	 * @generated
 	 */
 	public void setProvidedInterfaces(Interface newProvidedInterfaces) {
-		Interface oldProvidedInterfaces = providedInterfaces;
-		providedInterfaces = newProvidedInterfaces;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES, oldProvidedInterfaces, providedInterfaces));
+		if (newProvidedInterfaces != providedInterfaces) {
+			NotificationChain msgs = null;
+			if (providedInterfaces != null)
+				msgs = ((InternalEObject)providedInterfaces).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES, null, msgs);
+			if (newProvidedInterfaces != null)
+				msgs = ((InternalEObject)newProvidedInterfaces).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES, null, msgs);
+			msgs = basicSetProvidedInterfaces(newProvidedInterfaces, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES, newProvidedInterfaces, newProvidedInterfaces));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES:
+				return basicSetProvidedInterfaces(null, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
@@ -145,8 +165,7 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 			case Pcm_mockupPackage.COMPONENT__NAME:
 				return getName();
 			case Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES:
-				if (resolve) return getProvidedInterfaces();
-				return basicGetProvidedInterfaces();
+				return getProvidedInterfaces();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}

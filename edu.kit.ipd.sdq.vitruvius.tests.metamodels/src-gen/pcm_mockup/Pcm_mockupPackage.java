@@ -232,7 +232,7 @@ public interface Pcm_mockupPackage extends EPackage {
 	int COMPONENT__NAME = IDENTIFIED_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Provided Interfaces</b></em>' reference.
+	 * The feature id for the '<em><b>Provided Interfaces</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -371,10 +371,10 @@ public interface Pcm_mockupPackage extends EPackage {
 	EClass getComponent();
 
 	/**
-	 * Returns the meta object for the reference '{@link pcm_mockup.Component#getProvidedInterfaces <em>Provided Interfaces</em>}'.
+	 * Returns the meta object for the containment reference '{@link pcm_mockup.Component#getProvidedInterfaces <em>Provided Interfaces</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Provided Interfaces</em>'.
+	 * @return the meta object for the containment reference '<em>Provided Interfaces</em>'.
 	 * @see pcm_mockup.Component#getProvidedInterfaces()
 	 * @see #getComponent()
 	 * @generated
@@ -490,7 +490,7 @@ public interface Pcm_mockupPackage extends EPackage {
 		EClass COMPONENT = eINSTANCE.getComponent();
 
 		/**
-		 * The meta object literal for the '<em><b>Provided Interfaces</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Provided Interfaces</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
