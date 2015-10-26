@@ -16,6 +16,7 @@ import com.google.inject.Inject;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EclipseProjectHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.PreProcessingFileSystemAccess;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.inferrer.ClosureProvider;
 
 /**
  * A generator that executes multiple IGenerators after each other
@@ -29,19 +30,31 @@ public class MIRGenerator implements IGenerator {
 	private MIRIntermediateLanguageGenerator intermediateLanguageGenerator;
 	private MIRCodeGenerator codeGenerator;
 	
+	private IGeneratorStatus generatorStatus;
+	private ClosureProvider closureProvider;
+	
 	@Inject
 	public MIRGenerator(
 			JvmModelGenerator jvmModelGenerator,
 			MIRIntermediateLanguageGenerator intermediateLanguageGenerator,
-			MIRCodeGenerator codeGenerator) {
+			MIRCodeGenerator codeGenerator,
+			IGeneratorStatus generatorStatus,
+			ClosureProvider closureProvider) {
 		
 		this.jvmModelGenerator = jvmModelGenerator;
 		this.intermediateLanguageGenerator = intermediateLanguageGenerator;
 		this.codeGenerator = codeGenerator;
+		
+		this.generatorStatus = generatorStatus;
+		this.closureProvider = closureProvider;
 	}
 	
 	@Override
 	public void doGenerate(Resource input, IFileSystemAccess fsa) {
+		// the "compilation state" is reset at this stage
+		generatorStatus.reset();
+		closureProvider.reset();
+		
 		String projectName = MIRHelper.getProjectName(MIRHelper.getMIR(input));
 		EclipseProjectHelper eclipseHelper = new EclipseProjectHelper(projectName);
 		eclipseHelper.reinitializeProject();
@@ -53,6 +66,8 @@ public class MIRGenerator implements IGenerator {
 		jvmModelGenerator.doGenerate(input, srcgenFSA);
 		intermediateLanguageGenerator.doGenerate(input, srcgenFSA);
 		codeGenerator.doGenerate(input, rootFSA);
+		
+		eclipseHelper.synchronizeProject();
 	}
 
 }

@@ -248,6 +248,7 @@
 	    <persistent value="true"/>
 	</extension>
 
+<!--
    <extension
          point="org.eclipse.xtext.builder.participant">
       <participant
@@ -256,6 +257,43 @@
             >
       </participant>
    </extension>
+-->
+  <extension
+        point="org.eclipse.ui.handlers">
+     <handler
+           class="edu.kit.ipd.sdq.vitruvius.framework.mir.ui.MIRExecutableExtensionFactory:edu.kit.ipd.sdq.vitruvius.framework.mir.ui.handler.GenerationHandler"
+           commandId="edu.kit.ipd.sdq.vitruvius.framework.mir.ui.handler.GenerationCommand">
+     </handler>
+      
+  </extension>
+   
+  <extension
+        point="org.eclipse.ui.commands">
+        <command name="Generate Code"
+              id="edu.kit.ipd.sdq.vitruvius.framework.mir.ui.handler.GenerationCommand">
+        </command>
+  </extension>
+   
+  <extension point="org.eclipse.ui.menus">
+    <menuContribution locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+        <command
+            commandId="edu.kit.ipd.sdq.vitruvius.framework.mir.ui.handler.GenerationCommand"
+            style="push">
+            <visibleWhen
+                  checkEnabled="false">
+              <iterate>
+		        <adapt type="org.eclipse.core.resources.IResource">
+		          <test property="org.eclipse.core.resources.name" 
+		                value="*.mir"/>
+		        </adapt>
+		      </iterate>
+            </visibleWhen>
+        </command>
+    </menuContribution>
+    </extension>
+    
+    <!-- End Popup-Menu generation -->
+
    <extension
             point="org.eclipse.ui.preferencePages">
         <page

@@ -27,6 +27,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusRecordingCommand;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusTransformationRecordingCommand;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRChange2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRMappingRealization;
@@ -37,6 +38,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util.ClaimableSingl
 import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.tests.VitruviusEMFCasestudyTest;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
@@ -52,21 +54,21 @@ public abstract class AbstractMIRTestBase extends VitruviusEMFCasestudyTest {
 	private static final String MODEL_PATH = TestUtil.PROJECT_URI + "/model";
 	
 	protected TestMIRUserInteracting userInteracting = new TestMIRUserInteracting();
-
+	
 	@Override
 	protected void setUserInteractor(UserInteracting newUserInteracting, ChangeSynchronizerImpl changeSynchronizerImpl)
 			throws Throwable {
 		// not in MIR mappings
 		// TODO: check if the correct type is inherited / rewrite
 	}
-
+	
 	@Override
 	public void setUpTest() throws Throwable {
 		LOGGER.trace("generating project " + TestUtil.PROJECT_URI + " and MIR file...");
 		EclipseProjectHelper eph = new EclipseProjectHelper(TestUtil.PROJECT_URI);
 		eph.reinitializeProject();
 		eph.getProject().getFolder("model").create(true, true, null);
-
+		
 		super.setUpTest();
 
 		// The Change2CommandTransfomer class has to be loaded here to determine the
@@ -85,6 +87,18 @@ public abstract class AbstractMIRTestBase extends VitruviusEMFCasestudyTest {
 	}
 
 	// Utility functions
+	@SuppressWarnings("unchecked")
+	protected <T extends EObject> T reloadByTUID(T eObject) {
+		try {
+			TUID tuid = getCorrespondenceInstance().calculateTUIDFromEObject(eObject);
+			return (T) getCorrespondenceInstance().resolveEObjectFromTUID(tuid);
+		} catch (Throwable e) {
+			LOGGER.error(e);
+		}
+		
+		return null;
+	}
+	
 	/**
 	 * Creates a model, saves it and triggers synchronisation. The Path of the
 	 * model is relative to {@link MODEL_PATH} (normally: MockupProject/model).

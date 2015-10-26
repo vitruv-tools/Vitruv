@@ -8,6 +8,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EclipseHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper
@@ -17,12 +18,18 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRChange2C
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRMappingRealization
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRModelInformationProvider
-import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EMFHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.FeatureMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Mapping
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.NamedFeatureCall
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.NamedTyped
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.StaticMethodCall
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.WhenWhereJavaPredicate
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.WithBlockPostCondition
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.ArrayList
 import java.util.Collection
@@ -31,12 +38,13 @@ import java.util.HashMap
 import java.util.HashSet
 import java.util.List
 import java.util.Map
-import java.util.Objects
 import java.util.Optional
 import java.util.Set
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EFactory
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EReference
@@ -45,18 +53,10 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
 
-import static edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRChange2CommandTransforming.*
 import static edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
-
-import org.eclipse.emf.ecore.EClassifier
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.WithBlockPostCondition
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.StaticMethodCall
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.WhenWhereJavaPredicate
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.NamedFeatureCall
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.NamedTyped
+import static edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRChange2CommandTransforming.*
+import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EMFHelper
+import org.eclipse.emf.ecore.EAttribute
 
 /**
  * @author Dominik Werle
@@ -66,6 +66,7 @@ class MIRCodeGenerator implements IGenerator {
 	private static final String SRC_GEN_FOLDER = "src-gen/";
 	private static final String MAPPING_PKG_NAME = "mappings";
 	private static final String LOGGER_NAME = "LOGGER";
+	private static final String CONSTANTS_CLASS_NAME = "Constants";
 	
 	@Inject IGeneratorStatus generatorStatus;
 	
@@ -73,7 +74,6 @@ class MIRCodeGenerator implements IGenerator {
 	var Map<ClassMapping, String> createMethodNames
 
 	var ClaimableMap<Mapping, String> mappingClassNames;
-
 
 	var List<ClassMapping> classMappings
 	
@@ -84,6 +84,10 @@ class MIRCodeGenerator implements IGenerator {
 		
 		resetState
 		val il = generatorStatus.getIntermediateForMIR(mirFile)
+		
+		il.packages.forEach[
+			addEntity(it)
+		]
 		
 		val fqn = il.configuration.package + "." + il.configuration.type
 		val projectName = MIRHelper.getProjectName(MIRHelper.getMIR(input));
@@ -104,6 +108,8 @@ class MIRCodeGenerator implements IGenerator {
 		}
 		
 		generateTransformationExecuting(il, resourcePath, fsa)
+		
+		generateConstants(il.configuration.package, fsa)
 	}
 	
 	private def getFqn(MIR mir) {
@@ -122,6 +128,8 @@ class MIRCodeGenerator implements IGenerator {
 		predicateCheckMethodNames = new HashMap<ClassMapping, String>()
 		createMethodNames = new HashMap<ClassMapping, String>()
 		mappingClassNames = new ClaimableHashMap<Mapping, String>()
+		
+		referencedEMFEntities = new HashMap<EPackage, List<Object>>()
 	}
 	
 	new() {
@@ -180,6 +188,8 @@ class MIRCodeGenerator implements IGenerator {
 			package «file.configuration.package»;
 			
 			«getImportStatements(IMPORTED_CLASSES_TRANSFORMATION_EXECUTING)»
+			
+			import «file.configuration.package».«CONSTANTS_CLASS_NAME»;
 			
 			/**
 			 * {@link AbstractMIRChange2CommandTransforming} for keeping the following meta models consistent:
@@ -302,6 +312,8 @@ class MIRCodeGenerator implements IGenerator {
 			
 			«getImportStatements(IMPORTED_CLASSES_MAPPING)»
 			
+			import «pkgName».«CONSTANTS_CLASS_NAME»;
+			
 			/**
 			 * Class Mapping from
 			 * <ul>
@@ -353,8 +365,7 @@ class MIRCodeGenerator implements IGenerator {
 			
 				@Override
 				protected EClass getMappedEClass() {
-					// «leftType.commentString»
-					return «EMFHelper.getJavaExpressionThatReturns(leftType, true)»;
+					return «referenceConstant(leftType)»;
 				}
 				
 				@Override
@@ -401,10 +412,10 @@ class MIRCodeGenerator implements IGenerator {
 					
 					«IF hasFeatureMapping»
 						final «rightBase.FQN» «rightBase.name» = claimBaseCorresponding(«leftName», blackboard);
+						
 						«createReferenceStructure(featureMapping.right, rightBase.name)»
 					«ELSE»
-						// «rightType.commentString»
-						«rightFQN» «rightName» = «EMFHelper.getJavaExpressionThatCreates(rightType)»;
+						«rightFQN» «rightName» = «createConstant(rightType)»;
 					«ENDIF»
 
 					result.addAll(handleNonContainedEObjects(Collections.singleton(«rightName»)));
@@ -474,24 +485,148 @@ class MIRCodeGenerator implements IGenerator {
 		)
 	}
 	
-	def static tryBindFeatureMapping(List<NamedFeatureCall> references, String checkVarName, boolean returnOptional) {
+	private Map<EPackage, List<Object>> referencedEMFEntities
+	
+	// TODO: Multimap Class!
+	private def void addEntity(EPackage pkg, Object obj) {
+		if (!referencedEMFEntities.containsKey(pkg))
+			referencedEMFEntities.put(pkg, new ArrayList)
+		
+		if (!referencedEMFEntities.get(pkg).contains(obj))
+			referencedEMFEntities.get(pkg).add(obj)
+	}
+	
+	private def List<Object> getFromMultimap(EPackage pkg) {
+		referencedEMFEntities.get(pkg).immutableCopy ?: Collections.emptyList
+	}
+	
+	def dispatch private addEntity(EPackage pkg) {
+		addEntity(pkg, pkg)
+		addEntity(pkg, pkg.EFactoryInstance)
+	}
+	
+	def dispatch private referenceConstant(EClass eClass) {
+		addEntity(eClass.EPackage, eClass)
+		
+		'''«CONSTANTS_CLASS_NAME».«eClass.EPackage.constantClassName».«eClass.fieldName»'''
+	}
+	
+	def dispatch private referenceConstant(EStructuralFeature feature) {
+		val eClass = feature.EContainingClass
+		addEntity(eClass.EPackage, eClass)
+		addEntity(eClass.EPackage, feature)
+		
+		'''«CONSTANTS_CLASS_NAME».«eClass.EPackage.constantClassName».«feature.fieldName»'''
+	}
+	
+	def dispatch private createConstant(EClass eClass) {
+		'''«CONSTANTS_CLASS_NAME».«eClass.EPackage.constantClassName».create«eClass.name.toFirstUpper»()'''
+	}
+	
+	def private constantClassName(EPackage pkg) {
+		pkg.name.toFirstUpper
+	}
+	
+	def dispatch private CharSequence fieldName(EPackage pkg) {
+		"_PACKAGE"
+	}
+	
+	def dispatch private CharSequence fieldName(EFactory factory) {
+		"_FACTORY"
+	}
+	
+	def dispatch private CharSequence fieldName(EClass eClass) {
+		eClass.name.toUpperCase + "_ECLASS"
+	}
+	
+	def dispatch private CharSequence fieldName(EStructuralFeature feature) {
+		val containerClass = feature.EContainingClass
+		
+		'''«containerClass.name.toUpperCase»__«feature.name.toUpperCase»'''
+	}
+	
+	def dispatch private createReferenceable(Object obj) '''
+		// no static constant created for «obj.toString»
+	'''
+	
+	def dispatch private createReferenceable(EPackage pkg) '''
+		public static final «EPackage.simpleName» «pkg.fieldName» =
+			«EMFHelper.getJavaExpressionThatReturns(pkg, false)»;
+	'''
+	
+	def dispatch private createReferenceable(EFactory factory) '''
+		public static final «EFactory.simpleName» «factory.fieldName» =
+			«factory.EPackage.fieldName».getEFactoryInstance();
+	'''
+	
+	def dispatch private createReferenceable(EClass eClass) {
+		val classifierID = eClass.classifierID
+		val pkg = eClass.EPackage
+		val factory = pkg.EFactoryInstance
+		
+		'''
+			public static final «EClass.simpleName» «eClass.fieldName» =
+				(«EClass.simpleName») «pkg.fieldName».getEClassifiers().get(«classifierID»);
+				
+			public static «eClass.instanceTypeName» create«eClass.name.toFirstUpper»() {
+				return («eClass.instanceTypeName») («factory.fieldName».create(«eClass.fieldName»));
+			}
+		'''
+	}
+	
+	def dispatch private createReferenceable(EAttribute feature) {
+		val featureID = feature.featureID
+		val containerClass = feature.EContainingClass
+		
+		'''
+			public static final «EAttribute.simpleName» «feature.fieldName» =
+				(«EAttribute.simpleName») «containerClass.fieldName».getEStructuralFeature(«featureID»);
+		'''
+	}
+	
+	def dispatch private createReferenceable(EReference feature) {
+		val featureID = feature.featureID
+		val containerClass = feature.EContainingClass
+		
+		'''
+			public static final «EReference.simpleName» «feature.fieldName» =
+				(«EReference.simpleName») «containerClass.fieldName».getEStructuralFeature(«featureID»);
+		'''
+	}
+	
+	def private generateConstants(String pkgName, IFileSystemAccess fsa) {
+		fsa.generateFile(SRC_GEN_FOLDER + (pkgName + "." + CONSTANTS_CLASS_NAME).classNameToJavaPath, '''
+		package «pkgName»;
+		
+		«getImportStatements(#[EPackage, EFactory, EClass, EStructuralFeature, EReference, EAttribute])»
+		
+		public final class «CONSTANTS_CLASS_NAME» {
+			«FOR pkg : referencedEMFEntities.keySet»
+			// EPackage «pkg.commentString»
+			public static class «pkg.constantClassName» {
+				«FOR referenceable : getFromMultimap(pkg)»
+				«referenceable.createReferenceable»
+				
+				«ENDFOR»
+			}
+			
+			«ENDFOR»
+		}
+		''')
+	}
+	
+	def tryBindFeatureMapping(List<NamedFeatureCall> references, String checkVarName, boolean returnOptional) {
 		val result = new StringBuilder
 		var previousOptionalName = '''Optional.ofNullable(«checkVarName»)'''
 		
-		for (ref : references.reverseView) {
+		for (ref : references) {
 			val eRef = ref.claimEReference
-			val refVarName = "referenceTo" + ref.name
-			val featureVarName = "featureTo" + ref.name
 			val containerTypeName = ref.EClass.instanceTypeName
 			val referVarName = ref.name + "Referencee"
 			
 			result.append('''
-			Optional<«containerTypeName»> «referVarName» = «previousOptionalName».flatMap( (it) -> { 
-			// «commentString(ref)»
-					EStructuralFeature «featureVarName» = «EMFHelper.getJavaExpressionThatReturns(eRef, true)»;
-					EReference «refVarName» = JavaHelper.requireType(«featureVarName», EReference.class);
-					return EcoreHelper.findOneReferencee(it, «refVarName», «containerTypeName».class);
-				}
+			Optional<«containerTypeName»> «referVarName» = «previousOptionalName».flatMap(
+				(it) -> EcoreHelper.findOneReferencee(it, «referenceConstant(eRef)», «containerTypeName».class)
 			);
 			''')
 			
@@ -507,30 +642,25 @@ class MIRCodeGenerator implements IGenerator {
 		return result.toString
 	}
 	
-	def static createReferenceStructure(List<NamedFeatureCall> references, String baseName) {
+	def createReferenceStructure(List<NamedFeatureCall> references, String baseName) {
 		var previousName = baseName
 		
 		val result = new StringBuilder
 		
-		for (ref : references) {
+		for (ref : references.reverseView) {
 			val eRef = ref.claimEReference
 			val refVarName = "referenceTo" + ref.name
 			
 			result.append('''
-			// «ref.commentString»
-			«ref.FQN» «ref.name» = «EMFHelper.getJavaExpressionThatCreates(ref.type)»;
+			«ref.FQN» «ref.name» = «createConstant(ref.type)»;
 			
-			EReference «refVarName» = «JavaHelper.simpleName».requireType(
-				«EMFHelper.getJavaExpressionThatReturns(eRef, false)»,
-				«EReference.simpleName».class);
-				
 			«IF eRef.many»
 				«JavaHelper.simpleName».requireCollectionType(
-					«previousName».eGet(«refVarName»),
+					«previousName».eGet(«referenceConstant(eRef)»),
 					«ref.FQN».class)
 					.add(«ref.name»);
 			«ELSE»
-				«previousName».eSet(«refVarName», «ref.name»);
+				«previousName».eSet(«referenceConstant(eRef)», «ref.name»);
 			«ENDIF»
 			
 			«IF eRef.containment»
@@ -565,5 +695,9 @@ class MIRCodeGenerator implements IGenerator {
 	
 	def static dispatch String commentString(NamedFeatureCall nfc) '''
 		«nfc.feature.commentString»
+	'''
+	
+	def static dispatch String commentString(EPackage pkg) '''
+		«pkg.name» («pkg.nsURI»)
 	'''
 }

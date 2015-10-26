@@ -6,6 +6,7 @@ import org.eclipse.jdt.core.IClasspathEntry
 import org.eclipse.jdt.core.JavaCore
 import org.eclipse.pde.core.project.IBundleProjectDescription
 import org.eclipse.xtext.generator.IFileSystemAccess
+import org.eclipse.core.resources.IResource
 
 class EclipseProjectHelper {
 	public final String SRC_GEN_FOLDER_NAME = "src-gen"
@@ -103,6 +104,10 @@ class EclipseProjectHelper {
 		this.srcgenFSA = new PrependPathFSA(this.rootFSA, SRC_GEN_FOLDER_NAME)
 		
 		return javaProject
+	}
+	
+	public def synchronizeProject() {
+		project.refreshLocal(IResource.DEPTH_INFINITE, null)
 	}
 	
 	/** Deletes the project, and creates a new Java project */

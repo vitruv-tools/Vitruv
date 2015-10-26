@@ -27,8 +27,11 @@ import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper.*
+import org.apache.log4j.Logger
 
 class MIRJvmModelInferrer extends AbstractModelInferrer {
+	private static final Logger LOGGER = Logger.getLogger(MIRJvmModelInferrer)
+	
 	@Inject extension JvmTypesBuilder
 	@Inject IGeneratorStatus generatorStatus
 	@Inject ClosureProvider closureProvider
@@ -41,11 +44,6 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 	// The dispatch modifier must not be removed or the method will not override / be called
 	def dispatch void infer(MIRFile mirFile, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		if (!isPreIndexingPhase) {
-
-			// the "compilation state" is reset at this stage
-			generatorStatus.reset
-			closureProvider.reset
-
 			val pkgName = mirFile.generatedPackage
 			EcoreUtil2.resolveAll(mirFile);
 			
@@ -58,7 +56,7 @@ class MIRJvmModelInferrer extends AbstractModelInferrer {
 	}
 
 	def void inferMapping(Mapping mapping, String pkgName, IJvmDeclaredTypeAcceptor acceptor) {
-		println("Inferring for mapping: " + mapping + ". " + mapping.constraints?.whenwhere)
+		// LOGGER.trace("Inferring for mapping: " + mapping + ". " + mapping.constraints?.whenwhere)
 
 		if (mapping.isValid && (mapping.constraints != null)) {
 			mapping.constraints.whenwhere?.createMappingWhensWheres(mapping, pkgName, acceptor)

@@ -27,6 +27,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.mir;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer,
  org.eclipse.ocl,
  org.eclipse.ocl.ecore,
- org.eclipse.emf.transaction
+ org.eclipse.emf.transaction,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence
 Bundle-ActivationPolicy: lazy
 

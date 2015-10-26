@@ -117,12 +117,12 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		val source = mir.packages.get(0)
 		val target = mir.packages.get(1)
 		
-		mapping.constraints.withs
+		mapping.constraints?.withs
 			// for typing
-			.filter(FeatureMapping)
+			?.filter(FeatureMapping)
 			// ensures, that the mappings are between EClasses 
-			.filter[mappedElements.forall [ mE | mE.typeRecursive instanceof EClass ] ]
-			.forEach [
+			?.filter[mappedElements.forall [ mE | mE.typeRecursive instanceof EClass ] ]
+			?.forEach [
 				val classMappingFromFeature = mapMappingAndReverse(it, mir)
 				classMappingFromFeature
 					.addFeatureConditions(it, fstMapping, mir, source, target)
@@ -172,6 +172,10 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 	}
 	
 	def private createWithBlockPostCondition(EObject context, EPackage source) {
+		if (generatorStatus.getJvmName(context) == null) {
+			logger.debug("No JVM class name found for " + context.toString)
+		}
+		
 		val newPostcondition = createWithBlockPostCondition
 		newPostcondition.assignmentExpression = createStaticMethodCall(
 			generatorStatus.getJvmName(context)
