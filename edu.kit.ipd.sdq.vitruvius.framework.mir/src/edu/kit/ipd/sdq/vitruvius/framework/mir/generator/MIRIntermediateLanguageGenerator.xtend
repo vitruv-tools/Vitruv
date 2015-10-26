@@ -164,18 +164,18 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 			
 			newMapping.postconditions +=
 				mapping.constraints.withBlocks.map [
-					createWithBlockPostCondition(target)
+					createWithBlockPostCondition(source)
 				]
 		}
 
 		return newMapping
 	}
 	
-	def private createWithBlockPostCondition(EObject context, EPackage target) {
+	def private createWithBlockPostCondition(EObject context, EPackage source) {
 		val newPostcondition = createWithBlockPostCondition
 		newPostcondition.assignmentExpression = createStaticMethodCall(
 			generatorStatus.getJvmName(context)
-				+ "." + target.assignmentMethodName,
+				+ "." + source.assignmentMethodName,
 			context.createParameterList
 			  .map[tryGetName])
 			  
@@ -264,9 +264,9 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 	}
 	
 	def TypedElement getMappedElementInPackage(Mapping mapping, EPackage pkg) {
-		mapping.mappedElements.forEach[
-			logger.debug("Mapped element: " + it.tryGetName + " (" + it.typeRecursive.getContainerHierarchy(true).map[it.toString].join(", ") + ")")
-		]
+//		mapping.mappedElements.forEach[
+//			logger.debug("Mapped element: " + it.tryGetName + " (" + it.typeRecursive.getContainerHierarchy(true).map[it.toString].join(", ") + ")")
+//		]
 		
 		val mappedElementsInPkg = (mapping.mappedElements.filter[typeRecursive.hasContainer(pkg)])
 		
@@ -286,16 +286,5 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 			       .ensureEClass
 			       
 		return result
-	}
-	
-	private def EClass getEClassOfElementInPackage(Mapping mapping, EPackage pkg) {
-		mapping.getMappedElementInPackage(pkg)
-		       .typeRecursive
-		       .ensureEClass
-	}
-	
-	private def String getNameOfElementInPackage(Mapping mapping, EPackage pkg) {
-		mapping.getMappedElementInPackage(pkg)
-		       .tryGetName
 	}
 }

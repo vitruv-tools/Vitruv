@@ -46,6 +46,8 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
 
 import static edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRChange2CommandTransforming.*
+import static edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
+
 import org.eclipse.emf.ecore.EClassifier
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.WithBlockPostCondition
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
@@ -53,6 +55,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.StaticMethodCall
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.WhenWhereJavaPredicate
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.NamedFeatureCall
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.NamedTyped
 
 /**
  * @author Dominik Werle
@@ -194,7 +198,8 @@ class MIRCodeGenerator implements IGenerator {
 				
 				/** The mappings. **/
 				public final static Set<«MIRMappingRealization.simpleName»> «MAPPINGS_FIELD_NAME» = new HashSet<«MIRMappingRealization.simpleName»>();
-				{
+				
+				static {
 					«FOR name : mappingClassNames.values»
 					«MAPPINGS_FIELD_NAME».add(«file.configuration.package».mappings.«name».INSTANCE);
 					«ENDFOR»
@@ -236,7 +241,7 @@ class MIRCodeGenerator implements IGenerator {
 	def dispatch String createMappingClassName(ClassMapping mapping) {
 		val leftTypeName = mapping.left.type.name
 		val rightTypeName = mapping.right.type.name
-		nextMappingClassName + "_Class_" + leftTypeName + "_" + rightTypeName
+		nextMappingClassName + "C_" + leftTypeName + "_" + rightTypeName
 	}
 	
 	def dispatch String createMappingClassName(FeatureMapping mapping) {
@@ -258,7 +263,18 @@ class MIRCodeGenerator implements IGenerator {
 		mappingClassNames.put(mapping, className)
 	}
 	
+	def static claimEReference(NamedFeatureCall fc) {
+		requireType(fc.feature, EReference)
+	}
+	
+	def static FQN(NamedTyped nt) {
+		nt?.type?.instanceTypeName
+	}
+	
 	def dispatch generateMappingClass(ClassMapping mapping, String pkgName, IFileSystemAccess fsa) {
+		val left = mapping.left
+		val right = mapping.right
+		
 		val leftFQN = mapping.left.type.instanceTypeName
 		val leftType = mapping.left.type
 		val leftName = mapping.left.name
@@ -267,28 +283,15 @@ class MIRCodeGenerator implements IGenerator {
 		val rightType = mapping.right.type
 		val rightName = mapping.right.name
 		
-		val hasParent = (mapping.featureMapping != null)
+		val hasFeatureMapping = (mapping.featureMapping != null)
+
+		val featureMapping = mapping.featureMapping
+		val hasLeftParents = hasFeatureMapping && !featureMapping.left.empty
+		val baseClassMapping = featureMapping?.parent
+		val leftBase = baseClassMapping?.left
+		val rightBase = baseClassMapping?.right
 		
-		val parentClassMapping = mapping.featureMapping?.parent
-		val parentClassMappingClass = mappingClassNames.get(parentClassMapping)
-		
-		// TODO: DW - Direction important here?
-		val parent = mapping.featureMapping?.parent?.left
-		val parentFQN = parent?.type?.instanceTypeName
-		val parentType = parent?.type
-		val parentName = parent?.name
-		
-		// TODO: DW - multiple hops. non-list...
-		val parentReference = JavaHelper.requireTypeOrNull(mapping.featureMapping?.left?.get(0)?.feature, EReference)
-		val parentReferenceContainment = if (parentReference != null) parentReference.isContainment
-		val parentReferenceCollection = if (parentReference != null) parentReference.isMany
-		
-		val parentRightReference = mapping.featureMapping?.right?.get(0)?.feature
-		
-		val parentRight = mapping.featureMapping?.parent?.right
-		val parentRightFQN = parentRight?.type?.instanceTypeName
-		val parentRightType = parentRight?.type
-		val parentRightName = parentRight?.name
+		val baseClassMappingClass = mappingClassNames.get(baseClassMapping)
 		
 		val className = mappingClassNames.claimValueForKey(mapping)
 		val reverseClassName = mappingClassNames.claimValueForKey(mapping.opposite)
@@ -328,7 +331,12 @@ class MIRCodeGenerator implements IGenerator {
 					«leftFQN» «leftName» =
 						(«leftFQN») context;
 
-					«featureMappingCheckAndBindingJava(mapping)»
+					«IF hasFeatureMapping»
+					if (!getBase(«leftName»).isPresent()) {
+						return false;
+					}
+					«ENDIF»
+					
 					
 					«FOR predicate : mapping.predicates.filter(WhenWhereJavaPredicate)»
 					if (!(«predicate.checkWhenWhereJava»)) {
@@ -362,8 +370,19 @@ class MIRCodeGenerator implements IGenerator {
 					final «leftFQN» «leftName» = «JavaHelper.simpleName».requireType(eObject, «leftFQN».class);
 					final «rightFQN» «rightName» = «JavaHelper.simpleName».requireType(target, «rightFQN».class);
 					
-					«featureMappingBindingJava(mapping, true)»
+					«IF hasFeatureMapping»
+					final «leftBase.FQN» «leftBase.name» = «className».claimBase(«leftName»);
+					final «rightBase.FQN» «rightBase.name» = «reverseClassName».claimBase(«rightName»);
+					«ENDIF»
 					
+					/*
+						«IF hasFeatureMapping»
+						«tryBindFeatureMapping(featureMapping.left, leftName, false)»
+						«tryBindFeatureMapping(featureMapping.right, rightName, false)»
+						«ENDIF»
+					*/
+					
+					// TODO: bind all necessary elements 
 					// TODO: restore post conditions
 					«FOR with_block : mapping.postconditions.filter(WithBlockPostCondition)»
 					«restorePostCondition(with_block)»
@@ -379,34 +398,19 @@ class MIRCodeGenerator implements IGenerator {
 					final Collection<Pair<EObject, VURI>> result = new HashSet<Pair<EObject, VURI>>();
 					
 					«leftFQN» «leftName» = «JavaHelper.simpleName».requireType(eObject, «leftFQN».class);
-					// «rightType.commentString»
-					«rightFQN» «rightName» = «EMFHelper.getJavaExpressionThatCreates(rightType)»;
 					
-					«IF hasParent»
-						final «parentRightFQN» «parentRightName» = claimParentCorresponding(«leftName», blackboard);
-						// TODO DW: correct referencing...
-						
-						// «parentRightReference.name»
-						EReference parentReference = «JavaHelper.simpleName».requireType(
-							«EMFHelper.getJavaExpressionThatReturns(parentRightReference, false)»,
-							«EReference.simpleName».class);
-							
-						«IF parentReferenceCollection»
-							«JavaHelper.simpleName».requireCollectionType(
-								«parentRightName».eGet(parentReference),
-								«rightFQN».class)
-								.add(«rightName»);
-						«ELSE»
-							«parentRightName».eSet(parentReference, «rightName»);
-						«ENDIF»
+					«IF hasFeatureMapping»
+						final «rightBase.FQN» «rightBase.name» = claimBaseCorresponding(«leftName», blackboard);
+						«createReferenceStructure(featureMapping.right, rightBase.name)»
+					«ELSE»
+						// «rightType.commentString»
+						«rightFQN» «rightName» = «EMFHelper.getJavaExpressionThatCreates(rightType)»;
 					«ENDIF»
 
-					«IF parentReferenceContainment»
-					// TODO: omit, parent reference is containment
-					«ENDIF»
 					result.addAll(handleNonContainedEObjects(Collections.singleton(«rightName»)));
 					
 					// create here, since containment is decided here
+					// TODO: what is the correspondence structure when feature hopping?
 					SameTypeCorrespondence stc = ci.createAndAddEObjectCorrespondence(«leftName», «rightName»);
 					ci.registerMappingForCorrespondence(stc, this);
 					ci.registerMappingForCorrespondence(stc, «className».REVERSE);
@@ -441,42 +445,103 @@ class MIRCodeGenerator implements IGenerator {
 					return «rightName»;
 				}
 				
-				«IF hasParent»
-				public static Optional<«parentFQN»> getParent(«leftFQN» «leftName») {
-					// «parentReference.commentString»
-					EStructuralFeature feature = «EMFHelper.getJavaExpressionThatReturns(parentReference, true)»;
-					EReference ref = JavaHelper.requireType(feature, EReference.class);
-					
-					final Optional<«parentFQN»> «parentName» =
-						EcoreHelper.findOneReferencee(«leftName», ref, «parentFQN».class);
-						
-					return «parentName»;
+				«IF hasFeatureMapping»
+				public static Optional<«leftBase.FQN»> getBase(«leftFQN» «leftName») {
+					«tryBindFeatureMapping(featureMapping.left, leftName, true)»
 				}
 				
-				public static «parentFQN» claimParent(«leftFQN» «leftName») {
-					final Optional<«parentFQN»> «parentName»_opt = getParent(«leftName»);
-					final «parentFQN» «parentName» = «parentName»_opt.orElseThrow(() -> new IllegalStateException(
-						"Could not find a referencing «parentFQN» for «leftFQN» " + «leftName».toString()));
-						
-					return «parentName»;
+				public static «leftBase.FQN» claimBase(«leftFQN» «leftName») {
+					final Optional<«leftBase.FQN»> «leftBase.name» = getBase(«leftName»);
+					return «leftBase.name».orElseThrow(() -> new IllegalStateException(
+						"Could not find the correct reference structure from «leftBase.FQN» to «leftFQN» " + «leftName».toString()));
 				}
 				
-				public static Optional<«parentRightFQN»> getParentCorresponding(«leftFQN» «leftName», Blackboard blackboard) {
-					return getParent(«leftName»).map(it ->
-						«parentClassMappingClass».getCorresponding(it, blackboard).orElse(null));
+				public static Optional<«rightBase.FQN»> getBaseCorresponding(«leftFQN» «leftName», Blackboard blackboard) {
+					return getBase(«leftName»).map(it ->
+						«baseClassMappingClass».getCorresponding(it, blackboard).orElse(null));
 				}
 				
-				public static «parentRightFQN» claimParentCorresponding(«leftFQN» «leftName», Blackboard blackboard) {
-					final «parentFQN» «parentName» = claimParent(«leftName»);
-					final «parentRightFQN» «parentRightName» =
-						«parentClassMappingClass».claimCorresponding(«parentName», blackboard);
+				public static «rightBase.FQN» claimBaseCorresponding(«leftFQN» «leftName», Blackboard blackboard) {
+					final «leftBase.FQN» «leftBase.name» = claimBase(«leftName»);
+					final «rightBase.FQN» «rightBase.name» =
+						«baseClassMappingClass».claimCorresponding(«leftBase.name», blackboard);
 						
-					return «parentRightName»;
+					return «rightBase.name»;
 				}
 				«ENDIF»
 			}
 		'''
 		)
+	}
+	
+	def static tryBindFeatureMapping(List<NamedFeatureCall> references, String checkVarName, boolean returnOptional) {
+		val result = new StringBuilder
+		var previousOptionalName = '''Optional.ofNullable(«checkVarName»)'''
+		
+		for (ref : references.reverseView) {
+			val eRef = ref.claimEReference
+			val refVarName = "referenceTo" + ref.name
+			val featureVarName = "featureTo" + ref.name
+			val containerTypeName = ref.EClass.instanceTypeName
+			val referVarName = ref.name + "Referencee"
+			
+			result.append('''
+			Optional<«containerTypeName»> «referVarName» = «previousOptionalName».flatMap( (it) -> { 
+			// «commentString(ref)»
+					EStructuralFeature «featureVarName» = «EMFHelper.getJavaExpressionThatReturns(eRef, true)»;
+					EReference «refVarName» = JavaHelper.requireType(«featureVarName», EReference.class);
+					return EcoreHelper.findOneReferencee(it, «refVarName», «containerTypeName».class);
+				}
+			);
+			''')
+			
+			previousOptionalName = referVarName
+		}
+		
+		if (returnOptional) {
+			result.append('''
+				return «previousOptionalName»; 
+			''')
+		}
+		
+		return result.toString
+	}
+	
+	def static createReferenceStructure(List<NamedFeatureCall> references, String baseName) {
+		var previousName = baseName
+		
+		val result = new StringBuilder
+		
+		for (ref : references) {
+			val eRef = ref.claimEReference
+			val refVarName = "referenceTo" + ref.name
+			
+			result.append('''
+			// «ref.commentString»
+			«ref.FQN» «ref.name» = «EMFHelper.getJavaExpressionThatCreates(ref.type)»;
+			
+			EReference «refVarName» = «JavaHelper.simpleName».requireType(
+				«EMFHelper.getJavaExpressionThatReturns(eRef, false)»,
+				«EReference.simpleName».class);
+				
+			«IF eRef.many»
+				«JavaHelper.simpleName».requireCollectionType(
+					«previousName».eGet(«refVarName»),
+					«ref.FQN».class)
+					.add(«ref.name»);
+			«ELSE»
+				«previousName».eSet(«refVarName», «ref.name»);
+			«ENDIF»
+			
+			«IF eRef.containment»
+			// TODO: omit handling, reference is containment
+			«ENDIF»
+			''')
+			
+			previousName = ref.name
+		}
+		
+		return result.toString
 	}
 	
 	def restorePostCondition(WithBlockPostCondition pc) '''
@@ -487,57 +552,18 @@ class MIRCodeGenerator implements IGenerator {
 		return '''«smc.methodFQN»(«String.join(", ", smc.parameterNames)»)'''
 	}
 	
-	
-	def String featureMappingBindingJava(ClassMapping mapping, boolean claim) {
-		if (mapping.featureMapping != null) {
-			val mappingClassName = Objects.requireNonNull(mappingClassNames.get(mapping));
-			val classMappingLeftName = mapping.left.name
-			
-			val leftName = mapping.left.name
-			val leftParentType = mapping.featureMapping.parent.left.type
-			val leftParentTypeName = leftParentType.instanceTypeName
-			val leftParentName = mapping.featureMapping.parent.left.name
-			
-			val rightParentType = mapping.featureMapping.parent.right.type
-			val rightParentTypeName = rightParentType.instanceTypeName
-			val rightParentName = mapping.featureMapping.parent.right.name
-			
-			'''
-			// feature «mapping.featureMapping.left.get(0).feature.name»
-			«IF claim»
-			final «leftParentTypeName» «leftParentName» = «mappingClassName».claimParent(«leftName»);
-			final «rightParentTypeName» «rightParentName» = «mappingClassName».claimParentCorresponding(«leftName», blackboard);
-			«ELSE»
-			final Optional<«leftParentTypeName»> «leftParentName» = «mappingClassName».getParent(«leftName»);
-			if (!«leftParentName».isPresent()) {
-				return false;
-			}
-			
-			final Optional<«rightParentTypeName»> «rightParentName» = «mappingClassName».getParentCorresponding(«leftName», blackboard);
-			if (!«rightParentName».isPresent()) {
-				return false;
-			}
-			«ENDIF»
-			
-			«featureMappingBindingJava(mapping.featureMapping.parent, claim)»
-			'''
-		} else {
-			""
-		}
-	}
-	
-	def String featureMappingCheckAndBindingJava(ClassMapping mapping) {
-		featureMappingBindingJava(mapping, false)
-	}
-	
 	def dispatch generateMappingClass(FeatureMapping mapping, String pkgName, IFileSystemAccess fsa) {
 	}
 	
-	def dispatch String commentString(EStructuralFeature feature) '''
+	def static dispatch String commentString(EStructuralFeature feature) '''
 		«feature.containerClass.name» . «feature.name»
 	'''
 	
-	def dispatch String commentString(EClassifier clazz) '''
+	def static dispatch String commentString(EClassifier clazz) '''
 		«clazz.instanceTypeName»
+	'''
+	
+	def static dispatch String commentString(NamedFeatureCall nfc) '''
+		«nfc.feature.commentString»
 	'''
 }

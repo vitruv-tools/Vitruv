@@ -15,6 +15,7 @@ import com.google.inject.Inject;
 
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EclipseProjectHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.PreProcessingFileSystemAccess;
 
 /**
  * A generator that executes multiple IGenerators after each other
@@ -45,7 +46,8 @@ public class MIRGenerator implements IGenerator {
 		EclipseProjectHelper eclipseHelper = new EclipseProjectHelper(projectName);
 		eclipseHelper.reinitializeProject();
 		
-		IFileSystemAccess rootFSA = eclipseHelper.getRootFSA();
+		IFileSystemAccess rootFSA = PreProcessingFileSystemAccess.createJavaFormattingFSA(eclipseHelper.getRootFSA());
+		
 		IFileSystemAccess srcgenFSA = eclipseHelper.getSrcGenFSA();
 		
 		jvmModelGenerator.doGenerate(input, srcgenFSA);
