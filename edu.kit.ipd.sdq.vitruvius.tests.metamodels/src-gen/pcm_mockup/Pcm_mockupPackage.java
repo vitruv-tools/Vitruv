@@ -241,13 +241,22 @@ public interface Pcm_mockupPackage extends EPackage {
 	int COMPONENT__PROVIDED_INTERFACES = IDENTIFIED_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Repository Factor</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPONENT__REPOSITORY_FACTOR = IDENTIFIED_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>Component</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPONENT_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 2;
+	int COMPONENT_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of operations of the '<em>Component</em>' class.
@@ -382,6 +391,17 @@ public interface Pcm_mockupPackage extends EPackage {
 	EReference getComponent_ProvidedInterfaces();
 
 	/**
+	 * Returns the meta object for the attribute '{@link pcm_mockup.Component#getRepositoryFactor <em>Repository Factor</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Repository Factor</em>'.
+	 * @see pcm_mockup.Component#getRepositoryFactor()
+	 * @see #getComponent()
+	 * @generated
+	 */
+	EAttribute getComponent_RepositoryFactor();
+
+	/**
 	 * Returns the meta object for class '{@link pcm_mockup.PNamedElement <em>PNamed Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -496,6 +516,14 @@ public interface Pcm_mockupPackage extends EPackage {
 		 * @generated
 		 */
 		EReference COMPONENT__PROVIDED_INTERFACES = eINSTANCE.getComponent_ProvidedInterfaces();
+
+		/**
+		 * The meta object literal for the '<em><b>Repository Factor</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute COMPONENT__REPOSITORY_FACTOR = eINSTANCE.getComponent_RepositoryFactor();
 
 		/**
 		 * The meta object literal for the '{@link pcm_mockup.impl.PNamedElementImpl <em>PNamed Element</em>}' class.

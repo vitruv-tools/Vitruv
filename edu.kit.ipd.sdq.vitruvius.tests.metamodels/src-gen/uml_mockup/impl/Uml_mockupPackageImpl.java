@@ -188,6 +188,15 @@ public class Uml_mockupPackageImpl extends EPackageImpl implements Uml_mockupPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getUClass_ClassCount() {
+		return (EAttribute)uClassEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getUNamedElement() {
 		return uNamedElementEClass;
 	}
@@ -239,6 +248,7 @@ public class Uml_mockupPackageImpl extends EPackageImpl implements Uml_mockupPac
 		interfaceEClass = createEClass(INTERFACE);
 
 		uClassEClass = createEClass(UCLASS);
+		createEAttribute(uClassEClass, UCLASS__CLASS_COUNT);
 
 		uNamedElementEClass = createEClass(UNAMED_ELEMENT);
 		createEAttribute(uNamedElementEClass, UNAMED_ELEMENT__NAME);
@@ -290,6 +300,7 @@ public class Uml_mockupPackageImpl extends EPackageImpl implements Uml_mockupPac
 		initEClass(interfaceEClass, Interface.class, "Interface", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(uClassEClass, UClass.class, "UClass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getUClass_ClassCount(), ecorePackage.getEInt(), "classCount", null, 1, 1, UClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(uNamedElementEClass, UNamedElement.class, "UNamedElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getUNamedElement_Name(), ecorePackage.getEString(), "name", null, 0, 1, UNamedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

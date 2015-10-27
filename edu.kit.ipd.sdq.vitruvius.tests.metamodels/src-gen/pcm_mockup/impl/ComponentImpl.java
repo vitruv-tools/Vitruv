@@ -23,6 +23,7 @@ import pcm_mockup.Pcm_mockupPackage;
  * <ul>
  *   <li>{@link pcm_mockup.impl.ComponentImpl#getName <em>Name</em>}</li>
  *   <li>{@link pcm_mockup.impl.ComponentImpl#getProvidedInterfaces <em>Provided Interfaces</em>}</li>
+ *   <li>{@link pcm_mockup.impl.ComponentImpl#getRepositoryFactor <em>Repository Factor</em>}</li>
  * </ul>
  *
  * @generated
@@ -56,6 +57,25 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 	 * @ordered
 	 */
 	protected Interface providedInterfaces;
+
+	/**
+	 * The default value of the '{@link #getRepositoryFactor() <em>Repository Factor</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getRepositoryFactor()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int REPOSITORY_FACTOR_EDEFAULT = 0;
+	/**
+	 * The cached value of the '{@link #getRepositoryFactor() <em>Repository Factor</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getRepositoryFactor()
+	 * @generated
+	 * @ordered
+	 */
+	protected int repositoryFactor = REPOSITORY_FACTOR_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -145,6 +165,27 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public int getRepositoryFactor() {
+		return repositoryFactor;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setRepositoryFactor(int newRepositoryFactor) {
+		int oldRepositoryFactor = repositoryFactor;
+		repositoryFactor = newRepositoryFactor;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Pcm_mockupPackage.COMPONENT__REPOSITORY_FACTOR, oldRepositoryFactor, repositoryFactor));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -166,6 +207,8 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 				return getName();
 			case Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES:
 				return getProvidedInterfaces();
+			case Pcm_mockupPackage.COMPONENT__REPOSITORY_FACTOR:
+				return getRepositoryFactor();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -183,6 +226,9 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 				return;
 			case Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES:
 				setProvidedInterfaces((Interface)newValue);
+				return;
+			case Pcm_mockupPackage.COMPONENT__REPOSITORY_FACTOR:
+				setRepositoryFactor((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -202,6 +248,9 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 			case Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES:
 				setProvidedInterfaces((Interface)null);
 				return;
+			case Pcm_mockupPackage.COMPONENT__REPOSITORY_FACTOR:
+				setRepositoryFactor(REPOSITORY_FACTOR_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -218,6 +267,8 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES:
 				return providedInterfaces != null;
+			case Pcm_mockupPackage.COMPONENT__REPOSITORY_FACTOR:
+				return repositoryFactor != REPOSITORY_FACTOR_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -266,6 +317,8 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (name: ");
 		result.append(name);
+		result.append(", repositoryFactor: ");
+		result.append(repositoryFactor);
 		result.append(')');
 		return result.toString();
 	}

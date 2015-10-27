@@ -13,7 +13,10 @@
         eType="#//UClass" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Interface" eSuperTypes="#//Identified #//UNamedElement"/>
-  <eClassifiers xsi:type="ecore:EClass" name="UClass" eSuperTypes="#//Identified #//UNamedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="UClass" eSuperTypes="#//Identified #//UNamedElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="classCount" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UNamedElement" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>

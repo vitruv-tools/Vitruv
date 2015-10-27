@@ -22,4 +22,20 @@
             genModel="metamodels/pcm_mockup.genmodel"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated multicontainment_a -->
+      <package
+            uri="http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.multicontainment_a"
+            class="multicontainment_a.Multicontainment_aPackage"
+            genModel="metamodels/multicontainment_a.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated multicontainment_b -->
+      <package
+            uri="http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.multicontainment_b"
+            class="multicontainment_b.Multicontainment_bPackage"
+            genModel="metamodels/multicontainment_b.genmodel"/>
+   </extension>
+
 </plugin>

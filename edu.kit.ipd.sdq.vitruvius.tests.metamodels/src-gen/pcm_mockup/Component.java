@@ -13,6 +13,7 @@ package pcm_mockup;
  * </p>
  * <ul>
  *   <li>{@link pcm_mockup.Component#getProvidedInterfaces <em>Provided Interfaces</em>}</li>
+ *   <li>{@link pcm_mockup.Component#getRepositoryFactor <em>Repository Factor</em>}</li>
  * </ul>
  *
  * @see pcm_mockup.Pcm_mockupPackage#getComponent()
@@ -46,4 +47,30 @@ public interface Component extends Identified, PNamedElement {
 	 * @generated
 	 */
 	void setProvidedInterfaces(Interface value);
+
+	/**
+	 * Returns the value of the '<em><b>Repository Factor</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Repository Factor</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Repository Factor</em>' attribute.
+	 * @see #setRepositoryFactor(int)
+	 * @see pcm_mockup.Pcm_mockupPackage#getComponent_RepositoryFactor()
+	 * @model required="true"
+	 * @generated
+	 */
+	int getRepositoryFactor();
+
+	/**
+	 * Sets the value of the '{@link pcm_mockup.Component#getRepositoryFactor <em>Repository Factor</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Repository Factor</em>' attribute.
+	 * @see #getRepositoryFactor()
+	 * @generated
+	 */
+	void setRepositoryFactor(int value);
 } // Component

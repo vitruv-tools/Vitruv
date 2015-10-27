@@ -232,13 +232,22 @@ public interface Uml_mockupPackage extends EPackage {
 	int UCLASS__NAME = IDENTIFIED_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Class Count</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UCLASS__CLASS_COUNT = IDENTIFIED_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>UClass</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UCLASS_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 1;
+	int UCLASS_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>UClass</em>' class.
@@ -362,6 +371,17 @@ public interface Uml_mockupPackage extends EPackage {
 	EClass getUClass();
 
 	/**
+	 * Returns the meta object for the attribute '{@link uml_mockup.UClass#getClassCount <em>Class Count</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Class Count</em>'.
+	 * @see uml_mockup.UClass#getClassCount()
+	 * @see #getUClass()
+	 * @generated
+	 */
+	EAttribute getUClass_ClassCount();
+
+	/**
 	 * Returns the meta object for class '{@link uml_mockup.UNamedElement <em>UNamed Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -468,6 +488,14 @@ public interface Uml_mockupPackage extends EPackage {
 		 * @generated
 		 */
 		EClass UCLASS = eINSTANCE.getUClass();
+
+		/**
+		 * The meta object literal for the '<em><b>Class Count</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute UCLASS__CLASS_COUNT = eINSTANCE.getUClass_ClassCount();
 
 		/**
 		 * The meta object literal for the '{@link uml_mockup.impl.UNamedElementImpl <em>UNamed Element</em>}' class.

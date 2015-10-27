@@ -12,7 +12,13 @@ Export-Package: uml_mockup,
  uml_mockup.util,
  pcm_mockup,
  pcm_mockup.impl,
- pcm_mockup.util
+ pcm_mockup.util,
+ multicontainment_a,
+ multicontainment_a.impl,
+ multicontainment_a.util,
+ multicontainment_b,
+ multicontainment_b.impl,
+ multicontainment_b.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport
 Bundle-ActivationPolicy: lazy

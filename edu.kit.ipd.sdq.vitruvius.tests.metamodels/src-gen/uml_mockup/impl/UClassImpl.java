@@ -19,6 +19,7 @@ import uml_mockup.Uml_mockupPackage;
  * </p>
  * <ul>
  *   <li>{@link uml_mockup.impl.UClassImpl#getName <em>Name</em>}</li>
+ *   <li>{@link uml_mockup.impl.UClassImpl#getClassCount <em>Class Count</em>}</li>
  * </ul>
  *
  * @generated
@@ -42,6 +43,25 @@ public class UClassImpl extends IdentifiedImpl implements UClass {
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getClassCount() <em>Class Count</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getClassCount()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int CLASS_COUNT_EDEFAULT = 0;
+	/**
+	 * The cached value of the '{@link #getClassCount() <em>Class Count</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getClassCount()
+	 * @generated
+	 * @ordered
+	 */
+	protected int classCount = CLASS_COUNT_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -88,11 +108,34 @@ public class UClassImpl extends IdentifiedImpl implements UClass {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public int getClassCount() {
+		return classCount;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setClassCount(int newClassCount) {
+		int oldClassCount = classCount;
+		classCount = newClassCount;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Uml_mockupPackage.UCLASS__CLASS_COUNT, oldClassCount, classCount));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Uml_mockupPackage.UCLASS__NAME:
 				return getName();
+			case Uml_mockupPackage.UCLASS__CLASS_COUNT:
+				return getClassCount();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -107,6 +150,9 @@ public class UClassImpl extends IdentifiedImpl implements UClass {
 		switch (featureID) {
 			case Uml_mockupPackage.UCLASS__NAME:
 				setName((String)newValue);
+				return;
+			case Uml_mockupPackage.UCLASS__CLASS_COUNT:
+				setClassCount((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -123,6 +169,9 @@ public class UClassImpl extends IdentifiedImpl implements UClass {
 			case Uml_mockupPackage.UCLASS__NAME:
 				setName(NAME_EDEFAULT);
 				return;
+			case Uml_mockupPackage.UCLASS__CLASS_COUNT:
+				setClassCount(CLASS_COUNT_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -137,6 +186,8 @@ public class UClassImpl extends IdentifiedImpl implements UClass {
 		switch (featureID) {
 			case Uml_mockupPackage.UCLASS__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case Uml_mockupPackage.UCLASS__CLASS_COUNT:
+				return classCount != CLASS_COUNT_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -185,6 +236,8 @@ public class UClassImpl extends IdentifiedImpl implements UClass {
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (name: ");
 		result.append(name);
+		result.append(", classCount: ");
+		result.append(classCount);
 		result.append(')');
 		return result.toString();
 	}
