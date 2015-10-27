@@ -20,10 +20,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRea
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRModelInformationProvider
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassMapping
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.FeatureMapping
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ReferenceMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.Mapping
-import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.NamedFeatureCall
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.NamedEReference
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.NamedTyped
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.StaticMethodCall
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.WhenWhereJavaPredicate
@@ -57,6 +57,9 @@ import static edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelpe
 import static edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRChange2CommandTransforming.*
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EMFHelper
 import org.eclipse.emf.ecore.EAttribute
+import java.util.UUID
+import java.util.Random
+import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.WithAttributePostCondition
 
 /**
  * @author Dominik Werle
@@ -198,6 +201,7 @@ class MIRCodeGenerator implements IGenerator {
 			 *   <li>«file.packages.get(1).nsURI»</li>
 			 * </ol>.
 			 */
+			@SuppressWarnings("unused")
 			public class «file.configuration.type» extends «AbstractMIRChange2CommandTransforming.simpleName» {
 				«createLoggerField(file.configuration.type)»
 				
@@ -254,7 +258,7 @@ class MIRCodeGenerator implements IGenerator {
 		nextMappingClassName + "C_" + leftTypeName + "_" + rightTypeName
 	}
 	
-	def dispatch String createMappingClassName(FeatureMapping mapping) {
+	def dispatch String createMappingClassName(ReferenceMapping mapping) {
 		val leftTypeName = mapping.left.get(0).name
 		val rightTypeName = mapping.right.get(0).name
 		nextMappingClassName + "_Feature_" + leftTypeName + "_" + rightTypeName
@@ -273,10 +277,6 @@ class MIRCodeGenerator implements IGenerator {
 		mappingClassNames.put(mapping, className)
 	}
 	
-	def static claimEReference(NamedFeatureCall fc) {
-		requireType(fc.feature, EReference)
-	}
-	
 	def static FQN(NamedTyped nt) {
 		nt?.type?.instanceTypeName
 	}
@@ -285,13 +285,8 @@ class MIRCodeGenerator implements IGenerator {
 		val left = mapping.left
 		val right = mapping.right
 		
-		val leftFQN = mapping.left.type.instanceTypeName
 		val leftType = mapping.left.type
-		val leftName = mapping.left.name
-		
-		val rightFQN = mapping.right.type.instanceTypeName
 		val rightType = mapping.right.type
-		val rightName = mapping.right.name
 		
 		val hasFeatureMapping = (mapping.featureMapping != null)
 
@@ -317,14 +312,17 @@ class MIRCodeGenerator implements IGenerator {
 			/**
 			 * Class Mapping from
 			 * <ul>
-			 *   <li>{@link «leftFQN»} to</li>
-			 *   <li>{@link «rightFQN»}</li>
+			 *   <li>{@link «left.FQN»} to</li>
+			 *   <li>{@link «right.FQN»}</li>
 			 * </ul>.
 			 *
 			 * Reverse mapping is {@link «reverseClassName»}.
 			 */
+			@SuppressWarnings("unused")
 			public class «className» extends «AbstractMIRMappingRealization.simpleName» {
 				«createLoggerField(className)»
+				private static final long serialVersionUID = «(new Random).nextLong.toString
+					/* TODO: maybe do more intelligent calculation */»L;
 				
 				// Singleton
 				public final static «className» INSTANCE = new «className»();
@@ -336,15 +334,15 @@ class MIRCodeGenerator implements IGenerator {
 				protected boolean checkConditions(EObject context,
 					Blackboard blackboard) {
 
-					if (!(context instanceof «leftFQN»)) {
+					if (!(context instanceof «left.FQN»)) {
 						return false;
 					}
 					
-					«leftFQN» «leftName» =
-						(«leftFQN») context;
+					«left.FQN» «left.name» =
+						(«left.FQN») context;
 
 					«IF hasFeatureMapping»
-					if (!getBase(«leftName»).isPresent()) {
+					if (!getBase(«left.name»).isPresent()) {
 						return false;
 					}
 					«ENDIF»
@@ -378,18 +376,18 @@ class MIRCodeGenerator implements IGenerator {
 						Blackboard blackboard) {
 					LOGGER.trace("restorePostConditions(" + eObject.toString() + ", " + target.toString() + ", " + change.toString() + ")");
 					
-					final «leftFQN» «leftName» = «JavaHelper.simpleName».requireType(eObject, «leftFQN».class);
-					final «rightFQN» «rightName» = «JavaHelper.simpleName».requireType(target, «rightFQN».class);
+					final «left.FQN» «left.name» = «JavaHelper.simpleName».requireType(eObject, «left.FQN».class);
+					final «right.FQN» «right.name» = «JavaHelper.simpleName».requireType(target, «right.FQN».class);
 					
 					«IF hasFeatureMapping»
-					final «leftBase.FQN» «leftBase.name» = «className».claimBase(«leftName»);
-					final «rightBase.FQN» «rightBase.name» = «reverseClassName».claimBase(«rightName»);
+					final «leftBase.FQN» «leftBase.name» = «className».claimBase(«left.name»);
+					final «rightBase.FQN» «rightBase.name» = «reverseClassName».claimBase(«right.name»);
 					«ENDIF»
 					
 					/*
 						«IF hasFeatureMapping»
-						«tryBindFeatureMapping(featureMapping.left, leftName, false)»
-						«tryBindFeatureMapping(featureMapping.right, rightName, false)»
+						«tryBindFeatureMapping(featureMapping.left, left.name, false)»
+						«tryBindFeatureMapping(featureMapping.right, right.name, false)»
 						«ENDIF»
 					*/
 					
@@ -397,6 +395,10 @@ class MIRCodeGenerator implements IGenerator {
 					// TODO: restore post conditions
 					«FOR with_block : mapping.postconditions.filter(WithBlockPostCondition)»
 					«restorePostCondition(with_block)»
+					«ENDFOR»
+					
+					«FOR withAttribute : mapping.postconditions.filter(WithAttributePostCondition)»
+					«restorePostCondition(withAttribute)»
 					«ENDFOR»
 				}
 			
@@ -408,72 +410,72 @@ class MIRCodeGenerator implements IGenerator {
 					
 					final Collection<Pair<EObject, VURI>> result = new HashSet<Pair<EObject, VURI>>();
 					
-					«leftFQN» «leftName» = «JavaHelper.simpleName».requireType(eObject, «leftFQN».class);
+					«left.FQN» «left.name» = «JavaHelper.simpleName».requireType(eObject, «left.FQN».class);
 					
 					«IF hasFeatureMapping»
-						final «rightBase.FQN» «rightBase.name» = claimBaseCorresponding(«leftName», blackboard);
+						final «rightBase.FQN» «rightBase.name» = claimBaseCorresponding(«left.name», blackboard);
 						
 						«createReferenceStructure(featureMapping.right, rightBase.name)»
 					«ELSE»
-						«rightFQN» «rightName» = «createConstant(rightType)»;
+						«right.FQN» «right.name» = «createConstant(rightType)»;
 					«ENDIF»
 
-					result.addAll(handleNonContainedEObjects(Collections.singleton(«rightName»)));
+					result.addAll(handleNonContainedEObjects(Collections.singleton(«right.name»)));
 					
 					// create here, since containment is decided here
 					// TODO: what is the correspondence structure when feature hopping?
-					SameTypeCorrespondence stc = ci.createAndAddEObjectCorrespondence(«leftName», «rightName»);
+					SameTypeCorrespondence stc = ci.createAndAddEObjectCorrespondence(«left.name», «right.name»);
 					ci.registerMappingForCorrespondence(stc, this);
 					ci.registerMappingForCorrespondence(stc, «className».REVERSE);
 					
 					return result;
 				}
 				
-				@Override
+				«/*@Override
 				protected void deleteCorresponding(EObject eObject, EObject target, Blackboard blackboard, TransformationResult transformationResult) {
 					LOGGER.trace("deleteCorresponding(" + eObject.toString()
 						+ ", " + target.toString()
 						+ ", " + blackboard.toString() + ")");
 					
 					super.deleteCorresponding(eObject, target, blackboard, transformationResult);
-				}
+				}*/»
 				
-				public static Optional<«rightFQN»> getCorresponding(«leftFQN» «leftName», «Blackboard.simpleName» blackboard) {
+				public static Optional<«right.FQN»> getCorresponding(«left.FQN» «left.name», «Blackboard.simpleName» blackboard) {
 					final «MappedCorrespondenceInstance.simpleName» ci =
 						getMappedCorrespondenceInstanceFromBlackboard(blackboard);
 						
-					final Optional<«rightFQN»> «rightName» = JavaHelper.tryCast(
-						ci.getMappingTarget(«leftName», «className».INSTANCE), «rightFQN».class);
+					final Optional<«right.FQN»> «right.name» = JavaHelper.tryCast(
+						ci.getMappingTarget(«left.name», «className».INSTANCE), «right.FQN».class);
 						
-					return «rightName»;
+					return «right.name»;
 				}
 				
-				public static «rightFQN» claimCorresponding(«leftFQN» «leftName», «Blackboard.simpleName» blackboard) {
-					final «rightFQN» «rightName» = getCorresponding(«leftName», blackboard)
+				public static «right.FQN» claimCorresponding(«left.FQN» «left.name», «Blackboard.simpleName» blackboard) {
+					final «right.FQN» «right.name» = getCorresponding(«left.name», blackboard)
 						.orElseThrow(() ->
-							new IllegalStateException("Could not find mapped «rightFQN» for «leftFQN» " + «leftName».toString()));
+							new IllegalStateException("Could not find mapped «right.FQN» for «left.FQN» " + «left.name».toString()));
 					
-					return «rightName»;
+					return «right.name»;
 				}
 				
 				«IF hasFeatureMapping»
-				public static Optional<«leftBase.FQN»> getBase(«leftFQN» «leftName») {
-					«tryBindFeatureMapping(featureMapping.left, leftName, true)»
+				public static Optional<«leftBase.FQN»> getBase(«left.FQN» «left.name») {
+					«tryBindFeatureMapping(featureMapping.left, left.name, true)»
 				}
 				
-				public static «leftBase.FQN» claimBase(«leftFQN» «leftName») {
-					final Optional<«leftBase.FQN»> «leftBase.name» = getBase(«leftName»);
+				public static «leftBase.FQN» claimBase(«left.FQN» «left.name») {
+					final Optional<«leftBase.FQN»> «leftBase.name» = getBase(«left.name»);
 					return «leftBase.name».orElseThrow(() -> new IllegalStateException(
-						"Could not find the correct reference structure from «leftBase.FQN» to «leftFQN» " + «leftName».toString()));
+						"Could not find the correct reference structure from «leftBase.FQN» to «left.FQN» " + «left.name».toString()));
 				}
 				
-				public static Optional<«rightBase.FQN»> getBaseCorresponding(«leftFQN» «leftName», Blackboard blackboard) {
-					return getBase(«leftName»).map(it ->
+				public static Optional<«rightBase.FQN»> getBaseCorresponding(«left.FQN» «left.name», Blackboard blackboard) {
+					return getBase(«left.name»).map(it ->
 						«baseClassMappingClass».getCorresponding(it, blackboard).orElse(null));
 				}
 				
-				public static «rightBase.FQN» claimBaseCorresponding(«leftFQN» «leftName», Blackboard blackboard) {
-					final «leftBase.FQN» «leftBase.name» = claimBase(«leftName»);
+				public static «rightBase.FQN» claimBaseCorresponding(«left.FQN» «left.name», Blackboard blackboard) {
+					final «leftBase.FQN» «leftBase.name» = claimBase(«left.name»);
 					final «rightBase.FQN» «rightBase.name» =
 						«baseClassMappingClass».claimCorresponding(«leftBase.name», blackboard);
 						
@@ -500,7 +502,7 @@ class MIRCodeGenerator implements IGenerator {
 		referencedEMFEntities.get(pkg).immutableCopy ?: Collections.emptyList
 	}
 	
-	def dispatch private addEntity(EPackage pkg) {
+	def private addEntity(EPackage pkg) {
 		addEntity(pkg, pkg)
 		addEntity(pkg, pkg.EFactoryInstance)
 	}
@@ -519,7 +521,7 @@ class MIRCodeGenerator implements IGenerator {
 		'''«CONSTANTS_CLASS_NAME».«eClass.EPackage.constantClassName».«feature.fieldName»'''
 	}
 	
-	def dispatch private createConstant(EClass eClass) {
+	def private createConstant(EClass eClass) {
 		'''«CONSTANTS_CLASS_NAME».«eClass.EPackage.constantClassName».create«eClass.name.toFirstUpper»()'''
 	}
 	
@@ -565,12 +567,12 @@ class MIRCodeGenerator implements IGenerator {
 		val factory = pkg.EFactoryInstance
 		
 		'''
-			public static final «EClass.simpleName» «eClass.fieldName» =
-				(«EClass.simpleName») «pkg.fieldName».getEClassifiers().get(«classifierID»);
-				
-			public static «eClass.instanceTypeName» create«eClass.name.toFirstUpper»() {
-				return («eClass.instanceTypeName») («factory.fieldName».create(«eClass.fieldName»));
-			}
+		public static final «EClass.simpleName» «eClass.fieldName» =
+			(«EClass.simpleName») «pkg.fieldName».getEClassifiers().get(«classifierID»);
+			
+		public static «eClass.instanceTypeName» create«eClass.name.toFirstUpper»() {
+			return («eClass.instanceTypeName») («factory.fieldName».create(«eClass.fieldName»));
+		}
 		'''
 	}
 	
@@ -579,8 +581,8 @@ class MIRCodeGenerator implements IGenerator {
 		val containerClass = feature.EContainingClass
 		
 		'''
-			public static final «EAttribute.simpleName» «feature.fieldName» =
-				(«EAttribute.simpleName») «containerClass.fieldName».getEStructuralFeature(«featureID»);
+		public static final «EAttribute.simpleName» «feature.fieldName» =
+			(«EAttribute.simpleName») «containerClass.fieldName».getEStructuralFeature(«featureID»);
 		'''
 	}
 	
@@ -589,8 +591,8 @@ class MIRCodeGenerator implements IGenerator {
 		val containerClass = feature.EContainingClass
 		
 		'''
-			public static final «EReference.simpleName» «feature.fieldName» =
-				(«EReference.simpleName») «containerClass.fieldName».getEStructuralFeature(«featureID»);
+		public static final «EReference.simpleName» «feature.fieldName» =
+			(«EReference.simpleName») «containerClass.fieldName».getEStructuralFeature(«featureID»);
 		'''
 	}
 	
@@ -600,6 +602,7 @@ class MIRCodeGenerator implements IGenerator {
 		
 		«getImportStatements(#[EPackage, EFactory, EClass, EStructuralFeature, EReference, EAttribute])»
 		
+		@SuppressWarnings("unused")
 		public final class «CONSTANTS_CLASS_NAME» {
 			«FOR pkg : referencedEMFEntities.keySet»
 			// EPackage «pkg.commentString»
@@ -615,18 +618,17 @@ class MIRCodeGenerator implements IGenerator {
 		''')
 	}
 	
-	def tryBindFeatureMapping(List<NamedFeatureCall> references, String checkVarName, boolean returnOptional) {
+	def tryBindFeatureMapping(List<NamedEReference> references, String checkVarName, boolean returnOptional) {
 		val result = new StringBuilder
 		var previousOptionalName = '''Optional.ofNullable(«checkVarName»)'''
 		
 		for (ref : references) {
-			val eRef = ref.claimEReference
 			val containerTypeName = ref.EClass.instanceTypeName
 			val referVarName = ref.name + "Referencee"
 			
 			result.append('''
 			Optional<«containerTypeName»> «referVarName» = «previousOptionalName».flatMap(
-				(it) -> EcoreHelper.findOneReferencee(it, «referenceConstant(eRef)», «containerTypeName».class)
+				(it) -> EcoreHelper.findOneReferencee(it, «referenceConstant(ref.EReference)», «containerTypeName».class)
 			);
 			''')
 			
@@ -642,28 +644,25 @@ class MIRCodeGenerator implements IGenerator {
 		return result.toString
 	}
 	
-	def createReferenceStructure(List<NamedFeatureCall> references, String baseName) {
+	def createReferenceStructure(List<NamedEReference> references, String baseName) {
 		var previousName = baseName
 		
 		val result = new StringBuilder
 		
 		for (ref : references.reverseView) {
-			val eRef = ref.claimEReference
-			val refVarName = "referenceTo" + ref.name
-			
 			result.append('''
 			«ref.FQN» «ref.name» = «createConstant(ref.type)»;
 			
-			«IF eRef.many»
+			«IF ref.EReference.many»
 				«JavaHelper.simpleName».requireCollectionType(
-					«previousName».eGet(«referenceConstant(eRef)»),
+					«previousName».eGet(«referenceConstant(ref.EReference)»),
 					«ref.FQN».class)
 					.add(«ref.name»);
 			«ELSE»
-				«previousName».eSet(«referenceConstant(eRef)», «ref.name»);
+				«previousName».eSet(«referenceConstant(ref.EReference)», «ref.name»);
 			«ENDIF»
 			
-			«IF eRef.containment»
+			«IF ref.EReference.containment»
 			// TODO: omit handling, reference is containment
 			«ENDIF»
 			''')
@@ -678,11 +677,12 @@ class MIRCodeGenerator implements IGenerator {
 		«pc.assignmentExpression.toJavaExpression»;
 	'''
 	
+	def restorePostCondition(WithAttributePostCondition pc) '''
+		«pc.rightVariableName».eSet(«referenceConstant(pc.right)», «pc.leftVariableName».eGet(«referenceConstant(pc.left)»));
+	'''
+	
 	def toJavaExpression(StaticMethodCall smc) {
 		return '''«smc.methodFQN»(«String.join(", ", smc.parameterNames)»)'''
-	}
-	
-	def dispatch generateMappingClass(FeatureMapping mapping, String pkgName, IFileSystemAccess fsa) {
 	}
 	
 	def static dispatch String commentString(EStructuralFeature feature) '''
@@ -693,8 +693,8 @@ class MIRCodeGenerator implements IGenerator {
 		«clazz.instanceTypeName»
 	'''
 	
-	def static dispatch String commentString(NamedFeatureCall nfc) '''
-		«nfc.feature.commentString»
+	def static dispatch String commentString(NamedEReference nERef) '''
+		«nERef.EReference.commentString»
 	'''
 	
 	def static dispatch String commentString(EPackage pkg) '''

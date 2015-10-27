@@ -1,29 +1,34 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.generator
 
 import com.google.inject.Inject
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.ClassMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIR
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.MIRintermediateFactory
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureCall
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.FeatureMapping
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.MIRFile
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.Mapping
+import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.NamedEClass
 import edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.TypedElement
+import java.util.Collection
 import java.util.Collections
 import java.util.List
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
-import org.eclipse.emf.ecore.EPackage
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EMFHelper.*
@@ -117,20 +122,134 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		val source = mir.packages.get(0)
 		val target = mir.packages.get(1)
 		
-		mapping.constraints?.withs
-			// for typing
-			?.filter(FeatureMapping)
-			// ensures, that the mappings are between EClasses 
-			?.filter[mappedElements.forall [ mE | mE.typeRecursive instanceof EClass ] ]
-			?.forEach [
-				val classMappingFromFeature = mapMappingAndReverse(it, mir)
-				classMappingFromFeature
-					.addFeatureConditions(it, fstMapping, mir, source, target)
-				classMappingFromFeature.opposite
-					.addFeatureConditions(it, fstMapping.opposite, mir, target, source)
-			]
-					
+		val withs = mapping.constraints?.withs
+		if (withs != null) {
+			val correctTypes = withs.checkCorrectTypes
+			if (!correctTypes) {
+				throw new RuntimeException("Erroneous types for features.")
+			}
+			
+			withs
+				.featureMappingCandidates
+				.forEach [
+					val classMappingFromFeature = mapMapping(it, mir)
+					classMappingFromFeature
+						.addFeatureConditions(it, fstMapping, mir, source, target)
+					classMappingFromFeature.opposite
+						.addFeatureConditions(it, fstMapping.opposite, mir, target, source)
+				]
+				
+			withs
+				.postConditionCandidates
+				.forEach [
+					fstMapping
+						.addFeaturePostCondition(it, source, target)
+					fstMapping.opposite
+						.addFeaturePostCondition(it, target, source)
+				]
+		}
+		
 		return fstMapping
+	}
+	
+	def void addFeaturePostCondition(ClassMapping parent, FeatureMapping featureMapping, EPackage source, EPackage target) {
+		val pc = createWithAttributePostCondition
+		
+		val leftFeature = featureMapping
+						.getMappedElementInPackage(source)
+						.collectFeatureCalls
+						.claimExactlyOne
+
+		pc.leftVariableName =
+			leftFeature
+				.ref
+				.tryGetName
+				
+		pc.left =
+			leftFeature
+				.structuralFeature
+				.requireType(EAttribute)
+				
+		val rightFeature = featureMapping
+						.getMappedElementInPackage(target)
+						.collectFeatureCalls
+						.claimExactlyOne
+		pc.rightVariableName =
+			rightFeature
+				.ref
+				.tryGetName
+		
+		pc.right =
+			rightFeature
+				.structuralFeature
+				.requireType(EAttribute)
+				
+		parent.postconditions += pc
+	}
+	
+	/**
+	 * @see MIRIntermediateLanguageGenerator#checkCorrectTypes
+	 */
+	def private static getFeatureMappingCandidates(Collection<Mapping> mappings) {
+		mappings
+			.filter(FeatureMapping)
+			.filter[
+				(it.mappedElements.size == 2) &&
+				((it.mappedElements.forall[ mE |
+					mE.collectFeatureCalls.forall[ fc |
+						(fc.typeRecursive instanceof EClass)
+						&& (fc.structuralFeature instanceof EReference)
+					]
+				]))
+			]
+	}
+	
+	/**
+	 * @see MIRIntermediateLanguageGenerator#checkCorrectTypes
+	 */
+	def private static getPostConditionCandidates(Collection<Mapping> mappings) {
+		mappings
+			.filter(FeatureMapping)
+			.filter[
+				it.mappedElements.forall[ mE |
+					val featureCalls = mE.collectFeatureCalls
+					
+					return ((featureCalls.size == 1)
+						&& (featureCalls.forall[structuralFeature instanceof EAttribute]))
+				]
+			]
+	}
+	
+	/**
+	 * Checks that either
+	 * <ul>
+	 * 	<li>both sides of the mapping are {@link EAttribute EAttributes}
+	 * 		and only one feature call, or that</li>
+	 * 	<li>both sides only contain {@link EReference EReferences}
+	 * 	to {@link EClass EClasses}.</li>
+	 * </ul> 
+	 */
+	def private static checkCorrectTypes(Collection<Mapping> mappings) {
+		(mappings.forall[it instanceof FeatureMapping])
+			&&
+		(mappings.filter(FeatureMapping).forall[
+			(it.mappedElements.size == 2) &&
+			((it.mappedElements.forall[ mE |
+				mE.collectFeatureCalls.forall[ fc |
+					(fc.typeRecursive instanceof EClass)
+					&& (fc.structuralFeature instanceof EReference)
+				]
+			])
+				||
+			(
+				it.mappedElements.forall[ mE |
+					val featureCalls = mE.collectFeatureCalls
+					
+					return ((featureCalls.size == 1)
+						&& (featureCalls.forall[structuralFeature instanceof EAttribute]))
+				]
+			))
+		])
 	}
 	
 	def ClassMapping mapMappingAndReverse(Mapping mapping, MIR mir) {
@@ -227,7 +346,7 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		FeatureMapping featureMapping, ClassMapping parent,
 		MIR mir, EPackage source, EPackage target) {
 			
-		val newMapping = createFeatureMapping
+		val newMapping = createReferenceMapping
 		mir.featureMappings += newMapping
 		
 		newMapping.left += featureMapping.getMappedElementInPackage(source)
@@ -246,9 +365,10 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 		typedElement
 			.collectFeatureCalls
 			.map [
-				val namedFeatureCall = createNamedFeatureCall
+				// the type can be required, because it is checked before, same for EClass
+				val namedFeatureCall = createNamedEReference
 				namedFeatureCall.EClass = it.ref.typeRecursive.ensureEClass
-				namedFeatureCall.feature = it.structuralFeature
+				namedFeatureCall.EReference = requireType(it.structuralFeature, EReference)
 				namedFeatureCall.type = it.typeRecursive.ensureEClass
 				namedFeatureCall.name = it.name
 				
@@ -272,7 +392,15 @@ class MIRIntermediateLanguageGenerator implements IGenerator {
 //			logger.debug("Mapped element: " + it.tryGetName + " (" + it.typeRecursive.getContainerHierarchy(true).map[it.toString].join(", ") + ")")
 //		]
 		
-		val mappedElementsInPkg = (mapping.mappedElements.filter[typeRecursive.hasContainer(pkg)])
+		val mappedElementsInPkg = 
+			if (mapping instanceof edu.kit.ipd.sdq.vitruvius.framework.mir.mIR.ClassMapping)
+				(mapping.mappedElements.requireCollectionType(NamedEClass).filter[
+					type.hasContainer(pkg)
+				])
+			else if (mapping instanceof FeatureMapping)
+				(mapping.mappedElements.requireCollectionType(FeatureCall).filter[
+					tail.EContainingClass.hasContainer(pkg)
+				])
 		
 		if (mappedElementsInPkg.size != 1) {
 			throw new RuntimeException("Mapping " + mapping + " has " + mappedElementsInPkg.size + " mapped elements in package " + pkg.name)

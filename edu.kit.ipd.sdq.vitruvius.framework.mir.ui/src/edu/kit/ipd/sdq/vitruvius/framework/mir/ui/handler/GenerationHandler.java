@@ -44,7 +44,6 @@ public class GenerationHandler extends AbstractHandler implements IHandler {
                 ResourceSet rs = resourceSetProvider.get(project);
                 Resource r = rs.getResource(uri, true);
                 generator.doGenerate(r, null);
-                 
             }
         }
         return null;

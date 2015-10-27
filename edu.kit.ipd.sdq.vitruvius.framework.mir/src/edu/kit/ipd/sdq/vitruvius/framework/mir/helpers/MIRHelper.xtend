@@ -88,6 +88,10 @@ class MIRHelper {
 		return null
 	}
 	
+	static def dispatch String tryGetName(TypedElementRef element) {
+		return element.ref.tryGetName
+	}
+	
 	static def dispatch String tryGetName(NamedEClass element) {
 		return element.name
 	}

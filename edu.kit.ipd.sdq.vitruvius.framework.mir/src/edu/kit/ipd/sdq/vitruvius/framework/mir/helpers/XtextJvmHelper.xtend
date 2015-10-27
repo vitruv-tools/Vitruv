@@ -68,7 +68,7 @@ class XtextJvmHelper {
 							return pkgIterator
 						}
 					} catch (WrappedException e) {
-						LOGGER.error(e)
+						LOGGER.debug(e)
 					}
 				}
 			}
