@@ -16,8 +16,11 @@ import org.eclipse.xtext.xbase.XNullLiteral
 import org.eclipse.xtext.xbase.XNumberLiteral
 import org.eclipse.xtext.xbase.XStringLiteral
 import org.eclipse.xtext.xbase.XTypeLiteral
+import org.apache.log4j.Logger
 
 class XtextJvmHelper {
+	private final static Logger LOGGER = Logger.getLogger(XtextJvmHelper)
+	
 	/**
 	 * Returns true if equality for the given literal is checked with "==" instead of
 	 * ".equals(...)"
@@ -65,7 +68,7 @@ class XtextJvmHelper {
 							return pkgIterator
 						}
 					} catch (WrappedException e) {
-						println("Exception while iterating EPackages: " + e.toString)
+						LOGGER.error(e)
 					}
 				}
 			}
