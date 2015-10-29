@@ -1,15 +1,15 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: edu.kit.ipd.sdq.vitruvius.javauml.annotations
+Bundle-Name: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.annotations
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.annotations
 Bundle-Version: 1.0.0
-Bundle-Activator: edu.kit.ipd.sdq.vitruvius.javauml.annotations.activator.Activator
+Bundle-Activator: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.annotations.activator.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.jdt.core;bundle-version="3.9.2"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Export-Package: edu.kit.ipd.sdq.vitruvius.javauml.annotations
+Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.annotations
 Bundle-ClassPath: 
  src/
 Import-Package: org.apache.log4j;version="1.2.15",

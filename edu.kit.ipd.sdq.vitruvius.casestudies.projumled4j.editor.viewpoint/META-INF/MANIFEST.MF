@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: edu.kit.ipd.sdq.vitruvius.javauml.editor.viewpoint
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Activator: edu.kit.ipd.sdq.vitruvius.javauml.editor.viewpoint.Activator
+Bundle-Activator: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
@@ -21,7 +21,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.sirius.diagram
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: edu.kit.ipd.sdq.vitruvius.javauml.annotations,
+Import-Package: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.annotations,
  org.apache.log4j,
  org.eclipse.emf.transaction,
  org.emftext.language.java.annotations,

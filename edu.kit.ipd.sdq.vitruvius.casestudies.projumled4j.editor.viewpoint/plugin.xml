@@ -2,20 +2,20 @@
 <?eclipse version="3.0"?>
 <plugin>
   <extension point="org.eclipse.sirius.componentization">
-    <component class="edu.kit.ipd.sdq.vitruvius.javauml.editor.viewpoint.Activator"
-               id="edu.kit.ipd.sdq.vitruvius.javauml.editor.viewpoint"
-	       name="edu.kit.ipd.sdq.vitruvius.javauml.class">
+    <component class="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.Activator"
+               id="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint"
+	       name="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.class">
     </component>
   </extension>
   <extension
         point="org.eclipse.sirius.externalJavaAction">
      <javaActions
-           actionClass="edu.kit.ipd.sdq.vitruvius.javauml.editor.viewpoint.javaActions.OpenJavaEditorAction"
-           id="edu.kit.ipd.sdq.vitruvius.javauml.editor.viewpoint.javaActions.OpenJavaEditorAction">
+           actionClass="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.javaActions.OpenJavaEditorAction"
+           id="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.javaActions.OpenJavaEditorAction">
      </javaActions>
      <javaActions
-           actionClass="edu.kit.ipd.sdq.vitruvius.javauml.editor.viewpoint.javaActions.CreateClassAction"
-           id="edu.kit.ipd.sdq.vitruvius.javauml.editor.viewpoint.javaActions.CreateClassAction">
+           actionClass="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.javaActions.CreateClassAction"
+           id="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.javaActions.CreateClassAction">
      </javaActions>
   </extension>
 </plugin>

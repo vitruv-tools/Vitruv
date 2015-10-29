@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: edu.kit.ipd.sdq.vitruvius.javauml.editor.diagramGeneration
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.diagramGeneration;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Activator: edu.kit.ipd.sdq.vitruvius.javauml.editor.diagramGeneration.activator.Activator
+Bundle-Activator: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.diagramGeneration.activator.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.8.100",
  org.eclipse.jdt.core;bundle-version="3.9.2",
@@ -54,8 +54,8 @@ Require-Bundle: org.eclipse.core.runtime,
  edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.annotations
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Import-Package: edu.kit.ipd.sdq.vitruvius.framework.util.bridges,
- edu.kit.ipd.sdq.vitruvius.javauml.annotations,
+Import-Package: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.annotations,
+ edu.kit.ipd.sdq.vitruvius.framework.util.bridges,
  org.apache.log4j,
  org.emftext.language.java,
  org.emftext.language.java.annotations,
