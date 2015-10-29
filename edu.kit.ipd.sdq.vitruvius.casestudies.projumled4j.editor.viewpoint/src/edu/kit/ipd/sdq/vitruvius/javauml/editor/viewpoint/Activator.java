@@ -24,7 +24,7 @@ import org.osgi.framework.BundleContext;
  */
 public class Activator extends AbstractUIPlugin {
     // The plug-in ID
-    public static final String PLUGIN_ID = "edu.kit.ipd.sdq.vitruvius.javauml.editor.viewpoint";
+    public static final String PLUGIN_ID = "edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint";
 
     // The shared instance
     private static Activator plugin;

@@ -28,7 +28,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 
 public class ClasspathInjection {
-	private static final String PLUGIN_ID = "edu.kit.ipd.sdq.vitruvius.javauml.annotations";
+	private static final String PLUGIN_ID = "edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.annotations";
 	private static final String CLASS_FOLDER_PATH = "/bin";
 	private static final Logger logger = LogManager.getLogger(ClasspathInjection.class);
 	
