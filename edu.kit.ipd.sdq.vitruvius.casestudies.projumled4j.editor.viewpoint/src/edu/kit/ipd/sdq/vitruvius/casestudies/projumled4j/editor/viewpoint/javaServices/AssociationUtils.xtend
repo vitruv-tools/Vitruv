@@ -25,15 +25,7 @@ import org.emftext.language.java.references.IdentifierReference
 import org.emftext.language.java.members.EnumConstant
 import edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.annotations.Association
 import org.emftext.language.java.classifiers.Classifier
-import org.emftext.language.java.types.TypeReference
-import org.emftext.language.java.generics.QualifiedTypeArgument
-import org.emftext.language.java.generics.TypeParameter
-import org.emftext.language.java.generics.TypeArgument
-import java.util.ArrayList
-import org.emftext.language.java.types.ClassifierReference
-import org.emftext.language.java.classifiers.Interface
-import org.emftext.language.java.classifiers.ConcreteClassifier
-import org.emftext.language.java.classifiers.Class
+import edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.util.JamoppUtils
 
 /**
  * This class specifies utility methods for determining if a a field represents an association
@@ -51,22 +43,15 @@ public final class AssociationUtils {
 	private static final String MEMBER_TYPE_AGGREGATION = "Aggregation";
 	private static final String MEMBER_TYPE_COMPOSITION = "Composition";
 	private static final String ASSOCIATION_TAG = "Association";
-	private static final String COLLECTION_TYPE = "Collection";
 	
 	public def dispatch Classifier getAssociationTarget(EObject object) {
 		return null;
 	}
 	
 	public def dispatch Classifier getAssociationTarget(Field field) {
-		var referencedClassifier = field.typeReference.referencedClassifier
-		if (isFieldCollection(field)) {
-			if (field.getTypeReference() instanceof NamespaceClassifierReference) {
-				val classifierReference = field.getTypeReference() as NamespaceClassifierReference;
-				val typeArgument = classifierReference.getClassifierReferences().get(0).getTypeArguments().get(0);
-				if (typeArgument instanceof QualifiedTypeArgument) {
-					referencedClassifier = getReferencedClassifier(typeArgument.getTypeReference());
-				}
-			}
+		var referencedClassifier = JamoppUtils.getReferencedClassifier(field.typeReference)
+		if (JamoppUtils.isFieldCollection(field)) {
+			referencedClassifier = JamoppUtils.getCollectionTarget(field.typeReference);
 		}
 		return referencedClassifier;
 	}
@@ -268,91 +253,4 @@ public final class AssociationUtils {
 		}
 	}
 	
-	private def Classifier getReferencedClassifier(TypeReference typeReference) {
-		if (typeReference instanceof NamespaceClassifierReference) {
-			val reference = typeReference as NamespaceClassifierReference; 
-			val referenceType = reference.getTarget();
-			if (referenceType instanceof Classifier) {
-				return referenceType as Classifier;
-			}
-		}
-		return null;
-	}
-	
-	public def boolean isFieldCollection(Field field) {
-		val referencedClassifier = getReferencedClassifier(field.typeReference);
-		if (referencedClassifier instanceof ConcreteClassifier) {
-			return referencedClassifier.isCollection
-		} else {
-			return false;
-		}
-	}
-	
-	public def boolean isFieldMultiValued(Field field) {
-		return field.isFieldCollection || field.arrayDimension > 0;
-	}
-	
-	private def boolean isCollection(ConcreteClassifier classifier) {
-		if (classifier.getName().equals(COLLECTION_TYPE)) {
-			return true;
-		}
-		
-		// Our field must have exactly one type parameter, the one of the collection type,
-		// otherwise we do not want to see this field as a pure collection
-		if (classifier.typeParameters.size != 1) {
-			return false;
-		}
-		
-		val typeReferences = new ArrayList<TypeReference>();	
-		if (classifier instanceof Class) {
-			for (TypeReference interfaceReference : classifier.implements) {
-				typeReferences += interfaceReference;
-			}
-			if (classifier.extends != null) {
-				typeReferences += classifier.extends;
-			}
-		} else if (classifier instanceof Interface) {
-			for (TypeReference interfaceReference : classifier.extends) {
-				typeReferences += interfaceReference;
-			}			
-		}
-		
-		val classifierReferences = new ArrayList<ClassifierReference>();
-		for (TypeReference typeRef : typeReferences) {
-			classifierReferences += typeRef.classifierReferences;
-		}
-		
-		// If we have one type parameter and the same as one of the super references
-		// that is itself implementing the collection interface, we see this classifier
-		// as a pure collection
-		for (superReference : classifierReferences) {
-			val implementedTypeParameterNames = new ArrayList<String>();
-			for (TypeArgument typeArgument : superReference.typeArguments) {
-				val typeArgumentReferences = (typeArgument as QualifiedTypeArgument).typeReference.classifierReferences;
-				if (typeArgumentReferences.size > 0) {
-					val typeTarget = typeArgumentReferences.get(0).target;
-					if (typeTarget instanceof TypeParameter) {
-						implementedTypeParameterNames += (typeTarget as TypeParameter).name	
-					}
-				}
-			}
-			if (implementedTypeParameterNames.size == 1 && 
-				(superReference.target as ConcreteClassifier).isCollection &&
-				classifier.typeParameters.get(0).name.equals(implementedTypeParameterNames.get(0))) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	public def Iterable<ClassifierReference> getClassifierReferences(TypeReference typeRef) {
-		if (typeRef instanceof NamespaceClassifierReference) {
-			return typeRef.classifierReferences;
-		} else if (typeRef instanceof ClassifierReference) {
-			val result = new ArrayList<ClassifierReference>();
-			result.add(typeRef);
-			return result; 
-		}
-	}
 }

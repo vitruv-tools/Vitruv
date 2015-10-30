@@ -32,8 +32,6 @@ import org.emftext.language.java.classifiers.Annotation;
 import org.emftext.language.java.classifiers.Class;
 import org.emftext.language.java.classifiers.Classifier;
 import org.emftext.language.java.containers.CompilationUnit;
-import org.emftext.language.java.generics.QualifiedTypeArgument;
-import org.emftext.language.java.generics.TypeArgument;
 import org.emftext.language.java.imports.ClassifierImport;
 import org.emftext.language.java.imports.Import;
 import org.emftext.language.java.imports.ImportsFactory;
@@ -45,6 +43,8 @@ import org.emftext.language.java.modifiers.AnnotationInstanceOrModifier;
 import org.emftext.language.java.types.NamespaceClassifierReference;
 import org.emftext.language.java.types.Type;
 import org.emftext.language.java.types.TypeReference;
+
+import edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.util.JamoppUtils;
 
 /**
  * This class provides functionality for generating {@link edu.kit.ipd.sdq.vitruvius.javauml.annotations.Assocation} annotations
@@ -172,14 +172,8 @@ public class AssociationGenerator {
 			return false;
 		}
 		
-		if (multiplicityDetermination.isFieldCollection(field)) {
-			if (field.getTypeReference() instanceof NamespaceClassifierReference) {
-				NamespaceClassifierReference classifierReference = (NamespaceClassifierReference) field.getTypeReference();
-				TypeArgument typeArgument = classifierReference.getClassifierReferences().get(0).getTypeArguments().get(0);
-				if (typeArgument instanceof QualifiedTypeArgument) {
-					referencedClassifier = getReferencedClassifier(((QualifiedTypeArgument)typeArgument).getTypeReference());
-				}
-			}
+		if (JamoppUtils.isFieldCollection(field)) {
+			referencedClassifier = JamoppUtils.getCollectionTarget(field.getTypeReference());
 		}
 		
 		return field.getContainingPackageName().equals(referencedClassifier.getContainingPackageName());
