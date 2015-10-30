@@ -73,7 +73,7 @@ public final class InheritanceUtils {
 	 */
 	public def EList<Interface> getImplementedInterfaces(Interface ofInterface) {
 		val interfaceReferences = ofInterface.extends;
-		return interfaceReferences.interfaces;		
+		return interfaceReferences.interfaces;	
 	}
 	
 }

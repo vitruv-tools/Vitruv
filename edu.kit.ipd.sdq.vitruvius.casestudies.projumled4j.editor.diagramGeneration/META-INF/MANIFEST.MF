@@ -51,7 +51,11 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.equinox.registry,
  org.apache.commons.io,
  org.eclipse.emf.ecore,
- edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.annotations
+ edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.annotations,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Import-Package: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.annotations,
@@ -63,7 +67,9 @@ Import-Package: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.annotations,
  org.emftext.language.java.classifiers.impl,
  org.emftext.language.java.commons,
  org.emftext.language.java.containers,
+ org.emftext.language.java.generics,
  org.emftext.language.java.imports,
+ org.emftext.language.java.literals,
  org.emftext.language.java.members,
  org.emftext.language.java.members.impl,
  org.emftext.language.java.modifiers,
@@ -73,4 +79,6 @@ Import-Package: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.annotations,
  org.emftext.language.java.resource.java.util,
  org.emftext.language.java.types,
  org.emftext.language.java.types.impl,
- org.emftext.language.java.util
+ org.emftext.language.java.util,
+ org.emftext.language.java.variables
+
