@@ -14,8 +14,12 @@
            id="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.javaActions.OpenJavaEditorAction">
      </javaActions>
      <javaActions
-           actionClass="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.javaActions.CreateClassAction"
-           id="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.javaActions.CreateClassAction">
+           actionClass="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.javaActions.CreateJavaClassAction"
+           id="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.javaActions.CreateJavaClassAction">
+     </javaActions>
+     <javaActions
+           actionClass="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.javaActions.CreateJavaInterfaceAction"
+           id="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.javaActions.CreateJavaInterfaceAction">
      </javaActions>
   </extension>
 </plugin>

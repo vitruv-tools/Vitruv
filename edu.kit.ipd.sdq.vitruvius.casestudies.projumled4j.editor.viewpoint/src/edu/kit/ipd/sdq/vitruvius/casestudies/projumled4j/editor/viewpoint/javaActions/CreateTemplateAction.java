@@ -35,14 +35,13 @@ import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.containers.Package;
 
 /**
- * This action has to be called in the context of a JaMoPP package. In that case the user is
- * asked to specify a name for a new class that will be created in the Java package the
- * JaMoPP package is representing.
+ * This abstract action has to be called in the context of a JaMoPP package. In that case a
+ * template file is created depending on the concrete implementation in a subclass.
  * 
  * @author Heiko Klare
  */
-public class CreateClassAction implements IExternalJavaAction {
-	private static final Logger logger = LogManager.getLogger(CreateClassAction.class);
+public abstract class CreateTemplateAction implements IExternalJavaAction {
+	private static final Logger logger = LogManager.getLogger(CreateTemplateAction.class);
 	
 	@Override
 	public boolean canExecute(Collection<? extends EObject> arg0) {
@@ -56,19 +55,25 @@ public class CreateClassAction implements IExternalJavaAction {
 			EObject object = objects.iterator().next();
 			if (object instanceof Package) {
 				Package pckg = (Package) object;
-				IFolder packageFolder = getPackageFolder(pckg);
-				String newClassName = promptForClassName(packageFolder);
-				IFile javaFile = createEmptyJavaClass(packageFolder, pckg.getName(), newClassName);
-				if (javaFile == null) {
-					return;
-				}
-				addJavaClassToPackage(pckg, javaFile);
-				logger.info("Creating: " + javaFile);
+				createTemplateFile(pckg);
 			}
 		}
 	}
 
-	private IFolder getPackageFolder(Package pckg) {
+	protected abstract void createTemplateFile(Package pckg);
+	
+	protected void createTemplateFile(Package pckg, String typeName) {
+		IFolder packageFolder = getPackageFolder(pckg);
+		String typeInstanceName = promptForJavaFileNameInPackage(packageFolder, typeName);
+		IFile javaFile = createJavaFile(packageFolder, pckg.getName(), typeName, typeInstanceName);
+		if (javaFile == null) {
+			return;
+		}
+		addJavaClassToPackage(pckg, javaFile);
+		logger.info("Creating: " + javaFile);
+	}
+
+	protected IFolder getPackageFolder(Package pckg) {
 		URI packageURI = pckg.eResource().getURI();
 		String pathWithoutDummyExtension = packageURI.path().substring(0, packageURI.path().lastIndexOf("."));
 		IFolder packageFolder = ResourcesPlugin.getWorkspace().getRoot().getFolder(
@@ -76,7 +81,7 @@ public class CreateClassAction implements IExternalJavaAction {
 		return packageFolder;
 	}
 
-	private void addJavaClassToPackage(Package pckg, IFile javaFile) {
+	protected static void addJavaClassToPackage(Package pckg, IFile javaFile) {
 		Session session = SessionManager.INSTANCE.getSession(pckg);
 		URI classURI = URI.createPlatformResourceURI(javaFile.getFullPath().toString(), true);
 		AddSemanticResourceCommand newClassSemanticResourceCmd = new AddSemanticResourceCommand(session, classURI , new NullProgressMonitor());
@@ -84,39 +89,41 @@ public class CreateClassAction implements IExternalJavaAction {
 		pckg.getCompilationUnits().add((CompilationUnit)session.getTransactionalEditingDomain().getResourceSet().getResource(classURI, true).getContents().get(0));
 	}
 
-	private IFile createEmptyJavaClass(IFolder packageFolder, String packageName, String newClassName) {
-		String javaFileContent = createEmptyJavaFileContent(packageName, newClassName);
+	protected IFile createJavaFile(IFolder packageFolder, String packageName, String typeName, String typeInstanceName) {
 		IFile javaFile = null;
 		try {
-			javaFile = packageFolder.getFile(newClassName + ".java");
-			javaFile.create(new ByteArrayInputStream(javaFileContent.getBytes()), true, new NullProgressMonitor());
+			String emptyTypeContent = createEmptyJavaFileContent(packageName, typeName, typeInstanceName);
+			javaFile = packageFolder.getFile(typeInstanceName + ".java");
+			javaFile.create(new ByteArrayInputStream(emptyTypeContent.getBytes()), true, new NullProgressMonitor());
 		} catch (CoreException e) {
 			return null;
 		}
 		return javaFile;
 	}
 		
-	private String promptForClassName(IFolder packageFolder) {
-		String promptString = "\nName for the new class:";
-		String newClassName = null;
+	protected static String promptForJavaFileNameInPackage(IFolder packageFolder, String typeName) {
+		String camelCaseTypeName = Character.toUpperCase(typeName.charAt(0)) + typeName.substring(1);
+		String promptString = "\nName for the new " + camelCaseTypeName + ":";
+		String newName = null;
 		do {
-			newClassName = (String)JOptionPane.showInputDialog(null, promptString, "Create New Class", JOptionPane.PLAIN_MESSAGE, null, null, "NewClass");
-			if (newClassName == null || newClassName.length() == 0) {
+			newName = (String)JOptionPane.showInputDialog(null, promptString, "Create New " + camelCaseTypeName, JOptionPane.PLAIN_MESSAGE, null, null, "New" + camelCaseTypeName);
+			if (newName == null || newName.length() == 0) {
 				return null;
 			}
-			promptString = "Class " + newClassName + " already exists.\nName for the new class:";
-		} while (packageFolder.getFile(newClassName + ".java").exists());
-		return newClassName;
+			promptString = camelCaseTypeName + " " + newName + " already exists.\nName for the new " + camelCaseTypeName + ":";
+		} while (packageFolder.getFile(newName + ".java").exists());
+		return newName;
 	}
 	
-	private String createEmptyJavaFileContent(String packageName, String className) {
+	protected String createEmptyJavaFileContent(String packageName, String typeName, String typeInstanceName) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("package " + packageName + ";\n");
 		buffer.append("\n");
-		buffer.append("public class " + className + " {\n");
+		buffer.append("public " + typeName + " " + typeInstanceName + " {\n");
 		buffer.append("\n");
 		buffer.append("}");
 		
 		return buffer.toString();
 	}
+
 }
