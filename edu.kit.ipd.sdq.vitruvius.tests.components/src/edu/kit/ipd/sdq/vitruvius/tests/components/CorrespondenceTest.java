@@ -17,13 +17,15 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmuml.mir.generated.modified.mappings.MappingUPackageToRepository;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FeatureInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentReferenceCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
@@ -200,7 +202,20 @@ public class CorrespondenceTest extends VSUMTest {
 
         assertNotNull("Correspondence instance is null", corresp);
         if (corresp instanceof MappedCorrespondenceInstance) {
-            MIRMappingRealization mapping = MappingUPackageToRepository.INSTANCE;
+            MIRMappingRealization mapping = new MIRMappingRealization() {
+
+                private static final long serialVersionUID = 1L;
+
+                @Override
+                public String getMappingID() {
+                    return null;
+                }
+
+                @Override
+                public TransformationResult applyEChange(final EChange eChange, final Blackboard blackboard) {
+                    return null;
+                }
+            };
             ((MappedCorrespondenceInstance) corresp).registerMappingForCorrespondence(repo2pkg, mapping);
         }
 
