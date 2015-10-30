@@ -23,7 +23,7 @@ import org.emftext.language.java.modifiers.Final
  * final modifiers.
  */
 class MultiplicityDetermination {
-	public static final String COLLECTION_TYPE = "Collection";
+	private static final String COLLECTION_TYPE = "Collection";
 	
 	public def int determineTargetLowerMultiplicity(Field field) {
 		if (isFieldFinal(field) && !isFieldMultiValued(field)) {

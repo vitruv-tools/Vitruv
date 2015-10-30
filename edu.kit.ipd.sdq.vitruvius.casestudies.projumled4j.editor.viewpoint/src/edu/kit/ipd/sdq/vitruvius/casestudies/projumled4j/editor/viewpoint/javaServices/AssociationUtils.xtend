@@ -24,6 +24,9 @@ import org.emftext.language.java.annotations.AnnotationParameterList
 import org.emftext.language.java.references.IdentifierReference
 import org.emftext.language.java.members.EnumConstant
 import edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.annotations.Association
+import org.emftext.language.java.classifiers.Classifier
+import org.emftext.language.java.types.TypeReference
+import org.emftext.language.java.generics.QualifiedTypeArgument
 
 /**
  * This class specifies utility methods for determining if a a field represents an association
@@ -41,6 +44,25 @@ public final class AssociationUtils {
 	private static final String MEMBER_TYPE_AGGREGATION = "Aggregation";
 	private static final String MEMBER_TYPE_COMPOSITION = "Composition";
 	private static final String ASSOCIATION_TAG = "Association";
+	private static final String COLLECTION_TYPE = "Collection";
+	
+	public def dispatch Classifier getAssociationTarget(EObject object) {
+		return null;
+	}
+	
+	public def dispatch Classifier getAssociationTarget(Field field) {
+		var referencedClassifier = field.typeReference.referencedClassifier
+		if (isFieldCollection(field)) {
+			if (field.getTypeReference() instanceof NamespaceClassifierReference) {
+				val classifierReference = field.getTypeReference() as NamespaceClassifierReference;
+				val typeArgument = classifierReference.getClassifierReferences().get(0).getTypeArguments().get(0);
+				if (typeArgument instanceof QualifiedTypeArgument) {
+					referencedClassifier = getReferencedClassifier(typeArgument.getTypeReference());
+				}
+			}
+		}
+		return referencedClassifier;
+	}
 	
 	/**
 	 * Returns true if the specified objects represents any association (can also e an aggregation/composition), 
@@ -239,4 +261,31 @@ public final class AssociationUtils {
 		}
 	}
 	
+	private def Classifier getReferencedClassifier(TypeReference typeReference) {
+		if (typeReference instanceof NamespaceClassifierReference) {
+			val reference = typeReference as NamespaceClassifierReference; 
+			val referenceType = reference.getTarget();
+			if (referenceType instanceof Classifier) {
+				return referenceType as Classifier;
+			}
+		}
+		return null;
+	}
+	
+	public def boolean isFieldCollection(Field field) {
+		val referencedClassifier = getReferencedClassifier(field.typeReference);
+		if (referencedClassifier == null) {
+			return false;
+		}
+		
+		return referencedClassifier.isCollection
+	}
+	
+	public def boolean isFieldMultiValued(Field field) {
+		return field.isFieldCollection || field.arrayDimension > 0;
+	}
+	
+	private def boolean isCollection(Classifier classifier) {
+		return classifier.getName().equals(COLLECTION_TYPE) || classifier.allSuperClassifiers.exists[superclass | superclass.isCollection];
+	}
 }
