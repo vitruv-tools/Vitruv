@@ -18,6 +18,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -330,4 +331,8 @@ public final class EclipseBridge {
             workspace.setDescription(description);
         }
     }
+
+	public static String getAbsolutePathString(IResource resource) {
+		return resource.getLocation().toOSString();
+	}
 }
