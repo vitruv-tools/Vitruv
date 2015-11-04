@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,9 +14,61 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentReferenceCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.HalfEObjectCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 
+// FIXME MK replace with xtend version with delegate annotations
 public abstract class AbstractDelegatingCorrespondenceInstanceDecorator<D> implements CorrespondenceInstanceDecorator {
+    @Override
+    public HalfEObjectCorrespondence getOrCreateHalfEObjectCorrespondence(final List<EObject> eObjects) {
+        return this.correspondenceInstance.getOrCreateHalfEObjectCorrespondence(eObjects);
+    }
+
+    @Override
+    public boolean hasCorrespondences(final List<EObject> eObject) {
+        return this.correspondenceInstance.hasCorrespondences(eObject);
+    }
+
+    @Override
+    public Set<Correspondence> claimCorrespondences(final List<EObject> eObjects) {
+        return this.correspondenceInstance.claimCorrespondences(eObjects);
+    }
+
+    @Override
+    public Set<Correspondence> getAllCorrespondences(final List<EObject> eObjects) {
+        return this.correspondenceInstance.getAllCorrespondences(eObjects);
+    }
+
+    @Override
+    public Set<Correspondence> getAllCorrespondencesForTUIDs(final List<TUID> involvedTUIDs) {
+        return this.correspondenceInstance.getAllCorrespondencesForTUIDs(involvedTUIDs);
+    }
+
+    @Override
+    public Set<HalfEObjectCorrespondence> claimCorrespondingEObjects(final List<EObject> eObject) {
+        return this.correspondenceInstance.claimCorrespondingEObjects(eObject);
+    }
+
+    @Override
+    public Set<HalfEObjectCorrespondence> getAllCorrespondingEObjects(final List<EObject> eObjects) {
+        return this.correspondenceInstance.getAllCorrespondingEObjects(eObjects);
+    }
+
+    @Override
+    public Correspondence claimUniqueOrNullCorrespondenceForEObject(final List<EObject> eObject) {
+        return this.correspondenceInstance.claimUniqueOrNullCorrespondenceForEObject(eObject);
+    }
+
+    @Override
+    public Correspondence claimUniqueCorrespondence(final List<EObject> eObject) {
+        return this.correspondenceInstance.claimUniqueCorrespondence(eObject);
+    }
+
+    @Override
+    public SameTypeCorrespondence createAndAddM2NCorrespondence(final List<EObject> as, final List<EObject> bs) {
+        return this.correspondenceInstance.createAndAddM2NCorrespondence(as, bs);
+    }
+
     protected CorrespondenceInstanceDecorator correspondenceInstance;
     private final Class<D> decoratorObjectType;
 

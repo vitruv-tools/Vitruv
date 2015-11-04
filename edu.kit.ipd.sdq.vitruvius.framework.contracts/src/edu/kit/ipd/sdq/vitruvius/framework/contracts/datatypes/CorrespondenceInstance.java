@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
@@ -11,6 +12,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentReferenceCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.HalfEObjectCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 
 /**
@@ -35,7 +37,10 @@ public interface CorrespondenceInstance {
      *            the object for which correspondences should be looked up
      * @return true if # of corresponding objects > 0
      */
+    // FIXME MK will be convenience for next method
     public boolean hasCorrespondences(EObject eObject);
+
+    public boolean hasCorrespondences(List<EObject> eObject);
 
     /**
      * Returns whether at least one object corresponds to another object.
@@ -52,7 +57,10 @@ public interface CorrespondenceInstance {
      *            the object for which correspondences are to be returned
      * @return the correspondences for the specified object
      */
+    // FIXME MK will be convenience for next method
     public Set<Correspondence> claimCorrespondences(EObject eObject);
+
+    public Set<Correspondence> claimCorrespondences(List<EObject> eObjects);
 
     /**
      * Returns all correspondences for the specified object and an empty set if the object has no
@@ -62,7 +70,10 @@ public interface CorrespondenceInstance {
      * @return all correspondences for the specified object and an empty set if the object has no
      *         correspondences.
      */
+    // FIXME MK will be convenience for next method
     public Set<Correspondence> getAllCorrespondences(EObject eObject);
+
+    public Set<Correspondence> getAllCorrespondences(List<EObject> eObjects);
 
     /**
      * Returns all correspondences for the object with the specified tuid and an empty set if the
@@ -72,7 +83,10 @@ public interface CorrespondenceInstance {
      * @return all correspondences for the object with the specified tuid and an empty set if the
      *         object has no correspondences.
      */
+    // FIXME MK will be convenience for next method
     public Set<Correspondence> getAllCorrespondences(TUID involvedTUID);
+
+    public Set<Correspondence> getAllCorrespondencesForTUIDs(List<TUID> involvedTUIDs);
 
     /**
      * Returns the corresponding objects for the specified object and throws a
@@ -82,7 +96,11 @@ public interface CorrespondenceInstance {
      *            the object for which corresponding objects are to be returned
      * @return the corresponding objects for the specified object
      */
+    // FIXME MK rename to claimOne2OneCorrespondingEObjects but do NOT add
+    // claimM2NCorrespondingEObjects(EObject)
     public Set<EObject> claimCorrespondingEObjects(EObject eObject);
+
+    public Set<HalfEObjectCorrespondence> claimCorrespondingEObjects(List<EObject> eObject);
 
     /**
      * Returns all corresponding objects for the specified object and an empty set if the object has
@@ -93,7 +111,11 @@ public interface CorrespondenceInstance {
      * @return all corresponding objects for the specified object and an empty set if the object has
      *         no correspondences.
      */
+    // FIXME MK rename to getAllOne2OneCorrespondingEObjects but do NOT add
+    // getAllM2NCorrespondingEObjects(EObject)
     public Set<EObject> getAllCorrespondingEObjects(EObject eObject);
+
+    public Set<HalfEObjectCorrespondence> getAllCorrespondingEObjects(List<EObject> eObjects);
 
     /**
      * Returns the corresponding object for the specified object if there is exactly one
@@ -116,6 +138,8 @@ public interface CorrespondenceInstance {
      *            the class of which instances are to be returned
      * @return the corresponding objects of the specified type for the specified object
      */
+    // FIXME MK rename to claimOne2OneCorrespondingEObjectsByType but do NOT provide
+    // claimM2NCorrespondingEObjectsByType
     public <T> Set<T> claimCorrespondingEObjectsByType(EObject eObject, Class<T> type);
 
     /**
@@ -142,7 +166,10 @@ public interface CorrespondenceInstance {
      * @return the correspondence for the given eObject if it is unique, or null if no
      *         correspondence exists
      */
+    // FIXME MK will be convenience for next method
     public Correspondence claimUniqueOrNullCorrespondenceForEObject(EObject eObject);
+
+    public Correspondence claimUniqueOrNullCorrespondenceForEObject(List<EObject> eObject);
 
     /**
      * Returns the correspondence for the given eObject if it is unique and throws a
@@ -152,7 +179,10 @@ public interface CorrespondenceInstance {
      *            the object for which the correspondence is to be returned
      * @return the correspondence for the given eObject if there is exactly one corresponding object
      */
+    // FIXME MK will be convenience for next method
     public Correspondence claimUniqueCorrespondence(EObject eObject);
+
+    public Correspondence claimUniqueCorrespondence(List<EObject> eObject);
 
     /**
      * Returns the SameTypeCorrespondence for the given eObjects a and b and throws a
@@ -163,6 +193,7 @@ public interface CorrespondenceInstance {
      * @param b
      * @return
      */
+    // FIXME MK rename to claimUniqueOne2OneCorrespondence
     public SameTypeCorrespondence claimUniqueSameTypeCorrespondence(final EObject a, final EObject b);
 
     /**
@@ -172,8 +203,10 @@ public interface CorrespondenceInstance {
      *            the class for which instances should be returned
      * @return a set containing all eObjects of the given type that have a correspondence
      */
+    // FIXME rename to getAllEObjectsOfTypeInCorrespondences
     public <T> Set<T> getAllEObjectsInCorrespondencesWithType(Class<T> type);
 
+    // FIXME rename and change param to addCorrespondence
     public void addSameTypeCorrespondence(SameTypeCorrespondence correspondence);
 
     /**
@@ -185,6 +218,7 @@ public interface CorrespondenceInstance {
      *            for which all correspondences should be removed
      * @return a set containing all removed correspondences
      */
+    // FIXME MK rename to removeCorrespondencesOfEObjectAndChildrenOnBothSides
     public Set<Correspondence> removeDirectAndChildrenCorrespondencesOnBothSides(EObject eObject);
 
     /**
@@ -197,6 +231,7 @@ public interface CorrespondenceInstance {
      *            for which all correspondences should be removed
      * @return a set containing all removed correspondences
      */
+    // FIXME MK rename to removeCorrespondencesOfEObjectAndChildrenOnBothSides
     public Set<Correspondence> removeDirectAndChildrenCorrespondencesOnBothSides(TUID tuid);
 
     /**
@@ -208,8 +243,10 @@ public interface CorrespondenceInstance {
      *            that should be removed
      * @return a set containing all removed correspondences
      */
+    // FIXME MK rename to removeCorrespondencesOfEObjectAndChildrenOnBothSides
     public Set<Correspondence> removeNeighborAndChildrenCorrespondencesOnBothSides(Correspondence correspondence);
 
+    // FIXME MK remove all methods with feature instances?
     public Set<FeatureInstance> getAllCorrespondingFeatureInstances(EObject parentEObject, EStructuralFeature feature);
 
     public Set<FeatureInstance> getAllCorrespondingFeatureInstances(FeatureInstance featureInstance);
@@ -226,6 +263,7 @@ public interface CorrespondenceInstance {
      * @param newEObject
      *            the new EObject
      */
+    // FIXME MK rename to updateTUID
     public void update(EObject oldEObject, EObject newEObject);
 
     /**
@@ -242,8 +280,10 @@ public interface CorrespondenceInstance {
      * @param newEObject
      *            the new EObject
      */
+    // FIXME MK rename to updateTUID
     public void update(TUID oldTUID, EObject newEObject);
 
+    // FIXME MK rename to updateTUID
     public void update(TUID oldTUID, TUID newTUID);
 
     public EObject resolveEObjectFromTUID(final TUID tuid);
@@ -255,14 +295,19 @@ public interface CorrespondenceInstance {
     /**
      * SWAPS a and b if necessary!
      */
+    // FIXME MK remove
     public EContainmentReferenceCorrespondence createAndAddEContainmentReferenceCorrespondence(EObject a, EObject b,
             EReference referenceFeatureA, EReference referenceFeatureB);
 
     /**
      * SWAPS a and b if necessary!
      */
+    // FIXME MK rename to createAndAddOne2OneCorrespondence
     public EObjectCorrespondence createAndAddEObjectCorrespondence(EObject a, EObject b);
 
+    public SameTypeCorrespondence createAndAddM2NCorrespondence(List<EObject> as, List<EObject> bs);
+
+    // FIXME MK rename getOne2OneCorrespondingEObjectsByType
     public <T> Set<T> getCorrespondingEObjectsByType(EObject eObject, Class<T> type);
 
     EObject resolveEObjectFromRootAndFullTUID(EObject root, String tuidString);
