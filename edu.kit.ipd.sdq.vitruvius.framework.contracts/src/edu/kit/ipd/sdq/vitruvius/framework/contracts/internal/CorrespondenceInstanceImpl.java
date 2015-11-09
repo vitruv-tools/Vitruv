@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.internal;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -229,14 +228,14 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     @Override
     public Set<EObject> claimCorrespondingEObjects(final EObject eObject) {
         TUID tuid = calculateTUIDFromEObject(eObject);
-        Collection<TUID> correspondingTUIDs = getCorrespondingTUIDs(tuid);
+        Set<TUID> correspondingTUIDs = getCorrespondingTUIDs(tuid);
         claimCorrespondenceSetNotEmpty(eObject, tuid, correspondingTUIDs);
         return resolveEObjectsFromTUIDs(correspondingTUIDs);
     }
 
-    private Collection<TUID> getCorrespondingTUIDs(final TUID tuid) {
+    private Set<TUID> getCorrespondingTUIDs(final TUID tuid) {
         Set<Correspondence> allCorrespondences = getAllCorrespondences(tuid);
-        Collection<TUID> correspondingTUIDs = new ArrayList<TUID>(allCorrespondences.size());
+        Set<TUID> correspondingTUIDs = new HashSet<TUID>(allCorrespondences.size());
         for (Correspondence correspondence : allCorrespondences) {
             if (correspondence instanceof SameTypeCorrespondence) {
                 SameTypeCorrespondence stc = (SameTypeCorrespondence) correspondence;
@@ -257,7 +256,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     }
 
     @Override
-    public Set<EObject> resolveEObjectsFromTUIDs(final Collection<TUID> tuids) {
+    public Set<EObject> resolveEObjectsFromTUIDs(final Set<TUID> tuids) {
         Set<EObject> eObjects = new HashSet<EObject>(tuids.size());
         for (TUID tuid : tuids) {
             EObject resolvedEObject = resolveEObjectFromTUID(tuid);
@@ -279,7 +278,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     @Override
     public Set<EObject> getAllCorrespondingEObjects(final EObject eObject) {
         TUID tuid = calculateTUIDFromEObject(eObject);
-        Collection<TUID> correspondingTUIDs = getCorrespondingTUIDs(tuid);
+        Set<TUID> correspondingTUIDs = getCorrespondingTUIDs(tuid);
         return resolveEObjectsFromTUIDs(correspondingTUIDs);
     }
 
