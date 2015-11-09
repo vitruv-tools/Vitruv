@@ -44,7 +44,9 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.casestudies.emf.changedescription2change,
  edu.kit.ipd.sdq.vitruvius.casestudies.gmf.run.monitorededitor;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.commandexecuter,
- edu.kit.ipd.sdq.vitruvius.framework.changepreparer
+ edu.kit.ipd.sdq.vitruvius.framework.changepreparer,
+ edu.kit.ipd.sdq.vitruvius.tests.components,
+ org.eclipse.emf.transaction
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.jamopp2pcm,

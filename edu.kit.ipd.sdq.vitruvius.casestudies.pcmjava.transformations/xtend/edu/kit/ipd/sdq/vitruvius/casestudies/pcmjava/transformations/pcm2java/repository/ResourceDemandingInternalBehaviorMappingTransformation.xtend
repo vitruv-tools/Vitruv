@@ -32,7 +32,7 @@ class ResourceDemandingInternalBehaviorMappingTransformation extends DefaultEObj
 			//val methodName = getMethodNameFromUser(classForMethod.name)
 			val methodName = resourceDemandingInternalBehaviour.entityName
 			val classMethod = PCM2JaMoPPUtils.createClassMethod(methodName, TypesFactory.eINSTANCE.createVoid, null,
-				null)
+				null, false)
 			classForMethod.members.add(classMethod)
 			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(resourceDemandingInternalBehaviour, classMethod)
 		}

@@ -6,6 +6,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationRes
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
+import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.emftext.language.java.classifiers.ConcreteClassifier
@@ -36,6 +37,13 @@ class SEFFMappingTransformation extends DefaultEObjectMappingTransformation {
 	override removeEObject(EObject eObject) {
 		TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
 		return null
+	}
+
+	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
+		Object newValue) {
+		val transformationResult = new TransformationResult
+		// a RDSEFF does not have an entity name - hence we do nothing here 
+		return transformationResult
 	}
 
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
@@ -82,12 +90,14 @@ class SEFFMappingTransformation extends DefaultEObjectMappingTransformation {
 				return null
 			}
 			val correspondingInterfaceMethod = correspondingMethods.get(0)
-			val ClassMethod classMethod = PCM2JaMoPPUtils.createClassMethod(correspondingInterfaceMethod)
+			val ClassMethod classMethod = PCM2JaMoPPUtils.createClassMethod(correspondingInterfaceMethod, true)
 			val correspondingClass = correspondingClasses.get(0)
 			var ClassMethod correspondinClassgMethod = correspondingClass.findMethodInClass(classMethod)
 			if (null == correspondinClassgMethod) {
 				correspondingClass.members.add(classMethod)
 				correspondinClassgMethod = classMethod
+			}else{
+				correspondinClassgMethod.name = correspondingInterfaceMethod.name
 			}
 			return correspondinClassgMethod.toArray
 		} else {

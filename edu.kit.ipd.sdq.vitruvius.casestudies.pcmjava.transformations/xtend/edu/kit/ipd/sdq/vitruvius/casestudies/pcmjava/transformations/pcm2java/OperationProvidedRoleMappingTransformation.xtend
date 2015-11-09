@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
@@ -11,7 +11,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.Interface
 import org.palladiosimulator.pcm.repository.OperationProvidedRole
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 
 class OperationProvidedRoleMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -41,8 +40,10 @@ class OperationProvidedRoleMappingTransformation extends EmptyEObjectMappingTran
 			logger.warn("Basic component is null. Can not synchronize creation of opeation provided role: " + opr)
 			return null
 		}
-		val jaMoPPClass = blackboard.correspondenceInstance.claimUniqueCorrespondingEObjectByType(providingEntity, Class)
-		val jaMoPPInterface = blackboard.correspondenceInstance.claimUniqueCorrespondingEObjectByType(opInterface, Interface)
+		val jaMoPPClass = blackboard.correspondenceInstance.
+			claimUniqueCorrespondingEObjectByType(providingEntity, Class)
+		val jaMoPPInterface = blackboard.correspondenceInstance.
+			claimUniqueCorrespondingEObjectByType(opInterface, Interface)
 		val namespaceClassifierRef = PCM2JaMoPPUtils.createNamespaceClassifierReference(jaMoPPInterface)
 		jaMoPPClass.implements.add(namespaceClassifierRef)
 		val classifierImport = PCM2JaMoPPUtils.addImportToCompilationUnitOfClassifier(jaMoPPClass, jaMoPPInterface)
@@ -56,23 +57,32 @@ class OperationProvidedRoleMappingTransformation extends EmptyEObjectMappingTran
 
 	/**
 	 * called when a operation provided role has been changed.
-	 * Either the implementing component or the providing interface has ben changed.
-	 * In both cases: Delete the old one and create a new one
+	 * If the implementing component or the interface has been changed (which is always the case):
+	 * Delete the old OperationProvidedRole if oldValue is not null and create a new one
 	 */
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject newValue) {
-		val EObject[] oldEObjects = removeEObject(affectedEObject)
-		val EObject[] newEObjects = createEObject(affectedEObject)
-		for (oldEObject : oldEObjects) {
-			blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(oldEObject)
-			EcoreUtil.remove(oldEObject)
+		if (oldValue == newValue) {
+			logger.debug("oldValue == newValue (value: )" + oldValue + ". Nothing has to be done here.")
+			return new TransformationResult
 		}
-		if (null != newEObjects) {
-			for (newEObject : newEObjects) {
-				blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newEObject, affectedEObject)
+		if (null != oldValue) {
+			val EObject[] oldEObjects = removeEObject(affectedEObject)
+			for (oldEObject : oldEObjects) {
+				blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(oldEObject)
+				EcoreUtil.remove(oldEObject)
 			}
+ 	 	}
+ 	 	// if the new value already has a correspondence we do not need to create newEObjects
+		if (!this.blackboard.correspondenceInstance.hasCorrespondences(newValue)) {
+			val EObject[] newEObjects = createEObject(affectedEObject)
+			if (null != newEObjects) {
+				for (newEObject : newEObjects) {
+					blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newEObject, affectedEObject)
+				}
+			}
+			return new TransformationResult
 		}
-		return new TransformationResult
 	}
 
 	/**

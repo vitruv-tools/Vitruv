@@ -1,12 +1,15 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.repository;
 
-import org.junit.Test;
+import java.util.concurrent.Callable;
 
+import org.junit.Test;
 import org.palladiosimulator.pcm.repository.CompositeDataType;
 import org.palladiosimulator.pcm.repository.InnerDeclaration;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryFactory;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 
@@ -36,12 +39,24 @@ public class CompositeDataTypeMappingTransformationTest extends PCM2JaMoPPTransf
     public void testAddCompositeDataTypeWithInnerTypes() throws Throwable {
         final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
         final CompositeDataType cdt = this.createCompositeDataType(repo, PCM2JaMoPPTestUtils.COMPOSITE_DATA_TYPE_NAME);
+        super.triggerSynchronization(VURI.getInstance(repo.eResource()));
 
         final InnerDeclaration innerDec = this.addInnerDeclaration(cdt);
         super.triggerSynchronization(VURI.getInstance(repo.eResource()));
 
-        this.assertDataTypeCorrespondence(cdt);
-        this.assertInnerDeclaration(innerDec);
+        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
+
+            @Override
+            public Void call() throws Exception {
+                try {
+                    CompositeDataTypeMappingTransformationTest.this.assertDataTypeCorrespondence(cdt);
+                    CompositeDataTypeMappingTransformationTest.this.assertInnerDeclaration(innerDec);
+                } catch (final Throwable e) {
+                    throw new RuntimeException(e);
+                }
+                return null;
+            }
+        }, this.vsum);
     }
 
     @Test

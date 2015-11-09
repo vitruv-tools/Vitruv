@@ -43,6 +43,7 @@ public class BasicComponentMappingTransformationTest extends PCM2JaMoPPTransform
         super.triggerSynchronization(repo);
 
         this.assertEmptyCorrespondence(basicComponent);
+        this.assertCompilationUnitForBasicComponentDeleted(basicComponent);
     }
 
     @Test

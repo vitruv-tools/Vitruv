@@ -22,6 +22,13 @@ import org.emftext.language.java.types.Void
 import org.palladiosimulator.pcm.repository.DataType
 import org.palladiosimulator.pcm.repository.InnerDeclaration
 import org.palladiosimulator.pcm.repository.RepositoryFactory
+import org.emftext.language.java.references.ReferencesFactory
+import org.emftext.language.java.modifiers.ModifiersFactory
+import org.emftext.language.java.statements.StatementsFactory
+import org.emftext.language.java.types.TypesFactory
+import org.emftext.language.java.parameters.ParametersFactory
+import org.emftext.language.java.expressions.ExpressionsFactory
+import org.emftext.language.java.operators.OperatorsFactory
 
 class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransformation {
 
@@ -86,57 +93,57 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 		return ret
 	}
 
-//	def private createSetter(Field field, TypeReference reference) {
-//		val method = MembersFactory.eINSTANCE.createClassMethod
-//		method.name = "set" + field.name.toFirstUpper
-//		method.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPublic)
-//		method.typeReference = TypesFactory.eINSTANCE.createVoid
-//		val parameter = ParametersFactory.eINSTANCE.createOrdinaryParameter
-//		parameter.name = field.name
-//		parameter.typeReference = reference
-//		method.parameters.add(parameter)
-//		val expressionStatement = StatementsFactory.eINSTANCE.createExpressionStatement
-//		val assigmentExpression = ExpressionsFactory.eINSTANCE.createAssignmentExpression
-//
-//		//this.
-//		val selfReference = ReferencesFactory.eINSTANCE.createSelfReference
-//		assigmentExpression.child = selfReference
-//
-//		//.fieldname
-//		val fieldReference = ReferencesFactory.eINSTANCE.createIdentifierReference
-//		fieldReference.target = field
-//		selfReference.next = fieldReference
-//
-//		//=
-//		assigmentExpression.assignmentOperator = OperatorsFactory.eINSTANCE.createAssignment
-//
-//		//name		
-//		val identifierReference = ReferencesFactory.eINSTANCE.createIdentifierReference
-//		identifierReference.target = parameter
-//
-//		assigmentExpression.value = identifierReference
-//		expressionStatement.expression = assigmentExpression
-//		method.statements.add(expressionStatement)
-//		return method
-//	}
-//
-//	def private createGetter(Field field, TypeReference reference) {
-//		val method = MembersFactory.eINSTANCE.createClassMethod
-//		method.name = "get" + field.name.toFirstUpper
-//		method.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPublic)
-//		method.typeReference = reference
-//
-//		//this.fieldname
-//		val selfReference = ReferencesFactory.eINSTANCE.createSelfReference
-//		val identifierRef = ReferencesFactory.eINSTANCE.createIdentifierReference
-//		identifierRef.target = field
-//		selfReference.next = identifierRef
-//
-//		// return
-//		val ret = StatementsFactory.eINSTANCE.createReturn
-//		ret.returnValue = selfReference
-//		return method
-//	}
+	def private createSetter(Field field, TypeReference reference) {
+		val method = MembersFactory.eINSTANCE.createClassMethod
+		method.name = "set" + field.name.toFirstUpper
+		method.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPublic)
+		method.typeReference = TypesFactory.eINSTANCE.createVoid
+		val parameter = ParametersFactory.eINSTANCE.createOrdinaryParameter
+		parameter.name = field.name
+		parameter.typeReference = reference
+		method.parameters.add(parameter)
+		val expressionStatement = StatementsFactory.eINSTANCE.createExpressionStatement
+		val assigmentExpression = ExpressionsFactory.eINSTANCE.createAssignmentExpression
+
+		//this.
+		val selfReference = ReferencesFactory.eINSTANCE.createSelfReference
+		assigmentExpression.child = selfReference
+
+		//.fieldname
+		val fieldReference = ReferencesFactory.eINSTANCE.createIdentifierReference
+		fieldReference.target = field
+		selfReference.next = fieldReference
+
+		//=
+		assigmentExpression.assignmentOperator = OperatorsFactory.eINSTANCE.createAssignment
+
+		//name		
+		val identifierReference = ReferencesFactory.eINSTANCE.createIdentifierReference
+		identifierReference.target = parameter
+
+		assigmentExpression.value = identifierReference
+		expressionStatement.expression = assigmentExpression
+		method.statements.add(expressionStatement)
+		return method
+	}
+
+	def private createGetter(Field field, TypeReference reference) {
+		val method = MembersFactory.eINSTANCE.createClassMethod
+		method.name = "get" + field.name.toFirstUpper
+		method.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPublic)
+		method.typeReference = reference
+
+		//this.fieldname
+		val selfReference = ReferencesFactory.eINSTANCE.createSelfReference
+		val identifierRef = ReferencesFactory.eINSTANCE.createIdentifierReference
+		identifierRef.target = field
+		selfReference.next = identifierRef
+
+		// return
+		val ret = StatementsFactory.eINSTANCE.createReturn
+		ret.returnValue = selfReference
+		return method
+	}
 
 	/**
 	 * Called when a InnerDeclaration has been renamed.
@@ -145,7 +152,10 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 	 */
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
-		val transformationResult = new TransformationResult 
+		val transformationResult = new TransformationResult
+		if(oldValue == newValue){
+			return transformationResult  
+		}
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(eObject, affectedAttribute,
 			featureCorrespondenceMap, blackboard.correspondenceInstance)
 		if (affectedEObjects.nullOrEmpty) {

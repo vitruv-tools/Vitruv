@@ -9,8 +9,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.JavaCore;
 import org.emftext.language.java.classifiers.Class;
 import org.emftext.language.java.classifiers.Classifier;
 import org.emftext.language.java.commons.NamedElement;
@@ -26,7 +31,6 @@ import org.emftext.language.java.statements.Statement;
 import org.emftext.language.java.types.ClassifierReference;
 import org.emftext.language.java.types.NamespaceClassifierReference;
 import org.emftext.language.java.types.TypeReference;
-
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.core.composition.CompositionFactory;
 import org.palladiosimulator.pcm.core.entity.ComposedProvidingRequiringEntity;
@@ -51,7 +55,10 @@ import org.palladiosimulator.pcm.repository.RepositoryFactory;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.seff.SeffFactory;
 import org.palladiosimulator.pcm.system.System;
+
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPChange2CommandTransformerBase;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.DataTypeCorrespondenceHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
@@ -60,6 +67,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.VitruviusEMFCasestudyTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.jamopppcm.util.JaMoPPPCMTestUtil;
+import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 /**
  * super class for all repository and system tests. Contains helper methods
@@ -73,13 +81,14 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
     protected void assertDataTypeCorrespondence(final DataType dataType) throws Throwable {
         if (dataType instanceof CollectionDataType) {
             final CollectionDataType cdt = (CollectionDataType) dataType;
-            this.assertCorrespondnecesAndCompareNames(cdt, 3, new java.lang.Class[] { CompilationUnit.class,
-                    Classifier.class, TypeReference.class },
+            this.assertCorrespondnecesAndCompareNames(cdt, 3,
+                    new java.lang.Class[] { CompilationUnit.class, Classifier.class, TypeReference.class },
                     new String[] { cdt.getEntityName() + ".java", cdt.getEntityName(), null });
         } else if (dataType instanceof CompositeDataType) {
             final CompositeDataType cdt = (CompositeDataType) dataType;
-            this.assertCorrespondnecesAndCompareNames(cdt, 2, new java.lang.Class[] { CompilationUnit.class,
-                    Classifier.class }, new String[] { cdt.getEntityName() + ".java", cdt.getEntityName() });
+            this.assertCorrespondnecesAndCompareNames(cdt, 2,
+                    new java.lang.Class[] { CompilationUnit.class, Classifier.class },
+                    new String[] { cdt.getEntityName() + ".java", cdt.getEntityName() });
         } else if (dataType instanceof PrimitiveDataType) {
             final PrimitiveDataType pdt = (PrimitiveDataType) dataType;
             assertTrue("No correspondence exists for DataType " + dataType,
@@ -91,8 +100,8 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
     protected <T> Set<NamedElement> assertCorrespondnecesAndCompareNames(
             final org.palladiosimulator.pcm.core.entity.NamedElement pcmNamedElement, final int expectedSize,
             final java.lang.Class<? extends EObject>[] expectedClasses, final String[] expectedNames) throws Throwable {
-        final Set<EObject> correspondences = this.getCorrespondenceInstance().claimCorrespondingEObjects(
-                pcmNamedElement);
+        final Set<EObject> correspondences = this.getCorrespondenceInstance()
+                .claimCorrespondingEObjects(pcmNamedElement);
         assertEquals("correspondences.size should be " + expectedSize, expectedSize, correspondences.size());
         final Set<NamedElement> jaMoPPElements = new HashSet<NamedElement>();
         for (int i = 0; i < expectedClasses.length; i++) {
@@ -105,8 +114,8 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
             final String expectedName = expectedNames[i];
             if (correspondingEObject instanceof NamedElement) {
                 final NamedElement jaMoPPElement = (NamedElement) correspondingEObject;
-                assertTrue("The name of the jamopp element does not contain the expected name", jaMoPPElement.getName()
-                        .contains(expectedName));
+                assertTrue("The name of the jamopp element does not contain the expected name",
+                        jaMoPPElement.getName().contains(expectedName));
                 jaMoPPElements.add(jaMoPPElement);
             } else {
                 // expected name should be null
@@ -135,8 +144,8 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
         if (expected instanceof ClassifierReference) {
             final ClassifierReference expectedClassifierRef = (ClassifierReference) expected;
             final ClassifierReference actualClassifierRef = (ClassifierReference) actual;
-            assertEquals("Target of type reference does not have the same name", expectedClassifierRef.getTarget()
-                    .getName(), actualClassifierRef.getTarget().getName());
+            assertEquals("Target of type reference does not have the same name",
+                    expectedClassifierRef.getTarget().getName(), actualClassifierRef.getTarget().getName());
         }
         if (expected instanceof NamespaceClassifierReference) {
             final NamespaceClassifierReference expectedNamespaceClassifierRef = (NamespaceClassifierReference) expected;
@@ -262,8 +271,8 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
     protected Parameter createAndSyncRepoOpSigAndParameterWithDataTypeName(final String compositeDataTypeName,
             final String parameterName) throws Throwable {
         final OperationSignature opSig = this.createAndSyncRepoInterfaceAndOperationSignature();
-        final CompositeDataType cdt = this.createAndSyncCompositeDataType(opSig.getInterface__OperationSignature()
-                .getRepository__Interface(), compositeDataTypeName);
+        final CompositeDataType cdt = this.createAndSyncCompositeDataType(
+                opSig.getInterface__OperationSignature().getRepository__Interface(), compositeDataTypeName);
         final Parameter param = this.addAndSyncParameterToSignature(opSig, cdt, parameterName);
         return param;
     }
@@ -287,8 +296,8 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
         return innerDec;
     }
 
-    protected OperationProvidedRole createAndSyncRepoOpIntfOpSigBasicCompAndOperationProvRole() throws IOException,
-            Throwable {
+    protected OperationProvidedRole createAndSyncRepoOpIntfOpSigBasicCompAndOperationProvRole()
+            throws IOException, Throwable {
         final OperationSignature opSig = this.createAndSyncRepoInterfaceAndOperationSignature();
         final OperationInterface opInterface = opSig.getInterface__OperationSignature();
         final BasicComponent basicComponent = this.addBasicComponentAndSync(opInterface.getRepository__Interface());
@@ -299,8 +308,8 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
     protected OperationProvidedRole createAndSyncOperationProvidedRole(final OperationInterface opInterface,
             final InterfaceProvidingEntity interfaceProvidingEntity) {
         final OperationProvidedRole operationProvidedRole = RepositoryFactory.eINSTANCE.createOperationProvidedRole();
-        operationProvidedRole.setEntityName(interfaceProvidingEntity.getEntityName() + "_provides_"
-                + opInterface.getEntityName());
+        operationProvidedRole
+                .setEntityName(interfaceProvidingEntity.getEntityName() + "_provides_" + opInterface.getEntityName());
         operationProvidedRole.setProvidedInterface__OperationProvidedRole(opInterface);
         operationProvidedRole.setProvidingEntity_ProvidedRole(interfaceProvidingEntity);
         final VURI vuri = VURI.getInstance(opInterface.eResource());
@@ -308,8 +317,8 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
         return operationProvidedRole;
     }
 
-    protected OperationRequiredRole createAndSyncRepoBasicCompInterfaceAndOperationReqiredRole() throws IOException,
-            Throwable {
+    protected OperationRequiredRole createAndSyncRepoBasicCompInterfaceAndOperationReqiredRole()
+            throws IOException, Throwable {
         final OperationSignature opSig = this.createAndSyncRepoInterfaceAndOperationSignature();
         final OperationInterface opInterface = opSig.getInterface__OperationSignature();
         final BasicComponent basicComponent = this.addBasicComponentAndSync(opInterface.getRepository__Interface());
@@ -339,8 +348,8 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
     }
 
     protected AssemblyContext createAndSyncAssemblyContext(
-            final ComposedProvidingRequiringEntity composedProvidingRequiringEntity, final BasicComponent basicComponent)
-            throws IOException {
+            final ComposedProvidingRequiringEntity composedProvidingRequiringEntity,
+            final BasicComponent basicComponent) throws IOException {
         final AssemblyContext assemblyContext = CompositionFactory.eINSTANCE.createAssemblyContext();
         assemblyContext.setEntityName(PCM2JaMoPPTestUtils.ASSEMBLY_CONTEXT_NAME);
         assemblyContext.setEncapsulatedComponent__AssemblyContext(basicComponent);
@@ -366,8 +375,8 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
      * @throws Throwable
      */
     protected void assertOperationProvidedRole(final OperationProvidedRole operationProvidedRole) throws Throwable {
-        final Set<EObject> correspondingEObjects = this.getCorrespondenceInstance().getAllCorrespondingEObjects(
-                operationProvidedRole);
+        final Set<EObject> correspondingEObjects = this.getCorrespondenceInstance()
+                .getAllCorrespondingEObjects(operationProvidedRole);
         int namespaceClassifierReferenceFound = 0;
         int importFound = 0;
         for (final EObject eObject : correspondingEObjects) {
@@ -393,8 +402,8 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
      * @throws Throwable
      */
     protected void assertOperationRequiredRole(final OperationRequiredRole operationRequiredRole) throws Throwable {
-        final Set<EObject> correspondingEObjects = this.getCorrespondenceInstance().getAllCorrespondingEObjects(
-                operationRequiredRole);
+        final Set<EObject> correspondingEObjects = this.getCorrespondenceInstance()
+                .getAllCorrespondingEObjects(operationRequiredRole);
         int importFounds = 0;
         int constructorParameterFound = 0;
         int fieldsFound = 0;
@@ -445,8 +454,8 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
      * @throws Throwable
      */
     protected void assertAssemblyContext(final AssemblyContext assemblyContext) throws Throwable {
-        final Set<EObject> correspondingEObjects = this.getCorrespondenceInstance().getAllCorrespondingEObjects(
-                assemblyContext);
+        final Set<EObject> correspondingEObjects = this.getCorrespondenceInstance()
+                .getAllCorrespondingEObjects(assemblyContext);
         boolean fieldFound = false;
         boolean importFound = false;
         boolean newConstructorCallFound = false;
@@ -468,8 +477,8 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
                 constructorFound = true;
             }
         }
-        assertTrue("Could not find all necessary corresponding objects", constructorFound && importFound
-                && newConstructorCallFound && fieldFound);
+        assertTrue("Could not find all necessary corresponding objects",
+                constructorFound && importFound && newConstructorCallFound && fieldFound);
     }
 
     @SuppressWarnings("unused")
@@ -494,10 +503,10 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
                 downloadMethodName);
         final OperationSignature uploadMediaStore = this.createAndSyncOperationSignature(repo, iMediaStoreIf,
                 uploadMethodName);
-        final OperationSignature downloadWebGUI = this.createAndSyncOperationSignature(repo, iwebGUIIf, "http"
-                + downloadMethodName);
-        final OperationSignature uploadWebGUI = this.createAndSyncOperationSignature(repo, iwebGUIIf, "http"
-                + uploadMethodName);
+        final OperationSignature downloadWebGUI = this.createAndSyncOperationSignature(repo, iwebGUIIf,
+                "http" + downloadMethodName);
+        final OperationSignature uploadWebGUI = this.createAndSyncOperationSignature(repo, iwebGUIIf,
+                "http" + uploadMethodName);
 
         // create provided roles
         final OperationProvidedRole mediaStore2IMediaStore = this.createAndSyncOperationProvidedRole(iMediaStoreIf,
@@ -505,8 +514,8 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
         final OperationProvidedRole webGUI2IWebGUI = this.createAndSyncOperationProvidedRole(iwebGUIIf, webGUIBC);
 
         // create required role
-        final OperationRequiredRole webGui2MediaStore = this
-                .createAndSyncOperationRequiredRole(iMediaStoreIf, webGUIBC);
+        final OperationRequiredRole webGui2MediaStore = this.createAndSyncOperationRequiredRole(iMediaStoreIf,
+                webGUIBC);
 
         // Create seff for provided roles
         this.createAndSyncSeff(mediaStoreBC, downloadMediaStore);
@@ -546,10 +555,14 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
                 .getAllCorrespondingEObjects(innerDec);
         int fieldsFound = 0;
         int methodsFound = 0;
+        String fieldName = null;
+        String fieldTypeName = null;
         for (final EObject eObject : correspondingObjects) {
             if (eObject instanceof Field) {
                 fieldsFound++;
                 final Field field = (Field) eObject;
+                fieldName = field.getName();
+                fieldTypeName = PCM2JaMoPPUtils.getNameFromJaMoPPType(field.getTypeReference());
                 assertTrue("field name unexpected",
                         field.getName().toLowerCase().contains(innerDec.getEntityName().toLowerCase()));
             } else if (eObject instanceof Method) {
@@ -560,10 +573,30 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
         }
         assertEquals("unexpected number of corresponding fields found", 1, fieldsFound);
         assertEquals("unexpected number of corresponding methods found", 2, methodsFound);
+        final String expectedName = innerDec.getEntityName();
+        assertEquals("name of field does not mathc name of inner declaration", expectedName, fieldName);
+        final String expectedTypeName = PCMJaMoPPUtils.getNameFromPCMDataType(innerDec.getDatatype_InnerDeclaration());
+        assertEquals("name of JaMoPP type is not expected name of PCM datatype", expectedTypeName.toLowerCase(),
+                fieldTypeName.toLowerCase());
+
     }
 
     @Override
     protected java.lang.Class<?> getChange2CommandTransformerClass() {
         return PCMJaMoPPChange2CommandTransformerBase.class;
+    }
+
+    protected void assertCompilationUnitForBasicComponentDeleted(final BasicComponent basicComponent) throws Throwable {
+        final String expectedClassName = basicComponent.getEntityName() + "Impl";
+        final IProject testProject = TestUtil.getTestProject();
+        final IJavaProject javaProject = JavaCore.create(testProject);
+        for (final IPackageFragment pkg : javaProject.getPackageFragments()) {
+            for (final ICompilationUnit unit : pkg.getCompilationUnits()) {
+                if (unit.getElementName().contains(expectedClassName)) {
+                    fail("CompilationUnit with name " + expectedClassName + " for component "
+                            + basicComponent.getEntityName() + " still exists.");
+                }
+            }
+        }
     }
 }

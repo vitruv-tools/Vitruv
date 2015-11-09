@@ -31,6 +31,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.re
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.OperationSignatureMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.ParameterMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.RepositoryMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.ResourceDemandingInternalBehaviorMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.SEFFMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.system.AssemblyConnectorMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.system.AssemblyContextMappingTransformation;
@@ -66,6 +67,7 @@ public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2Comm
         this.transformationExecuter.addMapping(new CompositeDataTypeMappingTransformation());
         this.transformationExecuter.addMapping(new InnerDeclarationMappingTransforamtion());
         this.transformationExecuter.addMapping(new SEFFMappingTransformation());
+        this.transformationExecuter.addMapping(new ResourceDemandingInternalBehaviorMappingTransformation());
         // System
         this.transformationExecuter.addMapping(new SystemMappingTransformation());
         this.transformationExecuter.addMapping(new AssemblyContextMappingTransformation());

@@ -5,6 +5,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.Co
 import org.eclipse.emf.ecore.EObject
 import org.palladiosimulator.pcm.system.System
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
+import org.emftext.language.java.containers.JavaRoot
 
 class SystemMappingTransformation extends ComposedProvidingRequiringEntityMappingTransformation {
 
@@ -25,7 +26,7 @@ class SystemMappingTransformation extends ComposedProvidingRequiringEntityMappin
 		if (newCorrespondingEObjects.nullOrEmpty) {
 			return transformationResult
 		}
-		newCorrespondingEObjects.forEach [ newCorrespondingEObject |
+		newCorrespondingEObjects.filter(JavaRoot).forEach [ newCorrespondingEObject |
 			PCMJaMoPPUtils.addRootChangeToTransformationResult(newCorrespondingEObject, blackboard,
 				PCMJaMoPPUtils.getSourceModelVURI(newRootEObject), transformationResult)
 		]

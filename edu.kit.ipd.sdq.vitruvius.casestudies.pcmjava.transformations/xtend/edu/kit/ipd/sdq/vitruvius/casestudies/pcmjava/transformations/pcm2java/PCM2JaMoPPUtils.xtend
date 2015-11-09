@@ -70,6 +70,7 @@ import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 import org.emftext.language.java.members.ClassMethod
 import org.emftext.language.java.modifiers.Modifier
+import org.emftext.language.java.modifiers.Public
 
 abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	private static val Logger logger = Logger.getLogger(PCM2JaMoPPUtils.simpleName)
@@ -219,19 +220,6 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		return field
 	}
 
-	def static createPrivateFieldUsingDummyPrinting(TypeReference reference, String name) {
-		try {
-			val String cuContent = "class Dummy{ private " + PCM2JaMoPPUtils.getNameFromJaMoPPType(reference) + " " +
-				name + "; }"
-			val String fileName = "vitruvius.meta/src/dummy.java";
-			val cu = createJavaRoot(fileName, cuContent) as CompilationUnit
-			return cu.classifiers.get(0).fields.get(0)
-		} catch (Throwable t) {
-			logger.info("Could not create field: " + name)
-			return null
-		}
-	}
-
 	def static Parameter createOrdinaryParameter(TypeReference typeReference, String name) {
 		val parameter = ParametersFactory.eINSTANCE.createOrdinaryParameter
 		parameter.name = name
@@ -266,7 +254,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	}
 
 	/**
-	 * sorts the member list to ensure that fields occure before constructors and constructors before methods
+	 * sorts the member list to ensure that fields are printed before constructors and constructors before methods
 	 */
 	def static sortMembers(List<? extends EObject> members) {
 		members.sort(new Comparator<EObject> {
@@ -275,15 +263,15 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 
 				// fields before constructors and methods
 				if (o1 instanceof Field && (o2 instanceof Method || o2 instanceof Constructor)) {
-					return 1
-				} else if ((o1 instanceof Method || o1 instanceof Constructor) && o2 instanceof Field) {
 					return -1
+				} else if ((o1 instanceof Method || o1 instanceof Constructor) && o2 instanceof Field) {
+					return 1
 
 				// constructors before Methods	
 				} else if (o1 instanceof Constructor && o2 instanceof Method) {
-					return 1
-				} else if (o1 instanceof Method && o2 instanceof Constructor) {
 					return -1
+				} else if (o1 instanceof Method && o2 instanceof Constructor) {
+					return 1
 				}
 				return 0;
 			}
@@ -385,6 +373,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		val javaRoot = jaMoPPParser.parseCompilationUnitFromInputStream(VURI.getInstance(name + ".java").getEMFUri,
 			inStream)
 		javaRoot.name = name + ".java"
+		EcoreUtil.remove(javaRoot)
 		return javaRoot
 	}
 
@@ -393,7 +382,9 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 			val String cuContent = "class Dummy{" + content + "}"
 			val String name = "vitruvius.meta/src/dummy.java";
 			val cu = createJavaRoot(name, cuContent) as CompilationUnit
-			return cu.classifiers.get(0).methods.get(0)
+			val method = cu.classifiers.get(0).methods.get(0)
+			EcoreUtil.remove(method)
+			return method
 		} catch (Throwable t) {
 			logger.warn("Exception during createJaMoPPMethod with content " + content + " Exception: " + t)
 			return null;
@@ -700,14 +691,20 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	}
 
 	public static def createClassMethod(String name, TypeReference typeReference, Modifier[] modifiers,
-		Parameter[] parameters) {
+		Parameter[] parameters, boolean ensurePublic) {
 		val ClassMethod classMethod = MembersFactory.eINSTANCE.createClassMethod
 		classMethod.name = name
 		if (null != typeReference) {
 			classMethod.typeReference = EcoreUtil.copy(typeReference)
 		}
 		if (null != modifiers) {
-			classMethod.modifiers.addAll(EcoreUtil.copyAll(modifiers))
+			classMethod.annotationsAndModifiers.addAll(EcoreUtil.copyAll(modifiers))
+		}
+		if (ensurePublic) {
+			val alreadyPublic = classMethod.annotationsAndModifiers.filter[modifier|modifier instanceof Public].size > 0
+			if (!alreadyPublic) {
+				classMethod.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPublic)
+			}
 		}
 		if (null != parameters) {
 			classMethod.parameters.addAll(EcoreUtil.copyAll(parameters))
@@ -715,8 +712,8 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		return classMethod
 	}
 
-	public static def createClassMethod(Method method) {
-		createClassMethod(method.name, method.typeReference, method.modifiers, method.parameters)
+	public static def createClassMethod(Method method, boolean ensurePublic) {
+		createClassMethod(method.name, method.typeReference, method.modifiers, method.parameters, ensurePublic)
 	}
 
 }

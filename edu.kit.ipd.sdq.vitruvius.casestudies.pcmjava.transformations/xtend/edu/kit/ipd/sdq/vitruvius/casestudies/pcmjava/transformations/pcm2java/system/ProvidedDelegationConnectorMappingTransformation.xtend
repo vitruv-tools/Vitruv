@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.system
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
@@ -10,12 +11,10 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.classifiers.ConcreteClassifier
 import org.emftext.language.java.literals.LiteralsFactory
 import org.emftext.language.java.members.ClassMethod
 import org.emftext.language.java.members.Field
-import org.emftext.language.java.members.MembersFactory
 import org.emftext.language.java.members.Method
 import org.emftext.language.java.parameters.Parameter
 import org.emftext.language.java.references.IdentifierReference
@@ -25,9 +24,6 @@ import org.emftext.language.java.references.SelfReference
 import org.emftext.language.java.statements.ExpressionStatement
 import org.emftext.language.java.statements.StatementsFactory
 import org.palladiosimulator.pcm.core.composition.ProvidedDelegationConnector
-import org.emftext.language.java.modifiers.Modifier
-import org.emftext.language.java.types.TypeReference
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 
 class ProvidedDelegationConnectorMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -127,7 +123,7 @@ class ProvidedDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 		}
 
 		// no method found: create it in classifier
-		val ClassMethod classMethod = PCM2JaMoPPUtils.createClassMethod(method)
+		val ClassMethod classMethod = PCM2JaMoPPUtils.createClassMethod(method, true)
 		return classMethod
 	}
 	

@@ -21,10 +21,11 @@ import org.emftext.language.java.containers.Package
 import org.emftext.language.java.members.Method
 import org.emftext.language.java.types.TypeReference
 import org.palladiosimulator.pcm.core.entity.NamedElement
+import org.palladiosimulator.pcm.repository.CollectionDataType
+import org.palladiosimulator.pcm.repository.CompositeDataType
+import org.palladiosimulator.pcm.repository.PrimitiveDataType
 import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.system.System
-import org.emftext.language.java.containers.CompilationUnit
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 
 class PCMJaMoPPUtils {
 	private static val Logger logger = Logger.getLogger(PCMJaMoPPUtils.simpleName)
@@ -65,10 +66,8 @@ class PCMJaMoPPUtils {
 				return
 			}
 			for (EObject correspondingObject : correspondingEObjects) {
-				if (null == correspondingObject || null == correspondingObject.eResource) {
-					logger.error(
-						"corresponding object is null or correspondingObject is not contained in a resource!: " +
-							correspondingObject + " (object.isProxy=" + correspondingObject.eIsProxy + ")")
+				if (null == correspondingObject) {
+					logger.error("corresponding object is null")
 				} else {
 					val TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(correspondingObject)
 					correspondingObject.eSet(eStructuralFeature, newValue)
@@ -207,5 +206,16 @@ class PCMJaMoPPUtils {
 			}
 			return srcFolderPath;
 		}
-
+		
+		public dispatch static def getNameFromPCMDataType(PrimitiveDataType primitiveDataType){
+			return primitiveDataType.type.getName
+		}
+		
+		public dispatch static def getNameFromPCMDataType(CollectionDataType collectionDataType){
+			return collectionDataType.entityName
+		}
+		
+		public dispatch static def getNameFromPCMDataType(CompositeDataType compositeDataType){
+			return compositeDataType.entityName
+		}
 	}

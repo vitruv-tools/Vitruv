@@ -16,6 +16,7 @@ import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.members.Member
 import org.emftext.language.java.modifiers.ModifiersFactory
 import org.palladiosimulator.pcm.repository.CompositeDataType
+import org.emftext.language.java.containers.JavaRoot
 
 /**
  * Maps a composite DataType to a class in the data types package.
@@ -97,11 +98,13 @@ class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransfor
 		val jaMoPPDataType = blackboard.correspondenceInstance.
 			claimUniqueCorrespondingEObjectByType(compositeDataType, Class)
 		for (newCorrespondingEObject : newCorrespondingEObjects) {
-			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newValue, newCorrespondingEObject)
-			PCMJaMoPPUtils.addRootChangeToTransformationResult(newCorrespondingEObject, blackboard,
-				PCM2JaMoPPUtils.getSourceModelVURI(newAffectedEObject), transformationResult)
 			if (newCorrespondingEObject instanceof Member) {
 				jaMoPPDataType.members.add(newCorrespondingEObject)
+			}
+			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newValue, newCorrespondingEObject)
+			if (newCorrespondingEObject instanceof JavaRoot) {
+				PCMJaMoPPUtils.addRootChangeToTransformationResult(newCorrespondingEObject, blackboard,
+					PCM2JaMoPPUtils.getSourceModelVURI(newAffectedEObject), transformationResult)
 			}
 		}
 		transformationResult

@@ -55,7 +55,7 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 			for (containingPackage : packages) {
 				if (containingPackage.name.equalsIgnoreCase("contracts")) {
 					logger.info("Found contracts package.")
-					containingPackage.compilationUnits.add(correspondingCompilationUnit)
+					//containingPackage.compilationUnits.add(correspondingCompilationUnit)
 					correspondingCompilationUnit.namespaces.addAll(containingPackage.namespaces)
 					correspondingCompilationUnit.namespaces.add(containingPackage.name)
 					return #[correspondingInterface, correspondingCompilationUnit]
