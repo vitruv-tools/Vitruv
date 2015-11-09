@@ -13,9 +13,9 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import java.util.HashSet
 
 class TransformationUtils {
-	
-	val private static Logger logger = Logger.getLogger(TransformationUtils)
-	
+
+	//val private static Logger logger = Logger.getLogger(TransformationUtils)
+
 	private new() {
 	}
 
@@ -44,9 +44,13 @@ class TransformationUtils {
 	}
 
 	def private static resolveAndRemoveEObject(TUID tuid, Blackboard blackboard) {
-		val eObject = blackboard.correspondenceInstance.resolveEObjectFromTUID(tuid)
-		if (null != eObject) {
-			EcoreUtil.delete(eObject)
+		try {
+			val eObject = blackboard.correspondenceInstance.resolveEObjectFromTUID(tuid)
+			if (null != eObject) {
+				EcoreUtil.delete(eObject)
+			}
+		} catch (RuntimeException e ) {
+			// ignore runtime exception during object deletion
 		}
 	}
 }
