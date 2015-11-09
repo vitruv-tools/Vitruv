@@ -248,6 +248,11 @@ class JaMoPPTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResol
 	private def dispatch String getNameFrom(ClassifierReference classifierReference) {
 		return classifierReference.target.name
 	}
+	
+	private def dispatch String getNameFrom(Void nullType){
+		logger.warn("getNameFrom name for "+ nullType + " not possible" )
+		return "";
+	}
 
 	private def String getNamespaceAsString(CompilationUnit cu) {
 		return StringOperationsJaMoPP.getNamespaceAsString(cu.namespaces)
