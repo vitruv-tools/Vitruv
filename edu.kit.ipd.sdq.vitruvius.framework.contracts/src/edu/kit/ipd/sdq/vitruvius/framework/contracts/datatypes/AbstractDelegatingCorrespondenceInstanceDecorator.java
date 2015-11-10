@@ -34,13 +34,13 @@ public abstract class AbstractDelegatingCorrespondenceInstanceDecorator<D> imple
     }
 
     @Override
-    public Set<Correspondence> getAllCorrespondences(final List<EObject> eObjects) {
-        return this.correspondenceInstance.getAllCorrespondences(eObjects);
+    public Set<Correspondence> getCorrespondences(final List<EObject> eObjects) {
+        return this.correspondenceInstance.getCorrespondences(eObjects);
     }
 
     @Override
-    public Set<Correspondence> getAllCorrespondencesForTUIDs(final List<TUID> involvedTUIDs) {
-        return this.correspondenceInstance.getAllCorrespondencesForTUIDs(involvedTUIDs);
+    public Set<Correspondence> getCorrespondencesForTUIDs(final List<TUID> involvedTUIDs) {
+        return this.correspondenceInstance.getCorrespondencesForTUIDs(involvedTUIDs);
     }
 
     @Override
@@ -49,8 +49,8 @@ public abstract class AbstractDelegatingCorrespondenceInstanceDecorator<D> imple
     }
 
     @Override
-    public Set<HalfEObjectCorrespondence> getAllCorrespondingEObjects(final List<EObject> eObjects) {
-        return this.correspondenceInstance.getAllCorrespondingEObjects(eObjects);
+    public Set<HalfEObjectCorrespondence> getCorrespondingEObjects(final List<EObject> eObjects) {
+        return this.correspondenceInstance.getCorrespondingEObjects(eObjects);
     }
 
     @Override

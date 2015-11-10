@@ -904,13 +904,13 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     }
 
     @Override
-    public Set<Correspondence> getAllCorrespondences(final List<EObject> eObjects) {
+    public Set<Correspondence> getCorrespondences(final List<EObject> eObjects) {
         // FIXME MK Auto-generated method stub
         return null;
     }
 
     @Override
-    public Set<Correspondence> getAllCorrespondencesForTUIDs(final List<TUID> involvedTUIDs) {
+    public Set<Correspondence> getCorrespondencesForTUIDs(final List<TUID> involvedTUIDs) {
         // FIXME MK Auto-generated method stub
         return null;
     }
@@ -922,7 +922,7 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     }
 
     @Override
-    public Set<HalfEObjectCorrespondence> getAllCorrespondingEObjects(final List<EObject> eObjects) {
+    public Set<HalfEObjectCorrespondence> getCorrespondingEObjects(final List<EObject> eObjects) {
         // FIXME MK Auto-generated method stub
         return null;
     }

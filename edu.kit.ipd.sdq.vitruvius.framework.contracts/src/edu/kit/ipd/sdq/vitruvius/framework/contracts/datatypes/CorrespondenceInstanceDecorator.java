@@ -18,7 +18,7 @@ public interface CorrespondenceInstanceDecorator extends InternalCorrespondenceI
     Map<String, Object> getFileExtPrefix2ObjectMapForSave();
 
     /**
-     * Returns a mutable set of prefixed for file names for which a file should be loaded to obtain
+     * Returns a mutable set of prefixes for file names for which a file should be loaded to obtain
      * objects that persist decorator information.
      *
      * @return
