@@ -3,14 +3,19 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.UpdateEReference;
@@ -83,5 +88,17 @@ public final class MIRMappingHelper {
 		}
 		
 		return result;
+	}
+	
+	public static List<Resource> getResources(Collection<EObject> eObjects) {
+		return eObjects.stream().map(it -> it.eResource()).distinct().collect(Collectors.toList());
+	}
+	
+	public static void addEmptyResourcesToTransformationResult(Iterable<Resource> resources, TransformationResult result) {
+		for (Resource res : resources) {
+			if (res.getContents().isEmpty()) {
+				result.addVURIToDeleteIfNotNull(VURI.getInstance(res));
+			}
+		}
 	}
 }
