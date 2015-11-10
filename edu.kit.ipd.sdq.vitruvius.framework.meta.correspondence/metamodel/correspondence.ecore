@@ -18,21 +18,15 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="M2NCorrespondenceWASSameTypeCorrespondence"
       abstract="true" eSuperTypes="#//Correspondence">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="Metaclass for cases where an Object corresponds to another Object of the same metatype (i.e. both objects are either complex-typed EObjects or simple-typed EJavaObjects).&#xA;ElementA and elementB usually point to instances of different metaclasses but their common type T is not a problem as T will never be used more strictly than for the metatype."/>
-    </eAnnotations>
     <eOperations name="getAHalfEObjectCorrespondence" eType="#//HalfEObjectCorrespondence"/>
     <eOperations name="getBHalfEObjectCorrespondence" eType="#//HalfEObjectCorrespondence"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="aHalfCorrespondence" eType="#//HalfTUIDCorrespondence"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="bHalfCorrespondence" eType="#//HalfTUIDCorrespondence"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="aHalfCorrespondence" lowerBound="1"
+        eType="#//HalfTUIDCorrespondence" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bHalfCorrespondence" lowerBound="1"
+        eType="#//HalfTUIDCorrespondence" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="One2OneCorrespondenceWASEObjectCorrespondence"
-      eSuperTypes="#//M2NCorrespondenceWASSameTypeCorrespondence">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="Metaclass for cases where an eObject corresponds to another eObject.&#xA;The correspondence type is indirectly implied by the correspondences of the features of the eObjects."/>
-    </eAnnotations>
+      eSuperTypes="#//Correspondence">
     <eOperations name="getElementATUID" eType="#//TUID"/>
     <eOperations name="getElementBTUID" eType="#//TUID"/>
     <eOperations name="getA" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
