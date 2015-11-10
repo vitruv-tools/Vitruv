@@ -29,6 +29,19 @@ class EMFHelper {
 		return result
 	}
 	
+	static def getContainerOfType(EObject obj, EClass containerType) {
+		var EObject iterator = obj;
+		
+		while (iterator != null) {
+			if (containerType.isInstance(iterator))
+				return iterator
+			iterator = iterator.eContainer
+		}
+		
+		return null
+		
+	}
+	
 	static def hasContainer(EObject obj, EObject container) {
 		// TODO: possibly optimize, so iteration is stopped
 		// when container is found
