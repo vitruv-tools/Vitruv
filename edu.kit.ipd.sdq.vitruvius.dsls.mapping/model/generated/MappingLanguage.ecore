@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="mappingLanguage" nsURI="http://www.kit.edu/ipd/sdq/vitruvius/dsls/mapping/MappingLanguage"
+    nsPrefix="mappingLanguage">
+  <eClassifiers xsi:type="ecore:EClass" name="MappingFile">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="imports" upperBound="-1"
+        eType="#//Import" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappings" upperBound="-1"
+        eType="#//Mapping" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Import">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="package" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Mapping">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="requires" unique="false"
+        upperBound="-1" eType="#//Mapping"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="signature0" eType="#//Signature"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="constraints0" eType="#//SignatureConstraintBlock"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="signature1" eType="#//Signature"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="constraints1" eType="#//SignatureConstraintBlock"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="constraintsBody" eType="#//BodyConstraintBlock"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="submappings" upperBound="-1"
+        eType="#//Mapping" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Signature">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
+        eType="#//NamedEClass" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NamedEClass">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConstraintBlock">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expressions" upperBound="-1"
+        eType="#//ConstraintExpression" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConstraintExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SignatureConstraintBlock" eSuperTypes="#//ConstraintBlock"/>
+  <eClassifiers xsi:type="ecore:EClass" name="BodyConstraintBlock" eSuperTypes="#//ConstraintBlock"/>
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureOfContextVariable">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="#//ContextVariable"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContextVariable">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//NamedEClass"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConstraintLiteral"/>
+  <eClassifiers xsi:type="ecore:EClass" name="VariableRef" eSuperTypes="#//ConstraintExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//ContextVariable"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InExpression" eSuperTypes="#//ConstraintExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//ContextVariable"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" eType="#//FeatureOfContextVariable"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EqualsLiteralExpression" eSuperTypes="#//ConstraintExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//FeatureOfContextVariable"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//ConstraintLiteral"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AttributeEquivalenceExpression" eSuperTypes="#//ConstraintExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//FeatureOfContextVariable"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//FeatureOfContextVariable"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConstraintBooleanLiteral" eSuperTypes="#//ConstraintLiteral">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isTrue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConstraintNullLiteral" eSuperTypes="#//ConstraintLiteral"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ConstraintNumberLiteral" eSuperTypes="#//ConstraintLiteral">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConstraintStringLiteral" eSuperTypes="#//ConstraintLiteral">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+</ecore:EPackage>

@@ -1,0 +1,132 @@
+grammar edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage
+	with org.eclipse.xtext.xbase.Xbase
+
+generate mappingLanguage "http://www.kit.edu/ipd/sdq/vitruvius/dsls/mapping/MappingLanguage"
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+MappingFile:
+	(imports += Import)*
+	(mappings += Mapping)*
+;
+
+Import returns Import: 
+	'import' package=[ecore::EPackage|STRING] 
+	('as' name=ValidID)?;
+
+
+Mapping:
+	{Mapping}
+	('mapping' name=ValidID ':')?
+	
+	('when' '('
+		requires+=[Mapping] (',' requires+=[Mapping])* 
+	 ')')?
+	 
+ 	(
+	 	('map' signature0=Signature (constraints0=SignatureConstraintBlock)?
+	 	 'and' signature1=Signature (constraints1=SignatureConstraintBlock)?)
+	  	('{'
+	  		(constraintsBody=BodyConstraintBlock)?
+	  		(submappings+=Mapping)* 
+	  	'}')?
+  	) |
+  	(
+  		'map' '{'
+	  		(constraintsBody=BodyConstraintBlock)?
+	  		(submappings+=Mapping)* 
+	  	'}'
+
+  	)
+;
+
+Signature:
+	{Signature}
+	'{' (elements+=NamedEClass (',' elements+=NamedEClass)*)? '}'
+;
+
+NamedEClass:
+	type=[ecore::EClass|QualifiedName] 'as' name=ValidID
+;
+
+
+ConstraintBlock:
+	SignatureConstraintBlock |
+	BodyConstraintBlock
+;
+
+ConstraintExpression:
+	SignatureConstraintExpression |
+	BodyConstraintExpression
+;
+
+SignatureConstraintBlock:
+	'['
+		(expressions+=SignatureConstraintExpression ';'?)*
+	']'
+;
+
+SignatureConstraintExpression returns ConstraintExpression:
+ 	InExpression |
+	EqualsLiteralExpression
+;
+
+BodyConstraintBlock:
+	'['
+		(expressions+=BodyConstraintExpression ';'?)*
+	']'
+;
+
+BodyConstraintExpression returns ConstraintExpression:
+	AttributeEquivalenceExpression
+;
+
+
+VariableRef returns ConstraintExpression:
+	{VariableRef}
+	target=ContextVariable
+;
+
+InExpression returns ConstraintExpression:
+	{InExpression}
+	target=ContextVariable 'in' source=FeatureOfContextVariable
+;
+
+EqualsLiteralExpression returns ConstraintExpression:
+	{EqualsLiteralExpression}
+	target=FeatureOfContextVariable '==' value=ConstraintLiteral
+;
+
+AttributeEquivalenceExpression returns ConstraintExpression:
+	{AttributeEquivalenceExpression}
+	left=FeatureOfContextVariable 'equals' right=FeatureOfContextVariable
+;
+
+FeatureOfContextVariable:
+	context=ContextVariable '::' feature=[ecore::EStructuralFeature|ValidID]
+;
+
+ContextVariable:
+	target=[NamedEClass|QualifiedName]
+;
+
+
+// LITERALS from Xbase.xtext
+ConstraintLiteral:
+	ConstraintBooleanLiteral |
+	ConstraintNullLiteral |
+	ConstraintNumberLiteral |
+	ConstraintStringLiteral
+;
+
+ConstraintBooleanLiteral returns ConstraintLiteral :
+	{ConstraintBooleanLiteral} ('false' | isTrue?='true');
+
+ConstraintNullLiteral returns ConstraintLiteral :
+	{ConstraintNullLiteral} 'null';
+
+ConstraintNumberLiteral returns ConstraintLiteral :
+	{ConstraintNumberLiteral} value=Number;
+
+ConstraintStringLiteral returns ConstraintLiteral:
+	{ConstraintStringLiteral} value=STRING;
