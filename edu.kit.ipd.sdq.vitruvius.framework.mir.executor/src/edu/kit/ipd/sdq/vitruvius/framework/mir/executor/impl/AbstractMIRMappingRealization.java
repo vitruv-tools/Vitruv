@@ -42,6 +42,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
  * @author Dominik Werle
  *
  */
+@Deprecated
 public abstract class AbstractMIRMappingRealization implements MIRMappingRealization {
 	private final static Logger LOGGER = Logger.getLogger(AbstractMIRMappingRealization.class);
 

@@ -21,6 +21,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRea
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.Response;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.ResponseRegistry;
 
+@Deprecated
 public abstract class AbstractMIRChange2CommandTransforming implements Change2CommandTransforming {
 	// static field names in generated code
 	public static final String MAPPINGS_FIELD_NAME = "MAPPINGS";

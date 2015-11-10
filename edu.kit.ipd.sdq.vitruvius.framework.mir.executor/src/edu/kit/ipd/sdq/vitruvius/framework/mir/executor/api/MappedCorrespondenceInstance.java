@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -18,15 +20,18 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespon
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
-public class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInstanceDecorator<Map<SameTypeCorrespondence,Collection<MIRMappingRealization>>> {
-	private Map<SameTypeCorrespondence,Collection<MIRMappingRealization>> correspondence2MappingMap;
- 
+public class MappedCorrespondenceInstance extends
+		AbstractDelegatingCorrespondenceInstanceDecorator<Map<SameTypeCorrespondence, Collection<MIRMappingRealization>>> {
+	private Map<SameTypeCorrespondence, Collection<MIRMappingRealization>> correspondence2MappingMap;
+
 	@SuppressWarnings("unchecked")
 	public MappedCorrespondenceInstance(CorrespondenceInstanceDecorator correspondenceInstance) {
-		// this seems to be the only way to provide the correct instance of the map class to the ADCID
-		super(correspondenceInstance, (Class<Map<SameTypeCorrespondence,Collection<MIRMappingRealization>>>) new HashMap<SameTypeCorrespondence,MIRMappingRealization>().getClass());
+		// this seems to be the only way to provide the correct instance of the
+		// map class to the ADCID
+		super(correspondenceInstance,
+				(Class<Map<SameTypeCorrespondence, Collection<MIRMappingRealization>>>) new HashMap<SameTypeCorrespondence, MIRMappingRealization>()
+						.getClass());
 		this.correspondence2MappingMap = new HashMap<SameTypeCorrespondence, Collection<MIRMappingRealization>>();
 	}
 
@@ -34,25 +39,27 @@ public class MappedCorrespondenceInstance extends AbstractDelegatingCorresponden
 	protected String getDecoratorFileExtPrefix() {
 		return MIRHelper.getCorrespondenceDecoratorFileExtPrefix();
 	}
-	
+
 	@Override
-	protected Map<SameTypeCorrespondence,Collection<MIRMappingRealization>> getDecoratorObject() {
+	protected Map<SameTypeCorrespondence, Collection<MIRMappingRealization>> getDecoratorObject() {
 		return this.correspondence2MappingMap;
 	}
 
 	@Override
-	protected void initializeFromDecoratorObject(Map<SameTypeCorrespondence,Collection<MIRMappingRealization>> object) {
+	protected void initializeFromDecoratorObject(
+			Map<SameTypeCorrespondence, Collection<MIRMappingRealization>> object) {
 		this.correspondence2MappingMap = object;
 	}
-	
+
 	@Override
 	protected void initializeWithoutDecoratorObject() {
 		// empty
 	}
 
 	/**
-	 * Register a mapping for a correspondence that can then be retrieved by calling
-	 * {@link #getMappingsForCorrespondence(Correspondence)}.
+	 * Register a mapping for a correspondence that can then be retrieved by
+	 * calling {@link #getMappingsForCorrespondence(Correspondence)}.
+	 * 
 	 * @param correspondence
 	 * @param mapping
 	 */
@@ -60,72 +67,87 @@ public class MappedCorrespondenceInstance extends AbstractDelegatingCorresponden
 		// FIXME MK (deco): store mapping realization automatically
 		if (!this.correspondence2MappingMap.containsKey(correspondence))
 			this.correspondence2MappingMap.put(correspondence, new HashSet<>());
-		
+
 		this.correspondence2MappingMap.get(correspondence).add(mapping);
 	}
-	
-	// TODO: clean up methods copied from edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMappedCorrespondenceInstance
+
+	// TODO: clean up methods copied from
+	// edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMappedCorrespondenceInstance
 	public TUID getCorrespondenceTarget(EObject eObject, Correspondence correspondence) {
 		SameTypeCorrespondence sameTypeCorrespondence = requireType(correspondence, SameTypeCorrespondence.class);
 		TUID tuid = calculateTUIDFromEObject(eObject);
-		
+
 		TUID elementATUID = sameTypeCorrespondence.getElementATUID();
 		TUID elementBTUID = sameTypeCorrespondence.getElementBTUID();
-		
+
 		// return the other side of the correspondence
-		if (tuid.equals(elementATUID)) { return elementBTUID; }
-		if (tuid.equals(elementBTUID)) { return elementATUID; }
-		
-		throw new IllegalArgumentException(eObject.toString() + " is not part of correspondence " + correspondence.toString());
+		if (tuid.equals(elementATUID)) {
+			return elementBTUID;
+		}
+		if (tuid.equals(elementBTUID)) {
+			return elementATUID;
+		}
+
+		throw new IllegalArgumentException(
+				eObject.toString() + " is not part of correspondence " + correspondence.toString());
 	}
-	
-	public SameTypeCorrespondence getMappedCorrespondence(EObject eObject,
-			MIRMappingRealization mapping) {
-		
+
+	public SameTypeCorrespondence getMappedCorrespondence(EObject eObject, MIRMappingRealization mapping) {
+
 		return filterType(getAllCorrespondences(eObject), SameTypeCorrespondence.class)
-				.filter(it -> getMappingsForCorrespondence(it).contains(mapping))
-				.findFirst()
-				.orElse(null);
+				.filter(it -> getMappingsForCorrespondence(it).contains(mapping)).findFirst().orElse(null);
 	}
-	
+
 	/**
-	 * Returns the MIRMappingRealization that created a correspondence, or <code>null</code>,
-	 * if no mapping is coupled to the correspondence. To get all MIRMappingRealizations for an
-	 * EObject, first get all correspondences from the {@link CorrespondenceInstance},
-	 * then use this method.
+	 * Returns the MIRMappingRealization that created a correspondence, or
+	 * <code>null</code>, if no mapping is coupled to the correspondence. To get
+	 * all MIRMappingRealizations for an EObject, first get all correspondences
+	 * from the {@link CorrespondenceInstance}, then use this method.
 	 */
 	public Collection<MIRMappingRealization> getMappingsForCorrespondence(SameTypeCorrespondence correspondence) {
 		return correspondence2MappingMap.get(correspondence);
 	}
-	
+
+	/**
+	 * Returns all SameTypeCorrespondences that correspond to a mapping. 
+	 */
+	public Set<SameTypeCorrespondence> getCorrespondencesForMapping(MIRMappingRealization mapping) {
+		return correspondence2MappingMap.entrySet().stream().filter(it -> it.getValue().contains(mapping))
+				.map(it -> it.getKey()).collect(Collectors.toSet());
+	}
+
 	public void unregisterMappingForCorrespondence(MIRMappingRealization mapping,
 			SameTypeCorrespondence correspondence) {
 		if (correspondence2MappingMap.get(correspondence) != mapping) {
-			throw new IllegalArgumentException("Mapping " + mapping.getMappingID() + " is not registered for correspondence " + correspondence.toString());
+			throw new IllegalArgumentException("Mapping " + mapping.getMappingID()
+					+ " is not registered for correspondence " + correspondence.toString());
 		} else {
 			correspondence2MappingMap.remove(correspondence);
 		}
 	}
-	
+
 	/**
-	 * Checks if the given mapping maps <code>eObject</code> and returns the target.
-	 * @param eObject the {@link EObject} to check
+	 * Checks if the given mapping maps <code>eObject</code> and returns the
+	 * target.
+	 * 
+	 * @param eObject
+	 *            the {@link EObject} to check
 	 * @param correspondenceInstance
 	 * @param mapping
-	 * @return The target of the mapping if this mapping maps <code>eObject</code>,
-	 * 	<code>null</code> otherwise.
+	 * @return The target of the mapping if this mapping maps
+	 *         <code>eObject</code>, <code>null</code> otherwise.
 	 */
 	public EObject getMappingTarget(EObject eObject, MIRMappingRealization mapping) {
 		return filterType(correspondenceInstance.getAllCorrespondences(eObject), SameTypeCorrespondence.class)
-			.filter(it -> getMappingsForCorrespondence(it).contains(mapping))
-			.findFirst()
-			.map(it -> resolveEObjectFromTUID(getCorrespondenceTarget(eObject, it)))
-			.orElse(null);
+				.filter(it -> getMappingsForCorrespondence(it).contains(mapping)).findFirst()
+				.map(it -> resolveEObjectFromTUID(getCorrespondenceTarget(eObject, it))).orElse(null);
 	}
-	
+
 	/**
 	 * Checks if the given mapping maps <code>eObject</code>.
-	 * @param eObject the {@link EObject} to check
+	 * 
+	 * @param eObject
+	 *            the {@link EObject} to check
 	 * @param correspondenceInstance
 	 * @param mapping
 	 * @return <code>true</code> if this mapping maps <code>eObject</code>
