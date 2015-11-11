@@ -60,11 +60,6 @@ class MappingLanguageGenerator implements IGenerator {
 		private static val MAPPED_CORRESPONDENCE_PACKAGE = "wrappers"
 		private static val C2CTRANSFORMING_PACKAGE = "wrappers"
 		
-		private static val VURI_ONE_FIELD_NAME = "VURI_ONE"
-		private static val VURI_TWO_FIELD_NAME = "VURI_TWO"
-		private static val MM_ONE_FIELD_NAME = "MM_ONE"
-		private static val MM_TWO_FIELD_NAME = "MM_TWO"
-
 		new(MappingFile file, IFileSystemAccess fsa) {
 			this.file = file
 			this.fsa = PreProcessingFileSystemAccess.createJavaFormattingFSA(fsa)
