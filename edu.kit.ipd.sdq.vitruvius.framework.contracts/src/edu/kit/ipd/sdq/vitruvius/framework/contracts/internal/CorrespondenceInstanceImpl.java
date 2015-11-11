@@ -32,13 +32,11 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentRefer
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EFeatureCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.HalfEObjectCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.RecursiveHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple;
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
@@ -51,10 +49,6 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     private final Correspondences correspondences;
     protected final ClaimableMap<TUID, Set<Correspondence>> tuid2CorrespondencesMap;
     private ClaimableMap<FeatureInstance, Set<FeatureInstance>> featureInstance2CorrespondingFIMap;
-
-    // FIXME MAX use tuids2HalfEObjectCorrespondences
-    // one HalfEObjectCorrespondence can appear in several Correspondences
-    private RecursiveHashMap<EObject, HalfEObjectCorrespondence> tuids2HalfEObjectCorrespondences;
 
     private boolean changedAfterLastSave = false;
 
@@ -886,12 +880,6 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     }
 
     @Override
-    public HalfEObjectCorrespondence getOrCreateHalfEObjectCorrespondence(final List<EObject> eObjects) {
-        // FIXME MK Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public boolean hasCorrespondences(final List<EObject> eObject) {
         // FIXME MK Auto-generated method stub
         return false;
@@ -916,13 +904,13 @@ public class CorrespondenceInstanceImpl extends ModelInstance implements Corresp
     }
 
     @Override
-    public Set<HalfEObjectCorrespondence> claimCorrespondingEObjects(final List<EObject> eObject) {
+    public Set<List<EObject>> claimCorrespondingEObjects(final List<EObject> eObject) {
         // FIXME MK Auto-generated method stub
         return null;
     }
 
     @Override
-    public Set<HalfEObjectCorrespondence> getCorrespondingEObjects(final List<EObject> eObjects) {
+    public Set<List<EObject>> getCorrespondingEObjects(final List<EObject> eObjects) {
         // FIXME MK Auto-generated method stub
         return null;
     }

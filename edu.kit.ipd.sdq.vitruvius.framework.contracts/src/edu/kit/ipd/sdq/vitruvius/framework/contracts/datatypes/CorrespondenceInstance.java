@@ -11,7 +11,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentReferenceCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.HalfEObjectCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 
 /**
@@ -107,7 +106,7 @@ public interface CorrespondenceInstance {
 
     // FIXME MK will no longer be provided (use extension method claimNotEmpty)
     @Deprecated
-    public Set<HalfEObjectCorrespondence> claimCorrespondingEObjects(List<EObject> eObject);
+    public Set<List<EObject>> claimCorrespondingEObjects(List<EObject> eObject);
 
     /**
      * Returns all corresponding objects for the specified object and an empty set if the object has
@@ -122,7 +121,7 @@ public interface CorrespondenceInstance {
     @Deprecated
     public Set<EObject> getAllCorrespondingEObjects(EObject eObject);
 
-    public Set<HalfEObjectCorrespondence> getCorrespondingEObjects(List<EObject> eObjects);
+    public Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects);
 
     /**
      * Returns the corresponding object for the specified object if there is exactly one

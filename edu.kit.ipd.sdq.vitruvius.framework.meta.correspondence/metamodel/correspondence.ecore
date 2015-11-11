@@ -16,29 +16,23 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="dependedOnBy" ordered="false"
         upperBound="-1" eType="#//Correspondence" eOpposite="#//Correspondence/dependsOn"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="M2NCorrespondenceWASSameTypeCorrespondence"
-      abstract="true" eSuperTypes="#//Correspondence">
-    <eOperations name="getAHalfEObjectCorrespondence" eType="#//HalfEObjectCorrespondence"/>
-    <eOperations name="getBHalfEObjectCorrespondence" eType="#//HalfEObjectCorrespondence"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="aHalfCorrespondence" lowerBound="1"
-        eType="#//HalfTUIDCorrespondence" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="bHalfCorrespondence" lowerBound="1"
-        eType="#//HalfTUIDCorrespondence" containment="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="M2NCorrespondence" abstract="true" eSuperTypes="#//Correspondence">
+    <eOperations name="getAs" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eOperations name="getBs" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="aTUIDs" upperBound="-1"
+        eType="#//TUID"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bTUIDs" upperBound="-1"
+        eType="#//TUID"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="One2OneCorrespondenceWASEObjectCorrespondence"
-      eSuperTypes="#//Correspondence">
+  <eClassifiers xsi:type="ecore:EClass" name="One2OneCorrespondence" eSuperTypes="#//Correspondence">
     <eOperations name="getElementATUID" eType="#//TUID"/>
     <eOperations name="getElementBTUID" eType="#//TUID"/>
     <eOperations name="getA" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     <eOperations name="getB" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="HalfTUIDCorrespondence">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tuids" upperBound="-1"
-        eType="#//TUID"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="aTUID" eType="#//TUID"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bTUID" eType="#//TUID"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="Metamodel" instanceClassName="edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel"
       serializable="false"/>
   <eClassifiers xsi:type="ecore:EDataType" name="TUID" instanceClassName="edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="HalfEObjectCorrespondence" instanceClassName="edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.HalfEObjectCorrespondence"
-      serializable="false"/>
 </ecore:EPackage>

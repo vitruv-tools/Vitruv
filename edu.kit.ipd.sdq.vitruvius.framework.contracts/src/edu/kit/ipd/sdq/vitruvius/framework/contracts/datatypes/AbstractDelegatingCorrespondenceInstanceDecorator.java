@@ -13,15 +13,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentReferenceCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.HalfEObjectCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 
 // FIXME MK replace with xtend version with delegate annotations
 public abstract class AbstractDelegatingCorrespondenceInstanceDecorator<D> implements CorrespondenceInstanceDecorator {
-    @Override
-    public HalfEObjectCorrespondence getOrCreateHalfEObjectCorrespondence(final List<EObject> eObjects) {
-        return this.correspondenceInstance.getOrCreateHalfEObjectCorrespondence(eObjects);
-    }
 
     @Override
     public boolean hasCorrespondences(final List<EObject> eObject) {
@@ -44,12 +39,12 @@ public abstract class AbstractDelegatingCorrespondenceInstanceDecorator<D> imple
     }
 
     @Override
-    public Set<HalfEObjectCorrespondence> claimCorrespondingEObjects(final List<EObject> eObject) {
+    public Set<List<EObject>> claimCorrespondingEObjects(final List<EObject> eObject) {
         return this.correspondenceInstance.claimCorrespondingEObjects(eObject);
     }
 
     @Override
-    public Set<HalfEObjectCorrespondence> getCorrespondingEObjects(final List<EObject> eObjects) {
+    public Set<List<EObject>> getCorrespondingEObjects(final List<EObject> eObjects) {
         return this.correspondenceInstance.getCorrespondingEObjects(eObjects);
     }
 
