@@ -13,27 +13,55 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//MIR/featureMappings"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//MIR/predicates"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//MIR/configuration"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//MIR/packages"/>
     </genClasses>
-    <genClasses ecoreClass="MIRintermediate.ecore#//FeatureMapping">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//FeatureMapping/left"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//FeatureMapping/right"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//FeatureMapping/predicates"/>
+    <genClasses image="false" ecoreClass="MIRintermediate.ecore#//Mapping">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//Mapping/predicates"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//Mapping/postconditions"/>
+    </genClasses>
+    <genClasses ecoreClass="MIRintermediate.ecore#//ReferenceMapping">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//ReferenceMapping/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//ReferenceMapping/right"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//ReferenceMapping/classMapping"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//ReferenceMapping/parent"/>
     </genClasses>
     <genClasses ecoreClass="MIRintermediate.ecore#//ClassMapping">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//ClassMapping/left"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//ClassMapping/right"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//ClassMapping/predicates"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//ClassMapping/initializer"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//ClassMapping/featureMapping"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//ClassMapping/opposite"/>
     </genClasses>
-    <genClasses ecoreClass="MIRintermediate.ecore#//Predicate">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIRintermediate.ecore#//Predicate/checkStatement"/>
-    </genClasses>
-    <genClasses ecoreClass="MIRintermediate.ecore#//Initializer">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIRintermediate.ecore#//Initializer/callStatement"/>
+    <genClasses ecoreClass="MIRintermediate.ecore#//Predicate"/>
+    <genClasses ecoreClass="MIRintermediate.ecore#//WhenWhereJavaPredicate">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//WhenWhereJavaPredicate/assignmentExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//WhenWhereJavaPredicate/checkExpression"/>
     </genClasses>
     <genClasses ecoreClass="MIRintermediate.ecore#//Configuration">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIRintermediate.ecore#//Configuration/package"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIRintermediate.ecore#//Configuration/type"/>
+    </genClasses>
+    <genClasses ecoreClass="MIRintermediate.ecore#//NamedEReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//NamedEReference/eClass"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//NamedEReference/eReference"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="MIRintermediate.ecore#//PostCondition"/>
+    <genClasses ecoreClass="MIRintermediate.ecore#//WithBlockPostCondition">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//WithBlockPostCondition/assignmentExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="MIRintermediate.ecore#//NamedEClass"/>
+    <genClasses image="false" ecoreClass="MIRintermediate.ecore#//NamedTyped">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIRintermediate.ecore#//NamedTyped/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//NamedTyped/type"/>
+    </genClasses>
+    <genClasses ecoreClass="MIRintermediate.ecore#//StaticMethodCall">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIRintermediate.ecore#//StaticMethodCall/methodFQN"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIRintermediate.ecore#//StaticMethodCall/parameterNames"/>
+    </genClasses>
+    <genClasses ecoreClass="MIRintermediate.ecore#//WithAttributePostCondition">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//WithAttributePostCondition/left"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIRintermediate.ecore#//WithAttributePostCondition/right"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIRintermediate.ecore#//WithAttributePostCondition/leftVariableName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIRintermediate.ecore#//WithAttributePostCondition/rightVariableName"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
