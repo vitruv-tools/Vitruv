@@ -3,7 +3,6 @@
 package pcm_mockup.impl;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.InternalEObject;
@@ -22,7 +21,7 @@ import pcm_mockup.Pcm_mockupPackage;
  * </p>
  * <ul>
  *   <li>{@link pcm_mockup.impl.ComponentImpl#getName <em>Name</em>}</li>
- *   <li>{@link pcm_mockup.impl.ComponentImpl#getProvidedInterfaces <em>Provided Interfaces</em>}</li>
+ *   <li>{@link pcm_mockup.impl.ComponentImpl#getProvidedInterface <em>Provided Interface</em>}</li>
  *   <li>{@link pcm_mockup.impl.ComponentImpl#getRepositoryFactor <em>Repository Factor</em>}</li>
  * </ul>
  *
@@ -49,15 +48,14 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getProvidedInterfaces() <em>Provided Interfaces</em>}' containment reference.
+	 * The cached value of the '{@link #getProvidedInterface() <em>Provided Interface</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getProvidedInterfaces()
+	 * @see #getProvidedInterface()
 	 * @generated
 	 * @ordered
 	 */
-	protected Interface providedInterfaces;
-
+	protected Interface providedInterface;
 	/**
 	 * The default value of the '{@link #getRepositoryFactor() <em>Repository Factor</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -122,8 +120,16 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Interface getProvidedInterfaces() {
-		return providedInterfaces;
+	public Interface getProvidedInterface() {
+		if (providedInterface != null && providedInterface.eIsProxy()) {
+			InternalEObject oldProvidedInterface = (InternalEObject)providedInterface;
+			providedInterface = (Interface)eResolveProxy(oldProvidedInterface);
+			if (providedInterface != oldProvidedInterface) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACE, oldProvidedInterface, providedInterface));
+			}
+		}
+		return providedInterface;
 	}
 
 	/**
@@ -131,14 +137,8 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetProvidedInterfaces(Interface newProvidedInterfaces, NotificationChain msgs) {
-		Interface oldProvidedInterfaces = providedInterfaces;
-		providedInterfaces = newProvidedInterfaces;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES, oldProvidedInterfaces, newProvidedInterfaces);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
+	public Interface basicGetProvidedInterface() {
+		return providedInterface;
 	}
 
 	/**
@@ -146,18 +146,11 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setProvidedInterfaces(Interface newProvidedInterfaces) {
-		if (newProvidedInterfaces != providedInterfaces) {
-			NotificationChain msgs = null;
-			if (providedInterfaces != null)
-				msgs = ((InternalEObject)providedInterfaces).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES, null, msgs);
-			if (newProvidedInterfaces != null)
-				msgs = ((InternalEObject)newProvidedInterfaces).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES, null, msgs);
-			msgs = basicSetProvidedInterfaces(newProvidedInterfaces, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES, newProvidedInterfaces, newProvidedInterfaces));
+	public void setProvidedInterface(Interface newProvidedInterface) {
+		Interface oldProvidedInterface = providedInterface;
+		providedInterface = newProvidedInterface;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACE, oldProvidedInterface, providedInterface));
 	}
 
 	/**
@@ -187,26 +180,13 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES:
-				return basicSetProvidedInterfaces(null, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Pcm_mockupPackage.COMPONENT__NAME:
 				return getName();
-			case Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES:
-				return getProvidedInterfaces();
+			case Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACE:
+				if (resolve) return getProvidedInterface();
+				return basicGetProvidedInterface();
 			case Pcm_mockupPackage.COMPONENT__REPOSITORY_FACTOR:
 				return getRepositoryFactor();
 		}
@@ -224,8 +204,8 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 			case Pcm_mockupPackage.COMPONENT__NAME:
 				setName((String)newValue);
 				return;
-			case Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES:
-				setProvidedInterfaces((Interface)newValue);
+			case Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACE:
+				setProvidedInterface((Interface)newValue);
 				return;
 			case Pcm_mockupPackage.COMPONENT__REPOSITORY_FACTOR:
 				setRepositoryFactor((Integer)newValue);
@@ -245,8 +225,8 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 			case Pcm_mockupPackage.COMPONENT__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES:
-				setProvidedInterfaces((Interface)null);
+			case Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACE:
+				setProvidedInterface((Interface)null);
 				return;
 			case Pcm_mockupPackage.COMPONENT__REPOSITORY_FACTOR:
 				setRepositoryFactor(REPOSITORY_FACTOR_EDEFAULT);
@@ -265,8 +245,8 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 		switch (featureID) {
 			case Pcm_mockupPackage.COMPONENT__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACES:
-				return providedInterfaces != null;
+			case Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACE:
+				return providedInterface != null;
 			case Pcm_mockupPackage.COMPONENT__REPOSITORY_FACTOR:
 				return repositoryFactor != REPOSITORY_FACTOR_EDEFAULT;
 		}

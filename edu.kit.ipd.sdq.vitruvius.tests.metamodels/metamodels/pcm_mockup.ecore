@@ -14,8 +14,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Interface" eSuperTypes="#//Identified #//PNamedElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="Component" eSuperTypes="#//Identified #//PNamedElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="providedInterfaces" ordered="false"
-        eType="#//Interface" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="providedInterface" ordered="false"
+        eType="#//Interface"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="repositoryFactor" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>

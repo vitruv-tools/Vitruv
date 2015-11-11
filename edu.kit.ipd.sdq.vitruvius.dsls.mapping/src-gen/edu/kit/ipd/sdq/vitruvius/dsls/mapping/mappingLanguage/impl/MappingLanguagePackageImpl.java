@@ -21,6 +21,9 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguageFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NamedEClass;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathBase;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathTail;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Signature;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.SignatureConstraintBlock;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.VariableRef;
@@ -80,6 +83,13 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass requiredMappingEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass constraintBlockEClass = null;
 
   /**
@@ -116,6 +126,20 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    * @generated
    */
   private EClass contextVariableEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass requiredMappingPathBaseEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass requiredMappingPathTailEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -448,6 +472,36 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getRequiredMapping()
+  {
+    return requiredMappingEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getRequiredMapping_Mapping()
+  {
+    return (EReference)requiredMappingEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getRequiredMapping_Name()
+  {
+    return (EAttribute)requiredMappingEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getConstraintBlock()
   {
     return constraintBlockEClass;
@@ -538,9 +592,79 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getContextVariable_Target()
+  public EReference getContextVariable_RequiredMappingPath()
   {
     return (EReference)contextVariableEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getContextVariable_TargetClass()
+  {
+    return (EReference)contextVariableEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getRequiredMappingPathBase()
+  {
+    return requiredMappingPathBaseEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getRequiredMappingPathBase_RequiredMapping()
+  {
+    return (EReference)requiredMappingPathBaseEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getRequiredMappingPathBase_Tail()
+  {
+    return (EReference)requiredMappingPathBaseEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getRequiredMappingPathTail()
+  {
+    return requiredMappingPathTailEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getRequiredMappingPathTail_RequiredMapping()
+  {
+    return (EReference)requiredMappingPathTailEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getRequiredMappingPathTail_Tail()
+  {
+    return (EReference)requiredMappingPathTailEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -788,6 +912,10 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     createEReference(namedEClassEClass, NAMED_ECLASS__TYPE);
     createEAttribute(namedEClassEClass, NAMED_ECLASS__NAME);
 
+    requiredMappingEClass = createEClass(REQUIRED_MAPPING);
+    createEReference(requiredMappingEClass, REQUIRED_MAPPING__MAPPING);
+    createEAttribute(requiredMappingEClass, REQUIRED_MAPPING__NAME);
+
     constraintBlockEClass = createEClass(CONSTRAINT_BLOCK);
     createEReference(constraintBlockEClass, CONSTRAINT_BLOCK__EXPRESSIONS);
 
@@ -802,7 +930,16 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     createEReference(featureOfContextVariableEClass, FEATURE_OF_CONTEXT_VARIABLE__FEATURE);
 
     contextVariableEClass = createEClass(CONTEXT_VARIABLE);
-    createEReference(contextVariableEClass, CONTEXT_VARIABLE__TARGET);
+    createEReference(contextVariableEClass, CONTEXT_VARIABLE__REQUIRED_MAPPING_PATH);
+    createEReference(contextVariableEClass, CONTEXT_VARIABLE__TARGET_CLASS);
+
+    requiredMappingPathBaseEClass = createEClass(REQUIRED_MAPPING_PATH_BASE);
+    createEReference(requiredMappingPathBaseEClass, REQUIRED_MAPPING_PATH_BASE__REQUIRED_MAPPING);
+    createEReference(requiredMappingPathBaseEClass, REQUIRED_MAPPING_PATH_BASE__TAIL);
+
+    requiredMappingPathTailEClass = createEClass(REQUIRED_MAPPING_PATH_TAIL);
+    createEReference(requiredMappingPathTailEClass, REQUIRED_MAPPING_PATH_TAIL__REQUIRED_MAPPING);
+    createEReference(requiredMappingPathTailEClass, REQUIRED_MAPPING_PATH_TAIL__TAIL);
 
     constraintLiteralEClass = createEClass(CONSTRAINT_LITERAL);
 
@@ -884,7 +1021,7 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
 
     initEClass(mappingEClass, Mapping.class, "Mapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getMapping_Name(), ecorePackage.getEString(), "name", null, 0, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMapping_Requires(), this.getMapping(), null, "requires", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMapping_Requires(), this.getRequiredMapping(), null, "requires", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMapping_Signature0(), this.getSignature(), null, "signature0", null, 0, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMapping_Constraints0(), this.getSignatureConstraintBlock(), null, "constraints0", null, 0, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMapping_Signature1(), this.getSignature(), null, "signature1", null, 0, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -898,6 +1035,10 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     initEClass(namedEClassEClass, NamedEClass.class, "NamedEClass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getNamedEClass_Type(), ecorePackage.getEClass(), null, "type", null, 0, 1, NamedEClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getNamedEClass_Name(), ecorePackage.getEString(), "name", null, 0, 1, NamedEClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(requiredMappingEClass, RequiredMapping.class, "RequiredMapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getRequiredMapping_Mapping(), this.getMapping(), null, "mapping", null, 0, 1, RequiredMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getRequiredMapping_Name(), ecorePackage.getEString(), "name", null, 0, 1, RequiredMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(constraintBlockEClass, ConstraintBlock.class, "ConstraintBlock", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getConstraintBlock_Expressions(), this.getConstraintExpression(), null, "expressions", null, 0, -1, ConstraintBlock.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -913,7 +1054,16 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     initEReference(getFeatureOfContextVariable_Feature(), ecorePackage.getEStructuralFeature(), null, "feature", null, 0, 1, FeatureOfContextVariable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(contextVariableEClass, ContextVariable.class, "ContextVariable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getContextVariable_Target(), this.getNamedEClass(), null, "target", null, 0, 1, ContextVariable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getContextVariable_RequiredMappingPath(), this.getRequiredMappingPathBase(), null, "requiredMappingPath", null, 0, 1, ContextVariable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getContextVariable_TargetClass(), this.getNamedEClass(), null, "targetClass", null, 0, 1, ContextVariable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(requiredMappingPathBaseEClass, RequiredMappingPathBase.class, "RequiredMappingPathBase", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getRequiredMappingPathBase_RequiredMapping(), this.getRequiredMapping(), null, "requiredMapping", null, 0, 1, RequiredMappingPathBase.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRequiredMappingPathBase_Tail(), this.getRequiredMappingPathTail(), null, "tail", null, 0, 1, RequiredMappingPathBase.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(requiredMappingPathTailEClass, RequiredMappingPathTail.class, "RequiredMappingPathTail", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getRequiredMappingPathTail_RequiredMapping(), this.getRequiredMapping(), null, "requiredMapping", null, 0, 1, RequiredMappingPathTail.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRequiredMappingPathTail_Tail(), this.getRequiredMappingPathTail(), null, "tail", null, 0, 1, RequiredMappingPathTail.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(constraintLiteralEClass, ConstraintLiteral.class, "ConstraintLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

@@ -5,6 +5,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.BodyConstraintBlock;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Signature;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.SignatureConstraintBlock;
 
@@ -22,7 +23,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
@@ -68,14 +68,14 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
   protected String name = NAME_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getRequires() <em>Requires</em>}' reference list.
+   * The cached value of the '{@link #getRequires() <em>Requires</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getRequires()
    * @generated
    * @ordered
    */
-  protected EList<Mapping> requires;
+  protected EList<RequiredMapping> requires;
 
   /**
    * The cached value of the '{@link #getSignature0() <em>Signature0</em>}' containment reference.
@@ -186,11 +186,11 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<Mapping> getRequires()
+  public EList<RequiredMapping> getRequires()
   {
     if (requires == null)
     {
-      requires = new EObjectResolvingEList<Mapping>(Mapping.class, this, MappingLanguagePackage.MAPPING__REQUIRES);
+      requires = new EObjectContainmentEList<RequiredMapping>(RequiredMapping.class, this, MappingLanguagePackage.MAPPING__REQUIRES);
     }
     return requires;
   }
@@ -459,6 +459,8 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
   {
     switch (featureID)
     {
+      case MappingLanguagePackage.MAPPING__REQUIRES:
+        return ((InternalEList<?>)getRequires()).basicRemove(otherEnd, msgs);
       case MappingLanguagePackage.MAPPING__SIGNATURE0:
         return basicSetSignature0(null, msgs);
       case MappingLanguagePackage.MAPPING__CONSTRAINTS0:
@@ -521,7 +523,7 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
         return;
       case MappingLanguagePackage.MAPPING__REQUIRES:
         getRequires().clear();
-        getRequires().addAll((Collection<? extends Mapping>)newValue);
+        getRequires().addAll((Collection<? extends RequiredMapping>)newValue);
         return;
       case MappingLanguagePackage.MAPPING__SIGNATURE0:
         setSignature0((Signature)newValue);

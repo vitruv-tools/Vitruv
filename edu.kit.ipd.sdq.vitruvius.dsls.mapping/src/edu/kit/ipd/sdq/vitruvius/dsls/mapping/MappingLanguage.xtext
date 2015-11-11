@@ -20,7 +20,7 @@ Mapping:
 	('mapping' name=ValidID ':')?
 	
 	('when' '('
-		requires+=[Mapping] (',' requires+=[Mapping])* 
+		requires+=RequiredMapping (',' requires+=RequiredMapping)* 
 	 ')')?
 	 
  	(
@@ -47,6 +47,10 @@ Signature:
 
 NamedEClass:
 	type=[ecore::EClass|QualifiedName] 'as' name=ValidID
+;
+
+RequiredMapping:
+	mapping=[Mapping] 'as' name=ValidID
 ;
 
 
@@ -89,12 +93,12 @@ VariableRef returns ConstraintExpression:
 
 InExpression returns ConstraintExpression:
 	{InExpression}
-	target=ContextVariable 'in' source=FeatureOfContextVariable
+	'in' '(' target=ContextVariable ',' source=FeatureOfContextVariable ')'
 ;
 
 EqualsLiteralExpression returns ConstraintExpression:
 	{EqualsLiteralExpression}
-	target=FeatureOfContextVariable '==' value=ConstraintLiteral
+	'equal' '(' target=FeatureOfContextVariable ',' value=ConstraintLiteral ')'
 ;
 
 AttributeEquivalenceExpression returns ConstraintExpression:
@@ -103,12 +107,22 @@ AttributeEquivalenceExpression returns ConstraintExpression:
 ;
 
 FeatureOfContextVariable:
-	context=ContextVariable '::' feature=[ecore::EStructuralFeature|ValidID]
+	context=ContextVariable ('.' feature=[ecore::EStructuralFeature|ValidID])
 ;
 
 ContextVariable:
-	target=[NamedEClass|QualifiedName]
+	(requiredMappingPath=RequiredMappingPathBase)? ('::' targetClass=[NamedEClass|ValidID])
 ;
+
+RequiredMappingPathBase:
+	(requiredMapping=[RequiredMapping|ValidID]) (tail=RequiredMappingPathTail)?
+;
+
+RequiredMappingPathTail:
+	('.' requiredMapping=[RequiredMapping|ValidID] (tail=RequiredMappingPathTail)?)
+;
+
+
 
 
 // LITERALS from Xbase.xtext

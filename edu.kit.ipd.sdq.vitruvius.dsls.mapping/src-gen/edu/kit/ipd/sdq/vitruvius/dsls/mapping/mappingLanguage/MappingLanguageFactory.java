@@ -68,6 +68,15 @@ public interface MappingLanguageFactory extends EFactory
   NamedEClass createNamedEClass();
 
   /**
+   * Returns a new object of class '<em>Required Mapping</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Required Mapping</em>'.
+   * @generated
+   */
+  RequiredMapping createRequiredMapping();
+
+  /**
    * Returns a new object of class '<em>Constraint Block</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -120,6 +129,24 @@ public interface MappingLanguageFactory extends EFactory
    * @generated
    */
   ContextVariable createContextVariable();
+
+  /**
+   * Returns a new object of class '<em>Required Mapping Path Base</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Required Mapping Path Base</em>'.
+   * @generated
+   */
+  RequiredMappingPathBase createRequiredMappingPathBase();
+
+  /**
+   * Returns a new object of class '<em>Required Mapping Path Tail</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Required Mapping Path Tail</em>'.
+   * @generated
+   */
+  RequiredMappingPathTail createRequiredMappingPathTail();
 
   /**
    * Returns a new object of class '<em>Constraint Literal</em>'.

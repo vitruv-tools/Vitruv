@@ -140,7 +140,7 @@ class MappingLanguageGenerator implements IGenerator {
 			val className = mapping.getMappingClassName
 			val fqn = WRAPPER_PACKAGE + "." + className
 			
-			val requires = mapping.requires.map[new Pair(mappedCorrespondenceName, name.toFirstUpper)]
+			val requires = mapping.requires.map[new Pair(it.mapping.mappedCorrespondenceName, name.toFirstUpper)]
 			val mcn = mapping.mappedCorrespondenceName
 			 
 			fsa.generateJavaFile(fqn, [ extension ih |
@@ -197,9 +197,6 @@ class MappingLanguageGenerator implements IGenerator {
 		}
 	
 		private def generateWrapperClass(Mapping parent, Import imp) {
-			val otherImport = imports.filter[it != imp].claimExactlyOne
-			val otherWrapperClass = getWrapperName(parent, otherImport)
-			
 			val signature = parent.signatures.claimExactlyOneInPackage(imp.package)
 			val className = getWrapperName(parent, imp)
 			val fqn = WRAPPER_PACKAGE + "." + className
@@ -220,37 +217,13 @@ class MappingLanguageGenerator implements IGenerator {
 						
 						«FOR namedEClass : signature.elements»
 							public «typeRef(namedEClass.type)» get«namedEClass.name.toFirstUpper»() {
-								/* return get(«namedEClass.name.toUpperCase»_INDEX); */
-								return null;
+								return «typeRef(JavaHelper)».requireType(elements.get(«namedEClass.name.toUpperCase»_INDEX), «typeRef(namedEClass.type)».class);
 							}
 						«ENDFOR»
 						
-						private «typeRef(List)»<«typeRef(EObject)»> elements;
+						private final «typeRef(List)»<«typeRef(EObject)»> elements;
 						
 						public «typeRef(List)»<«typeRef(EObject)»> getElements() { return this.elements; }
-						
-						/*public «parent.mappedCorrespondenceName» getMappedCorrespondence() {
-							return «parent.mappedCorrespondenceName».claimOneFor«imp.name.toFirstUpper»(this);
-						}
-						
-						public «parent.mappedCorrespondenceName» claimMappedCorrespondence() {
-							return «typeRef(Objects)».requireNonNull(getMappedCorrespondence());
-						}
-						
-						// move to API ?
-						public «otherWrapperClass» getCorresponding() {
-							return getMappedCorrespondence().get«otherImport.name.toFirstUpper»();
-						}
-						
-						// move to API ?
-						public «otherWrapperClass» claimCorresponding() {
-							return claimMappedCorrespondence().get«otherImport.name.toFirstUpper»();
-						}
-						
-						// move to API
-						public boolean isMapped() {
-							return (getMappedCorrespondence() != null);
-						}*/
 						
 						public static class Builder {
 							«FOR namedEClass : signature.elements»
@@ -298,7 +271,7 @@ class MappingLanguageGenerator implements IGenerator {
 			val fqn = MAPPED_CORRESPONDENCE_PACKAGE + "." + className
 			
 			val requires = mapping.requires
-					.map[req | new Pair(req.mappedCorrespondenceName, req.name)]
+					.map[req | new Pair(req.mapping.mappedCorrespondenceName, req.name)]
 					
 			val packages = imports.map[name.toFirstUpper]
 			
@@ -419,12 +392,6 @@ class MappingLanguageGenerator implements IGenerator {
 								«(requires.map[second] + indices.map[if (it == el) ('''new_«wrapperFields.get(it)»''') else ('''get«packages.get(it)»()''')]).join (", ")»
 							));
 						}
-						
-						private void destroy«packages.get(el)»() {
-							for («typeRef(EObject)» eObject : get«packages.get(el)»().getElements()) {
-								«typeRef(EcoreUtil)».remove(eObject);
-							}
-						}
 						«ENDFOR»
 						
 						«FOR el : pairs»
@@ -434,7 +401,7 @@ class MappingLanguageGenerator implements IGenerator {
 								throw new «typeRef(IllegalStateException)»("Cannot unset «packages.get(el.first)» in state " + state.toString());
 								
 							Helper.removeCorrespondence(correspondence);
-							destroy«packages.get(el.first)»();
+							«typeRef(MIRMappingHelper)».removeAll(get«packages.get(el.first)»().getElements());
 							this.correspondence = null;
 							this.«wrapperFields.get(el.first)» = null;
 							this.state = State.«stateNames.get(el.second)»;
@@ -629,7 +596,7 @@ class MappingLanguageGenerator implements IGenerator {
 							}
 							
 							public static void removeCorrespondence(SameTypeCorrespondence correspondence) {
-								EcoreUtil.remove(correspondence); // ???
+								«typeRef(EcoreUtil)».remove(correspondence); // ???
 							}
 							
 						}

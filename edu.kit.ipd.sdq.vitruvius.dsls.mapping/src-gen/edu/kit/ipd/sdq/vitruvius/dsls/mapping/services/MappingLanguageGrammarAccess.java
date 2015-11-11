@@ -105,13 +105,11 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cWhenKeyword_0_2_0 = (Keyword)cGroup_0_2.eContents().get(0);
 		private final Keyword cLeftParenthesisKeyword_0_2_1 = (Keyword)cGroup_0_2.eContents().get(1);
 		private final Assignment cRequiresAssignment_0_2_2 = (Assignment)cGroup_0_2.eContents().get(2);
-		private final CrossReference cRequiresMappingCrossReference_0_2_2_0 = (CrossReference)cRequiresAssignment_0_2_2.eContents().get(0);
-		private final RuleCall cRequiresMappingIDTerminalRuleCall_0_2_2_0_1 = (RuleCall)cRequiresMappingCrossReference_0_2_2_0.eContents().get(1);
+		private final RuleCall cRequiresRequiredMappingParserRuleCall_0_2_2_0 = (RuleCall)cRequiresAssignment_0_2_2.eContents().get(0);
 		private final Group cGroup_0_2_3 = (Group)cGroup_0_2.eContents().get(3);
 		private final Keyword cCommaKeyword_0_2_3_0 = (Keyword)cGroup_0_2_3.eContents().get(0);
 		private final Assignment cRequiresAssignment_0_2_3_1 = (Assignment)cGroup_0_2_3.eContents().get(1);
-		private final CrossReference cRequiresMappingCrossReference_0_2_3_1_0 = (CrossReference)cRequiresAssignment_0_2_3_1.eContents().get(0);
-		private final RuleCall cRequiresMappingIDTerminalRuleCall_0_2_3_1_0_1 = (RuleCall)cRequiresMappingCrossReference_0_2_3_1_0.eContents().get(1);
+		private final RuleCall cRequiresRequiredMappingParserRuleCall_0_2_3_1_0 = (RuleCall)cRequiresAssignment_0_2_3_1.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_0_2_4 = (Keyword)cGroup_0_2.eContents().get(4);
 		private final Group cGroup_0_3 = (Group)cGroup_0.eContents().get(3);
 		private final Group cGroup_0_3_0 = (Group)cGroup_0_3.eContents().get(0);
@@ -142,20 +140,20 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRightCurlyBracketKeyword_1_4 = (Keyword)cGroup_1.eContents().get(4);
 		
 		//Mapping:
-		//	{Mapping} ("mapping" name=ValidID ":")? ("when" "(" requires+=[Mapping] ("," requires+=[Mapping])* ")")? (("map"
-		//	signature0=Signature constraints0=SignatureConstraintBlock? "and" signature1=Signature
-		//	constraints1=SignatureConstraintBlock?) ("{" constraintsBody=BodyConstraintBlock? submappings+=Mapping* "}")?) |
-		//	"map" "{" constraintsBody=BodyConstraintBlock? submappings+=Mapping* "}";
+		//	{Mapping} ("mapping" name=ValidID ":")? ("when" "(" requires+=RequiredMapping ("," requires+=RequiredMapping)* ")")?
+		//	(("map" signature0=Signature constraints0=SignatureConstraintBlock? "and" signature1=Signature
+		//	constraints1=SignatureConstraintBlock?) ("{" constraintsBody=BodyConstraintBlock? submappings+=Mapping* "}")?) | "map"
+		//	"{" constraintsBody=BodyConstraintBlock? submappings+=Mapping* "}";
 		@Override public ParserRule getRule() { return rule; }
 
-		//{Mapping} ("mapping" name=ValidID ":")? ("when" "(" requires+=[Mapping] ("," requires+=[Mapping])* ")")? (("map"
-		//signature0=Signature constraints0=SignatureConstraintBlock? "and" signature1=Signature
+		//{Mapping} ("mapping" name=ValidID ":")? ("when" "(" requires+=RequiredMapping ("," requires+=RequiredMapping)* ")")?
+		//(("map" signature0=Signature constraints0=SignatureConstraintBlock? "and" signature1=Signature
 		//constraints1=SignatureConstraintBlock?) ("{" constraintsBody=BodyConstraintBlock? submappings+=Mapping* "}")?) | "map"
 		//"{" constraintsBody=BodyConstraintBlock? submappings+=Mapping* "}"
 		public Alternatives getAlternatives() { return cAlternatives; }
 
-		//{Mapping} ("mapping" name=ValidID ":")? ("when" "(" requires+=[Mapping] ("," requires+=[Mapping])* ")")? (("map"
-		//signature0=Signature constraints0=SignatureConstraintBlock? "and" signature1=Signature
+		//{Mapping} ("mapping" name=ValidID ":")? ("when" "(" requires+=RequiredMapping ("," requires+=RequiredMapping)* ")")?
+		//(("map" signature0=Signature constraints0=SignatureConstraintBlock? "and" signature1=Signature
 		//constraints1=SignatureConstraintBlock?) ("{" constraintsBody=BodyConstraintBlock? submappings+=Mapping* "}")?)
 		public Group getGroup_0() { return cGroup_0; }
 
@@ -177,7 +175,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//":"
 		public Keyword getColonKeyword_0_1_2() { return cColonKeyword_0_1_2; }
 
-		//("when" "(" requires+=[Mapping] ("," requires+=[Mapping])* ")")?
+		//("when" "(" requires+=RequiredMapping ("," requires+=RequiredMapping)* ")")?
 		public Group getGroup_0_2() { return cGroup_0_2; }
 
 		//"when"
@@ -186,29 +184,23 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//"("
 		public Keyword getLeftParenthesisKeyword_0_2_1() { return cLeftParenthesisKeyword_0_2_1; }
 
-		//requires+=[Mapping]
+		//requires+=RequiredMapping
 		public Assignment getRequiresAssignment_0_2_2() { return cRequiresAssignment_0_2_2; }
 
-		//[Mapping]
-		public CrossReference getRequiresMappingCrossReference_0_2_2_0() { return cRequiresMappingCrossReference_0_2_2_0; }
+		//RequiredMapping
+		public RuleCall getRequiresRequiredMappingParserRuleCall_0_2_2_0() { return cRequiresRequiredMappingParserRuleCall_0_2_2_0; }
 
-		//ID
-		public RuleCall getRequiresMappingIDTerminalRuleCall_0_2_2_0_1() { return cRequiresMappingIDTerminalRuleCall_0_2_2_0_1; }
-
-		//("," requires+=[Mapping])*
+		//("," requires+=RequiredMapping)*
 		public Group getGroup_0_2_3() { return cGroup_0_2_3; }
 
 		//","
 		public Keyword getCommaKeyword_0_2_3_0() { return cCommaKeyword_0_2_3_0; }
 
-		//requires+=[Mapping]
+		//requires+=RequiredMapping
 		public Assignment getRequiresAssignment_0_2_3_1() { return cRequiresAssignment_0_2_3_1; }
 
-		//[Mapping]
-		public CrossReference getRequiresMappingCrossReference_0_2_3_1_0() { return cRequiresMappingCrossReference_0_2_3_1_0; }
-
-		//ID
-		public RuleCall getRequiresMappingIDTerminalRuleCall_0_2_3_1_0_1() { return cRequiresMappingIDTerminalRuleCall_0_2_3_1_0_1; }
+		//RequiredMapping
+		public RuleCall getRequiresRequiredMappingParserRuleCall_0_2_3_1_0() { return cRequiresRequiredMappingParserRuleCall_0_2_3_1_0; }
 
 		//")"
 		public Keyword getRightParenthesisKeyword_0_2_4() { return cRightParenthesisKeyword_0_2_4; }
@@ -374,6 +366,42 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 
 		//QualifiedName
 		public RuleCall getTypeEClassQualifiedNameParserRuleCall_0_0_1() { return cTypeEClassQualifiedNameParserRuleCall_0_0_1; }
+
+		//"as"
+		public Keyword getAsKeyword_1() { return cAsKeyword_1; }
+
+		//name=ValidID
+		public Assignment getNameAssignment_2() { return cNameAssignment_2; }
+
+		//ValidID
+		public RuleCall getNameValidIDParserRuleCall_2_0() { return cNameValidIDParserRuleCall_2_0; }
+	}
+
+	public class RequiredMappingElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "RequiredMapping");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cMappingAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final CrossReference cMappingMappingCrossReference_0_0 = (CrossReference)cMappingAssignment_0.eContents().get(0);
+		private final RuleCall cMappingMappingIDTerminalRuleCall_0_0_1 = (RuleCall)cMappingMappingCrossReference_0_0.eContents().get(1);
+		private final Keyword cAsKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cNameValidIDParserRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
+		
+		//RequiredMapping:
+		//	mapping=[Mapping] "as" name=ValidID;
+		@Override public ParserRule getRule() { return rule; }
+
+		//mapping=[Mapping] "as" name=ValidID
+		public Group getGroup() { return cGroup; }
+
+		//mapping=[Mapping]
+		public Assignment getMappingAssignment_0() { return cMappingAssignment_0; }
+
+		//[Mapping]
+		public CrossReference getMappingMappingCrossReference_0_0() { return cMappingMappingCrossReference_0_0; }
+
+		//ID
+		public RuleCall getMappingMappingIDTerminalRuleCall_0_0_1() { return cMappingMappingIDTerminalRuleCall_0_0_1; }
 
 		//"as"
 		public Keyword getAsKeyword_1() { return cAsKeyword_1; }
@@ -557,72 +585,96 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "InExpression");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cInExpressionAction_0 = (Action)cGroup.eContents().get(0);
-		private final Assignment cTargetAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cTargetContextVariableParserRuleCall_1_0 = (RuleCall)cTargetAssignment_1.eContents().get(0);
-		private final Keyword cInKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cSourceAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cSourceFeatureOfContextVariableParserRuleCall_3_0 = (RuleCall)cSourceAssignment_3.eContents().get(0);
+		private final Keyword cInKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Keyword cLeftParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cTargetAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cTargetContextVariableParserRuleCall_3_0 = (RuleCall)cTargetAssignment_3.eContents().get(0);
+		private final Keyword cCommaKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Assignment cSourceAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cSourceFeatureOfContextVariableParserRuleCall_5_0 = (RuleCall)cSourceAssignment_5.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
 		//InExpression returns ConstraintExpression:
-		//	{InExpression} target=ContextVariable "in" source=FeatureOfContextVariable;
+		//	{InExpression} "in" "(" target=ContextVariable "," source=FeatureOfContextVariable ")";
 		@Override public ParserRule getRule() { return rule; }
 
-		//{InExpression} target=ContextVariable "in" source=FeatureOfContextVariable
+		//{InExpression} "in" "(" target=ContextVariable "," source=FeatureOfContextVariable ")"
 		public Group getGroup() { return cGroup; }
 
 		//{InExpression}
 		public Action getInExpressionAction_0() { return cInExpressionAction_0; }
 
+		//"in"
+		public Keyword getInKeyword_1() { return cInKeyword_1; }
+
+		//"("
+		public Keyword getLeftParenthesisKeyword_2() { return cLeftParenthesisKeyword_2; }
+
 		//target=ContextVariable
-		public Assignment getTargetAssignment_1() { return cTargetAssignment_1; }
+		public Assignment getTargetAssignment_3() { return cTargetAssignment_3; }
 
 		//ContextVariable
-		public RuleCall getTargetContextVariableParserRuleCall_1_0() { return cTargetContextVariableParserRuleCall_1_0; }
+		public RuleCall getTargetContextVariableParserRuleCall_3_0() { return cTargetContextVariableParserRuleCall_3_0; }
 
-		//"in"
-		public Keyword getInKeyword_2() { return cInKeyword_2; }
+		//","
+		public Keyword getCommaKeyword_4() { return cCommaKeyword_4; }
 
 		//source=FeatureOfContextVariable
-		public Assignment getSourceAssignment_3() { return cSourceAssignment_3; }
+		public Assignment getSourceAssignment_5() { return cSourceAssignment_5; }
 
 		//FeatureOfContextVariable
-		public RuleCall getSourceFeatureOfContextVariableParserRuleCall_3_0() { return cSourceFeatureOfContextVariableParserRuleCall_3_0; }
+		public RuleCall getSourceFeatureOfContextVariableParserRuleCall_5_0() { return cSourceFeatureOfContextVariableParserRuleCall_5_0; }
+
+		//")"
+		public Keyword getRightParenthesisKeyword_6() { return cRightParenthesisKeyword_6; }
 	}
 
 	public class EqualsLiteralExpressionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "EqualsLiteralExpression");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cEqualsLiteralExpressionAction_0 = (Action)cGroup.eContents().get(0);
-		private final Assignment cTargetAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cTargetFeatureOfContextVariableParserRuleCall_1_0 = (RuleCall)cTargetAssignment_1.eContents().get(0);
-		private final Keyword cEqualsSignEqualsSignKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cValueAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cValueConstraintLiteralParserRuleCall_3_0 = (RuleCall)cValueAssignment_3.eContents().get(0);
+		private final Keyword cEqualKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Keyword cLeftParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cTargetAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cTargetFeatureOfContextVariableParserRuleCall_3_0 = (RuleCall)cTargetAssignment_3.eContents().get(0);
+		private final Keyword cCommaKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Assignment cValueAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cValueConstraintLiteralParserRuleCall_5_0 = (RuleCall)cValueAssignment_5.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
 		//EqualsLiteralExpression returns ConstraintExpression:
-		//	{EqualsLiteralExpression} target=FeatureOfContextVariable "==" value=ConstraintLiteral;
+		//	{EqualsLiteralExpression} "equal" "(" target=FeatureOfContextVariable "," value=ConstraintLiteral ")";
 		@Override public ParserRule getRule() { return rule; }
 
-		//{EqualsLiteralExpression} target=FeatureOfContextVariable "==" value=ConstraintLiteral
+		//{EqualsLiteralExpression} "equal" "(" target=FeatureOfContextVariable "," value=ConstraintLiteral ")"
 		public Group getGroup() { return cGroup; }
 
 		//{EqualsLiteralExpression}
 		public Action getEqualsLiteralExpressionAction_0() { return cEqualsLiteralExpressionAction_0; }
 
+		//"equal"
+		public Keyword getEqualKeyword_1() { return cEqualKeyword_1; }
+
+		//"("
+		public Keyword getLeftParenthesisKeyword_2() { return cLeftParenthesisKeyword_2; }
+
 		//target=FeatureOfContextVariable
-		public Assignment getTargetAssignment_1() { return cTargetAssignment_1; }
+		public Assignment getTargetAssignment_3() { return cTargetAssignment_3; }
 
 		//FeatureOfContextVariable
-		public RuleCall getTargetFeatureOfContextVariableParserRuleCall_1_0() { return cTargetFeatureOfContextVariableParserRuleCall_1_0; }
+		public RuleCall getTargetFeatureOfContextVariableParserRuleCall_3_0() { return cTargetFeatureOfContextVariableParserRuleCall_3_0; }
 
-		//"=="
-		public Keyword getEqualsSignEqualsSignKeyword_2() { return cEqualsSignEqualsSignKeyword_2; }
+		//","
+		public Keyword getCommaKeyword_4() { return cCommaKeyword_4; }
 
 		//value=ConstraintLiteral
-		public Assignment getValueAssignment_3() { return cValueAssignment_3; }
+		public Assignment getValueAssignment_5() { return cValueAssignment_5; }
 
 		//ConstraintLiteral
-		public RuleCall getValueConstraintLiteralParserRuleCall_3_0() { return cValueConstraintLiteralParserRuleCall_3_0; }
+		public RuleCall getValueConstraintLiteralParserRuleCall_5_0() { return cValueConstraintLiteralParserRuleCall_5_0; }
+
+		//")"
+		public Keyword getRightParenthesisKeyword_6() { return cRightParenthesisKeyword_6; }
 	}
 
 	public class AttributeEquivalenceExpressionElements extends AbstractParserRuleElementFinder {
@@ -666,16 +718,17 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cContextAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final RuleCall cContextContextVariableParserRuleCall_0_0 = (RuleCall)cContextAssignment_0.eContents().get(0);
-		private final Keyword cColonColonKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Assignment cFeatureAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final CrossReference cFeatureEStructuralFeatureCrossReference_2_0 = (CrossReference)cFeatureAssignment_2.eContents().get(0);
-		private final RuleCall cFeatureEStructuralFeatureValidIDParserRuleCall_2_0_1 = (RuleCall)cFeatureEStructuralFeatureCrossReference_2_0.eContents().get(1);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Keyword cFullStopKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
+		private final Assignment cFeatureAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final CrossReference cFeatureEStructuralFeatureCrossReference_1_1_0 = (CrossReference)cFeatureAssignment_1_1.eContents().get(0);
+		private final RuleCall cFeatureEStructuralFeatureValidIDParserRuleCall_1_1_0_1 = (RuleCall)cFeatureEStructuralFeatureCrossReference_1_1_0.eContents().get(1);
 		
 		//FeatureOfContextVariable:
-		//	context=ContextVariable "::" feature=[ecore::EStructuralFeature|ValidID];
+		//	context=ContextVariable ("." feature=[ecore::EStructuralFeature|ValidID]);
 		@Override public ParserRule getRule() { return rule; }
 
-		//context=ContextVariable "::" feature=[ecore::EStructuralFeature|ValidID]
+		//context=ContextVariable ("." feature=[ecore::EStructuralFeature|ValidID])
 		public Group getGroup() { return cGroup; }
 
 		//context=ContextVariable
@@ -684,37 +737,128 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//ContextVariable
 		public RuleCall getContextContextVariableParserRuleCall_0_0() { return cContextContextVariableParserRuleCall_0_0; }
 
-		//"::"
-		public Keyword getColonColonKeyword_1() { return cColonColonKeyword_1; }
+		//"." feature=[ecore::EStructuralFeature|ValidID]
+		public Group getGroup_1() { return cGroup_1; }
+
+		//"."
+		public Keyword getFullStopKeyword_1_0() { return cFullStopKeyword_1_0; }
 
 		//feature=[ecore::EStructuralFeature|ValidID]
-		public Assignment getFeatureAssignment_2() { return cFeatureAssignment_2; }
+		public Assignment getFeatureAssignment_1_1() { return cFeatureAssignment_1_1; }
 
 		//[ecore::EStructuralFeature|ValidID]
-		public CrossReference getFeatureEStructuralFeatureCrossReference_2_0() { return cFeatureEStructuralFeatureCrossReference_2_0; }
+		public CrossReference getFeatureEStructuralFeatureCrossReference_1_1_0() { return cFeatureEStructuralFeatureCrossReference_1_1_0; }
 
 		//ValidID
-		public RuleCall getFeatureEStructuralFeatureValidIDParserRuleCall_2_0_1() { return cFeatureEStructuralFeatureValidIDParserRuleCall_2_0_1; }
+		public RuleCall getFeatureEStructuralFeatureValidIDParserRuleCall_1_1_0_1() { return cFeatureEStructuralFeatureValidIDParserRuleCall_1_1_0_1; }
 	}
 
 	public class ContextVariableElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "ContextVariable");
-		private final Assignment cTargetAssignment = (Assignment)rule.eContents().get(1);
-		private final CrossReference cTargetNamedEClassCrossReference_0 = (CrossReference)cTargetAssignment.eContents().get(0);
-		private final RuleCall cTargetNamedEClassQualifiedNameParserRuleCall_0_1 = (RuleCall)cTargetNamedEClassCrossReference_0.eContents().get(1);
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cRequiredMappingPathAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cRequiredMappingPathRequiredMappingPathBaseParserRuleCall_0_0 = (RuleCall)cRequiredMappingPathAssignment_0.eContents().get(0);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Keyword cColonColonKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
+		private final Assignment cTargetClassAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final CrossReference cTargetClassNamedEClassCrossReference_1_1_0 = (CrossReference)cTargetClassAssignment_1_1.eContents().get(0);
+		private final RuleCall cTargetClassNamedEClassValidIDParserRuleCall_1_1_0_1 = (RuleCall)cTargetClassNamedEClassCrossReference_1_1_0.eContents().get(1);
 		
 		//ContextVariable:
-		//	target=[NamedEClass|QualifiedName];
+		//	requiredMappingPath=RequiredMappingPathBase? ("::" targetClass=[NamedEClass|ValidID]);
 		@Override public ParserRule getRule() { return rule; }
 
-		//target=[NamedEClass|QualifiedName]
-		public Assignment getTargetAssignment() { return cTargetAssignment; }
+		//requiredMappingPath=RequiredMappingPathBase? ("::" targetClass=[NamedEClass|ValidID])
+		public Group getGroup() { return cGroup; }
 
-		//[NamedEClass|QualifiedName]
-		public CrossReference getTargetNamedEClassCrossReference_0() { return cTargetNamedEClassCrossReference_0; }
+		//requiredMappingPath=RequiredMappingPathBase?
+		public Assignment getRequiredMappingPathAssignment_0() { return cRequiredMappingPathAssignment_0; }
 
-		//QualifiedName
-		public RuleCall getTargetNamedEClassQualifiedNameParserRuleCall_0_1() { return cTargetNamedEClassQualifiedNameParserRuleCall_0_1; }
+		//RequiredMappingPathBase
+		public RuleCall getRequiredMappingPathRequiredMappingPathBaseParserRuleCall_0_0() { return cRequiredMappingPathRequiredMappingPathBaseParserRuleCall_0_0; }
+
+		//"::" targetClass=[NamedEClass|ValidID]
+		public Group getGroup_1() { return cGroup_1; }
+
+		//"::"
+		public Keyword getColonColonKeyword_1_0() { return cColonColonKeyword_1_0; }
+
+		//targetClass=[NamedEClass|ValidID]
+		public Assignment getTargetClassAssignment_1_1() { return cTargetClassAssignment_1_1; }
+
+		//[NamedEClass|ValidID]
+		public CrossReference getTargetClassNamedEClassCrossReference_1_1_0() { return cTargetClassNamedEClassCrossReference_1_1_0; }
+
+		//ValidID
+		public RuleCall getTargetClassNamedEClassValidIDParserRuleCall_1_1_0_1() { return cTargetClassNamedEClassValidIDParserRuleCall_1_1_0_1; }
+	}
+
+	public class RequiredMappingPathBaseElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "RequiredMappingPathBase");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cRequiredMappingAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final CrossReference cRequiredMappingRequiredMappingCrossReference_0_0 = (CrossReference)cRequiredMappingAssignment_0.eContents().get(0);
+		private final RuleCall cRequiredMappingRequiredMappingValidIDParserRuleCall_0_0_1 = (RuleCall)cRequiredMappingRequiredMappingCrossReference_0_0.eContents().get(1);
+		private final Assignment cTailAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cTailRequiredMappingPathTailParserRuleCall_1_0 = (RuleCall)cTailAssignment_1.eContents().get(0);
+		
+		//RequiredMappingPathBase:
+		//	requiredMapping=[RequiredMapping|ValidID] tail=RequiredMappingPathTail?;
+		@Override public ParserRule getRule() { return rule; }
+
+		//requiredMapping=[RequiredMapping|ValidID] tail=RequiredMappingPathTail?
+		public Group getGroup() { return cGroup; }
+
+		//requiredMapping=[RequiredMapping|ValidID]
+		public Assignment getRequiredMappingAssignment_0() { return cRequiredMappingAssignment_0; }
+
+		//[RequiredMapping|ValidID]
+		public CrossReference getRequiredMappingRequiredMappingCrossReference_0_0() { return cRequiredMappingRequiredMappingCrossReference_0_0; }
+
+		//ValidID
+		public RuleCall getRequiredMappingRequiredMappingValidIDParserRuleCall_0_0_1() { return cRequiredMappingRequiredMappingValidIDParserRuleCall_0_0_1; }
+
+		//tail=RequiredMappingPathTail?
+		public Assignment getTailAssignment_1() { return cTailAssignment_1; }
+
+		//RequiredMappingPathTail
+		public RuleCall getTailRequiredMappingPathTailParserRuleCall_1_0() { return cTailRequiredMappingPathTailParserRuleCall_1_0; }
+	}
+
+	public class RequiredMappingPathTailElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "RequiredMappingPathTail");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cFullStopKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cRequiredMappingAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final CrossReference cRequiredMappingRequiredMappingCrossReference_1_0 = (CrossReference)cRequiredMappingAssignment_1.eContents().get(0);
+		private final RuleCall cRequiredMappingRequiredMappingValidIDParserRuleCall_1_0_1 = (RuleCall)cRequiredMappingRequiredMappingCrossReference_1_0.eContents().get(1);
+		private final Assignment cTailAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cTailRequiredMappingPathTailParserRuleCall_2_0 = (RuleCall)cTailAssignment_2.eContents().get(0);
+		
+		//RequiredMappingPathTail:
+		//	"." requiredMapping=[RequiredMapping|ValidID] tail=RequiredMappingPathTail?;
+		@Override public ParserRule getRule() { return rule; }
+
+		//"." requiredMapping=[RequiredMapping|ValidID] tail=RequiredMappingPathTail?
+		public Group getGroup() { return cGroup; }
+
+		//"."
+		public Keyword getFullStopKeyword_0() { return cFullStopKeyword_0; }
+
+		//requiredMapping=[RequiredMapping|ValidID]
+		public Assignment getRequiredMappingAssignment_1() { return cRequiredMappingAssignment_1; }
+
+		//[RequiredMapping|ValidID]
+		public CrossReference getRequiredMappingRequiredMappingCrossReference_1_0() { return cRequiredMappingRequiredMappingCrossReference_1_0; }
+
+		//ValidID
+		public RuleCall getRequiredMappingRequiredMappingValidIDParserRuleCall_1_0_1() { return cRequiredMappingRequiredMappingValidIDParserRuleCall_1_0_1; }
+
+		//tail=RequiredMappingPathTail?
+		public Assignment getTailAssignment_2() { return cTailAssignment_2; }
+
+		//RequiredMappingPathTail
+		public RuleCall getTailRequiredMappingPathTailParserRuleCall_2_0() { return cTailRequiredMappingPathTailParserRuleCall_2_0; }
 	}
 
 	public class ConstraintLiteralElements extends AbstractParserRuleElementFinder {
@@ -852,6 +996,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	private final MappingElements pMapping;
 	private final SignatureElements pSignature;
 	private final NamedEClassElements pNamedEClass;
+	private final RequiredMappingElements pRequiredMapping;
 	private final ConstraintBlockElements pConstraintBlock;
 	private final ConstraintExpressionElements pConstraintExpression;
 	private final SignatureConstraintBlockElements pSignatureConstraintBlock;
@@ -864,6 +1009,8 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	private final AttributeEquivalenceExpressionElements pAttributeEquivalenceExpression;
 	private final FeatureOfContextVariableElements pFeatureOfContextVariable;
 	private final ContextVariableElements pContextVariable;
+	private final RequiredMappingPathBaseElements pRequiredMappingPathBase;
+	private final RequiredMappingPathTailElements pRequiredMappingPathTail;
 	private final ConstraintLiteralElements pConstraintLiteral;
 	private final ConstraintBooleanLiteralElements pConstraintBooleanLiteral;
 	private final ConstraintNullLiteralElements pConstraintNullLiteral;
@@ -884,6 +1031,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		this.pMapping = new MappingElements();
 		this.pSignature = new SignatureElements();
 		this.pNamedEClass = new NamedEClassElements();
+		this.pRequiredMapping = new RequiredMappingElements();
 		this.pConstraintBlock = new ConstraintBlockElements();
 		this.pConstraintExpression = new ConstraintExpressionElements();
 		this.pSignatureConstraintBlock = new SignatureConstraintBlockElements();
@@ -896,6 +1044,8 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		this.pAttributeEquivalenceExpression = new AttributeEquivalenceExpressionElements();
 		this.pFeatureOfContextVariable = new FeatureOfContextVariableElements();
 		this.pContextVariable = new ContextVariableElements();
+		this.pRequiredMappingPathBase = new RequiredMappingPathBaseElements();
+		this.pRequiredMappingPathTail = new RequiredMappingPathTailElements();
 		this.pConstraintLiteral = new ConstraintLiteralElements();
 		this.pConstraintBooleanLiteral = new ConstraintBooleanLiteralElements();
 		this.pConstraintNullLiteral = new ConstraintNullLiteralElements();
@@ -951,10 +1101,10 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Mapping:
-	//	{Mapping} ("mapping" name=ValidID ":")? ("when" "(" requires+=[Mapping] ("," requires+=[Mapping])* ")")? (("map"
-	//	signature0=Signature constraints0=SignatureConstraintBlock? "and" signature1=Signature
-	//	constraints1=SignatureConstraintBlock?) ("{" constraintsBody=BodyConstraintBlock? submappings+=Mapping* "}")?) |
-	//	"map" "{" constraintsBody=BodyConstraintBlock? submappings+=Mapping* "}";
+	//	{Mapping} ("mapping" name=ValidID ":")? ("when" "(" requires+=RequiredMapping ("," requires+=RequiredMapping)* ")")?
+	//	(("map" signature0=Signature constraints0=SignatureConstraintBlock? "and" signature1=Signature
+	//	constraints1=SignatureConstraintBlock?) ("{" constraintsBody=BodyConstraintBlock? submappings+=Mapping* "}")?) | "map"
+	//	"{" constraintsBody=BodyConstraintBlock? submappings+=Mapping* "}";
 	public MappingElements getMappingAccess() {
 		return pMapping;
 	}
@@ -981,6 +1131,16 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getNamedEClassRule() {
 		return getNamedEClassAccess().getRule();
+	}
+
+	//RequiredMapping:
+	//	mapping=[Mapping] "as" name=ValidID;
+	public RequiredMappingElements getRequiredMappingAccess() {
+		return pRequiredMapping;
+	}
+	
+	public ParserRule getRequiredMappingRule() {
+		return getRequiredMappingAccess().getRule();
 	}
 
 	//ConstraintBlock:
@@ -1054,7 +1214,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//InExpression returns ConstraintExpression:
-	//	{InExpression} target=ContextVariable "in" source=FeatureOfContextVariable;
+	//	{InExpression} "in" "(" target=ContextVariable "," source=FeatureOfContextVariable ")";
 	public InExpressionElements getInExpressionAccess() {
 		return pInExpression;
 	}
@@ -1064,7 +1224,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//EqualsLiteralExpression returns ConstraintExpression:
-	//	{EqualsLiteralExpression} target=FeatureOfContextVariable "==" value=ConstraintLiteral;
+	//	{EqualsLiteralExpression} "equal" "(" target=FeatureOfContextVariable "," value=ConstraintLiteral ")";
 	public EqualsLiteralExpressionElements getEqualsLiteralExpressionAccess() {
 		return pEqualsLiteralExpression;
 	}
@@ -1084,7 +1244,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//FeatureOfContextVariable:
-	//	context=ContextVariable "::" feature=[ecore::EStructuralFeature|ValidID];
+	//	context=ContextVariable ("." feature=[ecore::EStructuralFeature|ValidID]);
 	public FeatureOfContextVariableElements getFeatureOfContextVariableAccess() {
 		return pFeatureOfContextVariable;
 	}
@@ -1094,13 +1254,33 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//ContextVariable:
-	//	target=[NamedEClass|QualifiedName];
+	//	requiredMappingPath=RequiredMappingPathBase? ("::" targetClass=[NamedEClass|ValidID]);
 	public ContextVariableElements getContextVariableAccess() {
 		return pContextVariable;
 	}
 	
 	public ParserRule getContextVariableRule() {
 		return getContextVariableAccess().getRule();
+	}
+
+	//RequiredMappingPathBase:
+	//	requiredMapping=[RequiredMapping|ValidID] tail=RequiredMappingPathTail?;
+	public RequiredMappingPathBaseElements getRequiredMappingPathBaseAccess() {
+		return pRequiredMappingPathBase;
+	}
+	
+	public ParserRule getRequiredMappingPathBaseRule() {
+		return getRequiredMappingPathBaseAccess().getRule();
+	}
+
+	//RequiredMappingPathTail:
+	//	"." requiredMapping=[RequiredMapping|ValidID] tail=RequiredMappingPathTail?;
+	public RequiredMappingPathTailElements getRequiredMappingPathTailAccess() {
+		return pRequiredMappingPathTail;
+	}
+	
+	public ParserRule getRequiredMappingPathTailRule() {
+		return getRequiredMappingPathTailAccess().getRule();
 	}
 
 	//// LITERALS from Xbase.xtext
@@ -1399,8 +1579,8 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	//	feature=[types::JvmIdentifiableElement|FeatureCallID] OpSingleAssign) value=XAssignment | =>
 	//	({XMemberFeatureCall.memberCallTarget=current} ("." | nullSafe?="?." | explicitStatic?="::")) ("<"
 	//	typeArguments+=JvmArgumentTypeReference ("," typeArguments+=JvmArgumentTypeReference)* ">")?
-	//	feature=[types::JvmIdentifiableElement|IdOrSuper] (=> explicitOperationCall?="(" (memberCallArguments+=XShortClosure
-	//	| memberCallArguments+=XExpression ("," memberCallArguments+=XExpression)*)? ")")? memberCallArguments+=XClosure?)*;
+	//	feature=[types::JvmIdentifiableElement|IdOrSuper] (=> explicitOperationCall?="(" (memberCallArguments+=XShortClosure |
+	//	memberCallArguments+=XExpression ("," memberCallArguments+=XExpression)*)? ")")? memberCallArguments+=XClosure?)*;
 	public XbaseGrammarAccess.XMemberFeatureCallElements getXMemberFeatureCallAccess() {
 		return gaXbase.getXMemberFeatureCallAccess();
 	}
@@ -1515,8 +1695,8 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 
 	//XSwitchExpression returns XExpression:
 	//	{XSwitchExpression} "switch" (=> ("(" declaredParam=JvmFormalParameter ":") switch=XExpression ")" | =>
-	//	(declaredParam=JvmFormalParameter ":")? switch=XExpression) "{" cases+=XCasePart* ("default" ":"
-	//	default=XExpression)? "}";
+	//	(declaredParam=JvmFormalParameter ":")? switch=XExpression) "{" cases+=XCasePart* ("default" ":" default=XExpression)?
+	//	"}";
 	public XbaseGrammarAccess.XSwitchExpressionElements getXSwitchExpressionAccess() {
 		return gaXbase.getXSwitchExpressionAccess();
 	}
@@ -1798,8 +1978,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	/// **
 	// * Dummy rule, for "better" downwards compatibility, since GrammarAccess generates non-static inner classes, 
 	// * which makes downstream grammars break on classloading, when a rule is removed.
-	// * /
-	//StaticQualifier:
+	// * / StaticQualifier:
 	//	(ValidID "::")+;
 	public XbaseGrammarAccess.StaticQualifierElements getStaticQualifierAccess() {
 		return gaXbase.getStaticQualifierAccess();

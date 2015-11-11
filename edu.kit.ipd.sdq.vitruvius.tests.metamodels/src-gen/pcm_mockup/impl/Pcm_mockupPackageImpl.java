@@ -188,7 +188,7 @@ public class Pcm_mockupPackageImpl extends EPackageImpl implements Pcm_mockupPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getComponent_ProvidedInterfaces() {
+	public EReference getComponent_ProvidedInterface() {
 		return (EReference)componentEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -257,7 +257,7 @@ public class Pcm_mockupPackageImpl extends EPackageImpl implements Pcm_mockupPac
 		interfaceEClass = createEClass(INTERFACE);
 
 		componentEClass = createEClass(COMPONENT);
-		createEReference(componentEClass, COMPONENT__PROVIDED_INTERFACES);
+		createEReference(componentEClass, COMPONENT__PROVIDED_INTERFACE);
 		createEAttribute(componentEClass, COMPONENT__REPOSITORY_FACTOR);
 
 		pNamedElementEClass = createEClass(PNAMED_ELEMENT);
@@ -310,7 +310,7 @@ public class Pcm_mockupPackageImpl extends EPackageImpl implements Pcm_mockupPac
 		initEClass(interfaceEClass, Interface.class, "Interface", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(componentEClass, Component.class, "Component", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getComponent_ProvidedInterfaces(), this.getInterface(), null, "providedInterfaces", null, 0, 1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getComponent_ProvidedInterface(), this.getInterface(), null, "providedInterface", null, 0, 1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getComponent_RepositoryFactor(), ecorePackage.getEInt(), "repositoryFactor", null, 1, 1, Component.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(pNamedElementEClass, PNamedElement.class, "PNamedElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

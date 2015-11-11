@@ -20,6 +20,9 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NamedEClass;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathBase;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathTail;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Signature;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.SignatureConstraintBlock;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.VariableRef;
@@ -131,6 +134,15 @@ public class MappingLanguageSemanticSequencer extends XbaseSemanticSequencer {
 				return; 
 			case MappingLanguagePackage.NAMED_ECLASS:
 				sequence_NamedEClass(context, (NamedEClass) semanticObject); 
+				return; 
+			case MappingLanguagePackage.REQUIRED_MAPPING:
+				sequence_RequiredMapping(context, (RequiredMapping) semanticObject); 
+				return; 
+			case MappingLanguagePackage.REQUIRED_MAPPING_PATH_BASE:
+				sequence_RequiredMappingPathBase(context, (RequiredMappingPathBase) semanticObject); 
+				return; 
+			case MappingLanguagePackage.REQUIRED_MAPPING_PATH_TAIL:
+				sequence_RequiredMappingPathTail(context, (RequiredMappingPathTail) semanticObject); 
 				return; 
 			case MappingLanguagePackage.SIGNATURE:
 				sequence_Signature(context, (Signature) semanticObject); 
@@ -451,17 +463,10 @@ public class MappingLanguageSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     target=[NamedEClass|QualifiedName]
+	 *     (requiredMappingPath=RequiredMappingPathBase? targetClass=[NamedEClass|ValidID])
 	 */
 	protected void sequence_ContextVariable(EObject context, ContextVariable semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, MappingLanguagePackage.Literals.CONTEXT_VARIABLE__TARGET) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingLanguagePackage.Literals.CONTEXT_VARIABLE__TARGET));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getContextVariableAccess().getTargetNamedEClassQualifiedNameParserRuleCall_0_1(), semanticObject.getTarget());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -478,8 +483,8 @@ public class MappingLanguageSemanticSequencer extends XbaseSemanticSequencer {
 		}
 		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getEqualsLiteralExpressionAccess().getTargetFeatureOfContextVariableParserRuleCall_1_0(), semanticObject.getTarget());
-		feeder.accept(grammarAccess.getEqualsLiteralExpressionAccess().getValueConstraintLiteralParserRuleCall_3_0(), semanticObject.getValue());
+		feeder.accept(grammarAccess.getEqualsLiteralExpressionAccess().getTargetFeatureOfContextVariableParserRuleCall_3_0(), semanticObject.getTarget());
+		feeder.accept(grammarAccess.getEqualsLiteralExpressionAccess().getValueConstraintLiteralParserRuleCall_5_0(), semanticObject.getValue());
 		feeder.finish();
 	}
 	
@@ -498,7 +503,7 @@ public class MappingLanguageSemanticSequencer extends XbaseSemanticSequencer {
 		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
 		feeder.accept(grammarAccess.getFeatureOfContextVariableAccess().getContextContextVariableParserRuleCall_0_0(), semanticObject.getContext());
-		feeder.accept(grammarAccess.getFeatureOfContextVariableAccess().getFeatureEStructuralFeatureValidIDParserRuleCall_2_0_1(), semanticObject.getFeature());
+		feeder.accept(grammarAccess.getFeatureOfContextVariableAccess().getFeatureEStructuralFeatureValidIDParserRuleCall_1_1_0_1(), semanticObject.getFeature());
 		feeder.finish();
 	}
 	
@@ -525,8 +530,8 @@ public class MappingLanguageSemanticSequencer extends XbaseSemanticSequencer {
 		}
 		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getInExpressionAccess().getTargetContextVariableParserRuleCall_1_0(), semanticObject.getTarget());
-		feeder.accept(grammarAccess.getInExpressionAccess().getSourceFeatureOfContextVariableParserRuleCall_3_0(), semanticObject.getSource());
+		feeder.accept(grammarAccess.getInExpressionAccess().getTargetContextVariableParserRuleCall_3_0(), semanticObject.getTarget());
+		feeder.accept(grammarAccess.getInExpressionAccess().getSourceFeatureOfContextVariableParserRuleCall_5_0(), semanticObject.getSource());
 		feeder.finish();
 	}
 	
@@ -544,7 +549,7 @@ public class MappingLanguageSemanticSequencer extends XbaseSemanticSequencer {
 	 * Constraint:
 	 *     (
 	 *         name=ValidID? 
-	 *         (requires+=[Mapping|ID] requires+=[Mapping|ID]*)? 
+	 *         (requires+=RequiredMapping requires+=RequiredMapping*)? 
 	 *         signature0=Signature 
 	 *         constraints0=SignatureConstraintBlock? 
 	 *         signature1=Signature 
@@ -572,6 +577,43 @@ public class MappingLanguageSemanticSequencer extends XbaseSemanticSequencer {
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
 		feeder.accept(grammarAccess.getNamedEClassAccess().getTypeEClassQualifiedNameParserRuleCall_0_0_1(), semanticObject.getType());
 		feeder.accept(grammarAccess.getNamedEClassAccess().getNameValidIDParserRuleCall_2_0(), semanticObject.getName());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (requiredMapping=[RequiredMapping|ValidID] tail=RequiredMappingPathTail?)
+	 */
+	protected void sequence_RequiredMappingPathBase(EObject context, RequiredMappingPathBase semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (requiredMapping=[RequiredMapping|ValidID] tail=RequiredMappingPathTail?)
+	 */
+	protected void sequence_RequiredMappingPathTail(EObject context, RequiredMappingPathTail semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (mapping=[Mapping|ID] name=ValidID)
+	 */
+	protected void sequence_RequiredMapping(EObject context, RequiredMapping semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, MappingLanguagePackage.Literals.REQUIRED_MAPPING__MAPPING) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingLanguagePackage.Literals.REQUIRED_MAPPING__MAPPING));
+			if(transientValues.isValueTransient(semanticObject, MappingLanguagePackage.Literals.REQUIRED_MAPPING__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingLanguagePackage.Literals.REQUIRED_MAPPING__NAME));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getRequiredMappingAccess().getMappingMappingIDTerminalRuleCall_0_0_1(), semanticObject.getMapping());
+		feeder.accept(grammarAccess.getRequiredMappingAccess().getNameValidIDParserRuleCall_2_0(), semanticObject.getName());
 		feeder.finish();
 	}
 	

@@ -69,12 +69,15 @@ public class MappingLanguageFactoryImpl extends EFactoryImpl implements MappingL
       case MappingLanguagePackage.MAPPING: return createMapping();
       case MappingLanguagePackage.SIGNATURE: return createSignature();
       case MappingLanguagePackage.NAMED_ECLASS: return createNamedEClass();
+      case MappingLanguagePackage.REQUIRED_MAPPING: return createRequiredMapping();
       case MappingLanguagePackage.CONSTRAINT_BLOCK: return createConstraintBlock();
       case MappingLanguagePackage.CONSTRAINT_EXPRESSION: return createConstraintExpression();
       case MappingLanguagePackage.SIGNATURE_CONSTRAINT_BLOCK: return createSignatureConstraintBlock();
       case MappingLanguagePackage.BODY_CONSTRAINT_BLOCK: return createBodyConstraintBlock();
       case MappingLanguagePackage.FEATURE_OF_CONTEXT_VARIABLE: return createFeatureOfContextVariable();
       case MappingLanguagePackage.CONTEXT_VARIABLE: return createContextVariable();
+      case MappingLanguagePackage.REQUIRED_MAPPING_PATH_BASE: return createRequiredMappingPathBase();
+      case MappingLanguagePackage.REQUIRED_MAPPING_PATH_TAIL: return createRequiredMappingPathTail();
       case MappingLanguagePackage.CONSTRAINT_LITERAL: return createConstraintLiteral();
       case MappingLanguagePackage.VARIABLE_REF: return createVariableRef();
       case MappingLanguagePackage.IN_EXPRESSION: return createInExpression();
@@ -149,6 +152,17 @@ public class MappingLanguageFactoryImpl extends EFactoryImpl implements MappingL
    * <!-- end-user-doc -->
    * @generated
    */
+  public RequiredMapping createRequiredMapping()
+  {
+    RequiredMappingImpl requiredMapping = new RequiredMappingImpl();
+    return requiredMapping;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public ConstraintBlock createConstraintBlock()
   {
     ConstraintBlockImpl constraintBlock = new ConstraintBlockImpl();
@@ -208,6 +222,28 @@ public class MappingLanguageFactoryImpl extends EFactoryImpl implements MappingL
   {
     ContextVariableImpl contextVariable = new ContextVariableImpl();
     return contextVariable;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public RequiredMappingPathBase createRequiredMappingPathBase()
+  {
+    RequiredMappingPathBaseImpl requiredMappingPathBase = new RequiredMappingPathBaseImpl();
+    return requiredMappingPathBase;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public RequiredMappingPathTail createRequiredMappingPathTail()
+  {
+    RequiredMappingPathTailImpl requiredMappingPathTail = new RequiredMappingPathTailImpl();
+    return requiredMappingPathTail;
   }
 
   /**

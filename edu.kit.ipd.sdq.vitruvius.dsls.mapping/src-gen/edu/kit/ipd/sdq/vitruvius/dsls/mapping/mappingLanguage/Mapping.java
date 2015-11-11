@@ -58,20 +58,20 @@ public interface Mapping extends EObject
   void setName(String value);
 
   /**
-   * Returns the value of the '<em><b>Requires</b></em>' reference list.
-   * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping}.
+   * Returns the value of the '<em><b>Requires</b></em>' containment reference list.
+   * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Requires</em>' reference list isn't clear,
+   * If the meaning of the '<em>Requires</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Requires</em>' reference list.
+   * @return the value of the '<em>Requires</em>' containment reference list.
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage#getMapping_Requires()
-   * @model
+   * @model containment="true"
    * @generated
    */
-  EList<Mapping> getRequires();
+  EList<RequiredMapping> getRequires();
 
   /**
    * Returns the value of the '<em><b>Signature0</b></em>' containment reference.

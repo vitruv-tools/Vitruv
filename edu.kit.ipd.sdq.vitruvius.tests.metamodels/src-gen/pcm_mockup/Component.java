@@ -12,7 +12,7 @@ package pcm_mockup;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link pcm_mockup.Component#getProvidedInterfaces <em>Provided Interfaces</em>}</li>
+ *   <li>{@link pcm_mockup.Component#getProvidedInterface <em>Provided Interface</em>}</li>
  *   <li>{@link pcm_mockup.Component#getRepositoryFactor <em>Repository Factor</em>}</li>
  * </ul>
  *
@@ -23,30 +23,30 @@ package pcm_mockup;
 public interface Component extends Identified, PNamedElement {
 
 	/**
-	 * Returns the value of the '<em><b>Provided Interfaces</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Provided Interface</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Provided Interfaces</em>' reference isn't clear,
+	 * If the meaning of the '<em>Provided Interface</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Provided Interfaces</em>' containment reference.
-	 * @see #setProvidedInterfaces(Interface)
-	 * @see pcm_mockup.Pcm_mockupPackage#getComponent_ProvidedInterfaces()
-	 * @model containment="true" ordered="false"
+	 * @return the value of the '<em>Provided Interface</em>' reference.
+	 * @see #setProvidedInterface(Interface)
+	 * @see pcm_mockup.Pcm_mockupPackage#getComponent_ProvidedInterface()
+	 * @model ordered="false"
 	 * @generated
 	 */
-	Interface getProvidedInterfaces();
+	Interface getProvidedInterface();
 
 	/**
-	 * Sets the value of the '{@link pcm_mockup.Component#getProvidedInterfaces <em>Provided Interfaces</em>}' containment reference.
+	 * Sets the value of the '{@link pcm_mockup.Component#getProvidedInterface <em>Provided Interface</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Provided Interfaces</em>' containment reference.
-	 * @see #getProvidedInterfaces()
+	 * @param value the new value of the '<em>Provided Interface</em>' reference.
+	 * @see #getProvidedInterface()
 	 * @generated
 	 */
-	void setProvidedInterfaces(Interface value);
+	void setProvidedInterface(Interface value);
 
 	/**
 	 * Returns the value of the '<em><b>Repository Factor</b></em>' attribute.

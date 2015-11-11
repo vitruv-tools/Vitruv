@@ -5,8 +5,10 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ContextVariable;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NamedEClass;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathBase;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -22,7 +24,8 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.ContextVariableImpl#getTarget <em>Target</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.ContextVariableImpl#getRequiredMappingPath <em>Required Mapping Path</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.ContextVariableImpl#getTargetClass <em>Target Class</em>}</li>
  * </ul>
  *
  * @generated
@@ -30,14 +33,24 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 public class ContextVariableImpl extends MinimalEObjectImpl.Container implements ContextVariable
 {
   /**
-   * The cached value of the '{@link #getTarget() <em>Target</em>}' reference.
+   * The cached value of the '{@link #getRequiredMappingPath() <em>Required Mapping Path</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getTarget()
+   * @see #getRequiredMappingPath()
    * @generated
    * @ordered
    */
-  protected NamedEClass target;
+  protected RequiredMappingPathBase requiredMappingPath;
+
+  /**
+   * The cached value of the '{@link #getTargetClass() <em>Target Class</em>}' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getTargetClass()
+   * @generated
+   * @ordered
+   */
+  protected NamedEClass targetClass;
 
   /**
    * <!-- begin-user-doc -->
@@ -65,19 +78,67 @@ public class ContextVariableImpl extends MinimalEObjectImpl.Container implements
    * <!-- end-user-doc -->
    * @generated
    */
-  public NamedEClass getTarget()
+  public RequiredMappingPathBase getRequiredMappingPath()
   {
-    if (target != null && target.eIsProxy())
+    return requiredMappingPath;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetRequiredMappingPath(RequiredMappingPathBase newRequiredMappingPath, NotificationChain msgs)
+  {
+    RequiredMappingPathBase oldRequiredMappingPath = requiredMappingPath;
+    requiredMappingPath = newRequiredMappingPath;
+    if (eNotificationRequired())
     {
-      InternalEObject oldTarget = (InternalEObject)target;
-      target = (NamedEClass)eResolveProxy(oldTarget);
-      if (target != oldTarget)
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MappingLanguagePackage.CONTEXT_VARIABLE__REQUIRED_MAPPING_PATH, oldRequiredMappingPath, newRequiredMappingPath);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setRequiredMappingPath(RequiredMappingPathBase newRequiredMappingPath)
+  {
+    if (newRequiredMappingPath != requiredMappingPath)
+    {
+      NotificationChain msgs = null;
+      if (requiredMappingPath != null)
+        msgs = ((InternalEObject)requiredMappingPath).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MappingLanguagePackage.CONTEXT_VARIABLE__REQUIRED_MAPPING_PATH, null, msgs);
+      if (newRequiredMappingPath != null)
+        msgs = ((InternalEObject)newRequiredMappingPath).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MappingLanguagePackage.CONTEXT_VARIABLE__REQUIRED_MAPPING_PATH, null, msgs);
+      msgs = basicSetRequiredMappingPath(newRequiredMappingPath, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MappingLanguagePackage.CONTEXT_VARIABLE__REQUIRED_MAPPING_PATH, newRequiredMappingPath, newRequiredMappingPath));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NamedEClass getTargetClass()
+  {
+    if (targetClass != null && targetClass.eIsProxy())
+    {
+      InternalEObject oldTargetClass = (InternalEObject)targetClass;
+      targetClass = (NamedEClass)eResolveProxy(oldTargetClass);
+      if (targetClass != oldTargetClass)
       {
         if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MappingLanguagePackage.CONTEXT_VARIABLE__TARGET, oldTarget, target));
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MappingLanguagePackage.CONTEXT_VARIABLE__TARGET_CLASS, oldTargetClass, targetClass));
       }
     }
-    return target;
+    return targetClass;
   }
 
   /**
@@ -85,9 +146,9 @@ public class ContextVariableImpl extends MinimalEObjectImpl.Container implements
    * <!-- end-user-doc -->
    * @generated
    */
-  public NamedEClass basicGetTarget()
+  public NamedEClass basicGetTargetClass()
   {
-    return target;
+    return targetClass;
   }
 
   /**
@@ -95,12 +156,28 @@ public class ContextVariableImpl extends MinimalEObjectImpl.Container implements
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setTarget(NamedEClass newTarget)
+  public void setTargetClass(NamedEClass newTargetClass)
   {
-    NamedEClass oldTarget = target;
-    target = newTarget;
+    NamedEClass oldTargetClass = targetClass;
+    targetClass = newTargetClass;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MappingLanguagePackage.CONTEXT_VARIABLE__TARGET, oldTarget, target));
+      eNotify(new ENotificationImpl(this, Notification.SET, MappingLanguagePackage.CONTEXT_VARIABLE__TARGET_CLASS, oldTargetClass, targetClass));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case MappingLanguagePackage.CONTEXT_VARIABLE__REQUIRED_MAPPING_PATH:
+        return basicSetRequiredMappingPath(null, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
   }
 
   /**
@@ -113,9 +190,11 @@ public class ContextVariableImpl extends MinimalEObjectImpl.Container implements
   {
     switch (featureID)
     {
-      case MappingLanguagePackage.CONTEXT_VARIABLE__TARGET:
-        if (resolve) return getTarget();
-        return basicGetTarget();
+      case MappingLanguagePackage.CONTEXT_VARIABLE__REQUIRED_MAPPING_PATH:
+        return getRequiredMappingPath();
+      case MappingLanguagePackage.CONTEXT_VARIABLE__TARGET_CLASS:
+        if (resolve) return getTargetClass();
+        return basicGetTargetClass();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -130,8 +209,11 @@ public class ContextVariableImpl extends MinimalEObjectImpl.Container implements
   {
     switch (featureID)
     {
-      case MappingLanguagePackage.CONTEXT_VARIABLE__TARGET:
-        setTarget((NamedEClass)newValue);
+      case MappingLanguagePackage.CONTEXT_VARIABLE__REQUIRED_MAPPING_PATH:
+        setRequiredMappingPath((RequiredMappingPathBase)newValue);
+        return;
+      case MappingLanguagePackage.CONTEXT_VARIABLE__TARGET_CLASS:
+        setTargetClass((NamedEClass)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -147,8 +229,11 @@ public class ContextVariableImpl extends MinimalEObjectImpl.Container implements
   {
     switch (featureID)
     {
-      case MappingLanguagePackage.CONTEXT_VARIABLE__TARGET:
-        setTarget((NamedEClass)null);
+      case MappingLanguagePackage.CONTEXT_VARIABLE__REQUIRED_MAPPING_PATH:
+        setRequiredMappingPath((RequiredMappingPathBase)null);
+        return;
+      case MappingLanguagePackage.CONTEXT_VARIABLE__TARGET_CLASS:
+        setTargetClass((NamedEClass)null);
         return;
     }
     super.eUnset(featureID);
@@ -164,8 +249,10 @@ public class ContextVariableImpl extends MinimalEObjectImpl.Container implements
   {
     switch (featureID)
     {
-      case MappingLanguagePackage.CONTEXT_VARIABLE__TARGET:
-        return target != null;
+      case MappingLanguagePackage.CONTEXT_VARIABLE__REQUIRED_MAPPING_PATH:
+        return requiredMappingPath != null;
+      case MappingLanguagePackage.CONTEXT_VARIABLE__TARGET_CLASS:
+        return targetClass != null;
     }
     return super.eIsSet(featureID);
   }

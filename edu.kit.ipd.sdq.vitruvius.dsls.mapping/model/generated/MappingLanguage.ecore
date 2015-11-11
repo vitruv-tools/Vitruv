@@ -14,8 +14,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Mapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="requires" unique="false"
-        upperBound="-1" eType="#//Mapping"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="requires" upperBound="-1"
+        eType="#//RequiredMapping" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="signature0" eType="#//Signature"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="constraints0" eType="#//SignatureConstraintBlock"
@@ -37,6 +37,10 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RequiredMapping">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" eType="#//Mapping"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConstraintBlock">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expressions" upperBound="-1"
         eType="#//ConstraintExpression" containment="true"/>
@@ -50,7 +54,19 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ContextVariable">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//NamedEClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="requiredMappingPath" eType="#//RequiredMappingPathBase"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetClass" eType="#//NamedEClass"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RequiredMappingPathBase">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="requiredMapping" eType="#//RequiredMapping"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tail" eType="#//RequiredMappingPathTail"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RequiredMappingPathTail">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="requiredMapping" eType="#//RequiredMapping"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tail" eType="#//RequiredMappingPathTail"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConstraintLiteral"/>
   <eClassifiers xsi:type="ecore:EClass" name="VariableRef" eSuperTypes="#//ConstraintExpression">

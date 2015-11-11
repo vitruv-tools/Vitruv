@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
@@ -204,7 +205,7 @@ public final class JavaHelper {
 		int lastSeparatorPos = fqn.lastIndexOf(FQN_SEPARATOR);
 		return (lastSeparatorPos == -1);
 	}
-
+	
 	// iterate with index
 	public static <T> Iterable<Pair<Integer, T>> withIndex(final Iterable<T> iterable) {
 		return zip(createIntegerIterator(0), iterable);

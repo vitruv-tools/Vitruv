@@ -107,6 +107,13 @@ public class MappingLanguageSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case MappingLanguagePackage.REQUIRED_MAPPING:
+      {
+        RequiredMapping requiredMapping = (RequiredMapping)theEObject;
+        T result = caseRequiredMapping(requiredMapping);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case MappingLanguagePackage.CONSTRAINT_BLOCK:
       {
         ConstraintBlock constraintBlock = (ConstraintBlock)theEObject;
@@ -148,6 +155,20 @@ public class MappingLanguageSwitch<T> extends Switch<T>
       {
         ContextVariable contextVariable = (ContextVariable)theEObject;
         T result = caseContextVariable(contextVariable);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case MappingLanguagePackage.REQUIRED_MAPPING_PATH_BASE:
+      {
+        RequiredMappingPathBase requiredMappingPathBase = (RequiredMappingPathBase)theEObject;
+        T result = caseRequiredMappingPathBase(requiredMappingPathBase);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case MappingLanguagePackage.REQUIRED_MAPPING_PATH_TAIL:
+      {
+        RequiredMappingPathTail requiredMappingPathTail = (RequiredMappingPathTail)theEObject;
+        T result = caseRequiredMappingPathTail(requiredMappingPathTail);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -307,6 +328,22 @@ public class MappingLanguageSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Required Mapping</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Required Mapping</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseRequiredMapping(RequiredMapping object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Constraint Block</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -398,6 +435,38 @@ public class MappingLanguageSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseContextVariable(ContextVariable object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Required Mapping Path Base</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Required Mapping Path Base</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseRequiredMappingPathBase(RequiredMappingPathBase object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Required Mapping Path Tail</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Required Mapping Path Tail</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseRequiredMappingPathTail(RequiredMappingPathTail object)
   {
     return null;
   }

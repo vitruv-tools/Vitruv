@@ -2,13 +2,13 @@
  */
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Import;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping;
 
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -16,29 +16,29 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Import</b></em>'.
+ * An implementation of the model object '<em><b>Required Mapping</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.ImportImpl#getPackage <em>Package</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.ImportImpl#getName <em>Name</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.RequiredMappingImpl#getMapping <em>Mapping</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.RequiredMappingImpl#getName <em>Name</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ImportImpl extends MinimalEObjectImpl.Container implements Import
+public class RequiredMappingImpl extends MinimalEObjectImpl.Container implements RequiredMapping
 {
   /**
-   * The cached value of the '{@link #getPackage() <em>Package</em>}' reference.
+   * The cached value of the '{@link #getMapping() <em>Mapping</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getPackage()
+   * @see #getMapping()
    * @generated
    * @ordered
    */
-  protected EPackage package_;
+  protected Mapping mapping;
 
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -65,7 +65,7 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import
    * <!-- end-user-doc -->
    * @generated
    */
-  protected ImportImpl()
+  protected RequiredMappingImpl()
   {
     super();
   }
@@ -78,7 +78,7 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import
   @Override
   protected EClass eStaticClass()
   {
-    return MappingLanguagePackage.Literals.IMPORT;
+    return MappingLanguagePackage.Literals.REQUIRED_MAPPING;
   }
 
   /**
@@ -86,19 +86,19 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import
    * <!-- end-user-doc -->
    * @generated
    */
-  public EPackage getPackage()
+  public Mapping getMapping()
   {
-    if (package_ != null && package_.eIsProxy())
+    if (mapping != null && mapping.eIsProxy())
     {
-      InternalEObject oldPackage = (InternalEObject)package_;
-      package_ = (EPackage)eResolveProxy(oldPackage);
-      if (package_ != oldPackage)
+      InternalEObject oldMapping = (InternalEObject)mapping;
+      mapping = (Mapping)eResolveProxy(oldMapping);
+      if (mapping != oldMapping)
       {
         if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MappingLanguagePackage.IMPORT__PACKAGE, oldPackage, package_));
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MappingLanguagePackage.REQUIRED_MAPPING__MAPPING, oldMapping, mapping));
       }
     }
-    return package_;
+    return mapping;
   }
 
   /**
@@ -106,9 +106,9 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import
    * <!-- end-user-doc -->
    * @generated
    */
-  public EPackage basicGetPackage()
+  public Mapping basicGetMapping()
   {
-    return package_;
+    return mapping;
   }
 
   /**
@@ -116,12 +116,12 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setPackage(EPackage newPackage)
+  public void setMapping(Mapping newMapping)
   {
-    EPackage oldPackage = package_;
-    package_ = newPackage;
+    Mapping oldMapping = mapping;
+    mapping = newMapping;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MappingLanguagePackage.IMPORT__PACKAGE, oldPackage, package_));
+      eNotify(new ENotificationImpl(this, Notification.SET, MappingLanguagePackage.REQUIRED_MAPPING__MAPPING, oldMapping, mapping));
   }
 
   /**
@@ -144,7 +144,7 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import
     String oldName = name;
     name = newName;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MappingLanguagePackage.IMPORT__NAME, oldName, name));
+      eNotify(new ENotificationImpl(this, Notification.SET, MappingLanguagePackage.REQUIRED_MAPPING__NAME, oldName, name));
   }
 
   /**
@@ -157,10 +157,10 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import
   {
     switch (featureID)
     {
-      case MappingLanguagePackage.IMPORT__PACKAGE:
-        if (resolve) return getPackage();
-        return basicGetPackage();
-      case MappingLanguagePackage.IMPORT__NAME:
+      case MappingLanguagePackage.REQUIRED_MAPPING__MAPPING:
+        if (resolve) return getMapping();
+        return basicGetMapping();
+      case MappingLanguagePackage.REQUIRED_MAPPING__NAME:
         return getName();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -176,10 +176,10 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import
   {
     switch (featureID)
     {
-      case MappingLanguagePackage.IMPORT__PACKAGE:
-        setPackage((EPackage)newValue);
+      case MappingLanguagePackage.REQUIRED_MAPPING__MAPPING:
+        setMapping((Mapping)newValue);
         return;
-      case MappingLanguagePackage.IMPORT__NAME:
+      case MappingLanguagePackage.REQUIRED_MAPPING__NAME:
         setName((String)newValue);
         return;
     }
@@ -196,10 +196,10 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import
   {
     switch (featureID)
     {
-      case MappingLanguagePackage.IMPORT__PACKAGE:
-        setPackage((EPackage)null);
+      case MappingLanguagePackage.REQUIRED_MAPPING__MAPPING:
+        setMapping((Mapping)null);
         return;
-      case MappingLanguagePackage.IMPORT__NAME:
+      case MappingLanguagePackage.REQUIRED_MAPPING__NAME:
         setName(NAME_EDEFAULT);
         return;
     }
@@ -216,9 +216,9 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import
   {
     switch (featureID)
     {
-      case MappingLanguagePackage.IMPORT__PACKAGE:
-        return package_ != null;
-      case MappingLanguagePackage.IMPORT__NAME:
+      case MappingLanguagePackage.REQUIRED_MAPPING__MAPPING:
+        return mapping != null;
+      case MappingLanguagePackage.REQUIRED_MAPPING__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
     }
     return super.eIsSet(featureID);
@@ -241,4 +241,4 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import
     return result.toString();
   }
 
-} //ImportImpl
+} //RequiredMappingImpl

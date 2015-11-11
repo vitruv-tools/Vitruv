@@ -150,7 +150,7 @@ public interface MappingLanguagePackage extends EPackage
   int MAPPING__NAME = 0;
 
   /**
-   * The feature id for the '<em><b>Requires</b></em>' reference list.
+   * The feature id for the '<em><b>Requires</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -287,6 +287,43 @@ public interface MappingLanguagePackage extends EPackage
   int NAMED_ECLASS_FEATURE_COUNT = 2;
 
   /**
+   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.RequiredMappingImpl <em>Required Mapping</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.RequiredMappingImpl
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getRequiredMapping()
+   * @generated
+   */
+  int REQUIRED_MAPPING = 5;
+
+  /**
+   * The feature id for the '<em><b>Mapping</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REQUIRED_MAPPING__MAPPING = 0;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REQUIRED_MAPPING__NAME = 1;
+
+  /**
+   * The number of structural features of the '<em>Required Mapping</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REQUIRED_MAPPING_FEATURE_COUNT = 2;
+
+  /**
    * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.ConstraintBlockImpl <em>Constraint Block</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -294,7 +331,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getConstraintBlock()
    * @generated
    */
-  int CONSTRAINT_BLOCK = 5;
+  int CONSTRAINT_BLOCK = 6;
 
   /**
    * The feature id for the '<em><b>Expressions</b></em>' containment reference list.
@@ -322,7 +359,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getConstraintExpression()
    * @generated
    */
-  int CONSTRAINT_EXPRESSION = 6;
+  int CONSTRAINT_EXPRESSION = 7;
 
   /**
    * The number of structural features of the '<em>Constraint Expression</em>' class.
@@ -341,7 +378,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getSignatureConstraintBlock()
    * @generated
    */
-  int SIGNATURE_CONSTRAINT_BLOCK = 7;
+  int SIGNATURE_CONSTRAINT_BLOCK = 8;
 
   /**
    * The feature id for the '<em><b>Expressions</b></em>' containment reference list.
@@ -369,7 +406,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getBodyConstraintBlock()
    * @generated
    */
-  int BODY_CONSTRAINT_BLOCK = 8;
+  int BODY_CONSTRAINT_BLOCK = 9;
 
   /**
    * The feature id for the '<em><b>Expressions</b></em>' containment reference list.
@@ -397,7 +434,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getFeatureOfContextVariable()
    * @generated
    */
-  int FEATURE_OF_CONTEXT_VARIABLE = 9;
+  int FEATURE_OF_CONTEXT_VARIABLE = 10;
 
   /**
    * The feature id for the '<em><b>Context</b></em>' containment reference.
@@ -434,16 +471,25 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getContextVariable()
    * @generated
    */
-  int CONTEXT_VARIABLE = 10;
+  int CONTEXT_VARIABLE = 11;
 
   /**
-   * The feature id for the '<em><b>Target</b></em>' reference.
+   * The feature id for the '<em><b>Required Mapping Path</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int CONTEXT_VARIABLE__TARGET = 0;
+  int CONTEXT_VARIABLE__REQUIRED_MAPPING_PATH = 0;
+
+  /**
+   * The feature id for the '<em><b>Target Class</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CONTEXT_VARIABLE__TARGET_CLASS = 1;
 
   /**
    * The number of structural features of the '<em>Context Variable</em>' class.
@@ -452,7 +498,81 @@ public interface MappingLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int CONTEXT_VARIABLE_FEATURE_COUNT = 1;
+  int CONTEXT_VARIABLE_FEATURE_COUNT = 2;
+
+  /**
+   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.RequiredMappingPathBaseImpl <em>Required Mapping Path Base</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.RequiredMappingPathBaseImpl
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getRequiredMappingPathBase()
+   * @generated
+   */
+  int REQUIRED_MAPPING_PATH_BASE = 12;
+
+  /**
+   * The feature id for the '<em><b>Required Mapping</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REQUIRED_MAPPING_PATH_BASE__REQUIRED_MAPPING = 0;
+
+  /**
+   * The feature id for the '<em><b>Tail</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REQUIRED_MAPPING_PATH_BASE__TAIL = 1;
+
+  /**
+   * The number of structural features of the '<em>Required Mapping Path Base</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REQUIRED_MAPPING_PATH_BASE_FEATURE_COUNT = 2;
+
+  /**
+   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.RequiredMappingPathTailImpl <em>Required Mapping Path Tail</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.RequiredMappingPathTailImpl
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getRequiredMappingPathTail()
+   * @generated
+   */
+  int REQUIRED_MAPPING_PATH_TAIL = 13;
+
+  /**
+   * The feature id for the '<em><b>Required Mapping</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REQUIRED_MAPPING_PATH_TAIL__REQUIRED_MAPPING = 0;
+
+  /**
+   * The feature id for the '<em><b>Tail</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REQUIRED_MAPPING_PATH_TAIL__TAIL = 1;
+
+  /**
+   * The number of structural features of the '<em>Required Mapping Path Tail</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REQUIRED_MAPPING_PATH_TAIL_FEATURE_COUNT = 2;
 
   /**
    * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.ConstraintLiteralImpl <em>Constraint Literal</em>}' class.
@@ -462,7 +582,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getConstraintLiteral()
    * @generated
    */
-  int CONSTRAINT_LITERAL = 11;
+  int CONSTRAINT_LITERAL = 14;
 
   /**
    * The number of structural features of the '<em>Constraint Literal</em>' class.
@@ -481,7 +601,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getVariableRef()
    * @generated
    */
-  int VARIABLE_REF = 12;
+  int VARIABLE_REF = 15;
 
   /**
    * The feature id for the '<em><b>Target</b></em>' containment reference.
@@ -509,7 +629,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getInExpression()
    * @generated
    */
-  int IN_EXPRESSION = 13;
+  int IN_EXPRESSION = 16;
 
   /**
    * The feature id for the '<em><b>Target</b></em>' containment reference.
@@ -546,7 +666,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getEqualsLiteralExpression()
    * @generated
    */
-  int EQUALS_LITERAL_EXPRESSION = 14;
+  int EQUALS_LITERAL_EXPRESSION = 17;
 
   /**
    * The feature id for the '<em><b>Target</b></em>' containment reference.
@@ -583,7 +703,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getAttributeEquivalenceExpression()
    * @generated
    */
-  int ATTRIBUTE_EQUIVALENCE_EXPRESSION = 15;
+  int ATTRIBUTE_EQUIVALENCE_EXPRESSION = 18;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -620,7 +740,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getConstraintBooleanLiteral()
    * @generated
    */
-  int CONSTRAINT_BOOLEAN_LITERAL = 16;
+  int CONSTRAINT_BOOLEAN_LITERAL = 19;
 
   /**
    * The feature id for the '<em><b>Is True</b></em>' attribute.
@@ -648,7 +768,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getConstraintNullLiteral()
    * @generated
    */
-  int CONSTRAINT_NULL_LITERAL = 17;
+  int CONSTRAINT_NULL_LITERAL = 20;
 
   /**
    * The number of structural features of the '<em>Constraint Null Literal</em>' class.
@@ -667,7 +787,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getConstraintNumberLiteral()
    * @generated
    */
-  int CONSTRAINT_NUMBER_LITERAL = 18;
+  int CONSTRAINT_NUMBER_LITERAL = 21;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -695,7 +815,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getConstraintStringLiteral()
    * @generated
    */
-  int CONSTRAINT_STRING_LITERAL = 19;
+  int CONSTRAINT_STRING_LITERAL = 22;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -802,10 +922,10 @@ public interface MappingLanguagePackage extends EPackage
   EAttribute getMapping_Name();
 
   /**
-   * Returns the meta object for the reference list '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getRequires <em>Requires</em>}'.
+   * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getRequires <em>Requires</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the reference list '<em>Requires</em>'.
+   * @return the meta object for the containment reference list '<em>Requires</em>'.
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getRequires()
    * @see #getMapping()
    * @generated
@@ -932,6 +1052,38 @@ public interface MappingLanguagePackage extends EPackage
   EAttribute getNamedEClass_Name();
 
   /**
+   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping <em>Required Mapping</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Required Mapping</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping
+   * @generated
+   */
+  EClass getRequiredMapping();
+
+  /**
+   * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping#getMapping <em>Mapping</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>Mapping</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping#getMapping()
+   * @see #getRequiredMapping()
+   * @generated
+   */
+  EReference getRequiredMapping_Mapping();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping#getName()
+   * @see #getRequiredMapping()
+   * @generated
+   */
+  EAttribute getRequiredMapping_Name();
+
+  /**
    * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintBlock <em>Constraint Block</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1025,15 +1177,90 @@ public interface MappingLanguagePackage extends EPackage
   EClass getContextVariable();
 
   /**
-   * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ContextVariable#getTarget <em>Target</em>}'.
+   * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ContextVariable#getRequiredMappingPath <em>Required Mapping Path</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the reference '<em>Target</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ContextVariable#getTarget()
+   * @return the meta object for the containment reference '<em>Required Mapping Path</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ContextVariable#getRequiredMappingPath()
    * @see #getContextVariable()
    * @generated
    */
-  EReference getContextVariable_Target();
+  EReference getContextVariable_RequiredMappingPath();
+
+  /**
+   * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ContextVariable#getTargetClass <em>Target Class</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>Target Class</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ContextVariable#getTargetClass()
+   * @see #getContextVariable()
+   * @generated
+   */
+  EReference getContextVariable_TargetClass();
+
+  /**
+   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathBase <em>Required Mapping Path Base</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Required Mapping Path Base</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathBase
+   * @generated
+   */
+  EClass getRequiredMappingPathBase();
+
+  /**
+   * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathBase#getRequiredMapping <em>Required Mapping</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>Required Mapping</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathBase#getRequiredMapping()
+   * @see #getRequiredMappingPathBase()
+   * @generated
+   */
+  EReference getRequiredMappingPathBase_RequiredMapping();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathBase#getTail <em>Tail</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Tail</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathBase#getTail()
+   * @see #getRequiredMappingPathBase()
+   * @generated
+   */
+  EReference getRequiredMappingPathBase_Tail();
+
+  /**
+   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathTail <em>Required Mapping Path Tail</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Required Mapping Path Tail</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathTail
+   * @generated
+   */
+  EClass getRequiredMappingPathTail();
+
+  /**
+   * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathTail#getRequiredMapping <em>Required Mapping</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>Required Mapping</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathTail#getRequiredMapping()
+   * @see #getRequiredMappingPathTail()
+   * @generated
+   */
+  EReference getRequiredMappingPathTail_RequiredMapping();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathTail#getTail <em>Tail</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Tail</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathTail#getTail()
+   * @see #getRequiredMappingPathTail()
+   * @generated
+   */
+  EReference getRequiredMappingPathTail_Tail();
 
   /**
    * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintLiteral <em>Constraint Literal</em>}'.
@@ -1329,7 +1556,7 @@ public interface MappingLanguagePackage extends EPackage
     EAttribute MAPPING__NAME = eINSTANCE.getMapping_Name();
 
     /**
-     * The meta object literal for the '<em><b>Requires</b></em>' reference list feature.
+     * The meta object literal for the '<em><b>Requires</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -1429,6 +1656,32 @@ public interface MappingLanguagePackage extends EPackage
     EAttribute NAMED_ECLASS__NAME = eINSTANCE.getNamedEClass_Name();
 
     /**
+     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.RequiredMappingImpl <em>Required Mapping</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.RequiredMappingImpl
+     * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getRequiredMapping()
+     * @generated
+     */
+    EClass REQUIRED_MAPPING = eINSTANCE.getRequiredMapping();
+
+    /**
+     * The meta object literal for the '<em><b>Mapping</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference REQUIRED_MAPPING__MAPPING = eINSTANCE.getRequiredMapping_Mapping();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute REQUIRED_MAPPING__NAME = eINSTANCE.getRequiredMapping_Name();
+
+    /**
      * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.ConstraintBlockImpl <em>Constraint Block</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1513,12 +1766,72 @@ public interface MappingLanguagePackage extends EPackage
     EClass CONTEXT_VARIABLE = eINSTANCE.getContextVariable();
 
     /**
-     * The meta object literal for the '<em><b>Target</b></em>' reference feature.
+     * The meta object literal for the '<em><b>Required Mapping Path</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference CONTEXT_VARIABLE__TARGET = eINSTANCE.getContextVariable_Target();
+    EReference CONTEXT_VARIABLE__REQUIRED_MAPPING_PATH = eINSTANCE.getContextVariable_RequiredMappingPath();
+
+    /**
+     * The meta object literal for the '<em><b>Target Class</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference CONTEXT_VARIABLE__TARGET_CLASS = eINSTANCE.getContextVariable_TargetClass();
+
+    /**
+     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.RequiredMappingPathBaseImpl <em>Required Mapping Path Base</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.RequiredMappingPathBaseImpl
+     * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getRequiredMappingPathBase()
+     * @generated
+     */
+    EClass REQUIRED_MAPPING_PATH_BASE = eINSTANCE.getRequiredMappingPathBase();
+
+    /**
+     * The meta object literal for the '<em><b>Required Mapping</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference REQUIRED_MAPPING_PATH_BASE__REQUIRED_MAPPING = eINSTANCE.getRequiredMappingPathBase_RequiredMapping();
+
+    /**
+     * The meta object literal for the '<em><b>Tail</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference REQUIRED_MAPPING_PATH_BASE__TAIL = eINSTANCE.getRequiredMappingPathBase_Tail();
+
+    /**
+     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.RequiredMappingPathTailImpl <em>Required Mapping Path Tail</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.RequiredMappingPathTailImpl
+     * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getRequiredMappingPathTail()
+     * @generated
+     */
+    EClass REQUIRED_MAPPING_PATH_TAIL = eINSTANCE.getRequiredMappingPathTail();
+
+    /**
+     * The meta object literal for the '<em><b>Required Mapping</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference REQUIRED_MAPPING_PATH_TAIL__REQUIRED_MAPPING = eINSTANCE.getRequiredMappingPathTail_RequiredMapping();
+
+    /**
+     * The meta object literal for the '<em><b>Tail</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference REQUIRED_MAPPING_PATH_TAIL__TAIL = eINSTANCE.getRequiredMappingPathTail_Tail();
 
     /**
      * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.ConstraintLiteralImpl <em>Constraint Literal</em>}' class.

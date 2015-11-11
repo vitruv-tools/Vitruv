@@ -232,13 +232,13 @@ public interface Pcm_mockupPackage extends EPackage {
 	int COMPONENT__NAME = IDENTIFIED_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Provided Interfaces</b></em>' containment reference.
+	 * The feature id for the '<em><b>Provided Interface</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPONENT__PROVIDED_INTERFACES = IDENTIFIED_FEATURE_COUNT + 1;
+	int COMPONENT__PROVIDED_INTERFACE = IDENTIFIED_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Repository Factor</b></em>' attribute.
@@ -380,15 +380,15 @@ public interface Pcm_mockupPackage extends EPackage {
 	EClass getComponent();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link pcm_mockup.Component#getProvidedInterfaces <em>Provided Interfaces</em>}'.
+	 * Returns the meta object for the reference '{@link pcm_mockup.Component#getProvidedInterface <em>Provided Interface</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Provided Interfaces</em>'.
-	 * @see pcm_mockup.Component#getProvidedInterfaces()
+	 * @return the meta object for the reference '<em>Provided Interface</em>'.
+	 * @see pcm_mockup.Component#getProvidedInterface()
 	 * @see #getComponent()
 	 * @generated
 	 */
-	EReference getComponent_ProvidedInterfaces();
+	EReference getComponent_ProvidedInterface();
 
 	/**
 	 * Returns the meta object for the attribute '{@link pcm_mockup.Component#getRepositoryFactor <em>Repository Factor</em>}'.
@@ -510,12 +510,12 @@ public interface Pcm_mockupPackage extends EPackage {
 		EClass COMPONENT = eINSTANCE.getComponent();
 
 		/**
-		 * The meta object literal for the '<em><b>Provided Interfaces</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Provided Interface</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference COMPONENT__PROVIDED_INTERFACES = eINSTANCE.getComponent_ProvidedInterfaces();
+		EReference COMPONENT__PROVIDED_INTERFACE = eINSTANCE.getComponent_ProvidedInterface();
 
 		/**
 		 * The meta object literal for the '<em><b>Repository Factor</b></em>' attribute feature.

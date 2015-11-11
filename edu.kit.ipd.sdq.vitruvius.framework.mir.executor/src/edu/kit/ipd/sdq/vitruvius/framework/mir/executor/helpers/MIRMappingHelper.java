@@ -101,4 +101,10 @@ public final class MIRMappingHelper {
 			}
 		}
 	}
+	
+	public static void removeAll(Collection<EObject> eObjects) {
+		for (EObject obj : eObjects) {
+			EcoreUtil.remove(obj);
+		}
+	}
 }

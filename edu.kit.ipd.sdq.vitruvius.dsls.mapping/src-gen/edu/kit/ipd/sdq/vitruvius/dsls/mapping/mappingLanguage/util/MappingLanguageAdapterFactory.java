@@ -100,6 +100,11 @@ public class MappingLanguageAdapterFactory extends AdapterFactoryImpl
         return createNamedEClassAdapter();
       }
       @Override
+      public Adapter caseRequiredMapping(RequiredMapping object)
+      {
+        return createRequiredMappingAdapter();
+      }
+      @Override
       public Adapter caseConstraintBlock(ConstraintBlock object)
       {
         return createConstraintBlockAdapter();
@@ -128,6 +133,16 @@ public class MappingLanguageAdapterFactory extends AdapterFactoryImpl
       public Adapter caseContextVariable(ContextVariable object)
       {
         return createContextVariableAdapter();
+      }
+      @Override
+      public Adapter caseRequiredMappingPathBase(RequiredMappingPathBase object)
+      {
+        return createRequiredMappingPathBaseAdapter();
+      }
+      @Override
+      public Adapter caseRequiredMappingPathTail(RequiredMappingPathTail object)
+      {
+        return createRequiredMappingPathTailAdapter();
       }
       @Override
       public Adapter caseConstraintLiteral(ConstraintLiteral object)
@@ -272,6 +287,21 @@ public class MappingLanguageAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping <em>Required Mapping</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping
+   * @generated
+   */
+  public Adapter createRequiredMappingAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintBlock <em>Constraint Block</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -357,6 +387,36 @@ public class MappingLanguageAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createContextVariableAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathBase <em>Required Mapping Path Base</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathBase
+   * @generated
+   */
+  public Adapter createRequiredMappingPathBaseAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathTail <em>Required Mapping Path Tail</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathTail
+   * @generated
+   */
+  public Adapter createRequiredMappingPathTailAdapter()
   {
     return null;
   }
