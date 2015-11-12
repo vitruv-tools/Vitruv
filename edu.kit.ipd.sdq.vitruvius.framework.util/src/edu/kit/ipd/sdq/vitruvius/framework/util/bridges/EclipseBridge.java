@@ -25,6 +25,7 @@ import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IContributor;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SafeRunner;
@@ -358,7 +359,7 @@ public final class EclipseBridge {
 	}
 
 	/**
-	 * Returns the name of a plugin that implements a specific
+	 * Returns the name of a {@link IContributor} that implements a specific
 	 * extension point that has a property with a defined value.
 	 * 
 	 * @author dwerle
@@ -368,10 +369,10 @@ public final class EclipseBridge {
 	 *            the property to test
 	 * @param testValue
 	 *            the value of the property
-	 * @return the name of the first plugin that provides the extension or
-	 *         <code>null</code>, if no such plugin was found.
+	 * @return the name of the first {@link IContributor} that provides the extension or
+	 *         <code>null</code>, if no such {@link IContributor} was found.
 	 */
-	public static String getNameOfPluginWithExtension(final String extensionPointID, final String testProperty,
+	public static String getNameOfContributorOfExtension(final String extensionPointID, final String testProperty,
 			final String testValue) {
 		IConfigurationElement[] config = Platform.getExtensionRegistry().getConfigurationElementsFor(extensionPointID);
 		for (IConfigurationElement extConfElem : config) {
