@@ -10,8 +10,8 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers
 import org.eclipse.emf.ecore.EClassifier
 
 class JavaGeneratorHelper {
-	public static def void generateJavaFile(IFileSystemAccess fsa, String fqn, Function<ImportHelper, CharSequence> generatorFunction) {
-		fsa.generateFile(fqn.classNameToJavaPath, JavaGeneratorHelper.generate(fqn.classNameToPackageName, generatorFunction))
+	public static def void generateJavaFile(IFileSystemAccess fsa, CharSequence fqn, Function<ImportHelper, CharSequence> generatorFunction) {
+		fsa.generateFile(fqn.toString.classNameToJavaPath, JavaGeneratorHelper.generate(fqn.toString.classNameToPackageName, generatorFunction))
 	}
 	
 	public static def CharSequence generate(String packageName,

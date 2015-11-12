@@ -538,7 +538,7 @@ public class MappingLanguageSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (imports+=Import* mappings+=Mapping*)
+	 *     (pluginName=QualifiedName imports+=Import* mappings+=Mapping*)
 	 */
 	protected void sequence_MappingFile(EObject context, MappingFile semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.mir.helpers
+package edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers
 
 import org.eclipse.xtext.generator.IFileSystemAccess
 

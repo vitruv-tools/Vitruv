@@ -12,6 +12,7 @@ import com.google.inject.Binder;
 import com.google.inject.name.Names;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.MappingLanguageGenerator;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.NoGenerator;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.linking.MappingLanguageLinkingService;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping.MappingLanguageGlobalScopeProvider;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping.MappingLanguageQualifiedNameConverter;
@@ -45,6 +46,10 @@ public class MappingLanguageRuntimeModule extends edu.kit.ipd.sdq.vitruvius.dsls
 	
 	@Override
 	public Class<? extends IGenerator> bindIGenerator() {
+		return NoGenerator.class;
+	}
+	
+	public Class<MappingLanguageGenerator> bindMappingLanguageGenerator() {
 		return MappingLanguageGenerator.class;
 	}
 }

@@ -67,13 +67,22 @@ public interface MappingLanguagePackage extends EPackage
   int MAPPING_FILE = 0;
 
   /**
+   * The feature id for the '<em><b>Plugin Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MAPPING_FILE__PLUGIN_NAME = 0;
+
+  /**
    * The feature id for the '<em><b>Imports</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MAPPING_FILE__IMPORTS = 0;
+  int MAPPING_FILE__IMPORTS = 1;
 
   /**
    * The feature id for the '<em><b>Mappings</b></em>' containment reference list.
@@ -82,7 +91,7 @@ public interface MappingLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int MAPPING_FILE__MAPPINGS = 1;
+  int MAPPING_FILE__MAPPINGS = 2;
 
   /**
    * The number of structural features of the '<em>Mapping File</em>' class.
@@ -91,7 +100,7 @@ public interface MappingLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int MAPPING_FILE_FEATURE_COUNT = 2;
+  int MAPPING_FILE_FEATURE_COUNT = 3;
 
   /**
    * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.ImportImpl <em>Import</em>}' class.
@@ -847,6 +856,17 @@ public interface MappingLanguagePackage extends EPackage
   EClass getMappingFile();
 
   /**
+   * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile#getPluginName <em>Plugin Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Plugin Name</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile#getPluginName()
+   * @see #getMappingFile()
+   * @generated
+   */
+  EAttribute getMappingFile_PluginName();
+
+  /**
    * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile#getImports <em>Imports</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1494,6 +1514,14 @@ public interface MappingLanguagePackage extends EPackage
      * @generated
      */
     EClass MAPPING_FILE = eINSTANCE.getMappingFile();
+
+    /**
+     * The meta object literal for the '<em><b>Plugin Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute MAPPING_FILE__PLUGIN_NAME = eINSTANCE.getMappingFile_PluginName();
 
     /**
      * The meta object literal for the '<em><b>Imports</b></em>' containment reference list feature.

@@ -295,8 +295,9 @@ public class MappingLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getXImportDeclarationAccess().getGroup(), "rule__XImportDeclaration__Group__0");
 					put(grammarAccess.getXImportDeclarationAccess().getGroup_1_0(), "rule__XImportDeclaration__Group_1_0__0");
 					put(grammarAccess.getQualifiedNameInStaticImportAccess().getGroup(), "rule__QualifiedNameInStaticImport__Group__0");
-					put(grammarAccess.getMappingFileAccess().getImportsAssignment_0(), "rule__MappingFile__ImportsAssignment_0");
-					put(grammarAccess.getMappingFileAccess().getMappingsAssignment_1(), "rule__MappingFile__MappingsAssignment_1");
+					put(grammarAccess.getMappingFileAccess().getPluginNameAssignment_1(), "rule__MappingFile__PluginNameAssignment_1");
+					put(grammarAccess.getMappingFileAccess().getImportsAssignment_2(), "rule__MappingFile__ImportsAssignment_2");
+					put(grammarAccess.getMappingFileAccess().getMappingsAssignment_3(), "rule__MappingFile__MappingsAssignment_3");
 					put(grammarAccess.getImportAccess().getPackageAssignment_1(), "rule__Import__PackageAssignment_1");
 					put(grammarAccess.getImportAccess().getNameAssignment_2_1(), "rule__Import__NameAssignment_2_1");
 					put(grammarAccess.getMappingAccess().getNameAssignment_0_1_1(), "rule__Mapping__NameAssignment_0_1_1");

@@ -60,6 +60,7 @@ import org.eclipse.emf.ecore.EAttribute
 import java.util.UUID
 import java.util.Random
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.WithAttributePostCondition
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingPluginProjectHelper
 
 /**
  * @author Dominik Werle
@@ -95,8 +96,8 @@ class MIRCodeGenerator implements IGenerator {
 		val fqn = il.configuration.package + "." + il.configuration.type
 		val projectName = MIRHelper.getProjectName(MIRHelper.getMIR(input));
 		
-		MIRPluginProjectCreator.createPluginXML(fsa, fqn);
-		MIRPluginProjectCreator.createManifest(fsa, projectName,
+		MappingPluginProjectHelper.createPluginXML(fsa, fqn);
+		MappingPluginProjectHelper.createManifest(fsa, projectName,
 			mirFile.bundles.map[bundleFQN],
 			#[il.configuration.package,
 			  il.configuration.package.mappingPackageName]

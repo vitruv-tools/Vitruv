@@ -77,19 +77,41 @@ ruleMappingFile returns [EObject current=null]
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
-((
+(	otherlv_0='generates' 
+    {
+    	newLeafNode(otherlv_0, grammarAccess.getMappingFileAccess().getGeneratesKeyword_0());
+    }
+(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getMappingFileAccess().getImportsImportParserRuleCall_0_0()); 
+	        newCompositeNode(grammarAccess.getMappingFileAccess().getPluginNameQualifiedNameParserRuleCall_1_0()); 
 	    }
-		lv_imports_0_0=ruleImport		{
+		lv_pluginName_1_0=ruleQualifiedName		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getMappingFileRule());
+	        }
+       		set(
+       			$current, 
+       			"pluginName",
+        		lv_pluginName_1_0, 
+        		"QualifiedName");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getMappingFileAccess().getImportsImportParserRuleCall_2_0()); 
+	    }
+		lv_imports_2_0=ruleImport		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getMappingFileRule());
 	        }
        		add(
        			$current, 
        			"imports",
-        		lv_imports_0_0, 
+        		lv_imports_2_0, 
         		"Import");
 	        afterParserOrEnumRuleCall();
 	    }
@@ -98,16 +120,16 @@ ruleMappingFile returns [EObject current=null]
 )*(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getMappingFileAccess().getMappingsMappingParserRuleCall_1_0()); 
+	        newCompositeNode(grammarAccess.getMappingFileAccess().getMappingsMappingParserRuleCall_3_0()); 
 	    }
-		lv_mappings_1_0=ruleMapping		{
+		lv_mappings_3_0=ruleMapping		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getMappingFileRule());
 	        }
        		add(
        			$current, 
        			"mappings",
-        		lv_mappings_1_0, 
+        		lv_mappings_3_0, 
         		"Mapping");
 	        afterParserOrEnumRuleCall();
 	    }

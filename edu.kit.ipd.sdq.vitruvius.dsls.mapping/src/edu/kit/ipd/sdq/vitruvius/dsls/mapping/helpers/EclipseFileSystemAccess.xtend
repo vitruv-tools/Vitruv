@@ -1,11 +1,11 @@
-package edu.kit.ipd.sdq.vitruvius.framework.mir.helpers
+package edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers
 
 import java.io.ByteArrayInputStream
 import java.nio.charset.StandardCharsets
-import org.eclipse.core.resources.IFolder
 import org.eclipse.emf.common.util.URI
 import org.eclipse.jdt.core.IJavaProject
 import org.eclipse.xtext.generator.IFileSystemAccess
+import org.eclipse.core.resources.IFolder
 
 class EclipseFileSystemAccess implements IFileSystemAccess {
 	private IJavaProject javaProject

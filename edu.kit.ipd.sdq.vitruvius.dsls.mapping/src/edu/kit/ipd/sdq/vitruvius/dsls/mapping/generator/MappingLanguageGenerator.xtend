@@ -1,7 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator
 
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.formatting.PreProcessingFileSystemAccess
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.EclipseProjectHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.ImportHelper
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingPluginProjectHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Import
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile
@@ -12,36 +14,53 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRMappingHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMappingChange2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.ArrayList
+import java.util.Collection
 import java.util.HashSet
 import java.util.List
 import java.util.Objects
+import java.util.Optional
 import java.util.Set
+import java.util.stream.Collectors
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtext.generator.IFileSystemAccess
-import org.eclipse.xtext.generator.IGenerator
 
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
-import java.util.stream.Collectors
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRMappingHelper
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper
-import java.util.Collection
-import java.util.Optional
-import org.eclipse.emf.ecore.EPackage
 
-class MappingLanguageGenerator implements IGenerator {
-	override doGenerate(Resource input, IFileSystemAccess fsa) {
+class MappingLanguageGenerator {
+	def doGenerate(Resource input) {
 		val mappingFile = input.contents.filter(MappingFile).claimExactlyOne;
-
-		(new StatefulMappingLanguageGenerator(mappingFile, fsa)).generate()
+		if (mappingFile.pluginName != null) {
+			val contributorNames = mappingFile.imports.map[
+				EclipseBridge.getNameOfContributorOfExtension(
+					"org.eclipse.emf.ecore.generated_package",
+					"uri", it.package.nsURI)].toSet
+			
+			val name = mappingFile.pluginName
+			val project = new EclipseProjectHelper(name)
+			project.reinitializeProject()
+			
+			val srcGenFSA = project.srcGenFSA
+			val rootFSA = project.rootFSA
+			
+			val generator = new StatefulMappingLanguageGenerator(mappingFile, srcGenFSA)
+			generator.generate
+			
+			MappingPluginProjectHelper.createPluginXML(rootFSA, generator.change2CommandTransformingFQN)
+			MappingPluginProjectHelper.createManifest(rootFSA, name, contributorNames, generator.getPkgNames)
+		}
 	}
 	
 	private static class StatefulMappingLanguageGenerator {
@@ -54,16 +73,22 @@ class MappingLanguageGenerator implements IGenerator {
 		private extension NameProvider nameProvider
 		
 		private extension ConstraintLanguageGenerator clg
-
-		private static val WRAPPER_PACKAGE = "wrappers"
-		private static val CANDIDATE_PACKAGE = "wrappers"
-		private static val MAPPED_CORRESPONDENCE_PACKAGE = "wrappers"
-		private static val C2CTRANSFORMING_PACKAGE = "wrappers"
 		
+		private final String pkgName;
+
 		new(MappingFile file, IFileSystemAccess fsa) {
 			this.file = file
+			this.pkgName = file.pluginName + ".generated"
 			this.fsa = PreProcessingFileSystemAccess.createJavaFormattingFSA(fsa)
-			this.nameProvider = new NameProvider()
+			this.nameProvider = new NameProvider(pkgName)
+		}
+		
+		public def getPkgNames() {
+			#[pkgName]
+		}
+		
+		public def getChange2CommandTransformingFQN() {
+			change2CommandTransformingClassName
 		}
 
 		public def generate() {
@@ -76,7 +101,7 @@ class MappingLanguageGenerator implements IGenerator {
 
 			this.imports = file.imports.claim[size == 2]
 			
-			this.emfGeneratorHelper = new EMFGeneratorHelper("constants.EMFWrapper")
+			this.emfGeneratorHelper = new EMFGeneratorHelper(constantsClassName)
 			this.clg = new ConstraintLanguageGenerator(emfGeneratorHelper)
 
 			for (mapping : mappings) {
@@ -89,8 +114,13 @@ class MappingLanguageGenerator implements IGenerator {
 		}
 
 		private static class NameProvider {
+			new(String pkgName) {
+				this.pkgName = pkgName
+			}
+			
 			private var anonMappingIndex = 0
-
+			private final String pkgName
+			
 			public def getMappingName(Mapping mapping) {
 				if ((mapping.name == null) || (mapping.name.empty)) {
 					mapping.name = mapping.nextAnonymousMappingName.toString
@@ -100,31 +130,35 @@ class MappingLanguageGenerator implements IGenerator {
 			}
 
 			public def nextAnonymousMappingName(Mapping mapping) {
-				'''Mapping«anonMappingIndex++»'''
+				'''Mapping«anonMappingIndex++»'''.toString
 			}
 
 			public def getMappedCorrespondenceName(Mapping mapping) {
-				'''«mapping.name»_MappedCorrespondence'''
+				'''«pkgName».«mapping.name»_MappedCorrespondence'''.toString
 			}
 			
 			public def getHelperClassName(Mapping mapping) {
-				'''«mapping.name»_Helper'''
+				'''«pkgName».«mapping.name»_Helper'''.toString
 			}
 
 			public def getWrapperName(Mapping mapping, Import imp) {
-				'''«mapping.mappingName»_Wrapper_«imp.name»'''
+				'''«pkgName».«mapping.mappingName»_Wrapper_«imp.name»'''.toString
 			}
 			
 			public def getCandidateClassName(Mapping mapping, Import imp) {
-				'''«mapping.mappingName»_Candidate_«imp.name»'''
+				'''«pkgName».«mapping.mappingName»_Candidate_«imp.name»'''.toString
 			}
 			
 			public def getChange2CommandTransformingClassName() {
-				'''MappingsChange2CommandTransforming'''
+				'''«pkgName».MappingsChange2CommandTransforming'''.toString
 			}
 			
 			public def getMappingClassName(Mapping mapping) {
-				'''«mapping.name»_Mapping'''
+				'''«pkgName».«mapping.name»_Mapping'''.toString
+			}
+			
+			public def getConstantsClassName() {
+				'''«pkgName».EMFWrapper'''.toString
 			}
 		}
 
@@ -137,8 +171,8 @@ class MappingLanguageGenerator implements IGenerator {
 		}
 	
 		private def generateMappingClass(Mapping mapping) {
-			val className = mapping.getMappingClassName
-			val fqn = WRAPPER_PACKAGE + "." + className
+			val fqn = mapping.getMappingClassName
+			val className = fqn.toSimpleName
 			
 			val requires = mapping.requires.map[new Pair(it.mapping.mappedCorrespondenceName, name.toFirstUpper)]
 			val mcn = mapping.mappedCorrespondenceName
@@ -148,7 +182,7 @@ class MappingLanguageGenerator implements IGenerator {
 				val flatElements = (mapping.signatures.map[it.elements].flatten).map[new Pair(it.type.instanceTypeName.typeRef, it.name)]
 				
 				'''
-					import «C2CTRANSFORMING_PACKAGE».«change2CommandTransformingClassName».MappingPackage;
+					import «change2CommandTransformingClassName».MappingPackage;
 
 					public class «className» implements «typeRef(MIRMappingRealization)» {
 						public final static «className» INSTANCE = new «className»();
@@ -198,8 +232,8 @@ class MappingLanguageGenerator implements IGenerator {
 	
 		private def generateWrapperClass(Mapping parent, Import imp) {
 			val signature = parent.signatures.claimExactlyOneInPackage(imp.package)
-			val className = getWrapperName(parent, imp)
-			val fqn = WRAPPER_PACKAGE + "." + className
+			val fqn = getWrapperName(parent, imp)
+			val className = fqn.toSimpleName 
 
 			fsa.generateJavaFile(fqn, [
 				var elementIndex = 0;
@@ -267,8 +301,8 @@ class MappingLanguageGenerator implements IGenerator {
 			val constraints = imports.map[mapping.constraintBlocks.filterWithPackage(it.package).claimOneOrNone]
 			val stateNames = imports.map[name.toUpperCase]
 			
-			val className = mapping.mappedCorrespondenceName
-			val fqn = MAPPED_CORRESPONDENCE_PACKAGE + "." + className
+			val fqn = mapping.mappedCorrespondenceName
+			val className = fqn.toSimpleName
 			
 			val requires = mapping.requires
 					.map[req | new Pair(req.mapping.mappedCorrespondenceName, req.name)]
@@ -692,8 +726,8 @@ class MappingLanguageGenerator implements IGenerator {
 		}
 		
 		def generateChange2CommandTransforming() {
-			val className = getChange2CommandTransformingClassName
-			val fqn = C2CTRANSFORMING_PACKAGE + "." + className
+			val fqn = getChange2CommandTransformingClassName
+			val className = fqn.toSimpleName
 			
 			val packages = imports.map[name.toFirstUpper]
 			

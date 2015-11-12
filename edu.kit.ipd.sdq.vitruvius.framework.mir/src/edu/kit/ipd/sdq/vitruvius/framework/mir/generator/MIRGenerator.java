@@ -13,9 +13,9 @@ import org.eclipse.core.resources.ResourcesPlugin;
 
 import com.google.inject.Inject;
 
-import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.EclipseProjectHelper;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.PreProcessingFileSystemAccess;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.EclipseProjectHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.MIRHelper;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.helpers.PreProcessingFileSystemAccess;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.inferrer.ClosureProvider;
 
 /**

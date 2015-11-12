@@ -22,29 +22,41 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	public class MappingFileElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "MappingFile");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Assignment cImportsAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final RuleCall cImportsImportParserRuleCall_0_0 = (RuleCall)cImportsAssignment_0.eContents().get(0);
-		private final Assignment cMappingsAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cMappingsMappingParserRuleCall_1_0 = (RuleCall)cMappingsAssignment_1.eContents().get(0);
+		private final Keyword cGeneratesKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cPluginNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cPluginNameQualifiedNameParserRuleCall_1_0 = (RuleCall)cPluginNameAssignment_1.eContents().get(0);
+		private final Assignment cImportsAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cImportsImportParserRuleCall_2_0 = (RuleCall)cImportsAssignment_2.eContents().get(0);
+		private final Assignment cMappingsAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cMappingsMappingParserRuleCall_3_0 = (RuleCall)cMappingsAssignment_3.eContents().get(0);
 		
 		//MappingFile:
-		//	imports+=Import* mappings+=Mapping*;
+		//	"generates" pluginName=QualifiedName imports+=Import* mappings+=Mapping*;
 		@Override public ParserRule getRule() { return rule; }
 
-		//imports+=Import* mappings+=Mapping*
+		//"generates" pluginName=QualifiedName imports+=Import* mappings+=Mapping*
 		public Group getGroup() { return cGroup; }
 
+		//"generates"
+		public Keyword getGeneratesKeyword_0() { return cGeneratesKeyword_0; }
+
+		//pluginName=QualifiedName
+		public Assignment getPluginNameAssignment_1() { return cPluginNameAssignment_1; }
+
+		//QualifiedName
+		public RuleCall getPluginNameQualifiedNameParserRuleCall_1_0() { return cPluginNameQualifiedNameParserRuleCall_1_0; }
+
 		//imports+=Import*
-		public Assignment getImportsAssignment_0() { return cImportsAssignment_0; }
+		public Assignment getImportsAssignment_2() { return cImportsAssignment_2; }
 
 		//Import
-		public RuleCall getImportsImportParserRuleCall_0_0() { return cImportsImportParserRuleCall_0_0; }
+		public RuleCall getImportsImportParserRuleCall_2_0() { return cImportsImportParserRuleCall_2_0; }
 
 		//mappings+=Mapping*
-		public Assignment getMappingsAssignment_1() { return cMappingsAssignment_1; }
+		public Assignment getMappingsAssignment_3() { return cMappingsAssignment_3; }
 
 		//Mapping
-		public RuleCall getMappingsMappingParserRuleCall_1_0() { return cMappingsMappingParserRuleCall_1_0; }
+		public RuleCall getMappingsMappingParserRuleCall_3_0() { return cMappingsMappingParserRuleCall_3_0; }
 	}
 
 	public class ImportElements extends AbstractParserRuleElementFinder {
@@ -1081,7 +1093,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 
 	
 	//MappingFile:
-	//	imports+=Import* mappings+=Mapping*;
+	//	"generates" pluginName=QualifiedName imports+=Import* mappings+=Mapping*;
 	public MappingFileElements getMappingFileAccess() {
 		return pMappingFile;
 	}

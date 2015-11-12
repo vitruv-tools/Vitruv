@@ -282,9 +282,19 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getMappingFile_PluginName()
+  {
+    return (EAttribute)mappingFileEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EReference getMappingFile_Imports()
   {
-    return (EReference)mappingFileEClass.getEStructuralFeatures().get(0);
+    return (EReference)mappingFileEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -294,7 +304,7 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    */
   public EReference getMappingFile_Mappings()
   {
-    return (EReference)mappingFileEClass.getEStructuralFeatures().get(1);
+    return (EReference)mappingFileEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -888,6 +898,7 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
 
     // Create classes and their features
     mappingFileEClass = createEClass(MAPPING_FILE);
+    createEAttribute(mappingFileEClass, MAPPING_FILE__PLUGIN_NAME);
     createEReference(mappingFileEClass, MAPPING_FILE__IMPORTS);
     createEReference(mappingFileEClass, MAPPING_FILE__MAPPINGS);
 
@@ -1012,6 +1023,7 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
 
     // Initialize classes and features; add operations and parameters
     initEClass(mappingFileEClass, MappingFile.class, "MappingFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getMappingFile_PluginName(), ecorePackage.getEString(), "pluginName", null, 0, 1, MappingFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMappingFile_Imports(), this.getImport(), null, "imports", null, 0, -1, MappingFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMappingFile_Mappings(), this.getMapping(), null, "mappings", null, 0, -1, MappingFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

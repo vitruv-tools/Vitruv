@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.mir.generator
+package edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers
 
 import org.eclipse.xtext.generator.IFileSystemAccess
 import java.util.Collection
@@ -10,7 +10,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTr
  * 
  * @author Dominik Werle
  */
-class MIRPluginProjectCreator{
+class MappingPluginProjectHelper {
 	private final static String[] requiredBundles = #[
 		"org.eclipse.emf.ecore",
 		"edu.kit.ipd.sdq.vitruvius.framework.util",

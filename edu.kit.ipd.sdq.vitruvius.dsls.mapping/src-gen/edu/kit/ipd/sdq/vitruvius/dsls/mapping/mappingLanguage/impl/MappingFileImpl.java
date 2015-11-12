@@ -9,6 +9,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePac
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
@@ -16,6 +17,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
@@ -29,6 +31,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingFileImpl#getPluginName <em>Plugin Name</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingFileImpl#getImports <em>Imports</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingFileImpl#getMappings <em>Mappings</em>}</li>
  * </ul>
@@ -37,6 +40,26 @@ import org.eclipse.emf.ecore.util.InternalEList;
  */
 public class MappingFileImpl extends MinimalEObjectImpl.Container implements MappingFile
 {
+  /**
+   * The default value of the '{@link #getPluginName() <em>Plugin Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getPluginName()
+   * @generated
+   * @ordered
+   */
+  protected static final String PLUGIN_NAME_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getPluginName() <em>Plugin Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getPluginName()
+   * @generated
+   * @ordered
+   */
+  protected String pluginName = PLUGIN_NAME_EDEFAULT;
+
   /**
    * The cached value of the '{@link #getImports() <em>Imports</em>}' containment reference list.
    * <!-- begin-user-doc -->
@@ -76,6 +99,29 @@ public class MappingFileImpl extends MinimalEObjectImpl.Container implements Map
   protected EClass eStaticClass()
   {
     return MappingLanguagePackage.Literals.MAPPING_FILE;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getPluginName()
+  {
+    return pluginName;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setPluginName(String newPluginName)
+  {
+    String oldPluginName = pluginName;
+    pluginName = newPluginName;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MappingLanguagePackage.MAPPING_FILE__PLUGIN_NAME, oldPluginName, pluginName));
   }
 
   /**
@@ -134,6 +180,8 @@ public class MappingFileImpl extends MinimalEObjectImpl.Container implements Map
   {
     switch (featureID)
     {
+      case MappingLanguagePackage.MAPPING_FILE__PLUGIN_NAME:
+        return getPluginName();
       case MappingLanguagePackage.MAPPING_FILE__IMPORTS:
         return getImports();
       case MappingLanguagePackage.MAPPING_FILE__MAPPINGS:
@@ -153,6 +201,9 @@ public class MappingFileImpl extends MinimalEObjectImpl.Container implements Map
   {
     switch (featureID)
     {
+      case MappingLanguagePackage.MAPPING_FILE__PLUGIN_NAME:
+        setPluginName((String)newValue);
+        return;
       case MappingLanguagePackage.MAPPING_FILE__IMPORTS:
         getImports().clear();
         getImports().addAll((Collection<? extends Import>)newValue);
@@ -175,6 +226,9 @@ public class MappingFileImpl extends MinimalEObjectImpl.Container implements Map
   {
     switch (featureID)
     {
+      case MappingLanguagePackage.MAPPING_FILE__PLUGIN_NAME:
+        setPluginName(PLUGIN_NAME_EDEFAULT);
+        return;
       case MappingLanguagePackage.MAPPING_FILE__IMPORTS:
         getImports().clear();
         return;
@@ -195,12 +249,31 @@ public class MappingFileImpl extends MinimalEObjectImpl.Container implements Map
   {
     switch (featureID)
     {
+      case MappingLanguagePackage.MAPPING_FILE__PLUGIN_NAME:
+        return PLUGIN_NAME_EDEFAULT == null ? pluginName != null : !PLUGIN_NAME_EDEFAULT.equals(pluginName);
       case MappingLanguagePackage.MAPPING_FILE__IMPORTS:
         return imports != null && !imports.isEmpty();
       case MappingLanguagePackage.MAPPING_FILE__MAPPINGS:
         return mappings != null && !mappings.isEmpty();
     }
     return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (pluginName: ");
+    result.append(pluginName);
+    result.append(')');
+    return result.toString();
   }
 
 } //MappingFileImpl
