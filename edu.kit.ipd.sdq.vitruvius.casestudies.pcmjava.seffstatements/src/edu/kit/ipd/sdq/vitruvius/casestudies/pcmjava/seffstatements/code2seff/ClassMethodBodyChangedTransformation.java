@@ -140,7 +140,7 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
             final ResourceDemandingBehaviour newResourceDemandingBehaviourElements,
             final BasicComponent basicComponent) {
         for (final AbstractAction abstractAction : newResourceDemandingBehaviourElements.getSteps_Behaviour()) {
-            ci.createAndAddEObjectCorrespondence(abstractAction, this.newMethod);
+            ci.createAndAddCorrespondence(abstractAction, this.newMethod);
         }
     }
 
@@ -171,7 +171,7 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
         }
         for (final AbstractAction correspondingAbstractAction : correspondingAbstractActions) {
             final TUID tuidToRemove = ci.calculateTUIDFromEObject(correspondingAbstractAction);
-            ci.removeDirectAndChildrenCorrespondencesOnBothSides(tuidToRemove);
+            ci.removeCorrespondencesOfEObjectAndChildrenOnBothSides(tuidToRemove);
             EcoreUtil.remove(correspondingAbstractAction);
         }
 
