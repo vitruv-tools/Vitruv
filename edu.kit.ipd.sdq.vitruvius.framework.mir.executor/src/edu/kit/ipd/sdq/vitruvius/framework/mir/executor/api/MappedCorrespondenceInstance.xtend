@@ -79,7 +79,7 @@ class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInsta
 	}
 
 	def Correspondence getMappedCorrespondence(EObject eObject, MIRMappingRealization mapping) {
-		return filterType(getAllCorrespondences(eObject), typeof(Correspondence)).filter(null).findFirst().
+		return filterType(getCorrespondences(eObject.toList), typeof(Correspondence)).filter(null).findFirst().
 			orElse(null)
 	}
 
@@ -120,7 +120,7 @@ class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInsta
 	 * <code>eObject</code>, <code>null</code> otherwise.
 	 */
 	def EObject getMappingTarget(EObject eObject, MIRMappingRealization mapping) {
-		return filterType(correspondenceInstance.getAllCorrespondences(eObject),
+		return filterType(correspondenceInstance.getCorrespondences(eObject.toList),
 			typeof(Correspondence)).filter(null).findFirst().map(null).orElse(null)
 	}
 
