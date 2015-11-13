@@ -3,6 +3,8 @@ package edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.unittests.metamodels
 import static org.junit.Assert.assertSame;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.emftext.language.java.classifiers.Class;
@@ -142,7 +144,6 @@ public class JaMoPPTUIDCalculatorAndResolverTest extends
     public void testPrefixTUIDConstructionForDirectMember() {
         ConcreteClassifier c = rootObject.getClassifiers().get(0);
         Method m = c.getMethods().get(0);
-        
         String prefix = tuidGenerator.calculateTUIDFromEObject(c);
         String tuid = tuidGenerator.calculateTUIDFromEObject(m, c, prefix);
         EObject actualObject = tuidGenerator.resolveEObjectFromRootAndFullTUID(rootObject, tuid);
@@ -154,7 +155,6 @@ public class JaMoPPTUIDCalculatorAndResolverTest extends
     public void testPrefixTUIDConstructionForTwoLayersMember() {
         ConcreteClassifier c = rootObject.getClassifiers().get(0);
         Parameter p = c.getMethods().get(1).getParameters().get(0);
-        
         String prefix = tuidGenerator.calculateTUIDFromEObject(c);
         String tuid = tuidGenerator.calculateTUIDFromEObject(p, c, prefix);
         EObject actualObject = tuidGenerator.resolveEObjectFromRootAndFullTUID(rootObject, tuid);

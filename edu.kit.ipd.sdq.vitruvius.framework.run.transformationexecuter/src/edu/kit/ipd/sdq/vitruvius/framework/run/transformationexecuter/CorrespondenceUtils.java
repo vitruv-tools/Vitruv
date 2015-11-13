@@ -7,7 +7,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceIns
 public class CorrespondenceUtils {
 
     public static void updateCorrespondence(CorrespondenceInstance correspondenceInstance, EObject oldEObject, EObject newEObject) {
-        correspondenceInstance.update(oldEObject, newEObject);
+        correspondenceInstance.updateTUID(oldEObject, newEObject);
     }
     
 }

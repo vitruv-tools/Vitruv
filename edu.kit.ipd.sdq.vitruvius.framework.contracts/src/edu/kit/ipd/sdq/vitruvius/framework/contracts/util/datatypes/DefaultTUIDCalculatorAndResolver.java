@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user;
+package edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EDataType;
@@ -6,7 +6,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.HierarchicalTUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 
 public class DefaultTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResolver<EObject> {

@@ -131,9 +131,9 @@ class JavaClassTransformations extends Java2JMLTransformationBase {
 								val jmlModifier = getSingleCorrespondingEObjectOfType(oldValue, RegularModifier)
 
 								blackboard.correspondenceInstance.
-									removeDirectAndChildrenCorrespondencesOnBothSides(oldValue)
+									removeCorrespondencesOfEObjectAndChildrenOnBothSides(oldValue)
 								blackboard.correspondenceInstance.
-									removeDirectAndChildrenCorrespondencesOnBothSides(jmlModifier)
+									removeCorrespondencesOfEObjectAndChildrenOnBothSides(jmlModifier)
 
 								jmlClassifierDecl.modifiers.remove(jmlModifier)
 
@@ -160,9 +160,9 @@ class JavaClassTransformations extends Java2JMLTransformationBase {
 									JMLSpecifiedElement)
 
 								blackboard.correspondenceInstance.
-									removeDirectAndChildrenCorrespondencesOnBothSides(jmlSpecifiedElement)
+									removeCorrespondencesOfEObjectAndChildrenOnBothSides(jmlSpecifiedElement)
 								blackboard.correspondenceInstance.
-									removeDirectAndChildrenCorrespondencesOnBothSides(oldValue)
+									removeCorrespondencesOfEObjectAndChildrenOnBothSides(oldValue)
 
 								jmlNormalClassDecl.bodyDeclarations.remove(jmlSpecifiedElement)
 

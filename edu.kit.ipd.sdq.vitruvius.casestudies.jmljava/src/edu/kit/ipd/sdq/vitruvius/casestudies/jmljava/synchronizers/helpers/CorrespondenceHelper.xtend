@@ -1,10 +1,11 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.helpers
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 
 class CorrespondenceHelper {
 	
@@ -23,18 +24,18 @@ class CorrespondenceHelper {
 	
 	public static def getSingleCorrespondence(CorrespondenceInstance ci, EObject srcElement, EObject dstElement) {
 		val corrs = ci.getAllCorrespondences(srcElement)
-		val sameTypeCorrs = corrs.filter(SameTypeCorrespondence)
-		val dstTUID = ci.calculateTUIDFromEObject(dstElement)
+		val sameTypeCorrs = corrs.filter(Correspondence)
+		val dstTUID = ci.calculateTUIDsFromEObjects(dstElement.toList).claimOne
 		val result =  sameTypeCorrs.findFirst[elementBTUID.equals(dstTUID) || elementATUID.equals(dstTUID)]
 		return result
 		
-		//return ci.getAllCorrespondences(srcElement).filter(SameTypeCorrespondence).findFirst[elementBTUID == dstElement.TUID || elementATUID == dstElement.TUID]
+		//return ci.getAllCorrespondences(srcElement).filter(Correspondence).findFirst[elementBTUID == dstElement.TUID || elementATUID == dstElement.TUID]
 	}
 	
 	public static def <T extends EObject> T resolveEObjectByItsTUID(CorrespondenceInstance ci, T objectToFind) {
 		val root = EcoreUtil.getRootContainer(objectToFind)
 		// TODO SS does CorrespondenceHelper.resolveEObjectByItsTUID return its input objectToFind?
-		val tuid = ci.calculateTUIDFromEObject(objectToFind);
+		val tuid = ci.calculateTUIDsFromEObjects(objectToFind.toList).claimOne;
 		return ci.resolveEObjectFromTUID(tuid) as T;
 	}
 }

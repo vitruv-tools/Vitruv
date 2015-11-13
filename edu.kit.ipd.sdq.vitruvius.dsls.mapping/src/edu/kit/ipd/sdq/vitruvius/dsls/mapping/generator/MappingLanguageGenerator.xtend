@@ -12,7 +12,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRMappingHelper
@@ -317,7 +317,7 @@ class MappingLanguageGenerator {
 			fsa.generateJavaFile(fqn, [ extension ih |
 				val classSignatureWithoutRequires = 
 					zip(wrapperClasses, wrapperFields)
-					+ #[new Pair(typeRef(SameTypeCorrespondence), "correspondence"), new Pair("State", "state")]
+					+ #[new Pair(typeRef(Correspondence), "correspondence"), new Pair("State", "state")]
 				val classSignature = requires
 								+ classSignatureWithoutRequires
 								
@@ -369,7 +369,7 @@ class MappingLanguageGenerator {
 						«ENDFOR»
 						// end required mapped correspondences
 						
-						private «typeRef(SameTypeCorrespondence)» correspondence;
+						private «typeRef(Correspondence)» correspondence;
 						
 						«FOR el : indices»
 							private «wrapperClasses.get(el)» «wrapperFields.get(el)»;
@@ -566,7 +566,7 @@ class MappingLanguageGenerator {
 							 * @Nullable...
 							 */
 							public static «className» getExistingFor«packages.get(pair.first)»(«wrapperClasses.get(pair.first)» «wrapperFields.get(pair.first)») {
-								«typeRef(SameTypeCorrespondence)» stc = mci.getMappedCorrespondence(/*unwrap(«wrapperFields.get(pair.first)»)*/null, MAPPING);
+								«typeRef(Correspondence)» stc = mci.getMappedCorrespondence(/*unwrap(«wrapperFields.get(pair.first)»)*/null, MAPPING);
 								if (stc == null) {
 									return null;
 								} else {
@@ -591,7 +591,7 @@ class MappingLanguageGenerator {
 							}
 							«ENDFOR»
 							
-							public static «className» get(SameTypeCorrespondence stc) {
+							public static «className» get(Correspondence stc) {
 								«FOR req : requires»
 								«req.first» «req.second» = null; // wrap parent
 								«ENDFOR»
@@ -622,14 +622,14 @@ class MappingLanguageGenerator {
 							//   new.setUml(uml);
 							public static «className» create(«FOR arg : requires + zip(wrapperClasses, wrapperFields) SEPARATOR ", "»«arg.first» «arg.second»«ENDFOR») {
 								// claim getExisting(«FOR wf : wrapperFields SEPARATOR ", "»«wf»«ENDFOR») == null
-								«typeRef(SameTypeCorrespondence)» stc = mci.createAndAddEObjectCorrespondence(null, null); // wrap ...
+								«typeRef(Correspondence)» stc = mci.createAndAddEObjectCorrespondence(null, null); // wrap ...
 								mci.registerMappingForCorrespondence(stc, MAPPING);
 								return new «className»(
 										«FOR el : requires.map[second] + wrapperFields»«el», «ENDFOR»
 										stc, State.MAPPED);
 							}
 							
-							public static void removeCorrespondence(SameTypeCorrespondence correspondence) {
+							public static void removeCorrespondence(Correspondence correspondence) {
 								«typeRef(EcoreUtil)».remove(correspondence); // ???
 							}
 							

@@ -3,7 +3,6 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.r
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
@@ -17,6 +16,7 @@ import org.emftext.language.java.containers.Package
 import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 
 class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -66,7 +66,7 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 				PCMJaMoPPUtils.getSourceModelVURI(newRootEObject), transformationResult)
 		]
 		for (correspondingEObject : newCorrespondingEObjects) {
-			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newRootEObject, correspondingEObject)
+			blackboard.correspondenceInstance.createAndAddCorrespondence(newRootEObject, correspondingEObject)
 		}
 		return transformationResult
 	}
@@ -107,12 +107,12 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 		]
 
 		for (jaMoPPElement : newCorrespondingEObjects) {
-			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newValue, jaMoPPElement)
+			blackboard.correspondenceInstance.createAndAddCorrespondence(newValue, jaMoPPElement)
 		}
 		return transformationResult
 	}
 
-	def findPackageWithName(String packageName, Iterable<EObjectCorrespondence> correspondences) {
+	def findPackageWithName(String packageName, Iterable<Correspondence> correspondences) {
 		for (correspondence : correspondences) {
 			if (correspondence.elementATUID.toString.contains(packageName) ||
 				correspondence.elementBTUID.toString.contains(packageName)) {

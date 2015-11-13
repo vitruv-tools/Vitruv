@@ -81,7 +81,7 @@ class JavaFieldTransformations extends Java2JMLTransformationBase {
 				val oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(jmlVariableDeclaration)
 				jmlVariableDeclaration.identifier = newValue as String
 				val newTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(jmlVariableDeclaration)
-				blackboard.correspondenceInstance.update(oldTUID, newTUID)
+				blackboard.correspondenceInstance.updateTUID(oldTUID, newTUID)
 				changedObjects.add(jmlVariableDeclaration)
 			}
 		}

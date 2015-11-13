@@ -71,7 +71,7 @@ class PCMJaMoPPUtils {
 				} else {
 					val TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(correspondingObject)
 					correspondingObject.eSet(eStructuralFeature, newValue)
-					correspondenceInstance.update(oldTUID, correspondingObject)
+					correspondenceInstance.updateTUID(oldTUID, correspondingObject)
 					if (saveFilesOfChangedEObjects) {
 						// nothing to do here?
 					}
@@ -193,7 +193,7 @@ class PCMJaMoPPUtils {
 			EcoreUtil.remove(eObject)
 			PCMJaMoPPUtils.addRootChangeToTransformationResult(eObject, blackboard, sourceModelVURI,
 				transformationResult)
-			blackboard.correspondenceInstance.update(oldTUID, eObject)
+			blackboard.correspondenceInstance.updateTUID(oldTUID, eObject)
 			transformationResult.addVURIToDeleteIfNotNull(vuriToDelete)
 		}
 

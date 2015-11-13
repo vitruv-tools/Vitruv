@@ -20,4 +20,9 @@ Require-Bundle: org.eclipse.emf.ecore,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  org.apache.commons.lang;bundle-version="2.6.0",
  org.eclipse.emf.common,
- org.eclipse.emf.transaction
+ org.eclipse.emf.transaction,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro
+

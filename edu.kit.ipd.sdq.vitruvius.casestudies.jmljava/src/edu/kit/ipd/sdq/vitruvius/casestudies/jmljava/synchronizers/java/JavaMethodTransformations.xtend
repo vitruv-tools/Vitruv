@@ -112,7 +112,7 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 				LOGGER.trace("Updating " + jmlMethodDeclaration)
 				val jmlMethodDeclarationTUIDOld = blackboard.correspondenceInstance.calculateTUIDFromEObject(jmlMethodDeclaration)
 				jmlMethodDeclaration.identifier = newValue as String
-				blackboard.correspondenceInstance.update(jmlMethodDeclarationTUIDOld, blackboard.correspondenceInstance.calculateTUIDFromEObject(jmlMethodDeclaration));
+				blackboard.correspondenceInstance.updateTUID(jmlMethodDeclarationTUIDOld, blackboard.correspondenceInstance.calculateTUIDFromEObject(jmlMethodDeclaration));
 				changedObjects.add(jmlMethodDeclaration)
 			}
 		}
@@ -139,7 +139,7 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 
 				Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Parameter, jmlParameter,
 					blackboard.correspondenceInstance)
-				blackboard.correspondenceInstance.update(jmlMethodDeclarationTUIDOld, blackboard.correspondenceInstance.calculateTUIDFromEObject(jmlMethodDeclaration))
+				blackboard.correspondenceInstance.updateTUID(jmlMethodDeclarationTUIDOld, blackboard.correspondenceInstance.calculateTUIDFromEObject(jmlMethodDeclaration))
 
 				changedObjects.add(jmlMethodDeclaration)
 			}
@@ -191,12 +191,12 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 
 				val jmlParameter = getSingleCorrespondingEObjectOfType(oldValue, FormalParameterDecl)
 
-				blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(jmlParameter)
-				blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(oldValue)
+				blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(jmlParameter)
+				blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(oldValue)
 
 				jmlMethodDeclaration.parameters.remove(jmlParameter)
 
-				blackboard.correspondenceInstance.update(jmlMethodDeclarationOldTUID, blackboard.correspondenceInstance.calculateTUIDFromEObject(jmlMethodDeclaration))
+				blackboard.correspondenceInstance.updateTUID(jmlMethodDeclarationOldTUID, blackboard.correspondenceInstance.calculateTUIDFromEObject(jmlMethodDeclaration))
 
 				changedObjects.add(jmlMethodDeclaration)
 			}
@@ -208,8 +208,8 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 
 				val jmlModifier = getSingleCorrespondingEObjectOfType(oldValue, RegularModifier)
 
-				blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(jmlModifier)
-				blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(oldValue)
+				blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(jmlModifier)
+				blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(oldValue)
 
 				jmlMemberDeclWithModifier.modifiers.remove(jmlModifier)
 
@@ -222,8 +222,8 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 
 				val jmlException = getSingleCorrespondingEObjectOfType(oldValue, DeclaredException)
 
-				blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(jmlException)
-				blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(oldValue)
+				blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(jmlException)
+				blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(oldValue)
 
 				jmlMethodDeclaration.exceptions.remove(jmlException)
 

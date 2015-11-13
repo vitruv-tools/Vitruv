@@ -103,7 +103,7 @@ class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTran
 		
 		val EObject[] oldEObjects = removeEObject(affectedEObject)
 		for (oldEObject : oldEObjects) {
-			blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(oldEObject)
+			blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(oldEObject)
 			if (null != oldEObject.eContainer) {
 				return new TransformationResult
 			}
@@ -112,7 +112,7 @@ class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTran
 		val EObject[] newEObjects = createEObject(affectedEObject)
 		if (null != newEObjects) {
 			for (newEObject : newEObjects) {
-				blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newEObject, affectedEObject)
+				blackboard.correspondenceInstance.createAndAddCorrespondence(newEObject, affectedEObject)
 			}
 		}
 		return new TransformationResult

@@ -183,7 +183,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 				correspondences.forEach[correspondingObj|EcoreUtil.remove(correspondingObj)]
 				eObjectsToDelete.addAll(correspondences)
 			}
-			blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(jaMoPPClass)
+			blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(jaMoPPClass)
 		}
 		return null
 	}
@@ -211,7 +211,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 					eObjectToSave = newAffectedEObject
 				}
 				case 1: {
-					blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(component)
+					blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(component)
 					EcoreUtil.remove(component)
 				}
 			}

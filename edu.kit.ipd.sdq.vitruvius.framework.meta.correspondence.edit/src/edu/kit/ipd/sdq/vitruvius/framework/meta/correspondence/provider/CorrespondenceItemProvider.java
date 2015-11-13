@@ -3,6 +3,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.provider;
 
 
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage;
 
 import java.util.Collection;
@@ -20,7 +21,9 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
+import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
  * This is the item provider adapter for a {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence} object.
@@ -57,8 +60,100 @@ public class CorrespondenceItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addDependsOnPropertyDescriptor(object);
+			addDependedOnByPropertyDescriptor(object);
+			addATUIDsPropertyDescriptor(object);
+			addBTUIDsPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
+	}
+
+	/**
+	 * This adds a property descriptor for the Depends On feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addDependsOnPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Correspondence_dependsOn_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Correspondence_dependsOn_feature", "_UI_Correspondence_type"),
+				 CorrespondencePackage.Literals.CORRESPONDENCE__DEPENDS_ON,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Depended On By feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addDependedOnByPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Correspondence_dependedOnBy_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Correspondence_dependedOnBy_feature", "_UI_Correspondence_type"),
+				 CorrespondencePackage.Literals.CORRESPONDENCE__DEPENDED_ON_BY,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the ATUI Ds feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addATUIDsPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Correspondence_aTUIDs_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Correspondence_aTUIDs_feature", "_UI_Correspondence_type"),
+				 CorrespondencePackage.Literals.CORRESPONDENCE__ATUI_DS,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the BTUI Ds feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addBTUIDsPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Correspondence_bTUIDs_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Correspondence_bTUIDs_feature", "_UI_Correspondence_type"),
+				 CorrespondencePackage.Literals.CORRESPONDENCE__BTUI_DS,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
 	}
 
 	/**
@@ -83,6 +178,13 @@ public class CorrespondenceItemProvider
 	@Override
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
+
+		switch (notification.getFeatureID(Correspondence.class)) {
+			case CorrespondencePackage.CORRESPONDENCE__ATUI_DS:
+			case CorrespondencePackage.CORRESPONDENCE__BTUI_DS:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+		}
 		super.notifyChanged(notification);
 	}
 

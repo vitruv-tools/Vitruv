@@ -45,7 +45,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 	private static Logger logger = Logger.getLogger(JaMoPP2PCMUtils.simpleName)
 
 	def public static Repository getRepository(CorrespondenceInstance correspondenceInstance) {
-		val Set<Repository> repos = correspondenceInstance.getAllEObjectsInCorrespondencesWithType(Repository)
+		val Set<Repository> repos = correspondenceInstance.getAllEObjectsOfTypeInCorrespondences(Repository)
 		if (repos.nullOrEmpty) {
 			throw new RuntimeException("Could not find a repository")
 		}
@@ -142,7 +142,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 				} else {
 					// do nothing. save will be done later
 				}
-				blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(pcmElement, newEObject)
+				blackboard.correspondenceInstance.createAndAddCorrespondence(pcmElement, newEObject)
 			}
 		}
 

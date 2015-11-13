@@ -2,49 +2,33 @@
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence/src-gen"
     modelPluginID="edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence" modelName="Correspondence"
-    importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0" copyrightFields="false"
-    usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0" copyrightFields="false">
   <foreignModel>correspondence.ecore</foreignModel>
   <genPackages prefix="Correspondence" basePackage="edu.kit.ipd.sdq.vitruvius.framework.meta"
       disposableProviderFactory="true" ecorePackage="correspondence.ecore#/">
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="correspondence.ecore#//CorrespondenceType">
-      <genEnumLiterals ecoreEnumLiteral="correspondence.ecore#//CorrespondenceType/identity"/>
-      <genEnumLiterals ecoreEnumLiteral="correspondence.ecore#//CorrespondenceType/bijection"/>
-      <genEnumLiterals ecoreEnumLiteral="correspondence.ecore#//CorrespondenceType/unidirectional"/>
-      <genEnumLiterals ecoreEnumLiteral="correspondence.ecore#//CorrespondenceType/constrained"/>
-      <genEnumLiterals ecoreEnumLiteral="correspondence.ecore#//CorrespondenceType/unknown"/>
-    </genEnums>
+    <genDataTypes ecoreDataType="correspondence.ecore#//TUIDCalculatorAndResolver"/>
     <genDataTypes ecoreDataType="correspondence.ecore#//TUID"/>
     <genClasses ecoreClass="correspondence.ecore#//Correspondences">
       <genFeatures createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondences/correspondences"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondences/tuidCARForAs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondences/tuidCARForBs"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="correspondence.ecore#//Correspondence"/>
-    <genClasses image="false" ecoreClass="correspondence.ecore#//SameTypeCorrespondence">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//SameTypeCorrespondence/elementATUID"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//SameTypeCorrespondence/elementBTUID"/>
-    </genClasses>
-    <genClasses ecoreClass="correspondence.ecore#//EObjectCorrespondence"/>
-    <genClasses image="false" ecoreClass="correspondence.ecore#//EFeatureCorrespondence">
-      <genTypeParameters ecoreTypeParameter="correspondence.ecore#//EFeatureCorrespondence/TFeature"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//EFeatureCorrespondence/type"/>
-      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference correspondence.ecore#//EFeatureCorrespondence/featureA"/>
-      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference correspondence.ecore#//EFeatureCorrespondence/featureB"/>
-    </genClasses>
-    <genClasses ecoreClass="correspondence.ecore#//EAttributeCorrespondence"/>
-    <genClasses image="false" ecoreClass="correspondence.ecore#//EReferenceCorrespondence"/>
-    <genClasses ecoreClass="correspondence.ecore#//EContainmentReferenceCorrespondence"/>
-    <genClasses image="false" ecoreClass="correspondence.ecore#//PartialEFeatureCorrespondence">
-      <genTypeParameters ecoreTypeParameter="correspondence.ecore#//PartialEFeatureCorrespondence/TValue"/>
-    </genClasses>
-    <genClasses ecoreClass="correspondence.ecore#//PartialEAttributeCorrespondence">
-      <genTypeParameters ecoreTypeParameter="correspondence.ecore#//PartialEAttributeCorrespondence/TValue"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//PartialEAttributeCorrespondence/valueA"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//PartialEAttributeCorrespondence/valueB"/>
-    </genClasses>
-    <genClasses ecoreClass="correspondence.ecore#//PartialEReferenceCorrespondence">
-      <genTypeParameters ecoreTypeParameter="correspondence.ecore#//PartialEReferenceCorrespondence/TValue"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//PartialEReferenceCorrespondence/valueATUID"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//PartialEReferenceCorrespondence/valueBTUID"/>
+    <genClasses image="false" ecoreClass="correspondence.ecore#//Correspondence">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondence/parent"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondence/dependsOn"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondence/dependedOnBy"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondence/aTUIDs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondence/bTUIDs"/>
+      <genOperations ecoreOperation="correspondence.ecore#//Correspondence/getAs"/>
+      <genOperations ecoreOperation="correspondence.ecore#//Correspondence/getBs"/>
+      <genOperations ecoreOperation="correspondence.ecore#//Correspondence/getElementATUID"/>
+      <genOperations ecoreOperation="correspondence.ecore#//Correspondence/getElementBTUID"/>
+      <genOperations ecoreOperation="correspondence.ecore#//Correspondence/setElementATUID">
+        <genParameters ecoreParameter="correspondence.ecore#//Correspondence/setElementATUID/tuid"/>
+      </genOperations>
+      <genOperations ecoreOperation="correspondence.ecore#//Correspondence/setElementBTUID">
+        <genParameters ecoreParameter="correspondence.ecore#//Correspondence/setElementBTUID/tuid"/>
+      </genOperations>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

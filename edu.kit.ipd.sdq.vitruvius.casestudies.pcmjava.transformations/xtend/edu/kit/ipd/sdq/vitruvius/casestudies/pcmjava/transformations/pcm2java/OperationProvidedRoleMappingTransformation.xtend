@@ -11,6 +11,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.Interface
 import org.palladiosimulator.pcm.repository.OperationProvidedRole
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 
 class OperationProvidedRoleMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -69,16 +70,16 @@ class OperationProvidedRoleMappingTransformation extends EmptyEObjectMappingTran
 		if (null != oldValue) {
 			val EObject[] oldEObjects = removeEObject(affectedEObject)
 			for (oldEObject : oldEObjects) {
-				blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(oldEObject)
+				blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(oldEObject)
 				EcoreUtil.remove(oldEObject)
 			}
  	 	}
  	 	// if the new value already has a correspondence we do not need to create newEObjects
-		if (!this.blackboard.correspondenceInstance.hasCorrespondences(newValue)) {
+		if (!this.blackboard.correspondenceInstance.hasCorrespondences(newValue.toList)) {
 			val EObject[] newEObjects = createEObject(affectedEObject)
 			if (null != newEObjects) {
 				for (newEObject : newEObjects) {
-					blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newEObject, affectedEObject)
+					blackboard.correspondenceInstance.createAndAddCorrespondence(newEObject.toList, affectedEObject.toList)
 				}
 			}
 			return new TransformationResult

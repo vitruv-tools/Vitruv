@@ -127,7 +127,7 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 					innerDec.datatype_InnerDeclaration = TypeReferenceCorrespondenceHelper.
 						getCorrespondingPCMDataTypeForTypeReference(newTypeReference, blackboard.correspondenceInstance,
 							userInteracting, null)
-					blackboard.correspondenceInstance.update(oldAffectedEObject, newValue)
+					blackboard.correspondenceInstance.updateTUID(oldAffectedEObject, newValue)
 				}
 			}
 
@@ -146,7 +146,7 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 					val newCorrespondingEObjects = newField.checkAndAddOperationRequiredRolesCorrepondencesToField()
 					if (!newCorrespondingEObjects.nullOrEmpty) {
 						for (newCorrspondingEObject : newCorrespondingEObjects) {
-							blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newCorrspondingEObject, newAffectedEObject)
+							blackboard.correspondenceInstance.createAndAddCorrespondence(newCorrspondingEObject, newAffectedEObject)
 						}
 					}
 				}

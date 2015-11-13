@@ -90,7 +90,7 @@ class ClassMethodMappingTransformation extends EmptyEObjectMappingTransformation
 		val newSEFFs = newClassMethod.createSEFFIfImplementsInterfaceMethod
 		if(!newSEFFs.nullOrEmpty){
 			for(newSEFF : newSEFFs){
-				blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newSEFF, newClassMethod)
+				blackboard.correspondenceInstance.createAndAddCorrespondence(newSEFF, newClassMethod)
 			}			
 		}
 	}

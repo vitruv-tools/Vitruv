@@ -191,7 +191,7 @@ class TypeReferenceCorrespondenceHelper {
 		val CompositeDataType cdt = RepositoryFactory.eINSTANCE.createCompositeDataType
 		cdt.entityName = classifier.name
 		cdt.repository__DataType = repo
-		correspondenceInstance.createAndAddEObjectCorrespondence(cdt, classifier)
+		correspondenceInstance.createAndAddCorrespondence(cdt, classifier)
 		
 		/*val String message = "Automatically created the corresponding composite data type " + cdt.entityName +
 			" for classifier " + classifier.name + correspondingWarning

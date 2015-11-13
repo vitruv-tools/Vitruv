@@ -7,6 +7,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFac
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondences;
 
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUIDCalculatorAndResolver;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -22,6 +24,7 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
@@ -61,6 +64,8 @@ public class CorrespondencesItemProvider
 			super.getPropertyDescriptors(object);
 
 			addCorrespondencesPropertyDescriptor(object);
+			addTuidCARForAsPropertyDescriptor(object);
+			addTuidCARForBsPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -88,6 +93,50 @@ public class CorrespondencesItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Tuid CAR For As feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addTuidCARForAsPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Correspondences_tuidCARForAs_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Correspondences_tuidCARForAs_feature", "_UI_Correspondences_type"),
+				 CorrespondencePackage.Literals.CORRESPONDENCES__TUID_CAR_FOR_AS,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Tuid CAR For Bs feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addTuidCARForBsPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Correspondences_tuidCARForBs_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Correspondences_tuidCARForBs_feature", "_UI_Correspondences_type"),
+				 CorrespondencePackage.Literals.CORRESPONDENCES__TUID_CAR_FOR_BS,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This returns Correspondences.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -106,7 +155,11 @@ public class CorrespondencesItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_Correspondences_type");
+		TUIDCalculatorAndResolver labelValue = ((Correspondences)object).getTuidCARForAs();
+		String label = labelValue == null ? null : labelValue.toString();
+		return label == null || label.length() == 0 ?
+			getString("_UI_Correspondences_type") :
+			getString("_UI_Correspondences_type") + " " + label;
 	}
 	
 
@@ -123,6 +176,8 @@ public class CorrespondencesItemProvider
 
 		switch (notification.getFeatureID(Correspondences.class)) {
 			case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCES:
+			case CorrespondencePackage.CORRESPONDENCES__TUID_CAR_FOR_AS:
+			case CorrespondencePackage.CORRESPONDENCES__TUID_CAR_FOR_BS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}
@@ -143,32 +198,7 @@ public class CorrespondencesItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(CorrespondencePackage.Literals.CORRESPONDENCES__CORRESPONDENCES,
-				 CorrespondenceFactory.eINSTANCE.createEObjectCorrespondence()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CorrespondencePackage.Literals.CORRESPONDENCES__CORRESPONDENCES,
-				 CorrespondenceFactory.eINSTANCE.createEAttributeCorrespondence()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CorrespondencePackage.Literals.CORRESPONDENCES__CORRESPONDENCES,
-				 CorrespondenceFactory.eINSTANCE.createEReferenceCorrespondence()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CorrespondencePackage.Literals.CORRESPONDENCES__CORRESPONDENCES,
-				 CorrespondenceFactory.eINSTANCE.createEContainmentReferenceCorrespondence()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CorrespondencePackage.Literals.CORRESPONDENCES__CORRESPONDENCES,
-				 CorrespondenceFactory.eINSTANCE.createPartialEAttributeCorrespondence()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(CorrespondencePackage.Literals.CORRESPONDENCES__CORRESPONDENCES,
-				 CorrespondenceFactory.eINSTANCE.createPartialEReferenceCorrespondence()));
+				 CorrespondenceFactory.eINSTANCE.createCorrespondence()));
 	}
 
 	/**

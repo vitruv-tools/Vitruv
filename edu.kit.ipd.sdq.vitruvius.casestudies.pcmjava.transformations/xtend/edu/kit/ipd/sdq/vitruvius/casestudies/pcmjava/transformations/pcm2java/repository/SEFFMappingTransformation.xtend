@@ -61,7 +61,7 @@ class SEFFMappingTransformation extends DefaultEObjectMappingTransformation {
 		val affectedSEFF = affectedEObject as ResourceDemandingSEFF
 		val newEObjects = affectedSEFF.checkSEFFAndCreateCorrespondences
 		for (newCorrespondingEObject : newEObjects) {
-			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(affectedSEFF, newCorrespondingEObject)
+			blackboard.correspondenceInstance.createAndAddCorrespondence(affectedSEFF, newCorrespondingEObject)
 		}
 		transformationResult
 	}

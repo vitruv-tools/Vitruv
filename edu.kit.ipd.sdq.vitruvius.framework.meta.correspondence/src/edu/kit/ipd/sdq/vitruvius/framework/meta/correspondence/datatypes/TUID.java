@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes;
 
 import java.io.ObjectStreamException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -71,6 +72,21 @@ public class TUID implements Serializable {
     /** Multiton classes should not have a public or default constructor. */
     private TUID(final List<String> splitTUIDString) {
         this.lastSegment = SEGMENTS.addNewSegmentsWhereNecessary(splitTUIDString);
+    }
+    
+    /**
+     * Returns the unique TUID (instance) for the specified tuidString (key).
+     *
+     * @param tuidString
+     * @return the unique TUID for the specified tuidString
+     */
+    public static synchronized List<TUID> getInstance(final List<String> tuidStrings) {
+    	// FIXME MK replace with Xtend: map
+        List<TUID> tuids = new ArrayList<TUID>(tuidStrings.size());
+        for (String tuidString : tuidStrings) {
+        	tuids.add(getInstance(tuidString));
+        }
+        return tuids;
     }
 
     /**

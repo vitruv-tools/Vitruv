@@ -10,5 +10,10 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
  org.eclipse.emf.ecore,
  org.eclipse.emf.transaction,
  org.apache.log4j,
- edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence
+ edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro
 Export-Package: edu.kit.ipd.sdq.vitruvius.commandexecuter
+

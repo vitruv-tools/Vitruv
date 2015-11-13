@@ -1,11 +1,19 @@
-package edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user;
+package edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes;
+
+import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-
 public interface TUIDCalculatorAndResolver {
+
     String calculateTUIDFromEObject(EObject eObject);
+	
+	/**
+	 * syntactic sugar for map[{@link #calculateTUIDFromEObject(EObject)}]
+	 * @param eObjects
+	 * @return
+	 */
+    List<String> calculateTUIDsFromEObjects(List<EObject> eObjects);
 
     /**
      * Calculates the TUID for an EObject. The given prefix is the TUID part, which should be used
@@ -31,7 +39,7 @@ public interface TUIDCalculatorAndResolver {
      * @param tuid
      * @return the VURI if it exists, otherwise <code>null</code>
      */
-    VURI getModelVURIContainingIdentifiedEObject(String tuid);
+    String getModelVURIContainingIdentifiedEObject(String tuid);
 
     EObject resolveEObjectFromRootAndFullTUID(EObject root, String tuid);
 

@@ -95,141 +95,26 @@ public class CorrespondenceItemProviderAdapterFactory extends CorrespondenceAdap
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence} instances.
+	 * This keeps track of the one adapter used for all {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected EObjectCorrespondenceItemProvider eObjectCorrespondenceItemProvider;
+	protected CorrespondenceItemProvider correspondenceItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence}.
+	 * This creates an adapter for a {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createEObjectCorrespondenceAdapter() {
-		if (eObjectCorrespondenceItemProvider == null) {
-			eObjectCorrespondenceItemProvider = new EObjectCorrespondenceItemProvider(this);
+	public Adapter createCorrespondenceAdapter() {
+		if (correspondenceItemProvider == null) {
+			correspondenceItemProvider = new CorrespondenceItemProvider(this);
 		}
 
-		return eObjectCorrespondenceItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EAttributeCorrespondence} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected EAttributeCorrespondenceItemProvider eAttributeCorrespondenceItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EAttributeCorrespondence}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createEAttributeCorrespondenceAdapter() {
-		if (eAttributeCorrespondenceItemProvider == null) {
-			eAttributeCorrespondenceItemProvider = new EAttributeCorrespondenceItemProvider(this);
-		}
-
-		return eAttributeCorrespondenceItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EReferenceCorrespondence} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected EReferenceCorrespondenceItemProvider eReferenceCorrespondenceItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EReferenceCorrespondence}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createEReferenceCorrespondenceAdapter() {
-		if (eReferenceCorrespondenceItemProvider == null) {
-			eReferenceCorrespondenceItemProvider = new EReferenceCorrespondenceItemProvider(this);
-		}
-
-		return eReferenceCorrespondenceItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentReferenceCorrespondence} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected EContainmentReferenceCorrespondenceItemProvider eContainmentReferenceCorrespondenceItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentReferenceCorrespondence}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createEContainmentReferenceCorrespondenceAdapter() {
-		if (eContainmentReferenceCorrespondenceItemProvider == null) {
-			eContainmentReferenceCorrespondenceItemProvider = new EContainmentReferenceCorrespondenceItemProvider(this);
-		}
-
-		return eContainmentReferenceCorrespondenceItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEAttributeCorrespondence} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected PartialEAttributeCorrespondenceItemProvider partialEAttributeCorrespondenceItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEAttributeCorrespondence}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createPartialEAttributeCorrespondenceAdapter() {
-		if (partialEAttributeCorrespondenceItemProvider == null) {
-			partialEAttributeCorrespondenceItemProvider = new PartialEAttributeCorrespondenceItemProvider(this);
-		}
-
-		return partialEAttributeCorrespondenceItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEReferenceCorrespondence} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected PartialEReferenceCorrespondenceItemProvider partialEReferenceCorrespondenceItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEReferenceCorrespondence}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createPartialEReferenceCorrespondenceAdapter() {
-		if (partialEReferenceCorrespondenceItemProvider == null) {
-			partialEReferenceCorrespondenceItemProvider = new PartialEReferenceCorrespondenceItemProvider(this);
-		}
-
-		return partialEReferenceCorrespondenceItemProvider;
+		return correspondenceItemProvider;
 	}
 
 	/**
@@ -332,12 +217,7 @@ public class CorrespondenceItemProviderAdapterFactory extends CorrespondenceAdap
 	 */
 	public void dispose() {
 		if (correspondencesItemProvider != null) correspondencesItemProvider.dispose();
-		if (eObjectCorrespondenceItemProvider != null) eObjectCorrespondenceItemProvider.dispose();
-		if (eAttributeCorrespondenceItemProvider != null) eAttributeCorrespondenceItemProvider.dispose();
-		if (eReferenceCorrespondenceItemProvider != null) eReferenceCorrespondenceItemProvider.dispose();
-		if (eContainmentReferenceCorrespondenceItemProvider != null) eContainmentReferenceCorrespondenceItemProvider.dispose();
-		if (partialEAttributeCorrespondenceItemProvider != null) partialEAttributeCorrespondenceItemProvider.dispose();
-		if (partialEReferenceCorrespondenceItemProvider != null) partialEReferenceCorrespondenceItemProvider.dispose();
+		if (correspondenceItemProvider != null) correspondenceItemProvider.dispose();
 	}
 
 }

@@ -101,8 +101,8 @@ class JavaCompilationUnitTransformations extends Java2JMLTransformationBase {
 				
 				val jmlImport = getSingleCorrespondingEObjectOfType(oldValue, ImportDeclaration)
 				
-				blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(jmlImport)
-				blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(oldValue)
+				blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(jmlImport)
+				blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(oldValue)
 				
 				jmlCu.importdeclaration.remove(jmlImport)
 
@@ -115,8 +115,8 @@ class JavaCompilationUnitTransformations extends Java2JMLTransformationBase {
 				
 				val jmlType = getSingleCorrespondingEObjectOfType(oldValue, ClassifierDeclarationWithModifier)
 				
-				blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(jmlType)
-				blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(oldValue)
+				blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(jmlType)
+				blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(oldValue)
 				
 				jmlCu.typedeclaration.remove(jmlType)
 				

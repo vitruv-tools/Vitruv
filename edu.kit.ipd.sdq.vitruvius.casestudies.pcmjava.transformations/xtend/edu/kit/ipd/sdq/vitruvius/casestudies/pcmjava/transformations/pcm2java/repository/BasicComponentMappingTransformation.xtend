@@ -42,7 +42,7 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 			return transformationResult
 		}
 		for (jaMoPPElement : newCorrespondingEObjects) {
-			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newValue, jaMoPPElement)
+			blackboard.correspondenceInstance.createAndAddCorrespondence(newValue, jaMoPPElement)
 		}
 		transformationResult
 	}

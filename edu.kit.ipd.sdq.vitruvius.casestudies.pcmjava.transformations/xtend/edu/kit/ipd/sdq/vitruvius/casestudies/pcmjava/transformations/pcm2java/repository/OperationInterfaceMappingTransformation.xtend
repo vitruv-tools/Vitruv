@@ -104,7 +104,7 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 		for (eObject : newMethods) {
 			val InterfaceMethod newMethod = eObject as InterfaceMethod;
 			jaMoPPIf.members.add(newMethod)
-			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newValue, newMethod)
+			blackboard.correspondenceInstance.createAndAddCorrespondence(newValue, newMethod)
 
 		// the code jaMoPPIf.methods.add(index, newMethod); does not work, because adding a method 
 		// to interface methods does not cause an update of the resource.
@@ -140,7 +140,7 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 			// TODO: check wheather the CompilationUnit is deleted
 			EcoreUtil.remove(correspondingObject)
 		}
-		blackboard.correspondenceInstance.removeDirectAndChildrenCorrespondencesOnBothSides(operationInterface)
+		blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(operationInterface)
 		return null
 	}
 

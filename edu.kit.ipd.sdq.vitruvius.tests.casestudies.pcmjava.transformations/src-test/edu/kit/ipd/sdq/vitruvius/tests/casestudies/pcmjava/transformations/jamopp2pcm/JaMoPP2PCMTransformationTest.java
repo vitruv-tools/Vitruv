@@ -511,7 +511,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 
     protected Package getPackageWithName(final String name) throws Throwable {
         final Set<Package> packages = this.getCorrespondenceInstance()
-                .getAllEObjectsInCorrespondencesWithType(Package.class);
+                .getAllEObjectsOfTypeInCorrespondences(Package.class);
         for (final Package currentPackage : packages) {
             if (currentPackage.getName().equals(name)) {
                 return currentPackage;

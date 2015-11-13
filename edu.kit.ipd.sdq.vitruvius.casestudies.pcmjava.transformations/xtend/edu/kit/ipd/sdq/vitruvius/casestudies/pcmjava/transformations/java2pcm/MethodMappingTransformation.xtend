@@ -88,7 +88,7 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 				correspondingSignature.returnType__OperationSignature = newReturnValue
 
 				// guess this is not necessary since the id stay the same
-				blackboard.correspondenceInstance.update(oldTUID, correspondingSignature)
+				blackboard.correspondenceInstance.updateTUID(oldTUID, correspondingSignature)
 			}
 		}
 		transformationResult

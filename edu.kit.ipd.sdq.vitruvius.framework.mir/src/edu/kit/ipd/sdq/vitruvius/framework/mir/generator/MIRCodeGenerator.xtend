@@ -8,7 +8,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EclipseHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper
@@ -167,7 +167,7 @@ class MIRCodeGenerator implements IGenerator {
 		Set, HashSet, EPackage, Pair, MIRMappingHelper, MappedCorrespondenceInstance,
 		Logger, JavaHelper, Collections, Blackboard, Optional, EcoreHelper,
 		Collection, VURI, EclipseHelper, TransformationResult, EReference,
-		SameTypeCorrespondence
+		Correspondence
 	]
 	
 	/**
@@ -425,7 +425,7 @@ class MIRCodeGenerator implements IGenerator {
 					
 					// create here, since containment is decided here
 					// TODO: what is the correspondence structure when feature hopping?
-					SameTypeCorrespondence stc = ci.createAndAddEObjectCorrespondence(«left.name», «right.name»);
+					Correspondence stc = ci.createAndAddEObjectCorrespondence(«left.name», «right.name»);
 					ci.registerMappingForCorrespondence(stc, this);
 					ci.registerMappingForCorrespondence(stc, «className».REVERSE);
 					

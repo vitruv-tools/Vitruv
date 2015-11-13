@@ -1,12 +1,12 @@
 package edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.util.EcoreUtil
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 
 class TransformationUtils {
 
@@ -29,13 +29,10 @@ class TransformationUtils {
 
 	def static removeCorrespondenceAndAllObjects(EObject object, Blackboard blackboard) {
 		val correspondencens = blackboard.correspondenceInstance.
-			removeDirectAndChildrenCorrespondencesOnBothSides(object)
+			removeCorrespondencesOfEObjectAndChildrenOnBothSides(object)
 		for (correspondence : correspondencens) {
-			if (correspondence instanceof EObjectCorrespondence) {
-				val eoc = correspondence as EObjectCorrespondence
-				resolveAndRemoveEObject(eoc.elementATUID, blackboard)
-				resolveAndRemoveEObject(eoc.elementBTUID, blackboard)
-			}
+				resolveAndRemoveEObject(correspondence.elementATUID, blackboard)
+				resolveAndRemoveEObject(correspondence.elementBTUID, blackboard)
 		}
 	}
 

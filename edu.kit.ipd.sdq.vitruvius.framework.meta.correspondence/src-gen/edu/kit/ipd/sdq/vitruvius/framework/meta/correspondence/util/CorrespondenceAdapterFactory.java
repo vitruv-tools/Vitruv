@@ -10,7 +10,6 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
  * <!-- begin-user-doc -->
@@ -77,42 +76,6 @@ public class CorrespondenceAdapterFactory extends AdapterFactoryImpl {
 				return createCorrespondenceAdapter();
 			}
 			@Override
-			public Adapter caseSameTypeCorrespondence(SameTypeCorrespondence object) {
-				return createSameTypeCorrespondenceAdapter();
-			}
-			@Override
-			public Adapter caseEObjectCorrespondence(EObjectCorrespondence object) {
-				return createEObjectCorrespondenceAdapter();
-			}
-			@Override
-			public <TFeature extends EStructuralFeature> Adapter caseEFeatureCorrespondence(EFeatureCorrespondence<TFeature> object) {
-				return createEFeatureCorrespondenceAdapter();
-			}
-			@Override
-			public Adapter caseEAttributeCorrespondence(EAttributeCorrespondence object) {
-				return createEAttributeCorrespondenceAdapter();
-			}
-			@Override
-			public Adapter caseEReferenceCorrespondence(EReferenceCorrespondence object) {
-				return createEReferenceCorrespondenceAdapter();
-			}
-			@Override
-			public Adapter caseEContainmentReferenceCorrespondence(EContainmentReferenceCorrespondence object) {
-				return createEContainmentReferenceCorrespondenceAdapter();
-			}
-			@Override
-			public <TValue extends Object> Adapter casePartialEFeatureCorrespondence(PartialEFeatureCorrespondence<TValue> object) {
-				return createPartialEFeatureCorrespondenceAdapter();
-			}
-			@Override
-			public <TValue extends Object> Adapter casePartialEAttributeCorrespondence(PartialEAttributeCorrespondence<TValue> object) {
-				return createPartialEAttributeCorrespondenceAdapter();
-			}
-			@Override
-			public <TValue extends EObject> Adapter casePartialEReferenceCorrespondence(PartialEReferenceCorrespondence<TValue> object) {
-				return createPartialEReferenceCorrespondenceAdapter();
-			}
-			@Override
 			public Adapter defaultCase(EObject object) {
 				return createEObjectAdapter();
 			}
@@ -157,132 +120,6 @@ public class CorrespondenceAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createCorrespondenceAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence <em>Same Type Correspondence</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence
-	 * @generated
-	 */
-	public Adapter createSameTypeCorrespondenceAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence <em>EObject Correspondence</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
-	 * @generated
-	 */
-	public Adapter createEObjectCorrespondenceAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EFeatureCorrespondence <em>EFeature Correspondence</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EFeatureCorrespondence
-	 * @generated
-	 */
-	public Adapter createEFeatureCorrespondenceAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EAttributeCorrespondence <em>EAttribute Correspondence</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EAttributeCorrespondence
-	 * @generated
-	 */
-	public Adapter createEAttributeCorrespondenceAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EReferenceCorrespondence <em>EReference Correspondence</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EReferenceCorrespondence
-	 * @generated
-	 */
-	public Adapter createEReferenceCorrespondenceAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentReferenceCorrespondence <em>EContainment Reference Correspondence</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentReferenceCorrespondence
-	 * @generated
-	 */
-	public Adapter createEContainmentReferenceCorrespondenceAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEFeatureCorrespondence <em>Partial EFeature Correspondence</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEFeatureCorrespondence
-	 * @generated
-	 */
-	public Adapter createPartialEFeatureCorrespondenceAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEAttributeCorrespondence <em>Partial EAttribute Correspondence</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEAttributeCorrespondence
-	 * @generated
-	 */
-	public Adapter createPartialEAttributeCorrespondenceAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEReferenceCorrespondence <em>Partial EReference Correspondence</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.PartialEReferenceCorrespondence
-	 * @generated
-	 */
-	public Adapter createPartialEReferenceCorrespondenceAdapter() {
 		return null;
 	}
 

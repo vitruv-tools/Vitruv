@@ -33,7 +33,7 @@ public class PackageMappingTransformationTest extends JaMoPP2PCMTransformationTe
         final CorrespondenceInstance ci = this.getCorrespondenceInstance();
         assertTrue("CorrespondenceInstance == null", null != ci);
         assertTrue("No repository found in correspondence instance.",
-                0 < ci.getAllEObjectsInCorrespondencesWithType(Repository.class).size());
+                0 < ci.getAllEObjectsOfTypeInCorrespondences(Repository.class).size());
     }
 
     /**

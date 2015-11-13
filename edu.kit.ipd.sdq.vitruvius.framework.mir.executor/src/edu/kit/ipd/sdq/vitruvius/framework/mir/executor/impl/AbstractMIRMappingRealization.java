@@ -6,6 +6,7 @@ import static org.eclipse.xtext.xbase.lib.IterableExtensions.toList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -23,7 +24,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EclipseHelper;
@@ -103,7 +104,7 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 		final MappedCorrespondenceInstance correspondenceInstance = getMappedCorrespondenceInstanceFromBlackboard(
 				blackboard);
 		final Set<Correspondence> removedCorrespondences = correspondenceInstance
-				.removeDirectAndChildrenCorrespondencesOnBothSides(target);
+				.removeCorrespondencesOfEObjectAndChildrenOnBothSides(target);
 		final TUID sourceTUID = correspondenceInstance.calculateTUIDFromEObject(source);
 
 		for (final Correspondence correspondence : removedCorrespondences) {
@@ -128,8 +129,8 @@ public abstract class AbstractMIRMappingRealization implements MIRMappingRealiza
 	private Collection<TUID> getTUIDsInCorrespondence(final Correspondence correspondence,
 			final CorrespondenceInstance correspondenceInstance) {
 		final Set<TUID> result = new HashSet<TUID>();
-		if (correspondence instanceof EObjectCorrespondence) {
-			final EObjectCorrespondence eObjectCorrespondence = (EObjectCorrespondence) correspondence;
+		if (correspondence instanceof Correspondence) {
+			final Correspondence eObjectCorrespondence = (Correspondence) correspondence;
 			result.add(eObjectCorrespondence.getElementATUID());
 			result.add(eObjectCorrespondence.getElementBTUID());
 		} else {

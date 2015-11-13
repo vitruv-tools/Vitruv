@@ -101,7 +101,7 @@ class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransfor
 			if (newCorrespondingEObject instanceof Member) {
 				jaMoPPDataType.members.add(newCorrespondingEObject)
 			}
-			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(newValue, newCorrespondingEObject)
+			blackboard.correspondenceInstance.createAndAddCorrespondence(newValue, newCorrespondingEObject)
 			if (newCorrespondingEObject instanceof JavaRoot) {
 				PCMJaMoPPUtils.addRootChangeToTransformationResult(newCorrespondingEObject, blackboard,
 					PCM2JaMoPPUtils.getSourceModelVURI(newAffectedEObject), transformationResult)

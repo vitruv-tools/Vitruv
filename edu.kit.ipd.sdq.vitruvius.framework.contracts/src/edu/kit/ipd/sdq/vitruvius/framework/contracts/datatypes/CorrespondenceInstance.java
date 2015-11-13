@@ -5,12 +5,8 @@ import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
 
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EContainmentReferenceCorrespondence;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 
 /**
@@ -35,10 +31,6 @@ public interface CorrespondenceInstance {
      *            the object for which correspondences should be looked up
      * @return true if # of corresponding objects > 0
      */
-    // FIXME MK will be replaced by next method (use extension method toList)
-    @Deprecated
-    public boolean hasCorrespondences(EObject eObject);
-
     public boolean hasCorrespondences(List<EObject> eObject);
 
     /**
@@ -59,10 +51,6 @@ public interface CorrespondenceInstance {
     // FIXME MK will no longer be provided (use extension method claimNotEmpty)
     @Deprecated
     public Set<Correspondence> claimCorrespondences(EObject eObject);
-
-    // FIXME MK will no longer be provided (use extension method claimNotEmpty)
-    @Deprecated
-    public Set<Correspondence> claimCorrespondences(List<EObject> eObjects);
 
     /**
      * Returns all correspondences for the specified object and an empty set if the object has no
@@ -90,7 +78,7 @@ public interface CorrespondenceInstance {
     @Deprecated
     public Set<Correspondence> getAllCorrespondences(TUID involvedTUID);
 
-    public Set<Correspondence> getCorrespondencesForTUIDs(List<TUID> involvedTUIDs);
+    public Set<Correspondence> getCorrespondencesForTUIDs(List<TUID> tuids);
 
     /**
      * Returns the corresponding objects for the specified object and throws a
@@ -103,10 +91,6 @@ public interface CorrespondenceInstance {
     // FIXME MK will no longer be provided (use extension method claimNotEmpty)
     @Deprecated
     public Set<EObject> claimCorrespondingEObjects(EObject eObject);
-
-    // FIXME MK will no longer be provided (use extension method claimNotEmpty)
-    @Deprecated
-    public Set<List<EObject>> claimCorrespondingEObjects(List<EObject> eObject);
 
     /**
      * Returns all corresponding objects for the specified object and an empty set if the object has
@@ -181,10 +165,6 @@ public interface CorrespondenceInstance {
     @Deprecated
     public Correspondence claimUniqueOrNullCorrespondenceForEObject(EObject eObject);
 
-    // FIXME MK will no longer be provided (use extension method claimNotMany)
-    @Deprecated
-    public Correspondence claimUniqueOrNullCorrespondenceForEObject(List<EObject> eObject);
-
     /**
      * Returns the correspondence for the given eObject if it is unique and throws a
      * {@link RuntimeException} if there is not exactly one corresponding object.
@@ -197,10 +177,6 @@ public interface CorrespondenceInstance {
     @Deprecated
     public Correspondence claimUniqueCorrespondence(EObject eObject);
 
-    // FIXME MK will no longer be provided (use extension method claimOne)
-    @Deprecated
-    public Correspondence claimUniqueCorrespondence(List<EObject> eObject);
-
     /**
      * Returns the SameTypeCorrespondence for the given eObjects a and b and throws a
      * {@link RuntimeException} if there is no such correspondence. Note that a has to be an element
@@ -212,7 +188,7 @@ public interface CorrespondenceInstance {
      */
     // FIXME MK will no longer be provided (use filter(typeOf(..)) and extension method claimOne)
     @Deprecated
-    public SameTypeCorrespondence claimUniqueSameTypeCorrespondence(final EObject a, final EObject b);
+    public Correspondence claimUniqueSameTypeCorrespondence(final EObject a, final EObject b);
 
     /**
      * Returns all eObjects that have some correspondence and are an instance of the given class.
@@ -221,11 +197,13 @@ public interface CorrespondenceInstance {
      *            the class for which instances should be returned
      * @return a set containing all eObjects of the given type that have a correspondence
      */
-    // FIXME rename to getAllEObjectsOfTypeInCorrespondences
-    public <T> Set<T> getAllEObjectsInCorrespondencesWithType(Class<T> type);
+    // renamed from getAllEObjectsInCorrespondencesWithType
+    // no longer provided (use filter(typeOf(..)))
+    @Deprecated
+    public <T> Set<T> getAllEObjectsOfTypeInCorrespondences(Class<T> type);
 
-    // FIXME rename and change param to addCorrespondence
-    public void addSameTypeCorrespondence(SameTypeCorrespondence correspondence);
+    // renamed from addSameTypeCorrespondence
+    public void addCorrespondence(Correspondence correspondence);
 
     /**
      * Removes all direct correspondences for the given eObject and all correspondences for children
@@ -236,8 +214,8 @@ public interface CorrespondenceInstance {
      *            for which all correspondences should be removed
      * @return a set containing all removed correspondences
      */
-    // FIXME MK rename to removeCorrespondencesOfEObjectAndChildrenOnBothSides
-    public Set<Correspondence> removeDirectAndChildrenCorrespondencesOnBothSides(EObject eObject);
+    // renamed from removeDirectAndChildrenCorrespondencesOnBothSides
+    public Set<Correspondence> removeCorrespondencesOfEObjectAndChildrenOnBothSides(EObject eObject);
 
     /**
      * Removes all direct correspondences for the eObject with the given tuid and all
@@ -249,8 +227,8 @@ public interface CorrespondenceInstance {
      *            for which all correspondences should be removed
      * @return a set containing all removed correspondences
      */
-    // FIXME MK rename to removeCorrespondencesOfEObjectAndChildrenOnBothSides
-    public Set<Correspondence> removeDirectAndChildrenCorrespondencesOnBothSides(TUID tuid);
+    // renamed from removeDirectAndChildrenCorrespondencesOnBothSides
+    public Set<Correspondence> removeCorrespondencesOfEObjectAndChildrenOnBothSides(TUID tuid);
 
     /**
      * Removes the given correspondence, all correspondences for the eObjects of the given
@@ -261,24 +239,8 @@ public interface CorrespondenceInstance {
      *            that should be removed
      * @return a set containing all removed correspondences
      */
-    // FIXME MK rename to removeCorrespondencesOfEObjectAndChildrenOnBothSides
-    public Set<Correspondence> removeNeighborAndChildrenCorrespondencesOnBothSides(Correspondence correspondence);
-
-    // FIXME MK will no longer be provided
-    @Deprecated
-    public Set<FeatureInstance> getAllCorrespondingFeatureInstances(EObject parentEObject, EStructuralFeature feature);
-
-    // FIXME MK will no longer be provided
-    @Deprecated
-    public Set<FeatureInstance> getAllCorrespondingFeatureInstances(FeatureInstance featureInstance);
-
-    // FIXME MK will no longer be provided
-    @Deprecated
-    public Set<FeatureInstance> claimCorrespondingFeatureInstances(FeatureInstance featureInstance);
-
-    // FIXME MK will no longer be provided
-    @Deprecated
-    public FeatureInstance claimUniqueCorrespondingFeatureInstance(FeatureInstance featureInstance);
+    // renamed from removeNeighborAndChildrenCorrespondencesOnBothSides
+    public Set<Correspondence> removeCorrespondencesOfEObjectsAndChildrenOnBothSides(Correspondence correspondence);
 
     /**
      * updates the TUID of an EObject
@@ -288,8 +250,8 @@ public interface CorrespondenceInstance {
      * @param newEObject
      *            the new EObject
      */
-    // FIXME MK rename to updateTUID
-    public void update(EObject oldEObject, EObject newEObject);
+    // renamed from update
+    public void updateTUID(EObject oldEObject, EObject newEObject);
 
     /**
      * Updates the old TUID with the TUID of the EObject. This method can be used when the TUID of
@@ -305,33 +267,50 @@ public interface CorrespondenceInstance {
      * @param newEObject
      *            the new EObject
      */
-    // FIXME MK rename to updateTUID
-    public void update(TUID oldTUID, EObject newEObject);
+    // renamed from update
+    public void updateTUID(TUID oldTUID, EObject newEObject);
 
-    // FIXME MK rename to updateTUID
-    public void update(TUID oldTUID, TUID newTUID);
+    // renamed from update
+    public void updateTUID(TUID oldTUID, TUID newTUID);
 
     public EObject resolveEObjectFromTUID(final TUID tuid);
 
-    public Set<EObject> resolveEObjectsFromTUIDs(final Set<TUID> tuid);
+    /**
+     * syntactic sugar for map[{@link #resolveEObjectFromTUID(TUID)}]
+     *
+     * @param tuid
+     * @return
+     */
+    public List<EObject> resolveEObjectsFromTUIDs(final List<TUID> tuids);
+
+    public Set<List<EObject>> resolveEObjectsSetsFromTUIDsSets(final Set<List<TUID>> tuidLists);
 
     public TUID calculateTUIDFromEObject(final EObject eObject);
+
+    /**
+     * syntactic sugar for map[{@link #calculateTUIDFromEObject(EObject)}]
+     * 
+     * @param eObjects
+     * @return
+     */
+    public List<TUID> calculateTUIDsFromEObjects(final List<EObject> eObjects);
 
     /**
      * SWAPS a and b if necessary!
      */
     // FIXME MK will no longer be provided
     @Deprecated
-    public EContainmentReferenceCorrespondence createAndAddEContainmentReferenceCorrespondence(EObject a, EObject b,
+    public Correspondence createAndAddEContainmentReferenceCorrespondence(EObject a, EObject b,
             EReference referenceFeatureA, EReference referenceFeatureB);
 
-    /**
-     * SWAPS a and b if necessary!
-     */
-    // FIXME MK rename to createAndAddOne2OneCorrespondence
-    public EObjectCorrespondence createAndAddEObjectCorrespondence(EObject a, EObject b);
+    // FIXME MK will be replaced by next method (use extension method toList)
+    @Deprecated
+    public Correspondence createAndAddCorrespondence(EObject a, EObject b);
 
-    public SameTypeCorrespondence createAndAddM2NCorrespondence(List<EObject> as, List<EObject> bs);
+    /**
+     * SWAPS eObjects1 and eObjects2 to obtain first as and then bs if necessary!
+     */
+    public Correspondence createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2);
 
     // FIXME MK will no longer be provided (use filter(typeOf(T)))
     @Deprecated

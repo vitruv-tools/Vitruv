@@ -3,7 +3,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence;
 
 import org.eclipse.emf.ecore.EFactory;
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -32,58 +31,13 @@ public interface CorrespondenceFactory extends EFactory {
 	Correspondences createCorrespondences();
 
 	/**
-	 * Returns a new object of class '<em>EObject Correspondence</em>'.
+	 * Returns a new object of class '<em>Correspondence</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>EObject Correspondence</em>'.
+	 * @return a new object of class '<em>Correspondence</em>'.
 	 * @generated
 	 */
-	EObjectCorrespondence createEObjectCorrespondence();
-
-	/**
-	 * Returns a new object of class '<em>EAttribute Correspondence</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>EAttribute Correspondence</em>'.
-	 * @generated
-	 */
-	EAttributeCorrespondence createEAttributeCorrespondence();
-
-	/**
-	 * Returns a new object of class '<em>EReference Correspondence</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>EReference Correspondence</em>'.
-	 * @generated
-	 */
-	EReferenceCorrespondence createEReferenceCorrespondence();
-
-	/**
-	 * Returns a new object of class '<em>EContainment Reference Correspondence</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>EContainment Reference Correspondence</em>'.
-	 * @generated
-	 */
-	EContainmentReferenceCorrespondence createEContainmentReferenceCorrespondence();
-
-	/**
-	 * Returns a new object of class '<em>Partial EAttribute Correspondence</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Partial EAttribute Correspondence</em>'.
-	 * @generated
-	 */
-	<TValue extends Object> PartialEAttributeCorrespondence<TValue> createPartialEAttributeCorrespondence();
-
-	/**
-	 * Returns a new object of class '<em>Partial EReference Correspondence</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Partial EReference Correspondence</em>'.
-	 * @generated
-	 */
-	<TValue extends EObject> PartialEReferenceCorrespondence<TValue> createPartialEReferenceCorrespondence();
+	Correspondence createCorrespondence();
 
 	/**
 	 * Returns the package supported by this factory.

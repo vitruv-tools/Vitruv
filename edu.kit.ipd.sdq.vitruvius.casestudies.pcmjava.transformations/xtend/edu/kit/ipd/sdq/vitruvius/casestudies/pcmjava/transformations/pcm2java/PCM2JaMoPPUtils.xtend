@@ -171,7 +171,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 				c.name = classifier.name
 			}
 		}
-		correspondenceInstance.update(oldClassifierTUID, classifier)
+		correspondenceInstance.updateTUID(oldClassifierTUID, classifier)
 	}
 
 	def public static void handleJavaRootNameChange(JavaRoot javaRoot, EStructuralFeature affectedFeature,
@@ -333,7 +333,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		}
 		val finalNamespace = namespace
 		var Set<Package> packagesWithCorrespondences = correspondenceInstance.
-			getAllEObjectsInCorrespondencesWithType(Package)
+			getAllEObjectsOfTypeInCorrespondences(Package)
 		val packagesWithNamespace = packagesWithCorrespondences.filter [ pack |
 			finalNamespace.equals(pack.namespacesAsString + pack.name)
 		]
@@ -627,7 +627,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 			return
 		}
 		for (newCorrespondingEObject : newCorrespondingEObjects) {
-			blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(namedElement, newCorrespondingEObject)
+			blackboard.correspondenceInstance.createAndAddCorrespondence(namedElement, newCorrespondingEObject)
 		}
 	}
 

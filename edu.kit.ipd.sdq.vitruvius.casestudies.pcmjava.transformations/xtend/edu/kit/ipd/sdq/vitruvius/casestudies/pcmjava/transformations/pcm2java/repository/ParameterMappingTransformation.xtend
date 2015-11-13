@@ -97,7 +97,7 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 					claimUniqueCorrespondingJaMoPPDataTypeReference(newValue as DataType, blackboard.correspondenceInstance)
 				correspondingParameter.setTypeReference(typeReference)
 				val oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(correspondingParameter)
-				blackboard.correspondenceInstance.update(oldTUID, correspondingParameter)
+				blackboard.correspondenceInstance.updateTUID(oldTUID, correspondingParameter)
 			} catch (RuntimeException e) {
 				logger.warn("Could not find correspondence for PCM data type " + oldValue + " . " + e)
 			}

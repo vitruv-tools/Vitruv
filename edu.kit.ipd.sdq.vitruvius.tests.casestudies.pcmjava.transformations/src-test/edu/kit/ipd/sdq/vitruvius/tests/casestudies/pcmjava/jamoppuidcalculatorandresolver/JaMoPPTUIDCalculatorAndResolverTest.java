@@ -91,7 +91,7 @@ public class JaMoPPTUIDCalculatorAndResolverTest {
         final ResourceSet newResourceSet = new ResourceSetImpl();
 
         // find TUIDs in new java file
-        final VURI vuri = this.jamoppTUIDCR.getModelVURIContainingIdentifiedEObject(tuidPackage);
+        final VURI vuri = VURI.getInstance(this.jamoppTUIDCR.getModelVURIContainingIdentifiedEObject(tuidPackage));
         logger.info(vuri);
         final Resource newJaMoPPResource = newResourceSet.getResource(vuri.getEMFUri(), true);
         final EObject newRootEObject = newJaMoPPResource.getContents().get(0);
@@ -121,7 +121,7 @@ public class JaMoPPTUIDCalculatorAndResolverTest {
         final EObject newRootEObject = newJaMoPPResource.getContents().get(0);
 
         // find TUIDs in new java file
-        final VURI vuri = this.jamoppTUIDCR.getModelVURIContainingIdentifiedEObject(tuidCu);
+        final VURI vuri = VURI.getInstance(this.jamoppTUIDCR.getModelVURIContainingIdentifiedEObject(tuidCu));
         System.out.println(vuri);
         final EObject newCompilationUnit = this.jamoppTUIDCR.resolveEObjectFromRootAndFullTUID(newRootEObject, tuidCu);
         System.out.println("New Compilation unit: " + newCompilationUnit);
@@ -147,8 +147,8 @@ public class JaMoPPTUIDCalculatorAndResolverTest {
 
         final List<ExpressionStatement> foundExpressionStatements = new ArrayList<ExpressionStatement>();
         for (final String expressoinStatementTUID : expressionStatementsTUIDs) {
-            final VURI containingFile = this.jamoppTUIDCR
-                    .getModelVURIContainingIdentifiedEObject(expressoinStatementTUID);
+            final VURI containingFile = VURI.getInstance(this.jamoppTUIDCR
+                    .getModelVURIContainingIdentifiedEObject(expressoinStatementTUID));
             final ResourceSet resourceSet = new ResourceSetImpl();
             final Resource jaMoPPResource = resourceSet.getResource(containingFile.getEMFUri(), true);
             final EObject rootEObject = jaMoPPResource.getContents().get(0);

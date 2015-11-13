@@ -56,7 +56,7 @@ class CompilationUnitMappingTransformation extends EmptyEObjectMappingTransforma
 						} else {
 							//do nothing, cause save is done later
 						}
-						blackboard.correspondenceInstance.createAndAddEObjectCorrespondence(system, newValue)
+						blackboard.correspondenceInstance.createAndAddCorrespondence(system, newValue)
 					}
 				}
 			}

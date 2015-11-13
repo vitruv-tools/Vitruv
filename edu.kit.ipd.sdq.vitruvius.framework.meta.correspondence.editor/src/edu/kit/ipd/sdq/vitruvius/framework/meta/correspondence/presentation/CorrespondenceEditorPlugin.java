@@ -8,8 +8,6 @@ import org.eclipse.emf.common.ui.EclipseUIPlugin;
 
 import org.eclipse.emf.common.util.ResourceLocator;
 
-import org.eclipse.emf.ecore.provider.EcoreEditPlugin;
-
 /**
  * This is the central singleton for the Correspondence editor plugin.
  * <!-- begin-user-doc -->
@@ -42,7 +40,6 @@ public final class CorrespondenceEditorPlugin extends EMFPlugin {
 	public CorrespondenceEditorPlugin() {
 		super
 			(new ResourceLocator [] {
-				EcoreEditPlugin.INSTANCE,
 			});
 	}
 

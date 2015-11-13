@@ -54,7 +54,7 @@ class JaMoPPTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResol
 	// Base class stuff
 	// ============================================================================
 
-	override protected getRootObjectClass() {
+	override protected Class<JavaRoot> getRootObjectClass() {
 		return JavaRoot
 	}
 
