@@ -21,6 +21,9 @@ import org.emftext.language.java.types.TypeReference
 import org.palladiosimulator.pcm.repository.OperationRequiredRole
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
 class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	private val Logger logger = Logger.getLogger(OperationRequiredRoleMappingTransformation.simpleName)
@@ -43,9 +46,9 @@ class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTran
 	override createEObject(EObject eObject) {
 		val OperationRequiredRole operationRequiredRole = eObject as OperationRequiredRole
 		val interfaceRequiringEntity = operationRequiredRole.requiringEntity_RequiredRole
-		val jaMoPPClass = blackboard.correspondenceInstance.claimUniqueCorrespondingEObjectByType(interfaceRequiringEntity, Class)
+		val jaMoPPClass = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(interfaceRequiringEntity, Class).claimOne
 		val opInterface = operationRequiredRole.requiredInterface__OperationRequiredRole
-		val jaMoPPInterface = blackboard.correspondenceInstance.claimUniqueCorrespondingEObjectByType(opInterface, Interface)
+		val jaMoPPInterface = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(opInterface, Interface).claimOne
 		val List<EObject> newEObjects = new ArrayList
 
 		if (null == jaMoPPInterface) {

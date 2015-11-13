@@ -14,6 +14,9 @@ import org.palladiosimulator.pcm.core.composition.AssemblyConnector
 import org.palladiosimulator.pcm.core.composition.AssemblyContext
 import org.palladiosimulator.pcm.core.entity.NamedElement
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
 class AssemblyConnectorMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	private val Logger logger = Logger.getLogger(AssemblyConnectorMappingTransformation.simpleName)
@@ -38,7 +41,7 @@ class AssemblyConnectorMappingTransformation extends EmptyEObjectMappingTransfor
 	
 	private def EObject[] updateConstructorForCorrespondingField(AssemblyContext assemblyContext, NamedElement pcmElement) {
 		try {
-			val field = blackboard.correspondenceInstance.claimUniqueCorrespondingEObjectByType(assemblyContext, Field)
+			val field = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(assemblyContext, Field).claimOne
 			val fields = (field.containingConcreteClassifier as Class).fields
 			var List<Parameter> parameters = newArrayList()
 			val constructors = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(assemblyContext, Constructor)
@@ -46,7 +49,7 @@ class AssemblyConnectorMappingTransformation extends EmptyEObjectMappingTransfor
 				parameters = constructors.get(0).parameters
 			}
 			val constructorCall = blackboard.correspondenceInstance.
-				claimUniqueCorrespondingEObjectByType(assemblyContext, NewConstructorCall)
+				getCorrespondingEObjectsByType(assemblyContext, NewConstructorCall).claimOne
 			PCM2JaMoPPUtils.updateArgumentsOfConstructorCall(field, fields, parameters, constructorCall)
 		} catch (RuntimeException re) {
 			logger.trace("Can not create corresponding objects for PCMElement " + pcmElement.entityName)

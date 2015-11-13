@@ -72,6 +72,9 @@ import org.emftext.language.java.members.ClassMethod
 import org.emftext.language.java.modifiers.Modifier
 import org.emftext.language.java.modifiers.Public
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
 abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	private static val Logger logger = Logger.getLogger(PCM2JaMoPPUtils.simpleName)
 
@@ -441,7 +444,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 
 	def static askUserForPackage(CorrespondenceInstance correspondenceInstance, Repository repository,
 		UserInteracting userInteractiong, String message) {
-		val packages = correspondenceInstance.getAllCorrespondingEObjects(repository).filter(typeof(Package))
+		val packages = correspondenceInstance.getCorrespondingEObjectsByType(repository, Package)
 		val List<String> options = new ArrayList<String>
 		for (pack : packages) {
 			options.add(pack.name)

@@ -20,6 +20,8 @@ import org.emftext.language.java.members.MembersPackage
 import org.emftext.language.java.modifiers.Modifier
 import org.emftext.language.java.types.TypeReference
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
 class JavaFieldTransformations extends Java2JMLTransformationBase {
 
 	static val LOGGER = Logger.getLogger(JavaFieldTransformations)
@@ -74,7 +76,7 @@ class JavaFieldTransformations extends Java2JMLTransformationBase {
 			changedObjects.addAll((affectedEObject as Field).renameInAllJMLSpecifications(newValue as String))
 			
 			// rename the corresponding fields
-			val jmlVariableDeclarations = blackboard.correspondenceInstance.getAllCorrespondingEObjects(affectedEObject).
+			val jmlVariableDeclarations = blackboard.correspondenceInstance.getCorrespondingEObjects(affectedEObject).
 				filter(VariableDeclarator).filter[identifier.equals(oldValue as String)]
 			for (jmlVariableDeclaration : jmlVariableDeclarations) {
 				LOGGER.trace("Updating " + jmlVariableDeclaration)

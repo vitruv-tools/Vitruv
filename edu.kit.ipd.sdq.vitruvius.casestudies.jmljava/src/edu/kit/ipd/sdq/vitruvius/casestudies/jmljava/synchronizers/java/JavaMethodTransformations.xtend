@@ -27,6 +27,8 @@ import org.emftext.language.java.statements.StatementsPackage
 import org.emftext.language.java.types.NamespaceClassifierReference
 import org.emftext.language.java.types.TypeReference
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
 class JavaMethodTransformations extends Java2JMLTransformationBase {
 
 	val static LOGGER = Logger.getLogger(JavaMethodTransformations)
@@ -106,7 +108,7 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 
 			changedObjects.addAll((affectedEObject as Method).renameInAllJMLSpecifications(newValue as String))
 
-			val jmlMethodDeclarations = blackboard.correspondenceInstance.getAllCorrespondingEObjects(affectedEObject).
+			val jmlMethodDeclarations = blackboard.correspondenceInstance.getCorrespondingEObjects(affectedEObject).
 				filter(MethodDeclaration)
 			for (jmlMethodDeclaration : jmlMethodDeclarations) {
 				LOGGER.trace("Updating " + jmlMethodDeclaration)

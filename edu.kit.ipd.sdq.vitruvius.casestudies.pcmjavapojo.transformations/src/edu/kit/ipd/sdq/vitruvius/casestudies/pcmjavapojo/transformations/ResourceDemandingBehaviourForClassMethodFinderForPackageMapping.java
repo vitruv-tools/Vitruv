@@ -9,6 +9,7 @@ import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 
 public class ResourceDemandingBehaviourForClassMethodFinderForPackageMapping
         implements ResourceDemandingBehaviourForClassMethodFinding {
@@ -29,8 +30,8 @@ public class ResourceDemandingBehaviourForClassMethodFinderForPackageMapping
     }
 
     private <T> T getFirstCorrespondingEObjectIfAny(final ClassMethod classMethod, final Class<T> correspondingClass) {
-        final Set<T> correspondingObjects = this.correspondenceInstance.getCorrespondingEObjectsByType(classMethod,
-                correspondingClass);
+        final Set<T> correspondingObjects = CorrespondenceInstanceUtil
+                .getCorrespondingEObjectsByType(this.correspondenceInstance, classMethod, correspondingClass);
         if (correspondingObjects == null || correspondingObjects.isEmpty()) {
             return null;
         }

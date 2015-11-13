@@ -28,13 +28,14 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JMLTUIDCalculato
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JaMoPPTUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 
 public class ShadowCopyCorrespondencesImpl implements ShadowCopyCorrespondencesWritable {
 
-	private static final Logger LOGGER = Logger.getLogger(ShadowCopyCorrespondencesImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(ShadowCopyCorrespondencesImpl.class);
     private static final TUIDCalculatorAndResolver JAMOPP_TUID_RESOLVER = new JaMoPPTUIDCalculatorAndResolver();
     private static final JMLTUIDCalculatorAndResolver JML_TUID_RESOLVER = new JMLTUIDCalculatorAndResolver();
     private final CachedModelInstanceLoader modelInstanceHelperJMLCopies = new CachedModelInstanceLoader();
@@ -47,76 +48,77 @@ public class ShadowCopyCorrespondencesImpl implements ShadowCopyCorrespondencesW
     private final Collection<CompilationUnit> javaCUs;
     private final boolean useJMLCopies;
 
-    public ShadowCopyCorrespondencesImpl(CorrespondenceInstance ci, Collection<CompilationUnit> javaCUs,
-            boolean useJMLCopies) {
+    public ShadowCopyCorrespondencesImpl(final CorrespondenceInstance ci, final Collection<CompilationUnit> javaCUs,
+            final boolean useJMLCopies) {
         this.ci = ci;
         this.javaCUs = javaCUs;
         this.useJMLCopies = useJMLCopies;
     }
 
-    public void addCorrespondence(JMLSpecifiedElement jml, Member java) {
-            jmlElementToShadowMember.put(jml, java);
+    @Override
+    public void addCorrespondence(final JMLSpecifiedElement jml, final Member java) {
+        this.jmlElementToShadowMember.put(jml, java);
     }
 
     @Override
-    public void addCorrespondence(JMLExpressionHaving jml, Statement java) {
-            jmlExpression2ShadowStatement.put(jml, java);
+    public void addCorrespondence(final JMLExpressionHaving jml, final Statement java) {
+        this.jmlExpression2ShadowStatement.put(jml, java);
     }
 
     @Override
-    public Statement get(JMLExpressionHaving jml) {
-            return jmlExpression2ShadowStatement.get(jml);
+    public Statement get(final JMLExpressionHaving jml) {
+        return this.jmlExpression2ShadowStatement.get(jml);
     }
 
     @Override
-    public JMLExpressionHaving get(Statement stmt) {
-            return jmlExpression2ShadowStatement.inverse().get(stmt);
+    public JMLExpressionHaving get(final Statement stmt) {
+        return this.jmlExpression2ShadowStatement.inverse().get(stmt);
     }
 
     @Override
-    public JMLSpecifiedElement get(Member javaMember) {
-            return jmlElementToShadowMember.inverse().get(javaMember);
+    public JMLSpecifiedElement get(final Member javaMember) {
+        return this.jmlElementToShadowMember.inverse().get(javaMember);
     }
 
     @Override
-    public Member getMember(JMLSpecifiedElement jml) {
-            return jmlElementToShadowMember.get(jml);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T extends NamedElement> T getShadow(T original) {
-            if (!javaToShadowElement.containsKey(original)) {
-                String originalTUID = ci.calculateTUIDFromEObject(original).toString();
-                ModelInstance shadowModelInstance = modelInstanceHelperShadow.loadModelInstance(original.eResource()
-                        .getURI());
-                EObject shadowModelRoot = shadowModelInstance.getUniqueTypedRootEObject(CompilationUnit.class);
-                EObject resolvedObject = JAMOPP_TUID_RESOLVER.resolveEObjectFromRootAndFullTUID(shadowModelRoot,
-                        originalTUID);
-                if (javaToShadowElement.containsValue(resolvedObject)) {
-                    return (T) resolvedObject;
-                }
-                javaToShadowElement.put(original, (T) resolvedObject);
-            }
-            return (T) javaToShadowElement.get(original);
+    public Member getMember(final JMLSpecifiedElement jml) {
+        return this.jmlElementToShadowMember.get(jml);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends NamedElement> T getOriginal(T shadow) {
-            if (!javaToShadowElement.inverse().containsKey(shadow)) {
-                String shadowTUID = ci.calculateTUIDFromEObject(shadow).toString();
-                CompilationUnit originalRoot = null;
-                for (CompilationUnit cu : javaCUs) {
-                    if (cu.eResource().equals(shadow.eResource())) {
-                        originalRoot = cu;
-                    }
-                }
-                EObject resolvedObject = JAMOPP_TUID_RESOLVER.resolveEObjectFromRootAndFullTUID(originalRoot,
-                        shadowTUID);
-                javaToShadowElement.inverse().put(shadow, (T) resolvedObject);
+    public <T extends NamedElement> T getShadow(final T original) {
+        if (!this.javaToShadowElement.containsKey(original)) {
+            final String originalTUID = this.ci.calculateTUIDFromEObject(original).toString();
+            final ModelInstance shadowModelInstance = this.modelInstanceHelperShadow
+                    .loadModelInstance(original.eResource().getURI());
+            final EObject shadowModelRoot = shadowModelInstance.getUniqueTypedRootEObject(CompilationUnit.class);
+            final EObject resolvedObject = JAMOPP_TUID_RESOLVER.resolveEObjectFromRootAndFullTUID(shadowModelRoot,
+                    originalTUID);
+            if (this.javaToShadowElement.containsValue(resolvedObject)) {
+                return (T) resolvedObject;
             }
-            return (T) javaToShadowElement.inverse().get(shadow);
+            this.javaToShadowElement.put(original, (T) resolvedObject);
+        }
+        return (T) this.javaToShadowElement.get(original);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends NamedElement> T getOriginal(final T shadow) {
+        if (!this.javaToShadowElement.inverse().containsKey(shadow)) {
+            final String shadowTUID = this.ci.calculateTUIDFromEObject(shadow).toString();
+            CompilationUnit originalRoot = null;
+            for (final CompilationUnit cu : this.javaCUs) {
+                if (cu.eResource().equals(shadow.eResource())) {
+                    originalRoot = cu;
+                }
+            }
+            final EObject resolvedObject = JAMOPP_TUID_RESOLVER.resolveEObjectFromRootAndFullTUID(originalRoot,
+                    shadowTUID);
+            this.javaToShadowElement.inverse().put(shadow, (T) resolvedObject);
+        }
+        return (T) this.javaToShadowElement.inverse().get(shadow);
 
     }
 
@@ -127,18 +129,19 @@ public class ShadowCopyCorrespondencesImpl implements ShadowCopyCorrespondencesW
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends EObject> Set<T> getCorrespondingEObjectsByType(EObject eObject, Class<T> type) {
-        Set<T> correspondingElements = ci.getCorrespondingEObjectsByType(eObject, type);
-        if (correspondingElements == null || !useJMLCopies) {
+    public <T extends EObject> Set<T> getCorrespondingEObjectsByType(final EObject eObject, final Class<T> type) {
+        final Set<T> correspondingElements = CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(this.ci, eObject,
+                type);
+        if (correspondingElements == null || !this.useJMLCopies) {
             return correspondingElements;
         }
 
-        Set<T> copies = new HashSet<T>();
-        for (T correspondingElement : correspondingElements) {
-            ModelInstance mi = modelInstanceHelperJMLCopies
+        final Set<T> copies = new HashSet<T>();
+        for (final T correspondingElement : correspondingElements) {
+            final ModelInstance mi = this.modelInstanceHelperJMLCopies
                     .loadModelInstance(correspondingElement.eResource().getURI());
-            T correspondingElementCopy = (T) ci.resolveEObjectFromRootAndFullTUID(mi.getUniqueRootEObject(),
-                    ci.calculateTUIDFromEObject(correspondingElement).toString());
+            final T correspondingElementCopy = (T) this.ci.resolveEObjectFromRootAndFullTUID(mi.getUniqueRootEObject(),
+                    this.ci.calculateTUIDFromEObject(correspondingElement).toString());
             copies.add(correspondingElementCopy);
         }
         return copies;
@@ -146,37 +149,38 @@ public class ShadowCopyCorrespondencesImpl implements ShadowCopyCorrespondencesW
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends EObject> T getJMLElement(T original) {
-        TUID originalTUID = ci.calculateTUIDFromEObject(original);
-        if (!useJMLCopies) {
-            return (T) ci.resolveEObjectFromTUID(originalTUID);
+    public <T extends EObject> T getJMLElement(final T original) {
+        final TUID originalTUID = this.ci.calculateTUIDFromEObject(original);
+        if (!this.useJMLCopies) {
+            return (T) this.ci.resolveEObjectFromTUID(originalTUID);
         }
 
-        ModelInstance mi = modelInstanceHelperJMLCopies.loadModelInstance(original.eResource().getURI());
+        final ModelInstance mi = this.modelInstanceHelperJMLCopies.loadModelInstance(original.eResource().getURI());
         return (T) JML_TUID_RESOLVER.resolveEObjectFromRootAndFullTUID(mi.getUniqueRootEObject(),
                 originalTUID.toString());
     }
 
     @Override
     public CachedModelInstanceLoader getShadowModelInstanceLoaderJML() {
-        return modelInstanceHelperJMLCopies;
+        return this.modelInstanceHelperJMLCopies;
     }
 
     @Override
-    public Collection<Setting> findReferencesToJavaObject(EObject obj) {
-    	LOGGER.debug("Starting to find references to " + obj);
-    	long timestamp1 = System.currentTimeMillis();
-        Collection<Setting> tmp = modelInstanceHelperShadow.findObjectReferences(obj);
-        LOGGER.debug("Finished finding references. Duration: " + (System.currentTimeMillis() - timestamp1)/1000 + " s.");
+    public Collection<Setting> findReferencesToJavaObject(final EObject obj) {
+        LOGGER.debug("Starting to find references to " + obj);
+        final long timestamp1 = System.currentTimeMillis();
+        final Collection<Setting> tmp = this.modelInstanceHelperShadow.findObjectReferences(obj);
+        LOGGER.debug(
+                "Finished finding references. Duration: " + (System.currentTimeMillis() - timestamp1) / 1000 + " s.");
         return tmp;
     }
 
     @Override
-    public void addCorrespondence(Member shadowMember, ClassMethod specContainingMember) {
-        jmlShadowMemberToSpecContainingMethod.put(shadowMember, specContainingMember);
-        //TODO this feature should be documented as well as the limitations
+    public void addCorrespondence(final Member shadowMember, final ClassMethod specContainingMember) {
+        this.jmlShadowMemberToSpecContainingMethod.put(shadowMember, specContainingMember);
+        // TODO this feature should be documented as well as the limitations
         if (shadowMember instanceof Method) {
-            Method shadowMethod = (Method) shadowMember;
+            final Method shadowMethod = (Method) shadowMember;
             for (int i = 0; i < shadowMethod.getParameters().size(); ++i) {
                 shadowMethod.getParameters().get(i).eAdapters()
                         .add(new MethodParameterObserver(specContainingMember.getParameters().get(i)));
@@ -186,21 +190,18 @@ public class ShadowCopyCorrespondencesImpl implements ShadowCopyCorrespondencesW
 
     @Override
     public Set<Entry<Member, ClassMethod>> getSpecContainingMethods() {
-        return jmlShadowMemberToSpecContainingMethod.entrySet();
+        return this.jmlShadowMemberToSpecContainingMethod.entrySet();
     }
 
     @Override
-    public ClassMethod getSpecContainingMethod(Member shadowMember) {
-        return jmlShadowMemberToSpecContainingMethod.get(shadowMember);
+    public ClassMethod getSpecContainingMethod(final Member shadowMember) {
+        return this.jmlShadowMemberToSpecContainingMethod.get(shadowMember);
     }
-    
-    
-    
-    
+
     /**
      * Observer for changes on method parameters. It contains a corresponding parameter to which all
      * changes shall be applied. At the moment not all changes are implemented.
-     * 
+     *
      * @author Stephan Seifermann
      *
      */
@@ -212,62 +213,67 @@ public class ShadowCopyCorrespondencesImpl implements ShadowCopyCorrespondencesW
 
         /**
          * Constructor.
-         * @param correspondingParameter The parameter on which the changes shall be applied.
+         *
+         * @param correspondingParameter
+         *            The parameter on which the changes shall be applied.
          */
-        public MethodParameterObserver(Parameter correspondingParameter) {
+        public MethodParameterObserver(final Parameter correspondingParameter) {
             this.correspondingParameter = correspondingParameter;
         }
 
         @Override
-        public void notifyChanged(Notification msg) {
-            if (processingChange) {
+        public void notifyChanged(final Notification msg) {
+            if (this.processingChange) {
                 return;
             }
-            processingChange = true;
+            this.processingChange = true;
             switch (msg.getEventType()) {
             case Notification.SET:
-                applySet((EStructuralFeature) msg.getFeature(), msg.getOldValue(), msg.getNewValue());
+                this.applySet((EStructuralFeature) msg.getFeature(), msg.getOldValue(), msg.getNewValue());
                 break;
             case Notification.UNSET:
-                applyUnset((EStructuralFeature) msg.getFeature());
+                this.applyUnset((EStructuralFeature) msg.getFeature());
                 break;
             default:
-                LOGGER.trace("Ignoring change on parameter " + ((Parameter) getTarget()).getName() + ".");
+                LOGGER.trace("Ignoring change on parameter " + ((Parameter) this.getTarget()).getName() + ".");
                 // TODO implement more
             }
-            processingChange = false;
+            this.processingChange = false;
         }
 
         /**
          * Applies a set change
-         * @param feature The changed feature
-         * @param oldValue The old value of the feature
-         * @param newValue The new value of the feature
+         *
+         * @param feature
+         *            The changed feature
+         * @param oldValue
+         *            The old value of the feature
+         * @param newValue
+         *            The new value of the feature
          */
-        private void applySet(EStructuralFeature feature, Object oldValue, Object newValue) {
+        private void applySet(final EStructuralFeature feature, final Object oldValue, final Object newValue) {
             LOGGER.debug("Updating feature " + feature.getName() + " from " + oldValue + " to " + newValue + ".");
-            correspondingParameter.eSet(feature, newValue);
+            this.correspondingParameter.eSet(feature, newValue);
         }
 
         /**
          * Applies an unset change
-         * @param feature The changed feature
+         *
+         * @param feature
+         *            The changed feature
          */
-        private void applyUnset(EStructuralFeature feature) {
+        private void applyUnset(final EStructuralFeature feature) {
             LOGGER.debug("Unsetting feature " + feature.getName() + ".");
-            correspondingParameter.eUnset(feature);
+            this.correspondingParameter.eUnset(feature);
         }
 
     }
 
-
-
-
-	@Override
-	public void saveAll() throws IOException {
-		for (ModelInstance mi : modelInstanceHelperShadow.getAllCachedModelInstances()) {
-			EcoreResourceBridge.saveResource(mi.getResource());
-		}
-	}
+    @Override
+    public void saveAll() throws IOException {
+        for (final ModelInstance mi : this.modelInstanceHelperShadow.getAllCachedModelInstances()) {
+            EcoreResourceBridge.saveResource(mi.getResource());
+        }
+    }
 
 }

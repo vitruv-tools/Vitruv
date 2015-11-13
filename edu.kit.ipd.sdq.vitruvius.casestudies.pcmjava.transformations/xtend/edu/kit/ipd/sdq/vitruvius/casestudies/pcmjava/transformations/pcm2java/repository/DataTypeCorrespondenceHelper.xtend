@@ -17,6 +17,10 @@ import org.emftext.language.java.types.Type
 import org.emftext.language.java.types.TypeReference
 import org.emftext.language.java.types.TypesFactory
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
+
 /**
  * Mapping transformation for primitive data types
  * Mapping is as follows:
@@ -82,7 +86,7 @@ class DataTypeCorrespondenceHelper {
 	}
 
 	private static def dispatch Type claimUniqueCorrespondingType(CollectionDataType cdt, CorrespondenceInstance ci) {
-		return ci.claimUniqueCorrespondingEObjectByType(cdt, ConcreteClassifier)
+		return ci.getCorrespondingEObjectsByType(cdt, ConcreteClassifier).claimOne
 	}
 
 	private static def dispatch Type claimUniqueCorrespondingType(PrimitiveDataType pdt, CorrespondenceInstance ci) {
@@ -90,6 +94,6 @@ class DataTypeCorrespondenceHelper {
 	}
 
 	private static def dispatch Type claimUniqueCorrespondingType(CompositeDataType cdt, CorrespondenceInstance ci) {
-		return ci.claimUniqueCorrespondingEObjectByType(cdt, ConcreteClassifier)
+		return ci.getCorrespondingEObjectsByType(cdt, ConcreteClassifier).claimOne
 	}
 }

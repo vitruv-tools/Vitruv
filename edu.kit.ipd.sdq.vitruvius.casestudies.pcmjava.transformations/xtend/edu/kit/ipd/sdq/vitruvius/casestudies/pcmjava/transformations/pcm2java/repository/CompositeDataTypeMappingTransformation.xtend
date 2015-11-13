@@ -18,6 +18,10 @@ import org.emftext.language.java.modifiers.ModifiersFactory
 import org.palladiosimulator.pcm.repository.CompositeDataType
 import org.emftext.language.java.containers.JavaRoot
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
+
 /**
  * Maps a composite DataType to a class in the data types package.
  * 
@@ -96,7 +100,7 @@ class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransfor
 		}
 		val compositeDataType = newAffectedEObject as CompositeDataType
 		val jaMoPPDataType = blackboard.correspondenceInstance.
-			claimUniqueCorrespondingEObjectByType(compositeDataType, Class)
+			getCorrespondingEObjectsByType(compositeDataType, Class).claimOne
 		for (newCorrespondingEObject : newCorrespondingEObjects) {
 			if (newCorrespondingEObject instanceof Member) {
 				jaMoPPDataType.members.add(newCorrespondingEObject)

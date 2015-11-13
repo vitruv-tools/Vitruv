@@ -15,6 +15,9 @@ import org.emftext.language.java.parameters.Parameter
 import org.palladiosimulator.pcm.core.composition.RequiredDelegationConnector
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
 class RequiredDelegationConnectorMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	private val Logger logger = Logger.getLogger(RequiredDelegationConnectorMappingTransformation.simpleName)
@@ -34,14 +37,14 @@ class RequiredDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 		val requiredDelegationConnector = eObject as RequiredDelegationConnector
 		val assemblyContext = requiredDelegationConnector.assemblyContext_RequiredDelegationConnector
 		try {
-			val field = blackboard.correspondenceInstance.claimUniqueCorrespondingEObjectByType(assemblyContext, Field)
+			val field = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(assemblyContext, Field).claimOne
 			val parameters = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(
 				requiredDelegationConnector.innerRequiredRole_RequiredDelegationConnector, Parameter)
 			if (parameters.nullOrEmpty) {
 				return null
 			}
 			val constructorCallForField = blackboard.correspondenceInstance.
-				claimUniqueCorrespondingEObjectByType(assemblyContext, NewConstructorCall)
+				getCorrespondingEObjectsByType(assemblyContext, NewConstructorCall).claimOne
 			var parametersToUse = emptyList
 			val correspondingConstructors = blackboard.correspondenceInstance.
 				getCorrespondingEObjectsByType(assemblyContext, Constructor)
@@ -52,7 +55,7 @@ class RequiredDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 
 			PCM2JaMoPPUtils.updateArgumentsOfConstructorCall(field, fieldsToUseAsPossibleParameters, parametersToUse,
 				constructorCallForField)
-			return field.toArray
+			return field.toList
 		} catch (RuntimeException re) {
 			logger.trace(
 				"Could not generate a corresponding object for required delegation role" + requiredDelegationConnector +

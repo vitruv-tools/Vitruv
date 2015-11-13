@@ -24,6 +24,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 
 /**
@@ -114,8 +115,8 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
 
     private boolean isMethodArchitectureRelevant(final ClassMethod method, final CorrespondenceInstance ci) {
         if (null != method) {
-            final Set<ResourceDemandingBehaviour> correspondingEObjectsByType = ci
-                    .getCorrespondingEObjectsByType(method, ResourceDemandingBehaviour.class);
+            final Set<ResourceDemandingBehaviour> correspondingEObjectsByType = CorrespondenceInstanceUtil
+                    .getCorrespondingEObjectsByType(ci, method, ResourceDemandingBehaviour.class);
             if (null != correspondingEObjectsByType && !correspondingEObjectsByType.isEmpty()) {
                 return true;
             }
@@ -140,7 +141,7 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
             final ResourceDemandingBehaviour newResourceDemandingBehaviourElements,
             final BasicComponent basicComponent) {
         for (final AbstractAction abstractAction : newResourceDemandingBehaviourElements.getSteps_Behaviour()) {
-            ci.createAndAddCorrespondence(abstractAction, this.newMethod);
+            CorrespondenceInstanceUtil.createAndAddCorrespondence(ci, abstractAction, this.newMethod);
         }
     }
 
@@ -159,8 +160,8 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
     }
 
     private void removeCorrespondingAbstractActions(final CorrespondenceInstance ci) {
-        final Set<AbstractAction> correspondingAbstractActions = ci.getCorrespondingEObjectsByType(this.oldMethod,
-                AbstractAction.class);
+        final Set<AbstractAction> correspondingAbstractActions = CorrespondenceInstanceUtil
+                .getCorrespondingEObjectsByType(ci, this.oldMethod, AbstractAction.class);
         if (null == correspondingAbstractActions) {
             return;
         }
@@ -209,8 +210,8 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
     }
 
     private ResourceDemandingBehaviour findRdBehaviorToInsertElements(final CorrespondenceInstance ci) {
-        final Set<ResourceDemandingBehaviour> correspondingResourceDemandingBehaviours = ci
-                .getCorrespondingEObjectsByType(this.oldMethod, ResourceDemandingBehaviour.class);
+        final Set<ResourceDemandingBehaviour> correspondingResourceDemandingBehaviours = CorrespondenceInstanceUtil
+                .getCorrespondingEObjectsByType(ci, this.oldMethod, ResourceDemandingBehaviour.class);
         if (null == correspondingResourceDemandingBehaviours || correspondingResourceDemandingBehaviours.isEmpty()) {
             logger.warn("No ResourceDemandingBehaviours found for method " + this.oldMethod
                     + ". Could not create ResourceDemandingBehavoir to insert SEFF elements");

@@ -11,6 +11,10 @@ import org.palladiosimulator.pcm.repository.OperationInterface
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
+
 class TypeReferenceMappingTransformation extends DefaultEObjectMappingTransformation {
 
 	override getClassOfMappedEObject() {
@@ -45,7 +49,7 @@ class TypeReferenceMappingTransformation extends DefaultEObjectMappingTransforma
 				return null
 			}
 			val basicComponent = correspondingBasicComponents.get(0)
-			return createOperationProvidedRole(basicComponent, operationInterface).toArray
+			return createOperationProvidedRole(basicComponent, operationInterface).toList
 		}
 		return null
 	}

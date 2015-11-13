@@ -22,6 +22,8 @@ import org.palladiosimulator.pcm.repository.OperationSignature
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF
 import org.palladiosimulator.pcm.seff.SeffFactory
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
 class ClassMethodMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	override getClassOfMappedEObject() {

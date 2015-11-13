@@ -13,6 +13,7 @@ import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 
 /**
  * Class realizes a InterfaceOfExternalCallFinding for the simple package mapping
@@ -74,13 +75,14 @@ public class InterfaceOfExternalCallFinderForPackageMapping implements Interface
      * @return
      */
     private OperationSignature queryInterfaceOperation(final Method invokedMethod) {
-        final Set<OperationSignature> correspondingOpSigs = this.correspondenceInstance
-                .getCorrespondingEObjectsByType(invokedMethod, OperationSignature.class);
+        final Set<OperationSignature> correspondingOpSigs = CorrespondenceInstanceUtil
+                .getCorrespondingEObjectsByType(this.correspondenceInstance, invokedMethod, OperationSignature.class);
         if (null != correspondingOpSigs && 0 < correspondingOpSigs.size()) {
             return correspondingOpSigs.iterator().next();
         }
-        final Set<ResourceDemandingSEFF> correspondingRDSEFFs = this.correspondenceInstance
-                .getCorrespondingEObjectsByType(invokedMethod, ResourceDemandingSEFF.class);
+        final Set<ResourceDemandingSEFF> correspondingRDSEFFs = CorrespondenceInstanceUtil
+                .getCorrespondingEObjectsByType(this.correspondenceInstance, invokedMethod,
+                        ResourceDemandingSEFF.class);
         if (null != correspondingRDSEFFs && 0 < correspondingRDSEFFs.size()) {
             for (final ResourceDemandingSEFF seff : correspondingRDSEFFs) {
                 if (seff.getDescribedService__SEFF() instanceof OperationSignature) {

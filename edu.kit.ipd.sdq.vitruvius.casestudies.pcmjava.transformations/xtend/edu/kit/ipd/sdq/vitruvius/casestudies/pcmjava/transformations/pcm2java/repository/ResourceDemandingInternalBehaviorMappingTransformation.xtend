@@ -9,6 +9,9 @@ import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.types.TypesFactory
 import org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
 class ResourceDemandingInternalBehaviorMappingTransformation extends DefaultEObjectMappingTransformation {
 
 	val private static Logger logger = Logger.getLogger(

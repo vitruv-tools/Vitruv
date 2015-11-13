@@ -18,6 +18,10 @@ import org.palladiosimulator.pcm.repository.DataType
 import org.palladiosimulator.pcm.repository.Parameter
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
+
 class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	val private static Logger logger = Logger.getLogger(ParameterMappingTransformation.simpleName)
@@ -43,7 +47,7 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 			return #[]
 		}
 		jaMoPPParam.setTypeReference(typeReference)
-		return jaMoPPParam.toArray;
+		return jaMoPPParam.toList;
 	}
 
 	/**

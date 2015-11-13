@@ -12,7 +12,7 @@ class CorrespondenceHelper {
 	private static val LOGGER = Logger.getLogger(CorrespondenceHelper)
 	
 	public static def <T extends EObject> T getSingleCorrespondingEObjectOfType(CorrespondenceInstance ci, EObject subject, Class<T> type) {
-		val correspondingEObjects = ci.getAllCorrespondingEObjects(subject).filter(type)
+		val correspondingEObjects = ci.getCorrespondingEObjects(subject.toList).filter(type)
 		if (correspondingEObjects.empty) {
 			return null
 		}
@@ -23,7 +23,7 @@ class CorrespondenceHelper {
 	}
 	
 	public static def getSingleCorrespondence(CorrespondenceInstance ci, EObject srcElement, EObject dstElement) {
-		val corrs = ci.getAllCorrespondences(srcElement)
+		val corrs = ci.getCorrespondences(srcElement.toList)
 		val sameTypeCorrs = corrs.filter(Correspondence)
 		val dstTUID = ci.calculateTUIDsFromEObjects(dstElement.toList).claimOne
 		val result =  sameTypeCorrs.findFirst[elementBTUID.equals(dstTUID) || elementATUID.equals(dstTUID)]

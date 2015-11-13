@@ -61,6 +61,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.BlackboardImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.unittests.utils.Initializer;
@@ -300,7 +301,8 @@ public abstract class TransformationTestsBase {
     }
 
     protected void assertNumberOfCorrespondences(final int expected, final EObject object) {
-        Assert.assertEquals(expected, this.correspondenceInstance.getAllCorrespondences(object).size());
+        Assert.assertEquals(expected,
+                this.correspondenceInstance.getCorrespondences(CollectionBridge.toList(object)).size());
     }
 
     protected void assertNumberOfRealUpdateCalls(final int expected) {

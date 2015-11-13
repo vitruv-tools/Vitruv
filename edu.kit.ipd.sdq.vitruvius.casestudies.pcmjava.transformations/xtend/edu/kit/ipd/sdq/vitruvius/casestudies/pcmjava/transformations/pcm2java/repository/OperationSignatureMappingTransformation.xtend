@@ -21,6 +21,10 @@ import org.palladiosimulator.pcm.repository.DataType
 import org.palladiosimulator.pcm.repository.OperationSignature
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
+
 class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	private static val Logger logger = Logger.getLogger(OperationSignatureMappingTransformation.simpleName)
@@ -48,7 +52,7 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 				claimUniqueCorrespondingJaMoPPDataTypeReference(opSig.returnType__OperationSignature, blackboard.correspondenceInstance)
 			ifMethod.typeReference = retTypeRef
 		}
-		return ifMethod.toArray
+		return ifMethod.toList
 	}
 
 	/**
@@ -56,7 +60,7 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 	 * e.g the InterfaceMethod --> the deletion has do be done in the next step
 	 */
 	override removeEObject(EObject eObject) {
-		val correspondingEObjects = blackboard.correspondenceInstance.getAllCorrespondingEObjects(eObject)
+		val correspondingEObjects = blackboard.correspondenceInstance.getCorrespondingEObjects(eObject)
 		TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
 		return correspondingEObjects
 
@@ -101,7 +105,7 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 	 */
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
-		val jaMoPPIfMethod = blackboard.correspondenceInstance.getAllCorrespondingEObjects(newAffectedEObject)
+		val jaMoPPIfMethod = blackboard.correspondenceInstance.getCorrespondingEObjects(newAffectedEObject)
 		for (correspondingEObject : oldCorrespondingEObjectsToDelete) {
 			EcoreUtil.delete(correspondingEObject, true)
 		}
@@ -143,7 +147,7 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 			return transformationResult
 		}
 		val InterfaceMethod correspondingInterfaceMethod = blackboard.correspondenceInstance.
-			claimUniqueCorrespondingEObjectByType(affectedEObject, InterfaceMethod)
+			getCorrespondingEObjectsByType(affectedEObject, InterfaceMethod).claimOne
 		val TypeReference newTypeReference = DataTypeCorrespondenceHelper.
 			claimUniqueCorrespondingJaMoPPDataTypeReference(newValue as DataType, blackboard.correspondenceInstance)
 		val oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(correspondingInterfaceMethod)

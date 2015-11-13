@@ -8,6 +8,10 @@ import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.parameters.Parameter
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
+
 class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	override getClassOfMappedEObject() {
@@ -36,7 +40,7 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 			getCorrespondingPCMDataTypeForTypeReference(jaMoPPParam.typeReference, blackboard.correspondenceInstance,
 				userInteracting, null)
 		pcmParameter.entityName = jaMoPPParam.name
-		return pcmParameter.toArray
+		return pcmParameter.toList
 	}
 
 	/**

@@ -15,6 +15,9 @@ import org.emftext.language.java.members.Method
 import org.palladiosimulator.pcm.repository.OperationSignature
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
 class SEFFMappingTransformation extends DefaultEObjectMappingTransformation {
 
 	val private static Logger logger = Logger.getLogger(SEFFMappingTransformation.simpleName)
@@ -99,7 +102,7 @@ class SEFFMappingTransformation extends DefaultEObjectMappingTransformation {
 			}else{
 				correspondinClassgMethod.name = correspondingInterfaceMethod.name
 			}
-			return correspondinClassgMethod.toArray
+			return correspondinClassgMethod.toList
 		} else {
 			// warn user
 			userInteracting.showMessage(UserInteractionType.MODELESS,

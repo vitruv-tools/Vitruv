@@ -14,6 +14,8 @@ import org.emftext.language.java.containers.Package
 import org.palladiosimulator.pcm.repository.BasicComponent
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+
 class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	//val private static Logger logger = Logger.getLogger(BasicComponentMappingTransformation.simpleName)
@@ -41,7 +43,7 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 			return transformationResult
 		}
 		for (jaMoPPElement : newCorrespondingEObjects) {
-			blackboard.correspondenceInstance.createAndAddCorrespondence(newValue, jaMoPPElement)
+			blackboard.correspondenceInstance.createAndAddCorrespondence(newValue.toList, jaMoPPElement.toList)
 		}
 		transformationResult
 	}

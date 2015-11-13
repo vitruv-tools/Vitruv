@@ -13,22 +13,22 @@ import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.util.EcoreUtil
+import org.emftext.language.java.expressions.ExpressionsFactory
 import org.emftext.language.java.members.ClassMethod
 import org.emftext.language.java.members.Field
 import org.emftext.language.java.members.MembersFactory
 import org.emftext.language.java.members.Method
+import org.emftext.language.java.modifiers.ModifiersFactory
+import org.emftext.language.java.operators.OperatorsFactory
+import org.emftext.language.java.parameters.ParametersFactory
+import org.emftext.language.java.references.ReferencesFactory
+import org.emftext.language.java.statements.StatementsFactory
 import org.emftext.language.java.types.TypeReference
+import org.emftext.language.java.types.TypesFactory
 import org.emftext.language.java.types.Void
 import org.palladiosimulator.pcm.repository.DataType
 import org.palladiosimulator.pcm.repository.InnerDeclaration
 import org.palladiosimulator.pcm.repository.RepositoryFactory
-import org.emftext.language.java.references.ReferencesFactory
-import org.emftext.language.java.modifiers.ModifiersFactory
-import org.emftext.language.java.statements.StatementsFactory
-import org.emftext.language.java.types.TypesFactory
-import org.emftext.language.java.parameters.ParametersFactory
-import org.emftext.language.java.expressions.ExpressionsFactory
-import org.emftext.language.java.operators.OperatorsFactory
 
 class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransformation {
 

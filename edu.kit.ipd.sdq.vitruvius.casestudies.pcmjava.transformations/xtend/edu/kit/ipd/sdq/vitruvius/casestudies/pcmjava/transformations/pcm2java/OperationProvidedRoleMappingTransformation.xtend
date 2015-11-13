@@ -13,6 +13,9 @@ import org.emftext.language.java.classifiers.Interface
 import org.palladiosimulator.pcm.repository.OperationProvidedRole
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
 class OperationProvidedRoleMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	val private static final Logger logger = Logger.getLogger(OperationProvidedRoleMappingTransformation.simpleName)
@@ -42,9 +45,9 @@ class OperationProvidedRoleMappingTransformation extends EmptyEObjectMappingTran
 			return null
 		}
 		val jaMoPPClass = blackboard.correspondenceInstance.
-			claimUniqueCorrespondingEObjectByType(providingEntity, Class)
+			getCorrespondingEObjectsByType(providingEntity, Class).claimOne
 		val jaMoPPInterface = blackboard.correspondenceInstance.
-			claimUniqueCorrespondingEObjectByType(opInterface, Interface)
+			getCorrespondingEObjectsByType(opInterface, Interface).claimOne
 		val namespaceClassifierRef = PCM2JaMoPPUtils.createNamespaceClassifierReference(jaMoPPInterface)
 		jaMoPPClass.implements.add(namespaceClassifierRef)
 		val classifierImport = PCM2JaMoPPUtils.addImportToCompilationUnitOfClassifier(jaMoPPClass, jaMoPPInterface)

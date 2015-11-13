@@ -3,13 +3,17 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ClassifierDeclarationWithModifier
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.DeclaredException
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.FormalParameterDecl
+import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.GenericMethodOrConstructorDecl
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ImportDeclaration
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclaration
+import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MethodDeclaration
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Modifiable
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Modifier
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.NormalClassDeclaration
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.NormalInterfaceDeclaration
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.JaMoPPConcreteSyntax
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.StringOperationsJaMoPP
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import org.apache.log4j.Logger
@@ -26,10 +30,8 @@ import org.emftext.language.java.members.Method
 import org.emftext.language.java.modifiers.AnnotableAndModifiable
 import org.emftext.language.java.parameters.Parameter
 import org.emftext.language.java.types.NamespaceClassifierReference
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.StringOperationsJaMoPP
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.JaMoPPConcreteSyntax
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.GenericMethodOrConstructorDecl
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MethodDeclaration
+
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 
 class Java2JMLCorrespondenceAdder {
 	

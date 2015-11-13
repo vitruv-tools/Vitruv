@@ -7,6 +7,9 @@ import org.palladiosimulator.pcm.system.System
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import org.emftext.language.java.containers.JavaRoot
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
 class SystemMappingTransformation extends ComposedProvidingRequiringEntityMappingTransformation {
 
 	/**

@@ -26,6 +26,9 @@ import org.emftext.language.java.types.PrimitiveType
 import org.palladiosimulator.pcm.repository.CollectionDataType
 import org.palladiosimulator.pcm.repository.DataType
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+
 class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	override getClassOfMappedEObject() {
@@ -152,7 +155,7 @@ public class «cdt.entityName» extends «selectedClass.simpleName»<«jaMoPPInn
 		}
 		val innerClassifier = innerType as ConcreteClassifier
 		val concreteClass = blackboard.correspondenceInstance.
-			claimUniqueCorrespondingEObjectByType(affectedEObject, org.emftext.language.java.classifiers.Class)
+			getCorrespondingEObjectsByType(affectedEObject, org.emftext.language.java.classifiers.Class).claimOne
 		if (!(concreteClass.extends instanceof NamespaceClassifierReference)) {
 			return transformationResult
 		}

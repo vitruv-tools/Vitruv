@@ -16,6 +16,10 @@ import org.palladiosimulator.pcm.repository.RepositoryFactory
 import org.palladiosimulator.pcm.system.System
 import org.palladiosimulator.pcm.system.SystemFactory
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
+
 class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	private static val Logger logger = Logger.getLogger(PackageMappingTransformation.simpleName)
@@ -72,7 +76,7 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 
 		//if the package already has already a correspondence 
 		//(which can happen when the package was created by the PCM2JaMoPP transformation) nothing has do be done 
-		if (!blackboard.correspondenceInstance.getAllCorrespondences(jaMoPPPackage).nullOrEmpty) {
+		if (!blackboard.correspondenceInstance.getCorrespondences(jaMoPPPackage.toList).nullOrEmpty) {
 			return null
 		}
 		var packageName = jaMoPPPackage.name
@@ -85,12 +89,12 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 			repository = RepositoryFactory.eINSTANCE.createRepository
 			repository.setEntityName(packageName)
 			correspondenceRepositoryAlreadyExists = true
-			return repository.toArray
+			return repository.toList
 		}
 		//if the contracts or datatypes packages has been created we simply create the correspondence to the repository
 		if(packageName == "contracts" ||packageName == "datatypes"){
 			logger.debug("created " + packageName + " package - create correspondence to the repository" )
-			return repository.toArray
+			return repository.toList
 		}
 		val String userMsg = "A package has been created. Please decide whether and which corresponding architectural element should be created"
 		val String[] selections = #["Create basic component", "Create composite component", "Create system",
@@ -102,7 +106,7 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 				var BasicComponent basicComponent = RepositoryFactory.eINSTANCE.createBasicComponent
 				basicComponent.setEntityName(packageName)
 				repository.components__Repository.add(basicComponent)
-				return basicComponent.toArray
+				return basicComponent.toList
 			}
 			case 1: {
 
@@ -110,14 +114,14 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 				var CompositeComponent compositeComponent = RepositoryFactory.eINSTANCE.createCompositeComponent
 				compositeComponent.entityName = packageName
 				repository.components__Repository.add(compositeComponent)
-				return compositeComponent.toArray
+				return compositeComponent.toList
 			}
 			case 2: {
 
 				//case iii)
 				var System pcmSystem = SystemFactory.eINSTANCE.createSystem
 				pcmSystem.entityName = packageName
-				return pcmSystem.toArray
+				return pcmSystem.toList
 			}
 			case 3: {
 

@@ -25,6 +25,9 @@ import org.emftext.language.java.statements.ExpressionStatement
 import org.emftext.language.java.statements.StatementsFactory
 import org.palladiosimulator.pcm.core.composition.ProvidedDelegationConnector
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
 class ProvidedDelegationConnectorMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	private val Logger logger = Logger.getLogger(ProvidedDelegationConnectorMappingTransformation.simpleName)
@@ -46,13 +49,13 @@ class ProvidedDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 		val operationInterface = providedDelegationRole.innerProvidedRole_ProvidedDelegationConnector.
 			providedInterface__OperationProvidedRole
 		try {
-			val field = blackboard.correspondenceInstance.claimUniqueCorrespondingEObjectByType(assemblyContext, Field)
+			val field = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(assemblyContext, Field).claimOne
 			val Set<EObject> newEObjects = newHashSet()
 			for (opSig : operationInterface.signatures__OperationInterface) {
 
 				// get corresponding (interface) method and find or create a similar class method in the current class
 				val correspondingMethods = blackboard.correspondenceInstance.
-					claimCorrespondingEObjectsByType(opSig, Method)
+					getCorrespondingEObjectsByType(opSig, Method)
 				for (correspondingMethod : correspondingMethods) {
 					val methodInClassifier = findOrCreateMethodDeclarationInClassifier(correspondingMethod,
 						field.containingConcreteClassifier)

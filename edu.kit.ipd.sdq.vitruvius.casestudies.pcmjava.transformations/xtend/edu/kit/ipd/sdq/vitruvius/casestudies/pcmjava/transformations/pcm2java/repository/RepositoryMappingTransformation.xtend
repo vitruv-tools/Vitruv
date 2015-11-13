@@ -3,6 +3,8 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.r
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
@@ -15,8 +17,8 @@ import org.emftext.language.java.containers.JavaRoot
 import org.emftext.language.java.containers.Package
 import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.repository.RepositoryFactory
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
+
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 
 class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation {
 

@@ -17,6 +17,7 @@ import org.palladiosimulator.pcm.repository.BasicComponent;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.BasicComponentFinding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 
 /**
  * Finds the component for a method if the the simple package mapping structure is used.
@@ -86,8 +87,8 @@ public class BasicComponentForPackageMappingFinder implements BasicComponentFind
         if (0 == jaMoPPPackage.getNamespaces().size()) {
             return null;
         }
-        final Set<BasicComponent> correspondingComponents = ci.getCorrespondingEObjectsByType(jaMoPPPackage,
-                BasicComponent.class);
+        final Set<BasicComponent> correspondingComponents = CorrespondenceInstanceUtil
+                .getCorrespondingEObjectsByType(ci, jaMoPPPackage, BasicComponent.class);
         if (null == correspondingComponents || correspondingComponents.isEmpty()) {
 
             jaMoPPPackage.getNamespaces().remove(jaMoPPPackage.getNamespaces().size() - 1);

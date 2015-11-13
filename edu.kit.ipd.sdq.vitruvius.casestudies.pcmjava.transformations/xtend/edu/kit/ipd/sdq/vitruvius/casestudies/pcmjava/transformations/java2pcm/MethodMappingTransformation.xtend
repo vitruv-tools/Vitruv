@@ -18,6 +18,10 @@ import org.palladiosimulator.pcm.repository.Parameter
 import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
+
 class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	override getClassOfMappedEObject() {
@@ -46,14 +50,14 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 				var OperationSignature opSig = RepositoryFactory.eINSTANCE.createOperationSignature
 				opSig.entityName = interfaceMethod.name
 				opSig.interface__OperationSignature = opInterface
-				return opSig.toArray
+				return opSig.toList
 			}
 		}
 		return null
 	}
 
 	override removeEObject(EObject eObject) {
-		val correspondingObjects = blackboard.correspondenceInstance.getAllCorrespondingEObjects(eObject)
+		val correspondingObjects = blackboard.correspondenceInstance.getCorrespondingEObjects(eObject)
 		return correspondingObjects
 	}
 

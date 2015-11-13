@@ -6,6 +6,9 @@ import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.members.Method
 import org.apache.log4j.Logger
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.* 
+
 /**
  * The class is responsible to map a abstract action to code.
  * In order to map any AbstractAction we create ToDo markers in the code 
@@ -37,7 +40,7 @@ class AbstractActionMappingTransformation extends DefaultEObjectMappingTransform
 		val method = getMethodForAbstractAction(abstractAction)
 		// the method is the corresponding object for the AbstractAction
 		method.comments.add(comment)
-		return method.toArray
+		return method.toList
 	}
 
 	def String getCommentFromAbstractAction(String actionString, AbstractAction action) {

@@ -11,6 +11,8 @@ import org.emftext.language.java.classifiers.Interface
 import org.emftext.language.java.containers.CompilationUnit
 import org.palladiosimulator.pcm.system.System
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
 class CompilationUnitMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	val private static Logger logger = Logger.getLogger(CompilationUnitMappingTransformation.simpleName)

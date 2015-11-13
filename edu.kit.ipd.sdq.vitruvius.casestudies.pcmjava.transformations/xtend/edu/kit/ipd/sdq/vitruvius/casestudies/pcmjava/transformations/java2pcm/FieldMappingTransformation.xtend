@@ -20,6 +20,10 @@ import org.palladiosimulator.pcm.repository.OperationRequiredRole
 import org.palladiosimulator.pcm.repository.RepositoryComponent
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
+
 class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	override getClassOfMappedEObject() {
@@ -47,7 +51,7 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 	override createEObject(EObject eObject) {
 		val field = eObject as Field
 
-		val fieldContainingClassifierCorrespondences = blackboard.correspondenceInstance.getAllCorrespondingEObjects(
+		val fieldContainingClassifierCorrespondences = blackboard.correspondenceInstance.getCorrespondingEObjects(
 			field.containingConcreteClassifier)
 		val Set<EObject> newCorrespondingEObjects = new HashSet
 		val compositeDataTypes = fieldContainingClassifierCorrespondences.filter(typeof(CompositeDataType))

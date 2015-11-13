@@ -38,6 +38,8 @@ import org.palladiosimulator.pcm.repository.RepositoryComponent
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 import org.palladiosimulator.pcm.system.System
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
 abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 	private new() {
 	}
@@ -218,7 +220,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 				return null
 			}
 			val Set<EObject> newCorrespondingEObjects = new HashSet
-			val fieldTypeCorrespondences = correspondenceInstance.getAllCorrespondingEObjects(type)
+			val fieldTypeCorrespondences = correspondenceInstance.getCorrespondingEObjects(type)
 			val correspondingInterfaces = fieldTypeCorrespondences.filter(typeof(OperationInterface))
 			var RepositoryComponent repoComponent = null
 			if (!correspondingInterfaces.nullOrEmpty) {

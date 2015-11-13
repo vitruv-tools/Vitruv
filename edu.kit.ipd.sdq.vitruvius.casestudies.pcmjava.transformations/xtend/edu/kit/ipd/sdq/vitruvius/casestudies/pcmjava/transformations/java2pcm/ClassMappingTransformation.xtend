@@ -25,6 +25,9 @@ import org.palladiosimulator.pcm.repository.RepositoryComponent
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 import org.palladiosimulator.pcm.system.SystemFactory
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.* 
+
 /**
  * Maps a JaMoPP class to a PCM Components or System. 
  * Triggered when a CUD operation on JaMoPP class is detected.
@@ -105,7 +108,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 			if (null == pcmComponentOrSystem) {
 				return null
 			} else {
-				return pcmComponentOrSystem.toArray
+				return pcmComponentOrSystem.toList
 			}
 		} else {
 
@@ -115,12 +118,12 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 			if (jaMoPPClass.name.contains(pcmComponentOrSystem.entityName)) {
 
 				// the class is the implementing class
-				return pcmComponentOrSystem.toArray
+				return pcmComponentOrSystem.toList
 			} else {
 				if (super.modalTextYesNoUserInteracting(
 					"Should the new public class '" + jaMoPPClass.name + "' be the implementing class for " +
 						pcmComponentOrSystem.entityName)) {
-					return pcmComponentOrSystem.toArray
+					return pcmComponentOrSystem.toList
 				}
 			}
 		}
@@ -139,7 +142,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	def boolean alreadyHasClassCorrespondence(InterfaceProvidingRequiringEntity pcmComponentOrSystem) {
 		var correspondencesForPCMCompOrSystem = blackboard.correspondenceInstance.
-			getAllCorrespondingEObjects(pcmComponentOrSystem)
+			getCorrespondingEObjects(pcmComponentOrSystem)
 		val hasClassCorrespondence = correspondencesForPCMCompOrSystem.filter [ correspondence |
 			correspondence instanceof Class
 		].size
@@ -168,7 +171,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override removeEObject(EObject eObject) {
 		val jaMoPPClass = eObject as Class
-		val correspondences = blackboard.correspondenceInstance.getAllCorrespondences(jaMoPPClass);
+		val correspondences = blackboard.correspondenceInstance.getCorrespondences(jaMoPPClass.toList);
 		var eObjectsToDelete = new ArrayList<EObject>()
 		if (null != correspondences && 0 < correspondences.size) {
 			val classifiersInSamePackage = jaMoPPClass.containingCompilationUnit.classifiersInSamePackage
@@ -256,14 +259,14 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 							val compositeDataType = RepositoryFactory.eINSTANCE.createCompositeDataType
 							compositeDataType.entityName = jaMoPPClass.name
 							compositeDataType.setRepository__DataType(repo)
-							return compositeDataType.toArray
+							return compositeDataType.toList
 						}
 						case SELECT_CREATE_COLLECTION_DATA_TYPE: {
 							val repo = JaMoPP2PCMUtils.getRepository(blackboard.correspondenceInstance)
 							val collectionDataType = RepositoryFactory.eINSTANCE.createCollectionDataType
 							collectionDataType.entityName = jaMoPPClass.name
 							collectionDataType.setRepository__DataType(repo)
-							return collectionDataType.toArray
+							return collectionDataType.toList
 						}
 						case SELECT_DO_NOT_CREATE_DATA_TYPE: {
 							return null

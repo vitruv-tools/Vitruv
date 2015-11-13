@@ -28,6 +28,9 @@ import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.system.System
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
 class PCMJaMoPPUtils {
 	private static val Logger logger = Logger.getLogger(PCMJaMoPPUtils.simpleName)
 
@@ -45,7 +48,7 @@ class PCMJaMoPPUtils {
 				logger.debug("no feature correspondence found for affectedEeature: " + affectedEFeature)
 				return null
 			}
-			var correspondingEObjects = correspondenceInstance.getAllCorrespondingEObjects(eObject)
+			var correspondingEObjects = correspondenceInstance.getCorrespondingEObjects(eObject)
 			if (correspondingEObjects.nullOrEmpty) {
 				logger.info("No corresponding objects found for " + eObject)
 			}

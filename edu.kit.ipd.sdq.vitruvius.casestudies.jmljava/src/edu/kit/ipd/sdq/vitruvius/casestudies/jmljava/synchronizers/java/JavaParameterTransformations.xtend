@@ -16,6 +16,8 @@ import org.emftext.language.java.parameters.Parameter
 import org.emftext.language.java.parameters.ParametersPackage
 import org.emftext.language.java.types.TypeReference
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
 class JavaParameterTransformations extends Java2JMLTransformationBase {
 	static val LOGGER = Logger.getLogger(JavaParameterTransformations)
 
@@ -68,7 +70,7 @@ class JavaParameterTransformations extends Java2JMLTransformationBase {
 		val jmlFeature = featureCorrespondenceMap.claimValueForKey(affectedAttribute)
 
 		if (jmlFeature == JMLPackage.eINSTANCE.formalParameterDecl_Identifier) {
-			val jmlParameterDecls = blackboard.correspondenceInstance.getAllCorrespondingEObjects(affectedEObject).filter(
+			val jmlParameterDecls = blackboard.correspondenceInstance.getCorrespondingEObjects(affectedEObject).filter(
 				FormalParameterDecl)
 			for (jmlParameterDecl : jmlParameterDecls) {
 				LOGGER.trace("Updating " + jmlParameterDecl)

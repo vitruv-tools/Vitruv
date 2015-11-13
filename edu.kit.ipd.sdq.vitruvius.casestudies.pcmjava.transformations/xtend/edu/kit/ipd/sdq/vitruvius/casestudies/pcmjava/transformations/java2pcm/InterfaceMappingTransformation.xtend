@@ -15,6 +15,10 @@ import org.palladiosimulator.pcm.repository.OperationInterface
 import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
+
 /**
  * Maps a JaMoPP interface to a PCM interface 
  * Triggered when a CUD operation on JaMoPP interface is detected.
@@ -56,7 +60,7 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 				opInterface.setEntityName(jaMoPPInterface.name)
 				val Repository repo = JaMoPP2PCMUtils.getRepository(blackboard.correspondenceInstance)
 				opInterface.setRepository__Interface(repo)
-				return opInterface.toArray
+				return opInterface.toList
 			}
 
 		} catch (Exception e) {

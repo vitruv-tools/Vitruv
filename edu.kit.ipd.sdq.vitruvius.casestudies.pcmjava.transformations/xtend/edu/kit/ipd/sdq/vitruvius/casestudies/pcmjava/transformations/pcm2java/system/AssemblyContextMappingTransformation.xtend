@@ -18,6 +18,9 @@ import org.emftext.language.java.types.TypeReference
 import org.palladiosimulator.pcm.core.composition.AssemblyContext
 import org.palladiosimulator.pcm.repository.RepositoryComponent
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+
 class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	override getClassOfMappedEObject() {
@@ -82,7 +85,7 @@ class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransforma
 
 			} else {
 				val jaMoPPClass = blackboard.correspondenceInstance.
-					claimUniqueCorrespondingEObjectByType(newValue as RepositoryComponent, Class)
+					getCorrespondingEObjectsByType(newValue as RepositoryComponent, Class).claimOne
 
 				//update existing correspondence
 				for (typedElement : typedElementCorrespondences) {
@@ -104,9 +107,9 @@ class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransforma
 		var Class jaMoPPClass = null
 		var Class jaMoPPCompositeClass = null
 		try {
-			jaMoPPClass = blackboard.correspondenceInstance.claimUniqueCorrespondingEObjectByType(component, Class)
+			jaMoPPClass = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(component, Class).claimOne
 			jaMoPPCompositeClass = blackboard.correspondenceInstance.
-				claimUniqueCorrespondingEObjectByType(assemblyContext.parentStructure__AssemblyContext, Class)
+				getCorrespondingEObjectsByType(assemblyContext.parentStructure__AssemblyContext, Class).claimOne
 
 		} catch (RuntimeException e) {
 			val String msg = "Can not create field for component " + component.entityName +

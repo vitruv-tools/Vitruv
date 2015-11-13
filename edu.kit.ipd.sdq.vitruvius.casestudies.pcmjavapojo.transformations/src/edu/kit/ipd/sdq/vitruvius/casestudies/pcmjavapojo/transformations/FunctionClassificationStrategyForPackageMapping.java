@@ -12,6 +12,7 @@ import org.somox.gast2seff.visitors.AbstractFunctionClassificationStrategy;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.BasicComponentFinding;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.JaMoPP2PCMUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 
 /**
  * FunctionClassificationStrategy for the simple package mapping Strategy.
@@ -46,8 +47,8 @@ public class FunctionClassificationStrategyForPackageMapping extends AbstractFun
                     + ". Method call is not considered as as external call");
             return false;
         }
-        final Set<OperationSignature> correspondingSignatures = this.correspondenceInstance
-                .getCorrespondingEObjectsByType(method, OperationSignature.class);
+        final Set<OperationSignature> correspondingSignatures = CorrespondenceInstanceUtil
+                .getCorrespondingEObjectsByType(this.correspondenceInstance, method, OperationSignature.class);
         if (null != correspondingSignatures && !correspondingSignatures.isEmpty()) {
             return true;
         }
