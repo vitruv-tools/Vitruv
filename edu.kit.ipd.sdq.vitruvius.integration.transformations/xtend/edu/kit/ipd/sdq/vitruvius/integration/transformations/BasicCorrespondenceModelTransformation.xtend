@@ -2,8 +2,6 @@ package edu.kit.ipd.sdq.vitruvius.integration.transformations
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.EObjectCorrespondence
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
 import java.util.HashSet
 import org.apache.log4j.Logger
@@ -11,6 +9,9 @@ import org.eclipse.core.resources.ResourcesPlugin
 import org.eclipse.core.runtime.IPath
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
+
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 
 /**
  * Class that provides general methods for creating correspondences between two metamodels. 
@@ -49,7 +50,7 @@ abstract class BasicCorrespondenceModelTransformation implements ICreateCorrespo
 		var identifier = getCorrespondenceInstance.calculateTUIDFromEObject(deresolvedA).toString +
 			getCorrespondenceInstance.calculateTUIDFromEObject(deresolvedB).toString
 		if (!existingEntries.contains(identifier)) {
-			var correspondence = getCorrespondenceInstance.createAndAddEObjectCorrespondence(deresolvedA, deresolvedB);
+			var correspondence = getCorrespondenceInstance.createAndAddCorrespondence(deresolvedA, deresolvedB);
 			existingEntries.add(identifier);
 			logger.info("Created Correspondence for element: " + objectA + " and Element: " + objectB);
 			return correspondence;
@@ -76,10 +77,10 @@ abstract class BasicCorrespondenceModelTransformation implements ICreateCorrespo
      * {@link RuntimeException} if there is no such correspondence. Note that a has to be an element
      * of metamodel a and b an instance of metamodel b.
 	 */
-	protected def SameTypeCorrespondence getUniqueSameTypeCorrespondence(EObject objectA, EObject objectB) {
+	protected def Correspondence getUniqueSameTypeCorrespondence(EObject objectA, EObject objectB) {
 		var deresolvedA = deresolveIfNesessary(objectA)
 		var deresolvedB = deresolveIfNesessary(objectB)
-		return getCorrespondenceInstance.claimUniqueSameTypeCorrespondence(deresolvedA, deresolvedB)
+		return getCorrespondenceInstance.claimUniqueCorrespondence(deresolvedA.toList, deresolvedB.toList)
 	}
 
 }
