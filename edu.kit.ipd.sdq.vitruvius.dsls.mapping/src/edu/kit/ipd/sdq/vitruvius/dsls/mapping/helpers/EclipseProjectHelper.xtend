@@ -1,12 +1,15 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers
 
+import java.net.URLClassLoader
+import org.eclipse.core.resources.IResource
+import org.eclipse.core.resources.IncrementalProjectBuilder
 import org.eclipse.core.resources.ResourcesPlugin
 import org.eclipse.core.runtime.Path
 import org.eclipse.jdt.core.IClasspathEntry
 import org.eclipse.jdt.core.JavaCore
+import org.eclipse.jdt.launching.JavaRuntime
 import org.eclipse.pde.core.project.IBundleProjectDescription
 import org.eclipse.xtext.generator.IFileSystemAccess
-import org.eclipse.core.resources.IResource
 
 class EclipseProjectHelper {
 	public final String SRC_GEN_FOLDER_NAME = "src-gen"
@@ -80,7 +83,7 @@ class EclipseProjectHelper {
 		javaProject.setOutputLocation(binFolder.getFullPath(), null);
 		
 		// add src and src-gen folder
-		val sourceFolder = project.getFolder("src");
+		val sourceFolder = project.getFolder("srcEclipseProjectHelper ");
 		sourceFolder.create(false, true, null);
 		val sourceRoot = javaProject.getPackageFragmentRoot(sourceFolder);
 		
@@ -110,6 +113,10 @@ class EclipseProjectHelper {
 		project.refreshLocal(IResource.DEPTH_INFINITE, null)
 	}
 	
+	public def build() {
+		project.build(IncrementalProjectBuilder.FULL_BUILD, null)
+	}
+	
 	/** Deletes the project, and creates a new Java project */
 	public def reinitializeProject() {
 		deleteProject
@@ -130,6 +137,22 @@ class EclipseProjectHelper {
 		val project = root.getProject(projectName);
 		
 		return project
+	}
+	
+	public def getJavaProject() {
+		return JavaCore.create(getProject())
+	}
+	
+	/**
+	 * @see https://sdqweb.ipd.kit.edu/wiki/JDT_Tutorial:_Class_Loading_in_a_running_plugin
+	 */
+	public def getClassLoader() {
+		val project = javaProject
+		val classPathEntries = JavaRuntime.computeDefaultRuntimeClassPath(project);
+		val urlList = classPathEntries.map[new Path(it).toFile.toURI.toURL]
+		val parentClassLoader = javaProject.class.classLoader
+		
+		new URLClassLoader(urlList, parentClassLoader)
 	}
 	
 	public def IFileSystemAccess getRootFSA() {
