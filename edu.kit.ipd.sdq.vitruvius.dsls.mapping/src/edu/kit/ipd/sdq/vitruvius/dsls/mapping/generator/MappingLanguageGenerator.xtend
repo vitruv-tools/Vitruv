@@ -41,7 +41,11 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers
 
 class MappingLanguageGenerator {
 	def doGenerate(Resource input) {
-		val mappingFile = input.contents.filter(MappingFile).claimExactlyOne;
+		val mappingFile = input.contents.filter(MappingFile).claimExactlyOne
+		doGenerate(mappingFile)
+	}
+	
+	def doGenerate(MappingFile mappingFile) {
 		if (mappingFile.pluginName != null) {
 			val contributorNames = mappingFile.imports.map[
 				EclipseBridge.getNameOfContributorOfExtension(
