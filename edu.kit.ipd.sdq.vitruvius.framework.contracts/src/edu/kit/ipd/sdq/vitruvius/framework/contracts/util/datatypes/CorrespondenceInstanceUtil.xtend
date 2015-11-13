@@ -13,21 +13,20 @@ class CorrespondenceInstanceUtil {
 	}
 	
 	/**
-     * Returns the corresponding objects of the specified type for the specified object and throws a
-     * {@link java.lang.RuntimeException} if no correspondences of this type exist.
+     * Returns all corresponding objects for the specified object and an empty set if the object has
+     * no correspondences. Should never return {@link null}.
      *
      * @param eObject
      *            the object for which corresponding objects are to be returned
-     * @param type
-     *            the class of which instances are to be returned
-     * @return the corresponding objects of the specified type for the specified object
+     * @return all corresponding objects for the specified object and an empty set if the object has
+     *         no correspondences.
      */
-     //FIXME ML is this method correct? Is there some cool Xtend feature which makes this method shorter?
-	def public static <T> Set<T> claimCorrespondingEObjectsByType(CorrespondenceInstance ci, EObject eObject, Class<T> type) {
+    //FIXME ML is this method correct? Is there some cool Xtend feature which makes this method shorter? 
+	def public static Set<EObject> getCorrespondingEObjects(CorrespondenceInstance ci, EObject eObject) {
 		val correspondingEObjects = ci.getCorrespondingEObjects(eObject.toList)
 		val eObjects = Sets.newHashSet
-		correspondingEObjects.forEach[list|eObjects.addAll(list.filter[eObj|type.isInstance(eObj)])]
-		return eObjects as Set<T>
+		correspondingEObjects.forEach(list|eObjects.addAll(list))
+		return eObjects
 	}
 	
 	/**
@@ -67,33 +66,6 @@ class CorrespondenceInstanceUtil {
 	def public static EObject claimUniqueCorrespondingEObject(CorrespondenceInstance ci, EObject eObject) {
 		return ci.getCorrespondingEObjects(eObject.toList).claimOne.claimOne
 	}
-	
-	
-	
-	/**
-     * Returns all corresponding objects for the specified object and an empty set if the object has
-     * no correspondences. Should never return {@link null}.
-     *
-     * @param eObject
-     *            the object for which corresponding objects are to be returned
-     * @return all corresponding objects for the specified object and an empty set if the object has
-     *         no correspondences.
-     */
-    //FIXME ML is this method correct? Is there some cool Xtend feature which makes this method shorter? 
-	def public static Set<EObject> getCorrespondingEObjects(CorrespondenceInstance ci, EObject eObject) {
-		val correspondingEObjects = ci.getCorrespondingEObjects(eObject.toList)
-		val eObjects = Sets.newHashSet
-		correspondingEObjects.forEach(list|eObjects.addAll(list))
-		return eObjects
-	}
-	
-	def public static Correspondence claimUniqueOrNullCorrespondenceForEObject(CorrespondenceInstance ci,EObject eObject) {
-		return ci.getCorrespondences(eObject.toList).claimNotMany
-	}
-
-	def public static Correspondence claimUniqueSameTypeCorrespondence(CorrespondenceInstance ci, EObject a, EObject b) {
-		return ci.claimUniqueCorrespondence(a.toList,b.toList)
-	}	
 	
 	def public static Correspondence createAndAddCorrespondence(CorrespondenceInstance ci, EObject a, EObject b) {
 		return ci.createAndAddCorrespondence(a.toList,b.toList)
