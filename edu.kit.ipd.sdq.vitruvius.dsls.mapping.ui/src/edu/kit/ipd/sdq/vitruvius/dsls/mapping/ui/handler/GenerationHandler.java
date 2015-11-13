@@ -32,9 +32,6 @@ public class GenerationHandler extends AbstractHandler implements IHandler {
     private MappingLanguageGenerator generator;
  
     @Inject
-    private Provider<EclipseResourceFileSystemAccess2> fileAccessProvider;
-     
-    @Inject
     IResourceDescriptions resourceDescriptions;
      
     @Inject
