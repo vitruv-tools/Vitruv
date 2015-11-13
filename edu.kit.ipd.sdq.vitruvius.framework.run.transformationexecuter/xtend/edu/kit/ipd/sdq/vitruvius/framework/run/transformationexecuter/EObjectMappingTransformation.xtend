@@ -122,17 +122,6 @@ abstract class EObjectMappingTransformation {
 		return userInteracting
 	}
 
-	/**
-	 * Utility function that wraps a single EObject into an array. 
-	 * Is defined here to enable calls like eObject.toArray
-	 */
-	def protected toArray(EObject eObject) {
-		if (null == eObject) {
-			return null
-		}
-		#[eObject]
-	}
-
 	def protected int modalTextUserinteracting(String msg, String... selections) {
 		return userInteracting.selectFromMessage(UserInteractionType.MODAL, msg, selections)
 	}
