@@ -97,9 +97,11 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
 import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge;
@@ -198,7 +200,8 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
             throw new RuntimeException("Could not get correspondence instance.");
         }
         TestUtil.waitForSynchronization();
-        final Repository repo = ci.claimUniqueCorrespondingEObjectByType(this.mainPackage, Repository.class);
+        final Repository repo = CollectionBridge.claimOne(
+                CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(ci, this.mainPackage, Repository.class));
         return repo;
     }
 
@@ -211,8 +214,8 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     protected <T> T createSecondPackage(final Class<T> correspondingType, final String... namespace) throws Throwable {
         this.secondPackage = this.createPackageWithPackageInfo(namespace);
         TestUtil.waitForSynchronization();
-        return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(this.secondPackage,
-                correspondingType);
+        return CollectionBridge.claimOne(CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(
+                this.getCorrespondenceInstance(), this.secondPackage, correspondingType));
     }
 
     private void createSecondPackageWithoutCorrespondence(final String... namespace) throws Throwable {
@@ -285,7 +288,8 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
             TestUtil.waitForSynchronization();
             final VURI vuri = VURI.getInstance(cu.getResource());
             final Classifier jaMoPPClass = this.getJaMoPPClassifierForVURI(vuri);
-            return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(jaMoPPClass, type);
+            return CollectionBridge.claimOne(CorrespondenceInstanceUtil
+                    .getCorrespondingEObjectsByType(this.getCorrespondenceInstance(), jaMoPPClass, type));
         } catch (final Throwable e) {
             logger.warn(e.getMessage());
         }
@@ -361,8 +365,8 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     protected <T> T addClassInPackage(final Package packageForClass, final Class<T> classOfCorrespondingObject,
             final String implementingClassName) throws Throwable, CoreException, InterruptedException {
         final Classifier jaMoPPClass = this.addClassInPackage(packageForClass, implementingClassName);
-        return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(jaMoPPClass,
-                classOfCorrespondingObject);
+        return CollectionBridge.claimOne(CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(
+                this.getCorrespondenceInstance(), jaMoPPClass, classOfCorrespondingObject));
     }
 
     protected Classifier addClassInPackage(final Package packageForClass, final String implementingClassName)
@@ -498,11 +502,11 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         TestUtil.waitForSynchronization();
         final Classifier jaMoPPIf = this.getJaMoPPClassifierForVURI(vuri);
         if (throwException) {
-            return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(jaMoPPIf,
-                    OperationInterface.class);
+            return CollectionBridge.claimOne(CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(
+                    this.getCorrespondenceInstance(), jaMoPPIf, OperationInterface.class));
         } else {
-            final Set<EObject> correspondingEObjects = this.getCorrespondenceInstance()
-                    .getAllCorrespondingEObjects(jaMoPPIf);
+            final Set<EObject> correspondingEObjects = CorrespondenceInstanceUtil
+                    .getCorrespondingEObjects(this.getCorrespondenceInstance(), jaMoPPIf);
             if (null == correspondingEObjects || 0 == correspondingEObjects.size()) {
                 return null;
             } else {
@@ -523,8 +527,8 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     }
 
     protected Package getPackageWithName(final String name) throws Throwable {
-        final Set<Package> packages = this.getCorrespondenceInstance()
-                .getAllEObjectsOfTypeInCorrespondences(Package.class);
+        final Set<Package> packages = CorrespondenceInstanceUtil
+                .getAllEObjectsOfTypeInCorrespondences(this.getCorrespondenceInstance(), Package.class);
         for (final Package currentPackage : packages) {
             if (currentPackage.getName().equals(name)) {
                 return currentPackage;
@@ -562,8 +566,8 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         final ICompilationUnit icu = this.addMethodToCompilationUnit(className, methodString);
         final Method jaMoPPMethod = this.findJaMoPPMethodInICU(icu, methodName);
         final ClassMethod classMethod = (ClassMethod) jaMoPPMethod;
-        return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(classMethod,
-                ResourceDemandingSEFF.class);
+        return CollectionBridge.claimOne(CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(
+                this.getCorrespondenceInstance(), classMethod, ResourceDemandingSEFF.class));
     }
 
     protected int getOffsetForClassifierManipulation(final IType firstType) throws JavaModelException {
@@ -578,8 +582,8 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         final Interface jaMoPPInterface = (Interface) classifier;
         for (final Method jaMoPPMethod : jaMoPPInterface.getMethods()) {
             if (jaMoPPMethod.getName().equals(methodName)) {
-                return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(jaMoPPMethod,
-                        OperationSignature.class);
+                return CollectionBridge.claimOne(CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(
+                        this.getCorrespondenceInstance(), jaMoPPMethod, OperationSignature.class));
             }
         }
         logger.warn("No JaMoPP method with name " + methodName + " found in " + interfaceName);
@@ -652,8 +656,8 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         final Method jaMoPPMethod = (Method) concreateClassifier.getMembersByName(methodName).get(0);
         final org.emftext.language.java.parameters.Parameter jaMoPPParam = this
                 .getJaMoPPParameterFromJaMoPPMethod(jaMoPPMethod, parameterName);
-        return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(jaMoPPParam, Parameter.class);
-
+        return CollectionBridge.claimOne(CorrespondenceInstanceUtil
+                .getCorrespondingEObjectsByType(this.getCorrespondenceInstance(), jaMoPPParam, Parameter.class));
     }
 
     protected org.emftext.language.java.parameters.Parameter getJaMoPPParameterFromJaMoPPMethod(
@@ -746,8 +750,9 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
                 .getJaMoPPClassifierForVURI(VURI.getInstance(classCompilationUnit.getResource()));
         final EList<TypeReference> classImplements = jaMoPPClass.getImplements();
         for (final TypeReference implementsReference : classImplements) {
-            final Set<OperationProvidedRole> correspondingEObjects = this.getCorrespondenceInstance()
-                    .getCorrespondingEObjectsByType(implementsReference, OperationProvidedRole.class);
+            final Set<OperationProvidedRole> correspondingEObjects = CorrespondenceInstanceUtil
+                    .getCorrespondingEObjectsByType(this.getCorrespondenceInstance(), implementsReference,
+                            OperationProvidedRole.class);
             if (null != correspondingEObjects && 0 < correspondingEObjects.size()) {
                 return correspondingEObjects.iterator().next();
             }
@@ -774,7 +779,8 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         this.editCompilationUnit(icu, insertEdit);
         TestUtil.waitForSynchronization();
         final Field jaMoPPField = this.getJaMoPPFieldFromClass(icu, fieldName);
-        return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(jaMoPPField, correspondingType);
+        return CollectionBridge.claimOne(CorrespondenceInstanceUtil
+                .getCorrespondingEObjectsByType(this.getCorrespondenceInstance(), jaMoPPField, correspondingType));
     }
 
     protected Field getJaMoPPFieldFromClass(final ICompilationUnit icu, final String fieldName) {

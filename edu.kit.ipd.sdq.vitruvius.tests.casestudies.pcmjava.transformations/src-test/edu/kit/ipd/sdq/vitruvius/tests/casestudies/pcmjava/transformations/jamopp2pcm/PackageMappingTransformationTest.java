@@ -10,6 +10,7 @@ import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.system.System;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
@@ -34,7 +35,7 @@ public class PackageMappingTransformationTest extends JaMoPP2PCMTransformationTe
         final CorrespondenceInstance ci = this.getCorrespondenceInstance();
         assertTrue("CorrespondenceInstance == null", null != ci);
         assertTrue("No repository found in correspondence instance.",
-                0 < ci.getAllEObjectsOfTypeInCorrespondences(Repository.class).size());
+                0 < CorrespondenceInstanceUtil.getAllEObjectsOfTypeInCorrespondences(ci, Repository.class).size());
     }
 
     /**

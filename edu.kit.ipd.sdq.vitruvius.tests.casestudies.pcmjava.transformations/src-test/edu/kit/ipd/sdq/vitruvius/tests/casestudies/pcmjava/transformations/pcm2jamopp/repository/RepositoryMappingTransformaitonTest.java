@@ -7,9 +7,10 @@ import java.util.Set;
 
 import org.emftext.language.java.containers.Package;
 import org.junit.Test;
-
 import org.palladiosimulator.pcm.repository.Repository;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
@@ -42,8 +43,8 @@ public class RepositoryMappingTransformaitonTest extends PCM2JaMoPPTransformatio
             fail("correspondence instance is still null - no transformation was executed.");
             return;
         }
-        final Set<Package> jaMoPPPackages = this.getCorrespondenceInstance().getCorrespondingEObjectsByType(repo,
-                Package.class);
+        final Set<Package> jaMoPPPackages = CorrespondenceInstanceUtil
+                .getCorrespondingEObjectsByType(this.getCorrespondenceInstance(), repo, Package.class);
         boolean foundRepositoryPackage = false;
         boolean foundDatatypesPackage = false;
         boolean foundContractsPackage = false;

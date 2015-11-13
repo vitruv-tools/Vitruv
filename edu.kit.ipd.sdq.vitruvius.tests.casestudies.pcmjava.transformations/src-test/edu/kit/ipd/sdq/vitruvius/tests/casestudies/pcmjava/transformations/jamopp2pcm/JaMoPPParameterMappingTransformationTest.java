@@ -10,7 +10,6 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.InsertEdit;
 import org.junit.Test;
-
 import org.palladiosimulator.pcm.core.entity.NamedElement;
 import org.palladiosimulator.pcm.repository.CollectionDataType;
 import org.palladiosimulator.pcm.repository.CompositeDataType;
@@ -18,6 +17,9 @@ import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.repository.Parameter;
 import org.palladiosimulator.pcm.repository.PrimitiveDataType;
+
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
@@ -48,11 +50,11 @@ public class JaMoPPParameterMappingTransformationTest extends JaMoPP2PCMTransfor
                 "String", PCM2JaMoPPTestUtils.PARAMETER_NAME);
 
         final Parameter newParameter = this.renameParameterInSignature(opInterface.getEntityName(),
-                opSig.getEntityName(), parameter.getEntityName(), PCM2JaMoPPTestUtils.PARAMETER_NAME
-                        + PCM2JaMoPPTestUtils.RENAME);
+                opSig.getEntityName(), parameter.getEntityName(),
+                PCM2JaMoPPTestUtils.PARAMETER_NAME + PCM2JaMoPPTestUtils.RENAME);
 
-        this.assertParameter(opSig, newParameter, "String", PCM2JaMoPPTestUtils.PARAMETER_NAME
-                + PCM2JaMoPPTestUtils.RENAME);
+        this.assertParameter(opSig, newParameter, "String",
+                PCM2JaMoPPTestUtils.PARAMETER_NAME + PCM2JaMoPPTestUtils.RENAME);
     }
 
     @Test
@@ -85,9 +87,8 @@ public class JaMoPPParameterMappingTransformationTest extends JaMoPP2PCMTransfor
         TestUtil.waitForSynchronization();
         final org.emftext.language.java.parameters.Parameter newJaMoPPParameter = super.findJaMoPPParameterInICU(icu,
                 interfaceName, methodName, newParameterName);
-        return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(newJaMoPPParameter,
-                Parameter.class);
-
+        return CollectionBridge.claimOne(CorrespondenceInstanceUtil
+                .getCorrespondingEObjectsByType(this.getCorrespondenceInstance(), newJaMoPPParameter, Parameter.class));
     }
 
     private Parameter changeParameterType(final String interfaceName, final String methodName, final String paramName,
@@ -103,8 +104,8 @@ public class JaMoPPParameterMappingTransformationTest extends JaMoPP2PCMTransfor
         TestUtil.waitForSynchronization();
         final org.emftext.language.java.parameters.Parameter newJaMoPPParameter = super.findJaMoPPParameterInICU(icu,
                 interfaceName, methodName, paramName);
-        return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(newJaMoPPParameter,
-                Parameter.class);
+        return CollectionBridge.claimOne(CorrespondenceInstanceUtil
+                .getCorrespondingEObjectsByType(this.getCorrespondenceInstance(), newJaMoPPParameter, Parameter.class));
     }
 
     private ILocalVariable findParameterInIMethod(final IMethod iMethod, final String parameterName)
@@ -119,15 +120,15 @@ public class JaMoPPParameterMappingTransformationTest extends JaMoPP2PCMTransfor
 
     private void assertParameter(final OperationSignature opSig, final Parameter parameter,
             final String expectedTypeName, final String expectedName) {
-        assertEquals("The parameter is not contained in the expected operation signature", opSig.getId(), parameter
-                .getOperationSignature__Parameter().getId());
+        assertEquals("The parameter is not contained in the expected operation signature", opSig.getId(),
+                parameter.getOperationSignature__Parameter().getId());
         this.assertPCMNamedElement(parameter, expectedName);
         if (parameter.getDataType__Parameter() instanceof CollectionDataType
                 || parameter.getDataType__Parameter() instanceof CompositeDataType) {
             this.assertPCMNamedElement((NamedElement) parameter.getDataType__Parameter(), expectedTypeName);
         } else {
-            final String primitiveTypeName = this.getNameFromPCMPrimitiveDataType((PrimitiveDataType) parameter
-                    .getDataType__Parameter());
+            final String primitiveTypeName = this
+                    .getNameFromPCMPrimitiveDataType((PrimitiveDataType) parameter.getDataType__Parameter());
             assertTrue("The primitve type parameter has the wrong name",
                     expectedTypeName.equalsIgnoreCase(primitiveTypeName));
         }

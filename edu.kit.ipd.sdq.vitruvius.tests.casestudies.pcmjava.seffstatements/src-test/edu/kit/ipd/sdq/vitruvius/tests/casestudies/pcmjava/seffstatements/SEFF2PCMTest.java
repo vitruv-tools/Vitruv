@@ -26,6 +26,7 @@ import org.palladiosimulator.pcm.seff.SeffFactory;
 import org.somox.test.gast2seff.visitors.AssertSEFFHelper;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.jamopp2pcm.JaMoPP2PCMTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
@@ -293,7 +294,8 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
         TestUtil.waitForSynchronization(3 * 1000);
         final CorrespondenceInstance ci = this.getCorrespondenceInstance();
         final Method method = super.findJaMoPPMethodInICU(iCu, methodName);
-        final Set<ResourceDemandingSEFF> seffs = ci.getCorrespondingEObjectsByType(method, ResourceDemandingSEFF.class);
+        final Set<ResourceDemandingSEFF> seffs = CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(ci, method,
+                ResourceDemandingSEFF.class);
         if (null == seffs || 0 == seffs.size()) {
             if (shouldHaveCorrespndingSEFFAfterEdit) {
                 fail("could not find corresponding seff for method " + method);

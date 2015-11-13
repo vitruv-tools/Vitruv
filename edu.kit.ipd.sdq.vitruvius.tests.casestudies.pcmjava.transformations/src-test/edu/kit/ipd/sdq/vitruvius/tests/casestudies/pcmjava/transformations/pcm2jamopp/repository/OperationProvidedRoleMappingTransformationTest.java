@@ -5,13 +5,15 @@ import static org.junit.Assert.assertEquals;
 import org.emftext.language.java.classifiers.Class;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.junit.Test;
-
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.OperationProvidedRole;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryFactory;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 
@@ -99,8 +101,9 @@ public class OperationProvidedRoleMappingTransformationTest extends PCM2JaMoPPTr
         super.triggerSynchronization(vuri);
 
         this.assertOperationProvidedRole(operationProvidedRole);
-        final CompilationUnit jaMoPPCu = this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(
-                basicComponent, CompilationUnit.class);
+        final CompilationUnit jaMoPPCu = CollectionBridge
+                .claimOne(CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(this.getCorrespondenceInstance(),
+                        basicComponent, CompilationUnit.class));
         assertEquals("Unexpected size of imports", 1, jaMoPPCu.getImports().size());
         final Class jaMoPPClass = (Class) jaMoPPCu.getClassifiers().get(0);
         assertEquals("Unexpected size of implemented interfaces", 1, jaMoPPClass.getImplements().size());
@@ -111,7 +114,8 @@ public class OperationProvidedRoleMappingTransformationTest extends PCM2JaMoPPTr
         final Repository repo = super.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
         final OperationInterface opInterface = super.addInterfaceToReposiotryAndSync(repo,
                 PCM2JaMoPPTestUtils.INTERFACE_NAME);
-        final org.palladiosimulator.pcm.system.System system = super.createAndSyncSystem(PCM2JaMoPPTestUtils.SYSTEM_NAME);
+        final org.palladiosimulator.pcm.system.System system = super.createAndSyncSystem(
+                PCM2JaMoPPTestUtils.SYSTEM_NAME);
 
         final OperationProvidedRole operationProvidedRole = super.createAndSyncOperationProvidedRole(opInterface,
                 system);

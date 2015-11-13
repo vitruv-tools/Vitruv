@@ -19,6 +19,8 @@ import org.palladiosimulator.pcm.repository.CompositeDataType;
 import org.palladiosimulator.pcm.repository.InnerDeclaration;
 import org.palladiosimulator.pcm.repository.OperationRequiredRole;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
@@ -124,8 +126,8 @@ public class FieldMappingTransformationTest extends JaMoPP2PCMTransformationTest
     }
 
     private void assertOperationRequiredRole(final OperationRequiredRole operationRequiredRole) throws Throwable {
-        final Set<EObject> correspondingEObjects = this.getCorrespondenceInstance()
-                .getAllCorrespondingEObjects(operationRequiredRole);
+        final Set<EObject> correspondingEObjects = CorrespondenceInstanceUtil
+                .getCorrespondingEObjects(this.getCorrespondenceInstance(), operationRequiredRole);
         boolean fieldFound = false;
         for (final EObject correspondingEObject : correspondingEObjects) {
             if (correspondingEObject instanceof Field) {
@@ -154,9 +156,8 @@ public class FieldMappingTransformationTest extends JaMoPP2PCMTransformationTest
         super.editCompilationUnit(icu, deleteEdit, insertEdit);
         TestUtil.waitForSynchronization();
         final Field newJaMoPPField = this.getJaMoPPFieldFromClass(icu, newFieldName);
-        return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(newJaMoPPField,
-                InnerDeclaration.class);
-
+        return CollectionBridge.claimOne(CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(
+                this.getCorrespondenceInstance(), newJaMoPPField, InnerDeclaration.class));
     }
 
     private InnerDeclaration changeFieldTypeInClass(final String className, final String fieldName,
@@ -173,8 +174,8 @@ public class FieldMappingTransformationTest extends JaMoPP2PCMTransformationTest
         super.editCompilationUnit(icu, deleteEdit, insertEdit);
         TestUtil.waitForSynchronization();
         final Field newJaMoPPField = this.getJaMoPPFieldFromClass(icu, fieldName);
-        return this.getCorrespondenceInstance().claimUniqueCorrespondingEObjectByType(newJaMoPPField,
-                InnerDeclaration.class);
+        return CollectionBridge.claimOne(CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(
+                this.getCorrespondenceInstance(), newJaMoPPField, InnerDeclaration.class));
     }
 
     private void assertInnerDeclaration(final InnerDeclaration innerDeclaration, final String fieldType,

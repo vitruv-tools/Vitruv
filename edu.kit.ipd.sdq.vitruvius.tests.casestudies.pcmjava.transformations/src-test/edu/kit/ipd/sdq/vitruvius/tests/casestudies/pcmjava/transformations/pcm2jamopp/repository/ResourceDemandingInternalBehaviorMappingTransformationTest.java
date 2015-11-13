@@ -9,6 +9,8 @@ import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour;
 import org.palladiosimulator.pcm.seff.SeffFactory;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 
@@ -33,8 +35,9 @@ public class ResourceDemandingInternalBehaviorMappingTransformationTest extends 
     private void assertResourceDemandingInternalBehaviourCorrespondenceToMethod(
             final ResourceDemandingInternalBehaviour resourceDemandingInternalBehaviour,
             final String expectedMethodName) throws Throwable {
-        final ClassMethod classMethod = this.getCorrespondenceInstance()
-                .claimUniqueCorrespondingEObjectByType(resourceDemandingInternalBehaviour, ClassMethod.class);
+        final ClassMethod classMethod = CollectionBridge
+                .claimOne(CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(this.getCorrespondenceInstance(),
+                        resourceDemandingInternalBehaviour, ClassMethod.class));
         assertEquals("The class method should have the same name as the user selected", classMethod.getName(),
                 expectedMethodName);
     }

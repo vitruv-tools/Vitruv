@@ -30,6 +30,7 @@ import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertNull
 import static org.junit.Assert.assertTrue
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 
 class CorrespondenceTest extends VSUMTest {
@@ -100,7 +101,7 @@ class CorrespondenceTest extends VSUMTest {
 	def private void assertRepositoryCorrespondences(Repository repo,
 		InternalCorrespondenceInstance correspondenceInstance) {
 		// get the correspondence of repo
-		var Set<Correspondence> correspondences = correspondenceInstance.getAllCorrespondences(repo)
+		var Set<Correspondence> correspondences = correspondenceInstance.getCorrespondences(repo.toList)
 		assertEquals("Only one correspondence is expected for the repository.", 1, correspondences.size())
 		for (Correspondence correspondence : correspondences) {
 			assertTrue("Correspondence is not from the type EObjectCorrespondence",
@@ -174,7 +175,7 @@ class CorrespondenceTest extends VSUMTest {
 		var InternalCorrespondenceInstance corresp2 = testCorrespondenceInstanceCreation(vsum2)
 		// do not create correspondences they have to be restored from disk
 		assertTrue(corresp2.hasCorrespondences()) // obtain
-		var Correspondence repo2pkg2 = corresp2.claimUniqueSameTypeCorrespondence(repo2, pkg2)
+		var Correspondence repo2pkg2 = corresp2.claimUniqueCorrespondence(repo2.toList, pkg2.toList)
 		// test everything as if the correspondence would just have been created
 		testAllClaimersAndGettersForEObjectCorrespondences(repo2, pkg2, corresp2, repo2pkg2)
 	}
@@ -210,29 +211,29 @@ class CorrespondenceTest extends VSUMTest {
 		var Correspondence uniquePkgCorrespondence = corresp.claimUniqueCorrespondence(pkg)
 		assertEquals(uniquePkgCorrespondence, repo2pkg) // claimCorrespondingEObject is already indirectly tested via
 		// claimUniqueCorrespondingEObject
-		var EObject correspForRepo = corresp.claimUniqueCorrespondingEObject(repo)
+		var EObject correspForRepo = corresp.getCorrespondingEObjects(repo).claimOne
 		assertEquals(correspForRepo, pkg)
-		var EObject correspForPkg = corresp.claimUniqueCorrespondingEObject(pkg)
+		var EObject correspForPkg = corresp.getCorrespondingEObjects(pkg).claimOne
 		assertEquals(correspForPkg, repo)
 		var List<Interface> interfaces = repo.getInterfaces()
 		assertEquals(interfaces.size(), 1)
 		var Interface iface = interfaces.get(0)
-		var Correspondence correspForIface = corresp.claimUniqueOrNullCorrespondenceForEObject(iface)
+		var Correspondence correspForIface = corresp.getCorrespondences(iface.toList).claimNotMany
 		assertNull(correspForIface) // TODO test exception throwing of claimUniqueOrNullCorrespondenceForEObject
-		var Set<Correspondence> allRepoCorrespondences = corresp.getAllCorrespondences(repo)
+		var Set<Correspondence> allRepoCorrespondences = corresp.getCorrespondences(repo.toList)
 		assertEquals(allRepoCorrespondences.size(), 1)
 		assertTrue(allRepoCorrespondences.contains(repo2pkg))
-		var Set<Correspondence> allPkgCorrespondences = corresp.getAllCorrespondences(pkg)
+		var Set<Correspondence> allPkgCorrespondences = corresp.getCorrespondences(pkg.toList)
 		assertEquals(allPkgCorrespondences.size(), 1)
 		assertTrue(allPkgCorrespondences.contains(repo2pkg))
 		var Set<Repository> allRepoTypeCorresp = corresp.getAllEObjectsOfTypeInCorrespondences(Repository)
 		assertTrue(allRepoTypeCorresp.contains(repo))
 		var Set<UPackage> allPkgTypeCorresp = corresp.getAllEObjectsOfTypeInCorrespondences(UPackage)
 		assertTrue(allPkgTypeCorresp.contains(pkg))
-		var Set<EObject> allCorrespForRepo = corresp.getAllCorrespondingEObjects(repo)
+		var Set<EObject> allCorrespForRepo = corresp.getCorrespondingEObjects(repo)
 		assertEquals(allCorrespForRepo.size(), 1)
 		assertTrue(allCorrespForRepo.contains(pkg))
-		var Set<EObject> allCorrespForPkg = corresp.getAllCorrespondingEObjects(pkg)
+		var Set<EObject> allCorrespForPkg = corresp.getCorrespondingEObjects(pkg)
 		assertEquals(allCorrespForPkg.size(), 1)
 		assertTrue(allCorrespForPkg.contains(repo))
 	}
@@ -262,16 +263,16 @@ class CorrespondenceTest extends VSUMTest {
 		corresp.removeCorrespondencesOfEObjectAndChildrenOnBothSides(repoInterface) // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		// 2. CRC: repo.ifaces _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg.ifaces _sJD6YPxjEeOD3p0i_uuRbQ
 		// check whether it is removed
-		var Set<Correspondence> repoInterfaceCorresp = corresp.getAllCorrespondences(repoInterface)
+		var Set<Correspondence> repoInterfaceCorresp = corresp.getCorrespondences(repoInterface.toList)
 		assertTrue(repoInterfaceCorresp.isEmpty())
-		var Set<Correspondence> pkgInterfaceCorresp = corresp.getAllCorrespondences(pkgInterface)
+		var Set<Correspondence> pkgInterfaceCorresp = corresp.getCorrespondences(pkgInterface.toList)
 		assertTrue(pkgInterfaceCorresp.isEmpty())
-		var Set<EObject> correspForRepoInterface = corresp.getAllCorrespondingEObjects(repoInterface)
+		var Set<EObject> correspForRepoInterface = corresp.getCorrespondingEObjects(repoInterface)
 		assertTrue(correspForRepoInterface.isEmpty())
-		var Set<EObject> correspForPkgInterface = corresp.getAllCorrespondingEObjects(pkgInterface)
+		var Set<EObject> correspForPkgInterface = corresp.getCorrespondingEObjects(pkgInterface)
 		assertTrue(correspForPkgInterface.isEmpty())
 		var Set<Interface> correspForRepoInterfaceType = corresp.getAllEObjectsOfTypeInCorrespondences(Interface)
-		assertTrue(correspForRepoInterfaceType.isEmpty())
+		assertTrue(correspForRepoInterfaceType.isEmpty()) 
 		var Set<uml_mockup.Interface> correspForPkgInterfaceType = corresp.
 			getAllEObjectsOfTypeInCorrespondences(uml_mockup.Interface)
 		assertTrue(correspForPkgInterfaceType.isEmpty())
@@ -282,13 +283,13 @@ class CorrespondenceTest extends VSUMTest {
 		// 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		// 2. CRC: repo.ifaces _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg.ifaces _sJD6YPxjEeOD3p0i_uuRbQ
 		corresp.removeCorrespondencesOfEObjectAndChildrenOnBothSides(repo2pkg) // now the correspondence instance should be empty
-		var Set<Correspondence> repoCorresp = corresp.getAllCorrespondences(repo)
+		var Set<Correspondence> repoCorresp = corresp.getCorrespondences(repo.toList)
 		assertTrue(repoCorresp.isEmpty())
-		var Set<Correspondence> pkgCorresp = corresp.getAllCorrespondences(pkg)
+		var Set<Correspondence> pkgCorresp = corresp.getCorrespondences(pkg.toList)
 		assertTrue(pkgCorresp.isEmpty())
-		var Set<EObject> correspForRepo = corresp.getAllCorrespondingEObjects(repo)
+		var Set<EObject> correspForRepo = corresp.getCorrespondingEObjects(repo)
 		assertTrue(correspForRepo.isEmpty())
-		var Set<EObject> correspForPkg = corresp.getAllCorrespondingEObjects(pkg)
+		var Set<EObject> correspForPkg = corresp.getCorrespondingEObjects(pkg)
 		assertTrue(correspForPkg.isEmpty())
 		var Set<Repository> correspForRepoType = corresp.getAllEObjectsOfTypeInCorrespondences(Repository)
 		assertTrue(correspForRepoType.isEmpty())
@@ -308,15 +309,15 @@ class CorrespondenceTest extends VSUMTest {
 		CorrespondenceInstance corresp, Correspondence repo2pkg) {
 		var Repository newRepo = Pcm_mockupFactory.eINSTANCE.createRepository()
 		corresp.updateTUID(repo, newRepo)
-		var Set<Correspondence> repoCorresp = corresp.getAllCorrespondences(repo)
+		var Set<Correspondence> repoCorresp = corresp.getCorrespondences(repo.toList)
 		assertTrue(repoCorresp.isEmpty())
 		var Correspondence uniqueNewRepoCorrespondence = corresp.claimUniqueCorrespondence(newRepo)
 		assertEquals(uniqueNewRepoCorrespondence, repo2pkg)
 		var Correspondence uniquePkgCorrespondence = corresp.claimUniqueCorrespondence(pkg)
 		assertEquals(uniquePkgCorrespondence, repo2pkg)
-		var EObject correspForNewRepo = corresp.claimUniqueCorrespondingEObject(newRepo)
+		var EObject correspForNewRepo = corresp.getCorrespondingEObjects(newRepo).claimOne
 		assertEquals(correspForNewRepo, pkg)
-		var EObject correspForPkg = corresp.claimUniqueCorrespondingEObject(pkg)
+		var EObject correspForPkg = corresp.getCorrespondingEObjects(pkg).claimOne
 		assertEquals(correspForPkg, newRepo) // TODO is this really enough update testing?
 	}
 
