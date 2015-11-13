@@ -1,20 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.internal
 
-import java.io.IOException
-import java.util.ArrayList
-import java.util.Collections
-import java.util.HashMap
-import java.util.HashSet
-import java.util.List
-import java.util.Map
-import java.util.Set
-import org.apache.log4j.Logger
-import org.eclipse.emf.common.util.EList
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.EStructuralFeature
-import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.emf.ecore.util.EcoreUtil
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FeatureInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping
@@ -31,6 +17,19 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple
+import java.io.IOException
+import java.util.ArrayList
+import java.util.Collections
+import java.util.HashMap
+import java.util.HashSet
+import java.util.List
+import java.util.Map
+import java.util.Set
+import org.apache.log4j.Logger
+import org.eclipse.emf.common.util.EList
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 
@@ -60,7 +59,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
+	 * @see CorrespondenceInstance#
 	 * addSameTypeCorrespondence
 	 * (edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence)
 	 */
@@ -98,120 +97,13 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
+	 * @see CorrespondenceInstance#
 	 * changedAfterLastSave()
 	 */
 	override boolean changedAfterLastSave() {
 		return this.changedAfterLastSave
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
-	 * claimCorrespondences(org.eclipse.emf.ecore.EObject)
-	 */
-	override Set<Correspondence> claimCorrespondences(EObject eObject) {
-		return null
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
-	 * claimCorrespondingEObjects(org.eclipse.emf.ecore.EObject)
-	 */
-	override Set<EObject> claimCorrespondingEObjects(EObject eObject) {
-		// TUID tuid = calculateTUIDsFromEObjects(eObject);
-		// Set<TUID> correspondingTUIDs = getCorrespondingTUIDs(tuid);
-		// claimCorrespondenceSetNotEmpty(eObject, tuid, correspondingTUIDs);
-		// return resolveEObjectsFromTUIDs(correspondingTUIDs);
-		return getCorrespondingEObjects(eObject.toList).claimOne.toSet
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
-	 * claimCorrespondingEObjectsByType(org.eclipse.emf.ecore.EObject, java.lang.Class)
-	 */
-	override <T> Set<T> claimCorrespondingEObjectsByType(EObject eObject, Class<T> type) {
-		// Set<EObject> correspondingEObjects = claimCorrespondingEObjects(eObject);
-		// Set<T> correspondingEObjectsByType = new HashSet<T>();
-		// for (EObject correspondingEObject : correspondingEObjects) {
-		// if (type.isInstance(correspondingEObject)) {
-		// correspondingEObjectsByType.add(type.cast(correspondingEObject));
-		// }
-		// }
-		// if (correspondingEObjectsByType.size() == 0) {
-		// throw new RuntimeException(
-		// "There are no eObjects of type '" + type + "' that correspond to the eObject '" + eObject
-		// + "!");
-		// }
-		// return correspondingEObjectsByType;
-		return null;
-		// FIXME MK replace at caller
-//		return getCorrespondingEObjects(eObject.toList).claimOne.filter(typeof(type)) as Set<T>
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
-	 * claimUniqueCorrespondence(org.eclipse.emf.ecore.EObject)
-	 */
-	override Correspondence claimUniqueCorrespondence(EObject eObject) {
-		return getCorrespondences(eObject.toList).claimOne
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
-	 * claimUniqueCorrespondingEObject(org.eclipse.emf.ecore.EObject)
-	 */
-	override EObject claimUniqueCorrespondingEObject(EObject eObject) {
-		// Set<EObject> correspondingEObjects = claimCorrespondingEObjects(eObject);
-		// if (correspondingEObjects.size() != 1) {
-		// throw new RuntimeException(
-		// "The eObjects corresponding to '" + eObject + "' are not unique: " +
-		// correspondingEObjects);
-		// }
-		// return correspondingEObjects.iterator().next();
-		return getCorrespondingEObjects(eObject.toList).claimOne.claimOne
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
-	 * claimUniqueCorrespondingEObjectByType(org.eclipse.emf.ecore.EObject, java.lang.Class)
-	 */
-	override <T> T claimUniqueCorrespondingEObjectByType(EObject eObject, Class<T> type) {
-		// Set<T> correspondingEObjectsByType = claimCorrespondingEObjectsByType(eObject, type);
-		// if (1 != correspondingEObjectsByType.size()) {
-		// throw new RuntimeException(
-		// "claimCorrespondingEObjectForTypeIfUnique failed: " + correspondingEObjectsByType.size()
-		// + " corresponding objects found (expected 1)" + correspondingEObjectsByType);
-		// }
-		// return correspondingEObjectsByType.iterator().next();
-		// FIXME MK replace at caller
-//		return getCorrespondingEObjects(eObject.toList).claimOne.filter(typeof(type)).claimOne
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
-	 * claimUniqueOrNullCorrespondenceForEObject(org.eclipse.emf.ecore.EObject)
-	 */
-	override Correspondence claimUniqueOrNullCorrespondenceForEObject(EObject eObject) {
-		return getCorrespondences(eObject.toList).claimNotMany
-	}
-
-	override Correspondence claimUniqueSameTypeCorrespondence(EObject a, EObject b) {
-		return claimUniqueCorrespondence(a.toList,b.toList)
-	}
 	
 	override Correspondence claimUniqueCorrespondence(List<EObject> aEObjects, List<EObject> bEObjects) {
 		 val correspondences = getCorrespondences(aEObjects)
@@ -224,9 +116,6 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		 throw new RuntimeException("No correspondence for '" + aEObjects + "' and '" + bEObjects + "' was found!");
 	}
 
-	override Correspondence createAndAddCorrespondence(EObject a, EObject b) {
-		return createAndAddCorrespondence(a.toList,b.toList)
-	}
 
 	override Correspondence createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2) {
 		var Correspondence correspondence = CorrespondenceFactory::eINSTANCE.createCorrespondence()
@@ -234,38 +123,12 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		addCorrespondence(correspondence)
 		return correspondence
 	}
-
-	override Correspondence createAndAddEContainmentReferenceCorrespondence(EObject a, EObject b,
-		EReference referenceFeatureA, EReference referenceFeatureB) {
-		// TODO Auto-generated method stub
-		return null
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
-	 * getAllCorrespondences(org.eclipse.emf.ecore.EObject)
-	 */
-	override Set<Correspondence> getAllCorrespondences(EObject eObject) {
-		return getCorrespondences(eObject.toList)
-	}
 	
 	override Set<Correspondence> getCorrespondences(List<EObject> eObjects) {
 		var List<TUID> tuids = calculateTUIDsFromEObjects(eObjects)
 		return getCorrespondencesForTUIDs(tuids)
 	}
 
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
-	 * getAllCorrespondences(edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID)
-	 */
-	override Set<Correspondence> getAllCorrespondences(TUID tuid) {
-		return getCorrespondencesForTUIDs(tuid.toList)
-	}
 	
 	override Set<Correspondence> getCorrespondencesForTUIDs(List<TUID> tuids) {
 		var Set<Correspondence> correspondences = this.tuid2CorrespondencesMap.get(tuids)
@@ -276,67 +139,10 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		return correspondences
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
-	 * getAllCorrespondingEObjects(org.eclipse.emf.ecore.EObject)
-	 */
-	override Set<EObject> getAllCorrespondingEObjects(EObject eObject) {
-		return getCorrespondingEObjects(eObject.toList).claimOne.toSet
-	}
-	
 	override Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects) {
 		var List<TUID> tuids = calculateTUIDsFromEObjects(eObjects)
 		var Set<List<TUID>> correspondingTUIDLists = getCorrespondingTUIDs(tuids)
 		return resolveEObjectsSetsFromTUIDsSets(correspondingTUIDLists)
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
-	 * getAllEObjectsInCorrespondencesWithType(java.lang.Class)
-	 */
-	override <T> Set<T> getAllEObjectsOfTypeInCorrespondences(Class<T> type) {
-//		var Set<T> correspondencesWithType = new HashSet<T>()
-//		var List<Correspondence> allCorrespondences = this.correspondences.getCorrespondences()
-//		for (Correspondence correspondence : allCorrespondences) {
-//			var EObject element = resolveEObjectFromTUIDWithoutException(correspondence.getElementATUID())
-//			if (null !== element && type.isInstance(element)) {
-//				/*FIXME Cannot add Annotation to Variable declaration. Java code: @SuppressWarnings("unchecked")*/
-//				var T t = element as T
-//				correspondencesWithType.add(t)
-//			} else {
-//				element = resolveEObjectFromTUIDWithoutException(correspondence.getElementBTUID())
-//				if (null !== element && type.isInstance(element)) {
-//					/*FIXME Cannot add Annotation to Variable declaration. Java code: @SuppressWarnings("unchecked")*/
-//					var T t = element as T
-//					correspondencesWithType.add(t)
-//				}
-//
-//			} // currently nothing else to do as every correspondence is a One2OneCorrespondence
-//		}
-//		return correspondencesWithType
-		// FIXME MK decide whether to keep this evil method
-		return null
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
-	 * getCorrespondingEObjectsByType(org.eclipse.emf.ecore.EObject, java.lang.Class)
-	 */
-	override <T> Set<T> getCorrespondingEObjectsByType(EObject eObject, Class<T> type) {
-//		try {
-//			return claimCorrespondingEObjectsByType(eObject, type)
-//		} catch (RuntimeException e) {
-//			return null
-//		}
-		return null
-		// FIXME MK replace at caller
-//		return getCorrespondingEObjects(eObject.toList).claimOne.filter(typeof(type)).toSet
 	}
 
 	def private Set<List<TUID>> getCorrespondingTUIDs(List<TUID> tuids) {
@@ -474,7 +280,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 
 	def private void markNeighborAndChildrenCorrespondencesRecursively(EObject eObject,
 		Set<Correspondence> markedCorrespondences) {
-		var Set<Correspondence> allCorrespondences = getAllCorrespondences(eObject)
+		var Set<Correspondence> allCorrespondences = getCorrespondences(eObject.toList)
 		for (Correspondence correspondence : allCorrespondences) {
 			markNeighborAndChildrenCorrespondences(correspondence,
 				markedCorrespondences)
@@ -492,8 +298,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 			correspondence.getATUIDs())
 		allInvolvedTUIDs.addAll(correspondence.getBTUIDs()) // add all involved eObjects to the sets for these objects in the map
 		for (TUID involvedTUID : allInvolvedTUIDs) {
-			var Set<Correspondence> correspondences = getAllCorrespondences(
-				involvedTUID)
+			var Set<Correspondence> correspondences = getCorrespondencesForTUIDs(involvedTUID.toList)
 			if (!correspondences.contains(correspondence)) {
 				correspondences.add(correspondence)
 			}
@@ -540,9 +345,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 
 	override Set<Correspondence> removeCorrespondencesOfEObjectAndChildrenOnBothSides(
 		TUID tuid) {
-		var Set<Correspondence> directCorrespondences = getAllCorrespondences(
-			tuid
-		)
+		var Set<Correspondence> directCorrespondences = getCorrespondencesForTUIDs(tuid.toList)
 		var Set<Correspondence> directAndChildrenCorrespondences = new HashSet<Correspondence>()
 		for (Correspondence correspondence : directCorrespondences) {
 			directAndChildrenCorrespondences.addAll(
@@ -554,7 +357,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
+	 * @see CorrespondenceInstance#
 	 * resetChangedAfterLastSave()
 	 */
 	override void resetChangedAfterLastSave() {

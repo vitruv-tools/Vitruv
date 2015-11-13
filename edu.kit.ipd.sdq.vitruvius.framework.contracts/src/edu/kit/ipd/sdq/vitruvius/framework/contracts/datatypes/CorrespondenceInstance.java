@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
 
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
@@ -41,168 +40,28 @@ public interface CorrespondenceInstance {
     public boolean hasCorrespondences();
 
     /**
-     * Returns the correspondences for the specified object and throws a
-     * {@link java.lang.RuntimeException} if no correspondence exists.
-     *
-     * @param eObject
-     *            the object for which correspondences are to be returned
-     * @return the correspondences for the specified object
-     */
-    // FIXME MK will no longer be provided (use extension method claimNotEmpty)
-    @Deprecated
-    public Set<Correspondence> claimCorrespondences(EObject eObject);
-
-    /**
      * Returns all correspondences for the specified object and an empty set if the object has no
      * correspondences. Should never return {@link null}.
      *
-     * @param eObject
+     * @param eObjects
      * @return all correspondences for the specified object and an empty set if the object has no
      *         correspondences.
      */
-    // FIXME MK will be replaced by next method (use extension method toList)
-    @Deprecated
-    public Set<Correspondence> getAllCorrespondences(EObject eObject);
-
     public Set<Correspondence> getCorrespondences(List<EObject> eObjects);
 
     /**
      * Returns all correspondences for the object with the specified tuid and an empty set if the
      * object has no correspondences. Should never return {@link null}.
      *
-     * @param tuid
+     * @param tuids
      * @return all correspondences for the object with the specified tuid and an empty set if the
      *         object has no correspondences.
      */
-    // FIXME MK will be replaced by next method (use extension method toList)
-    @Deprecated
-    public Set<Correspondence> getAllCorrespondences(TUID involvedTUID);
-
     public Set<Correspondence> getCorrespondencesForTUIDs(List<TUID> tuids);
-
-    /**
-     * Returns the corresponding objects for the specified object and throws a
-     * {@link java.lang.RuntimeException} if no correspondence exists.
-     *
-     * @param eObject
-     *            the object for which corresponding objects are to be returned
-     * @return the corresponding objects for the specified object
-     */
-    // FIXME MK will no longer be provided (use extension method claimNotEmpty)
-    @Deprecated
-    public Set<EObject> claimCorrespondingEObjects(EObject eObject);
-
-    /**
-     * Returns all corresponding objects for the specified object and an empty set if the object has
-     * no correspondences. Should never return {@link null}.
-     *
-     * @param eObject
-     *            the object for which corresponding objects are to be returned
-     * @return all corresponding objects for the specified object and an empty set if the object has
-     *         no correspondences.
-     */
-    // FIXME MK will be replaced by next method (use extension method toList)
-    @Deprecated
-    public Set<EObject> getAllCorrespondingEObjects(EObject eObject);
 
     public Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects);
 
-    /**
-     * Returns the corresponding object for the specified object if there is exactly one
-     * corresponding object and throws a {@link java.lang.RuntimeException} otherwise.
-     *
-     * @param eObject
-     *            the object for which the corresponding object is to be returned
-     * @return the corresponding object for the specified object if there is exactly one
-     *         corresponding object
-     */
-    // FIXME MK will no longer be provided (use extension method claimOne)
-    @Deprecated
-    public EObject claimUniqueCorrespondingEObject(EObject eObject);
-
-    /**
-     * Returns the corresponding objects of the specified type for the specified object and throws a
-     * {@link java.lang.RuntimeException} if no correspondences of this type exist.
-     *
-     * @param eObject
-     *            the object for which corresponding objects are to be returned
-     * @param type
-     *            the class of which instances are to be returned
-     * @return the corresponding objects of the specified type for the specified object
-     */
-    // FIXME MK will no longer be provided (use filter(typeOf(T)) and extension method
-    // claimNotEmpty)
-    @Deprecated
-    public <T> Set<T> claimCorrespondingEObjectsByType(EObject eObject, Class<T> type);
-
-    /**
-     * Returns the corresponding object of the specified type for the specified object if there is
-     * exactly one corresponding object of this type and throws a {@link java.lang.RuntimeException}
-     * otherwise.
-     *
-     * @param eObject
-     *            the object for which the corresponding object is to be returned
-     * @param type
-     *            the class of which an instance is to be returned
-     * @return the corresponding object of the specified type for the specified object if there is
-     *         exactly one corresponding object of this type
-     */
-    // FIXME MK will no longer be provided (use filter(typeOf(T)) and extension method claimOne)
-    @Deprecated
-    public <T> T claimUniqueCorrespondingEObjectByType(EObject eObject, Class<T> type);
-
-    /**
-     * Returns the correspondence for the given eObject if it is unique, or null if no
-     * correspondence exists and throws a {@link RuntimeException} if more than one correspondence
-     * exists.
-     *
-     * @param eObject
-     *            the object for which the correspondence is to be returned
-     * @return the correspondence for the given eObject if it is unique, or null if no
-     *         correspondence exists
-     */
-    // FIXME MK will no longer be provided (use extension method claimNotMany)
-    @Deprecated
-    public Correspondence claimUniqueOrNullCorrespondenceForEObject(EObject eObject);
-
-    /**
-     * Returns the correspondence for the given eObject if it is unique and throws a
-     * {@link RuntimeException} if there is not exactly one corresponding object.
-     *
-     * @param eObject
-     *            the object for which the correspondence is to be returned
-     * @return the correspondence for the given eObject if there is exactly one corresponding object
-     */
-    // FIXME MK will no longer be provided (use extension method claimOne)
-    @Deprecated
-    public Correspondence claimUniqueCorrespondence(EObject eObject);
-
-    /**
-     * Returns the SameTypeCorrespondence for the given eObjects a and b and throws a
-     * {@link RuntimeException} if there is no such correspondence. Note that a has to be an element
-     * of metamodel a and b an instance of metamodel b.
-     *
-     * @param a
-     * @param b
-     * @return
-     */
-    // FIXME MK will be replaced by next method (use extension method toList)
-    @Deprecated
-    public Correspondence claimUniqueSameTypeCorrespondence(final EObject a, final EObject b);
-
     public Correspondence claimUniqueCorrespondence(final List<EObject> aEObjects, final List<EObject> bEObjects);
-
-    /**
-     * Returns all eObjects that have some correspondence and are an instance of the given class.
-     *
-     * @param type
-     *            the class for which instances should be returned
-     * @return a set containing all eObjects of the given type that have a correspondence
-     */
-    // renamed from getAllEObjectsInCorrespondencesWithType
-    // no longer provided (use filter(typeOf(..)))
-    @Deprecated
-    public <T> Set<T> getAllEObjectsOfTypeInCorrespondences(Class<T> type);
 
     // renamed from addSameTypeCorrespondence
     public void addCorrespondence(Correspondence correspondence);
@@ -298,25 +157,9 @@ public interface CorrespondenceInstance {
     public List<TUID> calculateTUIDsFromEObjects(final List<EObject> eObjects);
 
     /**
-     * SWAPS a and b if necessary!
-     */
-    // FIXME MK will no longer be provided
-    @Deprecated
-    public Correspondence createAndAddEContainmentReferenceCorrespondence(EObject a, EObject b,
-            EReference referenceFeatureA, EReference referenceFeatureB);
-
-    // FIXME MK will be replaced by next method (use extension method toList)
-    @Deprecated
-    public Correspondence createAndAddCorrespondence(EObject a, EObject b);
-
-    /**
      * SWAPS eObjects1 and eObjects2 to obtain first as and then bs if necessary!
      */
     public Correspondence createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2);
-
-    // FIXME MK will no longer be provided (use filter(typeOf(T)))
-    @Deprecated
-    public <T> Set<T> getCorrespondingEObjectsByType(EObject eObject, Class<T> type);
 
     EObject resolveEObjectFromRootAndFullTUID(EObject root, String tuidString);
 }
