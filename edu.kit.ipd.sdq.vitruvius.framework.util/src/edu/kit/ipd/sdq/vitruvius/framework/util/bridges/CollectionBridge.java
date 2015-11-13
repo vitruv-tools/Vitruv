@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.util.bridges;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -21,11 +22,13 @@ public final class CollectionBridge {
 	        return c;
 		}
 		
-		public static <T> T claimOne(Collection<T> c) {
-	        if (c.size() != 1) {
+		public static <T> T claimOne(Iterable<T> c) {
+			Iterator<T> iterator = c.iterator();
+			T one = iterator.next();
+	        if (iterator.hasNext()) {
 	            throw new RuntimeException("It was claimed that the collection '" + c + "' contains exactly one element!");
 	        }
-	        return c.iterator().next();
+	        return one;
 		}
 		
 		public static <T> T claimNotMany(Collection<T> c) {

@@ -126,7 +126,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		// Set<TUID> correspondingTUIDs = getCorrespondingTUIDs(tuid);
 		// claimCorrespondenceSetNotEmpty(eObject, tuid, correspondingTUIDs);
 		// return resolveEObjectsFromTUIDs(correspondingTUIDs);
-		return null
+		return getCorrespondingEObjects(eObject.toList).claimOne.toSet
 	}
 
 	/*
@@ -149,7 +149,9 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		// + "!");
 		// }
 		// return correspondingEObjectsByType;
-		return null
+		return null;
+		// FIXME MK replace at caller
+//		return getCorrespondingEObjects(eObject.toList).claimOne.filter(typeof(type)) as Set<T>
 	}
 
 	/*
@@ -159,7 +161,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	 * claimUniqueCorrespondence(org.eclipse.emf.ecore.EObject)
 	 */
 	override Correspondence claimUniqueCorrespondence(EObject eObject) {
-		return null
+		return getCorrespondences(eObject.toList).claimOne
 	}
 
 	/*
@@ -176,7 +178,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		// correspondingEObjects);
 		// }
 		// return correspondingEObjects.iterator().next();
-		return null
+		return getCorrespondingEObjects(eObject.toList).claimOne.claimOne
 	}
 
 	/*
@@ -193,7 +195,8 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		// + " corresponding objects found (expected 1)" + correspondingEObjectsByType);
 		// }
 		// return correspondingEObjectsByType.iterator().next();
-		return null
+		// FIXME MK replace at caller
+//		return getCorrespondingEObjects(eObject.toList).claimOne.filter(typeof(type)).claimOne
 	}
 
 	/*
@@ -203,25 +206,26 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	 * claimUniqueOrNullCorrespondenceForEObject(org.eclipse.emf.ecore.EObject)
 	 */
 	override Correspondence claimUniqueOrNullCorrespondenceForEObject(EObject eObject) {
-		return null
+		return getCorrespondences(eObject.toList).claimNotMany
 	}
 
 	override Correspondence claimUniqueSameTypeCorrespondence(EObject a, EObject b) {
-		// Set<Correspondence> correspondences = claimCorrespondences(a);
-		// for (Correspondence correspondence : correspondences) {
-		// TUID correspondingBTUID = correspondence.getElementBTUID();
-		// TUID bTUID = calculateTUIDsFromEObjects(b);
-		// if (correspondingBTUID.equals(bTUID)) {
-		// return correspondence;
-		// }
-		// }
-		// throw new RuntimeException("No eObject corresponding to '" + a + "' has the TUID of '" +
-		// b + "'!");
-		return null
+		return claimUniqueCorrespondence(a.toList,b.toList)
+	}
+	
+	override Correspondence claimUniqueCorrespondence(List<EObject> aEObjects, List<EObject> bEObjects) {
+		 val correspondences = getCorrespondences(aEObjects)
+		 for (Correspondence correspondence : correspondences) {
+		 	val correspondingBs = correspondence.bs
+		 	if (correspondingBs != null && correspondingBs.equals(bEObjects)) {
+		 		return correspondence;
+		 	}
+		 }
+		 throw new RuntimeException("No correspondence for '" + aEObjects + "' and '" + bEObjects + "' was found!");
 	}
 
 	override Correspondence createAndAddCorrespondence(EObject a, EObject b) {
-		return null
+		return createAndAddCorrespondence(a.toList,b.toList)
 	}
 
 	override Correspondence createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2) {
@@ -244,7 +248,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	 * getAllCorrespondences(org.eclipse.emf.ecore.EObject)
 	 */
 	override Set<Correspondence> getAllCorrespondences(EObject eObject) {
-		return null
+		return getCorrespondences(eObject.toList)
 	}
 	
 	override Set<Correspondence> getCorrespondences(List<EObject> eObjects) {
@@ -260,7 +264,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	 * getAllCorrespondences(edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID)
 	 */
 	override Set<Correspondence> getAllCorrespondences(TUID tuid) {
-		return null
+		return getCorrespondencesForTUIDs(tuid.toList)
 	}
 	
 	override Set<Correspondence> getCorrespondencesForTUIDs(List<TUID> tuids) {
@@ -279,7 +283,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	 * getAllCorrespondingEObjects(org.eclipse.emf.ecore.EObject)
 	 */
 	override Set<EObject> getAllCorrespondingEObjects(EObject eObject) {
-		return null
+		return getCorrespondingEObjects(eObject.toList).claimOne.toSet
 	}
 	
 	override Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects) {
@@ -314,6 +318,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 //			} // currently nothing else to do as every correspondence is a One2OneCorrespondence
 //		}
 //		return correspondencesWithType
+		// FIXME MK decide whether to keep this evil method
 		return null
 	}
 
@@ -330,6 +335,8 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 //			return null
 //		}
 		return null
+		// FIXME MK replace at caller
+//		return getCorrespondingEObjects(eObject.toList).claimOne.filter(typeof(type)).toSet
 	}
 
 	def private Set<List<TUID>> getCorrespondingTUIDs(List<TUID> tuids) {
@@ -371,7 +378,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 
 	override <T extends CorrespondenceInstanceDecorator> T getFirstCorrespondenceInstanceDecoratorOfTypeInChain(
 		Class<T> type) {
-		// FIXME MK Auto-generated method stub
+		// FIXME MK AAA Auto-generated method stub
 		return null
 	}
 

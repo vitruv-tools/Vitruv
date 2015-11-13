@@ -186,9 +186,11 @@ public interface CorrespondenceInstance {
      * @param b
      * @return
      */
-    // FIXME MK will no longer be provided (use filter(typeOf(..)) and extension method claimOne)
+    // FIXME MK will be replaced by next method (use extension method toList)
     @Deprecated
     public Correspondence claimUniqueSameTypeCorrespondence(final EObject a, final EObject b);
+
+    public Correspondence claimUniqueCorrespondence(final List<EObject> aEObjects, final List<EObject> bEObjects);
 
     /**
      * Returns all eObjects that have some correspondence and are an instance of the given class.
@@ -289,7 +291,7 @@ public interface CorrespondenceInstance {
 
     /**
      * syntactic sugar for map[{@link #calculateTUIDFromEObject(EObject)}]
-     * 
+     *
      * @param eObjects
      * @return
      */
