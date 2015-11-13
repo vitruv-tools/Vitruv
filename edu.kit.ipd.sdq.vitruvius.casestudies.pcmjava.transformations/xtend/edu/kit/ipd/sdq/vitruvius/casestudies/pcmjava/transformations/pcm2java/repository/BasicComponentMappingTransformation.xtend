@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.r
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.eclipse.emf.ecore.EAttribute
@@ -12,8 +13,6 @@ import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.Package
 import org.palladiosimulator.pcm.repository.BasicComponent
 import org.palladiosimulator.pcm.repository.RepositoryFactory
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
-import org.eclipse.emf.ecore.util.EcoreUtil
 
 class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformation {
 

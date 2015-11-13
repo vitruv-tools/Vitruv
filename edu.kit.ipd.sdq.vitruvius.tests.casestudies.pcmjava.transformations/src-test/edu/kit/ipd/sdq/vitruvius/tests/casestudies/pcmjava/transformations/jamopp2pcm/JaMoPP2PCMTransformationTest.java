@@ -1,6 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.jamopp2pcm;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
@@ -137,6 +139,8 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         this.resourceSet = new ResourceSetImpl();
         // set new user interactor
         this.setUserInteractor(this.testUserInteractor);
+        // deactivate the EMF Monitor
+        this.deactivateEMFMonitor();
     }
 
     @Override
@@ -193,6 +197,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         if (null == ci) {
             throw new RuntimeException("Could not get correspondence instance.");
         }
+        TestUtil.waitForSynchronization();
         final Repository repo = ci.claimUniqueCorrespondingEObjectByType(this.mainPackage, Repository.class);
         return repo;
     }
@@ -443,6 +448,13 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         this.assertPCMNamedElement(repoComponent, expectedName);
     }
 
+    protected void assertResourceAndFileForEObject(final EObject eObject) {
+        final Resource eResource = eObject.eResource();
+        assertNotNull("Resource of eObject " + eObject + " is null", eResource);
+        final IFile iFile = EMFBridge.getIFileForEMFUri(eResource.getURI());
+        assertTrue("No IFile for eObject " + eObject + " in resource " + eResource + " found.", iFile.exists());
+    }
+
     protected void assertRepositoryAndPCMNameForDatatype(final Repository repo, final DataType dt,
             final String expectedName) {
 
@@ -460,6 +472,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     protected void assertPCMNamedElement(final NamedElement pcmNamedElement, final String expectedName) {
         assertEquals("The name of pcm named element is not " + expectedName, expectedName,
                 pcmNamedElement.getEntityName());
+        this.assertResourceAndFileForEObject(pcmNamedElement);
     }
 
     protected OperationInterface addInterfaceInContractsPackage() throws Throwable {
@@ -810,5 +823,28 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         final org.emftext.language.java.classifiers.Class jaMoPPClass = ClassifiersFactory.eINSTANCE.createClass();
         jaMoPPClass.setName(annotationName);
         return jaMoPPClass;
+    }
+
+    private void deactivateEMFMonitor() throws Throwable {
+        final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
+        final ChangeSynchronizing dummyChangeSynchronizing = new ChangeSynchronizing() {
+
+            @Override
+            public List<List<edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change>> synchronizeChanges(
+                    final List<edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change> changes) {
+                final StringBuilder changeMessage = new StringBuilder();
+                changes.forEach(change -> changeMessage.append(change).append(", "));
+                logger.info("Detected (but ignored) changes: " + changeMessage);
+                return null;
+            }
+
+            @Override
+            public void synchronizeChange(final edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change change) {
+                logger.info("Detected (but ignored) change: " + change);
+            }
+        };
+        JavaBridge.setFieldInClass(VitruviusEmfBuilder.class, "changeSynchronizing", pcmJavaBuilder,
+                dummyChangeSynchronizing);
+
     }
 }

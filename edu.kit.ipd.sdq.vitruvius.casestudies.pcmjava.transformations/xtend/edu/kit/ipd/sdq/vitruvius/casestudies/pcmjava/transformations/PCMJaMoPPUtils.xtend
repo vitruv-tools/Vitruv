@@ -26,6 +26,7 @@ import org.palladiosimulator.pcm.repository.CompositeDataType
 import org.palladiosimulator.pcm.repository.PrimitiveDataType
 import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.system.System
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 
 class PCMJaMoPPUtils {
 	private static val Logger logger = Logger.getLogger(PCMJaMoPPUtils.simpleName)
@@ -126,12 +127,12 @@ class PCMJaMoPPUtils {
 
 		def dispatch static addRootChangeToTransformationResult(Repository repo, Blackboard blackboard,
 			VURI sourceModelVURI, TransformationResult transformationResult) {
-			handlePCMRootEObject(repo, sourceModelVURI, blackboard, "repostiory", transformationResult)
+			handlePCMRootEObject(repo, sourceModelVURI, blackboard, PCMJaMoPPNamespace.PCM.REPOSITORY_FILE_EXTENSION, transformationResult)
 		}
 
 		def dispatch static addRootChangeToTransformationResult(System system, Blackboard blackboard,
 			VURI sourceModelVURI, TransformationResult transformationResult) {
-			handlePCMRootEObject(system, sourceModelVURI, blackboard, "system", transformationResult)
+			handlePCMRootEObject(system, sourceModelVURI, blackboard, PCMJaMoPPNamespace.PCM.SYSTEM_FILE_EXTENSION, transformationResult)
 		}
 
 		def dispatch static addRootChangeToTransformationResult(JavaRoot newJavaRoot, Blackboard blackboard,

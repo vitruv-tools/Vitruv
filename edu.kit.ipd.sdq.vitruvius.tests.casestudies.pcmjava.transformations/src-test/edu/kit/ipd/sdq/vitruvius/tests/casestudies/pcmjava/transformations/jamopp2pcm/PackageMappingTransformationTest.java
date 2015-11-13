@@ -4,11 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.CompositeComponent;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.system.System;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
@@ -25,6 +25,7 @@ public class PackageMappingTransformationTest extends JaMoPP2PCMTransformationTe
         final Repository repo = super.addRepoContractsAndDatatypesPackage();
         assertEquals("Name of the repository is not the same as the name of the package",
                 PCM2JaMoPPTestUtils.REPOSITORY_NAME, repo.getEntityName());
+        this.assertResourceAndFileForEObject(repo);
     }
 
     @Test
@@ -44,6 +45,7 @@ public class PackageMappingTransformationTest extends JaMoPP2PCMTransformationTe
     @Test
     public void testAddSecondPackage() throws Throwable {
         final Repository repo = super.addRepoContractsAndDatatypesPackage();
+
         final BasicComponent bc = super.addSecondPackageCorrespondsToBasicComponent();
 
         this.assertRepositoryAndPCMName(repo, bc, PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME);
@@ -61,6 +63,7 @@ public class PackageMappingTransformationTest extends JaMoPP2PCMTransformationTe
     @Test
     public void testCreateSystem() throws Throwable {
         super.addRepoContractsAndDatatypesPackage();
+
         final System system = super.addSecondPackageCorrespondsToSystem();
 
         this.assertPCMNamedElement(system, PCM2JaMoPPTestUtils.SYSTEM_NAME);
@@ -88,10 +91,12 @@ public class PackageMappingTransformationTest extends JaMoPP2PCMTransformationTe
         TestUtil.waitForSynchronization();
 
         // repository of basic component has to be the repository
-        assertEquals("Repository of basic compoennt is not the repository: " + repo, repo.getId(), bc
-                .getRepository__RepositoryComponent().getId());
+        assertEquals("Repository of basic compoennt is not the repository: " + repo, repo.getId(),
+                bc.getRepository__RepositoryComponent().getId());
         // name should be changed since there is no implementing class (yet) fot the component
         assertTrue("The name of the basic component is not " + packageName,
                 packageName.toLowerCase().contains(bc.getEntityName()));
+        this.assertResourceAndFileForEObject(repo);
+        this.assertResourceAndFileForEObject(bc);
     }
 }
