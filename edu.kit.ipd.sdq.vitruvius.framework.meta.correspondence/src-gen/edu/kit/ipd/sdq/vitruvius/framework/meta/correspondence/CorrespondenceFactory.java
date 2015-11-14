@@ -13,39 +13,39 @@ import org.eclipse.emf.ecore.EFactory;
  * @generated
  */
 public interface CorrespondenceFactory extends EFactory {
-	/**
-	 * The singleton instance of the factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	CorrespondenceFactory eINSTANCE = edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.CorrespondenceFactoryImpl.init();
+    /**
+     * The singleton instance of the factory.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    CorrespondenceFactory eINSTANCE = edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl.CorrespondenceFactoryImpl.init();
 
-	/**
-	 * Returns a new object of class '<em>Correspondences</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Correspondences</em>'.
-	 * @generated
-	 */
-	Correspondences createCorrespondences();
+    /**
+     * Returns a new object of class '<em>Correspondences</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Correspondences</em>'.
+     * @generated
+     */
+    Correspondences createCorrespondences();
 
-	/**
-	 * Returns a new object of class '<em>Correspondence</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Correspondence</em>'.
-	 * @generated
-	 */
-	Correspondence createCorrespondence();
+    /**
+     * Returns a new object of class '<em>Correspondence</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Correspondence</em>'.
+     * @generated
+     */
+    Correspondence createCorrespondence();
 
-	/**
-	 * Returns the package supported by this factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the package supported by this factory.
-	 * @generated
-	 */
-	CorrespondencePackage getCorrespondencePackage();
+    /**
+     * Returns the package supported by this factory.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the package supported by this factory.
+     * @generated
+     */
+    CorrespondencePackage getCorrespondencePackage();
 
 } //CorrespondenceFactory

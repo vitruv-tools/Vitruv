@@ -15,10 +15,10 @@
     <eOperations name="getBs" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     <eOperations name="getElementATUID" eType="#//TUID"/>
     <eOperations name="getElementBTUID" eType="#//TUID"/>
-    <eOperations name="setElementATUID" eType="#//TUID">
+    <eOperations name="setElementATUID">
       <eParameters name="tuid" lowerBound="1" eType="#//TUID"/>
     </eOperations>
-    <eOperations name="setElementBTUID" eType="#//TUID">
+    <eOperations name="setElementBTUID">
       <eParameters name="tuid" lowerBound="1" eType="#//TUID"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parent" lowerBound="1"

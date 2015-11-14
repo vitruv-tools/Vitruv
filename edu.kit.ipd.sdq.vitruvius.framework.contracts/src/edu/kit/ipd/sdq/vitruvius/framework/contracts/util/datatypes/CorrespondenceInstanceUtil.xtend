@@ -78,7 +78,10 @@ class CorrespondenceInstanceUtil {
      *         exactly one corresponding object of this type
      */
 	def public static <T> Set<T> getCorrespondingEObjectsByType(CorrespondenceInstance ci, EObject eObject, Class<T> type) {
-		return getCorrespondingEObjects(ci, eObject).filter[eObj|type.isInstance(eObj)] as Set<T>
+		//return getCorrespondingEObjects(ci, eObject).filter[eObj | type.isInstance(eObj)].toSet
+		val Set<T> retSet = Sets.newHashSet
+		getCorrespondingEObjects(ci, eObject).forEach[if(type.isInstance(it)){retSet.add(it as T)}]
+		return retSet
 	}
 	
 	

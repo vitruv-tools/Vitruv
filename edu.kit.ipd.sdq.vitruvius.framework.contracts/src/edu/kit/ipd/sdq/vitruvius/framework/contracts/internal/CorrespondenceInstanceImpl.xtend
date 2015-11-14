@@ -184,7 +184,9 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 
 	override <T extends CorrespondenceInstanceDecorator> T getFirstCorrespondenceInstanceDecoratorOfTypeInChain(
 		Class<T> type) {
-		// FIXME MK AAA Auto-generated method stub
+		if (type.isInstance(this)) {
+			return type.cast(this)
+		} 
 		return null
 	}
 
@@ -317,8 +319,8 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	def private void removeCorrespondenceFromMaps(Correspondence markedCorrespondence) {
 		var TUID elementATUID = markedCorrespondence.getElementATUID()
 		var TUID elementBTUID = markedCorrespondence.getElementBTUID()
-		this.tuid2CorrespondencesMap.remove(elementATUID)
-		this.tuid2CorrespondencesMap.remove(elementBTUID)
+		this.tuid2CorrespondencesMap.remove(elementATUID.toList)
+		this.tuid2CorrespondencesMap.remove(elementBTUID.toList)
 	}
 
 	override Set<Correspondence> removeCorrespondencesOfEObjectsAndChildrenOnBothSides(
@@ -472,6 +474,9 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	 * .kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID,
 	 * edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID)
 	 */
+	 //FIXME note to MK: this currently only works if all key-lists in tuid2CorrespondencesMap only contain one element. 
+	 //If you implement an update function for list of TUIDs be careful since there could be the case that one TUID is contained 
+	 //in more than only one key-lists. My current guess is that we have to update all key-lists in which the TUID occurs
 	override void updateTUID(TUID oldTUID, TUID newTUID) {
 		var boolean sameTUID = if(oldTUID !== null) oldTUID.equals(
 				newTUID) else newTUID === null
@@ -485,7 +490,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		// remove the old map entries for the tuid before its hashcode changes
 		var TUID.BeforeHashCodeUpdateLambda before = ([ TUID oldCurrentTUID | 
 			var Set<Correspondence> correspondencesForOldTUID = CorrespondenceInstanceImpl.
-				this.tuid2CorrespondencesMap.remove(oldCurrentTUID)
+				this.tuid2CorrespondencesMap.remove(oldCurrentTUID.toList)
 			// because featureInstance2CorrespondingFIMap uses no TUID as key we do not need to
 			// update it
 			return new Triple<TUID, String, Set<Correspondence>>(oldCurrentTUID, oldCurrentTUID.toString(),correspondencesForOldTUID)

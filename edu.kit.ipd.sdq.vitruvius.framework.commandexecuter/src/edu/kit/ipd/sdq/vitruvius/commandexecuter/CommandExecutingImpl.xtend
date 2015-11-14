@@ -22,6 +22,8 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.transaction.TransactionalEditingDomain
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondences
 
 class CommandExecutingImpl implements CommandExecuting {
 	static final Logger logger = Logger::getLogger(typeof(CommandExecutingImpl).getSimpleName())
@@ -39,7 +41,8 @@ class CommandExecutingImpl implements CommandExecuting {
 			} else {
 				domain.getCommandStack().execute(command)
 			}
-			affectedObjects.addAll(command.getAffectedObjects().stream().filter(null).collect(Collectors::toList()))
+			affectedObjects.addAll(command.getAffectedObjects().filter [ eObj |
+				!(eObj instanceof Correspondence) && !(eObj instanceof Correspondences)])
 		}
 		this.executeTransformationResults(transformationResults, blackboard)
 		this.saveAffectedEObjects(affectedObjects, blackboard.getModelProviding())
@@ -74,7 +77,8 @@ class CommandExecutingImpl implements CommandExecuting {
 				blackboard.getModelProviding().deleteModelInstanceOriginal(vuriToDelete)
 			}
 			for (Pair<EObject, VURI> createdEObjectVURIPair : transformationResult.getRootEObjectsToSave()) {
-				val TUID oldTUID = blackboard.getCorrespondenceInstance().calculateTUIDsFromEObjects(createdEObjectVURIPair.getFirst().toList).claimOne
+				val TUID oldTUID = blackboard.getCorrespondenceInstance().calculateTUIDsFromEObjects(
+					createdEObjectVURIPair.getFirst().toList).claimOne
 				blackboard.getModelProviding().
 					saveModelInstanceOriginalWithEObjectAsOnlyContent(createdEObjectVURIPair.getSecond(),
 						createdEObjectVURIPair.getFirst(), oldTUID)
