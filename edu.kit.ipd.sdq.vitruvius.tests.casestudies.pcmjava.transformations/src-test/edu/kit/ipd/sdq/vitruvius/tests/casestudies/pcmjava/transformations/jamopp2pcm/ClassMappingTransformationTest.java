@@ -152,6 +152,7 @@ public class ClassMappingTransformationTest extends JaMoPP2PCMTransformationTest
 
         this.assertRepositoryAndPCMName(repo, newBasicComponent,
                 PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + PCM2JaMoPPTestUtils.RENAME);
+        this.assertFilesOnlyForEObjects(newBasicComponent);
     }
 
 }

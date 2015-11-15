@@ -3,8 +3,11 @@ package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.jamo
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +22,7 @@ import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -60,6 +64,7 @@ import org.emftext.language.java.classifiers.ConcreteClassifier;
 import org.emftext.language.java.classifiers.Interface;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.containers.ContainersFactory;
+import org.emftext.language.java.containers.JavaRoot;
 import org.emftext.language.java.containers.Package;
 import org.emftext.language.java.members.ClassMethod;
 import org.emftext.language.java.members.Field;
@@ -100,6 +105,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.MonitoredEditor;
 import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
@@ -147,6 +153,17 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 
     @Override
     protected void afterTest() {
+        // tell the code monitor to not report changes any more
+        try {
+            final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
+            if (null != pcmJavaBuilder) {
+                final MonitoredEditor monitoredEditor = JavaBridge.getFieldFromClass(PCMJavaBuilder.class,
+                        "javaMonitoredEditor", pcmJavaBuilder);
+                monitoredEditor.setReportChanges(false);
+            }
+        } catch (final Throwable e) {
+            // do nothing since we
+        }
         // Remove PCM Java Builder
         final PCMJavaRemoveBuilder pcmJavaRemoveBuilder = new PCMJavaRemoveBuilder();
         pcmJavaRemoveBuilder.removeBuilderFromProject(TestUtil.getTestProject());
@@ -244,7 +261,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         return jaMoPPPackage;
     }
 
-    protected void renamePackage(final Package packageToRename, String newName) throws Throwable {
+    protected Package renamePackage(final Package packageToRename, String newName) throws Throwable {
         final Resource resource = packageToRename.eResource();
         final IFile iFile = EMFBridge.getIFileForEMFUri(resource.getURI());
         IPath iPath = iFile.getProjectRelativePath();
@@ -256,6 +273,8 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         final IFolder iFolder = iFile.getProject().getFolder(iPath);
         final IJavaElement javaPackage = JavaCore.create(iFolder);
         this.refactorRenameJavaElement(newName, javaPackage, IJavaRefactorings.RENAME_PACKAGE);
+        final Package newPackage = this.findJaMoPPPackageWithName(newName);
+        return newPackage;
     }
 
     private void refactorRenameJavaElement(final String newName, final IJavaElement iJavaElement,
@@ -307,10 +326,39 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         cu.save(new NullProgressMonitor(), true);
     }
 
-    protected ICompilationUnit findICompilationUnitWithClassName(String entityName) throws Throwable {
-        if (!entityName.endsWith("." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION)) {
-            entityName = entityName + "." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION;
+    private Package findJaMoPPPackageWithName(final String newName) throws Throwable {
+        final IJavaProject javaProject = JavaCore.create(TestUtil.getTestProject());
+        for (final IPackageFragmentRoot packageFragmentRoot : javaProject.getPackageFragmentRoots()) {
+            final IJavaElement[] children = packageFragmentRoot.getChildren();
+            for (final IJavaElement iJavaElement : children) {
+                if (iJavaElement instanceof IPackageFragment) {
+                    final IPackageFragment fragment = (IPackageFragment) iJavaElement;
+                    if (fragment.getElementName().equals(newName)) {
+                        final VURI vuri = this.getVURIForElementInPackage(fragment, "package-info");
+                        final Package jaMoPPPackage = this.getJaMoPPRootForVURI(vuri);
+                        return jaMoPPPackage;
+                    }
+                    // final IJavaElement[] javaElements = fragment.getChildren();
+                    // for (int k = 0; k < javaElements.length; k++) {
+                    // final IJavaElement javaElement = javaElements[k];
+                    // if (javaElement.getElementType() == IJavaElement.PACKAGE_FRAGMENT) {
+                    // final IPackageFragment packageFragment = (IPackageFragment) javaElement;
+                    // if (packageFragment.getElementName().equals(newName)) {
+                    // final VURI vuri = this.getVURIForElementInPackage(packageFragment,
+                    // "package-info.java");
+                    // final Package jaMoPPPackage = this.getJaMoPPRootForVURI(vuri);
+                    // return jaMoPPPackage;
+                    // }
+                    // }
+                    // }
+                }
+            }
         }
+        throw new RuntimeException("Could not find a compilation unit with name " + newName);
+    }
+
+    protected ICompilationUnit findICompilationUnitWithClassName(String entityName) throws Throwable {
+        entityName = this.ensureJavaFileExtension(entityName);
         final IJavaProject javaProject = JavaCore.create(TestUtil.getTestProject());
         for (final IPackageFragmentRoot packageFragmentRoot : javaProject.getPackageFragmentRoots()) {
             final IJavaElement[] children = packageFragmentRoot.getChildren();
@@ -331,6 +379,13 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
             }
         }
         throw new RuntimeException("Could not find a compilation unit with name " + entityName);
+    }
+
+    private String ensureJavaFileExtension(String entityName) {
+        if (!entityName.endsWith("." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION)) {
+            entityName = entityName + "." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION;
+        }
+        return entityName;
     }
 
     private IPackageFragmentRoot getIJavaProject() throws Throwable {
@@ -365,8 +420,9 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     protected <T> T addClassInPackage(final Package packageForClass, final Class<T> classOfCorrespondingObject,
             final String implementingClassName) throws Throwable, CoreException, InterruptedException {
         final Classifier jaMoPPClass = this.addClassInPackage(packageForClass, implementingClassName);
-        return CollectionBridge.claimOne(CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(
-                this.getCorrespondenceInstance(), jaMoPPClass, classOfCorrespondingObject));
+        final Set<T> eObjectsByType = CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(
+                this.getCorrespondenceInstance(), jaMoPPClass, classOfCorrespondingObject);
+        return CollectionBridge.claimOne(eObjectsByType);
     }
 
     protected Classifier addClassInPackage(final Package packageForClass, final String implementingClassName)
@@ -407,10 +463,17 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     }
 
     protected ConcreteClassifier getJaMoPPClassifierForVURI(final VURI vuri) {
-        final Resource resource = EcoreResourceBridge.loadResourceAtURI(vuri.getEMFUri(), new ResourceSetImpl());
-        final CompilationUnit cu = (CompilationUnit) resource.getContents().get(0);
+        final CompilationUnit cu = this.getJaMoPPRootForVURI(vuri);
         final Classifier jaMoPPClassifier = cu.getClassifiers().get(0);
         return (ConcreteClassifier) jaMoPPClassifier;
+    }
+
+    private <T extends JavaRoot> T getJaMoPPRootForVURI(final VURI vuri) {
+        final Resource resource = EcoreResourceBridge.loadResourceAtURI(vuri.getEMFUri(), new ResourceSetImpl());
+        // unchecked is OK for the test.
+        @SuppressWarnings("unchecked")
+        final T javaRoot = (T) resource.getContents().get(0);
+        return javaRoot;
     }
 
     /**
@@ -444,7 +507,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     }
 
     protected void assertRepositoryAndPCMName(final Repository repo, final RepositoryComponent repoComponent,
-            final String expectedName) {
+            final String expectedName) throws Throwable {
 
         assertEquals("Repository of compoennt is not the repository: " + repo, repo.getId(),
                 repoComponent.getRepository__RepositoryComponent().getId());
@@ -452,15 +515,38 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         this.assertPCMNamedElement(repoComponent, expectedName);
     }
 
-    protected void assertResourceAndFileForEObject(final EObject eObject) {
-        final Resource eResource = eObject.eResource();
-        assertNotNull("Resource of eObject " + eObject + " is null", eResource);
-        final IFile iFile = EMFBridge.getIFileForEMFUri(eResource.getURI());
-        assertTrue("No IFile for eObject " + eObject + " in resource " + eResource + " found.", iFile.exists());
+    protected void assertResourceAndFileForEObjects(final EObject... eObjects) throws Throwable {
+        for (final EObject eObject : eObjects) {
+            final Resource eResource = eObject.eResource();
+            assertNotNull("Resource of eObject " + eObject + " is null", eResource);
+            final IFile iFile = EMFBridge.getIFileForEMFUri(eResource.getURI());
+            assertTrue("No IFile for eObject " + eObject + " in resource " + eResource + " found.", iFile.exists());
+        }
+    }
+
+    protected void assertFilesOnlyForEObjects(final EObject... eObjects) throws Throwable {
+        final Set<String> fullFilePaths = new HashSet<String>();
+        for (final EObject eObject : eObjects) {
+            final IFile iFile = EMFBridge.getIFileForEMFUri(eObject.eResource().getURI());
+            fullFilePaths.add(iFile.getFullPath().toString());
+        }
+        final IFolder folder = TestUtil.getTestProject().getFolder("model");
+        final List<String> foundAdditionalFiles = new ArrayList<>();
+        for (final IResource iResource : folder.members()) {
+            final String iResourcePath = iResource.getFullPath().toString();
+            if (!fullFilePaths.contains(iResourcePath)) {
+                foundAdditionalFiles.add(iResourcePath);
+            }
+        }
+        if (0 < foundAdditionalFiles.size()) {
+            final StringBuilder failMsg = new StringBuilder("Found addtional files in model folder: ");
+            foundAdditionalFiles.forEach(str -> failMsg.append(str).append(", "));
+            fail(failMsg.toString());
+        }
     }
 
     protected void assertRepositoryAndPCMNameForDatatype(final Repository repo, final DataType dt,
-            final String expectedName) {
+            final String expectedName) throws Throwable {
 
         assertEquals("Repository of compoennt is not the repository: " + repo, repo.getId(),
                 dt.getRepository__DataType().getId());
@@ -473,10 +559,11 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         }
     }
 
-    protected void assertPCMNamedElement(final NamedElement pcmNamedElement, final String expectedName) {
+    protected void assertPCMNamedElement(final NamedElement pcmNamedElement, final String expectedName)
+            throws Throwable {
         assertEquals("The name of pcm named element is not " + expectedName, expectedName,
                 pcmNamedElement.getEntityName());
-        this.assertResourceAndFileForEObject(pcmNamedElement);
+        this.assertResourceAndFileForEObjects(pcmNamedElement);
     }
 
     protected OperationInterface addInterfaceInContractsPackage() throws Throwable {
@@ -492,7 +579,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     protected OperationInterface createInterfaceInPackage(final String packageName, final boolean throwException,
             final String interfaceName) throws Throwable, CoreException, InterruptedException {
         final IPackageFragment packageFragment = this
-                .getPackageFragmentToForJaMoPPPackage(this.getPackageWithName(packageName));
+                .getPackageFragmentToForJaMoPPPackage(this.getPackageWithNameFromCorrespondenceInstance(packageName));
         final NewInterfaceWizardPage interfaceWizard = new NewInterfaceWizardPage();
         interfaceWizard.setPackageFragment(packageFragment, false);
         interfaceWizard.setPackageFragmentRoot(this.getIJavaProject(), false);
@@ -526,7 +613,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         return this.createInterfaceInPackage(packageName, false);
     }
 
-    protected Package getPackageWithName(final String name) throws Throwable {
+    protected Package getPackageWithNameFromCorrespondenceInstance(final String name) throws Throwable {
         final Set<Package> packages = CorrespondenceInstanceUtil
                 .getAllEObjectsOfTypeInCorrespondences(this.getCorrespondenceInstance(), Package.class);
         for (final Package currentPackage : packages) {
@@ -693,7 +780,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     }
 
     protected Package getDatatypesPackage() throws Throwable {
-        return this.getPackageWithName("datatypes");
+        return this.getPackageWithNameFromCorrespondenceInstance("datatypes");
     }
 
     protected CompositeDataType addClassThatCorrespondsToCompositeDatatype() throws Throwable {

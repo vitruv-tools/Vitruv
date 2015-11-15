@@ -119,7 +119,7 @@ public class JaMoPPParameterMappingTransformationTest extends JaMoPP2PCMTransfor
     }
 
     private void assertParameter(final OperationSignature opSig, final Parameter parameter,
-            final String expectedTypeName, final String expectedName) {
+            final String expectedTypeName, final String expectedName) throws Throwable {
         assertEquals("The parameter is not contained in the expected operation signature", opSig.getId(),
                 parameter.getOperationSignature__Parameter().getId());
         this.assertPCMNamedElement(parameter, expectedName);

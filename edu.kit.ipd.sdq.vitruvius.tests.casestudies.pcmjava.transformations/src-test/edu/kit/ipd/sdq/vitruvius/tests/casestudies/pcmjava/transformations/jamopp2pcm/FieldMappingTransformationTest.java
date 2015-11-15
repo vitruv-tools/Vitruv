@@ -179,7 +179,7 @@ public class FieldMappingTransformationTest extends JaMoPP2PCMTransformationTest
     }
 
     private void assertInnerDeclaration(final InnerDeclaration innerDeclaration, final String fieldType,
-            final String fieldName) {
+            final String fieldName) throws Throwable {
         super.assertPCMNamedElement(innerDeclaration, fieldName);
         final String pcmDataTypeName = super.getNameFromPCMDataType(innerDeclaration.getDatatype_InnerDeclaration());
         assertEquals("The name of the PCM datatype does not equal the JaMoPP type name", pcmDataTypeName, fieldType);
