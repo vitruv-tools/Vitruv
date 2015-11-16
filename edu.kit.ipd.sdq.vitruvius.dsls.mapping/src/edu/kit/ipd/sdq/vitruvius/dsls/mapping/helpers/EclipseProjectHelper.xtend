@@ -107,6 +107,8 @@ class EclipseProjectHelper {
 		addJavaCoreNatureAndBuilder
 		addPluginNatureAndBuilder
 		
+		setBinFolder("bin")
+		
 		addSourceFolder("src")
 		addSourceFolder(SRC_GEN_FOLDER_NAME)
 		
