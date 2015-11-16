@@ -3,6 +3,12 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
+
+import com.google.inject.Binder;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Module;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
@@ -13,10 +19,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AttributeTUIDCalcul
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
 /**
- * Utility class for the testing framework for the MIR language.
+ * Utility class for the testing framework for the mapping language.
  * @author Dominik Werle
  */
-public final class MIRTestFrameworkUtil {
+public final class MappingLanguageTestUtil {
 	public static final String[] DEFAULT_ATTRIBUTE_NAMES = new String[] {
 		"id", "name", "entityName"
 	};
@@ -85,5 +91,14 @@ public final class MIRTestFrameworkUtil {
 	
 	public static Metamodel createAttributeTUIDMetamodel(String nsURI, String... extensions) {
 		return new Metamodel(nsURI, VURI.getInstance(nsURI), new AttributeTUIDCalculatorAndResolver(nsURI, DEFAULT_ATTRIBUTE_NAMES), extensions);
+	}
+	
+	public static Injector injector(Consumer<Binder> configure) {
+		return Guice.createInjector(new Module() {
+			@Override
+			public void configure(Binder binder) {
+				configure.accept(binder);
+			}
+		});
 	}
 }

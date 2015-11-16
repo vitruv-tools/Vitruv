@@ -17,6 +17,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTr
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRUserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 public abstract class AbstractMappingChange2CommandTransforming implements Change2CommandTransforming {
@@ -84,4 +85,6 @@ public abstract class AbstractMappingChange2CommandTransforming implements Chang
 	}
 
 	protected abstract void setup();
+	
+	public abstract void setUserInteracting(MIRUserInteracting userInteracting);
 }

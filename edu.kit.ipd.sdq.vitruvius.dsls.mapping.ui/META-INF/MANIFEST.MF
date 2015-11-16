@@ -17,7 +17,8 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.dsls.mapping;visibility:=reexport,
  org.eclipse.xtext.common.types.ui,
  org.eclipse.jdt.debug.ui,
  org.eclipse.xtext.ui.codetemplates.ui,
- org.eclipse.compare
+ org.eclipse.compare,
+ org.eclipse.swt
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.quickfix,

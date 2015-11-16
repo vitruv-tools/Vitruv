@@ -150,6 +150,12 @@ class EclipseProjectHelper {
 		createXtextPluginProject
 	}
 	
+	public def reinitializeJavaProject() {
+		deleteProject
+		createProject
+		createJavaProject
+	}
+	
 	/** Creates a new project */
 	def createProject() {
 		project.create(null)

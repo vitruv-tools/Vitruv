@@ -47,7 +47,7 @@ public abstract class AbstractMIRTestBase extends VitruviusEMFCasestudyTest {
 	private static final Logger LOGGER = Logger.getLogger(AbstractMIRTestBase.class);
 	private static final String MODEL_PATH = TestUtil.PROJECT_URI + "/model";
 	
-	protected TestMIRUserInteracting userInteracting = new TestMIRUserInteracting();
+	protected MappingLanguageTestUserInteracting userInteracting = new MappingLanguageTestUserInteracting();
 	
 	@Override
 	protected void setUserInteractor(UserInteracting newUserInteracting, ChangeSynchronizerImpl changeSynchronizerImpl)
@@ -60,7 +60,7 @@ public abstract class AbstractMIRTestBase extends VitruviusEMFCasestudyTest {
 	public void setUpTest() throws Throwable {
 		LOGGER.trace("generating project " + TestUtil.PROJECT_URI + " and MIR file...");
 		EclipseProjectHelper eph = new EclipseProjectHelper(TestUtil.PROJECT_URI);
-		eph.reinitializeProject();
+		eph.reinitializeXtextPluginProject();
 		eph.getProject().getFolder("model").create(true, true, null);
 		
 		super.setUpTest();

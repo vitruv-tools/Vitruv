@@ -9,7 +9,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRUserIntera
 
 import static org.junit.Assert.*;
 
-public class TestMIRUserInteracting implements MIRUserInteracting {
+public class MappingLanguageTestUserInteracting implements MIRUserInteracting {
 	
 	private Queue<Object> inputQueue = new LinkedList<Object>();
 

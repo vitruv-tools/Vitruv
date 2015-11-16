@@ -57,7 +57,7 @@ public class MIRGenerator implements IGenerator {
 		
 		String projectName = MIRHelper.getProjectName(MIRHelper.getMIR(input));
 		EclipseProjectHelper eclipseHelper = new EclipseProjectHelper(projectName);
-		eclipseHelper.reinitializeProject();
+		eclipseHelper.reinitializeXtextPluginProject();
 		
 		IFileSystemAccess rootFSA = PreProcessingFileSystemAccess.createJavaFormattingFSA(eclipseHelper.getRootFSA());
 		

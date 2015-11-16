@@ -38,6 +38,8 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
+import com.google.inject.Inject
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRUserInteracting
 
 class MappingLanguageGenerator {
 	def doGenerate(Resource input) {
@@ -54,7 +56,7 @@ class MappingLanguageGenerator {
 			
 			val name = mappingFile.pluginName
 			val project = new EclipseProjectHelper(name)
-			project.reinitializeProject()
+			project.reinitializeXtextPluginProject
 			
 			val srcGenFSA = project.srcGenFSA
 			val rootFSA = project.rootFSA
@@ -64,6 +66,8 @@ class MappingLanguageGenerator {
 			
 			MappingPluginProjectHelper.createPluginXML(rootFSA, generator.change2CommandTransformingFQN)
 			MappingPluginProjectHelper.createManifest(rootFSA, name, contributorNames, generator.getPkgNames)
+			
+			project.synchronizeProject
 		}
 	}
 	
@@ -626,8 +630,9 @@ class MappingLanguageGenerator {
 							//   new.setUml(uml);
 							public static «className» create(«FOR arg : requires + zip(wrapperClasses, wrapperFields) SEPARATOR ", "»«arg.first» «arg.second»«ENDFOR») {
 								// claim getExisting(«FOR wf : wrapperFields SEPARATOR ", "»«wf»«ENDFOR») == null
-								«typeRef(Correspondence)» stc = mci.createAndAddEObjectCorrespondence(null, null); // wrap ...
+								«typeRef(Correspondence)» stc = mci.createAndAddCorrespondence(«FOR arg : wrapperFields SEPARATOR ", "»«arg».getElements()«ENDFOR»); // wrap ...
 								mci.registerMappingForCorrespondence(stc, MAPPING);
+								// create "parents"
 								return new «className»(
 										«FOR el : requires.map[second] + wrapperFields»«el», «ENDFOR»
 										stc, State.MAPPED);
@@ -747,7 +752,7 @@ class MappingLanguageGenerator {
 							«ENDFOR»
 							
 						    /* Transformable metamodels. */
-							private final «typeRef(List)»<«typeRef(Pair)»<«typeRef(VURI)», «typeRef(VURI)»>> transformableMetamodels = new «typeRef(ArrayList)»<>();
+							private «typeRef(List)»<«typeRef(Pair)»<«typeRef(VURI)», «typeRef(VURI)»>> transformableMetamodels;
 							
 							@Override
 							public «typeRef(List)»<«typeRef(Pair)»<«typeRef(VURI)», «typeRef(VURI)»>> getTransformableMetamodels() {
@@ -756,6 +761,8 @@ class MappingLanguageGenerator {
 							
 							@Override
 							protected void setup() {
+								transformableMetamodels = new «typeRef(ArrayList)»<>();
+								
 								«FOR id : #[new Pair(0, 1), new Pair(1, 0)]»
 								transformableMetamodels.add(new «typeRef(Pair)»<>(
 									VURI_«imports.get(id.first).name.toUpperCase», VURI_«imports.get(id.second).name.toUpperCase»
@@ -764,6 +771,13 @@ class MappingLanguageGenerator {
 								
 								«FOR mapping : file.mappings»
 								addMapping(«mapping.getMappingClassName».INSTANCE);
+								«ENDFOR»
+							}
+							
+							@Override
+							public void setUserInteracting(«typeRef(MIRUserInteracting)» userInteracting) {
+								«FOR mapping : file.mappings»
+								«mapping.getMappingClassName».INSTANCE.setUserInteracting(userInteracting);
 								«ENDFOR»
 							}
 							

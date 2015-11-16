@@ -621,5 +621,24 @@
             type="text">
     </fileTypes>
   </extension>
+  
+  <!-- Launch configuration -->
+  <extension
+        point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+     <launchConfigurationTabGroup
+           class="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.launcher.MappingLanguageLaunchConfigurationTabGroup"
+           id="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.tabGroupGenerateMappings"
+           type="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.launchConfigurationGenerateMappings">
+     </launchConfigurationTabGroup>
+  </extension>
+    <extension
+        point="org.eclipse.debug.core.launchConfigurationTypes">
+     <launchConfigurationType
+           delegate="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.launcher.MappingLanguageLaunchConfigurationDelegate"
+           id="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.launchConfigurationGenerateMappings"
+           modes="run"
+           name="Generate Mappings">
+     </launchConfigurationType>
+  </extension>
 
 </plugin>
