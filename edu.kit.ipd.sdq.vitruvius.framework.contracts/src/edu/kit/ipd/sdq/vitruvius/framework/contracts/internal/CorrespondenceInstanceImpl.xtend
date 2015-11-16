@@ -39,8 +39,8 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	final Mapping mapping
 	final ModelProviding modelProviding
 	final Correspondences correspondences
+	final ClaimableMap<TUID,Set<List<TUID>>> tuid2tuidListsMap
 	protected final ClaimableMap<List<TUID>, Set<Correspondence>> tuid2CorrespondencesMap
-	ClaimableMap<FeatureInstance, Set<FeatureInstance>> featureInstance2CorrespondingFIMap
 	boolean changedAfterLastSave = false
 	final Map<String, String> saveCorrespondenceOptions
 
@@ -48,25 +48,39 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		super(correspondencesVURI, correspondencesResource)
 		this.mapping = mapping
 		this.modelProviding = modelProviding
+		this.tuid2tuidListsMap = new ClaimableHashMap<TUID,Set<List<TUID>>>()
 		this.tuid2CorrespondencesMap = new ClaimableHashMap<List<TUID>, Set<Correspondence>>()
-		this.featureInstance2CorrespondingFIMap = new ClaimableHashMap<FeatureInstance, Set<FeatureInstance>>()
 		this.saveCorrespondenceOptions = new HashMap<String, String>()
 		this.saveCorrespondenceOptions.put(VitruviusConstants::getOptionProcessDanglingHref(),
 			VitruviusConstants::getOptionProcessDanglingHrefDiscard())
 		this.correspondences = loadAndRegisterCorrespondences(correspondencesResource)
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see CorrespondenceInstance#
-	 * addSameTypeCorrespondence
-	 * (edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence)
-	 */
 	override void addCorrespondence(Correspondence correspondence) {
 		addCorrespondenceToModel(correspondence)
 		registerCorrespondence(correspondence)
 		setChangeAfterLastSaveFlag()
+	}
+
+	def private void registerCorrespondence(Correspondence correspondence) {
+		registerTUIDLists(correspondence)
+		registerCorrespondenceForTUIDs(correspondence)
+	}
+	
+	def private registerTUIDLists(Correspondence correspondence) {
+		registerTUIDList(correspondence.ATUIDs)
+		registerTUIDList(correspondence.BTUIDs)
+	}
+	
+	def private registerTUIDList(List<TUID> tuidList) {
+		for (TUID tuid : tuidList) {
+			var tuidLists = this.tuid2tuidListsMap.get(tuid)
+			if (tuidLists == null) {
+				tuidLists = new HashSet<List<TUID>>()
+				this.tuid2tuidListsMap.put(tuid,tuidLists)
+			}
+			tuidLists.add(tuidList)
+		}
 	}
 
 	def private void addCorrespondenceToModel(Correspondence correspondence) {
@@ -94,12 +108,6 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		return eObjects.map[calculateTUIDFromEObject(it)]
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see CorrespondenceInstance#
-	 * changedAfterLastSave()
-	 */
 	override boolean changedAfterLastSave() {
 		return this.changedAfterLastSave
 	}
@@ -135,6 +143,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		if (correspondences === null) {
 			correspondences = new HashSet<Correspondence>()
 			this.tuid2CorrespondencesMap.put(tuids, correspondences)
+			registerTUIDList(tuids)
 		}
 		return correspondences
 	}
@@ -190,12 +199,6 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		return null
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#getMapping()
-	 */
 	override Mapping getMapping() {
 		return this.mapping
 	}
@@ -230,7 +233,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	override boolean hasCorrespondences(List<EObject> eObjects) {
 		var List<TUID> tuids = calculateTUIDsFromEObjects(eObjects)
 		var Set<Correspondence> correspondences = this.tuid2CorrespondencesMap.get(tuids)
-		return correspondences !== null && correspondences.size() > 0
+		return correspondences != null && correspondences.size() > 0
 	}
 
 	override void initialize(Map<String, Object> fileExtPrefix2ObjectMap) {
@@ -295,32 +298,33 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 
 	}
 
-	def private void registerCorrespondence(Correspondence correspondence) {
-		var List<TUID> allInvolvedTUIDs = new ArrayList<TUID>(
-			correspondence.getATUIDs())
-		allInvolvedTUIDs.addAll(correspondence.getBTUIDs()) // add all involved eObjects to the sets for these objects in the map
-		for (TUID involvedTUID : allInvolvedTUIDs) {
-			var Set<Correspondence> correspondences = getCorrespondencesForTUIDs(involvedTUID.toList)
-			if (!correspondences.contains(correspondence)) {
-				correspondences.add(correspondence)
-			}
-
-		}
-
+	def private void registerCorrespondenceForTUIDs(Correspondence correspondence) {
+		val correspondencesForAs = getCorrespondencesForTUIDs(correspondence.ATUIDs)
+		correspondencesForAs.add(correspondence)
+		val correspondencesForBs = getCorrespondencesForTUIDs(correspondence.BTUIDs)
+		correspondencesForBs.add(correspondence)
 	}
 
 	def private void registerLoadedCorrespondences(Correspondences correspondences) {
 		for (Correspondence correspondence : correspondences.getCorrespondences()) {
 			registerCorrespondence(correspondence)
 		}
-
 	}
 
 	def private void removeCorrespondenceFromMaps(Correspondence markedCorrespondence) {
-		var TUID elementATUID = markedCorrespondence.getElementATUID()
-		var TUID elementBTUID = markedCorrespondence.getElementBTUID()
-		this.tuid2CorrespondencesMap.remove(elementATUID.toList)
-		this.tuid2CorrespondencesMap.remove(elementBTUID.toList)
+		var List<TUID> aTUIDs = markedCorrespondence.ATUIDs
+		var List<TUID> bTUIDs = markedCorrespondence.BTUIDs
+		removeTUID2TUIDListsEntries(aTUIDs)
+		removeTUID2TUIDListsEntries(bTUIDs)
+		this.tuid2CorrespondencesMap.remove(aTUIDs)
+		this.tuid2CorrespondencesMap.remove(bTUIDs)
+	}
+	
+	def private void removeTUID2TUIDListsEntries(List<TUID> tuids) {
+		for (TUID tuid : tuids) {
+			val tuidLists = this.tuid2tuidListsMap.get(tuid)
+			tuidLists.remove(tuids)
+		}
 	}
 
 	override Set<Correspondence> removeCorrespondencesOfEObjectsAndChildrenOnBothSides(
@@ -441,39 +445,16 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		correspondence.getBTUIDs().addAll(bTUIDs)
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#update(org
-	 * .eclipse.emf.ecore.EObject, org.eclipse.emf.ecore.EObject)
-	 */
 	override void updateTUID(EObject oldEObject, EObject newEObject) {
 		var TUID oldTUID = calculateTUIDsFromEObjects(oldEObject.toList).claimOne
 		this.updateTUID(oldTUID, newEObject)
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#update(edu
-	 * .kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID,
-	 * org.eclipse.emf.ecore.EObject)
-	 */
 	override void updateTUID(TUID oldTUID, EObject newEObject) {
 		var TUID newTUID = calculateTUIDsFromEObjects(newEObject.toList).claimOne
 		updateTUID(oldTUID, newTUID)
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#update(edu
-	 * .kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID,
-	 * edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID)
-	 */
 	 //FIXME note to MK: this currently only works if all key-lists in tuid2CorrespondencesMap only contain one element. 
 	 //If you implement an update function for list of TUIDs be careful since there could be the case that one TUID is contained 
 	 //in more than only one key-lists. My current guess is that we have to update all key-lists in which the TUID occurs
