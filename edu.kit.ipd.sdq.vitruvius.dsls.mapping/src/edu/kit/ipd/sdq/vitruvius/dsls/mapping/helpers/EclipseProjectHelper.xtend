@@ -10,18 +10,24 @@ import org.eclipse.jdt.core.JavaCore
 import org.eclipse.jdt.launching.JavaRuntime
 import org.eclipse.pde.core.project.IBundleProjectDescription
 import org.eclipse.xtext.generator.IFileSystemAccess
+import org.eclipse.jdt.core.IJavaProject
+import org.eclipse.core.resources.IProject
 
 class EclipseProjectHelper {
 	public final String SRC_GEN_FOLDER_NAME = "src-gen"
 	
 	private final String JRE_CONTAINER = "org.eclipse.jdt.launching.JRE_CONTAINER/"
-		+ "org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"
+		+ "org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"
 
 	private final String REQUIRED_PLUGINS_CONTAINER = "org.eclipse.pde.core.requiredPlugins"
+	private final String XTEXT_NATURE = "org.eclipse.xtext.ui.shared.xtextNature"
 	
 	private String projectName
 	private IFileSystemAccess rootFSA
 	private PrependPathFSA srcgenFSA
+	
+	private IProject projectCache
+	private IJavaProject javaProjectCache
 	
 	
 	new(String projectName) {
@@ -29,76 +35,83 @@ class EclipseProjectHelper {
 	}
 	
 	public def deleteProject() {
-		val project = getProject()		
-
 		if (project.exists)
 			project.delete(true, null)
+	}
+	
+	public def addNature(String nature) {
+		val description = project.description
+		if (!description.natureIds.contains(nature)) {
+			description.natureIds = description.natureIds + #[nature]
+		}
+		project.setDescription(description, null)
+	}
+	
+	public def addBuilder(String builderName) {
+		val description = project.description
+		if (!description.buildSpec.stream.anyMatch[it.builderName.equals(builderName)]) {
+			val builderCommand = description.newCommand
+			builderCommand.builderName = builderName
+			description.buildSpec = description.buildSpec + #[builderCommand]
+		}
+		project.setDescription(description, null)
+	}
+	
+	public def addXtextNatureAndBuilder() {
+		addNature(XTEXT_NATURE)
+		addBuilder("org.eclipse.xtext.ui.shared.xtextBuilder")
+	}
+	
+	public def addPluginNatureAndBuilder() {
+		addNature(IBundleProjectDescription.PLUGIN_NATURE)
+		addBuilder("org.eclipse.pde.ManifestBuilder")
+		addBuilder("org.eclipse.pde.SchemaBuilder")
+	}
+	
+	public def addJavaCoreNatureAndBuilder() {
+		addNature(JavaCore.NATURE_ID)
+		addBuilder(JavaCore.BUILDER_ID)
+	}
+	
+	public def setBinFolder(String folderName) {
+		// set bin folder
+		val binFolder = project.getFolder("bin");
+		binFolder.create(false, true, null);
+		javaProject.setOutputLocation(binFolder.getFullPath(), null);
+	}
+	
+	public def addSourceFolder(String folderName) {
+		val sourceFolder = project.getFolder("src");
+		sourceFolder.create(false, true, null);
+		val sourceRoot = javaProject.getPackageFragmentRoot(sourceFolder);
+		
+		javaProject.setRawClasspath(
+			javaProject.rawClasspath + #[JavaCore.newSourceEntry(sourceRoot.path)], null
+		)
+	}
+	
+	public def addContainerEntry(String path) {
+		javaProject.setRawClasspath(
+			javaProject.rawClasspath + #[JavaCore.newContainerEntry(new Path(path))],
+			null
+		)
 	}
 	
 	/**
 	 * @see https://sdqweb.ipd.kit.edu/wiki/JDT_Tutorial:_Creating_Eclipse_Java_Projects_Programmatically
 	 * @see http://architecturware.cvs.sourceforge.net/viewvc/architecturware/oaw_v4/core.plugin/plugin.oaw4/main/src/org/openarchitectureware/wizards/EclipseHelper.java?revision=1.13&view=markup
-	 * TODO: Refactor god method
 	 */
-	public def createJavaProject() {
-		val project = getProject()
-
-		// add Java and plug-in natures
-		// Xtext nature and builder are added for parsing Xtend
-		val description = project.getDescription();
-		description.setNatureIds(#[
-				JavaCore.NATURE_ID,
-				IBundleProjectDescription.PLUGIN_NATURE,
-				"org.eclipse.xtext.ui.shared.xtextNature"
-				
-			]);
-		project.setDescription(description, null);
-		
+	public def createXtextPluginProject() {
 		// set builders
-		val xtextBuilderCommand = description.newCommand
-		xtextBuilderCommand.builderName = "org.eclipse.xtext.ui.shared.xtextBuilder"
+		addXtextNatureAndBuilder
+		addJavaCoreNatureAndBuilder
+		addPluginNatureAndBuilder
 		
-		val javaBuilderCommand = description.newCommand
-		javaBuilderCommand.builderName = JavaCore.BUILDER_ID
+		addSourceFolder("src")
+		addSourceFolder(SRC_GEN_FOLDER_NAME)
 		
-		val manifestBuilderCommand = description.newCommand
-		manifestBuilderCommand.builderName = "org.eclipse.pde.ManifestBuilder"
-		
-		val schemaBuilderCommand = description.newCommand
-		schemaBuilderCommand.builderName = "org.eclipse.pde.SchemaBuilder"
-		
-		description.buildSpec = #[
-			xtextBuilderCommand,
-			javaBuilderCommand,
-			manifestBuilderCommand,
-			schemaBuilderCommand
-		]
-		
-		// create Java project
-		val javaProject = JavaCore.create(project);
-		
-		// set bin folder
-		val binFolder = project.getFolder("bin");
-		binFolder.create(false, true, null);
-		javaProject.setOutputLocation(binFolder.getFullPath(), null);
-		
-		// add src and src-gen folder
-		val sourceFolder = project.getFolder("srcEclipseProjectHelper ");
-		sourceFolder.create(false, true, null);
-		val sourceRoot = javaProject.getPackageFragmentRoot(sourceFolder);
-		
-		val sourceGenFolder = project.getFolder(SRC_GEN_FOLDER_NAME);
-		sourceGenFolder.create(false, true, null);
-		val sourceGenRoot = javaProject.getPackageFragmentRoot(sourceGenFolder);
-		
-		val IClasspathEntry[] classpathEntries = #[
-			JavaCore.newSourceEntry(sourceRoot.getPath),
-			JavaCore.newSourceEntry(sourceGenRoot.getPath),
-			JavaCore.newContainerEntry(new Path(REQUIRED_PLUGINS_CONTAINER)),
-			JavaCore.newContainerEntry(new Path(JRE_CONTAINER))
-		]
-		
-		javaProject.setRawClasspath(classpathEntries, null);
+		addContainerEntry(REQUIRED_PLUGINS_CONTAINER)
+		addContainerEntry(JRE_CONTAINER)
 		
 		// TODO: create Monitor
 		javaProject.open(null)
@@ -106,6 +119,17 @@ class EclipseProjectHelper {
 		this.rootFSA = new EclipseFileSystemAccess(javaProject)
 		this.srcgenFSA = new PrependPathFSA(this.rootFSA, SRC_GEN_FOLDER_NAME)
 		
+		return javaProject
+	}
+	
+	public def createJavaProject() {
+		addJavaCoreNatureAndBuilder
+		addSourceFolder("src")
+		addContainerEntry(JRE_CONTAINER)
+		
+		javaProject.open(null)
+		
+		this.rootFSA = new EclipseFileSystemAccess(javaProject)
 		return javaProject
 	}
 	
@@ -118,29 +142,36 @@ class EclipseProjectHelper {
 	}
 	
 	/** Deletes the project, and creates a new Java project */
-	public def reinitializeProject() {
+	public def reinitializeXtextPluginProject() {
 		deleteProject
 		createProject
-		createJavaProject
+		createXtextPluginProject
 	}
 	
 	/** Creates a new project */
 	def createProject() {
-		val project = getProject()
-		
 		project.create(null)
 		project.open(null)
 	}
 	
 	public def getProject() {
-		val root = ResourcesPlugin.getWorkspace().getRoot();
-		val project = root.getProject(projectName);
+		this.projectCache = this.projectCache ?: ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		
-		return project
+		return this.projectCache
+	}
+	
+	public def getOrCreateProject() {
+		this.projectCache = this.projectCache ?: ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+		if (!projectCache.exists) {
+			createProject
+		}
+		
+		return this.projectCache
 	}
 	
 	public def getJavaProject() {
-		return JavaCore.create(getProject())
+		this.javaProjectCache = this.javaProjectCache ?: JavaCore.create(getProject())
+		return this.javaProjectCache
 	}
 	
 	/**
