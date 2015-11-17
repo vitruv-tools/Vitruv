@@ -8,6 +8,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondences;
 
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUIDCalculatorAndResolver;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -39,8 +40,14 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *
  * @generated
  */
-public class CorrespondencesImpl extends EObjectImpl implements Correspondences {
+//FIXME MAX (deco): try to generate use of serializable marker interface from ecore mm 
+public class CorrespondencesImpl extends EObjectImpl implements Correspondences, Serializable {
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4895710275131694507L;
+
+	/**
      * The cached value of the '{@link #getCorrespondences() <em>Correspondences</em>}' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
