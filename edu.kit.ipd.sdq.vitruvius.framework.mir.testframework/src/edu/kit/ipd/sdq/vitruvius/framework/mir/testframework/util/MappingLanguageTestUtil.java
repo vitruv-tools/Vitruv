@@ -18,6 +18,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AttributeTUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
+import static org.junit.Assert.*;
+
 /**
  * Utility class for the testing framework for the mapping language.
  * @author Dominik Werle
@@ -100,5 +102,14 @@ public final class MappingLanguageTestUtil {
 				configure.accept(binder);
 			}
 		});
+	}
+	
+	/**
+	 * @see JavaHelper#requireType(Object, Class)
+	 * @see JavaHelper#requireType(Object, Class, String)
+	 */
+	public static void assertType(String message, Object object, Class<?> type) {
+		assertNotNull(object);
+		assertTrue(message, type.isInstance(object));
 	}
 }

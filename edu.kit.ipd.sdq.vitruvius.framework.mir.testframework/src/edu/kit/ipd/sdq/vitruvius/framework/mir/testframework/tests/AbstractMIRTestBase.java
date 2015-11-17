@@ -22,7 +22,7 @@ import org.eclipse.ocl.ecore.OCL;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.helper.OCLHelper;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.EclipseProjectHelper;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.EclipseProjectHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
@@ -80,101 +80,6 @@ public abstract class AbstractMIRTestBase extends VitruviusEMFCasestudyTest {
 		}
 	}
 
-	// Utility functions
-	@SuppressWarnings("unchecked")
-	protected <T extends EObject> T reloadByTUID(T eObject) {
-		try {
-			TUID tuid = getCorrespondenceInstance().calculateTUIDFromEObject(eObject);
-			return (T) getCorrespondenceInstance().resolveEObjectFromTUID(tuid);
-		} catch (Throwable e) {
-			LOGGER.error(e);
-		}
-		
-		return null;
-	}
-	
-	/**
-	 * Creates a model, saves it and triggers synchronisation. The Path of the
-	 * model is relative to {@link MODEL_PATH} (normally: MockupProject/model).
-	 */
-	protected <T extends EObject> T createManipulateSaveAndSyncModel(String modelPath, Supplier<T> manipulate)
-			throws IOException {
-		final String resourcePath = MODEL_PATH + "/" + modelPath;
 
-		final VURI resourceVURI = VURI.getInstance(resourcePath);
-
-		final T result = manipulate.get();
-		final URI resourceURI = URI.createPlatformResourceURI(resourcePath, false);
-		final Resource resource = EcoreResourceBridge.loadResourceAtURI(resourceURI, resourceSet);
-		EcoreResourceBridge.saveEObjectAsOnlyContent(result, resource);
-
-		this.synchronizeFileChange(FileChangeKind.CREATE, resourceVURI);
-
-		return result;
-	}
-
-	protected EObject createAndSyncModelWithRootObject(String modelPath, EObject rootEObject) throws IOException {
-		return createManipulateSaveAndSyncModel(modelPath, () -> rootEObject);
-	}
-
-	protected <T extends EObject, R> R recordManipulateSaveAndSync(final T input, final Function<T, R> manipulate)
-			throws IOException {
-		changeRecorder.beginRecording(Collections.singletonList(input));
-		
-		vsum.detachTransactionalEditingDomain();
-		
-		final ClaimableSingletonContainer<R> resultContainer = new ClaimableSingletonContainer<>(true); // is set inside the closure
-		// TODO: should we create a command on the stack here
-		// instead of detaching the transactional editing domain?
-//		domain.getCommandStack().execute(new RecordingCommand(domain) {
-//			@Override
-//			protected void doExecute() {
-		
-				resultContainer.put(manipulate.apply(input));				
-
-//			}
-//		});
-		EcoreResourceBridge.saveResource(input.eResource());
-		triggerSynchronization(input);
-		
-		R result = resultContainer.claim();
-
-		return result;
-	}
-
-	protected <T extends EObject> void recordManipulateSaveAndSync(T input, Consumer<T> manipulate) throws IOException {
-		recordManipulateSaveAndSync(input, it -> {
-			manipulate.accept(it);
-			return null;
-		});
-	}
-	
-	protected static URI createModelURI(String fileName) {
-		return URI.createPlatformResourceURI(MODEL_PATH + "/" + fileName, false);
-	}
-	
-	/**
-	 * @see JavaHelper#requireType(Object, Class)
-	 * @see JavaHelper#requireType(Object, Class, String)
-	 */
-	protected static void assertType(String message, Object object, Class<?> type) {
-		assertNotNull(object);
-		assertTrue(message, type.isInstance(object));
-	}
-	
-	protected static void assertOCL(String message, EObject context, String oclPredicate) {
-		OCL ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);
-		OCLHelper<EClassifier, ?, ?, Constraint> helper = ocl.createOCLHelper();
-
-		OCLExpression<EClassifier> predicate = null;
-		try {
-			predicate = helper.createQuery(oclPredicate);
-		} catch (ParserException e) {
-			predicate = null;
-			e.printStackTrace();
-		}
-		
-		assertTrue(message, ocl.check(context, predicate));
-	}
 
 }
