@@ -40,13 +40,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *
  * @generated
  */
-//FIXME MAX (deco): try to generate use of serializable marker interface from ecore mm 
-public class CorrespondencesImpl extends EObjectImpl implements Correspondences, Serializable {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -4895710275131694507L;
-
+public class CorrespondencesImpl extends EObjectImpl implements Correspondences {
 	/**
      * The cached value of the '{@link #getCorrespondences() <em>Correspondences</em>}' containment reference list.
      * <!-- begin-user-doc -->

@@ -2,6 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.impl;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -48,8 +49,14 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
  *
  * @generated
  */
-public class CorrespondenceImpl extends EObjectImpl implements Correspondence {
+//FIXME MAX (deco): try to generate use of serializable marker interface from ecore mm 
+public class CorrespondenceImpl extends EObjectImpl implements Correspondence, Serializable {
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5644019695411508924L;
+
+	/**
      * The cached value of the '{@link #getDependsOn() <em>Depends On</em>}' reference list. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
