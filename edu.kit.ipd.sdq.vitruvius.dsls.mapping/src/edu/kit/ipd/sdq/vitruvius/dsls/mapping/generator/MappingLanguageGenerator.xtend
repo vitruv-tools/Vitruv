@@ -610,13 +610,25 @@ class MappingLanguageGenerator {
 								if (stc == null) {
 									return null;
 								} else {
+									return get(stc);
+									«/*
 									«typeRef(List)»<«typeRef(EObject)»> opposite = «typeRef(MappedCorrespondenceInstance)».getOpposite(stc, «wrapperFields.get(pair.first)».getElements());
 									«wrapperClasses.get(pair.second)» «wrapperFields.get(pair.second)» = new «wrapperClasses.get(pair.second)»(opposite);
 									
+									
+									«IF !requires.empty»
+										«typeRef(List)»<«typeRef(Correspondence)»> dependsOn = stc.getDependsOn();
+										«FOR req : requires.withIndex»
+										final «req.second.first» «req.second.second» = «req.second.first».Helper.get(dependsOn.get(«req.first»));
+										«ENDFOR»
+									«ENDIF»
+									
+									
 									return new «className»(
-										«FOR req : requires»/*resolve «req.second»*/null, «ENDFOR»
+										«FOR req : requires»«req.second», «ENDFOR»
 										«FOR wf : wrapperFields»«wf», «ENDFOR»
 										stc, State.MAPPED);
+									 */»
 								}
 							}
 							
@@ -643,13 +655,18 @@ class MappingLanguageGenerator {
 							}
 							«ENDFOR»
 							
-							public static «className» get(Correspondence stc) {
-								«FOR req : requires»
-								«req.first» «req.second» = null; // wrap parent
-								«ENDFOR»
-								«FOR id : indices»
-								«wrapperClasses.get(id)» «wrapperFields.get(id)» = null; // wrap
-								«ENDFOR»
+							public static «className» get(«typeRef(Correspondence)» stc) {
+								«IF !requires.empty»
+									«typeRef(List)»<«typeRef(Correspondence)»> dependsOn = stc.getDependsOn();
+									«FOR req : requires.withIndex»
+									final «req.second.first» «req.second.second» = «req.second.first».Helper.get(dependsOn.get(«req.first»));
+									«ENDFOR»
+								«ENDIF»
+								
+								«IF wrapperClasses.size != 2»throw new IllegalArgumentException("more than two wrapper classes!")«ENDIF»
+								
+								«wrapperClasses.get(0)» «wrapperFields.get(0)» = new «wrapperClasses.get(0)»(stc.getAs());
+								«wrapperClasses.get(1)» «wrapperFields.get(1)» = new «wrapperClasses.get(1)»(stc.getBs());
 								
 								return new «className»(
 									«FOR el : requires.map[second] + wrapperFields»«el», «ENDFOR»
