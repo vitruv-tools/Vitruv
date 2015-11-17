@@ -19,6 +19,7 @@ class MappingPluginProjectHelper {
 		"edu.kit.ipd.sdq.vitruvius.framework.mir.executor",
 		"edu.kit.ipd.sdq.vitruvius.framework.meta.change",
 		"edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence",
+		"edu.kit.ipd.sdq.vitruvius.framework.mir.testframework",
 		"com.google.guava",
 		"org.eclipse.core.resources",
 		"org.apache.log4j",
@@ -61,7 +62,7 @@ class MappingPluginProjectHelper {
 		Bundle-Name: «projectName»
 		Bundle-SymbolicName: «projectName»;singleton:=true
 		Bundle-Version: 1.0.0.qualifier
-		Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+		Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 		Require-Bundle: «(requiredBundles + additionalRequiredBundles).join(",\n ")»
 		Export-Package: «(exportedPackages.join(",\n "))»
 		'''
