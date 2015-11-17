@@ -48,13 +48,13 @@ public final class MIRMappingHelper {
 	public static Pair<EObject, EObject> getReverseFeatureMappedBy(EObject target,
 			EStructuralFeature feature, MappedCorrespondenceInstance correspondenceInstance,
 			MIRMappingRealization mapping) {
-		Collection<EObject> candidates = getReverseFeature(target, feature);
-		for (EObject candidate : candidates) {
-			EObject candidateTarget = correspondenceInstance.getMappingTarget(candidate, mapping);
-			if (candidateTarget != null) { // i.e. the candidate is not mapped by mapping
-				return new Pair<EObject, EObject>(candidate, candidateTarget);
-			}
-		}
+//		Collection<EObject> candidates = getReverseFeature(target, feature);
+//		for (EObject candidate : candidates) {
+//			EObject candidateTarget = correspondenceInstance.getMappingTarget(candidate, mapping);
+//			if (candidateTarget != null) { // i.e. the candidate is not mapped by mapping
+//				return new Pair<EObject, EObject>(candidate, candidateTarget);
+//			}
+//		}
 		return null;
 	}
 	

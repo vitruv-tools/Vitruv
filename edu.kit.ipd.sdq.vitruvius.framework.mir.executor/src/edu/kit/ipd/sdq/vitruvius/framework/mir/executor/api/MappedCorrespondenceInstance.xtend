@@ -4,42 +4,38 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.AbstractDelegatin
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization
 import java.util.Collection
 import java.util.HashMap
 import java.util.HashSet
+import java.util.List
 import java.util.Set
-import java.util.stream.Collectors
 import org.eclipse.emf.ecore.EObject
 
-import static edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.filterType
-import static edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.requireType
-
-import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-
-class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInstanceDecorator<HashMap<Correspondence, Collection<MIRMappingRealization>>> {
-	HashMap<Correspondence, Collection<MIRMappingRealization>> correspondence2MappingMap
+class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInstanceDecorator<HashMap<Correspondence, Collection<Class<? extends MIRMappingRealization>>>> {
+	HashMap<Correspondence, Collection<Class<? extends MIRMappingRealization>>> correspondence2MappingMap
 
 	@SuppressWarnings("unchecked")
 	new(CorrespondenceInstanceDecorator correspondenceInstance) {
 		// this seems to be the only way to provide the correct instance of the
 		// map class to the ADCID
-		super(correspondenceInstance, new HashMap<Correspondence, MIRMappingRealization>().getClass() as Class<HashMap<Correspondence, Collection<MIRMappingRealization>>>)
-				this.correspondence2MappingMap = new HashMap<Correspondence, Collection<MIRMappingRealization>>()
+		super(correspondenceInstance,
+			new HashMap<Correspondence, MIRMappingRealization>().
+				getClass() as Class<HashMap<Correspondence, Collection<Class<? extends MIRMappingRealization>>>>)
+		this.correspondence2MappingMap = new HashMap<Correspondence, Collection<Class<? extends MIRMappingRealization>>>()
 	}
 
 	override protected String getDecoratorFileExtPrefix() {
 		return MIRHelper::getCorrespondenceDecoratorFileExtPrefix()
 	}
 
-	override protected HashMap<Correspondence, Collection<MIRMappingRealization>> getDecoratorObject() {
+	override protected HashMap<Correspondence, Collection<Class<? extends MIRMappingRealization>>> getDecoratorObject() {
 		return this.correspondence2MappingMap
 	}
 
 	override protected void initializeFromDecoratorObject(
-		HashMap<Correspondence, Collection<MIRMappingRealization>> object) {
+		HashMap<Correspondence, Collection<Class<? extends MIRMappingRealization>>> object) {
 		this.correspondence2MappingMap = object
 	}
 
@@ -55,32 +51,14 @@ class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInsta
 	 */
 	def void registerMappingForCorrespondence(Correspondence correspondence, MIRMappingRealization mapping) {
 		// FIXME MK (deco): store mapping realization automatically
-		if(!this.correspondence2MappingMap.containsKey(correspondence)) this.correspondence2MappingMap.put(
-			correspondence, new HashSet())
-		this.correspondence2MappingMap.get(correspondence).add(mapping)
+		if (!this.correspondence2MappingMap.containsKey(correspondence))
+			this.correspondence2MappingMap.put(correspondence, new HashSet())
+		this.correspondence2MappingMap.get(correspondence).add(mapping.class)
 	}
 
-	// TODO: clean up methods copied from
-	// edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMappedCorrespondenceInstance
-	def TUID getCorrespondenceTarget(EObject eObject, Correspondence correspondence) {
-		var Correspondence sameTypeCorrespondence = requireType(correspondence, typeof(Correspondence))
-		var TUID tuid = calculateTUIDsFromEObjects(eObject.toList).claimOne
-		var TUID elementATUID = sameTypeCorrespondence.getElementATUID()
-		var TUID elementBTUID = sameTypeCorrespondence.getElementBTUID()
-		// return the other side of the correspondence
-		if (tuid.equals(elementATUID)) {
-			return elementBTUID
-		}
-		if (tuid.equals(elementBTUID)) {
-			return elementATUID
-		}
-		throw new IllegalArgumentException(
-			'''«eObject.toString()» is not part of correspondence «correspondence.toString()»'''.toString)
-	}
-
-	def Correspondence getMappedCorrespondence(EObject eObject, MIRMappingRealization mapping) {
-		return filterType(getCorrespondences(eObject.toList), typeof(Correspondence)).filter(null).findFirst().
-			orElse(null)
+	def Correspondence getMappedCorrespondence(List<EObject> eObjects, MIRMappingRealization mapping) {
+		return getCorrespondences(eObjects).filter(Correspondence).filter[mappingsForCorrespondence.contains(mapping)].
+			head
 	}
 
 	/** 
@@ -89,7 +67,7 @@ class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInsta
 	 * all MIRMappingRealizations for an EObject, first get all correspondences
 	 * from the {@link CorrespondenceInstance}, then use this method.
 	 */
-	def Collection<MIRMappingRealization> getMappingsForCorrespondence(Correspondence correspondence) {
+	def Collection<Class<? extends MIRMappingRealization>> getMappingsForCorrespondence(Correspondence correspondence) {
 		return correspondence2MappingMap.get(correspondence)
 	}
 
@@ -97,16 +75,16 @@ class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInsta
 	 * Returns all Correspondences that correspond to a mapping. 
 	 */
 	def Set<Correspondence> getCorrespondencesForMapping(MIRMappingRealization mapping) {
-		return correspondence2MappingMap.entrySet().stream().filter(null).map(null).collect(Collectors::toSet())
+		return correspondence2MappingMap.entrySet().filter[value.contains(mapping.class)].map[key].toSet
 	}
 
 	def void unregisterMappingForCorrespondence(MIRMappingRealization mapping, Correspondence correspondence) {
-		if (correspondence2MappingMap.get(correspondence) !== mapping) {
+		if (!correspondence2MappingMap.containsKey(correspondence) || !correspondence2MappingMap.get(correspondence).contains(mapping.class)) {
 			throw new IllegalArgumentException(
 				'''Mapping «mapping.getMappingID()» is not registered for correspondence «correspondence.toString()»'''.
 					toString)
 		} else {
-			correspondence2MappingMap.remove(correspondence)
+			correspondence2MappingMap.get(correspondence).remove(mapping.class)
 		}
 	}
 
@@ -119,10 +97,26 @@ class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInsta
 	 * @return The target of the mapping if this mapping maps
 	 * <code>eObject</code>, <code>null</code> otherwise.
 	 */
-	def EObject getMappingTarget(EObject eObject, MIRMappingRealization mapping) {
-		return filterType(correspondenceInstance.getCorrespondences(eObject.toList),
-			typeof(Correspondence)).filter(null).findFirst().map(null).orElse(null)
+	def List<EObject> getMappingTarget(List<EObject> eObjects, MIRMappingRealization mapping) {
+		return correspondenceInstance.getCorrespondences(eObjects)
+			.filter(Correspondence)
+			.filter[mappingsForCorrespondence.contains(mapping.class)]
+			.head?.getOpposite(eObjects)
 	}
+	
+	def static List<EObject> getOpposite(Correspondence correspondence, List<EObject> objects) {
+		val ^as = correspondence.^as
+		val bs = correspondence.bs
+		
+		if (objects == ^as)
+			return bs
+		else if (objects == bs)
+			return ^as
+		else
+			throw new IllegalArgumentException('''The given List<EObject> («objects.toString») is not on one side of correspondence «correspondence.toString»''')
+	}
+	
+	
 
 	/** 
 	 * Checks if the given mapping maps <code>eObject</code>.
@@ -131,9 +125,7 @@ class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInsta
 	 * @param mapping
 	 * @return <code>true</code> if this mapping maps <code>eObject</code>
 	 */
-	def boolean checkIfMappedBy(EObject eObject, MIRMappingRealization mapping) {
-		return ( getMappingTarget(eObject, mapping) !== null)
+	def boolean checkIfMappedBy(List<EObject> eObjects, MIRMappingRealization mapping) {
+		return ( getMappingTarget(eObjects, mapping) !== null)
 	}
-
 }
-		

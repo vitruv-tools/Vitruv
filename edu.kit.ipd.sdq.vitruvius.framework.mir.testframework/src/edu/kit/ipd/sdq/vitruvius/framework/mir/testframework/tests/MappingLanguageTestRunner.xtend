@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.tests
 
+import com.google.inject.Singleton
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMappingChange2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants
@@ -10,6 +11,7 @@ import org.junit.runner.notification.RunNotifier
 import org.junit.runners.BlockJUnit4ClassRunner
 import org.junit.runners.model.InitializationError
 
+import static edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
 import static edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util.MappingLanguageTestUtil.*
 
 class MappingLanguageTestRunner extends BlockJUnit4ClassRunner {
@@ -46,18 +48,17 @@ class MappingLanguageTestRunner extends BlockJUnit4ClassRunner {
 			''')
 		}
 		
-		val testEnv = new MappingLanguageTestEnvironment(c2cTransforming)
-		val testUserInteracting = new MappingLanguageTestUserInteracting
-
-		val inj = injector [
-			bind(MappingLanguageTestEnvironment).toInstance(testEnv)
-			bind(MappingLanguageTestUserInteracting).toInstance(testUserInteracting)
+		with(injector [
+			bind(Change2CommandTransforming).toInstance(c2cTransforming)
+			bind(AbstractMappingTestBase).toInstance(test)
+			bind(MappingLanguageTestEnvironment).in(Singleton)
+			bind(MappingLanguageTestUserInteracting).in(Singleton)
+		]) [
+			injectMembers(test)
+			getInstance(MappingLanguageTestEnvironment).setup
 		]
 		
-		inj.injectMembers(testEnv)
-		inj.injectMembers(newTest)
-		
-		newTest
+		test
 	}
 
 	override run(RunNotifier notifier) {

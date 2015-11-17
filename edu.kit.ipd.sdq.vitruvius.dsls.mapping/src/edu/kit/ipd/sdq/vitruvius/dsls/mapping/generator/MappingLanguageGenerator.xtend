@@ -1,23 +1,25 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.formatting.PreProcessingFileSystemAccess
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.EclipseProjectHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.ImportHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingPluginProjectHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Import
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Signature
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.EclipseProjectHelper
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.PreProcessingFileSystemAccess
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRMappingHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMappingChange2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRUserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.ArrayList
@@ -38,8 +40,6 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
-import com.google.inject.Inject
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRUserInteracting
 
 class MappingLanguageGenerator {
 	def doGenerate(Resource input) {
@@ -92,7 +92,7 @@ class MappingLanguageGenerator {
 		}
 		
 		public def getPkgNames() {
-			#[pkgName]
+			#[pkgName, pkgName + ".test"]
 		}
 		
 		public def getChange2CommandTransformingFQN() {
@@ -117,6 +117,7 @@ class MappingLanguageGenerator {
 			}
 
 			generateChange2CommandTransforming
+			generateTestClass
 			
 			emfGeneratorHelper.generateCode(fsa)
 		}
@@ -167,6 +168,10 @@ class MappingLanguageGenerator {
 			
 			public def getConstantsClassName() {
 				'''«pkgName».EMFWrapper'''.toString
+			}
+			
+			public def getTestClassName() {
+				'''«pkgName».test.TestBase'''.toString
 			}
 		}
 
@@ -233,6 +238,15 @@ class MappingLanguageGenerator {
 						public String getMappingID() {
 							return "«className»";
 						}
+						
+						private «typeRef(MIRUserInteracting)» userInteracting;
+						public void setUserInteracting(«typeRef(MIRUserInteracting)» userInteracting) {
+							this.userInteracting = userInteracting;
+						}
+						
+						public «typeRef(MIRUserInteracting)» getUserInteracting() {
+							return this.userInteracting;
+						}
 					}
 				'''
 			])
@@ -248,7 +262,18 @@ class MappingLanguageGenerator {
 				'''
 					public class «className» {
 						// Use builder for creating «className»
-						private «className»(«typeRef(List)»<«typeRef(EObject)»> elements) {
+						// TODO remove check when using builder
+						public «className»(«typeRef(List)»<«typeRef(EObject)»> elements) {
+							if (elements.size() != «signature.elements.size») {
+								throw new «typeRef(IllegalArgumentException)»("argument does not have «signature.elements.size» elements.");
+							}
+							
+							«FOR id : signature.elements.withIndex»
+							if ((elements.get(«id.first») == null) || !(elements.get(«id.first») instanceof «typeRef(id.second.type)»)) {
+								throw new «typeRef(IllegalArgumentException)»("element at position «id.first» must be of type «id.second.type.instanceTypeName»");
+							}
+							«ENDFOR»
+							
 							// TODO make immutable
 							this.elements = elements;
 						}
@@ -308,6 +333,7 @@ class MappingLanguageGenerator {
 			val wrapperFields = imports.map[name.toFirstLower]
 			val constraints = imports.map[mapping.constraintBlocks.filterWithPackage(it.package).claimOneOrNone]
 			val stateNames = imports.map[name.toUpperCase]
+			val mappingName = mapping.mappingClassName
 			
 			val fqn = mapping.mappedCorrespondenceName
 			val className = fqn.toSimpleName
@@ -394,12 +420,12 @@ class MappingLanguageGenerator {
 								throw new «typeRef(IllegalStateException)»("inconsistent state: not valid");
 							}
 							
-							if ((state == State.MAPPED) != (correspondence == null)) {
+							if ((state == State.MAPPED) != (correspondence != null)) {
 								throw new «typeRef(IllegalStateException)»("...");
 							}
 							
 							«FOR el : indices»
-								if (stateHas«packages.get(el)»() != («wrapperFields.get(el)» == null)) {
+								if (stateHas«packages.get(el)»() != («wrapperFields.get(el)» != null)) {
 									throw new «typeRef(IllegalStateException)»("«packages.get(el)» not consistent with state " + state.toString());
 								}
 								
@@ -467,16 +493,22 @@ class MappingLanguageGenerator {
 								do {
 									nonContainedFound = false;
 									for («typeRef(EObject)» eObject : get«packages.get(id)»().getElements()) {
-										if (eObject.eContainer() == null) {
+										if (!hasContainment(eObject, result)) {
 											// request new resource or infer it
 											// add to result
 											nonContainedFound = true;
-											throw new «typeRef(UnsupportedOperationException)»();
+											final «typeRef(VURI)» resourceVURI = «typeRef(VURI)».getInstance(«typeRef(mappingName)».INSTANCE.getUserInteracting().askForNewResource(«typeRef(EcoreHelper)».createSensibleString(eObject)));
+											result.addRootEObjectToSave(eObject, resourceVURI);
 										}
 									}
 								} while (nonContainedFound);
 							}
 							«ENDFOR»
+						}
+						
+						// TODO api?
+						private boolean hasContainment(«typeRef(EObject)» eObject, «typeRef(TransformationResult)» result) {
+							return (eObject.eContainer() != null || eObject.eResource() != null || (result.getRootEObjectsToSave().stream().anyMatch(it -> it.getFirst().equals(eObject))));
 						}
 						
 						«FOR el : pairs»
@@ -574,11 +606,12 @@ class MappingLanguageGenerator {
 							 * @Nullable...
 							 */
 							public static «className» getExistingFor«packages.get(pair.first)»(«wrapperClasses.get(pair.first)» «wrapperFields.get(pair.first)») {
-								«typeRef(Correspondence)» stc = mci.getMappedCorrespondence(/*unwrap(«wrapperFields.get(pair.first)»)*/null, MAPPING);
+								«typeRef(Correspondence)» stc = mci.getMappedCorrespondence(«wrapperFields.get(pair.first)».getElements(), MAPPING);
 								if (stc == null) {
 									return null;
 								} else {
-									«wrapperClasses.get(pair.second)» «wrapperFields.get(pair.second)» = null; /* wrap other side */
+									«typeRef(List)»<«typeRef(EObject)»> opposite = «typeRef(MappedCorrespondenceInstance)».getOpposite(stc, «wrapperFields.get(pair.first)».getElements());
+									«wrapperClasses.get(pair.second)» «wrapperFields.get(pair.second)» = new «wrapperClasses.get(pair.second)»(opposite);
 									
 									return new «className»(
 										«FOR req : requires»/*resolve «req.second»*/null, «ENDFOR»
@@ -596,6 +629,17 @@ class MappingLanguageGenerator {
 									«FOR req : requires»«req.second», «ENDFOR»
 									«FOR wf : wrapperFields.withIndex.map[if (it.first == pair.first) it.second else "null"]»«wf», «ENDFOR»
 									null, State.«stateNames.get(pair.first)»);
+							}
+							
+							public static «className» getExistingOrHalfFor«packages.get(pair.first)»(
+									«FOR req : requires»«req.first» «req.second», «ENDFOR»
+									«wrapperClasses.get(pair.first)» «wrapperFields.get(pair.first)») {
+								«className» existing = getExistingFor«packages.get(pair.first)»(«wrapperFields.get(pair.first)»);
+								if (existing != null) {
+									return existing;
+								} else {
+									return createHalfMappingFor«packages.get(pair.first)»(«FOR req : requires»«req.second», «ENDFOR»«wrapperFields.get(pair.first)»);
+								}
 							}
 							«ENDFOR»
 							
@@ -722,13 +766,48 @@ class MappingLanguageGenerator {
 								
 								«FOR id : indices SEPARATOR "\n else "»
 								if (this.«wrapperFields.get(id)» != null)
-									return Helper.getExistingFor«packages.get(id)»(this.«wrapperFields.get(id)»);
+									return Helper.getExistingOrHalfFor«packages.get(id)»(
+										«FOR req : requires SEPARATOR ", " AFTER ", "»«req.second»«ENDFOR»
+										this.«wrapperFields.get(id)»
+									);
 								«ENDFOR»
 								
 								throw new «typeRef(IllegalStateException)»();
 							}
 						}
 						
+					}
+				'''
+			])
+		}
+		
+		def generateTestClass() {
+			val fqn = getTestClassName
+			val className = fqn.toSimpleName
+			
+			fsa.generateJavaFile(fqn, [
+				// TODO DW resolve cycle and reference by type
+				'''
+					public class «className» extends «typeRef("edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.tests.AbstractMappingTestBase")» {
+						@Override
+						protected String getPluginName() {
+							return "«file.pluginName»";
+						}
+						
+						@Override
+						protected «typeRef(Collection)»<«typeRef(Pair)»<String, String>> getMetamodelURIsAndExtensions() {
+							«typeRef(Set)»<«typeRef(Pair)»<String, String>> result = new «typeRef(HashSet)»<>();
+							«FOR id : imports»
+								result.add(new «typeRef(Pair)»<>("«id.package.nsURI»", "«id.name»"));
+							«ENDFOR»
+							
+							return result;
+						}
+						
+						@Override
+						protected Class<? extends «typeRef(AbstractMappingChange2CommandTransforming)»> getChange2CommandTransformingClass() {
+							return «typeRef(change2CommandTransformingClassName)».class;
+						}
 					}
 				'''
 			])

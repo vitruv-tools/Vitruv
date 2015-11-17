@@ -168,6 +168,10 @@ public final class JavaHelper {
 	public static <T> T when(T target, Predicate<T> predicate) {
 		return (predicate.test(target) ? target : null);
 	}
+	
+	public static <T> void with(T target, Consumer<T> consumer) {
+		consumer.accept(target);
+	}
 
 	public static <T> Consumer<T> emptyConsumer() {
 		return it -> {

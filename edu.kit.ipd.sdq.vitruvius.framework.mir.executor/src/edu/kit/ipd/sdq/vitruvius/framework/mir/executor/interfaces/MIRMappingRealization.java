@@ -1,7 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces;
 
-import java.io.Serializable;
-
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
@@ -12,7 +10,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
  * @author Dominik Werle
  *
  */
-public interface MIRMappingRealization extends Serializable {
+public interface MIRMappingRealization {
 	/**
 	 * Applies the mapping.
 	 * @param eChange

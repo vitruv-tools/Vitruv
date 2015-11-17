@@ -1,13 +1,16 @@
 package edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.tests
 
 import com.google.inject.Inject
+import com.google.inject.name.Named
 import edu.kit.ipd.sdq.vitruvius.casestudies.emf.changedescription2change.ChangeDescription2ChangeConverter
 import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.EclipseProjectHelper
 import edu.kit.ipd.sdq.vitruvius.framework.changepreparer.ChangePreparingImpl
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener
@@ -33,24 +36,21 @@ import org.eclipse.emf.ecore.change.util.ChangeRecorder
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtend.lib.annotations.Accessors
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
 import static edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util.MappingLanguageTestUtil.*
-import java.util.Set
-import java.util.HashSet
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel
-import com.google.inject.name.Named
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.EclipseProjectHelper
+
+import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
 
 class MappingLanguageTestEnvironment implements SynchronisationListener {
 	private final static Logger LOGGER = Logger.getLogger(MappingLanguageTestEnvironment)
-	protected static final String PROJECT_FOLDER_NAME = "MockupProject"
-	protected static final String MODEL_PATH = PROJECT_FOLDER_NAME + "/model"
+	public static final String PROJECT_FOLDER_NAME = "MockupProject"
+	public static final String MODEL_PATH = PROJECT_FOLDER_NAME + "/model"
 
 	private List<Change2CommandTransforming> c2cts
 
 	@Accessors(PUBLIC_GETTER)
 	@Inject private MappingLanguageTestUserInteracting userInteracting
-	@Inject @Named("METAMODELS") private List<Metamodel> metamodels
+	
+	private val AbstractMappingTestBase mappingTest
 	
 	private MetaRepositoryImpl metaRepository
 	private VSUMImpl vsum
@@ -59,14 +59,10 @@ class MappingLanguageTestEnvironment implements SynchronisationListener {
 	private ChangeRecorder changeRecorder
 	private ChangeDescription2ChangeConverter changeDescription2ChangeConverter
 
-	public new(Change2CommandTransforming... c2cts) {
-		this.c2cts = new ArrayList(c2cts)
-		setup
-	}
-
-	public new(List<Change2CommandTransforming> c2cts) {
-		this.c2cts = new ArrayList(c2cts)
-		setup
+	@Inject
+	public new(AbstractMappingTestBase mappingTest, Change2CommandTransforming c2ct) {
+		this.c2cts = #[c2ct]
+		this.mappingTest = mappingTest
 	}
 
 	protected def setup() {
@@ -84,7 +80,9 @@ class MappingLanguageTestEnvironment implements SynchronisationListener {
 			change2CommandTransformingProvider.addChange2CommandTransforming(c2ct)
         }
 
-        this.metaRepository = createEmptyMetaRepository(metamodels)
+        this.metaRepository = createEmptyMetaRepository(mappingTest.metamodelURIsAndExtensions.map [
+        	createAttributeTUIDMetamodel(first, second)
+        ])
         this.vsum = TestUtil.createVSUM(this.metaRepository);
         val commandExecuter = new CommandExecutingImpl();
 		val changePreparer = new ChangePreparingImpl(this.vsum, this.vsum);
@@ -211,10 +209,6 @@ class MappingLanguageTestEnvironment implements SynchronisationListener {
 			manipulate.accept(it);
 			return null;
 		]);
-	}
-	
-	public static def URI createModelURI(String fileName) {
-		return URI.createPlatformResourceURI(MODEL_PATH + "/" + fileName, false);
 	}
 	
 	/*protected static def void assertOCL(String message, EObject context, String oclPredicate) {

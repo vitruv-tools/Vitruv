@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.eclipse.emf.common.util.URI;
+
 import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -16,6 +18,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AttributeTUIDCalculatorAndResolver;
+import edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.tests.MappingLanguageTestEnvironment;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
 import static org.junit.Assert.*;
@@ -112,4 +115,9 @@ public final class MappingLanguageTestUtil {
 		assertNotNull(object);
 		assertTrue(message, type.isInstance(object));
 	}
+	
+	public static URI createModelURI(String fileName) {
+		return URI.createPlatformResourceURI(MappingLanguageTestEnvironment.MODEL_PATH + "/" + fileName, false);
+	}
+	
 }
