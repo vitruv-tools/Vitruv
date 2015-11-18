@@ -15,7 +15,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.NormalInterfaceDec
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.JaMoPPConcreteSyntax
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.StringOperationsJaMoPP
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.classifiers.Class

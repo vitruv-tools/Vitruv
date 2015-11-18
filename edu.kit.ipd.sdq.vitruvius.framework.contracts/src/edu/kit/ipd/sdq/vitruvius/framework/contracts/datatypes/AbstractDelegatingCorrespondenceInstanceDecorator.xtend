@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes
 
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import java.util.List
 import java.util.Map
 import java.util.Set

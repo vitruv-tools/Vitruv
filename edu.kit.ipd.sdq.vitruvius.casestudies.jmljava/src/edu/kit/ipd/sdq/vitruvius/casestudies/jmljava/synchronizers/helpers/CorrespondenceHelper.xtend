@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.helpers
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil

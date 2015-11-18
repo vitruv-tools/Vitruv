@@ -23,6 +23,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Invariants;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ValidationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
@@ -34,7 +35,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ViewTypeManaging
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalContractsBuilder;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
@@ -329,7 +329,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
      * {@link getCorrespondenceInstanceOriginal} must be called before to create the appropriate
      * correspondence instance
      *
-     * @see edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.CorrespondenceInstance
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.datatypes.CorrespondenceInstance
      * @return set that contains all CorrespondenceInstances for the VURI or null if there is non
      */
     @Override

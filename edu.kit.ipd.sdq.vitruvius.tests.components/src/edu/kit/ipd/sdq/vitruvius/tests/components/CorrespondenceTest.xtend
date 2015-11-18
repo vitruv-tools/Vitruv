@@ -8,8 +8,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl

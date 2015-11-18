@@ -8,7 +8,7 @@ import java.util.Map
 import java.util.Set
 import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.DefaultTUIDCalculatorAndResolver
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUIDCalculatorAndResolver
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUIDCalculatorAndResolver
 
 class Metamodel extends AbstractURIHaving {
 	String[] fileExtensions

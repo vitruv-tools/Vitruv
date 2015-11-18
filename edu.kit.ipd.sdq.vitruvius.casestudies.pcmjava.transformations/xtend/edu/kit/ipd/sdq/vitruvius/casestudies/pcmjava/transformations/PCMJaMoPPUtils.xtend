@@ -5,7 +5,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
 import java.util.Map

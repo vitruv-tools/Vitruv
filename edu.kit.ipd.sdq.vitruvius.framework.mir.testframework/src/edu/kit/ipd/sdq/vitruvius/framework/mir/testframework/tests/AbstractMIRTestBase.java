@@ -24,9 +24,9 @@ import org.eclipse.ocl.helper.OCLHelper;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.EclipseProjectHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRChange2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMIRMappingRealization;

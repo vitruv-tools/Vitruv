@@ -19,4 +19,12 @@
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.changepreparing" name="ChangePreparing" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.changepreparing.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.commandexecuting" name="CommandExecuting" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.commandexecuting.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.correspondenceinstancedecorating" name="CorrespondenceInstanceDecorating" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.correspondenceinstancedecorating.exsd"/>
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated correspondence -->
+      <package
+            uri="http://edu.kit.ipd.sdq.vitruvius/Correspondence/1.0"
+            class="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage"
+            genModel="metamodel/correspondence.genmodel"/>
+   </extension>
+
 </plugin>

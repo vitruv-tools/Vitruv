@@ -5,8 +5,7 @@ import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
 
 /**
  * Contains all correspondences for all model instances that conform to the metamodels of a give

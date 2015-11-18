@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 
 public class TUIDTest {

@@ -24,10 +24,10 @@
 // import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 // import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 // import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
-// import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
-// import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory;
-// import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondences;
-// import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
+// import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
+// import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondenceFactory;
+// import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences;
+// import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 // import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 // import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 // import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap;
@@ -74,7 +74,7 @@
 // *
 // * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
 // * addSameTypeCorrespondence
-// * (edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.SameTypeCorrespondence)
+// * (edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.SameTypeCorrespondence)
 // */
 // @Override
 // public void addCorrespondence(final Correspondence correspondence) {
@@ -278,7 +278,7 @@
 // * (non-Javadoc)
 // *
 // * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#
-// * getAllCorrespondences(edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID)
+// * getAllCorrespondences(edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID)
 // */
 // @Override
 // public Set<Correspondence> getAllCorrespondences(final TUID tuid) {
@@ -740,7 +740,7 @@
 // * @see
 // * edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance#update(edu
 // * .kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID,
-// * edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID)
+// * edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID)
 // */
 // @Override
 // public void updateTUID(final TUID oldTUID, final TUID newTUID) {

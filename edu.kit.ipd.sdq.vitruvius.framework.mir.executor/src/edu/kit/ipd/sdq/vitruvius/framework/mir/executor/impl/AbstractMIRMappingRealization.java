@@ -19,13 +19,12 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EclipseHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper;

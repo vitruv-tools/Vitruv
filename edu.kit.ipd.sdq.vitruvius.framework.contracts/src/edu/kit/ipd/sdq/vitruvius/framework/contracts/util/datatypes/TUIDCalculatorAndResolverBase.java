@@ -9,7 +9,7 @@
 //
 // import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 // import
-// edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUIDCalculatorAndResolver;
+// edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUIDCalculatorAndResolver;
 // import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 // import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreBridge;
 // import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap;

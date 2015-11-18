@@ -14,8 +14,8 @@ import com.google.inject.Module;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AttributeTUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.tests.MappingLanguageTestEnvironment;

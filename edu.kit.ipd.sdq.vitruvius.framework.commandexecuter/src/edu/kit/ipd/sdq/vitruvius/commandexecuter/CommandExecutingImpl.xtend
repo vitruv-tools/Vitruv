@@ -8,7 +8,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusTransformationRecordingCommand
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.ArrayList
 import java.util.Collections
@@ -22,8 +22,8 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.transaction.TransactionalEditingDomain
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondences
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences
 
 class CommandExecutingImpl implements CommandExecuting {
 	static final Logger logger = Logger::getLogger(typeof(CommandExecutingImpl).getSimpleName())

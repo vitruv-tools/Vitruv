@@ -7,7 +7,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences.Java2JMLCor
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.Utilities
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.helpers.CorrespondenceHelper
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import java.util.ArrayList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject

@@ -2,7 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes
 
 import com.google.common.collect.Sets
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import java.util.HashSet
 import java.util.List
 import java.util.Set
@@ -12,8 +12,8 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.Collect
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.CorrespondenceInstanceImpl
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondences
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 
 class CorrespondenceInstanceUtil {
 	private new (){

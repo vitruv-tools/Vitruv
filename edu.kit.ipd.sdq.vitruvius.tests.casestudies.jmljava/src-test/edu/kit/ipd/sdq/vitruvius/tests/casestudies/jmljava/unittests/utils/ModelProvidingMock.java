@@ -7,9 +7,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
 
 public class ModelProvidingMock implements ModelProviding {
     final Map<VURI, ModelInstance> mapping = new HashMap<VURI, ModelInstance>();

@@ -7,10 +7,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondenceFactory
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondences
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondenceFactory
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap

@@ -15,7 +15,7 @@ import org.palladiosimulator.pcm.util.PcmResourceFactoryImpl;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.CorrespondencePackage;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;

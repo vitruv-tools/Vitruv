@@ -20,9 +20,9 @@
 //import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 //import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 //import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusTransformationRecordingCommand;
-//import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondence;
-//import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.Correspondences;
-//import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
+//import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
+//import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences;
+//import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 //import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 //
 //public class CommandExecutingImpl implements CommandExecuting {
