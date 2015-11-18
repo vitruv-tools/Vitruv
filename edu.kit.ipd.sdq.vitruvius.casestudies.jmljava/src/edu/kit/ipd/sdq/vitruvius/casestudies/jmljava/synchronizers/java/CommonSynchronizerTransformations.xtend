@@ -18,6 +18,8 @@ import org.emftext.language.java.types.TypeReference
 import org.emftext.language.java.variables.Variable
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+
 class CommonSynchronizerTransformations {
 	
 	private static val LOGGER = Logger.getLogger(CommonSynchronizerTransformations)
@@ -35,8 +37,8 @@ class CommonSynchronizerTransformations {
 			val oldJmlModifier = CorrespondenceHelper.getSingleCorrespondingEObjectOfType(ci, javaOldValue, RegularModifier)
 			val oldIndex = jmlModifiable.modifiers.indexOf(oldJmlModifier)
 			
-			ci.removeCorrespondencesOfEObjectAndChildrenOnBothSides(oldJmlModifier)
-			ci.removeCorrespondencesOfEObjectAndChildrenOnBothSides(javaOldValue)
+			ci.removeCorrespondencesThatInvolveAtLeastAndDependend(oldJmlModifier.toSet)
+			ci.removeCorrespondencesThatInvolveAtLeastAndDependend(javaOldValue.toSet)
 			
 			jmlModifiable.modifiers.remove(oldJmlModifier)
 			

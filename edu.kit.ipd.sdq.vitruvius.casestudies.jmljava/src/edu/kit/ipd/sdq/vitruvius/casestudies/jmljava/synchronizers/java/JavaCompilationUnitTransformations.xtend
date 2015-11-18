@@ -19,6 +19,7 @@ import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.Classifier
 import org.emftext.language.java.containers.ContainersPackage
 import org.emftext.language.java.imports.Import
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 
 class JavaCompilationUnitTransformations extends Java2JMLTransformationBase {
 	
@@ -101,8 +102,8 @@ class JavaCompilationUnitTransformations extends Java2JMLTransformationBase {
 				
 				val jmlImport = getSingleCorrespondingEObjectOfType(oldValue, ImportDeclaration)
 				
-				blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(jmlImport)
-				blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(oldValue)
+				blackboard.correspondenceInstance.removeCorrespondencesThatInvolveAtLeastAndDependend(jmlImport.toSet)
+				blackboard.correspondenceInstance.removeCorrespondencesThatInvolveAtLeastAndDependend(oldValue.toSet)
 				
 				jmlCu.importdeclaration.remove(jmlImport)
 
@@ -115,8 +116,8 @@ class JavaCompilationUnitTransformations extends Java2JMLTransformationBase {
 				
 				val jmlType = getSingleCorrespondingEObjectOfType(oldValue, ClassifierDeclarationWithModifier)
 				
-				blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(jmlType)
-				blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(oldValue)
+				blackboard.correspondenceInstance.removeCorrespondencesThatInvolveAtLeastAndDependend(jmlType.toSet)
+				blackboard.correspondenceInstance.removeCorrespondencesThatInvolveAtLeastAndDependend(oldValue.toSet)
 				
 				jmlCu.typedeclaration.remove(jmlType)
 				

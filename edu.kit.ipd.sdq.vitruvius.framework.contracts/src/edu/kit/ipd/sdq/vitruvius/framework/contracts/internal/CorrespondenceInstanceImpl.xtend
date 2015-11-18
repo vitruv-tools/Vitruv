@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.util.EcoreUtil
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge.*
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class CorrespondenceInstanceImpl extends ModelInstance implements CorrespondenceInstanceDecorator {
@@ -238,8 +239,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		// nothing to initialize, everything was done based on the correspondence model
 	}
 
-	def private Correspondences loadAndRegisterCorrespondences(
-		Resource correspondencesResource) {
+	def private Correspondences loadAndRegisterCorrespondences(Resource correspondencesResource) {
 		try {
 			correspondencesResource.load(this.saveCorrespondenceOptions)
 		} catch (Exception e) {
@@ -248,8 +248,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 			)
 		}
 		// TODO implement lazy loading for correspondences because they may get really big
-		var EObject correspondences = EcoreResourceBridge::
-			getResourceContentRootIfUnique(getResource())
+		var Correspondences correspondences = EcoreResourceBridge::getResourceContentRootIfUnique(getResource())?.dynamicCast(Correspondences, "correspondence model")
 		if (correspondences === null) {
 			correspondences = CorrespondenceFactory::eINSTANCE.createCorrespondences()
 			correspondencesResource.getContents().add(correspondences)
@@ -260,39 +259,8 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 				'''The unique root object '«»«correspondences»' of the correspondence model '«»«getURI()»' is not correctly typed!'''.
 					toString)
 		}
-		this.correspondences.setCorrespondenceInstance(this)
+		correspondences.setCorrespondenceInstance(this)
 		return correspondences as Correspondences
-	}
-
-	def private void markNeighborAndChildrenCorrespondences(Correspondence correspondence, Set<Correspondence> markedCorrespondences) {
-		if (markedCorrespondences.add(correspondence)) {
-			var TUID elementATUID = correspondence.getElementATUID()
-			markNeighborAndChildrenCorrespondences(elementATUID, markedCorrespondences)
-			var TUID elementBTUID = correspondence.getElementBTUID()
-			markNeighborAndChildrenCorrespondences(elementBTUID, markedCorrespondences)
-		}
-	}
-
-	def private void markNeighborAndChildrenCorrespondences(TUID tuid,
-		Set<Correspondence> markedCorrespondences) {
-		var EObject eObject = resolveEObjectFromTUID(tuid)
-		markNeighborAndChildrenCorrespondencesRecursively(eObject,
-			markedCorrespondences)
-	}
-
-	def private void markNeighborAndChildrenCorrespondencesRecursively(EObject eObject,
-		Set<Correspondence> markedCorrespondences) {
-		var Set<Correspondence> allCorrespondences = getCorrespondences(eObject.toList)
-		for (Correspondence correspondence : allCorrespondences) {
-			markNeighborAndChildrenCorrespondences(correspondence,
-				markedCorrespondences)
-		}
-		var List<EObject> children = eObject.eContents()
-		for (EObject child : children) {
-			markNeighborAndChildrenCorrespondencesRecursively(child,
-				markedCorrespondences)
-		}
-
 	}
 
 	def private void registerCorrespondenceForTUIDs(Correspondence correspondence) {
@@ -324,34 +292,43 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		}
 	}
 
-	override Set<Correspondence> removeCorrespondencesOfEObjectsAndChildrenOnBothSides(Correspondence correspondence) {
-		// FIXME MK completely rethink removal 
-		if (correspondence === null) {
-			return Collections::emptySet()
-		}
+	override Set<Correspondence> removeCorrespondencesAndDependendCorrespondences(Correspondence correspondence) {
+		val markedCorrespondences = markCorrespondenceAndDependingCorrespondences(correspondence)
+		removeMarkedCorrespondences(markedCorrespondences)
+		return markedCorrespondences
+	}
+	
+	private def Set<Correspondence> markCorrespondenceAndDependingCorrespondences(Correspondence correspondence) {
 		var Set<Correspondence> markedCorrespondences = new HashSet<Correspondence>()
-		markNeighborAndChildrenCorrespondences(correspondence, markedCorrespondences)
+		markCorrespondenceAndDependingCorrespondencesRecursively(markedCorrespondences, correspondence)
+		return markedCorrespondences
+	}
+	
+	private def void markCorrespondenceAndDependingCorrespondencesRecursively(Set<Correspondence> markedCorrespondences, Correspondence correspondence) {
+		markedCorrespondences.add(correspondence);
+		// FIXME MK detect dependency cycles in correspondences already when the reference is updated
+		for(dependingCorrespondence : correspondence.dependedOnBy) {
+			markCorrespondenceAndDependingCorrespondencesRecursively(markedCorrespondences,dependingCorrespondence)
+		}
+	}
+	
+	private def removeMarkedCorrespondences(Iterable<Correspondence> markedCorrespondences) {
 		for (Correspondence markedCorrespondence : markedCorrespondences) {
 			removeCorrespondenceFromMaps(markedCorrespondence)
 			EcoreUtil::remove(markedCorrespondence)
 			setChangeAfterLastSaveFlag()
 		}
-		return markedCorrespondences
+	}
+	
+	override Set<Correspondence> removeCorrespondencesThatInvolveAtLeastAndDependend(Set<EObject> eObjects) {
+		return removeCorrespondencesThatInvolveAtLeastAndDependendForTUIDs(eObjects.map[calculateTUIDFromEObject(it)].toSet)
 	}
 
-	override Set<Correspondence> removeCorrespondencesOfEObjectAndChildrenOnBothSides(EObject eObject) {
-		val TUID tuid = calculateTUIDsFromEObjects(eObject.toList).claimOne
-		return removeCorrespondencesOfEObjectAndChildrenOnBothSides(tuid)
-	}
-
-	override Set<Correspondence> removeCorrespondencesOfEObjectAndChildrenOnBothSides(TUID tuid) {
-		var Set<Correspondence> directCorrespondences = getCorrespondencesForTUIDs(tuid.toList)
-		var Set<Correspondence> directAndChildrenCorrespondences = new HashSet<Correspondence>()
-		for (Correspondence correspondence : directCorrespondences) {
-			directAndChildrenCorrespondences.addAll(
-				removeCorrespondencesOfEObjectsAndChildrenOnBothSides(correspondence))
-		}
-		return directAndChildrenCorrespondences
+	override Set<Correspondence> removeCorrespondencesThatInvolveAtLeastAndDependendForTUIDs(Set<TUID> tuids) {
+		val correspondences = getCorrespondencesThatInvolveAtLeastTUIDs(tuids)
+		val markedCorrespondences = correspondences.map[markCorrespondenceAndDependingCorrespondences(it)].flatten
+		removeMarkedCorrespondences(markedCorrespondences)
+		return markedCorrespondences.toSet
 	}
 
 	/*
@@ -495,19 +472,14 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 				val oldTUIDList = oldTUIDList2CorrespondencesEntry.key
 				val correspondences = oldTUIDList2CorrespondencesEntry.value
 				// replace the old tuid in the list with the new tuid
-				var indexOfOldTUID = -1
-				for (tuid : oldTUIDList) {
-					if (oldCurrentTUIDString?.equals(tuid.toString)) {
-						indexOfOldTUID = oldTUIDList.indexOf(tuid)
-					}
-				}
-				if (indexOfOldTUID == -1) {
+				// oldCurrentTUID is already the new TUID because this happens after the update
+				val replacedTUID = oldTUIDList.replaceFirstStringEqualElement(oldCurrentTUIDString,oldCurrentTUID)
+				if (replacedTUID == null) {
 					throw new RuntimeException("No TUID in the List '" + oldTUIDList + "' is equal to '" + oldCurrentTUIDString)
-				} else {
-					// oldCurrentTUID is already the new TUID because this happens after the update
-					oldTUIDList.set(indexOfOldTUID, oldCurrentTUID)
 				}
-				// re-add the entry for the current list of tuids with the new hashcode 
+				// re-add the tuid list with the new hashcode to the set for the  for the tuid2tuidListsMap entry
+				newSetOfoldTUIDLists.add(oldTUIDList)
+				// re-add the correspondences entry for the current list of tuids with the new hashcode 
 				this.tuid2CorrespondencesMap.put(oldTUIDList,correspondences)
 				// update the TUID in the correspondence model
 				for (correspondence : correspondences) {
@@ -537,4 +509,12 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		this.correspondences.correspondences.filter[it.dependsOn == null || it.dependsOn.size == 0].toSet
 	}
 	
+	override getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects) {
+		return getCorrespondencesThatInvolveAtLeastTUIDs(eObjects.map[calculateTUIDFromEObject(it)].toSet)
+	}
+	
+	override getCorrespondencesThatInvolveAtLeastTUIDs(Set<TUID> tuids) {
+		val supTUIDLists = tuids?.map[this.tuid2tuidListsMap.get(it)].flatten.filter[it.containsAll(tuids)]
+		return supTUIDLists?.map[getCorrespondencesForTUIDs(it)].flatten.toSet
+	}
 }		

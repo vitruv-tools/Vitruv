@@ -23,6 +23,7 @@ import org.emftext.language.java.modifiers.ModifiersFactory
 import org.palladiosimulator.pcm.repository.OperationInterface
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 
 class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -142,7 +143,7 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 				// TODO: check wheather the CompilationUnit is deleted
 				EcoreUtil.remove(correspondingObject)
 			}
-			blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(operationInterface)
+			blackboard.correspondenceInstance.removeCorrespondencesThatInvolveAtLeastAndDependend(operationInterface.toSet)
 		}
 		return null
 	}

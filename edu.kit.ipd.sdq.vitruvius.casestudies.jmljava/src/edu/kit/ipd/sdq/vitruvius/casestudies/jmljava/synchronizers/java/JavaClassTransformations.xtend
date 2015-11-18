@@ -26,6 +26,8 @@ import org.emftext.language.java.members.Member
 import org.emftext.language.java.members.Method
 import org.emftext.language.java.modifiers.Modifier
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+
 class JavaClassTransformations extends Java2JMLTransformationBase {
 
 	private static val Logger LOGGER = Logger.getLogger(JavaClassTransformations)
@@ -131,9 +133,9 @@ class JavaClassTransformations extends Java2JMLTransformationBase {
 								val jmlModifier = getSingleCorrespondingEObjectOfType(oldValue, RegularModifier)
 
 								blackboard.correspondenceInstance.
-									removeCorrespondencesOfEObjectAndChildrenOnBothSides(oldValue)
+									removeCorrespondencesThatInvolveAtLeastAndDependend(oldValue.toSet)
 								blackboard.correspondenceInstance.
-									removeCorrespondencesOfEObjectAndChildrenOnBothSides(jmlModifier)
+									removeCorrespondencesThatInvolveAtLeastAndDependend(jmlModifier.toSet)
 
 								jmlClassifierDecl.modifiers.remove(jmlModifier)
 
@@ -160,9 +162,9 @@ class JavaClassTransformations extends Java2JMLTransformationBase {
 									JMLSpecifiedElement)
 
 								blackboard.correspondenceInstance.
-									removeCorrespondencesOfEObjectAndChildrenOnBothSides(jmlSpecifiedElement)
+									removeCorrespondencesThatInvolveAtLeastAndDependend(jmlSpecifiedElement.toSet)
 								blackboard.correspondenceInstance.
-									removeCorrespondencesOfEObjectAndChildrenOnBothSides(oldValue)
+									removeCorrespondencesThatInvolveAtLeastAndDependend(oldValue.toSet)
 
 								jmlNormalClassDecl.bodyDeclarations.remove(jmlSpecifiedElement)
 

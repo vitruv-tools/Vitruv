@@ -92,45 +92,7 @@ class CorrespondenceInstanceUtil {
      *            the class for which instances should be returned
      * @return a set containing all eObjects of the given type that have a correspondence
      */
-     // FIXME MK, ML decide whether to keep this evil method --> we should delete it as soon as ML knows how he can implement his transformations without the method
 	def public static <T> Set<T> getAllEObjectsOfTypeInCorrespondences(CorrespondenceInstance ci, Class<T> type) {
-		var Set<T> correspondencesWithType = new HashSet<T>()
-		var CorrespondenceInstanceImpl ciImpl = null
-		if(ci instanceof CorrespondenceInstanceImpl){
-			ciImpl = ci as CorrespondenceInstanceImpl
-		}else if (ci instanceof CorrespondenceInstanceDecorator){
-			ciImpl = (ci as CorrespondenceInstanceDecorator).getFirstCorrespondenceInstanceDecoratorOfTypeInChain(CorrespondenceInstanceImpl) 
-		}
-		if(null == ciImpl){
-			throw new RuntimeException("CorrepondenceInstanceImpl not found in CorrepondenceInstance or one of its decorators: " + ci )
-		}
-		val Correspondences correspondences = JavaBridge.getFieldFromClass(CorrespondenceInstanceImpl, "correspondences", ciImpl)
-		var List<Correspondence> allCorrespondences = correspondences.correspondences 
-		for (Correspondence correspondence : allCorrespondences) {
-			var EObject element = ci.resolveEObjectFromTUIDWithoutException(correspondence.elementATUID)
-			if (null !== element && type.isInstance(element)) {
-				/*FIXME Cannot add Annotation to Variable declaration. Java code: @SuppressWarnings("unchecked")*/
-				var T t = element as T
-				correspondencesWithType.add(t)
-			} else {
-				element = ci.resolveEObjectFromTUIDWithoutException(correspondence.elementBTUID)
-				if (null !== element && type.isInstance(element)) {
-					/*FIXME Cannot add Annotation to Variable declaration. Java code: @SuppressWarnings("unchecked")*/
-					var T t = element as T
-					correspondencesWithType.add(t)
-				}
-
-			} // currently nothing else to do as every correspondence is a One2OneCorrespondence
-		}
-		return correspondencesWithType
-	}
-	
-	def private static EObject resolveEObjectFromTUIDWithoutException(CorrespondenceInstance ci, TUID tuid){
-		try{
-			return ci.resolveEObjectFromTUID(tuid)
-		}catch(RuntimeException ex){
-			return null
-		}
-		
+		return ci.allCorrespondencesWithoutDependencies.map[(it.^as + it.bs).filter(type)].flatten.toSet
 	}
 }

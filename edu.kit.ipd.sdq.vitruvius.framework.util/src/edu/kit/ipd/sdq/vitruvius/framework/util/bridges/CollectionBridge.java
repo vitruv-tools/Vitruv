@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
 * A utility class providing additional methods for Java collections.<br/>
@@ -44,6 +45,10 @@ public final class CollectionBridge {
 		
 		public static <T> List<T> toList(T o) {
 			return Collections.singletonList(o);
+		}
+		
+		public static <T> Set<T> toSet(T o) {
+			return Collections.singleton(o);
 		}
 		
 		public static <T> int replaceFirst(List<T> list, T oldElement, T newElement) {

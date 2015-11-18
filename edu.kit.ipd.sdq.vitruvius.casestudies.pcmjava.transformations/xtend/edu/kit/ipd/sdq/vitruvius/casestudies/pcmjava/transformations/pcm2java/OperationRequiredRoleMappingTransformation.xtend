@@ -106,7 +106,7 @@ class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTran
 		
 		val EObject[] oldEObjects = removeEObject(affectedEObject)
 		for (oldEObject : oldEObjects) {
-			blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(oldEObject)
+			blackboard.correspondenceInstance.removeCorrespondencesThatInvolveAtLeastAndDependend(oldEObject.toSet)
 			if (null != oldEObject.eContainer) {
 				return new TransformationResult
 			}

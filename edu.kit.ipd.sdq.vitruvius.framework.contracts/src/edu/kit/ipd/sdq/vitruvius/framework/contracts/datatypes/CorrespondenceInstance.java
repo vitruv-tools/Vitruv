@@ -62,10 +62,16 @@ public interface CorrespondenceInstance {
 
     public Correspondence claimUniqueCorrespondence(final List<EObject> aEObjects, final List<EObject> bEObjects);
 
+    public Set<Correspondence> getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects);
+
+    public Set<Correspondence> getCorrespondencesThatInvolveAtLeastTUIDs(Set<TUID> tuids);
+
     // renamed from addSameTypeCorrespondence
     public void addCorrespondence(Correspondence correspondence);
 
     /**
+     * React to the deletion of an object o by deleting all correspondences that
+     *
      * Removes all direct correspondences for the given eObject and all correspondences for children
      * of the given eObject and for children of the eObjects corresponding to the given eObject.
      * Does <b>not</b> remove any model elements (only correspondences).
@@ -74,8 +80,7 @@ public interface CorrespondenceInstance {
      *            for which all correspondences should be removed
      * @return a set containing all removed correspondences
      */
-    // renamed from removeDirectAndChildrenCorrespondencesOnBothSides
-    public Set<Correspondence> removeCorrespondencesOfEObjectAndChildrenOnBothSides(EObject eObject);
+    public Set<Correspondence> removeCorrespondencesThatInvolveAtLeastAndDependend(Set<EObject> eObjects);
 
     /**
      * Removes all direct correspondences for the eObject with the given tuid and all
@@ -87,8 +92,7 @@ public interface CorrespondenceInstance {
      *            for which all correspondences should be removed
      * @return a set containing all removed correspondences
      */
-    // renamed from removeDirectAndChildrenCorrespondencesOnBothSides
-    public Set<Correspondence> removeCorrespondencesOfEObjectAndChildrenOnBothSides(TUID tuid);
+    public Set<Correspondence> removeCorrespondencesThatInvolveAtLeastAndDependendForTUIDs(Set<TUID> tuids);
 
     /**
      * Removes the given correspondence, all correspondences for the eObjects of the given
@@ -99,8 +103,7 @@ public interface CorrespondenceInstance {
      *            that should be removed
      * @return a set containing all removed correspondences
      */
-    // renamed from removeNeighborAndChildrenCorrespondencesOnBothSides
-    public Set<Correspondence> removeCorrespondencesOfEObjectsAndChildrenOnBothSides(Correspondence correspondence);
+    public Set<Correspondence> removeCorrespondencesAndDependendCorrespondences(Correspondence correspondence);
 
     /**
      * updates the TUID of an EObject

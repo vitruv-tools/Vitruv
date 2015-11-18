@@ -28,6 +28,7 @@ import org.emftext.language.java.types.NamespaceClassifierReference
 import org.emftext.language.java.types.TypeReference
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 
 class JavaMethodTransformations extends Java2JMLTransformationBase {
 
@@ -193,8 +194,8 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 
 				val jmlParameter = getSingleCorrespondingEObjectOfType(oldValue, FormalParameterDecl)
 
-				blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(jmlParameter)
-				blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(oldValue)
+				blackboard.correspondenceInstance.removeCorrespondencesThatInvolveAtLeastAndDependend(jmlParameter.toSet)
+				blackboard.correspondenceInstance.removeCorrespondencesThatInvolveAtLeastAndDependend(oldValue.toSet)
 
 				jmlMethodDeclaration.parameters.remove(jmlParameter)
 
@@ -210,8 +211,8 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 
 				val jmlModifier = getSingleCorrespondingEObjectOfType(oldValue, RegularModifier)
 
-				blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(jmlModifier)
-				blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(oldValue)
+				blackboard.correspondenceInstance.removeCorrespondencesThatInvolveAtLeastAndDependend(jmlModifier.toSet)
+				blackboard.correspondenceInstance.removeCorrespondencesThatInvolveAtLeastAndDependend(oldValue.toSet)
 
 				jmlMemberDeclWithModifier.modifiers.remove(jmlModifier)
 
@@ -224,8 +225,8 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 
 				val jmlException = getSingleCorrespondingEObjectOfType(oldValue, DeclaredException)
 
-				blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(jmlException)
-				blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(oldValue)
+				blackboard.correspondenceInstance.removeCorrespondencesThatInvolveAtLeastAndDependend(jmlException.toSet)
+				blackboard.correspondenceInstance.removeCorrespondencesThatInvolveAtLeastAndDependend(oldValue.toSet)
 
 				jmlMethodDeclaration.exceptions.remove(jmlException)
 

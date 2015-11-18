@@ -56,7 +56,7 @@ class CorrespondenceTest extends VSUMTest {
 		// recreate the same correspondence as before
 		repo2pkg = createRepo2PkgCorrespondence(repo, pkg, correspondenceInstance) // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		testCreateRepo2PkgCorrespondenceAndUpdateTUID(repo, pkg, correspondenceInstance, repo2pkg)
-		correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(pkg) // now the correspondence instance should be empty
+		correspondenceInstance.removeCorrespondencesThatInvolveAtLeastAndDependend(pkg.toSet) // now the correspondence instance should be empty
 		testCorrespondencePersistence(vsum, repo, pkg, correspondenceInstance)
 	}
 
@@ -260,7 +260,7 @@ class CorrespondenceTest extends VSUMTest {
 		// 2. CRC: repo.ifaces _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg.ifaces _sJD6YPxjEeOD3p0i_uuRbQ
 		// 3. EOC: pcmIfac _tAgfwPxjEeOD3p0i_uuRbQ <=> umlIface _vWjxIPxjEeOD3p0i_uuRbQ
 		// remove correspondence
-		corresp.removeCorrespondencesOfEObjectAndChildrenOnBothSides(repoInterface) // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
+		corresp.removeCorrespondencesThatInvolveAtLeastAndDependend(repoInterface.toSet) // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		// 2. CRC: repo.ifaces _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg.ifaces _sJD6YPxjEeOD3p0i_uuRbQ
 		// check whether it is removed
 		var Set<Correspondence> repoInterfaceCorresp = corresp.getCorrespondences(repoInterface.toList)
@@ -282,7 +282,7 @@ class CorrespondenceTest extends VSUMTest {
 		Correspondence repo2pkg) {
 		// 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		// 2. CRC: repo.ifaces _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg.ifaces _sJD6YPxjEeOD3p0i_uuRbQ
-		corresp.removeCorrespondencesOfEObjectAndChildrenOnBothSides(repo2pkg) // now the correspondence instance should be empty
+		corresp.removeCorrespondencesThatInvolveAtLeastAndDependend(repo2pkg.toSet) // now the correspondence instance should be empty
 		var Set<Correspondence> repoCorresp = corresp.getCorrespondences(repo.toList)
 		assertTrue(repoCorresp.isEmpty())
 		var Set<Correspondence> pkgCorresp = corresp.getCorrespondences(pkg.toList)

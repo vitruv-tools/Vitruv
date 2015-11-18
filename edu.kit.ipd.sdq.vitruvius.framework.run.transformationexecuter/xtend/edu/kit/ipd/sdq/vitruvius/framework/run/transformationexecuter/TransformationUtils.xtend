@@ -7,6 +7,8 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.util.EcoreUtil
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+
 class TransformationUtils {
 
 	//val private static Logger logger = Logger.getLogger(TransformationUtils)
@@ -28,7 +30,7 @@ class TransformationUtils {
 
 	def static removeCorrespondenceAndAllObjects(EObject object, Blackboard blackboard) {
 		val correspondencens = blackboard.correspondenceInstance.
-			removeCorrespondencesOfEObjectAndChildrenOnBothSides(object)
+			removeCorrespondencesThatInvolveAtLeastAndDependend(object.toSet)
 		for (correspondence : correspondencens) {
 				resolveAndRemoveEObject(correspondence.ATUIDs, blackboard)
 				resolveAndRemoveEObject(correspondence.BTUIDs, blackboard)

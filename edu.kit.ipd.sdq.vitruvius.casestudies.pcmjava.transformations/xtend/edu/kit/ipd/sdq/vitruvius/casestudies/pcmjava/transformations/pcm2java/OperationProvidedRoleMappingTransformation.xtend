@@ -73,7 +73,7 @@ class OperationProvidedRoleMappingTransformation extends EmptyEObjectMappingTran
 		if (null != oldValue) {
 			val EObject[] oldEObjects = removeEObject(affectedEObject)
 			for (oldEObject : oldEObjects) {
-				blackboard.correspondenceInstance.removeCorrespondencesOfEObjectAndChildrenOnBothSides(oldEObject)
+				blackboard.correspondenceInstance.removeCorrespondencesThatInvolveAtLeastAndDependend(oldEObject.toSet)
 				EcoreUtil.remove(oldEObject)
 			}
  	 	}
