@@ -13,8 +13,8 @@ import java.util.List
 import java.util.Set
 import org.eclipse.emf.ecore.EObject
 
-class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInstanceDecorator<HashMap<Correspondence, Collection<Class<? extends MIRMappingRealization>>>> {
-	HashMap<Correspondence, Collection<Class<? extends MIRMappingRealization>>> correspondence2MappingMap
+class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInstanceDecorator<HashMap<Correspondence, Collection<String>>> {
+	HashMap<Correspondence, Collection<String>> correspondence2MappingMap
 
 	@SuppressWarnings("unchecked")
 	new(CorrespondenceInstanceDecorator correspondenceInstance) {
@@ -22,20 +22,20 @@ class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInsta
 		// map class to the ADCID
 		super(correspondenceInstance,
 			new HashMap<Correspondence, MIRMappingRealization>().
-				getClass() as Class<HashMap<Correspondence, Collection<Class<? extends MIRMappingRealization>>>>)
-		this.correspondence2MappingMap = new HashMap<Correspondence, Collection<Class<? extends MIRMappingRealization>>>()
+				getClass() as Class<HashMap<Correspondence, Collection<String>>>)
+		this.correspondence2MappingMap = new HashMap<Correspondence, Collection<String>>()
 	}
 
 	override protected String getDecoratorFileExtPrefix() {
 		return MIRHelper::getCorrespondenceDecoratorFileExtPrefix()
 	}
 
-	override protected HashMap<Correspondence, Collection<Class<? extends MIRMappingRealization>>> getDecoratorObject() {
+	override protected HashMap<Correspondence, Collection<String>> getDecoratorObject() {
 		return this.correspondence2MappingMap
 	}
 
 	override protected void initializeFromDecoratorObject(
-		HashMap<Correspondence, Collection<Class<? extends MIRMappingRealization>>> object) {
+		HashMap<Correspondence, Collection<String>> object) {
 		this.correspondence2MappingMap = object
 	}
 
@@ -53,11 +53,11 @@ class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInsta
 		// FIXME MK (deco): store mapping realization automatically
 		if (!this.correspondence2MappingMap.containsKey(correspondence))
 			this.correspondence2MappingMap.put(correspondence, new HashSet())
-		this.correspondence2MappingMap.get(correspondence).add(mapping.class)
+		this.correspondence2MappingMap.get(correspondence).add(mapping.mappingID)
 	}
 
 	def Correspondence getMappedCorrespondence(List<EObject> eObjects, MIRMappingRealization mapping) {
-		return getCorrespondences(eObjects).filter(Correspondence).filter[mappingsForCorrespondence.contains(mapping)].
+		return getCorrespondences(eObjects).filter(Correspondence).filter[mappingsForCorrespondence.contains(mapping.mappingID)].
 			head
 	}
 
@@ -67,7 +67,7 @@ class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInsta
 	 * all MIRMappingRealizations for an EObject, first get all correspondences
 	 * from the {@link CorrespondenceInstance}, then use this method.
 	 */
-	def Collection<Class<? extends MIRMappingRealization>> getMappingsForCorrespondence(Correspondence correspondence) {
+	def Collection<String> getMappingsForCorrespondence(Correspondence correspondence) {
 		return correspondence2MappingMap.get(correspondence)
 	}
 
@@ -75,16 +75,16 @@ class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInsta
 	 * Returns all Correspondences that correspond to a mapping. 
 	 */
 	def Set<Correspondence> getCorrespondencesForMapping(MIRMappingRealization mapping) {
-		return correspondence2MappingMap.entrySet().filter[value.contains(mapping.class)].map[key].toSet
+		return correspondence2MappingMap.entrySet().filter[value.contains(mapping.mappingID)].map[key].toSet
 	}
 
 	def void unregisterMappingForCorrespondence(MIRMappingRealization mapping, Correspondence correspondence) {
-		if (!correspondence2MappingMap.containsKey(correspondence) || !correspondence2MappingMap.get(correspondence).contains(mapping.class)) {
+		if (!correspondence2MappingMap.containsKey(correspondence) || !correspondence2MappingMap.get(correspondence).contains(mapping.mappingID)) {
 			throw new IllegalArgumentException(
-				'''Mapping «mapping.getMappingID()» is not registered for correspondence «correspondence.toString()»'''.
+				'''Mapping «mapping.mappingID» is not registered for correspondence «correspondence.toString()»'''.
 					toString)
 		} else {
-			correspondence2MappingMap.get(correspondence).remove(mapping.class)
+			correspondence2MappingMap.get(correspondence).remove(mapping.mappingID)
 		}
 	}
 
@@ -100,7 +100,7 @@ class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInsta
 	def List<EObject> getMappingTarget(List<EObject> eObjects, MIRMappingRealization mapping) {
 		return correspondenceInstance.getCorrespondences(eObjects)
 			.filter(Correspondence)
-			.filter[mappingsForCorrespondence.contains(mapping.class)]
+			.filter[mappingsForCorrespondence.contains(mapping.mappingID)]
 			.head?.getOpposite(eObjects)
 	}
 	
