@@ -65,7 +65,7 @@ class MappingLanguageTestEnvironment implements SynchronisationListener {
 		this.mappingTest = mappingTest
 	}
 
-	protected def setup() {
+	public def setup() {
 		val eph = new EclipseProjectHelper(PROJECT_FOLDER_NAME)
 		eph.reinitializeJavaProject
 		eph.getProject().getFolder("model").create(true, true, null);

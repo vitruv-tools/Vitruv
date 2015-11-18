@@ -233,7 +233,7 @@ public class TUID implements Serializable {
             final ForwardHashedBackwardLinkedTree<String>.Segment oldSegment = segmentPair.getFirst();
             final TUID oldTUID = LAST_SEGMENT_2_TUID_INSTANCES_MAP.get(oldSegment);
             final ForwardHashedBackwardLinkedTree<String>.Segment newSegment = segmentPair.getSecond();
-            Triple<TUID, String, Set<Correspondence>> removedMapEntries = null;
+            Triple<TUID, String, Map<List<TUID>,Set<Correspondence>>> removedMapEntries = null;
             if (before != null) {
                 removedMapEntries = before.performPreAction(oldTUID);
             }
@@ -419,11 +419,11 @@ public class TUID implements Serializable {
 	}
 
 	public interface BeforeHashCodeUpdateLambda {
-        Triple<TUID, String, Set<Correspondence>> performPreAction(TUID oldTUID);
+		Triple<TUID, String, Map<List<TUID>,Set<Correspondence>>> performPreAction(TUID oldTUID);
     }
 
     public interface AfterHashCodeUpdateLambda {
-        void performPostAction(Triple<TUID, String, Set<Correspondence>> removedMapEntries);
+        void performPostAction(Triple<TUID, String, Map<List<TUID>,Set<Correspondence>>> removedMapEntries);
     }
 
     private Object writeReplace() throws ObjectStreamException {

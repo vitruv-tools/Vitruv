@@ -45,4 +45,39 @@ public final class CollectionBridge {
 		public static <T> List<T> toList(T o) {
 			return Collections.singletonList(o);
 		}
+		
+		public static <T> int replaceFirst(List<T> list, T oldElement, T newElement) {
+			int indexForReplacement = list.indexOf(oldElement);
+			if (indexForReplacement != -1) {
+				list.set(indexForReplacement,newElement);
+			}
+			return indexForReplacement;
+		}
+		
+		public static <T> T replaceFirstStringEqualElement(List<T> list, String oldElementToString, T newElement) {
+			T elementToReplace = firstToStringEqualElement(list, oldElementToString);
+			if (elementToReplace != null) {
+				int indexOfReplacement = replaceFirst(list, elementToReplace, newElement);
+				return list.get(indexOfReplacement);
+			} else {
+				return null;
+			}
+		}
+		
+		public static <T> boolean containsAToStringEqualElement(Iterable<T> iterable, String elementString) {
+			return firstToStringEqualElement(iterable, elementString) != null;
+		}
+		
+		public static <T> T firstToStringEqualElement(Iterable<T> iterable, String elementString) {
+			if (elementString == null) {
+				return null;
+			} else {
+				for (T element : iterable) {
+					if (elementString.equals(element.toString())) {
+						return element;
+					}
+				}
+				return null;
+			}
+		}
 }

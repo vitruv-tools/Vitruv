@@ -2,7 +2,6 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.internal
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FeatureInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance
@@ -18,7 +17,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple
 import java.io.IOException
-import java.util.ArrayList
 import java.util.Collections
 import java.util.HashMap
 import java.util.HashSet
@@ -265,15 +263,13 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		return correspondences as Correspondences
 	}
 
-	def private void markNeighborAndChildrenCorrespondences(
-		Correspondence correspondence, Set<Correspondence> markedCorrespondences) {
+	def private void markNeighborAndChildrenCorrespondences(Correspondence correspondence, Set<Correspondence> markedCorrespondences) {
 		if (markedCorrespondences.add(correspondence)) {
 			var TUID elementATUID = correspondence.getElementATUID()
 			markNeighborAndChildrenCorrespondences(elementATUID, markedCorrespondences)
 			var TUID elementBTUID = correspondence.getElementBTUID()
 			markNeighborAndChildrenCorrespondences(elementBTUID, markedCorrespondences)
 		}
-
 	}
 
 	def private void markNeighborAndChildrenCorrespondences(TUID tuid,
@@ -327,9 +323,8 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		}
 	}
 
-	override Set<Correspondence> removeCorrespondencesOfEObjectsAndChildrenOnBothSides(
+	override Set<Correspondence> removeCorrespondencesOfEObjectsAndChildrenOnBothSides(Correspondence correspondence) {
 		// FIXME MK completely rethink removal 
-		Correspondence correspondence) {
 		if (correspondence === null) {
 			return Collections::emptySet()
 		}
@@ -343,14 +338,12 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		return markedCorrespondences
 	}
 
-	override Set<Correspondence> removeCorrespondencesOfEObjectAndChildrenOnBothSides(
-		EObject eObject) {
+	override Set<Correspondence> removeCorrespondencesOfEObjectAndChildrenOnBothSides(EObject eObject) {
 		val TUID tuid = calculateTUIDsFromEObjects(eObject.toList).claimOne
 		return removeCorrespondencesOfEObjectAndChildrenOnBothSides(tuid)
 	}
 
-	override Set<Correspondence> removeCorrespondencesOfEObjectAndChildrenOnBothSides(
-		TUID tuid) {
+	override Set<Correspondence> removeCorrespondencesOfEObjectAndChildrenOnBothSides(TUID tuid) {
 		var Set<Correspondence> directCorrespondences = getCorrespondencesForTUIDs(tuid.toList)
 		var Set<Correspondence> directAndChildrenCorrespondences = new HashSet<Correspondence>()
 		for (Correspondence correspondence : directCorrespondences) {
@@ -459,69 +452,102 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	 //If you implement an update function for list of TUIDs be careful since there could be the case that one TUID is contained 
 	 //in more than only one key-lists. My current guess is that we have to update all key-lists in which the TUID occurs
 	override void updateTUID(TUID oldTUID, TUID newTUID) {
-		var boolean sameTUID = if(oldTUID !== null) oldTUID.equals(
-				newTUID) else newTUID === null
+		var boolean sameTUID = if(oldTUID !== null) oldTUID.equals(newTUID) else newTUID === null
 		if (sameTUID || oldTUID === null) {
 			return;
 		}
-		var String oldTUIDString = oldTUID.
-			toString()
-		// The TUID is used as key in this map. Therefore the entry has to be removed before
-		// the hashCode of the TUID changes.
-		// remove the old map entries for the tuid before its hashcode changes
+		var String oldTUIDString = oldTUID.toString()
+		/**
+		 * Removes the current entries in the
+		 * {@link CorrespondenceInstanceImpl#tuid2CorrespondencesMap} map for the given oldTUID
+		 * before the hash code of it is updated and returns a pair containing the oldTUID and
+		 * the removed correspondence model elements of the map.
+		 *
+		 * @param oldCurrentTUID
+		 * @return oldCurrentTUIDAndStringAndMapEntriesTriple
+		 */
 		var TUID.BeforeHashCodeUpdateLambda before = ([ TUID oldCurrentTUID | 
-			var Set<Correspondence> correspondencesForOldTUID = CorrespondenceInstanceImpl.
-				this.tuid2CorrespondencesMap.remove(oldCurrentTUID.toList)
-			// because featureInstance2CorrespondingFIMap uses no TUID as key we do not need to
-			// update it
-			return new Triple<TUID, String, Set<Correspondence>>(oldCurrentTUID, oldCurrentTUID.toString(),correspondencesForOldTUID)
-		] as TUID.BeforeHashCodeUpdateLambda)
-		var TUID.AfterHashCodeUpdateLambda after = ([ Triple<TUID, String, Set<Correspondence>> removedMapEntry |
-			var TUID oldCurrentTUID = removedMapEntry.getFirst()
-			var String oldCurrentTUIDString = removedMapEntry.
-				getSecond()
-			var Set<Correspondence> correspondencesForOldSegment = removedMapEntry.
-				getThird()
-			// re-add the entries using the tuid with the new hashcode
-			if (correspondencesForOldSegment !== null) {
-				for (Correspondence correspondence : correspondencesForOldSegment) {
-					if (oldCurrentTUIDString !== null &&
-						oldCurrentTUIDString.equals(
-							correspondence.getElementATUID().
-								toString())) {
-						correspondence.
-							setElementATUID(oldCurrentTUID)
-					} else if (oldCurrentTUIDString !== null &&
-						oldCurrentTUIDString.equals(
-							correspondence.getElementBTUID().
-								toString())) {
-						correspondence.
-							setElementBTUID(oldCurrentTUID)
-					} else if (oldCurrentTUID === null ||
-						(!oldCurrentTUID.equals(
-							correspondence.getElementATUID()) &&
-							!oldCurrentTUID.equals(
-								correspondence.getElementBTUID()))
-						) {
-							throw new RuntimeException(
-								'''None of the corresponding elements in '«»«correspondence»' has the TUID '«»«oldCurrentTUID»'!'''.
-									toString)
-						}
-					}
-					CorrespondenceInstanceImpl.this.
-						tuid2CorrespondencesMap.put(
-							oldCurrentTUID.toList,
-							correspondencesForOldSegment)
-					}
-				] as TUID.AfterHashCodeUpdateLambda)
-				oldTUID.renameSegments(newTUID, before,
-					after
-				)
-				var Metamodel metamodel = getMetamodelHavingTUID(
-					oldTUIDString)
-				metamodel.
-					removeIfRootAndCached(oldTUIDString)
+			// The TUID is used as key in this map. Therefore the entry has to be removed before
+			// the hashCode of the TUID changes.
+			// remove the old map entries for the tuid before its hashcode changes
+			val oldTUIDList2Correspondences = new HashMap<List<TUID>,Set<Correspondence>>();
+			val oldTUIDLists = this.tuid2tuidListsMap.remove(oldCurrentTUID)
+			for (oldTUIDList : oldTUIDLists) {
+				val correspondencesForOldTUIDList = this.tuid2CorrespondencesMap.remove(oldTUIDList)
+				oldTUIDList2Correspondences.put(oldTUIDList,correspondencesForOldTUIDList)
 			}
-
-		}
-				
+			return new Triple<TUID, String, Map<List<TUID>,Set<Correspondence>>>(oldCurrentTUID, oldCurrentTUID.toString(),oldTUIDList2Correspondences)
+		] as TUID.BeforeHashCodeUpdateLambda)
+		
+		 /**
+		 * Re-adds all map entries after the hash code of tuids was updated.
+		 *
+		 * @param removedMapEntries
+		 */
+		var TUID.AfterHashCodeUpdateLambda after = ([ Triple<TUID, String, Map<List<TUID>,Set<Correspondence>>> removedMapEntry |
+			val oldCurrentTUID = removedMapEntry.getFirst()
+			val oldCurrentTUIDString = removedMapEntry.getSecond()
+			val oldTUIDList2Correspondences = removedMapEntry.getThird()
+			val oldTUIDList2CorrespondencesEntries = oldTUIDList2Correspondences.entrySet
+			val newSetOfoldTUIDLists = new HashSet<List<TUID>>()
+			for (oldTUIDList2CorrespondencesEntry : oldTUIDList2CorrespondencesEntries) {
+				val oldTUIDList = oldTUIDList2CorrespondencesEntry.key
+				val correspondences = oldTUIDList2CorrespondencesEntry.value
+				// replace the old tuid in the list with the new tuid
+				var indexOfOldTUID = -1
+				for (tuid : oldTUIDList) {
+					if (oldCurrentTUIDString?.equals(tuid.toString)) {
+						indexOfOldTUID = oldTUIDList.indexOf(tuid)
+					}
+				}
+				if (indexOfOldTUID == -1) {
+					throw new RuntimeException("No TUID in the List '" + oldTUIDList + "' is equal to '" + oldCurrentTUIDString)
+				} else {
+					// oldCurrentTUID is already the new TUID because this happens after the update
+					oldTUIDList.set(indexOfOldTUID, oldCurrentTUID)
+				}
+				// re-add the entry for the current list of tuids with the new hashcode 
+				this.tuid2CorrespondencesMap.put(oldTUIDList,correspondences)
+				// update the TUID in the correspondence model
+				for (correspondence : correspondences) {
+					val replacedATUID = correspondence.ATUIDs.replaceFirstStringEqualElement(oldCurrentTUIDString,oldCurrentTUID)
+					val replacedBTUID = correspondence.BTUIDs.replaceFirstStringEqualElement(oldCurrentTUIDString,oldCurrentTUID)
+					if (replacedATUID == null && replacedBTUID == null) {
+						throw new RuntimeException('''None of the corresponding elements in '«correspondence»' has a TUID equal to '«oldCurrentTUIDString»'!''')
+					} else if (replacedATUID != null && replacedBTUID != null) {
+						throw new RuntimeException('''At least an a element and a b element of the correspondence '«correspondence»' have '«oldCurrentTUID»'!''')
+					}
+					
+					if (oldCurrentTUIDString !== null && oldCurrentTUIDString.equals(
+								correspondence.getElementATUID().
+									toString())) {
+							correspondence.
+								setElementATUID(oldCurrentTUID)
+						} else if (oldCurrentTUIDString !== null &&
+							oldCurrentTUIDString.equals(
+								correspondence.getElementBTUID().
+									toString())) {
+							correspondence.
+								setElementBTUID(oldCurrentTUID)
+						} else if (oldCurrentTUID === null ||
+							(!oldCurrentTUID.equals(
+								correspondence.getElementATUID()) &&
+								!oldCurrentTUID.equals(
+									correspondence.getElementBTUID()))
+							) {
+								
+							}
+				}
+			}
+			// re-add the entry that maps the tuid to the set if tuid lists that contain it
+			this.tuid2tuidListsMap.put(oldCurrentTUID, newSetOfoldTUIDLists)
+		] as TUID.AfterHashCodeUpdateLambda)
+		oldTUID.renameSegments(newTUID, before,
+			after
+		)
+		var Metamodel metamodel = getMetamodelHavingTUID(
+			oldTUIDString)
+		metamodel.
+			removeIfRootAndCached(oldTUIDString)
+	}
+}		
