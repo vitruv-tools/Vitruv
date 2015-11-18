@@ -126,7 +126,7 @@ class MappingLanguageScopeProviderDelegate extends XImportSectionNamespaceScopeP
 
 		val containerMapping = context.getContainerOfType(Mapping)
 		return createPairScope(IScope.NULLSCOPE,
-			containerMapping.requires.map[new Pair(it.name, it)].iterator)
+			containerMapping.requires.map[new Pair(it.name, it)].filter[first != null && second != null].iterator)
 	}
 	
 	def createRequiredMappingPathTailScope(EObject context) {
