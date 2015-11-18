@@ -22,10 +22,11 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.CustomTransfo
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence.datatypes.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 
 /**
  * Class that keeps changes within a class method body consistent with the architecture. Has
@@ -172,7 +173,7 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
         }
         for (final AbstractAction correspondingAbstractAction : correspondingAbstractActions) {
             final TUID tuidToRemove = ci.calculateTUIDFromEObject(correspondingAbstractAction);
-            ci.removeCorrespondencesOfEObjectAndChildrenOnBothSides(tuidToRemove);
+            ci.removeCorrespondencesThatInvolveAtLeastAndDependendForTUIDs(CollectionBridge.toSet(tuidToRemove));
             EcoreUtil.remove(correspondingAbstractAction);
         }
 
