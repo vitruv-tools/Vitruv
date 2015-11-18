@@ -210,7 +210,9 @@ class MappingLanguageGenerator {
 							if (change_pkg == MappingPackage.UNDEFINED)
 								throw new «typeRef(IllegalStateException)»("Could not infer package for change " + eChange.toString() + "(" + affectedObjects.toString() + ")");
 							
-							«mcn».Helper.setCI(«typeRef(JavaHelper)».requireType(blackboard.getCorrespondenceInstance(), «typeRef(MappedCorrespondenceInstance)».class));
+							«FOR m : file.mappings»
+							«m.mappedCorrespondenceName».Helper.setCI(«typeRef(JavaHelper)».requireType(blackboard.getCorrespondenceInstance(), «typeRef(MappedCorrespondenceInstance)».class));
+							«ENDFOR»
 							
 							«FOR req : requires AFTER "\n"»
 							«typeRef(Iterable)»<«req.first»> affected_«req.second» = «req.first».Helper.getAll();
