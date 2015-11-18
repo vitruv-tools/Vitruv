@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated correspondence -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.presentation.CorrespondenceModelWizardID"
+            name="%_UI_CorrespondenceModelWizard_label"
+            class="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.presentation.CorrespondenceModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/CorrespondenceModelFile.gif">
+         <description>%_UI_CorrespondenceModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated correspondence -->
+      <editor
+            id="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.presentation.CorrespondenceEditorID"
+            name="%_UI_CorrespondenceEditor_label"
+            icon="icons/full/obj16/CorrespondenceModelFile.gif"
+            extensions="correspondence"
+            class="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.presentation.CorrespondenceEditor"
+            contributorClass="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.presentation.CorrespondenceActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>
