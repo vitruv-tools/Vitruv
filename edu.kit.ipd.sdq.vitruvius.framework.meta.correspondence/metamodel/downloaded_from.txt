@@ -1,1 +1,0 @@
-git.eclipse.org/c/mmt/org.eclipse.qvto.git/plain/plugins/org.eclipse.m2m.qvt.oml/model/
