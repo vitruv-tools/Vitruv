@@ -18,7 +18,6 @@ class MappingPluginProjectHelper {
 		"edu.kit.ipd.sdq.vitruvius.framework.contracts",
 		"edu.kit.ipd.sdq.vitruvius.framework.mir.executor",
 		"edu.kit.ipd.sdq.vitruvius.framework.meta.change",
-		"edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence",
 		"edu.kit.ipd.sdq.vitruvius.framework.mir.testframework",
 		"com.google.guava",
 		"org.eclipse.core.resources",
