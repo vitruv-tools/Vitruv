@@ -108,9 +108,9 @@ class CorrespondenceTest extends VSUMTest {
 				correspondence instanceof Correspondence)
 			var Correspondence eoc = correspondence
 			LOGGER.
-				info('''EObject with TUID: «eoc.getElementATUID()» corresponds to EObject with TUID: «eoc.getElementBTUID()»''')
-			var EObject a = correspondenceInstance.resolveEObjectFromTUID(eoc.getElementATUID())
-			var EObject b = correspondenceInstance.resolveEObjectFromTUID(eoc.getElementBTUID())
+				info('''EObject with TUID: «eoc.ATUIDs» corresponds to EObject with TUID: «eoc.BTUIDs»''')
+			var EObject a = correspondenceInstance.resolveEObjectFromTUID(eoc.ATUIDs.claimOne)
+			var EObject b = correspondenceInstance.resolveEObjectFromTUID(eoc.BTUIDs.claimOne)
 			assertNotNull("Left Object is null", a)
 			assertNotNull("Right Object is null", b)
 			LOGGER.info('''A: «a» corresponds to B: «b»''')

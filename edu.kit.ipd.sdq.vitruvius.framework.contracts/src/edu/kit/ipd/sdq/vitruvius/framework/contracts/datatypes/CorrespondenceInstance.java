@@ -161,4 +161,6 @@ public interface CorrespondenceInstance {
     public Correspondence createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2);
 
     EObject resolveEObjectFromRootAndFullTUID(EObject root, String tuidString);
+
+    Set<Correspondence> getAllCorrespondencesWithoutDependencies();
 }

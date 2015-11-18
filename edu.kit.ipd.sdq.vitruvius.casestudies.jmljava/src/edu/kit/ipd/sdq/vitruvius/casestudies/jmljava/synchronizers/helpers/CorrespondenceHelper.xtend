@@ -26,7 +26,7 @@ class CorrespondenceHelper {
 		val corrs = ci.getCorrespondences(srcElement.toList)
 		val sameTypeCorrs = corrs.filter(Correspondence)
 		val dstTUID = ci.calculateTUIDsFromEObjects(dstElement.toList).claimOne
-		val result =  sameTypeCorrs.findFirst[elementBTUID.equals(dstTUID) || elementATUID.equals(dstTUID)]
+		val result =  sameTypeCorrs.findFirst[BTUIDs.exists[it.equals(dstTUID)] || ATUIDs.exists[it.equals(dstTUID)]]
 		return result
 		
 		//return ci.getAllCorrespondences(srcElement).filter(Correspondence).findFirst[elementBTUID == dstElement.TUID || elementATUID == dstElement.TUID]

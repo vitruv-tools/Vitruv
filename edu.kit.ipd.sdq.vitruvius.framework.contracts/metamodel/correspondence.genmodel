@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/edu.kit.ipd.sdq.vitruvius.framework.contracts/src-gen"
+    editDirectory="/edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.edit/src"
+    editorDirectory="/edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.editor/src"
     modelPluginID="edu.kit.ipd.sdq.vitruvius.framework.contracts" modelName="Correspondence"
     modelPluginClass="" importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0"
-    copyrightFields="false">
+    copyrightFields="false" editPluginID="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.edit"
+    editorPluginID="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.editor">
   <foreignModel>correspondence.ecore</foreignModel>
   <genPackages prefix="Correspondence" basePackage="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta"
       disposableProviderFactory="true" ecorePackage="correspondence.ecore#/">
@@ -23,12 +26,6 @@
       <genOperations ecoreOperation="correspondence.ecore#//Correspondence/getBs"/>
       <genOperations ecoreOperation="correspondence.ecore#//Correspondence/getElementATUID"/>
       <genOperations ecoreOperation="correspondence.ecore#//Correspondence/getElementBTUID"/>
-      <genOperations ecoreOperation="correspondence.ecore#//Correspondence/setElementATUID">
-        <genParameters ecoreParameter="correspondence.ecore#//Correspondence/setElementATUID/tuid"/>
-      </genOperations>
-      <genOperations ecoreOperation="correspondence.ecore#//Correspondence/setElementBTUID">
-        <genParameters ecoreParameter="correspondence.ecore#//Correspondence/setElementBTUID/tuid"/>
-      </genOperations>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

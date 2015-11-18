@@ -6,7 +6,6 @@ import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.util.EcoreUtil
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 
 class TransformationUtils {
 
@@ -31,16 +30,18 @@ class TransformationUtils {
 		val correspondencens = blackboard.correspondenceInstance.
 			removeCorrespondencesOfEObjectAndChildrenOnBothSides(object)
 		for (correspondence : correspondencens) {
-				resolveAndRemoveEObject(correspondence.elementATUID, blackboard)
-				resolveAndRemoveEObject(correspondence.elementBTUID, blackboard)
+				resolveAndRemoveEObject(correspondence.ATUIDs, blackboard)
+				resolveAndRemoveEObject(correspondence.BTUIDs, blackboard)
 		}
 	}
 
-	def private static resolveAndRemoveEObject(TUID tuid, Blackboard blackboard) {
+	def private static resolveAndRemoveEObject(Iterable<TUID> tuids, Blackboard blackboard) {
 		try {
-			val eObject = blackboard.correspondenceInstance.resolveEObjectFromTUID(tuid)
-			if (null != eObject) {
-				EcoreUtil.delete(eObject)
+			for (tuid : tuids) {
+				val eObject = blackboard.correspondenceInstance.resolveEObjectFromTUID(tuid)
+				if (null != eObject) {
+					EcoreUtil.delete(eObject)
+				}
 			}
 		} catch (RuntimeException e ) {
 			// ignore runtime exception during object deletion

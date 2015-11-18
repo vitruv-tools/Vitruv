@@ -306,12 +306,6 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 
         addEOperation(correspondenceEClass, this.getTUID(), "getElementBTUID", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-        EOperation op = addEOperation(correspondenceEClass, null, "setElementATUID", 0, 1, IS_UNIQUE, IS_ORDERED);
-        addEParameter(op, this.getTUID(), "tuid", 1, 1, IS_UNIQUE, IS_ORDERED);
-
-        op = addEOperation(correspondenceEClass, null, "setElementBTUID", 0, 1, IS_UNIQUE, IS_ORDERED);
-        addEParameter(op, this.getTUID(), "tuid", 1, 1, IS_UNIQUE, IS_ORDERED);
-
         // Initialize data types
         initEDataType(correspondenceInstanceEDataType, CorrespondenceInstance.class, "CorrespondenceInstance", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(tuidEDataType, edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID.class, "TUID", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

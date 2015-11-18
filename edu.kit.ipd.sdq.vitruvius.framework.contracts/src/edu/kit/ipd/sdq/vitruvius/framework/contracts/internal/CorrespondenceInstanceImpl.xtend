@@ -260,6 +260,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 				'''The unique root object '«»«correspondences»' of the correspondence model '«»«getURI()»' is not correctly typed!'''.
 					toString)
 		}
+		this.correspondences.setCorrespondenceInstance(this)
 		return correspondences as Correspondences
 	}
 
@@ -517,26 +518,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 					} else if (replacedATUID != null && replacedBTUID != null) {
 						throw new RuntimeException('''At least an a element and a b element of the correspondence '«correspondence»' have '«oldCurrentTUID»'!''')
 					}
-					
-					if (oldCurrentTUIDString !== null && oldCurrentTUIDString.equals(
-								correspondence.getElementATUID().
-									toString())) {
-							correspondence.
-								setElementATUID(oldCurrentTUID)
-						} else if (oldCurrentTUIDString !== null &&
-							oldCurrentTUIDString.equals(
-								correspondence.getElementBTUID().
-									toString())) {
-							correspondence.
-								setElementBTUID(oldCurrentTUID)
-						} else if (oldCurrentTUID === null ||
-							(!oldCurrentTUID.equals(
-								correspondence.getElementATUID()) &&
-								!oldCurrentTUID.equals(
-									correspondence.getElementBTUID()))
-							) {
-								
-							}
+					// nothing to do as the TUID in one of the lists was already updated
 				}
 			}
 			// re-add the entry that maps the tuid to the set if tuid lists that contain it
@@ -550,4 +532,9 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		metamodel.
 			removeIfRootAndCached(oldTUIDString)
 	}
+	
+	override getAllCorrespondencesWithoutDependencies() {
+		this.correspondences.correspondences.filter[it.dependsOn == null || it.dependsOn.size == 0].toSet
+	}
+	
 }		

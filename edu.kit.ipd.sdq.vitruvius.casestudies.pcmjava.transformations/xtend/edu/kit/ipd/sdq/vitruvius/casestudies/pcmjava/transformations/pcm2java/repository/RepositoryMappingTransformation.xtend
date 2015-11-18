@@ -116,8 +116,8 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 
 	def findPackageWithName(String packageName, Iterable<Correspondence> correspondences) {
 		for (correspondence : correspondences) {
-			if (correspondence.elementATUID.toString.contains(packageName) ||
-				correspondence.elementBTUID.toString.contains(packageName)) {
+			if (correspondence.ATUIDs.exists[it.toString.contains(packageName)] ||
+				correspondence.BTUIDs.exists[it.toString.contains(packageName)]) {
 				return correspondence
 			}
 		}
