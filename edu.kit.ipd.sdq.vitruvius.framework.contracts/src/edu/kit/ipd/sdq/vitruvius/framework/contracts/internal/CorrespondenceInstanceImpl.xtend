@@ -5,19 +5,20 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceIns
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondenceFactory
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple
 import java.io.IOException
+import java.util.ArrayList
 import java.util.HashMap
 import java.util.HashSet
 import java.util.List
@@ -31,8 +32,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge.*
-import java.util.ArrayList
-import java.util.Collections
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class CorrespondenceInstanceImpl extends ModelInstance implements CorrespondenceInstanceDecorator {
@@ -486,7 +485,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 				for (correspondence : correspondences) {
 					val replacedATUID = correspondence.ATUIDs.replaceFirstStringEqualElement(oldCurrentTUIDString,oldCurrentTUID)
 					val replacedBTUID = correspondence.BTUIDs.replaceFirstStringEqualElement(oldCurrentTUIDString,oldCurrentTUID)
-					if (replacedATUID == null && replacedBTUID == null) {
+					if (replacedATUID == null && replacedBTUID == null && !correspondence.ATUIDs.contains(oldCurrentTUID) && !correspondence.BTUIDs.contains(oldCurrentTUID)) {
 						throw new RuntimeException('''None of the corresponding elements in '«correspondence»' has a TUID equal to '«oldCurrentTUIDString»'!''')
 					} else if (replacedATUID != null && replacedBTUID != null) {
 						throw new RuntimeException('''At least an a element and a b element of the correspondence '«correspondence»' have '«oldCurrentTUID»'!''')
