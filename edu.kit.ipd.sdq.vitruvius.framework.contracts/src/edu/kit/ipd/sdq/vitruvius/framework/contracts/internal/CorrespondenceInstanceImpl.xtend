@@ -16,8 +16,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.io.IOException
-import java.util.Collections
 import java.util.HashMap
 import java.util.HashSet
 import java.util.List
@@ -31,6 +31,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge.*
+import java.util.ArrayList
+import java.util.Collections
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class CorrespondenceInstanceImpl extends ModelInstance implements CorrespondenceInstanceDecorator {
@@ -448,13 +450,13 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 			// The TUID is used as key in this map. Therefore the entry has to be removed before
 			// the hashCode of the TUID changes.
 			// remove the old map entries for the tuid before its hashcode changes
-			val oldTUIDList2Correspondences = new HashMap<List<TUID>,Set<Correspondence>>();
-			val oldTUIDLists = this.tuid2tuidListsMap.remove(oldCurrentTUID)
+			val oldTUIDLists = this.tuid2tuidListsMap.remove(oldCurrentTUID) ?: new HashSet<List<TUID>>()
+			val oldTUIDList2Correspondences = new ArrayList<Pair<List<TUID>,Set<Correspondence>>>(oldTUIDLists.size);
 			for (oldTUIDList : oldTUIDLists) {
-				val correspondencesForOldTUIDList = this.tuid2CorrespondencesMap.remove(oldTUIDList)
-				oldTUIDList2Correspondences.put(oldTUIDList,correspondencesForOldTUIDList)
+				val correspondencesForOldTUIDList = this.tuid2CorrespondencesMap.remove(oldTUIDList) ?: new HashSet<Correspondence>()
+				oldTUIDList2Correspondences.add(new Pair<List<TUID>,Set<Correspondence>>(oldTUIDList,correspondencesForOldTUIDList))
 			}
-			return new Triple<TUID, String, Map<List<TUID>,Set<Correspondence>>>(oldCurrentTUID, oldCurrentTUID.toString(),oldTUIDList2Correspondences)
+			return new Triple<TUID, String, Iterable<Pair<List<TUID>,Set<Correspondence>>>>(oldCurrentTUID, oldCurrentTUID.toString(),oldTUIDList2Correspondences)
 		] as TUID.BeforeHashCodeUpdateLambda)
 		
 		 /**
@@ -462,21 +464,20 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		 *
 		 * @param removedMapEntries
 		 */
-		var TUID.AfterHashCodeUpdateLambda after = ([ Triple<TUID, String, Map<List<TUID>,Set<Correspondence>>> removedMapEntry |
-			val oldCurrentTUID = removedMapEntry.getFirst()
-			val oldCurrentTUIDString = removedMapEntry.getSecond()
-			val oldTUIDList2Correspondences = removedMapEntry.getThird()
-			val oldTUIDList2CorrespondencesEntries = oldTUIDList2Correspondences.entrySet
+		var TUID.AfterHashCodeUpdateLambda after = ([ Triple<TUID, String, Iterable<Pair<List<TUID>,Set<Correspondence>>>> removedMapEntry |
+			val oldCurrentTUID = removedMapEntry.first
+			val oldCurrentTUIDString = removedMapEntry.second
+			val oldTUIDList2Correspondences = removedMapEntry.third
 			val newSetOfoldTUIDLists = new HashSet<List<TUID>>()
-			for (oldTUIDList2CorrespondencesEntry : oldTUIDList2CorrespondencesEntries) {
-				val oldTUIDList = oldTUIDList2CorrespondencesEntry.key
-				val correspondences = oldTUIDList2CorrespondencesEntry.value
+			for (oldTUIDList2CorrespondencesEntry : oldTUIDList2Correspondences) {
+				val oldTUIDList = oldTUIDList2CorrespondencesEntry.first
+				val correspondences = oldTUIDList2CorrespondencesEntry.second
 				// replace the old tuid in the list with the new tuid
 				// oldCurrentTUID is already the new TUID because this happens after the update
 				val replacedTUID = oldTUIDList.replaceFirstStringEqualElement(oldCurrentTUIDString,oldCurrentTUID)
-				if (replacedTUID == null) {
-					throw new RuntimeException("No TUID in the List '" + oldTUIDList + "' is equal to '" + oldCurrentTUIDString)
-				}
+//				if (replacedTUID == null) {
+//					throw new RuntimeException("No TUID in the List '" + oldTUIDList + "' is equal to '" + oldCurrentTUIDString)
+//				}
 				// re-add the tuid list with the new hashcode to the set for the  for the tuid2tuidListsMap entry
 				newSetOfoldTUIDLists.add(oldTUIDList)
 				// re-add the correspondences entry for the current list of tuids with the new hashcode 
@@ -515,6 +516,9 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	
 	override getCorrespondencesThatInvolveAtLeastTUIDs(Set<TUID> tuids) {
 		val supTUIDLists = tuids?.map[this.tuid2tuidListsMap.get(it)].flatten.filter[it.containsAll(tuids)]
-		return supTUIDLists?.map[getCorrespondencesForTUIDs(it)].flatten.toSet
+		val corrit = supTUIDLists?.map[getCorrespondencesForTUIDs(it)]
+		val flatcorr = corrit.flatten
+		val corrset = flatcorr.toSet
+		return corrset
 	}
 }		

@@ -73,7 +73,7 @@ public class TUID implements Serializable {
     private TUID(final List<String> splitTUIDString) {
         this.lastSegment = SEGMENTS.addNewSegmentsWhereNecessary(splitTUIDString);
     }
-    
+
     /**
      * Returns the unique TUID (instance) for the specified tuidString (key).
      *
@@ -81,10 +81,10 @@ public class TUID implements Serializable {
      * @return the unique TUID for the specified tuidString
      */
     public static synchronized List<TUID> getInstance(final List<String> tuidStrings) {
-    	// FIXME MK replace with Xtend: map
+        // FIXME MK replace with Xtend: map
         List<TUID> tuids = new ArrayList<TUID>(tuidStrings.size());
         for (String tuidString : tuidStrings) {
-        	tuids.add(getInstance(tuidString));
+            tuids.add(getInstance(tuidString));
         }
         return tuids;
     }
@@ -139,8 +139,7 @@ public class TUID implements Serializable {
             ForwardHashedBackwardLinkedTree<String>.Segment lastSegment = instance.getLastSegment();
             LAST_SEGMENT_2_TUID_INSTANCES_MAP.put(lastSegment, instance);
             // also create TUIDs for all prefixes of the specified tuidString and register them
-            final Iterator<ForwardHashedBackwardLinkedTree<String>.Segment> segmentIterator = lastSegment
-                    .iterator();
+            final Iterator<ForwardHashedBackwardLinkedTree<String>.Segment> segmentIterator = lastSegment.iterator();
             ForwardHashedBackwardLinkedTree<String>.Segment pivot;
             while (segmentIterator.hasNext()) {
                 pivot = segmentIterator.next();
@@ -204,11 +203,11 @@ public class TUID implements Serializable {
             final ForwardHashedBackwardLinkedTree<String>.Segment ancestor = this.lastSegment.iterator().next();
             String fullDestinationTUIDString = "";
             if (ancestor != null) {
-            	fullDestinationTUIDString = ancestor.toString(segmentSeperator) + segmentSeperator;
+                fullDestinationTUIDString = ancestor.toString(segmentSeperator) + segmentSeperator;
             }
             fullDestinationTUIDString += newLastSegmentString;
             final TUID fullDestinationTUID = getInstance(fullDestinationTUIDString);
-            this.moveLastSegment(fullDestinationTUID, before, after);
+            moveLastSegment(fullDestinationTUID, before, after);
         } else {
             throw new IllegalArgumentException("The last segment '" + this.lastSegment + "' of the TUID '" + this
                     + "' cannot be renamed to '" + newLastSegmentString
@@ -233,7 +232,7 @@ public class TUID implements Serializable {
             final ForwardHashedBackwardLinkedTree<String>.Segment oldSegment = segmentPair.getFirst();
             final TUID oldTUID = LAST_SEGMENT_2_TUID_INSTANCES_MAP.get(oldSegment);
             final ForwardHashedBackwardLinkedTree<String>.Segment newSegment = segmentPair.getSecond();
-            Triple<TUID, String, Map<List<TUID>,Set<Correspondence>>> removedMapEntries = null;
+            Triple<TUID, String, Iterable<Pair<List<TUID>, Set<Correspondence>>>> removedMapEntries = null;
             if (before != null) {
                 removedMapEntries = before.performPreAction(oldTUID);
             }
@@ -246,7 +245,7 @@ public class TUID implements Serializable {
     }
 
     private int getCommonPrefixSegmentsCount(final TUID otherTUID) {
-        final String thisTUIDString = this.toString();
+        final String thisTUIDString = toString();
         final String otherTUIDString = otherTUID.toString();
         final String commonPrefix = Strings.commonPrefix(thisTUIDString, otherTUIDString);
         if ("".equals(commonPrefix)) {
@@ -272,7 +271,7 @@ public class TUID implements Serializable {
     }
 
     private int getAndEnsureEqualSegmentCount(final TUID newTUID) {
-        final int oldSegmentCount = this.getSegmentCount();
+        final int oldSegmentCount = getSegmentCount();
         final int newSegmentCount = newTUID.getSegmentCount();
         if (oldSegmentCount != newSegmentCount) {
             throw new IllegalArgumentException("Cannot update the TUID " + this + " because the new TUID " + newTUID
@@ -282,8 +281,8 @@ public class TUID implements Serializable {
     }
 
     private int getFirstSegmentToChange(final TUID newTUID) {
-        final int segmentsCount = this.getAndEnsureEqualSegmentCount(newTUID);
-        final int commonPrefixSegmentCount = this.getCommonPrefixSegmentsCount(newTUID);
+        final int segmentsCount = getAndEnsureEqualSegmentCount(newTUID);
+        final int commonPrefixSegmentCount = getCommonPrefixSegmentsCount(newTUID);
         if (commonPrefixSegmentCount == segmentsCount) {
             return -1;
         }
@@ -317,9 +316,9 @@ public class TUID implements Serializable {
     }
 
     /**
-     * Renames a single segment or multiple segments of this TUID instance so that it represents
-     * the specified new TUID. It is <b>not</b> possible to remove or add segments, i.e. the number
-     * of segments has to stay unchanged. The position and number of segments that should be changed
+     * Renames a single segment or multiple segments of this TUID instance so that it represents the
+     * specified new TUID. It is <b>not</b> possible to remove or add segments, i.e. the number of
+     * segments has to stay unchanged. The position and number of segments that should be changed
      * are not restricted. <br/>
      *
      * If only the last segment should be changed the {@link renameLastSegment} method can be used.
@@ -334,7 +333,7 @@ public class TUID implements Serializable {
     public List<Pair<String, String>> renameSegments(final TUID newTUID, final BeforeHashCodeUpdateLambda before,
             final AfterHashCodeUpdateLambda after) {
         final List<Pair<String, String>> changedPairs = new LinkedList<Pair<String, String>>();
-        int firstSegmentToChange = this.getFirstSegmentToChange(newTUID);
+        int firstSegmentToChange = getFirstSegmentToChange(newTUID);
         while (-1 != firstSegmentToChange) {
             final TUID oldPrefixPlusFirstSegmentToChange = TUID.getTUIDPrefix(this, firstSegmentToChange);
             final TUID newPrefixPlusFirstChangedSegment = TUID.getTUIDPrefix(newTUID, firstSegmentToChange);
@@ -343,7 +342,7 @@ public class TUID implements Serializable {
             oldPrefixPlusFirstSegmentToChange.moveLastSegment(newPrefixPlusFirstChangedSegment, before, after);
             // enjoy the side-effect of TUID: the right segment of this and newTUID will be changed
             // too
-            firstSegmentToChange = this.getFirstSegmentToChange(newTUID);
+            firstSegmentToChange = getFirstSegmentToChange(newTUID);
         }
         return changedPairs;
         // FIXME MK REMOVE CHANGEDPAIRS
@@ -397,38 +396,38 @@ public class TUID implements Serializable {
     }
 
     @Override
-	public int hashCode() {
-		return 31 + ((lastSegment == null) ? 0 : lastSegment.hashCode());
-	}
+    public int hashCode() {
+        return 31 + ((this.lastSegment == null) ? 0 : this.lastSegment.hashCode());
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		TUID other = (TUID) obj;
-		if (lastSegment == null) {
-			if (other.lastSegment != null)
-				return false;
-		} else if (!lastSegment.equals(other.lastSegment))
-			return false;
-		return true;
-	}
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        TUID other = (TUID) obj;
+        if (this.lastSegment == null) {
+            if (other.lastSegment != null)
+                return false;
+        } else if (!this.lastSegment.equals(other.lastSegment))
+            return false;
+        return true;
+    }
 
-	public interface BeforeHashCodeUpdateLambda {
-		Triple<TUID, String, Map<List<TUID>,Set<Correspondence>>> performPreAction(TUID oldTUID);
+    public interface BeforeHashCodeUpdateLambda {
+        Triple<TUID, String, Iterable<Pair<List<TUID>, Set<Correspondence>>>> performPreAction(TUID oldTUID);
     }
 
     public interface AfterHashCodeUpdateLambda {
-        void performPostAction(Triple<TUID, String, Map<List<TUID>,Set<Correspondence>>> removedMapEntries);
+        void performPostAction(Triple<TUID, String, Iterable<Pair<List<TUID>, Set<Correspondence>>>> removedMapEntries);
     }
 
     private Object writeReplace() throws ObjectStreamException {
         final TUID4Serialization tuid4Serialization = new TUID4Serialization();
-        tuid4Serialization.setTUIDString(this.toString());
+        tuid4Serialization.setTUIDString(toString());
         return tuid4Serialization;
     }
 }

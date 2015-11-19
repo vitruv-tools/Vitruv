@@ -282,7 +282,7 @@ class CorrespondenceTest extends VSUMTest {
 		Correspondence repo2pkg) {
 		// 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		// 2. CRC: repo.ifaces _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg.ifaces _sJD6YPxjEeOD3p0i_uuRbQ
-		corresp.removeCorrespondencesThatInvolveAtLeastAndDependend(repo2pkg.toSet) // now the correspondence instance should be empty
+		corresp.removeCorrespondencesAndDependendCorrespondences(repo2pkg) // now the correspondence instance should be empty
 		var Set<Correspondence> repoCorresp = corresp.getCorrespondences(repo.toList)
 		assertTrue(repoCorresp.isEmpty())
 		var Set<Correspondence> pkgCorresp = corresp.getCorrespondences(pkg.toList)
