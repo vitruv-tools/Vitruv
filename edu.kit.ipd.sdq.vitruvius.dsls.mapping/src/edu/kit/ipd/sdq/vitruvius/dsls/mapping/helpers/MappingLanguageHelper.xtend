@@ -20,15 +20,31 @@ import java.util.List
 
 class MappingLanguageHelper {
 	public static def getSignatures(Mapping mapping) {
-		return #[mapping.signature0, mapping.signature1].filterNull
+		return #[mapping.signature0, mapping.signature1]
 	}
 	
 	public static def getConstraintBlocks(Mapping mapping) {
-		return #[mapping.constraints0, mapping.constraints1].filterNull
+		return #[mapping.constraints0, mapping.constraints1]
+	}
+	
+	public static def getPackages(Mapping mapping) {
+		// mappings and constraint blocks must have the same packages
+		// they can also be null.
+		val signatures = mapping.signatures.map[it?.package]
+		val constraints = mapping.constraintBlocks.map[it?.package]
+		 
+		constraints.zip(signatures).map[
+				claim[first == second || first == null || second == null]
+				first ?: second
+			]
 	}
 	
 	public static def <T> claimExactlyOneInPackage(Iterable<T> elements, EPackage pkg) {
 		elements.filterWithPackage(pkg).claimIdenticalElements
+	}
+	
+	public static def <T> getOneInPackage(Iterable<T> elements, EPackage pkg) {
+		elements.filterWithPackage(pkg).getIdenticalElement
 	}
 	
 	public static def <T> filterWithPackage(Iterable<T> elements, EPackage pkg) {
@@ -48,11 +64,11 @@ class MappingLanguageHelper {
 	}
 	
 	public static def dispatch EPackage getPackage(Signature signature) {
-		signature.elements.map[type.EPackage].claimIdenticalElements
+		signature.elements.map[type.EPackage].getIdenticalElement
 	}
 	
 	public static def dispatch EPackage getPackage(ConstraintBlock constraintBlock) {
-		constraintBlock.eAllContents.filter(ContextVariable).map[targetClass.type.EPackage].claimIdenticalElements
+		constraintBlock.eAllContents.filter(ContextVariable).map[targetClass.type.EPackage].getIdenticalElement
 	}
 	
 	public static def getImport(EObject eObject) {

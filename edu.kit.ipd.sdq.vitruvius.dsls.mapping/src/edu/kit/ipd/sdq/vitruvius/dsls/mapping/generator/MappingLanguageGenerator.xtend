@@ -40,6 +40,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.PreProcessingFileSystemAccess
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
+import static extension java.util.Objects.*
 
 class MappingLanguageGenerator {
 	def doGenerate(Resource input) {
@@ -176,8 +177,8 @@ class MappingLanguageGenerator {
 		}
 
 		private def generateMapping(Mapping mapping) {
-			for (imp : imports) {
-				generateWrapperClass(mapping, imp)
+			for (id : mapping.signatures.withIndex) {
+				generateWrapperClass(mapping, id.first)
 			}
 			generateMappedCorrespondenceClass(mapping)
 			generateMappingClass(mapping)
@@ -254,11 +255,28 @@ class MappingLanguageGenerator {
 			])
 		}
 	
-		private def generateWrapperClass(Mapping parent, Import imp) {
-			val signature = parent.signatures.claimExactlyOneInPackage(imp.package)
+		private def inferImport(Mapping parent, int index) {
+			if (imports.size != 2)
+				throw new IllegalArgumentException("Only 2 imports are currently supported.")
+			if (parent.signatures.size != 2)
+				throw new IllegalArgumentException("Only 2 signatures are currently supported.")
+				
+			val pkgs = parent.packages
+			if (pkgs.forall[it!=null])
+				return imports.findFirst[it.package.equals(pkgs.get(index))].requireNonNull
+			else if (pkgs.forall[it==null])
+				return imports.get(index)
+			else
+				// get the "other" package. 1 - index is the other index for index in {0, 1}.
+				return imports.findFirst[!it.package.equals(pkgs.get(1 - index))].requireNonNull
+		}
+	
+		private def generateWrapperClass(Mapping parent, int index) {
+			val signature = parent.signatures.get(index)
+			val imp = inferImport(parent, index)
 			val fqn = getWrapperName(parent, imp)
-			val className = fqn.toSimpleName 
-
+			val className = fqn.toSimpleName
+			
 			fsa.generateJavaFile(fqn, [
 				var elementIndex = 0;
 				'''
@@ -330,10 +348,14 @@ class MappingLanguageGenerator {
 
 		private def generateMappedCorrespondenceClass(Mapping mapping) {
 			// FIXME DW das stimmt noch nicht für alle möglichen "Weglassungskombinationen" von signatures/constraints
-			val signatures = imports.map[mapping.signatures.claimExactlyOneInPackage(it.package)]
+			val pkgs = mapping.packages.withIndex
+			
+			// get correctly ordered signatures and constraints
+			val signatures = imports.map[imp | mapping.signatures.get(pkgs.findFirst[second == imp.package].first)]
+			val constraints = imports.map[imp | mapping.constraintBlocks.get(pkgs.findFirst[second == imp.package].first)]
+			
 			val wrapperClasses = imports.map[getWrapperName(mapping, it).toString]
 			val wrapperFields = imports.map[name.toFirstLower]
-			val constraints = imports.map[mapping.constraintBlocks.filterWithPackage(it.package).claimOneOrNone]
 			val stateNames = imports.map[name.toUpperCase]
 			val mappingName = mapping.mappingClassName
 			
@@ -347,8 +369,6 @@ class MappingLanguageGenerator {
 			
 			val indices = #[0,1]
 			val pairs = #[new Pair(0, 1), new Pair(1, 0)]
-			val simplePairs = #[new Pair(0, 1)]
-			
 			
 			fsa.generateJavaFile(fqn, [ extension ih |
 				val classSignatureWithoutRequires = 
@@ -548,8 +568,8 @@ class MappingLanguageGenerator {
 						}
 						
 						public boolean checkConstraintsFor«packages.get(el.first)»() {
-							«IF constraints.get(el.first).present»
-								«FOR expression : constraints.get(el.first).get.expressions»
+							«IF constraints.get(el.first) != null»
+								«FOR expression : constraints.get(el.first).expressions»
 									if (!«checkSignatureConstraint(ih, #{'''MCI_«mapping.name»''' -> "this"}, expression)»)
 										return false;
 								«ENDFOR»
@@ -573,8 +593,8 @@ class MappingLanguageGenerator {
 									«ENDFOR»
 									.build());
 							
-							«IF constraints.get(el.second).present»
-								«FOR constraint : constraints.get(el.second).get.expressions»
+							«IF constraints.get(el.second) != null»
+								«FOR constraint : constraints.get(el.second).expressions»
 									«enforceSignatureConstraint(ih, #{'''MCI_«mapping.name»''' -> "this"}, constraint)»;
 								«ENDFOR»
 							«ELSE»
