@@ -115,9 +115,4 @@ public final class MappingLanguageTestUtil {
 		assertNotNull(object);
 		assertTrue(message, type.isInstance(object));
 	}
-	
-	public static URI createModelURI(String fileName) {
-		return URI.createPlatformResourceURI(MappingLanguageTestEnvironment.MODEL_PATH + "/" + fileName, false);
-	}
-	
 }

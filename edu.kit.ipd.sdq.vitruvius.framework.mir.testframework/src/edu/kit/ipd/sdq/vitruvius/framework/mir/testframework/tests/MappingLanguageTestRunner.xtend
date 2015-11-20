@@ -13,24 +13,30 @@ import org.junit.runners.model.InitializationError
 
 import static edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
 import static edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util.MappingLanguageTestUtil.*
+import org.junit.runners.model.FrameworkMethod
+import org.junit.runners.model.Statement
+import com.google.inject.Inject
 
 class MappingLanguageTestRunner extends BlockJUnit4ClassRunner {
+	@Inject
+	private MappingLanguageTestEnvironment mlte
+
 	new(Class<?> klass) throws InitializationError {
 		super(klass)
 	}
-	
+
 	override protected createTest() throws Exception {
 		val newTest = super.createTest()
-		
+
 		if (!(newTest instanceof AbstractMappingTestBase)) {
 			throw new InitializationError('''The class under test «testClass.name» does not extend «AbstractMappingTestBase.name».''')
 		}
-		
+
 		val test = newTest as AbstractMappingTestBase
 		val pluginName = test.pluginName
-		
+
 		val c2cTransforming = getChange2CommandTransforming(pluginName)
-		
+
 		if (c2cTransforming == null) {
 			throw new InitializationError(
 			'''
@@ -38,7 +44,7 @@ class MappingLanguageTestRunner extends BlockJUnit4ClassRunner {
 				Please make sure that the plugin project has been generated and loaded correctly in the plugin test configuration.
 			''')
 		}
-		
+
 		if (!test.change2CommandTransformingClass.isInstance(c2cTransforming)) {
 			throw new InitializationError(
 			'''
@@ -47,7 +53,7 @@ class MappingLanguageTestRunner extends BlockJUnit4ClassRunner {
 				Please make sure that the plugin project has been generated and loaded correctly in the plugin test configuration.
 			''')
 		}
-		
+
 		with(injector [
 			bind(Change2CommandTransforming).toInstance(c2cTransforming)
 			bind(AbstractMappingTestBase).toInstance(test)
@@ -55,14 +61,26 @@ class MappingLanguageTestRunner extends BlockJUnit4ClassRunner {
 			bind(MappingLanguageTestUserInteracting).in(Singleton)
 		]) [
 			injectMembers(test)
-			getInstance(MappingLanguageTestEnvironment).setup
+			injectMembers(this)
 		]
-		
+
 		test
 	}
 
-	override run(RunNotifier notifier) {
-		super.run(notifier)
+	/* Add magic to move and delete correspondence / vsum before/after each test */
+	override protected methodBlock(FrameworkMethod method) {
+		val signature = super.methodBlock(method)
+
+		val result = [
+			mlte.setup(method);
+			try {
+				signature.evaluate
+			} finally {
+				mlte.after
+			}
+		] as Statement
+
+		return result
 	}
 
 	private static def AbstractMappingChange2CommandTransforming getChange2CommandTransforming(
