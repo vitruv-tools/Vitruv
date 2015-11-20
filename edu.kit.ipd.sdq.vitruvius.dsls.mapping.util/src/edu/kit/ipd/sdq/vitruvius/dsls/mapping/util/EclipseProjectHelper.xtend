@@ -136,6 +136,16 @@ class EclipseProjectHelper {
 		return javaProject
 	}
 	
+	public def move(String newName) {
+		val newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(newName)
+		if (newProject.exists)
+			throw new IllegalArgumentException("The target project already exists.")
+		else {
+			project.open(null)
+			project.move(new Path("/" + newName), true, null)
+		}
+	}
+	
 	public def createJavaProject() {
 		addJavaCoreNatureAndBuilder
 		setBinFolder("bin")
