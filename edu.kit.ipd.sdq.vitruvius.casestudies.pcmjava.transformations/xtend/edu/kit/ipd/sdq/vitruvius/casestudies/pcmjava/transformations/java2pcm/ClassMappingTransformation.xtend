@@ -1,11 +1,11 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.ArrayList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
@@ -25,8 +25,8 @@ import org.palladiosimulator.pcm.repository.RepositoryComponent
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 import org.palladiosimulator.pcm.system.SystemFactory
 
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.* 
 
 /**
  * Maps a JaMoPP class to a PCM Components or System. 
@@ -197,7 +197,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
 		val transformationResult = new TransformationResult
-		val components = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(newAffectedEObject,
+		val components = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(oldAffectedEObject,
 			RepositoryComponent)
 		var EObject eObjectToSave = null
 		val affectedClass = newAffectedEObject as ConcreteClassifier
@@ -214,24 +214,22 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 					eObjectToSave = newAffectedEObject
 				}
 				case 1: {
-					blackboard.correspondenceInstance.removeCorrespondencesThatInvolveAtLeastAndDependend(component.toSet)
+					blackboard.correspondenceInstance.
+						removeCorrespondencesThatInvolveAtLeastAndDependend(component.toSet)
 					EcoreUtil.remove(component)
 				}
 			}
 		} else if (!components.nullOrEmpty &&
 			PCMJaMoPPNamespace.JaMoPP.JAMOPP_MEMBERS_REFERENCE.equals(affectedReference.name) &&
 			oldValue instanceof Field) {
-				TransformationUtils.removeCorrespondenceAndAllObjects(oldCorrespondingEObjectsToDelete, blackboard)
+			PCMJaMoPPUtils.removeCorrespondenceAndAllObjects(oldValue, oldAffectedEObject, blackboard)
 
-			} // TODO implement code for methods that are corresponding to architectural signatures  
-			else {
-				logger.warn(
-					"deleteNonRootEObjectInList in class mapping called. Nothing done for EObject with oldValue" +
-						oldValue)
-					}
-
-					return transformationResult
-				}
+		}   
+		else {
+			PCMJaMoPPUtils.removeCorrespondenceAndAllObjects(oldValue, oldAffectedEObject, blackboard)
+ 		}
+		return transformationResult
+	}
 
 				/**
 				 * if the class is renamed rename the corresponding objects on PCM side 

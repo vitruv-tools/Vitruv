@@ -247,8 +247,10 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
         return param;
     }
 
-    protected CompositeDataType createAndSyncCompositeDataType(final Repository repo, final String name) {
+    protected CompositeDataType createAndSyncCompositeDataType(final Repository repo, final String name)
+            throws Throwable {
         final CompositeDataType cdt = this.createCompositeDataType(repo, name);
+        repo.eResource().save(null);
         this.triggerSynchronization(VURI.getInstance(repo.eResource()));
         return cdt;
     }
@@ -260,7 +262,7 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
         return cdt;
     }
 
-    protected CompositeDataType createAndSyncCompositeDataType(final Repository repo) {
+    protected CompositeDataType createAndSyncCompositeDataType(final Repository repo) throws Throwable {
         return this.createAndSyncCompositeDataType(repo, PCM2JaMoPPTestUtils.COMPOSITE_DATA_TYPE_NAME);
     }
 
@@ -280,7 +282,7 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
         return param;
     }
 
-    protected InnerDeclaration createAndSyncRepositoryCompositeDataTypeAndInnerDeclaration() throws IOException {
+    protected InnerDeclaration createAndSyncRepositoryCompositeDataTypeAndInnerDeclaration() throws Throwable {
         final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
         final CompositeDataType cdt = this.createAndSyncCompositeDataType(repo);
         final InnerDeclaration innerDec = this.addInnerDeclaration(cdt);

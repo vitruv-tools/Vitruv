@@ -55,7 +55,6 @@ class OperationProvidedRoleMappingTransformation extends EmptyEObjectMappingTran
 	}
 
 	override removeEObject(EObject eObject) {
-		TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
 		return null
 	}
 

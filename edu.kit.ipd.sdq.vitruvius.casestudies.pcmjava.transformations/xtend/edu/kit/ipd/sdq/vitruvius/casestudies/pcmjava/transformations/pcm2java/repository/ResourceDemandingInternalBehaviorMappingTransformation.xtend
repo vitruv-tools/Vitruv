@@ -2,14 +2,12 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.r
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.DefaultEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.types.TypesFactory
 import org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 
 class ResourceDemandingInternalBehaviorMappingTransformation extends DefaultEObjectMappingTransformation {
@@ -55,7 +53,6 @@ class ResourceDemandingInternalBehaviorMappingTransformation extends DefaultEObj
 //	}
 
 	override removeEObject(EObject eObject) {
-		TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
 		return null
 	}
 

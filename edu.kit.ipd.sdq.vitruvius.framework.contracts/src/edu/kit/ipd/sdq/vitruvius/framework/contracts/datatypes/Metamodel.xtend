@@ -89,6 +89,10 @@ class Metamodel extends AbstractURIHaving {
 	def List<String> calculateTUIDsFromEObjects(List<EObject> eObjects) {
 		return eObjects.map[calculateTUIDFromEObject(it)]
 	}
+	
+	def String calculateTUIDFromEObject(EObject eObject, EObject virtualRootObject, String prefix){
+		return this.tuidCalculatorAndResolver.calculateTUIDFromEObject(eObject, virtualRootObject, prefix)
+	}
 
 	def VURI getModelVURIContainingIdentifiedEObject(String tuid) {
 		val modelVURI = this.tuidCalculatorAndResolver.getModelVURIContainingIdentifiedEObject(tuid)

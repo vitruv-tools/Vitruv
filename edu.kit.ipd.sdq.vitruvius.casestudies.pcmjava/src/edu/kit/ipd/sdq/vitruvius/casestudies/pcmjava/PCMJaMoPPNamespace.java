@@ -32,6 +32,7 @@ public class PCMJaMoPPNamespace {
         public static String JAMOPP_ANNOTATIONS_AND_MODIFIERS_REFERENCE_NAME = "annotationsAndModifiers";
         public static String JAMOPP_REFERENCE_TYPE_REFERENCE = "typeReference";
         public static String JAMOPP_MEMBERS_REFERENCE = "members";
+        public static String JAMOPP_STATEMENTS_REFERENCE = "statements";
     }
 
     public static class PCM {

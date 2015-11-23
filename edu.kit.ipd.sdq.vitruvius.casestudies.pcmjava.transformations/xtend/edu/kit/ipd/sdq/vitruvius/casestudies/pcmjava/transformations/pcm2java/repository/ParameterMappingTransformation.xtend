@@ -19,8 +19,6 @@ import org.palladiosimulator.pcm.repository.Parameter
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
-
 
 class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -52,10 +50,8 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	/**
 	 * called when Parameter is removed:
-	 * Get JaMoPP Parameter to remove
 	 */
 	override removeEObject(EObject eObject) {
-		TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
 		null
 	}
 

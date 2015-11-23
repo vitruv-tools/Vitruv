@@ -38,7 +38,6 @@ class SEFFMappingTransformation extends DefaultEObjectMappingTransformation {
 	}
 
 	override removeEObject(EObject eObject) {
-		TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
 		return null
 	}
 

@@ -2,7 +2,9 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -10,15 +12,15 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 public class TransformationResult {
 
-    private final List<VURI> vurisToDelete;
+    private final Set<VURI> vurisToDelete;
     private final List<Pair<EObject, VURI>> rootEObjectsToSave;
 
     public TransformationResult() {
-        this.vurisToDelete = new ArrayList<VURI>();
+        this.vurisToDelete = new HashSet<VURI>();
         this.rootEObjectsToSave = new ArrayList<Pair<EObject, VURI>>();
     }
 
-    public List<VURI> getVUIRsToDelete() {
+    public Set<VURI> getVUIRsToDelete() {
         return this.vurisToDelete;
     }
 

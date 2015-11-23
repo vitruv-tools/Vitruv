@@ -71,5 +71,11 @@ class CompilationUnitMappingTransformation extends EmptyEObjectMappingTransforma
 
 	override setCorrespondenceForFeatures() {
 	}
+	
+	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
+		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
+		PCMJaMoPPUtils.removeCorrespondenceAndAllObjects(oldValue, oldAffectedEObject, blackboard)
+		return new TransformationResult 
+	}
 
 }

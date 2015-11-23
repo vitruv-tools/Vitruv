@@ -1,9 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
@@ -16,8 +16,6 @@ import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
-
 
 /**
  * Maps a JaMoPP interface to a PCM interface 
@@ -87,11 +85,6 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 	 * Does not ask the developer whether the PCM interface should be removed also.
 	 */
 	override removeEObject(EObject eObject) {
-		try {
-			TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
-		} catch (RuntimeException rte) {
-			logger.info(rte)
-		}
 		return null
 	}
 
@@ -102,6 +95,7 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
 		int index, EObject[] oldCorrespondingEObjectsToDelete) {
+			PCMJaMoPPUtils.deleteNonRootEObjectInList(oldAffectedEObject, oldValue, blackboard)
 	}
 
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,

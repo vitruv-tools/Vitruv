@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge.*
+import com.google.common.collect.Sets
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class CorrespondenceInstanceImpl extends ModelInstance implements CorrespondenceInstanceDecorator {
@@ -89,6 +90,26 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	}
 	
 	override calculateTUIDFromEObject(EObject eObject) {
+		val Metamodel metamodel = eObject.getMetamodelForEObject()
+		 if(null == metamodel){
+		 	return null 
+		 }
+         return TUID::getInstance(metamodel.calculateTUIDFromEObject(eObject))
+	}
+	
+	override calculateTUIDFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {
+		 val Metamodel metamodel = eObject.getMetamodelForEObject()
+		 if(null == metamodel){
+		 	return null 
+		 }
+		 if(null == virtualRootObject || null == prefix){
+		 	logger.info("virutalRootObject or prfix is null. Using standard calculation method for EObject " + eObject)
+         	return TUID::getInstance(metamodel.calculateTUIDFromEObject(eObject))
+     	}
+     	return TUID::getInstance(metamodel.calculateTUIDFromEObject(eObject, virtualRootObject, prefix))
+	}
+	
+	def private getMetamodelForEObject(EObject eObject){
 		var Metamodel metamodel = null
 		if (this.mapping.getMetamodelA().hasMetaclassInstances(eObject.toList)) {
 			metamodel = this.mapping.getMetamodelA()
@@ -99,9 +120,8 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		if (metamodel === null) {
 			logger.warn('''EObject: '«»«eObject»' is neither an instance of MM1 nor an instance of MM2. '''.toString)
 			return null
-		} else {
-			return TUID::getInstance(metamodel.calculateTUIDFromEObject(eObject))
 		}
+		return metamodel
 	}
 
 	override List<TUID> calculateTUIDsFromEObjects(List<EObject> eObjects) {
@@ -514,10 +534,15 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	}
 	
 	override getCorrespondencesThatInvolveAtLeastTUIDs(Set<TUID> tuids) {
-		val supTUIDLists = tuids?.map[this.tuid2tuidListsMap.get(it)].flatten.filter[it.containsAll(tuids)]
+		val supTUIDLists = tuids?.map[this.tuid2tuidListsMap.get(it)].filterNull.flatten.filter[it.containsAll(tuids)]
 		val corrit = supTUIDLists?.map[getCorrespondencesForTUIDs(it)]
 		val flatcorr = corrit.flatten
+		if(flatcorr.nullOrEmpty){
+			logger.debug("could not find correspondences for tuids: " + tuids)
+			return Sets.newHashSet
+		}
 		val corrset = flatcorr.toSet
 		return corrset
 	}
+	
 }		

@@ -1,9 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import java.util.HashSet
 import java.util.Set
 import org.eclipse.emf.ecore.EAttribute
@@ -20,9 +20,7 @@ import org.palladiosimulator.pcm.repository.OperationRequiredRole
 import org.palladiosimulator.pcm.repository.RepositoryComponent
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
-
 
 class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -94,7 +92,6 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 	}
 
 	override removeEObject(EObject eObject) {
-		TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
 		return null
 	}
 
@@ -139,7 +136,7 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 			val operationRequiredRoles = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(oldAffectedEObject,
 				OperationRequiredRole)
 			for (operationRequiredRole : operationRequiredRoles) {
-				TransformationUtils.removeCorrespondenceAndAllObjects(operationRequiredRole, blackboard)
+				PCMJaMoPPUtils.removeCorrespondenceAndAllObjects(operationRequiredRole, null, blackboard)
 			}
 
 			// add new OperationRequiredRoles that correspond to the field now

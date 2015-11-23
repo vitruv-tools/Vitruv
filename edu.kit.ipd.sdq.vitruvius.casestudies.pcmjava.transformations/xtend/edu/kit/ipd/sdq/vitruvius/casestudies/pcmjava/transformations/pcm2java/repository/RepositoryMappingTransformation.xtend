@@ -6,12 +6,10 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PC
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.containers.ContainersFactory
 import org.emftext.language.java.containers.JavaRoot
 import org.emftext.language.java.containers.Package
@@ -74,23 +72,18 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 	}
 
 	override removeEObject(EObject eObject) {
-		val Repository repository = eObject as Repository
-
-		// Remove corresponding packages
-		TransformationUtils.removeCorrespondenceAndAllObjects(repository, blackboard)
 		return null
 	}
 
 	override deleteRootEObject(EObject oldRootEObject, EObject[] oldCorrespondingEObjectsToDelete) {
+		val transformationResult = new TransformationResult
+		PCMJaMoPPUtils.removeCorrespondenceAndAllObjects(oldRootEObject, null, blackboard)
+		return transformationResult 
 	}
 
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
-		if (null != oldCorrespondingEObjectsToDelete) {
-			oldCorrespondingEObjectsToDelete.forEach[eObject|EcoreUtil.delete(eObject)]
-		}
-		return new TransformationResult
-
+		return PCMJaMoPPUtils.removeCorrespondenceAndAllObjects(oldValue, oldAffectedEObject, blackboard)
 	}
 
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,

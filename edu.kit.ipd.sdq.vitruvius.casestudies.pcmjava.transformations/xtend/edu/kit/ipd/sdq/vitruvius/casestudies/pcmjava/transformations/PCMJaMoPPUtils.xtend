@@ -1,11 +1,14 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations
 
+import com.google.common.collect.Sets
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.JaMoPP2PCMUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
 import java.util.Map
@@ -16,6 +19,7 @@ import org.eclipse.core.resources.IProject
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.util.EcoreUtil
+import org.emftext.language.java.containers.CompilationUnit
 import org.emftext.language.java.containers.JavaRoot
 import org.emftext.language.java.containers.Package
 import org.emftext.language.java.members.Method
@@ -26,13 +30,13 @@ import org.palladiosimulator.pcm.repository.CompositeDataType
 import org.palladiosimulator.pcm.repository.PrimitiveDataType
 import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.system.System
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 
 class PCMJaMoPPUtils {
 	private static val Logger logger = Logger.getLogger(PCMJaMoPPUtils.simpleName)
+	
+	static Set<Class<?>> pcmJavaRootObjects = Sets.newHashSet(Repository, System, Package, CompilationUnit)
 
 	protected new() {
 	}
@@ -130,12 +134,14 @@ class PCMJaMoPPUtils {
 
 		def dispatch static addRootChangeToTransformationResult(Repository repo, Blackboard blackboard,
 			VURI sourceModelVURI, TransformationResult transformationResult) {
-			handlePCMRootEObject(repo, sourceModelVURI, blackboard, PCMJaMoPPNamespace.PCM.REPOSITORY_FILE_EXTENSION, transformationResult)
+			handlePCMRootEObject(repo, sourceModelVURI, blackboard, PCMJaMoPPNamespace.PCM.REPOSITORY_FILE_EXTENSION,
+				transformationResult)
 		}
 
 		def dispatch static addRootChangeToTransformationResult(System system, Blackboard blackboard,
 			VURI sourceModelVURI, TransformationResult transformationResult) {
-			handlePCMRootEObject(system, sourceModelVURI, blackboard, PCMJaMoPPNamespace.PCM.SYSTEM_FILE_EXTENSION, transformationResult)
+			handlePCMRootEObject(system, sourceModelVURI, blackboard, PCMJaMoPPNamespace.PCM.SYSTEM_FILE_EXTENSION,
+				transformationResult)
 		}
 
 		def dispatch static addRootChangeToTransformationResult(JavaRoot newJavaRoot, Blackboard blackboard,
@@ -210,16 +216,29 @@ class PCMJaMoPPUtils {
 			}
 			return srcFolderPath;
 		}
-		
-		public dispatch static def getNameFromPCMDataType(PrimitiveDataType primitiveDataType){
+
+		public dispatch static def getNameFromPCMDataType(PrimitiveDataType primitiveDataType) {
 			return primitiveDataType.type.getName
 		}
-		
-		public dispatch static def getNameFromPCMDataType(CollectionDataType collectionDataType){
+
+		public dispatch static def getNameFromPCMDataType(CollectionDataType collectionDataType) {
 			return collectionDataType.entityName
 		}
-		
-		public dispatch static def getNameFromPCMDataType(CompositeDataType compositeDataType){
+
+		public dispatch static def getNameFromPCMDataType(CompositeDataType compositeDataType) {
 			return compositeDataType.entityName
+		}
+
+		def public static deleteNonRootEObjectInList(EObject affectedEObject, EObject oldEObject,
+			Blackboard blackboard) {
+			val transformationResult = new TransformationResult
+			TransformationUtils.removeCorrespondenceAndAllObjects(oldEObject, affectedEObject, blackboard,
+				pcmJavaRootObjects)
+			return transformationResult
+		}
+
+		def static TransformationResult removeCorrespondenceAndAllObjects(EObject object, EObject exRootObject,
+			Blackboard blackboard) {
+			TransformationUtils.removeCorrespondenceAndAllObjects(object, exRootObject, blackboard, pcmJavaRootObjects)
 		}
 	}

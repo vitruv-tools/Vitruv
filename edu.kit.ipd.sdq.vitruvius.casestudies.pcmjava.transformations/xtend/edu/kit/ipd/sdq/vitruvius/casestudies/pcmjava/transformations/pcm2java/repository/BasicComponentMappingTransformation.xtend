@@ -1,10 +1,10 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
@@ -49,20 +49,12 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 	}
 	
 	override removeEObject(EObject eObject) {
-		TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
-		null
+		return null
 	}
 
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
 		int index, EObject[] oldCorrespondingEObjectsToDelete) {
-		val transformationResult = new TransformationResult
-		if (oldCorrespondingEObjectsToDelete.nullOrEmpty) {
-			return transformationResult
-		}
-		for (oldEObject : oldCorrespondingEObjectsToDelete) {
-			TransformationUtils.removeCorrespondenceAndAllObjects(oldEObject, blackboard)
-		}
-		return transformationResult
+		PCMJaMoPPUtils.deleteNonRootEObjectInList(oldAffectedEObject, oldValue, blackboard)
 	}
 
 	/**

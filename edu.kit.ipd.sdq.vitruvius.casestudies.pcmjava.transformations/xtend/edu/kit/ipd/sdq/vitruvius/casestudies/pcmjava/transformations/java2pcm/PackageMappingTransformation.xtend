@@ -3,7 +3,6 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
@@ -16,9 +15,8 @@ import org.palladiosimulator.pcm.repository.RepositoryFactory
 import org.palladiosimulator.pcm.system.System
 import org.palladiosimulator.pcm.system.SystemFactory
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
-
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 
 class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -148,21 +146,18 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 		createRootEObject(newValue, newCorrespondingEObjects)
 	}
 
+	
+	override removeEObject(EObject eObject) {
+		return null
+	}
+
 	/**
 	 * When a package is removed all classes in the packages are removed as well.
 	 * Hence, we remove all corresponding objects (which theoretically could be the whole repository if the main
 	 * package is removed.
 	 */
-	override removeEObject(EObject eObject) {
-		try {
-			TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
-		} catch (RuntimeException rte) {
-			logger.info(rte)
-		}
-		return null
-	}
-
 	override deleteRootEObject(EObject oldRootEObject, EObject[] oldCorrespondingEObjectsToDelete) {
+			//TODO
 	}
 
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,

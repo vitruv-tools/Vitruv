@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
@@ -121,17 +122,7 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 	 */
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, int index, EObject[] oldMethods) {
-		if (oldMethods.nullOrEmpty || (false == oldMethods.forall[method|method instanceof InterfaceMethod])) {
-			throw new RuntimeException(
-				"unexpeceted value in oldMethods parameter " + oldMethods.size + " (expected 1):" + oldMethods)
-		}
-		val Interface jaMoPPIf = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(newAffectedEObject,
-			Interface).get(0)
-		for (eObject : oldMethods) {
-			val InterfaceMethod oldMethod = eObject as InterfaceMethod;
-			jaMoPPIf.methods.remove(oldMethod)
-		}
-		return new TransformationResult
+		PCMJaMoPPUtils.deleteNonRootEObjectInList(oldAffectedEObject, oldValue, blackboard)
 	}
 
 	override removeEObject(EObject eObject) {

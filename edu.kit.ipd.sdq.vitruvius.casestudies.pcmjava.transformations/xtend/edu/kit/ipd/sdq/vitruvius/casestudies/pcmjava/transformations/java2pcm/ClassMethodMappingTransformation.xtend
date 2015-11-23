@@ -44,7 +44,6 @@ class ClassMethodMappingTransformation extends EmptyEObjectMappingTransformation
 	}
 	
 	override removeEObject(EObject eObject){
-		TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
 		return null
 	}
 	

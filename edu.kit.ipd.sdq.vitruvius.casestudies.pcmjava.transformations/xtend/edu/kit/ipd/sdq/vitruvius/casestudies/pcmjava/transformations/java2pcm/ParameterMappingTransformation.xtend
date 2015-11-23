@@ -2,15 +2,12 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.parameters.Parameter
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
-
 
 class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -47,7 +44,6 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 	 * called when a parameter type has been changed
 	 */
 	 override removeEObject(EObject eObject){
-	 	TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
 	 	return null 
 	 }
 }

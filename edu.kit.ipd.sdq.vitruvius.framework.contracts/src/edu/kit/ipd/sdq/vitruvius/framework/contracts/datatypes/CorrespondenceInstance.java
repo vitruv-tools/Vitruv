@@ -151,6 +151,14 @@ public interface CorrespondenceInstance {
     public TUID calculateTUIDFromEObject(final EObject eObject);
 
     /**
+     * Is necessary to make the remove operation possible. TODO: check whether we can remove this
+     * from the public API
+     *
+     * @return
+     */
+    public TUID calculateTUIDFromEObject(final EObject eObject, EObject virtualRootObject, String prefix);
+
+    /**
      * syntactic sugar for map[{@link #calculateTUIDFromEObject(EObject)}]
      *
      * @param eObjects

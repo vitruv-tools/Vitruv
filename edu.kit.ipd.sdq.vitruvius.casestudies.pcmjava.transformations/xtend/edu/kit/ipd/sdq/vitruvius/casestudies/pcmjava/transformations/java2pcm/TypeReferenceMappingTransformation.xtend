@@ -9,11 +9,9 @@ import org.emftext.language.java.types.TypeReference
 import org.palladiosimulator.pcm.repository.BasicComponent
 import org.palladiosimulator.pcm.repository.OperationInterface
 import org.palladiosimulator.pcm.repository.RepositoryFactory
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
-
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 
 class TypeReferenceMappingTransformation extends DefaultEObjectMappingTransformation {
 
@@ -58,9 +56,6 @@ class TypeReferenceMappingTransformation extends DefaultEObjectMappingTransforma
 	 * if a implements reference has been removed remove the corresponding objects as well
 	 */
 	override removeEObject(EObject eObject) {
-		if (implementsChanged(eObject)) {
-			TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
-		}
 		return null
 	}
 

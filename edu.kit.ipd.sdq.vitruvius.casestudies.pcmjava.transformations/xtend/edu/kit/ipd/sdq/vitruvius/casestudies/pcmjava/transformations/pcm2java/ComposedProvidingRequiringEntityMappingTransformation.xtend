@@ -37,7 +37,6 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 	}
 
 	override removeEObject(EObject eObject) {
-		TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
 		return null
 	}
 

@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
@@ -10,7 +11,6 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.members.InterfaceMethod
 import org.emftext.language.java.members.MembersFactory
 import org.emftext.language.java.parameters.Parameter
@@ -21,9 +21,8 @@ import org.palladiosimulator.pcm.repository.DataType
 import org.palladiosimulator.pcm.repository.OperationSignature
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
-
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 
 class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -56,14 +55,11 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 	}
 
 	/**
-	 * Returns all corresponding eObjects that are corresponding to the operation signature,
-	 * e.g the InterfaceMethod --> the deletion has do be done in the next step
+	 * Returns all null
+	 * --> the deletion has do be done in the next step
 	 */
 	override removeEObject(EObject eObject) {
-		val correspondingEObjects = blackboard.correspondenceInstance.getCorrespondingEObjects(eObject)
-		TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
-		return correspondingEObjects
-
+		return null
 	}
 
 	/**
@@ -105,11 +101,7 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 	 */
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
-		val jaMoPPIfMethod = blackboard.correspondenceInstance.getCorrespondingEObjects(newAffectedEObject)
-		for (correspondingEObject : oldCorrespondingEObjectsToDelete) {
-			EcoreUtil.delete(correspondingEObject, true)
-		}
-		return new TransformationResult
+		return PCMJaMoPPUtils.deleteNonRootEObjectInList(oldAffectedEObject, oldValue, blackboard) 
 	}
 
 	/**

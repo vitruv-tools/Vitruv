@@ -75,7 +75,6 @@ class ProvidedDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 	}
 
 	override removeEObject(EObject eObject) {
-		TransformationUtils.removeCorrespondenceAndAllObjects(eObject, blackboard)
 		return null
 	}
 
