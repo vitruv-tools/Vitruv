@@ -23,19 +23,19 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 public abstract class AbstractMappingChange2CommandTransforming implements Change2CommandTransforming {
 	private final static Logger LOGGER = Logger.getLogger(AbstractMappingChange2CommandTransforming.class);
 
-	private Set<Pair<ChangeType, MIRMappingRealization>> changeTypeAndmappings = new HashSet<Pair<ChangeType, MIRMappingRealization>>();
+	private List<Pair<ChangeType, MIRMappingRealization>> changeTypeAndMappings = new ArrayList<Pair<ChangeType, MIRMappingRealization>>();
 
 	public AbstractMappingChange2CommandTransforming() {
-		this.changeTypeAndmappings = new HashSet<>();
+		this.changeTypeAndMappings = new ArrayList<>();
 		this.setup();
 	}
 
 	protected void addMapping(final Pair<ChangeType, MIRMappingRealization> mapping) {
-		this.changeTypeAndmappings.add(mapping);
+		this.changeTypeAndMappings.add(mapping);
 	}
 	
 	protected void addMapping(MIRMappingRealization mapping) {
-		this.changeTypeAndmappings.add(new Pair<ChangeType, MIRMappingRealization>(ChangeType.ANY_CHANGE, mapping));
+		this.changeTypeAndMappings.add(new Pair<ChangeType, MIRMappingRealization>(ChangeType.ANY_CHANGE, mapping));
 	}
 
 	@Override
@@ -67,8 +67,10 @@ public abstract class AbstractMappingChange2CommandTransforming implements Chang
 
 	protected List<Command> callRelevantMappings(final EChange eChange, final Blackboard blackboard) {
 		final List<Command> result = new ArrayList<Command>();
-		final Set<MIRMappingRealization> relevantMappings = this.getCandidateMappings(eChange);
+		final List<MIRMappingRealization> relevantMappings = this.getCandidateMappings(eChange);
+		LOGGER.debug("call relevant mappings");
 		for (final MIRMappingRealization mapping : relevantMappings) {
+			LOGGER.debug(mapping.getMappingID() + " (" + mapping.toString() + ")");
 			result.add(EMFCommandBridge
 					.createVitruviusTransformationRecordingCommand(() -> mapping.applyEChange(eChange, blackboard)));
 		}
@@ -79,9 +81,9 @@ public abstract class AbstractMappingChange2CommandTransforming implements Chang
 		return this.callRelevantMappings(eChange, blackboard);
 	}
 
-	protected Set<MIRMappingRealization> getCandidateMappings(final EChange eChange) {
-		return this.changeTypeAndmappings.stream().filter((it) -> it.getFirst().covers(eChange)).map((it) -> it.getSecond())
-				.collect(Collectors.toSet());
+	protected List<MIRMappingRealization> getCandidateMappings(final EChange eChange) {
+		return this.changeTypeAndMappings.stream().filter((it) -> it.getFirst().covers(eChange)).map((it) -> it.getSecond())
+				.collect(Collectors.toList());
 	}
 
 	protected abstract void setup();
