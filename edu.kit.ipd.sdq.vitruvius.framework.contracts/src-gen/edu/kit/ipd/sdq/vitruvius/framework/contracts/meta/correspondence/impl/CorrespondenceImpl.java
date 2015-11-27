@@ -2,6 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -50,7 +51,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Corresp
  * @generated
  */
 // FIXME MK generate implements relation to Serializable from metamodel
-public class CorrespondenceImpl extends EObjectImpl implements Correspondence {
+public class CorrespondenceImpl extends EObjectImpl implements Correspondence, Serializable {
     /**
      * @generated NOT
      */

@@ -1,10 +1,13 @@
 package edu.kit.ipd.sdq.vitruvius.framework.util.bridges;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
 
 /**
 * A utility class providing additional methods for Java collections.<br/>
@@ -25,11 +28,13 @@ public final class CollectionBridge {
 		
 		public static <T> T claimOne(Iterable<T> c) {
 			Iterator<T> iterator = c.iterator();
-			T one = iterator.next();
-	        if (iterator.hasNext()) {
-	            throw new RuntimeException("It was claimed that the collection '" + c + "' contains exactly one element!");
-	        }
-	        return one;
+			if (iterator.hasNext()) {
+				T one = iterator.next();
+		        if (!iterator.hasNext()) {
+		        	return one;
+		        }
+			}
+			throw new RuntimeException("It was claimed that the collection '" + c + "' contains exactly one element!");
 		}
 		
 		public static <T> T claimNotMany(Collection<T> c) {
@@ -84,5 +89,13 @@ public final class CollectionBridge {
 				}
 				return null;
 			}
+		}
+		
+		public static <T, R> Iterable<R> mapFixed(Iterable<T> original, Function1<? super T, ? extends R> transformation) {
+			List<R> list = new ArrayList<>();
+			for (T o : original) {
+				list.add(transformation.apply(o));
+			}
+			return list;
 		}
 }

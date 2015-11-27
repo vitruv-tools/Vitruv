@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge.*
 import com.google.common.collect.Sets
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.MutatingListsFixingClaimableHashMap
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class CorrespondenceInstanceImpl extends ModelInstance implements CorrespondenceInstanceDecorator {
@@ -49,6 +50,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		super(correspondencesVURI, correspondencesResource)
 		this.mapping = mapping
 		this.modelProviding = modelProviding
+		// TODO MK use MutatingListFixing... when necessary (for both maps!)
 		this.tuid2tuidListsMap = new ClaimableHashMap<TUID,Set<List<TUID>>>()
 		this.tuid2CorrespondencesMap = new ClaimableHashMap<List<TUID>, Set<Correspondence>>()
 		this.saveCorrespondenceOptions = new HashMap<String, String>()
@@ -125,7 +127,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	}
 
 	override List<TUID> calculateTUIDsFromEObjects(List<EObject> eObjects) {
-		return eObjects.map[calculateTUIDFromEObject(it)].toList
+		return eObjects.mapFixed[calculateTUIDFromEObject(it)].toList
 	}
 
 	override boolean changedAfterLastSave() {
@@ -342,12 +344,12 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	}
 	
 	override Set<Correspondence> removeCorrespondencesThatInvolveAtLeastAndDependend(Set<EObject> eObjects) {
-		return removeCorrespondencesThatInvolveAtLeastAndDependendForTUIDs(eObjects.map[calculateTUIDFromEObject(it)].toSet)
+		return removeCorrespondencesThatInvolveAtLeastAndDependendForTUIDs(eObjects.mapFixed[calculateTUIDFromEObject(it)].toSet)
 	}
 
 	override Set<Correspondence> removeCorrespondencesThatInvolveAtLeastAndDependendForTUIDs(Set<TUID> tuids) {
 		val correspondences = getCorrespondencesThatInvolveAtLeastTUIDs(tuids)
-		val markedCorrespondences = correspondences.map[markCorrespondenceAndDependingCorrespondences(it)].flatten
+		val markedCorrespondences = correspondences.mapFixed[markCorrespondenceAndDependingCorrespondences(it)].flatten
 		removeMarkedCorrespondences(markedCorrespondences)
 		return markedCorrespondences.toSet
 	}
@@ -370,11 +372,11 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	
 	
 	override List<EObject> resolveEObjectsFromTUIDs(List<TUID> tuids) {
-		return tuids.map[resolveEObjectFromTUID(it)].toList
+		return tuids.mapFixed[resolveEObjectFromTUID(it)].toList
 	}
 	
 	override Set<List<EObject>> resolveEObjectsSetsFromTUIDsSets(Set<List<TUID>> tuidLists) {
-		return tuidLists.map[resolveEObjectsFromTUIDs(it)].toSet
+		return tuidLists.mapFixed[resolveEObjectsFromTUIDs(it)].toSet
 	}
 	
 	override EObject resolveEObjectFromTUID(TUID tuid) {
@@ -530,12 +532,12 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	}
 	
 	override getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects) {
-		return getCorrespondencesThatInvolveAtLeastTUIDs(eObjects.map[calculateTUIDFromEObject(it)].toSet)
+		return getCorrespondencesThatInvolveAtLeastTUIDs(eObjects.mapFixed[calculateTUIDFromEObject(it)].toSet)
 	}
 	
 	override getCorrespondencesThatInvolveAtLeastTUIDs(Set<TUID> tuids) {
-		val supTUIDLists = tuids?.map[this.tuid2tuidListsMap.get(it)].filterNull.flatten.filter[it.containsAll(tuids)]
-		val corrit = supTUIDLists?.map[getCorrespondencesForTUIDs(it)]
+		val supTUIDLists = tuids?.mapFixed[this.tuid2tuidListsMap.get(it)].filterNull.flatten.filter[it.containsAll(tuids)]
+		val corrit = supTUIDLists?.mapFixed[getCorrespondencesForTUIDs(it)]
 		val flatcorr = corrit.flatten
 		if(flatcorr.nullOrEmpty){
 			logger.debug("could not find correspondences for tuids: " + tuids)
