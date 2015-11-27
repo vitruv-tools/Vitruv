@@ -21,7 +21,7 @@ import java.util.List
 abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAndResolver {
 	static final Logger LOGGER = Logger.getLogger(TUIDCalculatorAndResolverBase.getSimpleName())
 	final String tuidPrefix
-	// FIXME MK check whether cachedResourcelessRoots and cachedRoot2KeyMap can be replaced with a
+	// TODO MK check whether cachedResourcelessRoots and cachedRoot2KeyMap can be replaced with a
 	// BiMap
 	final ClaimableMap<Integer, EObject> cachedResourcelessRoots
 	int nextCacheKey = 0

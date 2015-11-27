@@ -63,7 +63,6 @@
 //	 * @param mapping
 //	 */
 //	public void registerMappingForCorrespondence(Correspondence correspondence, MIRMappingRealization mapping) {
-//		// FIXME MK (deco): store mapping realization automatically
 //		if (!this.correspondence2MappingMap.containsKey(correspondence))
 //			this.correspondence2MappingMap.put(correspondence, new HashSet<>());
 //

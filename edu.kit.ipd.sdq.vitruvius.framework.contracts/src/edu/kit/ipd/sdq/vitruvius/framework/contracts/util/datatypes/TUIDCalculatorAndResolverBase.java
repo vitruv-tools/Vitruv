@@ -29,8 +29,6 @@
 //
 // private final String tuidPrefix;
 //
-// // FIXME MK check whether cachedResourcelessRoots and cachedRoot2KeyMap can be replaced with a
-// // BiMap
 // private final ClaimableMap<Integer, EObject> cachedResourcelessRoots;
 // private int nextCacheKey = 0;
 // // TODO MK (cache): if necessary remove objects that were created and cached but never stored,

@@ -366,19 +366,16 @@
 //
 // @Override
 // public Set<Correspondence> getCorrespondences(final List<EObject> eObjects) {
-// // FIXME MK Auto-generated method stub
 // return null;
 // }
 //
 // @Override
 // public Set<Correspondence> getCorrespondencesForTUIDs(final List<TUID> involvedTUIDs) {
-// // FIXME MK Auto-generated method stub
 // return null;
 // }
 //
 // @Override
 // public Set<List<EObject>> getCorrespondingEObjects(final List<EObject> eObjects) {
-// // FIXME MK Auto-generated method stub
 // return null;
 // }
 //
@@ -487,7 +484,6 @@
 //
 // @Override
 // public boolean hasCorrespondences(final List<EObject> eObjects) {
-// // FIXME AAA KEEP ON WORKING HERE
 // List<TUID> tuids = calculateTUIDsFromEObjects(eObjects);
 // Set<Correspondence> correspondences = this.tuid2CorrespondencesMap.get(tuids);
 // return correspondences != null && correspondences.size() > 0;

@@ -7,7 +7,6 @@ import java.util.Set
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtend.lib.annotations.Delegate
 
-// FIXME MK replace with xtend version with delegate annotations
 abstract class AbstractDelegatingCorrespondenceInstanceDecorator<D> implements CorrespondenceInstanceDecorator {
 	@Delegate protected CorrespondenceInstanceDecorator correspondenceInstance
 	final Class<D> decoratorObjectType
