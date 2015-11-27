@@ -103,7 +103,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		 	return null 
 		 }
 		 if(null == virtualRootObject || null == prefix){
-		 	logger.info("virutalRootObject or prfix is null. Using standard calculation method for EObject " + eObject)
+		 	logger.info("virtualRootObject or prefix is null. Using standard calculation method for EObject " + eObject)
          	return TUID::getInstance(metamodel.calculateTUIDFromEObject(eObject))
      	}
      	return TUID::getInstance(metamodel.calculateTUIDFromEObject(eObject, virtualRootObject, prefix))
@@ -125,7 +125,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	}
 
 	override List<TUID> calculateTUIDsFromEObjects(List<EObject> eObjects) {
-		return eObjects.map[calculateTUIDFromEObject(it)]
+		return eObjects.map[calculateTUIDFromEObject(it)].toList
 	}
 
 	override boolean changedAfterLastSave() {
@@ -370,7 +370,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	
 	
 	override List<EObject> resolveEObjectsFromTUIDs(List<TUID> tuids) {
-		return tuids.map[resolveEObjectFromTUID(it)]
+		return tuids.map[resolveEObjectFromTUID(it)].toList
 	}
 	
 	override Set<List<EObject>> resolveEObjectsSetsFromTUIDsSets(Set<List<TUID>> tuidLists) {
