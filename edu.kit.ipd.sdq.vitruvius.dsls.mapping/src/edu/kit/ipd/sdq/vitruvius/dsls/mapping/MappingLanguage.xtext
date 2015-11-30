@@ -81,8 +81,9 @@ SignatureConstraintBlock:
 ;
 
 SignatureConstraintExpression returns ConstraintExpression:
- 	InExpression |
-	EqualsLiteralExpression
+ 	InExpression
+	| EqualsLiteralExpression
+	| DefaultContainExpression
 ;
 
 BodyConstraintBlock:
@@ -105,6 +106,12 @@ VariableRef returns ConstraintExpression:
 InExpression returns ConstraintExpression:
 	{InExpression}
 	'in' '(' target=ContextVariable ',' source=FeatureOfContextVariable ')'
+;
+
+DefaultContainExpression returns ConstraintExpression:
+	{DefaultContainExpression}
+	(('default-contain' '(' target=ContextVariable ',' source=FeatureOfContextVariable ')')
+	| ('default-resource' '(' target=ContextVariable ',' resource=STRING ')'))
 ;
 
 EqualsLiteralExpression returns ConstraintExpression:

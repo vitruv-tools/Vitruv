@@ -886,6 +886,16 @@ ruleSignatureConstraintExpression returns [EObject current=null]
         $current = $this_EqualsLiteralExpression_1.current; 
         afterParserOrEnumRuleCall();
     }
+
+    |
+    { 
+        newCompositeNode(grammarAccess.getSignatureConstraintExpressionAccess().getDefaultContainExpressionParserRuleCall_2()); 
+    }
+    this_DefaultContainExpression_2=ruleDefaultContainExpression
+    { 
+        $current = $this_DefaultContainExpression_2.current; 
+        afterParserOrEnumRuleCall();
+    }
 )
 ;
 
@@ -1055,6 +1065,138 @@ ruleInExpression returns [EObject current=null]
     	newLeafNode(otherlv_6, grammarAccess.getInExpressionAccess().getRightParenthesisKeyword_6());
     }
 )
+;
+
+
+
+
+
+// Entry rule entryRuleDefaultContainExpression
+entryRuleDefaultContainExpression returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getDefaultContainExpressionRule()); }
+	 iv_ruleDefaultContainExpression=ruleDefaultContainExpression 
+	 { $current=$iv_ruleDefaultContainExpression.current; } 
+	 EOF 
+;
+
+// Rule DefaultContainExpression
+ruleDefaultContainExpression returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+((
+    {
+        $current = forceCreateModelElement(
+            grammarAccess.getDefaultContainExpressionAccess().getDefaultContainExpressionAction_0(),
+            $current);
+    }
+)((	otherlv_1='default-contain' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getDefaultContainExpressionAccess().getDefaultContainKeyword_1_0_0());
+    }
+	otherlv_2='(' 
+    {
+    	newLeafNode(otherlv_2, grammarAccess.getDefaultContainExpressionAccess().getLeftParenthesisKeyword_1_0_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getDefaultContainExpressionAccess().getTargetContextVariableParserRuleCall_1_0_2_0()); 
+	    }
+		lv_target_3_0=ruleContextVariable		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getDefaultContainExpressionRule());
+	        }
+       		set(
+       			$current, 
+       			"target",
+        		lv_target_3_0, 
+        		"ContextVariable");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)	otherlv_4=',' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getDefaultContainExpressionAccess().getCommaKeyword_1_0_3());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getDefaultContainExpressionAccess().getSourceFeatureOfContextVariableParserRuleCall_1_0_4_0()); 
+	    }
+		lv_source_5_0=ruleFeatureOfContextVariable		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getDefaultContainExpressionRule());
+	        }
+       		set(
+       			$current, 
+       			"source",
+        		lv_source_5_0, 
+        		"FeatureOfContextVariable");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)	otherlv_6=')' 
+    {
+    	newLeafNode(otherlv_6, grammarAccess.getDefaultContainExpressionAccess().getRightParenthesisKeyword_1_0_5());
+    }
+)
+    |(	otherlv_7='default-resource' 
+    {
+    	newLeafNode(otherlv_7, grammarAccess.getDefaultContainExpressionAccess().getDefaultResourceKeyword_1_1_0());
+    }
+	otherlv_8='(' 
+    {
+    	newLeafNode(otherlv_8, grammarAccess.getDefaultContainExpressionAccess().getLeftParenthesisKeyword_1_1_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getDefaultContainExpressionAccess().getTargetContextVariableParserRuleCall_1_1_2_0()); 
+	    }
+		lv_target_9_0=ruleContextVariable		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getDefaultContainExpressionRule());
+	        }
+       		set(
+       			$current, 
+       			"target",
+        		lv_target_9_0, 
+        		"ContextVariable");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)	otherlv_10=',' 
+    {
+    	newLeafNode(otherlv_10, grammarAccess.getDefaultContainExpressionAccess().getCommaKeyword_1_1_3());
+    }
+(
+(
+		lv_resource_11_0=RULE_STRING
+		{
+			newLeafNode(lv_resource_11_0, grammarAccess.getDefaultContainExpressionAccess().getResourceSTRINGTerminalRuleCall_1_1_4_0()); 
+		}
+		{
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getDefaultContainExpressionRule());
+	        }
+       		setWithLastConsumed(
+       			$current, 
+       			"resource",
+        		lv_resource_11_0, 
+        		"STRING");
+	    }
+
+)
+)	otherlv_12=')' 
+    {
+    	newLeafNode(otherlv_12, grammarAccess.getDefaultContainExpressionAccess().getRightParenthesisKeyword_1_1_5());
+    }
+)))
 ;
 
 

@@ -591,12 +591,13 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final RuleCall cInExpressionParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cEqualsLiteralExpressionParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cDefaultContainExpressionParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
 		
 		//SignatureConstraintExpression returns ConstraintExpression:
-		//	InExpression | EqualsLiteralExpression;
+		//	InExpression | EqualsLiteralExpression | DefaultContainExpression;
 		@Override public ParserRule getRule() { return rule; }
 
-		//InExpression | EqualsLiteralExpression
+		//InExpression | EqualsLiteralExpression | DefaultContainExpression
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		//InExpression
@@ -604,6 +605,9 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 
 		//EqualsLiteralExpression
 		public RuleCall getEqualsLiteralExpressionParserRuleCall_1() { return cEqualsLiteralExpressionParserRuleCall_1; }
+
+		//DefaultContainExpression
+		public RuleCall getDefaultContainExpressionParserRuleCall_2() { return cDefaultContainExpressionParserRuleCall_2; }
 	}
 
 	public class BodyConstraintBlockElements extends AbstractParserRuleElementFinder {
@@ -732,6 +736,101 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 
 		//")"
 		public Keyword getRightParenthesisKeyword_6() { return cRightParenthesisKeyword_6; }
+	}
+
+	public class DefaultContainExpressionElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "DefaultContainExpression");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cDefaultContainExpressionAction_0 = (Action)cGroup.eContents().get(0);
+		private final Alternatives cAlternatives_1 = (Alternatives)cGroup.eContents().get(1);
+		private final Group cGroup_1_0 = (Group)cAlternatives_1.eContents().get(0);
+		private final Keyword cDefaultContainKeyword_1_0_0 = (Keyword)cGroup_1_0.eContents().get(0);
+		private final Keyword cLeftParenthesisKeyword_1_0_1 = (Keyword)cGroup_1_0.eContents().get(1);
+		private final Assignment cTargetAssignment_1_0_2 = (Assignment)cGroup_1_0.eContents().get(2);
+		private final RuleCall cTargetContextVariableParserRuleCall_1_0_2_0 = (RuleCall)cTargetAssignment_1_0_2.eContents().get(0);
+		private final Keyword cCommaKeyword_1_0_3 = (Keyword)cGroup_1_0.eContents().get(3);
+		private final Assignment cSourceAssignment_1_0_4 = (Assignment)cGroup_1_0.eContents().get(4);
+		private final RuleCall cSourceFeatureOfContextVariableParserRuleCall_1_0_4_0 = (RuleCall)cSourceAssignment_1_0_4.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_1_0_5 = (Keyword)cGroup_1_0.eContents().get(5);
+		private final Group cGroup_1_1 = (Group)cAlternatives_1.eContents().get(1);
+		private final Keyword cDefaultResourceKeyword_1_1_0 = (Keyword)cGroup_1_1.eContents().get(0);
+		private final Keyword cLeftParenthesisKeyword_1_1_1 = (Keyword)cGroup_1_1.eContents().get(1);
+		private final Assignment cTargetAssignment_1_1_2 = (Assignment)cGroup_1_1.eContents().get(2);
+		private final RuleCall cTargetContextVariableParserRuleCall_1_1_2_0 = (RuleCall)cTargetAssignment_1_1_2.eContents().get(0);
+		private final Keyword cCommaKeyword_1_1_3 = (Keyword)cGroup_1_1.eContents().get(3);
+		private final Assignment cResourceAssignment_1_1_4 = (Assignment)cGroup_1_1.eContents().get(4);
+		private final RuleCall cResourceSTRINGTerminalRuleCall_1_1_4_0 = (RuleCall)cResourceAssignment_1_1_4.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_1_1_5 = (Keyword)cGroup_1_1.eContents().get(5);
+		
+		//DefaultContainExpression returns ConstraintExpression:
+		//	{DefaultContainExpression} ("default-contain" "(" target=ContextVariable "," source=FeatureOfContextVariable ")" |
+		//	"default-resource" "(" target=ContextVariable "," resource=STRING ")");
+		@Override public ParserRule getRule() { return rule; }
+
+		//{DefaultContainExpression} ("default-contain" "(" target=ContextVariable "," source=FeatureOfContextVariable ")" |
+		//"default-resource" "(" target=ContextVariable "," resource=STRING ")")
+		public Group getGroup() { return cGroup; }
+
+		//{DefaultContainExpression}
+		public Action getDefaultContainExpressionAction_0() { return cDefaultContainExpressionAction_0; }
+
+		//"default-contain" "(" target=ContextVariable "," source=FeatureOfContextVariable ")" | "default-resource" "("
+		//target=ContextVariable "," resource=STRING ")"
+		public Alternatives getAlternatives_1() { return cAlternatives_1; }
+
+		//"default-contain" "(" target=ContextVariable "," source=FeatureOfContextVariable ")"
+		public Group getGroup_1_0() { return cGroup_1_0; }
+
+		//"default-contain"
+		public Keyword getDefaultContainKeyword_1_0_0() { return cDefaultContainKeyword_1_0_0; }
+
+		//"("
+		public Keyword getLeftParenthesisKeyword_1_0_1() { return cLeftParenthesisKeyword_1_0_1; }
+
+		//target=ContextVariable
+		public Assignment getTargetAssignment_1_0_2() { return cTargetAssignment_1_0_2; }
+
+		//ContextVariable
+		public RuleCall getTargetContextVariableParserRuleCall_1_0_2_0() { return cTargetContextVariableParserRuleCall_1_0_2_0; }
+
+		//","
+		public Keyword getCommaKeyword_1_0_3() { return cCommaKeyword_1_0_3; }
+
+		//source=FeatureOfContextVariable
+		public Assignment getSourceAssignment_1_0_4() { return cSourceAssignment_1_0_4; }
+
+		//FeatureOfContextVariable
+		public RuleCall getSourceFeatureOfContextVariableParserRuleCall_1_0_4_0() { return cSourceFeatureOfContextVariableParserRuleCall_1_0_4_0; }
+
+		//")"
+		public Keyword getRightParenthesisKeyword_1_0_5() { return cRightParenthesisKeyword_1_0_5; }
+
+		//"default-resource" "(" target=ContextVariable "," resource=STRING ")"
+		public Group getGroup_1_1() { return cGroup_1_1; }
+
+		//"default-resource"
+		public Keyword getDefaultResourceKeyword_1_1_0() { return cDefaultResourceKeyword_1_1_0; }
+
+		//"("
+		public Keyword getLeftParenthesisKeyword_1_1_1() { return cLeftParenthesisKeyword_1_1_1; }
+
+		//target=ContextVariable
+		public Assignment getTargetAssignment_1_1_2() { return cTargetAssignment_1_1_2; }
+
+		//ContextVariable
+		public RuleCall getTargetContextVariableParserRuleCall_1_1_2_0() { return cTargetContextVariableParserRuleCall_1_1_2_0; }
+
+		//","
+		public Keyword getCommaKeyword_1_1_3() { return cCommaKeyword_1_1_3; }
+
+		//resource=STRING
+		public Assignment getResourceAssignment_1_1_4() { return cResourceAssignment_1_1_4; }
+
+		//STRING
+		public RuleCall getResourceSTRINGTerminalRuleCall_1_1_4_0() { return cResourceSTRINGTerminalRuleCall_1_1_4_0; }
+
+		//")"
+		public Keyword getRightParenthesisKeyword_1_1_5() { return cRightParenthesisKeyword_1_1_5; }
 	}
 
 	public class EqualsLiteralExpressionElements extends AbstractParserRuleElementFinder {
@@ -1123,6 +1222,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	private final BodyConstraintExpressionElements pBodyConstraintExpression;
 	private final VariableRefElements pVariableRef;
 	private final InExpressionElements pInExpression;
+	private final DefaultContainExpressionElements pDefaultContainExpression;
 	private final EqualsLiteralExpressionElements pEqualsLiteralExpression;
 	private final AttributeEquivalenceExpressionElements pAttributeEquivalenceExpression;
 	private final FeatureOfContextVariableElements pFeatureOfContextVariable;
@@ -1159,6 +1259,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		this.pBodyConstraintExpression = new BodyConstraintExpressionElements();
 		this.pVariableRef = new VariableRefElements();
 		this.pInExpression = new InExpressionElements();
+		this.pDefaultContainExpression = new DefaultContainExpressionElements();
 		this.pEqualsLiteralExpression = new EqualsLiteralExpressionElements();
 		this.pAttributeEquivalenceExpression = new AttributeEquivalenceExpressionElements();
 		this.pFeatureOfContextVariable = new FeatureOfContextVariableElements();
@@ -1304,7 +1405,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//SignatureConstraintExpression returns ConstraintExpression:
-	//	InExpression | EqualsLiteralExpression;
+	//	InExpression | EqualsLiteralExpression | DefaultContainExpression;
 	public SignatureConstraintExpressionElements getSignatureConstraintExpressionAccess() {
 		return pSignatureConstraintExpression;
 	}
@@ -1351,6 +1452,17 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getInExpressionRule() {
 		return getInExpressionAccess().getRule();
+	}
+
+	//DefaultContainExpression returns ConstraintExpression:
+	//	{DefaultContainExpression} ("default-contain" "(" target=ContextVariable "," source=FeatureOfContextVariable ")" |
+	//	"default-resource" "(" target=ContextVariable "," resource=STRING ")");
+	public DefaultContainExpressionElements getDefaultContainExpressionAccess() {
+		return pDefaultContainExpression;
+	}
+	
+	public ParserRule getDefaultContainExpressionRule() {
+		return getDefaultContainExpressionAccess().getRule();
 	}
 
 	//EqualsLiteralExpression returns ConstraintExpression:

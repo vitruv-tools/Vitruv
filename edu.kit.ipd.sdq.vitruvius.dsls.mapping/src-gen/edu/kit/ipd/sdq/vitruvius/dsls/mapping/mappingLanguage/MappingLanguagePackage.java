@@ -668,6 +668,52 @@ public interface MappingLanguagePackage extends EPackage
   int IN_EXPRESSION_FEATURE_COUNT = CONSTRAINT_EXPRESSION_FEATURE_COUNT + 2;
 
   /**
+   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.DefaultContainExpressionImpl <em>Default Contain Expression</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.DefaultContainExpressionImpl
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getDefaultContainExpression()
+   * @generated
+   */
+  int DEFAULT_CONTAIN_EXPRESSION = 17;
+
+  /**
+   * The feature id for the '<em><b>Target</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DEFAULT_CONTAIN_EXPRESSION__TARGET = CONSTRAINT_EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Source</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DEFAULT_CONTAIN_EXPRESSION__SOURCE = CONSTRAINT_EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Resource</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DEFAULT_CONTAIN_EXPRESSION__RESOURCE = CONSTRAINT_EXPRESSION_FEATURE_COUNT + 2;
+
+  /**
+   * The number of structural features of the '<em>Default Contain Expression</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DEFAULT_CONTAIN_EXPRESSION_FEATURE_COUNT = CONSTRAINT_EXPRESSION_FEATURE_COUNT + 3;
+
+  /**
    * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.EqualsLiteralExpressionImpl <em>Equals Literal Expression</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -675,7 +721,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getEqualsLiteralExpression()
    * @generated
    */
-  int EQUALS_LITERAL_EXPRESSION = 17;
+  int EQUALS_LITERAL_EXPRESSION = 18;
 
   /**
    * The feature id for the '<em><b>Target</b></em>' containment reference.
@@ -712,7 +758,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getAttributeEquivalenceExpression()
    * @generated
    */
-  int ATTRIBUTE_EQUIVALENCE_EXPRESSION = 18;
+  int ATTRIBUTE_EQUIVALENCE_EXPRESSION = 19;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -749,7 +795,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getConstraintBooleanLiteral()
    * @generated
    */
-  int CONSTRAINT_BOOLEAN_LITERAL = 19;
+  int CONSTRAINT_BOOLEAN_LITERAL = 20;
 
   /**
    * The feature id for the '<em><b>Is True</b></em>' attribute.
@@ -777,7 +823,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getConstraintNullLiteral()
    * @generated
    */
-  int CONSTRAINT_NULL_LITERAL = 20;
+  int CONSTRAINT_NULL_LITERAL = 21;
 
   /**
    * The number of structural features of the '<em>Constraint Null Literal</em>' class.
@@ -796,7 +842,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getConstraintNumberLiteral()
    * @generated
    */
-  int CONSTRAINT_NUMBER_LITERAL = 21;
+  int CONSTRAINT_NUMBER_LITERAL = 22;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -824,7 +870,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getConstraintStringLiteral()
    * @generated
    */
-  int CONSTRAINT_STRING_LITERAL = 22;
+  int CONSTRAINT_STRING_LITERAL = 23;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -1344,6 +1390,49 @@ public interface MappingLanguagePackage extends EPackage
    * @generated
    */
   EReference getInExpression_Source();
+
+  /**
+   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression <em>Default Contain Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Default Contain Expression</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression
+   * @generated
+   */
+  EClass getDefaultContainExpression();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression#getTarget <em>Target</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Target</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression#getTarget()
+   * @see #getDefaultContainExpression()
+   * @generated
+   */
+  EReference getDefaultContainExpression_Target();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression#getSource <em>Source</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Source</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression#getSource()
+   * @see #getDefaultContainExpression()
+   * @generated
+   */
+  EReference getDefaultContainExpression_Source();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression#getResource <em>Resource</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Resource</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression#getResource()
+   * @see #getDefaultContainExpression()
+   * @generated
+   */
+  EAttribute getDefaultContainExpression_Resource();
 
   /**
    * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.EqualsLiteralExpression <em>Equals Literal Expression</em>}'.
@@ -1914,6 +2003,40 @@ public interface MappingLanguagePackage extends EPackage
      * @generated
      */
     EReference IN_EXPRESSION__SOURCE = eINSTANCE.getInExpression_Source();
+
+    /**
+     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.DefaultContainExpressionImpl <em>Default Contain Expression</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.DefaultContainExpressionImpl
+     * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getDefaultContainExpression()
+     * @generated
+     */
+    EClass DEFAULT_CONTAIN_EXPRESSION = eINSTANCE.getDefaultContainExpression();
+
+    /**
+     * The meta object literal for the '<em><b>Target</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference DEFAULT_CONTAIN_EXPRESSION__TARGET = eINSTANCE.getDefaultContainExpression_Target();
+
+    /**
+     * The meta object literal for the '<em><b>Source</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference DEFAULT_CONTAIN_EXPRESSION__SOURCE = eINSTANCE.getDefaultContainExpression_Source();
+
+    /**
+     * The meta object literal for the '<em><b>Resource</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute DEFAULT_CONTAIN_EXPRESSION__RESOURCE = eINSTANCE.getDefaultContainExpression_Resource();
 
     /**
      * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.EqualsLiteralExpressionImpl <em>Equals Literal Expression</em>}' class.

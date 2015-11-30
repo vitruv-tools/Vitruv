@@ -176,6 +176,15 @@ public interface MappingLanguageFactory extends EFactory
   InExpression createInExpression();
 
   /**
+   * Returns a new object of class '<em>Default Contain Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Default Contain Expression</em>'.
+   * @generated
+   */
+  DefaultContainExpression createDefaultContainExpression();
+
+  /**
    * Returns a new object of class '<em>Equals Literal Expression</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

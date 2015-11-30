@@ -12,6 +12,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintNullLite
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintNumberLiteral;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintStringLiteral;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ContextVariable;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.EqualsLiteralExpression;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.FeatureOfContextVariable;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Import;
@@ -161,6 +162,13 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    * @generated
    */
   private EClass inExpressionEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass defaultContainExpressionEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -742,6 +750,46 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getDefaultContainExpression()
+  {
+    return defaultContainExpressionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getDefaultContainExpression_Target()
+  {
+    return (EReference)defaultContainExpressionEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getDefaultContainExpression_Source()
+  {
+    return (EReference)defaultContainExpressionEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getDefaultContainExpression_Resource()
+  {
+    return (EAttribute)defaultContainExpressionEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getEqualsLiteralExpression()
   {
     return equalsLiteralExpressionEClass;
@@ -961,6 +1009,11 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     createEReference(inExpressionEClass, IN_EXPRESSION__TARGET);
     createEReference(inExpressionEClass, IN_EXPRESSION__SOURCE);
 
+    defaultContainExpressionEClass = createEClass(DEFAULT_CONTAIN_EXPRESSION);
+    createEReference(defaultContainExpressionEClass, DEFAULT_CONTAIN_EXPRESSION__TARGET);
+    createEReference(defaultContainExpressionEClass, DEFAULT_CONTAIN_EXPRESSION__SOURCE);
+    createEAttribute(defaultContainExpressionEClass, DEFAULT_CONTAIN_EXPRESSION__RESOURCE);
+
     equalsLiteralExpressionEClass = createEClass(EQUALS_LITERAL_EXPRESSION);
     createEReference(equalsLiteralExpressionEClass, EQUALS_LITERAL_EXPRESSION__TARGET);
     createEReference(equalsLiteralExpressionEClass, EQUALS_LITERAL_EXPRESSION__VALUE);
@@ -1014,6 +1067,7 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     bodyConstraintBlockEClass.getESuperTypes().add(this.getConstraintBlock());
     variableRefEClass.getESuperTypes().add(this.getConstraintExpression());
     inExpressionEClass.getESuperTypes().add(this.getConstraintExpression());
+    defaultContainExpressionEClass.getESuperTypes().add(this.getConstraintExpression());
     equalsLiteralExpressionEClass.getESuperTypes().add(this.getConstraintExpression());
     attributeEquivalenceExpressionEClass.getESuperTypes().add(this.getConstraintExpression());
     constraintBooleanLiteralEClass.getESuperTypes().add(this.getConstraintLiteral());
@@ -1085,6 +1139,11 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     initEClass(inExpressionEClass, InExpression.class, "InExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getInExpression_Target(), this.getContextVariable(), null, "target", null, 0, 1, InExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getInExpression_Source(), this.getFeatureOfContextVariable(), null, "source", null, 0, 1, InExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(defaultContainExpressionEClass, DefaultContainExpression.class, "DefaultContainExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getDefaultContainExpression_Target(), this.getContextVariable(), null, "target", null, 0, 1, DefaultContainExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getDefaultContainExpression_Source(), this.getFeatureOfContextVariable(), null, "source", null, 0, 1, DefaultContainExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getDefaultContainExpression_Resource(), ecorePackage.getEString(), "resource", null, 0, 1, DefaultContainExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(equalsLiteralExpressionEClass, EqualsLiteralExpression.class, "EqualsLiteralExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getEqualsLiteralExpression_Target(), this.getFeatureOfContextVariable(), null, "target", null, 0, 1, EqualsLiteralExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

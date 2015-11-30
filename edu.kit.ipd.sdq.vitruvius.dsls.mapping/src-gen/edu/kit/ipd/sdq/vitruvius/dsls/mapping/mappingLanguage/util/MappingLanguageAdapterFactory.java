@@ -160,6 +160,11 @@ public class MappingLanguageAdapterFactory extends AdapterFactoryImpl
         return createInExpressionAdapter();
       }
       @Override
+      public Adapter caseDefaultContainExpression(DefaultContainExpression object)
+      {
+        return createDefaultContainExpressionAdapter();
+      }
+      @Override
       public Adapter caseEqualsLiteralExpression(EqualsLiteralExpression object)
       {
         return createEqualsLiteralExpressionAdapter();
@@ -462,6 +467,21 @@ public class MappingLanguageAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createInExpressionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression <em>Default Contain Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression
+   * @generated
+   */
+  public Adapter createDefaultContainExpressionAdapter()
   {
     return null;
   }

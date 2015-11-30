@@ -68,6 +68,11 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//InExpression/target"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//InExpression/source"/>
     </genClasses>
+    <genClasses ecoreClass="MappingLanguage.ecore#//DefaultContainExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//DefaultContainExpression/target"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//DefaultContainExpression/source"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MappingLanguage.ecore#//DefaultContainExpression/resource"/>
+    </genClasses>
     <genClasses ecoreClass="MappingLanguage.ecore#//EqualsLiteralExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//EqualsLiteralExpression/target"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//EqualsLiteralExpression/value"/>

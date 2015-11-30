@@ -12,6 +12,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintNullLite
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintNumberLiteral;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintStringLiteral;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ContextVariable;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.EqualsLiteralExpression;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.FeatureOfContextVariable;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Import;
@@ -113,6 +114,9 @@ public class MappingLanguageSemanticSequencer extends XbaseSemanticSequencer {
 				return; 
 			case MappingLanguagePackage.CONTEXT_VARIABLE:
 				sequence_ContextVariable(context, (ContextVariable) semanticObject); 
+				return; 
+			case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION:
+				sequence_DefaultContainExpression(context, (DefaultContainExpression) semanticObject); 
 				return; 
 			case MappingLanguagePackage.EQUALS_LITERAL_EXPRESSION:
 				sequence_EqualsLiteralExpression(context, (EqualsLiteralExpression) semanticObject); 
@@ -473,6 +477,15 @@ public class MappingLanguageSemanticSequencer extends XbaseSemanticSequencer {
 	 *     (requiredMappingPath=RequiredMappingPathBase? targetClass=[NamedEClass|ValidID])
 	 */
 	protected void sequence_ContextVariable(EObject context, ContextVariable semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     ((target=ContextVariable source=FeatureOfContextVariable) | (target=ContextVariable resource=STRING))
+	 */
+	protected void sequence_DefaultContainExpression(EObject context, DefaultContainExpression semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

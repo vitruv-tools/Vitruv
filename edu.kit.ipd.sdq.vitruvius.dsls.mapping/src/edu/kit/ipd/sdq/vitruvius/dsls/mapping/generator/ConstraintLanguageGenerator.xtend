@@ -4,12 +4,9 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.AttributeEquivalen
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintExpression
 import org.eclipse.emf.ecore.EPackage
 
-import static extension java.util.Objects.*
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.InExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NamedEClass
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.EMFHelper.*
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.ImportHelper
 import java.util.Map
@@ -25,6 +22,12 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintNumberLi
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintStringLiteral
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ContextVariable
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression
+
+import static extension java.util.Objects.*
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.EMFHelper.*
 
 class ConstraintLanguageGenerator {
 	private static final Logger LOGGER = Logger.getLogger(ConstraintLanguageGenerator)
@@ -79,6 +82,12 @@ class ConstraintLanguageGenerator {
 
 		eContainsOrIsEqual(importHelper, getJavaExpressionThatReturns(localContext, target, mapping),
 			feature, getJavaExpressionThatReturns(constraint.value))
+	}
+	
+	def dispatch checkSignatureConstraint(ImportHelper importHelper, Map<Object, String> localContext,
+		DefaultContainExpression constraint) {
+		// default contain expression does not need check
+		null
 	}
 	
 	def static dispatch String getJavaExpressionThatReturns(ConstraintLiteral literal) '''
@@ -213,5 +222,26 @@ class ConstraintLanguageGenerator {
 		eSetOrAdd(importHelper,
 			getJavaExpressionThatReturns(localContext, manipulatedVariable, sourceMapping), feature,
 			getJavaExpressionThatReturns(constraint.value))
+	}
+	
+	def dispatch enforceSignatureConstraint(ImportHelper importHelper, Map<Object, String> localContext,
+		DefaultContainExpression constraint) {
+		
+		val createContainmentExpression =
+			if (constraint.source == null) {
+				constraint.resource.claim[it != null]
+				
+			} else {
+				constraint.resource.claim[it == null]
+				
+				
+			}
+		
+		val target = constraint.target
+		val sourceMapping = constraint.getContainerOfType(Mapping).requireNonNull
+		
+		'''
+			/* enforce signature constraint «constraint.toString» */
+		'''
 	}
 }

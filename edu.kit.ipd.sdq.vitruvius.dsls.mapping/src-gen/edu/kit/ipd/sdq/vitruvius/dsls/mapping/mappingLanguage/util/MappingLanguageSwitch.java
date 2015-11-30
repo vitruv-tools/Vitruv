@@ -195,6 +195,14 @@ public class MappingLanguageSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION:
+      {
+        DefaultContainExpression defaultContainExpression = (DefaultContainExpression)theEObject;
+        T result = caseDefaultContainExpression(defaultContainExpression);
+        if (result == null) result = caseConstraintExpression(defaultContainExpression);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case MappingLanguagePackage.EQUALS_LITERAL_EXPRESSION:
       {
         EqualsLiteralExpression equalsLiteralExpression = (EqualsLiteralExpression)theEObject;
@@ -515,6 +523,22 @@ public class MappingLanguageSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseInExpression(InExpression object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Default Contain Expression</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Default Contain Expression</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseDefaultContainExpression(DefaultContainExpression object)
   {
     return null;
   }

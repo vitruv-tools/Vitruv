@@ -2,16 +2,21 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator
 
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.ImportHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingPluginProjectHelper
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintBlock
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Import
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NamedEClass
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Signature
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.SignatureConstraintBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.EclipseProjectHelper
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.PreProcessingFileSystemAccess
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper
@@ -21,36 +26,29 @@ import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRea
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRUserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple
 import java.util.ArrayList
 import java.util.Collection
+import java.util.Collections
+import java.util.HashMap
 import java.util.HashSet
 import java.util.List
+import java.util.Map
 import java.util.Objects
 import java.util.Optional
 import java.util.Set
 import java.util.stream.Collectors
+import javax.naming.OperationNotSupportedException
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtext.generator.IFileSystemAccess
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.PreProcessingFileSystemAccess
 
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
-import static extension java.util.Objects.*
-import java.util.Map
-import java.util.HashMap
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintBlock
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.SignatureConstraintBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintExpression
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NamedEClass
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Quadruple
-import javax.naming.OperationNotSupportedException
-import java.util.Collections
 
 class MappingLanguageGenerator {
 	def doGenerate(Resource input) {
@@ -865,7 +863,7 @@ class MappingLanguageGenerator {
 							
 							«IF mapping.constraintsBody != null»
 								«FOR constraint : mapping.constraintsBody.expressions»
-									«restoreBodyConstraintFrom(ih, #{'''MCI_«mapping.name»''' -> "this"}, constraint, pair.first.package)»
+									«restoreBodyConstraintFrom(ih, #{}, constraint, pair.first.package)»
 								«ENDFOR»
 							«ELSE»
 								// no post conditions, ignore
@@ -876,8 +874,8 @@ class MappingLanguageGenerator {
 							reload();
 							«IF import2constraint.containsKey(pair.first) && !import2constraint.get(pair.first).empty»
 								«FOR constraintBlock : import2constraint.get(pair.first)»
-									«FOR expression : constraintBlock.expressions»
-										if (!«checkSignatureConstraint(ih, #{'''MCI_«mapping.name»''' -> "this"}, expression)»)
+									«FOR checkExpression : constraintBlock.expressions.map[checkSignatureConstraint(ih, #{}, it)].filterNull»
+										if (!«checkExpression»)
 											return false;
 									«ENDFOR»
 								«ENDFOR»
@@ -906,7 +904,7 @@ class MappingLanguageGenerator {
 							«IF !import2constraint.getOrDefault(pair.second, #[]).empty»
 								«FOR constraintBlock : import2constraint.getOrDefault(pair.second, #[])»
 									«FOR constraint : constraintBlock.expressions»
-										«enforceSignatureConstraint(ih, #{'''MCI_«mapping.name»''' -> "this"}, constraint)»;
+										«enforceSignatureConstraint(ih, #{}, constraint)»;
 									«ENDFOR»
 								«ENDFOR»
 							«ELSE»

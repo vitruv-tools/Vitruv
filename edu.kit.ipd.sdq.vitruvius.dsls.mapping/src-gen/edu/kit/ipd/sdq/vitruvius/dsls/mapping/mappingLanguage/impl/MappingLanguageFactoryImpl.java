@@ -81,6 +81,7 @@ public class MappingLanguageFactoryImpl extends EFactoryImpl implements MappingL
       case MappingLanguagePackage.CONSTRAINT_LITERAL: return createConstraintLiteral();
       case MappingLanguagePackage.VARIABLE_REF: return createVariableRef();
       case MappingLanguagePackage.IN_EXPRESSION: return createInExpression();
+      case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION: return createDefaultContainExpression();
       case MappingLanguagePackage.EQUALS_LITERAL_EXPRESSION: return createEqualsLiteralExpression();
       case MappingLanguagePackage.ATTRIBUTE_EQUIVALENCE_EXPRESSION: return createAttributeEquivalenceExpression();
       case MappingLanguagePackage.CONSTRAINT_BOOLEAN_LITERAL: return createConstraintBooleanLiteral();
@@ -277,6 +278,17 @@ public class MappingLanguageFactoryImpl extends EFactoryImpl implements MappingL
   {
     InExpressionImpl inExpression = new InExpressionImpl();
     return inExpression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public DefaultContainExpression createDefaultContainExpression()
+  {
+    DefaultContainExpressionImpl defaultContainExpression = new DefaultContainExpressionImpl();
+    return defaultContainExpression;
   }
 
   /**
