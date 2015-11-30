@@ -183,7 +183,10 @@ class MappingLanguageTestEnvironment implements SynchronisationListener {
 		val result = manipulate.get();
 		val resourceURI = URI.createPlatformResourceURI(resourcePath, false);
 		val resource = EcoreResourceBridge.loadResourceAtURI(resourceURI, resourceSet);
+//		val resource = resourceSet.createResource(resourceURI);
 		EcoreResourceBridge.saveEObjectAsOnlyContent(result, resource);
+
+		this.changeRecorder.beginRecording(#[result]);
 
 		this.synchronizeFileChange(FileChangeKind.CREATE, resourceVURI);
 

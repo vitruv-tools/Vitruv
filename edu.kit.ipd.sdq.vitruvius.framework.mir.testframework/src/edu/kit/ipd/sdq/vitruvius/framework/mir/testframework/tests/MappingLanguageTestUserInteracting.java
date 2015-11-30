@@ -18,15 +18,15 @@ public class MappingLanguageTestUserInteracting implements MIRUserInteracting {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private <T> T takeInputOfType(Class<T> type) {
+	private <T> T takeInputOfType(Class<T> type, String message) {
 		Object next = inputQueue.poll();
 		if (next == null) {
-			fail("No input found for user interaction.");
+			fail("No input found for user interaction (" + message + ").");
 			return null;
 		}
 		
 		if (!(type.isInstance(next))) {
-			fail("User input of type " + type.getName() + " expected, but found " + next.getClass().getName());
+			fail("User input of type " + type.getName() + " expected, but found " + next.getClass().getName() + "(" + message + ").");
 			return null;
 		}
 		
@@ -35,7 +35,7 @@ public class MappingLanguageTestUserInteracting implements MIRUserInteracting {
 	
 	@Override
 	public URI askForNewResource(String message) {
-		return(takeInputOfType(URI.class));
+		return(takeInputOfType(URI.class, message));
 	}
 
 	public void assertEmpty() {
