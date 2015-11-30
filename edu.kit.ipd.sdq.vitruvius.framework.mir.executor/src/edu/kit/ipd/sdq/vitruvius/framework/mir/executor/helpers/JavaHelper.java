@@ -14,6 +14,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple;
+
+import static org.eclipse.xtext.xbase.lib.IterableExtensions.*;
 
 /**
  * Helper class for casting, assertions, etc...
@@ -121,9 +124,10 @@ public final class JavaHelper {
 	public static <T> T getIdenticalElement(Iterable<T> iterable) {
 		return getIdenticalElement(iterable.iterator());
 	}
-	
+
 	/**
-	 * If all elements in the iterator are (equal-)identical, return the element (the first). Else return <code>null</code>.
+	 * If all elements in the iterator are (equal-)identical, return the element
+	 * (the first). Else return <code>null</code>.
 	 */
 	public static <T> T getIdenticalElement(Iterator<T> iterator) {
 		if (!iterator.hasNext()) {
@@ -141,11 +145,11 @@ public final class JavaHelper {
 
 		return result;
 	}
-	
+
 	public static <T> Collector<T, ?, Optional<T>> identicalElementCollector() {
 		return Collectors.reducing((a, b) -> (a == null || b == null) ? null : ((a.equals(b)) ? a : null));
 	}
-	
+
 	/**
 	 * Method for assertions inside function chains, when used with Xtend.
 	 */
@@ -168,7 +172,7 @@ public final class JavaHelper {
 	public static <T> T when(T target, Predicate<T> predicate) {
 		return (predicate.test(target) ? target : null);
 	}
-	
+
 	public static <T> void with(T target, Consumer<T> consumer) {
 		consumer.accept(target);
 	}
@@ -209,7 +213,7 @@ public final class JavaHelper {
 		int lastSeparatorPos = fqn.lastIndexOf(FQN_SEPARATOR);
 		return (lastSeparatorPos == -1);
 	}
-	
+
 	// iterate with index
 	public static <T> Iterable<Pair<Integer, T>> withIndex(final Iterable<T> iterable) {
 		return zip(createIntegerIterator(0), iterable);
@@ -231,6 +235,94 @@ public final class JavaHelper {
 					@Override
 					public Pair<T, U> next() {
 						return new Pair<T, U>(first_iter.next(), second_iter.next());
+					}
+				};
+			}
+		};
+	}
+
+	/**
+	 * Returns elements as long as any of the two iterators returns something
+	 * (hasNext == true). Will return null for the other iterator.
+	 * 
+	 * @param first
+	 * @param second
+	 * @return
+	 */
+	public static <T, U> Iterable<Pair<T, U>> zipAny(final Iterable<T> first, final Iterable<U> second) {
+		return new Iterable<Pair<T, U>>() {
+			@Override
+			public Iterator<Pair<T, U>> iterator() {
+				return new Iterator<Pair<T, U>>() {
+					private final Iterator<T> first_iter = first.iterator();
+					private final Iterator<U> second_iter = second.iterator();
+
+					@Override
+					public boolean hasNext() {
+						return (first_iter.hasNext() || second_iter.hasNext());
+					}
+
+					@Override
+					public Pair<T, U> next() {
+						return new Pair<T, U>((first_iter.hasNext() ? first_iter.next() : null),
+								(second_iter.hasNext() ? second_iter.next() : null));
+					}
+				};
+			}
+		};
+	}
+
+	public static <T, U, V> Iterable<Triple<T, U, V>> zip(final Iterable<T> first, final Iterable<U> second,
+			final Iterable<V> third) {
+		return map(zip(zip(first, second), third),
+				it -> new Triple<>(it.getFirst().getFirst(), it.getFirst().getSecond(), it.getSecond()));
+	}
+
+	public static <T, U, V> Iterable<Triple<T, U, V>> zipAny(final Iterable<T> first, final Iterable<U> second,
+			final Iterable<V> third) {
+		return map(zipAny(zipAny(first, second), third),
+				it -> new Triple<>(it.getFirst().getFirst(), it.getFirst().getSecond(), it.getSecond()));
+	}
+
+	public static <T> Iterable<T> andThen(Iterable<T> first, Iterable<T> second) {
+		return new Iterable<T>() {
+			@Override
+			public Iterator<T> iterator() {
+				return new Iterator<T>() {
+					private Iterator<T> first_iter = first.iterator();
+					private Iterator<T> second_iter = second.iterator();
+
+					@Override
+					public boolean hasNext() {
+						return (first_iter.hasNext() || second_iter.hasNext());
+					}
+
+					@Override
+					public T next() {
+						if (first_iter.hasNext())
+							return first_iter.next();
+						else
+							return second_iter.next();
+					}
+
+				};
+			}
+		};
+	}
+
+	public static <T> Iterable<T> iterate(T t) {
+		return new Iterable<T>() {
+			@Override
+			public Iterator<T> iterator() {
+				return new Iterator<T>() {
+					@Override
+					public boolean hasNext() {
+						return true;
+					}
+
+					@Override
+					public T next() {
+						return t;
 					}
 				};
 			}
