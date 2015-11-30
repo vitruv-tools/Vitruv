@@ -37,18 +37,8 @@ class MappingLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 
 	protected def _createChildren(AbstractOutlineNode parent, Mapping mapping) {
-		if (mapping.signature0 != null) {
-			createChildren(parent, mapping.signature0)
-		}
-		if (mapping.constraints0 != null) {
-			createNode(parent, mapping.constraints0)
-		}
-		if (mapping.signature1 != null) {
-			createChildren(parent, mapping.signature1)
-		}
-		if (mapping.constraints1 != null) {
-			createNode(parent, mapping.constraints1)
-		}
+		mapping.signatures.filterNull.forEach [ createChildren(parent, it) ]
+		mapping.constraintBlocks.filterNull.forEach [ createNode(parent, it) ]
 
 		for (submapping : mapping.submappings) {
 			createNode(parent, submapping)

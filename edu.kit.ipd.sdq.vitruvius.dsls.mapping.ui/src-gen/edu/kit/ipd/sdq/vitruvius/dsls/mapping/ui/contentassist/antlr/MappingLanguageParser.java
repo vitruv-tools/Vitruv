@@ -37,6 +37,7 @@ public class MappingLanguageParser extends AbstractContentAssistParser {
 			nameMappings = new HashMap<AbstractElement, String>() {
 				private static final long serialVersionUID = 1L;
 				{
+					put(grammarAccess.getMappingFileAccess().getAlternatives_3(), "rule__MappingFile__Alternatives_3");
 					put(grammarAccess.getMappingAccess().getAlternatives(), "rule__Mapping__Alternatives");
 					put(grammarAccess.getConstraintBlockAccess().getAlternatives(), "rule__ConstraintBlock__Alternatives");
 					put(grammarAccess.getConstraintExpressionAccess().getAlternatives(), "rule__ConstraintExpression__Alternatives");
@@ -85,6 +86,9 @@ public class MappingLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getMappingFileAccess().getGroup(), "rule__MappingFile__Group__0");
 					put(grammarAccess.getImportAccess().getGroup(), "rule__Import__Group__0");
 					put(grammarAccess.getImportAccess().getGroup_2(), "rule__Import__Group_2__0");
+					put(grammarAccess.getDefaultMappingAccess().getGroup(), "rule__DefaultMapping__Group__0");
+					put(grammarAccess.getDefaultMappingAccess().getGroup_4(), "rule__DefaultMapping__Group_4__0");
+					put(grammarAccess.getDefaultMappingAccess().getGroup_4_1(), "rule__DefaultMapping__Group_4_1__0");
 					put(grammarAccess.getMappingAccess().getGroup_0(), "rule__Mapping__Group_0__0");
 					put(grammarAccess.getMappingAccess().getGroup_0_1(), "rule__Mapping__Group_0_1__0");
 					put(grammarAccess.getMappingAccess().getGroup_0_2(), "rule__Mapping__Group_0_2__0");
@@ -100,8 +104,10 @@ public class MappingLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getRequiredMappingAccess().getGroup(), "rule__RequiredMapping__Group__0");
 					put(grammarAccess.getSignatureConstraintBlockAccess().getGroup(), "rule__SignatureConstraintBlock__Group__0");
 					put(grammarAccess.getSignatureConstraintBlockAccess().getGroup_1(), "rule__SignatureConstraintBlock__Group_1__0");
+					put(grammarAccess.getSignatureConstraintBlockAccess().getGroup_1_1(), "rule__SignatureConstraintBlock__Group_1_1__0");
 					put(grammarAccess.getBodyConstraintBlockAccess().getGroup(), "rule__BodyConstraintBlock__Group__0");
 					put(grammarAccess.getBodyConstraintBlockAccess().getGroup_1(), "rule__BodyConstraintBlock__Group_1__0");
+					put(grammarAccess.getBodyConstraintBlockAccess().getGroup_1_1(), "rule__BodyConstraintBlock__Group_1_1__0");
 					put(grammarAccess.getVariableRefAccess().getGroup(), "rule__VariableRef__Group__0");
 					put(grammarAccess.getInExpressionAccess().getGroup(), "rule__InExpression__Group__0");
 					put(grammarAccess.getEqualsLiteralExpressionAccess().getGroup(), "rule__EqualsLiteralExpression__Group__0");
@@ -297,16 +303,21 @@ public class MappingLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getQualifiedNameInStaticImportAccess().getGroup(), "rule__QualifiedNameInStaticImport__Group__0");
 					put(grammarAccess.getMappingFileAccess().getPluginNameAssignment_1(), "rule__MappingFile__PluginNameAssignment_1");
 					put(grammarAccess.getMappingFileAccess().getImportsAssignment_2(), "rule__MappingFile__ImportsAssignment_2");
-					put(grammarAccess.getMappingFileAccess().getMappingsAssignment_3(), "rule__MappingFile__MappingsAssignment_3");
+					put(grammarAccess.getMappingFileAccess().getMappingsAssignment_3_0(), "rule__MappingFile__MappingsAssignment_3_0");
+					put(grammarAccess.getMappingFileAccess().getMappingsAssignment_3_1(), "rule__MappingFile__MappingsAssignment_3_1");
 					put(grammarAccess.getImportAccess().getPackageAssignment_1(), "rule__Import__PackageAssignment_1");
 					put(grammarAccess.getImportAccess().getNameAssignment_2_1(), "rule__Import__NameAssignment_2_1");
+					put(grammarAccess.getDefaultMappingAccess().getDefaultAssignment_1(), "rule__DefaultMapping__DefaultAssignment_1");
+					put(grammarAccess.getDefaultMappingAccess().getNameAssignment_2(), "rule__DefaultMapping__NameAssignment_2");
+					put(grammarAccess.getDefaultMappingAccess().getSignaturesAssignment_4_1_0(), "rule__DefaultMapping__SignaturesAssignment_4_1_0");
+					put(grammarAccess.getDefaultMappingAccess().getConstraintsAssignment_4_1_1(), "rule__DefaultMapping__ConstraintsAssignment_4_1_1");
 					put(grammarAccess.getMappingAccess().getNameAssignment_0_1_1(), "rule__Mapping__NameAssignment_0_1_1");
 					put(grammarAccess.getMappingAccess().getRequiresAssignment_0_2_2(), "rule__Mapping__RequiresAssignment_0_2_2");
 					put(grammarAccess.getMappingAccess().getRequiresAssignment_0_2_3_1(), "rule__Mapping__RequiresAssignment_0_2_3_1");
-					put(grammarAccess.getMappingAccess().getSignature0Assignment_0_3_0_1(), "rule__Mapping__Signature0Assignment_0_3_0_1");
-					put(grammarAccess.getMappingAccess().getConstraints0Assignment_0_3_0_2(), "rule__Mapping__Constraints0Assignment_0_3_0_2");
-					put(grammarAccess.getMappingAccess().getSignature1Assignment_0_3_0_4(), "rule__Mapping__Signature1Assignment_0_3_0_4");
-					put(grammarAccess.getMappingAccess().getConstraints1Assignment_0_3_0_5(), "rule__Mapping__Constraints1Assignment_0_3_0_5");
+					put(grammarAccess.getMappingAccess().getSignaturesAssignment_0_3_0_1(), "rule__Mapping__SignaturesAssignment_0_3_0_1");
+					put(grammarAccess.getMappingAccess().getConstraintBlocksAssignment_0_3_0_2(), "rule__Mapping__ConstraintBlocksAssignment_0_3_0_2");
+					put(grammarAccess.getMappingAccess().getSignaturesAssignment_0_3_0_4(), "rule__Mapping__SignaturesAssignment_0_3_0_4");
+					put(grammarAccess.getMappingAccess().getConstraintBlocksAssignment_0_3_0_5(), "rule__Mapping__ConstraintBlocksAssignment_0_3_0_5");
 					put(grammarAccess.getMappingAccess().getConstraintsBodyAssignment_0_3_1_1(), "rule__Mapping__ConstraintsBodyAssignment_0_3_1_1");
 					put(grammarAccess.getMappingAccess().getSubmappingsAssignment_0_3_1_2(), "rule__Mapping__SubmappingsAssignment_0_3_1_2");
 					put(grammarAccess.getMappingAccess().getConstraintsBodyAssignment_1_2(), "rule__Mapping__ConstraintsBodyAssignment_1_2");
@@ -317,15 +328,15 @@ public class MappingLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getNamedEClassAccess().getNameAssignment_2(), "rule__NamedEClass__NameAssignment_2");
 					put(grammarAccess.getRequiredMappingAccess().getMappingAssignment_0(), "rule__RequiredMapping__MappingAssignment_0");
 					put(grammarAccess.getRequiredMappingAccess().getNameAssignment_2(), "rule__RequiredMapping__NameAssignment_2");
-					put(grammarAccess.getSignatureConstraintBlockAccess().getExpressionsAssignment_1_0(), "rule__SignatureConstraintBlock__ExpressionsAssignment_1_0");
-					put(grammarAccess.getBodyConstraintBlockAccess().getExpressionsAssignment_1_0(), "rule__BodyConstraintBlock__ExpressionsAssignment_1_0");
+					put(grammarAccess.getSignatureConstraintBlockAccess().getExpressionsAssignment_1_1_0(), "rule__SignatureConstraintBlock__ExpressionsAssignment_1_1_0");
+					put(grammarAccess.getBodyConstraintBlockAccess().getExpressionsAssignment_1_1_0(), "rule__BodyConstraintBlock__ExpressionsAssignment_1_1_0");
 					put(grammarAccess.getVariableRefAccess().getTargetAssignment_1(), "rule__VariableRef__TargetAssignment_1");
 					put(grammarAccess.getInExpressionAccess().getTargetAssignment_3(), "rule__InExpression__TargetAssignment_3");
 					put(grammarAccess.getInExpressionAccess().getSourceAssignment_5(), "rule__InExpression__SourceAssignment_5");
 					put(grammarAccess.getEqualsLiteralExpressionAccess().getTargetAssignment_3(), "rule__EqualsLiteralExpression__TargetAssignment_3");
 					put(grammarAccess.getEqualsLiteralExpressionAccess().getValueAssignment_5(), "rule__EqualsLiteralExpression__ValueAssignment_5");
-					put(grammarAccess.getAttributeEquivalenceExpressionAccess().getLeftAssignment_1(), "rule__AttributeEquivalenceExpression__LeftAssignment_1");
-					put(grammarAccess.getAttributeEquivalenceExpressionAccess().getRightAssignment_3(), "rule__AttributeEquivalenceExpression__RightAssignment_3");
+					put(grammarAccess.getAttributeEquivalenceExpressionAccess().getLeftAssignment_3(), "rule__AttributeEquivalenceExpression__LeftAssignment_3");
+					put(grammarAccess.getAttributeEquivalenceExpressionAccess().getRightAssignment_5(), "rule__AttributeEquivalenceExpression__RightAssignment_5");
 					put(grammarAccess.getFeatureOfContextVariableAccess().getContextAssignment_0(), "rule__FeatureOfContextVariable__ContextAssignment_0");
 					put(grammarAccess.getFeatureOfContextVariableAccess().getFeatureAssignment_1_1(), "rule__FeatureOfContextVariable__FeatureAssignment_1_1");
 					put(grammarAccess.getContextVariableAccess().getRequiredMappingPathAssignment_0(), "rule__ContextVariable__RequiredMappingPathAssignment_0");

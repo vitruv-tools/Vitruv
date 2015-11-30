@@ -14,17 +14,16 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Mapping">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="default" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="signatures" upperBound="-1"
+        eType="#//Signature" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="constraints" upperBound="-1"
+        eType="#//SignatureConstraintBlock" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="requires" upperBound="-1"
         eType="#//RequiredMapping" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="signature0" eType="#//Signature"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="constraints0" eType="#//SignatureConstraintBlock"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="signature1" eType="#//Signature"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="constraints1" eType="#//SignatureConstraintBlock"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="constraintBlocks" upperBound="-1"
+        eType="#//SignatureConstraintBlock" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="constraintsBody" eType="#//BodyConstraintBlock"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="submappings" upperBound="-1"

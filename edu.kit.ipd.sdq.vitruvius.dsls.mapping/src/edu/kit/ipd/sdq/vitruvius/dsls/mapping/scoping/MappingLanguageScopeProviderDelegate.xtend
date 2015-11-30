@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping
 
 import com.google.inject.Inject
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintBlock
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ContextVariable
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.FeatureOfContextVariable
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Import
@@ -36,7 +37,8 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.EMFHelper
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
 import static extension java.util.Objects.*
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintExpression
+import org.eclipse.xtext.scoping.impl.FilteringScope
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile
 
 /**
  * @author Dominik Werle
@@ -72,7 +74,7 @@ class MappingLanguageScopeProviderDelegate extends XImportSectionNamespaceScopeP
 			].filterNull.toList
 		)
 	}
-
+	
 	override getScope(EObject context, EReference reference) {
 		if (reference.EType.equals(EcorePackage.Literals.ECLASS))
 			return createQualifiedEClassScope(context.eResource)
@@ -85,9 +87,19 @@ class MappingLanguageScopeProviderDelegate extends XImportSectionNamespaceScopeP
 			return createRequiredMappingPathTailScope(context)
 		else if (reference.equals(CONTEXT_VARIABLE__TARGET_CLASS))
 			return createTargetClassScope(context)
+//		else if (reference.equals(REQUIRED_MAPPING__MAPPING))
+//			return createRequiresScope(context)
 
 		super.getScope(context, reference)
 	}
+	
+	/*def IScope createRequiresScope(EObject context) {
+		val superScope = super.getScope(context, REQUIRED_MAPPING__MAPPING)
+		return new FilteringScope(superScope, [
+			val mapping = it.EObjectOrProxy as Mapping
+			(mapping.^null) || (!mapping.^default) 
+		])
+	}*/
 
 	def IScope createMappingBaseScope(IScope parentScope, Mapping mapping) {
 		var baseScope = parentScope
@@ -103,7 +115,7 @@ class MappingLanguageScopeProviderDelegate extends XImportSectionNamespaceScopeP
 			baseScope = recursiveCreateMappingBaseScope(baseScope, it.mapping)
 		}
 
-		for (it : #[mapping.signature0, mapping.signature1].filterNull) {
+		for (it : mapping.signatures.filterNull) {
 			baseScope = createScope(baseScope, it.eContents.validNamedEClasses.iterator)
 		}
 
@@ -120,18 +132,30 @@ class MappingLanguageScopeProviderDelegate extends XImportSectionNamespaceScopeP
 		)
 	}
 	
+	def dispatch Pair<String, EObject> namePair(EObject eObject) {
+		new Pair(eObject.toString, eObject)
+	}
+	
+	def dispatch Pair<String, EObject> namePair(Mapping mapping) {
+		new Pair(mapping.name, mapping)
+	}
+	
+	def dispatch Pair<String, EObject> namePair(RequiredMapping mapping) {
+		new Pair(mapping.name, mapping)
+	}
+	
 	def createRequiredMappingPathBaseScope(EObject context) {
 		if (!(context instanceof RequiredMappingPathBase || context instanceof ConstraintExpression))
 			LOGGER.debug("Unexpected context for base scope: " + context.toString)
 
 		val containerMapping = context.getContainerOfType(Mapping)
 		return createPairScope(IScope.NULLSCOPE,
-			containerMapping.requires.map[new Pair(it.name, it)].filter[first != null && second != null].iterator)
+			(containerMapping.requires).map[namePair].filter[first != null && second != null].iterator)
 	}
 	
 	def createRequiredMappingPathTailScope(EObject context) {
 		if (context instanceof RequiredMappingPathTail) {
-			return createPairScope(IScope.NULLSCOPE, context.eContainer.requiredMappings.map[new Pair(it.name, it)].iterator)
+			return createPairScope(IScope.NULLSCOPE, (context.eContainer.requiredMappings).map[namePair].iterator)
 		} else {
 			LOGGER.debug("Unexpected context for tail scope: " + context.toString)
 			return IScope.NULLSCOPE
@@ -182,7 +206,7 @@ class MappingLanguageScopeProviderDelegate extends XImportSectionNamespaceScopeP
 		}
 		
 		createPairScope(IScope.NULLSCOPE,
-			contextMapping.signatures.map[elements].flatten.map[new Pair(it.name, it)].iterator)
+			contextMapping.signatures.filterNull.map[elements].flatten.map[new Pair(it.name, it)].iterator)
 	}
 
 	def createEStructuralFeatureScope(FeatureOfContextVariable variable) {

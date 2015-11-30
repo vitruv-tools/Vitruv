@@ -150,13 +150,40 @@ public interface MappingLanguagePackage extends EPackage
   int MAPPING = 2;
 
   /**
+   * The feature id for the '<em><b>Default</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MAPPING__DEFAULT = 0;
+
+  /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MAPPING__NAME = 0;
+  int MAPPING__NAME = 1;
+
+  /**
+   * The feature id for the '<em><b>Signatures</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MAPPING__SIGNATURES = 2;
+
+  /**
+   * The feature id for the '<em><b>Constraints</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MAPPING__CONSTRAINTS = 3;
 
   /**
    * The feature id for the '<em><b>Requires</b></em>' containment reference list.
@@ -165,43 +192,16 @@ public interface MappingLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int MAPPING__REQUIRES = 1;
+  int MAPPING__REQUIRES = 4;
 
   /**
-   * The feature id for the '<em><b>Signature0</b></em>' containment reference.
+   * The feature id for the '<em><b>Constraint Blocks</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MAPPING__SIGNATURE0 = 2;
-
-  /**
-   * The feature id for the '<em><b>Constraints0</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MAPPING__CONSTRAINTS0 = 3;
-
-  /**
-   * The feature id for the '<em><b>Signature1</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MAPPING__SIGNATURE1 = 4;
-
-  /**
-   * The feature id for the '<em><b>Constraints1</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MAPPING__CONSTRAINTS1 = 5;
+  int MAPPING__CONSTRAINT_BLOCKS = 5;
 
   /**
    * The feature id for the '<em><b>Constraints Body</b></em>' containment reference.
@@ -931,6 +931,17 @@ public interface MappingLanguagePackage extends EPackage
   EClass getMapping();
 
   /**
+   * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#isDefault <em>Default</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Default</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#isDefault()
+   * @see #getMapping()
+   * @generated
+   */
+  EAttribute getMapping_Default();
+
+  /**
    * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -940,6 +951,28 @@ public interface MappingLanguagePackage extends EPackage
    * @generated
    */
   EAttribute getMapping_Name();
+
+  /**
+   * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getSignatures <em>Signatures</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Signatures</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getSignatures()
+   * @see #getMapping()
+   * @generated
+   */
+  EReference getMapping_Signatures();
+
+  /**
+   * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getConstraints <em>Constraints</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Constraints</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getConstraints()
+   * @see #getMapping()
+   * @generated
+   */
+  EReference getMapping_Constraints();
 
   /**
    * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getRequires <em>Requires</em>}'.
@@ -953,48 +986,15 @@ public interface MappingLanguagePackage extends EPackage
   EReference getMapping_Requires();
 
   /**
-   * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getSignature0 <em>Signature0</em>}'.
+   * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getConstraintBlocks <em>Constraint Blocks</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Signature0</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getSignature0()
+   * @return the meta object for the containment reference list '<em>Constraint Blocks</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getConstraintBlocks()
    * @see #getMapping()
    * @generated
    */
-  EReference getMapping_Signature0();
-
-  /**
-   * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getConstraints0 <em>Constraints0</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Constraints0</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getConstraints0()
-   * @see #getMapping()
-   * @generated
-   */
-  EReference getMapping_Constraints0();
-
-  /**
-   * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getSignature1 <em>Signature1</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Signature1</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getSignature1()
-   * @see #getMapping()
-   * @generated
-   */
-  EReference getMapping_Signature1();
-
-  /**
-   * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getConstraints1 <em>Constraints1</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Constraints1</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getConstraints1()
-   * @see #getMapping()
-   * @generated
-   */
-  EReference getMapping_Constraints1();
+  EReference getMapping_ConstraintBlocks();
 
   /**
    * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getConstraintsBody <em>Constraints Body</em>}'.
@@ -1576,12 +1576,36 @@ public interface MappingLanguagePackage extends EPackage
     EClass MAPPING = eINSTANCE.getMapping();
 
     /**
+     * The meta object literal for the '<em><b>Default</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute MAPPING__DEFAULT = eINSTANCE.getMapping_Default();
+
+    /**
      * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
     EAttribute MAPPING__NAME = eINSTANCE.getMapping_Name();
+
+    /**
+     * The meta object literal for the '<em><b>Signatures</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference MAPPING__SIGNATURES = eINSTANCE.getMapping_Signatures();
+
+    /**
+     * The meta object literal for the '<em><b>Constraints</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference MAPPING__CONSTRAINTS = eINSTANCE.getMapping_Constraints();
 
     /**
      * The meta object literal for the '<em><b>Requires</b></em>' containment reference list feature.
@@ -1592,36 +1616,12 @@ public interface MappingLanguagePackage extends EPackage
     EReference MAPPING__REQUIRES = eINSTANCE.getMapping_Requires();
 
     /**
-     * The meta object literal for the '<em><b>Signature0</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Constraint Blocks</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference MAPPING__SIGNATURE0 = eINSTANCE.getMapping_Signature0();
-
-    /**
-     * The meta object literal for the '<em><b>Constraints0</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference MAPPING__CONSTRAINTS0 = eINSTANCE.getMapping_Constraints0();
-
-    /**
-     * The meta object literal for the '<em><b>Signature1</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference MAPPING__SIGNATURE1 = eINSTANCE.getMapping_Signature1();
-
-    /**
-     * The meta object literal for the '<em><b>Constraints1</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference MAPPING__CONSTRAINTS1 = eINSTANCE.getMapping_Constraints1();
+    EReference MAPPING__CONSTRAINT_BLOCKS = eINSTANCE.getMapping_ConstraintBlocks();
 
     /**
      * The meta object literal for the '<em><b>Constraints Body</b></em>' containment reference feature.

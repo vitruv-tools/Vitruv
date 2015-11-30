@@ -18,12 +18,12 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MappingLanguage.ecore#//Import/name"/>
     </genClasses>
     <genClasses ecoreClass="MappingLanguage.ecore#//Mapping">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MappingLanguage.ecore#//Mapping/default"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MappingLanguage.ecore#//Mapping/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//Mapping/signatures"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//Mapping/constraints"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//Mapping/requires"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//Mapping/signature0"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//Mapping/constraints0"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//Mapping/signature1"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//Mapping/constraints1"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//Mapping/constraintBlocks"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//Mapping/constraintsBody"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//Mapping/submappings"/>
     </genClasses>

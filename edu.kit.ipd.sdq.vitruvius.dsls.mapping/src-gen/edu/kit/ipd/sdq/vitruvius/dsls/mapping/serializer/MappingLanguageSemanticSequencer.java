@@ -127,8 +127,15 @@ public class MappingLanguageSemanticSequencer extends XbaseSemanticSequencer {
 				sequence_InExpression(context, (InExpression) semanticObject); 
 				return; 
 			case MappingLanguagePackage.MAPPING:
-				sequence_Mapping(context, (Mapping) semanticObject); 
-				return; 
+				if(context == grammarAccess.getDefaultMappingRule()) {
+					sequence_DefaultMapping(context, (Mapping) semanticObject); 
+					return; 
+				}
+				else if(context == grammarAccess.getMappingRule()) {
+					sequence_Mapping(context, (Mapping) semanticObject); 
+					return; 
+				}
+				else break;
 			case MappingLanguagePackage.MAPPING_FILE:
 				sequence_MappingFile(context, (MappingFile) semanticObject); 
 				return; 
@@ -396,15 +403,15 @@ public class MappingLanguageSemanticSequencer extends XbaseSemanticSequencer {
 		}
 		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getAttributeEquivalenceExpressionAccess().getLeftFeatureOfContextVariableParserRuleCall_1_0(), semanticObject.getLeft());
-		feeder.accept(grammarAccess.getAttributeEquivalenceExpressionAccess().getRightFeatureOfContextVariableParserRuleCall_3_0(), semanticObject.getRight());
+		feeder.accept(grammarAccess.getAttributeEquivalenceExpressionAccess().getLeftFeatureOfContextVariableParserRuleCall_3_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getAttributeEquivalenceExpressionAccess().getRightFeatureOfContextVariableParserRuleCall_5_0(), semanticObject.getRight());
 		feeder.finish();
 	}
 	
 	
 	/**
 	 * Constraint:
-	 *     expressions+=BodyConstraintExpression+
+	 *     (expressions+=BodyConstraintExpression*)
 	 */
 	protected void sequence_BodyConstraintBlock(EObject context, BodyConstraintBlock semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -466,6 +473,15 @@ public class MappingLanguageSemanticSequencer extends XbaseSemanticSequencer {
 	 *     (requiredMappingPath=RequiredMappingPathBase? targetClass=[NamedEClass|ValidID])
 	 */
 	protected void sequence_ContextVariable(EObject context, ContextVariable semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (default?='default' name=ValidID (signatures+=Signature constraints+=SignatureConstraintBlock)*)
+	 */
+	protected void sequence_DefaultMapping(EObject context, Mapping semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -538,7 +554,7 @@ public class MappingLanguageSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (pluginName=QualifiedName imports+=Import* mappings+=Mapping*)
+	 *     (pluginName=QualifiedName imports+=Import* (mappings+=Mapping | mappings+=DefaultMapping)*)
 	 */
 	protected void sequence_MappingFile(EObject context, MappingFile semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -550,11 +566,11 @@ public class MappingLanguageSemanticSequencer extends XbaseSemanticSequencer {
 	 *     (
 	 *         name=ValidID? 
 	 *         (requires+=RequiredMapping requires+=RequiredMapping*)? 
-	 *         signature0=Signature 
-	 *         constraints0=SignatureConstraintBlock? 
-	 *         signature1=Signature 
-	 *         constraints1=SignatureConstraintBlock? 
-	 *         (constraintsBody=BodyConstraintBlock? submappings+=Mapping*)?
+	 *         signatures+=Signature 
+	 *         constraintBlocks+=SignatureConstraintBlock 
+	 *         signatures+=Signature 
+	 *         constraintBlocks+=SignatureConstraintBlock 
+	 *         (constraintsBody=BodyConstraintBlock submappings+=Mapping*)?
 	 *     )
 	 */
 	protected void sequence_Mapping(EObject context, Mapping semanticObject) {
@@ -620,7 +636,7 @@ public class MappingLanguageSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     expressions+=SignatureConstraintExpression+
+	 *     (expressions+=SignatureConstraintExpression*)
 	 */
 	protected void sequence_SignatureConstraintBlock(EObject context, SignatureConstraintBlock semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

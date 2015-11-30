@@ -352,7 +352,7 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getMapping_Name()
+  public EAttribute getMapping_Default()
   {
     return (EAttribute)mappingEClass.getEStructuralFeatures().get(0);
   }
@@ -362,9 +362,9 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getMapping_Requires()
+  public EAttribute getMapping_Name()
   {
-    return (EReference)mappingEClass.getEStructuralFeatures().get(1);
+    return (EAttribute)mappingEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -372,7 +372,7 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getMapping_Signature0()
+  public EReference getMapping_Signatures()
   {
     return (EReference)mappingEClass.getEStructuralFeatures().get(2);
   }
@@ -382,7 +382,7 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getMapping_Constraints0()
+  public EReference getMapping_Constraints()
   {
     return (EReference)mappingEClass.getEStructuralFeatures().get(3);
   }
@@ -392,7 +392,7 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getMapping_Signature1()
+  public EReference getMapping_Requires()
   {
     return (EReference)mappingEClass.getEStructuralFeatures().get(4);
   }
@@ -402,7 +402,7 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getMapping_Constraints1()
+  public EReference getMapping_ConstraintBlocks()
   {
     return (EReference)mappingEClass.getEStructuralFeatures().get(5);
   }
@@ -907,12 +907,12 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     createEAttribute(importEClass, IMPORT__NAME);
 
     mappingEClass = createEClass(MAPPING);
+    createEAttribute(mappingEClass, MAPPING__DEFAULT);
     createEAttribute(mappingEClass, MAPPING__NAME);
+    createEReference(mappingEClass, MAPPING__SIGNATURES);
+    createEReference(mappingEClass, MAPPING__CONSTRAINTS);
     createEReference(mappingEClass, MAPPING__REQUIRES);
-    createEReference(mappingEClass, MAPPING__SIGNATURE0);
-    createEReference(mappingEClass, MAPPING__CONSTRAINTS0);
-    createEReference(mappingEClass, MAPPING__SIGNATURE1);
-    createEReference(mappingEClass, MAPPING__CONSTRAINTS1);
+    createEReference(mappingEClass, MAPPING__CONSTRAINT_BLOCKS);
     createEReference(mappingEClass, MAPPING__CONSTRAINTS_BODY);
     createEReference(mappingEClass, MAPPING__SUBMAPPINGS);
 
@@ -1032,12 +1032,12 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     initEAttribute(getImport_Name(), ecorePackage.getEString(), "name", null, 0, 1, Import.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(mappingEClass, Mapping.class, "Mapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getMapping_Default(), ecorePackage.getEBoolean(), "default", null, 0, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getMapping_Name(), ecorePackage.getEString(), "name", null, 0, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMapping_Signatures(), this.getSignature(), null, "signatures", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMapping_Constraints(), this.getSignatureConstraintBlock(), null, "constraints", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMapping_Requires(), this.getRequiredMapping(), null, "requires", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMapping_Signature0(), this.getSignature(), null, "signature0", null, 0, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMapping_Constraints0(), this.getSignatureConstraintBlock(), null, "constraints0", null, 0, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMapping_Signature1(), this.getSignature(), null, "signature1", null, 0, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMapping_Constraints1(), this.getSignatureConstraintBlock(), null, "constraints1", null, 0, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMapping_ConstraintBlocks(), this.getSignatureConstraintBlock(), null, "constraintBlocks", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMapping_ConstraintsBody(), this.getBodyConstraintBlock(), null, "constraintsBody", null, 0, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMapping_Submappings(), this.getMapping(), null, "submappings", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

@@ -9,15 +9,22 @@ MappingFile:
 	'generates' pluginName=QualifiedName
 	
 	(imports += Import)*
-	(mappings += Mapping)*
+	
+	(mappings += Mapping | mappings += DefaultMapping)*
 ;
 
 Import returns Import: 
-	'import' package=[ecore::EPackage|STRING] 
+	'import' package=[ecore::EPackage|STRING]
 	('as' name=ValidID)?;
 
 
-Mapping:
+DefaultMapping returns Mapping:
+	{Mapping}
+	default?='default' name=ValidID ':'
+ 	('create' (signatures+=Signature constraints+=SignatureConstraintBlock))*
+;
+
+Mapping returns Mapping:
 	{Mapping}
 	('mapping' name=ValidID ':')?
 	
@@ -26,16 +33,16 @@ Mapping:
 	 ')')?
 	 
  	(
-	 	('map' signature0=Signature (constraints0=SignatureConstraintBlock)?
-	 	 'and' signature1=Signature (constraints1=SignatureConstraintBlock)?)
+	 	('map' signatures+=Signature constraintBlocks+=SignatureConstraintBlock
+	 	 'and' signatures+=Signature constraintBlocks+=SignatureConstraintBlock)
 	  	('{'
-	  		(constraintsBody=BodyConstraintBlock)?
+	  		constraintsBody=BodyConstraintBlock
 	  		(submappings+=Mapping)* 
 	  	'}')?
   	) |
   	(
   		'map' '{'
-	  		(constraintsBody=BodyConstraintBlock)?
+	  		constraintsBody=BodyConstraintBlock
 	  		(submappings+=Mapping)* 
 	  	'}'
 
@@ -67,9 +74,10 @@ ConstraintExpression:
 ;
 
 SignatureConstraintBlock:
-	'['
+	{SignatureConstraintBlock}
+	('['
 		(expressions+=SignatureConstraintExpression ';'?)*
-	']'
+	']')?
 ;
 
 SignatureConstraintExpression returns ConstraintExpression:
@@ -78,9 +86,10 @@ SignatureConstraintExpression returns ConstraintExpression:
 ;
 
 BodyConstraintBlock:
-	'['
+	{BodyConstraintBlock}
+	('['
 		(expressions+=BodyConstraintExpression ';'?)*
-	']'
+	']')?
 ;
 
 BodyConstraintExpression returns ConstraintExpression:
@@ -105,7 +114,7 @@ EqualsLiteralExpression returns ConstraintExpression:
 
 AttributeEquivalenceExpression returns ConstraintExpression:
 	{AttributeEquivalenceExpression}
-	left=FeatureOfContextVariable 'equals' right=FeatureOfContextVariable
+	'equal' '(' left=FeatureOfContextVariable ',' right=FeatureOfContextVariable ')'
 ;
 
 FeatureOfContextVariable:

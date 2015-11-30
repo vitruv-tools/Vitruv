@@ -19,24 +19,20 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping
 import java.util.List
 
 class MappingLanguageHelper {
-	public static def getSignatures(Mapping mapping) {
-		return #[mapping.signature0, mapping.signature1]
-	}
-	
-	public static def getConstraintBlocks(Mapping mapping) {
-		return #[mapping.constraints0, mapping.constraints1]
-	}
-	
-	public static def getPackages(Mapping mapping) {
+	public static def inferPackagesForSignaturesAndConstraints(Mapping mapping) {
 		// mappings and constraint blocks must have the same packages
 		// they can also be null.
 		val signatures = mapping.signatures.map[it?.package]
 		val constraints = mapping.constraintBlocks.map[it?.package]
 		 
-		constraints.zip(signatures).map[
+		constraints.zipAny(signatures).map[
 				claim[first == second || first == null || second == null]
 				first ?: second
 			]
+	}
+	
+	public static def defaultMappings(EObject context) {
+		return context.getContainerOfType(MappingFile)?.mappings?.filter[^default] ?: #[]
 	}
 	
 	public static def <T> claimExactlyOneInPackage(Iterable<T> elements, EPackage pkg) {

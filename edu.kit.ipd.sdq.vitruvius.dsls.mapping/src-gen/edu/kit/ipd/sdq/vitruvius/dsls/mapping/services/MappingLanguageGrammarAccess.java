@@ -27,14 +27,17 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cPluginNameQualifiedNameParserRuleCall_1_0 = (RuleCall)cPluginNameAssignment_1.eContents().get(0);
 		private final Assignment cImportsAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cImportsImportParserRuleCall_2_0 = (RuleCall)cImportsAssignment_2.eContents().get(0);
-		private final Assignment cMappingsAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cMappingsMappingParserRuleCall_3_0 = (RuleCall)cMappingsAssignment_3.eContents().get(0);
+		private final Alternatives cAlternatives_3 = (Alternatives)cGroup.eContents().get(3);
+		private final Assignment cMappingsAssignment_3_0 = (Assignment)cAlternatives_3.eContents().get(0);
+		private final RuleCall cMappingsMappingParserRuleCall_3_0_0 = (RuleCall)cMappingsAssignment_3_0.eContents().get(0);
+		private final Assignment cMappingsAssignment_3_1 = (Assignment)cAlternatives_3.eContents().get(1);
+		private final RuleCall cMappingsDefaultMappingParserRuleCall_3_1_0 = (RuleCall)cMappingsAssignment_3_1.eContents().get(0);
 		
 		//MappingFile:
-		//	"generates" pluginName=QualifiedName imports+=Import* mappings+=Mapping*;
+		//	"generates" pluginName=QualifiedName imports+=Import* (mappings+=Mapping | mappings+=DefaultMapping)*;
 		@Override public ParserRule getRule() { return rule; }
 
-		//"generates" pluginName=QualifiedName imports+=Import* mappings+=Mapping*
+		//"generates" pluginName=QualifiedName imports+=Import* (mappings+=Mapping | mappings+=DefaultMapping)*
 		public Group getGroup() { return cGroup; }
 
 		//"generates"
@@ -52,11 +55,20 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//Import
 		public RuleCall getImportsImportParserRuleCall_2_0() { return cImportsImportParserRuleCall_2_0; }
 
-		//mappings+=Mapping*
-		public Assignment getMappingsAssignment_3() { return cMappingsAssignment_3; }
+		//(mappings+=Mapping | mappings+=DefaultMapping)*
+		public Alternatives getAlternatives_3() { return cAlternatives_3; }
+
+		//mappings+=Mapping
+		public Assignment getMappingsAssignment_3_0() { return cMappingsAssignment_3_0; }
 
 		//Mapping
-		public RuleCall getMappingsMappingParserRuleCall_3_0() { return cMappingsMappingParserRuleCall_3_0; }
+		public RuleCall getMappingsMappingParserRuleCall_3_0_0() { return cMappingsMappingParserRuleCall_3_0_0; }
+
+		//mappings+=DefaultMapping
+		public Assignment getMappingsAssignment_3_1() { return cMappingsAssignment_3_1; }
+
+		//DefaultMapping
+		public RuleCall getMappingsDefaultMappingParserRuleCall_3_1_0() { return cMappingsDefaultMappingParserRuleCall_3_1_0; }
 	}
 
 	public class ImportElements extends AbstractParserRuleElementFinder {
@@ -103,6 +115,71 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		public RuleCall getNameValidIDParserRuleCall_2_1_0() { return cNameValidIDParserRuleCall_2_1_0; }
 	}
 
+	public class DefaultMappingElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "DefaultMapping");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cMappingAction_0 = (Action)cGroup.eContents().get(0);
+		private final Assignment cDefaultAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final Keyword cDefaultDefaultKeyword_1_0 = (Keyword)cDefaultAssignment_1.eContents().get(0);
+		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cNameValidIDParserRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
+		private final Keyword cColonKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
+		private final Keyword cCreateKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
+		private final Group cGroup_4_1 = (Group)cGroup_4.eContents().get(1);
+		private final Assignment cSignaturesAssignment_4_1_0 = (Assignment)cGroup_4_1.eContents().get(0);
+		private final RuleCall cSignaturesSignatureParserRuleCall_4_1_0_0 = (RuleCall)cSignaturesAssignment_4_1_0.eContents().get(0);
+		private final Assignment cConstraintsAssignment_4_1_1 = (Assignment)cGroup_4_1.eContents().get(1);
+		private final RuleCall cConstraintsSignatureConstraintBlockParserRuleCall_4_1_1_0 = (RuleCall)cConstraintsAssignment_4_1_1.eContents().get(0);
+		
+		//DefaultMapping returns Mapping:
+		//	{Mapping} default?="default" name=ValidID ":" ("create" (signatures+=Signature
+		//	constraints+=SignatureConstraintBlock))*;
+		@Override public ParserRule getRule() { return rule; }
+
+		//{Mapping} default?="default" name=ValidID ":" ("create" (signatures+=Signature constraints+=SignatureConstraintBlock))*
+		public Group getGroup() { return cGroup; }
+
+		//{Mapping}
+		public Action getMappingAction_0() { return cMappingAction_0; }
+
+		//default?="default"
+		public Assignment getDefaultAssignment_1() { return cDefaultAssignment_1; }
+
+		//"default"
+		public Keyword getDefaultDefaultKeyword_1_0() { return cDefaultDefaultKeyword_1_0; }
+
+		//name=ValidID
+		public Assignment getNameAssignment_2() { return cNameAssignment_2; }
+
+		//ValidID
+		public RuleCall getNameValidIDParserRuleCall_2_0() { return cNameValidIDParserRuleCall_2_0; }
+
+		//":"
+		public Keyword getColonKeyword_3() { return cColonKeyword_3; }
+
+		//("create" (signatures+=Signature constraints+=SignatureConstraintBlock))*
+		public Group getGroup_4() { return cGroup_4; }
+
+		//"create"
+		public Keyword getCreateKeyword_4_0() { return cCreateKeyword_4_0; }
+
+		//signatures+=Signature constraints+=SignatureConstraintBlock
+		public Group getGroup_4_1() { return cGroup_4_1; }
+
+		//signatures+=Signature
+		public Assignment getSignaturesAssignment_4_1_0() { return cSignaturesAssignment_4_1_0; }
+
+		//Signature
+		public RuleCall getSignaturesSignatureParserRuleCall_4_1_0_0() { return cSignaturesSignatureParserRuleCall_4_1_0_0; }
+
+		//constraints+=SignatureConstraintBlock
+		public Assignment getConstraintsAssignment_4_1_1() { return cConstraintsAssignment_4_1_1; }
+
+		//SignatureConstraintBlock
+		public RuleCall getConstraintsSignatureConstraintBlockParserRuleCall_4_1_1_0() { return cConstraintsSignatureConstraintBlockParserRuleCall_4_1_1_0; }
+	}
+
 	public class MappingElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Mapping");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
@@ -126,15 +203,15 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup_0_3 = (Group)cGroup_0.eContents().get(3);
 		private final Group cGroup_0_3_0 = (Group)cGroup_0_3.eContents().get(0);
 		private final Keyword cMapKeyword_0_3_0_0 = (Keyword)cGroup_0_3_0.eContents().get(0);
-		private final Assignment cSignature0Assignment_0_3_0_1 = (Assignment)cGroup_0_3_0.eContents().get(1);
-		private final RuleCall cSignature0SignatureParserRuleCall_0_3_0_1_0 = (RuleCall)cSignature0Assignment_0_3_0_1.eContents().get(0);
-		private final Assignment cConstraints0Assignment_0_3_0_2 = (Assignment)cGroup_0_3_0.eContents().get(2);
-		private final RuleCall cConstraints0SignatureConstraintBlockParserRuleCall_0_3_0_2_0 = (RuleCall)cConstraints0Assignment_0_3_0_2.eContents().get(0);
+		private final Assignment cSignaturesAssignment_0_3_0_1 = (Assignment)cGroup_0_3_0.eContents().get(1);
+		private final RuleCall cSignaturesSignatureParserRuleCall_0_3_0_1_0 = (RuleCall)cSignaturesAssignment_0_3_0_1.eContents().get(0);
+		private final Assignment cConstraintBlocksAssignment_0_3_0_2 = (Assignment)cGroup_0_3_0.eContents().get(2);
+		private final RuleCall cConstraintBlocksSignatureConstraintBlockParserRuleCall_0_3_0_2_0 = (RuleCall)cConstraintBlocksAssignment_0_3_0_2.eContents().get(0);
 		private final Keyword cAndKeyword_0_3_0_3 = (Keyword)cGroup_0_3_0.eContents().get(3);
-		private final Assignment cSignature1Assignment_0_3_0_4 = (Assignment)cGroup_0_3_0.eContents().get(4);
-		private final RuleCall cSignature1SignatureParserRuleCall_0_3_0_4_0 = (RuleCall)cSignature1Assignment_0_3_0_4.eContents().get(0);
-		private final Assignment cConstraints1Assignment_0_3_0_5 = (Assignment)cGroup_0_3_0.eContents().get(5);
-		private final RuleCall cConstraints1SignatureConstraintBlockParserRuleCall_0_3_0_5_0 = (RuleCall)cConstraints1Assignment_0_3_0_5.eContents().get(0);
+		private final Assignment cSignaturesAssignment_0_3_0_4 = (Assignment)cGroup_0_3_0.eContents().get(4);
+		private final RuleCall cSignaturesSignatureParserRuleCall_0_3_0_4_0 = (RuleCall)cSignaturesAssignment_0_3_0_4.eContents().get(0);
+		private final Assignment cConstraintBlocksAssignment_0_3_0_5 = (Assignment)cGroup_0_3_0.eContents().get(5);
+		private final RuleCall cConstraintBlocksSignatureConstraintBlockParserRuleCall_0_3_0_5_0 = (RuleCall)cConstraintBlocksAssignment_0_3_0_5.eContents().get(0);
 		private final Group cGroup_0_3_1 = (Group)cGroup_0_3.eContents().get(1);
 		private final Keyword cLeftCurlyBracketKeyword_0_3_1_0 = (Keyword)cGroup_0_3_1.eContents().get(0);
 		private final Assignment cConstraintsBodyAssignment_0_3_1_1 = (Assignment)cGroup_0_3_1.eContents().get(1);
@@ -153,20 +230,20 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//Mapping:
 		//	{Mapping} ("mapping" name=ValidID ":")? ("when" "(" requires+=RequiredMapping ("," requires+=RequiredMapping)* ")")?
-		//	(("map" signature0=Signature constraints0=SignatureConstraintBlock? "and" signature1=Signature
-		//	constraints1=SignatureConstraintBlock?) ("{" constraintsBody=BodyConstraintBlock? submappings+=Mapping* "}")?) | "map"
-		//	"{" constraintsBody=BodyConstraintBlock? submappings+=Mapping* "}";
+		//	(("map" signatures+=Signature constraintBlocks+=SignatureConstraintBlock "and" signatures+=Signature
+		//	constraintBlocks+=SignatureConstraintBlock) ("{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}")?) |
+		//	"map" "{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}";
 		@Override public ParserRule getRule() { return rule; }
 
 		//{Mapping} ("mapping" name=ValidID ":")? ("when" "(" requires+=RequiredMapping ("," requires+=RequiredMapping)* ")")?
-		//(("map" signature0=Signature constraints0=SignatureConstraintBlock? "and" signature1=Signature
-		//constraints1=SignatureConstraintBlock?) ("{" constraintsBody=BodyConstraintBlock? submappings+=Mapping* "}")?) | "map"
-		//"{" constraintsBody=BodyConstraintBlock? submappings+=Mapping* "}"
+		//(("map" signatures+=Signature constraintBlocks+=SignatureConstraintBlock "and" signatures+=Signature
+		//constraintBlocks+=SignatureConstraintBlock) ("{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}")?) |
+		//"map" "{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}"
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		//{Mapping} ("mapping" name=ValidID ":")? ("when" "(" requires+=RequiredMapping ("," requires+=RequiredMapping)* ")")?
-		//(("map" signature0=Signature constraints0=SignatureConstraintBlock? "and" signature1=Signature
-		//constraints1=SignatureConstraintBlock?) ("{" constraintsBody=BodyConstraintBlock? submappings+=Mapping* "}")?)
+		//(("map" signatures+=Signature constraintBlocks+=SignatureConstraintBlock "and" signatures+=Signature
+		//constraintBlocks+=SignatureConstraintBlock) ("{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}")?)
 		public Group getGroup_0() { return cGroup_0; }
 
 		//{Mapping}
@@ -217,51 +294,51 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//")"
 		public Keyword getRightParenthesisKeyword_0_2_4() { return cRightParenthesisKeyword_0_2_4; }
 
-		//("map" signature0=Signature constraints0=SignatureConstraintBlock? "and" signature1=Signature
-		//constraints1=SignatureConstraintBlock?) ("{" constraintsBody=BodyConstraintBlock? submappings+=Mapping* "}")?
+		//("map" signatures+=Signature constraintBlocks+=SignatureConstraintBlock "and" signatures+=Signature
+		//constraintBlocks+=SignatureConstraintBlock) ("{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}")?
 		public Group getGroup_0_3() { return cGroup_0_3; }
 
-		//"map" signature0=Signature constraints0=SignatureConstraintBlock? "and" signature1=Signature
-		//constraints1=SignatureConstraintBlock?
+		//"map" signatures+=Signature constraintBlocks+=SignatureConstraintBlock "and" signatures+=Signature
+		//constraintBlocks+=SignatureConstraintBlock
 		public Group getGroup_0_3_0() { return cGroup_0_3_0; }
 
 		//"map"
 		public Keyword getMapKeyword_0_3_0_0() { return cMapKeyword_0_3_0_0; }
 
-		//signature0=Signature
-		public Assignment getSignature0Assignment_0_3_0_1() { return cSignature0Assignment_0_3_0_1; }
+		//signatures+=Signature
+		public Assignment getSignaturesAssignment_0_3_0_1() { return cSignaturesAssignment_0_3_0_1; }
 
 		//Signature
-		public RuleCall getSignature0SignatureParserRuleCall_0_3_0_1_0() { return cSignature0SignatureParserRuleCall_0_3_0_1_0; }
+		public RuleCall getSignaturesSignatureParserRuleCall_0_3_0_1_0() { return cSignaturesSignatureParserRuleCall_0_3_0_1_0; }
 
-		//constraints0=SignatureConstraintBlock?
-		public Assignment getConstraints0Assignment_0_3_0_2() { return cConstraints0Assignment_0_3_0_2; }
+		//constraintBlocks+=SignatureConstraintBlock
+		public Assignment getConstraintBlocksAssignment_0_3_0_2() { return cConstraintBlocksAssignment_0_3_0_2; }
 
 		//SignatureConstraintBlock
-		public RuleCall getConstraints0SignatureConstraintBlockParserRuleCall_0_3_0_2_0() { return cConstraints0SignatureConstraintBlockParserRuleCall_0_3_0_2_0; }
+		public RuleCall getConstraintBlocksSignatureConstraintBlockParserRuleCall_0_3_0_2_0() { return cConstraintBlocksSignatureConstraintBlockParserRuleCall_0_3_0_2_0; }
 
 		//"and"
 		public Keyword getAndKeyword_0_3_0_3() { return cAndKeyword_0_3_0_3; }
 
-		//signature1=Signature
-		public Assignment getSignature1Assignment_0_3_0_4() { return cSignature1Assignment_0_3_0_4; }
+		//signatures+=Signature
+		public Assignment getSignaturesAssignment_0_3_0_4() { return cSignaturesAssignment_0_3_0_4; }
 
 		//Signature
-		public RuleCall getSignature1SignatureParserRuleCall_0_3_0_4_0() { return cSignature1SignatureParserRuleCall_0_3_0_4_0; }
+		public RuleCall getSignaturesSignatureParserRuleCall_0_3_0_4_0() { return cSignaturesSignatureParserRuleCall_0_3_0_4_0; }
 
-		//constraints1=SignatureConstraintBlock?
-		public Assignment getConstraints1Assignment_0_3_0_5() { return cConstraints1Assignment_0_3_0_5; }
+		//constraintBlocks+=SignatureConstraintBlock
+		public Assignment getConstraintBlocksAssignment_0_3_0_5() { return cConstraintBlocksAssignment_0_3_0_5; }
 
 		//SignatureConstraintBlock
-		public RuleCall getConstraints1SignatureConstraintBlockParserRuleCall_0_3_0_5_0() { return cConstraints1SignatureConstraintBlockParserRuleCall_0_3_0_5_0; }
+		public RuleCall getConstraintBlocksSignatureConstraintBlockParserRuleCall_0_3_0_5_0() { return cConstraintBlocksSignatureConstraintBlockParserRuleCall_0_3_0_5_0; }
 
-		//("{" constraintsBody=BodyConstraintBlock? submappings+=Mapping* "}")?
+		//("{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}")?
 		public Group getGroup_0_3_1() { return cGroup_0_3_1; }
 
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_0_3_1_0() { return cLeftCurlyBracketKeyword_0_3_1_0; }
 
-		//constraintsBody=BodyConstraintBlock?
+		//constraintsBody=BodyConstraintBlock
 		public Assignment getConstraintsBodyAssignment_0_3_1_1() { return cConstraintsBodyAssignment_0_3_1_1; }
 
 		//BodyConstraintBlock
@@ -276,7 +353,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//"}"
 		public Keyword getRightCurlyBracketKeyword_0_3_1_3() { return cRightCurlyBracketKeyword_0_3_1_3; }
 
-		//"map" "{" constraintsBody=BodyConstraintBlock? submappings+=Mapping* "}"
+		//"map" "{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}"
 		public Group getGroup_1() { return cGroup_1; }
 
 		//"map"
@@ -285,7 +362,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_1_1() { return cLeftCurlyBracketKeyword_1_1; }
 
-		//constraintsBody=BodyConstraintBlock?
+		//constraintsBody=BodyConstraintBlock
 		public Assignment getConstraintsBodyAssignment_1_2() { return cConstraintsBodyAssignment_1_2; }
 
 		//BodyConstraintBlock
@@ -468,37 +545,45 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	public class SignatureConstraintBlockElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "SignatureConstraintBlock");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cLeftSquareBracketKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Action cSignatureConstraintBlockAction_0 = (Action)cGroup.eContents().get(0);
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
-		private final Assignment cExpressionsAssignment_1_0 = (Assignment)cGroup_1.eContents().get(0);
-		private final RuleCall cExpressionsSignatureConstraintExpressionParserRuleCall_1_0_0 = (RuleCall)cExpressionsAssignment_1_0.eContents().get(0);
-		private final Keyword cSemicolonKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
-		private final Keyword cRightSquareBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Keyword cLeftSquareBracketKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
+		private final Group cGroup_1_1 = (Group)cGroup_1.eContents().get(1);
+		private final Assignment cExpressionsAssignment_1_1_0 = (Assignment)cGroup_1_1.eContents().get(0);
+		private final RuleCall cExpressionsSignatureConstraintExpressionParserRuleCall_1_1_0_0 = (RuleCall)cExpressionsAssignment_1_1_0.eContents().get(0);
+		private final Keyword cSemicolonKeyword_1_1_1 = (Keyword)cGroup_1_1.eContents().get(1);
+		private final Keyword cRightSquareBracketKeyword_1_2 = (Keyword)cGroup_1.eContents().get(2);
 		
 		//SignatureConstraintBlock:
-		//	"[" (expressions+=SignatureConstraintExpression ";"?)* "]";
+		//	{SignatureConstraintBlock} ("[" (expressions+=SignatureConstraintExpression ";"?)* "]")?;
 		@Override public ParserRule getRule() { return rule; }
 
-		//"[" (expressions+=SignatureConstraintExpression ";"?)* "]"
+		//{SignatureConstraintBlock} ("[" (expressions+=SignatureConstraintExpression ";"?)* "]")?
 		public Group getGroup() { return cGroup; }
 
-		//"["
-		public Keyword getLeftSquareBracketKeyword_0() { return cLeftSquareBracketKeyword_0; }
+		//{SignatureConstraintBlock}
+		public Action getSignatureConstraintBlockAction_0() { return cSignatureConstraintBlockAction_0; }
 
-		//(expressions+=SignatureConstraintExpression ";"?)*
+		//("[" (expressions+=SignatureConstraintExpression ";"?)* "]")?
 		public Group getGroup_1() { return cGroup_1; }
 
+		//"["
+		public Keyword getLeftSquareBracketKeyword_1_0() { return cLeftSquareBracketKeyword_1_0; }
+
+		//(expressions+=SignatureConstraintExpression ";"?)*
+		public Group getGroup_1_1() { return cGroup_1_1; }
+
 		//expressions+=SignatureConstraintExpression
-		public Assignment getExpressionsAssignment_1_0() { return cExpressionsAssignment_1_0; }
+		public Assignment getExpressionsAssignment_1_1_0() { return cExpressionsAssignment_1_1_0; }
 
 		//SignatureConstraintExpression
-		public RuleCall getExpressionsSignatureConstraintExpressionParserRuleCall_1_0_0() { return cExpressionsSignatureConstraintExpressionParserRuleCall_1_0_0; }
+		public RuleCall getExpressionsSignatureConstraintExpressionParserRuleCall_1_1_0_0() { return cExpressionsSignatureConstraintExpressionParserRuleCall_1_1_0_0; }
 
 		//";"?
-		public Keyword getSemicolonKeyword_1_1() { return cSemicolonKeyword_1_1; }
+		public Keyword getSemicolonKeyword_1_1_1() { return cSemicolonKeyword_1_1_1; }
 
 		//"]"
-		public Keyword getRightSquareBracketKeyword_2() { return cRightSquareBracketKeyword_2; }
+		public Keyword getRightSquareBracketKeyword_1_2() { return cRightSquareBracketKeyword_1_2; }
 	}
 
 	public class SignatureConstraintExpressionElements extends AbstractParserRuleElementFinder {
@@ -524,37 +609,45 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	public class BodyConstraintBlockElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "BodyConstraintBlock");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cLeftSquareBracketKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Action cBodyConstraintBlockAction_0 = (Action)cGroup.eContents().get(0);
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
-		private final Assignment cExpressionsAssignment_1_0 = (Assignment)cGroup_1.eContents().get(0);
-		private final RuleCall cExpressionsBodyConstraintExpressionParserRuleCall_1_0_0 = (RuleCall)cExpressionsAssignment_1_0.eContents().get(0);
-		private final Keyword cSemicolonKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
-		private final Keyword cRightSquareBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Keyword cLeftSquareBracketKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
+		private final Group cGroup_1_1 = (Group)cGroup_1.eContents().get(1);
+		private final Assignment cExpressionsAssignment_1_1_0 = (Assignment)cGroup_1_1.eContents().get(0);
+		private final RuleCall cExpressionsBodyConstraintExpressionParserRuleCall_1_1_0_0 = (RuleCall)cExpressionsAssignment_1_1_0.eContents().get(0);
+		private final Keyword cSemicolonKeyword_1_1_1 = (Keyword)cGroup_1_1.eContents().get(1);
+		private final Keyword cRightSquareBracketKeyword_1_2 = (Keyword)cGroup_1.eContents().get(2);
 		
 		//BodyConstraintBlock:
-		//	"[" (expressions+=BodyConstraintExpression ";"?)* "]";
+		//	{BodyConstraintBlock} ("[" (expressions+=BodyConstraintExpression ";"?)* "]")?;
 		@Override public ParserRule getRule() { return rule; }
 
-		//"[" (expressions+=BodyConstraintExpression ";"?)* "]"
+		//{BodyConstraintBlock} ("[" (expressions+=BodyConstraintExpression ";"?)* "]")?
 		public Group getGroup() { return cGroup; }
 
-		//"["
-		public Keyword getLeftSquareBracketKeyword_0() { return cLeftSquareBracketKeyword_0; }
+		//{BodyConstraintBlock}
+		public Action getBodyConstraintBlockAction_0() { return cBodyConstraintBlockAction_0; }
 
-		//(expressions+=BodyConstraintExpression ";"?)*
+		//("[" (expressions+=BodyConstraintExpression ";"?)* "]")?
 		public Group getGroup_1() { return cGroup_1; }
 
+		//"["
+		public Keyword getLeftSquareBracketKeyword_1_0() { return cLeftSquareBracketKeyword_1_0; }
+
+		//(expressions+=BodyConstraintExpression ";"?)*
+		public Group getGroup_1_1() { return cGroup_1_1; }
+
 		//expressions+=BodyConstraintExpression
-		public Assignment getExpressionsAssignment_1_0() { return cExpressionsAssignment_1_0; }
+		public Assignment getExpressionsAssignment_1_1_0() { return cExpressionsAssignment_1_1_0; }
 
 		//BodyConstraintExpression
-		public RuleCall getExpressionsBodyConstraintExpressionParserRuleCall_1_0_0() { return cExpressionsBodyConstraintExpressionParserRuleCall_1_0_0; }
+		public RuleCall getExpressionsBodyConstraintExpressionParserRuleCall_1_1_0_0() { return cExpressionsBodyConstraintExpressionParserRuleCall_1_1_0_0; }
 
 		//";"?
-		public Keyword getSemicolonKeyword_1_1() { return cSemicolonKeyword_1_1; }
+		public Keyword getSemicolonKeyword_1_1_1() { return cSemicolonKeyword_1_1_1; }
 
 		//"]"
-		public Keyword getRightSquareBracketKeyword_2() { return cRightSquareBracketKeyword_2; }
+		public Keyword getRightSquareBracketKeyword_1_2() { return cRightSquareBracketKeyword_1_2; }
 	}
 
 	public class BodyConstraintExpressionElements extends AbstractParserRuleElementFinder {
@@ -693,36 +786,48 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "AttributeEquivalenceExpression");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cAttributeEquivalenceExpressionAction_0 = (Action)cGroup.eContents().get(0);
-		private final Assignment cLeftAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cLeftFeatureOfContextVariableParserRuleCall_1_0 = (RuleCall)cLeftAssignment_1.eContents().get(0);
-		private final Keyword cEqualsKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cRightAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cRightFeatureOfContextVariableParserRuleCall_3_0 = (RuleCall)cRightAssignment_3.eContents().get(0);
+		private final Keyword cEqualKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Keyword cLeftParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cLeftAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cLeftFeatureOfContextVariableParserRuleCall_3_0 = (RuleCall)cLeftAssignment_3.eContents().get(0);
+		private final Keyword cCommaKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Assignment cRightAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cRightFeatureOfContextVariableParserRuleCall_5_0 = (RuleCall)cRightAssignment_5.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
 		//AttributeEquivalenceExpression returns ConstraintExpression:
-		//	{AttributeEquivalenceExpression} left=FeatureOfContextVariable "equals" right=FeatureOfContextVariable;
+		//	{AttributeEquivalenceExpression} "equal" "(" left=FeatureOfContextVariable "," right=FeatureOfContextVariable ")";
 		@Override public ParserRule getRule() { return rule; }
 
-		//{AttributeEquivalenceExpression} left=FeatureOfContextVariable "equals" right=FeatureOfContextVariable
+		//{AttributeEquivalenceExpression} "equal" "(" left=FeatureOfContextVariable "," right=FeatureOfContextVariable ")"
 		public Group getGroup() { return cGroup; }
 
 		//{AttributeEquivalenceExpression}
 		public Action getAttributeEquivalenceExpressionAction_0() { return cAttributeEquivalenceExpressionAction_0; }
 
+		//"equal"
+		public Keyword getEqualKeyword_1() { return cEqualKeyword_1; }
+
+		//"("
+		public Keyword getLeftParenthesisKeyword_2() { return cLeftParenthesisKeyword_2; }
+
 		//left=FeatureOfContextVariable
-		public Assignment getLeftAssignment_1() { return cLeftAssignment_1; }
+		public Assignment getLeftAssignment_3() { return cLeftAssignment_3; }
 
 		//FeatureOfContextVariable
-		public RuleCall getLeftFeatureOfContextVariableParserRuleCall_1_0() { return cLeftFeatureOfContextVariableParserRuleCall_1_0; }
+		public RuleCall getLeftFeatureOfContextVariableParserRuleCall_3_0() { return cLeftFeatureOfContextVariableParserRuleCall_3_0; }
 
-		//"equals"
-		public Keyword getEqualsKeyword_2() { return cEqualsKeyword_2; }
+		//","
+		public Keyword getCommaKeyword_4() { return cCommaKeyword_4; }
 
 		//right=FeatureOfContextVariable
-		public Assignment getRightAssignment_3() { return cRightAssignment_3; }
+		public Assignment getRightAssignment_5() { return cRightAssignment_5; }
 
 		//FeatureOfContextVariable
-		public RuleCall getRightFeatureOfContextVariableParserRuleCall_3_0() { return cRightFeatureOfContextVariableParserRuleCall_3_0; }
+		public RuleCall getRightFeatureOfContextVariableParserRuleCall_5_0() { return cRightFeatureOfContextVariableParserRuleCall_5_0; }
+
+		//")"
+		public Keyword getRightParenthesisKeyword_6() { return cRightParenthesisKeyword_6; }
 	}
 
 	public class FeatureOfContextVariableElements extends AbstractParserRuleElementFinder {
@@ -1005,6 +1110,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	
 	private final MappingFileElements pMappingFile;
 	private final ImportElements pImport;
+	private final DefaultMappingElements pDefaultMapping;
 	private final MappingElements pMapping;
 	private final SignatureElements pSignature;
 	private final NamedEClassElements pNamedEClass;
@@ -1040,6 +1146,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		this.gaXbase = gaXbase;
 		this.pMappingFile = new MappingFileElements();
 		this.pImport = new ImportElements();
+		this.pDefaultMapping = new DefaultMappingElements();
 		this.pMapping = new MappingElements();
 		this.pSignature = new SignatureElements();
 		this.pNamedEClass = new NamedEClassElements();
@@ -1093,7 +1200,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 
 	
 	//MappingFile:
-	//	"generates" pluginName=QualifiedName imports+=Import* mappings+=Mapping*;
+	//	"generates" pluginName=QualifiedName imports+=Import* (mappings+=Mapping | mappings+=DefaultMapping)*;
 	public MappingFileElements getMappingFileAccess() {
 		return pMappingFile;
 	}
@@ -1112,11 +1219,22 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		return getImportAccess().getRule();
 	}
 
+	//DefaultMapping returns Mapping:
+	//	{Mapping} default?="default" name=ValidID ":" ("create" (signatures+=Signature
+	//	constraints+=SignatureConstraintBlock))*;
+	public DefaultMappingElements getDefaultMappingAccess() {
+		return pDefaultMapping;
+	}
+	
+	public ParserRule getDefaultMappingRule() {
+		return getDefaultMappingAccess().getRule();
+	}
+
 	//Mapping:
 	//	{Mapping} ("mapping" name=ValidID ":")? ("when" "(" requires+=RequiredMapping ("," requires+=RequiredMapping)* ")")?
-	//	(("map" signature0=Signature constraints0=SignatureConstraintBlock? "and" signature1=Signature
-	//	constraints1=SignatureConstraintBlock?) ("{" constraintsBody=BodyConstraintBlock? submappings+=Mapping* "}")?) | "map"
-	//	"{" constraintsBody=BodyConstraintBlock? submappings+=Mapping* "}";
+	//	(("map" signatures+=Signature constraintBlocks+=SignatureConstraintBlock "and" signatures+=Signature
+	//	constraintBlocks+=SignatureConstraintBlock) ("{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}")?) |
+	//	"map" "{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}";
 	public MappingElements getMappingAccess() {
 		return pMapping;
 	}
@@ -1176,7 +1294,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//SignatureConstraintBlock:
-	//	"[" (expressions+=SignatureConstraintExpression ";"?)* "]";
+	//	{SignatureConstraintBlock} ("[" (expressions+=SignatureConstraintExpression ";"?)* "]")?;
 	public SignatureConstraintBlockElements getSignatureConstraintBlockAccess() {
 		return pSignatureConstraintBlock;
 	}
@@ -1196,7 +1314,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//BodyConstraintBlock:
-	//	"[" (expressions+=BodyConstraintExpression ";"?)* "]";
+	//	{BodyConstraintBlock} ("[" (expressions+=BodyConstraintExpression ";"?)* "]")?;
 	public BodyConstraintBlockElements getBodyConstraintBlockAccess() {
 		return pBodyConstraintBlock;
 	}
@@ -1246,7 +1364,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//AttributeEquivalenceExpression returns ConstraintExpression:
-	//	{AttributeEquivalenceExpression} left=FeatureOfContextVariable "equals" right=FeatureOfContextVariable;
+	//	{AttributeEquivalenceExpression} "equal" "(" left=FeatureOfContextVariable "," right=FeatureOfContextVariable ")";
 	public AttributeEquivalenceExpressionElements getAttributeEquivalenceExpressionAccess() {
 		return pAttributeEquivalenceExpression;
 	}

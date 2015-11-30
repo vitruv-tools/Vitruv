@@ -21,9 +21,10 @@ import org.eclipse.xtext.serializer.sequencer.AbstractSyntacticSequencer;
 public class MappingLanguageSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	protected MappingLanguageGrammarAccess grammarAccess;
-	protected AbstractElementAlias match_BodyConstraintBlock_SemicolonKeyword_1_1_q;
-	protected AbstractElementAlias match_Mapping___LeftCurlyBracketKeyword_0_3_1_0_RightCurlyBracketKeyword_0_3_1_3__q;
-	protected AbstractElementAlias match_SignatureConstraintBlock_SemicolonKeyword_1_1_q;
+	protected AbstractElementAlias match_BodyConstraintBlock_SemicolonKeyword_1_1_1_q;
+	protected AbstractElementAlias match_BodyConstraintBlock___LeftSquareBracketKeyword_1_0_RightSquareBracketKeyword_1_2__q;
+	protected AbstractElementAlias match_SignatureConstraintBlock_SemicolonKeyword_1_1_1_q;
+	protected AbstractElementAlias match_SignatureConstraintBlock___LeftSquareBracketKeyword_1_0_RightSquareBracketKeyword_1_2__q;
 	protected AbstractElementAlias match_XBlockExpression_SemicolonKeyword_2_1_q;
 	protected AbstractElementAlias match_XExpressionInClosure_SemicolonKeyword_1_1_q;
 	protected AbstractElementAlias match_XFunctionTypeRef___LeftParenthesisKeyword_0_0_RightParenthesisKeyword_0_2__q;
@@ -34,9 +35,10 @@ public class MappingLanguageSyntacticSequencer extends AbstractSyntacticSequence
 	@Inject
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (MappingLanguageGrammarAccess) access;
-		match_BodyConstraintBlock_SemicolonKeyword_1_1_q = new TokenAlias(false, true, grammarAccess.getBodyConstraintBlockAccess().getSemicolonKeyword_1_1());
-		match_Mapping___LeftCurlyBracketKeyword_0_3_1_0_RightCurlyBracketKeyword_0_3_1_3__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getMappingAccess().getLeftCurlyBracketKeyword_0_3_1_0()), new TokenAlias(false, false, grammarAccess.getMappingAccess().getRightCurlyBracketKeyword_0_3_1_3()));
-		match_SignatureConstraintBlock_SemicolonKeyword_1_1_q = new TokenAlias(false, true, grammarAccess.getSignatureConstraintBlockAccess().getSemicolonKeyword_1_1());
+		match_BodyConstraintBlock_SemicolonKeyword_1_1_1_q = new TokenAlias(false, true, grammarAccess.getBodyConstraintBlockAccess().getSemicolonKeyword_1_1_1());
+		match_BodyConstraintBlock___LeftSquareBracketKeyword_1_0_RightSquareBracketKeyword_1_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getBodyConstraintBlockAccess().getLeftSquareBracketKeyword_1_0()), new TokenAlias(false, false, grammarAccess.getBodyConstraintBlockAccess().getRightSquareBracketKeyword_1_2()));
+		match_SignatureConstraintBlock_SemicolonKeyword_1_1_1_q = new TokenAlias(false, true, grammarAccess.getSignatureConstraintBlockAccess().getSemicolonKeyword_1_1_1());
+		match_SignatureConstraintBlock___LeftSquareBracketKeyword_1_0_RightSquareBracketKeyword_1_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getSignatureConstraintBlockAccess().getLeftSquareBracketKeyword_1_0()), new TokenAlias(false, false, grammarAccess.getSignatureConstraintBlockAccess().getRightSquareBracketKeyword_1_2()));
 		match_XBlockExpression_SemicolonKeyword_2_1_q = new TokenAlias(false, true, grammarAccess.getXBlockExpressionAccess().getSemicolonKeyword_2_1());
 		match_XExpressionInClosure_SemicolonKeyword_1_1_q = new TokenAlias(false, true, grammarAccess.getXExpressionInClosureAccess().getSemicolonKeyword_1_1());
 		match_XFunctionTypeRef___LeftParenthesisKeyword_0_0_RightParenthesisKeyword_0_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getXFunctionTypeRefAccess().getLeftParenthesisKeyword_0_0()), new TokenAlias(false, false, grammarAccess.getXFunctionTypeRefAccess().getRightParenthesisKeyword_0_2()));
@@ -82,12 +84,14 @@ public class MappingLanguageSyntacticSequencer extends AbstractSyntacticSequence
 		List<INode> transitionNodes = collectNodes(fromNode, toNode);
 		for (AbstractElementAlias syntax : transition.getAmbiguousSyntaxes()) {
 			List<INode> syntaxNodes = getNodesFor(transitionNodes, syntax);
-			if(match_BodyConstraintBlock_SemicolonKeyword_1_1_q.equals(syntax))
-				emit_BodyConstraintBlock_SemicolonKeyword_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_Mapping___LeftCurlyBracketKeyword_0_3_1_0_RightCurlyBracketKeyword_0_3_1_3__q.equals(syntax))
-				emit_Mapping___LeftCurlyBracketKeyword_0_3_1_0_RightCurlyBracketKeyword_0_3_1_3__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_SignatureConstraintBlock_SemicolonKeyword_1_1_q.equals(syntax))
-				emit_SignatureConstraintBlock_SemicolonKeyword_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			if(match_BodyConstraintBlock_SemicolonKeyword_1_1_1_q.equals(syntax))
+				emit_BodyConstraintBlock_SemicolonKeyword_1_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_BodyConstraintBlock___LeftSquareBracketKeyword_1_0_RightSquareBracketKeyword_1_2__q.equals(syntax))
+				emit_BodyConstraintBlock___LeftSquareBracketKeyword_1_0_RightSquareBracketKeyword_1_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_SignatureConstraintBlock_SemicolonKeyword_1_1_1_q.equals(syntax))
+				emit_SignatureConstraintBlock_SemicolonKeyword_1_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_SignatureConstraintBlock___LeftSquareBracketKeyword_1_0_RightSquareBracketKeyword_1_2__q.equals(syntax))
+				emit_SignatureConstraintBlock___LeftSquareBracketKeyword_1_0_RightSquareBracketKeyword_1_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_XBlockExpression_SemicolonKeyword_2_1_q.equals(syntax))
 				emit_XBlockExpression_SemicolonKeyword_2_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_XExpressionInClosure_SemicolonKeyword_1_1_q.equals(syntax))
@@ -112,19 +116,18 @@ public class MappingLanguageSyntacticSequencer extends AbstractSyntacticSequence
 	 *     expressions+=BodyConstraintExpression (ambiguity) ']' (rule end)
 	 *     expressions+=BodyConstraintExpression (ambiguity) expressions+=BodyConstraintExpression
 	 */
-	protected void emit_BodyConstraintBlock_SemicolonKeyword_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_BodyConstraintBlock_SemicolonKeyword_1_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
 	/**
 	 * Ambiguous syntax:
-	 *     ('{' '}')?
+	 *     ('[' ']')?
 	 *
 	 * This ambiguous syntax occurs at:
-	 *     constraints1=SignatureConstraintBlock (ambiguity) (rule end)
-	 *     signature1=Signature (ambiguity) (rule end)
+	 *     (rule start) (ambiguity) (rule start)
 	 */
-	protected void emit_Mapping___LeftCurlyBracketKeyword_0_3_1_0_RightCurlyBracketKeyword_0_3_1_3__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_BodyConstraintBlock___LeftSquareBracketKeyword_1_0_RightSquareBracketKeyword_1_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -136,7 +139,18 @@ public class MappingLanguageSyntacticSequencer extends AbstractSyntacticSequence
 	 *     expressions+=SignatureConstraintExpression (ambiguity) ']' (rule end)
 	 *     expressions+=SignatureConstraintExpression (ambiguity) expressions+=SignatureConstraintExpression
 	 */
-	protected void emit_SignatureConstraintBlock_SemicolonKeyword_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_SignatureConstraintBlock_SemicolonKeyword_1_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Ambiguous syntax:
+	 *     ('[' ']')?
+	 *
+	 * This ambiguous syntax occurs at:
+	 *     (rule start) (ambiguity) (rule start)
+	 */
+	protected void emit_SignatureConstraintBlock___LeftSquareBracketKeyword_1_0_RightSquareBracketKeyword_1_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
