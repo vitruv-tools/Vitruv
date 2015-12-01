@@ -22,8 +22,6 @@
         eType="#//SignatureConstraintBlock" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="requires" upperBound="-1"
         eType="#//RequiredMapping" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="constraintBlocks" upperBound="-1"
-        eType="#//SignatureConstraintBlock" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="constraintsBody" eType="#//BodyConstraintBlock"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="submappings" upperBound="-1"

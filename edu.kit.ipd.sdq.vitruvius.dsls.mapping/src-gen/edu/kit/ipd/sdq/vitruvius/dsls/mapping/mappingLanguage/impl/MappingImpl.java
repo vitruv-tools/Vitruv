@@ -38,7 +38,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingImpl#getSignatures <em>Signatures</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingImpl#getConstraints <em>Constraints</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingImpl#getRequires <em>Requires</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingImpl#getConstraintBlocks <em>Constraint Blocks</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingImpl#getConstraintsBody <em>Constraints Body</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingImpl#getSubmappings <em>Submappings</em>}</li>
  * </ul>
@@ -116,16 +115,6 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
    * @ordered
    */
   protected EList<RequiredMapping> requires;
-
-  /**
-   * The cached value of the '{@link #getConstraintBlocks() <em>Constraint Blocks</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getConstraintBlocks()
-   * @generated
-   * @ordered
-   */
-  protected EList<SignatureConstraintBlock> constraintBlocks;
 
   /**
    * The cached value of the '{@link #getConstraintsBody() <em>Constraints Body</em>}' containment reference.
@@ -261,20 +250,6 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<SignatureConstraintBlock> getConstraintBlocks()
-  {
-    if (constraintBlocks == null)
-    {
-      constraintBlocks = new EObjectContainmentEList<SignatureConstraintBlock>(SignatureConstraintBlock.class, this, MappingLanguagePackage.MAPPING__CONSTRAINT_BLOCKS);
-    }
-    return constraintBlocks;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public BodyConstraintBlock getConstraintsBody()
   {
     return constraintsBody;
@@ -348,8 +323,6 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
         return ((InternalEList<?>)getConstraints()).basicRemove(otherEnd, msgs);
       case MappingLanguagePackage.MAPPING__REQUIRES:
         return ((InternalEList<?>)getRequires()).basicRemove(otherEnd, msgs);
-      case MappingLanguagePackage.MAPPING__CONSTRAINT_BLOCKS:
-        return ((InternalEList<?>)getConstraintBlocks()).basicRemove(otherEnd, msgs);
       case MappingLanguagePackage.MAPPING__CONSTRAINTS_BODY:
         return basicSetConstraintsBody(null, msgs);
       case MappingLanguagePackage.MAPPING__SUBMAPPINGS:
@@ -378,8 +351,6 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
         return getConstraints();
       case MappingLanguagePackage.MAPPING__REQUIRES:
         return getRequires();
-      case MappingLanguagePackage.MAPPING__CONSTRAINT_BLOCKS:
-        return getConstraintBlocks();
       case MappingLanguagePackage.MAPPING__CONSTRAINTS_BODY:
         return getConstraintsBody();
       case MappingLanguagePackage.MAPPING__SUBMAPPINGS:
@@ -417,10 +388,6 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
         getRequires().clear();
         getRequires().addAll((Collection<? extends RequiredMapping>)newValue);
         return;
-      case MappingLanguagePackage.MAPPING__CONSTRAINT_BLOCKS:
-        getConstraintBlocks().clear();
-        getConstraintBlocks().addAll((Collection<? extends SignatureConstraintBlock>)newValue);
-        return;
       case MappingLanguagePackage.MAPPING__CONSTRAINTS_BODY:
         setConstraintsBody((BodyConstraintBlock)newValue);
         return;
@@ -457,9 +424,6 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
       case MappingLanguagePackage.MAPPING__REQUIRES:
         getRequires().clear();
         return;
-      case MappingLanguagePackage.MAPPING__CONSTRAINT_BLOCKS:
-        getConstraintBlocks().clear();
-        return;
       case MappingLanguagePackage.MAPPING__CONSTRAINTS_BODY:
         setConstraintsBody((BodyConstraintBlock)null);
         return;
@@ -490,8 +454,6 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
         return constraints != null && !constraints.isEmpty();
       case MappingLanguagePackage.MAPPING__REQUIRES:
         return requires != null && !requires.isEmpty();
-      case MappingLanguagePackage.MAPPING__CONSTRAINT_BLOCKS:
-        return constraintBlocks != null && !constraintBlocks.isEmpty();
       case MappingLanguagePackage.MAPPING__CONSTRAINTS_BODY:
         return constraintsBody != null;
       case MappingLanguagePackage.MAPPING__SUBMAPPINGS:

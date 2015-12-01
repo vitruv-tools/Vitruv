@@ -924,7 +924,7 @@ public class InternalMappingLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleMapping"
-    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:338:1: ruleMapping returns [EObject current=null] : ( ( () (otherlv_1= 'mapping' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= ':' )? (otherlv_4= 'when' otherlv_5= '(' ( (lv_requires_6_0= ruleRequiredMapping ) ) (otherlv_7= ',' ( (lv_requires_8_0= ruleRequiredMapping ) ) )* otherlv_9= ')' )? ( (otherlv_10= 'map' ( (lv_signatures_11_0= ruleSignature ) ) ( (lv_constraintBlocks_12_0= ruleSignatureConstraintBlock ) ) otherlv_13= 'and' ( (lv_signatures_14_0= ruleSignature ) ) ( (lv_constraintBlocks_15_0= ruleSignatureConstraintBlock ) ) ) (otherlv_16= '{' ( (lv_constraintsBody_17_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_18_0= ruleMapping ) )* otherlv_19= '}' )? ) ) | (otherlv_20= 'map' otherlv_21= '{' ( (lv_constraintsBody_22_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_23_0= ruleMapping ) )* otherlv_24= '}' ) ) ;
+    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:338:1: ruleMapping returns [EObject current=null] : ( ( () (otherlv_1= 'mapping' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= ':' )? (otherlv_4= 'when' otherlv_5= '(' ( (lv_requires_6_0= ruleRequiredMapping ) ) (otherlv_7= ',' ( (lv_requires_8_0= ruleRequiredMapping ) ) )* otherlv_9= ')' )? ( (otherlv_10= 'map' ( (lv_signatures_11_0= ruleSignature ) ) ( (lv_constraints_12_0= ruleSignatureConstraintBlock ) ) otherlv_13= 'and' ( (lv_signatures_14_0= ruleSignature ) ) ( (lv_constraints_15_0= ruleSignatureConstraintBlock ) ) ) (otherlv_16= '{' ( (lv_constraintsBody_17_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_18_0= ruleMapping ) )* otherlv_19= '}' )? ) ) | (otherlv_20= 'map' otherlv_21= '{' ( (lv_constraintsBody_22_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_23_0= ruleMapping ) )* otherlv_24= '}' ) ) ;
     public final EObject ruleMapping() throws RecognitionException {
         EObject current = null;
 
@@ -949,11 +949,11 @@ public class InternalMappingLanguageParser extends AbstractInternalAntlrParser {
 
         EObject lv_signatures_11_0 = null;
 
-        EObject lv_constraintBlocks_12_0 = null;
+        EObject lv_constraints_12_0 = null;
 
         EObject lv_signatures_14_0 = null;
 
-        EObject lv_constraintBlocks_15_0 = null;
+        EObject lv_constraints_15_0 = null;
 
         EObject lv_constraintsBody_17_0 = null;
 
@@ -967,10 +967,10 @@ public class InternalMappingLanguageParser extends AbstractInternalAntlrParser {
          enterRule(); 
             
         try {
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:341:28: ( ( ( () (otherlv_1= 'mapping' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= ':' )? (otherlv_4= 'when' otherlv_5= '(' ( (lv_requires_6_0= ruleRequiredMapping ) ) (otherlv_7= ',' ( (lv_requires_8_0= ruleRequiredMapping ) ) )* otherlv_9= ')' )? ( (otherlv_10= 'map' ( (lv_signatures_11_0= ruleSignature ) ) ( (lv_constraintBlocks_12_0= ruleSignatureConstraintBlock ) ) otherlv_13= 'and' ( (lv_signatures_14_0= ruleSignature ) ) ( (lv_constraintBlocks_15_0= ruleSignatureConstraintBlock ) ) ) (otherlv_16= '{' ( (lv_constraintsBody_17_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_18_0= ruleMapping ) )* otherlv_19= '}' )? ) ) | (otherlv_20= 'map' otherlv_21= '{' ( (lv_constraintsBody_22_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_23_0= ruleMapping ) )* otherlv_24= '}' ) ) )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:342:1: ( ( () (otherlv_1= 'mapping' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= ':' )? (otherlv_4= 'when' otherlv_5= '(' ( (lv_requires_6_0= ruleRequiredMapping ) ) (otherlv_7= ',' ( (lv_requires_8_0= ruleRequiredMapping ) ) )* otherlv_9= ')' )? ( (otherlv_10= 'map' ( (lv_signatures_11_0= ruleSignature ) ) ( (lv_constraintBlocks_12_0= ruleSignatureConstraintBlock ) ) otherlv_13= 'and' ( (lv_signatures_14_0= ruleSignature ) ) ( (lv_constraintBlocks_15_0= ruleSignatureConstraintBlock ) ) ) (otherlv_16= '{' ( (lv_constraintsBody_17_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_18_0= ruleMapping ) )* otherlv_19= '}' )? ) ) | (otherlv_20= 'map' otherlv_21= '{' ( (lv_constraintsBody_22_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_23_0= ruleMapping ) )* otherlv_24= '}' ) )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:341:28: ( ( ( () (otherlv_1= 'mapping' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= ':' )? (otherlv_4= 'when' otherlv_5= '(' ( (lv_requires_6_0= ruleRequiredMapping ) ) (otherlv_7= ',' ( (lv_requires_8_0= ruleRequiredMapping ) ) )* otherlv_9= ')' )? ( (otherlv_10= 'map' ( (lv_signatures_11_0= ruleSignature ) ) ( (lv_constraints_12_0= ruleSignatureConstraintBlock ) ) otherlv_13= 'and' ( (lv_signatures_14_0= ruleSignature ) ) ( (lv_constraints_15_0= ruleSignatureConstraintBlock ) ) ) (otherlv_16= '{' ( (lv_constraintsBody_17_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_18_0= ruleMapping ) )* otherlv_19= '}' )? ) ) | (otherlv_20= 'map' otherlv_21= '{' ( (lv_constraintsBody_22_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_23_0= ruleMapping ) )* otherlv_24= '}' ) ) )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:342:1: ( ( () (otherlv_1= 'mapping' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= ':' )? (otherlv_4= 'when' otherlv_5= '(' ( (lv_requires_6_0= ruleRequiredMapping ) ) (otherlv_7= ',' ( (lv_requires_8_0= ruleRequiredMapping ) ) )* otherlv_9= ')' )? ( (otherlv_10= 'map' ( (lv_signatures_11_0= ruleSignature ) ) ( (lv_constraints_12_0= ruleSignatureConstraintBlock ) ) otherlv_13= 'and' ( (lv_signatures_14_0= ruleSignature ) ) ( (lv_constraints_15_0= ruleSignatureConstraintBlock ) ) ) (otherlv_16= '{' ( (lv_constraintsBody_17_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_18_0= ruleMapping ) )* otherlv_19= '}' )? ) ) | (otherlv_20= 'map' otherlv_21= '{' ( (lv_constraintsBody_22_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_23_0= ruleMapping ) )* otherlv_24= '}' ) )
             {
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:342:1: ( ( () (otherlv_1= 'mapping' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= ':' )? (otherlv_4= 'when' otherlv_5= '(' ( (lv_requires_6_0= ruleRequiredMapping ) ) (otherlv_7= ',' ( (lv_requires_8_0= ruleRequiredMapping ) ) )* otherlv_9= ')' )? ( (otherlv_10= 'map' ( (lv_signatures_11_0= ruleSignature ) ) ( (lv_constraintBlocks_12_0= ruleSignatureConstraintBlock ) ) otherlv_13= 'and' ( (lv_signatures_14_0= ruleSignature ) ) ( (lv_constraintBlocks_15_0= ruleSignatureConstraintBlock ) ) ) (otherlv_16= '{' ( (lv_constraintsBody_17_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_18_0= ruleMapping ) )* otherlv_19= '}' )? ) ) | (otherlv_20= 'map' otherlv_21= '{' ( (lv_constraintsBody_22_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_23_0= ruleMapping ) )* otherlv_24= '}' ) )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:342:1: ( ( () (otherlv_1= 'mapping' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= ':' )? (otherlv_4= 'when' otherlv_5= '(' ( (lv_requires_6_0= ruleRequiredMapping ) ) (otherlv_7= ',' ( (lv_requires_8_0= ruleRequiredMapping ) ) )* otherlv_9= ')' )? ( (otherlv_10= 'map' ( (lv_signatures_11_0= ruleSignature ) ) ( (lv_constraints_12_0= ruleSignatureConstraintBlock ) ) otherlv_13= 'and' ( (lv_signatures_14_0= ruleSignature ) ) ( (lv_constraints_15_0= ruleSignatureConstraintBlock ) ) ) (otherlv_16= '{' ( (lv_constraintsBody_17_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_18_0= ruleMapping ) )* otherlv_19= '}' )? ) ) | (otherlv_20= 'map' otherlv_21= '{' ( (lv_constraintsBody_22_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_23_0= ruleMapping ) )* otherlv_24= '}' ) )
             int alt11=2;
             int LA11_0 = input.LA(1);
 
@@ -1040,10 +1040,10 @@ public class InternalMappingLanguageParser extends AbstractInternalAntlrParser {
             }
             switch (alt11) {
                 case 1 :
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:342:2: ( () (otherlv_1= 'mapping' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= ':' )? (otherlv_4= 'when' otherlv_5= '(' ( (lv_requires_6_0= ruleRequiredMapping ) ) (otherlv_7= ',' ( (lv_requires_8_0= ruleRequiredMapping ) ) )* otherlv_9= ')' )? ( (otherlv_10= 'map' ( (lv_signatures_11_0= ruleSignature ) ) ( (lv_constraintBlocks_12_0= ruleSignatureConstraintBlock ) ) otherlv_13= 'and' ( (lv_signatures_14_0= ruleSignature ) ) ( (lv_constraintBlocks_15_0= ruleSignatureConstraintBlock ) ) ) (otherlv_16= '{' ( (lv_constraintsBody_17_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_18_0= ruleMapping ) )* otherlv_19= '}' )? ) )
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:342:2: ( () (otherlv_1= 'mapping' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= ':' )? (otherlv_4= 'when' otherlv_5= '(' ( (lv_requires_6_0= ruleRequiredMapping ) ) (otherlv_7= ',' ( (lv_requires_8_0= ruleRequiredMapping ) ) )* otherlv_9= ')' )? ( (otherlv_10= 'map' ( (lv_signatures_11_0= ruleSignature ) ) ( (lv_constraints_12_0= ruleSignatureConstraintBlock ) ) otherlv_13= 'and' ( (lv_signatures_14_0= ruleSignature ) ) ( (lv_constraints_15_0= ruleSignatureConstraintBlock ) ) ) (otherlv_16= '{' ( (lv_constraintsBody_17_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_18_0= ruleMapping ) )* otherlv_19= '}' )? ) )
                     {
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:342:2: ( () (otherlv_1= 'mapping' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= ':' )? (otherlv_4= 'when' otherlv_5= '(' ( (lv_requires_6_0= ruleRequiredMapping ) ) (otherlv_7= ',' ( (lv_requires_8_0= ruleRequiredMapping ) ) )* otherlv_9= ')' )? ( (otherlv_10= 'map' ( (lv_signatures_11_0= ruleSignature ) ) ( (lv_constraintBlocks_12_0= ruleSignatureConstraintBlock ) ) otherlv_13= 'and' ( (lv_signatures_14_0= ruleSignature ) ) ( (lv_constraintBlocks_15_0= ruleSignatureConstraintBlock ) ) ) (otherlv_16= '{' ( (lv_constraintsBody_17_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_18_0= ruleMapping ) )* otherlv_19= '}' )? ) )
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:342:3: () (otherlv_1= 'mapping' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= ':' )? (otherlv_4= 'when' otherlv_5= '(' ( (lv_requires_6_0= ruleRequiredMapping ) ) (otherlv_7= ',' ( (lv_requires_8_0= ruleRequiredMapping ) ) )* otherlv_9= ')' )? ( (otherlv_10= 'map' ( (lv_signatures_11_0= ruleSignature ) ) ( (lv_constraintBlocks_12_0= ruleSignatureConstraintBlock ) ) otherlv_13= 'and' ( (lv_signatures_14_0= ruleSignature ) ) ( (lv_constraintBlocks_15_0= ruleSignatureConstraintBlock ) ) ) (otherlv_16= '{' ( (lv_constraintsBody_17_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_18_0= ruleMapping ) )* otherlv_19= '}' )? )
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:342:2: ( () (otherlv_1= 'mapping' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= ':' )? (otherlv_4= 'when' otherlv_5= '(' ( (lv_requires_6_0= ruleRequiredMapping ) ) (otherlv_7= ',' ( (lv_requires_8_0= ruleRequiredMapping ) ) )* otherlv_9= ')' )? ( (otherlv_10= 'map' ( (lv_signatures_11_0= ruleSignature ) ) ( (lv_constraints_12_0= ruleSignatureConstraintBlock ) ) otherlv_13= 'and' ( (lv_signatures_14_0= ruleSignature ) ) ( (lv_constraints_15_0= ruleSignatureConstraintBlock ) ) ) (otherlv_16= '{' ( (lv_constraintsBody_17_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_18_0= ruleMapping ) )* otherlv_19= '}' )? ) )
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:342:3: () (otherlv_1= 'mapping' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= ':' )? (otherlv_4= 'when' otherlv_5= '(' ( (lv_requires_6_0= ruleRequiredMapping ) ) (otherlv_7= ',' ( (lv_requires_8_0= ruleRequiredMapping ) ) )* otherlv_9= ')' )? ( (otherlv_10= 'map' ( (lv_signatures_11_0= ruleSignature ) ) ( (lv_constraints_12_0= ruleSignatureConstraintBlock ) ) otherlv_13= 'and' ( (lv_signatures_14_0= ruleSignature ) ) ( (lv_constraints_15_0= ruleSignatureConstraintBlock ) ) ) (otherlv_16= '{' ( (lv_constraintsBody_17_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_18_0= ruleMapping ) )* otherlv_19= '}' )? )
                     {
                     // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:342:3: ()
                     // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:343:5: 
@@ -1257,11 +1257,11 @@ public class InternalMappingLanguageParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:426:3: ( (otherlv_10= 'map' ( (lv_signatures_11_0= ruleSignature ) ) ( (lv_constraintBlocks_12_0= ruleSignatureConstraintBlock ) ) otherlv_13= 'and' ( (lv_signatures_14_0= ruleSignature ) ) ( (lv_constraintBlocks_15_0= ruleSignatureConstraintBlock ) ) ) (otherlv_16= '{' ( (lv_constraintsBody_17_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_18_0= ruleMapping ) )* otherlv_19= '}' )? )
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:426:4: (otherlv_10= 'map' ( (lv_signatures_11_0= ruleSignature ) ) ( (lv_constraintBlocks_12_0= ruleSignatureConstraintBlock ) ) otherlv_13= 'and' ( (lv_signatures_14_0= ruleSignature ) ) ( (lv_constraintBlocks_15_0= ruleSignatureConstraintBlock ) ) ) (otherlv_16= '{' ( (lv_constraintsBody_17_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_18_0= ruleMapping ) )* otherlv_19= '}' )?
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:426:3: ( (otherlv_10= 'map' ( (lv_signatures_11_0= ruleSignature ) ) ( (lv_constraints_12_0= ruleSignatureConstraintBlock ) ) otherlv_13= 'and' ( (lv_signatures_14_0= ruleSignature ) ) ( (lv_constraints_15_0= ruleSignatureConstraintBlock ) ) ) (otherlv_16= '{' ( (lv_constraintsBody_17_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_18_0= ruleMapping ) )* otherlv_19= '}' )? )
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:426:4: (otherlv_10= 'map' ( (lv_signatures_11_0= ruleSignature ) ) ( (lv_constraints_12_0= ruleSignatureConstraintBlock ) ) otherlv_13= 'and' ( (lv_signatures_14_0= ruleSignature ) ) ( (lv_constraints_15_0= ruleSignatureConstraintBlock ) ) ) (otherlv_16= '{' ( (lv_constraintsBody_17_0= ruleBodyConstraintBlock ) ) ( (lv_submappings_18_0= ruleMapping ) )* otherlv_19= '}' )?
                     {
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:426:4: (otherlv_10= 'map' ( (lv_signatures_11_0= ruleSignature ) ) ( (lv_constraintBlocks_12_0= ruleSignatureConstraintBlock ) ) otherlv_13= 'and' ( (lv_signatures_14_0= ruleSignature ) ) ( (lv_constraintBlocks_15_0= ruleSignatureConstraintBlock ) ) )
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:426:6: otherlv_10= 'map' ( (lv_signatures_11_0= ruleSignature ) ) ( (lv_constraintBlocks_12_0= ruleSignatureConstraintBlock ) ) otherlv_13= 'and' ( (lv_signatures_14_0= ruleSignature ) ) ( (lv_constraintBlocks_15_0= ruleSignatureConstraintBlock ) )
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:426:4: (otherlv_10= 'map' ( (lv_signatures_11_0= ruleSignature ) ) ( (lv_constraints_12_0= ruleSignatureConstraintBlock ) ) otherlv_13= 'and' ( (lv_signatures_14_0= ruleSignature ) ) ( (lv_constraints_15_0= ruleSignatureConstraintBlock ) ) )
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:426:6: otherlv_10= 'map' ( (lv_signatures_11_0= ruleSignature ) ) ( (lv_constraints_12_0= ruleSignatureConstraintBlock ) ) otherlv_13= 'and' ( (lv_signatures_14_0= ruleSignature ) ) ( (lv_constraints_15_0= ruleSignatureConstraintBlock ) )
                     {
                     otherlv_10=(Token)match(input,24,FOLLOW_24_in_ruleMapping797); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -1304,19 +1304,19 @@ public class InternalMappingLanguageParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:448:2: ( (lv_constraintBlocks_12_0= ruleSignatureConstraintBlock ) )
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:449:1: (lv_constraintBlocks_12_0= ruleSignatureConstraintBlock )
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:448:2: ( (lv_constraints_12_0= ruleSignatureConstraintBlock ) )
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:449:1: (lv_constraints_12_0= ruleSignatureConstraintBlock )
                     {
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:449:1: (lv_constraintBlocks_12_0= ruleSignatureConstraintBlock )
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:450:3: lv_constraintBlocks_12_0= ruleSignatureConstraintBlock
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:449:1: (lv_constraints_12_0= ruleSignatureConstraintBlock )
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:450:3: lv_constraints_12_0= ruleSignatureConstraintBlock
                     {
                     if ( state.backtracking==0 ) {
                        
-                      	        newCompositeNode(grammarAccess.getMappingAccess().getConstraintBlocksSignatureConstraintBlockParserRuleCall_0_3_0_2_0()); 
+                      	        newCompositeNode(grammarAccess.getMappingAccess().getConstraintsSignatureConstraintBlockParserRuleCall_0_3_0_2_0()); 
                       	    
                     }
                     pushFollow(FOLLOW_ruleSignatureConstraintBlock_in_ruleMapping839);
-                    lv_constraintBlocks_12_0=ruleSignatureConstraintBlock();
+                    lv_constraints_12_0=ruleSignatureConstraintBlock();
 
                     state._fsp--;
                     if (state.failed) return current;
@@ -1327,8 +1327,8 @@ public class InternalMappingLanguageParser extends AbstractInternalAntlrParser {
                       	        }
                              		add(
                              			current, 
-                             			"constraintBlocks",
-                              		lv_constraintBlocks_12_0, 
+                             			"constraints",
+                              		lv_constraints_12_0, 
                               		"SignatureConstraintBlock");
                       	        afterParserOrEnumRuleCall();
                       	    
@@ -1380,19 +1380,19 @@ public class InternalMappingLanguageParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:488:2: ( (lv_constraintBlocks_15_0= ruleSignatureConstraintBlock ) )
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:489:1: (lv_constraintBlocks_15_0= ruleSignatureConstraintBlock )
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:488:2: ( (lv_constraints_15_0= ruleSignatureConstraintBlock ) )
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:489:1: (lv_constraints_15_0= ruleSignatureConstraintBlock )
                     {
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:489:1: (lv_constraintBlocks_15_0= ruleSignatureConstraintBlock )
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:490:3: lv_constraintBlocks_15_0= ruleSignatureConstraintBlock
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:489:1: (lv_constraints_15_0= ruleSignatureConstraintBlock )
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/parser/antlr/internal/InternalMappingLanguage.g:490:3: lv_constraints_15_0= ruleSignatureConstraintBlock
                     {
                     if ( state.backtracking==0 ) {
                        
-                      	        newCompositeNode(grammarAccess.getMappingAccess().getConstraintBlocksSignatureConstraintBlockParserRuleCall_0_3_0_5_0()); 
+                      	        newCompositeNode(grammarAccess.getMappingAccess().getConstraintsSignatureConstraintBlockParserRuleCall_0_3_0_5_0()); 
                       	    
                     }
                     pushFollow(FOLLOW_ruleSignatureConstraintBlock_in_ruleMapping893);
-                    lv_constraintBlocks_15_0=ruleSignatureConstraintBlock();
+                    lv_constraints_15_0=ruleSignatureConstraintBlock();
 
                     state._fsp--;
                     if (state.failed) return current;
@@ -1403,8 +1403,8 @@ public class InternalMappingLanguageParser extends AbstractInternalAntlrParser {
                       	        }
                              		add(
                              			current, 
-                             			"constraintBlocks",
-                              		lv_constraintBlocks_15_0, 
+                             			"constraints",
+                              		lv_constraints_15_0, 
                               		"SignatureConstraintBlock");
                       	        afterParserOrEnumRuleCall();
                       	    

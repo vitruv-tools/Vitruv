@@ -448,16 +448,16 @@ ruleMapping returns [EObject current=null]
 )(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getMappingAccess().getConstraintBlocksSignatureConstraintBlockParserRuleCall_0_3_0_2_0()); 
+	        newCompositeNode(grammarAccess.getMappingAccess().getConstraintsSignatureConstraintBlockParserRuleCall_0_3_0_2_0()); 
 	    }
-		lv_constraintBlocks_12_0=ruleSignatureConstraintBlock		{
+		lv_constraints_12_0=ruleSignatureConstraintBlock		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getMappingRule());
 	        }
        		add(
        			$current, 
-       			"constraintBlocks",
-        		lv_constraintBlocks_12_0, 
+       			"constraints",
+        		lv_constraints_12_0, 
         		"SignatureConstraintBlock");
 	        afterParserOrEnumRuleCall();
 	    }
@@ -488,16 +488,16 @@ ruleMapping returns [EObject current=null]
 )(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getMappingAccess().getConstraintBlocksSignatureConstraintBlockParserRuleCall_0_3_0_5_0()); 
+	        newCompositeNode(grammarAccess.getMappingAccess().getConstraintsSignatureConstraintBlockParserRuleCall_0_3_0_5_0()); 
 	    }
-		lv_constraintBlocks_15_0=ruleSignatureConstraintBlock		{
+		lv_constraints_15_0=ruleSignatureConstraintBlock		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getMappingRule());
 	        }
        		add(
        			$current, 
-       			"constraintBlocks",
-        		lv_constraintBlocks_15_0, 
+       			"constraints",
+        		lv_constraints_15_0, 
         		"SignatureConstraintBlock");
 	        afterParserOrEnumRuleCall();
 	    }

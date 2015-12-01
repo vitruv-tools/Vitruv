@@ -49,6 +49,7 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression
 
 class MappingLanguageGenerator {
 	def doGenerate(Resource input) {
@@ -87,7 +88,7 @@ class MappingLanguageGenerator {
 		private IFileSystemAccess fsa
 		private List<Import> imports
 		private extension EMFGeneratorHelper emfGeneratorHelper
-		private extension NameProvider nameProvider
+		private extension MappingLanguageGeneratorNameProvider nameProvider
 		
 		private extension ConstraintLanguageGenerator clg
 		
@@ -97,7 +98,7 @@ class MappingLanguageGenerator {
 			this.file = file
 			this.pkgName = file.pluginName + ".generated"
 			this.fsa = PreProcessingFileSystemAccess.createJavaFormattingFSA(fsa)
-			this.nameProvider = new NameProvider(pkgName)
+			this.nameProvider = new MappingLanguageGeneratorNameProvider(pkgName)
 		}
 		
 		public def getPkgNames() {
@@ -131,70 +132,7 @@ class MappingLanguageGenerator {
 			emfGeneratorHelper.generateCode(fsa)
 		}
 
-		private static class NameProvider {
-			new(String pkgName) {
-				this.pkgName = pkgName
-			}
-			
-			private var anonMappingIndex = 0
-			private final String pkgName
-			
-			public def getMappingName(Mapping mapping) {
-				if ((mapping.name == null) || (mapping.name.empty)) {
-					mapping.name = mapping.nextAnonymousMappingName.toString
-				}
 
-				return mapping.name
-			}
-
-			public def nextAnonymousMappingName(Mapping mapping) {
-				'''Mapping«anonMappingIndex++»'''.toString
-			}
-
-			public def getMappedCorrespondenceName(Mapping mapping) {
-				'''«pkgName».«mapping.name»_MappedCorrespondence'''.toString
-			}
-			
-			public def getHelperClassName(Mapping mapping) {
-				'''«pkgName».«mapping.name»_Helper'''.toString
-			}
-
-			public def getWrapperName(Mapping mapping, Import imp) {
-				'''«pkgName».«mapping.mappingName»_Wrapper_«imp.name»'''.toString
-			}
-			
-			public def getCandidateClassName(Mapping mapping, Import imp) {
-				'''«pkgName».«mapping.mappingName»_Candidate_«imp.name»'''.toString
-			}
-			
-			public def getChange2CommandTransformingClassName() {
-				'''«pkgName».MappingsChange2CommandTransforming'''.toString
-			}
-			
-			public def getMappingClassName(Mapping mapping) {
-				'''«pkgName».«mapping.name»_Mapping'''.toString
-			}
-			
-			public def getConstantsClassName() {
-				'''«pkgName».EMFWrapper'''.toString
-			}
-			
-			public def getTestClassName() {
-				'''«pkgName».test.TestBase'''.toString
-			}
-			
-			public def getWrapperFieldName(Import imp) {
-				'''«imp.name.toFirstLower»'''.toString
-			}
-			
-			public def toFirstUpperName(Import imp) {
-				'''«imp.name.toFirstUpper»'''.toString
-			}
-			
-			public def toStateName(Import imp) {
-				'''«imp.name.toUpperCase»'''.toString
-			}
-		}
 
 		private def generateMapping(Mapping mapping) {
 			if (mapping.^default) {
@@ -237,10 +175,21 @@ class MappingLanguageGenerator {
 				}
 			}
 			
-			// generate mapping class
+			val defaultContainments = newHashMap
+			
+			for (imp : imports) {
+				if (pkgs.containsKey(imp.package)) {
+					defaultContainments.put(imp, pkgs.get(imp.package).map[third?.expressions ?: #[]].flatten.filter(DefaultContainExpression))
+				}
+			}
+			
 			val fqnMapping = mapping.getMappingClassName
 			val classNameMapping = fqnMapping.toSimpleName
 			
+			val fqnMC = mapping.mappedCorrespondenceName
+			val classNameMC = fqnMC.toSimpleName
+			
+			// generate mapping class
 			fsa.generateJavaFile(fqnMapping, [ extension ih |
 				'''
 					public class «classNameMapping» implements «typeRef(MIRMappingRealization)» {
@@ -248,8 +197,14 @@ class MappingLanguageGenerator {
 						
 						@Override
 						public «typeRef(TransformationResult)» applyEChange(«typeRef(EChange)» eChange, «typeRef(Blackboard)» blackboard) {
-							// default mapping is created lazily if it is used by another mapping. do nothing here
-							return new TransformationResult();
+							// create if not already existant
+							«typeRef(TransformationResult)» result = new «typeRef(TransformationResult)»();
+							
+							if (!«fqnMC».Helper.exists()) {
+								«fqnMC».Helper.createDefaultMapping(result);
+							}
+							
+							return result;
 						}
 						
 						@Override
@@ -270,9 +225,6 @@ class MappingLanguageGenerator {
 			])
 
 			// generate mapped correspondence
-			val fqnMC = mapping.mappedCorrespondenceName
-			val classNameMC = fqnMC.toSimpleName
-			
 			fsa.generateJavaFile(fqnMC, [ extension ih |
 				'''
 					public class «classNameMC» {
@@ -347,13 +299,13 @@ class MappingLanguageGenerator {
 									«FOR wi : wrapperImports SEPARATOR ", "»«wi.wrapperFieldName»«ENDFOR»);
 							}
 							
+							public static boolean exists() {
+								«typeRef(Set)»<«classNameMC»> mcs = getAll();
+								return (mcs.size() > 0);
+							}
+							
 							public static «classNameMC» get() {
 								«typeRef(Set)»<«classNameMC»> mcs = getAll();
-								if (mcs.size() == 0) {
-									createDefaultMapping();
-									mcs = getAll();
-								}
-								
 								if (mcs.size() == 0)
 									throw new «typeRef(IllegalStateException)»("Default mapping for «classNameMC» could not be created.");
 								
@@ -363,7 +315,31 @@ class MappingLanguageGenerator {
 								return mcs.iterator().next();
 							}
 							
-							private static void createDefaultMapping() {
+							private static void checkAllContainments(«typeRef(TransformationResult)» result) {
+								«FOR imp : wrapperImports»
+									«FOR defaultContainExpression : defaultContainments.get(imp) ?: #[] SEPARATOR ";"»
+									«clg.checkAndCreateDefaultContainment(ih, #{'this' -> 'get()'}, defaultContainExpression)»
+									«ENDFOR»
+								«ENDFOR»
+									
+								boolean nonContainedFound;
+								do {
+									nonContainedFound = false;
+									«FOR imp : wrapperImports»
+									for («typeRef(EObject)» eObject : get().get«imp.toFirstUpperName»().getElements()) {
+										if (!«typeRef(MIRMappingHelper)».hasContainment(eObject, result)) {
+											// request new resource or infer it
+											// add to result
+											nonContainedFound = true;
+											final «typeRef(VURI)» resourceVURI = «typeRef(VURI)».getInstance(«typeRef(fqnMapping)».INSTANCE.getUserInteracting().askForNewResource(«typeRef(EcoreHelper)».createSensibleString(eObject)));
+											result.addRootEObjectToSave(eObject, resourceVURI);
+										}
+									}
+									«ENDFOR»
+								} while (nonContainedFound);
+							}
+							
+							public static void createDefaultMapping(«typeRef(TransformationResult)» result) {
 								«FOR triple : reducedPkgs.values»
 									«FOR namedEClass : triple.second ?: #[]»
 										«typeRef(namedEClass.type)» new_«namedEClass.name» = «eCreate(ih, namedEClass.type)»;
@@ -377,7 +353,7 @@ class MappingLanguageGenerator {
 								
 									«IF !(triple.third ?: #[]).empty»
 										«FOR constraint : (triple.third ?: #[])»
-											«enforceSignatureConstraint(ih, #{triple.first -> '''wrap«triple.first.name.toFirstUpper»'''}, constraint)»;
+											«establishSignatureConstraintOnCreate(ih, #{triple.first -> '''wrap«triple.first.name.toFirstUpper»'''}, constraint)»;
 										«ENDFOR»
 									«ELSE»
 										// no constraints for «triple.first.name»
@@ -390,6 +366,8 @@ class MappingLanguageGenerator {
 									«ENDIF»
 								«ENDFOR»);
 								mci.registerMappingForCorrespondence(stc, MAPPING);
+								
+								checkAllContainments(result);
 							}
 						}
 					}
@@ -488,7 +466,7 @@ class MappingLanguageGenerator {
 		private def Map<Object, Import> mapSignatureToImport(Mapping parent) {
 			val result = new HashMap<Object, Import>()
 			
-			val mappingData = zipAny(parent.signatures, parent.constraintBlocks, parent.inferPackagesForSignaturesAndConstraints)
+			val mappingData = zipAny(parent.signatures, parent.constraints, parent.inferPackagesForSignaturesAndConstraints)
 			if (mappingData.forall[third!=null]) {
 				mappingData.forEach[ data |
 					val imp = imports.findFirst[imp | data.third.equals(imp.package)]
@@ -652,6 +630,8 @@ class MappingLanguageGenerator {
 				}
 			}
 			
+			val defaultContainments = imports.toInvertedMap[(pkgs.get(it.package).map[third?.expressions ?: #[]].flatten.filter(DefaultContainExpression))]
+						
 			fsa.generateJavaFile(fqn, [ extension ih |
 				val classSignatureWithoutRequires = 
 					zip(wrapperClasses, wrapperFields)
@@ -707,7 +687,7 @@ class MappingLanguageGenerator {
 						
 						// required mapped correspondences
 						«FOR el : requires»
-							private «el.first» «el.second»;
+							private «el.first» «el.second»;a
 						«ENDFOR»
 						
 						«FOR el : requires»
@@ -814,11 +794,15 @@ class MappingLanguageGenerator {
 						private void checkAllContainments(«typeRef(TransformationResult)» result) {
 							«FOR imp : imports»
 							if (stateHas«imp.toFirstUpperName»()) {
+								«FOR defaultContainExpression : defaultContainments.get(imp)»
+								«clg.checkAndCreateDefaultContainment(ih, #{}, defaultContainExpression)»
+								«ENDFOR»
+								
 								boolean nonContainedFound;
 								do {
 									nonContainedFound = false;
 									for («typeRef(EObject)» eObject : get«imp.toFirstUpperName»().getElements()) {
-										if (!hasContainment(eObject, result)) {
+										if (!«typeRef(MIRMappingHelper)».hasContainment(eObject, result)) {
 											// request new resource or infer it
 											// add to result
 											nonContainedFound = true;
@@ -829,11 +813,6 @@ class MappingLanguageGenerator {
 								} while (nonContainedFound);
 							}
 							«ENDFOR»
-						}
-						
-						// TODO api?
-						private boolean hasContainment(«typeRef(EObject)» eObject, «typeRef(TransformationResult)» result) {
-							return (eObject.eContainer() != null || eObject.eResource() != null || (result.getRootEObjectsToSave().stream().anyMatch(it -> it.getFirst().equals(eObject))));
 						}
 						
 						«FOR pair : importPairs»
@@ -904,7 +883,7 @@ class MappingLanguageGenerator {
 							«IF !import2constraint.getOrDefault(pair.second, #[]).empty»
 								«FOR constraintBlock : import2constraint.getOrDefault(pair.second, #[])»
 									«FOR constraint : constraintBlock.expressions»
-										«enforceSignatureConstraint(ih, #{}, constraint)»;
+										«establishSignatureConstraintOnCreate(ih, #{}, constraint)»;
 									«ENDFOR»
 								«ENDFOR»
 							«ELSE»
@@ -1227,7 +1206,7 @@ class MappingLanguageGenerator {
 								));
 								«ENDFOR»
 								
-								«FOR mapping : file.mappings»
+								«FOR mapping : file.mappings.sortBy[^default]»
 								addMapping(«mapping.getMappingClassName».INSTANCE);
 								«ENDFOR»
 							}

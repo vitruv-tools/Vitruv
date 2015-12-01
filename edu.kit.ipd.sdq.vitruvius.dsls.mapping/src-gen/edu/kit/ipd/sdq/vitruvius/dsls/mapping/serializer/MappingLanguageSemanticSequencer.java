@@ -580,9 +580,9 @@ public class MappingLanguageSemanticSequencer extends XbaseSemanticSequencer {
 	 *         name=ValidID? 
 	 *         (requires+=RequiredMapping requires+=RequiredMapping*)? 
 	 *         signatures+=Signature 
-	 *         constraintBlocks+=SignatureConstraintBlock 
+	 *         constraints+=SignatureConstraintBlock 
 	 *         signatures+=Signature 
-	 *         constraintBlocks+=SignatureConstraintBlock 
+	 *         constraints+=SignatureConstraintBlock 
 	 *         (constraintsBody=BodyConstraintBlock submappings+=Mapping*)?
 	 *     )
 	 */

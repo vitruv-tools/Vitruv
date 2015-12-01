@@ -410,7 +410,7 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getMapping_ConstraintBlocks()
+  public EReference getMapping_ConstraintsBody()
   {
     return (EReference)mappingEClass.getEStructuralFeatures().get(5);
   }
@@ -420,19 +420,9 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getMapping_ConstraintsBody()
-  {
-    return (EReference)mappingEClass.getEStructuralFeatures().get(6);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EReference getMapping_Submappings()
   {
-    return (EReference)mappingEClass.getEStructuralFeatures().get(7);
+    return (EReference)mappingEClass.getEStructuralFeatures().get(6);
   }
 
   /**
@@ -960,7 +950,6 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     createEReference(mappingEClass, MAPPING__SIGNATURES);
     createEReference(mappingEClass, MAPPING__CONSTRAINTS);
     createEReference(mappingEClass, MAPPING__REQUIRES);
-    createEReference(mappingEClass, MAPPING__CONSTRAINT_BLOCKS);
     createEReference(mappingEClass, MAPPING__CONSTRAINTS_BODY);
     createEReference(mappingEClass, MAPPING__SUBMAPPINGS);
 
@@ -1091,7 +1080,6 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     initEReference(getMapping_Signatures(), this.getSignature(), null, "signatures", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMapping_Constraints(), this.getSignatureConstraintBlock(), null, "constraints", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMapping_Requires(), this.getRequiredMapping(), null, "requires", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMapping_ConstraintBlocks(), this.getSignatureConstraintBlock(), null, "constraintBlocks", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMapping_ConstraintsBody(), this.getBodyConstraintBlock(), null, "constraintsBody", null, 0, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMapping_Submappings(), this.getMapping(), null, "submappings", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

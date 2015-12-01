@@ -23,7 +23,7 @@ class MappingLanguageHelper {
 		// mappings and constraint blocks must have the same packages
 		// they can also be null.
 		val signatures = mapping.signatures.map[it?.package]
-		val constraints = mapping.constraintBlocks.map[it?.package]
+		val constraints = mapping.constraints.map[it?.package]
 		 
 		constraints.zipAny(signatures).map[
 				claim[first == second || first == null || second == null]

@@ -33,8 +33,8 @@ Mapping returns Mapping:
 	 ')')?
 	 
  	(
-	 	('map' signatures+=Signature constraintBlocks+=SignatureConstraintBlock
-	 	 'and' signatures+=Signature constraintBlocks+=SignatureConstraintBlock)
+	 	('map' signatures+=Signature constraints+=SignatureConstraintBlock
+	 	 'and' signatures+=Signature constraints+=SignatureConstraintBlock)
 	  	('{'
 	  		constraintsBody=BodyConstraintBlock
 	  		(submappings+=Mapping)* 

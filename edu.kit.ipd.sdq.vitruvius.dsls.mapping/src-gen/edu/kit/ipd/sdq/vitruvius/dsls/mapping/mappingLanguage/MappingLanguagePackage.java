@@ -195,22 +195,13 @@ public interface MappingLanguagePackage extends EPackage
   int MAPPING__REQUIRES = 4;
 
   /**
-   * The feature id for the '<em><b>Constraint Blocks</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MAPPING__CONSTRAINT_BLOCKS = 5;
-
-  /**
    * The feature id for the '<em><b>Constraints Body</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MAPPING__CONSTRAINTS_BODY = 6;
+  int MAPPING__CONSTRAINTS_BODY = 5;
 
   /**
    * The feature id for the '<em><b>Submappings</b></em>' containment reference list.
@@ -219,7 +210,7 @@ public interface MappingLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int MAPPING__SUBMAPPINGS = 7;
+  int MAPPING__SUBMAPPINGS = 6;
 
   /**
    * The number of structural features of the '<em>Mapping</em>' class.
@@ -228,7 +219,7 @@ public interface MappingLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int MAPPING_FEATURE_COUNT = 8;
+  int MAPPING_FEATURE_COUNT = 7;
 
   /**
    * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.SignatureImpl <em>Signature</em>}' class.
@@ -1032,17 +1023,6 @@ public interface MappingLanguagePackage extends EPackage
   EReference getMapping_Requires();
 
   /**
-   * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getConstraintBlocks <em>Constraint Blocks</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Constraint Blocks</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getConstraintBlocks()
-   * @see #getMapping()
-   * @generated
-   */
-  EReference getMapping_ConstraintBlocks();
-
-  /**
    * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getConstraintsBody <em>Constraints Body</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1703,14 +1683,6 @@ public interface MappingLanguagePackage extends EPackage
      * @generated
      */
     EReference MAPPING__REQUIRES = eINSTANCE.getMapping_Requires();
-
-    /**
-     * The meta object literal for the '<em><b>Constraint Blocks</b></em>' containment reference list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference MAPPING__CONSTRAINT_BLOCKS = eINSTANCE.getMapping_ConstraintBlocks();
 
     /**
      * The meta object literal for the '<em><b>Constraints Body</b></em>' containment reference feature.

@@ -23,7 +23,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//Mapping/signatures"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//Mapping/constraints"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//Mapping/requires"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//Mapping/constraintBlocks"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//Mapping/constraintsBody"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//Mapping/submappings"/>
     </genClasses>

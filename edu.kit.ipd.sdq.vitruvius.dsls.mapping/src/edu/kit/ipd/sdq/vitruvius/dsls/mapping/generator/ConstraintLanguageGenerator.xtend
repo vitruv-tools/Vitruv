@@ -28,6 +28,8 @@ import static extension java.util.Objects.*
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.EMFHelper.*
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import org.eclipse.emf.common.util.URI
 
 class ConstraintLanguageGenerator {
 	private static final Logger LOGGER = Logger.getLogger(ConstraintLanguageGenerator)
@@ -113,22 +115,25 @@ class ConstraintLanguageGenerator {
 	static def getJavaExpressionThatReturns(Map<Object, String> localContext,
 		ContextVariable variable, Mapping source) {
 		
-		println(localContext.toString)
+		val Map<Object, String> context = newHashMap('this' -> 'this')
+		context.putAll(localContext)
+		
+		println(context.toString)
 
 		val mappingPath = variable.requiredMappingPath?.collectRecursive ?: #[]
-		val elementPath = (mappingPath + #[variable.targetClass.import, variable.targetClass]).toList
+		val elementPath = (#['this'] + mappingPath + #[variable.targetClass.import, variable.targetClass]).toList
 		val iter = elementPath.reverseView.iterator
 		
 		val pathToElement = new ArrayList<String>
-		var EObject el = null
+		var Object el = null
 		do {
 			if (iter.hasNext) {
 				el = iter.next()
-				val nextElement = localContext.getOrDefault(el, '''get«el.tryGetName.toFirstUpper»()''')
+				val nextElement = context.getOrDefault(el, '''get«el.tryGetName.toFirstUpper»()''')
 				println('''  «el.toString» --> «nextElement.toString»''')
 				pathToElement += nextElement
 			}
-		} while (!localContext.containsKey(el) && iter.hasNext)
+		} while (!context.containsKey(el) && iter.hasNext)
 
 		pathToElement.reverse
 		return pathToElement.filterNull.join(".")
@@ -154,6 +159,10 @@ class ConstraintLanguageGenerator {
 			}
 		} while (!localContext.containsKey(el.first) && iter.hasNext)
 		pathToElement.reverse*/
+	}
+	
+	private static def dispatch String tryGetName(Object object) {
+		'''/* unnamed «object.toString» */'''
 	}
 
 	private static def dispatch String tryGetName(EObject object) {
@@ -194,12 +203,12 @@ class ConstraintLanguageGenerator {
 		return null;
 	}
 
-	def dispatch enforceSignatureConstraint(ImportHelper importHelper, Map<Object, String> localContext,
+	def dispatch establishSignatureConstraintOnCreate(ImportHelper importHelper, Map<Object, String> localContext,
 		ConstraintExpression constraint) '''
 		// unknown signature constraint expression type to enforce
 	'''
 
-	def dispatch enforceSignatureConstraint(ImportHelper importHelper, Map<Object, String> localContext,
+	def dispatch establishSignatureConstraintOnCreate(ImportHelper importHelper, Map<Object, String> localContext,
 		InExpression constraint) {
 		val manipulatedVariable = constraint.source.context
 		val feature = constraint.source.feature
@@ -212,7 +221,7 @@ class ConstraintLanguageGenerator {
 			getJavaExpressionThatReturns(localContext, target, sourceMapping))
 	}
 	
-	def dispatch enforceSignatureConstraint(ImportHelper importHelper, Map<Object, String> localContext,
+	def dispatch establishSignatureConstraintOnCreate(ImportHelper importHelper, Map<Object, String> localContext,
 		EqualsLiteralExpression constraint) {
 		val manipulatedVariable = constraint.target.context
 		val feature = constraint.target.feature
@@ -224,24 +233,43 @@ class ConstraintLanguageGenerator {
 			getJavaExpressionThatReturns(constraint.value))
 	}
 	
-	def dispatch enforceSignatureConstraint(ImportHelper importHelper, Map<Object, String> localContext,
+	def dispatch establishSignatureConstraintOnCreate(ImportHelper importHelper, Map<Object, String> localContext,
+		DefaultContainExpression constraint) '''
+			/* establish «constraint.toString»: do nothing */
+	'''
+	
+	def checkAndCreateDefaultContainment(extension ImportHelper importHelper, Map<Object, String> localContext,
 		DefaultContainExpression constraint) {
+			
+		val target = constraint.target
+		val sourceMapping = constraint.getContainerOfType(Mapping).requireNonNull
+		val targetJava = getJavaExpressionThatReturns(localContext, target, sourceMapping)
 		
 		val createContainmentExpression =
 			if (constraint.source == null) {
 				constraint.resource.claim[it != null]
 				
+				'''
+				final «typeRef(VURI)» resourceVURI = «typeRef(VURI)».getInstance(
+				«typeRef(URI)».createPlatformResourceURI("«constraint.resource»", false));
+				result.addRootEObjectToSave(«targetJava», resourceVURI);
+				'''
 			} else {
 				constraint.resource.claim[it == null]
 				
+				val manipulatedVariable = constraint.source.context
+				val feature = constraint.source.feature
 				
+				eSetOrAdd(importHelper,
+					getJavaExpressionThatReturns(localContext, manipulatedVariable, sourceMapping), feature,
+					targetJava
+				)
 			}
 		
-		val target = constraint.target
-		val sourceMapping = constraint.getContainerOfType(Mapping).requireNonNull
-		
 		'''
-			/* enforce signature constraint «constraint.toString» */
+			if (!hasContainment(«targetJava», result)) {
+				«createContainmentExpression»;
+			}
 		'''
 	}
 }

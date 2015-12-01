@@ -20,7 +20,6 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getSignatures <em>Signatures</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getConstraints <em>Constraints</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getRequires <em>Requires</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getConstraintBlocks <em>Constraint Blocks</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getConstraintsBody <em>Constraints Body</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getSubmappings <em>Submappings</em>}</li>
  * </ul>
@@ -130,22 +129,6 @@ public interface Mapping extends EObject
    * @generated
    */
   EList<RequiredMapping> getRequires();
-
-  /**
-   * Returns the value of the '<em><b>Constraint Blocks</b></em>' containment reference list.
-   * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.SignatureConstraintBlock}.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Constraint Blocks</em>' containment reference list isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Constraint Blocks</em>' containment reference list.
-   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage#getMapping_ConstraintBlocks()
-   * @model containment="true"
-   * @generated
-   */
-  EList<SignatureConstraintBlock> getConstraintBlocks();
 
   /**
    * Returns the value of the '<em><b>Constraints Body</b></em>' containment reference.

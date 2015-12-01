@@ -205,13 +205,13 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cMapKeyword_0_3_0_0 = (Keyword)cGroup_0_3_0.eContents().get(0);
 		private final Assignment cSignaturesAssignment_0_3_0_1 = (Assignment)cGroup_0_3_0.eContents().get(1);
 		private final RuleCall cSignaturesSignatureParserRuleCall_0_3_0_1_0 = (RuleCall)cSignaturesAssignment_0_3_0_1.eContents().get(0);
-		private final Assignment cConstraintBlocksAssignment_0_3_0_2 = (Assignment)cGroup_0_3_0.eContents().get(2);
-		private final RuleCall cConstraintBlocksSignatureConstraintBlockParserRuleCall_0_3_0_2_0 = (RuleCall)cConstraintBlocksAssignment_0_3_0_2.eContents().get(0);
+		private final Assignment cConstraintsAssignment_0_3_0_2 = (Assignment)cGroup_0_3_0.eContents().get(2);
+		private final RuleCall cConstraintsSignatureConstraintBlockParserRuleCall_0_3_0_2_0 = (RuleCall)cConstraintsAssignment_0_3_0_2.eContents().get(0);
 		private final Keyword cAndKeyword_0_3_0_3 = (Keyword)cGroup_0_3_0.eContents().get(3);
 		private final Assignment cSignaturesAssignment_0_3_0_4 = (Assignment)cGroup_0_3_0.eContents().get(4);
 		private final RuleCall cSignaturesSignatureParserRuleCall_0_3_0_4_0 = (RuleCall)cSignaturesAssignment_0_3_0_4.eContents().get(0);
-		private final Assignment cConstraintBlocksAssignment_0_3_0_5 = (Assignment)cGroup_0_3_0.eContents().get(5);
-		private final RuleCall cConstraintBlocksSignatureConstraintBlockParserRuleCall_0_3_0_5_0 = (RuleCall)cConstraintBlocksAssignment_0_3_0_5.eContents().get(0);
+		private final Assignment cConstraintsAssignment_0_3_0_5 = (Assignment)cGroup_0_3_0.eContents().get(5);
+		private final RuleCall cConstraintsSignatureConstraintBlockParserRuleCall_0_3_0_5_0 = (RuleCall)cConstraintsAssignment_0_3_0_5.eContents().get(0);
 		private final Group cGroup_0_3_1 = (Group)cGroup_0_3.eContents().get(1);
 		private final Keyword cLeftCurlyBracketKeyword_0_3_1_0 = (Keyword)cGroup_0_3_1.eContents().get(0);
 		private final Assignment cConstraintsBodyAssignment_0_3_1_1 = (Assignment)cGroup_0_3_1.eContents().get(1);
@@ -230,20 +230,20 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//Mapping:
 		//	{Mapping} ("mapping" name=ValidID ":")? ("when" "(" requires+=RequiredMapping ("," requires+=RequiredMapping)* ")")?
-		//	(("map" signatures+=Signature constraintBlocks+=SignatureConstraintBlock "and" signatures+=Signature
-		//	constraintBlocks+=SignatureConstraintBlock) ("{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}")?) |
-		//	"map" "{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}";
+		//	(("map" signatures+=Signature constraints+=SignatureConstraintBlock "and" signatures+=Signature
+		//	constraints+=SignatureConstraintBlock) ("{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}")?) | "map"
+		//	"{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}";
 		@Override public ParserRule getRule() { return rule; }
 
 		//{Mapping} ("mapping" name=ValidID ":")? ("when" "(" requires+=RequiredMapping ("," requires+=RequiredMapping)* ")")?
-		//(("map" signatures+=Signature constraintBlocks+=SignatureConstraintBlock "and" signatures+=Signature
-		//constraintBlocks+=SignatureConstraintBlock) ("{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}")?) |
-		//"map" "{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}"
+		//(("map" signatures+=Signature constraints+=SignatureConstraintBlock "and" signatures+=Signature
+		//constraints+=SignatureConstraintBlock) ("{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}")?) | "map"
+		//"{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}"
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		//{Mapping} ("mapping" name=ValidID ":")? ("when" "(" requires+=RequiredMapping ("," requires+=RequiredMapping)* ")")?
-		//(("map" signatures+=Signature constraintBlocks+=SignatureConstraintBlock "and" signatures+=Signature
-		//constraintBlocks+=SignatureConstraintBlock) ("{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}")?)
+		//(("map" signatures+=Signature constraints+=SignatureConstraintBlock "and" signatures+=Signature
+		//constraints+=SignatureConstraintBlock) ("{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}")?)
 		public Group getGroup_0() { return cGroup_0; }
 
 		//{Mapping}
@@ -294,12 +294,12 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//")"
 		public Keyword getRightParenthesisKeyword_0_2_4() { return cRightParenthesisKeyword_0_2_4; }
 
-		//("map" signatures+=Signature constraintBlocks+=SignatureConstraintBlock "and" signatures+=Signature
-		//constraintBlocks+=SignatureConstraintBlock) ("{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}")?
+		//("map" signatures+=Signature constraints+=SignatureConstraintBlock "and" signatures+=Signature
+		//constraints+=SignatureConstraintBlock) ("{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}")?
 		public Group getGroup_0_3() { return cGroup_0_3; }
 
-		//"map" signatures+=Signature constraintBlocks+=SignatureConstraintBlock "and" signatures+=Signature
-		//constraintBlocks+=SignatureConstraintBlock
+		//"map" signatures+=Signature constraints+=SignatureConstraintBlock "and" signatures+=Signature
+		//constraints+=SignatureConstraintBlock
 		public Group getGroup_0_3_0() { return cGroup_0_3_0; }
 
 		//"map"
@@ -311,11 +311,11 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//Signature
 		public RuleCall getSignaturesSignatureParserRuleCall_0_3_0_1_0() { return cSignaturesSignatureParserRuleCall_0_3_0_1_0; }
 
-		//constraintBlocks+=SignatureConstraintBlock
-		public Assignment getConstraintBlocksAssignment_0_3_0_2() { return cConstraintBlocksAssignment_0_3_0_2; }
+		//constraints+=SignatureConstraintBlock
+		public Assignment getConstraintsAssignment_0_3_0_2() { return cConstraintsAssignment_0_3_0_2; }
 
 		//SignatureConstraintBlock
-		public RuleCall getConstraintBlocksSignatureConstraintBlockParserRuleCall_0_3_0_2_0() { return cConstraintBlocksSignatureConstraintBlockParserRuleCall_0_3_0_2_0; }
+		public RuleCall getConstraintsSignatureConstraintBlockParserRuleCall_0_3_0_2_0() { return cConstraintsSignatureConstraintBlockParserRuleCall_0_3_0_2_0; }
 
 		//"and"
 		public Keyword getAndKeyword_0_3_0_3() { return cAndKeyword_0_3_0_3; }
@@ -326,11 +326,11 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//Signature
 		public RuleCall getSignaturesSignatureParserRuleCall_0_3_0_4_0() { return cSignaturesSignatureParserRuleCall_0_3_0_4_0; }
 
-		//constraintBlocks+=SignatureConstraintBlock
-		public Assignment getConstraintBlocksAssignment_0_3_0_5() { return cConstraintBlocksAssignment_0_3_0_5; }
+		//constraints+=SignatureConstraintBlock
+		public Assignment getConstraintsAssignment_0_3_0_5() { return cConstraintsAssignment_0_3_0_5; }
 
 		//SignatureConstraintBlock
-		public RuleCall getConstraintBlocksSignatureConstraintBlockParserRuleCall_0_3_0_5_0() { return cConstraintBlocksSignatureConstraintBlockParserRuleCall_0_3_0_5_0; }
+		public RuleCall getConstraintsSignatureConstraintBlockParserRuleCall_0_3_0_5_0() { return cConstraintsSignatureConstraintBlockParserRuleCall_0_3_0_5_0; }
 
 		//("{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}")?
 		public Group getGroup_0_3_1() { return cGroup_0_3_1; }
@@ -1333,9 +1333,9 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 
 	//Mapping:
 	//	{Mapping} ("mapping" name=ValidID ":")? ("when" "(" requires+=RequiredMapping ("," requires+=RequiredMapping)* ")")?
-	//	(("map" signatures+=Signature constraintBlocks+=SignatureConstraintBlock "and" signatures+=Signature
-	//	constraintBlocks+=SignatureConstraintBlock) ("{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}")?) |
-	//	"map" "{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}";
+	//	(("map" signatures+=Signature constraints+=SignatureConstraintBlock "and" signatures+=Signature
+	//	constraints+=SignatureConstraintBlock) ("{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}")?) | "map"
+	//	"{" constraintsBody=BodyConstraintBlock submappings+=Mapping* "}";
 	public MappingElements getMappingAccess() {
 		return pMapping;
 	}
