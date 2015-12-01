@@ -91,7 +91,7 @@ public final class CollectionBridge {
 			}
 		}
 		
-		public static <T, R> Iterable<R> mapFixed(Iterable<T> original, Function1<? super T, ? extends R> transformation) {
+		public static <T, R> List<R> mapFixed(Iterable<T> original, Function1<? super T, ? extends R> transformation) {
 			List<R> list = new ArrayList<>();
 			for (T o : original) {
 				list.add(transformation.apply(o));

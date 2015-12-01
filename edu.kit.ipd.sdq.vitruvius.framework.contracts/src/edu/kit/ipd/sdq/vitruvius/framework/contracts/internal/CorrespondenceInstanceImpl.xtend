@@ -196,6 +196,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		return correspondingTUIDLists
 	}
 
+	// TODO MK rename to reflect the fact that this method saves the correspondence model
 	override Map<String, Object> getFileExtPrefix2ObjectMapForSave() {
 		try {
 			EcoreResourceBridge::saveResource(getResource(), this.saveCorrespondenceOptions)
@@ -518,9 +519,8 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 			// re-add the entry that maps the tuid to the set if tuid lists that contain it
 			this.tuid2tuidListsMap.put(oldCurrentTUID, newSetOfoldTUIDLists)
 		] as TUID.AfterHashCodeUpdateLambda)
-		oldTUID.renameSegments(newTUID, before,
-			after
-		)
+//		oldTUID.renameSegments(newTUID, before,after)
+		oldTUID.renameOrMoveLastSegment(newTUID, before,after)
 		var Metamodel metamodel = getMetamodelHavingTUID(
 			oldTUIDString)
 		metamodel.

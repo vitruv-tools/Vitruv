@@ -168,7 +168,8 @@ class CorrespondenceTest extends VSUMTest {
 		}
 		// save instances in order to trigger saving for CorrespondenceInstance(s)
 		var VURI pcmVURI = VURI.getInstance(getPCMInstanceUri())
-		vsum.saveExistingModelInstanceOriginal(pcmVURI) // create a new vsum from disk and load correspondence instance from disk
+		vsum.saveExistingModelInstanceOriginal(pcmVURI)
+		// create a new vsum from disk and load correspondence instance from disk
 		var VSUMImpl vsum2 = testMetaRepositoryVSUMAndModelInstancesCreation()
 		var Repository repo2 = testLoadObject(vsum2, getPCMInstanceUri(), Repository)
 		var UPackage pkg2 = testLoadObject(vsum2, getUMLInstanceURI(), UPackage)
