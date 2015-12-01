@@ -770,9 +770,19 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getDefaultContainExpression_Resource()
+  public EAttribute getDefaultContainExpression_RelativeResource()
   {
     return (EAttribute)defaultContainExpressionEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getDefaultContainExpression_RelativeResourceSource()
+  {
+    return (EReference)defaultContainExpressionEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -1001,7 +1011,8 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     defaultContainExpressionEClass = createEClass(DEFAULT_CONTAIN_EXPRESSION);
     createEReference(defaultContainExpressionEClass, DEFAULT_CONTAIN_EXPRESSION__TARGET);
     createEReference(defaultContainExpressionEClass, DEFAULT_CONTAIN_EXPRESSION__SOURCE);
-    createEAttribute(defaultContainExpressionEClass, DEFAULT_CONTAIN_EXPRESSION__RESOURCE);
+    createEAttribute(defaultContainExpressionEClass, DEFAULT_CONTAIN_EXPRESSION__RELATIVE_RESOURCE);
+    createEReference(defaultContainExpressionEClass, DEFAULT_CONTAIN_EXPRESSION__RELATIVE_RESOURCE_SOURCE);
 
     equalsLiteralExpressionEClass = createEClass(EQUALS_LITERAL_EXPRESSION);
     createEReference(equalsLiteralExpressionEClass, EQUALS_LITERAL_EXPRESSION__TARGET);
@@ -1131,7 +1142,8 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     initEClass(defaultContainExpressionEClass, DefaultContainExpression.class, "DefaultContainExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getDefaultContainExpression_Target(), this.getContextVariable(), null, "target", null, 0, 1, DefaultContainExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getDefaultContainExpression_Source(), this.getFeatureOfContextVariable(), null, "source", null, 0, 1, DefaultContainExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getDefaultContainExpression_Resource(), ecorePackage.getEString(), "resource", null, 0, 1, DefaultContainExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getDefaultContainExpression_RelativeResource(), ecorePackage.getEString(), "relativeResource", null, 0, 1, DefaultContainExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getDefaultContainExpression_RelativeResourceSource(), this.getContextVariable(), null, "relativeResourceSource", null, 0, 1, DefaultContainExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(equalsLiteralExpressionEClass, EqualsLiteralExpression.class, "EqualsLiteralExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getEqualsLiteralExpression_Target(), this.getFeatureOfContextVariable(), null, "target", null, 0, 1, EqualsLiteralExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

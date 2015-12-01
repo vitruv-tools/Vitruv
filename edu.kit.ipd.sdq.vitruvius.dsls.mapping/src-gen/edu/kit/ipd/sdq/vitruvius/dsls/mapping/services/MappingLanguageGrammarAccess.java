@@ -758,24 +758,30 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cTargetAssignment_1_1_2 = (Assignment)cGroup_1_1.eContents().get(2);
 		private final RuleCall cTargetContextVariableParserRuleCall_1_1_2_0 = (RuleCall)cTargetAssignment_1_1_2.eContents().get(0);
 		private final Keyword cCommaKeyword_1_1_3 = (Keyword)cGroup_1_1.eContents().get(3);
-		private final Assignment cResourceAssignment_1_1_4 = (Assignment)cGroup_1_1.eContents().get(4);
-		private final RuleCall cResourceSTRINGTerminalRuleCall_1_1_4_0 = (RuleCall)cResourceAssignment_1_1_4.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_1_1_5 = (Keyword)cGroup_1_1.eContents().get(5);
+		private final Assignment cRelativeResourceAssignment_1_1_4 = (Assignment)cGroup_1_1.eContents().get(4);
+		private final RuleCall cRelativeResourceSTRINGTerminalRuleCall_1_1_4_0 = (RuleCall)cRelativeResourceAssignment_1_1_4.eContents().get(0);
+		private final Group cGroup_1_1_5 = (Group)cGroup_1_1.eContents().get(5);
+		private final Keyword cRelativeToKeyword_1_1_5_0 = (Keyword)cGroup_1_1_5.eContents().get(0);
+		private final Assignment cRelativeResourceSourceAssignment_1_1_5_1 = (Assignment)cGroup_1_1_5.eContents().get(1);
+		private final RuleCall cRelativeResourceSourceContextVariableParserRuleCall_1_1_5_1_0 = (RuleCall)cRelativeResourceSourceAssignment_1_1_5_1.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_1_1_5_2 = (Keyword)cGroup_1_1_5.eContents().get(2);
 		
 		//DefaultContainExpression returns ConstraintExpression:
 		//	{DefaultContainExpression} ("default-contain" "(" target=ContextVariable "," source=FeatureOfContextVariable ")" |
-		//	"default-resource" "(" target=ContextVariable "," resource=STRING ")");
+		//	"default-resource" "(" target=ContextVariable "," relativeResource=STRING ("relative-to"
+		//	relativeResourceSource=ContextVariable ")")?);
 		@Override public ParserRule getRule() { return rule; }
 
 		//{DefaultContainExpression} ("default-contain" "(" target=ContextVariable "," source=FeatureOfContextVariable ")" |
-		//"default-resource" "(" target=ContextVariable "," resource=STRING ")")
+		//"default-resource" "(" target=ContextVariable "," relativeResource=STRING ("relative-to"
+		//relativeResourceSource=ContextVariable ")")?)
 		public Group getGroup() { return cGroup; }
 
 		//{DefaultContainExpression}
 		public Action getDefaultContainExpressionAction_0() { return cDefaultContainExpressionAction_0; }
 
 		//"default-contain" "(" target=ContextVariable "," source=FeatureOfContextVariable ")" | "default-resource" "("
-		//target=ContextVariable "," resource=STRING ")"
+		//target=ContextVariable "," relativeResource=STRING ("relative-to" relativeResourceSource=ContextVariable ")")?
 		public Alternatives getAlternatives_1() { return cAlternatives_1; }
 
 		//"default-contain" "(" target=ContextVariable "," source=FeatureOfContextVariable ")"
@@ -805,7 +811,8 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//")"
 		public Keyword getRightParenthesisKeyword_1_0_5() { return cRightParenthesisKeyword_1_0_5; }
 
-		//"default-resource" "(" target=ContextVariable "," resource=STRING ")"
+		//"default-resource" "(" target=ContextVariable "," relativeResource=STRING ("relative-to"
+		//relativeResourceSource=ContextVariable ")")?
 		public Group getGroup_1_1() { return cGroup_1_1; }
 
 		//"default-resource"
@@ -823,14 +830,26 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//","
 		public Keyword getCommaKeyword_1_1_3() { return cCommaKeyword_1_1_3; }
 
-		//resource=STRING
-		public Assignment getResourceAssignment_1_1_4() { return cResourceAssignment_1_1_4; }
+		//relativeResource=STRING
+		public Assignment getRelativeResourceAssignment_1_1_4() { return cRelativeResourceAssignment_1_1_4; }
 
 		//STRING
-		public RuleCall getResourceSTRINGTerminalRuleCall_1_1_4_0() { return cResourceSTRINGTerminalRuleCall_1_1_4_0; }
+		public RuleCall getRelativeResourceSTRINGTerminalRuleCall_1_1_4_0() { return cRelativeResourceSTRINGTerminalRuleCall_1_1_4_0; }
+
+		//("relative-to" relativeResourceSource=ContextVariable ")")?
+		public Group getGroup_1_1_5() { return cGroup_1_1_5; }
+
+		//"relative-to"
+		public Keyword getRelativeToKeyword_1_1_5_0() { return cRelativeToKeyword_1_1_5_0; }
+
+		//relativeResourceSource=ContextVariable
+		public Assignment getRelativeResourceSourceAssignment_1_1_5_1() { return cRelativeResourceSourceAssignment_1_1_5_1; }
+
+		//ContextVariable
+		public RuleCall getRelativeResourceSourceContextVariableParserRuleCall_1_1_5_1_0() { return cRelativeResourceSourceContextVariableParserRuleCall_1_1_5_1_0; }
 
 		//")"
-		public Keyword getRightParenthesisKeyword_1_1_5() { return cRightParenthesisKeyword_1_1_5; }
+		public Keyword getRightParenthesisKeyword_1_1_5_2() { return cRightParenthesisKeyword_1_1_5_2; }
 	}
 
 	public class EqualsLiteralExpressionElements extends AbstractParserRuleElementFinder {
@@ -1456,7 +1475,8 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 
 	//DefaultContainExpression returns ConstraintExpression:
 	//	{DefaultContainExpression} ("default-contain" "(" target=ContextVariable "," source=FeatureOfContextVariable ")" |
-	//	"default-resource" "(" target=ContextVariable "," resource=STRING ")");
+	//	"default-resource" "(" target=ContextVariable "," relativeResource=STRING ("relative-to"
+	//	relativeResourceSource=ContextVariable ")")?);
 	public DefaultContainExpressionElements getDefaultContainExpressionAccess() {
 		return pDefaultContainExpression;
 	}

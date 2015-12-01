@@ -70,6 +70,7 @@ public class InternalMappingLanguageLexer extends Lexer {
     public static final int T__14=14;
     public static final int T__95=95;
     public static final int T__96=96;
+    public static final int T__97=97;
     public static final int RULE_DECIMAL=7;
     public static final int T__26=26;
     public static final int T__27=27;
@@ -1303,10 +1304,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__70;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:68:7: ( 'equal' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:68:9: 'equal'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:68:7: ( 'relative-to' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:68:9: 'relative-to'
             {
-            match("equal"); 
+            match("relative-to"); 
 
 
             }
@@ -1324,10 +1325,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__71;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:69:7: ( '::' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:69:9: '::'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:69:7: ( 'equal' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:69:9: 'equal'
             {
-            match("::"); 
+            match("equal"); 
 
 
             }
@@ -1345,10 +1346,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__72;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:70:7: ( 'null' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:70:9: 'null'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:70:7: ( '::' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:70:9: '::'
             {
-            match("null"); 
+            match("::"); 
 
 
             }
@@ -1366,10 +1367,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__73;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:71:7: ( 'instanceof' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:71:9: 'instanceof'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:71:7: ( 'null' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:71:9: 'null'
             {
-            match("instanceof"); 
+            match("null"); 
 
 
             }
@@ -1387,10 +1388,11 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__74;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:72:7: ( '#' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:72:9: '#'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:72:7: ( 'instanceof' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:72:9: 'instanceof'
             {
-            match('#'); 
+            match("instanceof"); 
+
 
             }
 
@@ -1407,11 +1409,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__75;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:73:7: ( 'if' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:73:9: 'if'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:73:7: ( '#' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:73:9: '#'
             {
-            match("if"); 
-
+            match('#'); 
 
             }
 
@@ -1428,10 +1429,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__76;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:74:7: ( 'else' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:74:9: 'else'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:74:7: ( 'if' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:74:9: 'if'
             {
-            match("else"); 
+            match("if"); 
 
 
             }
@@ -1449,10 +1450,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__77;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:75:7: ( 'switch' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:75:9: 'switch'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:75:7: ( 'else' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:75:9: 'else'
             {
-            match("switch"); 
+            match("else"); 
 
 
             }
@@ -1470,10 +1471,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__78;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:76:7: ( 'default' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:76:9: 'default'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:76:7: ( 'switch' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:76:9: 'switch'
             {
-            match("default"); 
+            match("switch"); 
 
 
             }
@@ -1491,10 +1492,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__79;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:77:7: ( 'case' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:77:9: 'case'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:77:7: ( 'default' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:77:9: 'default'
             {
-            match("case"); 
+            match("default"); 
 
 
             }
@@ -1512,10 +1513,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__80;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:78:7: ( 'for' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:78:9: 'for'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:78:7: ( 'case' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:78:9: 'case'
             {
-            match("for"); 
+            match("case"); 
 
 
             }
@@ -1533,10 +1534,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__81;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:79:7: ( 'while' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:79:9: 'while'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:79:7: ( 'for' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:79:9: 'for'
             {
-            match("while"); 
+            match("for"); 
 
 
             }
@@ -1554,10 +1555,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__82;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:80:7: ( 'do' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:80:9: 'do'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:80:7: ( 'while' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:80:9: 'while'
             {
-            match("do"); 
+            match("while"); 
 
 
             }
@@ -1575,10 +1576,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__83;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:81:7: ( 'new' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:81:9: 'new'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:81:7: ( 'do' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:81:9: 'do'
             {
-            match("new"); 
+            match("do"); 
 
 
             }
@@ -1596,10 +1597,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__84;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:82:7: ( 'typeof' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:82:9: 'typeof'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:82:7: ( 'new' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:82:9: 'new'
             {
-            match("typeof"); 
+            match("new"); 
 
 
             }
@@ -1617,10 +1618,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__85;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:83:7: ( 'throw' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:83:9: 'throw'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:83:7: ( 'typeof' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:83:9: 'typeof'
             {
-            match("throw"); 
+            match("typeof"); 
 
 
             }
@@ -1638,10 +1639,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__86;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:84:7: ( 'return' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:84:9: 'return'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:84:7: ( 'throw' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:84:9: 'throw'
             {
-            match("return"); 
+            match("throw"); 
 
 
             }
@@ -1659,10 +1660,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__87;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:85:7: ( 'try' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:85:9: 'try'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:85:7: ( 'return' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:85:9: 'return'
             {
-            match("try"); 
+            match("return"); 
 
 
             }
@@ -1680,10 +1681,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__88;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:86:7: ( 'finally' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:86:9: 'finally'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:86:7: ( 'try' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:86:9: 'try'
             {
-            match("finally"); 
+            match("try"); 
 
 
             }
@@ -1701,10 +1702,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__89;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:87:7: ( 'synchronized' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:87:9: 'synchronized'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:87:7: ( 'finally' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:87:9: 'finally'
             {
-            match("synchronized"); 
+            match("finally"); 
 
 
             }
@@ -1722,10 +1723,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__90;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:88:7: ( 'catch' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:88:9: 'catch'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:88:7: ( 'synchronized' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:88:9: 'synchronized'
             {
-            match("catch"); 
+            match("synchronized"); 
 
 
             }
@@ -1743,10 +1744,11 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__91;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:89:7: ( '?' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:89:9: '?'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:89:7: ( 'catch' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:89:9: 'catch'
             {
-            match('?'); 
+            match("catch"); 
+
 
             }
 
@@ -1763,10 +1765,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__92;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:90:7: ( '&' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:90:9: '&'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:90:7: ( '?' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:90:9: '?'
             {
-            match('&'); 
+            match('?'); 
 
             }
 
@@ -1783,11 +1785,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__93;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:91:7: ( 'true' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:91:9: 'true'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:91:7: ( '&' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:91:9: '&'
             {
-            match("true"); 
-
+            match('&'); 
 
             }
 
@@ -1804,10 +1805,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__94;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:92:7: ( '?.' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:92:9: '?.'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:92:7: ( 'true' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:92:9: 'true'
             {
-            match("?."); 
+            match("true"); 
 
 
             }
@@ -1825,10 +1826,11 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__95;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:93:7: ( '|' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:93:9: '|'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:93:7: ( '?.' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:93:9: '?.'
             {
-            match('|'); 
+            match("?."); 
+
 
             }
 
@@ -1845,8 +1847,28 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__96;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:94:7: ( 'var' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:94:9: 'var'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:94:7: ( '|' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:94:9: '|'
+            {
+            match('|'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "T__96"
+
+    // $ANTLR start "T__97"
+    public final void mT__97() throws RecognitionException {
+        try {
+            int _type = T__97;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:95:7: ( 'var' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:95:9: 'var'
             {
             match("var"); 
 
@@ -1859,17 +1881,17 @@ public class InternalMappingLanguageLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "T__96"
+    // $ANTLR end "T__97"
 
     // $ANTLR start "RULE_HEX"
     public final void mRULE_HEX() throws RecognitionException {
         try {
             int _type = RULE_HEX;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25061:10: ( ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )? )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25061:12: ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25170:10: ( ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )? )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25170:12: ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
             {
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25061:12: ( '0x' | '0X' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25170:12: ( '0x' | '0X' )
             int alt1=2;
             int LA1_0 = input.LA(1);
 
@@ -1897,7 +1919,7 @@ public class InternalMappingLanguageLexer extends Lexer {
             }
             switch (alt1) {
                 case 1 :
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25061:13: '0x'
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25170:13: '0x'
                     {
                     match("0x"); 
 
@@ -1905,7 +1927,7 @@ public class InternalMappingLanguageLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25061:18: '0X'
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25170:18: '0X'
                     {
                     match("0X"); 
 
@@ -1915,7 +1937,7 @@ public class InternalMappingLanguageLexer extends Lexer {
 
             }
 
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25061:24: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25170:24: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+
             int cnt2=0;
             loop2:
             do {
@@ -1953,7 +1975,7 @@ public class InternalMappingLanguageLexer extends Lexer {
                 cnt2++;
             } while (true);
 
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25061:58: ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25170:58: ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
             int alt4=2;
             int LA4_0 = input.LA(1);
 
@@ -1962,10 +1984,10 @@ public class InternalMappingLanguageLexer extends Lexer {
             }
             switch (alt4) {
                 case 1 :
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25061:59: '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25170:59: '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
                     {
                     match('#'); 
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25061:63: ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25170:63: ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
                     int alt3=2;
                     int LA3_0 = input.LA(1);
 
@@ -1983,7 +2005,7 @@ public class InternalMappingLanguageLexer extends Lexer {
                     }
                     switch (alt3) {
                         case 1 :
-                            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25061:64: ( 'b' | 'B' ) ( 'i' | 'I' )
+                            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25170:64: ( 'b' | 'B' ) ( 'i' | 'I' )
                             {
                             if ( input.LA(1)=='B'||input.LA(1)=='b' ) {
                                 input.consume();
@@ -2007,7 +2029,7 @@ public class InternalMappingLanguageLexer extends Lexer {
                             }
                             break;
                         case 2 :
-                            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25061:84: ( 'l' | 'L' )
+                            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25170:84: ( 'l' | 'L' )
                             {
                             if ( input.LA(1)=='L'||input.LA(1)=='l' ) {
                                 input.consume();
@@ -2046,11 +2068,11 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = RULE_INT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25063:10: ( '0' .. '9' ( '0' .. '9' | '_' )* )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25063:12: '0' .. '9' ( '0' .. '9' | '_' )*
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25172:10: ( '0' .. '9' ( '0' .. '9' | '_' )* )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25172:12: '0' .. '9' ( '0' .. '9' | '_' )*
             {
             matchRange('0','9'); 
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25063:21: ( '0' .. '9' | '_' )*
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25172:21: ( '0' .. '9' | '_' )*
             loop5:
             do {
                 int alt5=2;
@@ -2099,11 +2121,11 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = RULE_DECIMAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25065:14: ( RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )? )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25065:16: RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25174:14: ( RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )? )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25174:16: RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
             {
             mRULE_INT(); 
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25065:25: ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )?
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25174:25: ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )?
             int alt7=2;
             int LA7_0 = input.LA(1);
 
@@ -2112,7 +2134,7 @@ public class InternalMappingLanguageLexer extends Lexer {
             }
             switch (alt7) {
                 case 1 :
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25065:26: ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25174:26: ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT
                     {
                     if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
                         input.consume();
@@ -2123,7 +2145,7 @@ public class InternalMappingLanguageLexer extends Lexer {
                         recover(mse);
                         throw mse;}
 
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25065:36: ( '+' | '-' )?
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25174:36: ( '+' | '-' )?
                     int alt6=2;
                     int LA6_0 = input.LA(1);
 
@@ -2156,7 +2178,7 @@ public class InternalMappingLanguageLexer extends Lexer {
 
             }
 
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25065:58: ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25174:58: ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
             int alt8=3;
             int LA8_0 = input.LA(1);
 
@@ -2168,7 +2190,7 @@ public class InternalMappingLanguageLexer extends Lexer {
             }
             switch (alt8) {
                 case 1 :
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25065:59: ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' )
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25174:59: ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' )
                     {
                     if ( input.LA(1)=='B'||input.LA(1)=='b' ) {
                         input.consume();
@@ -2192,7 +2214,7 @@ public class InternalMappingLanguageLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25065:87: ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' )
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25174:87: ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' )
                     {
                     if ( input.LA(1)=='D'||input.LA(1)=='F'||input.LA(1)=='L'||input.LA(1)=='d'||input.LA(1)=='f'||input.LA(1)=='l' ) {
                         input.consume();
@@ -2225,10 +2247,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = RULE_ID;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25067:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )* )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25067:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25176:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )* )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25176:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
             {
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25067:11: ( '^' )?
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25176:11: ( '^' )?
             int alt9=2;
             int LA9_0 = input.LA(1);
 
@@ -2237,7 +2259,7 @@ public class InternalMappingLanguageLexer extends Lexer {
             }
             switch (alt9) {
                 case 1 :
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25067:11: '^'
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25176:11: '^'
                     {
                     match('^'); 
 
@@ -2255,7 +2277,7 @@ public class InternalMappingLanguageLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25067:44: ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25176:44: ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
             loop10:
             do {
                 int alt10=2;
@@ -2304,10 +2326,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = RULE_STRING;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25069:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? ) )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25069:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25178:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? ) )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25178:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
             {
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25069:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25178:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
             int alt15=2;
             int LA15_0 = input.LA(1);
 
@@ -2325,10 +2347,10 @@ public class InternalMappingLanguageLexer extends Lexer {
             }
             switch (alt15) {
                 case 1 :
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25069:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )?
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25178:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )?
                     {
                     match('\"'); 
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25069:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25178:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
                     loop11:
                     do {
                         int alt11=3;
@@ -2344,7 +2366,7 @@ public class InternalMappingLanguageLexer extends Lexer {
 
                         switch (alt11) {
                     	case 1 :
-                    	    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25069:21: '\\\\' .
+                    	    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25178:21: '\\\\' .
                     	    {
                     	    match('\\'); 
                     	    matchAny(); 
@@ -2352,7 +2374,7 @@ public class InternalMappingLanguageLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25069:28: ~ ( ( '\\\\' | '\"' ) )
+                    	    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25178:28: ~ ( ( '\\\\' | '\"' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -2372,7 +2394,7 @@ public class InternalMappingLanguageLexer extends Lexer {
                         }
                     } while (true);
 
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25069:44: ( '\"' )?
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25178:44: ( '\"' )?
                     int alt12=2;
                     int LA12_0 = input.LA(1);
 
@@ -2381,7 +2403,7 @@ public class InternalMappingLanguageLexer extends Lexer {
                     }
                     switch (alt12) {
                         case 1 :
-                            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25069:44: '\"'
+                            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25178:44: '\"'
                             {
                             match('\"'); 
 
@@ -2394,10 +2416,10 @@ public class InternalMappingLanguageLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25069:49: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )?
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25178:49: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )?
                     {
                     match('\''); 
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25069:54: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25178:54: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
                     loop13:
                     do {
                         int alt13=3;
@@ -2413,7 +2435,7 @@ public class InternalMappingLanguageLexer extends Lexer {
 
                         switch (alt13) {
                     	case 1 :
-                    	    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25069:55: '\\\\' .
+                    	    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25178:55: '\\\\' .
                     	    {
                     	    match('\\'); 
                     	    matchAny(); 
@@ -2421,7 +2443,7 @@ public class InternalMappingLanguageLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25069:62: ~ ( ( '\\\\' | '\\'' ) )
+                    	    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25178:62: ~ ( ( '\\\\' | '\\'' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -2441,7 +2463,7 @@ public class InternalMappingLanguageLexer extends Lexer {
                         }
                     } while (true);
 
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25069:79: ( '\\'' )?
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25178:79: ( '\\'' )?
                     int alt14=2;
                     int LA14_0 = input.LA(1);
 
@@ -2450,7 +2472,7 @@ public class InternalMappingLanguageLexer extends Lexer {
                     }
                     switch (alt14) {
                         case 1 :
-                            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25069:79: '\\''
+                            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25178:79: '\\''
                             {
                             match('\''); 
 
@@ -2481,12 +2503,12 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = RULE_ML_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25071:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25071:19: '/*' ( options {greedy=false; } : . )* '*/'
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25180:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25180:19: '/*' ( options {greedy=false; } : . )* '*/'
             {
             match("/*"); 
 
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25071:24: ( options {greedy=false; } : . )*
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25180:24: ( options {greedy=false; } : . )*
             loop16:
             do {
                 int alt16=2;
@@ -2511,7 +2533,7 @@ public class InternalMappingLanguageLexer extends Lexer {
 
                 switch (alt16) {
             	case 1 :
-            	    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25071:52: .
+            	    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25180:52: .
             	    {
             	    matchAny(); 
 
@@ -2541,12 +2563,12 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = RULE_SL_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25073:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25073:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25182:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25182:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
             {
             match("//"); 
 
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25073:24: (~ ( ( '\\n' | '\\r' ) ) )*
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25182:24: (~ ( ( '\\n' | '\\r' ) ) )*
             loop17:
             do {
                 int alt17=2;
@@ -2559,7 +2581,7 @@ public class InternalMappingLanguageLexer extends Lexer {
 
                 switch (alt17) {
             	case 1 :
-            	    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25073:24: ~ ( ( '\\n' | '\\r' ) )
+            	    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25182:24: ~ ( ( '\\n' | '\\r' ) )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -2579,7 +2601,7 @@ public class InternalMappingLanguageLexer extends Lexer {
                 }
             } while (true);
 
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25073:40: ( ( '\\r' )? '\\n' )?
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25182:40: ( ( '\\r' )? '\\n' )?
             int alt19=2;
             int LA19_0 = input.LA(1);
 
@@ -2588,9 +2610,9 @@ public class InternalMappingLanguageLexer extends Lexer {
             }
             switch (alt19) {
                 case 1 :
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25073:41: ( '\\r' )? '\\n'
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25182:41: ( '\\r' )? '\\n'
                     {
-                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25073:41: ( '\\r' )?
+                    // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25182:41: ( '\\r' )?
                     int alt18=2;
                     int LA18_0 = input.LA(1);
 
@@ -2599,7 +2621,7 @@ public class InternalMappingLanguageLexer extends Lexer {
                     }
                     switch (alt18) {
                         case 1 :
-                            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25073:41: '\\r'
+                            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25182:41: '\\r'
                             {
                             match('\r'); 
 
@@ -2631,10 +2653,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = RULE_WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25075:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25075:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25184:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25184:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             {
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25075:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25184:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             int cnt20=0;
             loop20:
             do {
@@ -2688,8 +2710,8 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = RULE_ANY_OTHER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25077:16: ( . )
-            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25077:18: .
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25186:16: ( . )
+            // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:25186:18: .
             {
             matchAny(); 
 
@@ -2704,8 +2726,8 @@ public class InternalMappingLanguageLexer extends Lexer {
     // $ANTLR end "RULE_ANY_OTHER"
 
     public void mTokens() throws RecognitionException {
-        // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:1:8: ( T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | T__34 | T__35 | T__36 | T__37 | T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | T__44 | T__45 | T__46 | T__47 | T__48 | T__49 | T__50 | T__51 | T__52 | T__53 | T__54 | T__55 | T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | T__66 | T__67 | T__68 | T__69 | T__70 | T__71 | T__72 | T__73 | T__74 | T__75 | T__76 | T__77 | T__78 | T__79 | T__80 | T__81 | T__82 | T__83 | T__84 | T__85 | T__86 | T__87 | T__88 | T__89 | T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_ID | RULE_STRING | RULE_ML_COMMENT | RULE_SL_COMMENT | RULE_WS | RULE_ANY_OTHER )
-        int alt21=93;
+        // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:1:8: ( T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | T__34 | T__35 | T__36 | T__37 | T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | T__44 | T__45 | T__46 | T__47 | T__48 | T__49 | T__50 | T__51 | T__52 | T__53 | T__54 | T__55 | T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | T__66 | T__67 | T__68 | T__69 | T__70 | T__71 | T__72 | T__73 | T__74 | T__75 | T__76 | T__77 | T__78 | T__79 | T__80 | T__81 | T__82 | T__83 | T__84 | T__85 | T__86 | T__87 | T__88 | T__89 | T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | T__97 | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_ID | RULE_STRING | RULE_ML_COMMENT | RULE_SL_COMMENT | RULE_WS | RULE_ANY_OTHER )
+        int alt21=94;
         alt21 = dfa21.predict(input);
         switch (alt21) {
             case 1 :
@@ -3297,63 +3319,70 @@ public class InternalMappingLanguageLexer extends Lexer {
                 }
                 break;
             case 85 :
-                // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:1:514: RULE_HEX
+                // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:1:514: T__97
+                {
+                mT__97(); 
+
+                }
+                break;
+            case 86 :
+                // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:1:520: RULE_HEX
                 {
                 mRULE_HEX(); 
 
                 }
                 break;
-            case 86 :
-                // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:1:523: RULE_INT
+            case 87 :
+                // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:1:529: RULE_INT
                 {
                 mRULE_INT(); 
 
                 }
                 break;
-            case 87 :
-                // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:1:532: RULE_DECIMAL
+            case 88 :
+                // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:1:538: RULE_DECIMAL
                 {
                 mRULE_DECIMAL(); 
 
                 }
                 break;
-            case 88 :
-                // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:1:545: RULE_ID
+            case 89 :
+                // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:1:551: RULE_ID
                 {
                 mRULE_ID(); 
 
                 }
                 break;
-            case 89 :
-                // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:1:553: RULE_STRING
+            case 90 :
+                // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:1:559: RULE_STRING
                 {
                 mRULE_STRING(); 
 
                 }
                 break;
-            case 90 :
-                // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:1:565: RULE_ML_COMMENT
+            case 91 :
+                // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:1:571: RULE_ML_COMMENT
                 {
                 mRULE_ML_COMMENT(); 
 
                 }
                 break;
-            case 91 :
-                // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:1:581: RULE_SL_COMMENT
+            case 92 :
+                // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:1:587: RULE_SL_COMMENT
                 {
                 mRULE_SL_COMMENT(); 
 
                 }
                 break;
-            case 92 :
-                // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:1:597: RULE_WS
+            case 93 :
+                // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:1:603: RULE_WS
                 {
                 mRULE_WS(); 
 
                 }
                 break;
-            case 93 :
-                // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:1:605: RULE_ANY_OTHER
+            case 94 :
+                // ../edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui/src-gen/edu/kit/ipd/sdq/vitruvius/dsls/mapping/ui/contentassist/antlr/internal/InternalMappingLanguage.g:1:611: RULE_ANY_OTHER
                 {
                 mRULE_ANY_OTHER(); 
 
@@ -3367,19 +3396,19 @@ public class InternalMappingLanguageLexer extends Lexer {
 
     protected DFA21 dfa21 = new DFA21(this);
     static final String DFA21_eotS =
-        "\1\uffff\1\60\1\62\1\64\1\70\1\73\1\77\1\102\1\106\1\110\1\112\1\114\1\116\1\120\1\123\6\70\1\143\3\70\10\uffff\2\70\1\uffff\2\70\2\172\1\55\5\uffff\1\u0080\6\uffff\3\70\21\uffff\1\u0085\5\uffff\1\u0087\4\uffff\11\70\1\u0093\1\u0094\1\70\1\u0096\1\70\2\uffff\4\70\10\uffff\1\70\1\u009f\2\70\1\uffff\4\70\2\uffff\1\172\5\uffff\1\70\1\u00a8\1\70\4\uffff\1\u00aa\1\u00ab\11\70\2\uffff\1\70\1\uffff\1\u00b6\3\70\1\u00bb\3\70\1\uffff\1\70\1\u00c0\2\70\1\u00c3\3\70\1\uffff\1\70\2\uffff\2\70\1\u00ca\7\70\1\uffff\1\70\1\u00d3\2\70\1\uffff\1\u00d6\2\70\1\u00d9\1\uffff\2\70\1\uffff\1\u00dc\1\70\1\u00de\2\70\1\u00e2\1\uffff\1\70\1\u00e4\6\70\1\uffff\1\u00eb\1\70\1\uffff\1\u00ed\1\70\1\uffff\1\70\1\u00f0\1\uffff\1\70\1\uffff\3\70\1\uffff\1\u00f5\1\uffff\1\u00f6\1\70\1\u00f8\2\70\1\u00fb\1\uffff\1\70\1\uffff\1\70\1\u00fe\1\uffff\1\u00ff\1\u0100\1\u0101\1\70\2\uffff\1\70\1\uffff\2\70\1\uffff\1\u0106\1\u0108\4\uffff\4\70\3\uffff\1\u010f\2\70\1\u0112\3\uffff\1\70\1\u0114\1\uffff\1\70\1\uffff\1\u0116\1\uffff";
+        "\1\uffff\1\60\1\62\1\64\1\70\1\73\1\77\1\102\1\106\1\110\1\112\1\114\1\116\1\120\1\123\6\70\1\143\3\70\10\uffff\3\70\1\uffff\1\70\2\173\1\55\5\uffff\1\u0080\6\uffff\3\70\21\uffff\1\u0085\5\uffff\1\u0087\4\uffff\11\70\1\u0093\1\u0094\1\70\1\u0096\1\70\2\uffff\4\70\10\uffff\1\70\1\u009f\3\70\1\uffff\3\70\1\uffff\1\173\6\uffff\1\70\1\u00a9\1\70\4\uffff\1\u00ab\1\u00ac\11\70\2\uffff\1\70\1\uffff\1\u00b7\3\70\1\u00bc\3\70\1\uffff\3\70\1\u00c3\2\70\1\u00c6\2\70\1\uffff\1\70\2\uffff\2\70\1\u00cc\7\70\1\uffff\1\70\1\u00d5\2\70\1\uffff\1\u00d8\4\70\1\u00dd\1\uffff\2\70\1\uffff\1\u00e0\1\u00e1\2\70\1\u00e5\1\uffff\1\70\1\u00e7\6\70\1\uffff\1\u00ee\1\70\1\uffff\1\u00f0\3\70\1\uffff\1\70\1\u00f5\2\uffff\3\70\1\uffff\1\u00f9\1\uffff\1\u00fa\1\70\1\u00fc\2\70\1\u00ff\1\uffff\1\70\1\uffff\2\70\1\u0103\1\u0104\1\uffff\1\u0105\1\u0106\1\70\2\uffff\1\70\1\uffff\2\70\1\uffff\1\u010b\1\u010d\1\70\4\uffff\4\70\3\uffff\1\70\1\u0116\2\70\1\u0119\4\uffff\1\70\1\u011b\1\uffff\1\70\1\uffff\1\u011d\1\uffff";
     static final String DFA21_eofS =
-        "\u0117\uffff";
+        "\u011e\uffff";
     static final String DFA21_minS =
-        "\1\0\1\75\1\174\1\46\1\141\1\53\1\55\2\52\3\75\1\76\2\56\1\141\1\154\1\164\1\146\1\145\1\156\1\72\2\141\1\150\10\uffff\2\145\1\uffff\1\150\1\145\2\60\1\44\5\uffff\1\75\6\uffff\1\154\1\162\1\156\21\uffff\1\75\5\uffff\1\74\4\uffff\1\154\1\164\1\165\1\163\1\141\1\160\1\151\1\156\1\160\2\44\1\156\1\44\1\144\2\uffff\1\145\1\163\1\160\1\145\10\uffff\1\146\1\44\1\154\1\167\1\uffff\1\160\1\162\1\165\1\164\2\uffff\1\60\5\uffff\1\163\1\44\1\141\4\uffff\2\44\1\145\1\141\1\145\1\164\1\145\1\164\1\143\1\157\1\164\2\uffff\1\145\1\uffff\1\44\1\141\1\145\1\143\1\44\1\156\1\154\1\141\1\uffff\1\154\1\44\1\145\1\157\1\44\1\145\1\165\1\145\1\uffff\1\154\2\uffff\1\156\1\154\1\44\1\151\1\162\1\143\1\150\1\162\1\141\1\162\1\uffff\1\164\1\44\1\150\1\151\1\uffff\1\44\1\145\1\165\1\44\1\uffff\1\157\1\167\1\uffff\1\44\1\162\1\44\1\154\1\144\1\44\1\uffff\1\143\1\44\1\150\1\162\1\164\1\156\1\141\1\145\1\uffff\1\44\1\156\1\uffff\1\44\1\154\1\uffff\1\146\1\44\1\uffff\1\156\1\uffff\1\171\1\163\1\151\1\uffff\1\44\1\uffff\1\44\1\157\1\44\1\143\1\164\1\44\1\uffff\1\147\1\uffff\1\164\1\44\1\uffff\3\44\1\157\2\uffff\1\156\1\uffff\2\145\1\uffff\2\44\4\uffff\1\156\1\151\1\157\1\163\1\uffff\1\143\1\uffff\1\44\1\172\1\146\1\44\3\uffff\1\145\1\44\1\uffff\1\144\1\uffff\1\44\1\uffff";
+        "\1\0\1\75\1\174\1\46\1\141\1\53\1\55\2\52\3\75\1\76\2\56\1\141\1\154\1\164\1\146\1\145\1\156\1\72\2\141\1\150\10\uffff\3\145\1\uffff\1\150\2\60\1\44\5\uffff\1\75\6\uffff\1\154\1\162\1\156\21\uffff\1\75\5\uffff\1\74\4\uffff\1\154\1\164\1\165\1\163\1\141\1\160\1\151\1\156\1\160\2\44\1\156\1\44\1\144\2\uffff\1\145\1\163\1\160\1\145\10\uffff\1\146\1\44\2\154\1\167\1\uffff\1\160\1\162\1\165\1\uffff\1\60\6\uffff\1\163\1\44\1\141\4\uffff\2\44\1\145\1\141\1\145\1\164\1\145\1\164\1\143\1\157\1\164\2\uffff\1\145\1\uffff\1\44\1\141\1\145\1\143\1\44\1\156\1\154\1\141\1\uffff\1\141\1\165\1\154\1\44\1\145\1\157\1\44\2\145\1\uffff\1\154\2\uffff\1\156\1\154\1\44\1\151\1\162\1\143\1\150\1\162\1\141\1\162\1\uffff\1\164\1\44\1\150\1\151\1\uffff\1\44\1\145\1\165\1\164\1\162\1\44\1\uffff\1\157\1\167\1\uffff\2\44\1\154\1\144\1\44\1\uffff\1\143\1\44\1\150\1\162\1\164\1\156\1\141\1\145\1\uffff\1\44\1\156\1\uffff\1\44\1\154\1\151\1\156\1\uffff\1\146\1\44\2\uffff\1\171\1\163\1\151\1\uffff\1\44\1\uffff\1\44\1\157\1\44\1\143\1\164\1\44\1\uffff\1\147\1\uffff\1\164\1\166\2\44\1\uffff\2\44\1\157\2\uffff\1\156\1\uffff\2\145\1\uffff\2\44\1\145\4\uffff\1\156\1\151\1\157\1\163\1\uffff\1\143\1\uffff\1\55\1\44\1\172\1\146\1\44\4\uffff\1\145\1\44\1\uffff\1\144\1\uffff\1\44\1\uffff";
     static final String DFA21_maxS =
-        "\1\uffff\1\76\1\174\1\46\1\157\1\75\1\76\5\75\1\76\1\56\1\72\1\141\1\170\1\171\1\156\1\145\1\163\1\72\1\162\1\141\1\150\10\uffff\1\157\1\165\1\uffff\1\171\1\145\1\170\1\154\1\172\5\uffff\1\75\6\uffff\1\154\1\162\1\156\21\uffff\1\75\5\uffff\1\74\4\uffff\1\162\1\164\1\165\1\163\1\141\1\160\1\151\1\156\1\160\2\172\1\156\1\172\1\144\2\uffff\1\145\1\164\1\160\1\151\10\uffff\1\146\1\172\1\154\1\167\1\uffff\1\160\1\162\1\171\1\164\2\uffff\1\154\5\uffff\1\163\1\172\1\141\4\uffff\2\172\1\145\1\141\1\145\1\164\1\145\1\164\1\143\1\157\1\164\2\uffff\1\145\1\uffff\1\172\1\141\1\145\1\143\1\172\1\156\1\154\1\141\1\uffff\1\154\1\172\1\145\1\157\1\172\1\145\1\165\1\145\1\uffff\1\154\2\uffff\1\156\1\154\1\172\1\151\1\162\1\143\1\150\1\162\1\141\1\162\1\uffff\1\164\1\172\1\150\1\151\1\uffff\1\172\1\145\1\165\1\172\1\uffff\1\157\1\167\1\uffff\1\172\1\162\1\172\1\154\1\163\1\172\1\uffff\1\143\1\172\1\150\1\162\1\164\1\156\1\141\1\145\1\uffff\1\172\1\156\1\uffff\1\172\1\154\1\uffff\1\146\1\172\1\uffff\1\156\1\uffff\1\171\1\163\1\151\1\uffff\1\172\1\uffff\1\172\1\157\1\172\1\143\1\164\1\172\1\uffff\1\147\1\uffff\1\164\1\172\1\uffff\3\172\1\157\2\uffff\1\156\1\uffff\2\145\1\uffff\2\172\4\uffff\1\156\1\151\1\157\1\163\1\uffff\1\162\1\uffff\2\172\1\146\1\172\3\uffff\1\145\1\172\1\uffff\1\144\1\uffff\1\172\1\uffff";
+        "\1\uffff\1\76\1\174\1\46\1\157\1\75\1\76\5\75\1\76\1\56\1\72\1\141\1\170\1\171\1\156\1\145\1\163\1\72\1\162\1\141\1\150\10\uffff\1\157\1\145\1\165\1\uffff\1\171\1\170\1\154\1\172\5\uffff\1\75\6\uffff\1\154\1\162\1\156\21\uffff\1\75\5\uffff\1\74\4\uffff\1\162\1\164\1\165\1\163\1\141\1\160\1\151\1\156\1\160\2\172\1\156\1\172\1\144\2\uffff\1\145\1\164\1\160\1\151\10\uffff\1\146\1\172\1\164\1\154\1\167\1\uffff\1\160\1\162\1\171\1\uffff\1\154\6\uffff\1\163\1\172\1\141\4\uffff\2\172\1\145\1\141\1\145\1\164\1\145\1\164\1\143\1\157\1\164\2\uffff\1\145\1\uffff\1\172\1\141\1\145\1\143\1\172\1\156\1\154\1\141\1\uffff\1\141\1\165\1\154\1\172\1\145\1\157\1\172\2\145\1\uffff\1\154\2\uffff\1\156\1\154\1\172\1\151\1\162\1\143\1\150\1\162\1\141\1\162\1\uffff\1\164\1\172\1\150\1\151\1\uffff\1\172\1\145\1\165\1\164\1\162\1\172\1\uffff\1\157\1\167\1\uffff\2\172\1\154\1\163\1\172\1\uffff\1\143\1\172\1\150\1\162\1\164\1\156\1\141\1\145\1\uffff\1\172\1\156\1\uffff\1\172\1\154\1\151\1\156\1\uffff\1\146\1\172\2\uffff\1\171\1\163\1\151\1\uffff\1\172\1\uffff\1\172\1\157\1\172\1\143\1\164\1\172\1\uffff\1\147\1\uffff\1\164\1\166\2\172\1\uffff\2\172\1\157\2\uffff\1\156\1\uffff\2\145\1\uffff\2\172\1\145\4\uffff\1\156\1\151\1\157\1\163\1\uffff\1\162\1\uffff\1\55\2\172\1\146\1\172\4\uffff\1\145\1\172\1\uffff\1\144\1\uffff\1\172\1\uffff";
     static final String DFA21_acceptS =
-        "\31\uffff\1\55\1\56\1\57\1\62\1\63\1\64\1\65\1\66\2\uffff\1\76\5\uffff\1\130\2\131\1\134\1\135\1\uffff\1\24\1\1\1\2\1\123\1\3\1\120\3\uffff\1\130\1\5\1\36\1\27\1\6\1\21\1\37\1\30\1\7\1\32\1\31\1\10\1\132\1\133\1\33\1\11\1\34\1\uffff\1\35\1\16\1\17\1\25\1\20\1\uffff\1\40\1\26\1\122\1\117\16\uffff\1\73\1\51\4\uffff\1\55\1\56\1\57\1\62\1\63\1\64\1\65\1\66\4\uffff\1\76\4\uffff\1\125\1\126\1\uffff\1\127\1\131\1\134\1\14\1\12\3\uffff\1\15\1\13\1\22\1\23\13\uffff\1\67\1\77\1\uffff\1\50\10\uffff\1\106\10\uffff\1\104\1\uffff\1\41\1\124\12\uffff\1\61\4\uffff\1\60\4\uffff\1\107\2\uffff\1\113\6\uffff\1\100\10\uffff\1\103\2\uffff\1\54\2\uffff\1\74\2\uffff\1\121\1\uffff\1\4\3\uffff\1\72\1\uffff\1\46\6\uffff\1\116\1\uffff\1\105\2\uffff\1\111\4\uffff\1\43\1\101\1\uffff\1\44\2\uffff\1\52\2\uffff\1\110\1\112\1\114\1\42\4\uffff\1\53\1\uffff\1\102\4\uffff\1\70\1\71\1\45\2\uffff\1\47\1\uffff\1\75\1\uffff\1\115";
+        "\31\uffff\1\55\1\56\1\57\1\62\1\63\1\64\1\65\1\66\3\uffff\1\77\4\uffff\1\131\2\132\1\135\1\136\1\uffff\1\24\1\1\1\2\1\124\1\3\1\121\3\uffff\1\131\1\5\1\36\1\27\1\6\1\21\1\37\1\30\1\7\1\32\1\31\1\10\1\133\1\134\1\33\1\11\1\34\1\uffff\1\35\1\16\1\17\1\25\1\20\1\uffff\1\40\1\26\1\123\1\120\16\uffff\1\74\1\51\4\uffff\1\55\1\56\1\57\1\62\1\63\1\64\1\65\1\66\5\uffff\1\77\3\uffff\1\126\1\uffff\1\127\1\130\1\132\1\135\1\14\1\12\3\uffff\1\15\1\13\1\22\1\23\13\uffff\1\67\1\100\1\uffff\1\50\10\uffff\1\107\11\uffff\1\105\1\uffff\1\41\1\125\12\uffff\1\61\4\uffff\1\60\6\uffff\1\110\2\uffff\1\114\5\uffff\1\101\10\uffff\1\104\2\uffff\1\54\4\uffff\1\75\2\uffff\1\122\1\4\3\uffff\1\73\1\uffff\1\46\6\uffff\1\117\1\uffff\1\106\4\uffff\1\112\3\uffff\1\43\1\102\1\uffff\1\44\2\uffff\1\52\3\uffff\1\113\1\111\1\115\1\42\4\uffff\1\53\1\uffff\1\103\5\uffff\1\70\1\71\1\72\1\45\2\uffff\1\47\1\uffff\1\76\1\uffff\1\116";
     static final String DFA21_specialS =
-        "\1\0\u0116\uffff}>";
+        "\1\0\u011d\uffff}>";
     static final String[] DFA21_transitionS = {
-            "\11\55\2\54\2\55\1\54\22\55\1\54\1\12\1\52\1\43\1\51\1\11\1\3\1\53\1\31\1\32\1\7\1\5\1\33\1\6\1\15\1\10\1\46\11\47\1\25\1\40\1\14\1\1\1\13\1\16\1\55\32\51\1\36\1\55\1\37\1\50\1\51\1\55\1\24\1\51\1\26\1\41\1\20\1\4\1\23\1\51\1\22\3\51\1\27\1\42\3\51\1\45\1\21\1\44\1\51\1\17\1\30\3\51\1\34\1\2\1\35\uff82\55",
+            "\11\55\2\54\2\55\1\54\22\55\1\54\1\12\1\52\1\44\1\51\1\11\1\3\1\53\1\31\1\32\1\7\1\5\1\33\1\6\1\15\1\10\1\46\11\47\1\25\1\40\1\14\1\1\1\13\1\16\1\55\32\51\1\36\1\55\1\37\1\50\1\51\1\55\1\24\1\51\1\26\1\41\1\20\1\4\1\23\1\51\1\22\3\51\1\27\1\43\3\51\1\42\1\21\1\45\1\51\1\17\1\30\3\51\1\34\1\2\1\35\uff82\55",
             "\1\56\1\57",
             "\1\61",
             "\1\63",
@@ -3413,12 +3442,12 @@ public class InternalMappingLanguageLexer extends Lexer {
             "",
             "",
             "\1\160\11\uffff\1\161",
-            "\1\163\17\uffff\1\162",
+            "\1\162",
+            "\1\164\17\uffff\1\163",
             "",
-            "\1\166\11\uffff\1\167\6\uffff\1\165",
-            "\1\170",
-            "\12\173\10\uffff\1\174\1\uffff\3\174\5\uffff\1\174\13\uffff\1\171\6\uffff\1\173\2\uffff\1\174\1\uffff\3\174\5\uffff\1\174\13\uffff\1\171",
-            "\12\173\10\uffff\1\174\1\uffff\3\174\5\uffff\1\174\22\uffff\1\173\2\uffff\1\174\1\uffff\3\174\5\uffff\1\174",
+            "\1\167\11\uffff\1\170\6\uffff\1\166",
+            "\12\172\10\uffff\1\174\1\uffff\3\174\5\uffff\1\174\13\uffff\1\171\6\uffff\1\172\2\uffff\1\174\1\uffff\3\174\5\uffff\1\174\13\uffff\1\171",
+            "\12\172\10\uffff\1\174\1\uffff\3\174\5\uffff\1\174\22\uffff\1\172\2\uffff\1\174\1\uffff\3\174\5\uffff\1\174",
             "\1\70\34\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
             "",
             "",
@@ -3493,31 +3522,30 @@ public class InternalMappingLanguageLexer extends Lexer {
             "",
             "\1\u009e",
             "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
-            "\1\u00a0",
-            "\1\u00a1",
-            "",
+            "\1\u00a0\7\uffff\1\u00a1",
             "\1\u00a2",
             "\1\u00a3",
-            "\1\u00a5\3\uffff\1\u00a4",
-            "\1\u00a6",
+            "",
+            "\1\u00a4",
+            "\1\u00a5",
+            "\1\u00a7\3\uffff\1\u00a6",
+            "",
+            "\12\172\10\uffff\1\174\1\uffff\3\174\5\uffff\1\174\22\uffff\1\172\2\uffff\1\174\1\uffff\3\174\5\uffff\1\174",
             "",
             "",
-            "\12\173\10\uffff\1\174\1\uffff\3\174\5\uffff\1\174\22\uffff\1\173\2\uffff\1\174\1\uffff\3\174\5\uffff\1\174",
             "",
             "",
             "",
             "",
-            "",
-            "\1\u00a7",
+            "\1\u00a8",
             "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
-            "\1\u00a9",
+            "\1\u00aa",
             "",
             "",
             "",
             "",
             "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
             "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
-            "\1\u00ac",
             "\1\u00ad",
             "\1\u00ae",
             "\1\u00af",
@@ -3526,135 +3554,143 @@ public class InternalMappingLanguageLexer extends Lexer {
             "\1\u00b2",
             "\1\u00b3",
             "\1\u00b4",
-            "",
-            "",
             "\1\u00b5",
             "",
+            "",
+            "\1\u00b6",
+            "",
             "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
-            "\1\u00b7",
             "\1\u00b8",
             "\1\u00b9",
-            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\17\70\1\u00ba\12\70",
-            "\1\u00bc",
+            "\1\u00ba",
+            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\17\70\1\u00bb\12\70",
             "\1\u00bd",
             "\1\u00be",
-            "",
             "\1\u00bf",
-            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
+            "",
+            "\1\u00c0",
             "\1\u00c1",
             "\1\u00c2",
             "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
             "\1\u00c4",
             "\1\u00c5",
-            "\1\u00c6",
-            "",
-            "\1\u00c7",
-            "",
-            "",
-            "\1\u00c8",
-            "\1\u00c9",
             "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
+            "\1\u00c7",
+            "\1\u00c8",
+            "",
+            "\1\u00c9",
+            "",
+            "",
+            "\1\u00ca",
             "\1\u00cb",
-            "\1\u00cc",
+            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
             "\1\u00cd",
             "\1\u00ce",
             "\1\u00cf",
             "\1\u00d0",
             "\1\u00d1",
-            "",
             "\1\u00d2",
-            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
+            "\1\u00d3",
+            "",
             "\1\u00d4",
-            "\1\u00d5",
-            "",
             "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
+            "\1\u00d6",
             "\1\u00d7",
-            "\1\u00d8",
-            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
             "",
+            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
+            "\1\u00d9",
             "\1\u00da",
             "\1\u00db",
+            "\1\u00dc",
+            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
             "",
-            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
-            "\1\u00dd",
-            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
+            "\1\u00de",
             "\1\u00df",
-            "\1\u00e0\16\uffff\1\u00e1",
+            "",
+            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
+            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
+            "\1\u00e2",
+            "\1\u00e3\16\uffff\1\u00e4",
             "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
             "",
-            "\1\u00e3",
-            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
-            "\1\u00e5",
             "\1\u00e6",
-            "\1\u00e7",
+            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
             "\1\u00e8",
             "\1\u00e9",
             "\1\u00ea",
-            "",
-            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
+            "\1\u00eb",
             "\1\u00ec",
+            "\1\u00ed",
             "",
             "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
-            "\1\u00ee",
-            "",
             "\1\u00ef",
+            "",
             "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
-            "",
             "\1\u00f1",
-            "",
             "\1\u00f2",
             "\1\u00f3",
+            "",
             "\1\u00f4",
-            "",
             "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
             "",
-            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
+            "",
+            "\1\u00f6",
             "\1\u00f7",
-            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
-            "\1\u00f9",
-            "\1\u00fa",
+            "\1\u00f8",
+            "",
             "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
             "",
-            "\1\u00fc",
-            "",
+            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
+            "\1\u00fb",
+            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
             "\1\u00fd",
+            "\1\u00fe",
             "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
             "",
-            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
-            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
-            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
+            "\1\u0100",
+            "",
+            "\1\u0101",
             "\1\u0102",
-            "",
-            "",
-            "\1\u0103",
-            "",
-            "\1\u0104",
-            "\1\u0105",
+            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
+            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
             "",
             "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
-            "\1\70\10\uffff\1\u0107\2\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
+            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
+            "\1\u0107",
             "",
             "",
-            "",
+            "\1\u0108",
             "",
             "\1\u0109",
             "\1\u010a",
-            "\1\u010b",
-            "\1\u010c",
-            "",
-            "\1\u010d\16\uffff\1\u010e",
             "",
             "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
+            "\1\70\10\uffff\1\u010c\2\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
+            "\1\u010e",
+            "",
+            "",
+            "",
+            "",
+            "\1\u010f",
             "\1\u0110",
             "\1\u0111",
-            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
+            "\1\u0112",
             "",
-            "",
-            "",
-            "\1\u0113",
-            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
+            "\1\u0113\16\uffff\1\u0114",
             "",
             "\1\u0115",
+            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
+            "\1\u0117",
+            "\1\u0118",
+            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
+            "",
+            "",
+            "",
+            "",
+            "\1\u011a",
+            "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
+            "",
+            "\1\u011c",
             "",
             "\1\70\13\uffff\12\70\7\uffff\32\70\4\uffff\1\70\1\uffff\32\70",
             ""
@@ -3690,7 +3726,7 @@ public class InternalMappingLanguageLexer extends Lexer {
             this.transition = DFA21_transition;
         }
         public String getDescription() {
-            return "1:1: Tokens : ( T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | T__34 | T__35 | T__36 | T__37 | T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | T__44 | T__45 | T__46 | T__47 | T__48 | T__49 | T__50 | T__51 | T__52 | T__53 | T__54 | T__55 | T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | T__66 | T__67 | T__68 | T__69 | T__70 | T__71 | T__72 | T__73 | T__74 | T__75 | T__76 | T__77 | T__78 | T__79 | T__80 | T__81 | T__82 | T__83 | T__84 | T__85 | T__86 | T__87 | T__88 | T__89 | T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_ID | RULE_STRING | RULE_ML_COMMENT | RULE_SL_COMMENT | RULE_WS | RULE_ANY_OTHER );";
+            return "1:1: Tokens : ( T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | T__34 | T__35 | T__36 | T__37 | T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | T__44 | T__45 | T__46 | T__47 | T__48 | T__49 | T__50 | T__51 | T__52 | T__53 | T__54 | T__55 | T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | T__66 | T__67 | T__68 | T__69 | T__70 | T__71 | T__72 | T__73 | T__74 | T__75 | T__76 | T__77 | T__78 | T__79 | T__80 | T__81 | T__82 | T__83 | T__84 | T__85 | T__86 | T__87 | T__88 | T__89 | T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | T__97 | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_ID | RULE_STRING | RULE_ML_COMMENT | RULE_SL_COMMENT | RULE_WS | RULE_ANY_OTHER );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             IntStream input = _input;
@@ -3766,13 +3802,13 @@ public class InternalMappingLanguageLexer extends Lexer {
 
                         else if ( (LA21_0=='d') ) {s = 33;}
 
-                        else if ( (LA21_0=='n') ) {s = 34;}
+                        else if ( (LA21_0=='r') ) {s = 34;}
 
-                        else if ( (LA21_0=='#') ) {s = 35;}
+                        else if ( (LA21_0=='n') ) {s = 35;}
 
-                        else if ( (LA21_0=='t') ) {s = 36;}
+                        else if ( (LA21_0=='#') ) {s = 36;}
 
-                        else if ( (LA21_0=='r') ) {s = 37;}
+                        else if ( (LA21_0=='t') ) {s = 37;}
 
                         else if ( (LA21_0=='0') ) {s = 38;}
 

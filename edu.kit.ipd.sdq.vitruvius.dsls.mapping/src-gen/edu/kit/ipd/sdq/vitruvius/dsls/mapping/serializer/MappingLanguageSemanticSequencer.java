@@ -483,7 +483,10 @@ public class MappingLanguageSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     ((target=ContextVariable source=FeatureOfContextVariable) | (target=ContextVariable resource=STRING))
+	 *     (
+	 *         (target=ContextVariable source=FeatureOfContextVariable) | 
+	 *         (target=ContextVariable relativeResource=STRING relativeResourceSource=ContextVariable?)
+	 *     )
 	 */
 	protected void sequence_DefaultContainExpression(EObject context, DefaultContainExpression semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

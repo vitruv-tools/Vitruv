@@ -114,6 +114,7 @@ public class MappingLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getDefaultContainExpressionAccess().getGroup(), "rule__DefaultContainExpression__Group__0");
 					put(grammarAccess.getDefaultContainExpressionAccess().getGroup_1_0(), "rule__DefaultContainExpression__Group_1_0__0");
 					put(grammarAccess.getDefaultContainExpressionAccess().getGroup_1_1(), "rule__DefaultContainExpression__Group_1_1__0");
+					put(grammarAccess.getDefaultContainExpressionAccess().getGroup_1_1_5(), "rule__DefaultContainExpression__Group_1_1_5__0");
 					put(grammarAccess.getEqualsLiteralExpressionAccess().getGroup(), "rule__EqualsLiteralExpression__Group__0");
 					put(grammarAccess.getAttributeEquivalenceExpressionAccess().getGroup(), "rule__AttributeEquivalenceExpression__Group__0");
 					put(grammarAccess.getFeatureOfContextVariableAccess().getGroup(), "rule__FeatureOfContextVariable__Group__0");
@@ -340,7 +341,8 @@ public class MappingLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getDefaultContainExpressionAccess().getTargetAssignment_1_0_2(), "rule__DefaultContainExpression__TargetAssignment_1_0_2");
 					put(grammarAccess.getDefaultContainExpressionAccess().getSourceAssignment_1_0_4(), "rule__DefaultContainExpression__SourceAssignment_1_0_4");
 					put(grammarAccess.getDefaultContainExpressionAccess().getTargetAssignment_1_1_2(), "rule__DefaultContainExpression__TargetAssignment_1_1_2");
-					put(grammarAccess.getDefaultContainExpressionAccess().getResourceAssignment_1_1_4(), "rule__DefaultContainExpression__ResourceAssignment_1_1_4");
+					put(grammarAccess.getDefaultContainExpressionAccess().getRelativeResourceAssignment_1_1_4(), "rule__DefaultContainExpression__RelativeResourceAssignment_1_1_4");
+					put(grammarAccess.getDefaultContainExpressionAccess().getRelativeResourceSourceAssignment_1_1_5_1(), "rule__DefaultContainExpression__RelativeResourceSourceAssignment_1_1_5_1");
 					put(grammarAccess.getEqualsLiteralExpressionAccess().getTargetAssignment_3(), "rule__EqualsLiteralExpression__TargetAssignment_3");
 					put(grammarAccess.getEqualsLiteralExpressionAccess().getValueAssignment_5(), "rule__EqualsLiteralExpression__ValueAssignment_5");
 					put(grammarAccess.getAttributeEquivalenceExpressionAccess().getLeftAssignment_3(), "rule__AttributeEquivalenceExpression__LeftAssignment_3");

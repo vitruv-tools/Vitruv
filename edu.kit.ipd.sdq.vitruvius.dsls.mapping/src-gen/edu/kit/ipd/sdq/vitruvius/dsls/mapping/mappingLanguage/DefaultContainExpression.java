@@ -14,7 +14,8 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage;
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression#getTarget <em>Target</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression#getSource <em>Source</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression#getResource <em>Resource</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression#getRelativeResource <em>Relative Resource</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression#getRelativeResourceSource <em>Relative Resource Source</em>}</li>
  * </ul>
  *
  * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage#getDefaultContainExpression()
@@ -76,29 +77,55 @@ public interface DefaultContainExpression extends ConstraintExpression
   void setSource(FeatureOfContextVariable value);
 
   /**
-   * Returns the value of the '<em><b>Resource</b></em>' attribute.
+   * Returns the value of the '<em><b>Relative Resource</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Resource</em>' attribute isn't clear,
+   * If the meaning of the '<em>Relative Resource</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Resource</em>' attribute.
-   * @see #setResource(String)
-   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage#getDefaultContainExpression_Resource()
+   * @return the value of the '<em>Relative Resource</em>' attribute.
+   * @see #setRelativeResource(String)
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage#getDefaultContainExpression_RelativeResource()
    * @model
    * @generated
    */
-  String getResource();
+  String getRelativeResource();
 
   /**
-   * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression#getResource <em>Resource</em>}' attribute.
+   * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression#getRelativeResource <em>Relative Resource</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Resource</em>' attribute.
-   * @see #getResource()
+   * @param value the new value of the '<em>Relative Resource</em>' attribute.
+   * @see #getRelativeResource()
    * @generated
    */
-  void setResource(String value);
+  void setRelativeResource(String value);
+
+  /**
+   * Returns the value of the '<em><b>Relative Resource Source</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Relative Resource Source</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Relative Resource Source</em>' containment reference.
+   * @see #setRelativeResourceSource(ContextVariable)
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage#getDefaultContainExpression_RelativeResourceSource()
+   * @model containment="true"
+   * @generated
+   */
+  ContextVariable getRelativeResourceSource();
+
+  /**
+   * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression#getRelativeResourceSource <em>Relative Resource Source</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Relative Resource Source</em>' containment reference.
+   * @see #getRelativeResourceSource()
+   * @generated
+   */
+  void setRelativeResourceSource(ContextVariable value);
 
 } // DefaultContainExpression

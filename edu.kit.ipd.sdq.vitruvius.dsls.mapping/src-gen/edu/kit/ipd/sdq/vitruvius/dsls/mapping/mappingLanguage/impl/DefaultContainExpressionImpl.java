@@ -25,7 +25,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.DefaultContainExpressionImpl#getTarget <em>Target</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.DefaultContainExpressionImpl#getSource <em>Source</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.DefaultContainExpressionImpl#getResource <em>Resource</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.DefaultContainExpressionImpl#getRelativeResource <em>Relative Resource</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.DefaultContainExpressionImpl#getRelativeResourceSource <em>Relative Resource Source</em>}</li>
  * </ul>
  *
  * @generated
@@ -53,24 +54,34 @@ public class DefaultContainExpressionImpl extends ConstraintExpressionImpl imple
   protected FeatureOfContextVariable source;
 
   /**
-   * The default value of the '{@link #getResource() <em>Resource</em>}' attribute.
+   * The default value of the '{@link #getRelativeResource() <em>Relative Resource</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getResource()
+   * @see #getRelativeResource()
    * @generated
    * @ordered
    */
-  protected static final String RESOURCE_EDEFAULT = null;
+  protected static final String RELATIVE_RESOURCE_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #getResource() <em>Resource</em>}' attribute.
+   * The cached value of the '{@link #getRelativeResource() <em>Relative Resource</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getResource()
+   * @see #getRelativeResource()
    * @generated
    * @ordered
    */
-  protected String resource = RESOURCE_EDEFAULT;
+  protected String relativeResource = RELATIVE_RESOURCE_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getRelativeResourceSource() <em>Relative Resource Source</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getRelativeResourceSource()
+   * @generated
+   * @ordered
+   */
+  protected ContextVariable relativeResourceSource;
 
   /**
    * <!-- begin-user-doc -->
@@ -194,9 +205,9 @@ public class DefaultContainExpressionImpl extends ConstraintExpressionImpl imple
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getResource()
+  public String getRelativeResource()
   {
-    return resource;
+    return relativeResource;
   }
 
   /**
@@ -204,12 +215,60 @@ public class DefaultContainExpressionImpl extends ConstraintExpressionImpl imple
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setResource(String newResource)
+  public void setRelativeResource(String newRelativeResource)
   {
-    String oldResource = resource;
-    resource = newResource;
+    String oldRelativeResource = relativeResource;
+    relativeResource = newRelativeResource;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__RESOURCE, oldResource, resource));
+      eNotify(new ENotificationImpl(this, Notification.SET, MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__RELATIVE_RESOURCE, oldRelativeResource, relativeResource));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ContextVariable getRelativeResourceSource()
+  {
+    return relativeResourceSource;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetRelativeResourceSource(ContextVariable newRelativeResourceSource, NotificationChain msgs)
+  {
+    ContextVariable oldRelativeResourceSource = relativeResourceSource;
+    relativeResourceSource = newRelativeResourceSource;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__RELATIVE_RESOURCE_SOURCE, oldRelativeResourceSource, newRelativeResourceSource);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setRelativeResourceSource(ContextVariable newRelativeResourceSource)
+  {
+    if (newRelativeResourceSource != relativeResourceSource)
+    {
+      NotificationChain msgs = null;
+      if (relativeResourceSource != null)
+        msgs = ((InternalEObject)relativeResourceSource).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__RELATIVE_RESOURCE_SOURCE, null, msgs);
+      if (newRelativeResourceSource != null)
+        msgs = ((InternalEObject)newRelativeResourceSource).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__RELATIVE_RESOURCE_SOURCE, null, msgs);
+      msgs = basicSetRelativeResourceSource(newRelativeResourceSource, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__RELATIVE_RESOURCE_SOURCE, newRelativeResourceSource, newRelativeResourceSource));
   }
 
   /**
@@ -226,6 +285,8 @@ public class DefaultContainExpressionImpl extends ConstraintExpressionImpl imple
         return basicSetTarget(null, msgs);
       case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__SOURCE:
         return basicSetSource(null, msgs);
+      case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__RELATIVE_RESOURCE_SOURCE:
+        return basicSetRelativeResourceSource(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -244,8 +305,10 @@ public class DefaultContainExpressionImpl extends ConstraintExpressionImpl imple
         return getTarget();
       case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__SOURCE:
         return getSource();
-      case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__RESOURCE:
-        return getResource();
+      case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__RELATIVE_RESOURCE:
+        return getRelativeResource();
+      case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__RELATIVE_RESOURCE_SOURCE:
+        return getRelativeResourceSource();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -266,8 +329,11 @@ public class DefaultContainExpressionImpl extends ConstraintExpressionImpl imple
       case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__SOURCE:
         setSource((FeatureOfContextVariable)newValue);
         return;
-      case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__RESOURCE:
-        setResource((String)newValue);
+      case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__RELATIVE_RESOURCE:
+        setRelativeResource((String)newValue);
+        return;
+      case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__RELATIVE_RESOURCE_SOURCE:
+        setRelativeResourceSource((ContextVariable)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -289,8 +355,11 @@ public class DefaultContainExpressionImpl extends ConstraintExpressionImpl imple
       case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__SOURCE:
         setSource((FeatureOfContextVariable)null);
         return;
-      case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__RESOURCE:
-        setResource(RESOURCE_EDEFAULT);
+      case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__RELATIVE_RESOURCE:
+        setRelativeResource(RELATIVE_RESOURCE_EDEFAULT);
+        return;
+      case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__RELATIVE_RESOURCE_SOURCE:
+        setRelativeResourceSource((ContextVariable)null);
         return;
     }
     super.eUnset(featureID);
@@ -310,8 +379,10 @@ public class DefaultContainExpressionImpl extends ConstraintExpressionImpl imple
         return target != null;
       case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__SOURCE:
         return source != null;
-      case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__RESOURCE:
-        return RESOURCE_EDEFAULT == null ? resource != null : !RESOURCE_EDEFAULT.equals(resource);
+      case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__RELATIVE_RESOURCE:
+        return RELATIVE_RESOURCE_EDEFAULT == null ? relativeResource != null : !RELATIVE_RESOURCE_EDEFAULT.equals(relativeResource);
+      case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION__RELATIVE_RESOURCE_SOURCE:
+        return relativeResourceSource != null;
     }
     return super.eIsSet(featureID);
   }
@@ -327,8 +398,8 @@ public class DefaultContainExpressionImpl extends ConstraintExpressionImpl imple
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (resource: ");
-    result.append(resource);
+    result.append(" (relativeResource: ");
+    result.append(relativeResource);
     result.append(')');
     return result.toString();
   }

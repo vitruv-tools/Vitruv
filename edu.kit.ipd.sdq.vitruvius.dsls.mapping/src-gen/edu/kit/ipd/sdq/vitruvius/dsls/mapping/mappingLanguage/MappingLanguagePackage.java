@@ -687,13 +687,22 @@ public interface MappingLanguagePackage extends EPackage
   int DEFAULT_CONTAIN_EXPRESSION__SOURCE = CONSTRAINT_EXPRESSION_FEATURE_COUNT + 1;
 
   /**
-   * The feature id for the '<em><b>Resource</b></em>' attribute.
+   * The feature id for the '<em><b>Relative Resource</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int DEFAULT_CONTAIN_EXPRESSION__RESOURCE = CONSTRAINT_EXPRESSION_FEATURE_COUNT + 2;
+  int DEFAULT_CONTAIN_EXPRESSION__RELATIVE_RESOURCE = CONSTRAINT_EXPRESSION_FEATURE_COUNT + 2;
+
+  /**
+   * The feature id for the '<em><b>Relative Resource Source</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DEFAULT_CONTAIN_EXPRESSION__RELATIVE_RESOURCE_SOURCE = CONSTRAINT_EXPRESSION_FEATURE_COUNT + 3;
 
   /**
    * The number of structural features of the '<em>Default Contain Expression</em>' class.
@@ -702,7 +711,7 @@ public interface MappingLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int DEFAULT_CONTAIN_EXPRESSION_FEATURE_COUNT = CONSTRAINT_EXPRESSION_FEATURE_COUNT + 3;
+  int DEFAULT_CONTAIN_EXPRESSION_FEATURE_COUNT = CONSTRAINT_EXPRESSION_FEATURE_COUNT + 4;
 
   /**
    * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.EqualsLiteralExpressionImpl <em>Equals Literal Expression</em>}' class.
@@ -1404,15 +1413,26 @@ public interface MappingLanguagePackage extends EPackage
   EReference getDefaultContainExpression_Source();
 
   /**
-   * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression#getResource <em>Resource</em>}'.
+   * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression#getRelativeResource <em>Relative Resource</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Resource</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression#getResource()
+   * @return the meta object for the attribute '<em>Relative Resource</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression#getRelativeResource()
    * @see #getDefaultContainExpression()
    * @generated
    */
-  EAttribute getDefaultContainExpression_Resource();
+  EAttribute getDefaultContainExpression_RelativeResource();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression#getRelativeResourceSource <em>Relative Resource Source</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Relative Resource Source</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression#getRelativeResourceSource()
+   * @see #getDefaultContainExpression()
+   * @generated
+   */
+  EReference getDefaultContainExpression_RelativeResourceSource();
 
   /**
    * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.EqualsLiteralExpression <em>Equals Literal Expression</em>}'.
@@ -2003,12 +2023,20 @@ public interface MappingLanguagePackage extends EPackage
     EReference DEFAULT_CONTAIN_EXPRESSION__SOURCE = eINSTANCE.getDefaultContainExpression_Source();
 
     /**
-     * The meta object literal for the '<em><b>Resource</b></em>' attribute feature.
+     * The meta object literal for the '<em><b>Relative Resource</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute DEFAULT_CONTAIN_EXPRESSION__RESOURCE = eINSTANCE.getDefaultContainExpression_Resource();
+    EAttribute DEFAULT_CONTAIN_EXPRESSION__RELATIVE_RESOURCE = eINSTANCE.getDefaultContainExpression_RelativeResource();
+
+    /**
+     * The meta object literal for the '<em><b>Relative Resource Source</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference DEFAULT_CONTAIN_EXPRESSION__RELATIVE_RESOURCE_SOURCE = eINSTANCE.getDefaultContainExpression_RelativeResourceSource();
 
     /**
      * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.EqualsLiteralExpressionImpl <em>Equals Literal Expression</em>}' class.

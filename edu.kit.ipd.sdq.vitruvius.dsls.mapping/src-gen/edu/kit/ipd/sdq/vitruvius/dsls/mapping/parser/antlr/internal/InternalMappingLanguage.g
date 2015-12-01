@@ -1176,9 +1176,9 @@ ruleDefaultContainExpression returns [EObject current=null]
     }
 (
 (
-		lv_resource_11_0=RULE_STRING
+		lv_relativeResource_11_0=RULE_STRING
 		{
-			newLeafNode(lv_resource_11_0, grammarAccess.getDefaultContainExpressionAccess().getResourceSTRINGTerminalRuleCall_1_1_4_0()); 
+			newLeafNode(lv_relativeResource_11_0, grammarAccess.getDefaultContainExpressionAccess().getRelativeResourceSTRINGTerminalRuleCall_1_1_4_0()); 
 		}
 		{
 	        if ($current==null) {
@@ -1186,17 +1186,39 @@ ruleDefaultContainExpression returns [EObject current=null]
 	        }
        		setWithLastConsumed(
        			$current, 
-       			"resource",
-        		lv_resource_11_0, 
+       			"relativeResource",
+        		lv_relativeResource_11_0, 
         		"STRING");
 	    }
 
 )
-)	otherlv_12=')' 
+)(	otherlv_12='relative-to' 
     {
-    	newLeafNode(otherlv_12, grammarAccess.getDefaultContainExpressionAccess().getRightParenthesisKeyword_1_1_5());
+    	newLeafNode(otherlv_12, grammarAccess.getDefaultContainExpressionAccess().getRelativeToKeyword_1_1_5_0());
     }
-)))
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getDefaultContainExpressionAccess().getRelativeResourceSourceContextVariableParserRuleCall_1_1_5_1_0()); 
+	    }
+		lv_relativeResourceSource_13_0=ruleContextVariable		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getDefaultContainExpressionRule());
+	        }
+       		set(
+       			$current, 
+       			"relativeResourceSource",
+        		lv_relativeResourceSource_13_0, 
+        		"ContextVariable");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)	otherlv_14=')' 
+    {
+    	newLeafNode(otherlv_14, grammarAccess.getDefaultContainExpressionAccess().getRightParenthesisKeyword_1_1_5_2());
+    }
+)?)))
 ;
 
 

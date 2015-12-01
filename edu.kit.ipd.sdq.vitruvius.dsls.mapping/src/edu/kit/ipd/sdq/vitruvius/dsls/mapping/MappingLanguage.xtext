@@ -111,7 +111,7 @@ InExpression returns ConstraintExpression:
 DefaultContainExpression returns ConstraintExpression:
 	{DefaultContainExpression}
 	(('default-contain' '(' target=ContextVariable ',' source=FeatureOfContextVariable ')')
-	| ('default-resource' '(' target=ContextVariable ',' resource=STRING ')'))
+	| ('default-resource' '(' target=ContextVariable ',' relativeResource=STRING ('relative-to' relativeResourceSource=ContextVariable ')')?))
 ;
 
 EqualsLiteralExpression returns ConstraintExpression:

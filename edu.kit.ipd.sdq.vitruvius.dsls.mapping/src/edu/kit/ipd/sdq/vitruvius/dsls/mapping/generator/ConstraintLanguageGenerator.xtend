@@ -30,6 +30,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.EMFHelper.*
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import org.eclipse.emf.common.util.URI
+import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRMappingHelper
 
 class ConstraintLanguageGenerator {
 	private static final Logger LOGGER = Logger.getLogger(ConstraintLanguageGenerator)
@@ -247,15 +248,19 @@ class ConstraintLanguageGenerator {
 		
 		val createContainmentExpression =
 			if (constraint.source == null) {
-				constraint.resource.claim[it != null]
+				constraint.relativeResource.claim[it != null]
 				
+				val sourceJava =
+					constraint.relativeResourceSource?.apply[getJavaExpressionThatReturns(localContext, it, sourceMapping)] ?: "null"
+					
 				'''
-				final «typeRef(VURI)» resourceVURI = «typeRef(VURI)».getInstance(
-				«typeRef(URI)».createPlatformResourceURI("«constraint.resource»", false));
-				result.addRootEObjectToSave(«targetJava», resourceVURI);
+				final «typeRef(VURI)» resourceVURI = «typeRef(MIRMappingHelper)».resolveIfRelative(«sourceJava», "«constraint.relativeResource»");
+				if (resourceVURI != null) {
+					result.addRootEObjectToSave(«targetJava», resourceVURI);
+				}
 				'''
 			} else {
-				constraint.resource.claim[it == null]
+				constraint.relativeResource.claim[it == null]
 				
 				val manipulatedVariable = constraint.source.context
 				val feature = constraint.source.feature

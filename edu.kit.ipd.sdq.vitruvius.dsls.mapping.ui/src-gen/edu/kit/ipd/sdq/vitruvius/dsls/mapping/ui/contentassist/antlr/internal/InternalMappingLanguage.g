@@ -7270,9 +7270,9 @@ rule__DefaultContainExpression__Group_1_1__4__Impl
     }
 :
 (
-{ before(grammarAccess.getDefaultContainExpressionAccess().getResourceAssignment_1_1_4()); }
-(rule__DefaultContainExpression__ResourceAssignment_1_1_4)
-{ after(grammarAccess.getDefaultContainExpressionAccess().getResourceAssignment_1_1_4()); }
+{ before(grammarAccess.getDefaultContainExpressionAccess().getRelativeResourceAssignment_1_1_4()); }
+(rule__DefaultContainExpression__RelativeResourceAssignment_1_1_4)
+{ after(grammarAccess.getDefaultContainExpressionAccess().getRelativeResourceAssignment_1_1_4()); }
 )
 
 ;
@@ -7298,11 +7298,9 @@ rule__DefaultContainExpression__Group_1_1__5__Impl
     }
 :
 (
-{ before(grammarAccess.getDefaultContainExpressionAccess().getRightParenthesisKeyword_1_1_5()); }
-
-	')' 
-
-{ after(grammarAccess.getDefaultContainExpressionAccess().getRightParenthesisKeyword_1_1_5()); }
+{ before(grammarAccess.getDefaultContainExpressionAccess().getGroup_1_1_5()); }
+(rule__DefaultContainExpression__Group_1_1_5__0)?
+{ after(grammarAccess.getDefaultContainExpressionAccess().getGroup_1_1_5()); }
 )
 
 ;
@@ -7315,6 +7313,102 @@ finally {
 
 
 
+
+
+
+
+
+
+
+
+rule__DefaultContainExpression__Group_1_1_5__0
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+	rule__DefaultContainExpression__Group_1_1_5__0__Impl
+	rule__DefaultContainExpression__Group_1_1_5__1
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__DefaultContainExpression__Group_1_1_5__0__Impl
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getDefaultContainExpressionAccess().getRelativeToKeyword_1_1_5_0()); }
+
+	'relative-to' 
+
+{ after(grammarAccess.getDefaultContainExpressionAccess().getRelativeToKeyword_1_1_5_0()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+rule__DefaultContainExpression__Group_1_1_5__1
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+	rule__DefaultContainExpression__Group_1_1_5__1__Impl
+	rule__DefaultContainExpression__Group_1_1_5__2
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__DefaultContainExpression__Group_1_1_5__1__Impl
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getDefaultContainExpressionAccess().getRelativeResourceSourceAssignment_1_1_5_1()); }
+(rule__DefaultContainExpression__RelativeResourceSourceAssignment_1_1_5_1)
+{ after(grammarAccess.getDefaultContainExpressionAccess().getRelativeResourceSourceAssignment_1_1_5_1()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+rule__DefaultContainExpression__Group_1_1_5__2
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+	rule__DefaultContainExpression__Group_1_1_5__2__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__DefaultContainExpression__Group_1_1_5__2__Impl
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getDefaultContainExpressionAccess().getRightParenthesisKeyword_1_1_5_2()); }
+
+	')' 
+
+{ after(grammarAccess.getDefaultContainExpressionAccess().getRightParenthesisKeyword_1_1_5_2()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
 
 
 
@@ -22497,14 +22591,29 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__DefaultContainExpression__ResourceAssignment_1_1_4
+rule__DefaultContainExpression__RelativeResourceAssignment_1_1_4
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getDefaultContainExpressionAccess().getResourceSTRINGTerminalRuleCall_1_1_4_0()); }
-	RULE_STRING{ after(grammarAccess.getDefaultContainExpressionAccess().getResourceSTRINGTerminalRuleCall_1_1_4_0()); }
+{ before(grammarAccess.getDefaultContainExpressionAccess().getRelativeResourceSTRINGTerminalRuleCall_1_1_4_0()); }
+	RULE_STRING{ after(grammarAccess.getDefaultContainExpressionAccess().getRelativeResourceSTRINGTerminalRuleCall_1_1_4_0()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__DefaultContainExpression__RelativeResourceSourceAssignment_1_1_5_1
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getDefaultContainExpressionAccess().getRelativeResourceSourceContextVariableParserRuleCall_1_1_5_1_0()); }
+	ruleContextVariable{ after(grammarAccess.getDefaultContainExpressionAccess().getRelativeResourceSourceContextVariableParserRuleCall_1_1_5_1_0()); }
 )
 
 ;
