@@ -107,4 +107,13 @@ public final class MIRMappingHelper {
 			EcoreUtil.remove(obj);
 		}
 	}
+	
+	public static boolean hasContainment(EObject eObject) {
+		return (eObject.eContainer() != null || eObject.eResource() != null);
+	}
+	
+	public static boolean hasContainment(EObject eObject, TransformationResult result) {
+		return (hasContainment(eObject)
+				|| ((result != null) && (result.getRootEObjectsToSave().stream().anyMatch(it -> it.getFirst().equals(eObject)))));
+	}
 }
