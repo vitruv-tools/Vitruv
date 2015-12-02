@@ -46,8 +46,8 @@ public class ChangePreparingImpl implements ChangePreparing {
         final List<Change> preparedChanges = new ArrayList<Change>();
         for (final Change change : changesForPreparation) {
             if (!this.changePreparerMap.containsKey(change.getClass())) {
-                logger.warn("Could not find ChangeSynchronizer for change " + change.getClass().getSimpleName()
-                        + ". Can not synchronize change " + change);
+                logger.warn("Could not find ConcreteChangePreparer for change " + change.getClass().getSimpleName()
+                        + ". Can not prepare change " + change);
             }
             final Change preparedChange = this.changePreparerMap.get(change.getClass()).prepareChange(change);
             if (null != preparedChange) {
