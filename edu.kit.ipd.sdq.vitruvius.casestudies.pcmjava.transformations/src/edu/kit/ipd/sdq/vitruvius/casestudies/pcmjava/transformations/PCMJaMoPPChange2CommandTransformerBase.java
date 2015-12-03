@@ -113,7 +113,7 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
                 commands.addAll(this.transformCompositeChange((CompositeChange) change, blackboard));
                 continue;
             } else if (change instanceof EMFModelChange) {
-                this.transformChange2Command((EMFModelChange) change, blackboard);
+                commands.add(this.transformChange2Command((EMFModelChange) change, blackboard));
             }
         }
         return commands;

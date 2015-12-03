@@ -125,10 +125,11 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 			val innerDecs = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(oldAffectedEObject, InnerDeclaration)
 			if (!innerDecs.nullOrEmpty) {
 				for (innerDec : innerDecs) {
+					val oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(innerDec)
 					innerDec.datatype_InnerDeclaration = TypeReferenceCorrespondenceHelper.
 						getCorrespondingPCMDataTypeForTypeReference(newTypeReference, blackboard.correspondenceInstance,
 							userInteracting, null)
-					blackboard.correspondenceInstance.updateTUID(oldAffectedEObject, newValue)
+					blackboard.correspondenceInstance.updateTUID(oldTUID, innerDec)
 				}
 			}
 

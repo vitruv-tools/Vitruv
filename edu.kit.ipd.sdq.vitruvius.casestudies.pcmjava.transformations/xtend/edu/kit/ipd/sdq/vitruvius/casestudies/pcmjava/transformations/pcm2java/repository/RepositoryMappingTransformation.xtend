@@ -95,6 +95,9 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
 		val transformationResult = new TransformationResult
+		if(newCorrespondingEObjects.nullOrEmpty){
+			return transformationResult
+		}
 		val javaRoots = newCorrespondingEObjects.filter(typeof(JavaRoot))
 		javaRoots.forEach [ javaRoot |
 			PCMJaMoPPUtils.addRootChangeToTransformationResult(javaRoot, blackboard,
