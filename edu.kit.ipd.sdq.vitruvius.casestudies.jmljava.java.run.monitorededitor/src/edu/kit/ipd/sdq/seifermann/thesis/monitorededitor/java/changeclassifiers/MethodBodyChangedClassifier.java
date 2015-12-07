@@ -17,19 +17,19 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 /**
  * Extension classifier for the method body change event.
- * 
+ *
  * @author Stephan Seifermann
  *
  */
 public class MethodBodyChangedClassifier implements ConcreteChangeClassifier {
 
     @Override
-    public List<? extends ChangeClassifyingEvent> match(IJavaElementDelta delta,
-            CompilationUnit currentCompilationUnit, PreviousASTState previousState) {
+    public List<? extends ChangeClassifyingEvent> match(final IJavaElementDelta delta,
+            final CompilationUnit currentCompilationUnit, final PreviousASTState previousState) {
 
         if (delta.getAffectedChildren() != null && delta.getAffectedChildren().length == 0
                 && (delta.getFlags() & (IJavaElementDelta.F_FINE_GRAINED | IJavaElementDelta.F_CONTENT)) != 0) {
-            return findChangedMethodBodyEvents(previousState.getOldCompilationUnit(currentCompilationUnit),
+            return this.findChangedMethodBodyEvents(previousState.getOldCompilationUnit(currentCompilationUnit),
                     currentCompilationUnit);
         }
 
@@ -38,7 +38,7 @@ public class MethodBodyChangedClassifier implements ConcreteChangeClassifier {
 
     /**
      * AST visitor implementation, which finds all contained method declarations and stores them.
-     * 
+     *
      * @author Stephan Seifermann
      *
      */
@@ -46,8 +46,8 @@ public class MethodBodyChangedClassifier implements ConcreteChangeClassifier {
         private final List<MethodDeclaration> methodDeclarations = new ArrayList<MethodDeclaration>();
 
         @Override
-        public boolean visit(MethodDeclaration md) {
-            methodDeclarations.add(md);
+        public boolean visit(final MethodDeclaration md) {
+            this.methodDeclarations.add(md);
             return false;
         }
 
@@ -55,54 +55,59 @@ public class MethodBodyChangedClassifier implements ConcreteChangeClassifier {
          * @return All collected method declarations.
          */
         public List<MethodDeclaration> getMethodDeclarations() {
-            return methodDeclarations;
+            return this.methodDeclarations;
         }
     }
 
     /**
      * Finds changed method bodies and creates events. First all method declarations are found.
      * Second the methods are matched, compared and events are created.
-     * 
+     *
      * @param old
      *            The unchanged compilation unit.
      * @param changed
      *            The possibly changed compilation unit.
      * @return The set of change events.
      */
-    private List<ChangeClassifyingEvent> findChangedMethodBodyEvents(CompilationUnit old, CompilationUnit changed) {
-        ASTMethodVisitor oldVisitor = new ASTMethodVisitor();
+    private List<ChangeClassifyingEvent> findChangedMethodBodyEvents(final CompilationUnit old,
+            final CompilationUnit changed) {
+        if (null == old) {
+            return new ArrayList<ChangeClassifyingEvent>();
+        }
+        final ASTMethodVisitor oldVisitor = new ASTMethodVisitor();
         old.accept(oldVisitor);
-        List<MethodDeclaration> oldMethodDeclarations = oldVisitor.getMethodDeclarations();
+        final List<MethodDeclaration> oldMethodDeclarations = oldVisitor.getMethodDeclarations();
 
-        ASTMethodVisitor changedVisitor = new ASTMethodVisitor();
+        final ASTMethodVisitor changedVisitor = new ASTMethodVisitor();
         changed.accept(changedVisitor);
-        List<MethodDeclaration> changedMethodDeclarations = changedVisitor.getMethodDeclarations();
+        final List<MethodDeclaration> changedMethodDeclarations = changedVisitor.getMethodDeclarations();
 
         if (oldMethodDeclarations.size() != changedMethodDeclarations.size()) {
             return new ArrayList<ChangeClassifyingEvent>();
         }
 
-        return findChangedMethodBodyEvents(oldMethodDeclarations, changedMethodDeclarations);
+        return this.findChangedMethodBodyEvents(oldMethodDeclarations, changedMethodDeclarations);
     }
 
     /**
      * Finds changed method bodies and creates event for every detected change. First the matching
      * method declarations are found by comparing their signature. Second the bodies are compared
      * and in case of a difference an event is created.
-     * 
+     *
      * @param oldMethodDeclarations
      *            The unchanged method declarations.
      * @param changedMethodDeclarations
      *            The method declarations which might be changed.
      * @return The set of change events.
      */
-    private List<ChangeClassifyingEvent> findChangedMethodBodyEvents(List<MethodDeclaration> oldMethodDeclarations,
-            List<MethodDeclaration> changedMethodDeclarations) {
-        List<ChangeClassifyingEvent> events = new ArrayList<ChangeClassifyingEvent>();
+    private List<ChangeClassifyingEvent> findChangedMethodBodyEvents(
+            final List<MethodDeclaration> oldMethodDeclarations,
+            final List<MethodDeclaration> changedMethodDeclarations) {
+        final List<ChangeClassifyingEvent> events = new ArrayList<ChangeClassifyingEvent>();
 
-        List<Pair<MethodDeclaration, MethodDeclaration>> matches = new ArrayList<Pair<MethodDeclaration, MethodDeclaration>>();
-        for (MethodDeclaration oldMd : oldMethodDeclarations) {
-            for (MethodDeclaration changedMd : changedMethodDeclarations) {
+        final List<Pair<MethodDeclaration, MethodDeclaration>> matches = new ArrayList<Pair<MethodDeclaration, MethodDeclaration>>();
+        for (final MethodDeclaration oldMd : oldMethodDeclarations) {
+            for (final MethodDeclaration changedMd : changedMethodDeclarations) {
                 if (matchesSignature(oldMd, changedMd)) {
                     matches.add(new Pair<MethodDeclaration, MethodDeclaration>(oldMd, changedMd));
                     break;
@@ -114,7 +119,7 @@ public class MethodBodyChangedClassifier implements ConcreteChangeClassifier {
             return events;
         }
 
-        for (Pair<MethodDeclaration, MethodDeclaration> match : matches) {
+        for (final Pair<MethodDeclaration, MethodDeclaration> match : matches) {
             if (!AST_MATCHER.match(match.getFirst(), match.getSecond())) {
                 events.add(new MethodBodyChangedEvent(match.getFirst(), match.getSecond()));
             }
@@ -124,14 +129,14 @@ public class MethodBodyChangedClassifier implements ConcreteChangeClassifier {
 
     /**
      * Compares the signature of two method declarations and indicates if they are compatible.
-     * 
+     *
      * @param md1
      *            The first method declaration.
      * @param md2
      *            The second method declaration.
      * @return True if the signatures are compatible.
      */
-    private static boolean matchesSignature(MethodDeclaration md1, MethodDeclaration md2) {
+    private static boolean matchesSignature(final MethodDeclaration md1, final MethodDeclaration md2) {
         if (!md1.getName().getFullyQualifiedName().equals(md2.getName().getFullyQualifiedName())) {
             return false;
         }
