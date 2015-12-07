@@ -1,5 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.repository;
 
+import java.io.IOException;
+
 import org.junit.Test;
 import org.palladiosimulator.pcm.repository.CollectionDataType;
 import org.palladiosimulator.pcm.repository.CompositeDataType;
@@ -9,6 +11,7 @@ import org.palladiosimulator.pcm.repository.PrimitiveTypeEnum;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryFactory;
 
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 
@@ -50,6 +53,7 @@ public class CollectionDataTypeMappingTransformationTest extends PCM2JaMoPPTrans
         final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
         final PrimitiveDataType primitiveType = RepositoryFactory.eINSTANCE.createPrimitiveDataType();
         primitiveType.setType(pte);
+        primitiveType.setRepository__DataType(repo);
 
         final CollectionDataType collectionDataType = this.addCollectionDatatypeAndSync(repo,
                 PCM2JaMoPPTestUtils.COLLECTION_DATA_TYPE_NAME, primitiveType);
@@ -58,13 +62,14 @@ public class CollectionDataTypeMappingTransformationTest extends PCM2JaMoPPTrans
     }
 
     private CollectionDataType addCollectionDatatypeAndSync(final Repository repo, final String name,
-            final DataType innerType) {
+            final DataType innerType) throws IOException {
         final CollectionDataType cdt = RepositoryFactory.eINSTANCE.createCollectionDataType();
         cdt.setEntityName(name);
         cdt.setRepository__DataType(repo);
         if (null != innerType) {
             cdt.setInnerType_CollectionDataType(innerType);
         }
+        EcoreResourceBridge.saveResource(repo.eResource());
         super.triggerSynchronization(repo);
         return cdt;
     }

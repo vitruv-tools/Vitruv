@@ -41,9 +41,4 @@ public class ClassMethodMappingTransformationTest extends JaMoPP2PCMTransformati
         assertEquals(jaMoPPMethod.getName(), PCM2JaMoPPTestUtils.OPERATION_SIGNATURE_1_NAME);
     }
 
-    @Test
-    public void testAddClassMethodWithoutCorrespondence() {
-
-    }
-
 }

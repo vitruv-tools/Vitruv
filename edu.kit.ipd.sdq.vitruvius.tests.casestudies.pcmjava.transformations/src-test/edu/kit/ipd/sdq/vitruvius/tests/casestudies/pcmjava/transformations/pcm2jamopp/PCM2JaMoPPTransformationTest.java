@@ -250,7 +250,7 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
     protected CompositeDataType createAndSyncCompositeDataType(final Repository repo, final String name)
             throws Throwable {
         final CompositeDataType cdt = this.createCompositeDataType(repo, name);
-        repo.eResource().save(null);
+        EcoreResourceBridge.saveResource(repo.eResource());
         this.triggerSynchronization(VURI.getInstance(repo.eResource()));
         return cdt;
     }
@@ -285,19 +285,22 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
     protected InnerDeclaration createAndSyncRepositoryCompositeDataTypeAndInnerDeclaration() throws Throwable {
         final Repository repo = this.createAndSyncRepository(this.resourceSet, PCM2JaMoPPTestUtils.REPOSITORY_NAME);
         final CompositeDataType cdt = this.createAndSyncCompositeDataType(repo);
-        final InnerDeclaration innerDec = this.addInnerDeclaration(cdt);
+        final InnerDeclaration innerDec = this.addInnerDeclaration(cdt, repo);
         this.triggerSynchronization(VURI.getInstance(repo.eResource()));
         return innerDec;
     }
 
-    protected InnerDeclaration addInnerDeclaration(final CompositeDataType cdt) {
+    protected InnerDeclaration addInnerDeclaration(final CompositeDataType cdt, final Repository repo)
+            throws Throwable {
         final InnerDeclaration innerDec = RepositoryFactory.eINSTANCE.createInnerDeclaration();
         final PrimitiveDataType pdt = RepositoryFactory.eINSTANCE.createPrimitiveDataType();
         pdt.setType(PrimitiveTypeEnum.INT);
+        pdt.setRepository__DataType(repo);
         innerDec.setDatatype_InnerDeclaration(pdt);
         innerDec.setCompositeDataType_InnerDeclaration(cdt);
         innerDec.setEntityName(PCM2JaMoPPTestUtils.INNER_DEC_NAME);
         cdt.getInnerDeclaration_CompositeDataType().add(innerDec);
+        EcoreResourceBridge.saveResource(cdt.eResource());
         return innerDec;
     }
 

@@ -41,7 +41,7 @@ public class CompositeDataTypeMappingTransformationTest extends PCM2JaMoPPTransf
         final CompositeDataType cdt = this.createCompositeDataType(repo, PCM2JaMoPPTestUtils.COMPOSITE_DATA_TYPE_NAME);
         super.triggerSynchronization(VURI.getInstance(repo.eResource()));
 
-        final InnerDeclaration innerDec = this.addInnerDeclaration(cdt);
+        final InnerDeclaration innerDec = this.addInnerDeclaration(cdt, repo);
         super.triggerSynchronization(VURI.getInstance(repo.eResource()));
 
         EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {

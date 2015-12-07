@@ -136,6 +136,9 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 
     @Override
     protected void beforeTest() throws Throwable {
+        // remove and add java environment from project (in case it was not removed before) and add
+        // it again
+        this.removeAndAddJavaEnvironment();
         // remove PCM java builder from Project
         this.afterTest();
         this.testUserInteractor = new TestUserInteractor();
@@ -167,6 +170,12 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         // Remove PCM Java Builder
         final PCMJavaRemoveBuilder pcmJavaRemoveBuilder = new PCMJavaRemoveBuilder();
         pcmJavaRemoveBuilder.removeBuilderFromProject(TestUtil.getTestProject());
+        // Remove Java environment from project and add it again (for next tests)
+        this.removeAndAddJavaEnvironment();
+    }
+
+    private void removeAndAddJavaEnvironment() {
+
     }
 
     @Override
@@ -245,6 +254,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         final String namespaceDotted = StringUtils.join(namespace, ".");
         final boolean force = true;
         packageRoot.createPackageFragment(namespaceDotted, force, new NullProgressMonitor());
+        TestUtil.waitForSynchronization();
     }
 
     protected Package createPackageWithPackageInfo(final String... namespace) throws Throwable {
@@ -858,7 +868,9 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     protected <T> T addFieldToClassWithName(final String className, final String fieldType, final String fieldName,
             final Class<T> correspondingType) throws Throwable {
         final ICompilationUnit icu = this.findICompilationUnitWithClassName(className);
-        this.importCompilationUnitWithName(fieldType, icu);
+        if (!fieldType.equals("String")) {
+            this.importCompilationUnitWithName(fieldType, icu);
+        }
         final IType iClass = icu.getAllTypes()[0];
         final int offset = this.getOffsetForClassifierManipulation(iClass);
         final String fieldStr = "private " + fieldType + " " + fieldName + ";";

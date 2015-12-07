@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EObject;
@@ -19,6 +20,7 @@ import org.palladiosimulator.pcm.repository.CompositeDataType;
 import org.palladiosimulator.pcm.repository.InnerDeclaration;
 import org.palladiosimulator.pcm.repository.OperationRequiredRole;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
@@ -126,18 +128,35 @@ public class FieldMappingTransformationTest extends JaMoPP2PCMTransformationTest
     }
 
     private void assertOperationRequiredRole(final OperationRequiredRole operationRequiredRole) throws Throwable {
-        final Set<EObject> correspondingEObjects = CorrespondenceInstanceUtil
-                .getCorrespondingEObjects(this.getCorrespondenceInstance(), operationRequiredRole);
-        boolean fieldFound = false;
-        for (final EObject correspondingEObject : correspondingEObjects) {
-            if (correspondingEObject instanceof Field) {
-                fieldFound = true;
-            } else {
-                fail("OperationRequiredRole should correspond to field only, but corresonds also to: "
-                        + correspondingEObject);
+        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
+
+            @Override
+            public Void call() throws Exception {
+                Set<EObject> correspondingEObjects;
+                try {
+                    correspondingEObjects = CorrespondenceInstanceUtil.getCorrespondingEObjects(
+                            FieldMappingTransformationTest.this.getCorrespondenceInstance(), operationRequiredRole);
+
+                    boolean fieldFound = false;
+                    for (final EObject correspondingEObject : correspondingEObjects) {
+                        if (correspondingEObject instanceof Field) {
+                            fieldFound = true;
+                        } else {
+                            fail("OperationRequiredRole should correspond to field only, but corresonds also to: "
+                                    + correspondingEObject);
+                        }
+                    }
+                    assertTrue("OperationRequiredRole does not correspond to a field", fieldFound);
+                } catch (final Throwable e) {
+                    if (e instanceof Exception) {
+                        throw (Exception) e;
+                    }
+                    throw new RuntimeException(e);
+                }
+                return null;
             }
-        }
-        assertTrue("OperationRequiredRole does not correspond to a field", fieldFound);
+        }, this.getVSUM());
+
     }
 
     private InnerDeclaration renameFieldInClass(final String className, final String fieldName,

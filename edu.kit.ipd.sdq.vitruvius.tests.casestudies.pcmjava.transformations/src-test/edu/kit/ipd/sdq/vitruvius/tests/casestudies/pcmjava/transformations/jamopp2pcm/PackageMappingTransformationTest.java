@@ -56,7 +56,7 @@ public class PackageMappingTransformationTest extends JaMoPP2PCMTransformationTe
         final BasicComponent bc = super.addSecondPackageCorrespondsToBasicComponent();
 
         this.assertRepositoryAndPCMName(repo, bc, PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME);
-        this.assertFilesOnlyForEObjects(repo);
+        this.assertFilesOnlyForEObjects(bc);
     }
 
     @Test
@@ -66,7 +66,7 @@ public class PackageMappingTransformationTest extends JaMoPP2PCMTransformationTe
         final CompositeComponent cc = super.addSecondPackageCorrespondsToCompositeComponent();
 
         this.assertRepositoryAndPCMName(repo, cc, PCM2JaMoPPTestUtils.COMPOSITE_COMPONENT_NAME);
-        this.assertFilesOnlyForEObjects(repo);
+        this.assertFilesOnlyForEObjects(cc);
     }
 
     @Test
@@ -110,10 +110,10 @@ public class PackageMappingTransformationTest extends JaMoPP2PCMTransformationTe
         assertEquals("Repository of basic compoennt is not the repository: " + repo, repo.getId(),
                 bc.getRepository__RepositoryComponent().getId());
         // name should be changed since there is no implementing class (yet) fot the component
-        assertTrue("The name of the basic component is not " + packageName,
-                packageName.toLowerCase().contains(bc.getEntityName()));
-        this.assertResourceAndFileForEObjects(repo);
+        assertTrue(
+                "The name of the basic component, which is '" + bc.getEntityName()
+                        + "', is not contained in the name of the package: " + packageName + " ",
+                packageName.toLowerCase().contains(bc.getEntityName().toLowerCase()));
         this.assertResourceAndFileForEObjects(bc);
-        this.assertFilesOnlyForEObjects(repo, bc);
     }
 }
