@@ -3,17 +3,10 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes
 import com.google.common.collect.Sets
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
-import java.util.HashSet
-import java.util.List
 import java.util.Set
 import org.eclipse.emf.ecore.EObject
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.CorrespondenceInstanceImpl
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator
-import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 
 class CorrespondenceInstanceUtil {
 	private new (){
@@ -93,6 +86,10 @@ class CorrespondenceInstanceUtil {
      * @return a set containing all eObjects of the given type that have a correspondence
      */
 	def public static <T> Set<T> getAllEObjectsOfTypeInCorrespondences(CorrespondenceInstance ci, Class<T> type) {
-		return ci.allCorrespondencesWithoutDependencies.map[(it.^as + it.bs).filter(type)].flatten.toSet
+		val tuidSet = ci.allCorrespondencesWithoutDependencies.map[(it.ATUIDs + it.BTUIDs)].flatten.toSet
+		val eObjectSet = Sets.newHashSet
+		tuidSet.forEach[try{eObjectSet.add(ci.resolveEObjectFromTUID(it))}catch(RuntimeException e){ }]
+		return eObjectSet.filter(type).toSet
+		//return ci.allCorrespondencesWithoutDependencies.map[(it.^as + it.bs).filter(type)].flatten.toSet
 	}
 }
