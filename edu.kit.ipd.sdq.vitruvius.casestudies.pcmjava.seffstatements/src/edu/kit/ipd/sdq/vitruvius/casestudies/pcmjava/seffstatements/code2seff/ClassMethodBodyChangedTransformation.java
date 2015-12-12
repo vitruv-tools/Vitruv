@@ -85,11 +85,11 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
         this.removeCorrespondingAbstractActions(blackboard.getCorrespondenceInstance());
 
         // 2)
-        ResourceDemandingBehaviour resourceDemandingBehaviour = this
+        final ResourceDemandingBehaviour resourceDemandingBehaviour = this
                 .findRdBehaviorToInsertElements(blackboard.getCorrespondenceInstance());
         final BasicComponent basicComponent = this.basicComponentFinder.findBasicComponentForMethod(this.newMethod,
                 blackboard.getCorrespondenceInstance());
-        resourceDemandingBehaviour = this.executeSoMoXForMethod(basicComponent);
+        this.executeSoMoXForMethod(basicComponent, resourceDemandingBehaviour);
 
         // 3)
         this.connectCreatedResourceDemandingBehaviour(resourceDemandingBehaviour,
@@ -125,17 +125,13 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
         return false;
     }
 
-    private ResourceDemandingBehaviour executeSoMoXForMethod(final BasicComponent basicComponent) {
+    private void executeSoMoXForMethod(final BasicComponent basicComponent,
+            final ResourceDemandingBehaviour targetResourceDemandingBehaviour) {
         final FunctionCallClassificationVisitor functionCallClassificationVisitor = new FunctionCallClassificationVisitor(
                 this.iFunctionClassificationStrategy);
-        final ResourceDemandingBehaviour newResourceDemandingBehaviour = SeffFactory.eINSTANCE
-                .createResourceDemandingBehaviour();
-
-        VisitorUtils.visitJaMoPPMethod(newResourceDemandingBehaviour, basicComponent, this.newMethod, null,
+        VisitorUtils.visitJaMoPPMethod(targetResourceDemandingBehaviour, basicComponent, this.newMethod, null,
                 functionCallClassificationVisitor, this.interfaceOfExternalCallFinder,
                 this.resourceDemandingBehaviourForClassMethodFinding);
-
-        return newResourceDemandingBehaviour;
     }
 
     private void createNewCorrespondences(final CorrespondenceInstance ci,
@@ -149,11 +145,13 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
     private void connectCreatedResourceDemandingBehaviour(final ResourceDemandingBehaviour rdBehavior,
             final CorrespondenceInstance ci) {
         final EList<AbstractAction> steps = rdBehavior.getSteps_Behaviour();
-        final boolean addStartAndStopAction = 0 == steps.size()
-                || (1 < steps.size() && !(steps.get(0) instanceof StartAction));
+        final boolean addStartAction = 0 == steps.size() || !(steps.get(0) instanceof StartAction);
+        final boolean addStopAction = 0 == steps.size() || !(steps.get(steps.size() - 1) instanceof StopAction);
 
-        if (addStartAndStopAction) {
+        if (addStartAction) {
             rdBehavior.getSteps_Behaviour().add(0, SeffFactory.eINSTANCE.createStartAction());
+        }
+        if (addStopAction) {
             final AbstractAction stopAction = SeffFactory.eINSTANCE.createStopAction();
             rdBehavior.getSteps_Behaviour().add(stopAction);
         }
