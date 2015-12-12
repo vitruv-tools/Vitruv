@@ -22,7 +22,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.contain
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
-import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 public class PCM2JaMoPPTestUtils {
 
@@ -44,10 +43,10 @@ public class PCM2JaMoPPTestUtils {
     private PCM2JaMoPPTestUtils() {
     }
 
-    public static Repository createRepository(final ResourceSet resourceSet, final String repositoryName)
-            throws IOException {
-        final VURI repoVURI = VURI.getInstance(TestUtil.PROJECT_URI + "/model/" + repositoryName + "."
-                + PCMJaMoPPNamespace.PCM.REPOSITORY_FILE_EXTENSION);
+    public static Repository createRepository(final ResourceSet resourceSet, final String repositoryName,
+            final String projectName) throws IOException {
+        final VURI repoVURI = VURI.getInstance(
+                projectName + "/model/" + repositoryName + "." + PCMJaMoPPNamespace.PCM.REPOSITORY_FILE_EXTENSION);
         final Resource resource = resourceSet.createResource(repoVURI.getEMFUri());
         final Repository repo = RepositoryFactory.eINSTANCE.createRepository();
         repo.setEntityName(repositoryName);
@@ -116,9 +115,10 @@ public class PCM2JaMoPPTestUtils {
         return resource;
     }
 
-    public static System createSystem(final ResourceSet resourceSet, final String systemName) throws Throwable {
-        final VURI repoVURI = VURI.getInstance(
-                TestUtil.PROJECT_URI + "/model/" + systemName + "." + PCMJaMoPPNamespace.PCM.SYSTEM_FILE_EXTENSION);
+    public static System createSystem(final ResourceSet resourceSet, final String systemName, final String projectName)
+            throws Throwable {
+        final VURI repoVURI = VURI
+                .getInstance(projectName + "/model/" + systemName + "." + PCMJaMoPPNamespace.PCM.SYSTEM_FILE_EXTENSION);
         final Resource resource = resourceSet.createResource(repoVURI.getEMFUri());
         final System system = SystemFactory.eINSTANCE.createSystem();
         system.setEntityName(systemName);

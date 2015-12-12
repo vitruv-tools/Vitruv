@@ -72,6 +72,7 @@ import org.emftext.language.java.members.Member;
 import org.emftext.language.java.members.Method;
 import org.emftext.language.java.modifiers.AnnotableAndModifiable;
 import org.emftext.language.java.types.TypeReference;
+import org.junit.runner.Description;
 import org.palladiosimulator.pcm.core.entity.NamedElement;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.CollectionDataType;
@@ -135,16 +136,12 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     protected Package secondPackage;
 
     @Override
-    protected void beforeTest() throws Throwable {
-        // remove and add java environment from project (in case it was not removed before) and add
-        // it again
-        this.removeAndAddJavaEnvironment();
-        // remove PCM java builder from Project
-        this.afterTest();
+    protected void beforeTest(final Description description) throws Throwable {
+        super.beforeTest(description);
         this.testUserInteractor = new TestUserInteractor();
         // add PCM Java Builder to Project under test
         final PCMJavaAddBuilder pcmJavaBuilder = new PCMJavaAddBuilder();
-        pcmJavaBuilder.addBuilderToProject(TestUtil.getTestProject());
+        pcmJavaBuilder.addBuilderToProject(this.currentTestProject);
         // build the project
         BuildProjects.issueIncrementalBuildForAllProjectsWithBuilder(PCMJaMoPPNamespace.BUILDER_ID);
         this.resourceSet = new ResourceSetImpl();
@@ -155,7 +152,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     }
 
     @Override
-    protected void afterTest() {
+    protected void afterTest(final org.junit.runner.Description description) {
         // tell the code monitor to not report changes any more
         try {
             final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
@@ -169,13 +166,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         }
         // Remove PCM Java Builder
         final PCMJavaRemoveBuilder pcmJavaRemoveBuilder = new PCMJavaRemoveBuilder();
-        pcmJavaRemoveBuilder.removeBuilderFromProject(TestUtil.getTestProject());
-        // Remove Java environment from project and add it again (for next tests)
-        this.removeAndAddJavaEnvironment();
-    }
-
-    private void removeAndAddJavaEnvironment() {
-
+        pcmJavaRemoveBuilder.removeBuilderFromProject(this.currentTestProject);
     }
 
     @Override
@@ -198,7 +189,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     }
 
     private PCMJavaBuilder getPCMJavaBuilderFromProject() throws Throwable {
-        final Project project = (Project) TestUtil.getTestProject();
+        final Project project = (Project) this.currentTestProject;
         final ResourceInfo info = project.getResourceInfo(false, false);
         final ProjectDescription description = ((ProjectInfo) info).getDescription();
         final boolean makeCopy = false;
@@ -206,7 +197,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
             if (command.getBuilderName().equals(PCMJaMoPPNamespace.BUILDER_ID)) {
                 final BuildCommand buildCommand = (BuildCommand) command;
                 final IncrementalProjectBuilder ipb = buildCommand
-                        .getBuilder(TestUtil.getTestProject().getActiveBuildConfig());
+                        .getBuilder(this.currentTestProject.getActiveBuildConfig());
                 final PCMJavaBuilder pcmJavaBuilder = (PCMJavaBuilder) ipb;
                 return pcmJavaBuilder;
             }
@@ -337,7 +328,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     }
 
     private Package findJaMoPPPackageWithName(final String newName) throws Throwable {
-        final IJavaProject javaProject = JavaCore.create(TestUtil.getTestProject());
+        final IJavaProject javaProject = JavaCore.create(this.currentTestProject);
         for (final IPackageFragmentRoot packageFragmentRoot : javaProject.getPackageFragmentRoots()) {
             final IJavaElement[] children = packageFragmentRoot.getChildren();
             for (final IJavaElement iJavaElement : children) {
@@ -369,7 +360,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 
     protected ICompilationUnit findICompilationUnitWithClassName(String entityName) throws Throwable {
         entityName = this.ensureJavaFileExtension(entityName);
-        final IJavaProject javaProject = JavaCore.create(TestUtil.getTestProject());
+        final IJavaProject javaProject = JavaCore.create(this.currentTestProject);
         for (final IPackageFragmentRoot packageFragmentRoot : javaProject.getPackageFragmentRoots()) {
             final IJavaElement[] children = packageFragmentRoot.getChildren();
             for (final IJavaElement iJavaElement : children) {
@@ -399,7 +390,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     }
 
     private IPackageFragmentRoot getIJavaProject() throws Throwable {
-        final IProject project = TestUtil.getTestProject();
+        final IProject project = this.currentTestProject;
         final IJavaProject javaProject = JavaCore.create(project);
         final IFolder sourceFolder = project.getFolder(TestUtil.SOURCE_FOLDER);
         if (!sourceFolder.exists()) {
@@ -412,7 +403,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     }
 
     private VURI createVURIForSrcFile(final String srcFilePath) {
-        final String vuriKey = super.getProjectPath() + TestUtil.SOURCE_FOLDER + "/" + srcFilePath;
+        final String vuriKey = this.getProjectPath() + TestUtil.SOURCE_FOLDER + "/" + srcFilePath;
         return VURI.getInstance(vuriKey);
     }
 
@@ -540,7 +531,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
             final IFile iFile = EMFBridge.getIFileForEMFUri(eObject.eResource().getURI());
             fullFilePaths.add(iFile.getFullPath().toString());
         }
-        final IFolder folder = TestUtil.getTestProject().getFolder("model");
+        final IFolder folder = this.currentTestProject.getFolder("model");
         final List<String> foundAdditionalFiles = new ArrayList<>();
         for (final IResource iResource : folder.members()) {
             final String iResourcePath = iResource.getFullPath().toString();
@@ -952,4 +943,5 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
                 dummyChangeSynchronizing);
 
     }
+
 }

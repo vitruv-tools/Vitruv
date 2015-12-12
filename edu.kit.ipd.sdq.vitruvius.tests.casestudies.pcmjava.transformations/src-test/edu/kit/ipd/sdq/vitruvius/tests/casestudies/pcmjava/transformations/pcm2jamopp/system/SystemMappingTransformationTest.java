@@ -5,8 +5,8 @@ import static org.junit.Assert.fail;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.containers.Package;
 import org.junit.Test;
-
 import org.palladiosimulator.pcm.system.System;
+
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
@@ -33,7 +33,8 @@ public class SystemMappingTransformationTest extends PCM2JaMoPPTransformationTes
 
     @Test
     public void testRemoveSystem() throws Throwable {
-        final System system = PCM2JaMoPPTestUtils.createSystem(this.resourceSet, PCM2JaMoPPTestUtils.SYSTEM_NAME);
+        final System system = PCM2JaMoPPTestUtils.createSystem(this.resourceSet, PCM2JaMoPPTestUtils.SYSTEM_NAME,
+                this.currentTestProjectName);
 
         fail("Not yet implemented");
     }
@@ -47,8 +48,8 @@ public class SystemMappingTransformationTest extends PCM2JaMoPPTransformationTes
     @SuppressWarnings("unchecked")
     private void assertSystem(final System system) throws Throwable {
         final String expectedName = system.getEntityName();
-        this.assertCorrespondnecesAndCompareNames(system, 3, new Class[] { Package.class, CompilationUnit.class,
-                org.emftext.language.java.classifiers.Class.class }, new String[] { expectedName,
-                expectedName + "Impl", expectedName + "Impl" });
+        this.assertCorrespondnecesAndCompareNames(system, 3,
+                new Class[] { Package.class, CompilationUnit.class, org.emftext.language.java.classifiers.Class.class },
+                new String[] { expectedName, expectedName + "Impl", expectedName + "Impl" });
     }
 }

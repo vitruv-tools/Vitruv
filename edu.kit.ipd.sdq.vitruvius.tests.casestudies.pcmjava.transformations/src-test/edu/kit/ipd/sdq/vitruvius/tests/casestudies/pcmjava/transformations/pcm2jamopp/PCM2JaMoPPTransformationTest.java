@@ -214,7 +214,8 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
 
     protected Repository createAndSyncRepository(final ResourceSet resourceSet, final String repositoryName)
             throws IOException {
-        final Repository repo = PCM2JaMoPPTestUtils.createRepository(resourceSet, repositoryName);
+        final Repository repo = PCM2JaMoPPTestUtils.createRepository(resourceSet, repositoryName,
+                this.currentTestProjectName);
         this.changeRecorder.beginRecording(Collections.singletonList(repo));
         this.synchronizeFileChange(FileChangeKind.CREATE, VURI.getInstance(repo.eResource()));
         return repo;
@@ -349,7 +350,7 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
     }
 
     protected System createAndSyncSystem(final String name) throws Throwable {
-        final System system = PCM2JaMoPPTestUtils.createSystem(this.resourceSet, name);
+        final System system = PCM2JaMoPPTestUtils.createSystem(this.resourceSet, name, this.currentTestProjectName);
         this.changeRecorder.beginRecording(Collections.singletonList(system));
         this.synchronizeFileChange(FileChangeKind.CREATE, VURI.getInstance(system.eResource()));
         return system;
@@ -493,7 +494,7 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
     public Repository createMediaStore(final String mediaStoreName, final String webGUIName,
             final String downloadMethodName, final String uploadMethodName) throws Throwable {
 
-        this.setUpTest();
+        this.beforeTest(null);
 
         // create repo
         final Repository repo = this.createAndSyncRepository(this.resourceSet, "mediastorerepo");
@@ -596,7 +597,7 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
 
     protected void assertCompilationUnitForBasicComponentDeleted(final BasicComponent basicComponent) throws Throwable {
         final String expectedClassName = basicComponent.getEntityName() + "Impl";
-        final IProject testProject = TestUtil.getTestProject();
+        final IProject testProject = TestUtil.getProjectByName(this.currentTestProjectName);
         final IJavaProject javaProject = JavaCore.create(testProject);
         for (final IPackageFragment pkg : javaProject.getPackageFragments()) {
             for (final ICompilationUnit unit : pkg.getCompilationUnits()) {
