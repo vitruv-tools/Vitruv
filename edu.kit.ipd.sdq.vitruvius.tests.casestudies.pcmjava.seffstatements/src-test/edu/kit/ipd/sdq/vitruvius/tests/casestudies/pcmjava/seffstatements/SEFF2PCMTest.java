@@ -11,6 +11,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.text.edits.InsertEdit;
 import org.emftext.language.java.members.Method;
 import org.junit.Test;
+import org.junit.runner.Description;
 import org.palladiosimulator.pcm.repository.OperationRequiredRole;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.repository.Repository;
@@ -18,23 +19,25 @@ import org.palladiosimulator.pcm.seff.AbstractAction;
 import org.palladiosimulator.pcm.seff.BranchAction;
 import org.palladiosimulator.pcm.seff.ExternalCallAction;
 import org.palladiosimulator.pcm.seff.InternalAction;
+import org.palladiosimulator.pcm.seff.InternalCallAction;
 import org.palladiosimulator.pcm.seff.LoopAction;
 import org.palladiosimulator.pcm.seff.ProbabilisticBranchTransition;
 import org.palladiosimulator.pcm.seff.ResourceDemandingBehaviour;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.seff.SeffFactory;
 import org.somox.test.gast2seff.visitors.AssertSEFFHelper;
+import org.somox.test.gast2seff.visitors.InternalCallActionTestHelper;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.jamopp2pcm.JaMoPP2PCMTransformationTest;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
 
     private static final String MEDIA_STORE = "MediaStore";
     private static final String WEBGUI = "WebGUI";
+    @SuppressWarnings("unused")
     private static final String UPLOAD = "upload";
     private static final String DOWNLOAD = "download";
 
@@ -57,9 +60,8 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
      * methods each ((web)download and (web)upload).
      */
     @Override
-    protected void beforeTest() throws Throwable {
-        // this.repository = this.createMediaStoreViaPCM();
-        super.beforeTest();
+    protected void beforeTest(final Description description) throws Throwable {
+        super.beforeTest(description);
         this.repository = this.createMediaStoreViaCode();
     }
 
@@ -100,23 +102,29 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
 
     @Test
     public void testAddInternalMethodCallWithoutExternalCall() throws Throwable {
+        final InternalAction ia = SeffFactory.eINSTANCE.createInternalAction();
+        final InternalCallAction internalCallAction = InternalCallActionTestHelper.createInternalCallAction(ia);
+        final ResourceDemandingSEFF expectedSEFF = this.createSEFFWithAbstractActions(internalCallAction);
+
+        // do the test
         this.addInternalMethodToWebGUI("internalMethod", "System.out.println(\"Test\");");
         final String code = "internalMethod();";
-
         final ResourceDemandingSEFF seff = this.editWebGUIDownloadMethod(code);
 
-        final InternalAction ia = SeffFactory.eINSTANCE.createInternalAction();
-        AssertSEFFHelper.assertSeffEquals(seff, this.createSEFFWithAbstractActions(ia));
+        AssertSEFFHelper.assertSeffEquals(seff, expectedSEFF);
     }
 
     @Test
     public void testAddInternalMethodCallContainingExternalCall() throws Throwable {
+        final ExternalCallAction externalCallAction = this.createSimpleExternalCallAction();
+        final InternalCallAction ica = InternalCallActionTestHelper.createInternalCallAction(externalCallAction);
+        final ResourceDemandingBehaviour expectedSEFF = this.createSEFFWithAbstractActions(ica);
+
         this.addInternalMethodToWebGUI("internalMethod", this.getExternalCallCode());
         final String code = "internalMethod();";
-
         final ResourceDemandingSEFF seff = this.editWebGUIDownloadMethod(code);
 
-        this.assertSEFFWithExternalCall(seff, false);
+        AssertSEFFHelper.assertSeffEquals(seff, expectedSEFF);
     }
 
     @Test
@@ -207,29 +215,41 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
         final String codeForHelper = "System.out.println(\"Test\");";
         final String webGuiHelper = "WebGUIHelper";
         final String downloadHelper = "downloadHelper";
-        this.createHelperClassAndMethod(WEBGUI, webGuiHelper, downloadHelper, codeForHelper);
+        this.createHelperClassAndMethod(WEBGUI, webGuiHelper, downloadHelper, "", codeForHelper);
         final String code = "WebGUIHelper webGuiHelper = new WebGUIHelper();\nwebGuiHelper.downloadHelper();";
 
         final ResourceDemandingSEFF seff = this.editWebGUIDownloadMethod(code);
 
         final InternalAction ia = SeffFactory.eINSTANCE.createInternalAction();
-        final ResourceDemandingSEFF expectedSEFF = this.createSEFFWithAbstractActions(ia);
+        final InternalCallAction internalCallAction = InternalCallActionTestHelper.createInternalCallAction(ia);
+        final ResourceDemandingSEFF expectedSEFF = this
+                .createSEFFWithAbstractActions(SeffFactory.eINSTANCE.createInternalAction(), internalCallAction);
         AssertSEFFHelper.assertSeffEquals(seff, expectedSEFF);
     }
 
     @Test
     public void testComponentInternalCallWithExternalCallInSameComponent() throws Throwable {
-        final String codeForHelper = "System.out.println(\"Test\");";
         final String webGuiHelper = "WebGUIHelper";
-        final String downloadHelper = "\npublic void downloadHelper(){\n}\n";
-        this.createHelperClassAndMethod(WEBGUI, webGuiHelper, downloadHelper, codeForHelper);
+        final String downloadHelper = "downloadHelper";
+        final String parameterCode = "testRepository.contracts.IMediaStore iMediaStore";
+        final String codeForHelper = this.getExternalCallCode();
+        this.createHelperClassAndMethod(WEBGUI, webGuiHelper, downloadHelper, parameterCode, codeForHelper);
+        final String code = "WebGUIHelper webGuiHelper = new WebGUIHelper();\nwebGuiHelper.downloadHelper(this.iMediaStore);";
 
+        final ResourceDemandingSEFF seff = this.editWebGUIDownloadMethod(code);
+
+        final ExternalCallAction eca = this.createSimpleExternalCallAction();
+        final InternalCallAction internalCallAction = InternalCallActionTestHelper.createInternalCallAction(eca);
+        final ResourceDemandingSEFF expectedSEFF = this
+                .createSEFFWithAbstractActions(SeffFactory.eINSTANCE.createInternalAction(), internalCallAction);
+        AssertSEFFHelper.assertSeffEquals(seff, expectedSEFF);
     }
 
     private void createHelperClassAndMethod(final String packageName, final String className, final String methodName,
-            final String codeForHelper) throws Throwable, CoreException, InterruptedException, JavaModelException {
-        final String downloadHelperCode = "\npublic void " + methodName + "(){\n}\n";
-        this.addClassInPackage(this.getPackageWithName(packageName), className);
+            final String parameterCode, final String codeForHelper)
+                    throws Throwable, CoreException, InterruptedException, JavaModelException {
+        final String downloadHelperCode = "\npublic void " + methodName + "( " + parameterCode + "){\n}\n";
+        this.addClassInPackage(this.getPackageWithNameFromCorrespondenceInstance(packageName), className);
         this.addMethodToCompilationUnit(className, downloadHelperCode);
         this.editMethod(codeForHelper, className, methodName, false);
     }
@@ -309,12 +329,6 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
         }
         return seffs.iterator().next();
 
-    }
-
-    @SuppressWarnings("unused")
-    private Repository createMediaStoreViaPCM() throws Throwable {
-        final PCM2JaMoPPTransformationTest pcmJaMoPPTransformationTest = new PCM2JaMoPPTransformationTest();
-        return pcmJaMoPPTransformationTest.createMediaStore(MEDIA_STORE, WEBGUI, DOWNLOAD, UPLOAD);
     }
 
     /*
