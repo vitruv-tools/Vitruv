@@ -303,6 +303,9 @@ public abstract class FrameworkTestBase {
         return differ.getPatch();
     }
 
+    protected void createJavaProject(final IProject testProject) throws CoreException {
+    }
+
     private static File getOrCreateDiffDir() {
         final File baseDir = Paths.get("diffs").toAbsolutePath().toFile();
         if (!baseDir.exists()) {

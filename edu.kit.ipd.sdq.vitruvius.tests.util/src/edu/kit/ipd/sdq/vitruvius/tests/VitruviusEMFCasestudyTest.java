@@ -7,7 +7,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.change.ChangeDescription;
 import org.eclipse.emf.ecore.change.util.ChangeRecorder;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.junit.Before;
+import org.junit.runner.Description;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.emf.changedescription2change.ChangeDescription2ChangeConverter;
 import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl;
@@ -53,8 +53,10 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
      *
      * @throws Throwable
      */
-    @Before
-    public void setUpTest() throws Throwable {
+    @Override
+    public void beforeTest(final Description description) throws Throwable {
+        super.beforeTest(description);
+
         this.metaRepository = this.createMetaRepository();
         this.vsum = TestUtil.createVSUM(this.metaRepository);
         final Change2CommandTransformingProviding syncTransformationProvider = new Change2CommandTransformingProvidingImpl();
@@ -72,7 +74,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
     protected abstract MetaRepositoryImpl createMetaRepository();
 
     @Override
-    protected void afterTest() {
+    protected void afterTest(final org.junit.runner.Description description) {
         this.correspondenceInstance = null;
     }
 

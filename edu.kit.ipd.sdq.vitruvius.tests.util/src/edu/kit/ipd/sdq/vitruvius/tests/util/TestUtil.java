@@ -224,6 +224,10 @@ public final class TestUtil {
      */
     public static void moveVSUMProjectToOwnFolderWithTimepstamp(final String addtionalName) {
         final IProject project = FileSystemHelper.getVSUMProject();
+        moveProjectToOwnFolderWithTimestamp(addtionalName, project);
+    }
+
+    public static void moveProjectToOwnFolderWithTimestamp(final String addtionalName, final IProject project) {
         final String timestamp = getStringWithTimestamp("");
         final IPath destinationPath = new Path(
                 "/" + VSUMConstants.VSUM_PROJECT_NAME + "_" + addtionalName + "_" + timestamp);
@@ -260,7 +264,11 @@ public final class TestUtil {
     }
 
     public static IProject getTestProject() {
-        final IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProject(PROJECT_URI);
+        return getProjectByName(PROJECT_URI);
+    }
+
+    public static IProject getProjectByName(final String projectName) {
+        final IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
         return iProject;
     }
 

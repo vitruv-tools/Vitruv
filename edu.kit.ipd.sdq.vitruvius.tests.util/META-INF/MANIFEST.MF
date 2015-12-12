@@ -22,7 +22,9 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.casestudies.emf.changedescription2change,
  edu.kit.ipd.sdq.vitruvius.framework.commandexecuter,
  edu.kit.ipd.sdq.vitruvius.framework.changepreparer,
- org.eclipse.emf.transaction
+ org.eclipse.emf.transaction,
+ org.eclipse.jdt.core,
+ org.eclipse.jdt.launching
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests,
  edu.kit.ipd.sdq.vitruvius.tests.util
 Import-Package: edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter
