@@ -23,7 +23,8 @@ class MappingPluginProjectHelper {
 		"org.eclipse.core.resources",
 		"org.apache.log4j",
 		"org.eclipse.xtend.lib",
- 		"org.eclipse.xtend.lib.macro"
+ 		"org.eclipse.xtend.lib.macro",
+ 		"edu.kit.ipd.sdq.vitruvius.dsls.mapping"
 	]
 	
 	/**

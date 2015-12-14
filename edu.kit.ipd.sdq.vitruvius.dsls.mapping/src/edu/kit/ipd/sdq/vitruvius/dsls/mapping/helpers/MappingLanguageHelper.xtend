@@ -17,6 +17,11 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers
 import static extension java.util.Objects.*
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping
 import java.util.List
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.InExpression
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.EqualsLiteralExpression
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.ImportHelper
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 
 class MappingLanguageHelper {
 	public static def inferPackagesForSignaturesAndConstraints(Mapping mapping) {
@@ -51,6 +56,18 @@ class MappingLanguageHelper {
 		throw new UnsupportedOperationException("Unknown type for package resolution: " + obj.class.name)
 	}
 	
+	public static def dispatch EPackage getPackage(DefaultContainExpression defaultContainExpression) {
+		getPackage(defaultContainExpression.target.targetClass)
+	}
+	
+	public static def dispatch EPackage getPackage(InExpression inExpression) {
+		getPackage(inExpression.target.targetClass)
+	}
+	
+	public static def dispatch EPackage getPackage(EqualsLiteralExpression equalsLiteralExpression) {
+		getPackage(equalsLiteralExpression.target.context.targetClass)
+	}
+	
 	public static def dispatch EPackage getPackage(NamedEClass namedEClass) {
 		namedEClass.type.EPackage
 	}
@@ -75,8 +92,10 @@ class MappingLanguageHelper {
 		return imports.get(index)
 	}
 	
-	
-	
+	public static def getTypesAndNames(ImportHelper ih, List<NamedEClass> elements) {
+		elements?.map[new Pair(ih.typeRef(type.instanceTypeName), name.toFirstLower)] ?: #[]
+	}
+
 	public static def RequiredMapping getLastMapping(RequiredMappingPathBase mappingPath) {
 		if (mappingPath.tail != null)
 			return mappingPath.tail.lastMapping

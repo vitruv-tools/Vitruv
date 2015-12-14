@@ -1,21 +1,14 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.ImportHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingPluginProjectHelper
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Import
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NamedEClass
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Signature
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.SignatureConstraintBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.EclipseProjectHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.PreProcessingFileSystemAccess
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper
@@ -30,15 +23,12 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple
 import java.util.ArrayList
 import java.util.Collection
 import java.util.Collections
-import java.util.HashMap
 import java.util.HashSet
 import java.util.List
-import java.util.Map
 import java.util.Objects
 import java.util.Optional
 import java.util.Set
 import java.util.stream.Collectors
-import javax.naming.OperationNotSupportedException
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
@@ -47,9 +37,12 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtext.generator.IFileSystemAccess
 
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.*
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.ImportHelper
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.TUIDUpdateHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 
 class MappingLanguageGenerator {
 	def doGenerate(Resource input) {
@@ -86,11 +79,11 @@ class MappingLanguageGenerator {
 
 		private MappingFile file
 		private IFileSystemAccess fsa
-		private List<Import> imports
+		
 		private extension EMFGeneratorHelper emfGeneratorHelper
 		private extension MappingLanguageGeneratorNameProvider nameProvider
-		
 		private extension ConstraintLanguageGenerator clg
+		private extension MappingLanguageGeneratorState state
 		
 		private final String pkgName;
 
@@ -113,14 +106,10 @@ class MappingLanguageGenerator {
 			// FIXME DW there are some dependencies on a valid file here that should be
 			// checked before generating.
 			// sort so dependencies are resolved before they are used			
-			val mappings = file.mappings.sortWith [ m1, m2 |
-				if(m1.requires.contains(m2)) ( 1 ) else ( -1)
-			]
-
-			this.imports = file.imports.claim[size == 2]
-			
 			this.emfGeneratorHelper = new EMFGeneratorHelper(constantsClassName)
 			this.clg = new ConstraintLanguageGenerator(emfGeneratorHelper)
+
+			this.state = new MappingLanguageGeneratorState(file) 
 
 			for (mapping : mappings) {
 				generateMapping(mapping)
@@ -132,84 +121,109 @@ class MappingLanguageGenerator {
 			emfGeneratorHelper.generateCode(fsa)
 		}
 
-
-
 		private def generateMapping(Mapping mapping) {
-			if (mapping.^default) {
-				generateDefaultMapping(mapping)
-			} else {
-				for (signature : mapping.signatures) {
-					val imp = mapping.mapSignatureToImport.get(signature)
-					generateWrapperClass(mapping, imp, signature.elements)
-				}
+			for (imp : imports)
+				generateWrapperClass(mapping, imp)
+				
+			generateMappingClass(mapping)
+			
+			if (mapping.^default)
+				generateDefaultMappedCorrespondenceClass(mapping)
+			else
 				generateMappedCorrespondenceClass(mapping)
-				generateMappingClass(mapping)
-			}
 		}
 		
-		private def generateDefaultMapping(Mapping mapping) {
+		private def generateDefaultMappingApplyEChangeMethod(extension ImportHelper ih, Mapping mapping) {
 			if (!mapping.^default) {
 				throw new IllegalArgumentException("Mapping is not default mapping.")
 			}
 			
-			// get to a structure of the form { pkg1 => (all triples of pkg1/signature/constraintBlock for pkg1), pkg2 => ..., ... }
-			val pkgs = mapping.inferPackagesForSignaturesAndConstraints
-				.zipAny(mapping.signatures, mapping.constraints)
-				.groupBy[first]
+			val fqnMC = mapping.mappedCorrespondenceClassName
 			
+			'''
+			«FOR m : file.mappings»
+			«m.mappedCorrespondenceClassName».Helper.setCI(«typeRef(JavaHelper)».requireType(blackboard.getCorrespondenceInstance(), «typeRef(MappedCorrespondenceInstance)».class));
+			«ENDFOR»
 			
-			// get to a structure of the form { pkg1 => (ONE triples of import/signatureElements/constraints for pkg1), pkg2 => ..., ... }	
-			val reducedPkgs = newHashMap
+			// create if not already existant
+			«typeRef(TransformationResult)» result = new «typeRef(TransformationResult)»();
 			
-			val wrapperImports = new ArrayList<Import>()
-			for (ePackage : pkgs.keySet) {
-				val value = pkgs.get(ePackage)
-				val elements = reduceSignatures(value)
-				val constraints = reduceContraintBlocks(value)
-				val imp = imports.findFirst[package.equals(ePackage)]
-				if (imp != null) {
-					generateWrapperClass(mapping, imp, elements)
-					wrapperImports.add(imp)
-					
-					reducedPkgs.put(ePackage, new Triple(imp, elements, constraints))
-				}
+			if (!«fqnMC».Helper.exists()) {
+				«fqnMC».Helper.createDefaultMapping(result);
 			}
 			
-			val defaultContainments = newHashMap
-			
-			for (imp : imports) {
-				if (pkgs.containsKey(imp.package)) {
-					defaultContainments.put(imp, pkgs.get(imp.package).map[third?.expressions ?: #[]].flatten.filter(DefaultContainExpression))
-				}
+			return result;
+			'''
+		}
+		
+		private def generateMappingApplyEChangeMethod(extension ImportHelper ih, Mapping mapping) {
+			if (mapping.^default) {
+				throw new IllegalArgumentException("Mapping is default mapping.")
 			}
 			
-			val fqnMapping = mapping.getMappingClassName
-			val classNameMapping = fqnMapping.toSimpleName
+			val requires = mapping.requires.filter[!it.mapping.^default].map[new Triple(it.mapping.mappedCorrespondenceClassName, name.toFirstUpper, it)]
+			val mcn = mapping.mappedCorrespondenceClassName
+			val flatElements = (mapping.signatures.map[it.elements].flatten).map[new Pair(it.type.instanceTypeName.typeRef, it.name)]
 			
-			val fqnMC = mapping.mappedCorrespondenceName
-			val classNameMC = fqnMC.toSimpleName
+			'''
+			«typeRef(Collection)»<«typeRef(EObject)»> affectedObjects = «typeRef(MIRMappingHelper)».getAllAffectedObjects(eChange);
+			MappingPackage change_pkg = «change2CommandTransformingClassName».inferPackage(affectedObjects);
+			if (change_pkg == MappingPackage.UNDEFINED)
+				throw new «typeRef(IllegalStateException)»("Could not infer package for change " + eChange.toString() + "(" + affectedObjects.toString() + ")");
 			
-			// generate mapping class
-			fsa.generateJavaFile(fqnMapping, [ extension ih |
+			«FOR m : file.mappings»
+			«m.mappedCorrespondenceClassName».Helper.setCI(«typeRef(JavaHelper)».requireType(blackboard.getCorrespondenceInstance(), «typeRef(MappedCorrespondenceInstance)».class));
+			«ENDFOR»
+			
+			«FOR req : requires AFTER "\n"»
+			«typeRef(Iterable)»<«req.first»> affected_«req.second» = «req.first».Helper.getAll();
+			«ENDFOR»							
+			«FOR el : flatElements»
+			«typeRef(Iterable)»<«el.first»> affected_«el.second» = «typeRef(IterableExtensions)».filter(affectedObjects, «el.first».class);
+			«ENDFOR»
+			
+			«typeRef(Iterable)»<«mcn»> candidates = «mcn».Factory.createAllCandidates(
+				«FOR el : requires + flatElements SEPARATOR ", "»affected_«el.second»«ENDFOR»);
+			
+			«typeRef(TransformationResult)» result = new «typeRef(TransformationResult)»();
+			
+			for («mcn» candidate : candidates) {
+				«FOR imp : imports»
+				if ((change_pkg == MappingPackage.«imp.name.toUpperCase») && (candidate.stateHas«imp.toFirstUpperName»()))
+					candidate.repairFrom«imp.name.toFirstUpper»(result);
+				«ENDFOR»
+			}
+			
+			return result;
+			'''
+		}
+	
+		private def generateMappingClass(Mapping mapping) {
+			val fqn = mapping.getMappingClassName
+			val className = fqn.toSimpleName
+			
+			fsa.generateJavaFile(fqn, [ extension ih |
 				'''
-					public class «classNameMapping» implements «typeRef(MIRMappingRealization)» {
-						public final static «classNameMapping» INSTANCE = new «classNameMapping»();
+					import «change2CommandTransformingClassName».MappingPackage;
+
+					public class «className» implements «typeRef(MIRMappingRealization)» {
+						public final static «className» INSTANCE = new «className»();
+						
+						// Singleton
+						private «className»() {}
 						
 						@Override
 						public «typeRef(TransformationResult)» applyEChange(«typeRef(EChange)» eChange, «typeRef(Blackboard)» blackboard) {
-							// create if not already existant
-							«typeRef(TransformationResult)» result = new «typeRef(TransformationResult)»();
-							
-							if (!«fqnMC».Helper.exists()) {
-								«fqnMC».Helper.createDefaultMapping(result);
-							}
-							
-							return result;
+							«IF mapping.^default»
+								«generateDefaultMappingApplyEChangeMethod(ih, mapping)»
+							«ELSE»
+								«generateMappingApplyEChangeMethod(ih, mapping)»
+							«ENDIF»
 						}
-						
+
 						@Override
 						public String getMappingID() {
-							return "«classNameMapping»";
+							return "«className»";
 						}
 						
 						private «typeRef(MIRUserInteracting)» userInteracting;
@@ -223,23 +237,33 @@ class MappingLanguageGenerator {
 					}
 				'''
 			])
-
+		}
+		
+		private def generateDefaultMappedCorrespondenceClass(Mapping mapping) {
+			val fqnMapping = mapping.getMappingClassName
+			val classNameMapping = fqnMapping.toSimpleName
+			
+			val fqnMC = mapping.mappedCorrespondenceClassName
+			val classNameMC = fqnMC.toSimpleName
+			
 			// generate mapped correspondence
 			fsa.generateJavaFile(fqnMC, [ extension ih |
 				'''
 					public class «classNameMC» {
-						«FOR wi : wrapperImports»
-							private final «getWrapperName(mapping, wi)» «wi.wrapperFieldName»;
+						private static «typeRef(TUIDUpdateHelper)» tuidUpdateHelper = new «typeRef(TUIDUpdateHelper)»();
+						
+						«FOR imp : getImports(mapping)»
+							private final «getWrapperClassName(mapping, imp)» «imp.wrapperFieldName»;
 						«ENDFOR»
 						
-						private «classNameMC»(«FOR wi : wrapperImports SEPARATOR ", "»«getWrapperName(mapping, wi)» «wi.wrapperFieldName»«ENDFOR») {
-							«FOR wi : wrapperImports»
+						private «classNameMC»(«FOR wi : getImports(mapping) SEPARATOR ", "»«getWrapperClassName(mapping, wi)» «wi.wrapperFieldName»«ENDFOR») {
+							«FOR wi : getImports(mapping)»
 								this.«wi.wrapperFieldName» = «wi.wrapperFieldName»;
 							«ENDFOR»
 						}
 						
-						«FOR wi : wrapperImports»
-							public «getWrapperName(mapping, wi)» get«wi.toFirstUpperName»() {
+						«FOR wi : getImports(mapping)»
+							public «getWrapperClassName(mapping, wi)» get«wi.toFirstUpperName»() {
 								return this.«wi.wrapperFieldName»;
 							}
 						«ENDFOR»
@@ -247,28 +271,6 @@ class MappingLanguageGenerator {
 						public static class Helper {
 							private static final «typeRef(MIRMappingRealization)» MAPPING = «classNameMapping».INSTANCE;
 							private static «typeRef(MappedCorrespondenceInstance)» mci;
-							
-							/*
-							todo is this mechanism needed?
-							private static Map<EObject, List<TUID>> oldTUIDMap = new HashMap<EObject, List<TUID>>();
-
-							public static void addObjectToUpdate(EObject eObject) {
-								if (!oldTUIDMap.containsKey(eObject))
-									oldTUIDMap.put(eObject, new ArrayList<TUID>());
-								oldTUIDMap.get(eObject).add(mci.calculateTUIDFromEObject(eObject));
-							}
-							
-							public static void updateObject(EObject eObject) {
-								if (!oldTUIDMap.containsKey(eObject)) {
-									LOGGER.info("EObject " + eObject.toString() + " not in old tuid map");
-								} else {
-									for (TUID tuid : oldTUIDMap.get(eObject)) {
-										mci.updateTUID(tuid, eObject);
-									}
-									oldTUIDMap.remove(eObject);
-								}
-							}
-							*/
 							
 							private Helper() {}
 							
@@ -289,14 +291,12 @@ class MappingLanguageGenerator {
 							}
 							
 							private static «classNameMC» get(«typeRef(Correspondence)» stc) {
-								«IF wrapperImports.size > 2»throw new «typeRef(IllegalArgumentException)»("more than two wrapper classes!");«ENDIF»
-								
-								«FOR wi : wrapperImports.map[new Pair(it, #["A", "B"].get(imports.indexOf(it)))]»
-								«getWrapperName(mapping, wi.first)» «wi.first.wrapperFieldName» = new «getWrapperName(mapping, wi.first)»(stc.get«wi.second»s());
+								«IF getImports(mapping).size > 2»throw new «typeRef(IllegalArgumentException)»("more than two wrapper classes!");«ENDIF»
+								«FOR wi : getImports(mapping)»
+								«getWrapperClassName(mapping, wi)» «wi.wrapperFieldName» = new «getWrapperClassName(mapping, wi)»(stc.get«getImportLetter(wi)»s());
 								«ENDFOR»
-								
 								return new «classNameMC»(
-									«FOR wi : wrapperImports SEPARATOR ", "»«wi.wrapperFieldName»«ENDFOR»);
+									«FOR wi : getImports(mapping) SEPARATOR ", "»«wi.wrapperFieldName»«ENDFOR»);
 							}
 							
 							public static boolean exists() {
@@ -316,58 +316,58 @@ class MappingLanguageGenerator {
 							}
 							
 							private static void checkAllContainments(«typeRef(TransformationResult)» result) {
-								«FOR imp : wrapperImports»
-									«FOR defaultContainExpression : defaultContainments.get(imp) ?: #[] SEPARATOR ";"»
+								«FOR imp : getImports(mapping) AFTER "\n"»
+									«FOR defaultContainExpression : getDefaultContainments(mapping, imp)»
+									«FOR updateTUIDJava : clg.getEObjectsWithPossiblyChangedTUID(ih, #{'this' -> 'get()'}, defaultContainExpression)»
+										tuidUpdateHelper.addObjectToUpdate(Helper.mci, «updateTUIDJava»);
+									«ENDFOR»
 									«clg.checkAndCreateDefaultContainment(ih, #{'this' -> 'get()'}, defaultContainExpression)»
 									«ENDFOR»
 								«ENDFOR»
-									
-								boolean nonContainedFound;
-								do {
-									nonContainedFound = false;
-									«FOR imp : wrapperImports»
-									for («typeRef(EObject)» eObject : get().get«imp.toFirstUpperName»().getElements()) {
-										if (!«typeRef(MIRMappingHelper)».hasContainment(eObject, result)) {
-											// request new resource or infer it
-											// add to result
-											nonContainedFound = true;
-											final «typeRef(VURI)» resourceVURI = «typeRef(VURI)».getInstance(«typeRef(fqnMapping)».INSTANCE.getUserInteracting().askForNewResource(«typeRef(EcoreHelper)».createSensibleString(eObject)));
-											result.addRootEObjectToSave(eObject, resourceVURI);
-										}
-									}
-									«ENDFOR»
-								} while (nonContainedFound);
+								«FOR imp : getImports(mapping)»
+								«typeRef(MIRMappingHelper)».ensureContainmentsByUserInteraction(result,
+									() -> { return get().get«imp.toFirstUpperName»().getElements(); },
+									(obj) -> {
+										tuidUpdateHelper.addObjectToUpdate(Helper.mci, obj);
+										return «typeRef(VURI)».getInstance(«typeRef(fqnMapping)».INSTANCE.getUserInteracting().askForNewResource(«typeRef(EcoreHelper)».createSensibleString(obj)));
+									});
+								«ENDFOR»
 							}
 							
 							public static void createDefaultMapping(«typeRef(TransformationResult)» result) {
-								«FOR triple : reducedPkgs.values»
-									«FOR namedEClass : triple.second ?: #[]»
+								«FOR imp : getImports(mapping)»
+									«FOR namedEClass : getNamedEClasses(mapping, imp)»
 										«typeRef(namedEClass.type)» new_«namedEClass.name» = «eCreate(ih, namedEClass.type)»;
+										tuidUpdateHelper.addObjectToUpdate(Helper.mci, new_«namedEClass.name»);
 									«ENDFOR»
 									
-									«getWrapperName(mapping, triple.first)» wrap«triple.first.name.toFirstUpper» = new «getWrapperName(mapping, triple.first)».Builder()
-										«FOR namedEClass : triple.second ?: #[]»
+									«getWrapperClassName(mapping, imp)» wrap«imp.name.toFirstUpper» = new «getWrapperClassName(mapping, imp)».Builder()
+										«FOR namedEClass : getNamedEClasses(mapping, imp)»
 											.set«namedEClass.name.toFirstUpper»(new_«namedEClass.name»)
 										«ENDFOR»
 										.build();
 								
-									«IF !(triple.third ?: #[]).empty»
-										«FOR constraint : (triple.third ?: #[])»
-											«establishSignatureConstraintOnCreate(ih, #{triple.first -> '''wrap«triple.first.name.toFirstUpper»'''}, constraint)»;
+									«IF !(getConstraints(mapping, imp)).empty»
+										«FOR constraint : getConstraints(mapping, imp)»
+											«FOR updateTUIDJava : clg.getEObjectsWithPossiblyChangedTUID(ih, #{imp -> '''wrap«imp.name.toFirstUpper»'''}, constraint)»
+												tuidUpdateHelper.addObjectToUpdate(Helper.mci, «updateTUIDJava»);
+											«ENDFOR»
+											«establishSignatureConstraintOnCreate(ih, #{imp -> '''wrap«imp.name.toFirstUpper»'''}, constraint)»;
 										«ENDFOR»
 									«ELSE»
-										// no constraints for «triple.first.name»
+										// no constraints for «imp.name»
 									«ENDIF»
 								«ENDFOR»
 								
 								«typeRef(Correspondence)» stc = mci.createAndAddCorrespondence(«FOR imp : imports SEPARATOR ", "»
-									«IF reducedPkgs.containsKey(imp.package)»wrap«imp.name.toFirstUpper».getElements()
+									«IF getImports(mapping).contains(imp)»wrap«imp.name.toFirstUpper».getElements()
 									«ELSE»«typeRef(Collections)».emptyList()
 									«ENDIF»
 								«ENDFOR»);
 								mci.registerMappingForCorrespondence(stc, MAPPING);
 								
 								checkAllContainments(result);
+								tuidUpdateHelper.updateAll();
 							}
 						}
 					}
@@ -375,121 +375,9 @@ class MappingLanguageGenerator {
 			])
 		}
 	
-		def reduceContraintBlocks(List<Triple<EPackage, Signature, SignatureConstraintBlock>> input) {
-			val result = new ArrayList<ConstraintExpression>
-			input.forEach[result.addAll(it.third.expressions)]
-			return result
-		}
-		
-		def reduceSignatures(List<Triple<EPackage, Signature, SignatureConstraintBlock>> input) {
-			val result = new ArrayList<NamedEClass>
-			input.forEach[result.addAll(it.second.elements)]
-			return result
-		}
-	
-		private def generateMappingClass(Mapping mapping) {
-			if (mapping.^default) {
-				throw new IllegalArgumentException("Mapping is default mapping.")
-			}
-			
-			val fqn = mapping.getMappingClassName
-			val className = fqn.toSimpleName
-			
-			val requires = mapping.requires.filter[!it.mapping.^default].map[new Triple(it.mapping.mappedCorrespondenceName, name.toFirstUpper, it)]
-			val mcn = mapping.mappedCorrespondenceName
-			 
-			fsa.generateJavaFile(fqn, [ extension ih |
-				
-				val flatElements = (mapping.signatures.map[it.elements].flatten).map[new Pair(it.type.instanceTypeName.typeRef, it.name)]
-				
-				'''
-					import «change2CommandTransformingClassName».MappingPackage;
-
-					public class «className» implements «typeRef(MIRMappingRealization)» {
-						public final static «className» INSTANCE = new «className»();
-						
-						// Singleton
-						private «className»() {}
-						
-						@Override
-						public «typeRef(TransformationResult)» applyEChange(«typeRef(EChange)» eChange, «typeRef(Blackboard)» blackboard) {
-							«typeRef(Collection)»<«typeRef(EObject)»> affectedObjects = «typeRef(MIRMappingHelper)».getAllAffectedObjects(eChange);
-							MappingPackage change_pkg = «change2CommandTransformingClassName».inferPackage(affectedObjects);
-							if (change_pkg == MappingPackage.UNDEFINED)
-								throw new «typeRef(IllegalStateException)»("Could not infer package for change " + eChange.toString() + "(" + affectedObjects.toString() + ")");
-							
-							«FOR m : file.mappings»
-							«m.mappedCorrespondenceName».Helper.setCI(«typeRef(JavaHelper)».requireType(blackboard.getCorrespondenceInstance(), «typeRef(MappedCorrespondenceInstance)».class));
-							«ENDFOR»
-							
-							«FOR req : requires AFTER "\n"»
-							«typeRef(Iterable)»<«req.first»> affected_«req.second» = «req.first».Helper.getAll();
-							«ENDFOR»							
-							«FOR el : flatElements»
-							«typeRef(Iterable)»<«el.first»> affected_«el.second» = «typeRef(IterableExtensions)».filter(affectedObjects, «el.first».class);
-							«ENDFOR»
-							
-							«typeRef(Iterable)»<«mcn»> candidates = «mcn».Factory.createAllCandidates(
-								«FOR el : requires + flatElements SEPARATOR ", "»affected_«el.second»«ENDFOR»);
-							
-							«typeRef(TransformationResult)» result = new «typeRef(TransformationResult)»();
-							
-							for («mcn» candidate : candidates) {
-								«FOR imp : imports»
-								if (change_pkg == MappingPackage.«imp.name.toUpperCase»)
-									candidate.repairFrom«imp.name.toFirstUpper»(result);
-								«ENDFOR»
-							}
-							
-							return result;
-						}
-
-						@Override
-						public String getMappingID() {
-							return "«className»";
-						}
-						
-						private «typeRef(MIRUserInteracting)» userInteracting;
-						public void setUserInteracting(«typeRef(MIRUserInteracting)» userInteracting) {
-							this.userInteracting = userInteracting;
-						}
-						
-						public «typeRef(MIRUserInteracting)» getUserInteracting() {
-							return this.userInteracting;
-						}
-					}
-				'''
-			])
-		}
-	
-		// create map from signature/constraint index to correct import
-		private def Map<Object, Import> mapSignatureToImport(Mapping parent) {
-			val result = new HashMap<Object, Import>()
-			
-			val mappingData = zipAny(parent.signatures, parent.constraints, parent.inferPackagesForSignaturesAndConstraints)
-			if (mappingData.forall[third!=null]) {
-				mappingData.forEach[ data |
-					val imp = imports.findFirst[imp | data.third.equals(imp.package)]
-					result.put(data.first, imp)
-					result.put(data.second, imp)
-				]
-			} else if (mappingData.forall[third==null]) {
-				mappingData.zip(imports).forEach[ data |
-					// first = (signature, constraintBlock, package), second = import 
-					result.put(data.first.first, data.second)
-					result.put(data.first.second, data.second)
-				]
-			} else {
-				throw new IllegalArgumentException(
-					'''Mapping «parent.name» does not have enough information '''
-					+ '''in its signature to infer correct imports.''')
-			}
-			
-			result
-		}
-		
-		private def generateWrapperClass(Mapping parent, Import imp, List<NamedEClass> signatureElements) {
-			val fqn = getWrapperName(parent, imp)
+		private def generateWrapperClass(Mapping parent, Import imp) {
+			val signatureElements = mappingToImportToNamedEClasses.get(parent).get(imp)
+			val fqn = getWrapperClassName(parent, imp)
 			val className = fqn.toSimpleName
 			
 			fsa.generateJavaFile(fqn, [
@@ -533,7 +421,7 @@ class MappingLanguageGenerator {
 							«typeRef(List)»<«typeRef(EObject)»> tmp = new «typeRef(ArrayList)»<«typeRef(EObject)»>();
 							tmp.addAll(elements);
 							elements.clear();
-							tmp.stream().map(it -> «parent.mappedCorrespondenceName».Helper.reload(it)).forEach(elements::add);
+							tmp.stream().map(it -> «parent.mappedCorrespondenceClassName».Helper.reload(it)).forEach(elements::add);
 						}
 						
 						public static class Builder {
@@ -564,73 +452,27 @@ class MappingLanguageGenerator {
 				'''
 			])
 		}
-		
 			
-		private static def getTypesAndNames(ImportHelper ih, Signature signature) {
-			if (signature == null)
-				return #[]
-			else
-				signature.elements?.map[new Pair(ih.typeRef(type.instanceTypeName), name.toFirstLower)] ?: #[]
-		}
-
 		private def generateMappedCorrespondenceClass(Mapping mapping) {
 			// TODO: Refactor and clean up. Align with default mappings
-			
-			// FIXME DW das stimmt noch nicht für alle möglichen "Weglassungskombinationen" von signatures/constraints
-			val pkgs = mapping.inferPackagesForSignaturesAndConstraints
-				.zipAny(mapping.signatures, mapping.constraints)
-				.groupBy[first]
-			
-			val sig2Import = mapping.mapSignatureToImport
-			val import2constraint = new HashMap<Import, Collection<ConstraintBlock>>
-			val import2signature = new HashMap<Import, Collection<Signature>>
-			sig2Import.entrySet.forEach [
-				if (key instanceof ConstraintBlock) {
-					if (!import2constraint.containsKey(value))
-						import2constraint.put(value, new ArrayList<ConstraintBlock>())
-					import2constraint.get(value).add(key as ConstraintBlock)
-				} else if (key instanceof Signature) {
-					if (!import2signature.containsKey(value))
-						import2signature.put(value, new ArrayList<Signature>())
-					import2signature.get(value).add(key as Signature)
-				}
-			]
-			
 			// get correctly ordered signatures and constraints
-			val wrapperClasses = imports.map[getWrapperName(mapping, it)]
+			val wrapperClasses = imports.map[getWrapperClassName(mapping, it)]
 			val wrapperFields = imports.map[wrapperFieldName]
 			val stateNames = imports.map[toStateName]
 			val mappingName = mapping.mappingClassName
 			
-			val fqn = mapping.mappedCorrespondenceName
+			val fqn = mapping.mappedCorrespondenceClassName
 			val className = fqn.toSimpleName
-			
 			
 			// todo consolidate
 			val requires = mapping.requires.filter[!it.mapping.^default]
-					.map[req | new Pair(req.mapping.mappedCorrespondenceName, req.name)]
+					.map[req | new Pair(req.mapping.mappedCorrespondenceClassName, req.name)]
 					
 			val defaultRequirements = mapping.requires.filter[it.mapping.^default]
-					.map[req | new Pair(req.mapping.mappedCorrespondenceName, req.name)]
+					.map[req | new Pair(req.mapping.mappedCorrespondenceClassName, req.name)]
 					
-			val packages = imports.map[name.toFirstUpper]
-			
-//			val indices = #[0,1]
 			val pairs = #[new Pair(0, 1), new Pair(1, 0)]
 			val importPairs = pairs.map[new Pair(imports.get(first), imports.get(second))]
-			
-			
-			val wrapperImports = new ArrayList<Import>()
-			for (ePackage : pkgs.keySet) {
-				val value = pkgs.get(ePackage)
-				val elements = reduceSignatures(value)
-				val imp = imports.findFirst[package.equals(ePackage)]
-				if (imp != null) {
-					wrapperImports.add(imp)
-				}
-			}
-			
-			val defaultContainments = imports.toInvertedMap[(pkgs.get(it.package).map[third?.expressions ?: #[]].flatten.filter(DefaultContainExpression))]
 						
 			fsa.generateJavaFile(fqn, [ extension ih |
 				val classSignatureWithoutRequires = 
@@ -641,6 +483,8 @@ class MappingLanguageGenerator {
 								
 				'''
 					public class «className» {
+						private «typeRef(TUIDUpdateHelper)» tuidUpdateHelper = new «typeRef(TUIDUpdateHelper)»();
+						
 						private «className»(
 							«FOR el : classSignature SEPARATOR ", "»
 								«el.first» «el.second»
@@ -670,8 +514,6 @@ class MappingLanguageGenerator {
 							validateCorrespondence();
 						}
 						
-						
-						
 						public static enum State {
 							UNDEFINED, «stateNames.join(", ")», MAPPED
 						}
@@ -687,7 +529,7 @@ class MappingLanguageGenerator {
 						
 						// required mapped correspondences
 						«FOR el : requires»
-							private «el.first» «el.second»;a
+							private «el.first» «el.second»;
 						«ENDFOR»
 						
 						«FOR el : requires»
@@ -709,11 +551,11 @@ class MappingLanguageGenerator {
 						}
 						
 						«FOR imp : imports»
-							private «mapping.getWrapperName(imp)» «imp.wrapperFieldName»;
+							private «mapping.getWrapperClassName(imp)» «imp.wrapperFieldName»;
 						«ENDFOR»
 						
 						«FOR imp : imports»
-							private boolean stateHas«imp.toFirstUpperName»() {
+							public boolean stateHas«imp.toFirstUpperName»() {
 								return ((state == State.«imp.toStateName») || (state == State.MAPPED));
 							}
 						«ENDFOR»
@@ -735,6 +577,7 @@ class MappingLanguageGenerator {
 							«ENDFOR»
 							
 							if ((state == State.MAPPED)) {
+								// TODO
 								// M0B_Wrapper_pcm resolvedPcmWrapper = ...;
 								// M0B_Wrapper_uml resolvedUmlWrapper = ...;
 								// falls unterschied: Fehler/Warning und setzen
@@ -744,7 +587,7 @@ class MappingLanguageGenerator {
 						}
 						
 						«FOR imp : imports»
-						public «mapping.getWrapperName(imp)» get«imp.toFirstUpperName»() {
+						public «mapping.getWrapperClassName(imp)» get«imp.toFirstUpperName»() {
 							if (!stateHas«imp.toFirstUpperName»())
 								throw new «typeRef(IllegalStateException)»("Cannot get «imp.package.name» in state " + state.toString());
 								
@@ -755,7 +598,7 @@ class MappingLanguageGenerator {
 							return this.«imp.wrapperFieldName»;
 						}
 						
-						public void set«imp.toFirstUpperName»(«mapping.getWrapperName(imp)» new_«imp.wrapperFieldName») {
+						public void set«imp.toFirstUpperName»(«mapping.getWrapperClassName(imp)» new_«imp.wrapperFieldName») {
 							validateCorrespondence();
 							
 							if (stateHas«imp.toFirstUpperName»())
@@ -792,27 +635,24 @@ class MappingLanguageGenerator {
 						}
 						
 						private void checkAllContainments(«typeRef(TransformationResult)» result) {
-							«FOR imp : imports»
+							«FOR imp : getImports(mapping)»
 							if (stateHas«imp.toFirstUpperName»()) {
-								«FOR defaultContainExpression : defaultContainments.get(imp)»
+								«FOR defaultContainExpression : getDefaultContainments(mapping, imp) AFTER "\n"»
+								«FOR updateTUIDJava : clg.getEObjectsWithPossiblyChangedTUID(ih, #{}, defaultContainExpression)»
+									tuidUpdateHelper.addObjectToUpdate(Helper.mci, «updateTUIDJava»);
+								«ENDFOR»
 								«clg.checkAndCreateDefaultContainment(ih, #{}, defaultContainExpression)»
 								«ENDFOR»
-								
-								boolean nonContainedFound;
-								do {
-									nonContainedFound = false;
-									for («typeRef(EObject)» eObject : get«imp.toFirstUpperName»().getElements()) {
-										if (!«typeRef(MIRMappingHelper)».hasContainment(eObject, result)) {
-											// request new resource or infer it
-											// add to result
-											nonContainedFound = true;
-											final «typeRef(VURI)» resourceVURI = «typeRef(VURI)».getInstance(«typeRef(mappingName)».INSTANCE.getUserInteracting().askForNewResource(«typeRef(EcoreHelper)».createSensibleString(eObject)));
-											result.addRootEObjectToSave(eObject, resourceVURI);
-										}
-									}
-								} while (nonContainedFound);
+								«typeRef(MIRMappingHelper)».ensureContainmentsByUserInteraction(result,
+									() -> { return get«imp.toFirstUpperName»().getElements(); },
+									(obj) -> {
+										tuidUpdateHelper.addObjectToUpdate(Helper.mci, obj);
+										return «typeRef(VURI)».getInstance(«typeRef(mappingName)».INSTANCE.getUserInteracting().askForNewResource(«typeRef(EcoreHelper)».createSensibleString(obj)));
+									});
 							}
 							«ENDFOR»
+							
+							tuidUpdateHelper.updateAll();
 						}
 						
 						«FOR pair : importPairs»
@@ -842,8 +682,12 @@ class MappingLanguageGenerator {
 							
 							«IF mapping.constraintsBody != null»
 								«FOR constraint : mapping.constraintsBody.expressions»
+									«FOR updateTUIDJava : clg.getEObjectsWithPossiblyChangedTUID(ih, #{}, constraint, pair.first.package)»
+									tuidUpdateHelper.addObjectToUpdate(Helper.mci, «updateTUIDJava»);
+									«ENDFOR»
 									«restoreBodyConstraintFrom(ih, #{}, constraint, pair.first.package)»
 								«ENDFOR»
+								tuidUpdateHelper.updateAll();
 							«ELSE»
 								// no post conditions, ignore
 							«ENDIF»
@@ -851,12 +695,10 @@ class MappingLanguageGenerator {
 						
 						public boolean checkConstraintsFor«pair.first.toFirstUpperName»() {
 							reload();
-							«IF import2constraint.containsKey(pair.first) && !import2constraint.get(pair.first).empty»
-								«FOR constraintBlock : import2constraint.get(pair.first)»
-									«FOR checkExpression : constraintBlock.expressions.map[checkSignatureConstraint(ih, #{}, it)].filterNull»
-										if (!«checkExpression»)
-											return false;
-									«ENDFOR»
+							«IF !getConstraints(mapping, pair.first).empty»
+								«FOR checkExpression : getConstraints(mapping, pair.first).map[checkSignatureConstraint(ih, #{}, it)].filterNull»
+									if (!«checkExpression»)
+										return false;
 								«ENDFOR»
 							«ENDIF»
 							
@@ -864,61 +706,40 @@ class MappingLanguageGenerator {
 						}
 						
 						public void createCorresponding«pair.second.toFirstUpperName»From«pair.first.toFirstUpperName»() {
-							throw new «typeRef(OperationNotSupportedException)»("Order and TUID generation not correct yet");
-							
 							if (state != State.«pair.first.toStateName»)
 								throw new «typeRef(IllegalStateException)»("State must be «pair.first.toStateName»");
 								
-							«FOR namedEClass : import2signature.get(pair.second)?.identicalElement?.elements ?: #[]»
+							«FOR namedEClass : getNamedEClasses(mapping, pair.second)»
 								«typeRef(namedEClass.type)» new_«namedEClass.name» = «eCreate(ih, namedEClass.type)»;
+								tuidUpdateHelper.addObjectToUpdate(Helper.mci, new_«namedEClass.name»);
 							«ENDFOR»
 							
 							set«pair.second.toFirstUpperName»(
-								(new «getWrapperName(mapping, pair.second)».Builder())
-									«FOR namedEClass : import2signature.get(pair.second)?.identicalElement?.elements ?: #[]»
+								(new «getWrapperClassName(mapping, pair.second)».Builder())
+									«FOR namedEClass : getNamedEClasses(mapping, pair.second)»
 										.set«namedEClass.name.toFirstUpper»(new_«namedEClass.name»)
 									«ENDFOR»
 									.build());
 							
-							«IF !import2constraint.getOrDefault(pair.second, #[]).empty»
-								«FOR constraintBlock : import2constraint.getOrDefault(pair.second, #[])»
-									«FOR constraint : constraintBlock.expressions»
-										«establishSignatureConstraintOnCreate(ih, #{}, constraint)»;
+							«IF !getConstraints(mapping, pair.second).filter[!(it instanceof DefaultContainExpression)].empty»
+								«FOR constraint : getConstraints(mapping, pair.second).filter[!(it instanceof DefaultContainExpression)]»
+									«FOR updateTUIDJava : clg.getEObjectsWithPossiblyChangedTUID(ih, #{}, constraint)»
+										tuidUpdateHelper.addObjectToUpdate(Helper.mci, «updateTUIDJava»);
 									«ENDFOR»
+									«establishSignatureConstraintOnCreate(ih, #{}, constraint)»;
 								«ENDFOR»
 							«ELSE»
 								// no constraints for «pair.second.name»
 							«ENDIF»
+							
+							tuidUpdateHelper.updateAll();
 						}
 						
 						«ENDFOR»
 						
-						
 						public static class Helper {
 							private static final «typeRef(MIRMappingRealization)» MAPPING = «mapping.mappingClassName».INSTANCE;
 							private static «typeRef(MappedCorrespondenceInstance)» mci;
-							
-							/*
-							todo is this mechanism needed?
-							private static Map<EObject, List<TUID>> oldTUIDMap = new HashMap<EObject, List<TUID>>();
-
-							public static void addObjectToUpdate(EObject eObject) {
-								if (!oldTUIDMap.containsKey(eObject))
-									oldTUIDMap.put(eObject, new ArrayList<TUID>());
-								oldTUIDMap.get(eObject).add(mci.calculateTUIDFromEObject(eObject));
-							}
-							
-							public static void updateObject(EObject eObject) {
-								if (!oldTUIDMap.containsKey(eObject)) {
-									LOGGER.info("EObject " + eObject.toString() + " not in old tuid map");
-								} else {
-									for (TUID tuid : oldTUIDMap.get(eObject)) {
-										mci.updateTUID(tuid, eObject);
-									}
-									oldTUIDMap.remove(eObject);
-								}
-							}
-							*/
 							
 							private Helper() {}
 							
@@ -939,39 +760,14 @@ class MappingLanguageGenerator {
 							}
 							
 							«FOR pair : importPairs»
-							/**
-							 * @Nullable...
-							 */
-							public static «className» getExistingFor«pair.first.toFirstUpperName»(«getWrapperName(mapping, pair.first)» «pair.first.wrapperFieldName») {
+							public static «className» getExistingFor«pair.first.toFirstUpperName»(«getWrapperClassName(mapping, pair.first)» «pair.first.wrapperFieldName») {
 								«typeRef(Correspondence)» stc = mci.getMappedCorrespondence(«pair.first.wrapperFieldName».getElements(), MAPPING);
-								if (stc == null) {
-									return null;
-								} else {
-									return get(stc);
-									«/*
-									«typeRef(List)»<«typeRef(EObject)»> opposite = «typeRef(MappedCorrespondenceInstance)».getOpposite(stc, «wrapperFields.get(pair.first)».getElements());
-									«wrapperClasses.get(pair.second)» «wrapperFields.get(pair.second)» = new «wrapperClasses.get(pair.second)»(opposite);
-									
-									
-									«IF !requires.empty»
-										«typeRef(List)»<«typeRef(Correspondence)»> dependsOn = stc.getDependsOn();
-										«FOR req : requires.withIndex»
-										final «req.second.first» «req.second.second» = «req.second.first».Helper.get(dependsOn.get(«req.first»));
-										«ENDFOR»
-									«ENDIF»
-									
-									
-									return new «className»(
-										«FOR req : requires»«req.second», «ENDFOR»
-										«FOR wf : wrapperFields»«wf», «ENDFOR»
-										stc, State.MAPPED);
-									 */»
-								}
+								return (stc == null) ? null : get(stc);
 							}
 							
 							public static «className» createHalfMappingFor«pair.first.toFirstUpperName»(
 								«FOR req : requires»«req.first» «req.second», «ENDFOR»
-								«getWrapperName(mapping, pair.first)» «pair.first.wrapperFieldName») {
+								«getWrapperClassName(mapping, pair.first)» «pair.first.wrapperFieldName») {
 								// assert getExistingFor«pair.first.toFirstUpperName» == null
 								
 								return new «className»(
@@ -982,7 +778,7 @@ class MappingLanguageGenerator {
 							
 							public static «className» getExistingOrHalfFor«pair.first.toFirstUpperName»(
 									«FOR req : requires»«req.first» «req.second», «ENDFOR»
-									«getWrapperName(mapping, pair.first)» «pair.first.wrapperFieldName») {
+									«getWrapperClassName(mapping, pair.first)» «pair.first.wrapperFieldName») {
 								«className» existing = getExistingFor«pair.first.toFirstUpperName»(«pair.first.wrapperFieldName»);
 								if (existing != null) {
 									return existing;
@@ -999,11 +795,9 @@ class MappingLanguageGenerator {
 									final «req.second.first» «req.second.second» = «req.second.first».Helper.get(dependsOn.get(«req.first»));
 									«ENDFOR»
 								«ENDIF»
-								
 								«IF wrapperClasses.size != 2»throw new IllegalArgumentException("more than two wrapper classes!")«ENDIF»
-								
-								«FOR wi : wrapperImports.map[new Pair(it, #["A", "B"].get(imports.indexOf(it)))]»
-								«getWrapperName(mapping, wi.first)» «wi.first.wrapperFieldName» = new «getWrapperName(mapping, wi.first)»(stc.get«wi.second»s());
+								«FOR wi : getImports(mapping).map[new Pair(it, #["A", "B"].get(imports.indexOf(it)))]»
+								«getWrapperClassName(mapping, wi.first)» «wi.first.wrapperFieldName» = new «getWrapperClassName(mapping, wi.first)»(stc.get«wi.second»s());
 								«ENDFOR»
 								
 								return new «className»(
@@ -1012,12 +806,9 @@ class MappingLanguageGenerator {
 							}
 							
 							««« TODO hardcoded indices
-							/**
-							 * @Nullable ...
-							 */
 							public static «className» getExisting(«FOR arg : zip(wrapperClasses, wrapperFields) SEPARATOR ", "»«arg.first» «arg.second»«ENDFOR») {
-								«className» claimedMC = getExistingFor«packages.get(0)»(«wrapperFields.get(0)»);
-								if (claimedMC.get«packages.get(1)»() == «wrapperFields.get(1)»)
+								«className» claimedMC = getExistingFor«imports.get(0).toFirstUpperName»(«wrapperFields.get(0)»);
+								if (claimedMC.get«imports.get(1).toFirstUpperName»() == «wrapperFields.get(1)»)
 									return claimedMC;
 								else
 									return null;
@@ -1050,7 +841,7 @@ class MappingLanguageGenerator {
 							public static «typeRef(Iterable)»<«className»> createAllCandidates(
 								«FOR el :
 									((requires)
-									+ (imports.map[import2signature.get(it)].filterNull.flatten.map[elements].flatten).map[new Pair(it.type.instanceTypeName.typeRef, it.name)])
+									+ (imports.map[imp|getNamedEClasses(mapping, imp)].flatten).map[new Pair(it.type.instanceTypeName.typeRef, it.name)])
 								SEPARATOR ", "»
 									«typeRef(Iterable)»<«el.first»> «el.second»
 								«ENDFOR»
@@ -1063,12 +854,12 @@ class MappingLanguageGenerator {
 								«ENDFOR»
 								
 								«FOR imp : imports»
-									«FOR el : getTypesAndNames(ih, import2signature.get(imp)?.identicalElement) ?: #[] SEPARATOR "\n"»
+									«FOR el : getTypesAndNames(ih, getNamedEClasses(mapping, imp)) ?: #[] SEPARATOR "\n"»
 									for («el.first» «el.second»_it : «el.second») {
 									«ENDFOR»
 
-									«getWrapperName(mapping, imp)» «imp.wrapperFieldName» = new «getWrapperName(mapping, imp)».Builder()
-										«FOR el : getTypesAndNames(ih, import2signature.get(imp)?.identicalElement)»
+									«getWrapperClassName(mapping, imp)» «imp.wrapperFieldName» = new «getWrapperClassName(mapping, imp)».Builder()
+										«FOR el : getTypesAndNames(ih, getNamedEClasses(mapping, imp))»
 											.set«el.second.toFirstUpper»(«el.second»_it)
 										«ENDFOR»
 										.build();
@@ -1079,7 +870,7 @@ class MappingLanguageGenerator {
 										«ENDFOR»
 										.build());
 
-									«FOR el : getTypesAndNames(ih, import2signature.get(imp)?.identicalElement)»
+									«FOR el : getTypesAndNames(ih, getNamedEClasses(mapping, imp))»
 									}
 									«ENDFOR»
 								«ENDFOR»
@@ -1105,7 +896,7 @@ class MappingLanguageGenerator {
 							«ENDFOR»
 							
 							«FOR imp : imports»
-								public Builder set«imp.toFirstUpperName»(«getWrapperName(mapping, imp)» «imp.wrapperFieldName») {
+								public Builder set«imp.toFirstUpperName»(«getWrapperClassName(mapping, imp)» «imp.wrapperFieldName») {
 									if (this.«imp.wrapperFieldName» != null)
 										throw new «typeRef(IllegalStateException)»("«imp.wrapperFieldName» has already been set.");
 										
@@ -1139,7 +930,7 @@ class MappingLanguageGenerator {
 			])
 		}
 		
-		def generateTestClass() {
+		private def generateTestClass() {
 			val fqn = getTestClassName
 			val className = fqn.toSimpleName
 			
@@ -1171,11 +962,9 @@ class MappingLanguageGenerator {
 			])
 		}
 		
-		def generateChange2CommandTransforming() {
+		private def generateChange2CommandTransforming() {
 			val fqn = getChange2CommandTransformingClassName
 			val className = fqn.toSimpleName
-			
-			val packages = imports.map[name.toFirstUpper]
 			
 			fsa.generateJavaFile(fqn, [
 				'''
@@ -1206,7 +995,7 @@ class MappingLanguageGenerator {
 								));
 								«ENDFOR»
 								
-								«FOR mapping : file.mappings.sortBy[^default]»
+								«FOR mapping : file.mappings.sortBy[!^default]»
 								addMapping(«mapping.getMappingClassName».INSTANCE);
 								«ENDFOR»
 							}

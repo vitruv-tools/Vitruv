@@ -23,20 +23,12 @@ class MappingLanguageGeneratorNameProvider {
 		'''Mapping«anonMappingIndex++»'''.toString
 	}
 
-	public def getMappedCorrespondenceName(Mapping mapping) {
+	public def getMappedCorrespondenceClassName(Mapping mapping) {
 		'''«pkgName».«mapping.name»_MappedCorrespondence'''.toString
 	}
 
-	public def getHelperClassName(Mapping mapping) {
-		'''«pkgName».«mapping.name»_Helper'''.toString
-	}
-
-	public def getWrapperName(Mapping mapping, Import imp) {
+	public def getWrapperClassName(Mapping mapping, Import imp) {
 		'''«pkgName».«mapping.mappingName»_Wrapper_«imp.name»'''.toString
-	}
-
-	public def getCandidateClassName(Mapping mapping, Import imp) {
-		'''«pkgName».«mapping.mappingName»_Candidate_«imp.name»'''.toString
 	}
 
 	public def getChange2CommandTransformingClassName() {

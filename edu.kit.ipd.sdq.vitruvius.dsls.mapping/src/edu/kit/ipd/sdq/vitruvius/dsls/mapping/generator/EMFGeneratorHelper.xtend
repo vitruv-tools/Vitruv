@@ -17,6 +17,7 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
 import java.util.Set
+import org.eclipse.emf.ecore.EDataType
 
 /**
  * Generates a class that can be used in generated code
@@ -126,8 +127,10 @@ class EMFGeneratorHelper {
 	public def String eContainsOrIsEqual(extension ImportHelper ih, String instance, EStructuralFeature feature, String otherValue) {
 		if (feature.many)
 			'''«eRefGet(ih, instance, feature)».contains(«otherValue»)'''
-		else
+		else if (feature.EType instanceof EDataType && (feature.EType as EDataType).instanceTypeName.equals("java.lang.String"))
 			'''«eRefGet(ih, instance, feature)».equals(«otherValue»)'''
+		else
+			'''(«eRefGet(ih, instance, feature)» == «otherValue»)'''
 	}
 	
 	
