@@ -8,7 +8,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EclipseHelper
 import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper
@@ -61,6 +60,7 @@ import java.util.UUID
 import java.util.Random
 import edu.kit.ipd.sdq.vitruvius.framework.mir.intermediate.MIRintermediate.WithAttributePostCondition
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingPluginProjectHelper
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 
 /**
  * @author Dominik Werle
