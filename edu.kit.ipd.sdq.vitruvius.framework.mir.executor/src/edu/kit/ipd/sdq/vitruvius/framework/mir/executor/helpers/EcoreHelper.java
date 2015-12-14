@@ -127,7 +127,7 @@ public class EcoreHelper {
 	/**
 	 * Determines whether an {@link EObject} is the root object in its resource.
 	 */
-	public static boolean isRoot(EObject object) {
-		return (object.eContainer() == null || object.eContainer().equals(object.eResource()));
+	public static boolean isRootInResource(EObject object) {
+		return ((object.eContainer() == null && object.eResource() != null) || object.eContainer().equals(object.eResource()));
 	}
 }

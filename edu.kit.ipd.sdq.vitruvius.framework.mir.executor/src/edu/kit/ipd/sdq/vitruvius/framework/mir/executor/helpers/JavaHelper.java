@@ -3,6 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -175,6 +176,10 @@ public final class JavaHelper {
 
 	public static <T> void with(T target, Consumer<T> consumer) {
 		consumer.accept(target);
+	}
+	
+	public static <T, R> R apply(T target, Function<T, R> consumer) {
+		return consumer.apply(target);
 	}
 
 	public static <T> Consumer<T> emptyConsumer() {
@@ -349,5 +354,27 @@ public final class JavaHelper {
 				};
 			}
 		};
+	}
+	
+	/**
+	 * Gets the given key from the given map, if present, or puts a value obtained from
+	 * <code>valueSupplier</code> in the map under the given key and returns it.
+	 */
+	public static <K,V> V getOrPut(Map<K,V> map, K key, Supplier<V> valueSupplier) {
+		if (!map.containsKey(key)) {
+			map.put(key, valueSupplier.get());
+		}
+		return map.get(key);
+	}
+	
+	/**
+	 * Gets the given key from the given map, if present, or puts <code>defaultValue</code>
+	 * in the map under the given key and returns it.
+	 */
+	public static <K,V> V getOrPut(Map<K,V> map, K key, V defaultValue) {
+		if (!map.containsKey(key)) {
+			map.put(key, defaultValue);
+		}
+		return map.get(key);
 	}
 }
