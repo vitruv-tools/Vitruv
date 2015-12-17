@@ -8,6 +8,7 @@ import org.emftext.language.java.members.Method;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.somox.gast2seff.visitors.AbstractFunctionClassificationStrategy;
+import org.somox.gast2seff.visitors.MethodCallFinder;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.BasicComponentFinding;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.JaMoPP2PCMUtils;
@@ -31,6 +32,7 @@ public class FunctionClassificationStrategyForPackageMapping extends AbstractFun
 
     public FunctionClassificationStrategyForPackageMapping(final BasicComponentFinding basicComponentFinding,
             final CorrespondenceInstance ci, final BasicComponent myBasicComponent) {
+        super(new MethodCallFinder());
         this.basicComponentFinding = basicComponentFinding;
         this.correspondenceInstance = ci;
         this.myBasicComponent = myBasicComponent;

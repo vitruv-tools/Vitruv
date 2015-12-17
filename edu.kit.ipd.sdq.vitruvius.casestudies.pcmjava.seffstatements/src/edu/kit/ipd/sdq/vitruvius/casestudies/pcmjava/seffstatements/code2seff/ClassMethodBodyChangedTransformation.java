@@ -15,6 +15,7 @@ import org.palladiosimulator.pcm.seff.StopAction;
 import org.somox.gast2seff.visitors.FunctionCallClassificationVisitor;
 import org.somox.gast2seff.visitors.IFunctionClassificationStrategy;
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding;
+import org.somox.gast2seff.visitors.MethodCallFinder;
 import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding;
 import org.somox.gast2seff.visitors.VisitorUtils;
 
@@ -127,11 +128,12 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
 
     private void executeSoMoXForMethod(final BasicComponent basicComponent,
             final ResourceDemandingBehaviour targetResourceDemandingBehaviour) {
+        final MethodCallFinder methodCallFinder = new MethodCallFinder();
         final FunctionCallClassificationVisitor functionCallClassificationVisitor = new FunctionCallClassificationVisitor(
-                this.iFunctionClassificationStrategy);
+                this.iFunctionClassificationStrategy, methodCallFinder);
         VisitorUtils.visitJaMoPPMethod(targetResourceDemandingBehaviour, basicComponent, this.newMethod, null,
                 functionCallClassificationVisitor, this.interfaceOfExternalCallFinder,
-                this.resourceDemandingBehaviourForClassMethodFinding);
+                this.resourceDemandingBehaviourForClassMethodFinding, methodCallFinder);
     }
 
     private void createNewCorrespondences(final CorrespondenceInstance ci,
