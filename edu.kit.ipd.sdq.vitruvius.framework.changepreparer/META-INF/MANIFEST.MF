@@ -7,5 +7,10 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
  org.apache.log4j,
  org.eclipse.emf.ecore,
- edu.kit.ipd.sdq.vitruvius.framework.meta.change
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.changepreparer
+
