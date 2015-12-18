@@ -19,13 +19,13 @@ package class EMFModelPreparer extends ConcreteChangePreparer {
 	override Change prepareChange(Change change) {
 		if (change instanceof EMFModelChange) {
 			val emc = change as EMFModelChange
-			val modelInstance = this.modelProviding.getAndLoadModelInstanceOriginal(emc.URI)
+			this.modelProviding.getAndLoadModelInstanceOriginal(emc.URI)
 			val eChange = emc.EChange
 			if (eChange instanceof EFeatureChange<?>) {
 				val featureChange = eChange as EFeatureChange<?>
 				val oldEObject = featureChange.oldAffectedEObject
 				val newEObject = featureChange.newAffectedEObject				
-				val correspondenceInstances = this.correspondenceProviding.getOrCreateAllCorrespondenceInstances(modelInstance.metamodeURI)
+				val correspondenceInstances = this.correspondenceProviding.getOrCreateAllCorrespondenceInstances(emc.URI)
 				for (correspondenceInstance : correspondenceInstances) {
 					correspondenceInstance.updateTUID(oldEObject,newEObject)
 				}
