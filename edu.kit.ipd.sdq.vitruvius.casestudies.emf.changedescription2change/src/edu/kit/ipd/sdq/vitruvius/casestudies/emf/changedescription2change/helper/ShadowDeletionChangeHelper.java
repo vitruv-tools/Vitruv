@@ -89,7 +89,7 @@ public final class ShadowDeletionChangeHelper {
 
             DeleteNonRootEObjectInList<EObject> deleteChange = ContainmentFactory.eINSTANCE
                     .createDeleteNonRootEObjectInList();
-            InitializeEChange.setupUpdateEReference(deleteChange, affectedObject, affectedFeature);
+            InitializeEChange.setupUpdateEFeature(deleteChange, affectedObject, affectedFeature);
             InitializeEChange.setupRemoveFromEList(deleteChange, child, 0);
 
             additionalDetachedObjects.add(child);
@@ -107,7 +107,7 @@ public final class ShadowDeletionChangeHelper {
 
         DeleteNonRootEObjectSingle<EObject> deleteChange = ContainmentFactory.eINSTANCE
                 .createDeleteNonRootEObjectSingle();
-        InitializeEChange.setupUpdateEReference(deleteChange, object, feature);
+        InitializeEChange.setupUpdateEFeature(deleteChange, object, feature);
         deleteChange.setOldValue(child);
 
         additionalDetachedObjects.add(object);

@@ -146,7 +146,7 @@ public final class ShadowInsertionChangeHelper {
     private static void insertCreateChange(EObject createdObject, EObject referencedObj, EReference ref,
             Map<EObject, List<EChange>> target) {
         CreateNonRootEObjectSingle<EObject> update = ContainmentFactory.eINSTANCE.createCreateNonRootEObjectSingle();
-        InitializeEChange.setupUpdateEReference(update, createdObject, ref);
+        InitializeEChange.setupUpdateEFeature(update, createdObject, ref);
         InitializeEChange.setupCreateNonRootEObjectSingle(update, referencedObj);
         MapUtils.addToListMap(createdObject, update, target);
     }
@@ -156,7 +156,7 @@ public final class ShadowInsertionChangeHelper {
         LOGGER.trace("\tAdding create change for reference " + ref.getName() + " containing " + referencedObj + " in "
                 + referencedObj.eContainer());
         CreateNonRootEObjectInList<EObject> update = ContainmentFactory.eINSTANCE.createCreateNonRootEObjectInList();
-        InitializeEChange.setupUpdateEReference(update, createdObject, ref);
+        InitializeEChange.setupUpdateEFeature(update, createdObject, ref);
         InitializeEChange.setupInsertInEList(update, referencedObj, index);
         MapUtils.addToListMap(createdObject, update, target);
     }
@@ -167,7 +167,7 @@ public final class ShadowInsertionChangeHelper {
 
         UpdateSingleValuedNonContainmentEReference<EObject> update = ReferenceFactory.eINSTANCE
                 .createUpdateSingleValuedNonContainmentEReference();
-        InitializeEChange.setupUpdateEReference(update, createdObject, ref);
+        InitializeEChange.setupUpdateEFeature(update, createdObject, ref);
         // TODO (Maybe): EChange object set up with an explicit null reference.
         InitializeEChange.setupUpdateSingleValuedNonContainmentEReference(update, null, referencedObj);
 
@@ -180,7 +180,7 @@ public final class ShadowInsertionChangeHelper {
 
         InsertNonContainmentEReference<EObject> update = ReferenceFactory.eINSTANCE
                 .createInsertNonContainmentEReference();
-        InitializeEChange.setupUpdateEReference(update, createdObject, ref);
+        InitializeEChange.setupUpdateEFeature(update, createdObject, ref);
         InitializeEChange.setupInsertInEList(update, referencedObj, index);
         MapUtils.addToListMap(createdObject, update, target);
     }
@@ -190,7 +190,7 @@ public final class ShadowInsertionChangeHelper {
         LOGGER.trace("\tAdding attribute change in " + attr.getName() + " to " + attributeObj);
 
         UpdateSingleValuedEAttribute<Object> update = AttributeFactory.eINSTANCE.createUpdateSingleValuedEAttribute();
-        InitializeEChange.setupUpdateEAttribute(update, createdObject, attr);
+        InitializeEChange.setupUpdateEFeature(update, createdObject, attr);
         // TODO (Maybe): EChange object set up with an explicit null reference.
         InitializeEChange.setupUpdateSingleValuedEAttribute(update, null, attributeObj);
 

@@ -100,7 +100,7 @@ class ListChangeRemoveHelperImpl implements IListChangeTranslationHelper {
         for (Object obj : deletedObjects) {
             EObject eObj = (EObject) obj;
             UpdateEReference<EObject> update = createRemoveChange(orphanedObjects, eObj, feature, lc.getIndex());
-            InitializeEChange.setupUpdateEReference(update, affectedObject, feature);
+            InitializeEChange.setupUpdateEFeature(update, affectedObject, feature);
             target.add(update);
         }
     }
@@ -114,13 +114,13 @@ class ListChangeRemoveHelperImpl implements IListChangeTranslationHelper {
 
         if (lc.getValues().isEmpty()) {
             RemoveEAttributeValue<Object> update = AttributeFactory.eINSTANCE.createRemoveEAttributeValue();
-            InitializeEChange.setupUpdateEAttribute(update, affectedObject, attrFeature);
+            InitializeEChange.setupUpdateEFeature(update, affectedObject, attrFeature);
             update.setIndex(lc.getIndex());
             target.add(update);
         } else {
             for (Object o : lc.getValues()) {
                 RemoveEAttributeValue<Object> update = AttributeFactory.eINSTANCE.createRemoveEAttributeValue();
-                InitializeEChange.setupUpdateEAttribute(update, affectedObject, attrFeature);
+                InitializeEChange.setupUpdateEFeature(update, affectedObject, attrFeature);
                 update.setIndex(lc.getIndex());
                 update.setOldValue(o);
                 target.add(update);

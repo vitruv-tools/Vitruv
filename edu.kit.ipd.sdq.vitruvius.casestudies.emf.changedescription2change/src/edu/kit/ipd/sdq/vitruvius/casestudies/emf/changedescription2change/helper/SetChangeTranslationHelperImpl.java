@@ -44,7 +44,7 @@ class SetChangeTranslationHelperImpl extends AbstractChangeTranslationHelper {
     private UpdateEReference<EObject> createContainmentDeleteChange(EObject affectedObject, EReference feature) {
         DeleteNonRootEObjectSingle<EObject> deleteChange = ContainmentFactory.eINSTANCE
                 .createDeleteNonRootEObjectSingle();
-        InitializeEChange.setupUpdateEReference(deleteChange, affectedObject, feature);
+        InitializeEChange.setupUpdateEFeature(deleteChange, affectedObject, feature);
         deleteChange.setOldValue((EObject) affectedObject.eGet(feature));
 
         return deleteChange;
@@ -54,7 +54,7 @@ class SetChangeTranslationHelperImpl extends AbstractChangeTranslationHelper {
             EReference feature) {
         CreateNonRootEObjectSingle<EObject> createChange = ContainmentFactory.eINSTANCE
                 .createCreateNonRootEObjectSingle();
-        InitializeEChange.setupUpdateEReference(createChange, affectedObject, feature);
+        InitializeEChange.setupUpdateEFeature(createChange, affectedObject, feature);
         createChange.setNewValue(newValue);
         return createChange;
     }
@@ -63,7 +63,7 @@ class SetChangeTranslationHelperImpl extends AbstractChangeTranslationHelper {
             EObject affectedObject, EReference feature) {
         UpdateSingleValuedNonContainmentEReference<EObject> update = ReferenceFactory.eINSTANCE
                 .createUpdateSingleValuedNonContainmentEReference();
-        InitializeEChange.setupUpdateEReference(update, affectedObject, feature);
+        InitializeEChange.setupUpdateEFeature(update, affectedObject, feature);
         update.setNewValue(newValue);
         return update;
     }
@@ -106,7 +106,7 @@ class SetChangeTranslationHelperImpl extends AbstractChangeTranslationHelper {
 
         UpdateSingleValuedEAttribute<Object> updateChange = AttributeFactory.eINSTANCE
                 .createUpdateSingleValuedEAttribute();
-        InitializeEChange.setupUpdateEAttribute(updateChange, affectedObject, feature);
+        InitializeEChange.setupUpdateEFeature(updateChange, affectedObject, feature);
         updateChange.setNewValue(fc.getValue());
         target.add(updateChange);
     }

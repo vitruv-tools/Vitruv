@@ -89,7 +89,7 @@ class ListChangeAddHelperImpl implements IListChangeTranslationHelper {
         for (EObject obj : lc.getReferenceValues()) {
             LOGGER.trace("\tProcessing: " + obj);
             UpdateEReference<EObject> update = createAddChange(addedObjects, obj, (EReference) fc.getFeature(), i);
-            InitializeEChange.setupUpdateEReference(update, affectedObject, (EReference) fc.getFeature());
+            InitializeEChange.setupUpdateEFeature(update, affectedObject, (EReference) fc.getFeature());
             target.add(update);
             i++;
         }
@@ -105,7 +105,7 @@ class ListChangeAddHelperImpl implements IListChangeTranslationHelper {
             InsertEAttributeValue<Object> insertChange = AttributeFactory.eINSTANCE.createInsertEAttributeValue();
             insertChange.setIndex(lc.getIndex());
             insertChange.setNewValue(obj);
-            InitializeEChange.setupUpdateEAttribute(insertChange, affectedObject, attrFeature);
+            InitializeEChange.setupUpdateEFeature(insertChange, affectedObject, attrFeature);
             target.add(insertChange);
         }
     }

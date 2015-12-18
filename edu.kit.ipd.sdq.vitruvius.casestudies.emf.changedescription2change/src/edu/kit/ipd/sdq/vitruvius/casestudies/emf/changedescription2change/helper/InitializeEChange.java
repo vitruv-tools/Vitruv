@@ -11,15 +11,13 @@
 
 package edu.kit.ipd.sdq.vitruvius.casestudies.emf.changedescription2change.helper;
 
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.InsertInEList;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.RemoveFromEList;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.UpdateEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.UpdateSingleValuedNonContainmentEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectSingle;
 
@@ -31,15 +29,8 @@ final class InitializeEChange {
     private InitializeEChange() {
     }
 
-    protected static <T extends EObject> void setupUpdateEReference(UpdateEReference<T> update, EObject affectedObject,
-            EReference affectedFeature) {
-        update.setOldAffectedEObject(affectedObject);
-        update.setNewAffectedEObject(affectedObject);
-        update.setAffectedFeature(affectedFeature);
-    }
-
-    protected static <T extends Object> void setupUpdateEAttribute(UpdateEAttribute<T> update, EObject affectedObject,
-            EAttribute affectedFeature) {
+    protected static <T extends EStructuralFeature> void setupUpdateEFeature(EFeatureChange<T> update, EObject affectedObject,
+            T affectedFeature) {
         update.setOldAffectedEObject(affectedObject);
         update.setNewAffectedEObject(affectedObject);
         update.setAffectedFeature(affectedFeature);

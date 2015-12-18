@@ -56,13 +56,13 @@ class UnsetChangeTranslationHelper implements IChangeTranslationHelper {
                 LOGGER.trace("\tCreating a delete operation for " + remObj);
                 DeleteNonRootEObjectInList<EObject> deleteChange = ContainmentFactory.eINSTANCE
                         .createDeleteNonRootEObjectInList();
-                InitializeEChange.setupUpdateEReference(deleteChange, affectedObject, referenceFeature);
+                InitializeEChange.setupUpdateEFeature(deleteChange, affectedObject, referenceFeature);
                 InitializeEChange.setupRemoveFromEList(deleteChange, (EObject) remObj, 0);
                 target.add(deleteChange);
             } else {
                 RemoveNonContainmentEReference<EObject> deleteChange = ReferenceFactory.eINSTANCE
                         .createRemoveNonContainmentEReference();
-                InitializeEChange.setupUpdateEReference(deleteChange, affectedObject, referenceFeature);
+                InitializeEChange.setupUpdateEFeature(deleteChange, affectedObject, referenceFeature);
                 deleteChange.setOldValue((EObject) remObj);
                 deleteChange.setIndex(0);
                 target.add(deleteChange);
@@ -86,7 +86,7 @@ class UnsetChangeTranslationHelper implements IChangeTranslationHelper {
                 for (int i = 0; i < attrFeature.size(); i++) {
                     RemoveEAttributeValue<Object> removeChange = AttributeFactory.eINSTANCE
                             .createRemoveEAttributeValue();
-                    InitializeEChange.setupUpdateEAttribute(removeChange, affectedObject, feature);
+                    InitializeEChange.setupUpdateEFeature(removeChange, affectedObject, feature);
                     removeChange.setOldValue(attrFeature.get(i));
                     removeChange.setIndex(0);
                     target.add(removeChange);
@@ -98,34 +98,29 @@ class UnsetChangeTranslationHelper implements IChangeTranslationHelper {
             if (ref.isContainment() && orphanedObjects.contains(oldValue)) {
                 DeleteNonRootEObjectSingle<EObject> deleteChange = ContainmentFactory.eINSTANCE
                         .createDeleteNonRootEObjectSingle();
-                InitializeEChange.setupUpdateEReference(deleteChange, affectedObject, ref);
+                InitializeEChange.setupUpdateEFeature(deleteChange, affectedObject, ref);
                 deleteChange.setOldValue(oldValue);
                 target.add(deleteChange);
             }
         }
 
         if (fc.getFeature() instanceof EReference) {
-            EReference feature = (EReference) fc.getFeature();
-            if (feature.isContainment()) {
+            EReference reference = (EReference) fc.getFeature();
+            if (reference.isContainment()) {
                 UnsetContainmentEReference<EStructuralFeature> unsetFeature = FeatureFactory.eINSTANCE
                         .createUnsetContainmentEReference();
-                unsetFeature.setAffectedFeature(feature);
-                unsetFeature.setOldAffectedEObject(affectedObject);
-                unsetFeature.setNewAffectedEObject(affectedObject);
+                InitializeEChange.setupUpdateEFeature(unsetFeature, affectedObject, reference);
                 target.add(unsetFeature);
             } else {
                 UnsetNonContainmentEReference<EStructuralFeature> unsetFeature = FeatureFactory.eINSTANCE
                         .createUnsetNonContainmentEReference();
-                unsetFeature.setAffectedFeature(feature);
-                unsetFeature.setOldAffectedEObject(affectedObject);
-                unsetFeature.setNewAffectedEObject(affectedObject);
+                InitializeEChange.setupUpdateEFeature(unsetFeature, affectedObject, reference);
                 target.add(unsetFeature);
             }
         } else if (fc.getFeature() instanceof EAttribute) {
+        	EAttribute attribute = (EAttribute) fc.getFeature();
             UnsetEAttribute<EStructuralFeature> unsetFeature = FeatureFactory.eINSTANCE.createUnsetEAttribute();
-            unsetFeature.setAffectedFeature((EAttribute) fc.getFeature());
-            unsetFeature.setOldAffectedEObject(affectedObject);
-            unsetFeature.setNewAffectedEObject(affectedObject);
+            InitializeEChange.setupUpdateEFeature(unsetFeature, affectedObject, attribute);
             target.add(unsetFeature);
         }
 

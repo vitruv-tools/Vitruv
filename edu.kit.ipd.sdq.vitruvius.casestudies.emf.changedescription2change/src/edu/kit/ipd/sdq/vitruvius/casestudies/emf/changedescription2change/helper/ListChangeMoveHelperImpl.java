@@ -39,7 +39,7 @@ class ListChangeMoveHelperImpl implements IListChangeTranslationHelper {
             int index) {
         RemoveNonRootEObjectFromContainmentList<EObject> removeChange = ContainmentFactory.eINSTANCE
                 .createRemoveNonRootEObjectFromContainmentList();
-        InitializeEChange.setupUpdateEReference(removeChange, affectedObject, feature);
+        InitializeEChange.setupUpdateEFeature(removeChange, affectedObject, feature);
         InitializeEChange.setupRemoveFromEList(removeChange, movedObject, index);
         return removeChange;
     }
@@ -48,7 +48,7 @@ class ListChangeMoveHelperImpl implements IListChangeTranslationHelper {
             int index) {
         InsertNonRootEObjectInContainmentList<EObject> insertChange = ContainmentFactory.eINSTANCE
                 .createInsertNonRootEObjectInContainmentList();
-        InitializeEChange.setupUpdateEReference(insertChange, affectedObject, feature);
+        InitializeEChange.setupUpdateEFeature(insertChange, affectedObject, feature);
         InitializeEChange.setupInsertInEList(insertChange, movedObject, index);
         return insertChange;
     }
@@ -57,7 +57,7 @@ class ListChangeMoveHelperImpl implements IListChangeTranslationHelper {
             int index) {
         RemoveNonContainmentEReference<EObject> removeChange = ReferenceFactory.eINSTANCE
                 .createRemoveNonContainmentEReference();
-        InitializeEChange.setupUpdateEReference(removeChange, affectedObject, feature);
+        InitializeEChange.setupUpdateEFeature(removeChange, affectedObject, feature);
         InitializeEChange.setupRemoveFromEList(removeChange, movedObject, index);
         return removeChange;
     }
@@ -66,7 +66,7 @@ class ListChangeMoveHelperImpl implements IListChangeTranslationHelper {
             int index) {
         InsertNonContainmentEReference<EObject> insertChange = ReferenceFactory.eINSTANCE
                 .createInsertNonContainmentEReference();
-        InitializeEChange.setupUpdateEReference(insertChange, affectedObject, feature);
+        InitializeEChange.setupUpdateEFeature(insertChange, affectedObject, feature);
         InitializeEChange.setupInsertInEList(insertChange, movedObject, index);
         return insertChange;
     }
