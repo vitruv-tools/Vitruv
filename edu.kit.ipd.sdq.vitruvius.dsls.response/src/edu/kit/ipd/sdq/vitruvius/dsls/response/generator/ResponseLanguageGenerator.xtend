@@ -20,6 +20,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
 import org.apache.log4j.Logger
 import org.apache.log4j.Level
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 
 class ResponseLanguageGenerator implements IGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
@@ -54,6 +55,29 @@ class ResponseLanguageGenerator implements IGenerator {
 		«classImplementation»'''
 		);
 	}
+	
+//	private def generateExecutorClass(Resource resource, IFileSystemAccess fsa) {
+//		val ih = new ImportHelper();
+//		val classImplementation = '''
+//		public class «resource.className.generatedClassName»Executor implements «ih.typeRef(AbstractResponseExecutor)» {
+//			public override void transformChanges2Commands(«ih.typeRef(Blackboard)» blackboard) {
+//				// Walk through changes and find fitting Responses from a HashMap or similar
+//			}
+//			
+//			public override «ih.typeRef(List)»<«ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)
+//				»>> getTransformableMetamodels() {
+//				// Hold a map that contains response model combinations
+//				return null;
+//			}
+//		}
+//		'''
+//		
+//		fsa.generateFile(resource.className.generatedClassName + "Delegator.xtend", '''
+//		«ih.generateImportCode»
+//		
+//		«classImplementation»'''
+//		);
+//	}
 	
 	private def generateDelegatorClass(Resource resource, IFileSystemAccess fsa) {
 		val ih = new ImportHelper();
@@ -92,7 +116,7 @@ class ResponseLanguageGenerator implements IGenerator {
 	}
 	
 	private def dispatch String getResponseNameForEvent(ModelChangeEvent event) '''
-		«event.name»Of«event.feature.feature.name.toFirstUpper»In«event.feature.element.name.toFirstUpper»'''
+		«event.change.name»Of«event.feature.feature.name.toFirstUpper»In«event.feature.element.name.toFirstUpper»'''
 
 	private def getGeneratedClassName(String sourceClassName) {
 		return sourceClassName + "Responses"
@@ -102,8 +126,21 @@ class ResponseLanguageGenerator implements IGenerator {
 		var ih = new ImportHelper();
 		val classImplementation = '''
 		public class «className» implements «ih.typeRef(ResponseRealization)» {
-			private def checkPrecondition(«ih.typeRef(Event)» event) { 
-				// TODO implement precondition check
+			public static def Class<? extends EChange> getTrigger() {
+				«IF response.trigger.event instanceof ModelChangeEvent»
+				return «ih.typeRef((response.trigger.event as ModelChangeEvent).change)»;
+				«ELSE»
+				return null;
+				«ENDIF»
+			}
+			
+			private def checkPrecondition(«ih.typeRef(EChange)» event) { 
+				«IF response.trigger.event instanceof ModelChangeEvent»
+				if (event instanceof «ih.typeRef((response.trigger.event as ModelChangeEvent).change)») {
+					// TODO implement precondition check
+					return true;
+				}
+				«ENDIF»
 				return false;
 			}
 			
@@ -112,7 +149,7 @@ class ResponseLanguageGenerator implements IGenerator {
 				return new «ih.typeRef(ArrayList)»<«ih.typeRef(EClass)»>();
 			}
 			
-			public override applyEvent(«ih.typeRef(Event)» event) {
+			public override applyEvent(«ih.typeRef(EChange)» event) {
 				val logger = «ih.typeRef(Logger)».getLogger(«className»);
 				logger.setLevel(«ih.typeRef(Level)».DEBUG);
 				logger.debug("Called response " + this + " with event " + event);
@@ -125,7 +162,7 @@ class ResponseLanguageGenerator implements IGenerator {
 				return new «ih.typeRef(TransformationResult)»();
 			}
 			
-			private def performResponseTo(«ih.typeRef(Event)» event, «ih.typeRef(EClass)» affectedModel) «response.effects.toXtendCode»
+			private def performResponseTo(«ih.typeRef(EChange)» event, «ih.typeRef(EClass)» affectedModel) «response.effects.toXtendCode»
 		}
 		'''
 		

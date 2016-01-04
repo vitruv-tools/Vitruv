@@ -57,7 +57,7 @@ abstract class ResponseChange2CommandTransforming implements Change2CommandTrans
 		for (executor : responseExecutors) {
 			// TODO HK implement correctly
 			LOGGER.debug('''Calling executor «executor» for change event «change»''');
-			result += executor.generateCommandsForEvent(ResponseLanguageFactory.eINSTANCE.createUpdateEvent());
+			result += executor.generateCommandsForEvent(change);
 		}
 		return result;
 	}

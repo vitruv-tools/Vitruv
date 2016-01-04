@@ -7,6 +7,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBrid
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Event
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseRealization
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
+import java.util.Queue
 
 abstract class AbstractResponseExecutor  {
 	private final static val LOGGER = Logger.getLogger(AbstractResponseExecutor);
@@ -18,15 +20,15 @@ abstract class AbstractResponseExecutor  {
 		this.setup();
 	}
 
-	protected def void addResponse(Class<? extends Event> eventType, ResponseRealization response) {
+	protected def void addResponse(Class<? extends EChange> eventType, ResponseRealization response) {
 		this.changeToResponseMap.addResponse(eventType, response);
 	}
 	
-	public def List<Command> generateCommandsForEvent(Event event) {
+	public def List<Command> generateCommandsForEvent(EChange event) {
 		return handleEvent(event);
 	}
 
-	protected def List<Command> callRelevantResponses(Event event) {
+	protected def List<Command> callRelevantResponses(EChange event) {
 		val result = new ArrayList<Command>();
 		val relevantResponses = this.changeToResponseMap.getResponses(event);
 		LOGGER.debug("call relevant responses");
@@ -38,7 +40,7 @@ abstract class AbstractResponseExecutor  {
 		return result;
 	}
 
-	protected def List<Command> handleEvent(Event event) {
+	protected def List<Command> handleEvent(EChange event) {
 		return this.callRelevantResponses(event);
 	}
 

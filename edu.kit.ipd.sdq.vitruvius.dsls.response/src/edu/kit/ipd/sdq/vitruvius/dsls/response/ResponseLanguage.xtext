@@ -23,13 +23,14 @@ Effects:
 
 // TODO this is a dummy by now
 AffectedModel:
-	model=STRING;
+	model=[ecore::EClass|QualifiedName];
 	
 Event:
 	ModelChangeEvent;
 	
 ModelChangeEvent:
-	(UpdateEvent | CreateEvent | DeleteEvent)
+	//(UpdateEvent | CreateEvent | DeleteEvent)
+	change=[ecore::EClass|QualifiedName]
 	'of' feature=FeatureOfElement 'in' metamodel=[Import];
 	
 UpdateEvent:

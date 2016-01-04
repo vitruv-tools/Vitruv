@@ -40,6 +40,12 @@ import org.eclipse.xtext.scoping.impl.FilteringScope
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.FeatureOfElement
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Import
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage
+import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.impl.EPackageImpl
+import org.eclipse.emf.ecore.impl.EcoreFactoryImpl
+import org.eclipse.emf.common.util.URI
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguageFactory
+import java.util.ArrayList
 
 /**
  * Copy of edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping.MappingLanguageScopeProviderDelegate by Dominik Werle
@@ -47,7 +53,8 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguage
 // TODO HK refactor to only one implementation
 class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 	private static val LOGGER = Logger.getLogger(ResponseLanguageScopeProviderDelegate)
-
+	private static val String CHANGE_MM_URI = "http://edu.kit.ipd.sdq.vitruvius/Change/1.0";
+	
 //	@Inject
 //	QualifiedNameProvider qualifiedNameProvider;
 
@@ -78,13 +85,13 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 	}
 	
 	override getScope(EObject context, EReference reference) {
-		if (reference.getEType.equals(EcorePackage.Literals.ECLASS))
-			return createQualifiedEClassScope(context.eResource)
-		else if ((reference.equals(FEATURE_OF_ELEMENT__FEATURE))
+		if ((reference.equals(FEATURE_OF_ELEMENT__FEATURE))
 			&& (context instanceof FeatureOfElement))
 			return createEStructuralFeatureScope(context as FeatureOfElement)
-//		else if (reference.equals(REQUIRED_MAPPING_PATH_BASE__REQUIRED_MAPPING))
-//			return createRequiredMappingPathBaseScope(context)
+		else if (reference.equals(MODEL_CHANGE_EVENT__CHANGE))
+			return createChangeEventsScope(context.eResource)
+		else if (reference.getEType.equals(EcorePackage.Literals.ECLASS))
+			return createQualifiedEClassScope(context.eResource)
 //		else if (reference.equals(REQUIRED_MAPPING_PATH_TAIL__REQUIRED_MAPPING))
 //			return createRequiredMappingPathTailScope(context)
 //		else if (reference.equals(CONTEXT_VARIABLE__TARGET_CLASS))
@@ -94,6 +101,7 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 
 		super.getScope(context, reference)
 	}
+	
 	
 	/*def IScope createRequiresScope(EObject context) {
 		val superScope = super.getScope(context, REQUIRED_MAPPING__MAPPING)
@@ -276,4 +284,20 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 		var resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions)
 		return resultScope
 	}
+	
+	
+	def createChangeEventsScope(Resource res) {
+		val changePckg = EPackage.Registry.INSTANCE.get(CHANGE_MM_URI) as EPackage;
+		val classifierDescriptions = collectObjectDescriptions(changePckg);
+		val resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions);
+		return resultScope
+	}
+	
+	def Iterable<IEObjectDescription> collectObjectDescriptions(EPackage pckg) {
+		var recursiveResult = pckg.ESubpackages.map[it | collectObjectDescriptions(it)].flatten
+		var result = pckg.EClassifiers.filter(EClass).map[EObjectDescription.create(
+			qualifiedNameProvider.getFullyQualifiedName(it).skipFirst(1), it)];
+		return recursiveResult + result;
+	}
+	
 }
