@@ -21,6 +21,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
 import org.apache.log4j.Logger
 import org.apache.log4j.Level
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange
 
 class ResponseLanguageGenerator implements IGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
@@ -136,9 +137,18 @@ class ResponseLanguageGenerator implements IGenerator {
 			
 			private def checkPrecondition(«ih.typeRef(EChange)» event) { 
 				«IF response.trigger.event instanceof ModelChangeEvent»
-				if (event instanceof «ih.typeRef((response.trigger.event as ModelChangeEvent).change)») {
-					// TODO implement precondition check
-					return true;
+				if (event instanceof «ih.typeRef((response.trigger.event as ModelChangeEvent).change)»<«
+					//ih.typeRef((response.trigger.event as ModelChangeEvent).feature.element.EStructuralFeatures.filter(ft | ft.name = (response.trigger.event as ModelChangeEvent).feature.feature
+					//ih.typeRef((response.trigger.event as ModelChangeEvent).feature.feature.EType)
+					»?>) {
+					«IF EFeatureChange.isAssignableFrom((response.trigger.event as ModelChangeEvent).change.instanceClass)»
+					val feature = (event as «ih.typeRef(EFeatureChange)»<?>).affectedFeature;
+					«val modelChangeEvent = (response.trigger.event as ModelChangeEvent)»
+					if (feature.name.equals("«modelChangeEvent.feature.feature.name»")
+						&& event.oldAffectedEObject instanceof «ih.typeRef(modelChangeEvent.feature.element)») {
+						return true;
+					}
+					«ENDIF»
 				}
 				«ENDIF»
 				return false;
@@ -157,6 +167,7 @@ class ResponseLanguageGenerator implements IGenerator {
 					return new «ih.typeRef(TransformationResult)»();
 				}
 				
+				logger.debug("Execute response " + this + " due to matching precondition");
 				val affectedModels = determineAffectedModels();
 				affectedModels.forEach[affectedModel | performResponseTo(event, affectedModel)];
 				return new «ih.typeRef(TransformationResult)»();
@@ -173,7 +184,7 @@ class ResponseLanguageGenerator implements IGenerator {
 	}
 	
 	private def toXtendCode(Effects effects) {
-		NodeModelUtils.getNode(effects.code).text}
+		NodeModelUtils.getNode(effects.code.code).text}
 	
 	
 	private def getClassName(Resource res) {

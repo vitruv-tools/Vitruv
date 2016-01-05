@@ -13,7 +13,6 @@ import com.google.inject.Inject
 //import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathTail
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.Iterator
-import java.util.List
 import java.util.function.Function
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EClass
@@ -85,7 +84,9 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 	}
 	
 	override getScope(EObject context, EReference reference) {
-		if ((reference.equals(FEATURE_OF_ELEMENT__FEATURE))
+		if ((reference.equals(CODE_BLOCK__CODE))) {
+			return IScope.NULLSCOPE
+		} else if ((reference.equals(FEATURE_OF_ELEMENT__FEATURE))
 			&& (context instanceof FeatureOfElement))
 			return createEStructuralFeatureScope(context as FeatureOfElement)
 		else if (reference.equals(MODEL_CHANGE_EVENT__CHANGE))
@@ -287,13 +288,16 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 	
 	
 	def createChangeEventsScope(Resource res) {
-		val changePckg = EPackage.Registry.INSTANCE.get(CHANGE_MM_URI) as EPackage;
-		val classifierDescriptions = collectObjectDescriptions(changePckg);
-		val resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions);
-		return resultScope
+		val resultScope = new SimpleScope(IScope.NULLSCOPE, changeMMObjects);
+		return resultScope	
 	}
 	
-	def Iterable<IEObjectDescription> collectObjectDescriptions(EPackage pckg) {
+	private final Iterable<IEObjectDescription> changeMMObjects = {
+		val changePckg = EPackage.Registry.INSTANCE.getEPackage(CHANGE_MM_URI);
+		collectObjectDescriptions(changePckg);
+	}
+	
+	private def Iterable<IEObjectDescription> collectObjectDescriptions(EPackage pckg) {
 		var recursiveResult = pckg.ESubpackages.map[it | collectObjectDescriptions(it)].flatten
 		var result = pckg.EClassifiers.filter(EClass).map[EObjectDescription.create(
 			qualifiedNameProvider.getFullyQualifiedName(it).skipFirst(1), it)];

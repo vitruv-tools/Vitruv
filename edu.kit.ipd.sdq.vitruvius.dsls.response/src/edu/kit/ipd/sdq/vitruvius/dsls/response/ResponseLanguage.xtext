@@ -19,7 +19,10 @@ Response:
 	'Response to' trigger=Trigger effects=Effects;
 	
 Effects:
-	('affects' affectedModel=AffectedModel)? code=XBlockExpression;
+	('affects' affectedModel=AffectedModel)? code=CodeBlock;
+
+CodeBlock:
+	code=XBlockExpression;
 
 // TODO this is a dummy by now
 AffectedModel:
