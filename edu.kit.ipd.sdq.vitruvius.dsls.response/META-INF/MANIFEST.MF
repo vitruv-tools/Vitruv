@@ -19,7 +19,9 @@ Require-Bundle: org.eclipse.xtext,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.framework.mir.executor,
- edu.kit.ipd.sdq.vitruvius.framework.meta.change;bundle-version="1.0.0"
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter,
+ edu.kit.ipd.sdq.vitruvius.framework.run.userinteractor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage,
  edu.kit.ipd.sdq.vitruvius.dsls.response.parser.antlr,
