@@ -34,7 +34,7 @@ Event:
 ModelChangeEvent:
 	//(UpdateEvent | CreateEvent | DeleteEvent)
 	change=[ecore::EClass|QualifiedName]
-	'of' feature=FeatureOfElement 'in' metamodel=[Import];
+	'of' feature=FeatureOfElement;
 	
 UpdateEvent:
 	{UpdateEvent}
@@ -49,7 +49,7 @@ DeleteEvent:
 	name='Delete';
 
 Trigger:
-	event=Event;
+	event=Event 'in' metamodel=[Import];
 
 FeatureOfElement:
 	element=[ecore::EClass|QualifiedName] '[' feature=[ecore::EStructuralFeature|ValidID] ']';

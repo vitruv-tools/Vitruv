@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.response.executor.impl
+package edu.kit.ipd.sdq.vitruvius.dsls.response.executor
 
 import org.apache.log4j.Logger
 import java.util.List

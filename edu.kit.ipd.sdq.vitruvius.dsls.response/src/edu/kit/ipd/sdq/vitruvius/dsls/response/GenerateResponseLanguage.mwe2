@@ -67,7 +67,9 @@ Workflow {
 			serializer = {
 				generateStub = false
 			}
-			validator = {
+			validator = validation.ValidatorFragment2 {
+				
+				inheritImplementation = true
 				// composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
 			}
 			qualifiedNamesProvider = exporting.QualifiedNamesFragment2 auto-inject {}
