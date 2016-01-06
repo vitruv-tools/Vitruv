@@ -28,7 +28,11 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.Transforma
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor
 import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.DefaultEObjectMappingTransformation
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
-import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
+import java.util.Set
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
 
 class ResponseLanguageGenerator implements IGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
@@ -36,9 +40,46 @@ class ResponseLanguageGenerator implements IGenerator {
 		//generateDelegatorClass(resource, fsa);
 		val modelCorrepondenceToResponseMap = generateResponses(resource.contents.head as ResponseFile, fsa);
 		generateExecutorsAndChange2CommandTransformings(modelCorrepondenceToResponseMap, fsa)
+		generateChange2CommandTransformingProviding(modelCorrepondenceToResponseMap.keySet, fsa);
 	}
 	
-	private def generateExecutorsAndChange2CommandTransformings(Map<Pair<VURI, VURI>, List<String>> modelCorrepondenceToResponseMap, IFileSystemAccess fsa) {
+	private def void generateChange2CommandTransformingProviding(Set<Pair<VURI, VURI>> modelCorrespondences, IFileSystemAccess fsa) {
+		val ih = new ImportHelper();	
+
+		val classImplementation = '''
+		public class «change2CommandTransformingProvidingName» implements «ih.typeRef(Change2CommandTransformingProviding)» {
+			protected «ih.typeRef(ClaimableMap)»<«ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)
+			 	»>, «ih.typeRef(Change2CommandTransforming)»> transformationExecuterMap;
+			
+			new() {
+				this.transformationExecuterMap = new «ih.typeRef(ClaimableHashMap)»<«ih.typeRef(Pair)»<«ih.typeRef(VURI)
+					», «ih.typeRef(VURI)»>, «ih.typeRef(Change2CommandTransforming)»>();
+				val transformationExecutingList = new «ih.typeRef(ArrayList)»<«ih.typeRef(Change2CommandTransforming)»>();
+				«FOR modelCorrespondence : modelCorrespondences»
+					transformationExecutingList.add(new «ih.typeRef(modelCorrespondence.change2CommandTransformingQualifiedName)»());
+				«ENDFOR»
+				
+				for (transformationExecuting : transformationExecutingList) {
+					val transformableMetamodels = transformationExecuting.getTransformableMetamodels();
+					for (transformableMetamodel : transformableMetamodels) {
+						this.transformationExecuterMap.put(transformableMetamodel, transformationExecuting);
+					}
+				}
+			}
+			
+			public override «ih.typeRef(Change2CommandTransforming)» getChange2CommandTransforming(«ih.typeRef(VURI)» mmURI1, «ih.typeRef(VURI)» mmURI2) {
+				val vuriPair = new «ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)»>(mmURI1, mmURI2);
+				return this.transformationExecuterMap.claimValueForKey(vuriPair);
+			}
+			
+		}
+		'''
+		
+		val classContent = generateClass(basicResponsesPackageQualifiedName, ih, classImplementation);
+		fsa.generateFile(change2CommandTransformingProvidingFilePath, classContent);
+	}
+	
+	private def void generateExecutorsAndChange2CommandTransformings(Map<Pair<VURI, VURI>, List<String>> modelCorrepondenceToResponseMap, IFileSystemAccess fsa) {
 		for (modelCombination : modelCorrepondenceToResponseMap.keySet) {
 			val executorContent = generateExecutor(modelCombination, modelCorrepondenceToResponseMap.get(modelCombination));
 			val change2ComandTransformingContent = generateChangeToCommandTransforming(modelCombination);
@@ -84,7 +125,7 @@ class ResponseLanguageGenerator implements IGenerator {
 		}
 		'''
 		
-		return generateClass(modelPair.packageName, ih, classImplementation);
+		return generateClass(modelPair.packageQualifiedName, ih, classImplementation);
 	}
 	
 	private def generateExecutor(Pair<VURI, VURI> modelPair, List<String> responseNames) {
@@ -99,7 +140,7 @@ class ResponseLanguageGenerator implements IGenerator {
 		}
 		'''
 		
-		return generateClass(modelPair.packageName, ih, classImplementation);
+		return generateClass(modelPair.packageQualifiedName, ih, classImplementation);
 	}
 			
 	private def Map<Pair<VURI, VURI>, List<String>> generateResponses(ResponseFile file, IFileSystemAccess fsa) {
@@ -182,7 +223,7 @@ class ResponseLanguageGenerator implements IGenerator {
 		}
 		'''
 		
-		return generateClass(response.sourceTargetPair.packageName, ih, classImplementation);
+		return generateClass(response.sourceTargetPair.packageQualifiedName, ih, classImplementation);
 	}
 	
 	private def String getResponseName(Response response) '''
