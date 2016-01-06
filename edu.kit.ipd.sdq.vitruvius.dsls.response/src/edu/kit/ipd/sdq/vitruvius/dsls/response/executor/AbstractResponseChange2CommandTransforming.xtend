@@ -12,8 +12,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationExecuter
 
-abstract class ResponseChange2CommandTransforming implements Change2CommandTransforming {
-	private final static val LOGGER = Logger.getLogger(ResponseChange2CommandTransforming);
+abstract class AbstractResponseChange2CommandTransforming implements Change2CommandTransforming {
+	private final static val LOGGER = Logger.getLogger(AbstractResponseChange2CommandTransforming);
 	protected final TransformationExecuter transformationExecuter;
 	
 	private List<AbstractResponseExecutor> responseExecutors;

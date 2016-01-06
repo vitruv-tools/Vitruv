@@ -5,10 +5,8 @@ import java.util.List
 import org.eclipse.emf.common.command.Command
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
 import java.util.ArrayList
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Event
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseRealization
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
-import java.util.Queue
 
 abstract class AbstractResponseExecutor  {
 	private final static val LOGGER = Logger.getLogger(AbstractResponseExecutor);

@@ -23,16 +23,14 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange
 import java.util.Map
 import java.util.HashMap
 import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.AbstractResponseExecutor
-import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.ResponseChange2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationExecuter
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor
 import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.DefaultEObjectMappingTransformation
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
 import java.util.Set
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
+import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.AbstractResponseChange2CommandTransforming
+import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.AbstractResponseChange2CommandTransformingProviding
 
 class ResponseLanguageGenerator implements IGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
@@ -47,29 +45,13 @@ class ResponseLanguageGenerator implements IGenerator {
 		val ih = new ImportHelper();	
 
 		val classImplementation = '''
-		public class «change2CommandTransformingProvidingName» implements «ih.typeRef(Change2CommandTransformingProviding)» {
-			protected «ih.typeRef(ClaimableMap)»<«ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)
-			 	»>, «ih.typeRef(Change2CommandTransforming)»> transformationExecuterMap;
-			
+		public class «change2CommandTransformingProvidingName» extends «ih.typeRef(AbstractResponseChange2CommandTransformingProviding)» {
 			new() {
-				this.transformationExecuterMap = new «ih.typeRef(ClaimableHashMap)»<«ih.typeRef(Pair)»<«ih.typeRef(VURI)
-					», «ih.typeRef(VURI)»>, «ih.typeRef(Change2CommandTransforming)»>();
 				val transformationExecutingList = new «ih.typeRef(ArrayList)»<«ih.typeRef(Change2CommandTransforming)»>();
 				«FOR modelCorrespondence : modelCorrespondences»
 					transformationExecutingList.add(new «ih.typeRef(modelCorrespondence.change2CommandTransformingQualifiedName)»());
 				«ENDFOR»
-				
-				for (transformationExecuting : transformationExecutingList) {
-					val transformableMetamodels = transformationExecuting.getTransformableMetamodels();
-					for (transformableMetamodel : transformableMetamodels) {
-						this.transformationExecuterMap.put(transformableMetamodel, transformationExecuting);
-					}
-				}
-			}
-			
-			public override «ih.typeRef(Change2CommandTransforming)» getChange2CommandTransforming(«ih.typeRef(VURI)» mmURI1, «ih.typeRef(VURI)» mmURI2) {
-				val vuriPair = new «ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)»>(mmURI1, mmURI2);
-				return this.transformationExecuterMap.claimValueForKey(vuriPair);
+				initializeTransformationExecuterMap(transformationExecutingList);
 			}
 			
 		}
@@ -93,7 +75,7 @@ class ResponseLanguageGenerator implements IGenerator {
 
 		// TODO HK replace DefaultEObjectMappingTransforming with correct one
 		val classImplementation = '''
-		public class «modelPair.change2CommandTransformingName» extends «ih.typeRef(ResponseChange2CommandTransforming)» {
+		public class «modelPair.change2CommandTransformingName» extends «ih.typeRef(AbstractResponseChange2CommandTransforming)» {
 			protected «ih.typeRef(UserInteractor)» userInteracting;
 			
 			new() {

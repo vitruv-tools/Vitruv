@@ -25,10 +25,10 @@ final class ResponseLanguageGeneratorUtils {
 		«RESPONSES_PACKAGE».«modelPair.packageName»'''
 		
 	static def String getChange2CommandTransformingProvidingName() '''
-		ResponsesChange2CommandTransformingProving'''
+		ResponseChange2CommandTransformingProviding'''
 		
 	static def String getChange2CommandTransformingProvidingQualifiedName() '''
-		«RESPONSES_PACKAGE».ResponsesChange2CommandTransformingProving'''
+		«RESPONSES_PACKAGE».«change2CommandTransformingProvidingName»'''
 		
 	static def String getChange2CommandTransformingProvidingFilePath() '''
 		«change2CommandTransformingProvidingQualifiedName.filePath»'''
