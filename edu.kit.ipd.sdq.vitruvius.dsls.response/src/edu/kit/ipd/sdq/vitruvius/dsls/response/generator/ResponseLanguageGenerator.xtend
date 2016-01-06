@@ -6,8 +6,6 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.JavaGeneratorHelper.ImportHelper
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import org.eclipse.emf.ecore.EClass
@@ -29,11 +27,13 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.ResponseChange2CommandTr
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationExecuter
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor
 import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.DefaultEObjectMappingTransformation
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
+import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
 
 class ResponseLanguageGenerator implements IGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
-		generateDummyImportsClass(resource, fsa);
-		generateDelegatorClass(resource, fsa);
+		//generateDummyImportsClass(resource, fsa);
+		//generateDelegatorClass(resource, fsa);
 		val modelCorrepondenceToResponseMap = generateResponses(resource.contents.head as ResponseFile, fsa);
 		generateExecutorsAndChange2CommandTransformings(modelCorrepondenceToResponseMap, fsa)
 	}
@@ -42,31 +42,21 @@ class ResponseLanguageGenerator implements IGenerator {
 		for (modelCombination : modelCorrepondenceToResponseMap.keySet) {
 			val executorContent = generateExecutor(modelCombination, modelCorrepondenceToResponseMap.get(modelCombination));
 			val change2ComandTransformingContent = generateChangeToCommandTransforming(modelCombination);
-			fsa.generateFile("responses" + modelCombination.metamodelPairName + "/" + modelCombination.executorName + ".xtend", executorContent);
-			fsa.generateFile("responses" + modelCombination.metamodelPairName + "/" + modelCombination.change2CommandTransformingName + ".xtend", change2ComandTransformingContent);
+			fsa.generateFile(modelCombination.executorFilePath, executorContent);
+			fsa.generateFile(modelCombination.change2CommandTransformingFilePath, change2ComandTransformingContent);
 		}
 	}
-	
-	private def getMetamodelPairName(Pair<VURI, VURI> modelPair) '''
-		«modelPair.first.fileExtension»To«modelPair.second.fileExtension»'''
-	
-	private def getExecutorName(Pair<VURI, VURI> modelPair) '''
-		Response«modelPair.metamodelPairName»Executor'''
 		
-	private def getChange2CommandTransformingName(Pair<VURI, VURI> modelPair) '''
-		Response«modelPair.metamodelPairName»Change2CommandTransforming'''
-	
-	def generateChangeToCommandTransforming(Pair<VURI, VURI> modelPair) {
+	private def generateChangeToCommandTransforming(Pair<VURI, VURI> modelPair) {
 		val ih = new ImportHelper();	
+
+		// TODO HK replace DefaultEObjectMappingTransforming with correct one
 		val classImplementation = '''
-		
-		public class «modelPair.change2CommandTransformingName» extends «ih.typeRef(ResponseChange2CommandTransforming)» {«
-			/*protected final «ih.typeRef(TransformationExecuter)» transformationExecuter;*/»
+		public class «modelPair.change2CommandTransformingName» extends «ih.typeRef(ResponseChange2CommandTransforming)» {
 			protected «ih.typeRef(UserInteractor)» userInteracting;
 			
 			new() {
-				super();«
-				/*this.transformationExecuter = new «ih.typeRef(TransformationExecuter)»();*/»
+				super();
 				this.userInteracting = new «ih.typeRef(UserInteractor)»();
 				
 				// Mapping for EObjects in order to avoid runtime exceptions
@@ -94,13 +84,12 @@ class ResponseLanguageGenerator implements IGenerator {
 		}
 		'''
 		
-		return '''package responses«modelPair.metamodelPairName»;''' + "\n\n" + ih.generateImportCode + classImplementation
+		return generateClass(modelPair.packageName, ih, classImplementation);
 	}
 	
-	def generateExecutor(Pair<VURI, VURI> modelPair, List<String> responseNames) {
+	private def generateExecutor(Pair<VURI, VURI> modelPair, List<String> responseNames) {
 		val ih = new ImportHelper();	
 		val classImplementation = '''
-		
 		public class «modelPair.executorName» extends «ih.typeRef(AbstractResponseExecutor)» {
 			protected override setup() {
 				«FOR response : responseNames»
@@ -110,116 +99,35 @@ class ResponseLanguageGenerator implements IGenerator {
 		}
 		'''
 		
-		return '''package responses«modelPair.metamodelPairName»;''' + "\n\n" +  ih.generateImportCode + classImplementation
+		return generateClass(modelPair.packageName, ih, classImplementation);
 	}
 			
-	private def generateDummyImportsClass(Resource resource, IFileSystemAccess fsa) {
-		val file = (resource.contents.head as ResponseFile);
-		val ih = new ImportHelper();
-		
-		val classImplementation = '''
-		//import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-		
-		public class «resource.className.generatedClassName» {
-			// Used metamodels
-			«FOR imp : file.imports»
-				// import «VURI.getInstance(imp.package.nsURI).toString»
-				public final static String MM_«imp.name.toUpperCase» = "«imp.package.nsURI»";
-			«ENDFOR»
-			«FOR id : file.imports.map[name.toUpperCase]»
-				public final static «ih.typeRef(VURI)» VURI_«id» = «ih.typeRef(VURI)».getInstance(MM_«id»);
-			«ENDFOR»
-						
-		}
-		'''
-		
-		fsa.generateFile(resource.className.generatedClassName + ".xtend", '''
-		«ih.generateImportCode»
-		
-		«classImplementation»'''
-		);
-	}
-	
-//	private def generateExecutorClass(Resource resource, IFileSystemAccess fsa) {
-//		val ih = new ImportHelper();
-//		val classImplementation = '''
-//		public class «resource.className.generatedClassName»Executor implements «ih.typeRef(AbstractResponseExecutor)» {
-//			public override void transformChanges2Commands(«ih.typeRef(Blackboard)» blackboard) {
-//				// Walk through changes and find fitting Responses from a HashMap or similar
-//			}
-//			
-//			public override «ih.typeRef(List)»<«ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)
-//				»>> getTransformableMetamodels() {
-//				// Hold a map that contains response model combinations
-//				return null;
-//			}
-//		}
-//		'''
-//		
-//		fsa.generateFile(resource.className.generatedClassName + "Delegator.xtend", '''
-//		«ih.generateImportCode»
-//		
-//		«classImplementation»'''
-//		);
-//	}
-	
-	private def generateDelegatorClass(Resource resource, IFileSystemAccess fsa) {
-		val ih = new ImportHelper();
-		val classImplementation = '''
-		public class «resource.className.generatedClassName»Delegator implements «ih.typeRef(Change2CommandTransforming)» {
-			public override void transformChanges2Commands(«ih.typeRef(Blackboard)» blackboard) {
-				// Walk through changes and find fitting Responses from a HashMap or similar
-			}
-			
-			public override «ih.typeRef(List)»<«ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)
-				»>> getTransformableMetamodels() {
-				// Hold a map that contains response model combinations
-				return null;
-			}
-		}
-		'''
-		
-		fsa.generateFile(resource.className.generatedClassName + "Delegator.xtend", '''
-		«ih.generateImportCode»
-		
-		«classImplementation»'''
-		);
-	}
-	
 	private def Map<Pair<VURI, VURI>, List<String>> generateResponses(ResponseFile file, IFileSystemAccess fsa) {
 		val modelCorrespondenceToResponseNameMap = new HashMap<Pair<VURI, VURI>, List<String>>;
 		for (response : file.responses) {
 			val responseName = response.responseName;
-			val source = VURI.getInstance(response.trigger.metamodel.package.nsURI);
-			// TODO HK correctly implement target calculation
-			val target = VURI.getInstance(response.trigger.metamodel.package.nsURI);
-			val sourceTargetPair = new Pair<VURI, VURI>(source, target);
+			val sourceTargetPair = response.sourceTargetPair;
 			if (!modelCorrespondenceToResponseNameMap.containsKey(sourceTargetPair)) {
 				modelCorrespondenceToResponseNameMap.put(sourceTargetPair, new ArrayList<String>());
 			}
 			modelCorrespondenceToResponseNameMap.get(sourceTargetPair).add(responseName);
-			fsa.generateFile("responses" + sourceTargetPair.metamodelPairName + "/" + response.responseName + ".xtend",
-				'''package responses«sourceTargetPair.metamodelPairName»;''' + "\n\n" + toXtendCode(response, responseName)
-			)
+			fsa.generateFile(sourceTargetPair.getResponseFilePath(responseName), generateResponse(response, responseName));
 		}	
 		return modelCorrespondenceToResponseNameMap;
 	}
 	
-	private def String getResponseName(Response response) '''
-		ResponseTo«response.trigger.event.responseNameForEvent»'''
-	
-	private def dispatch String getResponseNameForEvent(Event event) {
-		throw new UnsupportedOperationException("Response name fragment is not defined for this event type.")
+	private def Pair<VURI, VURI> getSourceTargetPair(Response response) {
+		val source = VURI.getInstance(response.trigger.metamodel.package.nsURI);
+		val target = VURI.getInstance(response.trigger.metamodel.package.nsURI);
+		val affectedModel = response.effects.affectedModel;
+		if (affectedModel!= null) {
+			// TODO HK correctly implement target calculation 
+		}
+		val sourceTargetPair = new Pair<VURI, VURI>(source, target);
+		return sourceTargetPair
 	}
-	
-	private def dispatch String getResponseNameForEvent(ModelChangeEvent event) '''
-		«event.change.name»Of«event.feature.feature.name.toFirstUpper»In«event.feature.element.name.toFirstUpper»'''
-
-	private def getGeneratedClassName(String sourceClassName) {
-		return sourceClassName + "Responses"
-	}
-	
-	private def toXtendCode(Response response, String className) {
+		
+	private def generateResponse(Response response, String className) {
 		var ih = new ImportHelper();
 		val classImplementation = '''
 		public class «className» implements «ih.typeRef(ResponseRealization)» {
@@ -274,19 +182,79 @@ class ResponseLanguageGenerator implements IGenerator {
 		}
 		'''
 		
-		return '''
-		«ih.generateImportCode»
-		
-		«classImplementation»'''
+		return generateClass(response.sourceTargetPair.packageName, ih, classImplementation);
 	}
 	
+	private def String getResponseName(Response response) '''
+		ResponseTo«response.trigger.event.responseNameForEvent»'''
+	
+	private def dispatch String getResponseNameForEvent(Event event) {
+		throw new UnsupportedOperationException("Response name fragment is not defined for this event type.")
+	}
+	
+	private def dispatch String getResponseNameForEvent(ModelChangeEvent event) '''
+		«event.change.name»Of«event.feature.feature.name.toFirstUpper»In«event.feature.element.name.toFirstUpper»'''
+		
 	private def toXtendCode(Effects effects) {
 		NodeModelUtils.getNode(effects.code.code).text}
 	
+//	
+//	private def getClassName(Resource res) {
+//		var name = res.URI.lastSegment
+//		return name.substring(0, name.indexOf('.'))
+//	}
+
+//	private def getGeneratedClassName(String sourceClassName) {
+//		return sourceClassName + "Responses"
+//	}
 	
-	private def getClassName(Resource res) {
-		var name = res.URI.lastSegment
-		return name.substring(0, name.indexOf('.'))
-	}
+//	private def generateDummyImportsClass(Resource resource, IFileSystemAccess fsa) {
+//		val file = (resource.contents.head as ResponseFile);
+//		val ih = new ImportHelper();
+//		
+//		val classImplementation = '''
+//		//import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+//		
+//		public class «resource.className.generatedClassName» {
+//			// Used metamodels
+//			«FOR imp : file.imports»
+//				// import «VURI.getInstance(imp.package.nsURI).toString»
+//				public final static String MM_«imp.name.toUpperCase» = "«imp.package.nsURI»";
+//			«ENDFOR»
+//			«FOR id : file.imports.map[name.toUpperCase]»
+//				public final static «ih.typeRef(VURI)» VURI_«id» = «ih.typeRef(VURI)».getInstance(MM_«id»);
+//			«ENDFOR»
+//						
+//		}
+//		'''
+//		
+//		fsa.generateFile(resource.className.generatedClassName + ".xtend", '''
+//		«ih.generateImportCode»
+//		
+//		«classImplementation»'''
+//		);
+//	}
 	
+//	private def generateDelegatorClass(Resource resource, IFileSystemAccess fsa) {
+//		val ih = new ImportHelper();
+//		val classImplementation = '''
+//		public class «resource.className.generatedClassName»Delegator implements «ih.typeRef(Change2CommandTransforming)» {
+//			public override void transformChanges2Commands(«ih.typeRef(Blackboard)» blackboard) {
+//				// Walk through changes and find fitting Responses from a HashMap or similar
+//			}
+//			
+//			public override «ih.typeRef(List)»<«ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)
+//				»>> getTransformableMetamodels() {
+//				// Hold a map that contains response model combinations
+//				return null;
+//			}
+//		}
+//		'''
+//		
+//		fsa.generateFile(resource.className.generatedClassName + "Delegator.xtend", '''
+//		«ih.generateImportCode»
+//		
+//		«classImplementation»'''
+//		);
+//	}
 }
