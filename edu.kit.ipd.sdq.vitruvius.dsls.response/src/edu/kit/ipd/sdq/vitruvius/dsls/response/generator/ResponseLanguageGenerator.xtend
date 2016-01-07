@@ -154,6 +154,12 @@ class ResponseLanguageGenerator implements IGenerator {
 		var ih = new ImportHelper();
 		val classImplementation = '''
 		public class «className» implements «ih.typeRef(ResponseRealization)» {
+			private static val «ih.typeRef(Logger)» LOGGER = {
+				val initializedLogger = «ih.typeRef(Logger)».getLogger(«className»);
+				initializedLogger.setLevel(«ih.typeRef(Level)».DEBUG);
+				return initializedLogger;
+			}
+		
 			public static def Class<? extends EChange> getTrigger() {
 				«IF response.trigger.event instanceof ModelChangeEvent»
 				return «ih.typeRef((response.trigger.event as ModelChangeEvent).change)»;
@@ -161,7 +167,7 @@ class ResponseLanguageGenerator implements IGenerator {
 				return null;
 				«ENDIF»
 			}
-			
+		
 			private def checkPrecondition(«ih.typeRef(EChange)» event) { 
 				«IF response.trigger.event instanceof ModelChangeEvent»
 				if (event instanceof «ih.typeRef((response.trigger.event as ModelChangeEvent).change)»«
@@ -181,27 +187,40 @@ class ResponseLanguageGenerator implements IGenerator {
 				«ENDIF»
 				return false;
 			}
-			
+		
+			«IF response.effects.affectedModel != null»
 			private def «ih.typeRef(List)»<«ih.typeRef(EClass)»> determineAffectedModels() {
-				// Implement affected model examination
-				return new «ih.typeRef(ArrayList)»<«ih.typeRef(EClass)»>();
+				val affectedModels = new «ih.typeRef(ArrayList)»<«ih.typeRef(EClass)»>();
+				«/* TODO HK implement affecteModel determination code here */» 
+				return affectedModels;
 			}
 			
+			«ENDIF»
 			public override applyEvent(«ih.typeRef(EChange)» event) {
-				val logger = «ih.typeRef(Logger)».getLogger(«className»);
-				logger.setLevel(«ih.typeRef(Level)».DEBUG);
-				logger.debug("Called response " + this + " with event " + event);
+				LOGGER.debug("Called response " + this.class.name + " with event " + event);
+				
+				// Check if the event matches the trigger of the response
 				if (!checkPrecondition(event)) {
 					return new «ih.typeRef(TransformationResult)»();
 				}
+				LOGGER.debug("Passed precondition check of response " + this.class.name);
 				
-				logger.debug("Execute response " + this + " due to matching precondition");
+				«IF response.effects.affectedModel != null»
 				val affectedModels = determineAffectedModels();
-				affectedModels.forEach[affectedModel | performResponseTo(event, affectedModel)];
+				affectedModels.forEach[affectedModel | 
+					LOGGER.debug("Execute response " + this.class.name + " for model " + affectedModel);
+					performResponseTo(event, affectedModel)];
+				«ELSE»
+					LOGGER.debug("Execute response " + this.class.name + " with no affected model");
+					performResponseTo(event);
+				«ENDIF»
+				
 				return new «ih.typeRef(TransformationResult)»();
 			}
 			
-			private def performResponseTo(«ih.typeRef(EChange)» event, «ih.typeRef(EClass)» affectedModel) «response.effects.toXtendCode»
+			private def performResponseTo(«ih.typeRef(EChange)» event«
+				IF response.effects.affectedModel != null», «ih.typeRef(EClass)» affectedModel«ENDIF
+				»)«response.effects.toXtendCode»
 		}
 		'''
 		
