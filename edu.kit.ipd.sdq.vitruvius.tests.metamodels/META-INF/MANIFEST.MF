@@ -18,7 +18,10 @@ Export-Package: uml_mockup,
  multicontainment_a.util,
  multicontainment_b,
  multicontainment_b.impl,
- multicontainment_b.util
+ multicontainment_b.util,
+ allElementTypes,
+ allElementTypes.impl,
+ allElementTypes.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport
 Bundle-ActivationPolicy: lazy

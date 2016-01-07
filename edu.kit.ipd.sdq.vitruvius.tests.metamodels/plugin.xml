@@ -38,4 +38,12 @@
             genModel="metamodels/multicontainment_b.genmodel"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated allElementTypes -->
+      <package
+            uri="http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.allElementTypes"
+            class="allElementTypes.AllElementTypesPackage"
+            genModel="metamodels/allElementTypes.genmodel"/>
+   </extension>
+
 </plugin>
