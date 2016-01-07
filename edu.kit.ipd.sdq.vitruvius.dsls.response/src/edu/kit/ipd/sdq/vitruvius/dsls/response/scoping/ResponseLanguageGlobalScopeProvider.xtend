@@ -49,7 +49,7 @@ class ResponseLanguageGlobalScopeProvider extends AbstractGlobalScopeProvider {
 	}
 	
 	override getScope(Resource resource, EReference ref, Predicate<IEObjectDescription> filter) {
-		if (ref.equals(IMPORT__PACKAGE)) {
+		if (ref.equals(NAMESPACE_IMPORT__PACKAGE)) {
 			return getPackageScope
 		}
 			

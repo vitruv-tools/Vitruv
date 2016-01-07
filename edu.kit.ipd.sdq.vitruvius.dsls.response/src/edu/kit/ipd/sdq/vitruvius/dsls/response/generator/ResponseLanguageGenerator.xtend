@@ -129,28 +129,34 @@ class ResponseLanguageGenerator implements IGenerator {
 		val modelCorrespondenceToResponseNameMap = new HashMap<Pair<VURI, VURI>, List<String>>;
 		for (response : file.responses) {
 			val responseName = response.responseName;
-			val sourceTargetPair = response.sourceTargetPair;
+			val sourceTargetPair = file.getSourceTargetPair(response);
 			if (!modelCorrespondenceToResponseNameMap.containsKey(sourceTargetPair)) {
 				modelCorrespondenceToResponseNameMap.put(sourceTargetPair, new ArrayList<String>());
 			}
 			modelCorrespondenceToResponseNameMap.get(sourceTargetPair).add(responseName);
-			fsa.generateFile(sourceTargetPair.getResponseFilePath(responseName), generateResponse(response, responseName));
+			fsa.generateFile(sourceTargetPair.getResponseFilePath(responseName), generateResponse(file, response, responseName));
 		}	
 		return modelCorrespondenceToResponseNameMap;
 	}
 	
-	private def Pair<VURI, VURI> getSourceTargetPair(Response response) {
-		val source = VURI.getInstance(response.trigger.metamodel.package.nsURI);
-		val target = VURI.getInstance(response.trigger.metamodel.package.nsURI);
-		val affectedModel = response.effects.affectedModel;
-		if (affectedModel!= null) {
-			// TODO HK correctly implement target calculation 
+	private def Pair<VURI, VURI> getSourceTargetPair(ResponseFile responseFile, Response response) {
+		val event = response.trigger.event;
+		if (event instanceof ModelChangeEvent) {
+			val pack = event.feature.element.EPackage;
+			val uri = responseFile.namespaceImports.findFirst[imp | imp.package == pack].metamodel.package.nsURI
+			val source = VURI.getInstance(uri);
+			val target= VURI.getInstance(uri);
+			val affectedModel = response.effects.affectedModel;
+			if (affectedModel!= null) {
+				// TODO HK correctly implement target calculation 
+			}
+			val sourceTargetPair = new Pair<VURI, VURI>(source, target);
+			return sourceTargetPair
 		}
-		val sourceTargetPair = new Pair<VURI, VURI>(source, target);
-		return sourceTargetPair
+		return null;		
 	}
 		
-	private def generateResponse(Response response, String className) {
+	private def generateResponse(ResponseFile responseFile, Response response, String className) {
 		var ih = new ImportHelper();
 		val classImplementation = '''
 		public class «className» implements «ih.typeRef(ResponseRealization)» {
@@ -224,7 +230,7 @@ class ResponseLanguageGenerator implements IGenerator {
 		}
 		'''
 		
-		return generateClass(response.sourceTargetPair.packageQualifiedName, ih, classImplementation);
+		return generateClass(responseFile.getSourceTargetPair(response).packageQualifiedName, ih, classImplementation);
 	}
 	
 	private def String getResponseName(Response response) '''

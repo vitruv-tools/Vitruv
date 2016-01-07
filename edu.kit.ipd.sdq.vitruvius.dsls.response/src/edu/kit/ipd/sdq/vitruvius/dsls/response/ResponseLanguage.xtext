@@ -6,14 +6,19 @@ generate responseLanguage "http://www.kit.edu/ipd/sdq/vitruvius/dsls/response/Re
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
 ResponseFile:
-	(imports += Import)*
+	(metamodelImports += MetamodelImport)*
+	
+	(namespaceImports += NamespaceImport)*
 	
 	(responses += Response)*
 ;
 
-Import returns Import: 
-	'import' package=[ecore::EPackage|STRING]
-	('as' name=ValidID)?;
+MetamodelImport:
+	'import metamodel' package=[ecore::EPackage|STRING] 'as' name=ValidID;
+
+NamespaceImport: 
+	'import namespace' package=[ecore::EPackage|STRING]
+	('as' name=ValidID)? 'belongs to' metamodel=[MetamodelImport];
 	
 Response:
 	'Response to' trigger=Trigger effects=Effects;
@@ -49,7 +54,7 @@ DeleteEvent:
 	name='Delete';
 
 Trigger:
-	event=Event 'in' metamodel=[Import];
+	event=Event;
 
 FeatureOfElement:
 	element=[ecore::EClass|QualifiedName] '[' feature=[ecore::EStructuralFeature|ValidID] ']';

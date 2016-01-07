@@ -37,7 +37,6 @@ import static edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseL
 import static extension java.util.Objects.*
 import org.eclipse.xtext.scoping.impl.FilteringScope
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.FeatureOfElement
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Import
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.impl.EPackageImpl
@@ -45,6 +44,7 @@ import org.eclipse.emf.ecore.impl.EcoreFactoryImpl
 import org.eclipse.emf.common.util.URI
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguageFactory
 import java.util.ArrayList
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.NamespaceImport
 
 /**
  * Copy of edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping.MappingLanguageScopeProviderDelegate by Dominik Werle
@@ -247,9 +247,9 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 	 * Returns all packages that have been imported by import statements
 	 * in the given resource.
 	 */
-	def getImports(Resource res) {
-		var contents = res.getAllContentsOfEClass(ResponseLanguagePackage.eINSTANCE.getImport, true).toList
-		val validImports = contents.filter(Import).filter[package != null].map[it.name = it.name ?: it.package.name; it]
+	def getNamespaceImports(Resource res) {
+		var contents = res.getAllContentsOfEClass(ResponseLanguagePackage.eINSTANCE.getNamespaceImport, true).toList
+		val validImports = contents.filter(NamespaceImport).filter[package != null].map[it.name = it.name ?: it.package.name; it]
 
 		return validImports
 	}
@@ -259,7 +259,7 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 	 * qualified name that also includes the name of the given
 	 * {@link Import}.
 	 */
-	def createEObjectDescription(EClassifier classifier, Import imp) {
+	def createEObjectDescription(EClassifier classifier, NamespaceImport imp) {
 		if (classifier == null) {
 			return null
 		}
@@ -278,7 +278,7 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 	 * @see MIRScopeProviderDelegate#createQualifiedEClassifierScope(Resource)
 	 */
 	def createQualifiedEClassScope(Resource res) {
-		val classifierDescriptions = res.imports.map [ import |
+		val classifierDescriptions = res.namespaceImports.map [ import |
 			import.package.EClassifiers.filter(EClass).map[it.createEObjectDescription(import)]
 		].flatten
 
