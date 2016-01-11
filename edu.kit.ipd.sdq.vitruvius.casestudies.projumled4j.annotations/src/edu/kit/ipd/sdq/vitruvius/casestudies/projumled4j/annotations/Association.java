@@ -12,10 +12,10 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.annotations;
 
 public @interface Association {
-	int sourceLowerMultiplicity() default 0;
-	int sourceUpperMultiplicity() default -1;
-	int targetLowerMultiplicity() default 0;
-	int targetUpperMultiplicity() default -1;
+	int sourceLowerMultiplicity() default 1;
+	int sourceUpperMultiplicity() default 1;
+	int targetLowerMultiplicity() default 1;
+	int targetUpperMultiplicity() default 1;
 	Type type() default Type.Association;
 	
 	enum Type {

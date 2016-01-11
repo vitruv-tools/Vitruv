@@ -181,8 +181,8 @@ public final class AssociationUtils {
 			val settings = annotationParameters.settings.filter([param | param.attribute.name.equals(memberName)]);
 			if (!settings.empty) {
 				val annotationAttributeValue = settings.get(0).value
-				if (annotationAttributeValue instanceof DecimalIntegerLiteral) {
-					return (annotationAttributeValue as DecimalIntegerLiteral).value;	
+				if (annotationAttributeValue instanceof Expression) {
+					return (annotationAttributeValue as Expression).value;	
 				}
 			}
 		}
@@ -191,7 +191,8 @@ public final class AssociationUtils {
 	}
 	
 	private def int getDefaultMultiplicity(String memberName) {
-		switch memberName {
+		return 1;
+		/*switch memberName {
 			case MEMBER_SOURCE_LOWER_MULTIPLITY,
 			case MEMBER_TARGET_LOWER_MULTIPLITY: 
 				return 0
@@ -199,7 +200,7 @@ public final class AssociationUtils {
 			case MEMBER_TARGET_UPPER_MULTIPLITY:
 				return -1
 		}
-		return 0;
+		return 0;*/
 	}
 	
 	private def int getSourceLowerMultiplicity(Field field) {
