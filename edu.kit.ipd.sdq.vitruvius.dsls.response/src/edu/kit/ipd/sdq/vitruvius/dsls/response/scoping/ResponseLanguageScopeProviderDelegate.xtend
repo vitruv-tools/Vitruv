@@ -45,6 +45,21 @@ import org.eclipse.emf.common.util.URI
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguageFactory
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.NamespaceImport
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChangeEvent
+import org.eclipse.xtext.xbase.XBlockExpression
+import org.eclipse.xtext.xbase.XVariableDeclaration
+import org.eclipse.xtext.xbase.XbaseFactory
+import org.eclipse.xtext.xbase.XbasePackage
+import org.eclipse.xtext.scoping.Scopes
+import org.eclipse.xtext.xbase.scoping.batch.XbaseBatchScopeProvider
+import org.eclipse.xtext.xbase.scoping.XbaseQualifiedNameProvider
+import org.eclipse.xtext.naming.IQualifiedNameProvider
+import java.util.List
+import org.eclipse.xtext.scoping.impl.ImportNormalizer
+import com.google.common.collect.Lists
 
 /**
  * Copy of edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping.MappingLanguageScopeProviderDelegate by Dominik Werle
@@ -54,8 +69,8 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 	private static val LOGGER = Logger.getLogger(ResponseLanguageScopeProviderDelegate)
 	private static val String CHANGE_MM_URI = "http://edu.kit.ipd.sdq.vitruvius/Change/1.0";
 	
-//	@Inject
-//	QualifiedNameProvider qualifiedNameProvider;
+	@Inject
+	IQualifiedNameProvider qualifiedNameProvider;
 
 	def <T extends EObject> IScope createPairScope(IScope parentScope, Iterator<Pair<String, T>> elements) {
 		createScope(parentScope, elements, [
@@ -85,7 +100,7 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 	
 	override getScope(EObject context, EReference reference) {
 		if ((reference.equals(CODE_BLOCK__CODE))) {
-			return IScope.NULLSCOPE
+			return createCodeScope(context.eResource, reference as XBlockExpression)
 		} else if ((reference.equals(FEATURE_OF_ELEMENT__FEATURE))
 			&& (context instanceof FeatureOfElement))
 			return createEStructuralFeatureScope(context as FeatureOfElement)
@@ -99,8 +114,33 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 //			return createTargetClassScope(context)
 //		else if (reference.equals(REQUIRED_MAPPING__MAPPING))
 //			return createRequiresScope(context)
-
+		
 		super.getScope(context, reference)
+	}
+
+	protected override List<ImportNormalizer> getImplicitImports(boolean ignoreCase) {
+		return Lists.<ImportNormalizer>newArrayList(
+				);
+	}
+
+	def IScope createCodeScope(Resource res, XBlockExpression blockExpression) {
+		val codeBlock = blockExpression.eContainer as CodeBlock;
+		val effects = codeBlock.eContainer as Effects;
+		val response = effects.eContainer as Response;
+		val event = response.trigger.event
+		
+		if (event instanceof ModelChangeEvent) {
+			return Scopes::scopeFor(#[event.change]);
+//			val descr = event.change.createEObjectDescription("change");
+//			return new SimpleScope(IScope.NULLSCOPE, #[descr]);
+		}
+		
+//		val variableDeclarations = res.getAllContentsOfEClass(XbasePackage.eINSTANCE.XVariableDeclaration, true);
+//		for (declaration : variableDeclarations.filter(XVariableDeclaration)) {
+//			//createScope(IScope.NULLSCOPE, )
+//		}
+
+		return null; 
 	}
 	
 	
@@ -260,15 +300,20 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 	 * {@link Import}.
 	 */
 	def createEObjectDescription(EClassifier classifier, NamespaceImport imp) {
+		createEObjectDescription(classifier, imp.name);
+	}
+	
+	def createEObjectDescription(EClassifier classifier, String importName) {
 		if (classifier == null) {
 			return null
 		}
 
 		return EObjectDescription.create(
-			QualifiedName.create(imp.name).append(qualifiedNameProvider.getFullyQualifiedName(classifier).skipFirst(1)),
+			QualifiedName.create(importName).append(qualifiedNameProvider.getFullyQualifiedName(classifier).skipFirst(1)),
 			classifier
 		)
 	}
+	
 
 	/**
 	 * Create an {@link IScope} that represents all {@link EClass}es
@@ -299,8 +344,9 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 	
 	private def Iterable<IEObjectDescription> collectObjectDescriptions(EPackage pckg) {
 		var recursiveResult = pckg.ESubpackages.map[it | collectObjectDescriptions(it)].flatten
-		var result = pckg.EClassifiers.filter(EClass).map[EObjectDescription.create(
-			qualifiedNameProvider.getFullyQualifiedName(it).skipFirst(1), it)];
+		// Use the following for fully qualified change names
+		// var result = pckg.EClassifiers.filter(EClass).map[EObjectDescription.create(qualifiedNameProvider.getFullyQualifiedName(it).skipFirst(1), it)];
+		var result = pckg.EClassifiers.filter(EClass).map[EObjectDescription.create(it.name, it)];
 		return recursiveResult + result;
 	}
 	
