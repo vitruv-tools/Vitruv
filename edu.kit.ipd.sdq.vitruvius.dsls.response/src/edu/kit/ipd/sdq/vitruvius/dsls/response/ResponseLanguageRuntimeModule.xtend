@@ -22,13 +22,13 @@ class ResponseLanguageRuntimeModule extends AbstractResponseLanguageRuntimeModul
 	public override Class<? extends IGlobalScopeProvider> bindIGlobalScopeProvider() {
 		return ResponseLanguageGlobalScopeProvider;
 	}
-//	
+
 	public override void configureIScopeProviderDelegate(Binder binder) {
 		binder.bind(org.eclipse.xtext.scoping.IScopeProvider)
 		      .annotatedWith(Names.named(org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider.NAMED_DELEGATE))
 		      .to(ResponseLanguageScopeProviderDelegate);
 	}
-//	
+	
 	public override Class<? extends IQualifiedNameConverter> bindIQualifiedNameConverter() {
 		return ResponseLanguageQualifiedNameConverter;
 	}

@@ -31,6 +31,7 @@ import java.util.Set
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.AbstractResponseChange2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.AbstractResponseChange2CommandTransformingProviding
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
 
 class ResponseLanguageGenerator implements IGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
@@ -174,18 +175,18 @@ class ResponseLanguageGenerator implements IGenerator {
 				«ENDIF»
 			}
 		
-			private def checkPrecondition(«ih.typeRef(EChange)» event) { 
+			private def checkPrecondition(«ih.typeRef(EChange)» change) { 
 				«IF response.trigger.event instanceof ModelChangeEvent»
-				if (event instanceof «ih.typeRef((response.trigger.event as ModelChangeEvent).change)»«
+				if (change instanceof «ih.typeRef((response.trigger.event as ModelChangeEvent).change)»«
 					//ih.typeRef((response.trigger.event as ModelChangeEvent).feature.element.EStructuralFeatures.filter(ft | ft.name = (response.trigger.event as ModelChangeEvent).feature.feature
 					//ih.typeRef((response.trigger.event as ModelChangeEvent).feature.feature.EType)
 					»«IF !(response.trigger.event as ModelChangeEvent).change.instanceClass.equals(EChange)»«
 					»<?>«ENDIF») {
 					«IF EFeatureChange.isAssignableFrom((response.trigger.event as ModelChangeEvent).change.instanceClass)»
-					val feature = (event as «ih.typeRef(EFeatureChange)»<?>).affectedFeature;
+					val feature = (change as «ih.typeRef(EFeatureChange)»<?>).affectedFeature;
 					«val modelChangeEvent = (response.trigger.event as ModelChangeEvent)»
 					if (feature.name.equals("«modelChangeEvent.feature.feature.name»")
-						&& event.oldAffectedEObject instanceof «ih.typeRef(modelChangeEvent.feature.element)») {
+						&& change.oldAffectedEObject instanceof «ih.typeRef(modelChangeEvent.feature.element)») {
 						return true;
 					}
 					«ENDIF»
@@ -202,11 +203,11 @@ class ResponseLanguageGenerator implements IGenerator {
 			}
 			
 			«ENDIF»
-			public override applyEvent(«ih.typeRef(EChange)» event) {
-				LOGGER.debug("Called response " + this.class.name + " with event " + event);
+			public override applyEvent(«ih.typeRef(EChange)» change) {
+				LOGGER.debug("Called response " + this.class.name + " with event " + change);
 				
 				// Check if the event matches the trigger of the response
-				if (!checkPrecondition(event)) {
+				if (!checkPrecondition(change)) {
 					return new «ih.typeRef(TransformationResult)»();
 				}
 				LOGGER.debug("Passed precondition check of response " + this.class.name);
@@ -215,16 +216,19 @@ class ResponseLanguageGenerator implements IGenerator {
 				val affectedModels = determineAffectedModels();
 				affectedModels.forEach[affectedModel | 
 					LOGGER.debug("Execute response " + this.class.name + " for model " + affectedModel);
-					performResponseTo(event, affectedModel)];
+					performResponseTo(change as «ih.typeRef((response.trigger.event as ModelChangeEvent).change)»<«
+						getGenericTypeParameterOfChange(response.trigger.event as ModelChangeEvent, ih)»>, affectedModel)];
 				«ELSE»
 					LOGGER.debug("Execute response " + this.class.name + " with no affected model");
-					performResponseTo(event);
+					performResponseTo(change as «ih.typeRef((response.trigger.event as ModelChangeEvent).change)»<«
+										getGenericTypeParameterOfChange(response.trigger.event as ModelChangeEvent, ih)»>);
 				«ENDIF»
 				
 				return new «ih.typeRef(TransformationResult)»();
 			}
 			
-			private def performResponseTo(«ih.typeRef(EChange)» event«
+			private def performResponseTo(«ih.typeRef((response.trigger.event as ModelChangeEvent).change)»<«
+					getGenericTypeParameterOfChange(response.trigger.event as ModelChangeEvent, ih)»> change«
 				IF response.effects.affectedModel != null», «ih.typeRef(EClass)» affectedModel«ENDIF
 				»)«response.effects.toXtendCode»
 		}
