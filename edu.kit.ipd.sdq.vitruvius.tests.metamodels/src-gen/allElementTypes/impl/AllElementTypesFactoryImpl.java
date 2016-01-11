@@ -59,6 +59,7 @@ public class AllElementTypesFactoryImpl extends EFactoryImpl implements AllEleme
 			case AllElementTypesPackage.ROOT: return createRoot();
 			case AllElementTypesPackage.NON_ROOT: return createNonRoot();
 			case AllElementTypesPackage.NON_ROOT_OBJECT_CONTAINER_HELPER: return createNonRootObjectContainerHelper();
+			case AllElementTypesPackage.IDENTIFIED: return createIdentified();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -92,6 +93,16 @@ public class AllElementTypesFactoryImpl extends EFactoryImpl implements AllEleme
 	public NonRootObjectContainerHelper createNonRootObjectContainerHelper() {
 		NonRootObjectContainerHelperImpl nonRootObjectContainerHelper = new NonRootObjectContainerHelperImpl();
 		return nonRootObjectContainerHelper;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Identified createIdentified() {
+		IdentifiedImpl identified = new IdentifiedImpl();
+		return identified;
 	}
 
 	/**

@@ -4,8 +4,6 @@ package allElementTypes;
 
 import org.eclipse.emf.common.util.EList;
 
-import org.eclipse.emf.ecore.EObject;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Root</b></em>'.
@@ -22,14 +20,13 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link allElementTypes.Root#getMultiValuedNonContainmentEReference <em>Multi Valued Non Containment EReference</em>}</li>
  *   <li>{@link allElementTypes.Root#getMultiValuedContainmentEReference <em>Multi Valued Containment EReference</em>}</li>
  *   <li>{@link allElementTypes.Root#getNonRootObjectContainerHelper <em>Non Root Object Container Helper</em>}</li>
- *   <li>{@link allElementTypes.Root#getId <em>Id</em>}</li>
  * </ul>
  *
  * @see allElementTypes.AllElementTypesPackage#getRoot()
  * @model
  * @generated
  */
-public interface Root extends EObject {
+public interface Root extends Identified {
 	/**
 	 * Returns the value of the '<em><b>Single Valued EAttribute</b></em>' attribute.
 	 * The default value is <code>"0"</code>.
@@ -182,32 +179,6 @@ public interface Root extends EObject {
 	 * @generated
 	 */
 	void setNonRootObjectContainerHelper(NonRootObjectContainerHelper value);
-
-	/**
-	 * Returns the value of the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Id</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Id</em>' attribute.
-	 * @see #setId(String)
-	 * @see allElementTypes.AllElementTypesPackage#getRoot_Id()
-	 * @model required="true"
-	 * @generated
-	 */
-	String getId();
-
-	/**
-	 * Sets the value of the '{@link allElementTypes.Root#getId <em>Id</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Id</em>' attribute.
-	 * @see #getId()
-	 * @generated
-	 */
-	void setId(String value);
 
 	/**
 	 * <!-- begin-user-doc -->

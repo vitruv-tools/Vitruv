@@ -4,6 +4,7 @@ package allElementTypes.impl;
 
 import allElementTypes.AllElementTypesFactory;
 import allElementTypes.AllElementTypesPackage;
+import allElementTypes.Identified;
 import allElementTypes.NonRoot;
 import allElementTypes.NonRootObjectContainerHelper;
 import allElementTypes.Root;
@@ -43,6 +44,13 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 	 * @generated
 	 */
 	private EClass nonRootObjectContainerHelperEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass identifiedEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -182,15 +190,6 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getRoot_Id() {
-		return (EAttribute)rootEClass.getEStructuralFeatures().get(7);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EOperation getRoot__SingleValuedOperation() {
 		return rootEClass.getEOperations().get(0);
 	}
@@ -218,15 +217,6 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getNonRoot_Id() {
-		return (EAttribute)nonRootEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getNonRootObjectContainerHelper() {
 		return nonRootObjectContainerHelperEClass;
 	}
@@ -245,8 +235,17 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getNonRootObjectContainerHelper_Id() {
-		return (EAttribute)nonRootObjectContainerHelperEClass.getEStructuralFeatures().get(1);
+	public EClass getIdentified() {
+		return identifiedEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getIdentified_Id() {
+		return (EAttribute)identifiedEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -285,16 +284,16 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 		createEReference(rootEClass, ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE);
 		createEReference(rootEClass, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE);
 		createEReference(rootEClass, ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER);
-		createEAttribute(rootEClass, ROOT__ID);
 		createEOperation(rootEClass, ROOT___SINGLE_VALUED_OPERATION);
 		createEOperation(rootEClass, ROOT___MULTI_VALUED_OPERATION);
 
 		nonRootEClass = createEClass(NON_ROOT);
-		createEAttribute(nonRootEClass, NON_ROOT__ID);
 
 		nonRootObjectContainerHelperEClass = createEClass(NON_ROOT_OBJECT_CONTAINER_HELPER);
 		createEReference(nonRootObjectContainerHelperEClass, NON_ROOT_OBJECT_CONTAINER_HELPER__NON_ROOT_OBJECTS_CONTAINMENT);
-		createEAttribute(nonRootObjectContainerHelperEClass, NON_ROOT_OBJECT_CONTAINER_HELPER__ID);
+
+		identifiedEClass = createEClass(IDENTIFIED);
+		createEAttribute(identifiedEClass, IDENTIFIED__ID);
 	}
 
 	/**
@@ -325,6 +324,9 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		rootEClass.getESuperTypes().add(this.getIdentified());
+		nonRootEClass.getESuperTypes().add(this.getIdentified());
+		nonRootObjectContainerHelperEClass.getESuperTypes().add(this.getIdentified());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(rootEClass, Root.class, "Root", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -335,18 +337,18 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 		initEReference(getRoot_MultiValuedNonContainmentEReference(), this.getNonRoot(), null, "multiValuedNonContainmentEReference", null, 0, -1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRoot_MultiValuedContainmentEReference(), this.getNonRoot(), null, "multiValuedContainmentEReference", null, 0, -1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRoot_NonRootObjectContainerHelper(), this.getNonRootObjectContainerHelper(), null, "nonRootObjectContainerHelper", null, 1, 1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getRoot_Id(), ecorePackage.getEString(), "id", null, 1, 1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getRoot__SingleValuedOperation(), null, "singleValuedOperation", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEOperation(getRoot__MultiValuedOperation(), ecorePackage.getEInt(), "multiValuedOperation", 0, -1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(nonRootEClass, NonRoot.class, "NonRoot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getNonRoot_Id(), ecorePackage.getEString(), "id", null, 1, 1, NonRoot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(nonRootObjectContainerHelperEClass, NonRootObjectContainerHelper.class, "NonRootObjectContainerHelper", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getNonRootObjectContainerHelper_NonRootObjectsContainment(), this.getNonRoot(), null, "nonRootObjectsContainment", null, 0, -1, NonRootObjectContainerHelper.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getNonRootObjectContainerHelper_Id(), ecorePackage.getEString(), "id", null, 1, 1, NonRootObjectContainerHelper.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(identifiedEClass, Identified.class, "Identified", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getIdentified_Id(), ecorePackage.getEString(), "id", null, 1, 1, Identified.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

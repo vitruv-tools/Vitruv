@@ -49,6 +49,15 @@ public interface AllElementTypesFactory extends EFactory {
 	NonRootObjectContainerHelper createNonRootObjectContainerHelper();
 
 	/**
+	 * Returns a new object of class '<em>Identified</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Identified</em>'.
+	 * @generated
+	 */
+	Identified createIdentified();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

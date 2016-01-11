@@ -80,6 +80,10 @@ public class AllElementTypesAdapterFactory extends AdapterFactoryImpl {
 				return createNonRootObjectContainerHelperAdapter();
 			}
 			@Override
+			public Adapter caseIdentified(Identified object) {
+				return createIdentifiedAdapter();
+			}
+			@Override
 			public Adapter defaultCase(EObject object) {
 				return createEObjectAdapter();
 			}
@@ -138,6 +142,20 @@ public class AllElementTypesAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createNonRootObjectContainerHelperAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link allElementTypes.Identified <em>Identified</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see allElementTypes.Identified
+	 * @generated
+	 */
+	public Adapter createIdentifiedAdapter() {
 		return null;
 	}
 

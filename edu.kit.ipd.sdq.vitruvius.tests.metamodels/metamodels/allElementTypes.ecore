@@ -2,7 +2,7 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="allElementTypes" nsURI="http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.allElementTypes"
     nsPrefix="allElementTypes">
-  <eClassifiers xsi:type="ecore:EClass" name="Root">
+  <eClassifiers xsi:type="ecore:EClass" name="Root" eSuperTypes="#//Identified">
     <eOperations name="singleValuedOperation"/>
     <eOperations name="multiValuedOperation" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="singleValuedEAttribute"
@@ -19,14 +19,13 @@
         upperBound="-1" eType="#//NonRoot" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="nonRootObjectContainerHelper"
         lowerBound="1" eType="#//NonRootObjectContainerHelper" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NonRoot">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NonRootObjectContainerHelper">
+  <eClassifiers xsi:type="ecore:EClass" name="NonRoot" eSuperTypes="#//Identified"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NonRootObjectContainerHelper" eSuperTypes="#//Identified">
     <eStructuralFeatures xsi:type="ecore:EReference" name="nonRootObjectsContainment"
         upperBound="-1" eType="#//NonRoot" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Identified">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>

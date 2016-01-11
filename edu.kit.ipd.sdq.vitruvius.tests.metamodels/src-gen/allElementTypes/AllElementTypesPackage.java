@@ -58,6 +58,43 @@ public interface AllElementTypesPackage extends EPackage {
 	AllElementTypesPackage eINSTANCE = allElementTypes.impl.AllElementTypesPackageImpl.init();
 
 	/**
+	 * The meta object id for the '{@link allElementTypes.impl.IdentifiedImpl <em>Identified</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see allElementTypes.impl.IdentifiedImpl
+	 * @see allElementTypes.impl.AllElementTypesPackageImpl#getIdentified()
+	 * @generated
+	 */
+	int IDENTIFIED = 3;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int IDENTIFIED__ID = 0;
+
+	/**
+	 * The number of structural features of the '<em>Identified</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int IDENTIFIED_FEATURE_COUNT = 1;
+
+	/**
+	 * The number of operations of the '<em>Identified</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int IDENTIFIED_OPERATION_COUNT = 0;
+
+	/**
 	 * The meta object id for the '{@link allElementTypes.impl.RootImpl <em>Root</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -68,13 +105,22 @@ public interface AllElementTypesPackage extends EPackage {
 	int ROOT = 0;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT__ID = IDENTIFIED__ID;
+
+	/**
 	 * The feature id for the '<em><b>Single Valued EAttribute</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT__SINGLE_VALUED_EATTRIBUTE = 0;
+	int ROOT__SINGLE_VALUED_EATTRIBUTE = IDENTIFIED_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Single Valued Non Containment EReference</b></em>' reference.
@@ -83,7 +129,7 @@ public interface AllElementTypesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE = 1;
+	int ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE = IDENTIFIED_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Single Valued Containment EReference</b></em>' containment reference.
@@ -92,7 +138,7 @@ public interface AllElementTypesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE = 2;
+	int ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE = IDENTIFIED_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Multi Valued EAttribute</b></em>' attribute list.
@@ -101,7 +147,7 @@ public interface AllElementTypesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT__MULTI_VALUED_EATTRIBUTE = 3;
+	int ROOT__MULTI_VALUED_EATTRIBUTE = IDENTIFIED_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Multi Valued Non Containment EReference</b></em>' reference list.
@@ -110,7 +156,7 @@ public interface AllElementTypesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE = 4;
+	int ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE = IDENTIFIED_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Multi Valued Containment EReference</b></em>' containment reference list.
@@ -119,7 +165,7 @@ public interface AllElementTypesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE = 5;
+	int ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE = IDENTIFIED_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Non Root Object Container Helper</b></em>' containment reference.
@@ -128,16 +174,7 @@ public interface AllElementTypesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER = 6;
-
-	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ROOT__ID = 7;
+	int ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER = IDENTIFIED_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of structural features of the '<em>Root</em>' class.
@@ -146,7 +183,7 @@ public interface AllElementTypesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT_FEATURE_COUNT = 8;
+	int ROOT_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 7;
 
 	/**
 	 * The operation id for the '<em>Single Valued Operation</em>' operation.
@@ -155,7 +192,7 @@ public interface AllElementTypesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT___SINGLE_VALUED_OPERATION = 0;
+	int ROOT___SINGLE_VALUED_OPERATION = IDENTIFIED_OPERATION_COUNT + 0;
 
 	/**
 	 * The operation id for the '<em>Multi Valued Operation</em>' operation.
@@ -164,7 +201,7 @@ public interface AllElementTypesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT___MULTI_VALUED_OPERATION = 1;
+	int ROOT___MULTI_VALUED_OPERATION = IDENTIFIED_OPERATION_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Root</em>' class.
@@ -173,7 +210,7 @@ public interface AllElementTypesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT_OPERATION_COUNT = 2;
+	int ROOT_OPERATION_COUNT = IDENTIFIED_OPERATION_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link allElementTypes.impl.NonRootImpl <em>Non Root</em>}' class.
@@ -192,7 +229,7 @@ public interface AllElementTypesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NON_ROOT__ID = 0;
+	int NON_ROOT__ID = IDENTIFIED__ID;
 
 	/**
 	 * The number of structural features of the '<em>Non Root</em>' class.
@@ -201,7 +238,7 @@ public interface AllElementTypesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NON_ROOT_FEATURE_COUNT = 1;
+	int NON_ROOT_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Non Root</em>' class.
@@ -210,7 +247,7 @@ public interface AllElementTypesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NON_ROOT_OPERATION_COUNT = 0;
+	int NON_ROOT_OPERATION_COUNT = IDENTIFIED_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link allElementTypes.impl.NonRootObjectContainerHelperImpl <em>Non Root Object Container Helper</em>}' class.
@@ -223,22 +260,22 @@ public interface AllElementTypesPackage extends EPackage {
 	int NON_ROOT_OBJECT_CONTAINER_HELPER = 2;
 
 	/**
-	 * The feature id for the '<em><b>Non Root Objects Containment</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int NON_ROOT_OBJECT_CONTAINER_HELPER__NON_ROOT_OBJECTS_CONTAINMENT = 0;
-
-	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NON_ROOT_OBJECT_CONTAINER_HELPER__ID = 1;
+	int NON_ROOT_OBJECT_CONTAINER_HELPER__ID = IDENTIFIED__ID;
+
+	/**
+	 * The feature id for the '<em><b>Non Root Objects Containment</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NON_ROOT_OBJECT_CONTAINER_HELPER__NON_ROOT_OBJECTS_CONTAINMENT = IDENTIFIED_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Non Root Object Container Helper</em>' class.
@@ -247,7 +284,7 @@ public interface AllElementTypesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NON_ROOT_OBJECT_CONTAINER_HELPER_FEATURE_COUNT = 2;
+	int NON_ROOT_OBJECT_CONTAINER_HELPER_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Non Root Object Container Helper</em>' class.
@@ -256,7 +293,7 @@ public interface AllElementTypesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NON_ROOT_OBJECT_CONTAINER_HELPER_OPERATION_COUNT = 0;
+	int NON_ROOT_OBJECT_CONTAINER_HELPER_OPERATION_COUNT = IDENTIFIED_OPERATION_COUNT + 0;
 
 
 	/**
@@ -347,17 +384,6 @@ public interface AllElementTypesPackage extends EPackage {
 	EReference getRoot_NonRootObjectContainerHelper();
 
 	/**
-	 * Returns the meta object for the attribute '{@link allElementTypes.Root#getId <em>Id</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Id</em>'.
-	 * @see allElementTypes.Root#getId()
-	 * @see #getRoot()
-	 * @generated
-	 */
-	EAttribute getRoot_Id();
-
-	/**
 	 * Returns the meta object for the '{@link allElementTypes.Root#singleValuedOperation() <em>Single Valued Operation</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -388,17 +414,6 @@ public interface AllElementTypesPackage extends EPackage {
 	EClass getNonRoot();
 
 	/**
-	 * Returns the meta object for the attribute '{@link allElementTypes.NonRoot#getId <em>Id</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Id</em>'.
-	 * @see allElementTypes.NonRoot#getId()
-	 * @see #getNonRoot()
-	 * @generated
-	 */
-	EAttribute getNonRoot_Id();
-
-	/**
 	 * Returns the meta object for class '{@link allElementTypes.NonRootObjectContainerHelper <em>Non Root Object Container Helper</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -420,15 +435,25 @@ public interface AllElementTypesPackage extends EPackage {
 	EReference getNonRootObjectContainerHelper_NonRootObjectsContainment();
 
 	/**
-	 * Returns the meta object for the attribute '{@link allElementTypes.NonRootObjectContainerHelper#getId <em>Id</em>}'.
+	 * Returns the meta object for class '{@link allElementTypes.Identified <em>Identified</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Identified</em>'.
+	 * @see allElementTypes.Identified
+	 * @generated
+	 */
+	EClass getIdentified();
+
+	/**
+	 * Returns the meta object for the attribute '{@link allElementTypes.Identified#getId <em>Id</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Id</em>'.
-	 * @see allElementTypes.NonRootObjectContainerHelper#getId()
-	 * @see #getNonRootObjectContainerHelper()
+	 * @see allElementTypes.Identified#getId()
+	 * @see #getIdentified()
 	 * @generated
 	 */
-	EAttribute getNonRootObjectContainerHelper_Id();
+	EAttribute getIdentified_Id();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -520,14 +545,6 @@ public interface AllElementTypesPackage extends EPackage {
 		EReference ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER = eINSTANCE.getRoot_NonRootObjectContainerHelper();
 
 		/**
-		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute ROOT__ID = eINSTANCE.getRoot_Id();
-
-		/**
 		 * The meta object literal for the '<em><b>Single Valued Operation</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -554,14 +571,6 @@ public interface AllElementTypesPackage extends EPackage {
 		EClass NON_ROOT = eINSTANCE.getNonRoot();
 
 		/**
-		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute NON_ROOT__ID = eINSTANCE.getNonRoot_Id();
-
-		/**
 		 * The meta object literal for the '{@link allElementTypes.impl.NonRootObjectContainerHelperImpl <em>Non Root Object Container Helper</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -580,12 +589,22 @@ public interface AllElementTypesPackage extends EPackage {
 		EReference NON_ROOT_OBJECT_CONTAINER_HELPER__NON_ROOT_OBJECTS_CONTAINMENT = eINSTANCE.getNonRootObjectContainerHelper_NonRootObjectsContainment();
 
 		/**
+		 * The meta object literal for the '{@link allElementTypes.impl.IdentifiedImpl <em>Identified</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see allElementTypes.impl.IdentifiedImpl
+		 * @see allElementTypes.impl.AllElementTypesPackageImpl#getIdentified()
+		 * @generated
+		 */
+		EClass IDENTIFIED = eINSTANCE.getIdentified();
+
+		/**
 		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute NON_ROOT_OBJECT_CONTAINER_HELPER__ID = eINSTANCE.getNonRootObjectContainerHelper_Id();
+		EAttribute IDENTIFIED__ID = eINSTANCE.getIdentified_Id();
 
 	}
 

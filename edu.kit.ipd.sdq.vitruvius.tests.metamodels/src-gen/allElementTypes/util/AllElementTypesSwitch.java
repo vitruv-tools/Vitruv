@@ -69,18 +69,27 @@ public class AllElementTypesSwitch<T> extends Switch<T> {
 			case AllElementTypesPackage.ROOT: {
 				Root root = (Root)theEObject;
 				T result = caseRoot(root);
+				if (result == null) result = caseIdentified(root);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AllElementTypesPackage.NON_ROOT: {
 				NonRoot nonRoot = (NonRoot)theEObject;
 				T result = caseNonRoot(nonRoot);
+				if (result == null) result = caseIdentified(nonRoot);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case AllElementTypesPackage.NON_ROOT_OBJECT_CONTAINER_HELPER: {
 				NonRootObjectContainerHelper nonRootObjectContainerHelper = (NonRootObjectContainerHelper)theEObject;
 				T result = caseNonRootObjectContainerHelper(nonRootObjectContainerHelper);
+				if (result == null) result = caseIdentified(nonRootObjectContainerHelper);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AllElementTypesPackage.IDENTIFIED: {
+				Identified identified = (Identified)theEObject;
+				T result = caseIdentified(identified);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -130,6 +139,21 @@ public class AllElementTypesSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseNonRootObjectContainerHelper(NonRootObjectContainerHelper object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Identified</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Identified</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIdentified(Identified object) {
 		return null;
 	}
 

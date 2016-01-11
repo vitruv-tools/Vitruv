@@ -20,8 +20,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
@@ -42,12 +40,11 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link allElementTypes.impl.RootImpl#getMultiValuedNonContainmentEReference <em>Multi Valued Non Containment EReference</em>}</li>
  *   <li>{@link allElementTypes.impl.RootImpl#getMultiValuedContainmentEReference <em>Multi Valued Containment EReference</em>}</li>
  *   <li>{@link allElementTypes.impl.RootImpl#getNonRootObjectContainerHelper <em>Non Root Object Container Helper</em>}</li>
- *   <li>{@link allElementTypes.impl.RootImpl#getId <em>Id</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class RootImpl extends MinimalEObjectImpl.Container implements Root {
+public class RootImpl extends IdentifiedImpl implements Root {
 	/**
 	 * The default value of the '{@link #getSingleValuedEAttribute() <em>Single Valued EAttribute</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -127,26 +124,6 @@ public class RootImpl extends MinimalEObjectImpl.Container implements Root {
 	 * @ordered
 	 */
 	protected NonRootObjectContainerHelper nonRootObjectContainerHelper;
-
-	/**
-	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getId()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String ID_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getId()
-	 * @generated
-	 * @ordered
-	 */
-	protected String id = ID_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -353,27 +330,6 @@ public class RootImpl extends MinimalEObjectImpl.Container implements Root {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getId() {
-		return id;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setId(String newId) {
-		String oldId = id;
-		id = newId;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AllElementTypesPackage.ROOT__ID, oldId, id));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public void singleValuedOperation() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -432,8 +388,6 @@ public class RootImpl extends MinimalEObjectImpl.Container implements Root {
 				return getMultiValuedContainmentEReference();
 			case AllElementTypesPackage.ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER:
 				return getNonRootObjectContainerHelper();
-			case AllElementTypesPackage.ROOT__ID:
-				return getId();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -471,9 +425,6 @@ public class RootImpl extends MinimalEObjectImpl.Container implements Root {
 			case AllElementTypesPackage.ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER:
 				setNonRootObjectContainerHelper((NonRootObjectContainerHelper)newValue);
 				return;
-			case AllElementTypesPackage.ROOT__ID:
-				setId((String)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -507,9 +458,6 @@ public class RootImpl extends MinimalEObjectImpl.Container implements Root {
 			case AllElementTypesPackage.ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER:
 				setNonRootObjectContainerHelper((NonRootObjectContainerHelper)null);
 				return;
-			case AllElementTypesPackage.ROOT__ID:
-				setId(ID_EDEFAULT);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -536,8 +484,6 @@ public class RootImpl extends MinimalEObjectImpl.Container implements Root {
 				return multiValuedContainmentEReference != null && !multiValuedContainmentEReference.isEmpty();
 			case AllElementTypesPackage.ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER:
 				return nonRootObjectContainerHelper != null;
-			case AllElementTypesPackage.ROOT__ID:
-				return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -573,8 +519,6 @@ public class RootImpl extends MinimalEObjectImpl.Container implements Root {
 		result.append(singleValuedEAttribute);
 		result.append(", multiValuedEAttribute: ");
 		result.append(multiValuedEAttribute);
-		result.append(", id: ");
-		result.append(id);
 		result.append(')');
 		return result.toString();
 	}

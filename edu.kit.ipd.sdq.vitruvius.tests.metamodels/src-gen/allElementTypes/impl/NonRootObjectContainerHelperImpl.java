@@ -7,18 +7,12 @@ import allElementTypes.NonRoot;
 import allElementTypes.NonRootObjectContainerHelper;
 
 import java.util.Collection;
-
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -31,12 +25,11 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * </p>
  * <ul>
  *   <li>{@link allElementTypes.impl.NonRootObjectContainerHelperImpl#getNonRootObjectsContainment <em>Non Root Objects Containment</em>}</li>
- *   <li>{@link allElementTypes.impl.NonRootObjectContainerHelperImpl#getId <em>Id</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class NonRootObjectContainerHelperImpl extends MinimalEObjectImpl.Container implements NonRootObjectContainerHelper {
+public class NonRootObjectContainerHelperImpl extends IdentifiedImpl implements NonRootObjectContainerHelper {
 	/**
 	 * The cached value of the '{@link #getNonRootObjectsContainment() <em>Non Root Objects Containment</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -46,26 +39,6 @@ public class NonRootObjectContainerHelperImpl extends MinimalEObjectImpl.Contain
 	 * @ordered
 	 */
 	protected EList<NonRoot> nonRootObjectsContainment;
-
-	/**
-	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getId()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String ID_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getId()
-	 * @generated
-	 * @ordered
-	 */
-	protected String id = ID_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -103,27 +76,6 @@ public class NonRootObjectContainerHelperImpl extends MinimalEObjectImpl.Contain
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getId() {
-		return id;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setId(String newId) {
-		String oldId = id;
-		id = newId;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AllElementTypesPackage.NON_ROOT_OBJECT_CONTAINER_HELPER__ID, oldId, id));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -143,8 +95,6 @@ public class NonRootObjectContainerHelperImpl extends MinimalEObjectImpl.Contain
 		switch (featureID) {
 			case AllElementTypesPackage.NON_ROOT_OBJECT_CONTAINER_HELPER__NON_ROOT_OBJECTS_CONTAINMENT:
 				return getNonRootObjectsContainment();
-			case AllElementTypesPackage.NON_ROOT_OBJECT_CONTAINER_HELPER__ID:
-				return getId();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -162,9 +112,6 @@ public class NonRootObjectContainerHelperImpl extends MinimalEObjectImpl.Contain
 				getNonRootObjectsContainment().clear();
 				getNonRootObjectsContainment().addAll((Collection<? extends NonRoot>)newValue);
 				return;
-			case AllElementTypesPackage.NON_ROOT_OBJECT_CONTAINER_HELPER__ID:
-				setId((String)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -180,9 +127,6 @@ public class NonRootObjectContainerHelperImpl extends MinimalEObjectImpl.Contain
 			case AllElementTypesPackage.NON_ROOT_OBJECT_CONTAINER_HELPER__NON_ROOT_OBJECTS_CONTAINMENT:
 				getNonRootObjectsContainment().clear();
 				return;
-			case AllElementTypesPackage.NON_ROOT_OBJECT_CONTAINER_HELPER__ID:
-				setId(ID_EDEFAULT);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -197,26 +141,8 @@ public class NonRootObjectContainerHelperImpl extends MinimalEObjectImpl.Contain
 		switch (featureID) {
 			case AllElementTypesPackage.NON_ROOT_OBJECT_CONTAINER_HELPER__NON_ROOT_OBJECTS_CONTAINMENT:
 				return nonRootObjectsContainment != null && !nonRootObjectsContainment.isEmpty();
-			case AllElementTypesPackage.NON_ROOT_OBJECT_CONTAINER_HELPER__ID:
-				return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (id: ");
-		result.append(id);
-		result.append(')');
-		return result.toString();
 	}
 
 } //NonRootObjectContainerHelperImpl
