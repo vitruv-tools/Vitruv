@@ -32,6 +32,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.AbstractResponseChange2C
 import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.AbstractResponseChange2CommandTransformingProviding
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
 import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorConstants.*;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 
 class ResponseLanguageGenerator implements IGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
@@ -141,6 +142,7 @@ class ResponseLanguageGenerator implements IGenerator {
 	private def generateResponse(ResponseFile responseFile, Response response, String className) {
 		var ih = new ImportHelper();
 		val change = (response.trigger as ModelChangeEvent).change
+		val affectedModel = response.effects.affectedModel;
 		val genericChangeTypeParameter = (response.trigger as ModelChangeEvent).genericTypeParameterFQNOfChange;
 		val classImplementation = '''
 		public class «className» implements «ih.typeRef(ResponseRealization)» {
@@ -178,15 +180,31 @@ class ResponseLanguageGenerator implements IGenerator {
 				return false;
 			}
 		
-			«IF response.effects.affectedModel != null»
-			private def «ih.typeRef(List)»<«ih.typeRef(EClass)»> determineAffectedModels() {
-				val affectedModels = new «ih.typeRef(ArrayList)»<«ih.typeRef(EClass)»>();
-				«/* TODO HK implement affecteModel determination code here */» 
+			«IF affectedModel != null»
+			private def «ih.typeRef(List)»<«ih.typeRef(affectedModel.model)»> determineAffectedModels(«
+				»EChange «CHANGE_PARAMETER_NAME», Blackboard blackboard) {
+				val affectedModels = new «ih.typeRef(ArrayList)»<«ih.typeRef(affectedModel.model)»>();
+				«IF EFeatureChange.isAssignableFrom(change.instanceClass)»
+				var changedObjectRoot = («CHANGE_PARAMETER_NAME» as «ih.typeRef(EFeatureChange)»<?>).oldAffectedEObject;
+				while (changedObjectRoot.eContainer() != null) {
+					changedObjectRoot = changedObjectRoot.eContainer();
+				}
+				val root = changedObjectRoot;
+				val correspondences = blackboard.correspondenceInstance.getCorrespondences(#[root])
+				affectedModels += correspondences.map[correspondence |
+					if (correspondence.^as.contains(root)) {
+						return correspondence.^bs;
+					} else {
+						return correspondence.^as;
+					}
+				].flatten.filter(«ih.typeRef(affectedModel.model)»);
+				«ENDIF»
 				return affectedModels;
 			}
 			
 			«ENDIF»
-			public override «RESPONSE_APPLY_METHOD_NAME»(«ih.typeRef(EChange)» «CHANGE_PARAMETER_NAME») {
+			public override «RESPONSE_APPLY_METHOD_NAME»(«ih.typeRef(EChange)» «CHANGE_PARAMETER_NAME», «
+				ih.typeRef(Blackboard)» blackboard) {
 				LOGGER.debug("Called response " + this.class.name + " with event " + «CHANGE_PARAMETER_NAME»);
 				
 				// Check if the event matches the trigger of the response
@@ -196,7 +214,7 @@ class ResponseLanguageGenerator implements IGenerator {
 				LOGGER.debug("Passed precondition check of response " + this.class.name);
 				
 				«IF response.effects.affectedModel != null»
-				val affectedModels = determineAffectedModels();
+				val affectedModels = determineAffectedModels(change, blackboard);
 				affectedModels.forEach[affectedModel | 
 					LOGGER.debug("Execute response " + this.class.name + " for model " + affectedModel);
 					performResponseTo(«CHANGE_PARAMETER_NAME» as «ih.typeRef(change)»<«
@@ -212,7 +230,7 @@ class ResponseLanguageGenerator implements IGenerator {
 			
 			private def performResponseTo(«ih.typeRef(change)»<«
 					ih.typeRef(genericChangeTypeParameter)»> «CHANGE_PARAMETER_NAME»«
-				IF response.effects.affectedModel != null», «ih.typeRef(EClass)» affectedModel«ENDIF
+				IF response.effects.affectedModel != null», «ih.typeRef(affectedModel.model)» affectedModel«ENDIF
 				»)«response.effects.toXtendCode»
 		}
 		'''
@@ -221,7 +239,7 @@ class ResponseLanguageGenerator implements IGenerator {
 	}
 	
 	private def toXtendCode(Effects effects) {
-		NodeModelUtils.getNode(effects.codeBlock).text
+		NodeModelUtils.getNode(effects.codeBlock.code).text
 	}
 	
 }

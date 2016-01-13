@@ -59,7 +59,7 @@ abstract class AbstractResponseChange2CommandTransforming implements Change2Comm
 		for (executor : responseExecutors) {
 			// TODO HK implement correctly
 			LOGGER.debug('''Calling executor «executor» for change event «change»''');
-			result += executor.generateCommandsForEvent(change);
+			result += executor.generateCommandsForEvent(change, blackboard);
 		}
 		return result;
 	}

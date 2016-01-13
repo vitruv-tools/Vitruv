@@ -22,11 +22,17 @@ Response:
 	'Response to' trigger=Trigger effects=Effects;
 	
 Effects:
-	('affects' affectedModel=AffectedModel)? codeBlock=XBlockExpression;
+	('affects' affectedModel=AffectedModel)? codeBlock=CodeBlock;
 
 // TODO this is a dummy by now
 AffectedModel:
-	model=[ecore::EClass|QualifiedName];
+	model=[ecore::EClass|QualifiedName] ('when' compareBlock=CompareBlock)?;
+
+CompareBlock:
+	code=XBlockExpression;
+
+CodeBlock:
+	code=XBlockExpression;
 	
 ModelChangeEvent:
 	//(UpdateEvent | CreateEvent | DeleteEvent)
