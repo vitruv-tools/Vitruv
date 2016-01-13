@@ -26,7 +26,7 @@ class ResponseLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalScopePr
 	@Inject
 	IQualifiedNameConverter qualifiedNameConverter
 	
-	IScope packageScope = null;
+	private IScope packageScope = null;
 	
 	override getScope(Resource resource, EReference reference) {
 		super.getScope(resource, reference)
@@ -49,11 +49,12 @@ class ResponseLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalScopePr
 	}
 	
 	override getScope(Resource resource, EReference ref, Predicate<IEObjectDescription> filter) {
-		if (ref.equals(NAMESPACE_IMPORT__PACKAGE)) {
+		if (ref.equals(NAMESPACE_IMPORT__PACKAGE)
+			|| ref.equals(METAMODEL_IMPORT__PACKAGE)) {
 			return getPackageScope
 		}
 			
-		super.getScope(resource, ref, filter)
+		return super.getScope(resource, ref, filter)
 	}
 	
 }

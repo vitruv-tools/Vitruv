@@ -62,7 +62,7 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 			return;
 		}
 		val response = codeBlock.containingResponse;
-		val event = response?.trigger.event;
+		val event = response?.trigger;
 		var EClass change;
 		if (event instanceof ModelChangeEvent) {
 			change = event.change;

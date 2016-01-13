@@ -140,8 +140,8 @@ class ResponseLanguageGenerator implements IGenerator {
 				
 	private def generateResponse(ResponseFile responseFile, Response response, String className) {
 		var ih = new ImportHelper();
-		val change = (response.trigger.event as ModelChangeEvent).change
-		val genericChangeTypeParameter = (response.trigger.event as ModelChangeEvent).genericTypeParameterFQNOfChange;
+		val change = (response.trigger as ModelChangeEvent).change
+		val genericChangeTypeParameter = (response.trigger as ModelChangeEvent).genericTypeParameterFQNOfChange;
 		val classImplementation = '''
 		public class «className» implements «ih.typeRef(ResponseRealization)» {
 			private static val «ih.typeRef(Logger)» LOGGER = {
@@ -151,7 +151,7 @@ class ResponseLanguageGenerator implements IGenerator {
 			}
 		
 			public static def Class<? extends EChange> getTrigger() {
-				«IF response.trigger.event instanceof ModelChangeEvent»
+				«IF response.trigger instanceof ModelChangeEvent»
 				return «ih.typeRef(change)»;
 				«ELSE»
 				return null;
@@ -159,7 +159,7 @@ class ResponseLanguageGenerator implements IGenerator {
 			}
 		
 			private def checkPrecondition(«ih.typeRef(EChange)» «CHANGE_PARAMETER_NAME») { 
-				«IF response.trigger.event instanceof ModelChangeEvent»
+				«IF response.trigger instanceof ModelChangeEvent»
 				if («CHANGE_PARAMETER_NAME» instanceof «ih.typeRef(change)»«
 					//ih.typeRef((response.trigger.event as ModelChangeEvent).feature.element.EStructuralFeatures.filter(ft | ft.name = (response.trigger.event as ModelChangeEvent).feature.feature
 					//ih.typeRef((response.trigger.event as ModelChangeEvent).feature.feature.EType)
@@ -167,7 +167,7 @@ class ResponseLanguageGenerator implements IGenerator {
 					»<?>«ENDIF») {
 					«IF EFeatureChange.isAssignableFrom(change.instanceClass)»
 					val feature = («CHANGE_PARAMETER_NAME» as «ih.typeRef(EFeatureChange)»<?>).affectedFeature;
-					«val modelChangeEvent = (response.trigger.event as ModelChangeEvent)»
+					«val modelChangeEvent = (response.trigger as ModelChangeEvent)»
 					if (feature.name.equals("«modelChangeEvent.feature.feature.name»")
 						&& «CHANGE_PARAMETER_NAME».oldAffectedEObject instanceof «ih.typeRef(modelChangeEvent.feature.element)») {
 						return true;
@@ -221,7 +221,7 @@ class ResponseLanguageGenerator implements IGenerator {
 	}
 	
 	private def toXtendCode(Effects effects) {
-		NodeModelUtils.getNode(effects.code.code).text
+		NodeModelUtils.getNode(effects.codeBlock).text
 	}
 	
 }

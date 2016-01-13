@@ -6,7 +6,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.JavaGeneratorHelper.Import
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChangeEvent
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Event
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 
 final class ResponseLanguageGeneratorUtils {
 	private static val FSA_SEPARATOR = "/";
@@ -72,7 +72,7 @@ final class ResponseLanguageGeneratorUtils {
 		'''
 
 	static def Pair<VURI, VURI> getSourceTargetPair(ResponseFile responseFile, Response response) {
-		val event = response.trigger.event;
+		val event = response.trigger;
 		if (event instanceof ModelChangeEvent) {
 			val pack = event.feature.element.EPackage;
 			if (pack == null) {
@@ -92,9 +92,9 @@ final class ResponseLanguageGeneratorUtils {
 	}
 	
 	static def String getResponseName(Response response) '''
-		ResponseTo«response.trigger.event.responseNameForEvent»'''
+		ResponseTo«response.trigger.responseNameForEvent»'''
 	
-	static def dispatch String getResponseNameForEvent(Event event) {
+	static def dispatch String getResponseNameForEvent(Trigger trigger) {
 		throw new UnsupportedOperationException("Response name fragment is not defined for this event type.")
 	}
 	

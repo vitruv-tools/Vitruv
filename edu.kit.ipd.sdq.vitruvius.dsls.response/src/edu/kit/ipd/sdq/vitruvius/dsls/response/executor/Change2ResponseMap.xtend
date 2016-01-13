@@ -3,7 +3,6 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.executor
 import java.util.Map
 import java.util.HashMap
 import java.util.List
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Event
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
