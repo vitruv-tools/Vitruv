@@ -60,21 +60,25 @@ Workflow {
 			name = "edu.kit.ipd.sdq.vitruvius.dsls.response.ResponseLanguage"
 			fileExtensions = "response"
 
-			scopeProvider = scoping.ImportNamespacesScopingFragment2 auto-inject {
-				generateStub = false
-			}
-
-			serializer = {
-				generateStub = false
-			}
-			validator = validation.ValidatorFragment2 {
-				
-				inheritImplementation = true
-				// composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
-			}
-			qualifiedNamesProvider = exporting.QualifiedNamesFragment2 auto-inject {}
+//			scopeProvider = scoping.ImportNamespacesScopingFragment2 auto-inject {
+//				generateStub = false
+//			}
+//
+//			serializer = {
+//				generateStub = false
+//			}
+//			validator = validation.ValidatorFragment2 {
+//				inheritImplementation = true
+//				// composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
+//			}
+//			qualifiedNamesProvider = exporting.QualifiedNamesFragment2 auto-inject {}
+//			
+//			// This does not work...
+//			//fragment = types.TypesGeneratorFragment2 {}
+//			xbaseSupport = xbase.XbaseGeneratorFragment2 {}
+//
+//			generator = generator.GeneratorFragment2  {}
 			
-			generator = generator.GeneratorFragment2 auto-inject {}
 		}
 	}
 }

@@ -99,14 +99,16 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 	}
 	
 	override getScope(EObject context, EReference reference) {
-		if ((reference.equals(CODE_BLOCK__CODE))) {
-			return createCodeScope(context.eResource, reference as XBlockExpression)
-		} else if ((reference.equals(FEATURE_OF_ELEMENT__FEATURE))
+//		if ((reference.equals(CODE_BLOCK__CODE))) {
+//			return createCodeScope(context.eResource, reference as XBlockExpression)
+//		} else 
+		if ((reference.equals(FEATURE_OF_ELEMENT__FEATURE))
 			&& (context instanceof FeatureOfElement))
 			return createEStructuralFeatureScope(context as FeatureOfElement)
 		else if (reference.equals(MODEL_CHANGE_EVENT__CHANGE))
 			return createChangeEventsScope(context.eResource)
-		else if (reference.getEType.equals(EcorePackage.Literals.ECLASS))
+		else if (reference.equals(FEATURE_OF_ELEMENT__ELEMENT)
+		)//reference.getEType.equals(EcorePackage.Literals.ECLASS))
 			return createQualifiedEClassScope(context.eResource)
 //		else if (reference.equals(REQUIRED_MAPPING_PATH_TAIL__REQUIRED_MAPPING))
 //			return createRequiredMappingPathTailScope(context)
@@ -118,10 +120,10 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 		super.getScope(context, reference)
 	}
 
-	protected override List<ImportNormalizer> getImplicitImports(boolean ignoreCase) {
-		return Lists.<ImportNormalizer>newArrayList(
-				);
-	}
+//	protected override List<ImportNormalizer> getImplicitImports(boolean ignoreCase) {
+//		return Lists.<ImportNormalizer>newArrayList(
+//				);
+//	}
 
 	def IScope createCodeScope(Resource res, XBlockExpression blockExpression) {
 		val codeBlock = blockExpression.eContainer as CodeBlock;

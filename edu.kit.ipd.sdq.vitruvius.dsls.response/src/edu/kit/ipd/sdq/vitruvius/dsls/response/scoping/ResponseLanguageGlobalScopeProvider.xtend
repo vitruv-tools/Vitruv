@@ -13,16 +13,16 @@ import org.eclipse.xtext.naming.IQualifiedNameConverter
 import org.eclipse.xtext.resource.EObjectDescription
 import org.eclipse.xtext.resource.IEObjectDescription
 import org.eclipse.xtext.scoping.IScope
-import org.eclipse.xtext.scoping.impl.AbstractGlobalScopeProvider
 import org.eclipse.xtext.scoping.impl.SimpleScope
 
 import static edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage.Literals.*
+import org.eclipse.xtext.common.types.xtext.TypesAwareDefaultGlobalScopeProvider
 
 /**
  * Copy of edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping.MappingLanguageGlobalScopeProvider by Dominik Werle
  */
 // TODO HK refactor to only one implementation
-class ResponseLanguageGlobalScopeProvider extends AbstractGlobalScopeProvider {
+class ResponseLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalScopeProvider {
 	@Inject
 	IQualifiedNameConverter qualifiedNameConverter
 	
