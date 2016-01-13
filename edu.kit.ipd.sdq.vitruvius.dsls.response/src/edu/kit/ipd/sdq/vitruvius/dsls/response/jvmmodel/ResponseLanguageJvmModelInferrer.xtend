@@ -11,13 +11,14 @@ import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmVisibility
-import org.eclipse.xtext.common.types.JvmOperation
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChangeEvent
 import org.eclipse.emf.ecore.EClass
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
 import org.eclipse.xtext.common.types.JvmFormalParameter
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
+import org.eclipse.xtext.common.types.JvmTypeReference
+import java.util.ArrayList
+import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorConstants.*;
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -26,7 +27,6 @@ import org.eclipse.xtext.common.types.JvmFormalParameter
  * which is generated from the source model. Other models link against the JVM model rather than the source model.</p>     
  */
 class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
-	private static val CHANGE_PARAMETER_NAME = "change";
     /**
      * convenience API to build and initialize JVM types and their members.
      */
@@ -61,60 +61,46 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 		if (isPreIndexingPhase) {
 			return;
 		}
-		val response = codeBlock.getResponse();
-		//val responseFile = response.eContainer() as ResponseFile;
-		val event = response.trigger.event;
+		val response = codeBlock.containingResponse;
+		val event = response?.trigger.event;
 		var EClass change;
 		if (event instanceof ModelChangeEvent) {
 			change = event.change;
 		}
-		//var qualifiedResponseName = responseFile.getSourceTargetPair(response)?.getResponseQualifiedName(response.responseName);
-		val parameters = <JvmFormalParameter>newArrayList();
+
+		val methodParameters = <JvmFormalParameter>newArrayList();
+		val changeTypeParameters = new ArrayList<String>();
 		if (change?.name != null) {
-			parameters += codeBlock.generateChangeParameter(change); 
+			if (event instanceof ModelChangeEvent) {
+				changeTypeParameters += getGenericTypeParameterFQNOfChange(event)
+			}
+			methodParameters += codeBlock.generateChangeParameter(change.instanceTypeName, changeTypeParameters);
 		}
 
-		acceptor.accept(codeBlock.toClass("Response")) [//qualifiedResponseName + "Helper")) [
-			members += codeBlock.toMethod("apply", typeRef(Void.TYPE))[applyMethod|
-				applyMethod.parameters += parameters//.map[p | withBlock.toParameter(p)]
+		acceptor.accept(response.toClass("Response")) [
+			members += codeBlock.toMethod(RESPONSE_APPLY_METHOD_NAME, typeRef(Void.TYPE)) [applyMethod |
+				applyMethod.parameters += methodParameters
 				applyMethod.body = codeBlock]
-			//packageName = responseFile.getSourceTargetPair(response)?.packageName
-			
-			it.makeStaticClass(codeBlock)
+			it.makeClassStatic(response)
 		]
 		
 	}
 	
-	private def Response getResponse(XBlockExpression xbaseCodeBlock) {
-		val codeBlock = xbaseCodeBlock.eContainer();
-		if (codeBlock instanceof CodeBlock) {
-			val effects = codeBlock.eContainer();
-			if (effects instanceof Effects) {
-				val response = effects.eContainer();
-				if (response instanceof Response) {
-					return response;
-				}
-			}
-		}
-		return null;
-	}
-	
-	private def void makeStaticClass(JvmGenericType type, EObject context) {
+	private def void makeClassStatic(JvmGenericType type, EObject context) {
 		type.members += context.toConstructor [
 			visibility = JvmVisibility::PRIVATE
 			body = ''''''
-			documentation = '''Private constructor since this class is static'''
-		]
-
-		type.members.filter(JvmOperation).forEach [
-			it.static = true
+			documentation = "Private constructor since this class is static"
 		]
 	}
 	
-	def generateChangeParameter(EObject context, EClass changeClass) {
-		var typeName = changeClass.instanceTypeName;
-		val changeType = typeRef(typeName)
-		context.toParameter(CHANGE_PARAMETER_NAME, changeType)
+	def generateChangeParameter(EObject context, String changeClassName, String... typeParameterClassNames) {
+		val typeParameters = new ArrayList<JvmTypeReference>(typeParameterClassNames.size);
+		for (typeParameterClassName : typeParameterClassNames) {
+			typeParameters.add(typeRef(typeParameterClassName));	
+		}		
+		val changeType = typeRef(changeClassName, typeParameters)
+		return context.toParameter(CHANGE_PARAMETER_NAME, changeType);
 	}
 	
 }

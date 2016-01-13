@@ -3,11 +3,17 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.generator
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.JavaGeneratorHelper.ImportHelper
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChangeEvent
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Event
 
 final class ResponseLanguageGeneratorUtils {
 	private static val FSA_SEPARATOR = "/";
 	private static val XTEND_FILE_EXTENSION = ".xtend";
 	private static val RESPONSES_PACKAGE = "responses";
+	
+	private new() {}
 	
 	private static def getFilePath(String qualifiedClassName) '''
 		«qualifiedClassName.replace('.', FSA_SEPARATOR)»«XTEND_FILE_EXTENSION»'''
@@ -65,4 +71,35 @@ final class ResponseLanguageGeneratorUtils {
 		«classImplementation»
 		'''
 
+	static def Pair<VURI, VURI> getSourceTargetPair(ResponseFile responseFile, Response response) {
+		val event = response.trigger.event;
+		if (event instanceof ModelChangeEvent) {
+			val pack = event.feature.element.EPackage;
+			if (pack == null) {
+				return null;
+			} 
+			val uri = responseFile.namespaceImports.findFirst[imp | imp.package == pack].metamodel.package.nsURI
+			val source = VURI.getInstance(uri);
+			val target= VURI.getInstance(uri);
+			val affectedModel = response.effects.affectedModel;
+			if (affectedModel!= null) {
+				// TODO HK correctly implement target calculation 
+			}
+			val sourceTargetPair = new Pair<VURI, VURI>(source, target);
+			return sourceTargetPair
+		}
+		return null;		
+	}
+	
+	static def String getResponseName(Response response) '''
+		ResponseTo«response.trigger.event.responseNameForEvent»'''
+	
+	static def dispatch String getResponseNameForEvent(Event event) {
+		throw new UnsupportedOperationException("Response name fragment is not defined for this event type.")
+	}
+	
+	static def dispatch String getResponseNameForEvent(ModelChangeEvent event) '''
+		«event.change.name»Of«IF event.feature.feature != null»«event.feature.feature.name.toFirstUpper»In«ENDIF»«
+			event.feature.element.name.toFirstUpper»'''
+		
 }

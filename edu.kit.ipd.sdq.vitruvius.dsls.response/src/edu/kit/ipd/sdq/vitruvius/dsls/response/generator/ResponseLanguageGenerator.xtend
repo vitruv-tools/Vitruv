@@ -12,7 +12,6 @@ import org.eclipse.emf.ecore.EClass
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Event
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChangeEvent
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
@@ -32,11 +31,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTr
 import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.AbstractResponseChange2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.AbstractResponseChange2CommandTransformingProviding
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
+import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorConstants.*;
 
 class ResponseLanguageGenerator implements IGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
-		//generateDummyImportsClass(resource, fsa);
-		//generateDelegatorClass(resource, fsa);
 		val modelCorrepondenceToResponseMap = generateResponses(resource.contents.head as ResponseFile, fsa);
 		generateExecutorsAndChange2CommandTransformings(modelCorrepondenceToResponseMap, fsa)
 		generateChange2CommandTransformingProviding(modelCorrepondenceToResponseMap.keySet, fsa);
@@ -139,26 +137,11 @@ class ResponseLanguageGenerator implements IGenerator {
 		}	
 		return modelCorrespondenceToResponseNameMap;
 	}
-	
-	private def Pair<VURI, VURI> getSourceTargetPair(ResponseFile responseFile, Response response) {
-		val event = response.trigger.event;
-		if (event instanceof ModelChangeEvent) {
-			val pack = event.feature.element.EPackage;
-			val uri = responseFile.namespaceImports.findFirst[imp | imp.package == pack].metamodel.package.nsURI
-			val source = VURI.getInstance(uri);
-			val target= VURI.getInstance(uri);
-			val affectedModel = response.effects.affectedModel;
-			if (affectedModel!= null) {
-				// TODO HK correctly implement target calculation 
-			}
-			val sourceTargetPair = new Pair<VURI, VURI>(source, target);
-			return sourceTargetPair
-		}
-		return null;		
-	}
-		
+				
 	private def generateResponse(ResponseFile responseFile, Response response, String className) {
 		var ih = new ImportHelper();
+		val change = (response.trigger.event as ModelChangeEvent).change
+		val genericChangeTypeParameter = (response.trigger.event as ModelChangeEvent).genericTypeParameterFQNOfChange;
 		val classImplementation = '''
 		public class «className» implements «ih.typeRef(ResponseRealization)» {
 			private static val «ih.typeRef(Logger)» LOGGER = {
@@ -169,24 +152,24 @@ class ResponseLanguageGenerator implements IGenerator {
 		
 			public static def Class<? extends EChange> getTrigger() {
 				«IF response.trigger.event instanceof ModelChangeEvent»
-				return «ih.typeRef((response.trigger.event as ModelChangeEvent).change)»;
+				return «ih.typeRef(change)»;
 				«ELSE»
 				return null;
 				«ENDIF»
 			}
 		
-			private def checkPrecondition(«ih.typeRef(EChange)» change) { 
+			private def checkPrecondition(«ih.typeRef(EChange)» «CHANGE_PARAMETER_NAME») { 
 				«IF response.trigger.event instanceof ModelChangeEvent»
-				if (change instanceof «ih.typeRef((response.trigger.event as ModelChangeEvent).change)»«
+				if («CHANGE_PARAMETER_NAME» instanceof «ih.typeRef(change)»«
 					//ih.typeRef((response.trigger.event as ModelChangeEvent).feature.element.EStructuralFeatures.filter(ft | ft.name = (response.trigger.event as ModelChangeEvent).feature.feature
 					//ih.typeRef((response.trigger.event as ModelChangeEvent).feature.feature.EType)
-					»«IF !(response.trigger.event as ModelChangeEvent).change.instanceClass.equals(EChange)»«
+					»«IF !change.instanceClass.equals(EChange)»«
 					»<?>«ENDIF») {
-					«IF EFeatureChange.isAssignableFrom((response.trigger.event as ModelChangeEvent).change.instanceClass)»
-					val feature = (change as «ih.typeRef(EFeatureChange)»<?>).affectedFeature;
+					«IF EFeatureChange.isAssignableFrom(change.instanceClass)»
+					val feature = («CHANGE_PARAMETER_NAME» as «ih.typeRef(EFeatureChange)»<?>).affectedFeature;
 					«val modelChangeEvent = (response.trigger.event as ModelChangeEvent)»
 					if (feature.name.equals("«modelChangeEvent.feature.feature.name»")
-						&& change.oldAffectedEObject instanceof «ih.typeRef(modelChangeEvent.feature.element)») {
+						&& «CHANGE_PARAMETER_NAME».oldAffectedEObject instanceof «ih.typeRef(modelChangeEvent.feature.element)») {
 						return true;
 					}
 					«ENDIF»
@@ -203,11 +186,11 @@ class ResponseLanguageGenerator implements IGenerator {
 			}
 			
 			«ENDIF»
-			public override applyEvent(«ih.typeRef(EChange)» change) {
-				LOGGER.debug("Called response " + this.class.name + " with event " + change);
+			public override «RESPONSE_APPLY_METHOD_NAME»(«ih.typeRef(EChange)» «CHANGE_PARAMETER_NAME») {
+				LOGGER.debug("Called response " + this.class.name + " with event " + «CHANGE_PARAMETER_NAME»);
 				
 				// Check if the event matches the trigger of the response
-				if (!checkPrecondition(change)) {
+				if (!checkPrecondition(«CHANGE_PARAMETER_NAME»)) {
 					return new «ih.typeRef(TransformationResult)»();
 				}
 				LOGGER.debug("Passed precondition check of response " + this.class.name);
@@ -216,19 +199,19 @@ class ResponseLanguageGenerator implements IGenerator {
 				val affectedModels = determineAffectedModels();
 				affectedModels.forEach[affectedModel | 
 					LOGGER.debug("Execute response " + this.class.name + " for model " + affectedModel);
-					performResponseTo(change as «ih.typeRef((response.trigger.event as ModelChangeEvent).change)»<«
-						getGenericTypeParameterOfChange(response.trigger.event as ModelChangeEvent, ih)»>, affectedModel)];
+					performResponseTo(«CHANGE_PARAMETER_NAME» as «ih.typeRef(change)»<«
+						ih.typeRef(genericChangeTypeParameter)»>, affectedModel)];
 				«ELSE»
 					LOGGER.debug("Execute response " + this.class.name + " with no affected model");
-					performResponseTo(change as «ih.typeRef((response.trigger.event as ModelChangeEvent).change)»<«
-										getGenericTypeParameterOfChange(response.trigger.event as ModelChangeEvent, ih)»>);
+					performResponseTo(«CHANGE_PARAMETER_NAME» as «ih.typeRef(change)»<«
+						ih.typeRef(genericChangeTypeParameter)»>);
 				«ENDIF»
 				
 				return new «ih.typeRef(TransformationResult)»();
 			}
 			
-			private def performResponseTo(«ih.typeRef((response.trigger.event as ModelChangeEvent).change)»<«
-					getGenericTypeParameterOfChange(response.trigger.event as ModelChangeEvent, ih)»> change«
+			private def performResponseTo(«ih.typeRef(change)»<«
+					ih.typeRef(genericChangeTypeParameter)»> «CHANGE_PARAMETER_NAME»«
 				IF response.effects.affectedModel != null», «ih.typeRef(EClass)» affectedModel«ENDIF
 				»)«response.effects.toXtendCode»
 		}
@@ -237,76 +220,8 @@ class ResponseLanguageGenerator implements IGenerator {
 		return generateClass(responseFile.getSourceTargetPair(response).packageQualifiedName, ih, classImplementation);
 	}
 	
-	private def String getResponseName(Response response) '''
-		ResponseTo«response.trigger.event.responseNameForEvent»'''
-	
-	private def dispatch String getResponseNameForEvent(Event event) {
-		throw new UnsupportedOperationException("Response name fragment is not defined for this event type.")
+	private def toXtendCode(Effects effects) {
+		NodeModelUtils.getNode(effects.code.code).text
 	}
 	
-	private def dispatch String getResponseNameForEvent(ModelChangeEvent event) '''
-		«event.change.name»Of«event.feature.feature.name.toFirstUpper»In«event.feature.element.name.toFirstUpper»'''
-		
-	private def toXtendCode(Effects effects) {
-		NodeModelUtils.getNode(effects.code.code).text}
-	
-//	
-//	private def getClassName(Resource res) {
-//		var name = res.URI.lastSegment
-//		return name.substring(0, name.indexOf('.'))
-//	}
-
-//	private def getGeneratedClassName(String sourceClassName) {
-//		return sourceClassName + "Responses"
-//	}
-	
-//	private def generateDummyImportsClass(Resource resource, IFileSystemAccess fsa) {
-//		val file = (resource.contents.head as ResponseFile);
-//		val ih = new ImportHelper();
-//		
-//		val classImplementation = '''
-//		//import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-//		
-//		public class «resource.className.generatedClassName» {
-//			// Used metamodels
-//			«FOR imp : file.imports»
-//				// import «VURI.getInstance(imp.package.nsURI).toString»
-//				public final static String MM_«imp.name.toUpperCase» = "«imp.package.nsURI»";
-//			«ENDFOR»
-//			«FOR id : file.imports.map[name.toUpperCase]»
-//				public final static «ih.typeRef(VURI)» VURI_«id» = «ih.typeRef(VURI)».getInstance(MM_«id»);
-//			«ENDFOR»
-//						
-//		}
-//		'''
-//		
-//		fsa.generateFile(resource.className.generatedClassName + ".xtend", '''
-//		«ih.generateImportCode»
-//		
-//		«classImplementation»'''
-//		);
-//	}
-	
-//	private def generateDelegatorClass(Resource resource, IFileSystemAccess fsa) {
-//		val ih = new ImportHelper();
-//		val classImplementation = '''
-//		public class «resource.className.generatedClassName»Delegator implements «ih.typeRef(Change2CommandTransforming)» {
-//			public override void transformChanges2Commands(«ih.typeRef(Blackboard)» blackboard) {
-//				// Walk through changes and find fitting Responses from a HashMap or similar
-//			}
-//			
-//			public override «ih.typeRef(List)»<«ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)
-//				»>> getTransformableMetamodels() {
-//				// Hold a map that contains response model combinations
-//				return null;
-//			}
-//		}
-//		'''
-//		
-//		fsa.generateFile(resource.className.generatedClassName + "Delegator.xtend", '''
-//		«ih.generateImportCode»
-//		
-//		«classImplementation»'''
-//		);
-//	}
 }
