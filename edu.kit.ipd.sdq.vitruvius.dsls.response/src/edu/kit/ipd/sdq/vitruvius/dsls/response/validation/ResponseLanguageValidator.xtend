@@ -3,6 +3,13 @@
  */
 package edu.kit.ipd.sdq.vitruvius.dsls.response.validation
 
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.FeatureOfElement
+import org.eclipse.xtext.validation.Check
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChangeEvent
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceRootEObject
 
 /**
  * This class contains custom validation rules. 
@@ -10,16 +17,22 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.validation
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
-	
-//  public static val INVALID_NAME = 'invalidName'
-//
-//	@Check
-//	def checkGreetingStartsWithCapital(Greeting greeting) {
-//		if (!Character.isUpperCase(greeting.name.charAt(0))) {
-//			warning('Name should start with a capital', 
-//					ResponseLanguagePackage.Literals.GREETING__NAME,
-//					INVALID_NAME)
-//		}
-//	}
-	
+	@Check
+	def checkFeatureOfElement(FeatureOfElement foe) {
+		val modelChangeEvent = foe.eContainer as ModelChangeEvent;
+		if (CreateRootEObject.isAssignableFrom(modelChangeEvent.change.instanceClass)
+			|| DeleteRootEObject.isAssignableFrom(modelChangeEvent.change.instanceClass)
+			|| ReplaceRootEObject.isAssignableFrom(modelChangeEvent.change.instanceClass)) {
+			if (foe.feature != null) {		
+				error("No affected feature must be specified for the change of a root object.", 
+					ResponseLanguagePackage.Literals.FEATURE_OF_ELEMENT__FEATURE);
+			}
+		} else {
+			if (foe.feature == null) {
+				error("An affected feature must be specified for the change of a non-root object.", 
+					ResponseLanguagePackage.Literals.FEATURE_OF_ELEMENT__FEATURE			
+				);
+			}
+		}
+	}
 }

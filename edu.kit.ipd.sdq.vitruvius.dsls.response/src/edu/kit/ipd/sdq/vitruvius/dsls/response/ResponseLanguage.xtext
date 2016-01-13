@@ -57,5 +57,5 @@ Trigger:
 	event=Event;
 
 FeatureOfElement:
-	element=[ecore::EClass|QualifiedName] '[' feature=[ecore::EStructuralFeature|ValidID] ']';
+	element=[ecore::EClass|QualifiedName] ('[' feature=[ecore::EStructuralFeature|ValidID] ']')?;
 	
