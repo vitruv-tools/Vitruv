@@ -1,11 +1,11 @@
-package edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.tests;
+package edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.tests;
 
 import java.util.LinkedList;
 import java.util.Queue;
 
 import org.eclipse.emf.common.util.URI;
 
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRUserInteracting;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MIRUserInteracting;
 
 import static org.junit.Assert.*;
 

@@ -1,8 +1,8 @@
-package edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.tests
+package edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.tests
 
 import com.google.inject.Singleton
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMappingChange2CommandTransforming
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.AbstractMappingChange2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants
 import org.eclipse.core.runtime.CoreException
 import org.eclipse.core.runtime.IConfigurationElement
@@ -11,8 +11,8 @@ import org.junit.runner.notification.RunNotifier
 import org.junit.runners.BlockJUnit4ClassRunner
 import org.junit.runners.model.InitializationError
 
-import static edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
-import static edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util.MappingLanguageTestUtil.*
+import static edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
+import static edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.util.MappingLanguageTestUtil.*
 import org.junit.runners.model.FrameworkMethod
 import org.junit.runners.model.Statement
 import com.google.inject.Inject

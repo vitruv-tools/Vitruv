@@ -6,7 +6,7 @@ import java.util.Map
 import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import org.apache.log4j.Logger
-import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
 
 class TUIDUpdateHelper {
 	private static final Logger LOGGER = Logger.getLogger(TUIDUpdateHelper)

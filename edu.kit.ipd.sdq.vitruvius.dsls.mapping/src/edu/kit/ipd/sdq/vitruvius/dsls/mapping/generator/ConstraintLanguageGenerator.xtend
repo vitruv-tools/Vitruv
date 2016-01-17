@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator
 
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MIRMappingHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.ImportHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.AttributeEquivalenceExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintBooleanLiteral
@@ -17,7 +18,6 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NamedEClass
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRMappingHelper
 import java.util.ArrayList
 import java.util.List
 import java.util.Map
@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.EPackage
 
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.EMFHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
-import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.JavaHelper.*
 import static extension java.util.Objects.*
 
 class ConstraintLanguageGenerator {

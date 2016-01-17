@@ -2,11 +2,10 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers
 
 import java.util.Map
 import java.util.function.Function
-import org.eclipse.emf.ecore.EClass
 import org.eclipse.xtext.generator.IFileSystemAccess
 
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.StringHelper.*
-import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
 import org.eclipse.emf.ecore.EClassifier
 
 class JavaGeneratorHelper {

@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.tests
+package edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.tests
 
 import com.google.inject.Inject
 import edu.kit.ipd.sdq.vitruvius.casestudies.emf.changedescription2change.ChangeDescription2ChangeConverter
@@ -14,8 +14,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTr
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMappingChange2CommandTransforming
-import edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util.ClaimableSingletonContainer
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.AbstractMappingChange2CommandTransforming
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.util.ClaimableSingletonContainer
 import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl
@@ -36,9 +36,9 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.junit.runners.model.FrameworkMethod
 
-import static edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util.MappingLanguageTestUtil.*
+import static edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.util.MappingLanguageTestUtil.*
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMConstants
 import org.eclipse.core.runtime.Path
 

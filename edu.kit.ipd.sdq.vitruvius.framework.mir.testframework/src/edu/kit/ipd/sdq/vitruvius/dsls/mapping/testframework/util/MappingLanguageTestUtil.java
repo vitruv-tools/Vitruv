@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util;
+package edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.util;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,9 +16,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.AttributeTUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AttributeTUIDCalculatorAndResolver;
-import edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.tests.MappingLanguageTestEnvironment;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.tests.MappingLanguageTestEnvironment;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
 import static org.junit.Assert.*;

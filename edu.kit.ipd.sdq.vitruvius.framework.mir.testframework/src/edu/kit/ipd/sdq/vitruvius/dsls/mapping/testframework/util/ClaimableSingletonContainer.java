@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util;
+package edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.util;
 
 /**
  * Utility class which contains one element.

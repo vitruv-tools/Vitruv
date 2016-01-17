@@ -1,17 +1,17 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.mir.testframework;singleton:=true
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.tests,
- edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.util
+Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.tests,
+ edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- edu.kit.ipd.sdq.vitruvius.framework.mir.executor;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.dsls.mapping.api,
  edu.kit.ipd.sdq.vitruvius.framework.meta.change;bundle-version="1.0.0",
  org.junit,
  edu.kit.ipd.sdq.vitruvius.framework.metarepository;bundle-version="1.0.0",

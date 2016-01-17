@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.tests;
+package edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.tests;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

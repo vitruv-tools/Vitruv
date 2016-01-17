@@ -10,13 +10,12 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.EcoreHelper
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.MIRMappingHelper
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.impl.AbstractMappingChange2CommandTransforming
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRUserInteracting
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.JavaHelper
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MIRMappingHelper
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.AbstractMappingChange2CommandTransforming
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MIRMappingRealization
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MIRUserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple
@@ -35,9 +34,10 @@ import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtext.generator.IFileSystemAccess
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreBridge
 
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.*
-import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.JavaHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.ImportHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.TUIDUpdateHelper
@@ -329,7 +329,7 @@ class MappingLanguageGenerator {
 									() -> { return get().get«imp.toFirstUpperName»().getElements(); },
 									(obj) -> {
 										tuidUpdateHelper.addObjectToUpdate(Helper.mci, obj);
-										return «typeRef(VURI)».getInstance(«typeRef(fqnMapping)».INSTANCE.getUserInteracting().askForNewResource(«typeRef(EcoreHelper)».createSensibleString(obj)));
+										return «typeRef(VURI)».getInstance(«typeRef(fqnMapping)».INSTANCE.getUserInteracting().askForNewResource(«typeRef(EcoreBridge)».createSensibleString(obj)));
 									});
 								«ENDFOR»
 							}
@@ -647,7 +647,7 @@ class MappingLanguageGenerator {
 									() -> { return get«imp.toFirstUpperName»().getElements(); },
 									(obj) -> {
 										tuidUpdateHelper.addObjectToUpdate(Helper.mci, obj);
-										return «typeRef(VURI)».getInstance(«typeRef(mappingName)».INSTANCE.getUserInteracting().askForNewResource(«typeRef(EcoreHelper)».createSensibleString(obj)));
+										return «typeRef(VURI)».getInstance(«typeRef(mappingName)».INSTANCE.getUserInteracting().askForNewResource(«typeRef(EcoreBridge)».createSensibleString(obj)));
 									});
 							}
 							«ENDFOR»
