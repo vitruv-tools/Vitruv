@@ -15,14 +15,21 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -442,9 +449,148 @@ public final class EcoreBridge {
      * 
      * @param eObject
      * @return the root
+     * @author Dominik Werle
      */
     public static EObject getRootEObject(final EObject eObject) {
         return EcoreUtil.getRootContainer(eObject);
     }
+    
+    
+    /**
+     * Returns a string representation that contains the attributes
+     * <code>name</name>, <code>entityName</code>, <code>id</code>
+     * if any of them exists (in that order).
+     * @param eObject the object to create a string representation for
+     * @author Dominik Werle
+     */
+	public static String createSensibleString(EObject eObject) {
+		String className = eObject.eClass().getName();
 
+		String name = EcoreBridge.getStringValueOfAttribute(eObject, "name");
+		if (name == null)
+			name = EcoreBridge.getStringValueOfAttribute(eObject, "entityName");
+		if (name == null)
+			name = EcoreBridge.getStringValueOfAttribute(eObject, "id");
+		if (name == null)
+			return className;
+
+		return String.join(" ", className, name);
+	}
+
+	/**
+	 * Determines all objects that refer to <code>target</code> by the
+	 * reference <code>reference</code>
+	 * @param target the target of the references
+	 * @param reference the reference to search for
+	 * @return all (distinct) objects that refer to target by reference
+     * @author Dominik Werle
+	 */
+	public static Set<EObject> findOppositeForFeature(EObject target, EReference reference) {
+		Set<EObject> result = new HashSet<EObject>();
+
+		Resource resource = target.eResource();
+		TreeIterator<Object> iter = EcoreUtil.getAllProperContents(resource, true);
+		while (iter.hasNext()) {
+			Object obj = iter.next();
+			if (obj instanceof EObject) {
+				EObject eobj = (EObject) obj;
+
+				if (reference.getEContainingClass().isSuperTypeOf(eobj.eClass())) {
+					Object referencedObject = eobj.eGet(reference);
+					if ((referencedObject instanceof EList<?>) && (((EList<?>) referencedObject).contains(target))) {
+						result.add(eobj);
+					} else if (referencedObject.equals(target)) {
+						result.add(eobj);
+					}
+				}
+			}
+		}
+
+		return result;
+
+	}
+
+	/**
+	 * Determines all objects that refer to <code>target</code> by the
+	 * references <code>references</code>
+	 * @param target the target of the references
+	 * @param reference the reference to search for
+	 * @return all (distinct) objects that refer to target by references
+     * @author Dominik Werle
+	 */
+	public static Set<EObject> findOppositeForFeatures(EObject target, EReference... references) {
+		Set<EObject> currentLevel = new HashSet<EObject>();
+		currentLevel.add(target);
+		Set<EObject> nextLevel = new HashSet<EObject>();
+
+		for (EReference reference : references) {
+			nextLevel.clear();
+			for (EObject eObj : currentLevel)
+				nextLevel.addAll(findOppositeForFeature(eObj, reference));
+
+			// swap references
+			Set<EObject> swap = currentLevel;
+			currentLevel = nextLevel;
+			nextLevel = swap;
+		}
+
+		return currentLevel;
+	}
+
+	/**
+	 * Uses {@link #findOppositeForFeature(EObject, EReference)} to find
+	 * referencing objects of the given type. If more than one such object is
+	 * found, an exception is thrown.
+	 * @author Dominik Werle
+	 */
+	public static <T extends EObject> Optional<T> findOneReferencee(EObject target, EReference reference,
+			Class<T> type) {
+		final Set<T> oppositeEObjects = JavaHelper.filterType(findOppositeForFeature(target, reference), type)
+				.collect(Collectors.toSet());
+
+		// TODO is the restriction <= 1 needed?
+
+		if (oppositeEObjects.size() > 1) {
+			throw new IllegalArgumentException("There is more than one " + type.getName() + " referencing "
+					+ target.toString() + " by " + reference.toString());
+		}
+		return oppositeEObjects.stream().findAny();
+	}
+
+	/**
+	 * Copied from
+	 * {@link DefaultTUIDCalculatorAndResolver#getValueOfAttribute(EObject, String)}
+	 * . Tries to obtain the value of the feature named <code>featureName</code>
+	 * from the given {@link EObject}. If the feature is of type
+	 * <code>EString</code>, it is returned directly, if it is of type
+	 * <code>EInt</code>, it is converted to the integers string representation.
+	 * @author Dominik Werle
+	 */
+	// TODO: refactor into helper class that both
+	// DefaultTUIDCalculatorAndResolver and AttributeTUIDCalculatorAndResolver
+	// use.
+	public static String getStringValueOfAttribute(final EObject eObject, final String featureName) {
+		EStructuralFeature idFeature = eObject.eClass().getEStructuralFeature(featureName);
+		if (idFeature != null && idFeature instanceof EAttribute) {
+			EAttribute idAttribute = (EAttribute) idFeature;
+			EDataType eAttributeType = idAttribute.getEAttributeType();
+
+			if (eAttributeType.getInstanceClassName().equals(String.class.getName())) {
+				return (String) eObject.eGet(idFeature);
+			}
+
+			if (eAttributeType.getInstanceClassName().equals("int")) {
+				return String.valueOf(eObject.eGet(idFeature));
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Determines whether an {@link EObject} is the root object in its resource.
+	 * @author Dominik Werle
+	 */
+	public static boolean isRootInResource(EObject object) {
+		return ((object.eContainer() == null && object.eResource() != null) || object.eContainer().equals(object.eResource()));
+	}
 }
