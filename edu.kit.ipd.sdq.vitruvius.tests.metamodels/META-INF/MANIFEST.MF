@@ -21,7 +21,13 @@ Export-Package: uml_mockup,
  multicontainment_b.util,
  allElementTypes,
  allElementTypes.impl,
- allElementTypes.util
+ allElementTypes.util,
+ attribute_to_structure_attr,
+ attribute_to_structure_attr.impl,
+ attribute_to_structure_attr.util,
+ attribute_to_structure_struct_1,
+ attribute_to_structure_struct_1.impl,
+ attribute_to_structure_struct_1.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport
 Bundle-ActivationPolicy: lazy

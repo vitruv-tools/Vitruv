@@ -46,4 +46,20 @@
             genModel="metamodels/allElementTypes.genmodel"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated attributeToStructureAttr -->
+      <package
+            uri="http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.attribute_to_structure_attr"
+            class="attribute_to_structure_attr.Attribute_to_structure_attrPackage"
+            genModel="metamodels/attributeToStructureAttr.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated attributeToStructureStruct1 -->
+      <package
+            uri="http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.attribute_to_structure_struct_1"
+            class="attribute_to_structure_struct_1.Attribute_to_structure_struct_1Package"
+            genModel="metamodels/attributeToStructureStruct1.genmodel"/>
+   </extension>
+
 </plugin>
