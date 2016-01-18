@@ -15,7 +15,7 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.generator.IFileSystemAccess
 
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.*
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.JavaHelper.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
 import java.util.Set
 import org.eclipse.emf.ecore.EDataType
 

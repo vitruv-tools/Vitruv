@@ -1,22 +1,28 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator
 
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.AbstractMappingChange2CommandTransforming
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MIRMappingHelper
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MIRMappingRealization
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MIRUserInteracting
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.ImportHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingPluginProjectHelper
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.TUIDUpdateHelper
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.TemplateGenerator
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Import
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.EclipseProjectHelper
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.PreProcessingFileSystemAccess
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.JavaHelper
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MIRMappingHelper
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.AbstractMappingChange2CommandTransforming
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MIRMappingRealization
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MIRUserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple
 import java.util.ArrayList
@@ -34,15 +40,11 @@ import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtext.generator.IFileSystemAccess
-import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreBridge
 
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.*
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.JavaHelper.*
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.ImportHelper
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.TUIDUpdateHelper
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import static edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
+import static edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.TemplateGenerator.*
+
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
 
 class MappingLanguageGenerator {
 	def doGenerate(Resource input) {
@@ -86,12 +88,15 @@ class MappingLanguageGenerator {
 		private extension MappingLanguageGeneratorState state
 		
 		private final String pkgName;
+	
+		private final extension TemplateGenerator templateGenerator
 
 		new(MappingFile file, IFileSystemAccess fsa) {
 			this.file = file
 			this.pkgName = file.pluginName + ".generated"
 			this.fsa = PreProcessingFileSystemAccess.createJavaFormattingFSA(fsa)
 			this.nameProvider = new MappingLanguageGeneratorNameProvider(pkgName)
+			this.templateGenerator = new TemplateGenerator(this.fsa)
 		}
 		
 		public def getPkgNames() {
@@ -105,7 +110,7 @@ class MappingLanguageGenerator {
 		public def generate() {
 			// FIXME DW there are some dependencies on a valid file here that should be
 			// checked before generating.
-			// sort so dependencies are resolved before they are used			
+			// sort so dependencies are resolved before they are used
 			this.emfGeneratorHelper = new EMFGeneratorHelper(constantsClassName)
 			this.clg = new ConstraintLanguageGenerator(emfGeneratorHelper)
 
@@ -115,9 +120,13 @@ class MappingLanguageGenerator {
 				generateMapping(mapping)
 			}
 
-			generateChange2CommandTransforming
-			generateTestClass
+			generateChange2CommandTransforming;
+			generateTestClass;
 			
+			// EXTENSION 1: default containments
+			(new DefaultContainmentGenerator(state, templateGenerator)).generate
+			
+			templateGenerator.generateAllTemplates			
 			emfGeneratorHelper.generateCode(fsa)
 		}
 
@@ -202,7 +211,7 @@ class MappingLanguageGenerator {
 			val fqn = mapping.getMappingClassName
 			val className = fqn.toSimpleName
 			
-			fsa.generateJavaFile(fqn, [ extension ih |
+			addTemplateJavaFile(fqn, [ extension ih, templates |
 				'''
 					import «change2CommandTransformingClassName».MappingPackage;
 
@@ -247,7 +256,7 @@ class MappingLanguageGenerator {
 			val classNameMC = fqnMC.toSimpleName
 			
 			// generate mapped correspondence
-			fsa.generateJavaFile(fqnMC, [ extension ih |
+			addTemplateJavaFile(fqnMC, [ extension ih, templates |
 				'''
 					public class «classNameMC» {
 						private static «typeRef(TUIDUpdateHelper)» tuidUpdateHelper = new «typeRef(TUIDUpdateHelper)»();
@@ -316,6 +325,8 @@ class MappingLanguageGenerator {
 							}
 							
 							private static void checkAllContainments(«typeRef(TransformationResult)» result) {
+								«expandTemplate(ih, mapping, "mc.checkContainment")»
+								
 								«FOR imp : getImports(mapping) AFTER "\n"»
 									«FOR defaultContainExpression : getDefaultContainments(mapping, imp)»
 									«FOR updateTUIDJava : clg.getEObjectsWithPossiblyChangedTUID(ih, #{'this' -> 'get()'}, defaultContainExpression)»
@@ -380,7 +391,7 @@ class MappingLanguageGenerator {
 			val fqn = getWrapperClassName(parent, imp)
 			val className = fqn.toSimpleName
 			
-			fsa.generateJavaFile(fqn, [
+			addTemplateJavaFile(fqn, [ extension ih, templates | 
 				var elementIndex = 0;
 				'''
 					public class «className» {
@@ -474,7 +485,7 @@ class MappingLanguageGenerator {
 			val pairs = #[new Pair(0, 1), new Pair(1, 0)]
 			val importPairs = pairs.map[new Pair(imports.get(first), imports.get(second))]
 						
-			fsa.generateJavaFile(fqn, [ extension ih |
+			addTemplateJavaFile(fqn, [ extension ih, templates |
 				val classSignatureWithoutRequires = 
 					zip(wrapperClasses, wrapperFields)
 					+ #[new Pair(typeRef(Correspondence), "correspondence"), new Pair("State", "state")]
@@ -635,6 +646,8 @@ class MappingLanguageGenerator {
 						}
 						
 						private void checkAllContainments(«typeRef(TransformationResult)» result) {
+							«expandTemplate(ih, mapping, "mc.checkContainment")»
+							
 							«FOR imp : getImports(mapping)»
 							if (stateHas«imp.toFirstUpperName»()) {
 								«FOR defaultContainExpression : getDefaultContainments(mapping, imp) AFTER "\n"»
@@ -934,7 +947,7 @@ class MappingLanguageGenerator {
 			val fqn = getTestClassName
 			val className = fqn.toSimpleName
 			
-			fsa.generateJavaFile(fqn, [
+			addTemplateJavaFile(fqn, [ extension ih, templates |
 				// TODO DW resolve cycle and reference by type
 				'''
 					public class «className» extends «typeRef("edu.kit.ipd.sdq.vitruvius.framework.mir.testframework.tests.AbstractMappingTestBase")» {
@@ -966,7 +979,7 @@ class MappingLanguageGenerator {
 			val fqn = getChange2CommandTransformingClassName
 			val className = fqn.toSimpleName
 			
-			fsa.generateJavaFile(fqn, [
+			addTemplateJavaFile(fqn, [ extension ih, templates |
 				'''
 					public class «className» extends «typeRef(AbstractMappingChange2CommandTransforming)» {
 							«FOR id : imports»

@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.EPackage
 
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.EMFHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.JavaHelper.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
 import static extension java.util.Objects.*
 
 class ConstraintLanguageGenerator {

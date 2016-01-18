@@ -2,17 +2,19 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers
 
 import java.util.Map
 import java.util.function.Function
+import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.xtext.generator.IFileSystemAccess
 
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.StringHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
-import org.eclipse.emf.ecore.EClassifier
 
 class JavaGeneratorHelper {
-	public static def void generateJavaFile(IFileSystemAccess fsa, CharSequence fqn, Function<ImportHelper, CharSequence> generatorFunction) {
-		fsa.generateFile(fqn.toString.classNameToJavaPath, JavaGeneratorHelper.generate(fqn.toString.classNameToPackageName, generatorFunction))
+	public static def void generateJavaFile(IFileSystemAccess fsa, CharSequence fqn,
+		Function<ImportHelper, CharSequence> generatorFunction) {
+		fsa.generateFile(fqn.toString.classNameToJavaPath,
+			JavaGeneratorHelper.generate(fqn.toString.classNameToPackageName, generatorFunction))
 	}
-	
+
 	public static def CharSequence generate(String packageName,
 		Function<ImportHelper, CharSequence> generatorFunction) {
 		(new JavaGeneratorHelper(packageName, generatorFunction)).generate
@@ -32,7 +34,7 @@ class JavaGeneratorHelper {
 
 		'''
 			«IF packageName != null»
-			package «packageName»;
+				package «packageName»;
 			«ENDIF»
 			
 			«importHelper.generateImportCode»
@@ -62,7 +64,7 @@ class JavaGeneratorHelper {
 			val fullyQualifiedJVMNameString = fullyQualifiedJVMName.toString
 			if (fullyQualifiedJVMNameString.isSimpleName)
 				return fullyQualifiedJVMNameString
-				
+
 			val simpleName = fullyQualifiedJVMNameString.lastFragmentOrComplete(".")
 
 			if (!imports.containsKey(simpleName)) {
@@ -70,7 +72,7 @@ class JavaGeneratorHelper {
 			} else if (!imports.get(simpleName).equals(fullyQualifiedJVMNameString)) {
 				return fullyQualifiedJVMNameString
 			}
-				
+
 			return simpleName
 		}
 	}
