@@ -13,6 +13,7 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.vitruvius.framework.meta.change,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.dsls.mapping.util,
- org.eclipse.emf.common
+ org.eclipse.emf.common,
+ org.eclipse.emf.transaction
 Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.mapping.api,
  edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces

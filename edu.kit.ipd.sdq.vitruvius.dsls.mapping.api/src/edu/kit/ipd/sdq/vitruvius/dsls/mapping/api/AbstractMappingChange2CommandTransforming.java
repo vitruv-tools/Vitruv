@@ -15,6 +15,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusTransformationRecordingCommand;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.datatypes.ChangeType;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MIRMappingRealization;
@@ -72,8 +73,9 @@ public abstract class AbstractMappingChange2CommandTransforming implements Chang
 		LOGGER.debug("call relevant mappings");
 		for (final MIRMappingRealization mapping : relevantMappings) {
 			LOGGER.debug(mapping.getMappingID() + " (" + mapping.toString() + ")");
-			result.add(EMFCommandBridge
-					.createVitruviusTransformationRecordingCommand(() -> mapping.applyEChange(eChange, blackboard)));
+			final Command command = EMFCommandBridge
+					.createVitruviusTransformationRecordingCommand(() -> mapping.applyEChange(eChange, blackboard));
+			result.add(command);
 		}
 		return result;
 	}
