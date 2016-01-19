@@ -19,14 +19,13 @@ NamespaceImport:
 	 'belongs to' metamodel=[MetamodelImport];
 
 Response:
-	'Response to' trigger=Trigger effects=Effects;
+	'response to' trigger=Trigger effects=Effects;
 	
 Effects:
-	('affects' affectedModel=AffectedModel)? codeBlock=CodeBlock;
+	('affects' affectedModel=AffectedModel)? ('when' perModelPrecondition=CompareBlock)? 'executes' codeBlock=CodeBlock;
 
-// TODO this is a dummy by now
 AffectedModel:
-	model=[ecore::EClass|QualifiedName] ('when' compareBlock=CompareBlock)?;
+	model=[ecore::EClass|QualifiedName];
 
 CompareBlock:
 	code=XBlockExpression;

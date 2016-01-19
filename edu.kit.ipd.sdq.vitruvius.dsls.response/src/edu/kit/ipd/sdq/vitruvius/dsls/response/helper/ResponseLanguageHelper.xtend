@@ -18,9 +18,9 @@ final class ResponseLanguageHelper {
 	}
 	
 	public static def Response getContainingResponse(CompareBlock compareBlock) {
-		val affectedModel = compareBlock.eContainer();
-		if (affectedModel instanceof AffectedModel) {
-			return getContainingResponse(affectedModel);
+		val effects = compareBlock.eContainer();
+		if (effects instanceof Effects) {
+			return getContainingResponse(effects);
 		}
 		return null;
 	}

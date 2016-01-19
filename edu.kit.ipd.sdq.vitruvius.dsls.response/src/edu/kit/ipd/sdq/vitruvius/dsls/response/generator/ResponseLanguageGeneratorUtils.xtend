@@ -7,6 +7,9 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChangeEvent
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.XtendImportHelper
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CompareBlock
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 
 final class ResponseLanguageGeneratorUtils {
 	private static val FSA_SEPARATOR = "/";
@@ -101,5 +104,12 @@ final class ResponseLanguageGeneratorUtils {
 	static def dispatch String getResponseNameForEvent(ModelChangeEvent event) '''
 		«event.change.name»Of«IF event.feature.feature != null»«event.feature.feature.name.toFirstUpper»In«ENDIF»«
 			event.feature.element.name.toFirstUpper»'''
-		
+	
+	static def getXtendCode(CompareBlock compareBlock) {
+		NodeModelUtils.getNode(compareBlock.code).text
+	}
+	
+	static def getXtendCode(CodeBlock codeBlock) {
+		NodeModelUtils.getNode(codeBlock.code).text
+	}
 }

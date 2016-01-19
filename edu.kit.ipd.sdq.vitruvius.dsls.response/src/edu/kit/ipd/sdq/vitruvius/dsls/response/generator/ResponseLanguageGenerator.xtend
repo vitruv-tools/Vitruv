@@ -4,19 +4,10 @@ import org.eclipse.xtext.generator.IGenerator
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.ArrayList
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChangeEvent
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
-import org.apache.log4j.Logger
-import org.apache.log4j.Level
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange
 import java.util.Map
 import java.util.HashMap
 import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.AbstractResponseExecutor
@@ -28,11 +19,8 @@ import java.util.Set
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.AbstractResponseChange2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.AbstractResponseChange2CommandTransformingProviding
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
-import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorConstants.*;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.ResponseRuntimeHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.XtendImportHelper
+import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.singleResponse.SingleResponseGeneratorFactory
 
 class ResponseLanguageGenerator implements IGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
@@ -134,103 +122,12 @@ class ResponseLanguageGenerator implements IGenerator {
 				modelCorrespondenceToResponseNameMap.put(sourceTargetPair, new ArrayList<String>());
 			}
 			modelCorrespondenceToResponseNameMap.get(sourceTargetPair).add(responseName);
-			fsa.generateFile(sourceTargetPair.getResponseFilePath(responseName), generateResponse(file, response, responseName));
+			val responseGenerator = SingleResponseGeneratorFactory.INSTANCE.createGenerator(response);
+			fsa.generateFile(sourceTargetPair.getResponseFilePath(responseName), 
+				responseGenerator.generateResponse(file.getSourceTargetPair(response).packageQualifiedName, responseName)
+			);
 		}	
 		return modelCorrespondenceToResponseNameMap;
-	}
-				
-	private def generateResponse(ResponseFile responseFile, Response response, String className) {
-		var ih = new XtendImportHelper();
-		val change = (response.trigger as ModelChangeEvent).change
-		val affectedModel = response.effects.affectedModel;
-		val genericChangeTypeParameter = (response.trigger as ModelChangeEvent).genericTypeParameterFQNOfChange;
-		val classImplementation = '''
-		public class «className» implements «ih.typeRef(ResponseRealization)» {
-			private static val «ih.typeRef(Logger)» LOGGER = {
-				val initializedLogger = «ih.typeRef(Logger)».getLogger(«className»);
-				initializedLogger.setLevel(«ih.typeRef(Level)».DEBUG);
-				return initializedLogger;
-			}
-		
-			public static def Class<? extends EChange> getTrigger() {
-				«IF response.trigger instanceof ModelChangeEvent»
-				return «ih.typeRef(change)»;
-				«ELSE»
-				return null;
-				«ENDIF»
-			}
-		
-			private def checkPrecondition(«ih.typeRef(EChange)» «CHANGE_PARAMETER_NAME») { 
-				«IF response.trigger instanceof ModelChangeEvent»
-				if («CHANGE_PARAMETER_NAME» instanceof «ih.typeRef(change)»«
-					//ih.typeRef((response.trigger.event as ModelChangeEvent).feature.element.EStructuralFeatures.filter(ft | ft.name = (response.trigger.event as ModelChangeEvent).feature.feature
-					//ih.typeRef((response.trigger.event as ModelChangeEvent).feature.feature.EType)
-					»«IF !change.instanceClass.equals(EChange)»«
-					»<?>«ENDIF») {
-					«IF EFeatureChange.isAssignableFrom(change.instanceClass)»
-					val feature = («CHANGE_PARAMETER_NAME» as «ih.typeRef(EFeatureChange)»<?>).affectedFeature;
-					«val modelChangeEvent = (response.trigger as ModelChangeEvent)»
-					if (feature.name.equals("«modelChangeEvent.feature.feature.name»")
-						&& «CHANGE_PARAMETER_NAME».oldAffectedEObject instanceof «ih.typeRef(modelChangeEvent.feature.element)») {
-						return true;
-					}
-					«ENDIF»
-				}
-				«ENDIF»
-				return false;
-			}
-		
-			«IF affectedModel != null»
-			private def «ih.typeRef(List)»<«ih.typeRef(affectedModel.model)»> determineAffectedModels(«
-				»EChange «CHANGE_PARAMETER_NAME», Blackboard blackboard) {
-				val affectedModels = new «ih.typeRef(ArrayList)»<«ih.typeRef(affectedModel.model)»>();
-				«IF EFeatureChange.isAssignableFrom(change.instanceClass)»
-				val changedObject = («CHANGE_PARAMETER_NAME» as «ih.typeRef(EFeatureChange)»<?>).oldAffectedEObject;
-				val root = changedObject.«ih.callExtensionMethod(ResponseRuntimeHelper, "modelRoot")»; 
-				affectedModels += blackboard.correspondenceInstance.«ih.callExtensionMethod(ResponseRuntimeHelper,
-					'''getCorrespondingObjectsOfType(root, «ih.typeRef(affectedModel.model)»)''')»;
-				«ENDIF»
-				return affectedModels;
-			}
-			
-			«ENDIF»
-			public override «RESPONSE_APPLY_METHOD_NAME»(«ih.typeRef(EChange)» «CHANGE_PARAMETER_NAME», «
-				ih.typeRef(Blackboard)» blackboard) {
-				LOGGER.debug("Called response " + this.class.name + " with event " + «CHANGE_PARAMETER_NAME»);
-				
-				// Check if the event matches the trigger of the response
-				if (!checkPrecondition(«CHANGE_PARAMETER_NAME»)) {
-					return new «ih.typeRef(TransformationResult)»();
-				}
-				LOGGER.debug("Passed precondition check of response " + this.class.name);
-				
-				«IF response.effects.affectedModel != null»
-				val affectedModels = determineAffectedModels(change, blackboard);
-				affectedModels.forEach[affectedModel | 
-					LOGGER.debug("Execute response " + this.class.name + " for model " + affectedModel);
-					performResponseTo(«CHANGE_PARAMETER_NAME» as «ih.typeRef(change)»<«
-						ih.typeRef(genericChangeTypeParameter)»>, affectedModel)];
-				«ELSE»
-					LOGGER.debug("Execute response " + this.class.name + " with no affected model");
-					performResponseTo(«CHANGE_PARAMETER_NAME» as «ih.typeRef(change)»<«
-						ih.typeRef(genericChangeTypeParameter)»>);
-				«ENDIF»
-				
-				return new «ih.typeRef(TransformationResult)»();
-			}
-			
-			private def performResponseTo(«ih.typeRef(change)»<«
-					ih.typeRef(genericChangeTypeParameter)»> «CHANGE_PARAMETER_NAME»«
-				IF response.effects.affectedModel != null», «ih.typeRef(affectedModel.model)» affectedModel«ENDIF
-				»)«response.effects.toXtendCode»
-		}
-		'''
-		
-		return generateClass(responseFile.getSourceTargetPair(response).packageQualifiedName, ih, classImplementation);
-	}
-	
-	private def toXtendCode(Effects effects) {
-		NodeModelUtils.getNode(effects.codeBlock.code).text
 	}
 	
 }

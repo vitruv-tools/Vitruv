@@ -21,6 +21,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseL
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CompareBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AffectedModel
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -103,7 +104,8 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 		if (event instanceof ModelChangeEvent) {
 			change = event.change;
 		}
-		val affectedModel = compareBlock.eContainer() as AffectedModel;
+		val affectedModel = response.effects.affectedModel;
+		
 
 		val methodParameters = <JvmFormalParameter>newArrayList();
 		val changeTypeParameters = new ArrayList<String>();
