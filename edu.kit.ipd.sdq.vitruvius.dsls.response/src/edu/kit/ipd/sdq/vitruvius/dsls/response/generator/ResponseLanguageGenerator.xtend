@@ -3,12 +3,10 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.generator
 import org.eclipse.xtext.generator.IGenerator
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
-import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.JavaGeneratorHelper.ImportHelper
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
-import org.eclipse.emf.ecore.EClass
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
@@ -33,6 +31,8 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.AbstractResponseChange2C
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
 import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorConstants.*;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
+import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.ResponseRuntimeHelper
+import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.XtendImportHelper
 
 class ResponseLanguageGenerator implements IGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
@@ -42,7 +42,7 @@ class ResponseLanguageGenerator implements IGenerator {
 	}
 	
 	private def void generateChange2CommandTransformingProviding(Set<Pair<VURI, VURI>> modelCorrespondences, IFileSystemAccess fsa) {
-		val ih = new ImportHelper();	
+		val ih = new XtendImportHelper();	
 
 		val classImplementation = '''
 		public class «change2CommandTransformingProvidingName» extends «ih.typeRef(AbstractResponseChange2CommandTransformingProviding)» {
@@ -71,7 +71,7 @@ class ResponseLanguageGenerator implements IGenerator {
 	}
 		
 	private def generateChangeToCommandTransforming(Pair<VURI, VURI> modelPair) {
-		val ih = new ImportHelper();	
+		val ih = new XtendImportHelper();	
 
 		// TODO HK replace DefaultEObjectMappingTransforming with correct one
 		val classImplementation = '''
@@ -111,7 +111,7 @@ class ResponseLanguageGenerator implements IGenerator {
 	}
 	
 	private def generateExecutor(Pair<VURI, VURI> modelPair, List<String> responseNames) {
-		val ih = new ImportHelper();	
+		val ih = new XtendImportHelper();	
 		val classImplementation = '''
 		public class «modelPair.executorName» extends «ih.typeRef(AbstractResponseExecutor)» {
 			protected override setup() {
@@ -140,7 +140,7 @@ class ResponseLanguageGenerator implements IGenerator {
 	}
 				
 	private def generateResponse(ResponseFile responseFile, Response response, String className) {
-		var ih = new ImportHelper();
+		var ih = new XtendImportHelper();
 		val change = (response.trigger as ModelChangeEvent).change
 		val affectedModel = response.effects.affectedModel;
 		val genericChangeTypeParameter = (response.trigger as ModelChangeEvent).genericTypeParameterFQNOfChange;
@@ -185,19 +185,10 @@ class ResponseLanguageGenerator implements IGenerator {
 				»EChange «CHANGE_PARAMETER_NAME», Blackboard blackboard) {
 				val affectedModels = new «ih.typeRef(ArrayList)»<«ih.typeRef(affectedModel.model)»>();
 				«IF EFeatureChange.isAssignableFrom(change.instanceClass)»
-				var changedObjectRoot = («CHANGE_PARAMETER_NAME» as «ih.typeRef(EFeatureChange)»<?>).oldAffectedEObject;
-				while (changedObjectRoot.eContainer() != null) {
-					changedObjectRoot = changedObjectRoot.eContainer();
-				}
-				val root = changedObjectRoot;
-				val correspondences = blackboard.correspondenceInstance.getCorrespondences(#[root])
-				affectedModels += correspondences.map[correspondence |
-					if (correspondence.^as.contains(root)) {
-						return correspondence.^bs;
-					} else {
-						return correspondence.^as;
-					}
-				].flatten.filter(«ih.typeRef(affectedModel.model)»);
+				val changedObject = («CHANGE_PARAMETER_NAME» as «ih.typeRef(EFeatureChange)»<?>).oldAffectedEObject;
+				val root = changedObject.«ih.callExtensionMethod(ResponseRuntimeHelper, "modelRoot")»; 
+				affectedModels += blackboard.correspondenceInstance.«ih.callExtensionMethod(ResponseRuntimeHelper,
+					'''getCorrespondingObjectsOfType(root, «ih.typeRef(affectedModel.model)»)''')»;
 				«ENDIF»
 				return affectedModels;
 			}

@@ -2,11 +2,11 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.generator
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
-import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.JavaGeneratorHelper.ImportHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChangeEvent
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
+import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.XtendImportHelper
 
 final class ResponseLanguageGeneratorUtils {
 	private static val FSA_SEPARATOR = "/";
@@ -63,7 +63,7 @@ final class ResponseLanguageGeneratorUtils {
 	static def String getResponseFilePath(Pair<VURI, VURI> modelPair, String responseName) '''
 		«modelPair.getResponseQualifiedName(responseName).filePath»'''
 	
-	static def generateClass(String packageName, ImportHelper importHelper, CharSequence classImplementation) '''
+	static def generateClass(String packageName, XtendImportHelper importHelper, CharSequence classImplementation) '''
 		package «packageName»;
 		
 		«importHelper.generateImportCode»
