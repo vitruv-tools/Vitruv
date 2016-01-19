@@ -82,6 +82,7 @@ class SingleChangeResponseGenerator {
 				IF !change.instanceClass.equals(EChange)»<?>«ENDIF») {
 				«IF EFeatureChange.isAssignableFrom(change.instanceClass)»
 				val feature = («CHANGE_PARAMETER_NAME» as «ih.typeRef(EFeatureChange)»<?>).affectedFeature;
+				«/* TODO HK We could compare something more safe like <MM>PackageImpl.eINSTANCE.<ELEMENT>_<FEATURE>.*/»
 				if (feature.name.equals("«changeEvent.feature.feature.name»")
 					&& «CHANGE_PARAMETER_NAME».oldAffectedEObject instanceof «ih.typeRef(changeEvent.feature.element)») {
 					return true;

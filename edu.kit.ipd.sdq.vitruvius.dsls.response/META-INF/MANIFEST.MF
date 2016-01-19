@@ -18,7 +18,6 @@ Require-Bundle: org.eclipse.xtext,
  org.eclipse.emf.common,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
- edu.kit.ipd.sdq.vitruvius.framework.mir.executor,
  edu.kit.ipd.sdq.vitruvius.framework.meta.change;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter,
  edu.kit.ipd.sdq.vitruvius.framework.run.userinteractor
@@ -34,5 +33,6 @@ Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage,
  edu.kit.ipd.sdq.vitruvius.dsls.response.serializer,
  edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.util,
  edu.kit.ipd.sdq.vitruvius.dsls.response.services,
- edu.kit.ipd.sdq.vitruvius.dsls.response.parser.antlr.internal
+ edu.kit.ipd.sdq.vitruvius.dsls.response.parser.antlr.internal,
+ edu.kit.ipd.sdq.vitruvius.dsls.response.scoping
 Import-Package: org.apache.log4j

@@ -25,7 +25,8 @@ final class ResponseLanguageGeneratorUtils {
 		«RESPONSES_PACKAGE»'''
 	
 	static def String getMetamodelPairName(Pair<VURI, VURI> modelPair) '''
-		«modelPair.first.fileExtension»To«modelPair.second.fileExtension»'''
+		«IF modelPair.first.lastSegment.nullOrEmpty»«modelPair.first.EMFUri.toString.split("\\.").last.toFirstUpper»«ELSE»«modelPair.first.lastSegment.toFirstUpper»«ENDIF»To«
+		IF modelPair.second.lastSegment.nullOrEmpty»«modelPair.second.EMFUri.toString.split("\\.").last.toFirstUpper»«ELSE»«modelPair.second.lastSegment.toFirstUpper»«ENDIF»'''
 	
 	static def String getPackageName(Pair<VURI, VURI> modelPair) '''
 		responses«modelPair.metamodelPairName»'''
@@ -77,16 +78,18 @@ final class ResponseLanguageGeneratorUtils {
 	static def Pair<VURI, VURI> getSourceTargetPair(ResponseFile responseFile, Response response) {
 		val event = response.trigger;
 		if (event instanceof ModelChangeEvent) {
-			val pack = event.feature.element.EPackage;
-			if (pack == null) {
+			val sourcePackage = event.feature.element.EPackage;
+			if (sourcePackage == null) {
 				return null;
 			} 
-			val uri = responseFile.namespaceImports.findFirst[imp | imp.package == pack].metamodel.package.nsURI
-			val source = VURI.getInstance(uri);
-			val target= VURI.getInstance(uri);
+			val sourceUri = responseFile.namespaceImports.findFirst[imp | imp.package == sourcePackage].metamodel.package.nsURI
+			val source = VURI.getInstance(sourceUri);
+			var target = VURI.getInstance(sourceUri);
 			val affectedModel = response.effects.affectedModel;
-			if (affectedModel!= null) {
-				// TODO HK correctly implement target calculation 
+			if (affectedModel != null) {
+				val targetPackage = affectedModel.model.EPackage
+				val targetUri = responseFile.namespaceImports.findFirst[imp | imp.package == targetPackage].metamodel.package.nsURI
+				target = VURI.getInstance(targetUri);
 			}
 			val sourceTargetPair = new Pair<VURI, VURI>(source, target);
 			return sourceTargetPair

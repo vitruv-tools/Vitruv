@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.helper
 import java.util.Map
 import org.eclipse.emf.ecore.EClassifier
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.StringHelper.*
-import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.JavaHelper.*
 
 class XtendImportHelper {
 	private val Map<String, String> imports = newHashMap
