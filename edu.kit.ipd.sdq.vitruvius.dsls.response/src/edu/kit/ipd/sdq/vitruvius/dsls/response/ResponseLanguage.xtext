@@ -29,7 +29,7 @@ CodeBlock:
 	code=XBlockExpression;
 	
 ModelChangeEvent:
-	change=[ecore::EClass|QualifiedName]
+	"old change" change=[ecore::EClass|QualifiedName]
 	'of' feature=FeatureOfElement;
 
 // TODO dummy for the invariant violation
@@ -37,7 +37,10 @@ InvariantViolationEvent:
 	"invariant" violation=[ecore::EClass|QualifiedName];
 
 Trigger:
-	ModelChangeEvent | InvariantViolationEvent;
+	ModelChangeEvent | InvariantViolationEvent | ChangeEvent;
+
+ChangeEvent:
+	change=[ecore::EClass|QualifiedName] 'of' feature=FeatureOfElement;
 
 FeatureOfElement:
 	element=[ecore::EClass|QualifiedName] ('[' feature=[ecore::EStructuralFeature|ValidID] ']')?;

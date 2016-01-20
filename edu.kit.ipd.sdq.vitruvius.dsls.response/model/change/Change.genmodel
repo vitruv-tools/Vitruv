@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
+    modelDirectory="/edu.kit.ipd.sdq.vitruvius.dsls.response/src-gen"
+    modelPluginID="edu.kit.ipd.sdq.vitruvius.dsls.response" modelName="Change" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
+    interfaceNamePattern="" operationReflection="true" importOrganizing="true">
+  <foreignModel>Change.ecore</foreignModel>
+  <genPackages prefix="Change" basePackage="edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage"
+      disposableProviderFactory="true" ecorePackage="Change.ecore#/">
+    <genClasses ecoreClass="Change.ecore#//Create"/>
+    <genClasses image="false" ecoreClass="Change.ecore#//Change"/>
+    <genClasses ecoreClass="Change.ecore#//Delete"/>
+    <genClasses ecoreClass="Change.ecore#//Update"/>
+  </genPackages>
+</genmodel:GenModel>

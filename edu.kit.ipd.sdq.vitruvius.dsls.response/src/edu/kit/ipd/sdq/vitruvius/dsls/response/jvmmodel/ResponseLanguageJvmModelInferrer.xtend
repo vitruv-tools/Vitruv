@@ -4,24 +4,27 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel
 
 import com.google.inject.Inject
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ChangeEvent
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CompareBlock
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChangeEvent
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
+import java.util.ArrayList
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtext.common.types.JvmFormalParameter
+import org.eclipse.xtext.common.types.JvmGenericType
+import org.eclipse.xtext.common.types.JvmTypeReference
+import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
-import org.eclipse.xtext.common.types.JvmGenericType
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.xtext.common.types.JvmVisibility
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChangeEvent
-import org.eclipse.emf.ecore.EClass
-import org.eclipse.xtext.common.types.JvmFormalParameter
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
-import org.eclipse.xtext.common.types.JvmTypeReference
-import java.util.ArrayList
-import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorConstants.*;
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CompareBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AffectedModel
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
+
+import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorConstants.*
+
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.FeatureOfElement
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -65,25 +68,7 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 			return;
 		}
 		val response = codeBlock.containingResponse;
-		val event = response?.trigger;
-		var EClass change;
-		if (event instanceof ModelChangeEvent) {
-			change = event.change;
-		}
-		
-		val methodParameters = <JvmFormalParameter>newArrayList();
-		val changeTypeParameters = new ArrayList<String>();
-		if (change?.name != null) {
-			if (event instanceof ModelChangeEvent) {
-				changeTypeParameters += getGenericTypeParameterFQNOfChange(event)
-			}
-			methodParameters += codeBlock.generateChangeParameter(change.instanceTypeName, changeTypeParameters);
-		}
-
-		val affectedModel = response.effects.affectedModel;
-		if (affectedModel != null) {
-			methodParameters += codeBlock.generateAffectedModelParameter(affectedModel.model.instanceTypeName);
-		}
+		val methodParameters = createResponseParameters(response, codeBlock)
 		
 		acceptor.accept(response.toClass("Response")) [
 			members += codeBlock.toMethod(RESPONSE_APPLY_METHOD_NAME, typeRef(Void.TYPE)) [applyMethod |
@@ -91,40 +76,50 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 				applyMethod.body = codeBlock.code]
 			it.makeClassStatic(response)
 		]
-		
 	}
-	
+		
 	def dispatch void infer(CompareBlock compareBlock, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		if (isPreIndexingPhase) {
 			return;
 		}
 		val response = compareBlock.containingResponse;
-		val event = response?.trigger;
-		var EClass change;
-		if (event instanceof ModelChangeEvent) {
-			change = event.change;
-		}
-		val affectedModel = response.effects.affectedModel;
+		val methodParameters = createResponseParameters(response, compareBlock)
 		
-
-		val methodParameters = <JvmFormalParameter>newArrayList();
-		val changeTypeParameters = new ArrayList<String>();
-		if (change?.name != null) {
-			if (event instanceof ModelChangeEvent) {
-				changeTypeParameters += getGenericTypeParameterFQNOfChange(event)
-			}
-			methodParameters += compareBlock.generateChangeParameter(change.instanceTypeName, changeTypeParameters);
-			methodParameters += compareBlock.generateAffectedModelParameter(affectedModel.model.instanceTypeName);
-		}
-
 		acceptor.accept(response.toClass("Response")) [
 			members += compareBlock.toMethod("determineAffectedModel", typeRef(Boolean.TYPE)) [applyMethod |
 				applyMethod.parameters += methodParameters
 				applyMethod.body = compareBlock.code]
 			it.makeClassStatic(response)
 		]
-		
 	}
+	
+	private def createResponseParameters(Response response, EObject blockContext) {
+		val event = response?.trigger;
+		var EClass change;
+		var FeatureOfElement foe;
+		if (event instanceof ModelChangeEvent) {
+			change = event.change;
+			foe = event.feature;
+		} else if (event instanceof ChangeEvent) {
+			change = event.change.generateEChange(event.feature.feature);
+			foe = event.feature;
+		}
+		val methodParameters = <JvmFormalParameter>newArrayList();
+		val changeTypeParameters = new ArrayList<String>();
+		if (change?.name != null) {
+			if (event instanceof ModelChangeEvent || event instanceof ChangeEvent) {
+				changeTypeParameters += getGenericTypeParameterFQNOfChange(change, foe)
+			}
+			methodParameters += blockContext.generateChangeParameter(change.instanceTypeName, changeTypeParameters);
+		}
+		
+		val affectedModel = response.effects.affectedModel;
+		if (affectedModel != null) {
+			methodParameters += blockContext.generateAffectedModelParameter(affectedModel.model.instanceTypeName);
+		}
+		methodParameters
+	}
+	
 	
 	private def void makeClassStatic(JvmGenericType type, EObject context) {
 		type.members += context.toConstructor [

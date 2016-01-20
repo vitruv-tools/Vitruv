@@ -124,7 +124,7 @@ class ResponseLanguageGenerator implements IGenerator {
 			modelCorrespondenceToResponseNameMap.get(sourceTargetPair).add(responseName);
 			val responseGenerator = SingleResponseGeneratorFactory.INSTANCE.createGenerator(response);
 			fsa.generateFile(sourceTargetPair.getResponseFilePath(responseName), 
-				responseGenerator.generateResponse(file.getSourceTargetPair(response).packageQualifiedName, responseName)
+				responseGenerator.generateResponseClass(file.getSourceTargetPair(response).packageQualifiedName, responseName)
 			);
 		}	
 		return modelCorrespondenceToResponseNameMap;

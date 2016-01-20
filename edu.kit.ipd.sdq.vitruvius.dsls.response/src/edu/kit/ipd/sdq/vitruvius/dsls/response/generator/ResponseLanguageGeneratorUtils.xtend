@@ -10,6 +10,8 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.XtendImportHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CompareBlock
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ChangeEvent
+import org.eclipse.emf.ecore.EPackage
 
 final class ResponseLanguageGeneratorUtils {
 	private static val FSA_SEPARATOR = "/";
@@ -77,12 +79,15 @@ final class ResponseLanguageGeneratorUtils {
 
 	static def Pair<VURI, VURI> getSourceTargetPair(ResponseFile responseFile, Response response) {
 		val event = response.trigger;
+		var EPackage sourceModel;
+		
 		if (event instanceof ModelChangeEvent) {
-			val sourcePackage = event.feature.element.EPackage;
-			if (sourcePackage == null) {
-				return null;
-			} 
-			val sourceUri = responseFile.metamodelImports.findFirst[imp | imp.package == sourcePackage].package.nsURI
+			sourceModel = event.feature.element.EPackage;
+		} else if (event instanceof ChangeEvent) {
+			sourceModel = event.feature.element.EPackage;
+		}
+		if (sourceModel != null) {
+			val sourceUri = sourceModel.nsURI;//responseFile.metamodelImports.findFirst[imp | imp.package == sourcePackage].package.nsURI
 			val source = VURI.getInstance(sourceUri);
 			var target = VURI.getInstance(sourceUri);
 			val affectedModel = response.effects.affectedModel;
@@ -107,6 +112,11 @@ final class ResponseLanguageGeneratorUtils {
 	static def dispatch String getResponseNameForEvent(ModelChangeEvent event) '''
 		«event.change.name»Of«IF event.feature.feature != null»«event.feature.feature.name.toFirstUpper»In«ENDIF»«
 			event.feature.element.name.toFirstUpper»'''
+	
+	static def dispatch String getResponseNameForEvent(ChangeEvent event) '''
+		«event.change.name»Of«IF event.feature.feature != null»«event.feature.feature.name.toFirstUpper»In«ENDIF»«
+			event.feature.element.name.toFirstUpper»'''
+	
 	
 	static def getXtendCode(CompareBlock compareBlock) {
 		NodeModelUtils.getNode(compareBlock.code).text

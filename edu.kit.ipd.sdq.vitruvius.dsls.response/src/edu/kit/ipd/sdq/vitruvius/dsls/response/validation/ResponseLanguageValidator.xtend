@@ -13,26 +13,30 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceRootEObject
 
 /**
  * This class contains custom validation rules. 
- *
+ * 
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 	@Check
 	def checkFeatureOfElement(FeatureOfElement foe) {
-		val modelChangeEvent = foe.eContainer as ModelChangeEvent;
-		if (CreateRootEObject.isAssignableFrom(modelChangeEvent.change.instanceClass)
-			|| DeleteRootEObject.isAssignableFrom(modelChangeEvent.change.instanceClass)
-			|| ReplaceRootEObject.isAssignableFrom(modelChangeEvent.change.instanceClass)) {
-			if (foe.feature != null) {		
-				error("No affected feature must be specified for the change of a root object.", 
-					ResponseLanguagePackage.Literals.FEATURE_OF_ELEMENT__FEATURE);
-			}
-		} else {
-			if (foe.feature == null) {
-				error("An affected feature must be specified for the change of a non-root object.", 
-					ResponseLanguagePackage.Literals.FEATURE_OF_ELEMENT__FEATURE			
-				);
+		if (foe.eContainer instanceof ModelChangeEvent) {
+			val modelChangeEvent = foe.eContainer as ModelChangeEvent;
+			if (CreateRootEObject.isAssignableFrom(modelChangeEvent.change.instanceClass) ||
+				DeleteRootEObject.isAssignableFrom(modelChangeEvent.change.instanceClass) ||
+				ReplaceRootEObject.isAssignableFrom(modelChangeEvent.change.instanceClass)) {
+				if (foe.feature != null) {
+					error("No affected feature must be specified for the change of a root object.",
+						ResponseLanguagePackage.Literals.FEATURE_OF_ELEMENT__FEATURE);
+				}
+			} else {
+				if (foe.feature == null) {
+					error(
+						"An affected feature must be specified for the change of a non-root object.",
+						ResponseLanguagePackage.Literals.FEATURE_OF_ELEMENT__FEATURE
+					);
+				}
 			}
 		}
 	}
+	
 }

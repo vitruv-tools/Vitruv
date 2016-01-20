@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.generator.singleResponse
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.XtendImportHelper
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChangeEvent
 
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
 import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorConstants.*;
@@ -20,27 +21,20 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceRootEObject
 import org.eclipse.emf.ecore.EClass
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseRealization
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ChangeEvent
 
-class SingleChangeResponseGenerator implements ISingleResponseGenerator {
+class SingleOldChangeResponseGenerator implements ISingleResponseGenerator {
 	private Response response;
-	private ChangeEvent changeEvent;
-	private EClass change;
+	private ModelChangeEvent changeEvent;
 	private XtendImportHelper ih;
 	private boolean hasAffectedModel;
 	private boolean hasPreconditionBlock;
 	
 	protected new(Response response) {
-		if (!(response.trigger instanceof ChangeEvent)) {
+		if (!(response.trigger instanceof ModelChangeEvent)) {
 			throw new IllegalArgumentException("Response must be triggered by a change event")
 		}
 		this.response = response;
-		this.changeEvent = response.trigger as ChangeEvent;
-		if (changeEvent.feature.feature != null) {
-			this.change = changeEvent.change.generateEChange(changeEvent.feature.feature)
-		} else {
-			this.change = changeEvent.change.generateEChange(changeEvent.feature.element)
-		}
+		this.changeEvent = response.trigger as ModelChangeEvent;
 		this.hasAffectedModel = response.effects.affectedModel != null;
 		this.hasPreconditionBlock = response.effects.perModelPrecondition != null;
 		this.ih = new XtendImportHelper();
@@ -83,7 +77,8 @@ class SingleChangeResponseGenerator implements ISingleResponseGenerator {
 	
 	private def generateMethodCheckPrecondition() '''
 		private def checkPrecondition(«ih.typeRef(EChange)» «CHANGE_PARAMETER_NAME») { 
-			if («CHANGE_PARAMETER_NAME» instanceof «ih.typeRef(change)»«
+			if («CHANGE_PARAMETER_NAME» instanceof «ih.typeRef(changeEvent.change)»«
+				val change = changeEvent.change»«
 				IF !change.instanceClass.equals(EChange)»<?>«ENDIF») {
 				«IF EFeatureChange.isAssignableFrom(change.instanceClass)»
 				val feature = («CHANGE_PARAMETER_NAME» as «ih.typeRef(EFeatureChange)»<?>).affectedFeature;
@@ -113,7 +108,7 @@ class SingleChangeResponseGenerator implements ISingleResponseGenerator {
 		private def «ih.typeRef(List)»<«ih.typeRef(affectedElementClass)»> determineAffectedModels(«
 			changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)» blackboard) {
 			val affectedModels = new «ih.typeRef(ArrayList)»<«ih.typeRef(affectedElementClass)»>();
-			«IF EFeatureChange.isAssignableFrom(change.instanceClass)»
+			«IF EFeatureChange.isAssignableFrom(changeEvent.change.instanceClass)»
 			val changedObject = «CHANGE_PARAMETER_NAME».oldAffectedEObject;
 			val root = changedObject.«ih.callExtensionMethod(ResponseRuntimeHelper, "modelRoot")»; 
 			affectedModels += blackboard.correspondenceInstance.«ih.callExtensionMethod(ResponseRuntimeHelper,
@@ -125,7 +120,11 @@ class SingleChangeResponseGenerator implements ISingleResponseGenerator {
 	
 	private def generateMethodGetTrigger() '''
 		public static def Class<? extends EChange> getTrigger() {
-			return «ih.typeRef(change)»;
+			«IF response.trigger instanceof ModelChangeEvent»
+			return «ih.typeRef((response.trigger as ModelChangeEvent).change)»;
+			«ELSE»
+			return null;
+			«ENDIF»
 		}
 	'''
 
@@ -181,6 +180,6 @@ class SingleChangeResponseGenerator implements ISingleResponseGenerator {
 	'''
 
 	private def getChangeEventTypeString() '''
-		«ih.typeRef(change)»<«ih.typeRef(change.getGenericTypeParameterFQNOfChange(changeEvent.feature))»>'''
+		«ih.typeRef(changeEvent.change)»<«ih.typeRef(changeEvent.change.getGenericTypeParameterFQNOfChange(changeEvent.feature))»>'''
 		
 }
