@@ -101,7 +101,11 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 			change = event.change;
 			foe = event.feature;
 		} else if (event instanceof ChangeEvent) {
-			change = event.change.generateEChange(event.feature.feature);
+			if (event.feature.feature != null) {
+				change = event.change.generateEChange(event.feature.feature);
+			} else {
+				change = event.change.generateEChange(event.feature.element);
+			}
 			foe = event.feature;
 		}
 		val methodParameters = <JvmFormalParameter>newArrayList();
