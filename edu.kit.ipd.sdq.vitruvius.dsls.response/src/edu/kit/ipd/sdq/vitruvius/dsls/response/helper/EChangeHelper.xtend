@@ -138,7 +138,8 @@ final class EChangeHelper {
 			}
 		} else {
 			if (feature.containment) {
-				return FeaturePackageImpl.eINSTANCE.unsetContainmentEReference
+				// TODO HK could also be FeaturePackageImpl.eINSTANCE.unsetContainmentEReference
+				return ContainmentPackageImpl.eINSTANCE.deleteNonRootEObjectSingle;
 			} else {
 				return FeaturePackageImpl.eINSTANCE.unsetNonContainmentEReference;
 			}
