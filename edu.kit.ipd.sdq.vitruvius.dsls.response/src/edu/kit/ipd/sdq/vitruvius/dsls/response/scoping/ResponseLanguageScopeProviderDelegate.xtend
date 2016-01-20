@@ -31,8 +31,8 @@ import static edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseL
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.FeatureOfElement
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage
 import org.eclipse.emf.ecore.EPackage
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.NamespaceImport
 import org.eclipse.xtext.naming.IQualifiedNameProvider
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelImport
 
 /**
  * Copy of edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping.MappingLanguageScopeProviderDelegate by Dominik Werle
@@ -112,9 +112,9 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 	 * Returns all packages that have been imported by import statements
 	 * in the given resource.
 	 */
-	def getNamespaceImports(Resource res) {
-		var contents = res.getAllContentsOfEClass(ResponseLanguagePackage.eINSTANCE.getNamespaceImport, true).toList
-		val validImports = contents.filter(NamespaceImport).filter[package != null].map[it.name = it.name ?: it.package.name; it]
+	def getMetamodelImports(Resource res) {
+		var contents = res.getAllContentsOfEClass(ResponseLanguagePackage.eINSTANCE.getMetamodelImport, true).toList
+		val validImports = contents.filter(MetamodelImport).filter[package != null].map[it.name = it.name ?: it.package.name; it]
 
 		return validImports
 	}
@@ -128,9 +128,9 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 	 * @see MIRScopeProviderDelegate#createQualifiedEClassifierScope(Resource)
 	 */
 	def createQualifiedEClassScope(Resource res) {
-		val classifierDescriptions = res.namespaceImports.map[import | collectObjectDescriptions(import.package, true, true, false, import.name)].flatten/*res.namespaceImports.map [ import |
-			import.package.EClassifiers.filter(EClass).map[it.createEObjectDescription(import)]
-		].flatten*/
+		val classifierDescriptions = res.metamodelImports.map[
+			import | collectObjectDescriptions(import.package, true, true, false, import.name)
+		].flatten
 
 		var resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions)
 		return resultScope
