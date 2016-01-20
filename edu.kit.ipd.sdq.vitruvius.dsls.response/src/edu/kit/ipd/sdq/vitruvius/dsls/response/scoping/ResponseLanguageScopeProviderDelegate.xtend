@@ -11,7 +11,6 @@ import com.google.inject.Inject
 //import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping
 //import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathBase
 //import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathTail
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.Iterator
 import java.util.function.Function
 import org.apache.log4j.Logger
@@ -19,9 +18,7 @@ import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.emf.mwe2.language.scoping.QualifiedNameProvider
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.resource.EObjectDescription
 import org.eclipse.xtext.resource.IEObjectDescription
@@ -31,35 +28,11 @@ import org.eclipse.xtext.xbase.scoping.XImportSectionNamespaceScopeProvider
 
 import static edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage.Literals.*
 
-//import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.EMFHelper.*
-//import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
-//import static extension edu.kit.ipd.sdq.vitruvius.framework.mir.executor.helpers.JavaHelper.*
-import static extension java.util.Objects.*
-import org.eclipse.xtext.scoping.impl.FilteringScope
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.FeatureOfElement
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage
 import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.impl.EPackageImpl
-import org.eclipse.emf.ecore.impl.EcoreFactoryImpl
-import org.eclipse.emf.common.util.URI
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguageFactory
-import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.NamespaceImport
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChangeEvent
-import org.eclipse.xtext.xbase.XBlockExpression
-import org.eclipse.xtext.xbase.XVariableDeclaration
-import org.eclipse.xtext.xbase.XbaseFactory
-import org.eclipse.xtext.xbase.XbasePackage
-import org.eclipse.xtext.scoping.Scopes
-import org.eclipse.xtext.xbase.scoping.batch.XbaseBatchScopeProvider
-import org.eclipse.xtext.xbase.scoping.XbaseQualifiedNameProvider
 import org.eclipse.xtext.naming.IQualifiedNameProvider
-import java.util.List
-import org.eclipse.xtext.scoping.impl.ImportNormalizer
-import com.google.common.collect.Lists
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
 
 /**
  * Copy of edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping.MappingLanguageScopeProviderDelegate by Dominik Werle
@@ -68,6 +41,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseL
 class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 	private static val LOGGER = Logger.getLogger(ResponseLanguageScopeProviderDelegate)
 	private static val String CHANGE_MM_URI = "http://edu.kit.ipd.sdq.vitruvius/Change/1.0";
+	private static val String CHANGE_URI = "http://www.kit.edu/ipd/sdq/vitruvius/dsls/response/ResponseLanguage/Change";
 	
 	@Inject
 	IQualifiedNameProvider qualifiedNameProvider;
@@ -90,10 +64,22 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 		else if (reference.equals(FEATURE_OF_ELEMENT__ELEMENT)
 			|| reference.equals(AFFECTED_MODEL__MODEL))
 			return createQualifiedEClassScope(context.eResource)
+		/*else if (reference.equals(CHANGE_EVENT__CHANGE))
+			return createChangeScope()*/
 		
 		super.getScope(context, reference)
 	}
-
+	
+	def createChangeScope() {
+		val resultScope = new SimpleScope(IScope.NULLSCOPE, changeObjects);
+		return resultScope	
+	}
+	
+	private final Iterable<IEObjectDescription> changeObjects = {
+		val changePckg = EPackage.Registry.INSTANCE.getEPackage(CHANGE_URI);
+		collectObjectDescriptions(changePckg, true, false, true);
+	}
+	
 	def hasQualifiedName(EObject eObject) {
 		val qn = qualifiedNameProvider.getFullyQualifiedName(eObject)
 		((qn != null) && (!qn.empty)
@@ -133,22 +119,6 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 		return validImports
 	}
 
-	/**
-	 * Creates and returns a {@link EObjectDescription} with a
-	 * qualified name that also includes the name of the given
-	 * {@link Import}.
-	 */
-	def createEObjectDescription(EClassifier classifier, NamespaceImport imp) {
-		if (classifier == null) {
-			return null
-		}
-
-		return EObjectDescription.create(
-			QualifiedName.create(imp.name).append(qualifiedNameProvider.getFullyQualifiedName(classifier).skipFirst(1)),
-			classifier
-		)
-	}
-	
 
 	/**
 	 * Create an {@link IScope} that represents all {@link EClass}es
@@ -158,9 +128,9 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 	 * @see MIRScopeProviderDelegate#createQualifiedEClassifierScope(Resource)
 	 */
 	def createQualifiedEClassScope(Resource res) {
-		val classifierDescriptions = res.namespaceImports.map [ import |
+		val classifierDescriptions = res.namespaceImports.map[import | collectObjectDescriptions(import.package, true, true, false, import.name)].flatten/*res.namespaceImports.map [ import |
 			import.package.EClassifiers.filter(EClass).map[it.createEObjectDescription(import)]
-		].flatten
+		].flatten*/
 
 		var resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions)
 		return resultScope
@@ -174,15 +144,44 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 	
 	private final Iterable<IEObjectDescription> changeMMObjects = {
 		val changePckg = EPackage.Registry.INSTANCE.getEPackage(CHANGE_MM_URI);
-		collectObjectDescriptions(changePckg);
+		collectObjectDescriptions(changePckg, true, true, true);
 	}
 	
-	private def Iterable<IEObjectDescription> collectObjectDescriptions(EPackage pckg) {
-		var recursiveResult = pckg.ESubpackages.map[it | collectObjectDescriptions(it)].flatten
-		// Use the following for fully qualified change names
-		// var result = pckg.EClassifiers.filter(EClass).map[EObjectDescription.create(qualifiedNameProvider.getFullyQualifiedName(it).skipFirst(1), it)];
-		var result = pckg.EClassifiers.filter(EClass).map[EObjectDescription.create(it.name, it)];
+	private def Iterable<IEObjectDescription> collectObjectDescriptions(EPackage pckg, 
+		boolean includeSubpackages, boolean includeAbstract, boolean useSimpleNames) {
+		collectObjectDescriptions(pckg, includeSubpackages, includeAbstract, useSimpleNames, null);	
+	}
+	
+	
+	private def Iterable<IEObjectDescription> collectObjectDescriptions(EPackage pckg, 
+		boolean includeSubpackages, boolean includeAbstract, boolean useSimpleNames, String packagePrefix) {
+		var classes = collectEClasses(pckg, includeSubpackages);
+		val result = classes.filter[includeAbstract || !abstract].map[it.createEObjectDescription(useSimpleNames, packagePrefix)];
+		return result;
+	}
+	
+	private def Iterable<EClass> collectEClasses(EPackage pckg, boolean includeSubpackages) {
+		var recursiveResult = <EClass>newArrayList();
+		if (includeSubpackages) {
+			recursiveResult += pckg.ESubpackages.map[it | collectEClasses(it, includeSubpackages)].flatten
+		}
+		val result = pckg.EClassifiers.filter(EClass);
 		return recursiveResult + result;
 	}
 	
+	/**
+	 * Creates and returns a {@link EObjectDescription} with simple name
+	 * or in case of a qualified name with the given package prefix.
+	 */
+	private def IEObjectDescription createEObjectDescription(EClassifier classifier, boolean useSimpleName, String packagePrefix) {
+		if (useSimpleName) {
+			return EObjectDescription.create(classifier.name, classifier);
+		} else {
+			var qualifiedName = qualifiedNameProvider.getFullyQualifiedName(classifier).skipFirst(1);
+			if (packagePrefix != null) {
+				qualifiedName = QualifiedName.create(packagePrefix).append(qualifiedName);
+			}
+			return EObjectDescription.create(qualifiedName, classifier);
+		}
+	}
 }
