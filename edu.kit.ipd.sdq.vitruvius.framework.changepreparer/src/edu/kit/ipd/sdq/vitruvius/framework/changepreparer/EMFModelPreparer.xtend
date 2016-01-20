@@ -19,7 +19,7 @@ package class EMFModelPreparer extends ConcreteChangePreparer {
 	override Change prepareChange(Change change) {
 		if (change instanceof EMFModelChange) {
 			val emc = change as EMFModelChange
-			this.modelProviding.getAndLoadModelInstanceOriginal(emc.URI)
+			this.modelProviding.forceReloadModelInstanceOriginalIfExisting(emc.URI)
 			val eChange = emc.EChange
 			if (eChange instanceof EFeatureChange<?>) {
 				val featureChange = eChange as EFeatureChange<?>
