@@ -91,18 +91,18 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
      * DECISION Since we do not throw an exception (which can happen in 3) we always return a valid
      * model. Hence the caller do not have to check whether the retrieved model is null.
      */
-    @Override
-    public ModelInstance getAndLoadModelInstanceOriginal(final VURI modelURI) {
+    private ModelInstance getAndLoadModelInstanceOriginal(final VURI modelURI,
+            final boolean forceLoadByDoingUnloadBeforeLoad) {
         final ModelInstance modelInstance = getModelInstanceOriginal(modelURI);
         EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
             @Override
             public Void call() {
                 try {
-                    modelInstance.load(getMetamodelByURI(modelURI).getDefaultLoadOptions());
+                    modelInstance.load(getMetamodelByURI(modelURI).getDefaultLoadOptions(),
+                            forceLoadByDoingUnloadBeforeLoad);
                 } catch (RuntimeException re) {
-                    // could not load model instance --> this should only be the case when the model
-                    // is not
-                    // Existing yet
+                    // could not load model instance --> this should only be the case when the
+                    // model is not existing yet
                     logger.info("Exception during loading of model instance " + modelInstance + " occured: " + re);
                 }
                 return null;
@@ -110,6 +110,18 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         }, this);
 
         return modelInstance;
+    }
+
+    @Override
+    public ModelInstance getAndLoadModelInstanceOriginal(final VURI modelURI) {
+        return getAndLoadModelInstanceOriginal(modelURI, false);
+    }
+
+    @Override
+    public void forceReloadModelInstanceOriginalIfExisting(final VURI modelURI) {
+        if (existsModelInstance(modelURI)) {
+            getAndLoadModelInstanceOriginal(modelURI);
+        }
     }
 
     public ModelInstance getModelInstanceOriginal(final VURI modelURI) {
@@ -329,7 +341,8 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
      * {@link getCorrespondenceInstanceOriginal} must be called before to create the appropriate
      * correspondence instance
      *
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.datatypes.CorrespondenceInstance
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.datatypes.
+     *      CorrespondenceInstance
      * @return set that contains all CorrespondenceInstances for the VURI or null if there is non
      */
     @Override

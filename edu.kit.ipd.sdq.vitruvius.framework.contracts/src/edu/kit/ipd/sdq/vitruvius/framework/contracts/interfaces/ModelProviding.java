@@ -20,4 +20,6 @@ public interface ModelProviding extends ModelCopyProviding {
 
     void saveModelInstanceOriginalWithEObjectAsOnlyContent(VURI vuri, EObject rootEObject, TUID oldTUID);
 
+    void forceReloadModelInstanceOriginalIfExisting(VURI modelURI);
+
 }
