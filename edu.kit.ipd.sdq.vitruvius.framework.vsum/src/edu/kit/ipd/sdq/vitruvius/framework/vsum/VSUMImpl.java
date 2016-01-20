@@ -120,7 +120,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     @Override
     public void forceReloadModelInstanceOriginalIfExisting(final VURI modelURI) {
         if (existsModelInstance(modelURI)) {
-            getAndLoadModelInstanceOriginal(modelURI);
+            getAndLoadModelInstanceOriginal(modelURI, true);
         }
     }
 
