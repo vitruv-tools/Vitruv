@@ -10,7 +10,6 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CompareBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChangeEvent
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import java.util.ArrayList
-import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmFormalParameter
 import org.eclipse.xtext.common.types.JvmGenericType
@@ -24,45 +23,20 @@ import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguage
 
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.FeatureOfElement
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AffectedModel
 
 /**
- * <p>Infers a JVM model from the source model.</p> 
+ * <p>Infers a JVM model for the Xtend code blocks of the response file model.</p> 
  *
- * <p>The JVM model should contain all elements that would appear in the Java code 
- * which is generated from the source model. Other models link against the JVM model rather than the source model.</p>     
+ * <p>The resulting classes are not to be persisted but only to be used for content assist purposes.</p>
+ * 
+ * @author Heiko Klare     
  */
 class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
-    /**
-     * convenience API to build and initialize JVM types and their members.
-     */
+
 	@Inject extension JvmTypesBuilder
 	
-	/**
-	 * The dispatch method {@code infer} is called for each instance of the
-	 * given element's type that is contained in a resource.
-	 * 
-	 * @param element
-	 *            the model to create one or more
-	 *            {@link org.eclipse.xtext.common.types.JvmDeclaredType declared
-	 *            types} from.
-	 * @param acceptor
-	 *            each created
-	 *            {@link org.eclipse.xtext.common.types.JvmDeclaredType type}
-	 *            without a container should be passed to the acceptor in order
-	 *            get attached to the current resource. The acceptor's
-	 *            {@link IJvmDeclaredTypeAcceptor#accept(org.eclipse.xtext.common.types.JvmDeclaredType)
-	 *            accept(..)} method takes the constructed empty type for the
-	 *            pre-indexing phase. This one is further initialized in the
-	 *            indexing phase using the closure you pass to the returned
-	 *            {@link org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor.IPostIndexingInitializing#initializeLater(org.eclipse.xtext.xbase.lib.Procedures.Procedure1)
-	 *            initializeLater(..)}.
-	 * @param isPreIndexingPhase
-	 *            whether the method is called in a pre-indexing phase, i.e.
-	 *            when the global index is not yet fully updated. You must not
-	 *            rely on linking using the index if isPreIndexingPhase is
-	 *            <code>true</code>.
-	 */
 	def dispatch void infer(CodeBlock codeBlock, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		if (isPreIndexingPhase) {
 			return;
@@ -70,7 +44,7 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 		val response = codeBlock.containingResponse;
 		val methodParameters = createResponseParameters(response, codeBlock)
 		
-		acceptor.accept(response.toClass("Response")) [
+		acceptor.accept(response.toClass("ResponseHelper" + RESPONSE_APPLY_METHOD_NAME.toFirstUpper)) [
 			members += codeBlock.toMethod(RESPONSE_APPLY_METHOD_NAME, typeRef(Void.TYPE)) [applyMethod |
 				applyMethod.parameters += methodParameters
 				applyMethod.body = codeBlock.code]
@@ -85,8 +59,8 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 		val response = compareBlock.containingResponse;
 		val methodParameters = createResponseParameters(response, compareBlock)
 		
-		acceptor.accept(response.toClass("Response")) [
-			members += compareBlock.toMethod("determineAffectedModel", typeRef(Boolean.TYPE)) [applyMethod |
+		acceptor.accept(response.toClass("ResponseHelper" +  PER_MODEL_PRECONDITION_METHOD_NAME.toFirstUpper)) [
+			members += compareBlock.toMethod(PER_MODEL_PRECONDITION_METHOD_NAME, typeRef(Boolean.TYPE)) [applyMethod |
 				applyMethod.parameters += methodParameters
 				applyMethod.body = compareBlock.code]
 			it.makeClassStatic(response)
@@ -94,36 +68,47 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 	}
 	
 	private def createResponseParameters(Response response, EObject blockContext) {
-		val event = response?.trigger;
-		var EClass change;
-		var FeatureOfElement foe;
-		if (event instanceof ModelChangeEvent) {
-			change = event.change;
-			foe = event.feature;
-		} else if (event instanceof ChangeEvent) {
-			if (event.feature.feature != null) {
-				change = event.change.generateEChange(event.feature.feature);
-			} else {
-				change = event.change.generateEChange(event.feature.element);
-			}
-			foe = event.feature;
-		}
 		val methodParameters = <JvmFormalParameter>newArrayList();
-		val changeTypeParameters = new ArrayList<String>();
-		if (change?.name != null) {
-			if (event instanceof ModelChangeEvent || event instanceof ChangeEvent) {
-				changeTypeParameters += getGenericTypeParameterFQNOfChange(change, foe)
-			}
-			methodParameters += blockContext.generateChangeParameter(change.instanceTypeName, changeTypeParameters);
+		if (response?.trigger != null) {
+			methodParameters += generateChangeParameters(response?.trigger, blockContext);	
 		}
-		
-		val affectedModel = response.effects.affectedModel;
-		if (affectedModel != null) {
-			methodParameters += blockContext.generateAffectedModelParameter(affectedModel.model.instanceTypeName);
+		if (response?.effects?.affectedModel != null) {
+			methodParameters += generateAffectedModelParameters(response?.effects?.affectedModel, blockContext);
 		}
-		methodParameters
+		return methodParameters;
+	}
+
+	private def dispatch Iterable<JvmFormalParameter> generateChangeParameters(Trigger event, EObject parameterContext) {
+		return #[];
+	}
+
+	private def dispatch Iterable<JvmFormalParameter> generateChangeParameters(ChangeEvent event, EObject parameterContext) {
+		var EObject changedElement = event.feature.feature?:event.feature.element;
+		var eChange = event.change.generateEChange(changedElement);
+		if (eChange == null) {
+			return #[];
+		}
+		var changeTypeParameters = #[getGenericTypeParameterFQNOfChange(eChange, event.feature)]
+		val changeParameter = parameterContext.generateChangeParameter(eChange.instanceTypeName, changeTypeParameters);
+		if (changeParameter != null) {
+			return #[changeParameter];
+		}
 	}
 	
+	private def dispatch Iterable<JvmFormalParameter> generateChangeParameters(ModelChangeEvent event, EObject parameterContext) {
+		var changeTypeParameters = #[getGenericTypeParameterFQNOfChange(event.change, event.feature)];
+		val changeParameter = parameterContext.generateChangeParameter(event.change.instanceTypeName, changeTypeParameters);
+		if (changeParameter != null) {
+			return #[changeParameter];
+		}
+	}
+	
+	private def Iterable<JvmFormalParameter> generateAffectedModelParameters(AffectedModel affectedModel, EObject parameterContext) {
+		if (affectedModel != null) {
+			return #[parameterContext.generateAffectedModelParameter(affectedModel.model.instanceTypeName)];
+		}
+		return #[];
+	}
 	
 	private def void makeClassStatic(JvmGenericType type, EObject context) {
 		type.members += context.toConstructor [
@@ -133,15 +118,18 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 	
-	def generateAffectedModelParameter(EObject context, String affectedModelClassName) {
+	private def generateAffectedModelParameter(EObject context, String affectedModelClassName) {
 		generateParameter(context, AFFECTED_MODEL_PARAMETER_NAME, affectedModelClassName);
 	}
 	
-	def generateChangeParameter(EObject context, String changeClassName, String... typeParameterClassNames) {
+	private def generateChangeParameter(EObject context, String changeClassName, String... typeParameterClassNames) {
 		generateParameter(context, CHANGE_PARAMETER_NAME, changeClassName, typeParameterClassNames);
 	}
 	
 	private def generateParameter(EObject context, String parameterName, String parameterClassName, String... typeParameterClassNames) {
+		if (parameterClassName.nullOrEmpty) {
+			return null;
+		}
 		val typeParameters = new ArrayList<JvmTypeReference>(typeParameterClassNames.size);
 		for (typeParameterClassName : typeParameterClassNames) {
 			typeParameters.add(typeRef(typeParameterClassName));	

@@ -19,6 +19,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.contain
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.FeaturePackageImpl
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.impl.ObjectPackageImpl
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.FeatureOfElement
+import org.eclipse.emf.ecore.EObject
 
 final class EChangeHelper {
 	
@@ -37,7 +38,11 @@ final class EChangeHelper {
 		return null;
 	}
 	
-	static def EClass generateEChange(EClass responseChange, EStructuralFeature feature) {
+	static def dispatch EClass generateEChange(EClass responseChange, EObject changedObject) {
+		throw new UnsupportedOperationException("This object type is not supported.");
+	}
+	
+	static def dispatch EClass generateEChange(EClass responseChange, EStructuralFeature feature) {
 		// TODO HK Find a better way for type checking...
 		if (responseChange.instanceTypeName.equals(Update.typeName)) {
 			generateUpdateEChange(feature);
@@ -50,7 +55,7 @@ final class EChangeHelper {
 		}
 	}
 	
-	static def EClass generateEChange(EClass responseChange, EClass element) {
+	static def dispatch EClass generateEChange(EClass responseChange, EClass element) {
 		// TODO HK Find a better way for type checking...
 		if (responseChange.instanceTypeName.equals(Update.typeName)) {
 			generateUpdateEChange(element);

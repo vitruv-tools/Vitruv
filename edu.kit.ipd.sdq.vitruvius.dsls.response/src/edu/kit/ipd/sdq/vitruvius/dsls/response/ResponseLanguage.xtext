@@ -27,7 +27,8 @@ CompareBlock:
 
 CodeBlock:
 	code=XBlockExpression;
-	
+
+// TODO legacy implementation; remove when not needed any more
 ModelChangeEvent:
 	"old change" change=[ecore::EClass|QualifiedName]
 	'of' feature=FeatureOfElement;
