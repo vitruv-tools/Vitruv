@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.tests;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -50,10 +51,26 @@ public abstract class VitruviusCasestudyTest {
 
     protected IProject currentTestProject;
 
+    protected final Supplier<? extends Change2CommandTransformingProviding> syncTransformationProviderSupplier;
+    
     protected abstract void afterTest(Description description);
 
     protected abstract CorrespondenceInstance getCorrespondenceInstance() throws Throwable;
-
+    
+    /**
+     * Initialize a VitruviusEMFCasestudyTest with the default {@link Supplier} for {@link Change2CommandTransformingProvidingImpl}.
+     */
+    public VitruviusCasestudyTest() {
+    	this.syncTransformationProviderSupplier = Change2CommandTransformingProvidingImpl::new;
+    }
+    
+    /**
+     * Initialize a VitruviusEMFCasestudyTest with the specified {@link Supplier} for {@link Change2CommandTransformingProviding}.
+     */
+    public VitruviusCasestudyTest(Supplier<? extends Change2CommandTransformingProviding> change2CommandTransformingProvidingSupplier) {
+    	this.syncTransformationProviderSupplier = change2CommandTransformingProvidingSupplier;
+    }
+    
     protected void beforeTest(final Description description) throws Throwable {
         // ensure that MockupProject is existing
         this.currentTestProjectName = TestUtil.PROJECT_URI + "_" + description.getMethodName();
@@ -105,8 +122,8 @@ public abstract class VitruviusCasestudyTest {
             final ChangeSynchronizerImpl changeSynchronizerImpl) throws Throwable {
         final Change2CommandTransformingProviding change2CommandProviding = JavaBridge.getFieldFromClass(
                 ChangeSynchronizerImpl.class, "change2CommandTransformingProviding", changeSynchronizerImpl);
-        final ClaimableMap<Pair<VURI, VURI>, Change2CommandTransforming> transformationExecuterMap = JavaBridge
-                .getFieldFromClass(Change2CommandTransformingProvidingImpl.class, "transformationExecuterMap",
+        final ClaimableMap<Pair<VURI, VURI>, Change2CommandTransforming> transformationExecuterMap = JavaBridge.
+        		getFieldFromClassOrSuperClass(syncTransformationProviderSupplier.get().getClass(), "transformationExecuterMap",
                         change2CommandProviding);
         final Class<?> change2CommandTransformerClass = this.getChange2CommandTransformerClass();
         final String nameOfChangeSynchronizerField = this.getNameOfChangeSynchronizerField();
@@ -124,7 +141,7 @@ public abstract class VitruviusCasestudyTest {
                 change2CommandTransformerClass, nameOfChangeSynchronizerField, change2CommandTransforming);
         transformationExecuter.setUserInteracting(newUserInteracting);
     }
-
+    
     protected abstract Class<?> getChange2CommandTransformerClass();
 
     protected String getNameOfChangeSynchronizerField() {

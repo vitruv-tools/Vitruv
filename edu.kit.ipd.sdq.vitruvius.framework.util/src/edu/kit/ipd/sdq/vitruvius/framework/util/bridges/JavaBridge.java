@@ -324,6 +324,37 @@ public final class JavaBridge {
                     + ". Instance was: " + instance, e);
         }
     }
+    
+    /**
+     * Returns the value of the given field from the given class or one of its superclasses. 
+     * If more than one of the classes contains a field with the given name, the one of the most
+     * specifiy class is returned. Uses Reflection to get access to private and protected fields. 
+     * Wraps possible exceptions to a runtime exception.
+     *
+     * @param classWithField
+     *            the class with the field
+     * @param fieldName
+     *            the name of the field
+     * @param instance
+     *            the instance, which has to be from type class (or a subclass of it)
+     * @return the value of the given field
+     *
+     * @throws RuntimeException
+     *             if something went wrong
+     */
+    public static <T> T getFieldFromClassOrSuperClass(Class<?> classWithField, String fieldName, 
+    		final Object instance) {
+    	T field = null;
+    	Class<?> currentClass = classWithField;
+    	while (field == null && currentClass != null) {
+    		try {
+    			field = getFieldFromClass(currentClass, fieldName, instance);
+    		} catch (RuntimeException e) {}
+    		currentClass = currentClass.getSuperclass();
+    	}
+    	return field;
+    }
+
 
     private static java.lang.reflect.Field getField(final Class<?> classWithField, final String fieldName)
             throws NoSuchFieldException {

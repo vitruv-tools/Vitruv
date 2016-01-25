@@ -47,20 +47,19 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
     protected ChangeRecorder changeRecorder;
     private ChangeDescription2ChangeConverter changeDescrition2ChangeConverter;
     protected CorrespondenceInstance correspondenceInstance;
-    private Supplier<? extends Change2CommandTransformingProviding> syncTransformationProviderSupplier;
     
     /**
      * Initialize a VitruviusEMFCasestudyTest with the default {@link Supplier} for {@link Change2CommandTransformingProvidingImpl}.
      */
     public VitruviusEMFCasestudyTest() {
-    	this.syncTransformationProviderSupplier = Change2CommandTransformingProvidingImpl::new;
+    	super();
     }
     
     /**
      * Initialize a VitruviusEMFCasestudyTest with the specified {@link Supplier} for {@link Change2CommandTransformingProviding}.
      */
     public VitruviusEMFCasestudyTest(Supplier<? extends Change2CommandTransformingProviding> change2CommandTransformingProvidingSupplier) {
-    	this.syncTransformationProviderSupplier = change2CommandTransformingProvidingSupplier;
+    	super(change2CommandTransformingProvidingSupplier);
     }
     
     /**
