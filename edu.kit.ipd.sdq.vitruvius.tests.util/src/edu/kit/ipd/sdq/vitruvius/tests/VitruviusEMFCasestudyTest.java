@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.tests;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.change.ChangeDescription;
@@ -46,7 +47,22 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
     protected ChangeRecorder changeRecorder;
     private ChangeDescription2ChangeConverter changeDescrition2ChangeConverter;
     protected CorrespondenceInstance correspondenceInstance;
-
+    private Supplier<? extends Change2CommandTransformingProviding> syncTransformationProviderSupplier;
+    
+    /**
+     * Initialize a VitruviusEMFCasestudyTest with the default {@link Supplier} for {@link Change2CommandTransformingProvidingImpl}.
+     */
+    public VitruviusEMFCasestudyTest() {
+    	this.syncTransformationProviderSupplier = Change2CommandTransformingProvidingImpl::new;
+    }
+    
+    /**
+     * Initialize a VitruviusEMFCasestudyTest with the specified {@link Supplier} for {@link Change2CommandTransformingProviding}.
+     */
+    public VitruviusEMFCasestudyTest(Supplier<? extends Change2CommandTransformingProviding> change2CommandTransformingProvidingSupplier) {
+    	this.syncTransformationProviderSupplier = change2CommandTransformingProvidingSupplier;
+    }
+    
     /**
      * Set up SyncMangaer and metaRepository facility. Creates a fresh VSUM, Metarepository etc.
      * before each test
@@ -59,10 +75,9 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 
         this.metaRepository = this.createMetaRepository();
         this.vsum = TestUtil.createVSUM(this.metaRepository);
-        final Change2CommandTransformingProviding syncTransformationProvider = new Change2CommandTransformingProvidingImpl();
         final CommandExecuting commandExecuter = new CommandExecutingImpl();
         final ChangePreparing changePreparer = new ChangePreparingImpl(this.vsum, this.vsum);
-        this.changeSynchronizer = new ChangeSynchronizerImpl(this.vsum, syncTransformationProvider, this.vsum,
+        this.changeSynchronizer = new ChangeSynchronizerImpl(this.vsum, syncTransformationProviderSupplier.get(), this.vsum,
                 this.metaRepository, this.vsum, this, changePreparer, commandExecuter);
         this.testUserInteractor = new TestUserInteractor();
         this.setUserInteractor(this.testUserInteractor, this.changeSynchronizer);
