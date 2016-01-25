@@ -1,0 +1,283 @@
+import "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.allElementTypes" as minimal
+
+/*
+ * UpdateSingleValuedEAttribute
+ */
+response to Update of minimal.Root[singleValuedEAttribute] 
+affects minimal.Root 
+when {
+	var sourceRootSearch = change.oldAffectedEObject;
+	while (sourceRootSearch.eContainer != null) {
+		sourceRootSearch = sourceRootSearch.eContainer;
+	}
+	val sourceRoot = sourceRootSearch as allElementTypes.Root;
+	affectedModel.id == sourceRoot.id && !affectedModel.eResource.equals(sourceRoot.eResource)
+} executes {
+	if (change.newValue == null) {
+		affectedModel.singleValuedEAttribute = null;
+	} else {
+		affectedModel.singleValuedEAttribute = change.newValue.intValue;
+	}
+	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
+		edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.
+		UpdateSingleValuedEAttribute);
+}
+
+/*
+ * UnsetSingleValuedEAttribute
+ */
+response to Delete of minimal.Root[singleValuedEAttribute] 
+affects minimal.Root 
+when {
+	var sourceRootSearch = change.oldAffectedEObject;
+	while (sourceRootSearch.eContainer != null) {
+		sourceRootSearch = sourceRootSearch.eContainer;
+	}
+	val sourceRoot = sourceRootSearch as allElementTypes.Root;
+	affectedModel.id == sourceRoot.id && !affectedModel.eResource.equals(sourceRoot.eResource)
+} executes {
+	affectedModel.singleValuedEAttribute = null;
+	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
+		edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.
+		UnsetEAttribute);
+}
+
+/*
+ * CreateRootEObject
+ */
+response to Create of minimal.Root 
+executes {
+}
+
+/*
+ * CreateNonRootEObjectInList
+ */
+response to Create of minimal.Root[multiValuedContainmentEReference] 
+affects minimal.Root 
+when {
+	var sourceRootSearch = change.oldAffectedEObject;
+	while (sourceRootSearch.eContainer != null) {
+		sourceRootSearch = sourceRootSearch.eContainer;
+	}
+	val sourceRoot = sourceRootSearch as allElementTypes.Root;
+	affectedModel.id == sourceRoot.id && !affectedModel.eResource.equals(sourceRoot.eResource)
+} executes {
+	val newElement = allElementTypes.impl.AllElementTypesFactoryImpl.eINSTANCE.createNonRoot();
+	newElement.id = change.newValue.id;
+	affectedModel.multiValuedContainmentEReference += newElement;
+	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
+		edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.
+		CreateNonRootEObjectInList);
+}
+
+/*
+ * DeleteNonRootEObjectInList
+ */
+response to Delete of minimal.Root[multiValuedContainmentEReference] 
+affects minimal.Root 
+when {
+	var sourceRootSearch = change.oldAffectedEObject;
+	while (sourceRootSearch.eContainer != null) {
+		sourceRootSearch = sourceRootSearch.eContainer;
+	}
+	val sourceRoot = sourceRootSearch as allElementTypes.Root;
+	affectedModel.id == sourceRoot.id && !affectedModel.eResource.equals(sourceRoot.eResource)
+} executes {
+	affectedModel.multiValuedContainmentEReference.removeIf[it.id == change.oldValue.id];
+	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
+		edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.
+		DeleteNonRootEObjectInList);
+}
+
+/*
+ * CreateNonRootEObjectSingle
+ */
+response to Create of minimal.Root[singleValuedContainmentEReference] 
+affects minimal.Root 
+when {
+	var sourceRootSearch = change.oldAffectedEObject;
+	while (sourceRootSearch.eContainer != null) {
+		sourceRootSearch = sourceRootSearch.eContainer;
+	}
+	val sourceRoot = sourceRootSearch as allElementTypes.Root;
+	affectedModel.id == sourceRoot.id && !affectedModel.eResource.equals(sourceRoot.eResource)
+} executes {
+	val newElement = allElementTypes.impl.AllElementTypesFactoryImpl.eINSTANCE.createNonRoot();
+	newElement.id = change.newValue.id;
+	affectedModel.singleValuedContainmentEReference = newElement;
+	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
+		edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.
+		CreateNonRootEObjectSingle);
+}
+
+/*
+ * DeleteNonRootEObjectSingle
+ */
+response to Delete of minimal.Root[singleValuedContainmentEReference] 
+affects minimal.Root 
+when {
+	var sourceRootSearch = change.oldAffectedEObject;
+	while (sourceRootSearch.eContainer != null) {
+		sourceRootSearch = sourceRootSearch.eContainer;
+	}
+	val sourceRoot = sourceRootSearch as allElementTypes.Root;
+	affectedModel.id == sourceRoot.id && !affectedModel.eResource.equals(sourceRoot.eResource)
+} executes {
+	affectedModel.singleValuedContainmentEReference = null;
+	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
+		edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.
+		DeleteNonRootEObjectSingle);
+}
+
+/*
+ * UpdateSingleValuedNonContainmentEReference
+ */
+response to Create of minimal.Root[singleValuedNonContainmentEReference] 
+affects minimal.Root 
+when {
+	var sourceRootSearch = change.oldAffectedEObject;
+	while (sourceRootSearch.eContainer != null) {
+		sourceRootSearch = sourceRootSearch.eContainer;
+	}
+	val sourceRoot = sourceRootSearch as allElementTypes.Root;
+	affectedModel.id == sourceRoot.id && !affectedModel.eResource.equals(sourceRoot.eResource)
+} executes {
+	val addedNonRoot = affectedModel.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst[it.id == change.newValue.id];
+	affectedModel.singleValuedNonContainmentEReference = addedNonRoot;    
+	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
+		edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.
+		UpdateSingleValuedNonContainmentEReference);
+}
+
+/*
+ * UnsetNonContainmentEReference
+ */
+response to Delete of minimal.Root[singleValuedNonContainmentEReference] 
+affects minimal.Root 
+when {
+	var sourceRootSearch = change.oldAffectedEObject;
+	while (sourceRootSearch.eContainer != null) {
+		sourceRootSearch = sourceRootSearch.eContainer;
+	}
+	val sourceRoot = sourceRootSearch as allElementTypes.Root;
+	affectedModel.id == sourceRoot.id && !affectedModel.eResource.equals(sourceRoot.eResource)
+} executes {
+	affectedModel.singleValuedNonContainmentEReference = null; 
+	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
+		edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.
+		UnsetNonContainmentEReference);
+}
+
+/*
+ * InsertEAttributeValue
+ */
+response to Create of minimal.Root[multiValuedEAttribute] 
+affects minimal.Root 
+when {
+	var sourceRootSearch = change.oldAffectedEObject;
+	while (sourceRootSearch.eContainer != null) {
+		sourceRootSearch = sourceRootSearch.eContainer;
+	}
+	val sourceRoot = sourceRootSearch as allElementTypes.Root;
+	affectedModel.id == sourceRoot.id && !affectedModel.eResource.equals(sourceRoot.eResource)
+} executes {
+	affectedModel.multiValuedEAttribute.add(change.newValue);    
+	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
+		edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.
+		InsertEAttributeValue);
+}
+
+/*
+ * RemoveEAttributeValue
+ */
+response to Delete of minimal.Root[multiValuedEAttribute] 
+affects minimal.Root 
+when {
+	var sourceRootSearch = change.oldAffectedEObject;
+	while (sourceRootSearch.eContainer != null) {
+		sourceRootSearch = sourceRootSearch.eContainer;
+	}
+	val sourceRoot = sourceRootSearch as allElementTypes.Root;
+	affectedModel.id == sourceRoot.id && !affectedModel.eResource.equals(sourceRoot.eResource)
+} executes {
+	val sourceValueList = (change.newAffectedEObject as allElementTypes.Root).multiValuedEAttribute;
+	affectedModel.multiValuedEAttribute.removeIf[!sourceValueList.contains(it.intValue)];
+	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
+		edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.
+		RemoveEAttributeValue);
+}
+
+/*
+ * InsertNonContainmentEReference
+ */
+response to Create of minimal.Root[multiValuedNonContainmentEReference] 
+affects minimal.Root 
+when {
+	var sourceRootSearch = change.oldAffectedEObject;
+	while (sourceRootSearch.eContainer != null) {
+		sourceRootSearch = sourceRootSearch.eContainer;
+	}
+	val sourceRoot = sourceRootSearch as allElementTypes.Root;
+	affectedModel.id == sourceRoot.id && !affectedModel.eResource.equals(sourceRoot.eResource)
+} executes {
+	val addedNonRoot = affectedModel.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst[it.id == change.newValue.id];
+	affectedModel.multiValuedNonContainmentEReference.add(addedNonRoot);    
+	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
+		edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.
+		InsertNonContainmentEReference);
+}
+
+/*
+ * RemoveNonContainmentEReference
+ */
+response to Delete of minimal.Root[multiValuedNonContainmentEReference] 
+affects minimal.Root 
+when {
+	var sourceRootSearch = change.oldAffectedEObject;
+	while (sourceRootSearch.eContainer != null) {
+		sourceRootSearch = sourceRootSearch.eContainer;
+	}
+	val sourceRoot = sourceRootSearch as allElementTypes.Root;
+	affectedModel.id == sourceRoot.id && !affectedModel.eResource.equals(sourceRoot.eResource)
+} executes {
+	affectedModel.multiValuedNonContainmentEReference.removeIf[it.id == change.oldValue.id];
+	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
+		edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.
+		RemoveNonContainmentEReference);
+}
+
+/*
+ * ReplaceNonContainmentEReference
+ */
+response to Update of minimal.Root[multiValuedNonContainmentEReference] 
+affects minimal.Root 
+when {
+	var sourceRootSearch = change.oldAffectedEObject;
+	while (sourceRootSearch.eContainer != null) {
+		sourceRootSearch = sourceRootSearch.eContainer;
+	}
+	val sourceRoot = sourceRootSearch as allElementTypes.Root;
+	affectedModel.id == sourceRoot.id && !affectedModel.eResource.equals(sourceRoot.eResource)
+} executes {
+	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
+		edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.
+		ReplaceNonContainmentEReference);
+}
+
+/*
+ * PermuteNonContainmentEReference
+ */
+response to old change PermuteNonContainmentEReferenceValues of minimal.Root[multiValuedNonContainmentEReference] 
+affects minimal.Root 
+when {
+	var sourceRootSearch = change.oldAffectedEObject;
+	while (sourceRootSearch.eContainer != null) {
+		sourceRootSearch = sourceRootSearch.eContainer;
+	}
+	val sourceRoot = sourceRootSearch as allElementTypes.Root;
+	affectedModel.id == sourceRoot.id && !affectedModel.eResource.equals(sourceRoot.eResource)
+} executes {
+	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
+		edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.
+		PermuteNonContainmentEReference);
+}
