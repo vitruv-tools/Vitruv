@@ -12,6 +12,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CompareBlock
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ChangeEvent
 import org.eclipse.emf.ecore.EPackage
+import org.eclipse.xtext.xbase.XExpression
 
 final class ResponseLanguageGeneratorUtils {
 	private static val FSA_SEPARATOR = "/";
@@ -124,5 +125,9 @@ final class ResponseLanguageGeneratorUtils {
 	
 	static def getXtendCode(CodeBlock codeBlock) {
 		NodeModelUtils.getNode(codeBlock.code).text
+	}
+	
+	static def getXtendCode(XExpression expression) {
+		NodeModelUtils.getNode(expression).text
 	}
 }

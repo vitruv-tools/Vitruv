@@ -49,6 +49,7 @@ class SingleChangeResponseGenerator implements ISingleResponseGenerator {
 	
 	public override generateResponseClass(String packageName, String className) {
 		val classImplementation = '''
+		«IF response.documentation != null»«response.documentation»«ENDIF»
 		public class «className» implements «ih.typeRef(ResponseRealization)» {
 			«generateLoggerInitialization(className)»
 			

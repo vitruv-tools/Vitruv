@@ -1,5 +1,5 @@
-grammar edu.kit.ipd.sdq.vitruvius.dsls.response.ResponseLanguage
-	with org.eclipse.xtext.xbase.Xbase
+grammar edu.kit.ipd.sdq.vitruvius.dsls.response.ResponseLanguage 
+	with org.eclipse.xtext.xbase.Xbase hidden(WS, SL_COMMENT)
 
 generate responseLanguage "http://www.kit.edu/ipd/sdq/vitruvius/dsls/response/ResponseLanguage"
 
@@ -14,6 +14,7 @@ MetamodelImport:
 	'import' package=[ecore::EPackage|STRING] 'as' name=ValidID;
 
 Response:
+	(documentation=ML_COMMENT)?
 	'response to' trigger=Trigger effects=Effects;
 	
 Effects:
