@@ -25,6 +25,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHe
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AffectedModel
+import org.eclipse.emf.ecore.EModelElement
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the response file model.</p> 
@@ -83,7 +84,7 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 	}
 
 	private def dispatch Iterable<JvmFormalParameter> generateChangeParameters(ChangeEvent event, EObject parameterContext) {
-		var EObject changedElement = event.feature.feature?:event.feature.element;
+		var EModelElement changedElement = event.feature.feature?:event.feature.element;
 		var eChange = event.change.generateEChange(changedElement);
 		if (eChange == null) {
 			return #[];

@@ -6,12 +6,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.UnsetEReference
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateEAttribute
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.UpdateEReference
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.EObjectChange
-import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.EAttribute
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.change.Create
 import org.eclipse.emf.ecore.EReference
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.change.Delete
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.change.Update
 import org.eclipse.emf.ecore.EClass
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.impl.AttributePackageImpl
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.impl.ReferencePackageImpl
@@ -19,55 +15,60 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.contain
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.FeaturePackageImpl
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.impl.ObjectPackageImpl
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.FeatureOfElement
-import org.eclipse.emf.ecore.EObject
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.change.impl.ChangePackageImpl
+import org.eclipse.emf.ecore.EModelElement
 
 final class EChangeHelper {
 	
 	static def String getGenericTypeParameterFQNOfChange(EClass changeEClass, FeatureOfElement foe) {
 		val changeClass = changeEClass.instanceClass;
-		 if (UpdateEReference.isAssignableFrom(changeClass)
+		var String className;
+		if (UpdateEReference.isAssignableFrom(changeClass)
 			|| UpdateEAttribute.isAssignableFrom(changeClass)
 			|| UnsetEReference.isAssignableFrom(changeClass)
 			|| UnsetEAttribute.isAssignableFrom(changeClass)) {
-			return foe.feature.EType.instanceClassName
+			className = foe.feature.EType.instanceClassName
 		} else if (EObjectChange.isAssignableFrom(changeClass)) {
-			return foe.element.instanceClassName;
+			className = foe.element.instanceClassName;
 		} else if (EFeatureChange.isAssignableFrom(changeClass)) {
-			return foe.feature.class.name
-		} 
-		return null;
+			className = foe.feature.class.name
+		}
+		
+		className = className?.convertPrimitiveTypeToClassName;
+		return className;
 	}
 	
-	static def dispatch EClass generateEChange(EClass responseChange, EObject changedObject) {
-		throw new UnsupportedOperationException("This object type is not supported.");
+	static def String convertPrimitiveTypeToClassName(String className) {
+		switch (className) {
+			case "short": return Short.name
+			case "int": return Integer.name
+			case "long": return Long.name
+			case "double": return Double.name
+			case "float": return Float.name
+			case "bool": return Boolean.name
+			case "char": return Character.name
+			case "byte": return Byte.name
+			case "void": return Void.name
+			default: return className
+		}
 	}
 	
-	static def dispatch EClass generateEChange(EClass responseChange, EStructuralFeature feature) {
-		// TODO HK Find a better way for type checking...
-		if (responseChange.instanceTypeName.equals(Update.typeName)) {
-			generateUpdateEChange(feature);
-		} else if (responseChange.instanceTypeName.equals(Create.typeName)) {
-			generateCreateEChange(feature);
-		} else if (responseChange.instanceTypeName.equals(Delete.typeName)) {
-			generateDeleteEChange(feature);
+	static def EClass generateEChange(EClass responseChange, EModelElement changedObject) {
+		if (responseChange.equals(ChangePackageImpl.eINSTANCE.update)) {
+			generateUpdateEChange(changedObject);
+		} else if (responseChange.equals(ChangePackageImpl.eINSTANCE.create)) {
+			generateCreateEChange(changedObject);
+		} else if (responseChange.equals(ChangePackageImpl.eINSTANCE.delete)) {
+			generateDeleteEChange(changedObject);
 		} else {
 			return null;
 		}
 	}
 	
-	static def dispatch EClass generateEChange(EClass responseChange, EClass element) {
-		// TODO HK Find a better way for type checking...
-		if (responseChange.instanceTypeName.equals(Update.typeName)) {
-			generateUpdateEChange(element);
-		} else if (responseChange.instanceTypeName.equals(Create.typeName)) {
-			generateCreateEChange(element);
-		} else if (responseChange.instanceTypeName.equals(Delete.typeName)) {
-			generateDeleteEChange(element);
-		} else {
-			return null;
-		}
-	}
-	
+	static def dispatch EClass generateUpdateEChange(EModelElement changedElement) {
+		throw new UnsupportedOperationException("The given element is not supported.");
+	} 
+		
 	static def dispatch EClass generateUpdateEChange(EAttribute feature) {
 		if (feature.upperBound > 1 || feature.upperBound == -1) {
 			return AttributePackageImpl.eINSTANCE.replaceEAttributeValue;
@@ -94,7 +95,11 @@ final class EChangeHelper {
 	
 	static def dispatch EClass generateUpdateEChange(EClass element) {
 		return ObjectPackageImpl.eINSTANCE.replaceRootEObject;
-	}	
+	}
+	
+	static def dispatch EClass generateCreateEChange(EModelElement changedElement) {
+		throw new UnsupportedOperationException("The given element is not supported.");
+	} 
 	
 	static def dispatch EClass generateCreateEChange(EAttribute feature) {
 		if (feature.upperBound > 1 || feature.upperBound == -1) {
@@ -116,7 +121,7 @@ final class EChangeHelper {
 			if (feature.containment) {
 				return ContainmentPackageImpl.eINSTANCE.createNonRootEObjectSingle;
 			} else {
-				return ReferencePackageImpl.eINSTANCE.updateNonContainmentEReference;
+				return ReferencePackageImpl.eINSTANCE.updateSingleValuedNonContainmentEReference;
 			}
 		}
 	}
@@ -124,6 +129,10 @@ final class EChangeHelper {
 	static def dispatch EClass generateCreateEChange(EClass element) {
 		return ObjectPackageImpl.eINSTANCE.createRootEObject;
 	}	
+	
+	static def dispatch EClass generateDeleteEChange(EModelElement changedElement) {
+		throw new UnsupportedOperationException("The given element is not supported.");
+	} 
 	
 	static def dispatch EClass generateDeleteEChange(EAttribute feature) {
 		if (feature.upperBound > 1 || feature.upperBound == -1) {
