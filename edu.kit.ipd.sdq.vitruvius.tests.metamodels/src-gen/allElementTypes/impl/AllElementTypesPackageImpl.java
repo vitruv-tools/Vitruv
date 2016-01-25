@@ -11,7 +11,6 @@ import allElementTypes.Root;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -190,24 +189,6 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getRoot__SingleValuedOperation() {
-		return rootEClass.getEOperations().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getRoot__MultiValuedOperation() {
-		return rootEClass.getEOperations().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getNonRoot() {
 		return nonRootEClass;
 	}
@@ -284,8 +265,6 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 		createEReference(rootEClass, ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE);
 		createEReference(rootEClass, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE);
 		createEReference(rootEClass, ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER);
-		createEOperation(rootEClass, ROOT___SINGLE_VALUED_OPERATION);
-		createEOperation(rootEClass, ROOT___MULTI_VALUED_OPERATION);
 
 		nonRootEClass = createEClass(NON_ROOT);
 
@@ -330,17 +309,13 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(rootEClass, Root.class, "Root", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getRoot_SingleValuedEAttribute(), ecorePackage.getEInt(), "singleValuedEAttribute", "0", 0, 1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRoot_SingleValuedEAttribute(), ecorePackage.getEIntegerObject(), "singleValuedEAttribute", "0", 0, 1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRoot_SingleValuedNonContainmentEReference(), this.getNonRoot(), null, "singleValuedNonContainmentEReference", null, 0, 1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRoot_SingleValuedContainmentEReference(), this.getNonRoot(), null, "singleValuedContainmentEReference", null, 0, 1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getRoot_MultiValuedEAttribute(), ecorePackage.getEInt(), "multiValuedEAttribute", null, 0, -1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRoot_MultiValuedEAttribute(), ecorePackage.getEIntegerObject(), "multiValuedEAttribute", null, 0, -1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRoot_MultiValuedNonContainmentEReference(), this.getNonRoot(), null, "multiValuedNonContainmentEReference", null, 0, -1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRoot_MultiValuedContainmentEReference(), this.getNonRoot(), null, "multiValuedContainmentEReference", null, 0, -1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRoot_NonRootObjectContainerHelper(), this.getNonRootObjectContainerHelper(), null, "nonRootObjectContainerHelper", null, 1, 1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEOperation(getRoot__SingleValuedOperation(), null, "singleValuedOperation", 0, 1, IS_UNIQUE, IS_ORDERED);
-
-		initEOperation(getRoot__MultiValuedOperation(), ecorePackage.getEInt(), "multiValuedOperation", 0, -1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(nonRootEClass, NonRoot.class, "NonRoot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

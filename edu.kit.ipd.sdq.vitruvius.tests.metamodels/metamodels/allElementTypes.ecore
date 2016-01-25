@@ -3,16 +3,15 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="allElementTypes" nsURI="http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.allElementTypes"
     nsPrefix="allElementTypes">
   <eClassifiers xsi:type="ecore:EClass" name="Root" eSuperTypes="#//Identified">
-    <eOperations name="singleValuedOperation"/>
-    <eOperations name="multiValuedOperation" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="singleValuedEAttribute"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="0"/>
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"
+        defaultValueLiteral="0"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="singleValuedNonContainmentEReference"
         eType="#//NonRoot"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="singleValuedContainmentEReference"
         eType="#//NonRoot" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="multiValuedEAttribute"
-        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="multiValuedNonContainmentEReference"
         upperBound="-1" eType="#//NonRoot"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="multiValuedContainmentEReference"

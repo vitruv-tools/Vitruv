@@ -6,9 +6,6 @@ import allElementTypes.AllElementTypesPackage;
 import allElementTypes.NonRoot;
 import allElementTypes.NonRootObjectContainerHelper;
 import allElementTypes.Root;
-
-import java.lang.reflect.InvocationTargetException;
-
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -53,7 +50,7 @@ public class RootImpl extends IdentifiedImpl implements Root {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int SINGLE_VALUED_EATTRIBUTE_EDEFAULT = 0;
+	protected static final Integer SINGLE_VALUED_EATTRIBUTE_EDEFAULT = new Integer(0);
 
 	/**
 	 * The cached value of the '{@link #getSingleValuedEAttribute() <em>Single Valued EAttribute</em>}' attribute.
@@ -63,7 +60,7 @@ public class RootImpl extends IdentifiedImpl implements Root {
 	 * @generated
 	 * @ordered
 	 */
-	protected int singleValuedEAttribute = SINGLE_VALUED_EATTRIBUTE_EDEFAULT;
+	protected Integer singleValuedEAttribute = SINGLE_VALUED_EATTRIBUTE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getSingleValuedNonContainmentEReference() <em>Single Valued Non Containment EReference</em>}' reference.
@@ -149,7 +146,7 @@ public class RootImpl extends IdentifiedImpl implements Root {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public int getSingleValuedEAttribute() {
+	public Integer getSingleValuedEAttribute() {
 		return singleValuedEAttribute;
 	}
 
@@ -158,8 +155,8 @@ public class RootImpl extends IdentifiedImpl implements Root {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setSingleValuedEAttribute(int newSingleValuedEAttribute) {
-		int oldSingleValuedEAttribute = singleValuedEAttribute;
+	public void setSingleValuedEAttribute(Integer newSingleValuedEAttribute) {
+		Integer oldSingleValuedEAttribute = singleValuedEAttribute;
 		singleValuedEAttribute = newSingleValuedEAttribute;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, AllElementTypesPackage.ROOT__SINGLE_VALUED_EATTRIBUTE, oldSingleValuedEAttribute, singleValuedEAttribute));
@@ -330,28 +327,6 @@ public class RootImpl extends IdentifiedImpl implements Root {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void singleValuedOperation() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EList<Integer> multiValuedOperation() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -471,7 +446,7 @@ public class RootImpl extends IdentifiedImpl implements Root {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_EATTRIBUTE:
-				return singleValuedEAttribute != SINGLE_VALUED_EATTRIBUTE_EDEFAULT;
+				return SINGLE_VALUED_EATTRIBUTE_EDEFAULT == null ? singleValuedEAttribute != null : !SINGLE_VALUED_EATTRIBUTE_EDEFAULT.equals(singleValuedEAttribute);
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE:
 				return singleValuedNonContainmentEReference != null;
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE:
@@ -486,23 +461,6 @@ public class RootImpl extends IdentifiedImpl implements Root {
 				return nonRootObjectContainerHelper != null;
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case AllElementTypesPackage.ROOT___SINGLE_VALUED_OPERATION:
-				singleValuedOperation();
-				return null;
-			case AllElementTypesPackage.ROOT___MULTI_VALUED_OPERATION:
-				return multiValuedOperation();
-		}
-		return super.eInvoke(operationID, arguments);
 	}
 
 	/**

@@ -37,12 +37,12 @@ public interface Root extends Identified {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Single Valued EAttribute</em>' attribute.
-	 * @see #setSingleValuedEAttribute(int)
+	 * @see #setSingleValuedEAttribute(Integer)
 	 * @see allElementTypes.AllElementTypesPackage#getRoot_SingleValuedEAttribute()
 	 * @model default="0"
 	 * @generated
 	 */
-	int getSingleValuedEAttribute();
+	Integer getSingleValuedEAttribute();
 
 	/**
 	 * Sets the value of the '{@link allElementTypes.Root#getSingleValuedEAttribute <em>Single Valued EAttribute</em>}' attribute.
@@ -52,7 +52,7 @@ public interface Root extends Identified {
 	 * @see #getSingleValuedEAttribute()
 	 * @generated
 	 */
-	void setSingleValuedEAttribute(int value);
+	void setSingleValuedEAttribute(Integer value);
 
 	/**
 	 * Returns the value of the '<em><b>Single Valued Non Containment EReference</b></em>' reference.
@@ -179,21 +179,5 @@ public interface Root extends Identified {
 	 * @generated
 	 */
 	void setNonRootObjectContainerHelper(NonRootObjectContainerHelper value);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model
-	 * @generated
-	 */
-	void singleValuedOperation();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model
-	 * @generated
-	 */
-	EList<Integer> multiValuedOperation();
 
 } // Root

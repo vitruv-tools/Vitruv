@@ -4,7 +4,6 @@ package allElementTypes;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -186,31 +185,13 @@ public interface AllElementTypesPackage extends EPackage {
 	int ROOT_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 7;
 
 	/**
-	 * The operation id for the '<em>Single Valued Operation</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ROOT___SINGLE_VALUED_OPERATION = IDENTIFIED_OPERATION_COUNT + 0;
-
-	/**
-	 * The operation id for the '<em>Multi Valued Operation</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ROOT___MULTI_VALUED_OPERATION = IDENTIFIED_OPERATION_COUNT + 1;
-
-	/**
 	 * The number of operations of the '<em>Root</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT_OPERATION_COUNT = IDENTIFIED_OPERATION_COUNT + 2;
+	int ROOT_OPERATION_COUNT = IDENTIFIED_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link allElementTypes.impl.NonRootImpl <em>Non Root</em>}' class.
@@ -384,26 +365,6 @@ public interface AllElementTypesPackage extends EPackage {
 	EReference getRoot_NonRootObjectContainerHelper();
 
 	/**
-	 * Returns the meta object for the '{@link allElementTypes.Root#singleValuedOperation() <em>Single Valued Operation</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Single Valued Operation</em>' operation.
-	 * @see allElementTypes.Root#singleValuedOperation()
-	 * @generated
-	 */
-	EOperation getRoot__SingleValuedOperation();
-
-	/**
-	 * Returns the meta object for the '{@link allElementTypes.Root#multiValuedOperation() <em>Multi Valued Operation</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Multi Valued Operation</em>' operation.
-	 * @see allElementTypes.Root#multiValuedOperation()
-	 * @generated
-	 */
-	EOperation getRoot__MultiValuedOperation();
-
-	/**
 	 * Returns the meta object for class '{@link allElementTypes.NonRoot <em>Non Root</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -543,22 +504,6 @@ public interface AllElementTypesPackage extends EPackage {
 		 * @generated
 		 */
 		EReference ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER = eINSTANCE.getRoot_NonRootObjectContainerHelper();
-
-		/**
-		 * The meta object literal for the '<em><b>Single Valued Operation</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation ROOT___SINGLE_VALUED_OPERATION = eINSTANCE.getRoot__SingleValuedOperation();
-
-		/**
-		 * The meta object literal for the '<em><b>Multi Valued Operation</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation ROOT___MULTI_VALUED_OPERATION = eINSTANCE.getRoot__MultiValuedOperation();
 
 		/**
 		 * The meta object literal for the '{@link allElementTypes.impl.NonRootImpl <em>Non Root</em>}' class.
