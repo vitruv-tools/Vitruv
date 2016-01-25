@@ -105,7 +105,7 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 	}
 	
 	private def Iterable<JvmFormalParameter> generateAffectedModelParameters(AffectedModel affectedModel, EObject parameterContext) {
-		if (affectedModel != null) {
+		if (affectedModel?.model != null) {
 			return #[parameterContext.generateAffectedModelParameter(affectedModel.model.instanceTypeName)];
 		}
 		return #[];

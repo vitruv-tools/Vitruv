@@ -115,8 +115,8 @@ final class ResponseLanguageGeneratorUtils {
 			event.feature.element.name.toFirstUpper»'''
 	
 	static def dispatch String getResponseNameForEvent(ChangeEvent event) '''
-		«event.change.name»Of«IF event.feature.feature != null»«event.feature.feature.name.toFirstUpper»In«ENDIF»«
-			event.feature.element.name.toFirstUpper»'''
+		«event.change.name»Of«IF event.feature?.feature != null»«event.feature.feature.name.toFirstUpper»In«ENDIF»«
+			event.feature?.element?.name?.toFirstUpper»'''
 	
 	
 	static def getXtendCode(CompareBlock compareBlock) {
