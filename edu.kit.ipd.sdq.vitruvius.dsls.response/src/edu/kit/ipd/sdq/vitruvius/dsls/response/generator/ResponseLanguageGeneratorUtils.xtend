@@ -88,15 +88,11 @@ final class ResponseLanguageGeneratorUtils {
 			sourceModel = event.feature.element.EPackage;
 		}
 		if (sourceModel != null) {
-			val sourceUri = sourceModel.nsURI;//responseFile.metamodelImports.findFirst[imp | imp.package == sourcePackage].package.nsURI
-			val source = VURI.getInstance(sourceUri);
-			var target = VURI.getInstance(sourceUri);
-			val affectedModel = response.effects.affectedModel;
-			if (affectedModel != null) {
-				val targetPackage = affectedModel.model.EPackage
-				val targetUri = responseFile.metamodelImports.findFirst[imp | imp.package == targetPackage].package.nsURI
-				target = VURI.getInstance(targetUri);
-			}
+			val sourceURI = sourceModel.nsURI;
+			val targetModel = response.effects.targetModel;
+			var targetURI = targetModel?.rootModelElement?.modelElement?.EPackage?.nsURI?:sourceModel.nsURI;
+			val source = VURI.getInstance(sourceURI);
+			var target = VURI.getInstance(targetURI);
 			val sourceTargetPair = new Pair<VURI, VURI>(source, target);
 			return sourceTargetPair
 		}

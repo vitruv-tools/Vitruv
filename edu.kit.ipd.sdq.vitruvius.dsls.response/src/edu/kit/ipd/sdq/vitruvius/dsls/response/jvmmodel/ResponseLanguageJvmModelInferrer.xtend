@@ -24,8 +24,9 @@ import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguage
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AffectedModel
 import org.eclipse.emf.ecore.EModelElement
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetModel
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondenceSourceDeterminationBlock
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the response file model.</p> 
@@ -37,6 +38,25 @@ import org.eclipse.emf.ecore.EModelElement
 class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 
 	@Inject extension JvmTypesBuilder
+	
+	def dispatch void infer(CorrespondenceSourceDeterminationBlock correspondenceSourceBlock, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+		if (isPreIndexingPhase) {
+			return;
+		}
+		val response = correspondenceSourceBlock.containingResponse;
+		val methodParameters = <JvmFormalParameter>newArrayList();
+		if (response?.trigger != null) {
+			methodParameters += generateChangeParameters(response?.trigger, correspondenceSourceBlock);	
+		}
+		
+		acceptor.accept(response.toClass("ResponseHelperSourceCorrespondence")) [
+			members += correspondenceSourceBlock.toMethod(RESPONSE_APPLY_METHOD_NAME, typeRef(EObject)) [applyMethod |
+				applyMethod.parameters += methodParameters
+				applyMethod.body = correspondenceSourceBlock.object];
+			it.makeClassStatic(response)
+		]
+	}
+	
 	
 	def dispatch void infer(CodeBlock codeBlock, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		if (isPreIndexingPhase) {
@@ -73,8 +93,8 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 		if (response?.trigger != null) {
 			methodParameters += generateChangeParameters(response?.trigger, blockContext);	
 		}
-		if (response?.effects?.affectedModel != null) {
-			methodParameters += generateAffectedModelParameters(response?.effects?.affectedModel, blockContext);
+		if (response?.effects?.targetModel?.rootModelElement != null) {
+			methodParameters += generateAffectedModelParameters(response?.effects?.targetModel, blockContext);
 		}
 		return methodParameters;
 	}
@@ -104,9 +124,9 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 		}
 	}
 	
-	private def Iterable<JvmFormalParameter> generateAffectedModelParameters(AffectedModel affectedModel, EObject parameterContext) {
-		if (affectedModel?.model != null) {
-			return #[parameterContext.generateAffectedModelParameter(affectedModel.model.instanceTypeName)];
+	private def Iterable<JvmFormalParameter> generateAffectedModelParameters(TargetModel targetModel, EObject parameterContext) {
+		if (targetModel?.rootModelElement?.modelElement != null) {
+			return #[parameterContext.generateAffectedModelParameter(targetModel.rootModelElement.modelElement.instanceTypeName)];
 		}
 		return #[];
 	}

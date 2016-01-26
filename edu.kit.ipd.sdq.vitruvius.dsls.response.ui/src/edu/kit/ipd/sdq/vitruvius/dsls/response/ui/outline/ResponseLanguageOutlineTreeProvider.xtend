@@ -14,10 +14,10 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ChangeEvent
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CompareBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AffectedModel
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetModel
 
 /**
  * Ouline structure defintion for a response file.
@@ -81,11 +81,11 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, Effects effects) {
-		if (effects.affectedModel != null) {
+		if (effects.targetModel?.rootModelElement != null) {
 			val affectedModelNode = createEStructuralFeatureNode(parentNode, effects, 
-				ResponseLanguagePackage.Literals.EFFECTS__AFFECTED_MODEL,
-				imageDispatcher.invoke(effects.affectedModel), "Affected model", effects.affectedModel.model == null);
-			createChildren(affectedModelNode, effects.affectedModel);
+				ResponseLanguagePackage.Literals.EFFECTS__TARGET_MODEL,
+				imageDispatcher.invoke(effects.targetModel), "Target model", effects.targetModel.rootModelElement?.modelElement == null);
+			createChildren(affectedModelNode, effects.targetModel);
 		}
 		if (effects.perModelPrecondition != null) {
 			createChildren(parentNode, effects.perModelPrecondition);
@@ -93,9 +93,9 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		createChildren(parentNode, effects.codeBlock);
 	}
 	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, AffectedModel affectedModel) {
-		if (affectedModel.model != null) {
-			createEObjectNode(parentNode, affectedModel.model);
+	protected def void _createChildren(EStructuralFeatureNode parentNode, TargetModel targetModel) {
+		if (targetModel.rootModelElement.modelElement!= null) {
+			createEObjectNode(parentNode, targetModel.rootModelElement.modelElement);
 		}
 	}
 	
@@ -146,7 +146,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return true;
 	}
 	
-	protected def boolean _isLeaf(AffectedModel affectedModel) {
+	protected def boolean _isLeaf(TargetModel targetModel) {
 		return true;
 	}
 	

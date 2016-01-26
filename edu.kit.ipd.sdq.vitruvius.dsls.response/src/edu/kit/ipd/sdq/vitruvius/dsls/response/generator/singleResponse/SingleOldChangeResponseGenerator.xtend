@@ -35,7 +35,7 @@ class SingleOldChangeResponseGenerator implements ISingleResponseGenerator {
 		}
 		this.response = response;
 		this.changeEvent = response.trigger as ModelChangeEvent;
-		this.hasAffectedModel = response.effects.affectedModel != null;
+		this.hasAffectedModel = response.effects.targetModel != null;
 		this.hasPreconditionBlock = response.effects.perModelPrecondition != null;
 		this.ih = new XtendImportHelper();
 	}
@@ -51,7 +51,7 @@ class SingleOldChangeResponseGenerator implements ISingleResponseGenerator {
 			«generateMethodCheckPrecondition()»
 			
 			«IF hasAffectedModel»
-			«generateMethodDetermineAffectedModels(response.effects.affectedModel.model)»
+			«generateMethodDetermineAffectedModels(response.effects.targetModel.rootModelElement.modelElement)»
 			
 			«ENDIF»
 			«IF hasPreconditionBlock»
@@ -130,7 +130,7 @@ class SingleOldChangeResponseGenerator implements ISingleResponseGenerator {
 
 	private def generateMethodCheckPerModelPrecondition() '''
 		private def boolean checkPerModelPrecondition(«changeEventTypeString» «CHANGE_PARAMETER_NAME»«
-			IF response.effects.affectedModel != null», «ih.typeRef(response.effects.affectedModel.model)» affectedModel«ENDIF
+			IF response.effects.targetModel != null», «ih.typeRef(response.effects.targetModel.rootModelElement.modelElement)» affectedModel«ENDIF
 			»)«response.effects.perModelPrecondition.xtendCode»
 	'''
 			
@@ -175,7 +175,7 @@ class SingleOldChangeResponseGenerator implements ISingleResponseGenerator {
 	
 	private def generateMethodPerformResponse() '''
 		private def performResponseTo(«changeEventTypeString» «CHANGE_PARAMETER_NAME»«
-			IF hasAffectedModel», «ih.typeRef(response.effects.affectedModel.model)» affectedModel«ENDIF
+			IF hasAffectedModel», «ih.typeRef(response.effects.targetModel.rootModelElement.modelElement)» affectedModel«ENDIF
 			»)«response.effects.codeBlock.xtendCode»
 	'''
 

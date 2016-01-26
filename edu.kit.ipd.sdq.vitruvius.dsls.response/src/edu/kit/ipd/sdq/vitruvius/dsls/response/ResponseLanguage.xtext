@@ -18,10 +18,22 @@ Response:
 	'response to' trigger=Trigger effects=Effects;
 	
 Effects:
-	('affects' affectedModel=AffectedModel)? ('when' perModelPrecondition=CompareBlock)? 'executes' codeBlock=CodeBlock;
+	(targetModel=TargetModel)? ('when' perModelPrecondition=CompareBlock)? 'executes' codeBlock=CodeBlock;
 
-AffectedModel:
-	model=[ecore::EClass|QualifiedName];
+TargetModel:
+	UpdatedModel | CreatedModel;
+
+UpdatedModel:
+	'updates' rootModelElement=ModelElement 'corresponding to' correspondenceSource=CorrespondenceSourceDeterminationBlock;
+	
+CreatedModel:
+	'creates' rootModelElement=ModelElement 'as' name=STRING;
+
+ModelElement:
+	modelElement=[ecore::EClass|QualifiedName];
+
+CorrespondenceSourceDeterminationBlock:
+	object=XBlockExpression;
 
 CompareBlock:
 	code=XBlockExpression;

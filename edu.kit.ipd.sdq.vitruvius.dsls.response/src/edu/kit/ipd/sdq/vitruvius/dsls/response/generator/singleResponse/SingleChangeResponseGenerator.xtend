@@ -21,6 +21,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceRootEObject
 import org.eclipse.emf.ecore.EClass
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ChangeEvent
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.UpdatedModel
 
 class SingleChangeResponseGenerator implements ISingleResponseGenerator {
 	private Response response;
@@ -41,7 +42,7 @@ class SingleChangeResponseGenerator implements ISingleResponseGenerator {
 		} else {
 			this.change = changeEvent.change.generateEChange(changeEvent.feature.element)
 		}
-		this.hasAffectedModel = response.effects.affectedModel != null;
+		this.hasAffectedModel = response.effects.targetModel != null;
 		this.hasPreconditionBlock = response.effects.perModelPrecondition != null;
 		this.ih = new XtendImportHelper();
 	}
@@ -57,8 +58,9 @@ class SingleChangeResponseGenerator implements ISingleResponseGenerator {
 			
 			«generateMethodCheckPrecondition()»
 			
-			«IF hasAffectedModel»
-			«generateMethodDetermineAffectedModels(response.effects.affectedModel.model)»
+			«IF hasAffectedModel && response.effects.targetModel instanceof UpdatedModel»
+			«generateMethodDetermineAffectedModels(response.effects.targetModel as UpdatedModel, 
+				response.effects.targetModel.rootModelElement.modelElement)»
 			
 			«ENDIF»
 			«IF hasPreconditionBlock»
@@ -110,16 +112,17 @@ class SingleChangeResponseGenerator implements ISingleResponseGenerator {
 		}
 	'''
 	
-	private def generateMethodDetermineAffectedModels(EClass affectedElementClass) '''
+	private def generateMethodDetermineAffectedModels(UpdatedModel updatedModel, EClass affectedElementClass) '''
 		private def «ih.typeRef(List)»<«ih.typeRef(affectedElementClass)»> determineAffectedModels(«
 			changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)» blackboard) {
 			val affectedModels = new «ih.typeRef(ArrayList)»<«ih.typeRef(affectedElementClass)»>();
-			«IF EFeatureChange.isAssignableFrom(change.instanceClass)»
+			val root = «updatedModel.correspondenceSource.object.xtendCode»
+			«/*«IF EFeatureChange.isAssignableFrom(change.instanceClass)»
 			val changedObject = «CHANGE_PARAMETER_NAME».oldAffectedEObject;
-			val root = changedObject.«ih.callExtensionMethod(ResponseRuntimeHelper, "modelRoot")»; 
+			val root = changedObject.«ih.callExtensionMethod(ResponseRuntimeHelper, "modelRoot")»;*/» 
 			affectedModels += blackboard.correspondenceInstance.«ih.callExtensionMethod(ResponseRuntimeHelper,
 				'''getCorrespondingObjectsOfType(root, «ih.typeRef(affectedElementClass)»)''')»;
-			«ENDIF»
+			«/*ENDIF*/»
 			return affectedModels;
 		}
 	'''
@@ -132,7 +135,7 @@ class SingleChangeResponseGenerator implements ISingleResponseGenerator {
 
 	private def generateMethodCheckPerModelPrecondition() '''
 		private def boolean checkPerModelPrecondition(«changeEventTypeString» «CHANGE_PARAMETER_NAME»«
-			IF response.effects.affectedModel != null», «ih.typeRef(response.effects.affectedModel.model)» affectedModel«ENDIF
+			IF response.effects.targetModel != null», «ih.typeRef(response.effects.targetModel.rootModelElement.modelElement)» affectedModel«ENDIF
 			»)«response.effects.perModelPrecondition.xtendCode»
 	'''
 			
@@ -177,7 +180,7 @@ class SingleChangeResponseGenerator implements ISingleResponseGenerator {
 	
 	private def generateMethodPerformResponse() '''
 		private def performResponseTo(«changeEventTypeString» «CHANGE_PARAMETER_NAME»«
-			IF hasAffectedModel», «ih.typeRef(response.effects.affectedModel.model)» affectedModel«ENDIF
+			IF hasAffectedModel», «ih.typeRef(response.effects.targetModel.rootModelElement.modelElement)» affectedModel«ENDIF
 			»)«response.effects.codeBlock.xtendCode»
 	'''
 
