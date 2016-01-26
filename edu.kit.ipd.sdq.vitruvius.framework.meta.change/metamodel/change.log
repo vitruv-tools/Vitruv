@@ -1,0 +1,47 @@
++ AddChange<T extends EJavaObject>
++ AddChange.newValue:T
++ SubtractChange<T extends EJavaObject>
++ SubtractChange.oldValue:T
+
+- ReplaceRootEObject.newValue
+- ReplaceRootEObject.oldValue
++ ReplaceRootEObject extends DeleteERootObject, CreateRootEObject
+~ DeleteRootEObject.oldValue:T -> oldTUID:TUID
+- CreateRootEObject.newValue
++ CreateRootEObject extends AddChange
+- DeleteERootObject.oldValue
++ DeleteERootObject extends SubtractChange
+
+- UnsetContainmentEReference
+- UnsetNonContainmentEReference
++ UnsetEReference.isContainment():bool
+
+- ReplaceInEList.newValue
+- ReplaceInEList.oldValue
++ ReplaceInEList extends RemoveFromEList, InsertInEList
+- InsertInEList.newValue
++ InsertInEList extends AddChange
+- RemoveFromEList.oldValue
++ RemoveFromEList extends SubtractChange
+
+~ UpdateSingleValuedEAttribute -> ReplaceSingleValuedEAttribute
+- UpdateSingleValuedEAttribute.oldValue
++ UpdateSingleValuedEAttribute extends SubtractChange
+- UpdateSingleValuedEAttribute.newValue
++ UpdateSingleValuedEAttribute extends AddChange
+
+
+~ UpdateSingleValuedNonContainmentEReference -> ReplaceSingleValuedNonContainmentEReference
+- UpdateSingleValuedNonContainmentEReference.oldValue
++ UpdateSingleValuedNonContainmentEReference extends SubtractChange
+- UpdateSingleValuedNonContainmentEReference.newValue
++ UpdateSingleValuedNonContainmentEReference extends AddChange
+
+
+-----------------------------------------
+
+
+entweder Create Replace DeleteEObject und alle ..Contaiment.. entfernen und ...XNonContainmentY.. in ..XY.. umbenennen und jeweils isContainment():bool hinzufügen
+oder in Create Replace DeleteNonRootEObjectSingle newValue und oldValue entfernen und Replace von Create und Delete erben lassen und diese von Add und Subtract
+
+wohin mit dem isContainment? direkt in Add und Subtract?
