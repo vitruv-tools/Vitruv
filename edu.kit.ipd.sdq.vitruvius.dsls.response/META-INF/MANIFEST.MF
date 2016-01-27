@@ -39,8 +39,5 @@ Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage,
  edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.util,
  edu.kit.ipd.sdq.vitruvius.dsls.response.services,
  edu.kit.ipd.sdq.vitruvius.dsls.response.parser.antlr.internal,
- edu.kit.ipd.sdq.vitruvius.dsls.response.scoping,
- edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.change,
- edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.change.impl,
- edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.change.util
+ edu.kit.ipd.sdq.vitruvius.dsls.response.scoping
 Import-Package: org.apache.log4j

@@ -17,7 +17,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetModel
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelElementChangeEvent
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
 
 /**
  * Ouline structure defintion for a response file.
@@ -70,7 +70,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		createEObjectNode(parentNode, trigger);
 	}
 	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, ModelElementChangeEvent event) {
+	protected def void _createChildren(EStructuralFeatureNode parentNode, ConcreteModelElementChange event) {
 		createEObjectNode(parentNode, event);
 		if (event.changedObject != null) {
 			createEObjectNode(parentNode, event.changedObject.element);
@@ -122,9 +122,9 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return "There is no outline for this trigger";
 	}
 	
-	protected def Object _text(ModelElementChangeEvent event) {
+	protected def Object _text(ConcreteModelElementChange event) {
 		if (event.changedObject?.element != null) {
-			return event.changeType.generateEChange(event.changedObject?.feature?:event.changedObject?.element)?.name;
+			return event.generateEChange()?.name;
 		} else {
 			return "No changed element specified"
 		}
@@ -150,7 +150,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return true;
 	}
 	
-	protected def boolean _isLeaf(ModelElementChangeEvent event) {
+	protected def boolean _isLeaf(ConcreteModelElementChange event) {
 		return true;
 	}
 	

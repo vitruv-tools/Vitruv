@@ -11,7 +11,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CompareBlock
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.xtext.xbase.XExpression
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelElementChangeEvent
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
 
 final class ResponseLanguageGeneratorUtils {
 	private static val FSA_SEPARATOR = "/";
@@ -81,7 +81,7 @@ final class ResponseLanguageGeneratorUtils {
 		val event = response.trigger;
 		var EPackage sourceModel;
 		
-		if (event instanceof ModelElementChangeEvent) {
+		if (event instanceof ConcreteModelElementChange) {
 			sourceModel = event.changedObject.element.EPackage;
 		}
 		if (sourceModel != null) {
@@ -103,8 +103,8 @@ final class ResponseLanguageGeneratorUtils {
 		throw new UnsupportedOperationException("Response name fragment is not defined for this event type.")
 	}
 	
-	static def dispatch String getResponseNameForEvent(ModelElementChangeEvent event) '''
-		«event.changeType.name»Of«IF event.changedObject?.feature != null»«event.changedObject.feature.name.toFirstUpper»In«ENDIF»«
+	static def dispatch String getResponseNameForEvent(ConcreteModelElementChange event) '''
+		«event.class.simpleName»Of«IF event.changedObject?.feature != null»«event.changedObject.feature.name.toFirstUpper»In«ENDIF»«
 			event.changedObject?.element?.name?.toFirstUpper»'''
 	
 	

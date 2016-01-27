@@ -1,16 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.scoping
 
 import com.google.inject.Inject
-//import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintBlock
-//import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintExpression
-//import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ContextVariable
-//import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.FeatureOfContextVariable
-//import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping
-//import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage
-//import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NamedEClass
-//import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping
-//import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathBase
-//import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathTail
 import java.util.Iterator
 import java.util.function.Function
 import org.apache.log4j.Logger
@@ -40,8 +30,6 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelImport
 // TODO HK refactor to only one implementation
 class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 	private static val LOGGER = Logger.getLogger(ResponseLanguageScopeProviderDelegate)
-	private static val String CHANGE_MM_URI = "http://edu.kit.ipd.sdq.vitruvius/Change/1.0";
-	private static val String CHANGE_URI = "http://www.kit.edu/ipd/sdq/vitruvius/dsls/response/ResponseLanguage/Change";
 	
 	@Inject
 	IQualifiedNameProvider qualifiedNameProvider;
@@ -62,20 +50,10 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 		else if (reference.equals(FEATURE_OF_ELEMENT__ELEMENT)
 			|| reference.equals(MODEL_ELEMENT__MODEL_ELEMENT))
 			return createQualifiedEClassScope(context.eResource)
-		else if (reference.equals(MODEL_ELEMENT_CHANGE_EVENT__CHANGE_TYPE))
+		/*else if (reference.equals(MODEL_ELEMENT_CHANGE_EVENT__CHANGE_TYPE))
 			return createChangeScope();
-					
+			*/		
 		super.getScope(context, reference)
-	}
-	
-	def createChangeScope() {
-		val resultScope = new SimpleScope(IScope.NULLSCOPE, changeObjects);
-		return resultScope	
-	}
-	
-	private final Iterable<IEObjectDescription> changeObjects = {
-		val changePckg = EPackage.Registry.INSTANCE.getEPackage(CHANGE_URI);
-		collectObjectDescriptions(changePckg, true, false, true);
 	}
 	
 	def hasQualifiedName(EObject eObject) {
@@ -132,17 +110,6 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 
 		var resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions)
 		return resultScope
-	}
-	
-	
-	def createChangeEventsScope(Resource res) {
-		val resultScope = new SimpleScope(IScope.NULLSCOPE, changeMMObjects);
-		return resultScope	
-	}
-	
-	private final Iterable<IEObjectDescription> changeMMObjects = {
-		val changePckg = EPackage.Registry.INSTANCE.getEPackage(CHANGE_MM_URI);
-		collectObjectDescriptions(changePckg, true, true, true);
 	}
 	
 	private def Iterable<IEObjectDescription> collectObjectDescriptions(EPackage pckg, 

@@ -25,12 +25,11 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CreatedModel
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.FeatureOfElement
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelReference
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelElementChangeEvent
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
 
 class SingleChangeResponseGenerator implements ISingleResponseGenerator {
 	private Response response;
-	private ModelElementChangeEvent changeEvent;
+	private ConcreteModelElementChange changeEvent;
 	private EClass change;
 	private XtendImportHelper ih;
 	private boolean hasAffectedModel;
@@ -38,17 +37,12 @@ class SingleChangeResponseGenerator implements ISingleResponseGenerator {
 	private boolean hasExecutionBlock;
 	
 	protected new(Response response) {
-		if (!(response.trigger instanceof ModelElementChangeEvent)) {
+		if (!(response.trigger instanceof ConcreteModelElementChange)) {
 			throw new IllegalArgumentException("Response must be triggered by a change event")
 		}
 		this.response = response;
-		this.changeEvent = response.trigger as ModelElementChangeEvent;
-		val changeObject = changeEvent.changedObject as FeatureOfElement;
-		if (changeObject.feature != null) {	
-			this.change = changeEvent.changeType.generateEChange(changeObject.feature)
-		} else {
-			this.change = changeEvent.changeType.generateEChange(changeObject.element)
-		}
+		this.changeEvent = response.trigger as ConcreteModelElementChange;
+		this.change = changeEvent.generateEChange()
 		this.hasAffectedModel = response.effects.targetModel != null;
 		this.hasPreconditionBlock = response.effects.perModelPrecondition != null;
 		this.hasExecutionBlock = response.effects.codeBlock != null;

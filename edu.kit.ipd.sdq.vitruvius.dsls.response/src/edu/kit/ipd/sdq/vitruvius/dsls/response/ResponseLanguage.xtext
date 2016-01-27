@@ -48,12 +48,21 @@ InvariantViolationEvent:
 	"invariant" violation=[ecore::EClass|QualifiedName];
 
 Trigger:
-	InvariantViolationEvent | ModelElementChangeEvent | ModelChangeEvent;
+	ModelChange | InvariantViolationEvent;
+	
+ModelChange:
+	ConcreteModelElementChange | ArbitraryModelElementChange;
 
-ModelElementChangeEvent:
-	'element' changeType=[ecore::EClass|QualifiedName] 'of' changedObject=FeatureOfElement;
+ConcreteModelElementChange returns ConcreteModelElementChange:
+	ModelElementChangeType 'of' changedObject=FeatureOfElement;
 
-ModelChangeEvent:
+ModelElementChangeType returns ConcreteModelElementChange:
+	'element change' {ConcreteModelElementChange} | 
+	'element create' {ConcreteModelElementCreate} |
+	'element update' {ConcreteModelElementUpdate} |
+	'element delete' {ConcreteModelElementDelete};
+
+ArbitraryModelElementChange:
 	'model change' 'in' changedmodel=MetamodelReference;
 	
 MetamodelReference:
@@ -61,4 +70,5 @@ MetamodelReference:
 
 FeatureOfElement:
 	element=[ecore::EClass|QualifiedName] ('[' feature=[ecore::EStructuralFeature|ValidID] ']')?;
+
 	

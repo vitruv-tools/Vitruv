@@ -22,11 +22,12 @@ import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguage
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
-import org.eclipse.emf.ecore.EModelElement
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetModel
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondenceSourceDeterminationBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.UpdatedModel
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelElementChangeEvent
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
+import java.util.List
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the response file model.</p> 
@@ -100,13 +101,15 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 		return #[];
 	}
 
-	private def dispatch Iterable<JvmFormalParameter> generateChangeParameters(ModelElementChangeEvent event, EObject parameterContext) {
-		var EModelElement changedElement = event.changedObject.feature?:event.changedObject.element;
-		var eChange = event.changeType.generateEChange(changedElement);
+	private def dispatch Iterable<JvmFormalParameter> generateChangeParameters(ModelChange event, EObject parameterContext) {
+		var eChange = event.generateEChange();
 		if (eChange == null) {
 			return #[];
 		}
-		var changeTypeParameters = #[getGenericTypeParameterFQNOfChange(eChange, event.changedObject)]
+		var List<String> changeTypeParameters = <String>newArrayList;
+		if (event instanceof ConcreteModelElementChange) {
+			changeTypeParameters = #[getGenericTypeParameterFQNOfChange(eChange, event.changedObject)]			
+		}
 		val changeParameter = parameterContext.generateChangeParameter(eChange.instanceTypeName, changeTypeParameters);
 		if (changeParameter != null) {
 			return #[changeParameter];

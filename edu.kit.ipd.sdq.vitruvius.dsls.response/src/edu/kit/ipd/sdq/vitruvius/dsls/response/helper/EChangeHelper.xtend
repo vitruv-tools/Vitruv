@@ -16,7 +16,12 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.FeaturePacka
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.impl.ObjectPackageImpl
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.FeatureOfElement
 import org.eclipse.emf.ecore.EModelElement
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.change.ChangePackage
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementUpdate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChange
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.ChangePackageImpl
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementCreate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementDelete
 
 final class EChangeHelper {
 	
@@ -38,7 +43,7 @@ final class EChangeHelper {
 		return className;
 	}
 	
-	static def String convertPrimitiveTypeToClassName(String className) {
+	private static def String convertPrimitiveTypeToClassName(String className) {
 		switch (className) {
 			case "short": return Short.name
 			case "int": return Integer.name
@@ -53,36 +58,19 @@ final class EChangeHelper {
 		}
 	}
 	
-	static def EClass generateEChange(EClass responseChange, EModelElement changedObject) {
-		if (responseChange.equals(ChangePackage.Literals.UPDATE)) {
-			generateUpdateEChange(changedObject);
-		} else if (responseChange.equals(ChangePackage.Literals.CREATE)) {
-			generateCreateEChange(changedObject);
-		} else if (responseChange.equals(ChangePackage.Literals.DELETE)) {
-			generateDeleteEChange(changedObject);
-		} else {
-			return null;
-		}
+	static def dispatch EClass generateEChange(ModelChange modelChange) {
+		return ChangePackageImpl.eINSTANCE.EChange;
 	}
 	
-	static def EClass generateEChange(EClass responseChange) {
-		if (responseChange.equals(ChangePackage.Literals.CHANGE)) {
-			generateChangeEChange();
-		} else {
-			return null;
-		}
-		}
-	
-	
-	static def EClass generateUpdateEChange() {
-		return ObjectPackageImpl.eINSTANCE.EObjectChange;
+	static def dispatch EClass generateEChange(ConcreteModelElementChange elementChange) {
+		generateEChange(elementChange, elementChange.changedObject.feature?:elementChange.changedObject.element);
 	}
 	
-	static def dispatch EClass generateUpdateEChange(EModelElement changedElement) {
-		throw new UnsupportedOperationException("The given element is not supported.");
-	} 
-		
-	static def dispatch EClass generateUpdateEChange(EAttribute feature) {
+	private static def dispatch EClass generateEChange(ConcreteModelElementChange elementUpdate, EModelElement element) {
+		throw new UnsupportedOperationException("This type of change or element is currently not supported.");
+	}
+	
+	private static def dispatch EClass generateEChange(ConcreteModelElementUpdate elementUpdate, EAttribute feature) {
 		if (feature.upperBound > 1 || feature.upperBound == -1) {
 			return AttributePackageImpl.eINSTANCE.replaceEAttributeValue;
 		} else {
@@ -90,7 +78,7 @@ final class EChangeHelper {
 		}
 	}	
 	
-	static def dispatch EClass generateUpdateEChange(EReference feature) {
+	private static def dispatch EClass generateEChange(ConcreteModelElementUpdate elementUpdate, EReference feature) {
 		if (feature.upperBound > 1 || feature.upperBound == -1) {
 			if (feature.containment) {
 				return ContainmentPackageImpl.eINSTANCE.replaceNonRootEObjectInList;
@@ -106,19 +94,11 @@ final class EChangeHelper {
 		}
 	}
 	
-	static def dispatch EClass generateUpdateEChange(EClass element) {
+	private static def dispatch EClass generateEChange(ConcreteModelElementUpdate elementUpdate, EClass element) {
 		return ObjectPackageImpl.eINSTANCE.replaceRootEObject;
 	}
 	
-	static def  EClass generateCreateEChange() {
-		return ObjectPackageImpl.eINSTANCE.EObjectChange;
-	}
-	
-	static def dispatch EClass generateCreateEChange(EModelElement changedElement) {
-		throw new UnsupportedOperationException("The given element is not supported.");
-	} 
-	
-	static def dispatch EClass generateCreateEChange(EAttribute feature) {
+	private static def dispatch EClass generateEChange(ConcreteModelElementCreate elementCreate, EAttribute feature) {
 		if (feature.upperBound > 1 || feature.upperBound == -1) {
 			return AttributePackageImpl.eINSTANCE.insertEAttributeValue;
 		} else {
@@ -126,7 +106,7 @@ final class EChangeHelper {
 		}
 	}
 	
-	static def dispatch EClass generateCreateEChange(EReference feature) {
+	private static def dispatch EClass generateEChange(ConcreteModelElementCreate elementCreate, EReference feature) {
 		if (feature.upperBound > 1 || feature.upperBound == -1) {
 			if (feature.containment) {
 				// TODO HK could also be InsertNonRootEObjectInContainmentList if object is moved from somewhere else 
@@ -143,19 +123,15 @@ final class EChangeHelper {
 		}
 	}
 	
-	static def dispatch EClass generateCreateEChange(EClass element) {
+	private static def dispatch EClass generateEChange(ConcreteModelElementCreate elementCreate, EClass element) {
 		return ObjectPackageImpl.eINSTANCE.createRootEObject;
 	}	
 	
-	static def EClass generateDeleteEChange() {
-		return ObjectPackageImpl.eINSTANCE.EObjectChange;
-	}
-	
-	static def dispatch EClass generateDeleteEChange(EModelElement changedElement) {
+	private static def dispatch EClass generateEChange(ConcreteModelElementDelete elementDelete, EModelElement changedElement) {
 		throw new UnsupportedOperationException("The given element is not supported.");
 	} 
 	
-	static def dispatch EClass generateDeleteEChange(EAttribute feature) {
+	private static def dispatch EClass generateEChange(ConcreteModelElementDelete elementDelete, EAttribute feature) {
 		if (feature.upperBound > 1 || feature.upperBound == -1) {
 			return AttributePackageImpl.eINSTANCE.removeEAttributeValue
 		} else {
@@ -163,7 +139,7 @@ final class EChangeHelper {
 		}
 	}
 	
-	static def dispatch EClass generateDeleteEChange(EReference feature) {
+	private static def dispatch EClass generateEChange(ConcreteModelElementDelete elementDelete, EReference feature) {
 		if (feature.upperBound > 1 || feature.upperBound == -1) {
 			if (feature.containment) {
 				// TODO HK could also be RemoveNonRootEObjectFromContainmentList if object is moved to somewhere else
@@ -181,19 +157,11 @@ final class EChangeHelper {
 		}
 	}
 	
-	static def dispatch EClass generateDeleteEChange(EClass element) {
+	private static def dispatch EClass generateEChange(ConcreteModelElementDelete elementDelete, EClass element) {
 		return ObjectPackageImpl.eINSTANCE.deleteRootEObject;
 	}	
 
-	static def EClass generateChangeEChange() {
-		return ObjectPackageImpl.eINSTANCE.EObjectChange;
-	}
-	
-	static def dispatch EClass generateChangeEChange(EModelElement changedElement) {
-		throw new UnsupportedOperationException("The given element is not supported.");
-	} 
-		
-	static def dispatch EClass generateChangeEChange(EAttribute feature) {
+	private static def dispatch EClass generateEChange(ConcreteModelElementChange elementChange, EAttribute feature) {
 		if (feature.upperBound > 1 || feature.upperBound == -1) {
 			return AttributePackageImpl.eINSTANCE.updateEAttribute;
 		} else {
@@ -201,7 +169,7 @@ final class EChangeHelper {
 		}
 	}	
 	
-	static def dispatch EClass generateChangeEChange(EReference feature) {
+	private static def dispatch EClass generateEChange(ConcreteModelElementChange elementChange, EReference feature) {
 		if (feature.upperBound > 1 || feature.upperBound == -1) {
 			if (feature.containment) {
 				return ContainmentPackageImpl.eINSTANCE.updateContainmentEReference;
@@ -217,7 +185,7 @@ final class EChangeHelper {
 		}
 	}
 	
-	static def dispatch EClass generateChangeEChange(EClass element) {
+	private static def dispatch EClass generateEChange(ConcreteModelElementChange elementChange, EClass element) {
 		return ObjectPackageImpl.eINSTANCE.EObjectChange;
 	}
 	

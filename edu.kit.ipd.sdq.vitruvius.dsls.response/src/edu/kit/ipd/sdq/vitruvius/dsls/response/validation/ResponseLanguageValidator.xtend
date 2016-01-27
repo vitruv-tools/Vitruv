@@ -8,9 +8,9 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguage
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.UpdatedModel
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.change.ChangePackage
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CreatedModel
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelElementChangeEvent
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementCreate
 
 /**
  * This class contains custom validation rules. 
@@ -25,15 +25,12 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 			warning("No code is specified to execute for the models to update.",
 				ResponseLanguagePackage.Literals.EFFECTS__CODE_BLOCK);
 		}
-		val response = effects.containingResponse;
-		if (response.trigger instanceof ModelElementChangeEvent) {
-			val changeEvent = response.trigger as ModelElementChangeEvent;
-			if (!changeEvent.changeType.equals(ChangePackage.Literals.CREATE) && 
-				effects.targetModel instanceof CreatedModel) {
-				error("A model can only be created in response to the creation of a model element.",
-					ResponseLanguagePackage.Literals.EFFECTS__TARGET_MODEL);
-			}
-		}
+//		val response = effects.containingResponse;^
+//		if (!(response.trigger instanceof ConcreteModelElementCreate) && 
+//			effects.targetModel instanceof CreatedModel) {
+//			error("A model can only be created in response to the creation of a model element.",
+//				ResponseLanguagePackage.Literals.EFFECTS__TARGET_MODEL);
+//		}
 	}
 	
 }
