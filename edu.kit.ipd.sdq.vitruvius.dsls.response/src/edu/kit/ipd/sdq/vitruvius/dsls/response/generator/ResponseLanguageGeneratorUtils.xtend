@@ -4,15 +4,14 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChangeEvent
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.XtendImportHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CompareBlock
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ChangeEvent
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.xtext.xbase.XExpression
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelElementChangeEvent
 
 final class ResponseLanguageGeneratorUtils {
 	private static val FSA_SEPARATOR = "/";
@@ -82,10 +81,8 @@ final class ResponseLanguageGeneratorUtils {
 		val event = response.trigger;
 		var EPackage sourceModel;
 		
-		if (event instanceof ModelChangeEvent) {
-			sourceModel = event.feature.element.EPackage;
-		} else if (event instanceof ChangeEvent) {
-			sourceModel = event.feature.element.EPackage;
+		if (event instanceof ModelElementChangeEvent) {
+			sourceModel = event.changedObject.element.EPackage;
 		}
 		if (sourceModel != null) {
 			val sourceURI = sourceModel.nsURI;
@@ -106,13 +103,9 @@ final class ResponseLanguageGeneratorUtils {
 		throw new UnsupportedOperationException("Response name fragment is not defined for this event type.")
 	}
 	
-	static def dispatch String getResponseNameForEvent(ModelChangeEvent event) '''
-		«event.change.name»Of«IF event.feature.feature != null»«event.feature.feature.name.toFirstUpper»In«ENDIF»«
-			event.feature.element.name.toFirstUpper»'''
-	
-	static def dispatch String getResponseNameForEvent(ChangeEvent event) '''
-		«event.change.name»Of«IF event.feature?.feature != null»«event.feature.feature.name.toFirstUpper»In«ENDIF»«
-			event.feature?.element?.name?.toFirstUpper»'''
+	static def dispatch String getResponseNameForEvent(ModelElementChangeEvent event) '''
+		«event.changeType.name»Of«IF event.changedObject?.feature != null»«event.changedObject.feature.name.toFirstUpper»In«ENDIF»«
+			event.changedObject?.element?.name?.toFirstUpper»'''
 	
 	
 	static def getXtendCode(CompareBlock compareBlock) {

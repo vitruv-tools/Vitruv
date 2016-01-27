@@ -15,8 +15,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.contain
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.FeaturePackageImpl
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.impl.ObjectPackageImpl
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.FeatureOfElement
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.change.impl.ChangePackageImpl
 import org.eclipse.emf.ecore.EModelElement
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.change.ChangePackage
 
 final class EChangeHelper {
 	
@@ -54,15 +54,28 @@ final class EChangeHelper {
 	}
 	
 	static def EClass generateEChange(EClass responseChange, EModelElement changedObject) {
-		if (responseChange.equals(ChangePackageImpl.eINSTANCE.update)) {
+		if (responseChange.equals(ChangePackage.Literals.UPDATE)) {
 			generateUpdateEChange(changedObject);
-		} else if (responseChange.equals(ChangePackageImpl.eINSTANCE.create)) {
+		} else if (responseChange.equals(ChangePackage.Literals.CREATE)) {
 			generateCreateEChange(changedObject);
-		} else if (responseChange.equals(ChangePackageImpl.eINSTANCE.delete)) {
+		} else if (responseChange.equals(ChangePackage.Literals.DELETE)) {
 			generateDeleteEChange(changedObject);
 		} else {
 			return null;
 		}
+	}
+	
+	static def EClass generateEChange(EClass responseChange) {
+		if (responseChange.equals(ChangePackage.Literals.CHANGE)) {
+			generateChangeEChange();
+		} else {
+			return null;
+		}
+		}
+	
+	
+	static def EClass generateUpdateEChange() {
+		return ObjectPackageImpl.eINSTANCE.EObjectChange;
 	}
 	
 	static def dispatch EClass generateUpdateEChange(EModelElement changedElement) {
@@ -95,6 +108,10 @@ final class EChangeHelper {
 	
 	static def dispatch EClass generateUpdateEChange(EClass element) {
 		return ObjectPackageImpl.eINSTANCE.replaceRootEObject;
+	}
+	
+	static def  EClass generateCreateEChange() {
+		return ObjectPackageImpl.eINSTANCE.EObjectChange;
 	}
 	
 	static def dispatch EClass generateCreateEChange(EModelElement changedElement) {
@@ -130,6 +147,10 @@ final class EChangeHelper {
 		return ObjectPackageImpl.eINSTANCE.createRootEObject;
 	}	
 	
+	static def EClass generateDeleteEChange() {
+		return ObjectPackageImpl.eINSTANCE.EObjectChange;
+	}
+	
 	static def dispatch EClass generateDeleteEChange(EModelElement changedElement) {
 		throw new UnsupportedOperationException("The given element is not supported.");
 	} 
@@ -163,5 +184,41 @@ final class EChangeHelper {
 	static def dispatch EClass generateDeleteEChange(EClass element) {
 		return ObjectPackageImpl.eINSTANCE.deleteRootEObject;
 	}	
+
+	static def EClass generateChangeEChange() {
+		return ObjectPackageImpl.eINSTANCE.EObjectChange;
+	}
+	
+	static def dispatch EClass generateChangeEChange(EModelElement changedElement) {
+		throw new UnsupportedOperationException("The given element is not supported.");
+	} 
+		
+	static def dispatch EClass generateChangeEChange(EAttribute feature) {
+		if (feature.upperBound > 1 || feature.upperBound == -1) {
+			return AttributePackageImpl.eINSTANCE.updateEAttribute;
+		} else {
+			return AttributePackageImpl.eINSTANCE.updateSingleValuedEAttribute;
+		}
+	}	
+	
+	static def dispatch EClass generateChangeEChange(EReference feature) {
+		if (feature.upperBound > 1 || feature.upperBound == -1) {
+			if (feature.containment) {
+				return ContainmentPackageImpl.eINSTANCE.updateContainmentEReference;
+			} else {
+				return ReferencePackageImpl.eINSTANCE.updateNonContainmentEReference;
+			}
+		} else {
+			if (feature.containment) {
+				return ContainmentPackageImpl.eINSTANCE.updateSingleValuedContainmentEReference;
+			} else {
+				return ReferencePackageImpl.eINSTANCE.updateSingleValuedNonContainmentEReference;
+			}
+		}
+	}
+	
+	static def dispatch EClass generateChangeEChange(EClass element) {
+		return ObjectPackageImpl.eINSTANCE.EObjectChange;
+	}
 	
 }

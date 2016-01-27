@@ -4,10 +4,8 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel
 
 import com.google.inject.Inject
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ChangeEvent
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CompareBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChangeEvent
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import java.util.ArrayList
 import org.eclipse.emf.ecore.EObject
@@ -28,6 +26,7 @@ import org.eclipse.emf.ecore.EModelElement
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetModel
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondenceSourceDeterminationBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.UpdatedModel
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelElementChangeEvent
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the response file model.</p> 
@@ -101,22 +100,14 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 		return #[];
 	}
 
-	private def dispatch Iterable<JvmFormalParameter> generateChangeParameters(ChangeEvent event, EObject parameterContext) {
-		var EModelElement changedElement = event.feature.feature?:event.feature.element;
-		var eChange = event.change.generateEChange(changedElement);
+	private def dispatch Iterable<JvmFormalParameter> generateChangeParameters(ModelElementChangeEvent event, EObject parameterContext) {
+		var EModelElement changedElement = event.changedObject.feature?:event.changedObject.element;
+		var eChange = event.changeType.generateEChange(changedElement);
 		if (eChange == null) {
 			return #[];
 		}
-		var changeTypeParameters = #[getGenericTypeParameterFQNOfChange(eChange, event.feature)]
+		var changeTypeParameters = #[getGenericTypeParameterFQNOfChange(eChange, event.changedObject)]
 		val changeParameter = parameterContext.generateChangeParameter(eChange.instanceTypeName, changeTypeParameters);
-		if (changeParameter != null) {
-			return #[changeParameter];
-		}
-	}
-	
-	private def dispatch Iterable<JvmFormalParameter> generateChangeParameters(ModelChangeEvent event, EObject parameterContext) {
-		var changeTypeParameters = #[getGenericTypeParameterFQNOfChange(event.change, event.feature)];
-		val changeParameter = parameterContext.generateChangeParameter(event.change.instanceTypeName, changeTypeParameters);
 		if (changeParameter != null) {
 			return #[changeParameter];
 		}

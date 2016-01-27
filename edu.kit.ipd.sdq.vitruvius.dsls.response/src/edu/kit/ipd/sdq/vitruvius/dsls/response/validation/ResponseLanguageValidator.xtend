@@ -3,19 +3,14 @@
  */
 package edu.kit.ipd.sdq.vitruvius.dsls.response.validation
 
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.FeatureOfElement
 import org.eclipse.xtext.validation.Check
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChangeEvent
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceRootEObject
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.UpdatedModel
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ChangeEvent
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.change.ChangePackage
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CreatedModel
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelElementChangeEvent
 
 /**
  * This class contains custom validation rules. 
@@ -23,26 +18,6 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CreatedModel
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
-	@Check
-	def checkFeatureOfElement(FeatureOfElement foe) {
-		if (foe.eContainer instanceof ModelChangeEvent) {
-			val modelChangeEvent = foe.eContainer as ModelChangeEvent;
-			if (CreateRootEObject.isAssignableFrom(modelChangeEvent.change.instanceClass) ||
-				DeleteRootEObject.isAssignableFrom(modelChangeEvent.change.instanceClass) ||
-				ReplaceRootEObject.isAssignableFrom(modelChangeEvent.change.instanceClass)) {
-				if (foe.feature != null) {
-					error("No affected feature must be specified for the change of a root object.",
-						ResponseLanguagePackage.Literals.FEATURE_OF_ELEMENT__FEATURE);
-				}
-			} else {
-				if (foe.feature == null) {
-					error(
-						"An affected feature must be specified for the change of a non-root object.",
-						ResponseLanguagePackage.Literals.FEATURE_OF_ELEMENT__FEATURE);
-				}
-			}
-		}
-	}
 	
 	@Check
 	def checkEffects(Effects effects) {
@@ -51,9 +26,9 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 				ResponseLanguagePackage.Literals.EFFECTS__CODE_BLOCK);
 		}
 		val response = effects.containingResponse;
-		if (response.trigger instanceof ChangeEvent) {
-			val changeEvent = response.trigger as ChangeEvent;
-			if (!changeEvent.change.equals(ChangePackage.Literals.CREATE) && 
+		if (response.trigger instanceof ModelElementChangeEvent) {
+			val changeEvent = response.trigger as ModelElementChangeEvent;
+			if (!changeEvent.changeType.equals(ChangePackage.Literals.CREATE) && 
 				effects.targetModel instanceof CreatedModel) {
 				error("A model can only be created in response to the creation of a model element.",
 					ResponseLanguagePackage.Literals.EFFECTS__TARGET_MODEL);

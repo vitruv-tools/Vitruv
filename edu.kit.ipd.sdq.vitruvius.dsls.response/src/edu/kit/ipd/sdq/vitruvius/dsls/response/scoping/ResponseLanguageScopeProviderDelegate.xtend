@@ -59,12 +59,10 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 	override getScope(EObject context, EReference reference) {
 		if ((reference.equals(FEATURE_OF_ELEMENT__FEATURE)))
 			return createEStructuralFeatureScope(context as FeatureOfElement)
-		else if (reference.equals(MODEL_CHANGE_EVENT__CHANGE))
-			return createChangeEventsScope(context.eResource)
 		else if (reference.equals(FEATURE_OF_ELEMENT__ELEMENT)
 			|| reference.equals(MODEL_ELEMENT__MODEL_ELEMENT))
 			return createQualifiedEClassScope(context.eResource)
-		else if (reference.equals(CHANGE_EVENT__CHANGE))
+		else if (reference.equals(MODEL_ELEMENT_CHANGE_EVENT__CHANGE_TYPE))
 			return createChangeScope();
 					
 		super.getScope(context, reference)

@@ -20,17 +20,17 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceRootEObject
 import org.eclipse.emf.ecore.EClass
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseRealization
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ChangeEvent
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.UpdatedModel
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CreatedModel
-import org.eclipse.core.resources.ResourcesPlugin
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.eclipse.emf.common.util.URI
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.FeatureOfElement
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelReference
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelElementChangeEvent
 
 class SingleChangeResponseGenerator implements ISingleResponseGenerator {
 	private Response response;
-	private ChangeEvent changeEvent;
+	private ModelElementChangeEvent changeEvent;
 	private EClass change;
 	private XtendImportHelper ih;
 	private boolean hasAffectedModel;
@@ -38,15 +38,16 @@ class SingleChangeResponseGenerator implements ISingleResponseGenerator {
 	private boolean hasExecutionBlock;
 	
 	protected new(Response response) {
-		if (!(response.trigger instanceof ChangeEvent)) {
+		if (!(response.trigger instanceof ModelElementChangeEvent)) {
 			throw new IllegalArgumentException("Response must be triggered by a change event")
 		}
 		this.response = response;
-		this.changeEvent = response.trigger as ChangeEvent;
-		if (changeEvent.feature.feature != null) {
-			this.change = changeEvent.change.generateEChange(changeEvent.feature.feature)
+		this.changeEvent = response.trigger as ModelElementChangeEvent;
+		val changeObject = changeEvent.changedObject as FeatureOfElement;
+		if (changeObject.feature != null) {	
+			this.change = changeEvent.changeType.generateEChange(changeObject.feature)
 		} else {
-			this.change = changeEvent.change.generateEChange(changeEvent.feature.element)
+			this.change = changeEvent.changeType.generateEChange(changeObject.element)
 		}
 		this.hasAffectedModel = response.effects.targetModel != null;
 		this.hasPreconditionBlock = response.effects.perModelPrecondition != null;
@@ -102,22 +103,24 @@ class SingleChangeResponseGenerator implements ISingleResponseGenerator {
 		private def checkPrecondition(«ih.typeRef(EChange)» «CHANGE_PARAMETER_NAME») { 
 			if («CHANGE_PARAMETER_NAME» instanceof «ih.typeRef(change)»«
 				IF !change.instanceClass.equals(EChange)»<?>«ENDIF») {
+				«val changedObject = changeEvent.changedObject as FeatureOfElement»
 				«IF EFeatureChange.isAssignableFrom(change.instanceClass)»
-				val feature = («CHANGE_PARAMETER_NAME» as «ih.typeRef(EFeatureChange)»<?>).affectedFeature;
-				«/* TODO HK We could compare something more safe like <MM>PackageImpl.eINSTANCE.<ELEMENT>_<FEATURE>.*/»
-				if (feature.name.equals("«changeEvent.feature.feature.name»")
-					&& «CHANGE_PARAMETER_NAME».oldAffectedEObject instanceof «ih.typeRef(changeEvent.feature.element)») {
-					return true;
-				}
+					val feature = («CHANGE_PARAMETER_NAME» as «ih.typeRef(EFeatureChange)»<?>).affectedFeature;
+					«/* TODO HK We could compare something more safe like <MM>PackageImpl.eINSTANCE.<ELEMENT>_<FEATURE>.*/»
+					if (feature.name.equals("«changedObject.feature.name»")
+						&& «CHANGE_PARAMETER_NAME».oldAffectedEObject instanceof «ih.typeRef(changedObject.element)») {
+						return true;
+					}
 				«ELSE»
 					«IF CreateRootEObject.isAssignableFrom(change.instanceClass)»
-					val element = («CHANGE_PARAMETER_NAME» as «ih.typeRef(CreateRootEObject)»<?>).newValue;
+						val element = («CHANGE_PARAMETER_NAME» as «ih.typeRef(CreateRootEObject)»<?>).newValue;
 					«ELSEIF DeleteRootEObject.isAssignableFrom(change.instanceClass)»
-					val element = («CHANGE_PARAMETER_NAME» as «ih.typeRef(DeleteRootEObject)»<?>).oldValue
+						val element = («CHANGE_PARAMETER_NAME» as «ih.typeRef(DeleteRootEObject)»<?>).oldValue
 					«ELSEIF ReplaceRootEObject.isAssignableFrom(change.instanceClass)»
-					val element = («CHANGE_PARAMETER_NAME» as «ih.typeRef(ReplaceRootEObject)»<?>).oldValue;
-					«ELSE»throw new «ih.typeRef(IllegalStateException)»()«ENDIF»
-					if (element instanceof «ih.typeRef(changeEvent.feature.element)») {
+						val element = («CHANGE_PARAMETER_NAME» as «ih.typeRef(ReplaceRootEObject)»<?>).oldValue;
+					«ELSE»throw new «ih.typeRef(IllegalStateException)»()
+					«ENDIF»
+					if (element instanceof «ih.typeRef(changedObject.element)») {
 						return true;
 					}
 				«ENDIF»
@@ -249,6 +252,6 @@ class SingleChangeResponseGenerator implements ISingleResponseGenerator {
 	'''
 
 	private def getChangeEventTypeString() '''
-		«ih.typeRef(change)»<«ih.typeRef(change.getGenericTypeParameterFQNOfChange(changeEvent.feature))»>'''
-		
+		«ih.typeRef(change)»<«ih.typeRef(change.getGenericTypeParameterFQNOfChange(changeEvent.changedObject))»>'''
+	
 }

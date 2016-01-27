@@ -10,7 +10,6 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelImport
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ChangeEvent
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CompareBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
@@ -18,6 +17,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetModel
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelElementChangeEvent
 
 /**
  * Ouline structure defintion for a response file.
@@ -70,12 +70,12 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		createEObjectNode(parentNode, trigger);
 	}
 	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, ChangeEvent event) {
+	protected def void _createChildren(EStructuralFeatureNode parentNode, ModelElementChangeEvent event) {
 		createEObjectNode(parentNode, event);
-		if (event.feature != null) {
-			createEObjectNode(parentNode, event.feature.element);
-			if (event.feature.feature != null) {
-				createEObjectNode(parentNode, event.feature.feature);
+		if (event.changedObject != null) {
+			createEObjectNode(parentNode, event.changedObject.element);
+			if (event.changedObject.feature != null) {
+				createEObjectNode(parentNode, event.changedObject.feature);
 			}
 		}
 	}
@@ -122,9 +122,9 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return "There is no outline for this trigger";
 	}
 	
-	protected def Object _text(ChangeEvent event) {
-		if (event.feature?.element != null) {
-			return event.change.generateEChange(event.feature?.feature?:event.feature?.element)?.name;
+	protected def Object _text(ModelElementChangeEvent event) {
+		if (event.changedObject?.element != null) {
+			return event.changeType.generateEChange(event.changedObject?.feature?:event.changedObject?.element)?.name;
 		} else {
 			return "No changed element specified"
 		}
@@ -150,7 +150,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return true;
 	}
 	
-	protected def boolean _isLeaf(ChangeEvent event) {
+	protected def boolean _isLeaf(ModelElementChangeEvent event) {
 		return true;
 	}
 	
