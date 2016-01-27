@@ -14,10 +14,12 @@ import allElementTypes.AllElementTypesFactory
 import org.eclipse.emf.ecore.EObject
 import allElementTypes.Identified
 import org.eclipse.emf.common.util.ECollections
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind
 
 class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 	private static val TEST_MODEL_NAME = "TestModel";
 	private static val TEST_MODEL2_NAME = "TestModel2";
+	public static val PATH_TO_NEW_MODEL = "/model/secondRoot.minimalAllElements";
 	
 	new() {
 		super(new ResponseChange2CommandTransformingProviding());
@@ -494,4 +496,15 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		assertModelsEqual();
 	}
 	
+	@Test
+	public def void testCreateRoot() throws Throwable {
+		changeRecorder.endRecording();
+		val resource = createModelResource(TEST_MODEL_NAME);
+		val root1 = AllElementTypesFactory.eINSTANCE.createRoot();
+		root1.setId("Root");
+		resource.getContents().add(root1);
+		synchronizeFileChange(FileChangeKind.CREATE, VURI.getInstance(resource));
+		// There should be no exception here.
+		"secondRoot".getModelResource(false);
+	}
 }

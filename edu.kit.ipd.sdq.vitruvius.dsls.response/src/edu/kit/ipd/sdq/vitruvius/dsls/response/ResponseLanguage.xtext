@@ -18,7 +18,8 @@ Response:
 	'response to' trigger=Trigger effects=Effects;
 	
 Effects:
-	(targetModel=TargetModel)? ('when' perModelPrecondition=CompareBlock)? 'executes' codeBlock=CodeBlock;
+	{Effects}
+	(targetModel=TargetModel)? ('when' perModelPrecondition=CompareBlock)? ('executes' codeBlock=CodeBlock)?;
 
 TargetModel:
 	UpdatedModel | CreatedModel;

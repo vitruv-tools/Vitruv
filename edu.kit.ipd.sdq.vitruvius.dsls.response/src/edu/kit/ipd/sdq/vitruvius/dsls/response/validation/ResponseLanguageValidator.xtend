@@ -10,6 +10,12 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguage
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceRootEObject
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.UpdatedModel
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ChangeEvent
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.change.ChangePackage
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CreatedModel
 
 /**
  * This class contains custom validation rules. 
@@ -32,9 +38,25 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 				if (foe.feature == null) {
 					error(
 						"An affected feature must be specified for the change of a non-root object.",
-						ResponseLanguagePackage.Literals.FEATURE_OF_ELEMENT__FEATURE
-					);
+						ResponseLanguagePackage.Literals.FEATURE_OF_ELEMENT__FEATURE);
 				}
+			}
+		}
+	}
+	
+	@Check
+	def checkEffects(Effects effects) {
+		if (effects.targetModel instanceof UpdatedModel && effects.codeBlock == null) {
+			warning("No code is specified to execute for the models to update.",
+				ResponseLanguagePackage.Literals.EFFECTS__CODE_BLOCK);
+		}
+		val response = effects.containingResponse;
+		if (response.trigger instanceof ChangeEvent) {
+			val changeEvent = response.trigger as ChangeEvent;
+			if (!changeEvent.change.equals(ChangePackage.Literals.CREATE) && 
+				effects.targetModel instanceof CreatedModel) {
+				error("A model can only be created in response to the creation of a model element.",
+					ResponseLanguagePackage.Literals.EFFECTS__TARGET_MODEL);
 			}
 		}
 	}

@@ -33,14 +33,8 @@ updates minimal.Root corresponding to {
 /*
  * CreateRootEObject
  */
-response to Create of minimal.Root 
-executes {
-	val newRoot = allElementTypes.impl.AllElementTypesFactoryImpl.eINSTANCE.createRoot();
-	newRoot.id = change.newValue.id;
-	val newModelPath = org.eclipse.core.resources.ResourcesPlugin.getWorkspace().getRoot().getLocation().append("/model/newModel.mimimalAllElements");
-	val newModelResource = new org.eclipse.emf.ecore.resource.impl.ResourceSetImpl().createResource(org.eclipse.emf.common.util.URI.createPlatformResourceURI(newModelPath.toString, true));
-	newModelResource.contents.add(newRoot);
-}
+response to Create of minimal.Root
+creates minimal.Root as "secondRoot"
 
 /*
  * CreateNonRootEObjectInList
