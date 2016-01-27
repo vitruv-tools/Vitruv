@@ -27,6 +27,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import org.eclipse.emf.ecore.EModelElement
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetModel
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondenceSourceDeterminationBlock
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.UpdatedModel
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the response file model.</p> 
@@ -44,10 +45,7 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 			return;
 		}
 		val response = correspondenceSourceBlock.containingResponse;
-		val methodParameters = <JvmFormalParameter>newArrayList();
-		if (response?.trigger != null) {
-			methodParameters += generateChangeParameters(response?.trigger, correspondenceSourceBlock);	
-		}
+		val methodParameters = createResponseParameters(response,correspondenceSourceBlock, false);
 		
 		acceptor.accept(response.toClass("ResponseHelperSourceCorrespondence")) [
 			members += correspondenceSourceBlock.toMethod(RESPONSE_APPLY_METHOD_NAME, typeRef(EObject)) [applyMethod |
@@ -63,7 +61,7 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 			return;
 		}
 		val response = codeBlock.containingResponse;
-		val methodParameters = createResponseParameters(response, codeBlock)
+		val methodParameters = createResponseParameters(response, codeBlock, true);
 		
 		acceptor.accept(response.toClass("ResponseHelper" + RESPONSE_APPLY_METHOD_NAME.toFirstUpper)) [
 			members += codeBlock.toMethod(RESPONSE_APPLY_METHOD_NAME, typeRef(Void.TYPE)) [applyMethod |
@@ -78,7 +76,7 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 			return;
 		}
 		val response = compareBlock.containingResponse;
-		val methodParameters = createResponseParameters(response, compareBlock)
+		val methodParameters = createResponseParameters(response, compareBlock, response.effects.targetModel instanceof UpdatedModel)
 		
 		acceptor.accept(response.toClass("ResponseHelper" +  PER_MODEL_PRECONDITION_METHOD_NAME.toFirstUpper)) [
 			members += compareBlock.toMethod(PER_MODEL_PRECONDITION_METHOD_NAME, typeRef(Boolean.TYPE)) [applyMethod |
@@ -88,12 +86,12 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 	
-	private def createResponseParameters(Response response, EObject blockContext) {
+	private def createResponseParameters(Response response, EObject blockContext, boolean includeAffectedModel) {
 		val methodParameters = <JvmFormalParameter>newArrayList();
 		if (response?.trigger != null) {
 			methodParameters += generateChangeParameters(response?.trigger, blockContext);	
 		}
-		if (response?.effects?.targetModel?.rootModelElement != null) {
+		if (includeAffectedModel && response?.effects?.targetModel?.rootModelElement != null) {
 			methodParameters += generateAffectedModelParameters(response?.effects?.targetModel, blockContext);
 		}
 		return methodParameters;

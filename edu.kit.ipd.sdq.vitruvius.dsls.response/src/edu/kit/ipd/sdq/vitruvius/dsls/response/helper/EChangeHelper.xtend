@@ -45,7 +45,7 @@ final class EChangeHelper {
 			case "long": return Long.name
 			case "double": return Double.name
 			case "float": return Float.name
-			case "bool": return Boolean.name
+			case "boolean": return Boolean.name
 			case "char": return Character.name
 			case "byte": return Byte.name
 			case "void": return Void.name
