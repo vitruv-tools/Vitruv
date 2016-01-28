@@ -1,0 +1,75 @@
++ AdditiveChange
++ SubtractiveChange
++ ReplaciveChange
++ AdditiveAttributeChange
++ SubtractiveAttributeChange
++ ReplaciveAttributeChange
++ AdditiveReferenceChange
++ SubtractiveReferenceChange
++ ReplaciveReferenceChange
+
+- UnsetEAttribute.oldValue
++ UnsetEAttribute extends SubtractiveAttributeChange
+- UnsetERefernce.oldValue
++ UnsetERefernce extends SubtractiveReferenceChange
+- UnsetContainmentEReference
+- UnsetNonContainmentEReference
++ UnsetEReference.isContainment():bool
+
+- CreateRootEObject.newValue
++ CreateEObject extends AdditiveReferenceChange
+- DeleteERootObject.oldValue
++ DeleteEObject extends SubtractiveReferenceChange
+- ReplaceRootEObject.newValue
+- ReplaceRootEObject.oldValue
++ ReplaceRootEObject extends DeleteERootObject, CreateRootEObject, 
+
+- InsertInEList.newValue
++ InsertInEList extends AdditiveChange
+- RemoveFromEList.oldValue
++ RemoveFromEList extends SubtractiveChange
+- ReplaceInEList.newValue
+- ReplaceInEList.oldValue
++ ReplaceInEList extends RemoveFromEList, InsertInEList
+~ PermuteEList.newIndexForElementAt:EIntegerObject -> EInt
+~ PermuteEList.newIndexForElementAt.upperBound -1 -> 1
+
+
+~ UpdateSingleValuedEAttribute -> ReplaceSingleValuedEAttribute
+- UpdateSingleValuedEAttribute.oldValue
+- UpdateSingleValuedEAttribute.newValue
++ UpdateSingleValuedEAttribute extends ReplaciveAttributeChange
+
+TODO alle anderen UpdateEAttribute von den richtigen AttributeChange erben lassen
+
+
+~ UpdateSingleValuedNonContainmentEReference -> ReplaceSingleValuedNonContainmentEReference
+- UpdateSingleValuedNonContainmentEReference.oldValue
++ UpdateSingleValuedNonContainmentEReference extends SubtractiveChange
+- UpdateSingleValuedNonContainmentEReference.newValue
++ UpdateSingleValuedNonContainmentEReference extends AdditiveChange
+
+
+-----------------------------------------
+
+
+entweder Create Replace DeleteEObject und alle ..Contaiment.. entfernen und ...XNonContainmentY.. in ..XY.. umbenennen und jeweils isContainment():bool hinzufügen
+oder in Create Replace DeleteNonRootEObjectSingle newValue und oldValue entfernen und Replace von Create und Delete erben lassen und diese von Add und Subtract
+
+wohin mit dem isContainment? direkt in Add und Subtract?
+
+
+
+
+
+
+
+
+
+T so selten wie möglich festlegen
+
+
+
+nicht jeder der von Add und Sub erbt erbt auch von Replacive, daher Replacive raus?
+
+ReplaciveChange wieder löschen?
