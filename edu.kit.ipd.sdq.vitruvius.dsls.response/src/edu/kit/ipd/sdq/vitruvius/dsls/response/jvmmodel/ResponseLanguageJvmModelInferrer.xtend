@@ -132,7 +132,7 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 	}
 	
 	private def generateAffectedModelParameter(EObject context, String affectedModelClassName) {
-		generateParameter(context, AFFECTED_MODEL_PARAMETER_NAME, affectedModelClassName);
+		generateParameter(context, TARGET_MODEL_PARAMETER_NAME, affectedModelClassName);
 	}
 	
 	private def generateChangeParameter(EObject context, String changeClassName, String... typeParameterClassNames) {

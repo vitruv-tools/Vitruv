@@ -22,6 +22,9 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.ChangePackageImpl
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementCreate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementDelete
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceRootEObject
 
 final class EChangeHelper {
 	
@@ -189,4 +192,17 @@ final class EChangeHelper {
 		return ObjectPackageImpl.eINSTANCE.EObjectChange;
 	}
 	
+	public static def String getEChangeFeatureNameOfChangedObject(EClass change) {
+		if (EFeatureChange.isAssignableFrom(change.instanceClass)) {
+			// TODO HK This is not correct
+			return "oldAffectedEObject";
+		} else if (CreateRootEObject.isAssignableFrom(change.instanceClass)) {
+			return "newValue"
+		} else if (DeleteRootEObject.isAssignableFrom(change.instanceClass)
+			|| ReplaceRootEObject.isAssignableFrom(change.instanceClass)) {
+			return "oldValue"
+		} else {
+			throw new IllegalStateException();
+		}
+	}
 }
