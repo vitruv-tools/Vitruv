@@ -30,7 +30,11 @@ Require-Bundle: org.junit,
  org.eclipse.core.resources,
  edu.kit.ipd.sdq.vitruvius.tests.util,
  org.apache.commons.lang;bundle-version="2.6.0",
- edu.kit.ipd.sdq.vitruvius.framework.mir,
  edu.kit.ipd.sdq.vitruvius.framework.mir.executor,
- edu.kit.ipd.sdq.vitruvius.framework.meta.change
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro
 Bundle-ActivationPolicy: lazy
+
