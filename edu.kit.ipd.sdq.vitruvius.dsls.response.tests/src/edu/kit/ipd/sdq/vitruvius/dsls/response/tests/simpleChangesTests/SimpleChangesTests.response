@@ -1,6 +1,6 @@
 import "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.allElementTypes" as minimal
 
-response:
+response: DummyForCodeExecutionOnAnyEvent
 trigger: model change in minimal
 effect: update any minimal
 execute: {
@@ -10,7 +10,7 @@ execute: {
 /*
  * UpdateSingleValuedEAttribute
  */
-response: UpdateSingleValuedEAttributeResponse
+response: UpdateSingleValuedEAttribute
 trigger: element update of minimal.Root[singleValuedEAttribute] 
 effect: update root minimal.Root corresponding to {
 	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
@@ -26,18 +26,11 @@ execute: {
 		UpdateSingleValuedEAttribute);
 }
 
-response:
-trigger: element update of minimal.Root[singleValuedEAttribute] 
-effect: update any minimal 
-execute: {
-	
-}
-
 
 /*
  * UnsetSingleValuedEAttribute
  */
-response: UnsetSingleValuedEAttriubteResponse 
+response: UnsetSingleValuedEAttriubte
 trigger: element delete of minimal.Root[singleValuedEAttribute] 
 effect: update root minimal.Root corresponding to {
 	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
@@ -58,7 +51,7 @@ effect: create root minimal.Root as "secondRoot"
 /*
  * CreateNonRootEObjectInList
  */
-response: 
+response: CreateNonRootEObjectInList
 trigger: element create of minimal.Root[multiValuedContainmentEReference] 
 effect: update root minimal.Root corresponding to {
 	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
@@ -75,7 +68,8 @@ execute: {
 /*
  * DeleteNonRootEObjectInList
  */
-response: trigger: element delete of minimal.Root[multiValuedContainmentEReference] 
+response: DeleteNonRootEObjectInList
+trigger: element delete of minimal.Root[multiValuedContainmentEReference] 
 effect: update root minimal.Root corresponding to {
 	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
 } execute: {
@@ -88,7 +82,8 @@ effect: update root minimal.Root corresponding to {
 /*
  * CreateNonRootEObjectSingle
  */
-response: trigger: element create of minimal.Root[singleValuedContainmentEReference] 
+response: CreateNonRootEObjectSingle
+trigger: element create of minimal.Root[singleValuedContainmentEReference] 
 effect: update root minimal.Root corresponding to {
 	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
 } execute: {
@@ -103,7 +98,8 @@ effect: update root minimal.Root corresponding to {
 /*
  * DeleteNonRootEObjectSingle
  */
-response: trigger: element delete of minimal.Root[singleValuedContainmentEReference] 
+response: DeleteNonRootEObjectSingle
+trigger: element delete of minimal.Root[singleValuedContainmentEReference] 
 effect: update root minimal.Root corresponding to {
 	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
 } execute: {
@@ -116,7 +112,7 @@ effect: update root minimal.Root corresponding to {
 /*
  * UpdateSingleValuedNonContainmentEReference
  */
-response: 
+response: UpdateSingleValuedNonContainmentEReference
 trigger: element create of minimal.Root[singleValuedNonContainmentEReference] 
 effect: update root minimal.Root corresponding to {
 	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
@@ -132,7 +128,7 @@ execute: {
 /*
  * UnsetNonContainmentEReference
  */
-response: 
+response: UnsetNonContainmentEReference
 trigger: element delete of minimal.Root[singleValuedNonContainmentEReference] 
 effect: update root minimal.Root corresponding to {
 	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
@@ -147,7 +143,7 @@ execute: {
 /*
  * InsertEAttributeValue
  */
-response: 
+response: InsertEAttributeValue
 trigger: element create of minimal.Root[multiValuedEAttribute] 
 effect: update root minimal.Root corresponding to {
 	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
@@ -162,7 +158,7 @@ execute: {
 /*
  * RemoveEAttributeValue
  */
-response: 
+response: RemoveEAttributeValue
 trigger: element delete of minimal.Root[multiValuedEAttribute] 
 effect: update root minimal.Root corresponding to {
 	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
@@ -178,7 +174,7 @@ execute: {
 /*
  * InsertNonContainmentEReference
  */
-response: 
+response: InsertNonContainmentEReference
 trigger: element create of minimal.Root[multiValuedNonContainmentEReference] 
 effect: update root minimal.Root corresponding to {
 	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
@@ -194,7 +190,7 @@ execute: {
 /*
  * RemoveNonContainmentEReference
  */
-response: 
+response: RemoveNonContainmentEReference
 trigger: element delete of minimal.Root[multiValuedNonContainmentEReference] 
 effect: update root minimal.Root corresponding to {
 	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
@@ -209,7 +205,7 @@ execute: {
 /*
  * ReplaceNonContainmentEReference
  */
-response: 
+response: ReplaceNonContainmentEReference
 trigger: element update of minimal.Root[multiValuedNonContainmentEReference] 
 effect: update root minimal.Root corresponding to {
 	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);

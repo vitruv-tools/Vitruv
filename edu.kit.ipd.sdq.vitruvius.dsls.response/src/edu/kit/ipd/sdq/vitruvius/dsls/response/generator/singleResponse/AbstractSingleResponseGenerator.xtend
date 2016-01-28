@@ -126,9 +126,7 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 		«val affectedElementClass = createdModel.rootModelElement.modelElement»
 		private def «ih.typeRef(affectedElementClass)» generateTargetModel(«
 			changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)» blackboard) {
-			«val createdQNClassName = affectedElementClass.instanceTypeName»
-			«var createdClassPackage = createdQNClassName.substring(0, createdQNClassName.length - affectedElementClass.name.length - 1)»
-			«var createdClassFactoryName = createdClassPackage + ".impl." + createdClassPackage.split("\\.").last.toFirstUpper + "FactoryImpl"»
+			«val createdClassFactoryName = affectedElementClass.EPackage.EFactoryInstance.class.name»
 			val newRoot = «ih.typeRef(createdClassFactoryName)».eINSTANCE.create«affectedElementClass.name»();
 			val sourceElement = «CHANGE_PARAMETER_NAME».«change.EChangeFeatureNameOfChangedObject»;
 			val newModelFileSegments = "«createdModel.name»".split("/")
@@ -139,7 +137,6 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 					+ "." + blackboard.correspondenceInstance.mapping.metamodelB.fileExtensions.get(0));
 			«ENDIF»
 			val newResourceURI = sourceElement.eResource.URI.trimSegments(1).appendSegments(newModelFileSegments);
-			
 			val newModelResource = new «ih.typeRef(ResourceSetImpl)»().createResource(newResourceURI);
 			newRoot.id = sourceElement.id;
 			newModelResource.contents.add(newRoot);
