@@ -6,9 +6,6 @@ import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguage
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelRootUpdate
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelRootCreate
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelRootChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryModelElementChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelImport
 
@@ -26,40 +23,8 @@ class SingleArbitraryModelElementChangeResponseGenerator extends SingleModelChan
 	}
 	
 	protected override Iterable<CharSequence> getGeneratedMethods() {
-		val methods = <CharSequence>newArrayList();
-		
-		methods += generateMethodCheckChangeType();
-		
-		if (hasPreconditionBlock) {
-			methods += generateMethodCheckPrecondition()
-		}
-		if (hasTargetChange) {
-			if (response.effects.targetChange instanceof ConcreteModelRootUpdate) {
-				methods += generateMethodDetermineTargetModels(response.effects.targetChange as ConcreteModelRootUpdate);	
-				methods += generateMethodExecuteResponse(response.effects.targetChange as ConcreteModelRootUpdate);
-			} else if (response.effects.targetChange instanceof ConcreteModelRootCreate) {
-				methods += generateMethodGenerateTargetModel(response.effects.targetChange as ConcreteModelRootCreate);
-				methods += generateMethodExecuteResponse(response.effects.targetChange as ConcreteModelRootCreate);
-			} else {
-				methods += generateMethodExecuteResponse();
-			}
-		} else {
-			methods += generateMethodExecuteResponse();
-		}
-		
-		methods += generateMethodApplyChange();
-		
-		if (hasExecutionBlock) {
-			if (response.effects.targetChange instanceof ConcreteModelRootChange) {
-				methods += generateMethodPerformResponse((response.effects.targetChange as ConcreteModelRootChange).rootModelElement.modelElement);
-			} else {
-				methods += generateMethodPerformResponse();
-			}
-		}
-			
-		return methods;
+		return super.getGeneratedMethods();
 	}
-	
 	
 	/**
 	 * Generates method: applyChange
@@ -71,7 +36,7 @@ class SingleArbitraryModelElementChangeResponseGenerator extends SingleModelChan
 	 * <li>2. blackboard: the {@link Blackboard} containing the {@link CorrespondenceInstance} 
 	 * 
 	 */
-	protected def generateMethodApplyChange() '''
+	protected override generateMethodApplyChange() '''
 		«val blackboardName = "blackboard"»
 		«val typedChangeName = "typedChange"»
 		public override «RESPONSE_APPLY_METHOD_NAME»(«ih.typeRef(EChange)» «CHANGE_PARAMETER_NAME», «

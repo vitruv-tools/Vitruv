@@ -23,20 +23,19 @@ Effects:
 	(targetChange=TargetChange)? ('executes' codeBlock=CodeBlock)?;
 
 TargetChange:
-	ConcreteModelRootChange | ArbitraryMetamodelInstanceUpdate;
+	ConcreteTargetModelRootChange | ArbitraryTargetMetamodelInstanceUpdate;
 
-ConcreteModelRootChange:
-	ConcreteModelRootUpdate | ConcreteModelRootCreate;
+ConcreteTargetModelRootChange:
+	ConcreteTargetModelRootUpdate | ConcreteTargetModelRootCreate;
 	
-ConcreteModelRootUpdate:
+ConcreteTargetModelRootUpdate:
 	'updates root' rootModelElement=ModelElement 'corresponding to' correspondenceSource=CorrespondenceSourceDeterminationBlock;
 	
-ConcreteModelRootCreate:
+ConcreteTargetModelRootCreate:
 	'creates root' rootModelElement=ModelElement 'as' name=STRING;
 
-ArbitraryMetamodelInstanceUpdate:
+ArbitraryTargetMetamodelInstanceUpdate:
 	'updates any' metamodelReference=MetamodelReference;
-
 
 ModelElement:
 	modelElement=[ecore::EClass|QualifiedName];

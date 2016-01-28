@@ -4,10 +4,10 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondenceSourceDeterminationBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelRootUpdate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootUpdate
 
 final class ResponseLanguageHelper {
 	private new() {}
@@ -30,7 +30,7 @@ final class ResponseLanguageHelper {
 	
 	public static def Response getContainingResponse(CorrespondenceSourceDeterminationBlock correspondenceSourceBlock) {
 		val modelRootUpdate = correspondenceSourceBlock.eContainer();
-		if (modelRootUpdate instanceof ConcreteModelRootUpdate) {
+		if (modelRootUpdate instanceof ConcreteTargetModelRootUpdate) {
 			return getContainingResponse(modelRootUpdate);
 		}
 		return null;

@@ -60,6 +60,9 @@ Workflow {
 		language = StandardLanguage {
 			name = "edu.kit.ipd.sdq.vitruvius.dsls.response.ResponseLanguage"
 			fileExtensions = "response"
+			junitSupport = junit.Junit4Fragment2 {
+				generateStub = false
+			}
 		}
 	}
 }

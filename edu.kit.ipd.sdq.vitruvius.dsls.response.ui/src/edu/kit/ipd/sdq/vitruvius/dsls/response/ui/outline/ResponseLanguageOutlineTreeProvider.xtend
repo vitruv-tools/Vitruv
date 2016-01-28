@@ -16,11 +16,11 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelRootChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryMetamodelInstanceUpdate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryTargetMetamodelInstanceUpdate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootChange
 
 /**
  * Outline structure definition for a response file.
@@ -95,9 +95,9 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		if (effects.targetChange != null) {
 			var targetChangeIsLeaf = false;
 			val targetChange = effects.targetChange;
-			if (targetChange instanceof ConcreteModelRootChange) {
+			if (targetChange instanceof ConcreteTargetModelRootChange) {
 				targetChangeIsLeaf = targetChange.rootModelElement?.modelElement == null;
-			} else if (targetChange instanceof ArbitraryMetamodelInstanceUpdate) {
+			} else if (targetChange instanceof ArbitraryTargetMetamodelInstanceUpdate) {
 				targetChangeIsLeaf = targetChange.metamodelReference?.model == null;
 			}
 			val targetChangeNode = createEStructuralFeatureNode(parentNode, effects, 
@@ -109,13 +109,13 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		createChildren(parentNode, effects.codeBlock);
 	}
 	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, ArbitraryMetamodelInstanceUpdate targetChange) {
+	protected def void _createChildren(EStructuralFeatureNode parentNode, ArbitraryTargetMetamodelInstanceUpdate targetChange) {
 		if (targetChange.metamodelReference?.model != null) {
 			createEObjectNode(parentNode, targetChange.metamodelReference.model);
 		}
 	}
 	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, ConcreteModelRootChange targetChange) {
+	protected def void _createChildren(EStructuralFeatureNode parentNode, ConcreteTargetModelRootChange targetChange) {
 		if (targetChange.rootModelElement.modelElement != null) {
 			createEObjectNode(parentNode, targetChange.rootModelElement.modelElement);
 		}

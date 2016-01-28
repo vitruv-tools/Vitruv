@@ -26,9 +26,9 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelRootChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryMetamodelInstanceUpdate
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryTargetMetamodelInstanceUpdate
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the response file model.</p> 
@@ -92,13 +92,14 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 		if (response?.trigger != null) {
 			methodParameters += generateChangeParameters(response?.trigger, blockContext);	
 		}
-		if (includeTargetModel) {
-			if (response.effects?.targetChange instanceof ConcreteModelRootChange) {
-				if ((response.effects.targetChange as ConcreteModelRootChange).rootModelElement != null) {
-					methodParameters += generateTargetModelParameters(response?.effects?.targetChange as ConcreteModelRootChange, blockContext);
+		if (includeTargetModel && response.effects != null) {
+			val targetChange = response.effects.targetChange
+			if (targetChange instanceof ConcreteTargetModelRootChange) {
+				if (targetChange.rootModelElement != null) {
+					methodParameters += generateTargetModelParameters(targetChange, blockContext);
 				}
-			} else if (response.effects?.targetChange instanceof ArbitraryMetamodelInstanceUpdate) {
-				if ((response.effects.targetChange as ArbitraryMetamodelInstanceUpdate).metamodelReference?.model != null) {
+			} else if (targetChange instanceof ArbitraryTargetMetamodelInstanceUpdate) {
+				if (targetChange.metamodelReference?.model != null) {
 					methodParameters += generateBlackboardParameter(blockContext);
 				}
 			}
@@ -125,7 +126,7 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 		}
 	}
 	
-	private def Iterable<JvmFormalParameter> generateTargetModelParameters(ConcreteModelRootChange rootChange, EObject parameterContext) {
+	private def Iterable<JvmFormalParameter> generateTargetModelParameters(ConcreteTargetModelRootChange rootChange, EObject parameterContext) {
 		if (rootChange?.rootModelElement?.modelElement != null) {
 			return #[parameterContext.generateAffectedModelParameter(rootChange.rootModelElement.modelElement.instanceTypeName)];
 		}

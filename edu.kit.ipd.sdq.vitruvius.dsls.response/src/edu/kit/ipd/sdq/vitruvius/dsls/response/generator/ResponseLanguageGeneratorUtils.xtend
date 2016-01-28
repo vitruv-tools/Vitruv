@@ -11,11 +11,11 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.xtext.xbase.XExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryMetamodelInstanceUpdate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryModelElementChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelRootChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionBlock
 import java.util.HashMap
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryTargetMetamodelInstanceUpdate
 
 final class ResponseLanguageGeneratorUtils {
 	private static val FSA_SEPARATOR = "/";
@@ -94,9 +94,9 @@ final class ResponseLanguageGeneratorUtils {
 			val sourceURI = sourceMetamodel.nsURI;
 			val targetChange = response.effects.targetChange;
 			var targetURI = sourceMetamodel.nsURI;
-			if (targetChange instanceof ConcreteModelRootChange) {
+			if (targetChange instanceof ConcreteTargetModelRootChange) {
 				targetURI = targetChange.rootModelElement?.modelElement?.EPackage?.nsURI?:sourceMetamodel.nsURI;
-			} else if (targetChange instanceof ArbitraryMetamodelInstanceUpdate) {
+			} else if (targetChange instanceof ArbitraryTargetMetamodelInstanceUpdate) {
 				targetURI = targetChange.metamodelReference?.model?.package?.nsURI?:sourceMetamodel.nsURI;
 			}
 			val source = VURI.getInstance(sourceURI);

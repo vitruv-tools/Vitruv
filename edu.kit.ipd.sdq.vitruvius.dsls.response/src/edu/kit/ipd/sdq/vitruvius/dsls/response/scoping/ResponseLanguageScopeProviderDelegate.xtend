@@ -31,17 +31,9 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelImport
 class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 	private static val LOGGER = Logger.getLogger(ResponseLanguageScopeProviderDelegate)
 	
-	@Inject
-	IQualifiedNameProvider qualifiedNameProvider;
-
 	def <T> IScope createScope(IScope parentScope, Iterator<T> elements,
 		Function<T, IEObjectDescription> descriptionCreation) {
-		new SimpleScope(
-			parentScope,
-			elements.map [
-				descriptionCreation.apply(it)
-			].filterNull.toList
-		)
+		new SimpleScope(parentScope, elements.map [descriptionCreation.apply(it)].filterNull.toList);
 	}
 	
 	override getScope(EObject context, EReference reference) {
@@ -50,16 +42,12 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 		else if (reference.equals(FEATURE_OF_ELEMENT__ELEMENT)
 			|| reference.equals(MODEL_ELEMENT__MODEL_ELEMENT))
 			return createQualifiedEClassScope(context.eResource)
-		/*else if (reference.equals(MODEL_ELEMENT_CHANGE_EVENT__CHANGE_TYPE))
-			return createChangeScope();
-			*/		
 		super.getScope(context, reference)
 	}
 	
 	def hasQualifiedName(EObject eObject) {
-		val qn = qualifiedNameProvider.getFullyQualifiedName(eObject)
-		((qn != null) && (!qn.empty)
-		)
+		val qn = qualifiedNameProvider.getFullyQualifiedName(eObject);
+		return ((qn != null) && (!qn.empty));
 	}
 	
 	def createEStructuralFeatureScope(FeatureOfElement variable) {
@@ -111,12 +99,6 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 		var resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions)
 		return resultScope
 	}
-	
-	private def Iterable<IEObjectDescription> collectObjectDescriptions(EPackage pckg, 
-		boolean includeSubpackages, boolean includeAbstract, boolean useSimpleNames) {
-		collectObjectDescriptions(pckg, includeSubpackages, includeAbstract, useSimpleNames, null);	
-	}
-	
 	
 	private def Iterable<IEObjectDescription> collectObjectDescriptions(EPackage pckg, 
 		boolean includeSubpackages, boolean includeAbstract, boolean useSimpleNames, String packagePrefix) {

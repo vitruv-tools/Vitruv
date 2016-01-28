@@ -18,8 +18,8 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHe
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementUpdate
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelRootUpdate
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelRootCreate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootCreate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootUpdate
 
 abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerator {
 	protected final Response response;
@@ -99,7 +99,7 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 	 * 
 	 * <p>Precondition: a metamodel element for the target models is specified in the response
 	 */	
-	protected def generateMethodDetermineTargetModels(ConcreteModelRootUpdate updatedModel) '''
+	protected def generateMethodDetermineTargetModels(ConcreteTargetModelRootUpdate updatedModel) '''
 		«val affectedElementClass = updatedModel.rootModelElement.modelElement»
 		private def «ih.typeRef(List)»<«ih.typeRef(affectedElementClass)»> determineTargetModels(«
 			changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)» blackboard) {
@@ -122,7 +122,7 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 	 * 
 	 * <p>Precondition: a metamodel element to be the root of the new model is specified in the response
 	 */	
-	protected def generateMethodGenerateTargetModel(ConcreteModelRootCreate createdModel) '''
+	protected def generateMethodGenerateTargetModel(ConcreteTargetModelRootCreate createdModel) '''
 		«val affectedElementClass = createdModel.rootModelElement.modelElement»
 		private def «ih.typeRef(affectedElementClass)» generateTargetModel(«
 			changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)» blackboard) {
@@ -149,7 +149,7 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 		}
 	'''
 	
-	
+	protected abstract def CharSequence generateMethodApplyChange();
 	protected abstract def String getChangeEventTypeString();
 	protected abstract def EClass calculateEChange();
 	protected abstract def Iterable<CharSequence> getGeneratedMethods();
