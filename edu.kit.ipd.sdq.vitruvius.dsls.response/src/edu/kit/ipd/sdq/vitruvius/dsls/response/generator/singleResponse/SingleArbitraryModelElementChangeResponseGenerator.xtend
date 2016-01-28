@@ -44,13 +44,16 @@ class SingleArbitraryModelElementChangeResponseGenerator extends SingleModelChan
 			LOGGER.debug("Called response " + this.class.name + " with event " + «CHANGE_PARAMETER_NAME»);
 			
 			// Check if the event matches the trigger of the response
-			if (!checkChangeType(«CHANGE_PARAMETER_NAME»)«IF hasPreconditionBlock»
-				|| !checkPrecondition(«CHANGE_PARAMETER_NAME»)«ENDIF») {
+			if (!checkChangeType(«CHANGE_PARAMETER_NAME»)) {
 				return new «ih.typeRef(TransformationResult)»();
 			}
+			val «typedChangeName» = «CHANGE_PARAMETER_NAME» as «changeEventTypeString»;
+			«IF hasPreconditionBlock»
+			if (!checkPrecondition(«typedChangeName»)) {
+				return new «ih.typeRef(TransformationResult)»();
+			}«ENDIF»
 			LOGGER.debug("Passed precondition check of response " + this.class.name);
 			
-			val «typedChangeName» = «CHANGE_PARAMETER_NAME» as «changeEventTypeString»;
 			executeResponse(«typedChangeName», «blackboardName»);
 			return new «ih.typeRef(TransformationResult)»();
 		}
