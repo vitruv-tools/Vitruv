@@ -17,6 +17,7 @@ import java.util.List
 import allElementTypes.Identified
 import java.util.function.Supplier
 import responses.ResponseChange2CommandTransformingProviding
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 
 abstract class AbstractAllElementTypesResponseTests extends AbstractResponseTests {
 	private static val MODEL_FILE_EXTENSION = "minimalAllElements";
@@ -50,11 +51,11 @@ abstract class AbstractAllElementTypesResponseTests extends AbstractResponseTest
 	}
 
 	protected def Resource getModelResource(String modelName, boolean forceReload) {
-		val resource = this.resourceSet.getResource(modelName.modelVURI.getEMFUri(), false);
+		var resource = this.resourceSet.getResource(modelName.modelVURI.getEMFUri(), false);
 		if (forceReload && resource != null) {
 			resource.unload;
-			this.resourceSet.getResource(modelName.modelVURI.getEMFUri(), true);
 		}
+		resource = this.resourceSet.getResource(modelName.modelVURI.getEMFUri(), true);
 		return resource;
 	}
 	
@@ -79,8 +80,9 @@ abstract class AbstractAllElementTypesResponseTests extends AbstractResponseTest
 	}
 	
 	protected def void assertModelsEqual(String modelName1, String modelName2) {
-		val root = modelName1.getRoot(true);
-		val root2 = modelName2.getRoot(true);
+		val testResourceSet = new ResourceSetImpl();
+		val root = testResourceSet.getResource(modelName1.modelVURI.getEMFUri(), true).contents.get(0) as Root;
+		val root2 = testResourceSet.getResource(modelName2.modelVURI.getEMFUri(), true).contents.get(0) as Root;
 		assertEquals(root.id, root2.id);
 		assertEquals(root.singleValuedEAttribute, root2.singleValuedEAttribute);
 		assertEquals(root.singleValuedContainmentEReference?.id, root2.singleValuedContainmentEReference?.id);

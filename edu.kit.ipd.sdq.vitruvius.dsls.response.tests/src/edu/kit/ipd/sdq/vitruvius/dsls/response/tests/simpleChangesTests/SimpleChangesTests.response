@@ -30,7 +30,7 @@ execute: {
 /*
  * UnsetSingleValuedEAttribute
  */
-response: UnsetSingleValuedEAttriubte
+response: UnsetSingleValuedEAttribute
 trigger: element delete of minimal.Root[singleValuedEAttribute] 
 effect: update root minimal.Root corresponding to {
 	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
@@ -44,9 +44,13 @@ effect: update root minimal.Root corresponding to {
 /*
  * CreateRootEObject
  */
-response: CreateRootEObjectResponse 
+response: CreateRootEObject
 trigger: element create of minimal.Root
-effect: create root minimal.Root as "secondRoot"
+effect: create root minimal.Root as "TestModel2"
+
+response: CreateNonRootsForRoot
+trigger: element create of minimal.Root[multiValuedContainmentEReference]
+effect: create root minimal.NonRoot as "FurtherModel"
 
 /*
  * CreateNonRootEObjectInList

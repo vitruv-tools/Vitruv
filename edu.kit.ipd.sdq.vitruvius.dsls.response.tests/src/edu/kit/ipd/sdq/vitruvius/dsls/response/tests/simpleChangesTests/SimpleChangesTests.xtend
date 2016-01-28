@@ -43,32 +43,21 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		val resource = createModelResource(TEST_MODEL_NAME);
 		val root1 = AllElementTypesFactory.eINSTANCE.createRoot();
 		root1.setId("Root");
-		resource.getContents().add(root1);
-		EcoreResourceBridge.saveResource(resource);
-		val resource2 = createModelResource(TEST_MODEL2_NAME);
-		val root2 = AllElementTypesFactory.eINSTANCE.createRoot();
-		root2.setId("Root");
-		resource2.getContents().add(root2);
+		resource.contents.add(root1);
+		saveAndSynchronizeChanges(root1, false);
+		synchronizeFileChange(FileChangeKind.CREATE, TEST_MODEL_NAME.modelVURI);
+		this.changeRecorder.beginRecording(#[rootElement1]);
 		prepareTestModel();
-		saveAndSynchronizeChanges(rootElement1, false);
-		saveAndSynchronizeChanges(rootElement2, false);
-		val corIn = this.vsum.getCorrespondenceInstanceOriginal(metaRepository.allMetamodels.get(0).URI, metaRepository.allMetamodels.get(0).URI);
-		corIn.createAndAddCorrespondence(#[root1], #[root2]);
 		assertModelsEqual();
-		this.changeRecorder.beginRecording(#[rootElement1, rootElement2]);
 	}
 		
 	private def prepareTestModel() {
 		initializeNonRootObjectContainer(rootElement1);
 		initializeNonRootObjectContainer(rootElement2);
-		rootElement1.setSingleValuedContainmentNonRootObject("singleValuedContainmentNonRoot", false);
-		rootElement2.setSingleValuedContainmentNonRootObject("singleValuedContainmentNonRoot", false);
-		rootElement1.addMultiValuedContainmentNonRootObject("multiValuedContainmentNonRoot0", false);
-		rootElement2.addMultiValuedContainmentNonRootObject("multiValuedContainmentNonRoot0", false);
-		rootElement1.addMultiValuedContainmentNonRootObject("multiValuedContainmentNonRoot1", false);
-		rootElement2.addMultiValuedContainmentNonRootObject("multiValuedContainmentNonRoot1", false);
-		rootElement1.addMultiValuedContainmentNonRootObject("multiValuedContainmentNonRoot2", false);
-		rootElement2.addMultiValuedContainmentNonRootObject("multiValuedContainmentNonRoot2", false);
+		rootElement1.setSingleValuedContainmentNonRootObject("singleValuedContainmentNonRoot", true);
+		rootElement1.addMultiValuedContainmentNonRootObject("multiValuedContainmentNonRoot0", true);
+		rootElement1.addMultiValuedContainmentNonRootObject("multiValuedContainmentNonRoot1", true);
+		rootElement1.addMultiValuedContainmentNonRootObject("multiValuedContainmentNonRoot2", true);
 	}
 	
 	private def void initializeNonRootObjectContainer(Root rootElement) {
@@ -467,7 +456,9 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 	@Test
 	public def void testReplaceMultiValuedNonContainmentEReference() throws Throwable {
 		insertMultiValuedNonContainmentNonRootObject(rootElement1, nonContainmentNonRootIds.get(0));
+		this.changeRecorder.beginRecording(#[rootElement1]);
 		insertMultiValuedNonContainmentNonRootObject(rootElement1, nonContainmentNonRootIds.get(1));
+		this.changeRecorder.beginRecording(#[rootElement1]);
 		SimpleChangesTestsExecutionMonitor.reinitialize();
 		replaceMultiValuedNonContainmentNonRootObject(rootElement1, nonContainmentNonRootIds.get(1), nonContainmentNonRootIds.get(2))
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
@@ -505,6 +496,6 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		resource.getContents().add(root1);
 		synchronizeFileChange(FileChangeKind.CREATE, VURI.getInstance(resource));
 		// There should be no exception here.
-		"secondRoot".getModelResource(false);
+		"TestModel2".getModelResource(false);
 	}
 }
