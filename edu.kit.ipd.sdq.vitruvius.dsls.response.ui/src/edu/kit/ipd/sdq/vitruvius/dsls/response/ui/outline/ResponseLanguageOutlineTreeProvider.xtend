@@ -11,21 +11,25 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CompareBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetModel
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelRootChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionBlock
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryMetamodelInstanceUpdate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils
 
 /**
- * Ouline structure defintion for a response file.
+ * Outline structure definition for a response file.
  *
  * @author Heiko Klare
  */
 class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	protected def void _createChildren(DocumentRootNode root, ResponseFile responseFile) {
+		ResponseLanguageGeneratorUtils.cleanEventToNameMap();
 		val importsNode = createEStructuralFeatureNode(root, responseFile, 
 			ResponseLanguagePackage.Literals.RESPONSE_FILE__METAMODEL_IMPORTS,
 			imageDispatcher.invoke(responseFile), "imports", false);
@@ -60,10 +64,17 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 			ResponseLanguagePackage.Literals.RESPONSE__TRIGGER,
 			imageDispatcher.invoke(response.trigger), "Trigger", false);
 		createChildren(triggerNode, response.trigger);
+		if (response.trigger?.precondition != null) {
+			createChildren(triggerNode, response.trigger.precondition)
+		}
 		val effectsNode = createEStructuralFeatureNode(responseNode, response, 
 			ResponseLanguagePackage.Literals.RESPONSE__EFFECTS,
 			imageDispatcher.invoke(response.effects), "Effects", false);
 		createChildren(effectsNode, response.effects);
+	}
+	
+	protected def void _createChildren(EStructuralFeatureNode parentNode, PreconditionBlock preconditionBlock) {
+		createEObjectNode(parentNode, preconditionBlock);
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, Trigger trigger) {
@@ -81,26 +92,33 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, Effects effects) {
-		if (effects.targetModel?.rootModelElement != null) {
-			val affectedModelNode = createEStructuralFeatureNode(parentNode, effects, 
-				ResponseLanguagePackage.Literals.EFFECTS__TARGET_MODEL,
-				imageDispatcher.invoke(effects.targetModel), "Target model", effects.targetModel.rootModelElement?.modelElement == null);
-			createChildren(affectedModelNode, effects.targetModel);
-		}
-		if (effects.perModelPrecondition != null) {
-			createChildren(parentNode, effects.perModelPrecondition);
+		if (effects.targetChange != null) {
+			var targetChangeIsLeaf = false;
+			val targetChange = effects.targetChange;
+			if (targetChange instanceof ConcreteModelRootChange) {
+				targetChangeIsLeaf = targetChange.rootModelElement?.modelElement == null;
+			} else if (targetChange instanceof ArbitraryMetamodelInstanceUpdate) {
+				targetChangeIsLeaf = targetChange.metamodelReference?.model == null;
+			}
+			val targetChangeNode = createEStructuralFeatureNode(parentNode, effects, 
+				ResponseLanguagePackage.Literals.EFFECTS__TARGET_CHANGE,
+				imageDispatcher.invoke(effects.targetChange), "Target change", 
+					targetChangeIsLeaf);
+			createChildren(targetChangeNode, effects.targetChange);
 		}
 		createChildren(parentNode, effects.codeBlock);
 	}
 	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, TargetModel targetModel) {
-		if (targetModel.rootModelElement.modelElement!= null) {
-			createEObjectNode(parentNode, targetModel.rootModelElement.modelElement);
+	protected def void _createChildren(EStructuralFeatureNode parentNode, ArbitraryMetamodelInstanceUpdate targetChange) {
+		if (targetChange.metamodelReference?.model != null) {
+			createEObjectNode(parentNode, targetChange.metamodelReference.model);
 		}
 	}
 	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, CompareBlock compareBlock) {
-		createEObjectNode(parentNode, compareBlock);
+	protected def void _createChildren(EStructuralFeatureNode parentNode, ConcreteModelRootChange targetChange) {
+		if (targetChange.rootModelElement.modelElement != null) {
+			createEObjectNode(parentNode, targetChange.rootModelElement.modelElement);
+		}
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, CodeBlock codeBlock) {
@@ -130,15 +148,15 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		}
 	}
 	
-	protected def Object _text(CompareBlock compareBlock) {
-		return "Per-Model Precondition Block"
+	protected def Object _text(PreconditionBlock preconditionBlock) {
+		return "Precondition Block"
 	}
 	
 	protected def Object _text(CodeBlock codeBlock) {
 		return "Execution Block"
 	}
 	
-	protected def boolean _isLeaf(CompareBlock compareBlock) {
+	protected def boolean _isLeaf(PreconditionBlock compareBlock) {
 		return true;
 	}
 	
@@ -146,7 +164,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return true;
 	}
 	
-	protected def boolean _isLeaf(TargetModel targetModel) {
+	protected def boolean _isLeaf(TargetChange targetChange) {
 		return true;
 	}
 	

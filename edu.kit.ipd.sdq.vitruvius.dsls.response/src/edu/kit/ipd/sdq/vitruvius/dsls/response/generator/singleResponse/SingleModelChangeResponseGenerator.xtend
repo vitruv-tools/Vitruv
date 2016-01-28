@@ -50,9 +50,8 @@ abstract class SingleModelChangeResponseGenerator extends AbstractSingleResponse
 	 * <p>Precondition: Executed codeBlock must exist.
 	 */
 	protected def generateMethodPerformResponse() '''
-		private def performResponseTo(«changeEventTypeString» «CHANGE_PARAMETER_NAME»«
-			IF hasTargetChange», «ih.typeRef(Blackboard)
-			» blackboard«ENDIF»)«response.effects.codeBlock.xtendCode»
+		private def performResponseTo(«changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)
+			» blackboard)«response.effects.codeBlock.xtendCode»
 	'''
 	
 	/**
