@@ -489,13 +489,13 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 	
 	@Test
 	public def void testCreateRoot() throws Throwable {
-		changeRecorder.endRecording();
-		val resource = createModelResource(TEST_MODEL_NAME);
+		val resource = createModelResource("CreateRootTestModelRoot");
 		val root1 = AllElementTypesFactory.eINSTANCE.createRoot();
-		root1.setId("Root");
+		root1.setId("CreateRootTestModelRoot");
 		resource.getContents().add(root1);
+		saveAndSynchronizeChanges(root1, false);
 		synchronizeFileChange(FileChangeKind.CREATE, VURI.getInstance(resource));
 		// There should be no exception here.
-		"TestModel2".getModelResource(false);
+		assertModelsEqual("CreateRootTestModelRoot", "ResponseToCreateRootModelRoot");
 	}
 }

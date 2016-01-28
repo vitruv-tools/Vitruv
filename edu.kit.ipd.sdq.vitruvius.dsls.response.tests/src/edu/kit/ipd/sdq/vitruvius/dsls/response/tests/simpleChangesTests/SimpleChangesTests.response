@@ -42,15 +42,17 @@ effect: update root minimal.Root corresponding to {
 }
 
 /*
- * CreateRootEObject
+ * Creates the model for comparing the currently created one with.
  */
-response: CreateRootEObject
+response: CreateCompareModel
 trigger: element create of minimal.Root
 effect: create root minimal.Root as "TestModel2"
 
-response: CreateNonRootsForRoot
-trigger: element create of minimal.Root[multiValuedContainmentEReference]
-effect: create root minimal.NonRoot as "FurtherModel"
+
+response: CreateRootTest
+trigger: element create of minimal.Root
+precondition: { change.newValue.id == "CreateRootTestModelRoot" }
+effect: create root minimal.Root as "ResponseToCreateRootModelRoot"
 
 /*
  * CreateNonRootEObjectInList
