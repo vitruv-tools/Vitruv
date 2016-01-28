@@ -92,4 +92,11 @@ class CorrespondenceInstanceUtil {
 		return eObjectSet.filter(type).toSet
 		//return ci.allCorrespondencesWithoutDependencies.map[(it.^as + it.bs).filter(type)].flatten.toSet
 	}
+	
+	def public static Set<Correspondence> getCorrespondencesBetweenEObjects(CorrespondenceInstance ci, Set<EObject> aS, Set<EObject> bS) {
+		val correspondencesThatInvolveAs = ci.getCorrespondencesThatInvolveAtLeast(aS)
+		val correspondencesBetweenEObjects = correspondencesThatInvolveAs.filter[(it.^as.containsAll(aS) && it.bs.containsAll(bs)) || (it.^as.containsAll(bS) && it.bs.containsAll(aS))]
+		return correspondencesBetweenEObjects.toSet  
+	}
+	
 }
