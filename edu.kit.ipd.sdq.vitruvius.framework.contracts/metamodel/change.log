@@ -17,53 +17,71 @@
 + UnsetEReference.isContainment():bool
 
 - CreateRootEObject.newValue
-+ CreateEObject extends AdditiveReferenceChange
-- DeleteERootObject.oldValue
-+ DeleteEObject extends SubtractiveReferenceChange
++ CreateRootEObject extends AdditiveReferenceChange
+- DeleteRootEObject.oldValue
++ DeleteRootEObject extends SubtractiveReferenceChange
 - ReplaceRootEObject.newValue
 - ReplaceRootEObject.oldValue
 + ReplaceRootEObject extends DeleteERootObject, CreateRootEObject, 
 
 - InsertInEList.newValue
-+ InsertInEList extends AdditiveChange
+  + InsertInEList extends AdditiveChange
 - RemoveFromEList.oldValue
-+ RemoveFromEList extends SubtractiveChange
+  + RemoveFromEList extends SubtractiveChange
 - ReplaceInEList.newValue
 - ReplaceInEList.oldValue
+- ReplaceInEList extends UpdateMultiValuedEFeature
 + ReplaceInEList extends RemoveFromEList, InsertInEList
 ~ PermuteEList.newIndexForElementAt:EIntegerObject -> EInt
 ~ PermuteEList.newIndexForElementAt.upperBound -1 -> 1
-
 
 ~ UpdateSingleValuedEAttribute -> ReplaceSingleValuedEAttribute
 - UpdateSingleValuedEAttribute.oldValue
 - UpdateSingleValuedEAttribute.newValue
 + UpdateSingleValuedEAttribute extends ReplaciveAttributeChange
++ InsertEAttributeValue extends AdditiveAttributeChange
++ RemoveEAttributeValue extends SubtractiveAttributeChange
+- ReplaceEAttributeValue extends ReplaceInEList, UpdateEAttribute
++ ReplaceEAttributeValue extends RemoveEAttributeValue, InsertEAttributeValue, ReplaciveAttributeChange
 
-TODO alle anderen UpdateEAttribute von den richtigen AttributeChange erben lassen
++ UpdateEReference.isContainment():bool
+- UpdateNonContainmentEReference
+# jedes extends UpdateNonContainmentEReference durch extends UpdateEReference ersetzt
+~ UpdateSingleValuedNonContainmentEReference -> ReplaceSingleValuedEReference
+- ReplaceSingleValuedEReference.oldValue
+- ReplaceSingleValuedEReference.newValue
++ ReplaceSingleValuedEReference extends ReplaciveReferenceChange
+~ InsertNonContainmentEReference -> InsertEReference
++ InsertEReference extends AdditiveReferenceChange
+~ RemoveNonContainmentEReference -> RemoveEReference
++ RemoveEReference extends SubtractiveReferenceChange
+~ ReplaceNonContainmentEReference -> ReplaceEReference
++ ReplaceEReference extends ReplaciveReferenceChange
+~ PermuteNonContainmentEReferenceValues -> PermuteEReferenceValues
 
-
-~ UpdateSingleValuedNonContainmentEReference -> ReplaceSingleValuedNonContainmentEReference
-- UpdateSingleValuedNonContainmentEReference.oldValue
-+ UpdateSingleValuedNonContainmentEReference extends SubtractiveChange
-- UpdateSingleValuedNonContainmentEReference.newValue
-+ UpdateSingleValuedNonContainmentEReference extends AdditiveChange
-
+~ UpdateSingleValuedContainmentEReference -> ReplaceSingleValuedContainmentEReference
+- ReplaceSingleValuedContainmentEReference extends UpdateSingleValuedEAttribute, UpdateContainmentEReference
++ ReplaceSingleValuedContainmentEReference extends ReplaceSingleValuedEReference
+~ CreateNonRootEObjectSingle -> CreateNonRootEObject
+- CreateNonRootEObject.newValue
+~ DeleteNonRootEObjectSingle -> DeleteNonRootEObject
+- DeleteNonRootEObject.oldValue
+~ ReplaceNonRootEObjectSingle -> ReplaceNonRootEObject
+- ReplaceNonRootEObject.oldValue
+- ReplaceNonRootEObject.newValue
+- ReplaceNonRootEObject extends ReplaceSingleValuedContainmentEReference
++ ReplaceNonRootEObject extends DeleteNonRootEObject, CreateNonRootEObject
+- CreateNonRootEObjectInList extends InsertInEList, UpdateContainmentEReference
++ CreateNonRootEObjectInList extends InsertEReference
+- DeleteNonRootEObjectInList extends DeleteInEList, UpdateContainmentEReference
++ DeleteNonRootEObjectInList extends DeleteEReference
+- ReplaceNonRootEObjectInList extends ReplaceInEList, UpdateContainmentEReference
++ ReplaceNonRootEObjectInList extends ReplaceEReference
+- PermuteContainmentEReferenceValues
+TODO InsertNonRootEObjectInContainmentList und RemoveNonRootEObjectFromContainmentList um move bereits existierender Objekte auszudrücken???
+- UpdateContainmentEReference
 
 -----------------------------------------
-
-
-entweder Create Replace DeleteEObject und alle ..Contaiment.. entfernen und ...XNonContainmentY.. in ..XY.. umbenennen und jeweils isContainment():bool hinzufügen
-oder in Create Replace DeleteNonRootEObjectSingle newValue und oldValue entfernen und Replace von Create und Delete erben lassen und diese von Add und Subtract
-
-wohin mit dem isContainment? direkt in Add und Subtract?
-
-
-
-
-
-
-
 
 
 T so selten wie möglich festlegen
@@ -73,3 +91,4 @@ T so selten wie möglich festlegen
 nicht jeder der von Add und Sub erbt erbt auch von Replacive, daher Replacive raus?
 
 ReplaciveChange wieder löschen?
+InsertInEList und RemoveFromEList können doch nicht vom allgemeinen AdditiveChange und SubtractiveChange erben
