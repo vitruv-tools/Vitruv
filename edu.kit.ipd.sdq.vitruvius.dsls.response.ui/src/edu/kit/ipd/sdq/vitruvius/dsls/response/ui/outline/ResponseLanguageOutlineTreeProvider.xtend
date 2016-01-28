@@ -18,7 +18,6 @@ import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryTargetMetamodelInstanceUpdate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootChange
 
@@ -29,7 +28,6 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetMo
  */
 class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	protected def void _createChildren(DocumentRootNode root, ResponseFile responseFile) {
-		ResponseLanguageGeneratorUtils.cleanEventToNameMap();
 		val importsNode = createEStructuralFeatureNode(root, responseFile, 
 			ResponseLanguagePackage.Literals.RESPONSE_FILE__METAMODEL_IMPORTS,
 			imageDispatcher.invoke(responseFile), "imports", false);
@@ -62,15 +60,19 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		}
 		val triggerNode = createEStructuralFeatureNode(responseNode, response, 
 			ResponseLanguagePackage.Literals.RESPONSE__TRIGGER,
-			imageDispatcher.invoke(response.trigger), "Trigger", false);
-		createChildren(triggerNode, response.trigger);
+			imageDispatcher.invoke(response.trigger), "Trigger", response.trigger != null);
+		if (response.trigger != null) {
+			createChildren(triggerNode, response.trigger);
+		}
 		if (response.trigger?.precondition != null) {
 			createChildren(triggerNode, response.trigger.precondition)
 		}
 		val effectsNode = createEStructuralFeatureNode(responseNode, response, 
 			ResponseLanguagePackage.Literals.RESPONSE__EFFECTS,
-			imageDispatcher.invoke(response.effects), "Effects", false);
-		createChildren(effectsNode, response.effects);
+			imageDispatcher.invoke(response.effects), "Effects", response.effects != null);
+		if (response.effects != null) {
+			createChildren(effectsNode, response.effects);
+		}
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, PreconditionBlock preconditionBlock) {

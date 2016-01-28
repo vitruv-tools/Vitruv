@@ -13,9 +13,9 @@ import org.eclipse.xtext.xbase.XExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryModelElementChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionBlock
-import java.util.HashMap
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryTargetMetamodelInstanceUpdate
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
 
 final class ResponseLanguageGeneratorUtils {
 	private static val FSA_SEPARATOR = "/";
@@ -108,34 +108,31 @@ final class ResponseLanguageGeneratorUtils {
 	}
 	
 	static def String getResponseName(Response response) '''
-		ResponseTo«response.trigger.responseNameForEvent»'''
-	
-	private static val eventToNameMap = new HashMap<Trigger, String>();
-	public static def void cleanEventToNameMap() {
-		eventToNameMap.clear();
-	}
+		«response.trigger.responseNameForEvent»Response'''
 	
 	static def dispatch String getResponseNameForEvent(Trigger trigger) {
 		throw new UnsupportedOperationException("Response name fragment is not defined for this event type.")
 	}
 	
 	static def dispatch String getResponseNameForEvent(ConcreteModelElementChange event) {
-		if (!eventToNameMap.containsKey(event)) {
-			val name = '''«event.class.simpleName»Of«IF event.changedObject?.feature != null»«event.changedObject.feature.name.toFirstUpper»In«ENDIF»«
-			event.changedObject?.element?.name?.toFirstUpper»'''
-			var index = 0;
-			var indexString = "";
-			while (eventToNameMap.containsValue(name + indexString)) {
-				index++;
-				indexString = index.toString;
-			}
-			eventToNameMap.put(event, name + indexString);
-		} 
-		return eventToNameMap.get(event);
+		val response = event.containingResponse;
+		if (!response.name.nullOrEmpty) {
+			return response.name;
+		} else {
+			return '''«event.class.simpleName»Of«IF event.changedObject?.feature != null»«
+				event.changedObject.feature.name.toFirstUpper»In«ENDIF»«event.changedObject?.element?.name?.toFirstUpper»'''
+		}
 	}
 	
-	static def dispatch String getResponseNameForEvent(ArbitraryModelElementChange event) '''
-		«event.class.simpleName»In«IF event.changedModel?.model?.name != null»«event.changedModel.model.name.toFirstUpper»«ENDIF»'''
+	static def dispatch String getResponseNameForEvent(ArbitraryModelElementChange event) {
+		val response = event.containingResponse;
+		if (!response.name.nullOrEmpty) {
+			return response.name;
+		} else {
+			return '''«event.class.simpleName»In«IF event.changedModel?.model?.name != null»«
+				event.changedModel.model.name.toFirstUpper»«ENDIF»'''
+		}
+	}
 	
 	
 	static def getXtendCode(PreconditionBlock preconditionBlock) {

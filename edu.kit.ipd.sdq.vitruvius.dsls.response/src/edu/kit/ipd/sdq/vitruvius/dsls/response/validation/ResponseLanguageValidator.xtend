@@ -7,6 +7,10 @@ import org.eclipse.xtext.validation.Check
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootCreate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
+import java.util.HashMap
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 
 /**
  * This class contains custom validation rules. 
@@ -15,6 +19,20 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetMo
  */
 class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 	
+	@Check
+	def checkResponseFile(ResponseFile file) {
+		val alreadyCheckedResponses = new HashMap<String, Response>();
+		for (response : file.responses) {
+			if (alreadyCheckedResponses.containsKey(response.responseName)) {
+				warning("Duplicate response name.",
+					response, ResponseLanguagePackage.Literals.RESPONSE__NAME);
+				warning("Duplicate response name.",
+					alreadyCheckedResponses.get(response.responseName), ResponseLanguagePackage.Literals.RESPONSE__NAME);
+			}
+			alreadyCheckedResponses.put(response.responseName, response);
+		}
+	}
+
 	@Check
 	def checkEffects(Effects effects) {
 		if (!(effects.targetChange instanceof ConcreteTargetModelRootCreate) && effects.codeBlock == null) {

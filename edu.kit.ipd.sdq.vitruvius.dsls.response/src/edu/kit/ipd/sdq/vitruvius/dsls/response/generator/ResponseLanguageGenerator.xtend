@@ -24,7 +24,6 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.singleResponse.SingleRe
 
 class ResponseLanguageGenerator implements IGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
-		ResponseLanguageGeneratorUtils.cleanEventToNameMap
 		val modelCorrepondenceToResponseMap = generateResponses(resource.contents.head as ResponseFile, fsa);
 		generateExecutorsAndChange2CommandTransformings(modelCorrepondenceToResponseMap, fsa)
 		generateChange2CommandTransformingProviding(modelCorrepondenceToResponseMap.keySet, fsa);

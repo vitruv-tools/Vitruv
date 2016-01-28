@@ -16,11 +16,14 @@ MetamodelImport:
 
 Response:
 	(documentation=ML_COMMENT)?
-	'response to' trigger=Trigger effects=Effects;
+	'response:' (name=ValidID)?
+	trigger=Trigger 
+	effects=Effects;
 
 Effects:
 	{Effects}
-	(targetChange=TargetChange)? ('executes' codeBlock=CodeBlock)?;
+	('effect:' targetChange=TargetChange)? 
+	('execute:' codeBlock=CodeBlock)?;
 
 TargetChange:
 	ConcreteTargetModelRootChange | ArbitraryTargetMetamodelInstanceUpdate;
@@ -29,13 +32,13 @@ ConcreteTargetModelRootChange:
 	ConcreteTargetModelRootUpdate | ConcreteTargetModelRootCreate;
 	
 ConcreteTargetModelRootUpdate:
-	'updates root' rootModelElement=ModelElement 'corresponding to' correspondenceSource=CorrespondenceSourceDeterminationBlock;
+	'update root' rootModelElement=ModelElement 'corresponding to' correspondenceSource=CorrespondenceSourceDeterminationBlock;
 	
 ConcreteTargetModelRootCreate:
-	'creates root' rootModelElement=ModelElement 'as' name=STRING;
+	'create root' rootModelElement=ModelElement 'as' name=STRING;
 
 ArbitraryTargetMetamodelInstanceUpdate:
-	'updates any' metamodelReference=MetamodelReference;
+	'update any' metamodelReference=MetamodelReference;
 
 ModelElement:
 	modelElement=[ecore::EClass|QualifiedName];
@@ -51,11 +54,11 @@ CodeBlock:
 
 // TODO dummy for the invariant violation
 InvariantViolationEvent:
-	"invariant" violation=[ecore::EClass|QualifiedName];
+	'invariant' violation=[ecore::EClass|QualifiedName];
 
 Trigger:
-	(ModelChange | InvariantViolationEvent)
-	('when' precondition=PreconditionBlock)?;
+	'trigger:' (ModelChange | InvariantViolationEvent)
+	('precondition:' precondition=PreconditionBlock)?;
 	
 ModelChange:
 	ConcreteModelElementChange | ArbitraryModelElementChange;
