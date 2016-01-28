@@ -30,7 +30,7 @@ final class EChangeHelper {
 	
 	static def String getGenericTypeParameterFQNOfChange(EClass changeEClass, FeatureOfElement foe) {
 		val changeClass = changeEClass.instanceClass;
-		var String className;
+		var String className = "";
 		if (UpdateEReference.isAssignableFrom(changeClass)
 			|| UpdateEAttribute.isAssignableFrom(changeClass)
 			|| UnsetEReference.isAssignableFrom(changeClass)

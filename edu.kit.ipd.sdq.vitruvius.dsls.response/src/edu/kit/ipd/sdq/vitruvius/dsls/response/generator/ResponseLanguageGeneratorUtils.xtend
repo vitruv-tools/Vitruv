@@ -7,11 +7,14 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.XtendImportHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CompareBlock
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.xtext.xbase.XExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryMetamodelInstanceUpdate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryModelElementChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelRootChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionBlock
 
 final class ResponseLanguageGeneratorUtils {
 	private static val FSA_SEPARATOR = "/";
@@ -79,15 +82,22 @@ final class ResponseLanguageGeneratorUtils {
 
 	static def Pair<VURI, VURI> getSourceTargetPair(ResponseFile responseFile, Response response) {
 		val event = response.trigger;
-		var EPackage sourceModel;
+		var EPackage sourceMetamodel;
 		
 		if (event instanceof ConcreteModelElementChange) {
-			sourceModel = event.changedObject.element.EPackage;
+			sourceMetamodel = event.changedObject.element.EPackage;
+		} else if (event instanceof ArbitraryModelElementChange) {
+			sourceMetamodel = event.changedModel.model.package;
 		}
-		if (sourceModel != null) {
-			val sourceURI = sourceModel.nsURI;
-			val targetModel = response.effects.targetModel;
-			var targetURI = targetModel?.rootModelElement?.modelElement?.EPackage?.nsURI?:sourceModel.nsURI;
+		if (sourceMetamodel != null) {
+			val sourceURI = sourceMetamodel.nsURI;
+			val targetChange = response.effects.targetChange;
+			var targetURI = sourceMetamodel.nsURI;
+			if (targetChange instanceof ConcreteModelRootChange) {
+				targetURI = targetChange.rootModelElement?.modelElement?.EPackage?.nsURI?:sourceMetamodel.nsURI;
+			} else if (targetChange instanceof ArbitraryMetamodelInstanceUpdate) {
+				targetURI = targetChange.metamodelReference?.model?.package?.nsURI?:sourceMetamodel.nsURI;
+			}
 			val source = VURI.getInstance(sourceURI);
 			var target = VURI.getInstance(targetURI);
 			val sourceTargetPair = new Pair<VURI, VURI>(source, target);
@@ -107,9 +117,12 @@ final class ResponseLanguageGeneratorUtils {
 		«event.class.simpleName»Of«IF event.changedObject?.feature != null»«event.changedObject.feature.name.toFirstUpper»In«ENDIF»«
 			event.changedObject?.element?.name?.toFirstUpper»'''
 	
+	static def dispatch String getResponseNameForEvent(ArbitraryModelElementChange event) '''
+		«event.class.simpleName»In«IF event.changedModel?.model?.name != null»«event.changedModel.model.name.toFirstUpper»«ENDIF»'''
 	
-	static def getXtendCode(CompareBlock compareBlock) {
-		NodeModelUtils.getNode(compareBlock.code).text
+	
+	static def getXtendCode(PreconditionBlock preconditionBlock) {
+		NodeModelUtils.getNode(preconditionBlock.code).text
 	}
 	
 	static def getXtendCode(CodeBlock codeBlock) {

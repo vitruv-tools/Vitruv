@@ -5,7 +5,6 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel
 
 import com.google.inject.Inject
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CompareBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import java.util.ArrayList
 import org.eclipse.emf.ecore.EObject
@@ -22,12 +21,14 @@ import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguage
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetModel
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondenceSourceDeterminationBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.UpdatedModel
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
 import java.util.List
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionBlock
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelRootChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryMetamodelInstanceUpdate
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the response file model.</p> 
@@ -71,28 +72,36 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 		
-	def dispatch void infer(CompareBlock compareBlock, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	def dispatch void infer(PreconditionBlock preconditionBlock, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		if (isPreIndexingPhase) {
 			return;
 		}
-		val response = compareBlock.containingResponse;
-		val methodParameters = createResponseParameters(response, compareBlock, response.effects.targetModel instanceof UpdatedModel)
+		val response = preconditionBlock.containingResponse;
+		val methodParameters = createResponseParameters(response, preconditionBlock, false);
 		
 		acceptor.accept(response.toClass("ResponseHelper" +  PER_MODEL_PRECONDITION_METHOD_NAME.toFirstUpper)) [
-			members += compareBlock.toMethod(PER_MODEL_PRECONDITION_METHOD_NAME, typeRef(Boolean.TYPE)) [applyMethod |
+			members += preconditionBlock.toMethod(PER_MODEL_PRECONDITION_METHOD_NAME, typeRef(Boolean.TYPE)) [applyMethod |
 				applyMethod.parameters += methodParameters
-				applyMethod.body = compareBlock.code]
+				applyMethod.body = preconditionBlock.code]
 			it.makeClassStatic(response)
 		]
 	}
 	
-	private def createResponseParameters(Response response, EObject blockContext, boolean includeAffectedModel) {
+	private def createResponseParameters(Response response, EObject blockContext, boolean includeTargetModel) {
 		val methodParameters = <JvmFormalParameter>newArrayList();
 		if (response?.trigger != null) {
 			methodParameters += generateChangeParameters(response?.trigger, blockContext);	
 		}
-		if (includeAffectedModel && response?.effects?.targetModel?.rootModelElement != null) {
-			methodParameters += generateAffectedModelParameters(response?.effects?.targetModel, blockContext);
+		if (includeTargetModel) {
+			if (response.effects?.targetChange instanceof ConcreteModelRootChange) {
+				if ((response.effects.targetChange as ConcreteModelRootChange).rootModelElement != null) {
+					methodParameters += generateTargetModelParameters(response?.effects?.targetChange as ConcreteModelRootChange, blockContext);
+				}
+			} else if (response.effects?.targetChange instanceof ArbitraryMetamodelInstanceUpdate) {
+				if ((response.effects.targetChange as ArbitraryMetamodelInstanceUpdate).metamodelReference?.model != null) {
+					methodParameters += generateBlackboardParameter(blockContext);
+				}
+			}
 		}
 		return methodParameters;
 	}
@@ -116,11 +125,15 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 		}
 	}
 	
-	private def Iterable<JvmFormalParameter> generateAffectedModelParameters(TargetModel targetModel, EObject parameterContext) {
-		if (targetModel?.rootModelElement?.modelElement != null) {
-			return #[parameterContext.generateAffectedModelParameter(targetModel.rootModelElement.modelElement.instanceTypeName)];
+	private def Iterable<JvmFormalParameter> generateTargetModelParameters(ConcreteModelRootChange rootChange, EObject parameterContext) {
+		if (rootChange?.rootModelElement?.modelElement != null) {
+			return #[parameterContext.generateAffectedModelParameter(rootChange.rootModelElement.modelElement.instanceTypeName)];
 		}
 		return #[];
+	}
+	
+	private def Iterable<JvmFormalParameter> generateBlackboardParameter(EObject parameterContext) {
+		return #[generateParameter(parameterContext, "blackboard", Blackboard.name)];
 	}
 	
 	private def void makeClassStatic(JvmGenericType type, EObject context) {

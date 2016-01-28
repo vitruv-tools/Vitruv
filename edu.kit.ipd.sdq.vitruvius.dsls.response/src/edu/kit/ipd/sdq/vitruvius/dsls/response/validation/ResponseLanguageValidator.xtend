@@ -6,11 +6,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.validation
 import org.eclipse.xtext.validation.Check
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.UpdatedModel
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CreatedModel
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementCreate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelRootCreate
 
 /**
  * This class contains custom validation rules. 
@@ -21,7 +17,7 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 	
 	@Check
 	def checkEffects(Effects effects) {
-		if (effects.targetModel instanceof UpdatedModel && effects.codeBlock == null) {
+		if (!(effects.targetChange instanceof ConcreteModelRootCreate) && effects.codeBlock == null) {
 			warning("No code is specified to execute for the models to update.",
 				ResponseLanguagePackage.Literals.EFFECTS__CODE_BLOCK);
 		}

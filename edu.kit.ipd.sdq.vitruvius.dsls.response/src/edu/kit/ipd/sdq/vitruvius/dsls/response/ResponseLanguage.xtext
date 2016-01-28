@@ -17,19 +17,26 @@ MetamodelImport:
 Response:
 	(documentation=ML_COMMENT)?
 	'response to' trigger=Trigger effects=Effects;
-	
+
 Effects:
 	{Effects}
-	(targetModel=TargetModel)? ('when' perModelPrecondition=CompareBlock)? ('executes' codeBlock=CodeBlock)?;
+	(targetChange=TargetChange)? ('executes' codeBlock=CodeBlock)?;
 
-TargetModel:
-	UpdatedModel | CreatedModel;
+TargetChange:
+	ConcreteModelRootChange | ArbitraryMetamodelInstanceUpdate;
 
-UpdatedModel:
-	'updates' rootModelElement=ModelElement 'corresponding to' correspondenceSource=CorrespondenceSourceDeterminationBlock;
+ConcreteModelRootChange:
+	ConcreteModelRootUpdate | ConcreteModelRootCreate;
 	
-CreatedModel:
-	'creates' rootModelElement=ModelElement 'as' name=STRING;
+ConcreteModelRootUpdate:
+	'updates root' rootModelElement=ModelElement 'corresponding to' correspondenceSource=CorrespondenceSourceDeterminationBlock;
+	
+ConcreteModelRootCreate:
+	'creates root' rootModelElement=ModelElement 'as' name=STRING;
+
+ArbitraryMetamodelInstanceUpdate:
+	'updates any' metamodelReference=MetamodelReference;
+
 
 ModelElement:
 	modelElement=[ecore::EClass|QualifiedName];
@@ -37,7 +44,7 @@ ModelElement:
 CorrespondenceSourceDeterminationBlock:
 	object=XBlockExpression;
 
-CompareBlock:
+PreconditionBlock:
 	code=XBlockExpression;
 
 CodeBlock:
@@ -48,7 +55,8 @@ InvariantViolationEvent:
 	"invariant" violation=[ecore::EClass|QualifiedName];
 
 Trigger:
-	ModelChange | InvariantViolationEvent;
+	(ModelChange | InvariantViolationEvent)
+	('when' precondition=PreconditionBlock)?;
 	
 ModelChange:
 	ConcreteModelElementChange | ArbitraryModelElementChange;
@@ -63,7 +71,7 @@ ModelElementChangeType returns ConcreteModelElementChange:
 	'element delete' {ConcreteModelElementDelete};
 
 ArbitraryModelElementChange:
-	'model change' 'in' changedmodel=MetamodelReference;
+	'model change' 'in' changedModel=MetamodelReference;
 	
 MetamodelReference:
 	model=[MetamodelImport];

@@ -3,10 +3,11 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.helper
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CompareBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetModel
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondenceSourceDeterminationBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.UpdatedModel
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelRootUpdate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionBlock
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 
 final class ResponseLanguageHelper {
 	private new() {}
@@ -19,24 +20,24 @@ final class ResponseLanguageHelper {
 		return null;
 	}
 	
-	public static def Response getContainingResponse(CompareBlock compareBlock) {
-		val effects = compareBlock.eContainer();
-		if (effects instanceof Effects) {
-			return getContainingResponse(effects);
+	public static def Response getContainingResponse(PreconditionBlock preconditionBlock) {
+		val trigger = preconditionBlock.eContainer();
+		if (trigger instanceof Trigger) {
+			return getContainingResponse(trigger);
 		}
 		return null;
 	}
 	
 	public static def Response getContainingResponse(CorrespondenceSourceDeterminationBlock correspondenceSourceBlock) {
-		val updatedModel = correspondenceSourceBlock.eContainer();
-		if (updatedModel instanceof UpdatedModel) {
-			return getContainingResponse(updatedModel);
+		val modelRootUpdate = correspondenceSourceBlock.eContainer();
+		if (modelRootUpdate instanceof ConcreteModelRootUpdate) {
+			return getContainingResponse(modelRootUpdate);
 		}
 		return null;
 	}
 	
-	public static def Response getContainingResponse(TargetModel targetModel) {
-		val effects = targetModel.eContainer();
+	public static def Response getContainingResponse(TargetChange targetChange) {
+		val effects = targetChange.eContainer();
 		if (effects instanceof Effects) {
 			return getContainingResponse(effects);
 		}
@@ -45,6 +46,14 @@ final class ResponseLanguageHelper {
 	
 	public static def Response getContainingResponse(Effects effects) {
 		val response = effects.eContainer();
+		if (response instanceof Response) {
+			return response;
+		}
+		return null;
+	}
+	
+	public static def Response getContainingResponse(Trigger tigger) {
+		val response = tigger.eContainer();
 		if (response instanceof Response) {
 			return response;
 		}
