@@ -16,13 +16,16 @@
 - UnsetNonContainmentEReference
 + UnsetEReference.isContainment():bool
 
++ InsertRootEObject
++ RemoveRootEObject
 - CreateRootEObject.newValue
-+ CreateRootEObject extends AdditiveReferenceChange
++ CreateRootEObject extends InsertRootEObject
 - DeleteRootEObject.oldValue
-+ DeleteRootEObject extends SubtractiveReferenceChange
++ DeleteRootEObject extends RemoveRootEObject
 - ReplaceRootEObject.newValue
 - ReplaceRootEObject.oldValue
 + ReplaceRootEObject extends DeleteERootObject, CreateRootEObject, 
++ MoveEObject
 
 - InsertInEList.newValue
   + InsertInEList extends AdditiveChange
@@ -71,14 +74,17 @@
 - ReplaceNonRootEObject.newValue
 - ReplaceNonRootEObject extends ReplaceSingleValuedContainmentEReference
 + ReplaceNonRootEObject extends DeleteNonRootEObject, CreateNonRootEObject
+- InsertNonRootEObjectInContainmentList extends InsertInEList, UpdateContainmentEReference
++ InsertNonRootEObjectInContainmentList extends InsertEReference
+- RemoveNonRootEObjectInContainmentList extends RemoveInEList, UpdateContainmentEReference
++ RemoveNonRootEObjectInContainmentList extends RemoveEReference
 - CreateNonRootEObjectInList extends InsertInEList, UpdateContainmentEReference
-+ CreateNonRootEObjectInList extends InsertEReference
++ CreateNonRootEObjectInList extends InsertNonRootEObjectInContainmentList
 - DeleteNonRootEObjectInList extends DeleteInEList, UpdateContainmentEReference
-+ DeleteNonRootEObjectInList extends DeleteEReference
++ DeleteNonRootEObjectInList extends RemoveNonRootEObjectInContainmentList
 - ReplaceNonRootEObjectInList extends ReplaceInEList, UpdateContainmentEReference
 + ReplaceNonRootEObjectInList extends ReplaceEReference
 - PermuteContainmentEReferenceValues
-TODO InsertNonRootEObjectInContainmentList und RemoveNonRootEObjectFromContainmentList um move bereits existierender Objekte auszudrücken???
 - UpdateContainmentEReference
 
 -----------------------------------------
