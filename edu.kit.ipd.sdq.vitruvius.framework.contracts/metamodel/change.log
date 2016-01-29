@@ -25,7 +25,11 @@
 - ReplaceRootEObject.newValue
 - ReplaceRootEObject.oldValue
 + ReplaceRootEObject extends DeleteERootObject, CreateRootEObject, 
+
++ pkg compound
++ CompoundChange
 + MoveEObject
+
 
 - InsertInEList.newValue
   + InsertInEList extends AdditiveChange
@@ -38,7 +42,7 @@
 ~ PermuteEList.newIndexForElementAt:EIntegerObject -> EInt
 ~ PermuteEList.newIndexForElementAt.upperBound -1 -> 1
 
-~ UpdateSingleValuedEAttribute -> ReplaceSingleValuedEAttribute
+!~ UpdateSingleValuedEAttribute -> ReplaceSingleValuedEAttribute
 - UpdateSingleValuedEAttribute.oldValue
 - UpdateSingleValuedEAttribute.newValue
 + UpdateSingleValuedEAttribute extends ReplaciveAttributeChange
@@ -89,12 +93,25 @@
 
 -----------------------------------------
 
-
-T so selten wie möglich festlegen
-
-
-
 nicht jeder der von Add und Sub erbt erbt auch von Replacive, daher Replacive raus?
+InsertInEList und RemoveFromEList können doch nicht vom allgemeinen AdditiveChange und SubtractiveChange erben, dass ist aber kein Problem da alle unterklassen von InsertInEList schon von einer Unterklasse von AdditiveChange erben und analog für Remove und Subtract
 
-ReplaciveChange wieder löschen?
-InsertInEList und RemoveFromEList können doch nicht vom allgemeinen AdditiveChange und SubtractiveChange erben
+auf jeden Fall bei der Reaktion von unten nach oben in der Vererbungshierarchie reagieren
+
+
+es gibt kein InsertWithoutCreate sondern wenn man dass behandeln will muss man prüfen ob es keine Instanz von Create... ist
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+HEIKO: den Typ des change elements inferieren und für den Block entsprechend gecastet einbinden damit der Nutzer sich darum nicht kümmern muss
