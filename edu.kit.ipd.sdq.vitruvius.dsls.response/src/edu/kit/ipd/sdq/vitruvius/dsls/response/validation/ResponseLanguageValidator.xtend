@@ -11,6 +11,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
 import java.util.HashMap
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootDelete
 
 /**
  * This class contains custom validation rules. 
@@ -35,7 +36,8 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 
 	@Check
 	def checkEffects(Effects effects) {
-		if (!(effects.targetChange instanceof ConcreteTargetModelRootCreate) && effects.codeBlock == null) {
+		if (!(effects.targetChange instanceof ConcreteTargetModelRootCreate ||
+			effects.targetChange instanceof ConcreteTargetModelRootDelete) && effects.codeBlock == null) {
 			warning("No code is specified to execute for the models to update.",
 				ResponseLanguagePackage.Literals.EFFECTS__CODE_BLOCK);
 		}

@@ -12,6 +12,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootCreate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootUpdate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootDelete
 
 abstract class SingleModelChangeResponseGenerator extends AbstractSingleResponseGenerator {
 	
@@ -32,15 +33,15 @@ abstract class SingleModelChangeResponseGenerator extends AbstractSingleResponse
 		}
 		
 		val targetChange = response.effects?.targetChange;
-		if (hasTargetChange) {
+		if (hasTargetChange &&
+			targetChange instanceof ConcreteTargetModelRootChange) {
+			methods += generateMethodExecuteResponse(targetChange as ConcreteTargetModelRootChange);
 			if (targetChange instanceof ConcreteTargetModelRootUpdate) {
 				methods += generateMethodDetermineTargetModels(targetChange);	
-				methods += generateMethodExecuteResponse(targetChange);
 			} else if (targetChange instanceof ConcreteTargetModelRootCreate) {
 				methods += generateMethodGenerateTargetModel(targetChange);
-				methods += generateMethodExecuteResponse(targetChange);
-			} else {
-				methods += generateMethodExecuteResponse();
+			} else if (targetChange instanceof ConcreteTargetModelRootDelete) {
+				methods += generateMethodDeleteTargetModels(targetChange);
 			}
 		} else {
 			methods += generateMethodExecuteResponse();
@@ -142,6 +143,25 @@ abstract class SingleModelChangeResponseGenerator extends AbstractSingleResponse
 			LOGGER.debug("Execute response " + this.class.name + " for new model " + targetModel);
 			«IF hasExecutionBlock»
 				performResponseTo(«CHANGE_PARAMETER_NAME», targetModel);
+			«ENDIF»
+		}
+	'''
+	
+	/**
+	 * Generates: executeResponse
+	 * 
+	 * <p>Calls the response execution after deleting the target model.
+	 * 
+	 * <p>Methods parameters are:
+	 * <li>1. change: the change event ({@link EChange})
+	 * <li>2. blackboard: the {@link Blackboard} containing the {@link CorrespondenceInstance}
+	 */
+	protected def dispatch generateMethodExecuteResponse(ConcreteTargetModelRootDelete modelRootDelete) '''
+		private def executeResponse(«changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)» blackboard) {
+			deleteTargetModels(«CHANGE_PARAMETER_NAME», blackboard);
+			LOGGER.debug("Execute response " + this.class.name + " with no affected model");
+			«IF hasExecutionBlock»
+				performResponseTo(«CHANGE_PARAMETER_NAME», blackboard);
 			«ENDIF»
 		}
 	'''

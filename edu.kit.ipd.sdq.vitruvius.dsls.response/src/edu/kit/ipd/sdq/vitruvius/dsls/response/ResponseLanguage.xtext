@@ -29,13 +29,16 @@ TargetChange:
 	ConcreteTargetModelRootChange | ArbitraryTargetMetamodelInstanceUpdate;
 
 ConcreteTargetModelRootChange:
-	ConcreteTargetModelRootUpdate | ConcreteTargetModelRootCreate;
+	ConcreteTargetModelRootUpdate | ConcreteTargetModelRootCreate | ConcreteTargetModelRootDelete;
 	
 ConcreteTargetModelRootUpdate:
 	'update root' rootModelElement=ModelElement 'corresponding to' correspondenceSource=CorrespondenceSourceDeterminationBlock;
 	
 ConcreteTargetModelRootCreate:
 	'create root' rootModelElement=ModelElement 'as' name=STRING;
+
+ConcreteTargetModelRootDelete:
+	'delete root' rootModelElement=ModelElement ('corresponding to' correspondenceSource=CorrespondenceSourceDeterminationBlock)?;
 
 ArbitraryTargetMetamodelInstanceUpdate:
 	'update any' metamodelReference=MetamodelReference;

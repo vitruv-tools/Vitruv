@@ -20,6 +20,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementUpdate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootCreate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootUpdate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootDelete
+import java.util.Collections
 
 abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerator {
 	protected final Response response;
@@ -143,6 +145,32 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 			blackboard.correspondenceInstance.createAndAddCorrespondence(#[sourceElement], #[newRoot]);
 			«ih.typeRef(EcoreResourceBridge)».saveResource(newModelResource);
 			return newRoot;
+		}
+	'''
+	
+	/**
+	 * Generates method: deleteTargetModel
+	 * 
+	 * <p>Delete the target model as specified in the response
+	 * 
+	 * <p>Method parameters are:
+	 * 	<li>1. change: the change event ({@link EChange})</li>
+	 *  <li>2. blackboard: the blackboard ({@link Blackboard})</li>
+	 */	
+	protected def generateMethodDeleteTargetModels(ConcreteTargetModelRootDelete deletedModel) '''
+		«val affectedElementClass = deletedModel.rootModelElement.modelElement»
+		private def deleteTargetModels(«
+			changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)» blackboard) {
+			val objectToGetCorrespondencesFor =«deletedModel.correspondenceSource?.object?.xtendCode?:"change.oldValue;"»
+			val correspondences = blackboard.correspondenceInstance.«ih.callExtensionMethod(ResponseRuntimeHelper,
+				'''getCorrespondencesWithTargetType(objectToGetCorrespondencesFor, «ih.typeRef(affectedElementClass)»)''')»;
+			for (correspondence : correspondences) {
+				val targetModels = correspondence.getCorrespondingObjectsOfTypeInCorrespondence(objectToGetCorrespondencesFor, «ih.typeRef(affectedElementClass)»);
+				blackboard.correspondenceInstance.removeCorrespondencesAndDependendCorrespondences(correspondence);
+				for (targetModel : targetModels) {
+					targetModel.eResource().delete(«ih.typeRef(Collections)».EMPTY_MAP);
+				}
+			}
 		}
 	'''
 	

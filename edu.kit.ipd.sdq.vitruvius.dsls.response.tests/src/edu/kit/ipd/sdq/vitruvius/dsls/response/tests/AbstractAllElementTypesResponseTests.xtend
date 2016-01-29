@@ -12,12 +12,16 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping
 import allElementTypes.Root
 import allElementTypes.AllElementTypesPackage
 import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertTrue
+import static org.junit.Assert.assertFalse
 import static org.junit.Assert.assertArrayEquals
 import java.util.List
 import allElementTypes.Identified
 import java.util.function.Supplier
 import responses.ResponseChange2CommandTransformingProviding
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.eclipse.core.resources.ResourcesPlugin
+import java.io.File
 
 abstract class AbstractAllElementTypesResponseTests extends AbstractResponseTests {
 	private static val MODEL_FILE_EXTENSION = "minimalAllElements";
@@ -30,8 +34,12 @@ abstract class AbstractAllElementTypesResponseTests extends AbstractResponseTest
 		})
 	}
 	
-	private def String getModelPath(String modelName) {
+	protected override String getPlatformModelPath(String modelName) {
 		return this.currentTestProjectName + "/model/" + modelName + "." + MODEL_FILE_EXTENSION
+	}
+	
+	protected def String getAbsoluteModelPath(String modelName) {
+		return ResourcesPlugin.workspace.root.location.append("/" + modelName.platformModelPath).toOSString;
 	}
 	
 	protected def Root getRoot(String modelName) {
@@ -43,13 +51,9 @@ abstract class AbstractAllElementTypesResponseTests extends AbstractResponseTest
 	}
 	
 	protected def VURI getModelVURI(String modelName) {
-		return VURI.getInstance(modelName.modelPath);	
+		return VURI.getInstance(modelName.platformModelPath);	
 	}
 	
-	protected def Resource createModelResource(String modelName) {
-		return this.resourceSet.createResource(modelName.modelVURI.getEMFUri());
-	}
-
 	protected def Resource getModelResource(String modelName, boolean forceReload) {
 		var resource = this.resourceSet.getResource(modelName.modelVURI.getEMFUri(), false);
 		if (forceReload && resource != null) {
@@ -77,6 +81,14 @@ abstract class AbstractAllElementTypesResponseTests extends AbstractResponseTest
 		val minimalMinimalMapping = new Mapping(minimalMetamodel, minimalMetamodel);
 		metarepository.addMapping(minimalMinimalMapping);
 		return metarepository;
+	}
+
+	protected def void assertModelExists(String modelName) {
+		assertTrue(new File(modelName.absoluteModelPath).exists());
+	}
+	
+	protected def void assertModelNotExists(String modelName) {
+		assertFalse(new File(modelName.absoluteModelPath).exists());
 	}
 	
 	protected def void assertModelsEqual(String modelName1, String modelName2) {

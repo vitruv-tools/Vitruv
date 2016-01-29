@@ -21,6 +21,19 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.AbstractResponseChange2C
 import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.AbstractResponseChange2CommandTransformingProviding
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.XtendImportHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.singleResponse.SingleResponseGeneratorFactory
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootCreate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguageFactory
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangeFactory
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ObjectFactory
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementCreate
+import org.eclipse.xtext.xbase.XbaseFactory
+import org.eclipse.xtext.xbase.compiler.XbaseCompiler
+import org.eclipse.xtext.xbase.parser.antlr.XbaseParser
+import org.eclipse.xtext.xbase.XBlockExpression
 
 class ResponseLanguageGenerator implements IGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
@@ -115,19 +128,48 @@ class ResponseLanguageGenerator implements IGenerator {
 			
 	private def Map<Pair<VURI, VURI>, List<String>> generateResponses(ResponseFile file, IFileSystemAccess fsa) {
 		val modelCorrespondenceToResponseNameMap = new HashMap<Pair<VURI, VURI>, List<String>>;
+		val List<Response> deleteResponses = <Response>newArrayList();
 		for (response : file.responses) {
-			val responseName = response.responseName;
-			val sourceTargetPair = file.getSourceTargetPair(response);
-			if (!modelCorrespondenceToResponseNameMap.containsKey(sourceTargetPair)) {
-				modelCorrespondenceToResponseNameMap.put(sourceTargetPair, new ArrayList<String>());
-			}
-			modelCorrespondenceToResponseNameMap.get(sourceTargetPair).add(responseName);
-			val responseGenerator = SingleResponseGeneratorFactory.INSTANCE.createGenerator(response);
-			fsa.generateFile(sourceTargetPair.getResponseFilePath(responseName), 
-				responseGenerator.generateResponseClass(file.getSourceTargetPair(response).packageQualifiedName, responseName)
-			);
-		}	
+			deleteResponses += generateResponse(file, response, modelCorrespondenceToResponseNameMap, fsa);
+		}
+		for (response : deleteResponses) {
+			generateResponse(file, response, modelCorrespondenceToResponseNameMap, fsa);
+		}
 		return modelCorrespondenceToResponseNameMap;
+	}
+	
+	private def Iterable<Response> generateResponse(ResponseFile file, Response response, Map<Pair<VURI, VURI>, List<String>> modelCorrespondenceToResponseNameMap, IFileSystemAccess fsa) {
+		val responseName = response.responseName;
+		val sourceTargetPair = file.getSourceTargetPair(response);
+		if (!modelCorrespondenceToResponseNameMap.containsKey(sourceTargetPair)) {
+			modelCorrespondenceToResponseNameMap.put(sourceTargetPair, new ArrayList<String>());
+		}
+		modelCorrespondenceToResponseNameMap.get(sourceTargetPair).add(responseName);
+		val responseGenerator = SingleResponseGeneratorFactory.INSTANCE.createGenerator(response);
+		fsa.generateFile(sourceTargetPair.getResponseFilePath(responseName), 
+			responseGenerator.generateResponseClass(file.getSourceTargetPair(response).packageQualifiedName, responseName)
+		);
+		return getRootDeleteIfCreate(response)
+	}
+	
+	private def List<Response> getRootDeleteIfCreate(Response response) {
+		if (response.effects.targetChange instanceof ConcreteTargetModelRootCreate
+			&& response.trigger instanceof ConcreteModelElementCreate) {
+			val createTrigger = response.trigger as ConcreteModelElementCreate;
+			val createTargetChange = response.effects.targetChange as ConcreteTargetModelRootCreate;
+			val deleteResponse = ResponseLanguageFactory.eINSTANCE.createResponse();
+			deleteResponse.name = "OppositeResponseForDeleteTo" + response.name;
+			val deleteTrigger = ResponseLanguageFactory.eINSTANCE.createConcreteModelElementDelete();
+			deleteTrigger.changedObject = createTrigger.changedObject;
+			deleteResponse.trigger = deleteTrigger;
+			val deleteEffects = ResponseLanguageFactory.eINSTANCE.createEffects();
+			val deleteTargetChange = ResponseLanguageFactory.eINSTANCE.createConcreteTargetModelRootDelete();
+			deleteTargetChange.rootModelElement = createTargetChange.rootModelElement;
+			deleteEffects.targetChange = deleteTargetChange;
+			deleteResponse.effects = deleteEffects;
+			return #[deleteResponse];
+		}
+		return #[];
 	}
 	
 }
