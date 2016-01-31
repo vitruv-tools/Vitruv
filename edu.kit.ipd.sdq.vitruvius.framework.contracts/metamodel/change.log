@@ -8,6 +8,10 @@
 + SubtractiveReferenceChange
 + ReplaciveReferenceChange
 
+!~ EFeatureChange.newAffectedEObject -> affectedEObject
+- EFeatureChange.oldAffectedEObject
++ EFeatureChange.oldTUIDOfAffectedEObject:TUID
++ UpdateEFeature extends EChange
 - UnsetEAttribute.oldValue
 + UnsetEAttribute extends SubtractiveAttributeChange
 - UnsetERefernce.oldValue
@@ -16,29 +20,47 @@
 - UnsetNonContainmentEReference
 + UnsetEReference.isContainment():bool
 
+- EObjectChange.T
+
+~ CreateEObject.isAbstract -> false
++ CreateEObject extends AdditiveReferenceChange
+~ DeleteEObject.isAbstract -> false
++ DeleteEObject extends SubtractiveReferenceChange
+- ReplaceEObject
++ root Pkg
 + InsertRootEObject
 + RemoveRootEObject
-- CreateRootEObject.newValue
-+ CreateRootEObject extends InsertRootEObject
-- DeleteRootEObject.oldValue
-+ DeleteRootEObject extends RemoveRootEObject
-- ReplaceRootEObject.newValue
-- ReplaceRootEObject.oldValue
-+ ReplaceRootEObject extends DeleteERootObject, CreateRootEObject, 
+- CreateRootEObject
+	- CreateRootEObject.newValue
+	+ CreateRootEObject extends InsertRootEObject
+- DeleteRootEObject
+	- DeleteRootEObject.oldValue
+	+ DeleteRootEObject extends RemoveRootEObject
+- ReplaceRootEObject
+	- ReplaceRootEObject.newValue
+	- ReplaceRootEObject.oldValue
+	+ ReplaceRootEObject extends DeleteERootObject, CreateRootEObject, 
 
 + pkg compound
 + CompoundChange
++ CreateEObjectAndAdd
++ DeleteEObjectAndSubtract
++ DeleteEObjectCreateEObject
++ DeleteEObjectCreateEObjectAndReplaceSingle
++ DeleteEObjectCreateEObjectAndReplaceInList
 + MoveEObject
++ ReplaceInEList
 
 
 - InsertInEList.newValue
   + InsertInEList extends AdditiveChange
 - RemoveFromEList.oldValue
   + RemoveFromEList extends SubtractiveChange
-- ReplaceInEList.newValue
-- ReplaceInEList.oldValue
-- ReplaceInEList extends UpdateMultiValuedEFeature
-+ ReplaceInEList extends RemoveFromEList, InsertInEList
+- ReplaceInEList
+	- ReplaceInEList.newValue
+	- ReplaceInEList.oldValue
+	- ReplaceInEList extends UpdateMultiValuedEFeature
+	+ ReplaceInEList extends RemoveFromEList, InsertInEList
 ~ PermuteEList.newIndexForElementAt:EIntegerObject -> EInt
 ~ PermuteEList.newIndexForElementAt.upperBound -1 -> 1
 
@@ -48,8 +70,9 @@
 + UpdateSingleValuedEAttribute extends ReplaciveAttributeChange
 + InsertEAttributeValue extends AdditiveAttributeChange
 + RemoveEAttributeValue extends SubtractiveAttributeChange
-- ReplaceEAttributeValue extends ReplaceInEList, UpdateEAttribute
-+ ReplaceEAttributeValue extends RemoveEAttributeValue, InsertEAttributeValue, ReplaciveAttributeChange
+- ReplaceEAttributeValue
+	- ReplaceEAttributeValue extends ReplaceInEList, UpdateEAttribute
+	+ ReplaceEAttributeValue extends RemoveEAttributeValue, InsertEAttributeValue, ReplaciveAttributeChange
 
 + UpdateEReference.isContainment():bool
 - UpdateNonContainmentEReference
@@ -62,38 +85,45 @@
 + InsertEReference extends AdditiveReferenceChange
 ~ RemoveNonContainmentEReference -> RemoveEReference
 + RemoveEReference extends SubtractiveReferenceChange
-~ ReplaceNonContainmentEReference -> ReplaceEReference
-+ ReplaceEReference extends ReplaciveReferenceChange
+- ReplaceEReference
+	~ ReplaceNonContainmentEReference -> ReplaceEReference
+	- ReplaceEReference extends ReplaceInEList, UpdateEReference
+	+ ReplaceEReference extends ReplaciveReferenceChange
 ~ PermuteNonContainmentEReferenceValues -> PermuteEReferenceValues
 
-~ UpdateSingleValuedContainmentEReference -> ReplaceSingleValuedContainmentEReference
-- ReplaceSingleValuedContainmentEReference extends UpdateSingleValuedEAttribute, UpdateContainmentEReference
-+ ReplaceSingleValuedContainmentEReference extends ReplaceSingleValuedEReference
-~ CreateNonRootEObjectSingle -> CreateNonRootEObject
-- CreateNonRootEObject.newValue
-~ DeleteNonRootEObjectSingle -> DeleteNonRootEObject
-- DeleteNonRootEObject.oldValue
-~ ReplaceNonRootEObjectSingle -> ReplaceNonRootEObject
-- ReplaceNonRootEObject.oldValue
-- ReplaceNonRootEObject.newValue
-- ReplaceNonRootEObject extends ReplaceSingleValuedContainmentEReference
-+ ReplaceNonRootEObject extends DeleteNonRootEObject, CreateNonRootEObject
-- InsertNonRootEObjectInContainmentList extends InsertInEList, UpdateContainmentEReference
-+ InsertNonRootEObjectInContainmentList extends InsertEReference
-- RemoveNonRootEObjectInContainmentList extends RemoveInEList, UpdateContainmentEReference
-+ RemoveNonRootEObjectInContainmentList extends RemoveEReference
-- CreateNonRootEObjectInList extends InsertInEList, UpdateContainmentEReference
-+ CreateNonRootEObjectInList extends InsertNonRootEObjectInContainmentList
-- DeleteNonRootEObjectInList extends DeleteInEList, UpdateContainmentEReference
-+ DeleteNonRootEObjectInList extends RemoveNonRootEObjectInContainmentList
-- ReplaceNonRootEObjectInList extends ReplaceInEList, UpdateContainmentEReference
-+ ReplaceNonRootEObjectInList extends ReplaceEReference
-- PermuteContainmentEReferenceValues
-- UpdateContainmentEReference
+- pkg containment
+	~ UpdateSingleValuedContainmentEReference -> ReplaceSingleValuedContainmentEReference
+	- ReplaceSingleValuedContainmentEReference extends UpdateSingleValuedEAttribute, UpdateContainmentEReference
+	+ ReplaceSingleValuedContainmentEReference extends ReplaceSingleValuedEReference
+	~ CreateNonRootEObjectSingle -> CreateNonRootEObject
+	- CreateNonRootEObject.newValue
+	~ DeleteNonRootEObjectSingle -> DeleteNonRootEObject
+	- DeleteNonRootEObject.oldValue
+	~ ReplaceNonRootEObjectSingle -> ReplaceNonRootEObject
+	- ReplaceNonRootEObject.oldValue
+	- ReplaceNonRootEObject.newValue
+	- ReplaceNonRootEObject extends ReplaceSingleValuedContainmentEReference
+	+ ReplaceNonRootEObject extends DeleteNonRootEObject, CreateNonRootEObject
+	- InsertNonRootEObjectInContainmentList extends InsertInEList, UpdateContainmentEReference
+	+ InsertNonRootEObjectInContainmentList extends InsertEReference
+	- RemoveNonRootEObjectInContainmentList extends RemoveInEList, UpdateContainmentEReference
+	+ RemoveNonRootEObjectInContainmentList extends RemoveEReference
+	- CreateNonRootEObjectInList extends InsertInEList, UpdateContainmentEReference
+	+ CreateNonRootEObjectInList extends InsertNonRootEObjectInContainmentList
+	- DeleteNonRootEObjectInList extends DeleteInEList, UpdateContainmentEReference
+	+ DeleteNonRootEObjectInList extends RemoveNonRootEObjectInContainmentList
+	- ReplaceNonRootEObjectInList extends ReplaceInEList, UpdateContainmentEReference
+	+ ReplaceNonRootEObjectInList extends ReplaceEReference
+	- PermuteContainmentEReferenceValues
+	- UpdateContainmentEReference
 
 -----------------------------------------
 
-nicht jeder der von Add und Sub erbt erbt auch von Replacive, daher Replacive raus?
+ReplaceEAttributeValue kann nicht von ReplaceInEList erben
+ReplaceEReferenceValue kann nicht von ReplaceInEList erben
+
+ist das noch so: nicht jeder der von Add und Sub erbt erbt auch von Replacive, daher Replacive raus?
+
 InsertInEList und RemoveFromEList können doch nicht vom allgemeinen AdditiveChange und SubtractiveChange erben, dass ist aber kein Problem da alle unterklassen von InsertInEList schon von einer Unterklasse von AdditiveChange erben und analog für Remove und Subtract
 
 auf jeden Fall bei der Reaktion von unten nach oben in der Vererbungshierarchie reagieren
@@ -102,6 +132,27 @@ auf jeden Fall bei der Reaktion von unten nach oben in der Vererbungshierarchie 
 es gibt kein InsertWithoutCreate sondern wenn man dass behandeln will muss man prüfen ob es keine Instanz von Create... ist
 
 
+was wenn ein Move mit einem Replace einhergeht? a<>-b c<>-d  ~> a<>- c<>-b
+
+
+Ich habe ReplaceAttributeInEList und ReplaceReferenceInEList nicht unterschieden da letzteres nicht von ReplaciveReferenceChange erben kann um replaceChange in DeleteEObjectCreateEObjectAndReplace typen zu können. Daher musste ich zwei Versionen von DeleteEObjectCreateEObjectAndReplaceInList zu erstellen.
+
+
+
+
+
+* drei Möglichkeiten Informationen über gelöschte Objekte zur Verfügung zu stellen
+*# verworfen: TUIDCalculatorAndResolver aus einer ID ohne Speicherbedarf den Wert eines Features das in die TUID eingeflossen ist berechnen lassen
+*#* dann muss die Objekt->TUID-Abbildung rechtseindeutig sein
+*#* geht nicht für Features die nicht in die TUID eingeflossen sind
+*#* verkompliziert jeden TUIDCalculatorAndResolver
+*# verworfen: VSUM eine Map von TUID und FeatureName auf alten Wert vorhalten lassen
+*#* benötigt Speicher
+*#* geht immer nur für Werte des letzten Objektes mit einer TUID
+*# gewählt: direkt im SubtractiveReferenceChange eine Map von FeatureName auf alten Wert
+*#* wenn der Change weggeworfen wird werden automatisch die alten Werte vergessen
+*#* erlaubt es für mehre Löschungen von Objekten mit gleicher TUID unterschiedliche Werte zu erhalten
+*#* unabhängig vom TUIDCalculatorAndResolver
 
 
 
@@ -115,3 +166,37 @@ es gibt kein InsertWithoutCreate sondern wenn man dass behandeln will muss man p
 
 
 HEIKO: den Typ des change elements inferieren und für den Block entsprechend gecastet einbinden damit der Nutzer sich darum nicht kümmern muss
+
+
+
+
+
+
+
+
+
+== find right metaclass algorithm ==
+=== for free ===
+* durch das feature ergibt sich automatisch (daher im algorithmus eingeklammert)
+** attribute oder reference (und dann ob containment)
+** single oder multi
+** root oder nicht (parent null oder nicht)
+=== to ask ===
+* atomic
+** object
+*** create - done
+*** delete - done
+** feature
+*** unset - done
+*** update
+**** (single) replace (attribute or reference) - done
+**** (multi) 
+***** insert (attribute or reference) - done
+***** remove (attribute or reference) - done
+***** permute (attribute or reference) - done
+* compound
+** create and add (root or not) - done
+** delete and subtract (root or not) - done
+** delete create replace (single or multi) done
+** move - done
+** replace in list - done
