@@ -95,7 +95,9 @@ class CorrespondenceInstanceUtil {
 	
 	def public static Set<Correspondence> getCorrespondencesBetweenEObjects(CorrespondenceInstance ci, Set<EObject> aS, Set<EObject> bS) {
 		val correspondencesThatInvolveAs = ci.getCorrespondencesThatInvolveAtLeast(aS)
-		val correspondencesBetweenEObjects = correspondencesThatInvolveAs.filter[(it.^as.containsAll(aS) && it.bs.containsAll(bs)) || (it.^as.containsAll(bS) && it.bs.containsAll(aS))]
+		val atuids = aS.mapFixed[ci.calculateTUIDFromEObject(it)]
+		val btuids = bS.mapFixed[ci.calculateTUIDFromEObject(it)]
+		val correspondencesBetweenEObjects = correspondencesThatInvolveAs.filter[(it.ATUIDs.containsAll(atuids) && it.BTUIDs.containsAll(btuids)) || (it.ATUIDs.containsAll(btuids) && it.BTUIDs.containsAll(atuids))]
 		return correspondencesBetweenEObjects.toSet  
 	}
 	
