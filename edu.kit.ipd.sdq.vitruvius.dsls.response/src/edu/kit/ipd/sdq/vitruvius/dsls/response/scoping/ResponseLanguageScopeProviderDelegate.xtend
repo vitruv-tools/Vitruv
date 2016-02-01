@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.scoping
 
-import com.google.inject.Inject
 import java.util.Iterator
 import java.util.function.Function
 import org.apache.log4j.Logger
@@ -21,8 +20,8 @@ import static edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseL
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.FeatureOfElement
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage
 import org.eclipse.emf.ecore.EPackage
-import org.eclipse.xtext.naming.IQualifiedNameProvider
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelImport
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
 
 /**
  * Copy of edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping.MappingLanguageScopeProviderDelegate by Dominik Werle
@@ -37,12 +36,20 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 	}
 	
 	override getScope(EObject context, EReference reference) {
-		if ((reference.equals(FEATURE_OF_ELEMENT__FEATURE)))
+		if (reference.equals(FEATURE_OF_ELEMENT__FEATURE))
 			return createEStructuralFeatureScope(context as FeatureOfElement)
 		else if (reference.equals(FEATURE_OF_ELEMENT__ELEMENT)
 			|| reference.equals(MODEL_ELEMENT__MODEL_ELEMENT))
 			return createQualifiedEClassScope(context.eResource)
+		else if (reference.equals(METAMODEL_REFERENCE__MODEL)) {
+			return createImportsScope(context.eResource);
+		}
 		super.getScope(context, reference)
+	}
+	
+	def createImportsScope(Resource resource) {
+		val file = resource.contents.get(0) as ResponseFile;
+		createScope(IScope.NULLSCOPE, file.metamodelImports.iterator, [EObjectDescription.create(it.name, it)])		
 	}
 	
 	def hasQualifiedName(EObject eObject) {
