@@ -3,14 +3,11 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.impl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveAttributeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEAttributeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ReplaciveAttributeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveAttributeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveChange;
-
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEAttributeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage;
 
@@ -386,30 +383,25 @@ public class ReplaceSingleValuedEAttributeImpl<T extends Object> extends UpdateS
                 default: return -1;
             }
         }
-        if (baseClass == SubtractiveChange.class) {
+        if (baseClass == SubtractiveEChange.class) {
             switch (derivedFeatureID) {
                 default: return -1;
             }
         }
-        if (baseClass == SubtractiveAttributeChange.class) {
+        if (baseClass == SubtractiveEAttributeChange.class) {
             switch (derivedFeatureID) {
-                case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE: return ChangePackage.SUBTRACTIVE_ATTRIBUTE_CHANGE__OLD_VALUE;
+                case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE: return ChangePackage.SUBTRACTIVE_EATTRIBUTE_CHANGE__OLD_VALUE;
                 default: return -1;
             }
         }
-        if (baseClass == AdditiveChange.class) {
+        if (baseClass == AdditiveEChange.class) {
             switch (derivedFeatureID) {
                 default: return -1;
             }
         }
-        if (baseClass == AdditiveAttributeChange.class) {
+        if (baseClass == AdditiveEAttributeChange.class) {
             switch (derivedFeatureID) {
-                case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE: return ChangePackage.ADDITIVE_ATTRIBUTE_CHANGE__NEW_VALUE;
-                default: return -1;
-            }
-        }
-        if (baseClass == ReplaciveAttributeChange.class) {
-            switch (derivedFeatureID) {
+                case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE: return ChangePackage.ADDITIVE_EATTRIBUTE_CHANGE__NEW_VALUE;
                 default: return -1;
             }
         }
@@ -436,30 +428,25 @@ public class ReplaceSingleValuedEAttributeImpl<T extends Object> extends UpdateS
                 default: return -1;
             }
         }
-        if (baseClass == SubtractiveChange.class) {
+        if (baseClass == SubtractiveEChange.class) {
             switch (baseFeatureID) {
                 default: return -1;
             }
         }
-        if (baseClass == SubtractiveAttributeChange.class) {
+        if (baseClass == SubtractiveEAttributeChange.class) {
             switch (baseFeatureID) {
-                case ChangePackage.SUBTRACTIVE_ATTRIBUTE_CHANGE__OLD_VALUE: return AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE;
+                case ChangePackage.SUBTRACTIVE_EATTRIBUTE_CHANGE__OLD_VALUE: return AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE;
                 default: return -1;
             }
         }
-        if (baseClass == AdditiveChange.class) {
+        if (baseClass == AdditiveEChange.class) {
             switch (baseFeatureID) {
                 default: return -1;
             }
         }
-        if (baseClass == AdditiveAttributeChange.class) {
+        if (baseClass == AdditiveEAttributeChange.class) {
             switch (baseFeatureID) {
-                case ChangePackage.ADDITIVE_ATTRIBUTE_CHANGE__NEW_VALUE: return AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE;
-                default: return -1;
-            }
-        }
-        if (baseClass == ReplaciveAttributeChange.class) {
-            switch (baseFeatureID) {
+                case ChangePackage.ADDITIVE_EATTRIBUTE_CHANGE__NEW_VALUE: return AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE;
                 default: return -1;
             }
         }

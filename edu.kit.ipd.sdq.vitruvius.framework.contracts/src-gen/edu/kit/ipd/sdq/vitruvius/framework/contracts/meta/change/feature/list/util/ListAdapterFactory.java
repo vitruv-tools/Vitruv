@@ -2,6 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.util;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateEFeature;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedEFeature;
@@ -90,6 +91,10 @@ public class ListAdapterFactory extends AdapterFactoryImpl {
             @Override
             public Adapter caseEChange(EChange object) {
                 return createEChangeAdapter();
+            }
+            @Override
+            public Adapter caseEAtomicChange(EAtomicChange object) {
+                return createEAtomicChangeAdapter();
             }
             @Override
             public <T extends Object> Adapter caseUpdateEFeature(UpdateEFeature<T> object) {
@@ -186,6 +191,20 @@ public class ListAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createEChangeAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange <em>EAtomic Change</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange
+     * @generated
+     */
+    public Adapter createEAtomicChangeAdapter() {
         return null;
     }
 

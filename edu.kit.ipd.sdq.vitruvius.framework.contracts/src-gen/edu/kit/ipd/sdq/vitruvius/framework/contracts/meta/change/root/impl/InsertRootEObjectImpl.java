@@ -2,8 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveReferenceChangeImpl;
-
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveEReferenceChangeImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootPackage;
 
@@ -17,7 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  * @generated
  */
-public class InsertRootEObjectImpl<T extends EObject> extends AdditiveReferenceChangeImpl<T> implements InsertRootEObject<T> {
+public class InsertRootEObjectImpl<T extends EObject> extends AdditiveEReferenceChangeImpl<T> implements InsertRootEObject<T> {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

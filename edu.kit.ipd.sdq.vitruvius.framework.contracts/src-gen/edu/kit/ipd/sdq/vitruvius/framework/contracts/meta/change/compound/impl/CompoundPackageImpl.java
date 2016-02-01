@@ -6,11 +6,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CompoundFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CompoundPackage;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CreateEObjectAndAdd;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.DeleteEObjectAndSubtract;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.DeleteEObjectCreateEObjectAndReplace;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.DeleteEObjectCreateEObjectAndReplaceInList;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.DeleteEObjectCreateEObjectAndReplaceSingle;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ECompoundChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.MoveEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ReplaceInEList;
@@ -32,11 +27,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.object.ObjectPackage;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.object.impl.ObjectPackageImpl;
-
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootPackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RootPackageImpl;
@@ -63,41 +53,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
      * @generated
      */
     private EClass eCompoundChangeEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private EClass createEObjectAndAddEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private EClass deleteEObjectAndSubtractEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private EClass deleteEObjectCreateEObjectAndReplaceEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private EClass deleteEObjectCreateEObjectAndReplaceSingleEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private EClass deleteEObjectCreateEObjectAndReplaceInListEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -165,7 +120,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
         ListPackageImpl theListPackage = (ListPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) instanceof ListPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) : ListPackage.eINSTANCE);
         AttributePackageImpl theAttributePackage = (AttributePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) instanceof AttributePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) : AttributePackage.eINSTANCE);
         ReferencePackageImpl theReferencePackage = (ReferencePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) instanceof ReferencePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) : ReferencePackage.eINSTANCE);
-        ObjectPackageImpl theObjectPackage = (ObjectPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ObjectPackage.eNS_URI) instanceof ObjectPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ObjectPackage.eNS_URI) : ObjectPackage.eINSTANCE);
         RootPackageImpl theRootPackage = (RootPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) instanceof RootPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) : RootPackage.eINSTANCE);
 
         // Create package meta-data objects
@@ -175,7 +129,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
         theListPackage.createPackageContents();
         theAttributePackage.createPackageContents();
         theReferencePackage.createPackageContents();
-        theObjectPackage.createPackageContents();
         theRootPackage.createPackageContents();
 
         // Initialize created meta-data
@@ -185,7 +138,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
         theListPackage.initializePackageContents();
         theAttributePackage.initializePackageContents();
         theReferencePackage.initializePackageContents();
-        theObjectPackage.initializePackageContents();
         theRootPackage.initializePackageContents();
 
         // Mark meta-data to indicate it can't be changed
@@ -211,116 +163,8 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    public EOperation getECompoundChange__GetComposedChanges() {
+    public EOperation getECompoundChange__GetAtomicChanges() {
         return eCompoundChangeEClass.getEOperations().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EClass getCreateEObjectAndAdd() {
-        return createEObjectAndAddEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EReference getCreateEObjectAndAdd_CreateChange() {
-        return (EReference)createEObjectAndAddEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EReference getCreateEObjectAndAdd_AddChange() {
-        return (EReference)createEObjectAndAddEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EClass getDeleteEObjectAndSubtract() {
-        return deleteEObjectAndSubtractEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EReference getDeleteEObjectAndSubtract_DeleteChange() {
-        return (EReference)deleteEObjectAndSubtractEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EReference getDeleteEObjectAndSubtract_SubtractChange() {
-        return (EReference)deleteEObjectAndSubtractEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EClass getDeleteEObjectCreateEObjectAndReplace() {
-        return deleteEObjectCreateEObjectAndReplaceEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EReference getDeleteEObjectCreateEObjectAndReplace_DeleteChange() {
-        return (EReference)deleteEObjectCreateEObjectAndReplaceEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EReference getDeleteEObjectCreateEObjectAndReplace_CreateChange() {
-        return (EReference)deleteEObjectCreateEObjectAndReplaceEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EReference getDeleteEObjectCreateEObjectAndReplace_ReplaceChange() {
-        return (EReference)deleteEObjectCreateEObjectAndReplaceEClass.getEStructuralFeatures().get(2);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EClass getDeleteEObjectCreateEObjectAndReplaceSingle() {
-        return deleteEObjectCreateEObjectAndReplaceSingleEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EClass getDeleteEObjectCreateEObjectAndReplaceInList() {
-        return deleteEObjectCreateEObjectAndReplaceInListEClass;
     }
 
     /**
@@ -406,24 +250,7 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 
         // Create classes and their features
         eCompoundChangeEClass = createEClass(ECOMPOUND_CHANGE);
-        createEOperation(eCompoundChangeEClass, ECOMPOUND_CHANGE___GET_COMPOSED_CHANGES);
-
-        createEObjectAndAddEClass = createEClass(CREATE_EOBJECT_AND_ADD);
-        createEReference(createEObjectAndAddEClass, CREATE_EOBJECT_AND_ADD__CREATE_CHANGE);
-        createEReference(createEObjectAndAddEClass, CREATE_EOBJECT_AND_ADD__ADD_CHANGE);
-
-        deleteEObjectAndSubtractEClass = createEClass(DELETE_EOBJECT_AND_SUBTRACT);
-        createEReference(deleteEObjectAndSubtractEClass, DELETE_EOBJECT_AND_SUBTRACT__DELETE_CHANGE);
-        createEReference(deleteEObjectAndSubtractEClass, DELETE_EOBJECT_AND_SUBTRACT__SUBTRACT_CHANGE);
-
-        deleteEObjectCreateEObjectAndReplaceEClass = createEClass(DELETE_EOBJECT_CREATE_EOBJECT_AND_REPLACE);
-        createEReference(deleteEObjectCreateEObjectAndReplaceEClass, DELETE_EOBJECT_CREATE_EOBJECT_AND_REPLACE__DELETE_CHANGE);
-        createEReference(deleteEObjectCreateEObjectAndReplaceEClass, DELETE_EOBJECT_CREATE_EOBJECT_AND_REPLACE__CREATE_CHANGE);
-        createEReference(deleteEObjectCreateEObjectAndReplaceEClass, DELETE_EOBJECT_CREATE_EOBJECT_AND_REPLACE__REPLACE_CHANGE);
-
-        deleteEObjectCreateEObjectAndReplaceSingleEClass = createEClass(DELETE_EOBJECT_CREATE_EOBJECT_AND_REPLACE_SINGLE);
-
-        deleteEObjectCreateEObjectAndReplaceInListEClass = createEClass(DELETE_EOBJECT_CREATE_EOBJECT_AND_REPLACE_IN_LIST);
+        createEOperation(eCompoundChangeEClass, ECOMPOUND_CHANGE___GET_ATOMIC_CHANGES);
 
         moveEObjectEClass = createEClass(MOVE_EOBJECT);
         createEReference(moveEObjectEClass, MOVE_EOBJECT__SUBTRACT_CHANGE);
@@ -459,104 +286,32 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 
         // Obtain other dependent packages
         ChangePackage theChangePackage = (ChangePackage)EPackage.Registry.INSTANCE.getEPackage(ChangePackage.eNS_URI);
-        ObjectPackage theObjectPackage = (ObjectPackage)EPackage.Registry.INSTANCE.getEPackage(ObjectPackage.eNS_URI);
-        ReferencePackage theReferencePackage = (ReferencePackage)EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI);
         ListPackage theListPackage = (ListPackage)EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI);
 
         // Create type parameters
-        ETypeParameter createEObjectAndAddEClass_T = addETypeParameter(createEObjectAndAddEClass, "T");
-        ETypeParameter deleteEObjectAndSubtractEClass_T = addETypeParameter(deleteEObjectAndSubtractEClass, "T");
-        ETypeParameter deleteEObjectCreateEObjectAndReplaceEClass_T = addETypeParameter(deleteEObjectCreateEObjectAndReplaceEClass, "T");
-        ETypeParameter deleteEObjectCreateEObjectAndReplaceEClass_R = addETypeParameter(deleteEObjectCreateEObjectAndReplaceEClass, "R");
-        ETypeParameter deleteEObjectCreateEObjectAndReplaceSingleEClass_T = addETypeParameter(deleteEObjectCreateEObjectAndReplaceSingleEClass, "T");
-        ETypeParameter deleteEObjectCreateEObjectAndReplaceInListEClass_T = addETypeParameter(deleteEObjectCreateEObjectAndReplaceInListEClass, "T");
         ETypeParameter moveEObjectEClass_T = addETypeParameter(moveEObjectEClass, "T");
         ETypeParameter replaceInEListEClass_T = addETypeParameter(replaceInEListEClass, "T");
 
         // Set bounds for type parameters
         EGenericType g1 = createEGenericType(ecorePackage.getEObject());
-        createEObjectAndAddEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEObject());
-        deleteEObjectAndSubtractEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEObject());
-        deleteEObjectCreateEObjectAndReplaceEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(theChangePackage.getEChange());
-        deleteEObjectCreateEObjectAndReplaceEClass_R.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEObject());
-        deleteEObjectCreateEObjectAndReplaceSingleEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEObject());
-        deleteEObjectCreateEObjectAndReplaceInListEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEObject());
         moveEObjectEClass_T.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEJavaObject());
         replaceInEListEClass_T.getEBounds().add(g1);
 
         // Add supertypes to classes
         eCompoundChangeEClass.getESuperTypes().add(theChangePackage.getEChange());
-        createEObjectAndAddEClass.getESuperTypes().add(this.getECompoundChange());
-        deleteEObjectAndSubtractEClass.getESuperTypes().add(this.getECompoundChange());
-        deleteEObjectCreateEObjectAndReplaceEClass.getESuperTypes().add(this.getECompoundChange());
-        g1 = createEGenericType(this.getDeleteEObjectCreateEObjectAndReplace());
-        EGenericType g2 = createEGenericType(deleteEObjectCreateEObjectAndReplaceSingleEClass_T);
-        g1.getETypeArguments().add(g2);
-        g2 = createEGenericType(theReferencePackage.getReplaceSingleValuedEReference());
-        g1.getETypeArguments().add(g2);
-        EGenericType g3 = createEGenericType(deleteEObjectCreateEObjectAndReplaceSingleEClass_T);
-        g2.getETypeArguments().add(g3);
-        deleteEObjectCreateEObjectAndReplaceSingleEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getDeleteEObjectCreateEObjectAndReplace());
-        g2 = createEGenericType(deleteEObjectCreateEObjectAndReplaceInListEClass_T);
-        g1.getETypeArguments().add(g2);
-        g2 = createEGenericType(this.getReplaceInEList());
-        g1.getETypeArguments().add(g2);
-        g3 = createEGenericType(deleteEObjectCreateEObjectAndReplaceInListEClass_T);
-        g2.getETypeArguments().add(g3);
-        deleteEObjectCreateEObjectAndReplaceInListEClass.getEGenericSuperTypes().add(g1);
         moveEObjectEClass.getESuperTypes().add(this.getECompoundChange());
         replaceInEListEClass.getESuperTypes().add(this.getECompoundChange());
 
         // Initialize classes, features, and operations; add parameters
         initEClass(eCompoundChangeEClass, ECompoundChange.class, "ECompoundChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-        initEOperation(getECompoundChange__GetComposedChanges(), theChangePackage.getEChange(), "getComposedChanges", 1, -1, IS_UNIQUE, IS_ORDERED);
-
-        initEClass(createEObjectAndAddEClass, CreateEObjectAndAdd.class, "CreateEObjectAndAdd", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        g1 = createEGenericType(theObjectPackage.getCreateEObject());
-        g2 = createEGenericType(createEObjectAndAddEClass_T);
-        g1.getETypeArguments().add(g2);
-        initEReference(getCreateEObjectAndAdd_CreateChange(), g1, null, "createChange", null, 1, 1, CreateEObjectAndAdd.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        g1 = createEGenericType(theChangePackage.getAdditiveReferenceChange());
-        g2 = createEGenericType(createEObjectAndAddEClass_T);
-        g1.getETypeArguments().add(g2);
-        initEReference(getCreateEObjectAndAdd_AddChange(), g1, null, "addChange", null, 1, 1, CreateEObjectAndAdd.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        initEClass(deleteEObjectAndSubtractEClass, DeleteEObjectAndSubtract.class, "DeleteEObjectAndSubtract", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        g1 = createEGenericType(theObjectPackage.getDeleteEObject());
-        g2 = createEGenericType(deleteEObjectAndSubtractEClass_T);
-        g1.getETypeArguments().add(g2);
-        initEReference(getDeleteEObjectAndSubtract_DeleteChange(), g1, null, "deleteChange", null, 1, 1, DeleteEObjectAndSubtract.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getDeleteEObjectAndSubtract_SubtractChange(), theChangePackage.getSubtractiveReferenceChange(), null, "subtractChange", null, 1, 1, DeleteEObjectAndSubtract.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        initEClass(deleteEObjectCreateEObjectAndReplaceEClass, DeleteEObjectCreateEObjectAndReplace.class, "DeleteEObjectCreateEObjectAndReplace", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        g1 = createEGenericType(theObjectPackage.getDeleteEObject());
-        g2 = createEGenericType(deleteEObjectCreateEObjectAndReplaceEClass_T);
-        g1.getETypeArguments().add(g2);
-        initEReference(getDeleteEObjectCreateEObjectAndReplace_DeleteChange(), g1, null, "deleteChange", null, 1, 1, DeleteEObjectCreateEObjectAndReplace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        g1 = createEGenericType(theObjectPackage.getCreateEObject());
-        g2 = createEGenericType(deleteEObjectCreateEObjectAndReplaceEClass_T);
-        g1.getETypeArguments().add(g2);
-        initEReference(getDeleteEObjectCreateEObjectAndReplace_CreateChange(), g1, null, "createChange", null, 1, 1, DeleteEObjectCreateEObjectAndReplace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        g1 = createEGenericType(deleteEObjectCreateEObjectAndReplaceEClass_R);
-        initEReference(getDeleteEObjectCreateEObjectAndReplace_ReplaceChange(), g1, null, "replaceChange", null, 1, 1, DeleteEObjectCreateEObjectAndReplace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        initEClass(deleteEObjectCreateEObjectAndReplaceSingleEClass, DeleteEObjectCreateEObjectAndReplaceSingle.class, "DeleteEObjectCreateEObjectAndReplaceSingle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-        initEClass(deleteEObjectCreateEObjectAndReplaceInListEClass, DeleteEObjectCreateEObjectAndReplaceInList.class, "DeleteEObjectCreateEObjectAndReplaceInList", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEOperation(getECompoundChange__GetAtomicChanges(), theChangePackage.getEAtomicChange(), "getAtomicChanges", 1, -1, IS_UNIQUE, IS_ORDERED);
 
         initEClass(moveEObjectEClass, MoveEObject.class, "MoveEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEReference(getMoveEObject_SubtractChange(), theChangePackage.getSubtractiveReferenceChange(), null, "subtractChange", null, 1, 1, MoveEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        g1 = createEGenericType(theChangePackage.getAdditiveReferenceChange());
-        g2 = createEGenericType(moveEObjectEClass_T);
+        initEReference(getMoveEObject_SubtractChange(), theChangePackage.getSubtractiveEReferenceChange(), null, "subtractChange", null, 1, 1, MoveEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        g1 = createEGenericType(theChangePackage.getAdditiveEReferenceChange());
+        EGenericType g2 = createEGenericType(moveEObjectEClass_T);
         g1.getETypeArguments().add(g2);
         initEReference(getMoveEObject_AddChange(), g1, null, "addChange", null, 1, 1, MoveEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

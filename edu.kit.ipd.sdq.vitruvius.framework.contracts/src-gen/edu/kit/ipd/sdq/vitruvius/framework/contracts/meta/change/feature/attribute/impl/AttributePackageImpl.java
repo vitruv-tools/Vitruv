@@ -29,11 +29,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.object.ObjectPackage;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.object.impl.ObjectPackageImpl;
-
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootPackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RootPackageImpl;
@@ -138,7 +133,6 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
         FeaturePackageImpl theFeaturePackage = (FeaturePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) instanceof FeaturePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) : FeaturePackage.eINSTANCE);
         ListPackageImpl theListPackage = (ListPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) instanceof ListPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) : ListPackage.eINSTANCE);
         ReferencePackageImpl theReferencePackage = (ReferencePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) instanceof ReferencePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) : ReferencePackage.eINSTANCE);
-        ObjectPackageImpl theObjectPackage = (ObjectPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ObjectPackage.eNS_URI) instanceof ObjectPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ObjectPackage.eNS_URI) : ObjectPackage.eINSTANCE);
         RootPackageImpl theRootPackage = (RootPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) instanceof RootPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) : RootPackage.eINSTANCE);
         CompoundPackageImpl theCompoundPackage = (CompoundPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) instanceof CompoundPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) : CompoundPackage.eINSTANCE);
 
@@ -148,7 +142,6 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
         theFeaturePackage.createPackageContents();
         theListPackage.createPackageContents();
         theReferencePackage.createPackageContents();
-        theObjectPackage.createPackageContents();
         theRootPackage.createPackageContents();
         theCompoundPackage.createPackageContents();
 
@@ -158,7 +151,6 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
         theFeaturePackage.initializePackageContents();
         theListPackage.initializePackageContents();
         theReferencePackage.initializePackageContents();
-        theObjectPackage.initializePackageContents();
         theRootPackage.initializePackageContents();
         theCompoundPackage.initializePackageContents();
 
@@ -315,7 +307,11 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
         g2 = createEGenericType(replaceSingleValuedEAttributeEClass_T);
         g1.getETypeArguments().add(g2);
         replaceSingleValuedEAttributeEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theChangePackage.getReplaciveAttributeChange());
+        g1 = createEGenericType(theChangePackage.getSubtractiveEAttributeChange());
+        g2 = createEGenericType(replaceSingleValuedEAttributeEClass_T);
+        g1.getETypeArguments().add(g2);
+        replaceSingleValuedEAttributeEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(theChangePackage.getAdditiveEAttributeChange());
         g2 = createEGenericType(replaceSingleValuedEAttributeEClass_T);
         g1.getETypeArguments().add(g2);
         replaceSingleValuedEAttributeEClass.getEGenericSuperTypes().add(g1);
@@ -327,7 +323,7 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
         g2 = createEGenericType(insertEAttributeValueEClass_T);
         g1.getETypeArguments().add(g2);
         insertEAttributeValueEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theChangePackage.getAdditiveAttributeChange());
+        g1 = createEGenericType(theChangePackage.getAdditiveEAttributeChange());
         g2 = createEGenericType(insertEAttributeValueEClass_T);
         g1.getETypeArguments().add(g2);
         insertEAttributeValueEClass.getEGenericSuperTypes().add(g1);
@@ -339,7 +335,7 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
         g2 = createEGenericType(removeEAttributeValueEClass_T);
         g1.getETypeArguments().add(g2);
         removeEAttributeValueEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theChangePackage.getSubtractiveAttributeChange());
+        g1 = createEGenericType(theChangePackage.getSubtractiveEAttributeChange());
         g2 = createEGenericType(removeEAttributeValueEClass_T);
         g1.getETypeArguments().add(g2);
         removeEAttributeValueEClass.getEGenericSuperTypes().add(g1);

@@ -2,7 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,5 +14,5 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveRefe
  * @model
  * @generated
  */
-public interface RemoveRootEObject extends SubtractiveReferenceChange {
+public interface RemoveRootEObject extends SubtractiveEReferenceChange {
 } // RemoveRootEObject

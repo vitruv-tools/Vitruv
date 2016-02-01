@@ -5,9 +5,8 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attrib
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveAttributeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveChange;
-
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEAttributeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage;
 
@@ -341,14 +340,14 @@ public class RemoveEAttributeValueImpl<T extends Object> extends RemoveFromEList
                 default: return -1;
             }
         }
-        if (baseClass == SubtractiveChange.class) {
+        if (baseClass == SubtractiveEChange.class) {
             switch (derivedFeatureID) {
                 default: return -1;
             }
         }
-        if (baseClass == SubtractiveAttributeChange.class) {
+        if (baseClass == SubtractiveEAttributeChange.class) {
             switch (derivedFeatureID) {
-                case AttributePackage.REMOVE_EATTRIBUTE_VALUE__OLD_VALUE: return ChangePackage.SUBTRACTIVE_ATTRIBUTE_CHANGE__OLD_VALUE;
+                case AttributePackage.REMOVE_EATTRIBUTE_VALUE__OLD_VALUE: return ChangePackage.SUBTRACTIVE_EATTRIBUTE_CHANGE__OLD_VALUE;
                 default: return -1;
             }
         }
@@ -375,14 +374,14 @@ public class RemoveEAttributeValueImpl<T extends Object> extends RemoveFromEList
                 default: return -1;
             }
         }
-        if (baseClass == SubtractiveChange.class) {
+        if (baseClass == SubtractiveEChange.class) {
             switch (baseFeatureID) {
                 default: return -1;
             }
         }
-        if (baseClass == SubtractiveAttributeChange.class) {
+        if (baseClass == SubtractiveEAttributeChange.class) {
             switch (baseFeatureID) {
-                case ChangePackage.SUBTRACTIVE_ATTRIBUTE_CHANGE__OLD_VALUE: return AttributePackage.REMOVE_EATTRIBUTE_VALUE__OLD_VALUE;
+                case ChangePackage.SUBTRACTIVE_EATTRIBUTE_CHANGE__OLD_VALUE: return AttributePackage.REMOVE_EATTRIBUTE_VALUE__OLD_VALUE;
                 default: return -1;
             }
         }

@@ -73,7 +73,16 @@ public interface RootPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INSERT_ROOT_EOBJECT__NEW_VALUE = ChangePackage.ADDITIVE_REFERENCE_CHANGE__NEW_VALUE;
+    int INSERT_ROOT_EOBJECT__NEW_VALUE = ChangePackage.ADDITIVE_EREFERENCE_CHANGE__NEW_VALUE;
+
+    /**
+     * The feature id for the '<em><b>Is Create</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INSERT_ROOT_EOBJECT__IS_CREATE = ChangePackage.ADDITIVE_EREFERENCE_CHANGE__IS_CREATE;
 
     /**
      * The number of structural features of the '<em>Insert Root EObject</em>' class.
@@ -82,7 +91,7 @@ public interface RootPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INSERT_ROOT_EOBJECT_FEATURE_COUNT = ChangePackage.ADDITIVE_REFERENCE_CHANGE_FEATURE_COUNT + 0;
+    int INSERT_ROOT_EOBJECT_FEATURE_COUNT = ChangePackage.ADDITIVE_EREFERENCE_CHANGE_FEATURE_COUNT + 0;
 
     /**
      * The operation id for the '<em>Get New Value</em>' operation.
@@ -91,7 +100,7 @@ public interface RootPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INSERT_ROOT_EOBJECT___GET_NEW_VALUE = ChangePackage.ADDITIVE_REFERENCE_CHANGE___GET_NEW_VALUE;
+    int INSERT_ROOT_EOBJECT___GET_NEW_VALUE = ChangePackage.ADDITIVE_EREFERENCE_CHANGE___GET_NEW_VALUE;
 
     /**
      * The number of operations of the '<em>Insert Root EObject</em>' class.
@@ -100,7 +109,7 @@ public interface RootPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INSERT_ROOT_EOBJECT_OPERATION_COUNT = ChangePackage.ADDITIVE_REFERENCE_CHANGE_OPERATION_COUNT + 0;
+    int INSERT_ROOT_EOBJECT_OPERATION_COUNT = ChangePackage.ADDITIVE_EREFERENCE_CHANGE_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RemoveRootEObjectImpl <em>Remove Root EObject</em>}' class.
@@ -119,16 +128,25 @@ public interface RootPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REMOVE_ROOT_EOBJECT__OLD_TUID = ChangePackage.SUBTRACTIVE_REFERENCE_CHANGE__OLD_TUID;
+    int REMOVE_ROOT_EOBJECT__OLD_TUID = ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_TUID;
 
     /**
-     * The feature id for the '<em><b>Feature Name2 Old Value Map</b></em>' attribute.
+     * The feature id for the '<em><b>Feature2 Old Value Map</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int REMOVE_ROOT_EOBJECT__FEATURE_NAME2_OLD_VALUE_MAP = ChangePackage.SUBTRACTIVE_REFERENCE_CHANGE__FEATURE_NAME2_OLD_VALUE_MAP;
+    int REMOVE_ROOT_EOBJECT__FEATURE2_OLD_VALUE_MAP = ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__FEATURE2_OLD_VALUE_MAP;
+
+    /**
+     * The feature id for the '<em><b>Is Delete</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REMOVE_ROOT_EOBJECT__IS_DELETE = ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__IS_DELETE;
 
     /**
      * The number of structural features of the '<em>Remove Root EObject</em>' class.
@@ -137,7 +155,7 @@ public interface RootPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REMOVE_ROOT_EOBJECT_FEATURE_COUNT = ChangePackage.SUBTRACTIVE_REFERENCE_CHANGE_FEATURE_COUNT + 0;
+    int REMOVE_ROOT_EOBJECT_FEATURE_COUNT = ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE_FEATURE_COUNT + 0;
 
     /**
      * The operation id for the '<em>Get Old Value</em>' operation.
@@ -146,7 +164,7 @@ public interface RootPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REMOVE_ROOT_EOBJECT___GET_OLD_VALUE = ChangePackage.SUBTRACTIVE_REFERENCE_CHANGE___GET_OLD_VALUE;
+    int REMOVE_ROOT_EOBJECT___GET_OLD_VALUE = ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE___GET_OLD_VALUE;
 
     /**
      * The number of operations of the '<em>Remove Root EObject</em>' class.
@@ -155,7 +173,7 @@ public interface RootPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REMOVE_ROOT_EOBJECT_OPERATION_COUNT = ChangePackage.SUBTRACTIVE_REFERENCE_CHANGE_OPERATION_COUNT + 0;
+    int REMOVE_ROOT_EOBJECT_OPERATION_COUNT = ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE_OPERATION_COUNT + 0;
 
 
     /**

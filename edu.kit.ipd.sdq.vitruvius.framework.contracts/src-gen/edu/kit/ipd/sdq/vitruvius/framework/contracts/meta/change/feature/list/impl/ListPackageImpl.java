@@ -28,11 +28,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.object.ObjectPackage;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.object.impl.ObjectPackageImpl;
-
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootPackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RootPackageImpl;
@@ -131,7 +126,6 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
         FeaturePackageImpl theFeaturePackage = (FeaturePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) instanceof FeaturePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) : FeaturePackage.eINSTANCE);
         AttributePackageImpl theAttributePackage = (AttributePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) instanceof AttributePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) : AttributePackage.eINSTANCE);
         ReferencePackageImpl theReferencePackage = (ReferencePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) instanceof ReferencePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) : ReferencePackage.eINSTANCE);
-        ObjectPackageImpl theObjectPackage = (ObjectPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ObjectPackage.eNS_URI) instanceof ObjectPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ObjectPackage.eNS_URI) : ObjectPackage.eINSTANCE);
         RootPackageImpl theRootPackage = (RootPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) instanceof RootPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) : RootPackage.eINSTANCE);
         CompoundPackageImpl theCompoundPackage = (CompoundPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) instanceof CompoundPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) : CompoundPackage.eINSTANCE);
 
@@ -141,7 +135,6 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
         theFeaturePackage.createPackageContents();
         theAttributePackage.createPackageContents();
         theReferencePackage.createPackageContents();
-        theObjectPackage.createPackageContents();
         theRootPackage.createPackageContents();
         theCompoundPackage.createPackageContents();
 
@@ -151,7 +144,6 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
         theFeaturePackage.initializePackageContents();
         theAttributePackage.initializePackageContents();
         theReferencePackage.initializePackageContents();
-        theObjectPackage.initializePackageContents();
         theRootPackage.initializePackageContents();
         theCompoundPackage.initializePackageContents();
 

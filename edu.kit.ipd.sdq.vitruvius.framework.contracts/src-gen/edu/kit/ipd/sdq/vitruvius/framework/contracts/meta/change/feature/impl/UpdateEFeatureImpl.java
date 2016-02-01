@@ -4,8 +4,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.impl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateEFeature;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.EChangeImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.EAtomicChangeImpl;
 import org.eclipse.emf.ecore.EClass;
 
 /**
@@ -15,7 +14,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public abstract class UpdateEFeatureImpl<T extends Object> extends EChangeImpl implements UpdateEFeature<T> {
+public abstract class UpdateEFeatureImpl<T extends Object> extends EAtomicChangeImpl implements UpdateEFeature<T> {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

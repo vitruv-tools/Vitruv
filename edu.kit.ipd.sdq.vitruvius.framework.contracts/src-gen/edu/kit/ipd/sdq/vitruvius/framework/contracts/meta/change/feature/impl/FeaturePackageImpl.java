@@ -31,11 +31,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.object.ObjectPackage;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.object.impl.ObjectPackageImpl;
-
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootPackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RootPackageImpl;
@@ -157,7 +152,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
         ListPackageImpl theListPackage = (ListPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) instanceof ListPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) : ListPackage.eINSTANCE);
         AttributePackageImpl theAttributePackage = (AttributePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) instanceof AttributePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) : AttributePackage.eINSTANCE);
         ReferencePackageImpl theReferencePackage = (ReferencePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) instanceof ReferencePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) : ReferencePackage.eINSTANCE);
-        ObjectPackageImpl theObjectPackage = (ObjectPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ObjectPackage.eNS_URI) instanceof ObjectPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ObjectPackage.eNS_URI) : ObjectPackage.eINSTANCE);
         RootPackageImpl theRootPackage = (RootPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) instanceof RootPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) : RootPackage.eINSTANCE);
         CompoundPackageImpl theCompoundPackage = (CompoundPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) instanceof CompoundPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) : CompoundPackage.eINSTANCE);
 
@@ -167,7 +161,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
         theListPackage.createPackageContents();
         theAttributePackage.createPackageContents();
         theReferencePackage.createPackageContents();
-        theObjectPackage.createPackageContents();
         theRootPackage.createPackageContents();
         theCompoundPackage.createPackageContents();
 
@@ -177,7 +170,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
         theListPackage.initializePackageContents();
         theAttributePackage.initializePackageContents();
         theReferencePackage.initializePackageContents();
-        theObjectPackage.initializePackageContents();
         theRootPackage.initializePackageContents();
         theCompoundPackage.initializePackageContents();
 
@@ -396,8 +388,8 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
         unsetEReferenceEClass_T.getEBounds().add(g1);
 
         // Add supertypes to classes
-        eFeatureChangeEClass.getESuperTypes().add(theChangePackage.getEChange());
-        updateEFeatureEClass.getESuperTypes().add(theChangePackage.getEChange());
+        eFeatureChangeEClass.getESuperTypes().add(theChangePackage.getEAtomicChange());
+        updateEFeatureEClass.getESuperTypes().add(theChangePackage.getEAtomicChange());
         g1 = createEGenericType(this.getUpdateEFeature());
         EGenericType g2 = createEGenericType(updateMultiValuedEFeatureEClass_T);
         g1.getETypeArguments().add(g2);
@@ -414,7 +406,7 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
         g2 = createEGenericType(ecorePackage.getEAttribute());
         g1.getETypeArguments().add(g2);
         unsetEAttributeEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theChangePackage.getSubtractiveAttributeChange());
+        g1 = createEGenericType(theChangePackage.getSubtractiveEAttributeChange());
         g2 = createEGenericType(unsetEAttributeEClass_T);
         g1.getETypeArguments().add(g2);
         unsetEAttributeEClass.getEGenericSuperTypes().add(g1);
@@ -422,7 +414,7 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
         g2 = createEGenericType(ecorePackage.getEReference());
         g1.getETypeArguments().add(g2);
         unsetEReferenceEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theChangePackage.getSubtractiveReferenceChange());
+        g1 = createEGenericType(theChangePackage.getSubtractiveEReferenceChange());
         unsetEReferenceEClass.getEGenericSuperTypes().add(g1);
 
         // Initialize classes, features, and operations; add parameters

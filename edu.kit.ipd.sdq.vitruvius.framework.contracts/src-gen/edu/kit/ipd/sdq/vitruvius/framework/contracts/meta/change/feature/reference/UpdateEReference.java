@@ -21,8 +21,10 @@ public interface UpdateEReference<T extends EObject> extends EFeatureChange<ERef
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * 
      * @model kind="operation" required="true"
-     * @generated
+     * @generated NOT
      */
-    boolean isContainment();
+    default boolean isContainment() {
+        return getAffectedFeature().isContainment();
+    }
 
 } // UpdateEReference

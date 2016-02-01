@@ -2,13 +2,12 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.util;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ReplaciveReferenceChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveReferenceChange;
-
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateEFeature;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedEFeature;
@@ -88,6 +87,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
                 UpdateEReference<?> updateEReference = (UpdateEReference<?>)theEObject;
                 T1 result = caseUpdateEReference(updateEReference);
                 if (result == null) result = caseEFeatureChange(updateEReference);
+                if (result == null) result = caseEAtomicChange(updateEReference);
                 if (result == null) result = caseEChange(updateEReference);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -97,13 +97,13 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
                 T1 result = caseReplaceSingleValuedEReference(replaceSingleValuedEReference);
                 if (result == null) result = caseUpdateSingleValuedEFeature(replaceSingleValuedEReference);
                 if (result == null) result = caseUpdateEReference(replaceSingleValuedEReference);
-                if (result == null) result = caseReplaciveReferenceChange(replaceSingleValuedEReference);
+                if (result == null) result = caseSubtractiveEReferenceChange(replaceSingleValuedEReference);
+                if (result == null) result = caseAdditiveEReferenceChange(replaceSingleValuedEReference);
                 if (result == null) result = caseUpdateEFeature(replaceSingleValuedEReference);
                 if (result == null) result = caseEFeatureChange(replaceSingleValuedEReference);
-                if (result == null) result = caseSubtractiveReferenceChange(replaceSingleValuedEReference);
-                if (result == null) result = caseAdditiveReferenceChange(replaceSingleValuedEReference);
-                if (result == null) result = caseSubtractiveChange(replaceSingleValuedEReference);
-                if (result == null) result = caseAdditiveChange(replaceSingleValuedEReference);
+                if (result == null) result = caseSubtractiveEChange(replaceSingleValuedEReference);
+                if (result == null) result = caseAdditiveEChange(replaceSingleValuedEReference);
+                if (result == null) result = caseEAtomicChange(replaceSingleValuedEReference);
                 if (result == null) result = caseEChange(replaceSingleValuedEReference);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -113,12 +113,13 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
                 T1 result = caseInsertEReference(insertEReference);
                 if (result == null) result = caseInsertInEList(insertEReference);
                 if (result == null) result = caseUpdateEReference(insertEReference);
-                if (result == null) result = caseAdditiveReferenceChange(insertEReference);
+                if (result == null) result = caseAdditiveEReferenceChange(insertEReference);
                 if (result == null) result = caseUpdateSingleEListEntry(insertEReference);
                 if (result == null) result = caseEFeatureChange(insertEReference);
-                if (result == null) result = caseAdditiveChange(insertEReference);
+                if (result == null) result = caseAdditiveEChange(insertEReference);
                 if (result == null) result = caseUpdateMultiValuedEFeature(insertEReference);
                 if (result == null) result = caseUpdateEFeature(insertEReference);
+                if (result == null) result = caseEAtomicChange(insertEReference);
                 if (result == null) result = caseEChange(insertEReference);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -128,12 +129,13 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
                 T1 result = caseRemoveEReference(removeEReference);
                 if (result == null) result = caseRemoveFromEList(removeEReference);
                 if (result == null) result = caseUpdateEReference(removeEReference);
-                if (result == null) result = caseSubtractiveReferenceChange(removeEReference);
+                if (result == null) result = caseSubtractiveEReferenceChange(removeEReference);
                 if (result == null) result = caseUpdateSingleEListEntry(removeEReference);
                 if (result == null) result = caseEFeatureChange(removeEReference);
-                if (result == null) result = caseSubtractiveChange(removeEReference);
+                if (result == null) result = caseSubtractiveEChange(removeEReference);
                 if (result == null) result = caseUpdateMultiValuedEFeature(removeEReference);
                 if (result == null) result = caseUpdateEFeature(removeEReference);
+                if (result == null) result = caseEAtomicChange(removeEReference);
                 if (result == null) result = caseEChange(removeEReference);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -146,6 +148,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
                 if (result == null) result = caseUpdateMultiValuedEFeature(permuteEReferenceValues);
                 if (result == null) result = caseEFeatureChange(permuteEReferenceValues);
                 if (result == null) result = caseUpdateEFeature(permuteEReferenceValues);
+                if (result == null) result = caseEAtomicChange(permuteEReferenceValues);
                 if (result == null) result = caseEChange(permuteEReferenceValues);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -245,6 +248,21 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>EAtomic Change</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>EAtomic Change</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T1 caseEAtomicChange(EAtomicChange object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>EFeature Change</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
@@ -290,77 +308,62 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Subtractive Change</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Subtractive EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Subtractive Change</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Subtractive EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseSubtractiveChange(SubtractiveChange<T> object) {
+    public <T extends Object> T1 caseSubtractiveEChange(SubtractiveEChange<T> object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Subtractive Reference Change</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Subtractive EReference Change</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Subtractive Reference Change</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Subtractive EReference Change</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseSubtractiveReferenceChange(SubtractiveReferenceChange object) {
+    public T1 caseSubtractiveEReferenceChange(SubtractiveEReferenceChange object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Additive Change</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Additive EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Additive Change</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Additive EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseAdditiveChange(AdditiveChange<T> object) {
+    public <T extends Object> T1 caseAdditiveEChange(AdditiveEChange<T> object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Additive Reference Change</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Additive EReference Change</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Additive Reference Change</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Additive EReference Change</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends EObject> T1 caseAdditiveReferenceChange(AdditiveReferenceChange<T> object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Replacive Reference Change</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Replacive Reference Change</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public <T extends EObject> T1 caseReplaciveReferenceChange(ReplaciveReferenceChange<T> object) {
+    public <T extends EObject> T1 caseAdditiveEReferenceChange(AdditiveEReferenceChange<T> object) {
         return null;
     }
 

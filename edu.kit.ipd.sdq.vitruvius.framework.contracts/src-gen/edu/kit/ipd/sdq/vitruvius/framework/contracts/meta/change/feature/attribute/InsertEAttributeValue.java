@@ -2,8 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveAttributeChange;
-
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEAttributeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInEList;
 
 /**
@@ -16,5 +15,5 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.In
  * @model TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
-public interface InsertEAttributeValue<T extends Object> extends InsertInEList<T>, UpdateEAttribute<T>, AdditiveAttributeChange<T> {
+public interface InsertEAttributeValue<T extends Object> extends InsertInEList<T>, UpdateEAttribute<T>, AdditiveEAttributeChange<T> {
 } // InsertEAttributeValue

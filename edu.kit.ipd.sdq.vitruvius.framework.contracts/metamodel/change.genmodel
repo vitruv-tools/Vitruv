@@ -13,38 +13,32 @@
       disposableProviderFactory="true" ecorePackage="change.ecore#/">
     <genDataTypes ecoreDataType="change.ecore#//TUID"/>
     <genClasses image="false" ecoreClass="change.ecore#//EChange"/>
-    <genClasses image="false" ecoreClass="change.ecore#//AdditiveChange">
-      <genTypeParameters ecoreTypeParameter="change.ecore#//AdditiveChange/T"/>
-      <genOperations ecoreOperation="change.ecore#//AdditiveChange/getNewValue"/>
+    <genClasses image="false" ecoreClass="change.ecore#//EAtomicChange"/>
+    <genClasses image="false" ecoreClass="change.ecore#//AdditiveEChange">
+      <genTypeParameters ecoreTypeParameter="change.ecore#//AdditiveEChange/T"/>
+      <genOperations ecoreOperation="change.ecore#//AdditiveEChange/getNewValue"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="change.ecore#//SubtractiveChange">
-      <genTypeParameters ecoreTypeParameter="change.ecore#//SubtractiveChange/T"/>
-      <genOperations ecoreOperation="change.ecore#//SubtractiveChange/getOldValue"/>
+    <genClasses image="false" ecoreClass="change.ecore#//SubtractiveEChange">
+      <genTypeParameters ecoreTypeParameter="change.ecore#//SubtractiveEChange/T"/>
+      <genOperations ecoreOperation="change.ecore#//SubtractiveEChange/getOldValue"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="change.ecore#//ReplaciveChange">
-      <genTypeParameters ecoreTypeParameter="change.ecore#//ReplaciveChange/T"/>
+    <genClasses image="false" ecoreClass="change.ecore#//AdditiveEAttributeChange">
+      <genTypeParameters ecoreTypeParameter="change.ecore#//AdditiveEAttributeChange/T"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//AdditiveEAttributeChange/newValue"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="change.ecore#//AdditiveAttributeChange">
-      <genTypeParameters ecoreTypeParameter="change.ecore#//AdditiveAttributeChange/T"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//AdditiveAttributeChange/newValue"/>
+    <genClasses image="false" ecoreClass="change.ecore#//SubtractiveEAttributeChange">
+      <genTypeParameters ecoreTypeParameter="change.ecore#//SubtractiveEAttributeChange/T"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//SubtractiveEAttributeChange/oldValue"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="change.ecore#//SubtractiveAttributeChange">
-      <genTypeParameters ecoreTypeParameter="change.ecore#//SubtractiveAttributeChange/T"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//SubtractiveAttributeChange/oldValue"/>
+    <genClasses image="false" ecoreClass="change.ecore#//AdditiveEReferenceChange">
+      <genTypeParameters ecoreTypeParameter="change.ecore#//AdditiveEReferenceChange/T"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference change.ecore#//AdditiveEReferenceChange/newValue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//AdditiveEReferenceChange/isCreate"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="change.ecore#//ReplaciveAttributeChange">
-      <genTypeParameters ecoreTypeParameter="change.ecore#//ReplaciveAttributeChange/T"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="change.ecore#//AdditiveReferenceChange">
-      <genTypeParameters ecoreTypeParameter="change.ecore#//AdditiveReferenceChange/T"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference change.ecore#//AdditiveReferenceChange/newValue"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="change.ecore#//SubtractiveReferenceChange">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//SubtractiveReferenceChange/oldTUID"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//SubtractiveReferenceChange/featureName2OldValueMap"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="change.ecore#//ReplaciveReferenceChange">
-      <genTypeParameters ecoreTypeParameter="change.ecore#//ReplaciveReferenceChange/T"/>
+    <genClasses image="false" ecoreClass="change.ecore#//SubtractiveEReferenceChange">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//SubtractiveEReferenceChange/oldTUID"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//SubtractiveEReferenceChange/feature2OldValueMap"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//SubtractiveEReferenceChange/isDelete"/>
     </genClasses>
     <nestedGenPackages prefix="Feature" basePackage="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change"
         disposableProviderFactory="true" ecorePackage="change.ecore#//feature">
@@ -131,16 +125,6 @@
         </genClasses>
       </nestedGenPackages>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Object" basePackage="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change"
-        disposableProviderFactory="true" ecorePackage="change.ecore#//object">
-      <genClasses image="false" ecoreClass="change.ecore#//object/EObjectChange"/>
-      <genClasses ecoreClass="change.ecore#//object/CreateEObject">
-        <genTypeParameters ecoreTypeParameter="change.ecore#//object/CreateEObject/T"/>
-      </genClasses>
-      <genClasses ecoreClass="change.ecore#//object/DeleteEObject">
-        <genTypeParameters ecoreTypeParameter="change.ecore#//object/DeleteEObject/T"/>
-      </genClasses>
-    </nestedGenPackages>
     <nestedGenPackages prefix="Root" basePackage="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change"
         disposableProviderFactory="true" ecorePackage="change.ecore#//root">
       <genClasses ecoreClass="change.ecore#//root/InsertRootEObject">
@@ -151,30 +135,7 @@
     <nestedGenPackages prefix="Compound" basePackage="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change"
         disposableProviderFactory="true" ecorePackage="change.ecore#//compound">
       <genClasses image="false" ecoreClass="change.ecore#//compound/ECompoundChange">
-        <genOperations ecoreOperation="change.ecore#//compound/ECompoundChange/getComposedChanges"/>
-      </genClasses>
-      <genClasses ecoreClass="change.ecore#//compound/CreateEObjectAndAdd">
-        <genTypeParameters ecoreTypeParameter="change.ecore#//compound/CreateEObjectAndAdd/T"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference change.ecore#//compound/CreateEObjectAndAdd/createChange"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference change.ecore#//compound/CreateEObjectAndAdd/addChange"/>
-      </genClasses>
-      <genClasses ecoreClass="change.ecore#//compound/DeleteEObjectAndSubtract">
-        <genTypeParameters ecoreTypeParameter="change.ecore#//compound/DeleteEObjectAndSubtract/T"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference change.ecore#//compound/DeleteEObjectAndSubtract/deleteChange"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference change.ecore#//compound/DeleteEObjectAndSubtract/subtractChange"/>
-      </genClasses>
-      <genClasses image="false" ecoreClass="change.ecore#//compound/DeleteEObjectCreateEObjectAndReplace">
-        <genTypeParameters ecoreTypeParameter="change.ecore#//compound/DeleteEObjectCreateEObjectAndReplace/T"/>
-        <genTypeParameters ecoreTypeParameter="change.ecore#//compound/DeleteEObjectCreateEObjectAndReplace/R"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference change.ecore#//compound/DeleteEObjectCreateEObjectAndReplace/deleteChange"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference change.ecore#//compound/DeleteEObjectCreateEObjectAndReplace/createChange"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference change.ecore#//compound/DeleteEObjectCreateEObjectAndReplace/replaceChange"/>
-      </genClasses>
-      <genClasses ecoreClass="change.ecore#//compound/DeleteEObjectCreateEObjectAndReplaceSingle">
-        <genTypeParameters ecoreTypeParameter="change.ecore#//compound/DeleteEObjectCreateEObjectAndReplaceSingle/T"/>
-      </genClasses>
-      <genClasses ecoreClass="change.ecore#//compound/DeleteEObjectCreateEObjectAndReplaceInList">
-        <genTypeParameters ecoreTypeParameter="change.ecore#//compound/DeleteEObjectCreateEObjectAndReplaceInList/T"/>
+        <genOperations ecoreOperation="change.ecore#//compound/ECompoundChange/getAtomicChanges"/>
       </genClasses>
       <genClasses ecoreClass="change.ecore#//compound/MoveEObject">
         <genTypeParameters ecoreTypeParameter="change.ecore#//compound/MoveEObject/T"/>

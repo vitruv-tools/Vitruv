@@ -2,6 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.util;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateEFeature;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedEFeature;
@@ -75,6 +76,7 @@ public class ListSwitch<T1> extends Switch<T1> {
                 T1 result = caseUpdateSingleEListEntry(updateSingleEListEntry);
                 if (result == null) result = caseUpdateMultiValuedEFeature(updateSingleEListEntry);
                 if (result == null) result = caseUpdateEFeature(updateSingleEListEntry);
+                if (result == null) result = caseEAtomicChange(updateSingleEListEntry);
                 if (result == null) result = caseEChange(updateSingleEListEntry);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -85,6 +87,7 @@ public class ListSwitch<T1> extends Switch<T1> {
                 if (result == null) result = caseUpdateSingleEListEntry(insertInEList);
                 if (result == null) result = caseUpdateMultiValuedEFeature(insertInEList);
                 if (result == null) result = caseUpdateEFeature(insertInEList);
+                if (result == null) result = caseEAtomicChange(insertInEList);
                 if (result == null) result = caseEChange(insertInEList);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -95,6 +98,7 @@ public class ListSwitch<T1> extends Switch<T1> {
                 if (result == null) result = caseUpdateSingleEListEntry(removeFromEList);
                 if (result == null) result = caseUpdateMultiValuedEFeature(removeFromEList);
                 if (result == null) result = caseUpdateEFeature(removeFromEList);
+                if (result == null) result = caseEAtomicChange(removeFromEList);
                 if (result == null) result = caseEChange(removeFromEList);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -104,6 +108,7 @@ public class ListSwitch<T1> extends Switch<T1> {
                 T1 result = casePermuteEList(permuteEList);
                 if (result == null) result = caseUpdateMultiValuedEFeature(permuteEList);
                 if (result == null) result = caseUpdateEFeature(permuteEList);
+                if (result == null) result = caseEAtomicChange(permuteEList);
                 if (result == null) result = caseEChange(permuteEList);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -184,6 +189,21 @@ public class ListSwitch<T1> extends Switch<T1> {
      * @generated
      */
     public T1 caseEChange(EChange object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>EAtomic Change</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>EAtomic Change</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T1 caseEAtomicChange(EAtomicChange object) {
         return null;
     }
 

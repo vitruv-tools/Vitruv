@@ -2,8 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveAttributeChange;
-
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEAttributeChange;
 import org.eclipse.emf.ecore.EAttribute;
 
 /**
@@ -16,5 +15,5 @@ import org.eclipse.emf.ecore.EAttribute;
  * @model TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
-public interface UnsetEAttribute<T extends Object> extends UnsetEFeature<EAttribute>, SubtractiveAttributeChange<T> {
+public interface UnsetEAttribute<T extends Object> extends UnsetEFeature<EAttribute>, SubtractiveEAttributeChange<T> {
 } // UnsetEAttribute

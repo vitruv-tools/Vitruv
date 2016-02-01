@@ -11,9 +11,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveReferenceChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CompoundPackage;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.MoveEObject;
 
@@ -38,7 +38,7 @@ public class MoveEObjectImpl<T extends EObject> extends ECompoundChangeImpl impl
      * @generated
      * @ordered
      */
-    protected SubtractiveReferenceChange subtractChange;
+    protected SubtractiveEReferenceChange subtractChange;
 
     /**
      * The cached value of the '{@link #getAddChange() <em>Add Change</em>}' containment reference.
@@ -47,7 +47,7 @@ public class MoveEObjectImpl<T extends EObject> extends ECompoundChangeImpl impl
      * @generated
      * @ordered
      */
-    protected AdditiveReferenceChange<T> addChange;
+    protected AdditiveEReferenceChange<T> addChange;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -70,8 +70,8 @@ public class MoveEObjectImpl<T extends EObject> extends ECompoundChangeImpl impl
      * @generated NOT
      */
     @Override
-    public EList<EChange> getComposedChanges() {
-        BasicEList<EChange> list = new BasicEList<EChange>();
+    public EList<EAtomicChange> getAtomicChanges() {
+        BasicEList<EAtomicChange> list = new BasicEList<EAtomicChange>();
         list.add(getSubtractChange());
         list.add(getAddChange());
         return list;
@@ -82,7 +82,7 @@ public class MoveEObjectImpl<T extends EObject> extends ECompoundChangeImpl impl
      * @generated
      */
     @Override
-    public SubtractiveReferenceChange getSubtractChange() {
+    public SubtractiveEReferenceChange getSubtractChange() {
         return subtractChange;
     }
 
@@ -90,8 +90,8 @@ public class MoveEObjectImpl<T extends EObject> extends ECompoundChangeImpl impl
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
-    public NotificationChain basicSetSubtractChange(SubtractiveReferenceChange newSubtractChange, NotificationChain msgs) {
-        SubtractiveReferenceChange oldSubtractChange = subtractChange;
+    public NotificationChain basicSetSubtractChange(SubtractiveEReferenceChange newSubtractChange, NotificationChain msgs) {
+        SubtractiveEReferenceChange oldSubtractChange = subtractChange;
         subtractChange = newSubtractChange;
         if (eNotificationRequired()) {
             ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, CompoundPackage.MOVE_EOBJECT__SUBTRACT_CHANGE, oldSubtractChange, newSubtractChange);
@@ -105,7 +105,7 @@ public class MoveEObjectImpl<T extends EObject> extends ECompoundChangeImpl impl
      * @generated
      */
     @Override
-    public void setSubtractChange(SubtractiveReferenceChange newSubtractChange) {
+    public void setSubtractChange(SubtractiveEReferenceChange newSubtractChange) {
         if (newSubtractChange != subtractChange) {
             NotificationChain msgs = null;
             if (subtractChange != null)
@@ -124,7 +124,7 @@ public class MoveEObjectImpl<T extends EObject> extends ECompoundChangeImpl impl
      * @generated
      */
     @Override
-    public AdditiveReferenceChange<T> getAddChange() {
+    public AdditiveEReferenceChange<T> getAddChange() {
         return addChange;
     }
 
@@ -132,8 +132,8 @@ public class MoveEObjectImpl<T extends EObject> extends ECompoundChangeImpl impl
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
-    public NotificationChain basicSetAddChange(AdditiveReferenceChange<T> newAddChange, NotificationChain msgs) {
-        AdditiveReferenceChange<T> oldAddChange = addChange;
+    public NotificationChain basicSetAddChange(AdditiveEReferenceChange<T> newAddChange, NotificationChain msgs) {
+        AdditiveEReferenceChange<T> oldAddChange = addChange;
         addChange = newAddChange;
         if (eNotificationRequired()) {
             ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, CompoundPackage.MOVE_EOBJECT__ADD_CHANGE, oldAddChange, newAddChange);
@@ -147,7 +147,7 @@ public class MoveEObjectImpl<T extends EObject> extends ECompoundChangeImpl impl
      * @generated
      */
     @Override
-    public void setAddChange(AdditiveReferenceChange<T> newAddChange) {
+    public void setAddChange(AdditiveEReferenceChange<T> newAddChange) {
         if (newAddChange != addChange) {
             NotificationChain msgs = null;
             if (addChange != null)
@@ -200,10 +200,10 @@ public class MoveEObjectImpl<T extends EObject> extends ECompoundChangeImpl impl
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case CompoundPackage.MOVE_EOBJECT__SUBTRACT_CHANGE:
-                setSubtractChange((SubtractiveReferenceChange)newValue);
+                setSubtractChange((SubtractiveEReferenceChange)newValue);
                 return;
             case CompoundPackage.MOVE_EOBJECT__ADD_CHANGE:
-                setAddChange((AdditiveReferenceChange<T>)newValue);
+                setAddChange((AdditiveEReferenceChange<T>)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -217,10 +217,10 @@ public class MoveEObjectImpl<T extends EObject> extends ECompoundChangeImpl impl
     public void eUnset(int featureID) {
         switch (featureID) {
             case CompoundPackage.MOVE_EOBJECT__SUBTRACT_CHANGE:
-                setSubtractChange((SubtractiveReferenceChange)null);
+                setSubtractChange((SubtractiveEReferenceChange)null);
                 return;
             case CompoundPackage.MOVE_EOBJECT__ADD_CHANGE:
-                setAddChange((AdditiveReferenceChange<T>)null);
+                setAddChange((AdditiveEReferenceChange<T>)null);
                 return;
         }
         super.eUnset(featureID);

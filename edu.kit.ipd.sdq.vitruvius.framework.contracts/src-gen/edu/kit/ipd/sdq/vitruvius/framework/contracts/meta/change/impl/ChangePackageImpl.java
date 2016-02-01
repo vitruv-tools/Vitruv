@@ -2,19 +2,16 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveAttributeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEAttributeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ReplaciveAttributeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ReplaciveChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ReplaciveReferenceChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveAttributeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveReferenceChange;
-
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEAttributeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CompoundPackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.CompoundPackageImpl;
@@ -34,11 +31,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.im
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.object.ObjectPackage;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.object.impl.ObjectPackageImpl;
-
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootPackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RootPackageImpl;
@@ -73,63 +65,49 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass additiveChangeEClass = null;
+    private EClass eAtomicChangeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass subtractiveChangeEClass = null;
+    private EClass additiveEChangeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass replaciveChangeEClass = null;
+    private EClass subtractiveEChangeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass additiveAttributeChangeEClass = null;
+    private EClass additiveEAttributeChangeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass subtractiveAttributeChangeEClass = null;
+    private EClass subtractiveEAttributeChangeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass replaciveAttributeChangeEClass = null;
+    private EClass additiveEReferenceChangeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass additiveReferenceChangeEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private EClass subtractiveReferenceChangeEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private EClass replaciveReferenceChangeEClass = null;
+    private EClass subtractiveEReferenceChangeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -189,7 +167,6 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         ListPackageImpl theListPackage = (ListPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) instanceof ListPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) : ListPackage.eINSTANCE);
         AttributePackageImpl theAttributePackage = (AttributePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) instanceof AttributePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) : AttributePackage.eINSTANCE);
         ReferencePackageImpl theReferencePackage = (ReferencePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) instanceof ReferencePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) : ReferencePackage.eINSTANCE);
-        ObjectPackageImpl theObjectPackage = (ObjectPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ObjectPackage.eNS_URI) instanceof ObjectPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ObjectPackage.eNS_URI) : ObjectPackage.eINSTANCE);
         RootPackageImpl theRootPackage = (RootPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) instanceof RootPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) : RootPackage.eINSTANCE);
         CompoundPackageImpl theCompoundPackage = (CompoundPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) instanceof CompoundPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) : CompoundPackage.eINSTANCE);
 
@@ -199,7 +176,6 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         theListPackage.createPackageContents();
         theAttributePackage.createPackageContents();
         theReferencePackage.createPackageContents();
-        theObjectPackage.createPackageContents();
         theRootPackage.createPackageContents();
         theCompoundPackage.createPackageContents();
 
@@ -209,7 +185,6 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         theListPackage.initializePackageContents();
         theAttributePackage.initializePackageContents();
         theReferencePackage.initializePackageContents();
-        theObjectPackage.initializePackageContents();
         theRootPackage.initializePackageContents();
         theCompoundPackage.initializePackageContents();
 
@@ -236,8 +211,8 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getAdditiveChange() {
-        return additiveChangeEClass;
+    public EClass getEAtomicChange() {
+        return eAtomicChangeEClass;
     }
 
     /**
@@ -245,8 +220,8 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EOperation getAdditiveChange__GetNewValue() {
-        return additiveChangeEClass.getEOperations().get(0);
+    public EClass getAdditiveEChange() {
+        return additiveEChangeEClass;
     }
 
     /**
@@ -254,8 +229,8 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getSubtractiveChange() {
-        return subtractiveChangeEClass;
+    public EOperation getAdditiveEChange__GetNewValue() {
+        return additiveEChangeEClass.getEOperations().get(0);
     }
 
     /**
@@ -263,8 +238,8 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EOperation getSubtractiveChange__GetOldValue() {
-        return subtractiveChangeEClass.getEOperations().get(0);
+    public EClass getSubtractiveEChange() {
+        return subtractiveEChangeEClass;
     }
 
     /**
@@ -272,8 +247,8 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getReplaciveChange() {
-        return replaciveChangeEClass;
+    public EOperation getSubtractiveEChange__GetOldValue() {
+        return subtractiveEChangeEClass.getEOperations().get(0);
     }
 
     /**
@@ -281,8 +256,8 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getAdditiveAttributeChange() {
-        return additiveAttributeChangeEClass;
+    public EClass getAdditiveEAttributeChange() {
+        return additiveEAttributeChangeEClass;
     }
 
     /**
@@ -290,8 +265,8 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getAdditiveAttributeChange_NewValue() {
-        return (EAttribute)additiveAttributeChangeEClass.getEStructuralFeatures().get(0);
+    public EAttribute getAdditiveEAttributeChange_NewValue() {
+        return (EAttribute)additiveEAttributeChangeEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -299,8 +274,8 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getSubtractiveAttributeChange() {
-        return subtractiveAttributeChangeEClass;
+    public EClass getSubtractiveEAttributeChange() {
+        return subtractiveEAttributeChangeEClass;
     }
 
     /**
@@ -308,8 +283,8 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getSubtractiveAttributeChange_OldValue() {
-        return (EAttribute)subtractiveAttributeChangeEClass.getEStructuralFeatures().get(0);
+    public EAttribute getSubtractiveEAttributeChange_OldValue() {
+        return (EAttribute)subtractiveEAttributeChangeEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -317,8 +292,8 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getReplaciveAttributeChange() {
-        return replaciveAttributeChangeEClass;
+    public EClass getAdditiveEReferenceChange() {
+        return additiveEReferenceChangeEClass;
     }
 
     /**
@@ -326,8 +301,8 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getAdditiveReferenceChange() {
-        return additiveReferenceChangeEClass;
+    public EReference getAdditiveEReferenceChange_NewValue() {
+        return (EReference)additiveEReferenceChangeEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -335,8 +310,8 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getAdditiveReferenceChange_NewValue() {
-        return (EReference)additiveReferenceChangeEClass.getEStructuralFeatures().get(0);
+    public EAttribute getAdditiveEReferenceChange_IsCreate() {
+        return (EAttribute)additiveEReferenceChangeEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -344,8 +319,8 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getSubtractiveReferenceChange() {
-        return subtractiveReferenceChangeEClass;
+    public EClass getSubtractiveEReferenceChange() {
+        return subtractiveEReferenceChangeEClass;
     }
 
     /**
@@ -353,8 +328,8 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getSubtractiveReferenceChange_OldTUID() {
-        return (EAttribute)subtractiveReferenceChangeEClass.getEStructuralFeatures().get(0);
+    public EAttribute getSubtractiveEReferenceChange_OldTUID() {
+        return (EAttribute)subtractiveEReferenceChangeEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -362,8 +337,8 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getSubtractiveReferenceChange_FeatureName2OldValueMap() {
-        return (EAttribute)subtractiveReferenceChangeEClass.getEStructuralFeatures().get(1);
+    public EAttribute getSubtractiveEReferenceChange_Feature2OldValueMap() {
+        return (EAttribute)subtractiveEReferenceChangeEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -371,8 +346,8 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getReplaciveReferenceChange() {
-        return replaciveReferenceChangeEClass;
+    public EAttribute getSubtractiveEReferenceChange_IsDelete() {
+        return (EAttribute)subtractiveEReferenceChangeEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -414,30 +389,28 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         // Create classes and their features
         eChangeEClass = createEClass(ECHANGE);
 
-        additiveChangeEClass = createEClass(ADDITIVE_CHANGE);
-        createEOperation(additiveChangeEClass, ADDITIVE_CHANGE___GET_NEW_VALUE);
+        eAtomicChangeEClass = createEClass(EATOMIC_CHANGE);
 
-        subtractiveChangeEClass = createEClass(SUBTRACTIVE_CHANGE);
-        createEOperation(subtractiveChangeEClass, SUBTRACTIVE_CHANGE___GET_OLD_VALUE);
+        additiveEChangeEClass = createEClass(ADDITIVE_ECHANGE);
+        createEOperation(additiveEChangeEClass, ADDITIVE_ECHANGE___GET_NEW_VALUE);
 
-        replaciveChangeEClass = createEClass(REPLACIVE_CHANGE);
+        subtractiveEChangeEClass = createEClass(SUBTRACTIVE_ECHANGE);
+        createEOperation(subtractiveEChangeEClass, SUBTRACTIVE_ECHANGE___GET_OLD_VALUE);
 
-        additiveAttributeChangeEClass = createEClass(ADDITIVE_ATTRIBUTE_CHANGE);
-        createEAttribute(additiveAttributeChangeEClass, ADDITIVE_ATTRIBUTE_CHANGE__NEW_VALUE);
+        additiveEAttributeChangeEClass = createEClass(ADDITIVE_EATTRIBUTE_CHANGE);
+        createEAttribute(additiveEAttributeChangeEClass, ADDITIVE_EATTRIBUTE_CHANGE__NEW_VALUE);
 
-        subtractiveAttributeChangeEClass = createEClass(SUBTRACTIVE_ATTRIBUTE_CHANGE);
-        createEAttribute(subtractiveAttributeChangeEClass, SUBTRACTIVE_ATTRIBUTE_CHANGE__OLD_VALUE);
+        subtractiveEAttributeChangeEClass = createEClass(SUBTRACTIVE_EATTRIBUTE_CHANGE);
+        createEAttribute(subtractiveEAttributeChangeEClass, SUBTRACTIVE_EATTRIBUTE_CHANGE__OLD_VALUE);
 
-        replaciveAttributeChangeEClass = createEClass(REPLACIVE_ATTRIBUTE_CHANGE);
+        additiveEReferenceChangeEClass = createEClass(ADDITIVE_EREFERENCE_CHANGE);
+        createEReference(additiveEReferenceChangeEClass, ADDITIVE_EREFERENCE_CHANGE__NEW_VALUE);
+        createEAttribute(additiveEReferenceChangeEClass, ADDITIVE_EREFERENCE_CHANGE__IS_CREATE);
 
-        additiveReferenceChangeEClass = createEClass(ADDITIVE_REFERENCE_CHANGE);
-        createEReference(additiveReferenceChangeEClass, ADDITIVE_REFERENCE_CHANGE__NEW_VALUE);
-
-        subtractiveReferenceChangeEClass = createEClass(SUBTRACTIVE_REFERENCE_CHANGE);
-        createEAttribute(subtractiveReferenceChangeEClass, SUBTRACTIVE_REFERENCE_CHANGE__OLD_TUID);
-        createEAttribute(subtractiveReferenceChangeEClass, SUBTRACTIVE_REFERENCE_CHANGE__FEATURE_NAME2_OLD_VALUE_MAP);
-
-        replaciveReferenceChangeEClass = createEClass(REPLACIVE_REFERENCE_CHANGE);
+        subtractiveEReferenceChangeEClass = createEClass(SUBTRACTIVE_EREFERENCE_CHANGE);
+        createEAttribute(subtractiveEReferenceChangeEClass, SUBTRACTIVE_EREFERENCE_CHANGE__OLD_TUID);
+        createEAttribute(subtractiveEReferenceChangeEClass, SUBTRACTIVE_EREFERENCE_CHANGE__FEATURE2_OLD_VALUE_MAP);
+        createEAttribute(subtractiveEReferenceChangeEClass, SUBTRACTIVE_EREFERENCE_CHANGE__IS_DELETE);
 
         // Create data types
         tuidEDataType = createEDataType(TUID);
@@ -468,127 +441,93 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
 
         // Obtain other dependent packages
         FeaturePackage theFeaturePackage = (FeaturePackage)EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI);
-        ObjectPackage theObjectPackage = (ObjectPackage)EPackage.Registry.INSTANCE.getEPackage(ObjectPackage.eNS_URI);
         RootPackage theRootPackage = (RootPackage)EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI);
         CompoundPackage theCompoundPackage = (CompoundPackage)EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI);
 
         // Add subpackages
         getESubpackages().add(theFeaturePackage);
-        getESubpackages().add(theObjectPackage);
         getESubpackages().add(theRootPackage);
         getESubpackages().add(theCompoundPackage);
 
         // Create type parameters
-        ETypeParameter additiveChangeEClass_T = addETypeParameter(additiveChangeEClass, "T");
-        ETypeParameter subtractiveChangeEClass_T = addETypeParameter(subtractiveChangeEClass, "T");
-        ETypeParameter replaciveChangeEClass_T = addETypeParameter(replaciveChangeEClass, "T");
-        ETypeParameter additiveAttributeChangeEClass_T = addETypeParameter(additiveAttributeChangeEClass, "T");
-        ETypeParameter subtractiveAttributeChangeEClass_T = addETypeParameter(subtractiveAttributeChangeEClass, "T");
-        ETypeParameter replaciveAttributeChangeEClass_T = addETypeParameter(replaciveAttributeChangeEClass, "T");
-        ETypeParameter additiveReferenceChangeEClass_T = addETypeParameter(additiveReferenceChangeEClass, "T");
-        ETypeParameter replaciveReferenceChangeEClass_T = addETypeParameter(replaciveReferenceChangeEClass, "T");
+        ETypeParameter additiveEChangeEClass_T = addETypeParameter(additiveEChangeEClass, "T");
+        ETypeParameter subtractiveEChangeEClass_T = addETypeParameter(subtractiveEChangeEClass, "T");
+        ETypeParameter additiveEAttributeChangeEClass_T = addETypeParameter(additiveEAttributeChangeEClass, "T");
+        ETypeParameter subtractiveEAttributeChangeEClass_T = addETypeParameter(subtractiveEAttributeChangeEClass, "T");
+        ETypeParameter additiveEReferenceChangeEClass_T = addETypeParameter(additiveEReferenceChangeEClass, "T");
 
         // Set bounds for type parameters
         EGenericType g1 = createEGenericType(ecorePackage.getEJavaObject());
-        additiveChangeEClass_T.getEBounds().add(g1);
+        additiveEChangeEClass_T.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEJavaObject());
-        subtractiveChangeEClass_T.getEBounds().add(g1);
+        subtractiveEChangeEClass_T.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEJavaObject());
-        replaciveChangeEClass_T.getEBounds().add(g1);
+        additiveEAttributeChangeEClass_T.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEJavaObject());
-        additiveAttributeChangeEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEJavaObject());
-        subtractiveAttributeChangeEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEJavaObject());
-        replaciveAttributeChangeEClass_T.getEBounds().add(g1);
+        subtractiveEAttributeChangeEClass_T.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEObject());
-        additiveReferenceChangeEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEObject());
-        replaciveReferenceChangeEClass_T.getEBounds().add(g1);
+        additiveEReferenceChangeEClass_T.getEBounds().add(g1);
 
         // Add supertypes to classes
-        additiveChangeEClass.getESuperTypes().add(this.getEChange());
-        subtractiveChangeEClass.getESuperTypes().add(this.getEChange());
-        g1 = createEGenericType(this.getSubtractiveChange());
-        EGenericType g2 = createEGenericType(replaciveChangeEClass_T);
+        eAtomicChangeEClass.getESuperTypes().add(this.getEChange());
+        additiveEChangeEClass.getESuperTypes().add(this.getEAtomicChange());
+        subtractiveEChangeEClass.getESuperTypes().add(this.getEAtomicChange());
+        g1 = createEGenericType(this.getAdditiveEChange());
+        EGenericType g2 = createEGenericType(additiveEAttributeChangeEClass_T);
         g1.getETypeArguments().add(g2);
-        replaciveChangeEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getAdditiveChange());
-        g2 = createEGenericType(replaciveChangeEClass_T);
+        additiveEAttributeChangeEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(this.getSubtractiveEChange());
+        g2 = createEGenericType(subtractiveEAttributeChangeEClass_T);
         g1.getETypeArguments().add(g2);
-        replaciveChangeEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getAdditiveChange());
-        g2 = createEGenericType(additiveAttributeChangeEClass_T);
+        subtractiveEAttributeChangeEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(this.getAdditiveEChange());
+        g2 = createEGenericType(additiveEReferenceChangeEClass_T);
         g1.getETypeArguments().add(g2);
-        additiveAttributeChangeEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getSubtractiveChange());
-        g2 = createEGenericType(subtractiveAttributeChangeEClass_T);
-        g1.getETypeArguments().add(g2);
-        subtractiveAttributeChangeEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getSubtractiveAttributeChange());
-        g2 = createEGenericType(replaciveAttributeChangeEClass_T);
-        g1.getETypeArguments().add(g2);
-        replaciveAttributeChangeEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getAdditiveAttributeChange());
-        g2 = createEGenericType(replaciveAttributeChangeEClass_T);
-        g1.getETypeArguments().add(g2);
-        replaciveAttributeChangeEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getAdditiveChange());
-        g2 = createEGenericType(additiveReferenceChangeEClass_T);
-        g1.getETypeArguments().add(g2);
-        additiveReferenceChangeEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getSubtractiveChange());
+        additiveEReferenceChangeEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(this.getSubtractiveEChange());
         g2 = createEGenericType(this.getTUID());
         g1.getETypeArguments().add(g2);
-        subtractiveReferenceChangeEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getSubtractiveReferenceChange());
-        replaciveReferenceChangeEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getAdditiveReferenceChange());
-        g2 = createEGenericType(replaciveReferenceChangeEClass_T);
-        g1.getETypeArguments().add(g2);
-        replaciveReferenceChangeEClass.getEGenericSuperTypes().add(g1);
+        subtractiveEReferenceChangeEClass.getEGenericSuperTypes().add(g1);
 
         // Initialize classes, features, and operations; add parameters
         initEClass(eChangeEClass, EChange.class, "EChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-        initEClass(additiveChangeEClass, AdditiveChange.class, "AdditiveChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(eAtomicChangeEClass, EAtomicChange.class, "EAtomicChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-        EOperation op = initEOperation(getAdditiveChange__GetNewValue(), null, "getNewValue", 1, 1, IS_UNIQUE, IS_ORDERED);
-        g1 = createEGenericType(additiveChangeEClass_T);
+        initEClass(additiveEChangeEClass, AdditiveEChange.class, "AdditiveEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        EOperation op = initEOperation(getAdditiveEChange__GetNewValue(), null, "getNewValue", 1, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(additiveEChangeEClass_T);
         initEOperation(op, g1);
 
-        initEClass(subtractiveChangeEClass, SubtractiveChange.class, "SubtractiveChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(subtractiveEChangeEClass, SubtractiveEChange.class, "SubtractiveEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-        op = initEOperation(getSubtractiveChange__GetOldValue(), null, "getOldValue", 1, 1, IS_UNIQUE, IS_ORDERED);
-        g1 = createEGenericType(subtractiveChangeEClass_T);
+        op = initEOperation(getSubtractiveEChange__GetOldValue(), null, "getOldValue", 1, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(subtractiveEChangeEClass_T);
         initEOperation(op, g1);
 
-        initEClass(replaciveChangeEClass, ReplaciveChange.class, "ReplaciveChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(additiveEAttributeChangeEClass, AdditiveEAttributeChange.class, "AdditiveEAttributeChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        g1 = createEGenericType(additiveEAttributeChangeEClass_T);
+        initEAttribute(getAdditiveEAttributeChange_NewValue(), g1, "newValue", null, 1, 1, AdditiveEAttributeChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(additiveAttributeChangeEClass, AdditiveAttributeChange.class, "AdditiveAttributeChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        g1 = createEGenericType(additiveAttributeChangeEClass_T);
-        initEAttribute(getAdditiveAttributeChange_NewValue(), g1, "newValue", null, 1, 1, AdditiveAttributeChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEClass(subtractiveEAttributeChangeEClass, SubtractiveEAttributeChange.class, "SubtractiveEAttributeChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        g1 = createEGenericType(subtractiveEAttributeChangeEClass_T);
+        initEAttribute(getSubtractiveEAttributeChange_OldValue(), g1, "oldValue", null, 1, 1, SubtractiveEAttributeChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(subtractiveAttributeChangeEClass, SubtractiveAttributeChange.class, "SubtractiveAttributeChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        g1 = createEGenericType(subtractiveAttributeChangeEClass_T);
-        initEAttribute(getSubtractiveAttributeChange_OldValue(), g1, "oldValue", null, 1, 1, SubtractiveAttributeChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEClass(additiveEReferenceChangeEClass, AdditiveEReferenceChange.class, "AdditiveEReferenceChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        g1 = createEGenericType(additiveEReferenceChangeEClass_T);
+        initEReference(getAdditiveEReferenceChange_NewValue(), g1, null, "newValue", null, 1, 1, AdditiveEReferenceChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getAdditiveEReferenceChange_IsCreate(), ecorePackage.getEBoolean(), "isCreate", null, 1, 1, AdditiveEReferenceChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(replaciveAttributeChangeEClass, ReplaciveAttributeChange.class, "ReplaciveAttributeChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-        initEClass(additiveReferenceChangeEClass, AdditiveReferenceChange.class, "AdditiveReferenceChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        g1 = createEGenericType(additiveReferenceChangeEClass_T);
-        initEReference(getAdditiveReferenceChange_NewValue(), g1, null, "newValue", null, 1, 1, AdditiveReferenceChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        initEClass(subtractiveReferenceChangeEClass, SubtractiveReferenceChange.class, "SubtractiveReferenceChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getSubtractiveReferenceChange_OldTUID(), this.getTUID(), "oldTUID", null, 1, 1, SubtractiveReferenceChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEClass(subtractiveEReferenceChangeEClass, SubtractiveEReferenceChange.class, "SubtractiveEReferenceChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getSubtractiveEReferenceChange_OldTUID(), this.getTUID(), "oldTUID", null, 1, 1, SubtractiveEReferenceChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         g1 = createEGenericType(ecorePackage.getEMap());
-        g2 = createEGenericType(ecorePackage.getEString());
+        g2 = createEGenericType(ecorePackage.getEStructuralFeature());
         g1.getETypeArguments().add(g2);
         g2 = createEGenericType(ecorePackage.getEJavaObject());
         g1.getETypeArguments().add(g2);
-        initEAttribute(getSubtractiveReferenceChange_FeatureName2OldValueMap(), g1, "featureName2OldValueMap", null, 1, 1, SubtractiveReferenceChange.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        initEClass(replaciveReferenceChangeEClass, ReplaciveReferenceChange.class, "ReplaciveReferenceChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getSubtractiveEReferenceChange_Feature2OldValueMap(), g1, "feature2OldValueMap", null, 1, 1, SubtractiveEReferenceChange.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getSubtractiveEReferenceChange_IsDelete(), ecorePackage.getEBoolean(), "isDelete", null, 1, 1, SubtractiveEReferenceChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize data types
         initEDataType(tuidEDataType, edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID.class, "TUID", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

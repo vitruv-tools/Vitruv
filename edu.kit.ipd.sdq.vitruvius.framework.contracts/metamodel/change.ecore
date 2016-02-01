@@ -3,104 +3,79 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="change" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/1.0"
     nsPrefix="change">
   <eClassifiers xsi:type="ecore:EClass" name="EChange" abstract="true"/>
-  <eClassifiers xsi:type="ecore:EClass" name="AdditiveChange" abstract="true" eSuperTypes="#//EChange">
+  <eClassifiers xsi:type="ecore:EClass" name="EAtomicChange" abstract="true" eSuperTypes="#//EChange"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AdditiveEChange" abstract="true" eSuperTypes="#//EAtomicChange">
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eTypeParameters>
     <eOperations name="getNewValue" lowerBound="1">
-      <eGenericType eTypeParameter="#//AdditiveChange/T"/>
+      <eGenericType eTypeParameter="#//AdditiveEChange/T"/>
     </eOperations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SubtractiveChange" abstract="true" eSuperTypes="#//EChange">
+  <eClassifiers xsi:type="ecore:EClass" name="SubtractiveEChange" abstract="true"
+      eSuperTypes="#//EAtomicChange">
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eTypeParameters>
     <eOperations name="getOldValue" lowerBound="1">
-      <eGenericType eTypeParameter="#//SubtractiveChange/T"/>
+      <eGenericType eTypeParameter="#//SubtractiveEChange/T"/>
     </eOperations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ReplaciveChange" abstract="true">
-    <eTypeParameters name="T">
-      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
-    </eTypeParameters>
-    <eGenericSuperTypes eClassifier="#//SubtractiveChange">
-      <eTypeArguments eTypeParameter="#//ReplaciveChange/T"/>
-    </eGenericSuperTypes>
-    <eGenericSuperTypes eClassifier="#//AdditiveChange">
-      <eTypeArguments eTypeParameter="#//ReplaciveChange/T"/>
-    </eGenericSuperTypes>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AdditiveAttributeChange" abstract="true">
+  <eClassifiers xsi:type="ecore:EClass" name="AdditiveEAttributeChange" abstract="true">
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eTypeParameters>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="newValue" lowerBound="1">
-      <eGenericType eTypeParameter="#//AdditiveAttributeChange/T"/>
+      <eGenericType eTypeParameter="#//AdditiveEAttributeChange/T"/>
     </eStructuralFeatures>
-    <eGenericSuperTypes eClassifier="#//AdditiveChange">
-      <eTypeArguments eTypeParameter="#//AdditiveAttributeChange/T"/>
+    <eGenericSuperTypes eClassifier="#//AdditiveEChange">
+      <eTypeArguments eTypeParameter="#//AdditiveEAttributeChange/T"/>
     </eGenericSuperTypes>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SubtractiveAttributeChange" abstract="true">
+  <eClassifiers xsi:type="ecore:EClass" name="SubtractiveEAttributeChange" abstract="true">
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eTypeParameters>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldValue" lowerBound="1">
-      <eGenericType eTypeParameter="#//SubtractiveAttributeChange/T"/>
+      <eGenericType eTypeParameter="#//SubtractiveEAttributeChange/T"/>
     </eStructuralFeatures>
-    <eGenericSuperTypes eClassifier="#//SubtractiveChange">
-      <eTypeArguments eTypeParameter="#//SubtractiveAttributeChange/T"/>
+    <eGenericSuperTypes eClassifier="#//SubtractiveEChange">
+      <eTypeArguments eTypeParameter="#//SubtractiveEAttributeChange/T"/>
     </eGenericSuperTypes>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ReplaciveAttributeChange" abstract="true">
-    <eTypeParameters name="T">
-      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
-    </eTypeParameters>
-    <eGenericSuperTypes eClassifier="#//SubtractiveAttributeChange">
-      <eTypeArguments eTypeParameter="#//ReplaciveAttributeChange/T"/>
-    </eGenericSuperTypes>
-    <eGenericSuperTypes eClassifier="#//AdditiveAttributeChange">
-      <eTypeArguments eTypeParameter="#//ReplaciveAttributeChange/T"/>
-    </eGenericSuperTypes>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AdditiveReferenceChange" abstract="true">
+  <eClassifiers xsi:type="ecore:EClass" name="AdditiveEReferenceChange" abstract="true">
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     </eTypeParameters>
     <eStructuralFeatures xsi:type="ecore:EReference" name="newValue" lowerBound="1">
-      <eGenericType eTypeParameter="#//AdditiveReferenceChange/T"/>
+      <eGenericType eTypeParameter="#//AdditiveEReferenceChange/T"/>
     </eStructuralFeatures>
-    <eGenericSuperTypes eClassifier="#//AdditiveChange">
-      <eTypeArguments eTypeParameter="#//AdditiveReferenceChange/T"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isCreate" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eGenericSuperTypes eClassifier="#//AdditiveEChange">
+      <eTypeArguments eTypeParameter="#//AdditiveEReferenceChange/T"/>
     </eGenericSuperTypes>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SubtractiveReferenceChange" abstract="true">
+  <eClassifiers xsi:type="ecore:EClass" name="SubtractiveEReferenceChange" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldTUID" lowerBound="1"
         eType="#//TUID"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="featureName2OldValueMap"
-        lowerBound="1" transient="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="feature2OldValueMap" lowerBound="1"
+        transient="true">
       <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EMap">
-        <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
         <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
       </eGenericType>
     </eStructuralFeatures>
-    <eGenericSuperTypes eClassifier="#//SubtractiveChange">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isDelete" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eGenericSuperTypes eClassifier="#//SubtractiveEChange">
       <eTypeArguments eClassifier="#//TUID"/>
-    </eGenericSuperTypes>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ReplaciveReferenceChange" abstract="true">
-    <eTypeParameters name="T">
-      <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
-    </eTypeParameters>
-    <eGenericSuperTypes eClassifier="#//SubtractiveReferenceChange"/>
-    <eGenericSuperTypes eClassifier="#//AdditiveReferenceChange">
-      <eTypeArguments eTypeParameter="#//ReplaciveReferenceChange/T"/>
     </eGenericSuperTypes>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="TUID" instanceClassName="edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID"/>
   <eSubpackages name="feature" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Feature/1.0"
       nsPrefix="feature">
-    <eClassifiers xsi:type="ecore:EClass" name="EFeatureChange" abstract="true" eSuperTypes="#//EChange">
+    <eClassifiers xsi:type="ecore:EClass" name="EFeatureChange" abstract="true" eSuperTypes="#//EAtomicChange">
       <eTypeParameters name="T">
         <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
       </eTypeParameters>
@@ -112,7 +87,7 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldTUIDOfAffectedEObject"
           lowerBound="1" eType="#//TUID"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="UpdateEFeature" abstract="true" eSuperTypes="#//EChange">
+    <eClassifiers xsi:type="ecore:EClass" name="UpdateEFeature" abstract="true" eSuperTypes="#//EAtomicChange">
       <eTypeParameters name="T">
         <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
       </eTypeParameters>
@@ -148,7 +123,7 @@
       <eGenericSuperTypes eClassifier="#//feature/UnsetEFeature">
         <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
       </eGenericSuperTypes>
-      <eGenericSuperTypes eClassifier="#//SubtractiveAttributeChange">
+      <eGenericSuperTypes eClassifier="#//SubtractiveEAttributeChange">
         <eTypeArguments eTypeParameter="#//feature/UnsetEAttribute/T"/>
       </eGenericSuperTypes>
     </eClassifiers>
@@ -160,7 +135,7 @@
       <eGenericSuperTypes eClassifier="#//feature/UnsetEFeature">
         <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
       </eGenericSuperTypes>
-      <eGenericSuperTypes eClassifier="#//SubtractiveReferenceChange"/>
+      <eGenericSuperTypes eClassifier="#//SubtractiveEReferenceChange"/>
     </eClassifiers>
     <eSubpackages name="list" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Feature/List/1.0"
         nsPrefix="list">
@@ -224,7 +199,10 @@
         <eGenericSuperTypes eClassifier="#//feature/attribute/UpdateEAttribute">
           <eTypeArguments eTypeParameter="#//feature/attribute/ReplaceSingleValuedEAttribute/T"/>
         </eGenericSuperTypes>
-        <eGenericSuperTypes eClassifier="#//ReplaciveAttributeChange">
+        <eGenericSuperTypes eClassifier="#//SubtractiveEAttributeChange">
+          <eTypeArguments eTypeParameter="#//feature/attribute/ReplaceSingleValuedEAttribute/T"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//AdditiveEAttributeChange">
           <eTypeArguments eTypeParameter="#//feature/attribute/ReplaceSingleValuedEAttribute/T"/>
         </eGenericSuperTypes>
       </eClassifiers>
@@ -238,7 +216,7 @@
         <eGenericSuperTypes eClassifier="#//feature/attribute/UpdateEAttribute">
           <eTypeArguments eTypeParameter="#//feature/attribute/InsertEAttributeValue/T"/>
         </eGenericSuperTypes>
-        <eGenericSuperTypes eClassifier="#//AdditiveAttributeChange">
+        <eGenericSuperTypes eClassifier="#//AdditiveEAttributeChange">
           <eTypeArguments eTypeParameter="#//feature/attribute/InsertEAttributeValue/T"/>
         </eGenericSuperTypes>
       </eClassifiers>
@@ -252,7 +230,7 @@
         <eGenericSuperTypes eClassifier="#//feature/attribute/UpdateEAttribute">
           <eTypeArguments eTypeParameter="#//feature/attribute/RemoveEAttributeValue/T"/>
         </eGenericSuperTypes>
-        <eGenericSuperTypes eClassifier="#//SubtractiveAttributeChange">
+        <eGenericSuperTypes eClassifier="#//SubtractiveEAttributeChange">
           <eTypeArguments eTypeParameter="#//feature/attribute/RemoveEAttributeValue/T"/>
         </eGenericSuperTypes>
       </eClassifiers>
@@ -289,7 +267,8 @@
         <eGenericSuperTypes eClassifier="#//feature/reference/UpdateEReference">
           <eTypeArguments eTypeParameter="#//feature/reference/ReplaceSingleValuedEReference/T"/>
         </eGenericSuperTypes>
-        <eGenericSuperTypes eClassifier="#//ReplaciveReferenceChange">
+        <eGenericSuperTypes eClassifier="#//SubtractiveEReferenceChange"/>
+        <eGenericSuperTypes eClassifier="#//AdditiveEReferenceChange">
           <eTypeArguments eTypeParameter="#//feature/reference/ReplaceSingleValuedEReference/T"/>
         </eGenericSuperTypes>
       </eClassifiers>
@@ -303,7 +282,7 @@
         <eGenericSuperTypes eClassifier="#//feature/reference/UpdateEReference">
           <eTypeArguments eTypeParameter="#//feature/reference/InsertEReference/T"/>
         </eGenericSuperTypes>
-        <eGenericSuperTypes eClassifier="#//AdditiveReferenceChange">
+        <eGenericSuperTypes eClassifier="#//AdditiveEReferenceChange">
           <eTypeArguments eTypeParameter="#//feature/reference/InsertEReference/T"/>
         </eGenericSuperTypes>
       </eClassifiers>
@@ -317,7 +296,7 @@
         <eGenericSuperTypes eClassifier="#//feature/reference/UpdateEReference">
           <eTypeArguments eTypeParameter="#//feature/reference/RemoveEReference/T"/>
         </eGenericSuperTypes>
-        <eGenericSuperTypes eClassifier="#//SubtractiveReferenceChange"/>
+        <eGenericSuperTypes eClassifier="#//SubtractiveEReferenceChange"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="PermuteEReferenceValues">
         <eTypeParameters name="T">
@@ -332,127 +311,32 @@
       </eClassifiers>
     </eSubpackages>
   </eSubpackages>
-  <eSubpackages name="object" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Object/1.0"
-      nsPrefix="object">
-    <eClassifiers xsi:type="ecore:EClass" name="EObjectChange" abstract="true" eSuperTypes="#//EChange"/>
-    <eClassifiers xsi:type="ecore:EClass" name="CreateEObject">
-      <eTypeParameters name="T">
-        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
-      </eTypeParameters>
-      <eGenericSuperTypes eClassifier="#//object/EObjectChange"/>
-      <eGenericSuperTypes eClassifier="#//AdditiveReferenceChange">
-        <eTypeArguments eTypeParameter="#//object/CreateEObject/T"/>
-      </eGenericSuperTypes>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="DeleteEObject" eSuperTypes="#//object/EObjectChange #//SubtractiveReferenceChange">
-      <eTypeParameters name="T">
-        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
-      </eTypeParameters>
-    </eClassifiers>
-  </eSubpackages>
   <eSubpackages name="root" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Root/1.0"
       nsPrefix="root">
     <eClassifiers xsi:type="ecore:EClass" name="InsertRootEObject">
       <eTypeParameters name="T">
         <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
       </eTypeParameters>
-      <eGenericSuperTypes eClassifier="#//AdditiveReferenceChange">
+      <eGenericSuperTypes eClassifier="#//AdditiveEReferenceChange">
         <eTypeArguments eTypeParameter="#//root/InsertRootEObject/T"/>
       </eGenericSuperTypes>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="RemoveRootEObject" eSuperTypes="#//SubtractiveReferenceChange"/>
+    <eClassifiers xsi:type="ecore:EClass" name="RemoveRootEObject" eSuperTypes="#//SubtractiveEReferenceChange"/>
   </eSubpackages>
   <eSubpackages name="compound" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Compound/1.0"
       nsPrefix="compound">
     <eClassifiers xsi:type="ecore:EClass" name="ECompoundChange" abstract="true" eSuperTypes="#//EChange">
-      <eOperations name="getComposedChanges" lowerBound="1" upperBound="-1" eType="#//EChange"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="CreateEObjectAndAdd" eSuperTypes="#//compound/ECompoundChange">
-      <eTypeParameters name="T">
-        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
-      </eTypeParameters>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="createChange" lowerBound="1"
-          containment="true">
-        <eGenericType eClassifier="#//object/CreateEObject">
-          <eTypeArguments eTypeParameter="#//compound/CreateEObjectAndAdd/T"/>
-        </eGenericType>
-      </eStructuralFeatures>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="addChange" lowerBound="1"
-          containment="true">
-        <eGenericType eClassifier="#//AdditiveReferenceChange">
-          <eTypeArguments eTypeParameter="#//compound/CreateEObjectAndAdd/T"/>
-        </eGenericType>
-      </eStructuralFeatures>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="DeleteEObjectAndSubtract" eSuperTypes="#//compound/ECompoundChange">
-      <eTypeParameters name="T">
-        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
-      </eTypeParameters>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="deleteChange" lowerBound="1"
-          containment="true">
-        <eGenericType eClassifier="#//object/DeleteEObject">
-          <eTypeArguments eTypeParameter="#//compound/DeleteEObjectAndSubtract/T"/>
-        </eGenericType>
-      </eStructuralFeatures>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="subtractChange" lowerBound="1"
-          eType="#//SubtractiveReferenceChange" containment="true"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="DeleteEObjectCreateEObjectAndReplace"
-        abstract="true" eSuperTypes="#//compound/ECompoundChange">
-      <eTypeParameters name="T">
-        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
-      </eTypeParameters>
-      <eTypeParameters name="R">
-        <eBounds eClassifier="#//EChange"/>
-      </eTypeParameters>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="deleteChange" lowerBound="1"
-          containment="true">
-        <eGenericType eClassifier="#//object/DeleteEObject">
-          <eTypeArguments eTypeParameter="#//compound/DeleteEObjectCreateEObjectAndReplace/T"/>
-        </eGenericType>
-      </eStructuralFeatures>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="createChange" lowerBound="1"
-          containment="true">
-        <eGenericType eClassifier="#//object/CreateEObject">
-          <eTypeArguments eTypeParameter="#//compound/DeleteEObjectCreateEObjectAndReplace/T"/>
-        </eGenericType>
-      </eStructuralFeatures>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="replaceChange" lowerBound="1"
-          containment="true">
-        <eGenericType eTypeParameter="#//compound/DeleteEObjectCreateEObjectAndReplace/R"/>
-      </eStructuralFeatures>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="DeleteEObjectCreateEObjectAndReplaceSingle">
-      <eTypeParameters name="T">
-        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
-      </eTypeParameters>
-      <eGenericSuperTypes eClassifier="#//compound/DeleteEObjectCreateEObjectAndReplace">
-        <eTypeArguments eTypeParameter="#//compound/DeleteEObjectCreateEObjectAndReplaceSingle/T"/>
-        <eTypeArguments eClassifier="#//feature/reference/ReplaceSingleValuedEReference">
-          <eTypeArguments eTypeParameter="#//compound/DeleteEObjectCreateEObjectAndReplaceSingle/T"/>
-        </eTypeArguments>
-      </eGenericSuperTypes>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="DeleteEObjectCreateEObjectAndReplaceInList">
-      <eTypeParameters name="T">
-        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
-      </eTypeParameters>
-      <eGenericSuperTypes eClassifier="#//compound/DeleteEObjectCreateEObjectAndReplace">
-        <eTypeArguments eTypeParameter="#//compound/DeleteEObjectCreateEObjectAndReplaceInList/T"/>
-        <eTypeArguments eClassifier="#//compound/ReplaceInEList">
-          <eTypeArguments eTypeParameter="#//compound/DeleteEObjectCreateEObjectAndReplaceInList/T"/>
-        </eTypeArguments>
-      </eGenericSuperTypes>
+      <eOperations name="getAtomicChanges" lowerBound="1" upperBound="-1" eType="#//EAtomicChange"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MoveEObject" eSuperTypes="#//compound/ECompoundChange">
       <eTypeParameters name="T">
         <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
       </eTypeParameters>
       <eStructuralFeatures xsi:type="ecore:EReference" name="subtractChange" lowerBound="1"
-          eType="#//SubtractiveReferenceChange" containment="true"/>
+          eType="#//SubtractiveEReferenceChange" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="addChange" lowerBound="1"
           containment="true">
-        <eGenericType eClassifier="#//AdditiveReferenceChange">
+        <eGenericType eClassifier="#//AdditiveEReferenceChange">
           <eTypeArguments eTypeParameter="#//compound/MoveEObject/T"/>
         </eGenericType>
       </eStructuralFeatures>

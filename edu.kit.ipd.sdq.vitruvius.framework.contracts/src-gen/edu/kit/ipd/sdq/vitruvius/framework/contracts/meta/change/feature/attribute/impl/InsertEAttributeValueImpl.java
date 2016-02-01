@@ -3,9 +3,8 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.impl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveAttributeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEAttributeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage;
@@ -340,14 +339,14 @@ public class InsertEAttributeValueImpl<T extends Object> extends InsertInEListIm
                 default: return -1;
             }
         }
-        if (baseClass == AdditiveChange.class) {
+        if (baseClass == AdditiveEChange.class) {
             switch (derivedFeatureID) {
                 default: return -1;
             }
         }
-        if (baseClass == AdditiveAttributeChange.class) {
+        if (baseClass == AdditiveEAttributeChange.class) {
             switch (derivedFeatureID) {
-                case AttributePackage.INSERT_EATTRIBUTE_VALUE__NEW_VALUE: return ChangePackage.ADDITIVE_ATTRIBUTE_CHANGE__NEW_VALUE;
+                case AttributePackage.INSERT_EATTRIBUTE_VALUE__NEW_VALUE: return ChangePackage.ADDITIVE_EATTRIBUTE_CHANGE__NEW_VALUE;
                 default: return -1;
             }
         }
@@ -374,14 +373,14 @@ public class InsertEAttributeValueImpl<T extends Object> extends InsertInEListIm
                 default: return -1;
             }
         }
-        if (baseClass == AdditiveChange.class) {
+        if (baseClass == AdditiveEChange.class) {
             switch (baseFeatureID) {
                 default: return -1;
             }
         }
-        if (baseClass == AdditiveAttributeChange.class) {
+        if (baseClass == AdditiveEAttributeChange.class) {
             switch (baseFeatureID) {
-                case ChangePackage.ADDITIVE_ATTRIBUTE_CHANGE__NEW_VALUE: return AttributePackage.INSERT_EATTRIBUTE_VALUE__NEW_VALUE;
+                case ChangePackage.ADDITIVE_EATTRIBUTE_CHANGE__NEW_VALUE: return AttributePackage.INSERT_EATTRIBUTE_VALUE__NEW_VALUE;
                 default: return -1;
             }
         }

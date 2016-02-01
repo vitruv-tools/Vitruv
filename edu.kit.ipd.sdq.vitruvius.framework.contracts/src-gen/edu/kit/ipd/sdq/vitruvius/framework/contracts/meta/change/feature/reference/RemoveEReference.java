@@ -2,8 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveReferenceChange;
-
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromEList;
 
 import org.eclipse.emf.ecore.EObject;
@@ -18,5 +17,5 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface RemoveEReference<T extends EObject> extends RemoveFromEList<T>, UpdateEReference<T>, SubtractiveReferenceChange {
+public interface RemoveEReference<T extends EObject> extends RemoveFromEList<T>, UpdateEReference<T>, SubtractiveEReferenceChange {
 } // RemoveEReference

@@ -2,9 +2,8 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveReferenceChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveReferenceChange;
-
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -34,12 +33,12 @@ public interface MoveEObject<T extends EObject> extends ECompoundChange {
      * </p>
      * <!-- end-user-doc -->
      * @return the value of the '<em>Subtract Change</em>' containment reference.
-     * @see #setSubtractChange(SubtractiveReferenceChange)
+     * @see #setSubtractChange(SubtractiveEReferenceChange)
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CompoundPackage#getMoveEObject_SubtractChange()
      * @model containment="true" required="true"
      * @generated
      */
-    SubtractiveReferenceChange getSubtractChange();
+    SubtractiveEReferenceChange getSubtractChange();
 
     /**
      * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.MoveEObject#getSubtractChange <em>Subtract Change</em>}' containment reference.
@@ -49,7 +48,7 @@ public interface MoveEObject<T extends EObject> extends ECompoundChange {
      * @see #getSubtractChange()
      * @generated
      */
-    void setSubtractChange(SubtractiveReferenceChange value);
+    void setSubtractChange(SubtractiveEReferenceChange value);
 
     /**
      * Returns the value of the '<em><b>Add Change</b></em>' containment reference.
@@ -60,12 +59,12 @@ public interface MoveEObject<T extends EObject> extends ECompoundChange {
      * </p>
      * <!-- end-user-doc -->
      * @return the value of the '<em>Add Change</em>' containment reference.
-     * @see #setAddChange(AdditiveReferenceChange)
+     * @see #setAddChange(AdditiveEReferenceChange)
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CompoundPackage#getMoveEObject_AddChange()
      * @model containment="true" required="true"
      * @generated
      */
-    AdditiveReferenceChange<T> getAddChange();
+    AdditiveEReferenceChange<T> getAddChange();
 
     /**
      * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.MoveEObject#getAddChange <em>Add Change</em>}' containment reference.
@@ -75,6 +74,6 @@ public interface MoveEObject<T extends EObject> extends ECompoundChange {
      * @see #getAddChange()
      * @generated
      */
-    void setAddChange(AdditiveReferenceChange<T> value);
+    void setAddChange(AdditiveEReferenceChange<T> value);
 
 } // MoveEObject

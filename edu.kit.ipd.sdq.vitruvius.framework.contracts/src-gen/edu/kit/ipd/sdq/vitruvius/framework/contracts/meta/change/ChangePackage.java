@@ -87,23 +87,51 @@ public interface ChangePackage extends EPackage {
     int ECHANGE_OPERATION_COUNT = 0;
 
     /**
-     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveChangeImpl <em>Additive Change</em>}' class.
+     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.EAtomicChangeImpl <em>EAtomic Change</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveChangeImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getAdditiveChange()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.EAtomicChangeImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getEAtomicChange()
      * @generated
      */
-    int ADDITIVE_CHANGE = 1;
+    int EATOMIC_CHANGE = 1;
 
     /**
-     * The number of structural features of the '<em>Additive Change</em>' class.
+     * The number of structural features of the '<em>EAtomic Change</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ADDITIVE_CHANGE_FEATURE_COUNT = ECHANGE_FEATURE_COUNT + 0;
+    int EATOMIC_CHANGE_FEATURE_COUNT = ECHANGE_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>EAtomic Change</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int EATOMIC_CHANGE_OPERATION_COUNT = ECHANGE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveEChangeImpl <em>Additive EChange</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveEChangeImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getAdditiveEChange()
+     * @generated
+     */
+    int ADDITIVE_ECHANGE = 2;
+
+    /**
+     * The number of structural features of the '<em>Additive EChange</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ADDITIVE_ECHANGE_FEATURE_COUNT = EATOMIC_CHANGE_FEATURE_COUNT + 0;
 
     /**
      * The operation id for the '<em>Get New Value</em>' operation.
@@ -112,35 +140,35 @@ public interface ChangePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ADDITIVE_CHANGE___GET_NEW_VALUE = ECHANGE_OPERATION_COUNT + 0;
+    int ADDITIVE_ECHANGE___GET_NEW_VALUE = EATOMIC_CHANGE_OPERATION_COUNT + 0;
 
     /**
-     * The number of operations of the '<em>Additive Change</em>' class.
+     * The number of operations of the '<em>Additive EChange</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ADDITIVE_CHANGE_OPERATION_COUNT = ECHANGE_OPERATION_COUNT + 1;
+    int ADDITIVE_ECHANGE_OPERATION_COUNT = EATOMIC_CHANGE_OPERATION_COUNT + 1;
 
     /**
-     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveChangeImpl <em>Subtractive Change</em>}' class.
+     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveEChangeImpl <em>Subtractive EChange</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveChangeImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getSubtractiveChange()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveEChangeImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getSubtractiveEChange()
      * @generated
      */
-    int SUBTRACTIVE_CHANGE = 2;
+    int SUBTRACTIVE_ECHANGE = 3;
 
     /**
-     * The number of structural features of the '<em>Subtractive Change</em>' class.
+     * The number of structural features of the '<em>Subtractive EChange</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int SUBTRACTIVE_CHANGE_FEATURE_COUNT = ECHANGE_FEATURE_COUNT + 0;
+    int SUBTRACTIVE_ECHANGE_FEATURE_COUNT = EATOMIC_CHANGE_FEATURE_COUNT + 0;
 
     /**
      * The operation id for the '<em>Get Old Value</em>' operation.
@@ -149,72 +177,26 @@ public interface ChangePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int SUBTRACTIVE_CHANGE___GET_OLD_VALUE = ECHANGE_OPERATION_COUNT + 0;
+    int SUBTRACTIVE_ECHANGE___GET_OLD_VALUE = EATOMIC_CHANGE_OPERATION_COUNT + 0;
 
     /**
-     * The number of operations of the '<em>Subtractive Change</em>' class.
+     * The number of operations of the '<em>Subtractive EChange</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int SUBTRACTIVE_CHANGE_OPERATION_COUNT = ECHANGE_OPERATION_COUNT + 1;
+    int SUBTRACTIVE_ECHANGE_OPERATION_COUNT = EATOMIC_CHANGE_OPERATION_COUNT + 1;
 
     /**
-     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ReplaciveChangeImpl <em>Replacive Change</em>}' class.
+     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveEAttributeChangeImpl <em>Additive EAttribute Change</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ReplaciveChangeImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getReplaciveChange()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveEAttributeChangeImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getAdditiveEAttributeChange()
      * @generated
      */
-    int REPLACIVE_CHANGE = 3;
-
-    /**
-     * The number of structural features of the '<em>Replacive Change</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACIVE_CHANGE_FEATURE_COUNT = SUBTRACTIVE_CHANGE_FEATURE_COUNT + 0;
-
-    /**
-     * The operation id for the '<em>Get Old Value</em>' operation.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACIVE_CHANGE___GET_OLD_VALUE = SUBTRACTIVE_CHANGE___GET_OLD_VALUE;
-
-    /**
-     * The operation id for the '<em>Get New Value</em>' operation.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACIVE_CHANGE___GET_NEW_VALUE = SUBTRACTIVE_CHANGE_OPERATION_COUNT + 0;
-
-    /**
-     * The number of operations of the '<em>Replacive Change</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACIVE_CHANGE_OPERATION_COUNT = SUBTRACTIVE_CHANGE_OPERATION_COUNT + 1;
-
-    /**
-     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveAttributeChangeImpl <em>Additive Attribute Change</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveAttributeChangeImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getAdditiveAttributeChange()
-     * @generated
-     */
-    int ADDITIVE_ATTRIBUTE_CHANGE = 4;
+    int ADDITIVE_EATTRIBUTE_CHANGE = 4;
 
     /**
      * The feature id for the '<em><b>New Value</b></em>' attribute.
@@ -223,16 +205,16 @@ public interface ChangePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ADDITIVE_ATTRIBUTE_CHANGE__NEW_VALUE = ADDITIVE_CHANGE_FEATURE_COUNT + 0;
+    int ADDITIVE_EATTRIBUTE_CHANGE__NEW_VALUE = ADDITIVE_ECHANGE_FEATURE_COUNT + 0;
 
     /**
-     * The number of structural features of the '<em>Additive Attribute Change</em>' class.
+     * The number of structural features of the '<em>Additive EAttribute Change</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ADDITIVE_ATTRIBUTE_CHANGE_FEATURE_COUNT = ADDITIVE_CHANGE_FEATURE_COUNT + 1;
+    int ADDITIVE_EATTRIBUTE_CHANGE_FEATURE_COUNT = ADDITIVE_ECHANGE_FEATURE_COUNT + 1;
 
     /**
      * The operation id for the '<em>Get New Value</em>' operation.
@@ -241,26 +223,26 @@ public interface ChangePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ADDITIVE_ATTRIBUTE_CHANGE___GET_NEW_VALUE = ADDITIVE_CHANGE___GET_NEW_VALUE;
+    int ADDITIVE_EATTRIBUTE_CHANGE___GET_NEW_VALUE = ADDITIVE_ECHANGE___GET_NEW_VALUE;
 
     /**
-     * The number of operations of the '<em>Additive Attribute Change</em>' class.
+     * The number of operations of the '<em>Additive EAttribute Change</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ADDITIVE_ATTRIBUTE_CHANGE_OPERATION_COUNT = ADDITIVE_CHANGE_OPERATION_COUNT + 0;
+    int ADDITIVE_EATTRIBUTE_CHANGE_OPERATION_COUNT = ADDITIVE_ECHANGE_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveAttributeChangeImpl <em>Subtractive Attribute Change</em>}' class.
+     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveEAttributeChangeImpl <em>Subtractive EAttribute Change</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveAttributeChangeImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getSubtractiveAttributeChange()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveEAttributeChangeImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getSubtractiveEAttributeChange()
      * @generated
      */
-    int SUBTRACTIVE_ATTRIBUTE_CHANGE = 5;
+    int SUBTRACTIVE_EATTRIBUTE_CHANGE = 5;
 
     /**
      * The feature id for the '<em><b>Old Value</b></em>' attribute.
@@ -269,16 +251,16 @@ public interface ChangePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int SUBTRACTIVE_ATTRIBUTE_CHANGE__OLD_VALUE = SUBTRACTIVE_CHANGE_FEATURE_COUNT + 0;
+    int SUBTRACTIVE_EATTRIBUTE_CHANGE__OLD_VALUE = SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 0;
 
     /**
-     * The number of structural features of the '<em>Subtractive Attribute Change</em>' class.
+     * The number of structural features of the '<em>Subtractive EAttribute Change</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int SUBTRACTIVE_ATTRIBUTE_CHANGE_FEATURE_COUNT = SUBTRACTIVE_CHANGE_FEATURE_COUNT + 1;
+    int SUBTRACTIVE_EATTRIBUTE_CHANGE_FEATURE_COUNT = SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 1;
 
     /**
      * The operation id for the '<em>Get Old Value</em>' operation.
@@ -287,90 +269,26 @@ public interface ChangePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int SUBTRACTIVE_ATTRIBUTE_CHANGE___GET_OLD_VALUE = SUBTRACTIVE_CHANGE___GET_OLD_VALUE;
+    int SUBTRACTIVE_EATTRIBUTE_CHANGE___GET_OLD_VALUE = SUBTRACTIVE_ECHANGE___GET_OLD_VALUE;
 
     /**
-     * The number of operations of the '<em>Subtractive Attribute Change</em>' class.
+     * The number of operations of the '<em>Subtractive EAttribute Change</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int SUBTRACTIVE_ATTRIBUTE_CHANGE_OPERATION_COUNT = SUBTRACTIVE_CHANGE_OPERATION_COUNT + 0;
+    int SUBTRACTIVE_EATTRIBUTE_CHANGE_OPERATION_COUNT = SUBTRACTIVE_ECHANGE_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ReplaciveAttributeChangeImpl <em>Replacive Attribute Change</em>}' class.
+     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveEReferenceChangeImpl <em>Additive EReference Change</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ReplaciveAttributeChangeImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getReplaciveAttributeChange()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveEReferenceChangeImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getAdditiveEReferenceChange()
      * @generated
      */
-    int REPLACIVE_ATTRIBUTE_CHANGE = 6;
-
-    /**
-     * The feature id for the '<em><b>Old Value</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACIVE_ATTRIBUTE_CHANGE__OLD_VALUE = SUBTRACTIVE_ATTRIBUTE_CHANGE__OLD_VALUE;
-
-    /**
-     * The feature id for the '<em><b>New Value</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACIVE_ATTRIBUTE_CHANGE__NEW_VALUE = SUBTRACTIVE_ATTRIBUTE_CHANGE_FEATURE_COUNT + 0;
-
-    /**
-     * The number of structural features of the '<em>Replacive Attribute Change</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACIVE_ATTRIBUTE_CHANGE_FEATURE_COUNT = SUBTRACTIVE_ATTRIBUTE_CHANGE_FEATURE_COUNT + 1;
-
-    /**
-     * The operation id for the '<em>Get Old Value</em>' operation.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACIVE_ATTRIBUTE_CHANGE___GET_OLD_VALUE = SUBTRACTIVE_ATTRIBUTE_CHANGE___GET_OLD_VALUE;
-
-    /**
-     * The operation id for the '<em>Get New Value</em>' operation.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACIVE_ATTRIBUTE_CHANGE___GET_NEW_VALUE = SUBTRACTIVE_ATTRIBUTE_CHANGE_OPERATION_COUNT + 0;
-
-    /**
-     * The number of operations of the '<em>Replacive Attribute Change</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACIVE_ATTRIBUTE_CHANGE_OPERATION_COUNT = SUBTRACTIVE_ATTRIBUTE_CHANGE_OPERATION_COUNT + 1;
-
-    /**
-     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveReferenceChangeImpl <em>Additive Reference Change</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveReferenceChangeImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getAdditiveReferenceChange()
-     * @generated
-     */
-    int ADDITIVE_REFERENCE_CHANGE = 7;
+    int ADDITIVE_EREFERENCE_CHANGE = 6;
 
     /**
      * The feature id for the '<em><b>New Value</b></em>' reference.
@@ -379,16 +297,25 @@ public interface ChangePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ADDITIVE_REFERENCE_CHANGE__NEW_VALUE = ADDITIVE_CHANGE_FEATURE_COUNT + 0;
+    int ADDITIVE_EREFERENCE_CHANGE__NEW_VALUE = ADDITIVE_ECHANGE_FEATURE_COUNT + 0;
 
     /**
-     * The number of structural features of the '<em>Additive Reference Change</em>' class.
+     * The feature id for the '<em><b>Is Create</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ADDITIVE_REFERENCE_CHANGE_FEATURE_COUNT = ADDITIVE_CHANGE_FEATURE_COUNT + 1;
+    int ADDITIVE_EREFERENCE_CHANGE__IS_CREATE = ADDITIVE_ECHANGE_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>Additive EReference Change</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ADDITIVE_EREFERENCE_CHANGE_FEATURE_COUNT = ADDITIVE_ECHANGE_FEATURE_COUNT + 2;
 
     /**
      * The operation id for the '<em>Get New Value</em>' operation.
@@ -397,26 +324,26 @@ public interface ChangePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ADDITIVE_REFERENCE_CHANGE___GET_NEW_VALUE = ADDITIVE_CHANGE___GET_NEW_VALUE;
+    int ADDITIVE_EREFERENCE_CHANGE___GET_NEW_VALUE = ADDITIVE_ECHANGE___GET_NEW_VALUE;
 
     /**
-     * The number of operations of the '<em>Additive Reference Change</em>' class.
+     * The number of operations of the '<em>Additive EReference Change</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ADDITIVE_REFERENCE_CHANGE_OPERATION_COUNT = ADDITIVE_CHANGE_OPERATION_COUNT + 0;
+    int ADDITIVE_EREFERENCE_CHANGE_OPERATION_COUNT = ADDITIVE_ECHANGE_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveReferenceChangeImpl <em>Subtractive Reference Change</em>}' class.
+     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveEReferenceChangeImpl <em>Subtractive EReference Change</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveReferenceChangeImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getSubtractiveReferenceChange()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveEReferenceChangeImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getSubtractiveEReferenceChange()
      * @generated
      */
-    int SUBTRACTIVE_REFERENCE_CHANGE = 8;
+    int SUBTRACTIVE_EREFERENCE_CHANGE = 7;
 
     /**
      * The feature id for the '<em><b>Old TUID</b></em>' attribute.
@@ -425,25 +352,34 @@ public interface ChangePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int SUBTRACTIVE_REFERENCE_CHANGE__OLD_TUID = SUBTRACTIVE_CHANGE_FEATURE_COUNT + 0;
+    int SUBTRACTIVE_EREFERENCE_CHANGE__OLD_TUID = SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Feature Name2 Old Value Map</b></em>' attribute.
+     * The feature id for the '<em><b>Feature2 Old Value Map</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int SUBTRACTIVE_REFERENCE_CHANGE__FEATURE_NAME2_OLD_VALUE_MAP = SUBTRACTIVE_CHANGE_FEATURE_COUNT + 1;
+    int SUBTRACTIVE_EREFERENCE_CHANGE__FEATURE2_OLD_VALUE_MAP = SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 1;
 
     /**
-     * The number of structural features of the '<em>Subtractive Reference Change</em>' class.
+     * The feature id for the '<em><b>Is Delete</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int SUBTRACTIVE_REFERENCE_CHANGE_FEATURE_COUNT = SUBTRACTIVE_CHANGE_FEATURE_COUNT + 2;
+    int SUBTRACTIVE_EREFERENCE_CHANGE__IS_DELETE = SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 2;
+
+    /**
+     * The number of structural features of the '<em>Subtractive EReference Change</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SUBTRACTIVE_EREFERENCE_CHANGE_FEATURE_COUNT = SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 3;
 
     /**
      * The operation id for the '<em>Get Old Value</em>' operation.
@@ -452,89 +388,16 @@ public interface ChangePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int SUBTRACTIVE_REFERENCE_CHANGE___GET_OLD_VALUE = SUBTRACTIVE_CHANGE___GET_OLD_VALUE;
+    int SUBTRACTIVE_EREFERENCE_CHANGE___GET_OLD_VALUE = SUBTRACTIVE_ECHANGE___GET_OLD_VALUE;
 
     /**
-     * The number of operations of the '<em>Subtractive Reference Change</em>' class.
+     * The number of operations of the '<em>Subtractive EReference Change</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int SUBTRACTIVE_REFERENCE_CHANGE_OPERATION_COUNT = SUBTRACTIVE_CHANGE_OPERATION_COUNT + 0;
-
-    /**
-     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ReplaciveReferenceChangeImpl <em>Replacive Reference Change</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ReplaciveReferenceChangeImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getReplaciveReferenceChange()
-     * @generated
-     */
-    int REPLACIVE_REFERENCE_CHANGE = 9;
-
-    /**
-     * The feature id for the '<em><b>Old TUID</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACIVE_REFERENCE_CHANGE__OLD_TUID = SUBTRACTIVE_REFERENCE_CHANGE__OLD_TUID;
-
-    /**
-     * The feature id for the '<em><b>Feature Name2 Old Value Map</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACIVE_REFERENCE_CHANGE__FEATURE_NAME2_OLD_VALUE_MAP = SUBTRACTIVE_REFERENCE_CHANGE__FEATURE_NAME2_OLD_VALUE_MAP;
-
-    /**
-     * The feature id for the '<em><b>New Value</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACIVE_REFERENCE_CHANGE__NEW_VALUE = SUBTRACTIVE_REFERENCE_CHANGE_FEATURE_COUNT + 0;
-
-    /**
-     * The number of structural features of the '<em>Replacive Reference Change</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACIVE_REFERENCE_CHANGE_FEATURE_COUNT = SUBTRACTIVE_REFERENCE_CHANGE_FEATURE_COUNT + 1;
-
-    /**
-     * The operation id for the '<em>Get Old Value</em>' operation.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACIVE_REFERENCE_CHANGE___GET_OLD_VALUE = SUBTRACTIVE_REFERENCE_CHANGE___GET_OLD_VALUE;
-
-    /**
-     * The operation id for the '<em>Get New Value</em>' operation.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACIVE_REFERENCE_CHANGE___GET_NEW_VALUE = SUBTRACTIVE_REFERENCE_CHANGE_OPERATION_COUNT + 0;
-
-    /**
-     * The number of operations of the '<em>Replacive Reference Change</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACIVE_REFERENCE_CHANGE_OPERATION_COUNT = SUBTRACTIVE_REFERENCE_CHANGE_OPERATION_COUNT + 1;
+    int SUBTRACTIVE_EREFERENCE_CHANGE_OPERATION_COUNT = SUBTRACTIVE_ECHANGE_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '<em>TUID</em>' data type.
@@ -544,7 +407,7 @@ public interface ChangePackage extends EPackage {
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getTUID()
      * @generated
      */
-    int TUID = 10;
+    int TUID = 8;
 
 
     /**
@@ -558,169 +421,171 @@ public interface ChangePackage extends EPackage {
     EClass getEChange();
 
     /**
-     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveChange <em>Additive Change</em>}'.
+     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange <em>EAtomic Change</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Additive Change</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveChange
+     * @return the meta object for class '<em>EAtomic Change</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange
      * @generated
      */
-    EClass getAdditiveChange();
+    EClass getEAtomicChange();
 
     /**
-     * Returns the meta object for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveChange#getNewValue() <em>Get New Value</em>}' operation.
+     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange <em>Additive EChange</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Additive EChange</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange
+     * @generated
+     */
+    EClass getAdditiveEChange();
+
+    /**
+     * Returns the meta object for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange#getNewValue() <em>Get New Value</em>}' operation.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the '<em>Get New Value</em>' operation.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveChange#getNewValue()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange#getNewValue()
      * @generated
      */
-    EOperation getAdditiveChange__GetNewValue();
+    EOperation getAdditiveEChange__GetNewValue();
 
     /**
-     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveChange <em>Subtractive Change</em>}'.
+     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange <em>Subtractive EChange</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Subtractive Change</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveChange
+     * @return the meta object for class '<em>Subtractive EChange</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange
      * @generated
      */
-    EClass getSubtractiveChange();
+    EClass getSubtractiveEChange();
 
     /**
-     * Returns the meta object for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveChange#getOldValue() <em>Get Old Value</em>}' operation.
+     * Returns the meta object for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange#getOldValue() <em>Get Old Value</em>}' operation.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the '<em>Get Old Value</em>' operation.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveChange#getOldValue()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange#getOldValue()
      * @generated
      */
-    EOperation getSubtractiveChange__GetOldValue();
+    EOperation getSubtractiveEChange__GetOldValue();
 
     /**
-     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ReplaciveChange <em>Replacive Change</em>}'.
+     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEAttributeChange <em>Additive EAttribute Change</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Replacive Change</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ReplaciveChange
+     * @return the meta object for class '<em>Additive EAttribute Change</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEAttributeChange
      * @generated
      */
-    EClass getReplaciveChange();
+    EClass getAdditiveEAttributeChange();
 
     /**
-     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveAttributeChange <em>Additive Attribute Change</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Additive Attribute Change</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveAttributeChange
-     * @generated
-     */
-    EClass getAdditiveAttributeChange();
-
-    /**
-     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveAttributeChange#getNewValue <em>New Value</em>}'.
+     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEAttributeChange#getNewValue <em>New Value</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>New Value</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveAttributeChange#getNewValue()
-     * @see #getAdditiveAttributeChange()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEAttributeChange#getNewValue()
+     * @see #getAdditiveEAttributeChange()
      * @generated
      */
-    EAttribute getAdditiveAttributeChange_NewValue();
+    EAttribute getAdditiveEAttributeChange_NewValue();
 
     /**
-     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveAttributeChange <em>Subtractive Attribute Change</em>}'.
+     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEAttributeChange <em>Subtractive EAttribute Change</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Subtractive Attribute Change</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveAttributeChange
+     * @return the meta object for class '<em>Subtractive EAttribute Change</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEAttributeChange
      * @generated
      */
-    EClass getSubtractiveAttributeChange();
+    EClass getSubtractiveEAttributeChange();
 
     /**
-     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveAttributeChange#getOldValue <em>Old Value</em>}'.
+     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEAttributeChange#getOldValue <em>Old Value</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Old Value</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveAttributeChange#getOldValue()
-     * @see #getSubtractiveAttributeChange()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEAttributeChange#getOldValue()
+     * @see #getSubtractiveEAttributeChange()
      * @generated
      */
-    EAttribute getSubtractiveAttributeChange_OldValue();
+    EAttribute getSubtractiveEAttributeChange_OldValue();
 
     /**
-     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ReplaciveAttributeChange <em>Replacive Attribute Change</em>}'.
+     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange <em>Additive EReference Change</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Replacive Attribute Change</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ReplaciveAttributeChange
+     * @return the meta object for class '<em>Additive EReference Change</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange
      * @generated
      */
-    EClass getReplaciveAttributeChange();
+    EClass getAdditiveEReferenceChange();
 
     /**
-     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveReferenceChange <em>Additive Reference Change</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Additive Reference Change</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveReferenceChange
-     * @generated
-     */
-    EClass getAdditiveReferenceChange();
-
-    /**
-     * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveReferenceChange#getNewValue <em>New Value</em>}'.
+     * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange#getNewValue <em>New Value</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the reference '<em>New Value</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveReferenceChange#getNewValue()
-     * @see #getAdditiveReferenceChange()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange#getNewValue()
+     * @see #getAdditiveEReferenceChange()
      * @generated
      */
-    EReference getAdditiveReferenceChange_NewValue();
+    EReference getAdditiveEReferenceChange_NewValue();
 
     /**
-     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveReferenceChange <em>Subtractive Reference Change</em>}'.
+     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange#isIsCreate <em>Is Create</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Subtractive Reference Change</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveReferenceChange
+     * @return the meta object for the attribute '<em>Is Create</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange#isIsCreate()
+     * @see #getAdditiveEReferenceChange()
      * @generated
      */
-    EClass getSubtractiveReferenceChange();
+    EAttribute getAdditiveEReferenceChange_IsCreate();
 
     /**
-     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveReferenceChange#getOldTUID <em>Old TUID</em>}'.
+     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange <em>Subtractive EReference Change</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Subtractive EReference Change</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange
+     * @generated
+     */
+    EClass getSubtractiveEReferenceChange();
+
+    /**
+     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#getOldTUID <em>Old TUID</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Old TUID</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveReferenceChange#getOldTUID()
-     * @see #getSubtractiveReferenceChange()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#getOldTUID()
+     * @see #getSubtractiveEReferenceChange()
      * @generated
      */
-    EAttribute getSubtractiveReferenceChange_OldTUID();
+    EAttribute getSubtractiveEReferenceChange_OldTUID();
 
     /**
-     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveReferenceChange#getFeatureName2OldValueMap <em>Feature Name2 Old Value Map</em>}'.
+     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#getFeature2OldValueMap <em>Feature2 Old Value Map</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Feature Name2 Old Value Map</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveReferenceChange#getFeatureName2OldValueMap()
-     * @see #getSubtractiveReferenceChange()
+     * @return the meta object for the attribute '<em>Feature2 Old Value Map</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#getFeature2OldValueMap()
+     * @see #getSubtractiveEReferenceChange()
      * @generated
      */
-    EAttribute getSubtractiveReferenceChange_FeatureName2OldValueMap();
+    EAttribute getSubtractiveEReferenceChange_Feature2OldValueMap();
 
     /**
-     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ReplaciveReferenceChange <em>Replacive Reference Change</em>}'.
+     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#isIsDelete <em>Is Delete</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Replacive Reference Change</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ReplaciveReferenceChange
+     * @return the meta object for the attribute '<em>Is Delete</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#isIsDelete()
+     * @see #getSubtractiveEReferenceChange()
      * @generated
      */
-    EClass getReplaciveReferenceChange();
+    EAttribute getSubtractiveEReferenceChange_IsDelete();
 
     /**
      * Returns the meta object for data type '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID <em>TUID</em>}'.
@@ -767,14 +632,24 @@ public interface ChangePackage extends EPackage {
         EClass ECHANGE = eINSTANCE.getEChange();
 
         /**
-         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveChangeImpl <em>Additive Change</em>}' class.
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.EAtomicChangeImpl <em>EAtomic Change</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveChangeImpl
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getAdditiveChange()
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.EAtomicChangeImpl
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getEAtomicChange()
          * @generated
          */
-        EClass ADDITIVE_CHANGE = eINSTANCE.getAdditiveChange();
+        EClass EATOMIC_CHANGE = eINSTANCE.getEAtomicChange();
+
+        /**
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveEChangeImpl <em>Additive EChange</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveEChangeImpl
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getAdditiveEChange()
+         * @generated
+         */
+        EClass ADDITIVE_ECHANGE = eINSTANCE.getAdditiveEChange();
 
         /**
          * The meta object literal for the '<em><b>Get New Value</b></em>' operation.
@@ -782,17 +657,17 @@ public interface ChangePackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EOperation ADDITIVE_CHANGE___GET_NEW_VALUE = eINSTANCE.getAdditiveChange__GetNewValue();
+        EOperation ADDITIVE_ECHANGE___GET_NEW_VALUE = eINSTANCE.getAdditiveEChange__GetNewValue();
 
         /**
-         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveChangeImpl <em>Subtractive Change</em>}' class.
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveEChangeImpl <em>Subtractive EChange</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveChangeImpl
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getSubtractiveChange()
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveEChangeImpl
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getSubtractiveEChange()
          * @generated
          */
-        EClass SUBTRACTIVE_CHANGE = eINSTANCE.getSubtractiveChange();
+        EClass SUBTRACTIVE_ECHANGE = eINSTANCE.getSubtractiveEChange();
 
         /**
          * The meta object literal for the '<em><b>Get Old Value</b></em>' operation.
@@ -800,27 +675,17 @@ public interface ChangePackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EOperation SUBTRACTIVE_CHANGE___GET_OLD_VALUE = eINSTANCE.getSubtractiveChange__GetOldValue();
+        EOperation SUBTRACTIVE_ECHANGE___GET_OLD_VALUE = eINSTANCE.getSubtractiveEChange__GetOldValue();
 
         /**
-         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ReplaciveChangeImpl <em>Replacive Change</em>}' class.
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveEAttributeChangeImpl <em>Additive EAttribute Change</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ReplaciveChangeImpl
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getReplaciveChange()
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveEAttributeChangeImpl
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getAdditiveEAttributeChange()
          * @generated
          */
-        EClass REPLACIVE_CHANGE = eINSTANCE.getReplaciveChange();
-
-        /**
-         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveAttributeChangeImpl <em>Additive Attribute Change</em>}' class.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveAttributeChangeImpl
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getAdditiveAttributeChange()
-         * @generated
-         */
-        EClass ADDITIVE_ATTRIBUTE_CHANGE = eINSTANCE.getAdditiveAttributeChange();
+        EClass ADDITIVE_EATTRIBUTE_CHANGE = eINSTANCE.getAdditiveEAttributeChange();
 
         /**
          * The meta object literal for the '<em><b>New Value</b></em>' attribute feature.
@@ -828,17 +693,17 @@ public interface ChangePackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute ADDITIVE_ATTRIBUTE_CHANGE__NEW_VALUE = eINSTANCE.getAdditiveAttributeChange_NewValue();
+        EAttribute ADDITIVE_EATTRIBUTE_CHANGE__NEW_VALUE = eINSTANCE.getAdditiveEAttributeChange_NewValue();
 
         /**
-         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveAttributeChangeImpl <em>Subtractive Attribute Change</em>}' class.
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveEAttributeChangeImpl <em>Subtractive EAttribute Change</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveAttributeChangeImpl
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getSubtractiveAttributeChange()
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveEAttributeChangeImpl
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getSubtractiveEAttributeChange()
          * @generated
          */
-        EClass SUBTRACTIVE_ATTRIBUTE_CHANGE = eINSTANCE.getSubtractiveAttributeChange();
+        EClass SUBTRACTIVE_EATTRIBUTE_CHANGE = eINSTANCE.getSubtractiveEAttributeChange();
 
         /**
          * The meta object literal for the '<em><b>Old Value</b></em>' attribute feature.
@@ -846,27 +711,17 @@ public interface ChangePackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute SUBTRACTIVE_ATTRIBUTE_CHANGE__OLD_VALUE = eINSTANCE.getSubtractiveAttributeChange_OldValue();
+        EAttribute SUBTRACTIVE_EATTRIBUTE_CHANGE__OLD_VALUE = eINSTANCE.getSubtractiveEAttributeChange_OldValue();
 
         /**
-         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ReplaciveAttributeChangeImpl <em>Replacive Attribute Change</em>}' class.
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveEReferenceChangeImpl <em>Additive EReference Change</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ReplaciveAttributeChangeImpl
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getReplaciveAttributeChange()
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveEReferenceChangeImpl
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getAdditiveEReferenceChange()
          * @generated
          */
-        EClass REPLACIVE_ATTRIBUTE_CHANGE = eINSTANCE.getReplaciveAttributeChange();
-
-        /**
-         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveReferenceChangeImpl <em>Additive Reference Change</em>}' class.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveReferenceChangeImpl
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getAdditiveReferenceChange()
-         * @generated
-         */
-        EClass ADDITIVE_REFERENCE_CHANGE = eINSTANCE.getAdditiveReferenceChange();
+        EClass ADDITIVE_EREFERENCE_CHANGE = eINSTANCE.getAdditiveEReferenceChange();
 
         /**
          * The meta object literal for the '<em><b>New Value</b></em>' reference feature.
@@ -874,17 +729,25 @@ public interface ChangePackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference ADDITIVE_REFERENCE_CHANGE__NEW_VALUE = eINSTANCE.getAdditiveReferenceChange_NewValue();
+        EReference ADDITIVE_EREFERENCE_CHANGE__NEW_VALUE = eINSTANCE.getAdditiveEReferenceChange_NewValue();
 
         /**
-         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveReferenceChangeImpl <em>Subtractive Reference Change</em>}' class.
+         * The meta object literal for the '<em><b>Is Create</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveReferenceChangeImpl
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getSubtractiveReferenceChange()
          * @generated
          */
-        EClass SUBTRACTIVE_REFERENCE_CHANGE = eINSTANCE.getSubtractiveReferenceChange();
+        EAttribute ADDITIVE_EREFERENCE_CHANGE__IS_CREATE = eINSTANCE.getAdditiveEReferenceChange_IsCreate();
+
+        /**
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveEReferenceChangeImpl <em>Subtractive EReference Change</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveEReferenceChangeImpl
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getSubtractiveEReferenceChange()
+         * @generated
+         */
+        EClass SUBTRACTIVE_EREFERENCE_CHANGE = eINSTANCE.getSubtractiveEReferenceChange();
 
         /**
          * The meta object literal for the '<em><b>Old TUID</b></em>' attribute feature.
@@ -892,25 +755,23 @@ public interface ChangePackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute SUBTRACTIVE_REFERENCE_CHANGE__OLD_TUID = eINSTANCE.getSubtractiveReferenceChange_OldTUID();
+        EAttribute SUBTRACTIVE_EREFERENCE_CHANGE__OLD_TUID = eINSTANCE.getSubtractiveEReferenceChange_OldTUID();
 
         /**
-         * The meta object literal for the '<em><b>Feature Name2 Old Value Map</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Feature2 Old Value Map</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute SUBTRACTIVE_REFERENCE_CHANGE__FEATURE_NAME2_OLD_VALUE_MAP = eINSTANCE.getSubtractiveReferenceChange_FeatureName2OldValueMap();
+        EAttribute SUBTRACTIVE_EREFERENCE_CHANGE__FEATURE2_OLD_VALUE_MAP = eINSTANCE.getSubtractiveEReferenceChange_Feature2OldValueMap();
 
         /**
-         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ReplaciveReferenceChangeImpl <em>Replacive Reference Change</em>}' class.
+         * The meta object literal for the '<em><b>Is Delete</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ReplaciveReferenceChangeImpl
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getReplaciveReferenceChange()
          * @generated
          */
-        EClass REPLACIVE_REFERENCE_CHANGE = eINSTANCE.getReplaciveReferenceChange();
+        EAttribute SUBTRACTIVE_EREFERENCE_CHANGE__IS_DELETE = eINSTANCE.getSubtractiveEReferenceChange_IsDelete();
 
         /**
          * The meta object literal for the '<em>TUID</em>' data type.

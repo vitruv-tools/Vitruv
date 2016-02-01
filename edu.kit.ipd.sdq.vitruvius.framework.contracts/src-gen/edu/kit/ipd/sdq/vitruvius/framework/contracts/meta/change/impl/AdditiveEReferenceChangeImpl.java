@@ -2,10 +2,8 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ReplaciveReferenceChange;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -17,18 +15,19 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Replacive Reference Change</b></em>'.
+ * An implementation of the model object '<em><b>Additive EReference Change</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ReplaciveReferenceChangeImpl#getNewValue <em>New Value</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveEReferenceChangeImpl#getNewValue <em>New Value</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AdditiveEReferenceChangeImpl#isIsCreate <em>Is Create</em>}</li>
  * </ul>
  *
  * @generated
  */
-public abstract class ReplaciveReferenceChangeImpl<T extends EObject> extends SubtractiveReferenceChangeImpl implements ReplaciveReferenceChange<T> {
+public abstract class AdditiveEReferenceChangeImpl<T extends EObject> extends AdditiveEChangeImpl<T> implements AdditiveEReferenceChange<T> {
     /**
      * The cached value of the '{@link #getNewValue() <em>New Value</em>}' reference.
      * <!-- begin-user-doc -->
@@ -40,11 +39,31 @@ public abstract class ReplaciveReferenceChangeImpl<T extends EObject> extends Su
     protected T newValue;
 
     /**
+     * The default value of the '{@link #isIsCreate() <em>Is Create</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isIsCreate()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean IS_CREATE_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isIsCreate() <em>Is Create</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isIsCreate()
+     * @generated
+     * @ordered
+     */
+    protected boolean isCreate = IS_CREATE_EDEFAULT;
+
+    /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    protected ReplaciveReferenceChangeImpl() {
+    protected AdditiveEReferenceChangeImpl() {
         super();
     }
 
@@ -55,7 +74,7 @@ public abstract class ReplaciveReferenceChangeImpl<T extends EObject> extends Su
      */
     @Override
     protected EClass eStaticClass() {
-        return ChangePackage.Literals.REPLACIVE_REFERENCE_CHANGE;
+        return ChangePackage.Literals.ADDITIVE_EREFERENCE_CHANGE;
     }
 
     /**
@@ -70,7 +89,7 @@ public abstract class ReplaciveReferenceChangeImpl<T extends EObject> extends Su
             newValue = (T)eResolveProxy(oldNewValue);
             if (newValue != oldNewValue) {
                 if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, ChangePackage.REPLACIVE_REFERENCE_CHANGE__NEW_VALUE, oldNewValue, newValue));
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, ChangePackage.ADDITIVE_EREFERENCE_CHANGE__NEW_VALUE, oldNewValue, newValue));
             }
         }
         return newValue;
@@ -94,7 +113,28 @@ public abstract class ReplaciveReferenceChangeImpl<T extends EObject> extends Su
         T oldNewValue = newValue;
         newValue = newNewValue;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ChangePackage.REPLACIVE_REFERENCE_CHANGE__NEW_VALUE, oldNewValue, newValue));
+            eNotify(new ENotificationImpl(this, Notification.SET, ChangePackage.ADDITIVE_EREFERENCE_CHANGE__NEW_VALUE, oldNewValue, newValue));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean isIsCreate() {
+        return isCreate;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setIsCreate(boolean newIsCreate) {
+        boolean oldIsCreate = isCreate;
+        isCreate = newIsCreate;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ChangePackage.ADDITIVE_EREFERENCE_CHANGE__IS_CREATE, oldIsCreate, isCreate));
     }
 
     /**
@@ -105,9 +145,11 @@ public abstract class ReplaciveReferenceChangeImpl<T extends EObject> extends Su
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case ChangePackage.REPLACIVE_REFERENCE_CHANGE__NEW_VALUE:
+            case ChangePackage.ADDITIVE_EREFERENCE_CHANGE__NEW_VALUE:
                 if (resolve) return getNewValue();
                 return basicGetNewValue();
+            case ChangePackage.ADDITIVE_EREFERENCE_CHANGE__IS_CREATE:
+                return isIsCreate();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -121,8 +163,11 @@ public abstract class ReplaciveReferenceChangeImpl<T extends EObject> extends Su
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case ChangePackage.REPLACIVE_REFERENCE_CHANGE__NEW_VALUE:
+            case ChangePackage.ADDITIVE_EREFERENCE_CHANGE__NEW_VALUE:
                 setNewValue((T)newValue);
+                return;
+            case ChangePackage.ADDITIVE_EREFERENCE_CHANGE__IS_CREATE:
+                setIsCreate((Boolean)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -136,8 +181,11 @@ public abstract class ReplaciveReferenceChangeImpl<T extends EObject> extends Su
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case ChangePackage.REPLACIVE_REFERENCE_CHANGE__NEW_VALUE:
+            case ChangePackage.ADDITIVE_EREFERENCE_CHANGE__NEW_VALUE:
                 setNewValue((T)null);
+                return;
+            case ChangePackage.ADDITIVE_EREFERENCE_CHANGE__IS_CREATE:
+                setIsCreate(IS_CREATE_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -151,8 +199,10 @@ public abstract class ReplaciveReferenceChangeImpl<T extends EObject> extends Su
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case ChangePackage.REPLACIVE_REFERENCE_CHANGE__NEW_VALUE:
+            case ChangePackage.ADDITIVE_EREFERENCE_CHANGE__NEW_VALUE:
                 return newValue != null;
+            case ChangePackage.ADDITIVE_EREFERENCE_CHANGE__IS_CREATE:
+                return isCreate != IS_CREATE_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -163,40 +213,14 @@ public abstract class ReplaciveReferenceChangeImpl<T extends EObject> extends Su
      * @generated
      */
     @Override
-    public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-        if (baseClass == AdditiveChange.class) {
-            switch (derivedFeatureID) {
-                default: return -1;
-            }
-        }
-        if (baseClass == AdditiveReferenceChange.class) {
-            switch (derivedFeatureID) {
-                case ChangePackage.REPLACIVE_REFERENCE_CHANGE__NEW_VALUE: return ChangePackage.ADDITIVE_REFERENCE_CHANGE__NEW_VALUE;
-                default: return -1;
-            }
-        }
-        return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+    public String toString() {
+        if (eIsProxy()) return super.toString();
+
+        StringBuffer result = new StringBuffer(super.toString());
+        result.append(" (isCreate: ");
+        result.append(isCreate);
+        result.append(')');
+        return result.toString();
     }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-        if (baseClass == AdditiveChange.class) {
-            switch (baseFeatureID) {
-                default: return -1;
-            }
-        }
-        if (baseClass == AdditiveReferenceChange.class) {
-            switch (baseFeatureID) {
-                case ChangePackage.ADDITIVE_REFERENCE_CHANGE__NEW_VALUE: return ChangePackage.REPLACIVE_REFERENCE_CHANGE__NEW_VALUE;
-                default: return -1;
-            }
-        }
-        return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
-    }
-
-} //ReplaciveReferenceChangeImpl
+} //AdditiveEReferenceChangeImpl

@@ -75,48 +75,6 @@ public class CompoundSwitch<T1> extends Switch<T1> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case CompoundPackage.CREATE_EOBJECT_AND_ADD: {
-                CreateEObjectAndAdd<?> createEObjectAndAdd = (CreateEObjectAndAdd<?>)theEObject;
-                T1 result = caseCreateEObjectAndAdd(createEObjectAndAdd);
-                if (result == null) result = caseECompoundChange(createEObjectAndAdd);
-                if (result == null) result = caseEChange(createEObjectAndAdd);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case CompoundPackage.DELETE_EOBJECT_AND_SUBTRACT: {
-                DeleteEObjectAndSubtract<?> deleteEObjectAndSubtract = (DeleteEObjectAndSubtract<?>)theEObject;
-                T1 result = caseDeleteEObjectAndSubtract(deleteEObjectAndSubtract);
-                if (result == null) result = caseECompoundChange(deleteEObjectAndSubtract);
-                if (result == null) result = caseEChange(deleteEObjectAndSubtract);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case CompoundPackage.DELETE_EOBJECT_CREATE_EOBJECT_AND_REPLACE: {
-                DeleteEObjectCreateEObjectAndReplace<?, ?> deleteEObjectCreateEObjectAndReplace = (DeleteEObjectCreateEObjectAndReplace<?, ?>)theEObject;
-                T1 result = caseDeleteEObjectCreateEObjectAndReplace(deleteEObjectCreateEObjectAndReplace);
-                if (result == null) result = caseECompoundChange(deleteEObjectCreateEObjectAndReplace);
-                if (result == null) result = caseEChange(deleteEObjectCreateEObjectAndReplace);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case CompoundPackage.DELETE_EOBJECT_CREATE_EOBJECT_AND_REPLACE_SINGLE: {
-                DeleteEObjectCreateEObjectAndReplaceSingle<?> deleteEObjectCreateEObjectAndReplaceSingle = (DeleteEObjectCreateEObjectAndReplaceSingle<?>)theEObject;
-                T1 result = caseDeleteEObjectCreateEObjectAndReplaceSingle(deleteEObjectCreateEObjectAndReplaceSingle);
-                if (result == null) result = caseDeleteEObjectCreateEObjectAndReplace(deleteEObjectCreateEObjectAndReplaceSingle);
-                if (result == null) result = caseECompoundChange(deleteEObjectCreateEObjectAndReplaceSingle);
-                if (result == null) result = caseEChange(deleteEObjectCreateEObjectAndReplaceSingle);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case CompoundPackage.DELETE_EOBJECT_CREATE_EOBJECT_AND_REPLACE_IN_LIST: {
-                DeleteEObjectCreateEObjectAndReplaceInList<?> deleteEObjectCreateEObjectAndReplaceInList = (DeleteEObjectCreateEObjectAndReplaceInList<?>)theEObject;
-                T1 result = caseDeleteEObjectCreateEObjectAndReplaceInList(deleteEObjectCreateEObjectAndReplaceInList);
-                if (result == null) result = caseDeleteEObjectCreateEObjectAndReplace(deleteEObjectCreateEObjectAndReplaceInList);
-                if (result == null) result = caseECompoundChange(deleteEObjectCreateEObjectAndReplaceInList);
-                if (result == null) result = caseEChange(deleteEObjectCreateEObjectAndReplaceInList);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
             case CompoundPackage.MOVE_EOBJECT: {
                 MoveEObject<?> moveEObject = (MoveEObject<?>)theEObject;
                 T1 result = caseMoveEObject(moveEObject);
@@ -149,81 +107,6 @@ public class CompoundSwitch<T1> extends Switch<T1> {
      * @generated
      */
     public T1 caseECompoundChange(ECompoundChange object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Create EObject And Add</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Create EObject And Add</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public <T extends EObject> T1 caseCreateEObjectAndAdd(CreateEObjectAndAdd<T> object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Delete EObject And Subtract</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Delete EObject And Subtract</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public <T extends EObject> T1 caseDeleteEObjectAndSubtract(DeleteEObjectAndSubtract<T> object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Delete EObject Create EObject And Replace</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Delete EObject Create EObject And Replace</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public <T extends EObject, R extends EChange> T1 caseDeleteEObjectCreateEObjectAndReplace(DeleteEObjectCreateEObjectAndReplace<T, R> object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Delete EObject Create EObject And Replace Single</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Delete EObject Create EObject And Replace Single</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public <T extends EObject> T1 caseDeleteEObjectCreateEObjectAndReplaceSingle(DeleteEObjectCreateEObjectAndReplaceSingle<T> object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Delete EObject Create EObject And Replace In List</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Delete EObject Create EObject And Replace In List</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public <T extends EObject> T1 caseDeleteEObjectCreateEObjectAndReplaceInList(DeleteEObjectCreateEObjectAndReplaceInList<T> object) {
         return null;
     }
 

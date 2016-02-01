@@ -2,12 +2,12 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.util;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveReferenceChange;
-
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.*;
 
 import org.eclipse.emf.common.notify.Adapter;
@@ -86,20 +86,24 @@ public class RootAdapterFactory extends AdapterFactoryImpl {
                 return createEChangeAdapter();
             }
             @Override
-            public <T extends Object> Adapter caseAdditiveChange(AdditiveChange<T> object) {
-                return createAdditiveChangeAdapter();
+            public Adapter caseEAtomicChange(EAtomicChange object) {
+                return createEAtomicChangeAdapter();
             }
             @Override
-            public <T extends EObject> Adapter caseAdditiveReferenceChange(AdditiveReferenceChange<T> object) {
-                return createAdditiveReferenceChangeAdapter();
+            public <T extends Object> Adapter caseAdditiveEChange(AdditiveEChange<T> object) {
+                return createAdditiveEChangeAdapter();
             }
             @Override
-            public <T extends Object> Adapter caseSubtractiveChange(SubtractiveChange<T> object) {
-                return createSubtractiveChangeAdapter();
+            public <T extends EObject> Adapter caseAdditiveEReferenceChange(AdditiveEReferenceChange<T> object) {
+                return createAdditiveEReferenceChangeAdapter();
             }
             @Override
-            public Adapter caseSubtractiveReferenceChange(SubtractiveReferenceChange object) {
-                return createSubtractiveReferenceChangeAdapter();
+            public <T extends Object> Adapter caseSubtractiveEChange(SubtractiveEChange<T> object) {
+                return createSubtractiveEChangeAdapter();
+            }
+            @Override
+            public Adapter caseSubtractiveEReferenceChange(SubtractiveEReferenceChange object) {
+                return createSubtractiveEReferenceChangeAdapter();
             }
             @Override
             public Adapter defaultCase(EObject object) {
@@ -164,58 +168,72 @@ public class RootAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveChange <em>Additive Change</em>}'.
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange <em>EAtomic Change</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveChange
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange
      * @generated
      */
-    public Adapter createAdditiveChangeAdapter() {
+    public Adapter createEAtomicChangeAdapter() {
         return null;
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveReferenceChange <em>Additive Reference Change</em>}'.
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange <em>Additive EChange</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveReferenceChange
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange
      * @generated
      */
-    public Adapter createAdditiveReferenceChangeAdapter() {
+    public Adapter createAdditiveEChangeAdapter() {
         return null;
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveChange <em>Subtractive Change</em>}'.
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange <em>Additive EReference Change</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveChange
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange
      * @generated
      */
-    public Adapter createSubtractiveChangeAdapter() {
+    public Adapter createAdditiveEReferenceChangeAdapter() {
         return null;
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveReferenceChange <em>Subtractive Reference Change</em>}'.
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange <em>Subtractive EChange</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveReferenceChange
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange
      * @generated
      */
-    public Adapter createSubtractiveReferenceChangeAdapter() {
+    public Adapter createSubtractiveEChangeAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange <em>Subtractive EReference Change</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange
+     * @generated
+     */
+    public Adapter createSubtractiveEReferenceChangeAdapter() {
         return null;
     }
 

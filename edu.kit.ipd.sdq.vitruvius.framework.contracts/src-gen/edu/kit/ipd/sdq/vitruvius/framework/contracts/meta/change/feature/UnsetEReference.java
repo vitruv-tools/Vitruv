@@ -2,8 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveReferenceChange;
-
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 
@@ -17,7 +16,7 @@ import org.eclipse.emf.ecore.EReference;
  * @model
  * @generated
  */
-public interface UnsetEReference<T extends EObject> extends UnsetEFeature<EReference>, SubtractiveReferenceChange {
+public interface UnsetEReference<T extends EObject> extends UnsetEFeature<EReference>, SubtractiveEReferenceChange {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

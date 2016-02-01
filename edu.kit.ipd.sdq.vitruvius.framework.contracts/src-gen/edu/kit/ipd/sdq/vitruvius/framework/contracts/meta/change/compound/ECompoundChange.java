@@ -2,6 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
 
 import org.eclipse.emf.common.util.EList;
@@ -23,6 +24,6 @@ public interface ECompoundChange extends EChange {
      * @model kind="operation" required="true"
      * @generated
      */
-    EList<EChange> getComposedChanges();
+    EList<EAtomicChange> getAtomicChanges();
 
 } // ECompoundChange

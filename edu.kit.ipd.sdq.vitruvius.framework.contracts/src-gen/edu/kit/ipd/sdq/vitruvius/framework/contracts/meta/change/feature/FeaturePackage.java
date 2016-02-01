@@ -76,7 +76,7 @@ public interface FeaturePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EFEATURE_CHANGE__AFFECTED_FEATURE = ChangePackage.ECHANGE_FEATURE_COUNT + 0;
+    int EFEATURE_CHANGE__AFFECTED_FEATURE = ChangePackage.EATOMIC_CHANGE_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -85,7 +85,7 @@ public interface FeaturePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EFEATURE_CHANGE__AFFECTED_EOBJECT = ChangePackage.ECHANGE_FEATURE_COUNT + 1;
+    int EFEATURE_CHANGE__AFFECTED_EOBJECT = ChangePackage.EATOMIC_CHANGE_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Old TUID Of Affected EObject</b></em>' attribute.
@@ -94,7 +94,7 @@ public interface FeaturePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT = ChangePackage.ECHANGE_FEATURE_COUNT + 2;
+    int EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT = ChangePackage.EATOMIC_CHANGE_FEATURE_COUNT + 2;
 
     /**
      * The number of structural features of the '<em>EFeature Change</em>' class.
@@ -103,7 +103,7 @@ public interface FeaturePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EFEATURE_CHANGE_FEATURE_COUNT = ChangePackage.ECHANGE_FEATURE_COUNT + 3;
+    int EFEATURE_CHANGE_FEATURE_COUNT = ChangePackage.EATOMIC_CHANGE_FEATURE_COUNT + 3;
 
     /**
      * The number of operations of the '<em>EFeature Change</em>' class.
@@ -112,7 +112,7 @@ public interface FeaturePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EFEATURE_CHANGE_OPERATION_COUNT = ChangePackage.ECHANGE_OPERATION_COUNT + 0;
+    int EFEATURE_CHANGE_OPERATION_COUNT = ChangePackage.EATOMIC_CHANGE_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.impl.UpdateEFeatureImpl <em>Update EFeature</em>}' class.
@@ -131,7 +131,7 @@ public interface FeaturePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int UPDATE_EFEATURE_FEATURE_COUNT = ChangePackage.ECHANGE_FEATURE_COUNT + 0;
+    int UPDATE_EFEATURE_FEATURE_COUNT = ChangePackage.EATOMIC_CHANGE_FEATURE_COUNT + 0;
 
     /**
      * The number of operations of the '<em>Update EFeature</em>' class.
@@ -140,7 +140,7 @@ public interface FeaturePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int UPDATE_EFEATURE_OPERATION_COUNT = ChangePackage.ECHANGE_OPERATION_COUNT + 0;
+    int UPDATE_EFEATURE_OPERATION_COUNT = ChangePackage.EATOMIC_CHANGE_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.impl.UpdateMultiValuedEFeatureImpl <em>Update Multi Valued EFeature</em>}' class.
@@ -373,13 +373,22 @@ public interface FeaturePackage extends EPackage {
     int UNSET_EREFERENCE__OLD_TUID = UNSET_EFEATURE_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Feature Name2 Old Value Map</b></em>' attribute.
+     * The feature id for the '<em><b>Feature2 Old Value Map</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int UNSET_EREFERENCE__FEATURE_NAME2_OLD_VALUE_MAP = UNSET_EFEATURE_FEATURE_COUNT + 1;
+    int UNSET_EREFERENCE__FEATURE2_OLD_VALUE_MAP = UNSET_EFEATURE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Is Delete</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int UNSET_EREFERENCE__IS_DELETE = UNSET_EFEATURE_FEATURE_COUNT + 2;
 
     /**
      * The number of structural features of the '<em>Unset EReference</em>' class.
@@ -388,7 +397,7 @@ public interface FeaturePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int UNSET_EREFERENCE_FEATURE_COUNT = UNSET_EFEATURE_FEATURE_COUNT + 2;
+    int UNSET_EREFERENCE_FEATURE_COUNT = UNSET_EFEATURE_FEATURE_COUNT + 3;
 
     /**
      * The operation id for the '<em>Get Old Value</em>' operation.

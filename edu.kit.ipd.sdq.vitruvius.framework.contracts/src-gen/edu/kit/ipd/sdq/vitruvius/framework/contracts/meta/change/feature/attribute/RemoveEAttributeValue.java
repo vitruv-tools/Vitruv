@@ -2,8 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveAttributeChange;
-
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEAttributeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromEList;
 
 /**
@@ -16,5 +15,5 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.Re
  * @model TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
-public interface RemoveEAttributeValue<T extends Object> extends RemoveFromEList<T>, UpdateEAttribute<T>, SubtractiveAttributeChange<T> {
+public interface RemoveEAttributeValue<T extends Object> extends RemoveFromEList<T>, UpdateEAttribute<T>, SubtractiveEAttributeChange<T> {
 } // RemoveEAttributeValue

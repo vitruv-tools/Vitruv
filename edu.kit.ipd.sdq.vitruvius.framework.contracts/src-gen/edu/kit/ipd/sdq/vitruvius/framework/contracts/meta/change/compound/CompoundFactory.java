@@ -23,42 +23,6 @@ public interface CompoundFactory extends EFactory {
     CompoundFactory eINSTANCE = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.CompoundFactoryImpl.init();
 
     /**
-     * Returns a new object of class '<em>Create EObject And Add</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>Create EObject And Add</em>'.
-     * @generated
-     */
-    <T extends EObject> CreateEObjectAndAdd<T> createCreateEObjectAndAdd();
-
-    /**
-     * Returns a new object of class '<em>Delete EObject And Subtract</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>Delete EObject And Subtract</em>'.
-     * @generated
-     */
-    <T extends EObject> DeleteEObjectAndSubtract<T> createDeleteEObjectAndSubtract();
-
-    /**
-     * Returns a new object of class '<em>Delete EObject Create EObject And Replace Single</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>Delete EObject Create EObject And Replace Single</em>'.
-     * @generated
-     */
-    <T extends EObject> DeleteEObjectCreateEObjectAndReplaceSingle<T> createDeleteEObjectCreateEObjectAndReplaceSingle();
-
-    /**
-     * Returns a new object of class '<em>Delete EObject Create EObject And Replace In List</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>Delete EObject Create EObject And Replace In List</em>'.
-     * @generated
-     */
-    <T extends EObject> DeleteEObjectCreateEObjectAndReplaceInList<T> createDeleteEObjectCreateEObjectAndReplaceInList();
-
-    /**
      * Returns a new object of class '<em>Move EObject</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

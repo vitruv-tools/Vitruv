@@ -2,12 +2,12 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.util;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveReferenceChange;
-
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.*;
 
 import org.eclipse.emf.ecore.EObject;
@@ -75,8 +75,9 @@ public class RootSwitch<T1> extends Switch<T1> {
             case RootPackage.INSERT_ROOT_EOBJECT: {
                 InsertRootEObject<?> insertRootEObject = (InsertRootEObject<?>)theEObject;
                 T1 result = caseInsertRootEObject(insertRootEObject);
-                if (result == null) result = caseAdditiveReferenceChange(insertRootEObject);
-                if (result == null) result = caseAdditiveChange(insertRootEObject);
+                if (result == null) result = caseAdditiveEReferenceChange(insertRootEObject);
+                if (result == null) result = caseAdditiveEChange(insertRootEObject);
+                if (result == null) result = caseEAtomicChange(insertRootEObject);
                 if (result == null) result = caseEChange(insertRootEObject);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -84,8 +85,9 @@ public class RootSwitch<T1> extends Switch<T1> {
             case RootPackage.REMOVE_ROOT_EOBJECT: {
                 RemoveRootEObject removeRootEObject = (RemoveRootEObject)theEObject;
                 T1 result = caseRemoveRootEObject(removeRootEObject);
-                if (result == null) result = caseSubtractiveReferenceChange(removeRootEObject);
-                if (result == null) result = caseSubtractiveChange(removeRootEObject);
+                if (result == null) result = caseSubtractiveEReferenceChange(removeRootEObject);
+                if (result == null) result = caseSubtractiveEChange(removeRootEObject);
+                if (result == null) result = caseEAtomicChange(removeRootEObject);
                 if (result == null) result = caseEChange(removeRootEObject);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -140,62 +142,77 @@ public class RootSwitch<T1> extends Switch<T1> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Additive Change</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>EAtomic Change</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Additive Change</em>'.
+     * @return the result of interpreting the object as an instance of '<em>EAtomic Change</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseAdditiveChange(AdditiveChange<T> object) {
+    public T1 caseEAtomicChange(EAtomicChange object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Additive Reference Change</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Additive EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Additive Reference Change</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Additive EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends EObject> T1 caseAdditiveReferenceChange(AdditiveReferenceChange<T> object) {
+    public <T extends Object> T1 caseAdditiveEChange(AdditiveEChange<T> object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Subtractive Change</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Additive EReference Change</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Subtractive Change</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Additive EReference Change</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseSubtractiveChange(SubtractiveChange<T> object) {
+    public <T extends EObject> T1 caseAdditiveEReferenceChange(AdditiveEReferenceChange<T> object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Subtractive Reference Change</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Subtractive EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Subtractive Reference Change</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Subtractive EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseSubtractiveReferenceChange(SubtractiveReferenceChange object) {
+    public <T extends Object> T1 caseSubtractiveEChange(SubtractiveEChange<T> object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Subtractive EReference Change</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Subtractive EReference Change</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T1 caseSubtractiveEReferenceChange(SubtractiveEReferenceChange object) {
         return null;
     }
 

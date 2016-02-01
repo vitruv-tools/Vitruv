@@ -56,55 +56,11 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
     @Override
     public EObject create(EClass eClass) {
         switch (eClass.getClassifierID()) {
-            case CompoundPackage.CREATE_EOBJECT_AND_ADD: return createCreateEObjectAndAdd();
-            case CompoundPackage.DELETE_EOBJECT_AND_SUBTRACT: return createDeleteEObjectAndSubtract();
-            case CompoundPackage.DELETE_EOBJECT_CREATE_EOBJECT_AND_REPLACE_SINGLE: return createDeleteEObjectCreateEObjectAndReplaceSingle();
-            case CompoundPackage.DELETE_EOBJECT_CREATE_EOBJECT_AND_REPLACE_IN_LIST: return createDeleteEObjectCreateEObjectAndReplaceInList();
             case CompoundPackage.MOVE_EOBJECT: return createMoveEObject();
             case CompoundPackage.REPLACE_IN_ELIST: return createReplaceInEList();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public <T extends EObject> CreateEObjectAndAdd<T> createCreateEObjectAndAdd() {
-        CreateEObjectAndAddImpl<T> createEObjectAndAdd = new CreateEObjectAndAddImpl<T>();
-        return createEObjectAndAdd;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public <T extends EObject> DeleteEObjectAndSubtract<T> createDeleteEObjectAndSubtract() {
-        DeleteEObjectAndSubtractImpl<T> deleteEObjectAndSubtract = new DeleteEObjectAndSubtractImpl<T>();
-        return deleteEObjectAndSubtract;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public <T extends EObject> DeleteEObjectCreateEObjectAndReplaceSingle<T> createDeleteEObjectCreateEObjectAndReplaceSingle() {
-        DeleteEObjectCreateEObjectAndReplaceSingleImpl<T> deleteEObjectCreateEObjectAndReplaceSingle = new DeleteEObjectCreateEObjectAndReplaceSingleImpl<T>();
-        return deleteEObjectCreateEObjectAndReplaceSingle;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public <T extends EObject> DeleteEObjectCreateEObjectAndReplaceInList<T> createDeleteEObjectCreateEObjectAndReplaceInList() {
-        DeleteEObjectCreateEObjectAndReplaceInListImpl<T> deleteEObjectCreateEObjectAndReplaceInList = new DeleteEObjectCreateEObjectAndReplaceInListImpl<T>();
-        return deleteEObjectCreateEObjectAndReplaceInList;
     }
 
     /**

@@ -74,26 +74,6 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
                 return createECompoundChangeAdapter();
             }
             @Override
-            public <T extends EObject> Adapter caseCreateEObjectAndAdd(CreateEObjectAndAdd<T> object) {
-                return createCreateEObjectAndAddAdapter();
-            }
-            @Override
-            public <T extends EObject> Adapter caseDeleteEObjectAndSubtract(DeleteEObjectAndSubtract<T> object) {
-                return createDeleteEObjectAndSubtractAdapter();
-            }
-            @Override
-            public <T extends EObject, R extends EChange> Adapter caseDeleteEObjectCreateEObjectAndReplace(DeleteEObjectCreateEObjectAndReplace<T, R> object) {
-                return createDeleteEObjectCreateEObjectAndReplaceAdapter();
-            }
-            @Override
-            public <T extends EObject> Adapter caseDeleteEObjectCreateEObjectAndReplaceSingle(DeleteEObjectCreateEObjectAndReplaceSingle<T> object) {
-                return createDeleteEObjectCreateEObjectAndReplaceSingleAdapter();
-            }
-            @Override
-            public <T extends EObject> Adapter caseDeleteEObjectCreateEObjectAndReplaceInList(DeleteEObjectCreateEObjectAndReplaceInList<T> object) {
-                return createDeleteEObjectCreateEObjectAndReplaceInListAdapter();
-            }
-            @Override
             public <T extends EObject> Adapter caseMoveEObject(MoveEObject<T> object) {
                 return createMoveEObjectAdapter();
             }
@@ -136,76 +116,6 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createECompoundChangeAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CreateEObjectAndAdd <em>Create EObject And Add</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CreateEObjectAndAdd
-     * @generated
-     */
-    public Adapter createCreateEObjectAndAddAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.DeleteEObjectAndSubtract <em>Delete EObject And Subtract</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.DeleteEObjectAndSubtract
-     * @generated
-     */
-    public Adapter createDeleteEObjectAndSubtractAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.DeleteEObjectCreateEObjectAndReplace <em>Delete EObject Create EObject And Replace</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.DeleteEObjectCreateEObjectAndReplace
-     * @generated
-     */
-    public Adapter createDeleteEObjectCreateEObjectAndReplaceAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.DeleteEObjectCreateEObjectAndReplaceSingle <em>Delete EObject Create EObject And Replace Single</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.DeleteEObjectCreateEObjectAndReplaceSingle
-     * @generated
-     */
-    public Adapter createDeleteEObjectCreateEObjectAndReplaceSingleAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.DeleteEObjectCreateEObjectAndReplaceInList <em>Delete EObject Create EObject And Replace In List</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.DeleteEObjectCreateEObjectAndReplaceInList
-     * @generated
-     */
-    public Adapter createDeleteEObjectCreateEObjectAndReplaceInListAdapter() {
         return null;
     }
 

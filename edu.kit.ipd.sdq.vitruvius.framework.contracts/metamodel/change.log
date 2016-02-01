@@ -1,12 +1,9 @@
 + AdditiveChange
 + SubtractiveChange
-+ ReplaciveChange
 + AdditiveAttributeChange
 + SubtractiveAttributeChange
-+ ReplaciveAttributeChange
 + AdditiveReferenceChange
 + SubtractiveReferenceChange
-+ ReplaciveReferenceChange
 
 !~ EFeatureChange.newAffectedEObject -> affectedEObject
 - EFeatureChange.oldAffectedEObject
@@ -22,10 +19,14 @@
 
 - EObjectChange.T
 
-~ CreateEObject.isAbstract -> false
-+ CreateEObject extends AdditiveReferenceChange
-~ DeleteEObject.isAbstract -> false
-+ DeleteEObject extends SubtractiveReferenceChange
+- object pkg
+- EObjectChange
+- CreateEObject
+	~ CreateEObject.isAbstract -> false
+	+ CreateEObject extends AdditiveReferenceChange
+- DeleteEObject
+	~ DeleteEObject.isAbstract -> false
+	+ DeleteEObject extends SubtractiveReferenceChange
 - ReplaceEObject
 + root Pkg
 + InsertRootEObject
@@ -43,11 +44,11 @@
 
 + pkg compound
 + CompoundChange
-+ CreateEObjectAndAdd
-+ DeleteEObjectAndSubtract
-+ DeleteEObjectCreateEObject
-+ DeleteEObjectCreateEObjectAndReplaceSingle
-+ DeleteEObjectCreateEObjectAndReplaceInList
+	+ CreateEObjectAndAdd
+	+ DeleteEObjectAndSubtract
+	+ DeleteEObjectCreateEObject
+	+ DeleteEObjectCreateEObjectAndReplaceSingle
+	+ DeleteEObjectCreateEObjectAndReplaceInList
 + MoveEObject
 + ReplaceInEList
 
@@ -67,7 +68,8 @@
 !~ UpdateSingleValuedEAttribute -> ReplaceSingleValuedEAttribute
 - UpdateSingleValuedEAttribute.oldValue
 - UpdateSingleValuedEAttribute.newValue
-+ UpdateSingleValuedEAttribute extends ReplaciveAttributeChange
++ UpdateSingleValuedEAttribute extends AdditiveAttributeChange
++ UpdateSingleValuedEAttribute extends SubtractiveAttributeChange
 + InsertEAttributeValue extends AdditiveAttributeChange
 + RemoveEAttributeValue extends SubtractiveAttributeChange
 - ReplaceEAttributeValue
@@ -80,7 +82,8 @@
 ~ UpdateSingleValuedNonContainmentEReference -> ReplaceSingleValuedEReference
 - ReplaceSingleValuedEReference.oldValue
 - ReplaceSingleValuedEReference.newValue
-+ ReplaceSingleValuedEReference extends ReplaciveReferenceChange
++ ReplaceSingleValuedEReference extends AdditiveReferenceChange
++ ReplaceSingleValuedEReference extends SubtractiveReferenceChange
 ~ InsertNonContainmentEReference -> InsertEReference
 + InsertEReference extends AdditiveReferenceChange
 ~ RemoveNonContainmentEReference -> RemoveEReference
@@ -119,11 +122,6 @@
 
 -----------------------------------------
 
-ReplaceEAttributeValue kann nicht von ReplaceInEList erben
-ReplaceEReferenceValue kann nicht von ReplaceInEList erben
-
-ist das noch so: nicht jeder der von Add und Sub erbt erbt auch von Replacive, daher Replacive raus?
-
 InsertInEList und RemoveFromEList können doch nicht vom allgemeinen AdditiveChange und SubtractiveChange erben, dass ist aber kein Problem da alle unterklassen von InsertInEList schon von einer Unterklasse von AdditiveChange erben und analog für Remove und Subtract
 
 auf jeden Fall bei der Reaktion von unten nach oben in der Vererbungshierarchie reagieren
@@ -155,26 +153,6 @@ Ich habe ReplaceAttributeInEList und ReplaceReferenceInEList nicht unterschieden
 *#* unabhängig vom TUIDCalculatorAndResolver
 
 
-
-
-
-
-
-
-
-
-
-
-HEIKO: den Typ des change elements inferieren und für den Block entsprechend gecastet einbinden damit der Nutzer sich darum nicht kümmern muss
-
-
-
-
-
-
-
-
-
 == find right metaclass algorithm ==
 === for free ===
 * durch das feature ergibt sich automatisch (daher im algorithmus eingeklammert)
@@ -195,8 +173,8 @@ HEIKO: den Typ des change elements inferieren und für den Block entsprechend ge
 ***** remove (attribute or reference) - done
 ***** permute (attribute or reference) - done
 * compound
-** create and add (root or not) - done
-** delete and subtract (root or not) - done
-** delete create replace (single or multi) done
+		      ** create and add (root or not) - done
+		      ** delete and subtract (root or not) - done
+		      ** delete create replace (single or multi) done
 ** move - done
 ** replace in list - done

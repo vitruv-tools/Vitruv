@@ -25,11 +25,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.object.ObjectPackage;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.object.impl.ObjectPackageImpl;
-
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootFactory;
@@ -115,7 +110,6 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
         ListPackageImpl theListPackage = (ListPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) instanceof ListPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) : ListPackage.eINSTANCE);
         AttributePackageImpl theAttributePackage = (AttributePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) instanceof AttributePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) : AttributePackage.eINSTANCE);
         ReferencePackageImpl theReferencePackage = (ReferencePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) instanceof ReferencePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) : ReferencePackage.eINSTANCE);
-        ObjectPackageImpl theObjectPackage = (ObjectPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ObjectPackage.eNS_URI) instanceof ObjectPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ObjectPackage.eNS_URI) : ObjectPackage.eINSTANCE);
         CompoundPackageImpl theCompoundPackage = (CompoundPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) instanceof CompoundPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) : CompoundPackage.eINSTANCE);
 
         // Create package meta-data objects
@@ -125,7 +119,6 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
         theListPackage.createPackageContents();
         theAttributePackage.createPackageContents();
         theReferencePackage.createPackageContents();
-        theObjectPackage.createPackageContents();
         theCompoundPackage.createPackageContents();
 
         // Initialize created meta-data
@@ -135,7 +128,6 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
         theListPackage.initializePackageContents();
         theAttributePackage.initializePackageContents();
         theReferencePackage.initializePackageContents();
-        theObjectPackage.initializePackageContents();
         theCompoundPackage.initializePackageContents();
 
         // Mark meta-data to indicate it can't be changed
@@ -232,11 +224,11 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
         insertRootEObjectEClass_T.getEBounds().add(g1);
 
         // Add supertypes to classes
-        g1 = createEGenericType(theChangePackage.getAdditiveReferenceChange());
+        g1 = createEGenericType(theChangePackage.getAdditiveEReferenceChange());
         EGenericType g2 = createEGenericType(insertRootEObjectEClass_T);
         g1.getETypeArguments().add(g2);
         insertRootEObjectEClass.getEGenericSuperTypes().add(g1);
-        removeRootEObjectEClass.getESuperTypes().add(theChangePackage.getSubtractiveReferenceChange());
+        removeRootEObjectEClass.getESuperTypes().add(theChangePackage.getSubtractiveEReferenceChange());
 
         // Initialize classes, features, and operations; add parameters
         initEClass(insertRootEObjectEClass, InsertRootEObject.class, "InsertRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

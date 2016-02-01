@@ -3,7 +3,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveAttributeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEAttributeChange;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -13,18 +13,18 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Subtractive Attribute Change</b></em>'.
+ * An implementation of the model object '<em><b>Subtractive EAttribute Change</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveAttributeChangeImpl#getOldValue <em>Old Value</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveEAttributeChangeImpl#getOldValue <em>Old Value</em>}</li>
  * </ul>
  *
  * @generated
  */
-public abstract class SubtractiveAttributeChangeImpl<T extends Object> extends SubtractiveChangeImpl<T> implements SubtractiveAttributeChange<T> {
+public abstract class SubtractiveEAttributeChangeImpl<T extends Object> extends SubtractiveEChangeImpl<T> implements SubtractiveEAttributeChange<T> {
     /**
      * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -40,7 +40,7 @@ public abstract class SubtractiveAttributeChangeImpl<T extends Object> extends S
      * <!-- end-user-doc -->
      * @generated
      */
-    protected SubtractiveAttributeChangeImpl() {
+    protected SubtractiveEAttributeChangeImpl() {
         super();
     }
 
@@ -51,7 +51,7 @@ public abstract class SubtractiveAttributeChangeImpl<T extends Object> extends S
      */
     @Override
     protected EClass eStaticClass() {
-        return ChangePackage.Literals.SUBTRACTIVE_ATTRIBUTE_CHANGE;
+        return ChangePackage.Literals.SUBTRACTIVE_EATTRIBUTE_CHANGE;
     }
 
     /**
@@ -72,7 +72,7 @@ public abstract class SubtractiveAttributeChangeImpl<T extends Object> extends S
         T oldOldValue = oldValue;
         oldValue = newOldValue;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ChangePackage.SUBTRACTIVE_ATTRIBUTE_CHANGE__OLD_VALUE, oldOldValue, oldValue));
+            eNotify(new ENotificationImpl(this, Notification.SET, ChangePackage.SUBTRACTIVE_EATTRIBUTE_CHANGE__OLD_VALUE, oldOldValue, oldValue));
     }
 
     /**
@@ -83,7 +83,7 @@ public abstract class SubtractiveAttributeChangeImpl<T extends Object> extends S
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case ChangePackage.SUBTRACTIVE_ATTRIBUTE_CHANGE__OLD_VALUE:
+            case ChangePackage.SUBTRACTIVE_EATTRIBUTE_CHANGE__OLD_VALUE:
                 return getOldValue();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -98,7 +98,7 @@ public abstract class SubtractiveAttributeChangeImpl<T extends Object> extends S
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case ChangePackage.SUBTRACTIVE_ATTRIBUTE_CHANGE__OLD_VALUE:
+            case ChangePackage.SUBTRACTIVE_EATTRIBUTE_CHANGE__OLD_VALUE:
                 setOldValue((T)newValue);
                 return;
         }
@@ -113,7 +113,7 @@ public abstract class SubtractiveAttributeChangeImpl<T extends Object> extends S
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case ChangePackage.SUBTRACTIVE_ATTRIBUTE_CHANGE__OLD_VALUE:
+            case ChangePackage.SUBTRACTIVE_EATTRIBUTE_CHANGE__OLD_VALUE:
                 setOldValue((T)null);
                 return;
         }
@@ -128,7 +128,7 @@ public abstract class SubtractiveAttributeChangeImpl<T extends Object> extends S
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case ChangePackage.SUBTRACTIVE_ATTRIBUTE_CHANGE__OLD_VALUE:
+            case ChangePackage.SUBTRACTIVE_EATTRIBUTE_CHANGE__OLD_VALUE:
                 return oldValue != null;
         }
         return super.eIsSet(featureID);
@@ -150,4 +150,4 @@ public abstract class SubtractiveAttributeChangeImpl<T extends Object> extends S
         return result.toString();
     }
 
-} //SubtractiveAttributeChangeImpl
+} //SubtractiveEAttributeChangeImpl

@@ -4,8 +4,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
-
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
@@ -27,7 +26,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * @model abstract="true"
  * @generated
  */
-public interface EFeatureChange<T extends EStructuralFeature> extends EChange {
+public interface EFeatureChange<T extends EStructuralFeature> extends EAtomicChange {
     /**
      * Returns the value of the '<em><b>Affected Feature</b></em>' reference.
      * <!-- begin-user-doc -->
