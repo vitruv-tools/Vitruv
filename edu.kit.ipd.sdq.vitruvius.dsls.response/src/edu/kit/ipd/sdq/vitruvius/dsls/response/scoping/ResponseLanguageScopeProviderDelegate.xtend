@@ -25,6 +25,9 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
 import org.eclipse.emf.ecore.EStructuralFeature
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicMultiValuedFeatureChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicSingleValuedFeatureChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootCreate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootDelete
 
 /**
  * Copy of edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping.MappingLanguageScopeProviderDelegate by Dominik Werle
@@ -42,9 +45,14 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 		if (reference.equals(FEATURE_OF_ELEMENT__FEATURE))
 			return createEStructuralFeatureScope(context as FeatureOfElement)
 		else if (reference.equals(FEATURE_OF_ELEMENT__ELEMENT)
-			|| reference.equals(MODEL_ELEMENT__ELEMENT))
-			return createQualifiedEClassScope(context.eResource)
-		else if (reference.equals(METAMODEL_REFERENCE__MODEL)) {
+			|| reference.equals(MODEL_ELEMENT__ELEMENT)) {
+			if (context instanceof ConcreteTargetModelRootCreate
+				|| context instanceof ConcreteTargetModelRootDelete) {
+				return createQualifiedConcreteEClassScope(context.eResource);
+			} else {
+				return createQualifiedEClassScope(context.eResource)
+			}
+		} else if (reference.equals(METAMODEL_REFERENCE__MODEL)) {
 			return createImportsScope(context.eResource);
 		}
 		super.getScope(context, reference)
@@ -102,6 +110,22 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 	}
 
 
+	/**
+	 * Create an {@link IScope} that represents all non-abstract {@link EClass}es
+	 * that are referencable inside the {@link Resource} via {@link Import}s
+	 * by a fully qualified name.
+	 * 
+	 * @see MIRScopeProviderDelegate#createQualifiedEClassifierScope(Resource)
+	 */
+	def createQualifiedConcreteEClassScope(Resource res) {
+		val classifierDescriptions = res.metamodelImports.map[
+			import | collectObjectDescriptions(import.package, true, false, false, import.name)
+		].flatten
+
+		var resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions)
+		return resultScope
+	}
+	
 	/**
 	 * Create an {@link IScope} that represents all {@link EClass}es
 	 * that are referencable inside the {@link Resource} via {@link Import}s
