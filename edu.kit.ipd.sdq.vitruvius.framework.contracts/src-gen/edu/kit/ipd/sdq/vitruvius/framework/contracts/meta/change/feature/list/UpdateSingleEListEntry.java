@@ -17,10 +17,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateM
  * </ul>
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.ListPackage#getUpdateSingleEListEntry()
- * @model abstract="true" TBounds="org.eclipse.emf.ecore.EJavaObject"
+ * @model abstract="true"
  * @generated
  */
-public interface UpdateSingleEListEntry<T extends Object> extends UpdateMultiValuedEFeature<T> {
+public interface UpdateSingleEListEntry extends UpdateMultiValuedEFeature {
     /**
      * Returns the value of the '<em><b>Index</b></em>' attribute.
      * The default value is <code>"0"</code>.

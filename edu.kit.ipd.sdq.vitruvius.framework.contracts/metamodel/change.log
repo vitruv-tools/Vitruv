@@ -134,6 +134,7 @@
 * InsertInEList und RemoveFromEList können doch nicht vom allgemeinen AdditiveChange und SubtractiveChange erben, dass ist aber kein Problem da alle unterklassen von InsertInEList schon von einer Unterklasse von AdditiveChange erben und analog für Remove und Subtract
 * Ich habe ReplaceAttributeInEList und ReplaceReferenceInEList nicht unterschieden da letzteres nicht von ReplaciveReferenceChange erben kann um replaceChange in DeleteEObjectCreateEObjectAndReplace typen zu können. Daher musste ich zwei Versionen von DeleteEObjectCreateEObjectAndReplaceInList zu erstellen.
 * ExplicitUnsetEFeature erbt nicht von EFeatureChange da alle Informationen zum feature in den enthaltenen subtractiveChanges enthalten sind und ExplicitUnsetEFeature ansonsten atomic und compound zugleich wäre
+* wir können den TypParameter-für-AtomicChanges-Trick nicht bei Move anwenden da InsertRoot und RemoveRoot nicht auch von EFeatureChange erben
 
 == Verwendung des change mm ==
 * auf jeden Fall bei der Reaktion von unten nach oben in der Vererbungshierarchie reagieren

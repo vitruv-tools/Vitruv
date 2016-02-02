@@ -17,5 +17,5 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface RemoveEReference<T extends EObject> extends RemoveFromEList<T>, UpdateEReference<T>, SubtractiveEReferenceChange {
+public interface RemoveEReference<A extends EObject> extends RemoveFromEList, UpdateEReference<A>, SubtractiveEReferenceChange {
 } // RemoveEReference

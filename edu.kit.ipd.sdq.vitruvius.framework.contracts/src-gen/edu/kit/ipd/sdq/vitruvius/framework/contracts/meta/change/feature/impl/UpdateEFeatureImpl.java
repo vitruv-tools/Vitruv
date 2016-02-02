@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public abstract class UpdateEFeatureImpl<T extends Object> extends EAtomicChangeImpl implements UpdateEFeature<T> {
+public abstract class UpdateEFeatureImpl extends EAtomicChangeImpl implements UpdateEFeature {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

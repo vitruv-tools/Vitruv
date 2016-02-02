@@ -26,7 +26,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * @model abstract="true"
  * @generated
  */
-public interface EFeatureChange<T extends EStructuralFeature> extends EAtomicChange {
+public interface EFeatureChange<A extends EObject, F extends EStructuralFeature> extends EAtomicChange {
     /**
      * Returns the value of the '<em><b>Affected Feature</b></em>' reference.
      * <!-- begin-user-doc -->
@@ -41,7 +41,7 @@ public interface EFeatureChange<T extends EStructuralFeature> extends EAtomicCha
      * @model required="true"
      * @generated
      */
-    T getAffectedFeature();
+    F getAffectedFeature();
 
     /**
      * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange#getAffectedFeature <em>Affected Feature</em>}' reference.
@@ -51,7 +51,7 @@ public interface EFeatureChange<T extends EStructuralFeature> extends EAtomicCha
      * @see #getAffectedFeature()
      * @generated
      */
-    void setAffectedFeature(T value);
+    void setAffectedFeature(F value);
 
     /**
      * Returns the value of the '<em><b>Affected EObject</b></em>' reference.
@@ -67,7 +67,7 @@ public interface EFeatureChange<T extends EStructuralFeature> extends EAtomicCha
      * @model required="true"
      * @generated
      */
-    EObject getAffectedEObject();
+    A getAffectedEObject();
 
     /**
      * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange#getAffectedEObject <em>Affected EObject</em>}' reference.
@@ -77,7 +77,7 @@ public interface EFeatureChange<T extends EStructuralFeature> extends EAtomicCha
      * @see #getAffectedEObject()
      * @generated
      */
-    void setAffectedEObject(EObject value);
+    void setAffectedEObject(A value);
 
     /**
      * Returns the value of the '<em><b>Old TUID Of Affected EObject</b></em>' attribute.

@@ -26,7 +26,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public abstract class PermuteEListImpl<T extends Object> extends UpdateMultiValuedEFeatureImpl<T> implements PermuteEList<T> {
+public abstract class PermuteEListImpl extends UpdateMultiValuedEFeatureImpl implements PermuteEList {
     /**
      * The default value of the '{@link #getNewIndexForElementAt() <em>New Index For Element At</em>}' attribute.
      * <!-- begin-user-doc -->

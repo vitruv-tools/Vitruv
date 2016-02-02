@@ -2,12 +2,18 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.*;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInEList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromEList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
@@ -69,8 +75,8 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
      * <!-- end-user-doc -->
      * @generated
      */
-    public <T extends EObject> MoveEObject<T> createMoveEObject() {
-        MoveEObjectImpl<T> moveEObject = new MoveEObjectImpl<T>();
+    public <A extends EObject, B extends EObject, T extends EObject> MoveEObject<A, B, T> createMoveEObject() {
+        MoveEObjectImpl<A, B, T> moveEObject = new MoveEObjectImpl<A, B, T>();
         return moveEObject;
     }
 
@@ -79,8 +85,8 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
      * <!-- end-user-doc -->
      * @generated
      */
-    public <T extends Object> ReplaceInEList<T> createReplaceInEList() {
-        ReplaceInEListImpl<T> replaceInEList = new ReplaceInEListImpl<T>();
+    public <A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromEList & EFeatureChange<A, F> & SubtractiveEChange<T>, I extends InsertInEList & EFeatureChange<A, F> & AdditiveEReferenceChange<T>> ReplaceInEList<A, F, T, R, I> createReplaceInEList() {
+        ReplaceInEListImpl<A, F, T, R, I> replaceInEList = new ReplaceInEListImpl<A, F, T, R, I>();
         return replaceInEList;
     }
 
@@ -89,8 +95,8 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
      * <!-- end-user-doc -->
      * @generated
      */
-    public <T extends Object> ExplicitUnsetEFeature<T> createExplicitUnsetEFeature() {
-        ExplicitUnsetEFeatureImpl<T> explicitUnsetEFeature = new ExplicitUnsetEFeatureImpl<T>();
+    public <A extends EObject, F extends EStructuralFeature, T extends Object, S extends EFeatureChange<A, F> & SubtractiveEChange<T>> ExplicitUnsetEFeature<A, F, T, S> createExplicitUnsetEFeature() {
+        ExplicitUnsetEFeatureImpl<A, F, T, S> explicitUnsetEFeature = new ExplicitUnsetEFeatureImpl<A, F, T, S>();
         return explicitUnsetEFeature;
     }
 

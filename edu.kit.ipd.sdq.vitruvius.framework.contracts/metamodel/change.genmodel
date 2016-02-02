@@ -43,75 +43,70 @@
     <nestedGenPackages prefix="Feature" basePackage="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change"
         disposableProviderFactory="true" ecorePackage="change.ecore#//feature">
       <genClasses image="false" ecoreClass="change.ecore#//feature/EFeatureChange">
-        <genTypeParameters ecoreTypeParameter="change.ecore#//feature/EFeatureChange/T"/>
+        <genTypeParameters ecoreTypeParameter="change.ecore#//feature/EFeatureChange/A"/>
+        <genTypeParameters ecoreTypeParameter="change.ecore#//feature/EFeatureChange/F"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference change.ecore#//feature/EFeatureChange/affectedFeature"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference change.ecore#//feature/EFeatureChange/affectedEObject"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//feature/EFeatureChange/oldTUIDOfAffectedEObject"/>
       </genClasses>
-      <genClasses image="false" ecoreClass="change.ecore#//feature/UpdateEFeature">
-        <genTypeParameters ecoreTypeParameter="change.ecore#//feature/UpdateEFeature/T"/>
-      </genClasses>
-      <genClasses image="false" ecoreClass="change.ecore#//feature/UpdateMultiValuedEFeature">
-        <genTypeParameters ecoreTypeParameter="change.ecore#//feature/UpdateMultiValuedEFeature/T"/>
-      </genClasses>
-      <genClasses image="false" ecoreClass="change.ecore#//feature/UpdateSingleValuedEFeature">
-        <genTypeParameters ecoreTypeParameter="change.ecore#//feature/UpdateSingleValuedEFeature/T"/>
-      </genClasses>
+      <genClasses image="false" ecoreClass="change.ecore#//feature/UpdateEFeature"/>
+      <genClasses image="false" ecoreClass="change.ecore#//feature/UpdateMultiValuedEFeature"/>
+      <genClasses image="false" ecoreClass="change.ecore#//feature/UpdateSingleValuedEFeature"/>
       <nestedGenPackages prefix="List" basePackage="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature"
           disposableProviderFactory="true" ecorePackage="change.ecore#//feature/list">
         <genClasses image="false" ecoreClass="change.ecore#//feature/list/UpdateSingleEListEntry">
-          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/list/UpdateSingleEListEntry/T"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//feature/list/UpdateSingleEListEntry/index"/>
         </genClasses>
-        <genClasses image="false" ecoreClass="change.ecore#//feature/list/InsertInEList">
-          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/list/InsertInEList/T"/>
-        </genClasses>
+        <genClasses image="false" ecoreClass="change.ecore#//feature/list/InsertInEList"/>
         <genClasses image="false" ecoreClass="change.ecore#//feature/list/RemoveFromEList">
-          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/list/RemoveFromEList/T"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//feature/list/RemoveFromEList/removedObjectURIFragment"/>
         </genClasses>
         <genClasses image="false" ecoreClass="change.ecore#//feature/list/PermuteEList">
-          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/list/PermuteEList/T"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//feature/list/PermuteEList/newIndexForElementAt"/>
         </genClasses>
       </nestedGenPackages>
       <nestedGenPackages prefix="Attribute" basePackage="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature"
           disposableProviderFactory="true" ecorePackage="change.ecore#//feature/attribute">
         <genClasses image="false" ecoreClass="change.ecore#//feature/attribute/UpdateEAttribute">
-          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/attribute/UpdateEAttribute/T"/>
+          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/attribute/UpdateEAttribute/A"/>
         </genClasses>
         <genClasses ecoreClass="change.ecore#//feature/attribute/ReplaceSingleValuedEAttribute">
+          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/attribute/ReplaceSingleValuedEAttribute/A"/>
           <genTypeParameters ecoreTypeParameter="change.ecore#//feature/attribute/ReplaceSingleValuedEAttribute/T"/>
         </genClasses>
         <genClasses ecoreClass="change.ecore#//feature/attribute/InsertEAttributeValue">
+          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/attribute/InsertEAttributeValue/A"/>
           <genTypeParameters ecoreTypeParameter="change.ecore#//feature/attribute/InsertEAttributeValue/T"/>
         </genClasses>
         <genClasses ecoreClass="change.ecore#//feature/attribute/RemoveEAttributeValue">
           <genTypeParameters ecoreTypeParameter="change.ecore#//feature/attribute/RemoveEAttributeValue/T"/>
+          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/attribute/RemoveEAttributeValue/A"/>
         </genClasses>
         <genClasses ecoreClass="change.ecore#//feature/attribute/PermuteEAttributeValues">
-          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/attribute/PermuteEAttributeValues/T"/>
+          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/attribute/PermuteEAttributeValues/A"/>
         </genClasses>
       </nestedGenPackages>
       <nestedGenPackages prefix="Reference" basePackage="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature"
           disposableProviderFactory="true" ecorePackage="change.ecore#//feature/reference">
         <genClasses image="false" ecoreClass="change.ecore#//feature/reference/UpdateEReference">
-          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/reference/UpdateEReference/T"/>
+          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/reference/UpdateEReference/A"/>
           <genOperations ecoreOperation="change.ecore#//feature/reference/UpdateEReference/isContainment"/>
         </genClasses>
         <genClasses ecoreClass="change.ecore#//feature/reference/ReplaceSingleValuedEReference">
+          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/reference/ReplaceSingleValuedEReference/A"/>
           <genTypeParameters ecoreTypeParameter="change.ecore#//feature/reference/ReplaceSingleValuedEReference/T"/>
         </genClasses>
         <genClasses ecoreClass="change.ecore#//feature/reference/InsertEReference">
+          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/reference/InsertEReference/A"/>
           <genTypeParameters ecoreTypeParameter="change.ecore#//feature/reference/InsertEReference/T"/>
         </genClasses>
         <genClasses ecoreClass="change.ecore#//feature/reference/RemoveEReference">
-          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/reference/RemoveEReference/T"/>
+          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/reference/RemoveEReference/A"/>
         </genClasses>
         <genClasses ecoreClass="change.ecore#//feature/reference/PermuteEReferenceValues">
-          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/reference/PermuteEReferenceValues/T"/>
+          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/reference/PermuteEReferenceValues/A"/>
         </genClasses>
       </nestedGenPackages>
     </nestedGenPackages>
@@ -128,17 +123,30 @@
         <genOperations ecoreOperation="change.ecore#//compound/ECompoundChange/getAtomicChanges"/>
       </genClasses>
       <genClasses ecoreClass="change.ecore#//compound/MoveEObject">
+        <genTypeParameters ecoreTypeParameter="change.ecore#//compound/MoveEObject/A"/>
+        <genTypeParameters ecoreTypeParameter="change.ecore#//compound/MoveEObject/B"/>
         <genTypeParameters ecoreTypeParameter="change.ecore#//compound/MoveEObject/T"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference change.ecore#//compound/MoveEObject/subtractChange"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference change.ecore#//compound/MoveEObject/addChange"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference change.ecore#//compound/MoveEObject/subtractWhereChange"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference change.ecore#//compound/MoveEObject/subtractWhatChange"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference change.ecore#//compound/MoveEObject/addWhereChange"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference change.ecore#//compound/MoveEObject/addWhatChange"/>
       </genClasses>
       <genClasses image="false" ecoreClass="change.ecore#//compound/ReplaceInEList">
+        <genTypeParameters ecoreTypeParameter="change.ecore#//compound/ReplaceInEList/A"/>
+        <genTypeParameters ecoreTypeParameter="change.ecore#//compound/ReplaceInEList/F"/>
         <genTypeParameters ecoreTypeParameter="change.ecore#//compound/ReplaceInEList/T"/>
+        <genTypeParameters ecoreTypeParameter="change.ecore#//compound/ReplaceInEList/R"/>
+        <genTypeParameters ecoreTypeParameter="change.ecore#//compound/ReplaceInEList/I"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference change.ecore#//compound/ReplaceInEList/removeChange"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference change.ecore#//compound/ReplaceInEList/insertChange"/>
       </genClasses>
       <genClasses ecoreClass="change.ecore#//compound/ExplicitUnsetEFeature">
+        <genTypeParameters ecoreTypeParameter="change.ecore#//compound/ExplicitUnsetEFeature/A"/>
+        <genTypeParameters ecoreTypeParameter="change.ecore#//compound/ExplicitUnsetEFeature/F"/>
         <genTypeParameters ecoreTypeParameter="change.ecore#//compound/ExplicitUnsetEFeature/T"/>
+        <genTypeParameters ecoreTypeParameter="change.ecore#//compound/ExplicitUnsetEFeature/S"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference change.ecore#//compound/ExplicitUnsetEFeature/subtractiveChanges"/>
       </genClasses>

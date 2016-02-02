@@ -93,7 +93,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
                 return result;
             }
             case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE: {
-                ReplaceSingleValuedEAttribute<?> replaceSingleValuedEAttribute = (ReplaceSingleValuedEAttribute<?>)theEObject;
+                ReplaceSingleValuedEAttribute<?, ?> replaceSingleValuedEAttribute = (ReplaceSingleValuedEAttribute<?, ?>)theEObject;
                 T1 result = caseReplaceSingleValuedEAttribute(replaceSingleValuedEAttribute);
                 if (result == null) result = caseUpdateSingleValuedEFeature(replaceSingleValuedEAttribute);
                 if (result == null) result = caseUpdateEAttribute(replaceSingleValuedEAttribute);
@@ -109,7 +109,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
                 return result;
             }
             case AttributePackage.INSERT_EATTRIBUTE_VALUE: {
-                InsertEAttributeValue<?> insertEAttributeValue = (InsertEAttributeValue<?>)theEObject;
+                InsertEAttributeValue<?, ?> insertEAttributeValue = (InsertEAttributeValue<?, ?>)theEObject;
                 T1 result = caseInsertEAttributeValue(insertEAttributeValue);
                 if (result == null) result = caseInsertInEList(insertEAttributeValue);
                 if (result == null) result = caseUpdateEAttribute(insertEAttributeValue);
@@ -125,7 +125,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
                 return result;
             }
             case AttributePackage.REMOVE_EATTRIBUTE_VALUE: {
-                RemoveEAttributeValue<?> removeEAttributeValue = (RemoveEAttributeValue<?>)theEObject;
+                RemoveEAttributeValue<?, ?> removeEAttributeValue = (RemoveEAttributeValue<?, ?>)theEObject;
                 T1 result = caseRemoveEAttributeValue(removeEAttributeValue);
                 if (result == null) result = caseRemoveFromEList(removeEAttributeValue);
                 if (result == null) result = caseUpdateEAttribute(removeEAttributeValue);
@@ -168,7 +168,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseUpdateEAttribute(UpdateEAttribute<T> object) {
+    public <A extends EObject> T1 caseUpdateEAttribute(UpdateEAttribute<A> object) {
         return null;
     }
 
@@ -183,7 +183,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseReplaceSingleValuedEAttribute(ReplaceSingleValuedEAttribute<T> object) {
+    public <A extends EObject, T extends Object> T1 caseReplaceSingleValuedEAttribute(ReplaceSingleValuedEAttribute<A, T> object) {
         return null;
     }
 
@@ -198,7 +198,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseInsertEAttributeValue(InsertEAttributeValue<T> object) {
+    public <A extends EObject, T extends Object> T1 caseInsertEAttributeValue(InsertEAttributeValue<A, T> object) {
         return null;
     }
 
@@ -213,7 +213,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseRemoveEAttributeValue(RemoveEAttributeValue<T> object) {
+    public <T extends Object, A extends EObject> T1 caseRemoveEAttributeValue(RemoveEAttributeValue<T, A> object) {
         return null;
     }
 
@@ -228,7 +228,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 casePermuteEAttributeValues(PermuteEAttributeValues<T> object) {
+    public <A extends EObject> T1 casePermuteEAttributeValues(PermuteEAttributeValues<A> object) {
         return null;
     }
 
@@ -273,7 +273,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends EStructuralFeature> T1 caseEFeatureChange(EFeatureChange<T> object) {
+    public <A extends EObject, F extends EStructuralFeature> T1 caseEFeatureChange(EFeatureChange<A, F> object) {
         return null;
     }
 
@@ -288,7 +288,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseUpdateEFeature(UpdateEFeature<T> object) {
+    public T1 caseUpdateEFeature(UpdateEFeature object) {
         return null;
     }
 
@@ -303,7 +303,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseUpdateSingleValuedEFeature(UpdateSingleValuedEFeature<T> object) {
+    public T1 caseUpdateSingleValuedEFeature(UpdateSingleValuedEFeature object) {
         return null;
     }
 
@@ -378,7 +378,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseUpdateMultiValuedEFeature(UpdateMultiValuedEFeature<T> object) {
+    public T1 caseUpdateMultiValuedEFeature(UpdateMultiValuedEFeature object) {
         return null;
     }
 
@@ -393,7 +393,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseUpdateSingleEListEntry(UpdateSingleEListEntry<T> object) {
+    public T1 caseUpdateSingleEListEntry(UpdateSingleEListEntry object) {
         return null;
     }
 
@@ -408,7 +408,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseInsertInEList(InsertInEList<T> object) {
+    public T1 caseInsertInEList(InsertInEList object) {
         return null;
     }
 
@@ -423,7 +423,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseRemoveFromEList(RemoveFromEList<T> object) {
+    public T1 caseRemoveFromEList(RemoveFromEList object) {
         return null;
     }
 
@@ -438,7 +438,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 casePermuteEList(PermuteEList<T> object) {
+    public T1 casePermuteEList(PermuteEList object) {
         return null;
     }
 

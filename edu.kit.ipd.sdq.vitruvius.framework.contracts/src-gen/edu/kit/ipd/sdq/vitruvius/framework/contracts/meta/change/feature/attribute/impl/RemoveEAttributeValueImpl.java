@@ -41,7 +41,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class RemoveEAttributeValueImpl<T extends Object> extends RemoveFromEListImpl<T> implements RemoveEAttributeValue<T> {
+public class RemoveEAttributeValueImpl<T extends Object, A extends EObject> extends RemoveFromEListImpl implements RemoveEAttributeValue<T, A> {
     /**
      * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
      * <!-- begin-user-doc -->
@@ -60,7 +60,7 @@ public class RemoveEAttributeValueImpl<T extends Object> extends RemoveFromEList
      * @generated
      * @ordered
      */
-    protected EObject affectedEObject;
+    protected A affectedEObject;
 
     /**
      * The default value of the '{@link #getOldTUIDOfAffectedEObject() <em>Old TUID Of Affected EObject</em>}' attribute.
@@ -154,10 +154,11 @@ public class RemoveEAttributeValueImpl<T extends Object> extends RemoveFromEList
      * <!-- end-user-doc -->
      * @generated
      */
-    public EObject getAffectedEObject() {
+    @SuppressWarnings("unchecked")
+    public A getAffectedEObject() {
         if (affectedEObject != null && affectedEObject.eIsProxy()) {
             InternalEObject oldAffectedEObject = (InternalEObject)affectedEObject;
-            affectedEObject = eResolveProxy(oldAffectedEObject);
+            affectedEObject = (A)eResolveProxy(oldAffectedEObject);
             if (affectedEObject != oldAffectedEObject) {
                 if (eNotificationRequired())
                     eNotify(new ENotificationImpl(this, Notification.RESOLVE, AttributePackage.REMOVE_EATTRIBUTE_VALUE__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
@@ -171,7 +172,7 @@ public class RemoveEAttributeValueImpl<T extends Object> extends RemoveFromEList
      * <!-- end-user-doc -->
      * @generated
      */
-    public EObject basicGetAffectedEObject() {
+    public A basicGetAffectedEObject() {
         return affectedEObject;
     }
 
@@ -180,8 +181,8 @@ public class RemoveEAttributeValueImpl<T extends Object> extends RemoveFromEList
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setAffectedEObject(EObject newAffectedEObject) {
-        EObject oldAffectedEObject = affectedEObject;
+    public void setAffectedEObject(A newAffectedEObject) {
+        A oldAffectedEObject = affectedEObject;
         affectedEObject = newAffectedEObject;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, AttributePackage.REMOVE_EATTRIBUTE_VALUE__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
@@ -264,7 +265,7 @@ public class RemoveEAttributeValueImpl<T extends Object> extends RemoveFromEList
                 setAffectedFeature((EAttribute)newValue);
                 return;
             case AttributePackage.REMOVE_EATTRIBUTE_VALUE__AFFECTED_EOBJECT:
-                setAffectedEObject((EObject)newValue);
+                setAffectedEObject((A)newValue);
                 return;
             case AttributePackage.REMOVE_EATTRIBUTE_VALUE__OLD_TUID_OF_AFFECTED_EOBJECT:
                 setOldTUIDOfAffectedEObject((TUID)newValue);
@@ -288,7 +289,7 @@ public class RemoveEAttributeValueImpl<T extends Object> extends RemoveFromEList
                 setAffectedFeature((EAttribute)null);
                 return;
             case AttributePackage.REMOVE_EATTRIBUTE_VALUE__AFFECTED_EOBJECT:
-                setAffectedEObject((EObject)null);
+                setAffectedEObject((A)null);
                 return;
             case AttributePackage.REMOVE_EATTRIBUTE_VALUE__OLD_TUID_OF_AFFECTED_EOBJECT:
                 setOldTUIDOfAffectedEObject(OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT);

@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public abstract class RemoveFromEListImpl<T extends Object> extends UpdateSingleEListEntryImpl<T> implements RemoveFromEList<T> {
+public abstract class RemoveFromEListImpl extends UpdateSingleEListEntryImpl implements RemoveFromEList {
     /**
      * The default value of the '{@link #getRemovedObjectURIFragment() <em>Removed Object URI Fragment</em>}' attribute.
      * <!-- begin-user-doc -->

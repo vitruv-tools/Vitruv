@@ -71,19 +71,19 @@ public class FeatureAdapterFactory extends AdapterFactoryImpl {
     protected FeatureSwitch<Adapter> modelSwitch =
         new FeatureSwitch<Adapter>() {
             @Override
-            public <T extends EStructuralFeature> Adapter caseEFeatureChange(EFeatureChange<T> object) {
+            public <A extends EObject, F extends EStructuralFeature> Adapter caseEFeatureChange(EFeatureChange<A, F> object) {
                 return createEFeatureChangeAdapter();
             }
             @Override
-            public <T extends Object> Adapter caseUpdateEFeature(UpdateEFeature<T> object) {
+            public Adapter caseUpdateEFeature(UpdateEFeature object) {
                 return createUpdateEFeatureAdapter();
             }
             @Override
-            public <T extends Object> Adapter caseUpdateMultiValuedEFeature(UpdateMultiValuedEFeature<T> object) {
+            public Adapter caseUpdateMultiValuedEFeature(UpdateMultiValuedEFeature object) {
                 return createUpdateMultiValuedEFeatureAdapter();
             }
             @Override
-            public <T extends Object> Adapter caseUpdateSingleValuedEFeature(UpdateSingleValuedEFeature<T> object) {
+            public Adapter caseUpdateSingleValuedEFeature(UpdateSingleValuedEFeature object) {
                 return createUpdateSingleValuedEFeatureAdapter();
             }
             @Override

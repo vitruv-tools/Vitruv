@@ -295,38 +295,27 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
         getESubpackages().add(theReferencePackage);
 
         // Create type parameters
-        ETypeParameter eFeatureChangeEClass_T = addETypeParameter(eFeatureChangeEClass, "T");
-        ETypeParameter updateEFeatureEClass_T = addETypeParameter(updateEFeatureEClass, "T");
-        ETypeParameter updateMultiValuedEFeatureEClass_T = addETypeParameter(updateMultiValuedEFeatureEClass, "T");
-        ETypeParameter updateSingleValuedEFeatureEClass_T = addETypeParameter(updateSingleValuedEFeatureEClass, "T");
+        ETypeParameter eFeatureChangeEClass_A = addETypeParameter(eFeatureChangeEClass, "A");
+        ETypeParameter eFeatureChangeEClass_F = addETypeParameter(eFeatureChangeEClass, "F");
 
         // Set bounds for type parameters
-        EGenericType g1 = createEGenericType(ecorePackage.getEStructuralFeature());
-        eFeatureChangeEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEJavaObject());
-        updateEFeatureEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEJavaObject());
-        updateMultiValuedEFeatureEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEJavaObject());
-        updateSingleValuedEFeatureEClass_T.getEBounds().add(g1);
+        EGenericType g1 = createEGenericType(ecorePackage.getEObject());
+        eFeatureChangeEClass_A.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEStructuralFeature());
+        eFeatureChangeEClass_F.getEBounds().add(g1);
 
         // Add supertypes to classes
         eFeatureChangeEClass.getESuperTypes().add(theChangePackage.getEAtomicChange());
         updateEFeatureEClass.getESuperTypes().add(theChangePackage.getEAtomicChange());
-        g1 = createEGenericType(this.getUpdateEFeature());
-        EGenericType g2 = createEGenericType(updateMultiValuedEFeatureEClass_T);
-        g1.getETypeArguments().add(g2);
-        updateMultiValuedEFeatureEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getUpdateEFeature());
-        g2 = createEGenericType(updateSingleValuedEFeatureEClass_T);
-        g1.getETypeArguments().add(g2);
-        updateSingleValuedEFeatureEClass.getEGenericSuperTypes().add(g1);
+        updateMultiValuedEFeatureEClass.getESuperTypes().add(this.getUpdateEFeature());
+        updateSingleValuedEFeatureEClass.getESuperTypes().add(this.getUpdateEFeature());
 
         // Initialize classes, features, and operations; add parameters
         initEClass(eFeatureChangeEClass, EFeatureChange.class, "EFeatureChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        g1 = createEGenericType(eFeatureChangeEClass_T);
+        g1 = createEGenericType(eFeatureChangeEClass_F);
         initEReference(getEFeatureChange_AffectedFeature(), g1, null, "affectedFeature", null, 1, 1, EFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getEFeatureChange_AffectedEObject(), ecorePackage.getEObject(), null, "affectedEObject", null, 1, 1, EFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        g1 = createEGenericType(eFeatureChangeEClass_A);
+        initEReference(getEFeatureChange_AffectedEObject(), g1, null, "affectedEObject", null, 1, 1, EFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getEFeatureChange_OldTUIDOfAffectedEObject(), theChangePackage.getTUID(), "oldTUIDOfAffectedEObject", null, 1, 1, EFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(updateEFeatureEClass, UpdateEFeature.class, "UpdateEFeature", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

@@ -70,8 +70,8 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
      * <!-- end-user-doc -->
      * @generated
      */
-    public <T extends EObject> ReplaceSingleValuedEReference<T> createReplaceSingleValuedEReference() {
-        ReplaceSingleValuedEReferenceImpl<T> replaceSingleValuedEReference = new ReplaceSingleValuedEReferenceImpl<T>();
+    public <A extends EObject, T extends EObject> ReplaceSingleValuedEReference<A, T> createReplaceSingleValuedEReference() {
+        ReplaceSingleValuedEReferenceImpl<A, T> replaceSingleValuedEReference = new ReplaceSingleValuedEReferenceImpl<A, T>();
         return replaceSingleValuedEReference;
     }
 
@@ -80,8 +80,8 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
      * <!-- end-user-doc -->
      * @generated
      */
-    public <T extends EObject> InsertEReference<T> createInsertEReference() {
-        InsertEReferenceImpl<T> insertEReference = new InsertEReferenceImpl<T>();
+    public <A extends EObject, T extends EObject> InsertEReference<A, T> createInsertEReference() {
+        InsertEReferenceImpl<A, T> insertEReference = new InsertEReferenceImpl<A, T>();
         return insertEReference;
     }
 
@@ -90,8 +90,8 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
      * <!-- end-user-doc -->
      * @generated
      */
-    public <T extends EObject> RemoveEReference<T> createRemoveEReference() {
-        RemoveEReferenceImpl<T> removeEReference = new RemoveEReferenceImpl<T>();
+    public <A extends EObject> RemoveEReference<A> createRemoveEReference() {
+        RemoveEReferenceImpl<A> removeEReference = new RemoveEReferenceImpl<A>();
         return removeEReference;
     }
 
@@ -100,8 +100,8 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
      * <!-- end-user-doc -->
      * @generated
      */
-    public <T extends EObject> PermuteEReferenceValues<T> createPermuteEReferenceValues() {
-        PermuteEReferenceValuesImpl<T> permuteEReferenceValues = new PermuteEReferenceValuesImpl<T>();
+    public <A extends EObject> PermuteEReferenceValues<A> createPermuteEReferenceValues() {
+        PermuteEReferenceValuesImpl<A> permuteEReferenceValues = new PermuteEReferenceValuesImpl<A>();
         return permuteEReferenceValues;
     }
 

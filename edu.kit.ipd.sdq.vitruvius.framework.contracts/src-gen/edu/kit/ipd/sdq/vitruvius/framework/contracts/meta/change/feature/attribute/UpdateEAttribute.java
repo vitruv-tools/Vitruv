@@ -5,6 +5,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attrib
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
 
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -13,8 +14,8 @@ import org.eclipse.emf.ecore.EAttribute;
  *
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.AttributePackage#getUpdateEAttribute()
- * @model abstract="true" TBounds="org.eclipse.emf.ecore.EJavaObject"
+ * @model abstract="true"
  * @generated
  */
-public interface UpdateEAttribute<T extends Object> extends EFeatureChange<EAttribute> {
+public interface UpdateEAttribute<A extends EObject> extends EFeatureChange<A, EAttribute> {
 } // UpdateEAttribute

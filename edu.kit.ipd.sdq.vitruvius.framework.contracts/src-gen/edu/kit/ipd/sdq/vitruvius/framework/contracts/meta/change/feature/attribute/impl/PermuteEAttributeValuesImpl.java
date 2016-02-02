@@ -36,7 +36,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class PermuteEAttributeValuesImpl<T extends Object> extends PermuteEListImpl<T> implements PermuteEAttributeValues<T> {
+public class PermuteEAttributeValuesImpl<A extends EObject> extends PermuteEListImpl implements PermuteEAttributeValues<A> {
     /**
      * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
      * <!-- begin-user-doc -->
@@ -55,7 +55,7 @@ public class PermuteEAttributeValuesImpl<T extends Object> extends PermuteEListI
      * @generated
      * @ordered
      */
-    protected EObject affectedEObject;
+    protected A affectedEObject;
 
     /**
      * The default value of the '{@link #getOldTUIDOfAffectedEObject() <em>Old TUID Of Affected EObject</em>}' attribute.
@@ -139,10 +139,11 @@ public class PermuteEAttributeValuesImpl<T extends Object> extends PermuteEListI
      * <!-- end-user-doc -->
      * @generated
      */
-    public EObject getAffectedEObject() {
+    @SuppressWarnings("unchecked")
+    public A getAffectedEObject() {
         if (affectedEObject != null && affectedEObject.eIsProxy()) {
             InternalEObject oldAffectedEObject = (InternalEObject)affectedEObject;
-            affectedEObject = eResolveProxy(oldAffectedEObject);
+            affectedEObject = (A)eResolveProxy(oldAffectedEObject);
             if (affectedEObject != oldAffectedEObject) {
                 if (eNotificationRequired())
                     eNotify(new ENotificationImpl(this, Notification.RESOLVE, AttributePackage.PERMUTE_EATTRIBUTE_VALUES__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
@@ -156,7 +157,7 @@ public class PermuteEAttributeValuesImpl<T extends Object> extends PermuteEListI
      * <!-- end-user-doc -->
      * @generated
      */
-    public EObject basicGetAffectedEObject() {
+    public A basicGetAffectedEObject() {
         return affectedEObject;
     }
 
@@ -165,8 +166,8 @@ public class PermuteEAttributeValuesImpl<T extends Object> extends PermuteEListI
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setAffectedEObject(EObject newAffectedEObject) {
-        EObject oldAffectedEObject = affectedEObject;
+    public void setAffectedEObject(A newAffectedEObject) {
+        A oldAffectedEObject = affectedEObject;
         affectedEObject = newAffectedEObject;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, AttributePackage.PERMUTE_EATTRIBUTE_VALUES__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
@@ -218,6 +219,7 @@ public class PermuteEAttributeValuesImpl<T extends Object> extends PermuteEListI
      * <!-- end-user-doc -->
      * @generated
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
@@ -225,7 +227,7 @@ public class PermuteEAttributeValuesImpl<T extends Object> extends PermuteEListI
                 setAffectedFeature((EAttribute)newValue);
                 return;
             case AttributePackage.PERMUTE_EATTRIBUTE_VALUES__AFFECTED_EOBJECT:
-                setAffectedEObject((EObject)newValue);
+                setAffectedEObject((A)newValue);
                 return;
             case AttributePackage.PERMUTE_EATTRIBUTE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT:
                 setOldTUIDOfAffectedEObject((TUID)newValue);
@@ -246,7 +248,7 @@ public class PermuteEAttributeValuesImpl<T extends Object> extends PermuteEListI
                 setAffectedFeature((EAttribute)null);
                 return;
             case AttributePackage.PERMUTE_EATTRIBUTE_VALUES__AFFECTED_EOBJECT:
-                setAffectedEObject((EObject)null);
+                setAffectedEObject((A)null);
                 return;
             case AttributePackage.PERMUTE_EATTRIBUTE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT:
                 setOldTUIDOfAffectedEObject(OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT);

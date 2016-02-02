@@ -73,19 +73,19 @@ public class ListAdapterFactory extends AdapterFactoryImpl {
     protected ListSwitch<Adapter> modelSwitch =
         new ListSwitch<Adapter>() {
             @Override
-            public <T extends Object> Adapter caseUpdateSingleEListEntry(UpdateSingleEListEntry<T> object) {
+            public Adapter caseUpdateSingleEListEntry(UpdateSingleEListEntry object) {
                 return createUpdateSingleEListEntryAdapter();
             }
             @Override
-            public <T extends Object> Adapter caseInsertInEList(InsertInEList<T> object) {
+            public Adapter caseInsertInEList(InsertInEList object) {
                 return createInsertInEListAdapter();
             }
             @Override
-            public <T extends Object> Adapter caseRemoveFromEList(RemoveFromEList<T> object) {
+            public Adapter caseRemoveFromEList(RemoveFromEList object) {
                 return createRemoveFromEListAdapter();
             }
             @Override
-            public <T extends Object> Adapter casePermuteEList(PermuteEList<T> object) {
+            public Adapter casePermuteEList(PermuteEList object) {
                 return createPermuteEListAdapter();
             }
             @Override
@@ -97,11 +97,11 @@ public class ListAdapterFactory extends AdapterFactoryImpl {
                 return createEAtomicChangeAdapter();
             }
             @Override
-            public <T extends Object> Adapter caseUpdateEFeature(UpdateEFeature<T> object) {
+            public Adapter caseUpdateEFeature(UpdateEFeature object) {
                 return createUpdateEFeatureAdapter();
             }
             @Override
-            public <T extends Object> Adapter caseUpdateMultiValuedEFeature(UpdateMultiValuedEFeature<T> object) {
+            public Adapter caseUpdateMultiValuedEFeature(UpdateMultiValuedEFeature object) {
                 return createUpdateMultiValuedEFeatureAdapter();
             }
             @Override

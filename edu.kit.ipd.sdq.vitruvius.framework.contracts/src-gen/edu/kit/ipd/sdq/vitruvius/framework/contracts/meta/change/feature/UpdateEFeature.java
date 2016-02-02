@@ -11,8 +11,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange;
  *
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage#getUpdateEFeature()
- * @model abstract="true" TBounds="org.eclipse.emf.ecore.EJavaObject"
+ * @model abstract="true"
  * @generated
  */
-public interface UpdateEFeature<T extends Object> extends EAtomicChange {
+public interface UpdateEFeature extends EAtomicChange {
 } // UpdateEFeature

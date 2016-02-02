@@ -93,7 +93,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
                 return result;
             }
             case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE: {
-                ReplaceSingleValuedEReference<?> replaceSingleValuedEReference = (ReplaceSingleValuedEReference<?>)theEObject;
+                ReplaceSingleValuedEReference<?, ?> replaceSingleValuedEReference = (ReplaceSingleValuedEReference<?, ?>)theEObject;
                 T1 result = caseReplaceSingleValuedEReference(replaceSingleValuedEReference);
                 if (result == null) result = caseUpdateSingleValuedEFeature(replaceSingleValuedEReference);
                 if (result == null) result = caseUpdateEReference(replaceSingleValuedEReference);
@@ -109,7 +109,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
                 return result;
             }
             case ReferencePackage.INSERT_EREFERENCE: {
-                InsertEReference<?> insertEReference = (InsertEReference<?>)theEObject;
+                InsertEReference<?, ?> insertEReference = (InsertEReference<?, ?>)theEObject;
                 T1 result = caseInsertEReference(insertEReference);
                 if (result == null) result = caseInsertInEList(insertEReference);
                 if (result == null) result = caseUpdateEReference(insertEReference);
@@ -168,7 +168,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends EObject> T1 caseUpdateEReference(UpdateEReference<T> object) {
+    public <A extends EObject> T1 caseUpdateEReference(UpdateEReference<A> object) {
         return null;
     }
 
@@ -183,7 +183,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends EObject> T1 caseReplaceSingleValuedEReference(ReplaceSingleValuedEReference<T> object) {
+    public <A extends EObject, T extends EObject> T1 caseReplaceSingleValuedEReference(ReplaceSingleValuedEReference<A, T> object) {
         return null;
     }
 
@@ -198,7 +198,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends EObject> T1 caseInsertEReference(InsertEReference<T> object) {
+    public <A extends EObject, T extends EObject> T1 caseInsertEReference(InsertEReference<A, T> object) {
         return null;
     }
 
@@ -213,7 +213,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends EObject> T1 caseRemoveEReference(RemoveEReference<T> object) {
+    public <A extends EObject> T1 caseRemoveEReference(RemoveEReference<A> object) {
         return null;
     }
 
@@ -228,7 +228,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends EObject> T1 casePermuteEReferenceValues(PermuteEReferenceValues<T> object) {
+    public <A extends EObject> T1 casePermuteEReferenceValues(PermuteEReferenceValues<A> object) {
         return null;
     }
 
@@ -273,7 +273,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends EStructuralFeature> T1 caseEFeatureChange(EFeatureChange<T> object) {
+    public <A extends EObject, F extends EStructuralFeature> T1 caseEFeatureChange(EFeatureChange<A, F> object) {
         return null;
     }
 
@@ -288,7 +288,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseUpdateEFeature(UpdateEFeature<T> object) {
+    public T1 caseUpdateEFeature(UpdateEFeature object) {
         return null;
     }
 
@@ -303,7 +303,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseUpdateSingleValuedEFeature(UpdateSingleValuedEFeature<T> object) {
+    public T1 caseUpdateSingleValuedEFeature(UpdateSingleValuedEFeature object) {
         return null;
     }
 
@@ -378,7 +378,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseUpdateMultiValuedEFeature(UpdateMultiValuedEFeature<T> object) {
+    public T1 caseUpdateMultiValuedEFeature(UpdateMultiValuedEFeature object) {
         return null;
     }
 
@@ -393,7 +393,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseUpdateSingleEListEntry(UpdateSingleEListEntry<T> object) {
+    public T1 caseUpdateSingleEListEntry(UpdateSingleEListEntry object) {
         return null;
     }
 
@@ -408,7 +408,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseInsertInEList(InsertInEList<T> object) {
+    public T1 caseInsertInEList(InsertInEList object) {
         return null;
     }
 
@@ -423,7 +423,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseRemoveFromEList(RemoveFromEList<T> object) {
+    public T1 caseRemoveFromEList(RemoveFromEList object) {
         return null;
     }
 
@@ -438,7 +438,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 casePermuteEList(PermuteEList<T> object) {
+    public T1 casePermuteEList(PermuteEList object) {
         return null;
     }
 

@@ -276,35 +276,44 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
         ListPackage theListPackage = (ListPackage)EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI);
 
         // Create type parameters
-        ETypeParameter updateEAttributeEClass_T = addETypeParameter(updateEAttributeEClass, "T");
+        ETypeParameter updateEAttributeEClass_A = addETypeParameter(updateEAttributeEClass, "A");
+        ETypeParameter replaceSingleValuedEAttributeEClass_A = addETypeParameter(replaceSingleValuedEAttributeEClass, "A");
         ETypeParameter replaceSingleValuedEAttributeEClass_T = addETypeParameter(replaceSingleValuedEAttributeEClass, "T");
+        ETypeParameter insertEAttributeValueEClass_A = addETypeParameter(insertEAttributeValueEClass, "A");
         ETypeParameter insertEAttributeValueEClass_T = addETypeParameter(insertEAttributeValueEClass, "T");
         ETypeParameter removeEAttributeValueEClass_T = addETypeParameter(removeEAttributeValueEClass, "T");
-        ETypeParameter permuteEAttributeValuesEClass_T = addETypeParameter(permuteEAttributeValuesEClass, "T");
+        ETypeParameter removeEAttributeValueEClass_A = addETypeParameter(removeEAttributeValueEClass, "A");
+        ETypeParameter permuteEAttributeValuesEClass_A = addETypeParameter(permuteEAttributeValuesEClass, "A");
 
         // Set bounds for type parameters
-        EGenericType g1 = createEGenericType(ecorePackage.getEJavaObject());
-        updateEAttributeEClass_T.getEBounds().add(g1);
+        EGenericType g1 = createEGenericType(ecorePackage.getEObject());
+        updateEAttributeEClass_A.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEObject());
+        replaceSingleValuedEAttributeEClass_A.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEJavaObject());
         replaceSingleValuedEAttributeEClass_T.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEObject());
+        insertEAttributeValueEClass_A.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEJavaObject());
         insertEAttributeValueEClass_T.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEJavaObject());
         removeEAttributeValueEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEJavaObject());
-        permuteEAttributeValuesEClass_T.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEObject());
+        removeEAttributeValueEClass_A.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEObject());
+        permuteEAttributeValuesEClass_A.getEBounds().add(g1);
 
         // Add supertypes to classes
         g1 = createEGenericType(theFeaturePackage.getEFeatureChange());
-        EGenericType g2 = createEGenericType(ecorePackage.getEAttribute());
+        EGenericType g2 = createEGenericType(updateEAttributeEClass_A);
+        g1.getETypeArguments().add(g2);
+        g2 = createEGenericType(ecorePackage.getEAttribute());
         g1.getETypeArguments().add(g2);
         updateEAttributeEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(theFeaturePackage.getUpdateSingleValuedEFeature());
-        g2 = createEGenericType(replaceSingleValuedEAttributeEClass_T);
-        g1.getETypeArguments().add(g2);
         replaceSingleValuedEAttributeEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(this.getUpdateEAttribute());
-        g2 = createEGenericType(replaceSingleValuedEAttributeEClass_T);
+        g2 = createEGenericType(replaceSingleValuedEAttributeEClass_A);
         g1.getETypeArguments().add(g2);
         replaceSingleValuedEAttributeEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(theChangePackage.getSubtractiveEAttributeChange());
@@ -316,11 +325,9 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
         g1.getETypeArguments().add(g2);
         replaceSingleValuedEAttributeEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(theListPackage.getInsertInEList());
-        g2 = createEGenericType(insertEAttributeValueEClass_T);
-        g1.getETypeArguments().add(g2);
         insertEAttributeValueEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(this.getUpdateEAttribute());
-        g2 = createEGenericType(insertEAttributeValueEClass_T);
+        g2 = createEGenericType(insertEAttributeValueEClass_A);
         g1.getETypeArguments().add(g2);
         insertEAttributeValueEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(theChangePackage.getAdditiveEAttributeChange());
@@ -328,11 +335,9 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
         g1.getETypeArguments().add(g2);
         insertEAttributeValueEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(theListPackage.getRemoveFromEList());
-        g2 = createEGenericType(removeEAttributeValueEClass_T);
-        g1.getETypeArguments().add(g2);
         removeEAttributeValueEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(this.getUpdateEAttribute());
-        g2 = createEGenericType(removeEAttributeValueEClass_T);
+        g2 = createEGenericType(removeEAttributeValueEClass_A);
         g1.getETypeArguments().add(g2);
         removeEAttributeValueEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(theChangePackage.getSubtractiveEAttributeChange());
@@ -340,11 +345,9 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
         g1.getETypeArguments().add(g2);
         removeEAttributeValueEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(theListPackage.getPermuteEList());
-        g2 = createEGenericType(permuteEAttributeValuesEClass_T);
-        g1.getETypeArguments().add(g2);
         permuteEAttributeValuesEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(this.getUpdateEAttribute());
-        g2 = createEGenericType(permuteEAttributeValuesEClass_T);
+        g2 = createEGenericType(permuteEAttributeValuesEClass_A);
         g1.getETypeArguments().add(g2);
         permuteEAttributeValuesEClass.getEGenericSuperTypes().add(g1);
 

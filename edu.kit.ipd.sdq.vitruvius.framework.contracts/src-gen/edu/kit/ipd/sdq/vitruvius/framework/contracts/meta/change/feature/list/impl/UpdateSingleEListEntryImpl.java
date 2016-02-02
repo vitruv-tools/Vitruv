@@ -26,7 +26,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public abstract class UpdateSingleEListEntryImpl<T extends Object> extends UpdateMultiValuedEFeatureImpl<T> implements UpdateSingleEListEntry<T> {
+public abstract class UpdateSingleEListEntryImpl extends UpdateMultiValuedEFeatureImpl implements UpdateSingleEListEntry {
     /**
      * The default value of the '{@link #getIndex() <em>Index</em>}' attribute.
      * <!-- begin-user-doc -->

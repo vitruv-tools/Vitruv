@@ -27,25 +27,18 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>
- * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.PermuteEReferenceValuesImpl#getAffectedFeature
- * <em>Affected Feature</em>}</li>
- * <li>
- * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.PermuteEReferenceValuesImpl#getAffectedEObject
- * <em>Affected EObject</em>}</li>
- * <li>
- * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.PermuteEReferenceValuesImpl#getOldTUIDOfAffectedEObject
- * <em>Old TUID Of Affected EObject</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.PermuteEReferenceValuesImpl#getAffectedFeature <em>Affected Feature</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.PermuteEReferenceValuesImpl#getAffectedEObject <em>Affected EObject</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.PermuteEReferenceValuesImpl#getOldTUIDOfAffectedEObject <em>Old TUID Of Affected EObject</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class PermuteEReferenceValuesImpl<T extends EObject> extends PermuteEListImpl<T>
-        implements PermuteEReferenceValues<T> {
+public class PermuteEReferenceValuesImpl<A extends EObject> extends PermuteEListImpl
+        implements PermuteEReferenceValues<A> {
     /**
      * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @see #getAffectedFeature()
      * @generated
      * @ordered
@@ -55,12 +48,11 @@ public class PermuteEReferenceValuesImpl<T extends EObject> extends PermuteEList
     /**
      * The cached value of the '{@link #getAffectedEObject() <em>Affected EObject</em>}' reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @see #getAffectedEObject()
      * @generated
      * @ordered
      */
-    protected EObject affectedEObject;
+    protected A affectedEObject;
 
     /**
      * The default value of the '{@link #getOldTUIDOfAffectedEObject()
@@ -86,7 +78,6 @@ public class PermuteEReferenceValuesImpl<T extends EObject> extends PermuteEList
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     protected PermuteEReferenceValuesImpl() {
@@ -95,7 +86,6 @@ public class PermuteEReferenceValuesImpl<T extends EObject> extends PermuteEList
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
@@ -105,115 +95,98 @@ public class PermuteEReferenceValuesImpl<T extends EObject> extends PermuteEList
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
     public EReference getAffectedFeature() {
-        if (this.affectedFeature != null && this.affectedFeature.eIsProxy()) {
-            InternalEObject oldAffectedFeature = (InternalEObject) this.affectedFeature;
-            this.affectedFeature = (EReference) eResolveProxy(oldAffectedFeature);
-            if (this.affectedFeature != oldAffectedFeature) {
+        if (affectedFeature != null && affectedFeature.eIsProxy()) {
+            InternalEObject oldAffectedFeature = (InternalEObject)affectedFeature;
+            affectedFeature = (EReference)eResolveProxy(oldAffectedFeature);
+            if (affectedFeature != oldAffectedFeature) {
                 if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-                            ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_FEATURE, oldAffectedFeature,
-                            this.affectedFeature));
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
             }
         }
-        return this.affectedFeature;
+        return affectedFeature;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     public EReference basicGetAffectedFeature() {
-        return this.affectedFeature;
+        return affectedFeature;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
-    public void setAffectedFeature(final EReference newAffectedFeature) {
-        EReference oldAffectedFeature = this.affectedFeature;
-        this.affectedFeature = newAffectedFeature;
+    public void setAffectedFeature(EReference newAffectedFeature) {
+        EReference oldAffectedFeature = affectedFeature;
+        affectedFeature = newAffectedFeature;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET,
-                    ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_FEATURE, oldAffectedFeature,
-                    this.affectedFeature));
+            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public EObject getAffectedEObject() {
-        if (this.affectedEObject != null && this.affectedEObject.eIsProxy()) {
-            InternalEObject oldAffectedEObject = (InternalEObject) this.affectedEObject;
-            this.affectedEObject = eResolveProxy(oldAffectedEObject);
-            if (this.affectedEObject != oldAffectedEObject) {
+    public A getAffectedEObject() {
+        if (affectedEObject != null && affectedEObject.eIsProxy()) {
+            InternalEObject oldAffectedEObject = (InternalEObject)affectedEObject;
+            affectedEObject = (A)eResolveProxy(oldAffectedEObject);
+            if (affectedEObject != oldAffectedEObject) {
                 if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-                            ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_EOBJECT, oldAffectedEObject,
-                            this.affectedEObject));
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
             }
         }
-        return this.affectedEObject;
+        return affectedEObject;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
-    public EObject basicGetAffectedEObject() {
-        return this.affectedEObject;
+    public A basicGetAffectedEObject() {
+        return affectedEObject;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-    @Override
-    public void setAffectedEObject(final EObject newAffectedEObject) {
-        EObject oldAffectedEObject = this.affectedEObject;
-        this.affectedEObject = newAffectedEObject;
+    public void setAffectedEObject(A newAffectedEObject) {
+        A oldAffectedEObject = affectedEObject;
+        affectedEObject = newAffectedEObject;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET,
-                    ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_EOBJECT, oldAffectedEObject,
-                    this.affectedEObject));
+            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
     public TUID getOldTUIDOfAffectedEObject() {
-        return this.oldTUIDOfAffectedEObject;
+        return oldTUIDOfAffectedEObject;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
-    public void setOldTUIDOfAffectedEObject(final TUID newOldTUIDOfAffectedEObject) {
-        TUID oldOldTUIDOfAffectedEObject = this.oldTUIDOfAffectedEObject;
-        this.oldTUIDOfAffectedEObject = newOldTUIDOfAffectedEObject;
+    public void setOldTUIDOfAffectedEObject(TUID newOldTUIDOfAffectedEObject) {
+        TUID oldOldTUIDOfAffectedEObject = oldTUIDOfAffectedEObject;
+        oldTUIDOfAffectedEObject = newOldTUIDOfAffectedEObject;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET,
-                    ReferencePackage.PERMUTE_EREFERENCE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT,
-                    oldOldTUIDOfAffectedEObject, this.oldTUIDOfAffectedEObject));
+            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.PERMUTE_EREFERENCE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT, oldOldTUIDOfAffectedEObject, oldTUIDOfAffectedEObject));
     }
 
     /**
@@ -228,110 +201,98 @@ public class PermuteEReferenceValuesImpl<T extends EObject> extends PermuteEList
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
-    public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-        case ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_FEATURE:
-            if (resolve)
-                return getAffectedFeature();
-            return basicGetAffectedFeature();
-        case ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_EOBJECT:
-            if (resolve)
-                return getAffectedEObject();
-            return basicGetAffectedEObject();
-        case ReferencePackage.PERMUTE_EREFERENCE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT:
-            return getOldTUIDOfAffectedEObject();
+            case ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_FEATURE:
+                if (resolve) return getAffectedFeature();
+                return basicGetAffectedFeature();
+            case ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_EOBJECT:
+                if (resolve) return getAffectedEObject();
+                return basicGetAffectedEObject();
+            case ReferencePackage.PERMUTE_EREFERENCE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT:
+                return getOldTUIDOfAffectedEObject();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public void eSet(final int featureID, final Object newValue) {
+    public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-        case ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_FEATURE:
-            setAffectedFeature((EReference) newValue);
-            return;
-        case ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_EOBJECT:
-            setAffectedEObject((EObject) newValue);
-            return;
-        case ReferencePackage.PERMUTE_EREFERENCE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT:
-            setOldTUIDOfAffectedEObject((TUID) newValue);
-            return;
+            case ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_FEATURE:
+                setAffectedFeature((EReference)newValue);
+                return;
+            case ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_EOBJECT:
+                setAffectedEObject((A)newValue);
+                return;
+            case ReferencePackage.PERMUTE_EREFERENCE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT:
+                setOldTUIDOfAffectedEObject((TUID)newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
-    public void eUnset(final int featureID) {
+    public void eUnset(int featureID) {
         switch (featureID) {
-        case ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_FEATURE:
-            setAffectedFeature((EReference) null);
-            return;
-        case ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_EOBJECT:
-            setAffectedEObject((EObject) null);
-            return;
-        case ReferencePackage.PERMUTE_EREFERENCE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT:
-            setOldTUIDOfAffectedEObject(OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT);
-            return;
+            case ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_FEATURE:
+                setAffectedFeature((EReference)null);
+                return;
+            case ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_EOBJECT:
+                setAffectedEObject((A)null);
+                return;
+            case ReferencePackage.PERMUTE_EREFERENCE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT:
+                setOldTUIDOfAffectedEObject(OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
-    public boolean eIsSet(final int featureID) {
+    public boolean eIsSet(int featureID) {
         switch (featureID) {
-        case ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_FEATURE:
-            return this.affectedFeature != null;
-        case ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_EOBJECT:
-            return this.affectedEObject != null;
-        case ReferencePackage.PERMUTE_EREFERENCE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT:
-            return OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT == null ? this.oldTUIDOfAffectedEObject != null
-                    : !OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT.equals(this.oldTUIDOfAffectedEObject);
+            case ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_FEATURE:
+                return affectedFeature != null;
+            case ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_EOBJECT:
+                return affectedEObject != null;
+            case ReferencePackage.PERMUTE_EREFERENCE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT:
+                return OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT == null ? oldTUIDOfAffectedEObject != null : !OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT.equals(oldTUIDOfAffectedEObject);
         }
         return super.eIsSet(featureID);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
-    public int eBaseStructuralFeatureID(final int derivedFeatureID, final Class<?> baseClass) {
+    public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
         if (baseClass == EFeatureChange.class) {
             switch (derivedFeatureID) {
-            case ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_FEATURE:
-                return FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE;
-            case ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_EOBJECT:
-                return FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT;
-            case ReferencePackage.PERMUTE_EREFERENCE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT:
-                return FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT;
-            default:
-                return -1;
+                case ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_FEATURE: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE;
+                case ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT;
+                case ReferencePackage.PERMUTE_EREFERENCE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT;
+                default: return -1;
             }
         }
         if (baseClass == UpdateEReference.class) {
             switch (derivedFeatureID) {
-            default:
-                return -1;
+                default: return -1;
             }
         }
         return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
@@ -339,27 +300,21 @@ public class PermuteEReferenceValuesImpl<T extends EObject> extends PermuteEList
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
-    public int eDerivedStructuralFeatureID(final int baseFeatureID, final Class<?> baseClass) {
+    public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
         if (baseClass == EFeatureChange.class) {
             switch (baseFeatureID) {
-            case FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE:
-                return ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_FEATURE;
-            case FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT:
-                return ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_EOBJECT;
-            case FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT:
-                return ReferencePackage.PERMUTE_EREFERENCE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT;
-            default:
-                return -1;
+                case FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE: return ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_FEATURE;
+                case FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT: return ReferencePackage.PERMUTE_EREFERENCE_VALUES__AFFECTED_EOBJECT;
+                case FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT: return ReferencePackage.PERMUTE_EREFERENCE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT;
+                default: return -1;
             }
         }
         if (baseClass == UpdateEReference.class) {
             switch (baseFeatureID) {
-            default:
-                return -1;
+                default: return -1;
             }
         }
         return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
@@ -367,23 +322,19 @@ public class PermuteEReferenceValuesImpl<T extends EObject> extends PermuteEList
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
-    public int eDerivedOperationID(final int baseOperationID, final Class<?> baseClass) {
+    public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
         if (baseClass == EFeatureChange.class) {
             switch (baseOperationID) {
-            default:
-                return -1;
+                default: return -1;
             }
         }
         if (baseClass == UpdateEReference.class) {
             switch (baseOperationID) {
-            case ReferencePackage.UPDATE_EREFERENCE___IS_CONTAINMENT:
-                return ReferencePackage.PERMUTE_EREFERENCE_VALUES___IS_CONTAINMENT;
-            default:
-                return -1;
+                case ReferencePackage.UPDATE_EREFERENCE___IS_CONTAINMENT: return ReferencePackage.PERMUTE_EREFERENCE_VALUES___IS_CONTAINMENT;
+                default: return -1;
             }
         }
         return super.eDerivedOperationID(baseOperationID, baseClass);
@@ -391,31 +342,28 @@ public class PermuteEReferenceValuesImpl<T extends EObject> extends PermuteEList
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
-    public Object eInvoke(final int operationID, final EList<?> arguments) throws InvocationTargetException {
+    public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
         switch (operationID) {
-        case ReferencePackage.PERMUTE_EREFERENCE_VALUES___IS_CONTAINMENT:
-            return isContainment();
+            case ReferencePackage.PERMUTE_EREFERENCE_VALUES___IS_CONTAINMENT:
+                return isContainment();
         }
         return super.eInvoke(operationID, arguments);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy())
-            return super.toString();
+        if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (oldTUIDOfAffectedEObject: ");
-        result.append(this.oldTUIDOfAffectedEObject);
+        result.append(oldTUIDOfAffectedEObject);
         result.append(')');
         return result.toString();
     }

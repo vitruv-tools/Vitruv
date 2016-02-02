@@ -32,7 +32,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public abstract class EFeatureChangeImpl<T extends EStructuralFeature> extends EAtomicChangeImpl implements EFeatureChange<T> {
+public abstract class EFeatureChangeImpl<A extends EObject, F extends EStructuralFeature> extends EAtomicChangeImpl implements EFeatureChange<A, F> {
     /**
      * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
      * <!-- begin-user-doc -->
@@ -41,7 +41,7 @@ public abstract class EFeatureChangeImpl<T extends EStructuralFeature> extends E
      * @generated
      * @ordered
      */
-    protected T affectedFeature;
+    protected F affectedFeature;
 
     /**
      * The cached value of the '{@link #getAffectedEObject() <em>Affected EObject</em>}' reference.
@@ -51,7 +51,7 @@ public abstract class EFeatureChangeImpl<T extends EStructuralFeature> extends E
      * @generated
      * @ordered
      */
-    protected EObject affectedEObject;
+    protected A affectedEObject;
 
     /**
      * The default value of the '{@link #getOldTUIDOfAffectedEObject() <em>Old TUID Of Affected EObject</em>}' attribute.
@@ -98,10 +98,10 @@ public abstract class EFeatureChangeImpl<T extends EStructuralFeature> extends E
      * @generated
      */
     @SuppressWarnings("unchecked")
-    public T getAffectedFeature() {
+    public F getAffectedFeature() {
         if (affectedFeature != null && affectedFeature.eIsProxy()) {
             InternalEObject oldAffectedFeature = (InternalEObject)affectedFeature;
-            affectedFeature = (T)eResolveProxy(oldAffectedFeature);
+            affectedFeature = (F)eResolveProxy(oldAffectedFeature);
             if (affectedFeature != oldAffectedFeature) {
                 if (eNotificationRequired())
                     eNotify(new ENotificationImpl(this, Notification.RESOLVE, FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
@@ -115,7 +115,7 @@ public abstract class EFeatureChangeImpl<T extends EStructuralFeature> extends E
      * <!-- end-user-doc -->
      * @generated
      */
-    public T basicGetAffectedFeature() {
+    public F basicGetAffectedFeature() {
         return affectedFeature;
     }
 
@@ -124,8 +124,8 @@ public abstract class EFeatureChangeImpl<T extends EStructuralFeature> extends E
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setAffectedFeature(T newAffectedFeature) {
-        T oldAffectedFeature = affectedFeature;
+    public void setAffectedFeature(F newAffectedFeature) {
+        F oldAffectedFeature = affectedFeature;
         affectedFeature = newAffectedFeature;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
@@ -136,10 +136,11 @@ public abstract class EFeatureChangeImpl<T extends EStructuralFeature> extends E
      * <!-- end-user-doc -->
      * @generated
      */
-    public EObject getAffectedEObject() {
+    @SuppressWarnings("unchecked")
+    public A getAffectedEObject() {
         if (affectedEObject != null && affectedEObject.eIsProxy()) {
             InternalEObject oldAffectedEObject = (InternalEObject)affectedEObject;
-            affectedEObject = eResolveProxy(oldAffectedEObject);
+            affectedEObject = (A)eResolveProxy(oldAffectedEObject);
             if (affectedEObject != oldAffectedEObject) {
                 if (eNotificationRequired())
                     eNotify(new ENotificationImpl(this, Notification.RESOLVE, FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
@@ -153,7 +154,7 @@ public abstract class EFeatureChangeImpl<T extends EStructuralFeature> extends E
      * <!-- end-user-doc -->
      * @generated
      */
-    public EObject basicGetAffectedEObject() {
+    public A basicGetAffectedEObject() {
         return affectedEObject;
     }
 
@@ -162,8 +163,8 @@ public abstract class EFeatureChangeImpl<T extends EStructuralFeature> extends E
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setAffectedEObject(EObject newAffectedEObject) {
-        EObject oldAffectedEObject = affectedEObject;
+    public void setAffectedEObject(A newAffectedEObject) {
+        A oldAffectedEObject = affectedEObject;
         affectedEObject = newAffectedEObject;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
@@ -220,10 +221,10 @@ public abstract class EFeatureChangeImpl<T extends EStructuralFeature> extends E
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE:
-                setAffectedFeature((T)newValue);
+                setAffectedFeature((F)newValue);
                 return;
             case FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT:
-                setAffectedEObject((EObject)newValue);
+                setAffectedEObject((A)newValue);
                 return;
             case FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT:
                 setOldTUIDOfAffectedEObject((TUID)newValue);
@@ -241,10 +242,10 @@ public abstract class EFeatureChangeImpl<T extends EStructuralFeature> extends E
     public void eUnset(int featureID) {
         switch (featureID) {
             case FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE:
-                setAffectedFeature((T)null);
+                setAffectedFeature((F)null);
                 return;
             case FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT:
-                setAffectedEObject((EObject)null);
+                setAffectedEObject((A)null);
                 return;
             case FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT:
                 setOldTUIDOfAffectedEObject(OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT);

@@ -2,13 +2,19 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.util;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.*;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInEList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromEList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.Switch;
 
 /**
@@ -76,7 +82,7 @@ public class CompoundSwitch<T1> extends Switch<T1> {
                 return result;
             }
             case CompoundPackage.MOVE_EOBJECT: {
-                MoveEObject<?> moveEObject = (MoveEObject<?>)theEObject;
+                MoveEObject<?, ?, ?> moveEObject = (MoveEObject<?, ?, ?>)theEObject;
                 T1 result = caseMoveEObject(moveEObject);
                 if (result == null) result = caseECompoundChange(moveEObject);
                 if (result == null) result = caseEChange(moveEObject);
@@ -84,7 +90,7 @@ public class CompoundSwitch<T1> extends Switch<T1> {
                 return result;
             }
             case CompoundPackage.REPLACE_IN_ELIST: {
-                ReplaceInEList<?> replaceInEList = (ReplaceInEList<?>)theEObject;
+                ReplaceInEList<?, ?, ?, ?, ?> replaceInEList = (ReplaceInEList<?, ?, ?, ?, ?>)theEObject;
                 T1 result = caseReplaceInEList(replaceInEList);
                 if (result == null) result = caseECompoundChange(replaceInEList);
                 if (result == null) result = caseEChange(replaceInEList);
@@ -92,7 +98,7 @@ public class CompoundSwitch<T1> extends Switch<T1> {
                 return result;
             }
             case CompoundPackage.EXPLICIT_UNSET_EFEATURE: {
-                ExplicitUnsetEFeature<?> explicitUnsetEFeature = (ExplicitUnsetEFeature<?>)theEObject;
+                ExplicitUnsetEFeature<?, ?, ?, ?> explicitUnsetEFeature = (ExplicitUnsetEFeature<?, ?, ?, ?>)theEObject;
                 T1 result = caseExplicitUnsetEFeature(explicitUnsetEFeature);
                 if (result == null) result = caseECompoundChange(explicitUnsetEFeature);
                 if (result == null) result = caseEChange(explicitUnsetEFeature);
@@ -129,7 +135,7 @@ public class CompoundSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends EObject> T1 caseMoveEObject(MoveEObject<T> object) {
+    public <A extends EObject, B extends EObject, T extends EObject> T1 caseMoveEObject(MoveEObject<A, B, T> object) {
         return null;
     }
 
@@ -144,7 +150,7 @@ public class CompoundSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseReplaceInEList(ReplaceInEList<T> object) {
+    public <A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromEList & EFeatureChange<A, F> & SubtractiveEChange<T>, I extends InsertInEList & EFeatureChange<A, F> & AdditiveEReferenceChange<T>> T1 caseReplaceInEList(ReplaceInEList<A, F, T, R, I> object) {
         return null;
     }
 
@@ -159,7 +165,7 @@ public class CompoundSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseExplicitUnsetEFeature(ExplicitUnsetEFeature<T> object) {
+    public <A extends EObject, F extends EStructuralFeature, T extends Object, S extends EFeatureChange<A, F> & SubtractiveEChange<T>> T1 caseExplicitUnsetEFeature(ExplicitUnsetEFeature<A, F, T, S> object) {
         return null;
     }
 

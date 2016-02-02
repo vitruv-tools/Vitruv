@@ -34,10 +34,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RootP
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.ETypeParameter;
-
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -286,38 +283,14 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
         FeaturePackage theFeaturePackage = (FeaturePackage)EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI);
 
         // Create type parameters
-        ETypeParameter updateSingleEListEntryEClass_T = addETypeParameter(updateSingleEListEntryEClass, "T");
-        ETypeParameter insertInEListEClass_T = addETypeParameter(insertInEListEClass, "T");
-        ETypeParameter removeFromEListEClass_T = addETypeParameter(removeFromEListEClass, "T");
-        ETypeParameter permuteEListEClass_T = addETypeParameter(permuteEListEClass, "T");
 
         // Set bounds for type parameters
-        EGenericType g1 = createEGenericType(ecorePackage.getEJavaObject());
-        updateSingleEListEntryEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEJavaObject());
-        insertInEListEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEJavaObject());
-        removeFromEListEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEJavaObject());
-        permuteEListEClass_T.getEBounds().add(g1);
 
         // Add supertypes to classes
-        g1 = createEGenericType(theFeaturePackage.getUpdateMultiValuedEFeature());
-        EGenericType g2 = createEGenericType(updateSingleEListEntryEClass_T);
-        g1.getETypeArguments().add(g2);
-        updateSingleEListEntryEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getUpdateSingleEListEntry());
-        g2 = createEGenericType(insertInEListEClass_T);
-        g1.getETypeArguments().add(g2);
-        insertInEListEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getUpdateSingleEListEntry());
-        g2 = createEGenericType(removeFromEListEClass_T);
-        g1.getETypeArguments().add(g2);
-        removeFromEListEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theFeaturePackage.getUpdateMultiValuedEFeature());
-        g2 = createEGenericType(permuteEListEClass_T);
-        g1.getETypeArguments().add(g2);
-        permuteEListEClass.getEGenericSuperTypes().add(g1);
+        updateSingleEListEntryEClass.getESuperTypes().add(theFeaturePackage.getUpdateMultiValuedEFeature());
+        insertInEListEClass.getESuperTypes().add(this.getUpdateSingleEListEntry());
+        removeFromEListEClass.getESuperTypes().add(this.getUpdateSingleEListEntry());
+        permuteEListEClass.getESuperTypes().add(theFeaturePackage.getUpdateMultiValuedEFeature());
 
         // Initialize classes, features, and operations; add parameters
         initEClass(updateSingleEListEntryEClass, UpdateSingleEListEntry.class, "UpdateSingleEListEntry", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

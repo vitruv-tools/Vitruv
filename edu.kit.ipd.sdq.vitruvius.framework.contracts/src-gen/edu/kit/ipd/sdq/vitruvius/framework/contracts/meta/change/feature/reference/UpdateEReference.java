@@ -16,7 +16,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatur
  * @model abstract="true"
  * @generated
  */
-public interface UpdateEReference<T extends EObject> extends EFeatureChange<EReference> {
+public interface UpdateEReference<A extends EObject> extends EFeatureChange<A, EReference> {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * 

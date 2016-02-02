@@ -2,16 +2,22 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.util;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.*;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInEList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromEList;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
  * <!-- begin-user-doc -->
@@ -74,15 +80,15 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
                 return createECompoundChangeAdapter();
             }
             @Override
-            public <T extends EObject> Adapter caseMoveEObject(MoveEObject<T> object) {
+            public <A extends EObject, B extends EObject, T extends EObject> Adapter caseMoveEObject(MoveEObject<A, B, T> object) {
                 return createMoveEObjectAdapter();
             }
             @Override
-            public <T extends Object> Adapter caseReplaceInEList(ReplaceInEList<T> object) {
+            public <A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromEList & EFeatureChange<A, F> & SubtractiveEChange<T>, I extends InsertInEList & EFeatureChange<A, F> & AdditiveEReferenceChange<T>> Adapter caseReplaceInEList(ReplaceInEList<A, F, T, R, I> object) {
                 return createReplaceInEListAdapter();
             }
             @Override
-            public <T extends Object> Adapter caseExplicitUnsetEFeature(ExplicitUnsetEFeature<T> object) {
+            public <A extends EObject, F extends EStructuralFeature, T extends Object, S extends EFeatureChange<A, F> & SubtractiveEChange<T>> Adapter caseExplicitUnsetEFeature(ExplicitUnsetEFeature<A, F, T, S> object) {
                 return createExplicitUnsetEFeatureAdapter();
             }
             @Override

@@ -4,7 +4,10 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,10 +25,9 @@ import org.eclipse.emf.common.util.EList;
  * @model TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
-public interface ExplicitUnsetEFeature<T extends Object> extends ECompoundChange {
+public interface ExplicitUnsetEFeature<A extends EObject, F extends EStructuralFeature, T extends Object, S extends EFeatureChange<A, F> & SubtractiveEChange<T>> extends ECompoundChange {
     /**
      * Returns the value of the '<em><b>Subtractive Changes</b></em>' reference list.
-     * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange}&lt;T>.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Subtractive Changes</em>' reference list isn't clear,
@@ -39,7 +41,7 @@ public interface ExplicitUnsetEFeature<T extends Object> extends ECompoundChange
      * @model unsettable="true" required="true"
      * @generated
      */
-    EList<SubtractiveEChange<T>> getSubtractiveChanges();
+    EList<S> getSubtractiveChanges();
 
     /**
      * Unsets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ExplicitUnsetEFeature#getSubtractiveChanges <em>Subtractive Changes</em>}' reference list.

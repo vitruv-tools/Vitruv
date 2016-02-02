@@ -85,23 +85,23 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
     protected ReferenceSwitch<Adapter> modelSwitch =
         new ReferenceSwitch<Adapter>() {
             @Override
-            public <T extends EObject> Adapter caseUpdateEReference(UpdateEReference<T> object) {
+            public <A extends EObject> Adapter caseUpdateEReference(UpdateEReference<A> object) {
                 return createUpdateEReferenceAdapter();
             }
             @Override
-            public <T extends EObject> Adapter caseReplaceSingleValuedEReference(ReplaceSingleValuedEReference<T> object) {
+            public <A extends EObject, T extends EObject> Adapter caseReplaceSingleValuedEReference(ReplaceSingleValuedEReference<A, T> object) {
                 return createReplaceSingleValuedEReferenceAdapter();
             }
             @Override
-            public <T extends EObject> Adapter caseInsertEReference(InsertEReference<T> object) {
+            public <A extends EObject, T extends EObject> Adapter caseInsertEReference(InsertEReference<A, T> object) {
                 return createInsertEReferenceAdapter();
             }
             @Override
-            public <T extends EObject> Adapter caseRemoveEReference(RemoveEReference<T> object) {
+            public <A extends EObject> Adapter caseRemoveEReference(RemoveEReference<A> object) {
                 return createRemoveEReferenceAdapter();
             }
             @Override
-            public <T extends EObject> Adapter casePermuteEReferenceValues(PermuteEReferenceValues<T> object) {
+            public <A extends EObject> Adapter casePermuteEReferenceValues(PermuteEReferenceValues<A> object) {
                 return createPermuteEReferenceValuesAdapter();
             }
             @Override
@@ -113,15 +113,15 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
                 return createEAtomicChangeAdapter();
             }
             @Override
-            public <T extends EStructuralFeature> Adapter caseEFeatureChange(EFeatureChange<T> object) {
+            public <A extends EObject, F extends EStructuralFeature> Adapter caseEFeatureChange(EFeatureChange<A, F> object) {
                 return createEFeatureChangeAdapter();
             }
             @Override
-            public <T extends Object> Adapter caseUpdateEFeature(UpdateEFeature<T> object) {
+            public Adapter caseUpdateEFeature(UpdateEFeature object) {
                 return createUpdateEFeatureAdapter();
             }
             @Override
-            public <T extends Object> Adapter caseUpdateSingleValuedEFeature(UpdateSingleValuedEFeature<T> object) {
+            public Adapter caseUpdateSingleValuedEFeature(UpdateSingleValuedEFeature object) {
                 return createUpdateSingleValuedEFeatureAdapter();
             }
             @Override
@@ -141,23 +141,23 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
                 return createAdditiveEReferenceChangeAdapter();
             }
             @Override
-            public <T extends Object> Adapter caseUpdateMultiValuedEFeature(UpdateMultiValuedEFeature<T> object) {
+            public Adapter caseUpdateMultiValuedEFeature(UpdateMultiValuedEFeature object) {
                 return createUpdateMultiValuedEFeatureAdapter();
             }
             @Override
-            public <T extends Object> Adapter caseUpdateSingleEListEntry(UpdateSingleEListEntry<T> object) {
+            public Adapter caseUpdateSingleEListEntry(UpdateSingleEListEntry object) {
                 return createUpdateSingleEListEntryAdapter();
             }
             @Override
-            public <T extends Object> Adapter caseInsertInEList(InsertInEList<T> object) {
+            public Adapter caseInsertInEList(InsertInEList object) {
                 return createInsertInEListAdapter();
             }
             @Override
-            public <T extends Object> Adapter caseRemoveFromEList(RemoveFromEList<T> object) {
+            public Adapter caseRemoveFromEList(RemoveFromEList object) {
                 return createRemoveFromEListAdapter();
             }
             @Override
-            public <T extends Object> Adapter casePermuteEList(PermuteEList<T> object) {
+            public Adapter casePermuteEList(PermuteEList object) {
                 return createPermuteEListAdapter();
             }
             @Override

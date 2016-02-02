@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public abstract class InsertInEListImpl<T extends Object> extends UpdateSingleEListEntryImpl<T> implements InsertInEList<T> {
+public abstract class InsertInEListImpl extends UpdateSingleEListEntryImpl implements InsertInEList {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

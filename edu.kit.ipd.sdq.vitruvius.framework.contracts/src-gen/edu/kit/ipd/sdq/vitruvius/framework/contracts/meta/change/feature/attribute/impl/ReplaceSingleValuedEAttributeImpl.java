@@ -43,7 +43,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class ReplaceSingleValuedEAttributeImpl<T extends Object> extends UpdateSingleValuedEFeatureImpl<T> implements ReplaceSingleValuedEAttribute<T> {
+public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Object> extends UpdateSingleValuedEFeatureImpl implements ReplaceSingleValuedEAttribute<A, T> {
     /**
      * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
      * <!-- begin-user-doc -->
@@ -62,7 +62,7 @@ public class ReplaceSingleValuedEAttributeImpl<T extends Object> extends UpdateS
      * @generated
      * @ordered
      */
-    protected EObject affectedEObject;
+    protected A affectedEObject;
 
     /**
      * The default value of the '{@link #getOldTUIDOfAffectedEObject() <em>Old TUID Of Affected EObject</em>}' attribute.
@@ -166,10 +166,11 @@ public class ReplaceSingleValuedEAttributeImpl<T extends Object> extends UpdateS
      * <!-- end-user-doc -->
      * @generated
      */
-    public EObject getAffectedEObject() {
+    @SuppressWarnings("unchecked")
+    public A getAffectedEObject() {
         if (affectedEObject != null && affectedEObject.eIsProxy()) {
             InternalEObject oldAffectedEObject = (InternalEObject)affectedEObject;
-            affectedEObject = eResolveProxy(oldAffectedEObject);
+            affectedEObject = (A)eResolveProxy(oldAffectedEObject);
             if (affectedEObject != oldAffectedEObject) {
                 if (eNotificationRequired())
                     eNotify(new ENotificationImpl(this, Notification.RESOLVE, AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
@@ -183,7 +184,7 @@ public class ReplaceSingleValuedEAttributeImpl<T extends Object> extends UpdateS
      * <!-- end-user-doc -->
      * @generated
      */
-    public EObject basicGetAffectedEObject() {
+    public A basicGetAffectedEObject() {
         return affectedEObject;
     }
 
@@ -192,8 +193,8 @@ public class ReplaceSingleValuedEAttributeImpl<T extends Object> extends UpdateS
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setAffectedEObject(EObject newAffectedEObject) {
-        EObject oldAffectedEObject = affectedEObject;
+    public void setAffectedEObject(A newAffectedEObject) {
+        A oldAffectedEObject = affectedEObject;
         affectedEObject = newAffectedEObject;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
@@ -299,7 +300,7 @@ public class ReplaceSingleValuedEAttributeImpl<T extends Object> extends UpdateS
                 setAffectedFeature((EAttribute)newValue);
                 return;
             case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT:
-                setAffectedEObject((EObject)newValue);
+                setAffectedEObject((A)newValue);
                 return;
             case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_TUID_OF_AFFECTED_EOBJECT:
                 setOldTUIDOfAffectedEObject((TUID)newValue);
@@ -326,7 +327,7 @@ public class ReplaceSingleValuedEAttributeImpl<T extends Object> extends UpdateS
                 setAffectedFeature((EAttribute)null);
                 return;
             case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT:
-                setAffectedEObject((EObject)null);
+                setAffectedEObject((A)null);
                 return;
             case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_TUID_OF_AFFECTED_EOBJECT:
                 setOldTUIDOfAffectedEObject(OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT);

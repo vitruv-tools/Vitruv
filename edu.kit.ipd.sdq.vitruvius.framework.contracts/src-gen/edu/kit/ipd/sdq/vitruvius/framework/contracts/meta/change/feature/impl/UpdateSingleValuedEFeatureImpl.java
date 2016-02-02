@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public abstract class UpdateSingleValuedEFeatureImpl<T extends Object> extends UpdateEFeatureImpl<T> implements UpdateSingleValuedEFeature<T> {
+public abstract class UpdateSingleValuedEFeatureImpl extends UpdateEFeatureImpl implements UpdateSingleValuedEFeature {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

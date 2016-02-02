@@ -70,8 +70,8 @@ public class AttributeFactoryImpl extends EFactoryImpl implements AttributeFacto
      * <!-- end-user-doc -->
      * @generated
      */
-    public <T extends Object> ReplaceSingleValuedEAttribute<T> createReplaceSingleValuedEAttribute() {
-        ReplaceSingleValuedEAttributeImpl<T> replaceSingleValuedEAttribute = new ReplaceSingleValuedEAttributeImpl<T>();
+    public <A extends EObject, T extends Object> ReplaceSingleValuedEAttribute<A, T> createReplaceSingleValuedEAttribute() {
+        ReplaceSingleValuedEAttributeImpl<A, T> replaceSingleValuedEAttribute = new ReplaceSingleValuedEAttributeImpl<A, T>();
         return replaceSingleValuedEAttribute;
     }
 
@@ -80,8 +80,8 @@ public class AttributeFactoryImpl extends EFactoryImpl implements AttributeFacto
      * <!-- end-user-doc -->
      * @generated
      */
-    public <T extends Object> InsertEAttributeValue<T> createInsertEAttributeValue() {
-        InsertEAttributeValueImpl<T> insertEAttributeValue = new InsertEAttributeValueImpl<T>();
+    public <A extends EObject, T extends Object> InsertEAttributeValue<A, T> createInsertEAttributeValue() {
+        InsertEAttributeValueImpl<A, T> insertEAttributeValue = new InsertEAttributeValueImpl<A, T>();
         return insertEAttributeValue;
     }
 
@@ -90,8 +90,8 @@ public class AttributeFactoryImpl extends EFactoryImpl implements AttributeFacto
      * <!-- end-user-doc -->
      * @generated
      */
-    public <T extends Object> RemoveEAttributeValue<T> createRemoveEAttributeValue() {
-        RemoveEAttributeValueImpl<T> removeEAttributeValue = new RemoveEAttributeValueImpl<T>();
+    public <T extends Object, A extends EObject> RemoveEAttributeValue<T, A> createRemoveEAttributeValue() {
+        RemoveEAttributeValueImpl<T, A> removeEAttributeValue = new RemoveEAttributeValueImpl<T, A>();
         return removeEAttributeValue;
     }
 
@@ -100,8 +100,8 @@ public class AttributeFactoryImpl extends EFactoryImpl implements AttributeFacto
      * <!-- end-user-doc -->
      * @generated
      */
-    public <T extends Object> PermuteEAttributeValues<T> createPermuteEAttributeValues() {
-        PermuteEAttributeValuesImpl<T> permuteEAttributeValues = new PermuteEAttributeValuesImpl<T>();
+    public <A extends EObject> PermuteEAttributeValues<A> createPermuteEAttributeValues() {
+        PermuteEAttributeValuesImpl<A> permuteEAttributeValues = new PermuteEAttributeValuesImpl<A>();
         return permuteEAttributeValues;
     }
 

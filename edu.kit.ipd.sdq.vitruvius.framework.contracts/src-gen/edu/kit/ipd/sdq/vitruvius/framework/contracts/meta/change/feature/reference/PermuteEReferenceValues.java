@@ -16,5 +16,5 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface PermuteEReferenceValues<T extends EObject> extends PermuteEList<T>, UpdateEReference<T> {
+public interface PermuteEReferenceValues<A extends EObject> extends PermuteEList, UpdateEReference<A> {
 } // PermuteEReferenceValues

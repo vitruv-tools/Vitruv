@@ -3,6 +3,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute;
 
 import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,7 +29,7 @@ public interface AttributeFactory extends EFactory {
      * @return a new object of class '<em>Replace Single Valued EAttribute</em>'.
      * @generated
      */
-    <T extends Object> ReplaceSingleValuedEAttribute<T> createReplaceSingleValuedEAttribute();
+    <A extends EObject, T extends Object> ReplaceSingleValuedEAttribute<A, T> createReplaceSingleValuedEAttribute();
 
     /**
      * Returns a new object of class '<em>Insert EAttribute Value</em>'.
@@ -37,7 +38,7 @@ public interface AttributeFactory extends EFactory {
      * @return a new object of class '<em>Insert EAttribute Value</em>'.
      * @generated
      */
-    <T extends Object> InsertEAttributeValue<T> createInsertEAttributeValue();
+    <A extends EObject, T extends Object> InsertEAttributeValue<A, T> createInsertEAttributeValue();
 
     /**
      * Returns a new object of class '<em>Remove EAttribute Value</em>'.
@@ -46,7 +47,7 @@ public interface AttributeFactory extends EFactory {
      * @return a new object of class '<em>Remove EAttribute Value</em>'.
      * @generated
      */
-    <T extends Object> RemoveEAttributeValue<T> createRemoveEAttributeValue();
+    <T extends Object, A extends EObject> RemoveEAttributeValue<T, A> createRemoveEAttributeValue();
 
     /**
      * Returns a new object of class '<em>Permute EAttribute Values</em>'.
@@ -55,7 +56,7 @@ public interface AttributeFactory extends EFactory {
      * @return a new object of class '<em>Permute EAttribute Values</em>'.
      * @generated
      */
-    <T extends Object> PermuteEAttributeValues<T> createPermuteEAttributeValues();
+    <A extends EObject> PermuteEAttributeValues<A> createPermuteEAttributeValues();
 
     /**
      * Returns the package supported by this factory.

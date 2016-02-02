@@ -16,10 +16,10 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list;
  * </ul>
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.ListPackage#getRemoveFromEList()
- * @model abstract="true" TBounds="org.eclipse.emf.ecore.EJavaObject"
+ * @model abstract="true"
  * @generated
  */
-public interface RemoveFromEList<T extends Object> extends UpdateSingleEListEntry<T> {
+public interface RemoveFromEList extends UpdateSingleEListEntry {
     /**
      * Returns the value of the '<em><b>Removed Object URI Fragment</b></em>' attribute.
      * The default value is <code>"0"</code>.

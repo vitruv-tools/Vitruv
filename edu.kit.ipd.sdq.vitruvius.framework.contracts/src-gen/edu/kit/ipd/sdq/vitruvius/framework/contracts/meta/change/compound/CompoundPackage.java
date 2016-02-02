@@ -106,22 +106,40 @@ public interface CompoundPackage extends EPackage {
     int MOVE_EOBJECT = 1;
 
     /**
-     * The feature id for the '<em><b>Subtract Change</b></em>' containment reference.
+     * The feature id for the '<em><b>Subtract Where Change</b></em>' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int MOVE_EOBJECT__SUBTRACT_CHANGE = ECOMPOUND_CHANGE_FEATURE_COUNT + 0;
+    int MOVE_EOBJECT__SUBTRACT_WHERE_CHANGE = ECOMPOUND_CHANGE_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Add Change</b></em>' containment reference.
+     * The feature id for the '<em><b>Subtract What Change</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int MOVE_EOBJECT__ADD_CHANGE = ECOMPOUND_CHANGE_FEATURE_COUNT + 1;
+    int MOVE_EOBJECT__SUBTRACT_WHAT_CHANGE = ECOMPOUND_CHANGE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Add Where Change</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int MOVE_EOBJECT__ADD_WHERE_CHANGE = ECOMPOUND_CHANGE_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Add What Change</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int MOVE_EOBJECT__ADD_WHAT_CHANGE = ECOMPOUND_CHANGE_FEATURE_COUNT + 3;
 
     /**
      * The number of structural features of the '<em>Move EObject</em>' class.
@@ -130,7 +148,7 @@ public interface CompoundPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int MOVE_EOBJECT_FEATURE_COUNT = ECOMPOUND_CHANGE_FEATURE_COUNT + 2;
+    int MOVE_EOBJECT_FEATURE_COUNT = ECOMPOUND_CHANGE_FEATURE_COUNT + 4;
 
     /**
      * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -284,26 +302,48 @@ public interface CompoundPackage extends EPackage {
     EClass getMoveEObject();
 
     /**
-     * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.MoveEObject#getSubtractChange <em>Subtract Change</em>}'.
+     * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.MoveEObject#getSubtractWhereChange <em>Subtract Where Change</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Subtract Change</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.MoveEObject#getSubtractChange()
+     * @return the meta object for the reference '<em>Subtract Where Change</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.MoveEObject#getSubtractWhereChange()
      * @see #getMoveEObject()
      * @generated
      */
-    EReference getMoveEObject_SubtractChange();
+    EReference getMoveEObject_SubtractWhereChange();
 
     /**
-     * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.MoveEObject#getAddChange <em>Add Change</em>}'.
+     * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.MoveEObject#getSubtractWhatChange <em>Subtract What Change</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Add Change</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.MoveEObject#getAddChange()
+     * @return the meta object for the containment reference '<em>Subtract What Change</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.MoveEObject#getSubtractWhatChange()
      * @see #getMoveEObject()
      * @generated
      */
-    EReference getMoveEObject_AddChange();
+    EReference getMoveEObject_SubtractWhatChange();
+
+    /**
+     * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.MoveEObject#getAddWhereChange <em>Add Where Change</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>Add Where Change</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.MoveEObject#getAddWhereChange()
+     * @see #getMoveEObject()
+     * @generated
+     */
+    EReference getMoveEObject_AddWhereChange();
+
+    /**
+     * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.MoveEObject#getAddWhatChange <em>Add What Change</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Add What Change</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.MoveEObject#getAddWhatChange()
+     * @see #getMoveEObject()
+     * @generated
+     */
+    EReference getMoveEObject_AddWhatChange();
 
     /**
      * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ReplaceInEList <em>Replace In EList</em>}'.
@@ -410,20 +450,36 @@ public interface CompoundPackage extends EPackage {
         EClass MOVE_EOBJECT = eINSTANCE.getMoveEObject();
 
         /**
-         * The meta object literal for the '<em><b>Subtract Change</b></em>' containment reference feature.
+         * The meta object literal for the '<em><b>Subtract Where Change</b></em>' reference feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference MOVE_EOBJECT__SUBTRACT_CHANGE = eINSTANCE.getMoveEObject_SubtractChange();
+        EReference MOVE_EOBJECT__SUBTRACT_WHERE_CHANGE = eINSTANCE.getMoveEObject_SubtractWhereChange();
 
         /**
-         * The meta object literal for the '<em><b>Add Change</b></em>' containment reference feature.
+         * The meta object literal for the '<em><b>Subtract What Change</b></em>' containment reference feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference MOVE_EOBJECT__ADD_CHANGE = eINSTANCE.getMoveEObject_AddChange();
+        EReference MOVE_EOBJECT__SUBTRACT_WHAT_CHANGE = eINSTANCE.getMoveEObject_SubtractWhatChange();
+
+        /**
+         * The meta object literal for the '<em><b>Add Where Change</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference MOVE_EOBJECT__ADD_WHERE_CHANGE = eINSTANCE.getMoveEObject_AddWhereChange();
+
+        /**
+         * The meta object literal for the '<em><b>Add What Change</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference MOVE_EOBJECT__ADD_WHAT_CHANGE = eINSTANCE.getMoveEObject_AddWhatChange();
 
         /**
          * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.ReplaceInEListImpl <em>Replace In EList</em>}' class.

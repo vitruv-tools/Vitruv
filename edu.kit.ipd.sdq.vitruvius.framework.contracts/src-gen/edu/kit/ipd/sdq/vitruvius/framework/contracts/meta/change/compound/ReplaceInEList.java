@@ -2,8 +2,13 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInEList;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromEList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
  * <!-- begin-user-doc -->
@@ -19,10 +24,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.Re
  * </ul>
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CompoundPackage#getReplaceInEList()
- * @model TBounds="org.eclipse.emf.ecore.EJavaObject"
+ * @model
  * @generated
  */
-public interface ReplaceInEList<T extends Object> extends ECompoundChange {
+public interface ReplaceInEList<A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromEList & EFeatureChange<A, F> & SubtractiveEChange<T>, I extends InsertInEList & EFeatureChange<A, F> & AdditiveEReferenceChange<T>> extends ECompoundChange {
     /**
      * Returns the value of the '<em><b>Remove Change</b></em>' containment reference.
      * <!-- begin-user-doc -->
@@ -37,7 +42,7 @@ public interface ReplaceInEList<T extends Object> extends ECompoundChange {
      * @model containment="true" required="true"
      * @generated
      */
-    RemoveFromEList<T> getRemoveChange();
+    R getRemoveChange();
 
     /**
      * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ReplaceInEList#getRemoveChange <em>Remove Change</em>}' containment reference.
@@ -47,7 +52,7 @@ public interface ReplaceInEList<T extends Object> extends ECompoundChange {
      * @see #getRemoveChange()
      * @generated
      */
-    void setRemoveChange(RemoveFromEList<T> value);
+    void setRemoveChange(R value);
 
     /**
      * Returns the value of the '<em><b>Insert Change</b></em>' containment reference.
@@ -63,7 +68,7 @@ public interface ReplaceInEList<T extends Object> extends ECompoundChange {
      * @model containment="true" required="true"
      * @generated
      */
-    InsertInEList<T> getInsertChange();
+    I getInsertChange();
 
     /**
      * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ReplaceInEList#getInsertChange <em>Insert Change</em>}' containment reference.
@@ -73,6 +78,6 @@ public interface ReplaceInEList<T extends Object> extends ECompoundChange {
      * @see #getInsertChange()
      * @generated
      */
-    void setInsertChange(InsertInEList<T> value);
+    void setInsertChange(I value);
 
 } // ReplaceInEList

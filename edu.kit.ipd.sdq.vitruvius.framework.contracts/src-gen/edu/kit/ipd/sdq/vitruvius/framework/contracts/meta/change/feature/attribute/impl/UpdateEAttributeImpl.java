@@ -9,6 +9,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.impl.EF
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -17,7 +18,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public abstract class UpdateEAttributeImpl<T extends Object> extends EFeatureChangeImpl<EAttribute> implements UpdateEAttribute<T> {
+public abstract class UpdateEAttributeImpl<A extends EObject> extends EFeatureChangeImpl<A, EAttribute> implements UpdateEAttribute<A> {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

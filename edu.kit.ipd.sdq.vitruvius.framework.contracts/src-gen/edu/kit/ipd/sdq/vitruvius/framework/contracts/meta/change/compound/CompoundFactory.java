@@ -2,8 +2,14 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInEList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromEList;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,7 +35,7 @@ public interface CompoundFactory extends EFactory {
      * @return a new object of class '<em>Move EObject</em>'.
      * @generated
      */
-    <T extends EObject> MoveEObject<T> createMoveEObject();
+    <A extends EObject, B extends EObject, T extends EObject> MoveEObject<A, B, T> createMoveEObject();
 
     /**
      * Returns a new object of class '<em>Replace In EList</em>'.
@@ -38,7 +44,7 @@ public interface CompoundFactory extends EFactory {
      * @return a new object of class '<em>Replace In EList</em>'.
      * @generated
      */
-    <T extends Object> ReplaceInEList<T> createReplaceInEList();
+    <A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromEList & EFeatureChange<A, F> & SubtractiveEChange<T>, I extends InsertInEList & EFeatureChange<A, F> & AdditiveEReferenceChange<T>> ReplaceInEList<A, F, T, R, I> createReplaceInEList();
 
     /**
      * Returns a new object of class '<em>Explicit Unset EFeature</em>'.
@@ -47,7 +53,7 @@ public interface CompoundFactory extends EFactory {
      * @return a new object of class '<em>Explicit Unset EFeature</em>'.
      * @generated
      */
-    <T extends Object> ExplicitUnsetEFeature<T> createExplicitUnsetEFeature();
+    <A extends EObject, F extends EStructuralFeature, T extends Object, S extends EFeatureChange<A, F> & SubtractiveEChange<T>> ExplicitUnsetEFeature<A, F, T, S> createExplicitUnsetEFeature();
 
     /**
      * Returns the package supported by this factory.

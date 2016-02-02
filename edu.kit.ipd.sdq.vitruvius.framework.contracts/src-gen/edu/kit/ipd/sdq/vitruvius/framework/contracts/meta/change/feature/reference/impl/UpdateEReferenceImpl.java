@@ -19,11 +19,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
  *
  * @generated
  */
-public abstract class UpdateEReferenceImpl<T extends EObject> extends EFeatureChangeImpl<EReference>
-        implements UpdateEReference<T> {
+public abstract class UpdateEReferenceImpl<A extends EObject> extends EFeatureChangeImpl<A, EReference>
+        implements UpdateEReference<A> {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     protected UpdateEReferenceImpl() {
@@ -32,7 +31,6 @@ public abstract class UpdateEReferenceImpl<T extends EObject> extends EFeatureCh
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
@@ -47,7 +45,7 @@ public abstract class UpdateEReferenceImpl<T extends EObject> extends EFeatureCh
      * @generated
      */
     @Override
-    public void setAffectedFeature(final EReference newAffectedFeature) {
+    public void setAffectedFeature(EReference newAffectedFeature) {
         super.setAffectedFeature(newAffectedFeature);
     }
 
@@ -63,14 +61,13 @@ public abstract class UpdateEReferenceImpl<T extends EObject> extends EFeatureCh
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
-    public Object eInvoke(final int operationID, final EList<?> arguments) throws InvocationTargetException {
+    public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
         switch (operationID) {
-        case ReferencePackage.UPDATE_EREFERENCE___IS_CONTAINMENT:
-            return isContainment();
+            case ReferencePackage.UPDATE_EREFERENCE___IS_CONTAINMENT:
+                return isContainment();
         }
         return super.eInvoke(operationID, arguments);
     }

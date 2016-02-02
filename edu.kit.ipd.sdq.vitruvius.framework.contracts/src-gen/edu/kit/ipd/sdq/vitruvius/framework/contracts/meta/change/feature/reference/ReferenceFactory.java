@@ -29,7 +29,7 @@ public interface ReferenceFactory extends EFactory {
      * @return a new object of class '<em>Replace Single Valued EReference</em>'.
      * @generated
      */
-    <T extends EObject> ReplaceSingleValuedEReference<T> createReplaceSingleValuedEReference();
+    <A extends EObject, T extends EObject> ReplaceSingleValuedEReference<A, T> createReplaceSingleValuedEReference();
 
     /**
      * Returns a new object of class '<em>Insert EReference</em>'.
@@ -38,7 +38,7 @@ public interface ReferenceFactory extends EFactory {
      * @return a new object of class '<em>Insert EReference</em>'.
      * @generated
      */
-    <T extends EObject> InsertEReference<T> createInsertEReference();
+    <A extends EObject, T extends EObject> InsertEReference<A, T> createInsertEReference();
 
     /**
      * Returns a new object of class '<em>Remove EReference</em>'.
@@ -47,7 +47,7 @@ public interface ReferenceFactory extends EFactory {
      * @return a new object of class '<em>Remove EReference</em>'.
      * @generated
      */
-    <T extends EObject> RemoveEReference<T> createRemoveEReference();
+    <A extends EObject> RemoveEReference<A> createRemoveEReference();
 
     /**
      * Returns a new object of class '<em>Permute EReference Values</em>'.
@@ -56,7 +56,7 @@ public interface ReferenceFactory extends EFactory {
      * @return a new object of class '<em>Permute EReference Values</em>'.
      * @generated
      */
-    <T extends EObject> PermuteEReferenceValues<T> createPermuteEReferenceValues();
+    <A extends EObject> PermuteEReferenceValues<A> createPermuteEReferenceValues();
 
     /**
      * Returns the package supported by this factory.

@@ -17,5 +17,5 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface InsertEReference<T extends EObject> extends InsertInEList<T>, UpdateEReference<T>, AdditiveEReferenceChange<T> {
+public interface InsertEReference<A extends EObject, T extends EObject> extends InsertInEList, UpdateEReference<A>, AdditiveEReferenceChange<T> {
 } // InsertEReference

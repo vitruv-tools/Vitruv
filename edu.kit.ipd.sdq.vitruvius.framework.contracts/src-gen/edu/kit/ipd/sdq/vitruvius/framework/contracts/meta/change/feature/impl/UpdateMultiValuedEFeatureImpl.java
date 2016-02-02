@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public abstract class UpdateMultiValuedEFeatureImpl<T extends Object> extends UpdateEFeatureImpl<T> implements UpdateMultiValuedEFeature<T> {
+public abstract class UpdateMultiValuedEFeatureImpl extends UpdateEFeatureImpl implements UpdateMultiValuedEFeature {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

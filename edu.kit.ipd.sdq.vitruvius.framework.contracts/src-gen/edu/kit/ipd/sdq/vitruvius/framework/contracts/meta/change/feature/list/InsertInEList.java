@@ -10,8 +10,8 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list;
  *
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.ListPackage#getInsertInEList()
- * @model abstract="true" TBounds="org.eclipse.emf.ecore.EJavaObject"
+ * @model abstract="true"
  * @generated
  */
-public interface InsertInEList<T extends Object> extends UpdateSingleEListEntry<T> {
+public interface InsertInEList extends UpdateSingleEListEntry {
 } // InsertInEList

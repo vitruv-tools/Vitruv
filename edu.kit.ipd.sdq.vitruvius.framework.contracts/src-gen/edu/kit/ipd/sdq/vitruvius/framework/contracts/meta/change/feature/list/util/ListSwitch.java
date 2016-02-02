@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.util.Switch;
  * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.ListPackage
  * @generated
  */
-public class ListSwitch<T1> extends Switch<T1> {
+public class ListSwitch<T> extends Switch<T> {
     /**
      * The cached model package
      * <!-- begin-user-doc -->
@@ -69,11 +69,11 @@ public class ListSwitch<T1> extends Switch<T1> {
      * @generated
      */
     @Override
-    protected T1 doSwitch(int classifierID, EObject theEObject) {
+    protected T doSwitch(int classifierID, EObject theEObject) {
         switch (classifierID) {
             case ListPackage.UPDATE_SINGLE_ELIST_ENTRY: {
-                UpdateSingleEListEntry<?> updateSingleEListEntry = (UpdateSingleEListEntry<?>)theEObject;
-                T1 result = caseUpdateSingleEListEntry(updateSingleEListEntry);
+                UpdateSingleEListEntry updateSingleEListEntry = (UpdateSingleEListEntry)theEObject;
+                T result = caseUpdateSingleEListEntry(updateSingleEListEntry);
                 if (result == null) result = caseUpdateMultiValuedEFeature(updateSingleEListEntry);
                 if (result == null) result = caseUpdateEFeature(updateSingleEListEntry);
                 if (result == null) result = caseEAtomicChange(updateSingleEListEntry);
@@ -82,8 +82,8 @@ public class ListSwitch<T1> extends Switch<T1> {
                 return result;
             }
             case ListPackage.INSERT_IN_ELIST: {
-                InsertInEList<?> insertInEList = (InsertInEList<?>)theEObject;
-                T1 result = caseInsertInEList(insertInEList);
+                InsertInEList insertInEList = (InsertInEList)theEObject;
+                T result = caseInsertInEList(insertInEList);
                 if (result == null) result = caseUpdateSingleEListEntry(insertInEList);
                 if (result == null) result = caseUpdateMultiValuedEFeature(insertInEList);
                 if (result == null) result = caseUpdateEFeature(insertInEList);
@@ -93,8 +93,8 @@ public class ListSwitch<T1> extends Switch<T1> {
                 return result;
             }
             case ListPackage.REMOVE_FROM_ELIST: {
-                RemoveFromEList<?> removeFromEList = (RemoveFromEList<?>)theEObject;
-                T1 result = caseRemoveFromEList(removeFromEList);
+                RemoveFromEList removeFromEList = (RemoveFromEList)theEObject;
+                T result = caseRemoveFromEList(removeFromEList);
                 if (result == null) result = caseUpdateSingleEListEntry(removeFromEList);
                 if (result == null) result = caseUpdateMultiValuedEFeature(removeFromEList);
                 if (result == null) result = caseUpdateEFeature(removeFromEList);
@@ -104,8 +104,8 @@ public class ListSwitch<T1> extends Switch<T1> {
                 return result;
             }
             case ListPackage.PERMUTE_ELIST: {
-                PermuteEList<?> permuteEList = (PermuteEList<?>)theEObject;
-                T1 result = casePermuteEList(permuteEList);
+                PermuteEList permuteEList = (PermuteEList)theEObject;
+                T result = casePermuteEList(permuteEList);
                 if (result == null) result = caseUpdateMultiValuedEFeature(permuteEList);
                 if (result == null) result = caseUpdateEFeature(permuteEList);
                 if (result == null) result = caseEAtomicChange(permuteEList);
@@ -128,7 +128,7 @@ public class ListSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseUpdateSingleEListEntry(UpdateSingleEListEntry<T> object) {
+    public T caseUpdateSingleEListEntry(UpdateSingleEListEntry object) {
         return null;
     }
 
@@ -143,7 +143,7 @@ public class ListSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseInsertInEList(InsertInEList<T> object) {
+    public T caseInsertInEList(InsertInEList object) {
         return null;
     }
 
@@ -158,7 +158,7 @@ public class ListSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseRemoveFromEList(RemoveFromEList<T> object) {
+    public T caseRemoveFromEList(RemoveFromEList object) {
         return null;
     }
 
@@ -173,7 +173,7 @@ public class ListSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 casePermuteEList(PermuteEList<T> object) {
+    public T casePermuteEList(PermuteEList object) {
         return null;
     }
 
@@ -188,7 +188,7 @@ public class ListSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseEChange(EChange object) {
+    public T caseEChange(EChange object) {
         return null;
     }
 
@@ -203,7 +203,7 @@ public class ListSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseEAtomicChange(EAtomicChange object) {
+    public T caseEAtomicChange(EAtomicChange object) {
         return null;
     }
 
@@ -218,7 +218,7 @@ public class ListSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseUpdateEFeature(UpdateEFeature<T> object) {
+    public T caseUpdateEFeature(UpdateEFeature object) {
         return null;
     }
 
@@ -233,7 +233,7 @@ public class ListSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseUpdateMultiValuedEFeature(UpdateMultiValuedEFeature<T> object) {
+    public T caseUpdateMultiValuedEFeature(UpdateMultiValuedEFeature object) {
         return null;
     }
 
@@ -249,7 +249,7 @@ public class ListSwitch<T1> extends Switch<T1> {
      * @generated
      */
     @Override
-    public T1 defaultCase(EObject object) {
+    public T defaultCase(EObject object) {
         return null;
     }
 

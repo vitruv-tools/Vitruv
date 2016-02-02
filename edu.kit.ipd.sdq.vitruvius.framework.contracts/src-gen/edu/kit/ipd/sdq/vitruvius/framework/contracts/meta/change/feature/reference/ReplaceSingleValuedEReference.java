@@ -18,5 +18,5 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface ReplaceSingleValuedEReference<T extends EObject> extends UpdateSingleValuedEFeature<T>, UpdateEReference<T>, SubtractiveEReferenceChange, AdditiveEReferenceChange<T> {
+public interface ReplaceSingleValuedEReference<A extends EObject, T extends EObject> extends UpdateSingleValuedEFeature, UpdateEReference<A>, SubtractiveEReferenceChange, AdditiveEReferenceChange<T> {
 } // ReplaceSingleValuedEReference

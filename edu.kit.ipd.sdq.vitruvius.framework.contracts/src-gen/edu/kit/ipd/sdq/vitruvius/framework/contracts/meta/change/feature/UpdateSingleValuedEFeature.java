@@ -10,8 +10,8 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature;
  *
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage#getUpdateSingleValuedEFeature()
- * @model abstract="true" TBounds="org.eclipse.emf.ecore.EJavaObject"
+ * @model abstract="true"
  * @generated
  */
-public interface UpdateSingleValuedEFeature<T extends Object> extends UpdateEFeature<T> {
+public interface UpdateSingleValuedEFeature extends UpdateEFeature {
 } // UpdateSingleValuedEFeature

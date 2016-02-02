@@ -17,10 +17,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateM
  * </ul>
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.ListPackage#getPermuteEList()
- * @model abstract="true" TBounds="org.eclipse.emf.ecore.EJavaObject"
+ * @model abstract="true"
  * @generated
  */
-public interface PermuteEList<T extends Object> extends UpdateMultiValuedEFeature<T> {
+public interface PermuteEList extends UpdateMultiValuedEFeature {
     /**
      * Returns the value of the '<em><b>New Index For Element At</b></em>' attribute.
      * <!-- begin-user-doc -->
