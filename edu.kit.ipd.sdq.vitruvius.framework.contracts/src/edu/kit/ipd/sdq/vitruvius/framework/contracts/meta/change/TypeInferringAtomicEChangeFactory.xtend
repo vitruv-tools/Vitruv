@@ -22,7 +22,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.PermuteEReferences
 
-final class TypeInferringChangeFactory {
+final class TypeInferringAtomicEChangeFactory {
 	val Metamodel metamodel
 	
 	new(Metamodel metamodel) {
