@@ -244,24 +244,22 @@ public class CorrespondenceImpl extends EObjectImpl implements Correspondence, S
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
+    @Deprecated
     @Override
     public TUID getElementATUID() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
         throw new UnsupportedOperationException();
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
+    @Deprecated
     @Override
     public TUID getElementBTUID() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
         throw new UnsupportedOperationException();
     }
 

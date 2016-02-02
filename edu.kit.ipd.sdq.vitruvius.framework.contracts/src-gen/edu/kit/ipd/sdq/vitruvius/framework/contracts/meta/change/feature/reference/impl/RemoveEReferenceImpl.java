@@ -20,7 +20,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveECha
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.RemoveFromEListImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateEReference;
 
 /**
@@ -30,20 +32,33 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.RemoveEReferenceImpl#getAffectedFeature <em>Affected Feature</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.RemoveEReferenceImpl#getAffectedEObject <em>Affected EObject</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.RemoveEReferenceImpl#getOldTUIDOfAffectedEObject <em>Old TUID Of Affected EObject</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.RemoveEReferenceImpl#getOldTUID <em>Old TUID</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.RemoveEReferenceImpl#getFeature2OldValueMap <em>Feature2 Old Value Map</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.RemoveEReferenceImpl#isIsDelete <em>Is Delete</em>}</li>
+ * <li>
+ * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.RemoveEReferenceImpl#getAffectedFeature
+ * <em>Affected Feature</em>}</li>
+ * <li>
+ * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.RemoveEReferenceImpl#getAffectedEObject
+ * <em>Affected EObject</em>}</li>
+ * <li>
+ * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.RemoveEReferenceImpl#getOldTUIDOfAffectedEObject
+ * <em>Old TUID Of Affected EObject</em>}</li>
+ * <li>
+ * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.RemoveEReferenceImpl#getOldTUID
+ * <em>Old TUID</em>}</li>
+ * <li>
+ * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.RemoveEReferenceImpl#getFeature2OldValueMap
+ * <em>Feature2 Old Value Map</em>}</li>
+ * <li>
+ * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.RemoveEReferenceImpl#isIsDelete
+ * <em>Is Delete</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImplimplements RemoveEReference<A> {
+public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl implements RemoveEReference<A> {
     /**
      * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @see #getAffectedFeature()
      * @generated
      * @ordered
@@ -53,6 +68,7 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
     /**
      * The cached value of the '{@link #getAffectedEObject() <em>Affected EObject</em>}' reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @see #getAffectedEObject()
      * @generated
      * @ordered
@@ -63,7 +79,7 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
      * The default value of the '{@link #getOldTUIDOfAffectedEObject()
      * <em>Old TUID Of Affected EObject</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     *
+     * 
      * @see #getOldTUIDOfAffectedEObject()
      * @generated
      * @ordered
@@ -74,7 +90,7 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
      * The cached value of the '{@link #getOldTUIDOfAffectedEObject()
      * <em>Old TUID Of Affected EObject</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     *
+     * 
      * @see #getOldTUIDOfAffectedEObject()
      * @generated
      * @ordered
@@ -84,7 +100,7 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
     /**
      * The default value of the '{@link #getOldTUID() <em>Old TUID</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #getOldTUID()
      * @generated
      * @ordered
@@ -94,7 +110,7 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
     /**
      * The cached value of the '{@link #getOldTUID() <em>Old TUID</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #getOldTUID()
      * @generated
      * @ordered
@@ -102,8 +118,9 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
     protected TUID oldTUID = OLD_TUID_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getFeature2OldValueMap() <em>Feature2 Old Value Map</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The cached value of the '{@link #getFeature2OldValueMap() <em>Feature2 Old Value Map</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @see #getFeature2OldValueMap()
      * @generated
      * @ordered
@@ -113,7 +130,7 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
     /**
      * The default value of the '{@link #isIsDelete() <em>Is Delete</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #isIsDelete()
      * @generated
      * @ordered
@@ -123,7 +140,7 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
     /**
      * The cached value of the '{@link #isIsDelete() <em>Is Delete</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #isIsDelete()
      * @generated
      * @ordered
@@ -132,6 +149,7 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected RemoveEReferenceImpl() {
@@ -140,6 +158,7 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -149,161 +168,187 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
     public EReference getAffectedFeature() {
-        if (affectedFeature != null && affectedFeature.eIsProxy()) {
-            InternalEObject oldAffectedFeature = (InternalEObject)affectedFeature;
-            affectedFeature = (EReference)eResolveProxy(oldAffectedFeature);
-            if (affectedFeature != oldAffectedFeature) {
+        if (this.affectedFeature != null && this.affectedFeature.eIsProxy()) {
+            InternalEObject oldAffectedFeature = (InternalEObject) this.affectedFeature;
+            this.affectedFeature = (EReference) eResolveProxy(oldAffectedFeature);
+            if (this.affectedFeature != oldAffectedFeature) {
                 if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, ReferencePackage.REMOVE_EREFERENCE__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE,
+                            ReferencePackage.REMOVE_EREFERENCE__AFFECTED_FEATURE, oldAffectedFeature,
+                            this.affectedFeature));
             }
         }
-        return affectedFeature;
+        return this.affectedFeature;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     public EReference basicGetAffectedFeature() {
-        return affectedFeature;
+        return this.affectedFeature;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
-    public void setAffectedFeature(EReference newAffectedFeature) {
-        EReference oldAffectedFeature = affectedFeature;
-        affectedFeature = newAffectedFeature;
+    public void setAffectedFeature(final EReference newAffectedFeature) {
+        EReference oldAffectedFeature = this.affectedFeature;
+        this.affectedFeature = newAffectedFeature;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_EREFERENCE__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
+            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_EREFERENCE__AFFECTED_FEATURE,
+                    oldAffectedFeature, this.affectedFeature));
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
-    @SuppressWarnings("unchecked")
     @Override
+    @SuppressWarnings("unchecked")
     public A getAffectedEObject() {
-        if (affectedEObject != null && affectedEObject.eIsProxy()) {
-            InternalEObject oldAffectedEObject = (InternalEObject)affectedEObject;
-            affectedEObject = (A)eResolveProxy(oldAffectedEObject);
-            if (affectedEObject != oldAffectedEObject) {
+        if (this.affectedEObject != null && this.affectedEObject.eIsProxy()) {
+            InternalEObject oldAffectedEObject = (InternalEObject) this.affectedEObject;
+            this.affectedEObject = (A) eResolveProxy(oldAffectedEObject);
+            if (this.affectedEObject != oldAffectedEObject) {
                 if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE,
+                            ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT, oldAffectedEObject,
+                            this.affectedEObject));
             }
         }
-        return affectedEObject;
+        return this.affectedEObject;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     public A basicGetAffectedEObject() {
-        return affectedEObject;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setAffectedEObject(A newAffectedEObject) {
-        A oldAffectedEObject = affectedEObject;
-        affectedEObject = newAffectedEObject;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
+        return this.affectedEObject;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public void setAffectedEObject(final A newAffectedEObject) {
+        A oldAffectedEObject = this.affectedEObject;
+        this.affectedEObject = newAffectedEObject;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT,
+                    oldAffectedEObject, this.affectedEObject));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
     public TUID getOldTUIDOfAffectedEObject() {
-        return oldTUIDOfAffectedEObject;
+        return this.oldTUIDOfAffectedEObject;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
-    public void setOldTUIDOfAffectedEObject(TUID newOldTUIDOfAffectedEObject) {
-        TUID oldOldTUIDOfAffectedEObject = oldTUIDOfAffectedEObject;
-        oldTUIDOfAffectedEObject = newOldTUIDOfAffectedEObject;
+    public void setOldTUIDOfAffectedEObject(final TUID newOldTUIDOfAffectedEObject) {
+        TUID oldOldTUIDOfAffectedEObject = this.oldTUIDOfAffectedEObject;
+        this.oldTUIDOfAffectedEObject = newOldTUIDOfAffectedEObject;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT, oldOldTUIDOfAffectedEObject, oldTUIDOfAffectedEObject));
+            eNotify(new ENotificationImpl(this, Notification.SET,
+                    ReferencePackage.REMOVE_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT, oldOldTUIDOfAffectedEObject,
+                    this.oldTUIDOfAffectedEObject));
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
     public TUID getOldTUID() {
-        return oldTUID;
+        return this.oldTUID;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
-    public void setOldTUID(TUID newOldTUID) {
-        TUID oldOldTUID = oldTUID;
-        oldTUID = newOldTUID;
+    public void setOldTUID(final TUID newOldTUID) {
+        TUID oldOldTUID = this.oldTUID;
+        this.oldTUID = newOldTUID;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_EREFERENCE__OLD_TUID, oldOldTUID, oldTUID));
+            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_EREFERENCE__OLD_TUID,
+                    oldOldTUID, this.oldTUID));
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
     public Map<EStructuralFeature, Object> getFeature2OldValueMap() {
-        return feature2OldValueMap;
+        return this.feature2OldValueMap;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
-    public void setFeature2OldValueMap(Map<EStructuralFeature, Object> newFeature2OldValueMap) {
-        Map<EStructuralFeature, Object> oldFeature2OldValueMap = feature2OldValueMap;
-        feature2OldValueMap = newFeature2OldValueMap;
+    public void setFeature2OldValueMap(final Map<EStructuralFeature, Object> newFeature2OldValueMap) {
+        Map<EStructuralFeature, Object> oldFeature2OldValueMap = this.feature2OldValueMap;
+        this.feature2OldValueMap = newFeature2OldValueMap;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_EREFERENCE__FEATURE2_OLD_VALUE_MAP, oldFeature2OldValueMap, feature2OldValueMap));
+            eNotify(new ENotificationImpl(this, Notification.SET,
+                    ReferencePackage.REMOVE_EREFERENCE__FEATURE2_OLD_VALUE_MAP, oldFeature2OldValueMap,
+                    this.feature2OldValueMap));
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
     public boolean isIsDelete() {
-        return isDelete;
+        return this.isDelete;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
-    public void setIsDelete(boolean newIsDelete) {
-        boolean oldIsDelete = isDelete;
-        isDelete = newIsDelete;
+    public void setIsDelete(final boolean newIsDelete) {
+        boolean oldIsDelete = this.isDelete;
+        this.isDelete = newIsDelete;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_EREFERENCE__IS_DELETE, oldIsDelete, isDelete));
+            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_EREFERENCE__IS_DELETE,
+                    oldIsDelete, this.isDelete));
     }
 
     /**
@@ -318,7 +363,7 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated NOT
      */
     @Override
@@ -328,141 +373,159 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
-    public Object eGet(int featureID, boolean resolve, boolean coreType) {
+    public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
         switch (featureID) {
-            case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_FEATURE:
-                if (resolve) return getAffectedFeature();
-                return basicGetAffectedFeature();
-            case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT:
-                if (resolve) return getAffectedEObject();
-                return basicGetAffectedEObject();
-            case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT:
-                return getOldTUIDOfAffectedEObject();
-            case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID:
-                return getOldTUID();
-            case ReferencePackage.REMOVE_EREFERENCE__FEATURE2_OLD_VALUE_MAP:
-                return getFeature2OldValueMap();
-            case ReferencePackage.REMOVE_EREFERENCE__IS_DELETE:
-                return isIsDelete();
+        case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_FEATURE:
+            if (resolve)
+                return getAffectedFeature();
+            return basicGetAffectedFeature();
+        case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT:
+            if (resolve)
+                return getAffectedEObject();
+            return basicGetAffectedEObject();
+        case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT:
+            return getOldTUIDOfAffectedEObject();
+        case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID:
+            return getOldTUID();
+        case ReferencePackage.REMOVE_EREFERENCE__FEATURE2_OLD_VALUE_MAP:
+            return getFeature2OldValueMap();
+        case ReferencePackage.REMOVE_EREFERENCE__IS_DELETE:
+            return isIsDelete();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
     @Override
-    public void eSet(int featureID, Object newValue) {
+    public void eSet(final int featureID, final Object newValue) {
         switch (featureID) {
-            case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_FEATURE:
-                setAffectedFeature((EReference)newValue);
-                return;
-            case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT:
-                setAffectedEObject((A)newValue);
-                return;
-            case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT:
-                setOldTUIDOfAffectedEObject((TUID)newValue);
-                return;
-            case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID:
-                setOldTUID((TUID)newValue);
-                return;
-            case ReferencePackage.REMOVE_EREFERENCE__FEATURE2_OLD_VALUE_MAP:
-                setFeature2OldValueMap((Map<EStructuralFeature, Object>)newValue);
-                return;
-            case ReferencePackage.REMOVE_EREFERENCE__IS_DELETE:
-                setIsDelete((Boolean)newValue);
-                return;
+        case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_FEATURE:
+            setAffectedFeature((EReference) newValue);
+            return;
+        case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT:
+            setAffectedEObject((A) newValue);
+            return;
+        case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT:
+            setOldTUIDOfAffectedEObject((TUID) newValue);
+            return;
+        case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID:
+            setOldTUID((TUID) newValue);
+            return;
+        case ReferencePackage.REMOVE_EREFERENCE__FEATURE2_OLD_VALUE_MAP:
+            setFeature2OldValueMap((Map<EStructuralFeature, Object>) newValue);
+            return;
+        case ReferencePackage.REMOVE_EREFERENCE__IS_DELETE:
+            setIsDelete((Boolean) newValue);
+            return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
-    public void eUnset(int featureID) {
+    public void eUnset(final int featureID) {
         switch (featureID) {
-            case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_FEATURE:
-                setAffectedFeature((EReference)null);
-                return;
-            case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT:
-                setAffectedEObject((A)null);
-                return;
-            case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT:
-                setOldTUIDOfAffectedEObject(OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT);
-                return;
-            case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID:
-                setOldTUID(OLD_TUID_EDEFAULT);
-                return;
-            case ReferencePackage.REMOVE_EREFERENCE__FEATURE2_OLD_VALUE_MAP:
-                setFeature2OldValueMap((Map<EStructuralFeature, Object>)null);
-                return;
-            case ReferencePackage.REMOVE_EREFERENCE__IS_DELETE:
-                setIsDelete(IS_DELETE_EDEFAULT);
-                return;
+        case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_FEATURE:
+            setAffectedFeature((EReference) null);
+            return;
+        case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT:
+            setAffectedEObject((A) null);
+            return;
+        case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT:
+            setOldTUIDOfAffectedEObject(OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT);
+            return;
+        case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID:
+            setOldTUID(OLD_TUID_EDEFAULT);
+            return;
+        case ReferencePackage.REMOVE_EREFERENCE__FEATURE2_OLD_VALUE_MAP:
+            setFeature2OldValueMap((Map<EStructuralFeature, Object>) null);
+            return;
+        case ReferencePackage.REMOVE_EREFERENCE__IS_DELETE:
+            setIsDelete(IS_DELETE_EDEFAULT);
+            return;
         }
         super.eUnset(featureID);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
-    public boolean eIsSet(int featureID) {
+    public boolean eIsSet(final int featureID) {
         switch (featureID) {
-            case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_FEATURE:
-                return affectedFeature != null;
-            case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT:
-                return affectedEObject != null;
-            case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT:
-                return OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT == null ? oldTUIDOfAffectedEObject != null : !OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT.equals(oldTUIDOfAffectedEObject);
-            case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID:
-                return OLD_TUID_EDEFAULT == null ? oldTUID != null : !OLD_TUID_EDEFAULT.equals(oldTUID);
-            case ReferencePackage.REMOVE_EREFERENCE__FEATURE2_OLD_VALUE_MAP:
-                return feature2OldValueMap != null;
-            case ReferencePackage.REMOVE_EREFERENCE__IS_DELETE:
-                return isDelete != IS_DELETE_EDEFAULT;
+        case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_FEATURE:
+            return this.affectedFeature != null;
+        case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT:
+            return this.affectedEObject != null;
+        case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT:
+            return OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT == null ? this.oldTUIDOfAffectedEObject != null
+                    : !OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT.equals(this.oldTUIDOfAffectedEObject);
+        case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID:
+            return OLD_TUID_EDEFAULT == null ? this.oldTUID != null : !OLD_TUID_EDEFAULT.equals(this.oldTUID);
+        case ReferencePackage.REMOVE_EREFERENCE__FEATURE2_OLD_VALUE_MAP:
+            return this.feature2OldValueMap != null;
+        case ReferencePackage.REMOVE_EREFERENCE__IS_DELETE:
+            return this.isDelete != IS_DELETE_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
-    public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+    public int eBaseStructuralFeatureID(final int derivedFeatureID, final Class<?> baseClass) {
         if (baseClass == EFeatureChange.class) {
             switch (derivedFeatureID) {
-                case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_FEATURE: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE;
-                case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT;
-                case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT;
-                default: return -1;
+            case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_FEATURE:
+                return FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE;
+            case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT:
+                return FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT;
+            case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT:
+                return FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT;
+            default:
+                return -1;
             }
         }
         if (baseClass == UpdateEReference.class) {
             switch (derivedFeatureID) {
-                default: return -1;
+            default:
+                return -1;
             }
         }
         if (baseClass == SubtractiveEChange.class) {
             switch (derivedFeatureID) {
-                default: return -1;
+            default:
+                return -1;
             }
         }
         if (baseClass == SubtractiveEReferenceChange.class) {
             switch (derivedFeatureID) {
-                case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID: return ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_TUID;
-                case ReferencePackage.REMOVE_EREFERENCE__FEATURE2_OLD_VALUE_MAP: return ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__FEATURE2_OLD_VALUE_MAP;
-                case ReferencePackage.REMOVE_EREFERENCE__IS_DELETE: return ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__IS_DELETE;
-                default: return -1;
+            case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID:
+                return ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_TUID;
+            case ReferencePackage.REMOVE_EREFERENCE__FEATURE2_OLD_VALUE_MAP:
+                return ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__FEATURE2_OLD_VALUE_MAP;
+            case ReferencePackage.REMOVE_EREFERENCE__IS_DELETE:
+                return ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__IS_DELETE;
+            default:
+                return -1;
             }
         }
         return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
@@ -470,34 +533,45 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
-    public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+    public int eDerivedStructuralFeatureID(final int baseFeatureID, final Class<?> baseClass) {
         if (baseClass == EFeatureChange.class) {
             switch (baseFeatureID) {
-                case FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE: return ReferencePackage.REMOVE_EREFERENCE__AFFECTED_FEATURE;
-                case FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT: return ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT;
-                case FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT: return ReferencePackage.REMOVE_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT;
-                default: return -1;
+            case FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE:
+                return ReferencePackage.REMOVE_EREFERENCE__AFFECTED_FEATURE;
+            case FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT:
+                return ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT;
+            case FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT:
+                return ReferencePackage.REMOVE_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT;
+            default:
+                return -1;
             }
         }
         if (baseClass == UpdateEReference.class) {
             switch (baseFeatureID) {
-                default: return -1;
+            default:
+                return -1;
             }
         }
         if (baseClass == SubtractiveEChange.class) {
             switch (baseFeatureID) {
-                default: return -1;
+            default:
+                return -1;
             }
         }
         if (baseClass == SubtractiveEReferenceChange.class) {
             switch (baseFeatureID) {
-                case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_TUID: return ReferencePackage.REMOVE_EREFERENCE__OLD_TUID;
-                case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__FEATURE2_OLD_VALUE_MAP: return ReferencePackage.REMOVE_EREFERENCE__FEATURE2_OLD_VALUE_MAP;
-                case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__IS_DELETE: return ReferencePackage.REMOVE_EREFERENCE__IS_DELETE;
-                default: return -1;
+            case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_TUID:
+                return ReferencePackage.REMOVE_EREFERENCE__OLD_TUID;
+            case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__FEATURE2_OLD_VALUE_MAP:
+                return ReferencePackage.REMOVE_EREFERENCE__FEATURE2_OLD_VALUE_MAP;
+            case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__IS_DELETE:
+                return ReferencePackage.REMOVE_EREFERENCE__IS_DELETE;
+            default:
+                return -1;
             }
         }
         return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
@@ -505,30 +579,37 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
-    public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
+    public int eDerivedOperationID(final int baseOperationID, final Class<?> baseClass) {
         if (baseClass == EFeatureChange.class) {
             switch (baseOperationID) {
-                default: return -1;
+            default:
+                return -1;
             }
         }
         if (baseClass == UpdateEReference.class) {
             switch (baseOperationID) {
-                case ReferencePackage.UPDATE_EREFERENCE___IS_CONTAINMENT: return ReferencePackage.REMOVE_EREFERENCE___IS_CONTAINMENT;
-                default: return -1;
+            case ReferencePackage.UPDATE_EREFERENCE___IS_CONTAINMENT:
+                return ReferencePackage.REMOVE_EREFERENCE___IS_CONTAINMENT;
+            default:
+                return -1;
             }
         }
         if (baseClass == SubtractiveEChange.class) {
             switch (baseOperationID) {
-                case ChangePackage.SUBTRACTIVE_ECHANGE___GET_OLD_VALUE: return ReferencePackage.REMOVE_EREFERENCE___GET_OLD_VALUE;
-                default: return -1;
+            case ChangePackage.SUBTRACTIVE_ECHANGE___GET_OLD_VALUE:
+                return ReferencePackage.REMOVE_EREFERENCE___GET_OLD_VALUE;
+            default:
+                return -1;
             }
         }
         if (baseClass == SubtractiveEReferenceChange.class) {
             switch (baseOperationID) {
-                default: return -1;
+            default:
+                return -1;
             }
         }
         return super.eDerivedOperationID(baseOperationID, baseClass);
@@ -536,36 +617,39 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
-    public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+    public Object eInvoke(final int operationID, final EList<?> arguments) throws InvocationTargetException {
         switch (operationID) {
-            case ReferencePackage.REMOVE_EREFERENCE___GET_OLD_VALUE:
-                return getOldValue();
-            case ReferencePackage.REMOVE_EREFERENCE___IS_CONTAINMENT:
-                return isContainment();
+        case ReferencePackage.REMOVE_EREFERENCE___GET_OLD_VALUE:
+            return getOldValue();
+        case ReferencePackage.REMOVE_EREFERENCE___IS_CONTAINMENT:
+            return isContainment();
         }
         return super.eInvoke(operationID, arguments);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+        if (eIsProxy())
+            return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (oldTUIDOfAffectedEObject: ");
-        result.append(oldTUIDOfAffectedEObject);
+        result.append(this.oldTUIDOfAffectedEObject);
         result.append(", oldTUID: ");
-        result.append(oldTUID);
+        result.append(this.oldTUID);
         result.append(", feature2OldValueMap: ");
-        result.append(feature2OldValueMap);
+        result.append(this.feature2OldValueMap);
         result.append(", isDelete: ");
-        result.append(isDelete);
+        result.append(this.isDelete);
         result.append(')');
         return result.toString();
     }
