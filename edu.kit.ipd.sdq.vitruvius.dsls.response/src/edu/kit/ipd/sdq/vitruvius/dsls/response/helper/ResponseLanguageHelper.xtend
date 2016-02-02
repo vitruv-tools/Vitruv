@@ -95,10 +95,6 @@ final class ResponseLanguageHelper {
 		throw new UnsupportedOperationException();
 	}
 	
-	public static def String getText(CodeBlock codeBlock) {
-		NodeModelUtils.getNode(codeBlock.code).text;
-	}
-	
 	public static def dispatch String getXBlockExpressionText(XExpression expression) {
 		NodeModelUtils.getNode(expression).text;
 	}

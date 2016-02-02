@@ -76,7 +76,7 @@ abstract class SingleModelChangeResponseGenerator extends AbstractSingleResponse
 	protected def generateMethodPerformResponse(EClass targetModelElement) '''
 		private def performResponseTo(«changeEventTypeString» «CHANGE_PARAMETER_NAME»«
 			IF hasTargetChange», «ih.typeRef(targetModelElement)
-			» «TARGET_MODEL_PARAMETER_NAME»«ENDIF»)«response.effects.codeBlock.text»
+			» «TARGET_MODEL_PARAMETER_NAME»«ENDIF»)«response.effects.codeBlock.code.XBlockExpressionText»
 	'''
 	
 	/**
@@ -92,7 +92,7 @@ abstract class SingleModelChangeResponseGenerator extends AbstractSingleResponse
 	 */
 	protected def generateMethodPerformResponse() '''
 		private def performResponseTo(«changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)
-			» blackboard)«response.effects.codeBlock.text»
+			» blackboard)«response.effects.codeBlock.code.XBlockExpressionText»
 	'''
 	
 	/**

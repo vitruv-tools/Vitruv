@@ -86,7 +86,7 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 	 */
 	protected def generateMethodCheckPrecondition() '''
 		private def boolean checkPrecondition(«changeEventTypeString» «CHANGE_PARAMETER_NAME»)«
-		response.trigger.precondition.text»
+		response.trigger.precondition.code.XBlockExpressionText»
 	'''
 		
 	/**
@@ -106,7 +106,7 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 		private def «ih.typeRef(List)»<«ih.typeRef(affectedElementClass)»> determineTargetModels(«
 			changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)» blackboard) {
 			val targetModels = new «ih.typeRef(ArrayList)»<«ih.typeRef(affectedElementClass)»>();
-			val objectToGetCorrespondencesFor =«updatedModel.correspondenceSource.text»
+			val objectToGetCorrespondencesFor =«updatedModel.correspondenceSource.code.XBlockExpressionText»
 			targetModels += blackboard.correspondenceInstance.«ih.callExtensionMethod(ResponseRuntimeHelper,
 				'''getCorrespondingObjectsOfType(objectToGetCorrespondencesFor, «ih.typeRef(affectedElementClass)»)''')»;
 			return targetModels;
@@ -161,7 +161,7 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 		«val affectedElementClass = deletedModel.rootModelElement.element»
 		private def deleteTargetModels(«
 			changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)» blackboard) {
-			val objectToGetCorrespondencesFor =«deletedModel.correspondenceSource?.text?:"change.oldValue;"»
+			val objectToGetCorrespondencesFor =«deletedModel.correspondenceSource?.code?.XBlockExpressionText?:"change.oldValue;"»
 			val correspondences = blackboard.correspondenceInstance.«ih.callExtensionMethod(ResponseRuntimeHelper,
 				'''getCorrespondencesWithTargetType(objectToGetCorrespondencesFor, «ih.typeRef(affectedElementClass)»)''')»;
 			for (correspondence : correspondences) {
