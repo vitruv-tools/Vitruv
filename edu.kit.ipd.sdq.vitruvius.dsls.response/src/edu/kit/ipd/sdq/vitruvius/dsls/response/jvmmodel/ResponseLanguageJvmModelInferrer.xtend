@@ -16,7 +16,7 @@ import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
 
-import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.api.ResponseLanguageGeneratorConstants.*
+import static edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.ResponseLanguageGeneratorConstants.*
 
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*
@@ -80,8 +80,8 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 		val response = preconditionBlock.containingResponse;
 		val methodParameters = createResponseParameters(response, preconditionBlock, false);
 		
-		acceptor.accept(response.toClass(response.responseQualifiedName + "Helper" +  PER_MODEL_PRECONDITION_METHOD_NAME.toFirstUpper)) [
-			members += preconditionBlock.toMethod(PER_MODEL_PRECONDITION_METHOD_NAME, typeRef(Boolean.TYPE)) [applyMethod |
+		acceptor.accept(response.toClass(response.responseQualifiedName + "Helper" +  PRECONDITION_METHOD_NAME.toFirstUpper)) [
+			members += preconditionBlock.toMethod(PRECONDITION_METHOD_NAME, typeRef(Boolean.TYPE)) [applyMethod |
 				applyMethod.parameters += methodParameters
 				applyMethod.body = preconditionBlock.code]
 			it.makeClassStatic(response)
