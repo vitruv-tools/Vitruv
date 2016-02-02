@@ -101,8 +101,8 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
                 return createRemoveEReferenceAdapter();
             }
             @Override
-            public <A extends EObject> Adapter casePermuteEReferenceValues(PermuteEReferenceValues<A> object) {
-                return createPermuteEReferenceValuesAdapter();
+            public <A extends EObject> Adapter casePermuteEReferences(PermuteEReferences<A> object) {
+                return createPermuteEReferencesAdapter();
             }
             @Override
             public Adapter caseEChange(EChange object) {
@@ -237,16 +237,16 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.PermuteEReferenceValues <em>Permute EReference Values</em>}'.
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.PermuteEReferences <em>Permute EReferences</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.PermuteEReferenceValues
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.PermuteEReferences
      * @generated
      */
-    public Adapter createPermuteEReferenceValuesAdapter() {
+    public Adapter createPermuteEReferencesAdapter() {
         return null;
     }
 

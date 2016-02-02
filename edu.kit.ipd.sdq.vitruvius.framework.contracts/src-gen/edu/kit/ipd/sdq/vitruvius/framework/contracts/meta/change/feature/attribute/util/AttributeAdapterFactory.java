@@ -97,7 +97,7 @@ public class AttributeAdapterFactory extends AdapterFactoryImpl {
                 return createInsertEAttributeValueAdapter();
             }
             @Override
-            public <T extends Object, A extends EObject> Adapter caseRemoveEAttributeValue(RemoveEAttributeValue<T, A> object) {
+            public <A extends EObject, T extends Object> Adapter caseRemoveEAttributeValue(RemoveEAttributeValue<A, T> object) {
                 return createRemoveEAttributeValueAdapter();
             }
             @Override

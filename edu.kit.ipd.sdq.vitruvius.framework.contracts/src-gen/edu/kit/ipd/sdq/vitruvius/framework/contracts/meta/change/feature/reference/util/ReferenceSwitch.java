@@ -140,16 +140,16 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case ReferencePackage.PERMUTE_EREFERENCE_VALUES: {
-                PermuteEReferenceValues<?> permuteEReferenceValues = (PermuteEReferenceValues<?>)theEObject;
-                T1 result = casePermuteEReferenceValues(permuteEReferenceValues);
-                if (result == null) result = casePermuteEList(permuteEReferenceValues);
-                if (result == null) result = caseUpdateEReference(permuteEReferenceValues);
-                if (result == null) result = caseUpdateMultiValuedEFeature(permuteEReferenceValues);
-                if (result == null) result = caseEFeatureChange(permuteEReferenceValues);
-                if (result == null) result = caseUpdateEFeature(permuteEReferenceValues);
-                if (result == null) result = caseEAtomicChange(permuteEReferenceValues);
-                if (result == null) result = caseEChange(permuteEReferenceValues);
+            case ReferencePackage.PERMUTE_EREFERENCES: {
+                PermuteEReferences<?> permuteEReferences = (PermuteEReferences<?>)theEObject;
+                T1 result = casePermuteEReferences(permuteEReferences);
+                if (result == null) result = casePermuteEList(permuteEReferences);
+                if (result == null) result = caseUpdateEReference(permuteEReferences);
+                if (result == null) result = caseUpdateMultiValuedEFeature(permuteEReferences);
+                if (result == null) result = caseEFeatureChange(permuteEReferences);
+                if (result == null) result = caseUpdateEFeature(permuteEReferences);
+                if (result == null) result = caseEAtomicChange(permuteEReferences);
+                if (result == null) result = caseEChange(permuteEReferences);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -218,17 +218,17 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Permute EReference Values</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Permute EReferences</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Permute EReference Values</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Permute EReferences</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <A extends EObject> T1 casePermuteEReferenceValues(PermuteEReferenceValues<A> object) {
+    public <A extends EObject> T1 casePermuteEReferences(PermuteEReferences<A> object) {
         return null;
     }
 

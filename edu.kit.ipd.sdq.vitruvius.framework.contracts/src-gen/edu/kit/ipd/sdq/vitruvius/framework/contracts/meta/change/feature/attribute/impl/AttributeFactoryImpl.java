@@ -90,8 +90,8 @@ public class AttributeFactoryImpl extends EFactoryImpl implements AttributeFacto
      * <!-- end-user-doc -->
      * @generated
      */
-    public <T extends Object, A extends EObject> RemoveEAttributeValue<T, A> createRemoveEAttributeValue() {
-        RemoveEAttributeValueImpl<T, A> removeEAttributeValue = new RemoveEAttributeValueImpl<T, A>();
+    public <A extends EObject, T extends Object> RemoveEAttributeValue<A, T> createRemoveEAttributeValue() {
+        RemoveEAttributeValueImpl<A, T> removeEAttributeValue = new RemoveEAttributeValueImpl<A, T>();
         return removeEAttributeValue;
     }
 

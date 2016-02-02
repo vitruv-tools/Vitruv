@@ -388,13 +388,22 @@ public interface AttributePackage extends EPackage {
     int PERMUTE_EATTRIBUTE_VALUES = 4;
 
     /**
-     * The feature id for the '<em><b>New Index For Element At</b></em>' attribute.
+     * The feature id for the '<em><b>Old Index</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int PERMUTE_EATTRIBUTE_VALUES__NEW_INDEX_FOR_ELEMENT_AT = ListPackage.PERMUTE_ELIST__NEW_INDEX_FOR_ELEMENT_AT;
+    int PERMUTE_EATTRIBUTE_VALUES__OLD_INDEX = ListPackage.PERMUTE_ELIST__OLD_INDEX;
+
+    /**
+     * The feature id for the '<em><b>New Index</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PERMUTE_EATTRIBUTE_VALUES__NEW_INDEX = ListPackage.PERMUTE_ELIST__NEW_INDEX;
 
     /**
      * The feature id for the '<em><b>Affected Feature</b></em>' reference.

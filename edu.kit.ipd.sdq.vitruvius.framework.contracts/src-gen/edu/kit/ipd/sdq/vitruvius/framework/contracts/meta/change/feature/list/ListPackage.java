@@ -188,13 +188,22 @@ public interface ListPackage extends EPackage {
     int PERMUTE_ELIST = 3;
 
     /**
-     * The feature id for the '<em><b>New Index For Element At</b></em>' attribute.
+     * The feature id for the '<em><b>Old Index</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int PERMUTE_ELIST__NEW_INDEX_FOR_ELEMENT_AT = FeaturePackage.UPDATE_MULTI_VALUED_EFEATURE_FEATURE_COUNT + 0;
+    int PERMUTE_ELIST__OLD_INDEX = FeaturePackage.UPDATE_MULTI_VALUED_EFEATURE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>New Index</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PERMUTE_ELIST__NEW_INDEX = FeaturePackage.UPDATE_MULTI_VALUED_EFEATURE_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>Permute EList</em>' class.
@@ -203,7 +212,7 @@ public interface ListPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PERMUTE_ELIST_FEATURE_COUNT = FeaturePackage.UPDATE_MULTI_VALUED_EFEATURE_FEATURE_COUNT + 1;
+    int PERMUTE_ELIST_FEATURE_COUNT = FeaturePackage.UPDATE_MULTI_VALUED_EFEATURE_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Permute EList</em>' class.
@@ -278,15 +287,26 @@ public interface ListPackage extends EPackage {
     EClass getPermuteEList();
 
     /**
-     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList#getNewIndexForElementAt <em>New Index For Element At</em>}'.
+     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList#getOldIndex <em>Old Index</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>New Index For Element At</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList#getNewIndexForElementAt()
+     * @return the meta object for the attribute '<em>Old Index</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList#getOldIndex()
      * @see #getPermuteEList()
      * @generated
      */
-    EAttribute getPermuteEList_NewIndexForElementAt();
+    EAttribute getPermuteEList_OldIndex();
+
+    /**
+     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList#getNewIndex <em>New Index</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>New Index</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList#getNewIndex()
+     * @see #getPermuteEList()
+     * @generated
+     */
+    EAttribute getPermuteEList_NewIndex();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -368,12 +388,20 @@ public interface ListPackage extends EPackage {
         EClass PERMUTE_ELIST = eINSTANCE.getPermuteEList();
 
         /**
-         * The meta object literal for the '<em><b>New Index For Element At</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Old Index</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute PERMUTE_ELIST__NEW_INDEX_FOR_ELEMENT_AT = eINSTANCE.getPermuteEList_NewIndexForElementAt();
+        EAttribute PERMUTE_ELIST__OLD_INDEX = eINSTANCE.getPermuteEList_OldIndex();
+
+        /**
+         * The meta object literal for the '<em><b>New Index</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute PERMUTE_ELIST__NEW_INDEX = eINSTANCE.getPermuteEList_NewIndex();
 
     }
 

@@ -111,8 +111,10 @@
             defaultValueLiteral="0"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="PermuteEList" abstract="true" eSuperTypes="#//feature/UpdateMultiValuedEFeature">
-        <eStructuralFeatures xsi:type="ecore:EAttribute" name="newIndexForElementAt"
-            lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldIndex" lowerBound="1"
+            eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="newIndex" lowerBound="1"
+            eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       </eClassifiers>
     </eSubpackages>
     <eSubpackages name="attribute" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Feature/Attribute/1.0"
@@ -160,11 +162,11 @@
         </eGenericSuperTypes>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="RemoveEAttributeValue">
-        <eTypeParameters name="T">
-          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
-        </eTypeParameters>
         <eTypeParameters name="A">
           <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+        </eTypeParameters>
+        <eTypeParameters name="T">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
         </eTypeParameters>
         <eGenericSuperTypes eClassifier="#//feature/list/RemoveFromEList"/>
         <eGenericSuperTypes eClassifier="#//feature/attribute/UpdateEAttribute">
@@ -237,13 +239,13 @@
         </eGenericSuperTypes>
         <eGenericSuperTypes eClassifier="#//SubtractiveEReferenceChange"/>
       </eClassifiers>
-      <eClassifiers xsi:type="ecore:EClass" name="PermuteEReferenceValues">
+      <eClassifiers xsi:type="ecore:EClass" name="PermuteEReferences">
         <eTypeParameters name="A">
           <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
         </eTypeParameters>
         <eGenericSuperTypes eClassifier="#//feature/list/PermuteEList"/>
         <eGenericSuperTypes eClassifier="#//feature/reference/UpdateEReference">
-          <eTypeArguments eTypeParameter="#//feature/reference/PermuteEReferenceValues/A"/>
+          <eTypeArguments eTypeParameter="#//feature/reference/PermuteEReferences/A"/>
         </eGenericSuperTypes>
       </eClassifiers>
     </eSubpackages>

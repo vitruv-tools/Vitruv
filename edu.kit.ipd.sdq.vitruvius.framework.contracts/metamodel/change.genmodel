@@ -64,7 +64,7 @@
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//feature/list/RemoveFromEList/removedObjectURIFragment"/>
         </genClasses>
         <genClasses image="false" ecoreClass="change.ecore#//feature/list/PermuteEList">
-          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//feature/list/PermuteEList/newIndexForElementAt"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//feature/list/PermuteEList/newIndex"/>
         </genClasses>
       </nestedGenPackages>
       <nestedGenPackages prefix="Attribute" basePackage="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature"
@@ -81,8 +81,8 @@
           <genTypeParameters ecoreTypeParameter="change.ecore#//feature/attribute/InsertEAttributeValue/T"/>
         </genClasses>
         <genClasses ecoreClass="change.ecore#//feature/attribute/RemoveEAttributeValue">
-          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/attribute/RemoveEAttributeValue/T"/>
           <genTypeParameters ecoreTypeParameter="change.ecore#//feature/attribute/RemoveEAttributeValue/A"/>
+          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/attribute/RemoveEAttributeValue/T"/>
         </genClasses>
         <genClasses ecoreClass="change.ecore#//feature/attribute/PermuteEAttributeValues">
           <genTypeParameters ecoreTypeParameter="change.ecore#//feature/attribute/PermuteEAttributeValues/A"/>

@@ -41,7 +41,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class RemoveEAttributeValueImpl<T extends Object, A extends EObject> extends RemoveFromEListImpl implements RemoveEAttributeValue<T, A> {
+public class RemoveEAttributeValueImpl<A extends EObject, T extends Object> extends RemoveFromEListImpl implements RemoveEAttributeValue<A, T> {
     /**
      * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
      * <!-- begin-user-doc -->

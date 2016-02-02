@@ -21,7 +21,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.Li
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.ListPackageImpl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.PermuteEReferenceValues;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.PermuteEReferences;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferenceFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference;
@@ -81,7 +81,7 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass permuteEReferenceValuesEClass = null;
+    private EClass permuteEReferencesEClass = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -214,8 +214,8 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getPermuteEReferenceValues() {
-        return permuteEReferenceValuesEClass;
+    public EClass getPermuteEReferences() {
+        return permuteEReferencesEClass;
     }
 
     /**
@@ -255,7 +255,7 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 
         removeEReferenceEClass = createEClass(REMOVE_EREFERENCE);
 
-        permuteEReferenceValuesEClass = createEClass(PERMUTE_EREFERENCE_VALUES);
+        permuteEReferencesEClass = createEClass(PERMUTE_EREFERENCES);
     }
 
     /**
@@ -293,7 +293,7 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
         ETypeParameter insertEReferenceEClass_A = addETypeParameter(insertEReferenceEClass, "A");
         ETypeParameter insertEReferenceEClass_T = addETypeParameter(insertEReferenceEClass, "T");
         ETypeParameter removeEReferenceEClass_A = addETypeParameter(removeEReferenceEClass, "A");
-        ETypeParameter permuteEReferenceValuesEClass_A = addETypeParameter(permuteEReferenceValuesEClass, "A");
+        ETypeParameter permuteEReferencesEClass_A = addETypeParameter(permuteEReferencesEClass, "A");
 
         // Set bounds for type parameters
         EGenericType g1 = createEGenericType(ecorePackage.getEObject());
@@ -309,7 +309,7 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
         g1 = createEGenericType(ecorePackage.getEObject());
         removeEReferenceEClass_A.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEObject());
-        permuteEReferenceValuesEClass_A.getEBounds().add(g1);
+        permuteEReferencesEClass_A.getEBounds().add(g1);
 
         // Add supertypes to classes
         g1 = createEGenericType(theFeaturePackage.getEFeatureChange());
@@ -349,11 +349,11 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
         g1 = createEGenericType(theChangePackage.getSubtractiveEReferenceChange());
         removeEReferenceEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(theListPackage.getPermuteEList());
-        permuteEReferenceValuesEClass.getEGenericSuperTypes().add(g1);
+        permuteEReferencesEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(this.getUpdateEReference());
-        g2 = createEGenericType(permuteEReferenceValuesEClass_A);
+        g2 = createEGenericType(permuteEReferencesEClass_A);
         g1.getETypeArguments().add(g2);
-        permuteEReferenceValuesEClass.getEGenericSuperTypes().add(g1);
+        permuteEReferencesEClass.getEGenericSuperTypes().add(g1);
 
         // Initialize classes, features, and operations; add parameters
         initEClass(updateEReferenceEClass, UpdateEReference.class, "UpdateEReference", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -366,7 +366,7 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 
         initEClass(removeEReferenceEClass, RemoveEReference.class, "RemoveEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-        initEClass(permuteEReferenceValuesEClass, PermuteEReferenceValues.class, "PermuteEReferenceValues", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(permuteEReferencesEClass, PermuteEReferences.class, "PermuteEReferences", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     }
 
 } //ReferencePackageImpl

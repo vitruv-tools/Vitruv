@@ -213,7 +213,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object, A extends EObject> T1 caseRemoveEAttributeValue(RemoveEAttributeValue<T, A> object) {
+    public <A extends EObject, T extends Object> T1 caseRemoveEAttributeValue(RemoveEAttributeValue<A, T> object) {
         return null;
     }
 

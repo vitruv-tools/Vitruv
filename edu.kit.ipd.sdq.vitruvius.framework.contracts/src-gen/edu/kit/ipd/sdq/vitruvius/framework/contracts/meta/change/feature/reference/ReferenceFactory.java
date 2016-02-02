@@ -50,13 +50,13 @@ public interface ReferenceFactory extends EFactory {
     <A extends EObject> RemoveEReference<A> createRemoveEReference();
 
     /**
-     * Returns a new object of class '<em>Permute EReference Values</em>'.
+     * Returns a new object of class '<em>Permute EReferences</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>Permute EReference Values</em>'.
+     * @return a new object of class '<em>Permute EReferences</em>'.
      * @generated
      */
-    <A extends EObject> PermuteEReferenceValues<A> createPermuteEReferenceValues();
+    <A extends EObject> PermuteEReferences<A> createPermuteEReferences();
 
     /**
      * Returns the package supported by this factory.

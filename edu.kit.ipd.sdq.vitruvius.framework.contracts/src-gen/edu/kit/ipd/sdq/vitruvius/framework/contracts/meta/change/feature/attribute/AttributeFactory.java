@@ -47,7 +47,7 @@ public interface AttributeFactory extends EFactory {
      * @return a new object of class '<em>Remove EAttribute Value</em>'.
      * @generated
      */
-    <T extends Object, A extends EObject> RemoveEAttributeValue<T, A> createRemoveEAttributeValue();
+    <A extends EObject, T extends Object> RemoveEAttributeValue<A, T> createRemoveEAttributeValue();
 
     /**
      * Returns a new object of class '<em>Permute EAttribute Values</em>'.

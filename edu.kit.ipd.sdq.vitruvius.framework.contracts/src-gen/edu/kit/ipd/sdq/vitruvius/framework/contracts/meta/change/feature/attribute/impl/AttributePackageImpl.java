@@ -281,8 +281,8 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
         ETypeParameter replaceSingleValuedEAttributeEClass_T = addETypeParameter(replaceSingleValuedEAttributeEClass, "T");
         ETypeParameter insertEAttributeValueEClass_A = addETypeParameter(insertEAttributeValueEClass, "A");
         ETypeParameter insertEAttributeValueEClass_T = addETypeParameter(insertEAttributeValueEClass, "T");
-        ETypeParameter removeEAttributeValueEClass_T = addETypeParameter(removeEAttributeValueEClass, "T");
         ETypeParameter removeEAttributeValueEClass_A = addETypeParameter(removeEAttributeValueEClass, "A");
+        ETypeParameter removeEAttributeValueEClass_T = addETypeParameter(removeEAttributeValueEClass, "T");
         ETypeParameter permuteEAttributeValuesEClass_A = addETypeParameter(permuteEAttributeValuesEClass, "A");
 
         // Set bounds for type parameters
@@ -296,10 +296,10 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
         insertEAttributeValueEClass_A.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEJavaObject());
         insertEAttributeValueEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEJavaObject());
-        removeEAttributeValueEClass_T.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEObject());
         removeEAttributeValueEClass_A.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEJavaObject());
+        removeEAttributeValueEClass_T.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEObject());
         permuteEAttributeValuesEClass_A.getEBounds().add(g1);
 

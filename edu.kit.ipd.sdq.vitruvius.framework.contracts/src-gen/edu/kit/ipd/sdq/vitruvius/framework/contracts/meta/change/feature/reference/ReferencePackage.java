@@ -469,23 +469,32 @@ public interface ReferencePackage extends EPackage {
     int REMOVE_EREFERENCE_OPERATION_COUNT = ListPackage.REMOVE_FROM_ELIST_OPERATION_COUNT + 2;
 
     /**
-     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.PermuteEReferenceValuesImpl <em>Permute EReference Values</em>}' class.
+     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.PermuteEReferencesImpl <em>Permute EReferences</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.PermuteEReferenceValuesImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl#getPermuteEReferenceValues()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.PermuteEReferencesImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl#getPermuteEReferences()
      * @generated
      */
-    int PERMUTE_EREFERENCE_VALUES = 4;
+    int PERMUTE_EREFERENCES = 4;
 
     /**
-     * The feature id for the '<em><b>New Index For Element At</b></em>' attribute.
+     * The feature id for the '<em><b>Old Index</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int PERMUTE_EREFERENCE_VALUES__NEW_INDEX_FOR_ELEMENT_AT = ListPackage.PERMUTE_ELIST__NEW_INDEX_FOR_ELEMENT_AT;
+    int PERMUTE_EREFERENCES__OLD_INDEX = ListPackage.PERMUTE_ELIST__OLD_INDEX;
+
+    /**
+     * The feature id for the '<em><b>New Index</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PERMUTE_EREFERENCES__NEW_INDEX = ListPackage.PERMUTE_ELIST__NEW_INDEX;
 
     /**
      * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -494,7 +503,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PERMUTE_EREFERENCE_VALUES__AFFECTED_FEATURE = ListPackage.PERMUTE_ELIST_FEATURE_COUNT + 0;
+    int PERMUTE_EREFERENCES__AFFECTED_FEATURE = ListPackage.PERMUTE_ELIST_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -503,7 +512,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PERMUTE_EREFERENCE_VALUES__AFFECTED_EOBJECT = ListPackage.PERMUTE_ELIST_FEATURE_COUNT + 1;
+    int PERMUTE_EREFERENCES__AFFECTED_EOBJECT = ListPackage.PERMUTE_ELIST_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Old TUID Of Affected EObject</b></em>' attribute.
@@ -512,16 +521,16 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PERMUTE_EREFERENCE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT = ListPackage.PERMUTE_ELIST_FEATURE_COUNT + 2;
+    int PERMUTE_EREFERENCES__OLD_TUID_OF_AFFECTED_EOBJECT = ListPackage.PERMUTE_ELIST_FEATURE_COUNT + 2;
 
     /**
-     * The number of structural features of the '<em>Permute EReference Values</em>' class.
+     * The number of structural features of the '<em>Permute EReferences</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int PERMUTE_EREFERENCE_VALUES_FEATURE_COUNT = ListPackage.PERMUTE_ELIST_FEATURE_COUNT + 3;
+    int PERMUTE_EREFERENCES_FEATURE_COUNT = ListPackage.PERMUTE_ELIST_FEATURE_COUNT + 3;
 
     /**
      * The operation id for the '<em>Is Containment</em>' operation.
@@ -530,17 +539,16 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PERMUTE_EREFERENCE_VALUES___IS_CONTAINMENT = ListPackage.PERMUTE_ELIST_OPERATION_COUNT + 0;
+    int PERMUTE_EREFERENCES___IS_CONTAINMENT = ListPackage.PERMUTE_ELIST_OPERATION_COUNT + 0;
 
     /**
-     * The number of operations of the '<em>Permute EReference Values</em>' class.
+     * The number of operations of the '<em>Permute EReferences</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int PERMUTE_EREFERENCE_VALUES_OPERATION_COUNT = ListPackage.PERMUTE_ELIST_OPERATION_COUNT + 1;
-
+    int PERMUTE_EREFERENCES_OPERATION_COUNT = ListPackage.PERMUTE_ELIST_OPERATION_COUNT + 1;
 
     /**
      * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateEReference <em>Update EReference</em>}'.
@@ -593,14 +601,14 @@ public interface ReferencePackage extends EPackage {
     EClass getRemoveEReference();
 
     /**
-     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.PermuteEReferenceValues <em>Permute EReference Values</em>}'.
+     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.PermuteEReferences <em>Permute EReferences</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Permute EReference Values</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.PermuteEReferenceValues
+     * @return the meta object for class '<em>Permute EReferences</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.PermuteEReferences
      * @generated
      */
-    EClass getPermuteEReferenceValues();
+    EClass getPermuteEReferences();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -674,14 +682,14 @@ public interface ReferencePackage extends EPackage {
         EClass REMOVE_EREFERENCE = eINSTANCE.getRemoveEReference();
 
         /**
-         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.PermuteEReferenceValuesImpl <em>Permute EReference Values</em>}' class.
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.PermuteEReferencesImpl <em>Permute EReferences</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.PermuteEReferenceValuesImpl
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl#getPermuteEReferenceValues()
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.PermuteEReferencesImpl
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl#getPermuteEReferences()
          * @generated
          */
-        EClass PERMUTE_EREFERENCE_VALUES = eINSTANCE.getPermuteEReferenceValues();
+        EClass PERMUTE_EREFERENCES = eINSTANCE.getPermuteEReferences();
 
     }
 

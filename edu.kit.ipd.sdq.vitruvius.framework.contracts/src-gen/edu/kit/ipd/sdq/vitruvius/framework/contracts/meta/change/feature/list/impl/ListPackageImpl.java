@@ -212,8 +212,17 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getPermuteEList_NewIndexForElementAt() {
+    public EAttribute getPermuteEList_OldIndex() {
         return (EAttribute)permuteEListEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getPermuteEList_NewIndex() {
+        return (EAttribute)permuteEListEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -253,7 +262,8 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
         createEAttribute(removeFromEListEClass, REMOVE_FROM_ELIST__REMOVED_OBJECT_URI_FRAGMENT);
 
         permuteEListEClass = createEClass(PERMUTE_ELIST);
-        createEAttribute(permuteEListEClass, PERMUTE_ELIST__NEW_INDEX_FOR_ELEMENT_AT);
+        createEAttribute(permuteEListEClass, PERMUTE_ELIST__OLD_INDEX);
+        createEAttribute(permuteEListEClass, PERMUTE_ELIST__NEW_INDEX);
     }
 
     /**
@@ -302,7 +312,8 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
         initEAttribute(getRemoveFromEList_RemovedObjectURIFragment(), ecorePackage.getEString(), "removedObjectURIFragment", "0", 1, 1, RemoveFromEList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(permuteEListEClass, PermuteEList.class, "PermuteEList", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getPermuteEList_NewIndexForElementAt(), ecorePackage.getEInt(), "newIndexForElementAt", null, 1, 1, PermuteEList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getPermuteEList_OldIndex(), ecorePackage.getEInt(), "oldIndex", null, 1, 1, PermuteEList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getPermuteEList_NewIndex(), ecorePackage.getEInt(), "newIndex", null, 1, 1, PermuteEList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     }
 
 } //ListPackageImpl

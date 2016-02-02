@@ -16,5 +16,5 @@ import org.eclipse.emf.ecore.EObject;
  * @model TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
-public interface RemoveEAttributeValue<T extends Object, A extends EObject> extends RemoveFromEList, UpdateEAttribute<A>, SubtractiveEAttributeChange<T> {
+public interface RemoveEAttributeValue<A extends EObject, T extends Object> extends RemoveFromEList, UpdateEAttribute<A>, SubtractiveEAttributeChange<T> {
 } // RemoveEAttributeValue
