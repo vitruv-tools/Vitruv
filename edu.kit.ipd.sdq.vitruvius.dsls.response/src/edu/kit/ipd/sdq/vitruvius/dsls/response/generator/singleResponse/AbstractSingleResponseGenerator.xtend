@@ -5,7 +5,7 @@ import org.apache.log4j.Logger
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.XtendImportHelper
 import org.apache.log4j.Level
-import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorConstants.*;
+import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.api.ResponseLanguageGeneratorConstants.*;
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
 import org.eclipse.emf.ecore.EClass
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseRealization
@@ -21,6 +21,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetMo
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootUpdate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootDelete
 import java.util.Collections
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
 
 abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerator {
 	protected final Response response;
@@ -85,7 +86,7 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 	 */
 	protected def generateMethodCheckPrecondition() '''
 		private def boolean checkPrecondition(«changeEventTypeString» «CHANGE_PARAMETER_NAME»)«
-		response.trigger.precondition.xtendCode»
+		response.trigger.precondition.text»
 	'''
 		
 	/**
@@ -105,7 +106,7 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 		private def «ih.typeRef(List)»<«ih.typeRef(affectedElementClass)»> determineTargetModels(«
 			changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)» blackboard) {
 			val targetModels = new «ih.typeRef(ArrayList)»<«ih.typeRef(affectedElementClass)»>();
-			val objectToGetCorrespondencesFor =«updatedModel.correspondenceSource.object.xtendCode»
+			val objectToGetCorrespondencesFor =«updatedModel.correspondenceSource.text»
 			targetModels += blackboard.correspondenceInstance.«ih.callExtensionMethod(ResponseRuntimeHelper,
 				'''getCorrespondingObjectsOfType(objectToGetCorrespondencesFor, «ih.typeRef(affectedElementClass)»)''')»;
 			return targetModels;
@@ -160,7 +161,7 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 		«val affectedElementClass = deletedModel.rootModelElement.element»
 		private def deleteTargetModels(«
 			changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)» blackboard) {
-			val objectToGetCorrespondencesFor =«deletedModel.correspondenceSource?.object?.xtendCode?:"change.oldValue;"»
+			val objectToGetCorrespondencesFor =«deletedModel.correspondenceSource?.text?:"change.oldValue;"»
 			val correspondences = blackboard.correspondenceInstance.«ih.callExtensionMethod(ResponseRuntimeHelper,
 				'''getCorrespondencesWithTargetType(objectToGetCorrespondencesFor, «ih.typeRef(affectedElementClass)»)''')»;
 			for (correspondence : correspondences) {

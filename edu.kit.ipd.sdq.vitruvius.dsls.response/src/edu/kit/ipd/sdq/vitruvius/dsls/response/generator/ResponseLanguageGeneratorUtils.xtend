@@ -2,21 +2,14 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.generator
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.XtendImportHelper
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
-import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.eclipse.emf.ecore.EPackage
-import org.eclipse.xtext.xbase.XExpression
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryModelElementChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryTargetMetamodelInstanceUpdate
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicConcreteModelElementChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicRootObjectChange
 
@@ -33,9 +26,13 @@ final class ResponseLanguageGeneratorUtils {
 	static def String getBasicResponsesPackageQualifiedName() '''
 		«RESPONSES_PACKAGE»'''
 	
+	static def String getMetamodelPairName(Response response) {
+		return response.sourceTargetPair?.metamodelPairName;
+	}
+	
 	static def String getMetamodelPairName(Pair<VURI, VURI> modelPair) '''
-		«IF modelPair.first.lastSegment.nullOrEmpty»«modelPair.first.EMFUri.toString.split("\\.").last.toFirstUpper»«ELSE»«modelPair.first.lastSegment.toFirstUpper»«ENDIF»To«
-		IF modelPair.second.lastSegment.nullOrEmpty»«modelPair.second.EMFUri.toString.split("\\.").last.toFirstUpper»«ELSE»«modelPair.second.lastSegment.toFirstUpper»«ENDIF»'''
+		«IF modelPair.first.lastSegment.nullOrEmpty»«modelPair.first.EMFUri.toString.split("\\.").last.toFirstUpper»«ELSE»«modelPair.first.lastSegment.split("\\.").get(0).toFirstUpper»«ENDIF»To«
+		IF modelPair.second.lastSegment.nullOrEmpty»«modelPair.second.EMFUri.toString.split("\\.").last.toFirstUpper»«ELSE»«modelPair.second.lastSegment.split("\\.").get(0).toFirstUpper»«ENDIF»'''
 	
 	static def String getPackageName(Pair<VURI, VURI> modelPair) '''
 		responses«modelPair.metamodelPairName»'''
@@ -70,11 +67,11 @@ final class ResponseLanguageGeneratorUtils {
 	static def String getChange2CommandTransformingFilePath(Pair<VURI, VURI> modelPair) '''
 		«modelPair.change2CommandTransformingQualifiedName.filePath»'''
 	
-	static def String getResponseQualifiedName(Pair<VURI, VURI> modelPair, String responseName) '''
-		«modelPair.packageQualifiedName».«responseName»'''
+	static def String getResponseQualifiedName(Response response) '''
+		«response.sourceTargetPair?.packageQualifiedName».«response.responseName»'''
 	
-	static def String getResponseFilePath(Pair<VURI, VURI> modelPair, String responseName) '''
-		«modelPair.getResponseQualifiedName(responseName).filePath»'''
+	static def String getResponseFilePath(Response response) '''
+		«response.getResponseQualifiedName().filePath»'''
 	
 	static def generateClass(String packageName, XtendImportHelper importHelper, CharSequence classImplementation) '''
 		package «packageName»;
@@ -84,7 +81,7 @@ final class ResponseLanguageGeneratorUtils {
 		«classImplementation»
 		'''
 
-	static def Pair<VURI, VURI> getSourceTargetPair(ResponseFile responseFile, Response response) {
+	static def Pair<VURI, VURI> getSourceTargetPair(Response response) {
 		val event = response.trigger;
 		var EPackage sourceMetamodel = event.sourceMetamodel;
 		
@@ -129,18 +126,5 @@ final class ResponseLanguageGeneratorUtils {
 	static def dispatch String getResponseNameForEvent(ArbitraryModelElementChange event) {
 		return '''«event.class.simpleName»In«IF event.changedModel?.model?.name != null»«
 			event.changedModel.model.name.toFirstUpper»«ENDIF»'''
-	}
-	
-	
-	static def getXtendCode(PreconditionBlock preconditionBlock) {
-		NodeModelUtils.getNode(preconditionBlock.code).text
-	}
-	
-	static def getXtendCode(CodeBlock codeBlock) {
-		NodeModelUtils.getNode(codeBlock.code).text
-	}
-	
-	static def getXtendCode(XExpression expression) {
-		NodeModelUtils.getNode(expression).text
 	}
 }

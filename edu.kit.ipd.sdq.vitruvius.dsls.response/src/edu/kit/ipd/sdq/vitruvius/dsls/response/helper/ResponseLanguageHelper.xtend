@@ -16,6 +16,11 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureCha
 import org.eclipse.emf.ecore.EPackage
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryModelElementChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.InvariantViolationEvent
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils
+import org.eclipse.xtext.xbase.XBlockExpression
+import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.SimpleTextXBlockExpression
+import org.eclipse.xtext.xbase.XExpression
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootChange
 
 final class ResponseLanguageHelper {
 	private new() {}
@@ -38,7 +43,7 @@ final class ResponseLanguageHelper {
 	
 	public static def Response getContainingResponse(CorrespondenceSourceDeterminationBlock correspondenceSourceBlock) {
 		val modelRootUpdate = correspondenceSourceBlock.eContainer();
-		if (modelRootUpdate instanceof ConcreteTargetModelRootUpdate) {
+		if (modelRootUpdate instanceof ConcreteTargetModelRootChange) {
 			return getContainingResponse(modelRootUpdate);
 		}
 		return null;
@@ -92,4 +97,15 @@ final class ResponseLanguageHelper {
 		throw new UnsupportedOperationException();
 	}
 	
+	public static def String getText(CodeBlock codeBlock) {
+		NodeModelUtils.getNode(codeBlock.code).text;
+	}
+	
+	public static def dispatch String getXBlockExpressionText(XExpression expression) {
+		NodeModelUtils.getNode(expression).text;
+	}
+	
+	public static def dispatch String getXBlockExpressionText(SimpleTextXBlockExpression blockExpression) {
+		blockExpression.text;
+	}
 }

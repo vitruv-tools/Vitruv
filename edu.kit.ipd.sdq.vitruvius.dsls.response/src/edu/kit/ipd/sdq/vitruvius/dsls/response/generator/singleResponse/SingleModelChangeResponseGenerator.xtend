@@ -5,7 +5,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChange
 import org.eclipse.emf.ecore.EClass
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
-import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorConstants.*;
+import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.api.ResponseLanguageGeneratorConstants.*;
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
@@ -13,6 +13,8 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetMo
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootUpdate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootDelete
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
+
 
 abstract class SingleModelChangeResponseGenerator extends AbstractSingleResponseGenerator {
 	
@@ -74,7 +76,7 @@ abstract class SingleModelChangeResponseGenerator extends AbstractSingleResponse
 	protected def generateMethodPerformResponse(EClass targetModelElement) '''
 		private def performResponseTo(«changeEventTypeString» «CHANGE_PARAMETER_NAME»«
 			IF hasTargetChange», «ih.typeRef(targetModelElement)
-			» «TARGET_MODEL_PARAMETER_NAME»«ENDIF»)«response.effects.codeBlock.xtendCode»
+			» «TARGET_MODEL_PARAMETER_NAME»«ENDIF»)«response.effects.codeBlock.text»
 	'''
 	
 	/**
@@ -90,7 +92,7 @@ abstract class SingleModelChangeResponseGenerator extends AbstractSingleResponse
 	 */
 	protected def generateMethodPerformResponse() '''
 		private def performResponseTo(«changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)
-			» blackboard)«response.effects.codeBlock.xtendCode»
+			» blackboard)«response.effects.codeBlock.text»
 	'''
 	
 	/**

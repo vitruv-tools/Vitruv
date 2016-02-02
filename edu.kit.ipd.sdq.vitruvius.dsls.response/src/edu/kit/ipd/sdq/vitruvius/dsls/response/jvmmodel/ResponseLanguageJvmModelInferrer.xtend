@@ -16,7 +16,7 @@ import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
 
-import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorConstants.*
+import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.api.ResponseLanguageGeneratorConstants.*
 
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*
@@ -29,6 +29,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionBloc
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryTargetMetamodelInstanceUpdate
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the response file model.</p> 
@@ -48,10 +49,10 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 		val response = correspondenceSourceBlock.containingResponse;
 		val methodParameters = createResponseParameters(response,correspondenceSourceBlock, false);
 		
-		acceptor.accept(response.toClass("ResponseHelperSourceCorrespondence")) [
+		acceptor.accept(response.toClass(response.responseQualifiedName + "HelperSourceCorrespondence")) [
 			members += correspondenceSourceBlock.toMethod(RESPONSE_APPLY_METHOD_NAME, typeRef(EObject)) [applyMethod |
 				applyMethod.parameters += methodParameters
-				applyMethod.body = correspondenceSourceBlock.object];
+				applyMethod.body = correspondenceSourceBlock.code];
 			it.makeClassStatic(response)
 		]
 	}
@@ -64,7 +65,7 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 		val response = codeBlock.containingResponse;
 		val methodParameters = createResponseParameters(response, codeBlock, true);
 		
-		acceptor.accept(response.toClass("ResponseHelper" + RESPONSE_APPLY_METHOD_NAME.toFirstUpper)) [
+		acceptor.accept(response.toClass(response.responseQualifiedName + "Helper" + RESPONSE_APPLY_METHOD_NAME.toFirstUpper)) [
 			members += codeBlock.toMethod(RESPONSE_APPLY_METHOD_NAME, typeRef(Void.TYPE)) [applyMethod |
 				applyMethod.parameters += methodParameters
 				applyMethod.body = codeBlock.code]
@@ -79,7 +80,7 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 		val response = preconditionBlock.containingResponse;
 		val methodParameters = createResponseParameters(response, preconditionBlock, false);
 		
-		acceptor.accept(response.toClass("ResponseHelper" +  PER_MODEL_PRECONDITION_METHOD_NAME.toFirstUpper)) [
+		acceptor.accept(response.toClass(response.responseQualifiedName + "Helper" +  PER_MODEL_PRECONDITION_METHOD_NAME.toFirstUpper)) [
 			members += preconditionBlock.toMethod(PER_MODEL_PRECONDITION_METHOD_NAME, typeRef(Boolean.TYPE)) [applyMethod |
 				applyMethod.parameters += methodParameters
 				applyMethod.body = preconditionBlock.code]

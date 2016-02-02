@@ -23,7 +23,7 @@ Response:
 Effects:
 	{Effects}
 	('effect:' targetChange=TargetChange)? 
-	('execute:' codeBlock=CodeBlock)?;
+	('execute:' codeBlock=ExecutionBlock)?;
 
 TargetChange:
 	ConcreteTargetModelRootChange | ArbitraryTargetMetamodelInstanceUpdate;
@@ -47,13 +47,19 @@ ArbitraryTargetMetamodelInstanceUpdate:
 ModelElement:
 	element=[ecore::EClass|QualifiedName];
 
-CorrespondenceSourceDeterminationBlock:
-	object=XBlockExpression;
+CodeBlock:
+	CorrespondenceSourceDeterminationBlock | PreconditionBlock | ExecutionBlock;
 
-PreconditionBlock:
+CorrespondenceSourceDeterminationBlock:
+	{CorrespondenceSourceDeterminationBlock}
 	code=XBlockExpression;
 
-CodeBlock:
+PreconditionBlock:
+	{PreconditionBlock}
+	code=XBlockExpression;
+
+ExecutionBlock:
+	{ExecutionBlock}
 	code=XBlockExpression;
 
 InvariantViolationEvent:
@@ -101,3 +107,8 @@ MetamodelReference:
 FeatureOfElement:
 	element=[ecore::EClass|QualifiedName] '[' feature=[ecore::EStructuralFeature|ValidID] ']';
 
+/*XBlockExpression returns xbase::XBlockExpression:
+	{XBlockExpressionAsString}
+	'{'
+		(expressions+=XExpressionOrVarDeclaration ';'?)*
+	'}';*/

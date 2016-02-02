@@ -133,14 +133,14 @@ class ResponseLanguageGenerator implements IGenerator {
 	
 	private def Iterable<Response> generateResponse(ResponseFile file, Response response, Map<Pair<VURI, VURI>, List<String>> modelCorrespondenceToResponseNameMap, IFileSystemAccess fsa) {
 		val responseName = response.responseName;
-		val sourceTargetPair = file.getSourceTargetPair(response);
+		val sourceTargetPair = response.getSourceTargetPair();
 		if (!modelCorrespondenceToResponseNameMap.containsKey(sourceTargetPair)) {
 			modelCorrespondenceToResponseNameMap.put(sourceTargetPair, new ArrayList<String>());
 		}
 		modelCorrespondenceToResponseNameMap.get(sourceTargetPair).add(responseName);
 		val responseGenerator = SingleResponseGeneratorFactory.INSTANCE.createGenerator(response);
-		fsa.generateFile(sourceTargetPair.getResponseFilePath(responseName), 
-			responseGenerator.generateResponseClass(file.getSourceTargetPair(response).packageQualifiedName, responseName)
+		fsa.generateFile(response.getResponseFilePath(), 
+			responseGenerator.generateResponseClass(response.getSourceTargetPair().packageQualifiedName, responseName)
 		);
 		return getRootDeleteIfCreate(response)
 	}
