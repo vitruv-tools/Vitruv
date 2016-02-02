@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests
 
 import java.util.BitSet
+import static org.junit.Assert.assertTrue;
 
 final class SimpleChangesTestsExecutionMonitor {
 	private static var SimpleChangesTestsExecutionMonitor INSTANCE;
@@ -19,7 +20,7 @@ final class SimpleChangesTestsExecutionMonitor {
 	private BitSet values;
 	
 	new() {
-		this.values = new BitSet(ChangeType.Size.ordinal);
+		this.values = new BitSet(ChangeType.Size.ordinal + 1);
 	}
 	
 	public enum ChangeType {
@@ -55,5 +56,16 @@ final class SimpleChangesTestsExecutionMonitor {
 			return monitor.values.equals(this.values);
 		}
 		return false;
+	}
+	
+	public def assertEqualWithStatic() {
+		for (var i = 0; i < ChangeType.Size.ordinal; i++) {
+			if (values.get(i)) {
+				assertTrue(ChangeType.values.get(i) + " was expected to occur but did not", INSTANCE.values.get(i));
+			}
+			if (!values.get(i)) {
+				assertTrue(ChangeType.values.get(i) + " was not expected to occur but did", !INSTANCE.values.get(i));
+			}
+		}
 	}
 }

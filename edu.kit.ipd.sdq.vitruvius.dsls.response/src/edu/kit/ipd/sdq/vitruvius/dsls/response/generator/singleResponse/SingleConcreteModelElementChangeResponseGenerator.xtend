@@ -5,15 +5,16 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
 import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorConstants.*;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.FeatureOfElement
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
+import org.eclipse.emf.ecore.EClass
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureChange
 
 class SingleConcreteModelElementChangeResponseGenerator extends SingleModelChangeResponseGenerator {
 	private final ConcreteModelElementChange changeEvent;
-	private final FeatureOfElement changedObject;
+	private final EClass changedElement;
 	
 	protected new(Response response) {
 		super(response);
@@ -21,7 +22,7 @@ class SingleConcreteModelElementChangeResponseGenerator extends SingleModelChang
 			throw new IllegalArgumentException("Response must be triggered by a change event")
 		}
 		this.changeEvent = response.trigger as ConcreteModelElementChange;
-		this.changedObject = changeEvent.changedObject;
+		this.changedElement = changeEvent.changedModelElementClass;
 	}
 	
 	protected override Iterable<CharSequence> getGeneratedMethods() {
@@ -43,13 +44,13 @@ class SingleConcreteModelElementChangeResponseGenerator extends SingleModelChang
 		private def boolean checkChangedObject(«ih.typeRef(EChange)» «CHANGE_PARAMETER_NAME») {
 			val typedChange = «CHANGE_PARAMETER_NAME» as «ih.typeRef(change)»«IF !change.instanceClass.equals(EChange)»<?>«ENDIF»;
 			val changedElement = typedChange.«change.EChangeFeatureNameOfChangedObject»;
-			«IF EFeatureChange.isAssignableFrom(change.instanceClass)»
+			«IF changeEvent instanceof AtomicFeatureChange»
 				«/* TODO HK We could compare something more safe like <MM>PackageImpl.eINSTANCE.<ELEMENT>_<FEATURE>.*/»
-				if (!typedChange.affectedFeature.name.equals("«changedObject.feature.name»")) {
+				if (!typedChange.affectedFeature.name.equals("«changeEvent.changedFeature.feature.name»")) {
 					return false;
 				}
 			«ENDIF»
-			if (changedElement instanceof «ih.typeRef(changedObject.element)») {
+			if (changedElement instanceof «ih.typeRef(changedElement)») {
 				return true;
 			}
 			return false;
@@ -92,7 +93,6 @@ class SingleConcreteModelElementChangeResponseGenerator extends SingleModelChang
 	
 	
 	protected override getChangeEventTypeString() '''
-		«val typeParameter = ih.typeRef(change.getGenericTypeParameterFQNOfChange(changeEvent.changedObject))»
-		«ih.typeRef(change)»«IF !typeParameter.nullOrEmpty»<«typeParameter»>«ENDIF»'''
+		«ih.typeRef(change)»<«ih.typeRef(changeEvent.getGenericTypeParameterFQNOfChange())»>'''
 	
 }

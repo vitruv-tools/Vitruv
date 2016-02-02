@@ -51,7 +51,7 @@ abstract class SingleModelChangeResponseGenerator extends AbstractSingleResponse
 		
 		if (hasExecutionBlock) {
 			if (targetChange instanceof ConcreteTargetModelRootChange) {
-				methods += generateMethodPerformResponse(targetChange.rootModelElement.modelElement);
+				methods += generateMethodPerformResponse(targetChange.rootModelElement.element);
 			} else {
 				methods += generateMethodPerformResponse();
 			}

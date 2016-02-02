@@ -24,16 +24,9 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.singleResponse.SingleRe
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootCreate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguageFactory
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangeFactory
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ObjectFactory
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementCreate
-import org.eclipse.xtext.xbase.XbaseFactory
-import org.eclipse.xtext.xbase.compiler.XbaseCompiler
-import org.eclipse.xtext.xbase.parser.antlr.XbaseParser
-import org.eclipse.xtext.xbase.XBlockExpression
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MultiValuedFeatureInsertChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.InsertRootChange
 
 class ResponseLanguageGenerator implements IGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
@@ -153,23 +146,39 @@ class ResponseLanguageGenerator implements IGenerator {
 	}
 	
 	private def List<Response> getRootDeleteIfCreate(Response response) {
-		if (response.effects.targetChange instanceof ConcreteTargetModelRootCreate
-			&& response.trigger instanceof ConcreteModelElementCreate) {
-			val createTrigger = response.trigger as ConcreteModelElementCreate;
-			val createTargetChange = response.effects.targetChange as ConcreteTargetModelRootCreate;
-			val deleteResponse = ResponseLanguageFactory.eINSTANCE.createResponse();
-			deleteResponse.name = "OppositeResponseForDeleteTo" + response.name;
-			val deleteTrigger = ResponseLanguageFactory.eINSTANCE.createConcreteModelElementDelete();
-			deleteTrigger.changedObject = createTrigger.changedObject;
-			deleteResponse.trigger = deleteTrigger;
-			val deleteEffects = ResponseLanguageFactory.eINSTANCE.createEffects();
-			val deleteTargetChange = ResponseLanguageFactory.eINSTANCE.createConcreteTargetModelRootDelete();
-			deleteTargetChange.rootModelElement = createTargetChange.rootModelElement;
-			deleteEffects.targetChange = deleteTargetChange;
-			deleteResponse.effects = deleteEffects;
-			return #[deleteResponse];
+		val deleteTrigger = response.trigger.deleteTrigger;
+		val targetChange = response.effects.targetChange;
+		if (targetChange instanceof ConcreteTargetModelRootCreate && deleteTrigger != null) {
+			val createTargetChange = targetChange as ConcreteTargetModelRootCreate;
+			if (createTargetChange.autodelete) {
+				val deleteResponse = ResponseLanguageFactory.eINSTANCE.createResponse();
+				deleteResponse.name = "OppositeResponseForDeleteTo" + response.name;
+				deleteResponse.trigger = deleteTrigger;
+				val deleteEffects = ResponseLanguageFactory.eINSTANCE.createEffects();
+				val deleteTargetChange = ResponseLanguageFactory.eINSTANCE.createConcreteTargetModelRootDelete();
+				deleteTargetChange.rootModelElement = createTargetChange.rootModelElement;
+				deleteEffects.targetChange = deleteTargetChange;
+				deleteResponse.effects = deleteEffects;
+				return #[deleteResponse];
+			}
 		}
 		return #[];
+	}
+	
+	private def dispatch Trigger getDeleteTrigger(Trigger change) {
+		return null;
+	}
+	
+	private def dispatch Trigger getDeleteTrigger(MultiValuedFeatureInsertChange change) {
+		val deleteTrigger = ResponseLanguageFactory.eINSTANCE.createMultiValuedFeatureRemoveChange();
+		deleteTrigger.changedFeature = change.changedFeature;
+		return deleteTrigger;
+	}
+	
+	private def dispatch Trigger getDeleteTrigger(InsertRootChange change) {
+		val deleteTrigger = ResponseLanguageFactory.eINSTANCE.createRemoveRootChange();
+		deleteTrigger.changedElement = change.changedElement;
+		return deleteTrigger;
 	}
 	
 }

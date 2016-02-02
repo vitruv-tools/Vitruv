@@ -9,22 +9,29 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.EObjectChange
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EClass
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.impl.AttributePackageImpl
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.impl.ReferencePackageImpl
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.ContainmentPackageImpl
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.impl.FeaturePackageImpl
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.impl.ObjectPackageImpl
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.FeatureOfElement
-import org.eclipse.emf.ecore.EModelElement
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementUpdate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.ChangePackageImpl
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementCreate
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementDelete
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceRootEObject
+import org.eclipse.emf.ecore.EObject
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicRootObjectChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MultiValuedFeatureInsertChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MultiValuedFeaturePermuteChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MultiValuedFeatureRemoveChange
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.AttributePackage
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.InsertRootChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.RemoveRootChange
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangePackage
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.SingleValuedFeatureReplace
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.SingleValuedFeatureCreate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.SingleValuedFeatureDelete
 
 final class EChangeHelper {
 	
@@ -46,6 +53,18 @@ final class EChangeHelper {
 		return className;
 	}
 	
+	static def dispatch String getGenericTypeParameterFQNOfChange(ConcreteModelElementChange change) {
+		throw new UnsupportedOperationException();
+	}
+	
+	static def dispatch String getGenericTypeParameterFQNOfChange(AtomicFeatureChange featureChange) {
+		return featureChange.changedFeature.feature.EType.instanceClassName?.convertPrimitiveTypeToClassName;
+	}
+	
+	static def dispatch String getGenericTypeParameterFQNOfChange(AtomicRootObjectChange elementChange) {
+		return elementChange.changedElement.element.instanceClassName?.convertPrimitiveTypeToClassName;
+	}
+	
 	private static def String convertPrimitiveTypeToClassName(String className) {
 		switch (className) {
 			case "short": return Short.name
@@ -65,127 +84,97 @@ final class EChangeHelper {
 		return ChangePackageImpl.eINSTANCE.EChange;
 	}
 	
-	static def dispatch EClass generateEChange(ConcreteModelElementChange elementChange) {
-		generateEChange(elementChange, elementChange.changedObject.feature?:elementChange.changedObject.element);
+	static def dispatch EClass generateEChange(AtomicFeatureChange elementChange) {
+		generateEChange(elementChange, elementChange.changedFeature.feature);
 	}
 	
-	private static def dispatch EClass generateEChange(ConcreteModelElementChange elementUpdate, EModelElement element) {
-		throw new UnsupportedOperationException("This type of change or element is currently not supported.");
+	static def dispatch EClass generateEChange(AtomicRootObjectChange elementChange) {
+		generateEChange(elementChange, elementChange.changedElement.element);
 	}
 	
-	private static def dispatch EClass generateEChange(ConcreteModelElementUpdate elementUpdate, EAttribute feature) {
-		if (feature.upperBound > 1 || feature.upperBound == -1) {
-			return AttributePackageImpl.eINSTANCE.replaceEAttributeValue;
-		} else {
-			return AttributePackageImpl.eINSTANCE.updateSingleValuedEAttribute;
-		}
-	}	
-	
-	private static def dispatch EClass generateEChange(ConcreteModelElementUpdate elementUpdate, EReference feature) {
-		if (feature.upperBound > 1 || feature.upperBound == -1) {
-			if (feature.containment) {
-				return ContainmentPackageImpl.eINSTANCE.replaceNonRootEObjectInList;
-			} else {
-				return ReferencePackageImpl.eINSTANCE.replaceNonContainmentEReference;
-			}
-		} else {
-			if (feature.containment) {
-				return ContainmentPackageImpl.eINSTANCE.replaceNonRootEObjectSingle;
-			} else {
-				return ReferencePackageImpl.eINSTANCE.updateSingleValuedNonContainmentEReference;
-			}
-		}
+	private static def dispatch EClass generateEChange(ConcreteModelElementChange elementUpdate, EObject element) {
+		return ChangePackage.Literals.ECHANGE;
 	}
-	
-	private static def dispatch EClass generateEChange(ConcreteModelElementUpdate elementUpdate, EClass element) {
-		return ObjectPackageImpl.eINSTANCE.replaceRootEObject;
-	}
-	
-	private static def dispatch EClass generateEChange(ConcreteModelElementCreate elementCreate, EAttribute feature) {
-		if (feature.upperBound > 1 || feature.upperBound == -1) {
-			return AttributePackageImpl.eINSTANCE.insertEAttributeValue;
-		} else {
-			return AttributePackageImpl.eINSTANCE.updateSingleValuedEAttribute
-		}
-	}
-	
-	private static def dispatch EClass generateEChange(ConcreteModelElementCreate elementCreate, EReference feature) {
-		if (feature.upperBound > 1 || feature.upperBound == -1) {
-			if (feature.containment) {
-				// TODO HK could also be InsertNonRootEObjectInContainmentList if object is moved from somewhere else 
-				return ContainmentPackageImpl.eINSTANCE.createNonRootEObjectInList;
-			} else {
-				return ReferencePackageImpl.eINSTANCE.insertNonContainmentEReference;
-			}
-		} else {
-			if (feature.containment) {
-				return ContainmentPackageImpl.eINSTANCE.createNonRootEObjectSingle;
-			} else {
-				return ReferencePackageImpl.eINSTANCE.updateSingleValuedNonContainmentEReference;
-			}
-		}
-	}
-	
-	private static def dispatch EClass generateEChange(ConcreteModelElementCreate elementCreate, EClass element) {
-		return ObjectPackageImpl.eINSTANCE.createRootEObject;
-	}	
-	
-	private static def dispatch EClass generateEChange(ConcreteModelElementDelete elementDelete, EModelElement changedElement) {
-		throw new UnsupportedOperationException("The given element is not supported.");
-	} 
-	
-	private static def dispatch EClass generateEChange(ConcreteModelElementDelete elementDelete, EAttribute feature) {
-		if (feature.upperBound > 1 || feature.upperBound == -1) {
-			return AttributePackageImpl.eINSTANCE.removeEAttributeValue
-		} else {
-			return FeaturePackageImpl.eINSTANCE.unsetEAttribute;
-		}
-	}
-	
-	private static def dispatch EClass generateEChange(ConcreteModelElementDelete elementDelete, EReference feature) {
-		if (feature.upperBound > 1 || feature.upperBound == -1) {
-			if (feature.containment) {
-				// TODO HK could also be RemoveNonRootEObjectFromContainmentList if object is moved to somewhere else
-				return ContainmentPackageImpl.eINSTANCE.deleteNonRootEObjectInList
-			} else {
-				return ReferencePackageImpl.eINSTANCE.removeNonContainmentEReference;
-			}
-		} else {
-			if (feature.containment) {
-				// TODO HK could also be FeaturePackageImpl.eINSTANCE.unsetContainmentEReference
-				return ContainmentPackageImpl.eINSTANCE.deleteNonRootEObjectSingle;
-			} else {
-				return FeaturePackageImpl.eINSTANCE.unsetNonContainmentEReference;
-			}
-		}
-	}
-	
-	private static def dispatch EClass generateEChange(ConcreteModelElementDelete elementDelete, EClass element) {
-		return ObjectPackageImpl.eINSTANCE.deleteRootEObject;
-	}	
 
-	private static def dispatch EClass generateEChange(ConcreteModelElementChange elementChange, EAttribute feature) {
-		if (feature.upperBound > 1 || feature.upperBound == -1) {
-			return AttributePackageImpl.eINSTANCE.updateEAttribute;
-		} else {
-			return AttributePackageImpl.eINSTANCE.updateSingleValuedEAttribute;
-		}
+	private static def dispatch EClass generateEChange(MultiValuedFeaturePermuteChange elementUpdate, EAttribute feature) {
+		return AttributePackage.Literals.PERMUTE_EATTRIBUTE_VALUES;
 	}	
 	
-	private static def dispatch EClass generateEChange(ConcreteModelElementChange elementChange, EReference feature) {
-		if (feature.upperBound > 1 || feature.upperBound == -1) {
-			if (feature.containment) {
-				return ContainmentPackageImpl.eINSTANCE.updateContainmentEReference;
-			} else {
-				return ReferencePackageImpl.eINSTANCE.updateNonContainmentEReference;
-			}
+	private static def dispatch EClass generateEChange(MultiValuedFeaturePermuteChange elementUpdate, EReference feature) {
+		if (feature.containment) {
+			return ContainmentPackageImpl.eINSTANCE.permuteContainmentEReferenceValues;
 		} else {
-			if (feature.containment) {
-				return ContainmentPackageImpl.eINSTANCE.updateSingleValuedContainmentEReference;
-			} else {
-				return ReferencePackageImpl.eINSTANCE.updateSingleValuedNonContainmentEReference;
-			}
+			return ReferencePackageImpl.eINSTANCE.permuteNonContainmentEReferenceValues;
 		}
+	}
+	
+	
+	private static def dispatch EClass generateEChange(MultiValuedFeatureInsertChange elementUpdate, EAttribute feature) {
+		return AttributePackage.Literals.INSERT_EATTRIBUTE_VALUE;
+	}	
+	
+	private static def dispatch EClass generateEChange(MultiValuedFeatureInsertChange elementUpdate, EReference feature) {
+		if (feature.containment) {
+			return ContainmentPackageImpl.eINSTANCE.createNonRootEObjectInList;
+		} else {
+			return ReferencePackageImpl.eINSTANCE.insertNonContainmentEReference;
+		}
+	}
+	
+	private static def dispatch EClass generateEChange(MultiValuedFeatureRemoveChange elementUpdate, EAttribute feature) {
+		return AttributePackage.Literals.REMOVE_EATTRIBUTE_VALUE;
+	}	
+	
+	private static def dispatch EClass generateEChange(MultiValuedFeatureRemoveChange elementUpdate, EReference feature) {
+		if (feature.containment) {
+			return ContainmentPackageImpl.eINSTANCE.deleteNonRootEObjectInList;
+		} else {
+			return ReferencePackageImpl.eINSTANCE.removeNonContainmentEReference;
+		}
+	}
+	
+	private static def dispatch EClass generateEChange(SingleValuedFeatureCreate elementUpdate, EAttribute feature) {
+		return AttributePackage.Literals.UPDATE_SINGLE_VALUED_EATTRIBUTE;
+	}
+	
+	private static def dispatch EClass generateEChange(SingleValuedFeatureCreate elementUpdate, EReference feature) {
+		if (feature.containment) {
+			return ContainmentPackageImpl.eINSTANCE.createNonRootEObjectSingle;
+		} else {
+			return ReferencePackageImpl.eINSTANCE.updateSingleValuedNonContainmentEReference;
+		}
+	}
+	
+	private static def dispatch EClass generateEChange(SingleValuedFeatureDelete elementUpdate, EAttribute feature) {
+		return AttributePackage.Literals.UPDATE_SINGLE_VALUED_EATTRIBUTE;
+	}
+	
+	private static def dispatch EClass generateEChange(SingleValuedFeatureDelete elementUpdate, EReference feature) {
+		if (feature.containment) {
+			return ContainmentPackageImpl.eINSTANCE.deleteNonRootEObjectSingle;
+		} else {
+			return ReferencePackageImpl.eINSTANCE.updateSingleValuedNonContainmentEReference;
+		}
+	}
+	
+	private static def dispatch EClass generateEChange(SingleValuedFeatureReplace elementUpdate, EAttribute feature) {
+		return AttributePackage.Literals.UPDATE_SINGLE_VALUED_EATTRIBUTE;
+	}
+	
+	private static def dispatch EClass generateEChange(SingleValuedFeatureReplace elementUpdate, EReference feature) {
+		if (feature.containment) {
+			return ContainmentPackageImpl.eINSTANCE.replaceNonRootEObjectSingle;
+		} else {
+			return ReferencePackageImpl.eINSTANCE.updateSingleValuedNonContainmentEReference;
+		}
+	}
+	
+	private static def dispatch EClass generateEChange(InsertRootChange elementCreate, EClass element) {
+		ObjectPackageImpl.eINSTANCE.createRootEObject;
+	}
+	
+	private static def dispatch EClass generateEChange(RemoveRootChange elementCreate, EClass element) {
+		ObjectPackageImpl.eINSTANCE.deleteRootEObject;
 	}
 	
 	private static def dispatch EClass generateEChange(ConcreteModelElementChange elementChange, EClass element) {

@@ -17,7 +17,6 @@ import java.util.ArrayList
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementUpdate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootCreate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootUpdate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootDelete
@@ -36,7 +35,7 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 		this.response = response;
 		this.ih = new XtendImportHelper();
 		this.hasTargetChange = response.effects.targetChange != null;
-		this.isTargetUpdated = this.hasTargetChange && response.effects.targetChange instanceof ConcreteModelElementUpdate;
+		this.isTargetUpdated = this.hasTargetChange && response.effects.targetChange instanceof ConcreteTargetModelRootUpdate;
 		this.hasPreconditionBlock = response.trigger.precondition != null;
 		this.hasExecutionBlock = response.effects.codeBlock != null;
 		this.change = calculateEChange();
@@ -102,7 +101,7 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 	 * <p>Precondition: a metamodel element for the target models is specified in the response
 	 */	
 	protected def generateMethodDetermineTargetModels(ConcreteTargetModelRootUpdate updatedModel) '''
-		«val affectedElementClass = updatedModel.rootModelElement.modelElement»
+		«val affectedElementClass = updatedModel.rootModelElement.element»
 		private def «ih.typeRef(List)»<«ih.typeRef(affectedElementClass)»> determineTargetModels(«
 			changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)» blackboard) {
 			val targetModels = new «ih.typeRef(ArrayList)»<«ih.typeRef(affectedElementClass)»>();
@@ -125,14 +124,14 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 	 * <p>Precondition: a metamodel element to be the root of the new model is specified in the response
 	 */	
 	protected def generateMethodGenerateTargetModel(ConcreteTargetModelRootCreate createdModel) '''
-		«val affectedElementClass = createdModel.rootModelElement.modelElement»
+		«val affectedElementClass = createdModel.rootModelElement.element»
 		private def «ih.typeRef(affectedElementClass)» generateTargetModel(«
 			changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)» blackboard) {
 			«val createdClassFactoryName = affectedElementClass.EPackage.EFactoryInstance.class.name»
 			val newRoot = «ih.typeRef(createdClassFactoryName)».eINSTANCE.create«affectedElementClass.name»();
 			val sourceElement = «CHANGE_PARAMETER_NAME».«change.EChangeFeatureNameOfChangedObject»;
-			val newModelFileSegments = "«createdModel.name»".split("/")
-			«val newModelFileSegments = createdModel.name.split("/")»
+			val newModelFileSegments = "«createdModel.relativeToSourcePath»".split("/")
+			«val newModelFileSegments = createdModel.relativeToSourcePath.split("/")»
 			«IF !newModelFileSegments.last.contains(".")»
 				// No file extension was specified, add the first one that is the valid for the metamodel
 				newModelFileSegments.set(newModelFileSegments.size - 1, newModelFileSegments.last 
@@ -158,7 +157,7 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 	 *  <li>2. blackboard: the blackboard ({@link Blackboard})</li>
 	 */	
 	protected def generateMethodDeleteTargetModels(ConcreteTargetModelRootDelete deletedModel) '''
-		«val affectedElementClass = deletedModel.rootModelElement.modelElement»
+		«val affectedElementClass = deletedModel.rootModelElement.element»
 		private def deleteTargetModels(«
 			changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)» blackboard) {
 			val objectToGetCorrespondencesFor =«deletedModel.correspondenceSource?.object?.xtendCode?:"change.oldValue;"»

@@ -20,6 +20,8 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionBloc
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryTargetMetamodelInstanceUpdate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicRootObjectChange
 
 /**
  * Outline structure definition for a response file.
@@ -83,13 +85,20 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		createEObjectNode(parentNode, trigger);
 	}
 	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, ConcreteModelElementChange event) {
+	protected def void _createChildren(EStructuralFeatureNode parentNode, AtomicFeatureChange event) {
 		createEObjectNode(parentNode, event);
-		if (event.changedObject != null) {
-			createEObjectNode(parentNode, event.changedObject.element);
-			if (event.changedObject.feature != null) {
-				createEObjectNode(parentNode, event.changedObject.feature);
+		if (event.changedFeature != null) {
+			createEObjectNode(parentNode, event.changedFeature.element);
+			if (event.changedFeature.feature != null) {
+				createEObjectNode(parentNode, event.changedFeature.feature);
 			}
+		}
+	}
+	
+	protected def void _createChildren(EStructuralFeatureNode parentNode, AtomicRootObjectChange event) {
+		createEObjectNode(parentNode, event);
+		if (event.changedElement != null) {
+			createEObjectNode(parentNode, event.changedElement.element);
 		}
 	}
 	
@@ -98,7 +107,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 			var targetChangeIsLeaf = false;
 			val targetChange = effects.targetChange;
 			if (targetChange instanceof ConcreteTargetModelRootChange) {
-				targetChangeIsLeaf = targetChange.rootModelElement?.modelElement == null;
+				targetChangeIsLeaf = targetChange.rootModelElement?.element == null;
 			} else if (targetChange instanceof ArbitraryTargetMetamodelInstanceUpdate) {
 				targetChangeIsLeaf = targetChange.metamodelReference?.model == null;
 			}
@@ -118,8 +127,8 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, ConcreteTargetModelRootChange targetChange) {
-		if (targetChange.rootModelElement.modelElement != null) {
-			createEObjectNode(parentNode, targetChange.rootModelElement.modelElement);
+		if (targetChange.rootModelElement.element != null) {
+			createEObjectNode(parentNode, targetChange.rootModelElement.element);
 		}
 	}
 	
@@ -142,8 +151,16 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return "There is no outline for this trigger";
 	}
 	
-	protected def Object _text(ConcreteModelElementChange event) {
-		if (event.changedObject?.element != null) {
+	protected def Object _text(AtomicFeatureChange event) {
+		if (event.changedFeature?.element != null) {
+			return event.generateEChange()?.name;
+		} else {
+			return "No changed element specified"
+		}
+	}
+	
+	protected def Object _text(AtomicRootObjectChange event) {
+		if (event.changedElement?.element != null) {
 			return event.generateEChange()?.name;
 		} else {
 			return "No changed element specified"

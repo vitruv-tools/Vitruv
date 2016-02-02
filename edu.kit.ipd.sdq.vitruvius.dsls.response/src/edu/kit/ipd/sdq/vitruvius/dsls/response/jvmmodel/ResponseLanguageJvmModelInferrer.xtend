@@ -118,7 +118,7 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 		}
 		var List<String> changeTypeParameters = <String>newArrayList;
 		if (event instanceof ConcreteModelElementChange) {
-			changeTypeParameters = #[getGenericTypeParameterFQNOfChange(eChange, event.changedObject)]			
+			changeTypeParameters = #[getGenericTypeParameterFQNOfChange(event)]			
 		}
 		val changeParameter = parameterContext.generateChangeParameter(eChange.instanceTypeName, changeTypeParameters);
 		if (changeParameter != null) {
@@ -127,8 +127,8 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
 	}
 	
 	private def Iterable<JvmFormalParameter> generateTargetModelParameters(ConcreteTargetModelRootChange rootChange, EObject parameterContext) {
-		if (rootChange?.rootModelElement?.modelElement != null) {
-			return #[parameterContext.generateAffectedModelParameter(rootChange.rootModelElement.modelElement.instanceTypeName)];
+		if (rootChange?.rootModelElement?.element != null) {
+			return #[parameterContext.generateAffectedModelParameter(rootChange.rootModelElement.element.instanceTypeName)];
 		}
 		return #[];
 	}

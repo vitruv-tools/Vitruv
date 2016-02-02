@@ -212,13 +212,14 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 	}
 	
 		
-	@Test
+	//@Test
 	public def void testUnsetSingleValuedNonContainmentEReference() throws Throwable {
 		setSingleValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(1));
 		SimpleChangesTestsExecutionMonitor.reinitialize();
 		unsetSingleValuedNonContainmentNonRootObject(rootElement);
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.UnsetNonContainmentEReference);
+		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
 	}
@@ -229,6 +230,7 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		setSingleValuedEAttribute(rootElement, -1);
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.UpdateSingleValuedEAttribute);
+		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
 	}
@@ -240,6 +242,7 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		setSingleValuedContainmentNonRootObject(rootElement, "singleValuedContainmentNonRootTest");
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.CreateNonRootEObjectSingle);
+		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
 	}
@@ -251,6 +254,7 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		unsetSingleValuedContainmentNonRootObject(rootElement);
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.DeleteNonRootEObjectSingle);
+		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
 	}
@@ -263,6 +267,7 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.DeleteNonRootEObjectSingle);
 		compareMonitor.set(ChangeType.CreateNonRootEObjectSingle);
+		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
 	}
@@ -273,6 +278,7 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		setSingleValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(1));
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.UpdateSingleValuedNonContainmentEReference);
+		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertEquals(nonContainmentNonRootIds.get(1), rootElement.singleValuedNonContainmentEReference.id);
 		assertModelsEqual();
@@ -286,6 +292,7 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		setSingleValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(1));
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.UpdateSingleValuedNonContainmentEReference);
+		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertEquals(nonContainmentNonRootIds.get(1), rootElement.singleValuedNonContainmentEReference.id);
 		assertModelsEqual();
@@ -298,6 +305,7 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		addMultiValuedEAttribute(rootElement, 1);
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.InsertEAttributeValue);
+		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
 	}
@@ -310,6 +318,7 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		removeMultiValuedEAttribute(rootElement, 1);
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.RemoveEAttributeValue);
+		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertEquals(2, rootElement.multiValuedEAttribute.get(0));
 		assertModelsEqual();
@@ -325,6 +334,7 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		// TODO HK This should not be, should be one event
 		compareMonitor.set(ChangeType.RemoveEAttributeValue);
 		compareMonitor.set(ChangeType.InsertEAttributeValue);
+		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertEquals(3, rootElement.multiValuedEAttribute.get(1));
 		assertModelsEqual();
@@ -336,6 +346,7 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		addMultiValuedContainmentNonRootObject(rootElement, "multiValuedContainmentNonRootTest");
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.CreateNonRootEObjectInList);
+		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
 	}
@@ -347,6 +358,7 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		removeMultiValuedContainmentNonRootObject(rootElement, "multiValuedContainmentNonRootTest");
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.DeleteNonRootEObjectInList);
+		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
 	}
@@ -359,6 +371,7 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.DeleteNonRootEObjectInList);
 		compareMonitor.set(ChangeType.CreateNonRootEObjectInList);
+		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertEquals("multiValuedContainmentNonRootTest2", rootElement.multiValuedContainmentEReference.last.id);
 		assertModelsEqual();
@@ -382,6 +395,7 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.RemoveNonContainmentEReference);
 		val mon = SimpleChangesTestsExecutionMonitor.instance;
+		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, mon);
 		assertModelsEqual();
 	}
@@ -397,6 +411,7 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		//compareMonitor.set(ChangeType.ReplaceNonContainmentEReference);
 		compareMonitor.set(ChangeType.RemoveNonContainmentEReference);
 		compareMonitor.set(ChangeType.InsertNonContainmentEReference);
+		compareMonitor.assertEqualWithStatic();
 		assertTrue(rootElement.multiValuedNonContainmentEReference.size == 2);
 		assertTrue(rootElement.multiValuedNonContainmentEReference.get(0).id == nonContainmentNonRootIds.get(0));
 		assertTrue(rootElement.multiValuedNonContainmentEReference.get(1).id == nonContainmentNonRootIds.get(2));

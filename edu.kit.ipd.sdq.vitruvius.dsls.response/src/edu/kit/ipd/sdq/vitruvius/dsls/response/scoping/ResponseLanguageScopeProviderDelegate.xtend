@@ -22,6 +22,9 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguage
 import org.eclipse.emf.ecore.EPackage
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelImport
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
+import org.eclipse.emf.ecore.EStructuralFeature
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicMultiValuedFeatureChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicSingleValuedFeatureChange
 
 /**
  * Copy of edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping.MappingLanguageScopeProviderDelegate by Dominik Werle
@@ -39,7 +42,7 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 		if (reference.equals(FEATURE_OF_ELEMENT__FEATURE))
 			return createEStructuralFeatureScope(context as FeatureOfElement)
 		else if (reference.equals(FEATURE_OF_ELEMENT__ELEMENT)
-			|| reference.equals(MODEL_ELEMENT__MODEL_ELEMENT))
+			|| reference.equals(MODEL_ELEMENT__ELEMENT))
 			return createQualifiedEClassScope(context.eResource)
 		else if (reference.equals(METAMODEL_REFERENCE__MODEL)) {
 			return createImportsScope(context.eResource);
@@ -59,7 +62,15 @@ class ResponseLanguageScopeProviderDelegate extends XImportSectionNamespaceScope
 	
 	def createEStructuralFeatureScope(FeatureOfElement variable) {
 		if (variable?.element != null) {
-			createScope(IScope.NULLSCOPE, variable.element.EAllStructuralFeatures.iterator, [
+			val changeType = variable.eContainer;
+			val filterFunction = if (changeType instanceof AtomicMultiValuedFeatureChange) {
+				[EStructuralFeature feat | feat.upperBound != 1];
+			} else if (changeType instanceof AtomicSingleValuedFeatureChange) {
+				[EStructuralFeature feat | feat.upperBound == 1];
+			} else {
+				[EStructuralFeature feat | true];
+			}
+			createScope(IScope.NULLSCOPE, variable.element.EAllStructuralFeatures.filter(filterFunction).iterator, [
 				EObjectDescription.create(it.name, it)
 			])
 		} else {

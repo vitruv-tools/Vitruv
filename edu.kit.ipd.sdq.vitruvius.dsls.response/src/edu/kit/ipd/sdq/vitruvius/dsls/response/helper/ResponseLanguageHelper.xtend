@@ -8,6 +8,14 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootUpdate
+import org.eclipse.emf.ecore.EClass
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicConcreteModelElementChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicRootObjectChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureChange
+import org.eclipse.emf.ecore.EPackage
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryModelElementChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.InvariantViolationEvent
 
 final class ResponseLanguageHelper {
 	private new() {}
@@ -59,4 +67,29 @@ final class ResponseLanguageHelper {
 		}
 		return null;
 	}
+	
+	public static def dispatch EClass getChangedModelElementClass(ConcreteModelElementChange change) {
+		throw new UnsupportedOperationException();
+	}
+	
+	public static def dispatch EClass getChangedModelElementClass(AtomicRootObjectChange change) {
+		return change?.changedElement?.element;
+	}
+	
+	public static def dispatch EClass getChangedModelElementClass(AtomicFeatureChange change) {
+		change?.changedFeature?.element;
+	}
+	
+	public static def dispatch EPackage getSourceMetamodel(AtomicConcreteModelElementChange change) {
+		return change.changedModelElementClass?.EPackage;
+	}
+	
+	public static def dispatch EPackage getSourceMetamodel(ArbitraryModelElementChange change) {
+		change?.changedModel?.model.package;
+	}
+
+	public static def dispatch EPackage getSourceMetamodel(InvariantViolationEvent change) {
+		throw new UnsupportedOperationException();
+	}
+	
 }

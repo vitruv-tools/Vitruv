@@ -16,6 +16,9 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionBloc
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryTargetMetamodelInstanceUpdate
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicConcreteModelElementChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicRootObjectChange
 
 final class ResponseLanguageGeneratorUtils {
 	private static val FSA_SEPARATOR = "/";
@@ -83,19 +86,14 @@ final class ResponseLanguageGeneratorUtils {
 
 	static def Pair<VURI, VURI> getSourceTargetPair(ResponseFile responseFile, Response response) {
 		val event = response.trigger;
-		var EPackage sourceMetamodel;
+		var EPackage sourceMetamodel = event.sourceMetamodel;
 		
-		if (event instanceof ConcreteModelElementChange) {
-			sourceMetamodel = event.changedObject.element.EPackage;
-		} else if (event instanceof ArbitraryModelElementChange) {
-			sourceMetamodel = event.changedModel.model.package;
-		}
 		if (sourceMetamodel != null) {
 			val sourceURI = sourceMetamodel.nsURI;
 			val targetChange = response.effects.targetChange;
 			var targetURI = sourceMetamodel.nsURI;
 			if (targetChange instanceof ConcreteTargetModelRootChange) {
-				targetURI = targetChange.rootModelElement?.modelElement?.EPackage?.nsURI?:sourceMetamodel.nsURI;
+				targetURI = targetChange.rootModelElement?.element?.EPackage?.nsURI?:sourceMetamodel.nsURI;
 			} else if (targetChange instanceof ArbitraryTargetMetamodelInstanceUpdate) {
 				targetURI = targetChange.metamodelReference?.model?.package?.nsURI?:sourceMetamodel.nsURI;
 			}
@@ -107,31 +105,30 @@ final class ResponseLanguageGeneratorUtils {
 		return null;		
 	}
 	
-	static def String getResponseName(Response response) '''
-		«response.trigger.responseNameForEvent»Response'''
+	static def String getResponseName(Response response) {
+		if (!response.name.nullOrEmpty) {
+			return response.name + "Response";
+		} else {
+			return '''«response.trigger.responseNameForEvent»Response'''
+		}
+	}
 	
 	static def dispatch String getResponseNameForEvent(Trigger trigger) {
 		throw new UnsupportedOperationException("Response name fragment is not defined for this event type.")
 	}
 	
-	static def dispatch String getResponseNameForEvent(ConcreteModelElementChange event) {
-		val response = event.containingResponse;
-		if (!response.name.nullOrEmpty) {
-			return response.name;
-		} else {
-			return '''«event.class.simpleName»Of«IF event.changedObject?.feature != null»«
-				event.changedObject.feature.name.toFirstUpper»In«ENDIF»«event.changedObject?.element?.name?.toFirstUpper»'''
-		}
+	static def dispatch String getResponseNameForEvent(AtomicRootObjectChange change) {
+		return '''«change.class.simpleName»Of«change.changedElement?.element?.name?.toFirstUpper»'''
+	}
+	
+	static def dispatch String getResponseNameForEvent(AtomicFeatureChange change) {
+		return '''«change.class.simpleName»Of«IF change.changedFeature?.feature != null»«
+			change.changedFeature.feature.name.toFirstUpper»In«ENDIF»«change.changedFeature?.element?.name?.toFirstUpper»'''
 	}
 	
 	static def dispatch String getResponseNameForEvent(ArbitraryModelElementChange event) {
-		val response = event.containingResponse;
-		if (!response.name.nullOrEmpty) {
-			return response.name;
-		} else {
-			return '''«event.class.simpleName»In«IF event.changedModel?.model?.name != null»«
-				event.changedModel.model.name.toFirstUpper»«ENDIF»'''
-		}
+		return '''«event.class.simpleName»In«IF event.changedModel?.model?.name != null»«
+			event.changedModel.model.name.toFirstUpper»«ENDIF»'''
 	}
 	
 	

@@ -29,22 +29,23 @@ TargetChange:
 	ConcreteTargetModelRootChange | ArbitraryTargetMetamodelInstanceUpdate;
 
 ConcreteTargetModelRootChange:
-	ConcreteTargetModelRootUpdate | ConcreteTargetModelRootCreate | ConcreteTargetModelRootDelete;
+	(ConcreteTargetModelRootUpdate | ConcreteTargetModelRootCreate | ConcreteTargetModelRootDelete)
+	'corresponding to' correspondenceSource=CorrespondenceSourceDeterminationBlock;
 	
 ConcreteTargetModelRootUpdate:
-	'update root' rootModelElement=ModelElement 'corresponding to' correspondenceSource=CorrespondenceSourceDeterminationBlock;
+	'update root' rootModelElement=ModelElement;
 	
 ConcreteTargetModelRootCreate:
-	'create root' rootModelElement=ModelElement 'as' name=STRING;
+	'create root' rootModelElement=ModelElement 'at' relativeToSourcePath=STRING autodelete?='auto-delete'?;
 
 ConcreteTargetModelRootDelete:
-	'delete root' rootModelElement=ModelElement ('corresponding to' correspondenceSource=CorrespondenceSourceDeterminationBlock)?;
+	'delete root' rootModelElement=ModelElement;
 
 ArbitraryTargetMetamodelInstanceUpdate:
-	'update any' metamodelReference=MetamodelReference;
+	'update instances of' metamodelReference=MetamodelReference;
 
 ModelElement:
-	modelElement=[ecore::EClass|QualifiedName];
+	element=[ecore::EClass|QualifiedName];
 
 CorrespondenceSourceDeterminationBlock:
 	object=XBlockExpression;
@@ -55,7 +56,6 @@ PreconditionBlock:
 CodeBlock:
 	code=XBlockExpression;
 
-// TODO dummy for the invariant violation
 InvariantViolationEvent:
 	'invariant' violation=[ecore::EClass|QualifiedName];
 
@@ -67,21 +67,37 @@ ModelChange:
 	ConcreteModelElementChange | ArbitraryModelElementChange;
 
 ConcreteModelElementChange returns ConcreteModelElementChange:
-	ModelElementChangeType 'of' changedObject=FeatureOfElement;
+	AtomicConcreteModelElementChange;
+	
+AtomicConcreteModelElementChange:
+	AtomicRootObjectChange | AtomicFeatureChange;
 
-ModelElementChangeType returns ConcreteModelElementChange:
-	'element change' {ConcreteModelElementChange} | 
-	'element create' {ConcreteModelElementCreate} |
-	'element update' {ConcreteModelElementUpdate} |
-	'element delete' {ConcreteModelElementDelete};
+AtomicRootObjectChange:
+	('insert root' {InsertRootChange} | 
+	'remove root' {RemoveRootChange})
+	changedElement=ModelElement;
+
+AtomicFeatureChange:
+	(AtomicMultiValuedFeatureChange | AtomicSingleValuedFeatureChange)
+	changedFeature=FeatureOfElement;
+
+AtomicMultiValuedFeatureChange returns AtomicMultiValuedFeatureChange:
+	'insert in list' {MultiValuedFeatureInsertChange} |
+	'remove from list' {MultiValuedFeatureRemoveChange} |
+	'permute list' {MultiValuedFeaturePermuteChange};
+
+AtomicSingleValuedFeatureChange returns AtomicSingleValuedFeatureChange:
+	/* The next two will be removed with the new Change MM */
+	'create value' {SingleValuedFeatureCreate} |
+	'delete value' {SingleValuedFeatureDelete} |
+	'replace value' {SingleValuedFeatureReplace};
 
 ArbitraryModelElementChange:
-	'model change' 'in' changedModel=MetamodelReference;
+	'change in instance of' changedModel=MetamodelReference;
 	
 MetamodelReference:
 	model=[MetamodelImport];
 
 FeatureOfElement:
-	element=[ecore::EClass|QualifiedName] ('[' feature=[ecore::EStructuralFeature|ValidID] ']')?;
+	element=[ecore::EClass|QualifiedName] '[' feature=[ecore::EStructuralFeature|ValidID] ']';
 
-	
