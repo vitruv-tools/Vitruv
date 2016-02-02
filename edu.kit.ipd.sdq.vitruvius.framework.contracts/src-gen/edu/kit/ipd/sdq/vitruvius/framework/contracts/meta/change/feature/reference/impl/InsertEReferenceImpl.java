@@ -74,7 +74,7 @@ public class InsertEReferenceImpl<T extends EObject> extends InsertInEListImpl<T
      * The default value of the '{@link #getOldTUIDOfAffectedEObject()
      * <em>Old TUID Of Affected EObject</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @see #getOldTUIDOfAffectedEObject()
      * @generated
      * @ordered
@@ -85,7 +85,7 @@ public class InsertEReferenceImpl<T extends EObject> extends InsertInEListImpl<T
      * The cached value of the '{@link #getOldTUIDOfAffectedEObject()
      * <em>Old TUID Of Affected EObject</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @see #getOldTUIDOfAffectedEObject()
      * @generated
      * @ordered
@@ -95,7 +95,7 @@ public class InsertEReferenceImpl<T extends EObject> extends InsertInEListImpl<T
     /**
      * The cached value of the '{@link #getNewValue() <em>New Value</em>}' reference. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getNewValue()
      * @generated
      * @ordered
@@ -105,7 +105,7 @@ public class InsertEReferenceImpl<T extends EObject> extends InsertInEListImpl<T
     /**
      * The default value of the '{@link #isIsCreate() <em>Is Create</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #isIsCreate()
      * @generated
      * @ordered
@@ -115,7 +115,7 @@ public class InsertEReferenceImpl<T extends EObject> extends InsertInEListImpl<T
     /**
      * The cached value of the '{@link #isIsCreate() <em>Is Create</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #isIsCreate()
      * @generated
      * @ordered
@@ -317,6 +317,16 @@ public class InsertEReferenceImpl<T extends EObject> extends InsertInEListImpl<T
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.INSERT_EREFERENCE__IS_CREATE,
                     oldIsCreate, this.isCreate));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
+     * @generated NOT
+     */
+    @Override
+    public boolean isContainment() {
+        return getAffectedFeature().isContainment();
     }
 
     /**

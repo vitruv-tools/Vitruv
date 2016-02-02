@@ -16,20 +16,13 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>
- * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#getOldTUID
- * <em>Old TUID</em>}</li>
- * <li>
- * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#getFeature2OldValueMap
- * <em>Feature2 Old Value Map</em>}</li>
- * <li>
- * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#isIsDelete
- * <em>Is Delete</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#getOldTUID <em>Old TUID</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#getFeature2OldValueMap <em>Feature2 Old Value Map</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#isIsDelete <em>Is Delete</em>}</li>
  * </ul>
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage#getSubtractiveEReferenceChange()
- * @model abstract="true" superTypes=
- *        "edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange<edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.TUID>"
+ * @model abstract="true" superTypes="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange<edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.TUID>"
  * @generated
  */
 public interface SubtractiveEReferenceChange extends SubtractiveEChange<TUID> {
@@ -53,12 +46,9 @@ public interface SubtractiveEReferenceChange extends SubtractiveEChange<TUID> {
     }
 
     /**
-     * Sets the value of the '
-     * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#getOldTUID
-     * <em>Old TUID</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @param value
-     *            the new value of the '<em>Old TUID</em>' attribute.
+     * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#getOldTUID <em>Old TUID</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @param value the new value of the '<em>Old TUID</em>' attribute.
      * @see #getOldTUID()
      * @generated
      */
@@ -82,25 +72,22 @@ public interface SubtractiveEReferenceChange extends SubtractiveEChange<TUID> {
     Map<EStructuralFeature, Object> getFeature2OldValueMap();
 
     /**
-     * Sets the value of the '
-     * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#getFeature2OldValueMap
-     * <em>Feature2 Old Value Map</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @param value
-     *            the new value of the '<em>Feature2 Old Value Map</em>' attribute.
+     * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#getFeature2OldValueMap <em>Feature2 Old Value Map</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @param value the new value of the '<em>Feature2 Old Value Map</em>' attribute.
      * @see #getFeature2OldValueMap()
      * @generated
      */
     void setFeature2OldValueMap(Map<EStructuralFeature, Object> value);
 
     /**
-     * Returns the value of the '<em><b>Is Delete</b></em>' attribute. <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Is Delete</b></em>' attribute.
+     * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Is Delete</em>' attribute isn't clear, there really should be more
      * of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Is Delete</em>' attribute.
      * @see #setIsDelete(boolean)
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage#getSubtractiveEReferenceChange_IsDelete()
@@ -110,12 +97,9 @@ public interface SubtractiveEReferenceChange extends SubtractiveEChange<TUID> {
     boolean isIsDelete();
 
     /**
-     * Sets the value of the '
-     * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#isIsDelete
-     * <em>Is Delete</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @param value
-     *            the new value of the '<em>Is Delete</em>' attribute.
+     * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#isIsDelete <em>Is Delete</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @param value the new value of the '<em>Is Delete</em>' attribute.
      * @see #isIsDelete()
      * @generated
      */

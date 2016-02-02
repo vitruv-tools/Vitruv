@@ -108,35 +108,6 @@
         <eTypeArguments eTypeParameter="#//feature/UpdateSingleValuedEFeature/T"/>
       </eGenericSuperTypes>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="UnsetEFeature" abstract="true">
-      <eTypeParameters name="T">
-        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
-      </eTypeParameters>
-      <eGenericSuperTypes eClassifier="#//feature/EFeatureChange">
-        <eTypeArguments eTypeParameter="#//feature/UnsetEFeature/T"/>
-      </eGenericSuperTypes>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="UnsetEAttribute">
-      <eTypeParameters name="T">
-        <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
-      </eTypeParameters>
-      <eGenericSuperTypes eClassifier="#//feature/UnsetEFeature">
-        <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
-      </eGenericSuperTypes>
-      <eGenericSuperTypes eClassifier="#//SubtractiveEAttributeChange">
-        <eTypeArguments eTypeParameter="#//feature/UnsetEAttribute/T"/>
-      </eGenericSuperTypes>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="UnsetEReference">
-      <eTypeParameters name="T">
-        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
-      </eTypeParameters>
-      <eOperations name="isContainment" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-      <eGenericSuperTypes eClassifier="#//feature/UnsetEFeature">
-        <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
-      </eGenericSuperTypes>
-      <eGenericSuperTypes eClassifier="#//SubtractiveEReferenceChange"/>
-    </eClassifiers>
     <eSubpackages name="list" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Feature/List/1.0"
         nsPrefix="list">
       <eClassifiers xsi:type="ecore:EClass" name="UpdateSingleEListEntry" abstract="true">
@@ -355,6 +326,17 @@
           containment="true">
         <eGenericType eClassifier="#//feature/list/InsertInEList">
           <eTypeArguments eTypeParameter="#//compound/ReplaceInEList/T"/>
+        </eGenericType>
+      </eStructuralFeatures>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ExplicitUnsetEFeature" eSuperTypes="#//compound/ECompoundChange">
+      <eTypeParameters name="T">
+        <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      </eTypeParameters>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="subtractiveChanges" lowerBound="1"
+          upperBound="-1" unsettable="true">
+        <eGenericType eClassifier="#//SubtractiveEChange">
+          <eTypeArguments eTypeParameter="#//compound/ExplicitUnsetEFeature/T"/>
         </eGenericType>
       </eStructuralFeatures>
     </eClassifiers>

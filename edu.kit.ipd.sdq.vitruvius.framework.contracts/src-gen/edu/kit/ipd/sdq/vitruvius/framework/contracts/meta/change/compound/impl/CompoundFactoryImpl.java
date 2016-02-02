@@ -58,6 +58,7 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
         switch (eClass.getClassifierID()) {
             case CompoundPackage.MOVE_EOBJECT: return createMoveEObject();
             case CompoundPackage.REPLACE_IN_ELIST: return createReplaceInEList();
+            case CompoundPackage.EXPLICIT_UNSET_EFEATURE: return createExplicitUnsetEFeature();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -81,6 +82,16 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
     public <T extends Object> ReplaceInEList<T> createReplaceInEList() {
         ReplaceInEListImpl<T> replaceInEList = new ReplaceInEListImpl<T>();
         return replaceInEList;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public <T extends Object> ExplicitUnsetEFeature<T> createExplicitUnsetEFeature() {
+        ExplicitUnsetEFeatureImpl<T> explicitUnsetEFeature = new ExplicitUnsetEFeatureImpl<T>();
+        return explicitUnsetEFeature;
     }
 
     /**

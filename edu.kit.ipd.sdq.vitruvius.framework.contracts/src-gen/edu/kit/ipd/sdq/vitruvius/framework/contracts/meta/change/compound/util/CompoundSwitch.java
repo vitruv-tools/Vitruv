@@ -91,6 +91,14 @@ public class CompoundSwitch<T1> extends Switch<T1> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
+            case CompoundPackage.EXPLICIT_UNSET_EFEATURE: {
+                ExplicitUnsetEFeature<?> explicitUnsetEFeature = (ExplicitUnsetEFeature<?>)theEObject;
+                T1 result = caseExplicitUnsetEFeature(explicitUnsetEFeature);
+                if (result == null) result = caseECompoundChange(explicitUnsetEFeature);
+                if (result == null) result = caseEChange(explicitUnsetEFeature);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
             default: return defaultCase(theEObject);
         }
     }
@@ -137,6 +145,21 @@ public class CompoundSwitch<T1> extends Switch<T1> {
      * @generated
      */
     public <T extends Object> T1 caseReplaceInEList(ReplaceInEList<T> object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Explicit Unset EFeature</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Explicit Unset EFeature</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public <T extends Object> T1 caseExplicitUnsetEFeature(ExplicitUnsetEFeature<T> object) {
         return null;
     }
 

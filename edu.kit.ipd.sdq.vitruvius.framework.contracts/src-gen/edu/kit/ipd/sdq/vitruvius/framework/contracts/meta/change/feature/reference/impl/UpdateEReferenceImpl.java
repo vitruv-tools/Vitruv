@@ -54,6 +54,16 @@ public abstract class UpdateEReferenceImpl<T extends EObject> extends EFeatureCh
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * 
+     * @generated NOT
+     */
+    @Override
+    public boolean isContainment() {
+        return getAffectedFeature().isContainment();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override

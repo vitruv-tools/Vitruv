@@ -66,7 +66,7 @@ public class PermuteEReferenceValuesImpl<T extends EObject> extends PermuteEList
      * The default value of the '{@link #getOldTUIDOfAffectedEObject()
      * <em>Old TUID Of Affected EObject</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @see #getOldTUIDOfAffectedEObject()
      * @generated
      * @ordered
@@ -77,7 +77,7 @@ public class PermuteEReferenceValuesImpl<T extends EObject> extends PermuteEList
      * The cached value of the '{@link #getOldTUIDOfAffectedEObject()
      * <em>Old TUID Of Affected EObject</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @see #getOldTUIDOfAffectedEObject()
      * @generated
      * @ordered
@@ -214,6 +214,16 @@ public class PermuteEReferenceValuesImpl<T extends EObject> extends PermuteEList
             eNotify(new ENotificationImpl(this, Notification.SET,
                     ReferencePackage.PERMUTE_EREFERENCE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT,
                     oldOldTUIDOfAffectedEObject, this.oldTUIDOfAffectedEObject));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
+     * @generated NOT
+     */
+    @Override
+    public boolean isContainment() {
+        return getAffectedFeature().isContainment();
     }
 
     /**

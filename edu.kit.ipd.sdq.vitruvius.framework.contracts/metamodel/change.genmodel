@@ -59,16 +59,6 @@
       <genClasses image="false" ecoreClass="change.ecore#//feature/UpdateSingleValuedEFeature">
         <genTypeParameters ecoreTypeParameter="change.ecore#//feature/UpdateSingleValuedEFeature/T"/>
       </genClasses>
-      <genClasses image="false" ecoreClass="change.ecore#//feature/UnsetEFeature">
-        <genTypeParameters ecoreTypeParameter="change.ecore#//feature/UnsetEFeature/T"/>
-      </genClasses>
-      <genClasses ecoreClass="change.ecore#//feature/UnsetEAttribute">
-        <genTypeParameters ecoreTypeParameter="change.ecore#//feature/UnsetEAttribute/T"/>
-      </genClasses>
-      <genClasses ecoreClass="change.ecore#//feature/UnsetEReference">
-        <genTypeParameters ecoreTypeParameter="change.ecore#//feature/UnsetEReference/T"/>
-        <genOperations ecoreOperation="change.ecore#//feature/UnsetEReference/isContainment"/>
-      </genClasses>
       <nestedGenPackages prefix="List" basePackage="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature"
           disposableProviderFactory="true" ecorePackage="change.ecore#//feature/list">
         <genClasses image="false" ecoreClass="change.ecore#//feature/list/UpdateSingleEListEntry">
@@ -146,6 +136,11 @@
         <genTypeParameters ecoreTypeParameter="change.ecore#//compound/ReplaceInEList/T"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference change.ecore#//compound/ReplaceInEList/removeChange"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference change.ecore#//compound/ReplaceInEList/insertChange"/>
+      </genClasses>
+      <genClasses ecoreClass="change.ecore#//compound/ExplicitUnsetEFeature">
+        <genTypeParameters ecoreTypeParameter="change.ecore#//compound/ExplicitUnsetEFeature/T"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference change.ecore#//compound/ExplicitUnsetEFeature/subtractiveChanges"/>
       </genClasses>
     </nestedGenPackages>
   </genPackages>

@@ -58,7 +58,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
     /**
      * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #getAffectedFeature()
      * @generated
      * @ordered
@@ -68,7 +68,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
     /**
      * The cached value of the '{@link #getAffectedEObject() <em>Affected EObject</em>}' reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #getAffectedEObject()
      * @generated
      * @ordered
@@ -120,7 +120,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
     /**
      * The cached value of the '{@link #getFeature2OldValueMap() <em>Feature2 Old Value Map</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #getFeature2OldValueMap()
      * @generated
      * @ordered
@@ -149,7 +149,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected RemoveEReferenceImpl() {
@@ -158,7 +158,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -168,7 +168,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -188,7 +188,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public EReference basicGetAffectedFeature() {
@@ -197,7 +197,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -211,7 +211,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -231,7 +231,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public EObject basicGetAffectedEObject() {
@@ -240,7 +240,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -254,7 +254,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -264,7 +264,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -279,7 +279,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -289,7 +289,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -303,7 +303,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -313,7 +313,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -328,7 +328,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -338,7 +338,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -362,7 +362,17 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
+     * @generated NOT
+     */
+    @Override
+    public boolean isContainment() {
+        return getAffectedFeature().isContainment();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -390,7 +400,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -421,7 +431,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -451,7 +461,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -476,7 +486,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -522,7 +532,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -568,7 +578,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -606,7 +616,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -622,7 +632,7 @@ public class RemoveEReferenceImpl<T extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

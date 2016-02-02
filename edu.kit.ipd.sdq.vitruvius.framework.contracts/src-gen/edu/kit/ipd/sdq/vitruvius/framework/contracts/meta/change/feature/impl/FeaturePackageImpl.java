@@ -11,9 +11,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.C
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UnsetEAttribute;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UnsetEFeature;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UnsetEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateEFeature;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedEFeature;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateSingleValuedEFeature;
@@ -38,7 +35,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RootP
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.ETypeParameter;
@@ -79,27 +75,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
      * @generated
      */
     private EClass updateSingleValuedEFeatureEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private EClass unsetEFeatureEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private EClass unsetEAttributeEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private EClass unsetEReferenceEClass = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -250,42 +225,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getUnsetEFeature() {
-        return unsetEFeatureEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EClass getUnsetEAttribute() {
-        return unsetEAttributeEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EClass getUnsetEReference() {
-        return unsetEReferenceEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EOperation getUnsetEReference__IsContainment() {
-        return unsetEReferenceEClass.getEOperations().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public FeatureFactory getFeatureFactory() {
         return (FeatureFactory)getEFactoryInstance();
     }
@@ -319,13 +258,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
         updateMultiValuedEFeatureEClass = createEClass(UPDATE_MULTI_VALUED_EFEATURE);
 
         updateSingleValuedEFeatureEClass = createEClass(UPDATE_SINGLE_VALUED_EFEATURE);
-
-        unsetEFeatureEClass = createEClass(UNSET_EFEATURE);
-
-        unsetEAttributeEClass = createEClass(UNSET_EATTRIBUTE);
-
-        unsetEReferenceEClass = createEClass(UNSET_EREFERENCE);
-        createEOperation(unsetEReferenceEClass, UNSET_EREFERENCE___IS_CONTAINMENT);
     }
 
     /**
@@ -367,9 +299,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
         ETypeParameter updateEFeatureEClass_T = addETypeParameter(updateEFeatureEClass, "T");
         ETypeParameter updateMultiValuedEFeatureEClass_T = addETypeParameter(updateMultiValuedEFeatureEClass, "T");
         ETypeParameter updateSingleValuedEFeatureEClass_T = addETypeParameter(updateSingleValuedEFeatureEClass, "T");
-        ETypeParameter unsetEFeatureEClass_T = addETypeParameter(unsetEFeatureEClass, "T");
-        ETypeParameter unsetEAttributeEClass_T = addETypeParameter(unsetEAttributeEClass, "T");
-        ETypeParameter unsetEReferenceEClass_T = addETypeParameter(unsetEReferenceEClass, "T");
 
         // Set bounds for type parameters
         EGenericType g1 = createEGenericType(ecorePackage.getEStructuralFeature());
@@ -380,12 +309,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
         updateMultiValuedEFeatureEClass_T.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEJavaObject());
         updateSingleValuedEFeatureEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEStructuralFeature());
-        unsetEFeatureEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEJavaObject());
-        unsetEAttributeEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(ecorePackage.getEObject());
-        unsetEReferenceEClass_T.getEBounds().add(g1);
 
         // Add supertypes to classes
         eFeatureChangeEClass.getESuperTypes().add(theChangePackage.getEAtomicChange());
@@ -398,24 +321,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
         g2 = createEGenericType(updateSingleValuedEFeatureEClass_T);
         g1.getETypeArguments().add(g2);
         updateSingleValuedEFeatureEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getEFeatureChange());
-        g2 = createEGenericType(unsetEFeatureEClass_T);
-        g1.getETypeArguments().add(g2);
-        unsetEFeatureEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getUnsetEFeature());
-        g2 = createEGenericType(ecorePackage.getEAttribute());
-        g1.getETypeArguments().add(g2);
-        unsetEAttributeEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theChangePackage.getSubtractiveEAttributeChange());
-        g2 = createEGenericType(unsetEAttributeEClass_T);
-        g1.getETypeArguments().add(g2);
-        unsetEAttributeEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getUnsetEFeature());
-        g2 = createEGenericType(ecorePackage.getEReference());
-        g1.getETypeArguments().add(g2);
-        unsetEReferenceEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theChangePackage.getSubtractiveEReferenceChange());
-        unsetEReferenceEClass.getEGenericSuperTypes().add(g1);
 
         // Initialize classes, features, and operations; add parameters
         initEClass(eFeatureChangeEClass, EFeatureChange.class, "EFeatureChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -429,14 +334,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
         initEClass(updateMultiValuedEFeatureEClass, UpdateMultiValuedEFeature.class, "UpdateMultiValuedEFeature", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         initEClass(updateSingleValuedEFeatureEClass, UpdateSingleValuedEFeature.class, "UpdateSingleValuedEFeature", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-        initEClass(unsetEFeatureEClass, UnsetEFeature.class, "UnsetEFeature", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-        initEClass(unsetEAttributeEClass, UnsetEAttribute.class, "UnsetEAttribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-        initEClass(unsetEReferenceEClass, UnsetEReference.class, "UnsetEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-        initEOperation(getUnsetEReference__IsContainment(), ecorePackage.getEBoolean(), "isContainment", 1, 1, IS_UNIQUE, IS_ORDERED);
     }
 
 } //FeaturePackageImpl

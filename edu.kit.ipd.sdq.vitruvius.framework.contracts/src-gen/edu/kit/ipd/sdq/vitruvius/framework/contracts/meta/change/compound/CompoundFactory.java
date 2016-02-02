@@ -41,6 +41,15 @@ public interface CompoundFactory extends EFactory {
     <T extends Object> ReplaceInEList<T> createReplaceInEList();
 
     /**
+     * Returns a new object of class '<em>Explicit Unset EFeature</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Explicit Unset EFeature</em>'.
+     * @generated
+     */
+    <T extends Object> ExplicitUnsetEFeature<T> createExplicitUnsetEFeature();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

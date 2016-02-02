@@ -19,7 +19,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
 public abstract class AdditiveEChangeImpl<T extends Object> extends EAtomicChangeImpl implements AdditiveEChange<T> {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     protected AdditiveEChangeImpl() {
@@ -28,7 +27,6 @@ public abstract class AdditiveEChangeImpl<T extends Object> extends EAtomicChang
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
@@ -48,14 +46,13 @@ public abstract class AdditiveEChangeImpl<T extends Object> extends EAtomicChang
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
-    public Object eInvoke(final int operationID, final EList<?> arguments) throws InvocationTargetException {
+    public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
         switch (operationID) {
-        case ChangePackage.ADDITIVE_ECHANGE___GET_NEW_VALUE:
-            return getNewValue();
+            case ChangePackage.ADDITIVE_ECHANGE___GET_NEW_VALUE:
+                return getNewValue();
         }
         return super.eInvoke(operationID, arguments);
     }

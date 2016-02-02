@@ -7,6 +7,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CompoundFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CompoundPackage;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ECompoundChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ExplicitUnsetEFeature;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.MoveEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ReplaceInEList;
 
@@ -67,6 +68,13 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
      * @generated
      */
     private EClass replaceInEListEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass explicitUnsetEFeatureEClass = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -226,6 +234,24 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getExplicitUnsetEFeature() {
+        return explicitUnsetEFeatureEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getExplicitUnsetEFeature_SubtractiveChanges() {
+        return (EReference)explicitUnsetEFeatureEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public CompoundFactory getCompoundFactory() {
         return (CompoundFactory)getEFactoryInstance();
     }
@@ -259,6 +285,9 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
         replaceInEListEClass = createEClass(REPLACE_IN_ELIST);
         createEReference(replaceInEListEClass, REPLACE_IN_ELIST__REMOVE_CHANGE);
         createEReference(replaceInEListEClass, REPLACE_IN_ELIST__INSERT_CHANGE);
+
+        explicitUnsetEFeatureEClass = createEClass(EXPLICIT_UNSET_EFEATURE);
+        createEReference(explicitUnsetEFeatureEClass, EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES);
     }
 
     /**
@@ -291,17 +320,21 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
         // Create type parameters
         ETypeParameter moveEObjectEClass_T = addETypeParameter(moveEObjectEClass, "T");
         ETypeParameter replaceInEListEClass_T = addETypeParameter(replaceInEListEClass, "T");
+        ETypeParameter explicitUnsetEFeatureEClass_T = addETypeParameter(explicitUnsetEFeatureEClass, "T");
 
         // Set bounds for type parameters
         EGenericType g1 = createEGenericType(ecorePackage.getEObject());
         moveEObjectEClass_T.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEJavaObject());
         replaceInEListEClass_T.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEJavaObject());
+        explicitUnsetEFeatureEClass_T.getEBounds().add(g1);
 
         // Add supertypes to classes
         eCompoundChangeEClass.getESuperTypes().add(theChangePackage.getEChange());
         moveEObjectEClass.getESuperTypes().add(this.getECompoundChange());
         replaceInEListEClass.getESuperTypes().add(this.getECompoundChange());
+        explicitUnsetEFeatureEClass.getESuperTypes().add(this.getECompoundChange());
 
         // Initialize classes, features, and operations; add parameters
         initEClass(eCompoundChangeEClass, ECompoundChange.class, "ECompoundChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -324,6 +357,12 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
         g2 = createEGenericType(replaceInEListEClass_T);
         g1.getETypeArguments().add(g2);
         initEReference(getReplaceInEList_InsertChange(), g1, null, "insertChange", null, 1, 1, ReplaceInEList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(explicitUnsetEFeatureEClass, ExplicitUnsetEFeature.class, "ExplicitUnsetEFeature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        g1 = createEGenericType(theChangePackage.getSubtractiveEChange());
+        g2 = createEGenericType(explicitUnsetEFeatureEClass_T);
+        g1.getETypeArguments().add(g2);
+        initEReference(getExplicitUnsetEFeature_SubtractiveChanges(), g1, null, "subtractiveChanges", null, 1, -1, ExplicitUnsetEFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     }
 
 } //CompoundPackageImpl

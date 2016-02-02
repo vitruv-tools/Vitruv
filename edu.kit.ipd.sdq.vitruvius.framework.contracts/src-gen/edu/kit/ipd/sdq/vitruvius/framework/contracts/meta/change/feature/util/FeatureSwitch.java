@@ -4,9 +4,6 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.util;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEAttributeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.*;
 
 import org.eclipse.emf.ecore.EObject;
@@ -106,39 +103,6 @@ public class FeatureSwitch<T1> extends Switch<T1> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case FeaturePackage.UNSET_EFEATURE: {
-                UnsetEFeature<?> unsetEFeature = (UnsetEFeature<?>)theEObject;
-                T1 result = caseUnsetEFeature(unsetEFeature);
-                if (result == null) result = caseEFeatureChange(unsetEFeature);
-                if (result == null) result = caseEAtomicChange(unsetEFeature);
-                if (result == null) result = caseEChange(unsetEFeature);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case FeaturePackage.UNSET_EATTRIBUTE: {
-                UnsetEAttribute<?> unsetEAttribute = (UnsetEAttribute<?>)theEObject;
-                T1 result = caseUnsetEAttribute(unsetEAttribute);
-                if (result == null) result = caseUnsetEFeature(unsetEAttribute);
-                if (result == null) result = caseSubtractiveEAttributeChange(unsetEAttribute);
-                if (result == null) result = caseEFeatureChange(unsetEAttribute);
-                if (result == null) result = caseSubtractiveEChange(unsetEAttribute);
-                if (result == null) result = caseEAtomicChange(unsetEAttribute);
-                if (result == null) result = caseEChange(unsetEAttribute);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case FeaturePackage.UNSET_EREFERENCE: {
-                UnsetEReference<?> unsetEReference = (UnsetEReference<?>)theEObject;
-                T1 result = caseUnsetEReference(unsetEReference);
-                if (result == null) result = caseUnsetEFeature(unsetEReference);
-                if (result == null) result = caseSubtractiveEReferenceChange(unsetEReference);
-                if (result == null) result = caseEFeatureChange(unsetEReference);
-                if (result == null) result = caseSubtractiveEChange(unsetEReference);
-                if (result == null) result = caseEAtomicChange(unsetEReference);
-                if (result == null) result = caseEChange(unsetEReference);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
             default: return defaultCase(theEObject);
         }
     }
@@ -204,51 +168,6 @@ public class FeatureSwitch<T1> extends Switch<T1> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Unset EFeature</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Unset EFeature</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public <T extends EStructuralFeature> T1 caseUnsetEFeature(UnsetEFeature<T> object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Unset EAttribute</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Unset EAttribute</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public <T extends Object> T1 caseUnsetEAttribute(UnsetEAttribute<T> object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Unset EReference</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Unset EReference</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public <T extends EObject> T1 caseUnsetEReference(UnsetEReference<T> object) {
-        return null;
-    }
-
-    /**
      * Returns the result of interpreting the object as an instance of '<em>EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
@@ -275,51 +194,6 @@ public class FeatureSwitch<T1> extends Switch<T1> {
      * @generated
      */
     public T1 caseEAtomicChange(EAtomicChange object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Subtractive EChange</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Subtractive EChange</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public <T extends Object> T1 caseSubtractiveEChange(SubtractiveEChange<T> object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Subtractive EAttribute Change</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Subtractive EAttribute Change</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public <T extends Object> T1 caseSubtractiveEAttributeChange(SubtractiveEAttributeChange<T> object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Subtractive EReference Change</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Subtractive EReference Change</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T1 caseSubtractiveEReferenceChange(SubtractiveEReferenceChange object) {
         return null;
     }
 

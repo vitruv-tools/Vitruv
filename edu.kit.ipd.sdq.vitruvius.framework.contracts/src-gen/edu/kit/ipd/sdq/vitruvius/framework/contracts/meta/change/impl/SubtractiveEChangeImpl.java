@@ -20,7 +20,6 @@ public abstract class SubtractiveEChangeImpl<T extends Object> extends EAtomicCh
         implements SubtractiveEChange<T> {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     protected SubtractiveEChangeImpl() {
@@ -29,7 +28,6 @@ public abstract class SubtractiveEChangeImpl<T extends Object> extends EAtomicCh
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
@@ -49,14 +47,13 @@ public abstract class SubtractiveEChangeImpl<T extends Object> extends EAtomicCh
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
-    public Object eInvoke(final int operationID, final EList<?> arguments) throws InvocationTargetException {
+    public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
         switch (operationID) {
-        case ChangePackage.SUBTRACTIVE_ECHANGE___GET_OLD_VALUE:
-            return getOldValue();
+            case ChangePackage.SUBTRACTIVE_ECHANGE___GET_OLD_VALUE:
+                return getOldValue();
         }
         return super.eInvoke(operationID, arguments);
     }

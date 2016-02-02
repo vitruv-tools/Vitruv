@@ -9,13 +9,16 @@
 - EFeatureChange.oldAffectedEObject
 + EFeatureChange.oldTUIDOfAffectedEObject:TUID
 + UpdateEFeature extends EChange
-- UnsetEAttribute.oldValue
-+ UnsetEAttribute extends SubtractiveAttributeChange
-- UnsetERefernce.oldValue
-+ UnsetERefernce extends SubtractiveReferenceChange
+- UnsetEFeature
+- UnsetEAttribute
+- UnsetERefernce
+      - UnsetEAttribute.oldValue
+      + UnsetEAttribute extends SubtractiveAttributeChange
+      - UnsetERefernce.oldValue
+      + UnsetERefernce extends SubtractiveReferenceChange
 - UnsetContainmentEReference
 - UnsetNonContainmentEReference
-+ UnsetEReference.isContainment():bool
+      + UnsetEReference.isContainment():bool
 
 - EObjectChange.T
 
@@ -51,6 +54,7 @@
 	+ DeleteEObjectCreateEObjectAndReplaceInList
 + MoveEObject
 + ReplaceInEList
++ ExplicitUnsetEFeature
 
 
 - InsertInEList.newValue
@@ -122,22 +126,20 @@
 
 -----------------------------------------
 
-InsertInEList und RemoveFromEList können doch nicht vom allgemeinen AdditiveChange und SubtractiveChange erben, dass ist aber kein Problem da alle unterklassen von InsertInEList schon von einer Unterklasse von AdditiveChange erben und analog für Remove und Subtract
+== unset ==
+* ohne unser change mm kann man für den Fall dass für eine EStructuralFeature unsettable nicht auf true gesetzt wurde ein [http://download.eclipse.org/modeling/emf/emf/javadoc/2.4.2/org/eclipse/emf/ecore/EObject.html#eSet%28org.eclipse.emf.ecore.EStructuralFeature,%20java.lang.Object%29 eSet(defaultValue)] nicht von einem [http://download.eclipse.org/modeling/emf/emf/javadoc/2.4.2/org/eclipse/emf/ecore/EObject.html#eUnset%28org.eclipse.emf.ecore.EStructuralFeature%29 eUnset()] unterscheiden (durch aufrufen von [http://download.eclipse.org/modeling/emf/emf/javadoc/2.4.2/org/eclipse/emf/ecore/EObject.html#eIsSet%28org.eclipse.emf.ecore.EStructuralFeature%29 eIsSet()])
+* mit unserem change mm hat man die Möglichkeit unabhängig von unsettable auf ein eUnset anders als auf ein eSet(defaultValue) zu reagieren (oder sich dafür zu entscheiden dies nicht zu tun)
 
-auf jeden Fall bei der Reaktion von unten nach oben in der Vererbungshierarchie reagieren
+== umschiffte Probleme ==
+* InsertInEList und RemoveFromEList können doch nicht vom allgemeinen AdditiveChange und SubtractiveChange erben, dass ist aber kein Problem da alle unterklassen von InsertInEList schon von einer Unterklasse von AdditiveChange erben und analog für Remove und Subtract
+* Ich habe ReplaceAttributeInEList und ReplaceReferenceInEList nicht unterschieden da letzteres nicht von ReplaciveReferenceChange erben kann um replaceChange in DeleteEObjectCreateEObjectAndReplace typen zu können. Daher musste ich zwei Versionen von DeleteEObjectCreateEObjectAndReplaceInList zu erstellen.
+* ExplicitUnsetEFeature erbt nicht von EFeatureChange da alle Informationen zum feature in den enthaltenen subtractiveChanges enthalten sind und ExplicitUnsetEFeature ansonsten atomic und compound zugleich wäre
 
+== Verwendung des change mm ==
+* auf jeden Fall bei der Reaktion von unten nach oben in der Vererbungshierarchie reagieren
+* es gibt kein InsertWithoutCreate sondern wenn man dass behandeln will muss man prüfen ob es keine Instanz von Create... ist
 
-es gibt kein InsertWithoutCreate sondern wenn man dass behandeln will muss man prüfen ob es keine Instanz von Create... ist
-
-
-was wenn ein Move mit einem Replace einhergeht? a<>-b c<>-d  ~> a<>- c<>-b
-
-
-Ich habe ReplaceAttributeInEList und ReplaceReferenceInEList nicht unterschieden da letzteres nicht von ReplaciveReferenceChange erben kann um replaceChange in DeleteEObjectCreateEObjectAndReplace typen zu können. Daher musste ich zwei Versionen von DeleteEObjectCreateEObjectAndReplaceInList zu erstellen.
-
-
-
-
+== Alternativen für Informationen über gelöschte Objekte ==
 
 * drei Möglichkeiten Informationen über gelöschte Objekte zur Verfügung zu stellen
 *# verworfen: TUIDCalculatorAndResolver aus einer ID ohne Speicherbedarf den Wert eines Features das in die TUID eingeflossen ist berechnen lassen
@@ -151,7 +153,6 @@ Ich habe ReplaceAttributeInEList und ReplaceReferenceInEList nicht unterschieden
 *#* wenn der Change weggeworfen wird werden automatisch die alten Werte vergessen
 *#* erlaubt es für mehre Löschungen von Objekten mit gleicher TUID unterschiedliche Werte zu erhalten
 *#* unabhängig vom TUIDCalculatorAndResolver
-
 
 == find right metaclass algorithm ==
 === for free ===
@@ -173,8 +174,6 @@ Ich habe ReplaceAttributeInEList und ReplaceReferenceInEList nicht unterschieden
 ***** remove (attribute or reference) - done
 ***** permute (attribute or reference) - done
 * compound
-		      ** create and add (root or not) - done
-		      ** delete and subtract (root or not) - done
-		      ** delete create replace (single or multi) done
 ** move - done
 ** replace in list - done
+** unset - done

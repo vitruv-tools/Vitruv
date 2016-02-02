@@ -56,31 +56,9 @@ public class FeatureFactoryImpl extends EFactoryImpl implements FeatureFactory {
     @Override
     public EObject create(EClass eClass) {
         switch (eClass.getClassifierID()) {
-            case FeaturePackage.UNSET_EATTRIBUTE: return createUnsetEAttribute();
-            case FeaturePackage.UNSET_EREFERENCE: return createUnsetEReference();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public <T extends Object> UnsetEAttribute<T> createUnsetEAttribute() {
-        UnsetEAttributeImpl<T> unsetEAttribute = new UnsetEAttributeImpl<T>();
-        return unsetEAttribute;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public <T extends EObject> UnsetEReference<T> createUnsetEReference() {
-        UnsetEReferenceImpl<T> unsetEReference = new UnsetEReferenceImpl<T>();
-        return unsetEReference;
     }
 
     /**

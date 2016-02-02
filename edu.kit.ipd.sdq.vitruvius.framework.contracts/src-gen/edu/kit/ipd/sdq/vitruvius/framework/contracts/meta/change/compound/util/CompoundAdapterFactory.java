@@ -82,6 +82,10 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
                 return createReplaceInEListAdapter();
             }
             @Override
+            public <T extends Object> Adapter caseExplicitUnsetEFeature(ExplicitUnsetEFeature<T> object) {
+                return createExplicitUnsetEFeatureAdapter();
+            }
+            @Override
             public Adapter caseEChange(EChange object) {
                 return createEChangeAdapter();
             }
@@ -144,6 +148,20 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createReplaceInEListAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ExplicitUnsetEFeature <em>Explicit Unset EFeature</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ExplicitUnsetEFeature
+     * @generated
+     */
+    public Adapter createExplicitUnsetEFeatureAdapter() {
         return null;
     }
 

@@ -207,6 +207,53 @@ public interface CompoundPackage extends EPackage {
 
 
     /**
+     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.ExplicitUnsetEFeatureImpl <em>Explicit Unset EFeature</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.ExplicitUnsetEFeatureImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.CompoundPackageImpl#getExplicitUnsetEFeature()
+     * @generated
+     */
+    int EXPLICIT_UNSET_EFEATURE = 3;
+
+    /**
+     * The feature id for the '<em><b>Subtractive Changes</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES = ECOMPOUND_CHANGE_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Explicit Unset EFeature</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int EXPLICIT_UNSET_EFEATURE_FEATURE_COUNT = ECOMPOUND_CHANGE_FEATURE_COUNT + 1;
+
+    /**
+     * The operation id for the '<em>Get Atomic Changes</em>' operation.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int EXPLICIT_UNSET_EFEATURE___GET_ATOMIC_CHANGES = ECOMPOUND_CHANGE___GET_ATOMIC_CHANGES;
+
+    /**
+     * The number of operations of the '<em>Explicit Unset EFeature</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int EXPLICIT_UNSET_EFEATURE_OPERATION_COUNT = ECOMPOUND_CHANGE_OPERATION_COUNT + 0;
+
+
+    /**
      * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ECompoundChange <em>ECompound Change</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -289,6 +336,27 @@ public interface CompoundPackage extends EPackage {
      * @generated
      */
     EReference getReplaceInEList_InsertChange();
+
+    /**
+     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ExplicitUnsetEFeature <em>Explicit Unset EFeature</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Explicit Unset EFeature</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ExplicitUnsetEFeature
+     * @generated
+     */
+    EClass getExplicitUnsetEFeature();
+
+    /**
+     * Returns the meta object for the reference list '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ExplicitUnsetEFeature#getSubtractiveChanges <em>Subtractive Changes</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference list '<em>Subtractive Changes</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ExplicitUnsetEFeature#getSubtractiveChanges()
+     * @see #getExplicitUnsetEFeature()
+     * @generated
+     */
+    EReference getExplicitUnsetEFeature_SubtractiveChanges();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -382,6 +450,24 @@ public interface CompoundPackage extends EPackage {
          * @generated
          */
         EReference REPLACE_IN_ELIST__INSERT_CHANGE = eINSTANCE.getReplaceInEList_InsertChange();
+
+        /**
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.ExplicitUnsetEFeatureImpl <em>Explicit Unset EFeature</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.ExplicitUnsetEFeatureImpl
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.CompoundPackageImpl#getExplicitUnsetEFeature()
+         * @generated
+         */
+        EClass EXPLICIT_UNSET_EFEATURE = eINSTANCE.getExplicitUnsetEFeature();
+
+        /**
+         * The meta object literal for the '<em><b>Subtractive Changes</b></em>' reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES = eINSTANCE.getExplicitUnsetEFeature_SubtractiveChanges();
 
     }
 

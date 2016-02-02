@@ -3,7 +3,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature;
 
 import org.eclipse.emf.ecore.EFactory;
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,24 +20,6 @@ public interface FeatureFactory extends EFactory {
      * @generated
      */
     FeatureFactory eINSTANCE = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.impl.FeatureFactoryImpl.init();
-
-    /**
-     * Returns a new object of class '<em>Unset EAttribute</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>Unset EAttribute</em>'.
-     * @generated
-     */
-    <T extends Object> UnsetEAttribute<T> createUnsetEAttribute();
-
-    /**
-     * Returns a new object of class '<em>Unset EReference</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>Unset EReference</em>'.
-     * @generated
-     */
-    <T extends EObject> UnsetEReference<T> createUnsetEReference();
 
     /**
      * Returns the package supported by this factory.
