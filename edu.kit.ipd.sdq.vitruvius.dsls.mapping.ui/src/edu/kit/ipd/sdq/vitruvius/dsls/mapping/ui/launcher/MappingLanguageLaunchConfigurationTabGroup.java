@@ -16,10 +16,10 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.internal.MappingLanguageActivator;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.internal.MappingActivator;
 
 public class MappingLanguageLaunchConfigurationTabGroup extends AbstractLaunchConfigurationTabGroup {
-	public static final String FILES_TO_GENERATE = MappingLanguageActivator.EDU_KIT_IPD_SDQ_VITRUVIUS_DSLS_MAPPING_MAPPINGLANGUAGE + ".FILES_TO_GENERATE";
+	public static final String FILES_TO_GENERATE = MappingActivator.EDU_KIT_IPD_SDQ_VITRUVIUS_DSLS_MAPPING_MAPPINGLANGUAGE + ".FILES_TO_GENERATE";
 
 	@Override
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {

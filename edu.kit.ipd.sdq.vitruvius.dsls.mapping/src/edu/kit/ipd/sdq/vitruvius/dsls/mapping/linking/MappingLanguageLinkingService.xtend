@@ -3,17 +3,17 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.linking
 import com.google.inject.Inject
 import java.util.Collections
 import java.util.List
+import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.xtext.conversion.IValueConverterService
 import org.eclipse.xtext.conversion.ValueConverterException
 import org.eclipse.xtext.linking.impl.DefaultLinkingService
 import org.eclipse.xtext.linking.impl.IllegalNodeException
 import org.eclipse.xtext.nodemodel.ILeafNode
 import org.eclipse.xtext.nodemodel.INode
-import org.apache.log4j.Logger
-import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.EcorePackage
 
 /**
  * Used to enable refering to packages by their metamodel namespace URI.

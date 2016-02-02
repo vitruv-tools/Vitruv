@@ -6,6 +6,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.util;
  */
 public class ClaimableSingletonContainer<T> {
 	private T element;
+	private boolean isSet;
 	private final boolean isFinal;
 	
 	public ClaimableSingletonContainer() {
@@ -14,10 +15,11 @@ public class ClaimableSingletonContainer<T> {
 	
 	public ClaimableSingletonContainer(boolean isFinal) {
 		this.isFinal = isFinal;
+		this.isSet = false;
 	}
 	
 	public T claim() {
-		if (element == null) {
+		if (isSet == false) {
 			throw new RuntimeException("It was claimed that the container contains an element. There is no element in singleton container.");
 		}
 		
@@ -25,14 +27,11 @@ public class ClaimableSingletonContainer<T> {
 	}
 	
 	public void put(T element) {
-		if (element == null) {
-			throw new RuntimeException("Cannot put null inside container.");
-		}
-		
 		if (this.isFinal && (this.element != null)) {
 			throw new RuntimeException("Container is final, but already contains an element.");
 		}
 		
 		this.element = element;
+		this.isSet = true;
 	}
 }

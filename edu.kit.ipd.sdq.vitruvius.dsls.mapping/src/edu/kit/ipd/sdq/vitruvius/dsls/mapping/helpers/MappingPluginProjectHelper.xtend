@@ -16,15 +16,16 @@ class MappingPluginProjectHelper {
 		"org.eclipse.emf.ecore",
 		"edu.kit.ipd.sdq.vitruvius.framework.util",
 		"edu.kit.ipd.sdq.vitruvius.framework.contracts",
-		"edu.kit.ipd.sdq.vitruvius.framework.mir.executor",
+		"edu.kit.ipd.sdq.vitruvius.dsls.mapping.apidesign",
 		"edu.kit.ipd.sdq.vitruvius.framework.meta.change",
-		"edu.kit.ipd.sdq.vitruvius.framework.mir.testframework",
 		"com.google.guava",
 		"org.eclipse.core.resources",
 		"org.apache.log4j",
 		"org.eclipse.xtend.lib",
  		"org.eclipse.xtend.lib.macro",
- 		"edu.kit.ipd.sdq.vitruvius.dsls.mapping"
+ 		"edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework",
+ 		"edu.kit.ipd.sdq.vitruvius.dsls.mapping",
+ 		"edu.kit.ipd.sdq.vitruvius.dsls.mapping.api"
 	]
 	
 	/**

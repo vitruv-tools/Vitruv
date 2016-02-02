@@ -18,26 +18,28 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBrid
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusTransformationRecordingCommand;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.datatypes.ChangeType;
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MIRMappingRealization;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MappingRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MIRUserInteracting;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingExecutionState;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 public abstract class AbstractMappingChange2CommandTransforming implements Change2CommandTransforming {
 	private final static Logger LOGGER = Logger.getLogger(AbstractMappingChange2CommandTransforming.class);
 
-	private List<Pair<ChangeType, MIRMappingRealization>> changeTypeAndMappings = new ArrayList<Pair<ChangeType, MIRMappingRealization>>();
+	private List<Pair<ChangeType, MappingRealization>> changeTypeAndMappings = new ArrayList<Pair<ChangeType, MappingRealization>>();
 
 	public AbstractMappingChange2CommandTransforming() {
 		this.changeTypeAndMappings = new ArrayList<>();
 		this.setup();
 	}
 
-	protected void addMapping(final Pair<ChangeType, MIRMappingRealization> mapping) {
+	protected void addMapping(final Pair<ChangeType, MappingRealization> mapping) {
 		this.changeTypeAndMappings.add(mapping);
 	}
-	
-	protected void addMapping(MIRMappingRealization mapping) {
-		this.changeTypeAndMappings.add(new Pair<ChangeType, MIRMappingRealization>(ChangeType.ANY_CHANGE, mapping));
+
+	protected void addMapping(MappingRealization mapping) {
+		this.changeTypeAndMappings.add(new Pair<ChangeType, MappingRealization>(ChangeType.ANY_CHANGE, mapping));
 	}
 
 	@Override
@@ -69,14 +71,22 @@ public abstract class AbstractMappingChange2CommandTransforming implements Chang
 
 	protected List<Command> callRelevantMappings(final EChange eChange, final Blackboard blackboard) {
 		final List<Command> result = new ArrayList<Command>();
-		final List<MIRMappingRealization> relevantMappings = this.getCandidateMappings(eChange);
-		LOGGER.debug("call relevant mappings");
-		for (final MIRMappingRealization mapping : relevantMappings) {
-			LOGGER.debug(mapping.getMappingID() + " (" + mapping.toString() + ")");
-			final Command command = EMFCommandBridge
-					.createVitruviusTransformationRecordingCommand(() -> mapping.applyEChange(eChange, blackboard));
-			result.add(command);
-		}
+		final List<MappingRealization> relevantMappings = this.getCandidateMappings(eChange);
+		final MappedCorrespondenceInstance mappedCorrespondenceInstance = JavaHelper
+				.requireType(blackboard.getCorrespondenceInstance(), MappedCorrespondenceInstance.class);
+		
+		final Command command = EMFCommandBridge
+				.createVitruviusTransformationRecordingCommand(() -> {
+					final MappingExecutionState state = new MappingExecutionState(mappedCorrespondenceInstance, blackboard);
+					LOGGER.debug("call relevant mappings");
+					for (final MappingRealization mapping : relevantMappings) {
+						LOGGER.debug(mapping.getMappingID() + " (" + mapping.toString() + ")");
+						mapping.applyEChange(eChange, blackboard, state);
+					}
+					return state;
+				});
+		
+		result.add(command);
 		return result;
 	}
 
@@ -84,12 +94,12 @@ public abstract class AbstractMappingChange2CommandTransforming implements Chang
 		return this.callRelevantMappings(eChange, blackboard);
 	}
 
-	protected List<MIRMappingRealization> getCandidateMappings(final EChange eChange) {
-		return this.changeTypeAndMappings.stream().filter((it) -> it.getFirst().covers(eChange)).map((it) -> it.getSecond())
-				.collect(Collectors.toList());
+	protected List<MappingRealization> getCandidateMappings(final EChange eChange) {
+		return this.changeTypeAndMappings.stream().filter((it) -> it.getFirst().covers(eChange))
+				.map((it) -> it.getSecond()).collect(Collectors.toList());
 	}
 
 	protected abstract void setup();
-	
+
 	public abstract void setUserInteracting(MIRUserInteracting userInteracting);
 }

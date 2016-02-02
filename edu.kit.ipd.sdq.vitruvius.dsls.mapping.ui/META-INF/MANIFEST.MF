@@ -18,11 +18,14 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.dsls.mapping;visibility:=reexport,
  org.eclipse.jdt.debug.ui,
  org.eclipse.xtext.ui.codetemplates.ui,
  org.eclipse.compare,
- org.eclipse.swt
+ org.eclipse.swt,
+ org.eclipse.xtend.lib;resolution:=optional,
+ edu.kit.ipd.sdq.vitruvius.dsls.mapping.ide;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.dsls.mirbase;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.dsls.mirbase.ui
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.quickfix,
- edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.contentassist,
- edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.internal,
- edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.contentassist.antlr
-Bundle-Activator: edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.internal.MappingLanguageActivator
+Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.internal,
+ edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.quickfix,
+ edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.contentassist
+Bundle-Activator: edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.internal.MappingActivator

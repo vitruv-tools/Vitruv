@@ -5,8 +5,8 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.labeling
 
 import com.google.inject.Inject
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NamedEClass
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintBlock
+import edu.kit.ipd.sdq.vitruvius.dsls.mirBase.ModelElement
 
 /**
  * Provides labels for EObjects.
@@ -27,21 +27,7 @@ class MappingLanguageLabelProvider extends org.eclipse.xtext.xbase.ui.labeling.X
 			"Mapping " + mapping.name
 	}
 	
-	def String text(NamedEClass namedEClass) '''
-		«namedEClass.name» («namedEClass.type.instanceTypeName»)
-	'''
+	def String text(ModelElement modelElement) '''«modelElement.name» («modelElement.element.instanceTypeName»)'''
 	
-	def String text(ConstraintBlock constraintBlock) '''
-		constraints
-	'''
-	
-	// Labels and icons can be computed like this:
-	
-//	def text(Greeting ele) {
-//		'A greeting to ' + ele.name
-//	}
-//
-//	def image(Greeting ele) {
-//		'Greeting.gif'
-//	}
+	def String text(ConstraintBlock constraintBlock) '''constraints'''
 }

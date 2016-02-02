@@ -3,6 +3,8 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.tests
 import com.google.inject.Inject
 import edu.kit.ipd.sdq.vitruvius.casestudies.emf.changedescription2change.ChangeDescription2ChangeConverter
 import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.AbstractMappingChange2CommandTransforming
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.util.ClaimableSingletonContainer
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.EclipseProjectHelper
 import edu.kit.ipd.sdq.vitruvius.framework.changepreparer.ChangePreparingImpl
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
@@ -14,15 +16,15 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTr
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.AbstractMappingChange2CommandTransforming
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.util.ClaimableSingletonContainer
 import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
+import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMConstants
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil
 import java.io.IOException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Collection
 import java.util.Collections
 import java.util.List
 import java.util.function.Consumer
@@ -32,6 +34,7 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.change.util.ChangeRecorder
+import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.junit.runners.model.FrameworkMethod
@@ -39,8 +42,6 @@ import org.junit.runners.model.FrameworkMethod
 import static edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.util.MappingLanguageTestUtil.*
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
-import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMConstants
-import org.eclipse.core.runtime.Path
 
 class MappingLanguageTestEnvironment implements SynchronisationListener {
 	private final static Logger LOGGER = Logger.getLogger(MappingLanguageTestEnvironment)
@@ -146,6 +147,11 @@ class MappingLanguageTestEnvironment implements SynchronisationListener {
         val vuri = VURI.getInstance(eObject.eResource());
         this.triggerSynchronization(vuri);
     }
+    
+    public def void triggerSynchronization(Resource resource) {
+        val vuri = VURI.getInstance(resource);
+        this.triggerSynchronization(vuri);
+    }
 
     public def void synchronizeFileChange(FileChangeKind fileChangeKind, VURI vuri) {
         val fileChange = new FileChange(fileChangeKind, vuri);
@@ -197,51 +203,25 @@ class MappingLanguageTestEnvironment implements SynchronisationListener {
 		return createManipulateSaveAndSyncModel(modelPath, [rootEObject]);
 	}
 
-	public def <T extends EObject, R> R recordManipulateSaveAndSync(T input, Function<T, R> manipulate)
+	public def <R> R recordManipulateSaveAndSync(Resource resourceToSaveAfter, Supplier<R> manipulate)
 			throws IOException {
-		changeRecorder.beginRecording(Collections.singletonList(input));
+		changeRecorder.beginRecording(#[resourceToSaveAfter]);
 		
 		vsum.detachTransactionalEditingDomain();
 		
 		val resultContainer = new ClaimableSingletonContainer(true); // is set inside the closure
-		// TODO: should we create a command on the stack here
-		// instead of detaching the transactional editing domain?
-//		domain.getCommandStack().execute(new RecordingCommand(domain) {
-//			@Override
-//			protected void doExecute() {
-		
-				resultContainer.put(manipulate.apply(input));				
-
-//			}
-//		});
-		EcoreResourceBridge.saveResource(input.eResource());
-		triggerSynchronization(input);
+		resultContainer.put(manipulate.get);
+		EcoreResourceBridge.saveResource(resourceToSaveAfter);
+		triggerSynchronization(resourceToSaveAfter);
 		
 		val result = resultContainer.claim();
-
 		return result;
 	}
 
-	public def <T extends EObject> void recordManipulateSaveAndSync(T input, Consumer<T> manipulate) throws IOException {
-		recordManipulateSaveAndSync(input, [
-			manipulate.accept(it);
-			return null;
+	public def void recordManipulateSaveAndSync(Resource resource, Runnable manipulate) throws IOException {
+		recordManipulateSaveAndSync(resource, [
+			manipulate.run
+			return null
 		]);
 	}
-	
-	/*protected static def void assertOCL(String message, EObject context, String oclPredicate) {
-		OCL ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);
-		OCLHelper<EClassifier, ?, ?, Constraint> helper = ocl.createOCLHelper();
-
-		OCLExpression<EClassifier> predicate = null;
-		try {
-			predicate = helper.createQuery(oclPredicate);
-		} catch (ParserException e) {
-			predicate = null;
-			e.printStackTrace();
-		}
-		
-		assertTrue(message, ocl.check(context, predicate));
-	}*/
-	
 }

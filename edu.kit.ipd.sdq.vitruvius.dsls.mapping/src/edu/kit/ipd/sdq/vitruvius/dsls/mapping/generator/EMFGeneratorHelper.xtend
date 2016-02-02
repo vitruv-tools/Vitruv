@@ -32,6 +32,11 @@ class EMFGeneratorHelper {
 		this.classFQN = classFQN
 		this.referencedEMFEntities = newHashMap
 	}
+	
+	public def String ePackageInstance(extension ImportHelper ih, EPackage ePackage) {
+		addEntity(ePackage, ePackage)
+		'''«typeRef(classFQN)».«ePackage.constantClassName».«ePackage.fieldName»'''
+	}
 
 	public def String eRef(extension ImportHelper ih, EClassifier eClassifier) {
 		addEntity(eClassifier.EPackage, eClassifier)

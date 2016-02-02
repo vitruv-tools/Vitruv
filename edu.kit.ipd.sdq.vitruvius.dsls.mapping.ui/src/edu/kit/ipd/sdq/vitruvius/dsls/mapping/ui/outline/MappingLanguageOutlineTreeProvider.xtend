@@ -4,12 +4,12 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.outline
 
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NamedEClass
 import org.eclipse.xtext.ui.editor.outline.impl.AbstractOutlineNode
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping
+import edu.kit.ipd.sdq.vitruvius.dsls.mirBase.ModelElement
 
 /**
  * Customization of the default outline structure.
@@ -28,8 +28,8 @@ class MappingLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 //	    createNode(parent, element);
 //	  }
 //	}
-	protected def _createChildren(AbstractOutlineNode parent, NamedEClass eClass) {
-		// only create node for the NamedEClass
+	protected def _createChildren(AbstractOutlineNode parent, ModelElement eClass) {
+		// only create node for the ModelElement
 	}
 
 	protected def _createChildren(AbstractOutlineNode parent, ConstraintBlock constraintBlock) {
@@ -40,8 +40,8 @@ class MappingLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		mapping.signatures.filterNull.forEach [ createChildren(parent, it) ]
 		mapping.constraints.filterNull.forEach [ createNode(parent, it) ]
 
-		for (submapping : mapping.submappings) {
-			createNode(parent, submapping)
+		for (childMapping : mapping.childMappings) {
+			createNode(parent, childMapping)
 		}
 	}
 }

@@ -5,13 +5,12 @@
   <eClassifiers xsi:type="ecore:EClass" name="MappingFile">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="pluginName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="imports" upperBound="-1"
-        eType="#//Import" containment="true"/>
+        eType="ecore:EClass platform:/resource/edu.kit.ipd.sdq.vitruvius.dsls.mirbase/model/generated/MirBase.ecore#//MetamodelImport"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappings" upperBound="-1"
         eType="#//Mapping" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Import">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="package" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="defaultRequirements" upperBound="-1"
+        eType="#//RequiredMapping" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Mapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="default" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -24,16 +23,17 @@
         eType="#//RequiredMapping" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="constraintsBody" eType="#//BodyConstraintBlock"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="submappings" upperBound="-1"
-        eType="#//Mapping" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="childMappings" upperBound="-1"
+        eType="#//Mapping" containment="true" eOpposite="#//Mapping/parentMapping"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parentMapping" eType="#//Mapping"
+        eOpposite="#//Mapping/childMappings"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="constraintExpressions"
+        upperBound="-1" eType="#//ConstraintExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Signature">
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
-        eType="#//NamedEClass" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NamedEClass">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        eType="ecore:EClass platform:/resource/edu.kit.ipd.sdq.vitruvius.dsls.mirbase/model/generated/MirBase.ecore#//ModelElement"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RequiredMapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" eType="#//Mapping"/>
@@ -54,7 +54,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="ContextVariable">
     <eStructuralFeatures xsi:type="ecore:EReference" name="requiredMappingPath" eType="#//RequiredMappingPathBase"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="targetClass" eType="#//NamedEClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetClass" eType="ecore:EClass platform:/resource/edu.kit.ipd.sdq.vitruvius.dsls.mirbase/model/generated/MirBase.ecore#//ModelElement"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RequiredMappingPathBase">
     <eStructuralFeatures xsi:type="ecore:EReference" name="requiredMapping" eType="#//RequiredMapping"/>
@@ -107,5 +107,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConstraintStringLiteral" eSuperTypes="#//ConstraintLiteral">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NotNullExpression" eSuperTypes="#//ConstraintExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="#//FeatureOfContextVariable"/>
   </eClassifiers>
 </ecore:EPackage>

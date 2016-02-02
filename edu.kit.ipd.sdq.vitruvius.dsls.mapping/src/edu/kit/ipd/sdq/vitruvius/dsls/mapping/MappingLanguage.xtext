@@ -1,27 +1,22 @@
 grammar edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage
-	with org.eclipse.xtext.xbase.Xbase
+	with edu.kit.ipd.sdq.vitruvius.dsls.MirBase
 
 generate mappingLanguage "http://www.kit.edu/ipd/sdq/vitruvius/dsls/mapping/MappingLanguage"
 
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+import "http://www.kit.edu/ipd/sdq/vitruvius/dsls/MirBase" as mirBase
 
 MappingFile:
 	'generates' pluginName=QualifiedName
 	
-	(imports += Import)*
-	
+	(imports += MetamodelImport)*
 	(mappings += Mapping | mappings += DefaultMapping)*
 ;
-
-Import returns Import: 
-	'import' package=[ecore::EPackage|STRING]
-	('as' name=ValidID)?;
-
 
 DefaultMapping returns Mapping:
 	{Mapping}
 	default?='default' name=ValidID ':'
- 	('create' (signatures+=Signature constraints+=SignatureConstraintBlock))*
+ 	('create' (signatures+=Signature 'with' constraints+=SignatureConstraintBlock))*
 ;
 
 Mapping returns Mapping:
@@ -33,33 +28,25 @@ Mapping returns Mapping:
 	 ')')?
 	 
  	(
-	 	('map' signatures+=Signature constraints+=SignatureConstraintBlock
-	 	 'and' signatures+=Signature constraints+=SignatureConstraintBlock)
+	 	'map'
+	 		(
+	 			(signatures+=Signature ('with' constraints+=SignatureConstraintBlock)?)
+	 	 		'and' (signatures+=Signature ('with' constraints+=SignatureConstraintBlock)?)
+	 	 	)?
 	  	('{'
 	  		constraintsBody=BodyConstraintBlock
-	  		(submappings+=Mapping)* 
+	  		(childMappings+=Mapping)* 
 	  	'}')?
-  	) |
-  	(
-  		'map' '{'
-	  		constraintsBody=BodyConstraintBlock
-	  		(submappings+=Mapping)* 
-	  	'}'
-
   	)
 ;
 
 Signature:
 	{Signature}
-	'{' (elements+=NamedEClass (',' elements+=NamedEClass)*)? '}'
-;
-
-NamedEClass:
-	type=[ecore::EClass|QualifiedName] 'as' name=ValidID
+	'[' (elements+=ModelElement (',' elements+=ModelElement)*)? ']'
 ;
 
 RequiredMapping:
-	mapping=[Mapping] 'as' name=ValidID
+	mapping=[Mapping] ('as' name=ValidID)?
 ;
 
 
@@ -129,7 +116,7 @@ FeatureOfContextVariable:
 ;
 
 ContextVariable:
-	(requiredMappingPath=RequiredMappingPathBase)? ('::' targetClass=[NamedEClass|ValidID])
+	(requiredMappingPath=RequiredMappingPathBase '::')? (targetClass=[mirBase::ModelElement|ValidID])
 ;
 
 RequiredMappingPathBase:

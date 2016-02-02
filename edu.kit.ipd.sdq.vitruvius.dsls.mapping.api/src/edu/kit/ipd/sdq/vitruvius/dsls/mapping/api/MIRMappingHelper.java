@@ -19,7 +19,6 @@ import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MIRMappingRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
@@ -48,20 +47,6 @@ public final class MIRMappingHelper {
 		}
 
 		return result;
-	}
-
-	public static Pair<EObject, EObject> getReverseFeatureMappedBy(EObject target, EStructuralFeature feature,
-			MappedCorrespondenceInstance correspondenceInstance, MIRMappingRealization mapping) {
-		// Collection<EObject> candidates = getReverseFeature(target, feature);
-		// for (EObject candidate : candidates) {
-		// EObject candidateTarget =
-		// correspondenceInstance.getMappingTarget(candidate, mapping);
-		// if (candidateTarget != null) { // i.e. the candidate is not mapped by
-		// mapping
-		// return new Pair<EObject, EObject>(candidate, candidateTarget);
-		// }
-		// }
-		return null;
 	}
 
 	public static Collection<EObject> getAllAffectedObjects(EChange eChange) {
@@ -135,9 +120,10 @@ public final class MIRMappingHelper {
 		do {
 			nonContainedFound = false;
 			for (EObject eObject : elementSupplier.get()) {
-				if (!MIRMappingHelper.hasContainment(eObject, transformationResult)) {
+				if (!result.contains(eObject) && !MIRMappingHelper.hasContainment(eObject, transformationResult)) {
 					nonContainedFound = true;
 					containmentEnsurer.accept(eObject);
+					result.add(eObject);
 				}
 			}
 		} while (nonContainedFound);
