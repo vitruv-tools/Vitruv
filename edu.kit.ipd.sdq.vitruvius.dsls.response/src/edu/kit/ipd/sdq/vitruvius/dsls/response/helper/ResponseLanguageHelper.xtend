@@ -19,6 +19,7 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.eclipse.xtext.xbase.XExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.impl.SimpleTextXBlockExpression
+import org.eclipse.xtext.xbase.XBlockExpression
 
 final class ResponseLanguageHelper {
 	private new() {}
@@ -95,7 +96,12 @@ final class ResponseLanguageHelper {
 		throw new UnsupportedOperationException();
 	}
 	
-	public static def dispatch String getXBlockExpressionText(XExpression expression) {
+	public static def dispatch String getXBlockExpressionText(XExpression expression) '''
+		{
+			«NodeModelUtils.getNode(expression).text»
+		}'''
+	
+	public static def dispatch String getXBlockExpressionText(XBlockExpression expression) {
 		NodeModelUtils.getNode(expression).text;
 	}
 	

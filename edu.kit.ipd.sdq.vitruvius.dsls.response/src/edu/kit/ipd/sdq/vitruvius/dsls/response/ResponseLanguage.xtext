@@ -52,15 +52,15 @@ CodeBlock:
 
 CorrespondenceSourceDeterminationBlock:
 	{CorrespondenceSourceDeterminationBlock}
-	code=XBlockExpression;
+	code=XExpression;
 
 PreconditionBlock:
 	{PreconditionBlock}
-	code=XBlockExpression;
+	code=XExpression;
 
 ExecutionBlock:
 	{ExecutionBlock}
-	code=XBlockExpression;
+	code=XExpression;
 
 InvariantViolationEvent:
 	'invariant' violation=[ecore::EClass|QualifiedName];
