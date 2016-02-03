@@ -60,7 +60,7 @@ public class MappingLanguageLaunchConfigurationDelegate extends LaunchConfigurat
 				
 //				ResourceSet rs = new XtextResourceSet();
 //				Resource r = rs.getResource(uri, true);
-				generator.doGenerate(resource);
+//				generator.doGenerate(resource);
 			} else {
 				System.out.println("FALSE");
 			}

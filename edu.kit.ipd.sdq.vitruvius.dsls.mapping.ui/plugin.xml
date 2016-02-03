@@ -9,7 +9,7 @@
             class="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.MappingLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
             contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
             default="true"
-            extensions="mappings"
+            extensions="mapping"
             id="edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage"
             matchingStrategy="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.MappingLanguageExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.editor.JavaEditorInputMatcher"
             name="MappingLanguage Editor">
@@ -214,13 +214,13 @@
 		point="org.eclipse.emf.ecore.extension_parser">
 		<parser
 			class="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.MappingLanguageExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
-			type="mappings">
+			type="mapping">
 		</parser>
 	</extension>
 	<extension point="org.eclipse.xtext.extension_resourceServiceProvider">
         <resourceServiceProvider
             class="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.MappingLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
-            uriExtension="mappings">
+            uriExtension="mapping">
         </resourceServiceProvider>
     </extension>
 
@@ -252,7 +252,7 @@
          point="org.eclipse.xtext.builder.participant">
       <participant
             class="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.MappingLanguageExecutableExtensionFactory:org.eclipse.xtext.builder.IXtextBuilderParticipant"
-            fileExtensions="mappings"
+            fileExtensions="mapping"
             >
       </participant>
    </extension>-->
@@ -600,24 +600,24 @@
   <extension point="org.eclipse.compare.contentViewers">
     <viewer id="edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.compare.contentViewers"
             class="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.MappingLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
-            extensions="mappings">
+            extensions="mapping">
     </viewer>
   </extension>
   <extension point="org.eclipse.compare.contentMergeViewers">
     <viewer id="edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.compare.contentMergeViewers"
             class="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.MappingLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
-            extensions="mappings" label="MappingLanguage Compare">
+            extensions="mapping" label="MappingLanguage Compare">
      </viewer>
   </extension>
   <extension point="org.eclipse.ui.editors.documentProviders">
     <provider id="edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.editors.documentProviders"
             class="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.MappingLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
-            extensions="mappings">
+            extensions="mapping">
     </provider>
   </extension>
   <extension point="org.eclipse.team.core.fileTypes">
     <fileTypes
-            extension="mappings"
+            extension="mapping"
             type="text">
     </fileTypes>
   </extension>

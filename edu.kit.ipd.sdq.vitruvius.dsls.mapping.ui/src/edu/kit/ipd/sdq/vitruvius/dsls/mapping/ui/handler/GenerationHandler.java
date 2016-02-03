@@ -51,7 +51,7 @@ public class GenerationHandler extends AbstractHandler implements IHandler {
                 URI uri = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
                 ResourceSet rs = resourceSetProvider.get(project);
                 Resource r = rs.getResource(uri, true);
-                generator.doGenerate(r);
+//                generator.doGenerate(r);
             }
         }
         return null;

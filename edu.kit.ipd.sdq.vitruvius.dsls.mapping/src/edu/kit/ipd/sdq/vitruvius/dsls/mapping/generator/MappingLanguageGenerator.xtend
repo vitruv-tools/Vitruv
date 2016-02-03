@@ -1,10 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.AbstractMappingChange2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.AbstractMappingRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.AbstractWrapper
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.CandidateGeneratorImpl
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.DefaultContainmentMapping
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.EclipseDialogMIRUserInteracting
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MIRMappingHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceInstance
@@ -18,20 +16,19 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MIRUserInteracting
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MappingRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MatchUpdate
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.ImportHelper
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingPluginProjectHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.TemplateGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.tests.AbstractMappingTestBase
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.EclipseProjectHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.PreProcessingFileSystemAccess
+import edu.kit.ipd.sdq.vitruvius.dsls.mirBase.MetamodelImport
+import edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.ResponseBuilderFactory
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
@@ -40,7 +37,6 @@ import java.util.ArrayList
 import java.util.Arrays
 import java.util.Collection
 import java.util.Collections
-import java.util.HashSet
 import java.util.List
 import java.util.Optional
 import java.util.Set
@@ -54,40 +50,42 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
-import edu.kit.ipd.sdq.vitruvius.dsls.mirBase.MetamodelImport
 
 /**
  * The main Java plugin project generator for the mapping language.
  */
 class MappingLanguageGenerator {
-	def doGenerate(Resource input) {
+	def Collection<Response> doGenerate(Resource input, IFileSystemAccess fsa) {
 		val mappingFile = input.contents.filter(MappingFile).claimExactlyOne
 		XMIDumper.dump(mappingFile, input, "mxmi")
-		doGenerate(mappingFile)
+		doGenerate(mappingFile, fsa)
 	}
 	
-	def doGenerate(MappingFile mappingFile) {
-		if (mappingFile.pluginName != null) {
-			val contributorNames = mappingFile.imports.map[
-				EclipseBridge.getNameOfContributorOfExtension(
-					"org.eclipse.emf.ecore.generated_package",
-					"uri", it.package.nsURI)].toSet
+	def Collection<Response> doGenerate(MappingFile mappingFile, IFileSystemAccess fsa) {
+		
+//		if (mappingFile.pluginName != null) {
+//			val contributorNames = mappingFile.imports.map[
+//				EclipseBridge.getNameOfContributorOfExtension(
+//					"org.eclipse.emf.ecore.generated_package",
+//					"uri", it.package.nsURI)].toSet
 			
-			val name = mappingFile.pluginName
-			val project = new EclipseProjectHelper(name)
-			project.reinitializeXtextPluginProject
+//			val name = mappingFile.pluginName
+//			val project = new EclipseProjectHelper(name)
+//			project.reinitializeXtextPluginProject
 			
-			val srcGenFSA = project.srcGenFSA
-			val rootFSA = project.rootFSA
+			val srcGenFSA = fsa
+			
+//			val srcGenFSA = project.srcGenFSA
+//			val rootFSA = project.rootFSA
 			
 			val generator = new StatefulMappingLanguageGenerator(mappingFile, srcGenFSA)
-			generator.generate
+			generator.generate;
 			
-			MappingPluginProjectHelper.createPluginXML(rootFSA, generator.change2CommandTransformingFQN)
-			MappingPluginProjectHelper.createManifest(rootFSA, name, contributorNames, generator.getPkgNames)
+//			MappingPluginProjectHelper.createPluginXML(rootFSA, generator.change2CommandTransformingFQN)
+//			MappingPluginProjectHelper.createManifest(rootFSA, name, contributorNames, generator.getPkgNames)
 			
-			project.synchronizeProject
-		}
+//			project.synchronizeProject
+//		}
 	}
 	
 	private static class StatefulMappingLanguageGenerator {
@@ -101,15 +99,19 @@ class MappingLanguageGenerator {
 		private extension ConstraintLanguageGenerator clg
 		private extension MappingLanguageGeneratorState state
 		
+		private final Set<Response> responses
+		
 		private final String pkgName;
 	
 		private final extension TemplateGenerator templateGenerator
 		
+		private final ResponseBuilderFactory responseBuilderFactory = new ResponseBuilderFactory
 		
 		
 		private ClaimableHashMap<MetamodelImport, String> correspondenceGetMethod = new ClaimableHashMap
 
 		new(MappingFile file, IFileSystemAccess fsa) {
+			this.responses = newHashSet
 			this.file = file
 			this.pkgName = file.pluginName + ".generated"
 			this.fsa = PreProcessingFileSystemAccess.createJavaFormattingFSA(fsa)
@@ -141,14 +143,16 @@ class MappingLanguageGenerator {
 				generateMapping(mapping)
 			}
 
-			generateChange2CommandTransforming;
-			generateTestClass;
+//			generateChange2CommandTransforming;
+//			generateTestClass;
 			
 			// EXTENSION 1: default containments
 			(new DefaultContainmentGenerator(state, templateGenerator)).generate
 			
 			templateGenerator.generateAllTemplates			
 			emfGeneratorHelper.generateCode(fsa)
+			
+			responses
 		}
 
 		private def generateMapping(Mapping mapping) {
@@ -369,7 +373,7 @@ class MappingLanguageGenerator {
 					private «className»() {}
 					
 					@Override
-					public «typeRef(MappingRealization)» getInstance() {
+					public «className» getInstance() {
 						return INSTANCE;
 					}
 					
@@ -467,43 +471,41 @@ class MappingLanguageGenerator {
 				
 					private «typeRef(MIRUserInteracting)» userInteracting = new «typeRef(EclipseDialogMIRUserInteracting)»();
 					
+					«FOR imp : imports SEPARATOR "\n"»
 					@Override
-					public void applyEChange(«typeRef(EChange)» eChange, «typeRef(Blackboard)» blackboard, «typeRef(MappingExecutionState)» state) {
+					public void applyEChangeFor«imp.toFirstUpperName»(«typeRef(EChange)» eChange, «typeRef(Blackboard)» blackboard, «typeRef(MappingExecutionState)» state) {
 						«typeRef(MappedCorrespondenceInstance)» mci = state.getMci();
 
-						System.out.println("«mapping.name.toFirstUpper». EChange: " + eChange.toString());
+						System.out.println("«mapping.name.toFirstUpper». EChange, «imp.toFirstUpperName»: " + eChange.toString());
 						
-						«FOR imp : imports SEPARATOR " else "»
-						if («typeRef(MappingUtil)».isEChangeInPackage(eChange, «imp.name.toUpperCase»_PACKAGE)) {
-							«typeRef(Set)»<«typeRef(Candidate)»> candidates = candidateGenerator.createCandidates(eChange, REQUIREMENTS, «imp.name.toUpperCase»_SIGNATURE,
-									INSTANCE, mci);
-							«typeRef(MatchUpdate)»<«typeRef(mapping.getWrapperClassName(imp))», «typeRef(mapping.correspondenceWrapperClassName)»> matchUpdate =
-								new «typeRef(MatchUpdate)»<>(INSTANCE, mci,
-									candidates, «className»::create«imp.toFirstUpperName»Candidate, «className»::check«imp.toFirstUpperName», «typeRef(mapping.correspondenceWrapperClassName)»::new);
+						«typeRef(Set)»<«typeRef(Candidate)»> candidates = candidateGenerator.createCandidates(eChange, REQUIREMENTS, «imp.name.toUpperCase»_SIGNATURE,
+								INSTANCE, mci);
+						«typeRef(MatchUpdate)»<«typeRef(mapping.getWrapperClassName(imp))», «typeRef(mapping.correspondenceWrapperClassName)»> matchUpdate =
+							new «typeRef(MatchUpdate)»<>(INSTANCE, mci,
+								candidates, «className»::create«imp.toFirstUpperName»Candidate, «className»::check«imp.toFirstUpperName», «typeRef(mapping.correspondenceWrapperClassName)»::new);
 
-							for («typeRef(mapping.getWrapperClassName(imp))» newCandidate : matchUpdate.getNewCandidates()) {
-								«typeRef(List)»<«typeRef(EObject)»> «otherImport.get(imp).toVarName»Objects
-									= «typeRef(MappingUtil)».createSignature(«otherImport.get(imp).name.toUpperCase»_PACKAGE, «otherImport.get(imp).name.toUpperCase»_SIGNATURE, state);
-								«typeRef(mapping.correspondenceWrapperClassName)» corr
-									= createMappedCorrespondenceWrapper(mci,
-										«FOR req : allRequires SEPARATOR "," AFTER ","»
-										newCandidate.get«req.name.toFirstUpper»()
-										«ENDFOR»
-										newCandidate.getElements(), «otherImport.get(imp).toVarName»Objects, state);
-								enforceCorrectInitializationOn«otherImport.get(imp).toFirstUpperName»(corr.get«otherImport.get(imp).toFirstUpperName»(), state);
-								propagateAttributesFrom«imp.toFirstUpperName»(corr, state);
-							}
-
-							for («typeRef(mapping.correspondenceWrapperClassName)» voidedCorrespondence : matchUpdate.getVoidedCorrespondences()) {
-								destroy(voidedCorrespondence.get«otherImport.get(imp).toFirstUpperName»(), state);
-							}
-
-							for («typeRef(mapping.correspondenceWrapperClassName)» currentCorrespondence : matchUpdate.getCurrentCorrespondences()) {
-								propagateAttributesFrom«imp.toFirstUpperName»(currentCorrespondence, state);
-							}
+						for («typeRef(mapping.getWrapperClassName(imp))» newCandidate : matchUpdate.getNewCandidates()) {
+							«typeRef(List)»<«typeRef(EObject)»> «otherImport.get(imp).toVarName»Objects
+								= «typeRef(MappingUtil)».createSignature(«otherImport.get(imp).name.toUpperCase»_PACKAGE, «otherImport.get(imp).name.toUpperCase»_SIGNATURE, state);
+							«typeRef(mapping.correspondenceWrapperClassName)» corr
+								= createMappedCorrespondenceWrapper(mci,
+									«FOR req : allRequires SEPARATOR "," AFTER ","»
+									newCandidate.get«req.name.toFirstUpper»()
+									«ENDFOR»
+									newCandidate.getElements(), «otherImport.get(imp).toVarName»Objects, state);
+							enforceCorrectInitializationOn«otherImport.get(imp).toFirstUpperName»(corr.get«otherImport.get(imp).toFirstUpperName»(), state);
+							propagateAttributesFrom«imp.toFirstUpperName»(corr, state);
 						}
-						«ENDFOR»
+
+						for («typeRef(mapping.correspondenceWrapperClassName)» voidedCorrespondence : matchUpdate.getVoidedCorrespondences()) {
+							destroy(voidedCorrespondence.get«otherImport.get(imp).toFirstUpperName»(), state);
+						}
+
+						for («typeRef(mapping.correspondenceWrapperClassName)» currentCorrespondence : matchUpdate.getCurrentCorrespondences()) {
+							propagateAttributesFrom«imp.toFirstUpperName»(currentCorrespondence, state);
+						}
 					}
+					«ENDFOR»
 					
 					public void setUserInteracting(«typeRef(MIRUserInteracting)» userInteracting) {
 						this.userInteracting = userInteracting;
@@ -511,6 +513,22 @@ class MappingLanguageGenerator {
 				}
 				'''
 			])
+			
+			responses += #[
+				new Pair(imports.get(0), imports.get(1)),
+				new Pair(imports.get(1), imports.get(0))
+			].map[
+				responseBuilderFactory
+					.createResponseBuilder
+					.setName("Response_" + className)
+					.setTrigger(first.package)
+					.setTargetChange(second.package)
+					.setExecutionBlock(
+					'''
+						{ «fqn».getInstance().applyEChangeFor«first.toFirstUpperName»(change, blackboard, null); }
+					''')
+					.generateResponse
+			]			
 		}
 		
 		private def generateDefaultMappingClass(Mapping mapping) {
@@ -529,7 +547,7 @@ class MappingLanguageGenerator {
 					private «className»() {}
 					
 					@Override
-					public «typeRef(MappingRealization)» getInstance() {
+					public «className» getInstance() {
 						return INSTANCE;
 					}
 					
@@ -626,85 +644,85 @@ class MappingLanguageGenerator {
 		}
 			
 	
-		private def generateTestClass() {
-			val fqn = getTestClassName
-			val className = fqn.toSimpleName
-			
-			addTemplateJavaFile(fqn, [ extension ih, templates |
-				// TODO DW resolve cycle and reference by type
-				'''
-					public class «className» extends «typeRef(AbstractMappingTestBase)» {
-						@Override
-						protected String getPluginName() {
-							return "«file.pluginName»";
-						}
-						
-						@Override
-						protected «typeRef(Collection)»<«typeRef(Pair)»<String, String>> getMetamodelURIsAndExtensions() {
-							«typeRef(Set)»<«typeRef(Pair)»<String, String>> result = new «typeRef(HashSet)»<>();
-							«FOR id : imports»
-								result.add(new «typeRef(Pair)»<>("«id.package.nsURI»", "«id.name»"));
-							«ENDFOR»
-							
-							return result;
-						}
-						
-						@Override
-						protected Class<? extends «typeRef(AbstractMappingChange2CommandTransforming)»> getChange2CommandTransformingClass() {
-							return «typeRef(change2CommandTransformingClassName)».class;
-						}
-					}
-				'''
-			])
-		}
+//		private def generateTestClass() {
+//			val fqn = getTestClassName
+//			val className = fqn.toSimpleName
+//			
+//			addTemplateJavaFile(fqn, [ extension ih, templates |
+//				// TODO DW resolve cycle and reference by type
+//				'''
+//					public class «className» extends «typeRef(AbstractMappingTestBase)» {
+//						@Override
+//						protected String getPluginName() {
+//«««							return "«file.pluginName»";
+//						}
+//						
+//						@Override
+//						protected «typeRef(Collection)»<«typeRef(Pair)»<String, String>> getMetamodelURIsAndExtensions() {
+//							«typeRef(Set)»<«typeRef(Pair)»<String, String>> result = new «typeRef(HashSet)»<>();
+//							«FOR id : imports»
+//								result.add(new «typeRef(Pair)»<>("«id.package.nsURI»", "«id.name»"));
+//							«ENDFOR»
+//							
+//							return result;
+//						}
+//						
+//						@Override
+//						protected Class<? extends «typeRef(AbstractMappingChange2CommandTransforming)»> getChange2CommandTransformingClass() {
+//							return «typeRef(change2CommandTransformingClassName)».class;
+//						}
+//					}
+//				'''
+//			])
+//		}
 		
-		private def generateChange2CommandTransforming() {
-			val fqn = getChange2CommandTransformingClassName
-			val className = fqn.toSimpleName
-			
-			addTemplateJavaFile(fqn, [ extension ih, templates |
-				'''
-					public class «className» extends «typeRef(AbstractMappingChange2CommandTransforming)» {
-							«FOR id : imports»
-							public final static String MM_«id.name.toUpperCase» = "«id.package.nsURI»";
-							«ENDFOR»
-							
-							«FOR id : imports.map[name.toUpperCase]»
-							public final static «typeRef(VURI)» VURI_«id» = «typeRef(VURI)».getInstance(MM_«id»);
-							«ENDFOR»
-							
-						    /* Transformable metamodels. */
-							private «typeRef(List)»<«typeRef(Pair)»<«typeRef(VURI)», «typeRef(VURI)»>> transformableMetamodels;
-							
-							@Override
-							public «typeRef(List)»<«typeRef(Pair)»<«typeRef(VURI)», «typeRef(VURI)»>> getTransformableMetamodels() {
-								return transformableMetamodels;
-							}
-							
-							@Override
-							protected void setup() {
-								transformableMetamodels = new «typeRef(ArrayList)»<>();
-								
-								«FOR id : #[new Pair(0, 1), new Pair(1, 0)]»
-								transformableMetamodels.add(new «typeRef(Pair)»<>(
-									VURI_«imports.get(id.first).name.toUpperCase», VURI_«imports.get(id.second).name.toUpperCase»
-								));
-								«ENDFOR»
-								
-								«FOR mc : mappings.map[typeRef(mappingClassName)] + #[typeRef(DefaultContainmentMapping)]»
-								addMapping(«mc».INSTANCE);
-								«ENDFOR»
-							}
-							
-							@Override
-							public void setUserInteracting(«typeRef(MIRUserInteracting)» userInteracting) {
-								«FOR mc : mappings.map[typeRef(mappingClassName)] + #[typeRef(DefaultContainmentMapping)]»
-								«mc».INSTANCE.setUserInteracting(userInteracting);
-								«ENDFOR»
-							}
-					}
-				'''
-			])
-		}
+//		private def generateChange2CommandTransforming() {
+//			val fqn = getChange2CommandTransformingClassName
+//			val className = fqn.toSimpleName
+//			
+//			addTemplateJavaFile(fqn, [ extension ih, templates |
+//				'''
+//					public class «className» extends «typeRef(AbstractMappingChange2CommandTransforming)» {
+//							«FOR id : imports»
+//							public final static String MM_«id.name.toUpperCase» = "«id.package.nsURI»";
+//							«ENDFOR»
+//							
+//							«FOR id : imports.map[name.toUpperCase]»
+//							public final static «typeRef(VURI)» VURI_«id» = «typeRef(VURI)».getInstance(MM_«id»);
+//							«ENDFOR»
+//							
+//						    /* Transformable metamodels. */
+//							private «typeRef(List)»<«typeRef(Pair)»<«typeRef(VURI)», «typeRef(VURI)»>> transformableMetamodels;
+//							
+//							@Override
+//							public «typeRef(List)»<«typeRef(Pair)»<«typeRef(VURI)», «typeRef(VURI)»>> getTransformableMetamodels() {
+//								return transformableMetamodels;
+//							}
+//							
+//							@Override
+//							protected void setup() {
+//								transformableMetamodels = new «typeRef(ArrayList)»<>();
+//								
+//								«FOR id : #[new Pair(0, 1), new Pair(1, 0)]»
+//								transformableMetamodels.add(new «typeRef(Pair)»<>(
+//									VURI_«imports.get(id.first).name.toUpperCase», VURI_«imports.get(id.second).name.toUpperCase»
+//								));
+//								«ENDFOR»
+//								
+//								«FOR mc : mappings.map[typeRef(mappingClassName)] + #[typeRef(DefaultContainmentMapping)]»
+//								addMapping(«mc».INSTANCE);
+//								«ENDFOR»
+//							}
+//							
+//							@Override
+//							public void setUserInteracting(«typeRef(MIRUserInteracting)» userInteracting) {
+//								«FOR mc : mappings.map[typeRef(mappingClassName)] + #[typeRef(DefaultContainmentMapping)]»
+//								«mc».INSTANCE.setUserInteracting(userInteracting);
+//								«ENDFOR»
+//							}
+//					}
+//				'''
+//			])
+//		}
 	}
 }
