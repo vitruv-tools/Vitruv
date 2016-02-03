@@ -24,15 +24,14 @@ Require-Bundle: org.eclipse.xtext,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.framework.meta.change;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter,
+ edu.kit.ipd.sdq.vitruvius.dsls.response.api,
  edu.kit.ipd.sdq.vitruvius.framework.run.userinteractor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage,
  edu.kit.ipd.sdq.vitruvius.dsls.response.parser.antlr,
  edu.kit.ipd.sdq.vitruvius.dsls.response,
- edu.kit.ipd.sdq.vitruvius.dsls.response.executor,
  edu.kit.ipd.sdq.vitruvius.dsls.response.generator,
  edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator,
- edu.kit.ipd.sdq.vitruvius.dsls.response.helper,
  edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.impl,
  edu.kit.ipd.sdq.vitruvius.dsls.response.validation,
  edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel,
@@ -40,5 +39,6 @@ Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage,
  edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.util,
  edu.kit.ipd.sdq.vitruvius.dsls.response.services,
  edu.kit.ipd.sdq.vitruvius.dsls.response.parser.antlr.internal,
- edu.kit.ipd.sdq.vitruvius.dsls.response.scoping
+ edu.kit.ipd.sdq.vitruvius.dsls.response.scoping,
+ edu.kit.ipd.sdq.vitruvius.dsls.response.helper
 Import-Package: org.apache.log4j

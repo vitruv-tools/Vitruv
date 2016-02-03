@@ -1,30 +1,30 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.response.executor
+package edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment
 
 import java.util.Map
 import java.util.HashMap
 import java.util.List
 import java.util.ArrayList
-import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import java.util.Set
 import java.util.HashSet
+import edu.kit.ipd.sdq.vitruvius.dsls.response.api.interfaces.IResponseRealization
 
 class Change2ResponseMap {
-	private Map<Class<? extends EChange>, List<ResponseRealization>> change2responseMap;
+	private Map<Class<? extends EChange>, List<IResponseRealization>> change2responseMap;
 	
 	new() {
-		this.change2responseMap = new HashMap<Class<? extends EChange>, List<ResponseRealization>>();
+		this.change2responseMap = new HashMap<Class<? extends EChange>, List<IResponseRealization>>();
 	}
 	
-	public def addResponse(Class<? extends EChange> eventType, ResponseRealization response) {
+	public def addResponse(Class<? extends EChange> eventType, IResponseRealization response) {
 		if (this.change2responseMap.get(eventType) == null) {
-			this.change2responseMap.put(eventType, (new ArrayList<ResponseRealization>()))
+			this.change2responseMap.put(eventType, (new ArrayList<IResponseRealization>()))
 		}
 		this.change2responseMap.get(eventType).add(response);
 	}
 	
-	public def Set<ResponseRealization> getResponses(EChange event) {
-		val result = new HashSet<ResponseRealization>();
+	public def Set<IResponseRealization> getResponses(EChange event) {
+		val result = new HashSet<IResponseRealization>();
 		var dependantInterfaces = newLinkedList(event.class.interfaces);
 		var superClass = event.class as Class<?>;
 		while (superClass != null) {

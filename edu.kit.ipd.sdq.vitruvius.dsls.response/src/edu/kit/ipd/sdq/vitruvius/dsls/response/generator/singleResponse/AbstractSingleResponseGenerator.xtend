@@ -8,11 +8,9 @@ import org.apache.log4j.Level
 import static edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.ResponseLanguageGeneratorConstants.*;
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
 import org.eclipse.emf.ecore.EClass
-import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseRealization
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.ResponseRuntimeHelper
 import java.util.ArrayList
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
@@ -22,6 +20,8 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetMo
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootDelete
 import java.util.Collections
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.api.interfaces.IResponseRealization
+import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseRuntimeHelper
 
 abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerator {
 	protected final Response response;
@@ -48,7 +48,7 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 					#[generateLoggerInitialization(className), generateMethodGetTrigger()]
 		val classImplementation = '''
 		«IF response.documentation != null»«response.documentation»«ENDIF»
-		public class «className» implements «ih.typeRef(ResponseRealization)» {
+		public class «className» implements «ih.typeRef(IResponseRealization)» {
 			«FOR method : generatedMethods»
 				«method»
 				

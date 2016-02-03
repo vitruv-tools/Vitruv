@@ -1,13 +1,13 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.response.executor
+package edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment
 
 import org.apache.log4j.Logger
 import java.util.List
 import org.eclipse.emf.common.command.Command
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
 import java.util.ArrayList
-import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseRealization
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
+import edu.kit.ipd.sdq.vitruvius.dsls.response.api.interfaces.IResponseRealization
 
 abstract class AbstractResponseExecutor  {
 	private final static val LOGGER = Logger.getLogger(AbstractResponseExecutor);
@@ -19,7 +19,7 @@ abstract class AbstractResponseExecutor  {
 		this.setup();
 	}
 
-	protected def void addResponse(Class<? extends EChange> eventType, ResponseRealization response) {
+	protected def void addResponse(Class<? extends EChange> eventType, IResponseRealization response) {
 		this.changeToResponseMap.addResponse(eventType, response);
 	}
 	

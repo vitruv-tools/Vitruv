@@ -2,7 +2,6 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.tests
 
 import edu.kit.ipd.sdq.vitruvius.tests.VitruviusEMFCasestudyTest
 import org.junit.runner.Description
-import edu.kit.ipd.sdq.vitruvius.dsls.response.executor.AbstractResponseChange2CommandTransforming
 import responses.ResponseChange2CommandTransformingProviding
 import java.util.function.Supplier
 import org.eclipse.emf.common.util.URI
@@ -11,6 +10,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileCh
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import java.util.Collections
 import org.eclipse.emf.ecore.EObject
+import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseChange2CommandTransforming
 
 abstract class AbstractResponseTests extends VitruviusEMFCasestudyTest {
 
