@@ -21,6 +21,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.PermuteEReferences
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInEList
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateSingleValuedEFeature
 
 final class TypeInferringAtomicEChangeFactory {
 	val Metamodel metamodel
@@ -66,6 +68,14 @@ final class TypeInferringAtomicEChangeFactory {
 		return getTUID(referencedEObject)
 	}
 	
+//	def dispatch InsertInEList createInsert(EObject affectedEObject, TUID oldTUIDOfAffectedEObject, EAttribute affectedAttribute, Object newValue, int index) {
+//		return createInsertAttributeChange(affectedEObject,oldTUIDOfAffectedEObject,affectedAttribute,newValue,index)
+//	}
+//	
+//	def dispatch InsertInEList createInsert(EObject affectedEObject, TUID oldTUIDOfAffectedEObject, EReference affectedReference, EObject newValue, int index) {
+//		return createInsertReferenceChange(affectedEObject,oldTUIDOfAffectedEObject,affectedReference,newValue,index)
+//	}
+	
 	def <A extends EObject, T extends Object> InsertEAttributeValue<A,T> createInsertAttributeChange(A affectedEObject, TUID oldTUIDOfAffectedEObject, EAttribute affectedAttribute, T newValue, int index) {
 		val c = AttributeFactory.eINSTANCE.createInsertEAttributeValue()
 		setFeatureChangeFeatures(c,affectedEObject,oldTUIDOfAffectedEObject,affectedAttribute)
@@ -79,6 +89,14 @@ final class TypeInferringAtomicEChangeFactory {
 		c.oldTUIDOfAffectedEObject = oldTUIDOfAffectedEObject
 		c.affectedFeature = affectedFeature
 	}
+	
+//	def dispatch UpdateSingleValuedEFeature createReplaceSingle(EObject affectedEObject, TUID oldTUIDOfAffectedEObject, EAttribute affectedAttribute, Object oldValue, Object newValue) {
+//		return createReplaceSingleAttributeChange(affectedEObject, oldTUIDOfAffectedEObject, affectedAttribute, oldValue, newValue)
+//	}
+//	
+//	def dispatch UpdateSingleValuedEFeature createReplaceSingle(EObject affectedEObject, TUID oldTUIDOfAffectedEObject, EReference affectedReference, EObject oldValue, EObject newValue) {
+//		return createReplaceSingleReferenceChange(affectedEObject,oldTUIDOfAffectedEObject,affectedReference,oldEO
+//	}
 	
 	def <A extends EObject, T extends Object> ReplaceSingleValuedEAttribute<A,T> createReplaceSingleAttributeChange(A affectedEObject, TUID oldTUIDOfAffectedEObject, EAttribute affectedAttribute, T oldValue, T newValue) {
 		val c = AttributeFactory.eINSTANCE.createReplaceSingleValuedEAttribute
