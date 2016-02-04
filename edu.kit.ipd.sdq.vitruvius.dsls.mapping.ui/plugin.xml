@@ -256,42 +256,6 @@
             >
       </participant>
    </extension>-->
-	<extension
-        point="org.eclipse.ui.handlers">
-	     <handler
-	           class="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.MappingLanguageExecutableExtensionFactory:edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.handler.GenerationHandler"
-	           commandId="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.handler.GenerationCommand">
-	     </handler>
-	      
-	</extension>
-	   
-	<extension
-			point="org.eclipse.ui.commands">
-		<command name="Generate Code"
-		      id="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.handler.GenerationCommand">
-		</command>
- 	</extension>
-	   
-	  <extension point="org.eclipse.ui.menus">
-		<menuContribution locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
-			<command
-			    commandId="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.handler.GenerationCommand"
-				    style="push">
-				<visibleWhen
-				      checkEnabled="false">
-					<iterate>
-						<adapt type="org.eclipse.core.resources.IResource">
-							<test property="org.eclipse.core.resources.name" 
-								value="*.mappings"/>
-						</adapt>
-					</iterate>
-				</visibleWhen>
-			</command>
-		</menuContribution>
-	</extension>
-   
-   
-   
    <extension
             point="org.eclipse.ui.preferencePages">
         <page
