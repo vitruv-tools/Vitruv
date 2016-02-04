@@ -215,6 +215,25 @@ public interface MirBasePackage extends EPackage
    */
   int METAMODEL_REFERENCE_FEATURE_COUNT = 1;
 
+  /**
+   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBaseFileImpl <em>File</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBaseFileImpl
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getMirBaseFile()
+   * @generated
+   */
+  int MIR_BASE_FILE = 5;
+
+  /**
+   * The number of structural features of the '<em>File</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MIR_BASE_FILE_FEATURE_COUNT = 0;
+
 
   /**
    * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport <em>Metamodel Import</em>}'.
@@ -344,6 +363,16 @@ public interface MirBasePackage extends EPackage
   EReference getMetamodelReference_Model();
 
   /**
+   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFile <em>File</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>File</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFile
+   * @generated
+   */
+  EClass getMirBaseFile();
+
+  /**
    * Returns the factory that creates the instances of the model.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -471,6 +500,16 @@ public interface MirBasePackage extends EPackage
      * @generated
      */
     EReference METAMODEL_REFERENCE__MODEL = eINSTANCE.getMetamodelReference_Model();
+
+    /**
+     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBaseFileImpl <em>File</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBaseFileImpl
+     * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getMirBaseFile()
+     * @generated
+     */
+    EClass MIR_BASE_FILE = eINSTANCE.getMirBaseFile();
 
   }
 

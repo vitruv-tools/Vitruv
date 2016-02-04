@@ -22,5 +22,6 @@
     <genClasses ecoreClass="MirBase.ecore#//MetamodelReference">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MirBase.ecore#//MetamodelReference/model"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="MirBase.ecore#//MirBaseFile"/>
   </genPackages>
 </genmodel:GenModel>

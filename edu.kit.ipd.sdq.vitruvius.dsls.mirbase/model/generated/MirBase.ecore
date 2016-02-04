@@ -18,4 +18,5 @@
   <eClassifiers xsi:type="ecore:EClass" name="MetamodelReference">
     <eStructuralFeatures xsi:type="ecore:EReference" name="model" eType="#//MetamodelImport"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MirBaseFile" abstract="true"/>
 </ecore:EPackage>

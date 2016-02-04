@@ -7,6 +7,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.FeatureOfElement;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelReference;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFactory;
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFile;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedModelElement;
@@ -60,6 +61,13 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
    * @generated
    */
   private EClass metamodelReferenceEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass mirBaseFileEClass = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -249,6 +257,16 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getMirBaseFile()
+  {
+    return mirBaseFileEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public MirBaseFactory getMirBaseFactory()
   {
     return (MirBaseFactory)getEFactoryInstance();
@@ -290,6 +308,8 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
 
     metamodelReferenceEClass = createEClass(METAMODEL_REFERENCE);
     createEReference(metamodelReferenceEClass, METAMODEL_REFERENCE__MODEL);
+
+    mirBaseFileEClass = createEClass(MIR_BASE_FILE);
   }
 
   /**
@@ -340,6 +360,8 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
 
     initEClass(metamodelReferenceEClass, MetamodelReference.class, "MetamodelReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getMetamodelReference_Model(), this.getMetamodelImport(), null, "model", null, 0, 1, MetamodelReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(mirBaseFileEClass, MirBaseFile.class, "MirBaseFile", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     // Create resource
     createResource(eNS_URI);

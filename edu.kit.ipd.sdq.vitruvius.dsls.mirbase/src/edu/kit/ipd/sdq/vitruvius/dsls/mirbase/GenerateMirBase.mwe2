@@ -7,7 +7,7 @@ var rootPath = ".."
 
 Workflow {
 	
-	component = XtextGenerator {
+	component = mirbase.metamodelinferrer.MirBaseExtendedGenerator {
 		configuration = {
 			project = StandardProjectConfig {
 				baseName = "edu.kit.ipd.sdq.vitruvius.dsls.mirbase"

@@ -101,6 +101,11 @@ public class MirBaseAdapterFactory extends AdapterFactoryImpl
         return createMetamodelReferenceAdapter();
       }
       @Override
+      public Adapter caseMirBaseFile(MirBaseFile object)
+      {
+        return createMirBaseFileAdapter();
+      }
+      @Override
       public Adapter defaultCase(EObject object)
       {
         return createEObjectAdapter();
@@ -193,6 +198,21 @@ public class MirBaseAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createMetamodelReferenceAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFile <em>File</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFile
+   * @generated
+   */
+  public Adapter createMirBaseFileAdapter()
   {
     return null;
   }
