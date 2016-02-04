@@ -3,6 +3,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.dsls.mirbase.ui.quickfix;
 
+import edu.kit.ipd.sdq.vitruvius.dsls.common.VitruviusDslsCommonConstants;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.validation.EclipsePluginHelper;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.validation.MirBaseValidator;
@@ -50,7 +51,7 @@ public class MirBaseQuickfixProvider extends XbaseQuickfixProvider {
     final ISemanticModification _function = (EObject element, IModificationContext context) -> {
       Resource _eResource = element.eResource();
       final IProject project = EclipsePluginHelper.getProject(_eResource);
-      for (final String dependency : MirBaseValidator.VITRUVIUS_DEPENDENCIES) {
+      for (final String dependency : VitruviusDslsCommonConstants.VITRUVIUS_DEPENDENCIES) {
         {
           InputOutput.<String>println(dependency);
           boolean _hasDependency = EclipsePluginHelper.hasDependency(project, dependency);

@@ -12,6 +12,7 @@ import org.eclipse.xtext.validation.Issue
 import org.eclipse.xtext.xbase.ui.quickfix.XbaseQuickfixProvider
 
 import static edu.kit.ipd.sdq.vitruvius.dsls.mirbase.validation.EclipsePluginHelper.*
+import edu.kit.ipd.sdq.vitruvius.dsls.common.VitruviusDslsCommonConstants
 
 /**
  * Custom quickfixes.
@@ -38,7 +39,7 @@ class MirBaseQuickfixProvider extends XbaseQuickfixProvider {
 	def addVitruviusDependenciesToManifest(Issue issue, IssueResolutionAcceptor acceptor) {
 		acceptor.accept(issue, 'Add all Vitruvius depdendencies.', 'Add all Vitruvius depdendencies.', null) [ element, context |
 			val project = getProject(element.eResource)
-			for (String dependency : MirBaseValidator.VITRUVIUS_DEPENDENCIES) {
+			for (String dependency : VitruviusDslsCommonConstants.VITRUVIUS_DEPENDENCIES) {
 				println(dependency)
 				if (!hasDependency(project, dependency)) {
 					addDependency(project, dependency)

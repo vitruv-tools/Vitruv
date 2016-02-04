@@ -3,6 +3,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.dsls.mirbase.validation;
 
+import edu.kit.ipd.sdq.vitruvius.dsls.common.VitruviusDslsCommonConstants;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFile;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage;
@@ -67,14 +68,12 @@ public class MirBaseValidator extends AbstractMirBaseValidator {
     }
   }
   
-  public final static String[] VITRUVIUS_DEPENDENCIES = { "org.eclipse.emf.ecore", "edu.kit.ipd.sdq.vitruvius.framework.util", "edu.kit.ipd.sdq.vitruvius.framework.contracts", "edu.kit.ipd.sdq.vitruvius.dsls.mapping.apidesign", "edu.kit.ipd.sdq.vitruvius.framework.meta.change", "com.google.guava", "org.eclipse.core.resources", "org.apache.log4j", "org.eclipse.xtend.lib", "org.eclipse.xtend.lib.macro", "edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework", "edu.kit.ipd.sdq.vitruvius.dsls.mapping", "edu.kit.ipd.sdq.vitruvius.dsls.mapping.api", "edu.kit.ipd.sdq.vitruvius.dsls.response.api", "edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter", "edu.kit.ipd.sdq.vitruvius.framework.run.userinteractor" };
-  
   @Check
   public void checkVitruviusDependencies(final MirBaseFile mirBaseFile) {
     try {
       Resource _eResource = mirBaseFile.eResource();
       final IProject project = EclipsePluginHelper.getProject(_eResource);
-      for (final String dependency : MirBaseValidator.VITRUVIUS_DEPENDENCIES) {
+      for (final String dependency : VitruviusDslsCommonConstants.VITRUVIUS_DEPENDENCIES) {
         boolean _hasDependency = EclipsePluginHelper.hasDependency(project, dependency);
         boolean _not = (!_hasDependency);
         if (_not) {

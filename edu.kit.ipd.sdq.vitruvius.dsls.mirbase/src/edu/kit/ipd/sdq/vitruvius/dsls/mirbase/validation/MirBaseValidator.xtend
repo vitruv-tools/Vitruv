@@ -11,6 +11,7 @@ import org.eclipse.osgi.container.namespaces.EclipsePlatformNamespace
 import org.eclipse.xtext.validation.Check
 
 import static edu.kit.ipd.sdq.vitruvius.dsls.mirbase.validation.EclipsePluginHelper.*
+import edu.kit.ipd.sdq.vitruvius.dsls.common.VitruviusDslsCommonConstants
 
 /**
  * This class contains custom validation rules. 
@@ -43,30 +44,13 @@ class MirBaseValidator extends AbstractMirBaseValidator {
 	}
 	
 	// TODO DW: move to appropriate plugin
-	public final static String[] VITRUVIUS_DEPENDENCIES = #[
-		"org.eclipse.emf.ecore",
-		"edu.kit.ipd.sdq.vitruvius.framework.util",
-		"edu.kit.ipd.sdq.vitruvius.framework.contracts",
-		"edu.kit.ipd.sdq.vitruvius.dsls.mapping.apidesign",
-		"edu.kit.ipd.sdq.vitruvius.framework.meta.change",
-		"com.google.guava",
-		"org.eclipse.core.resources",
-		"org.apache.log4j",
-		"org.eclipse.xtend.lib",
- 		"org.eclipse.xtend.lib.macro",
- 		"edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework",
- 		"edu.kit.ipd.sdq.vitruvius.dsls.mapping",
- 		"edu.kit.ipd.sdq.vitruvius.dsls.mapping.api",
- 		"edu.kit.ipd.sdq.vitruvius.dsls.response.api",
- 		"edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter",
- 		"edu.kit.ipd.sdq.vitruvius.framework.run.userinteractor"
-	]
+
 	
 	@Check
 	def checkVitruviusDependencies(MirBaseFile mirBaseFile) {
 		val project = getProject(mirBaseFile.eResource)
 		
-		for (String dependency : VITRUVIUS_DEPENDENCIES) {
+		for (String dependency : VitruviusDslsCommonConstants.VITRUVIUS_DEPENDENCIES) {
 			if (!hasDependency(project, dependency)) {
 				warning('''Plug-in does not declare all needed dependencies for Vitruvius (missing: «dependency»).''', mirBaseFile, null, VITRUVIUS_DEPENDENCY_MISSING)
 				return
