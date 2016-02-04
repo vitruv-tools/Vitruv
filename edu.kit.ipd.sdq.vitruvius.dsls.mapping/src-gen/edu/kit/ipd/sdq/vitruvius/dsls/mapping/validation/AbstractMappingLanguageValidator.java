@@ -3,7 +3,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.validation;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.validation.MirBaseValidator;
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.validation.MirBaseValidator;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.emf.ecore.EPackage;

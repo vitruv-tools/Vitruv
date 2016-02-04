@@ -9,9 +9,9 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathBase
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathTail
-import edu.kit.ipd.sdq.vitruvius.dsls.mirBase.MetamodelImport
-import edu.kit.ipd.sdq.vitruvius.dsls.mirBase.MirBasePackage
-import edu.kit.ipd.sdq.vitruvius.dsls.scoping.MirBaseScopeProviderDelegate
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.Iterator
 import java.util.List
@@ -32,7 +32,7 @@ import static edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLang
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.EMFHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
 import static extension java.util.Objects.*
-import edu.kit.ipd.sdq.vitruvius.dsls.mirBase.ModelElement
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
 
 /**
  * @author Dominik Werle

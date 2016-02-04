@@ -6,7 +6,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Signature;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mirBase.ModelElement;
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement;
 
 import java.util.Collection;
 

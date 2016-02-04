@@ -3,7 +3,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mirBase.ModelElement;
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement;
 
 import org.eclipse.emf.common.util.EList;
 
@@ -29,7 +29,7 @@ public interface Signature extends EObject
 {
   /**
    * Returns the value of the '<em><b>Elements</b></em>' containment reference list.
-   * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.dsls.mirBase.ModelElement}.
+   * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Elements</em>' containment reference list isn't clear,

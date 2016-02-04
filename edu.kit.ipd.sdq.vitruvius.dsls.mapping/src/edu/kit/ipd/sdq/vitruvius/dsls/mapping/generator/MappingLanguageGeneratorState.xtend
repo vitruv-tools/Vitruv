@@ -10,8 +10,8 @@ import org.eclipse.xtend.lib.annotations.Accessors
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
-import edu.kit.ipd.sdq.vitruvius.dsls.mirBase.MetamodelImport
-import edu.kit.ipd.sdq.vitruvius.dsls.mirBase.ModelElement
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
 
 @Accessors(PUBLIC_GETTER)
 class MappingLanguageGeneratorState {

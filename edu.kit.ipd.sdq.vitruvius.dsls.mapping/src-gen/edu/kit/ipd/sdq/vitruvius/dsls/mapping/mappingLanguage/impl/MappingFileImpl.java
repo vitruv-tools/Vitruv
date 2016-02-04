@@ -8,7 +8,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mirBase.MetamodelImport;
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport;
 
 import java.util.Collection;
 

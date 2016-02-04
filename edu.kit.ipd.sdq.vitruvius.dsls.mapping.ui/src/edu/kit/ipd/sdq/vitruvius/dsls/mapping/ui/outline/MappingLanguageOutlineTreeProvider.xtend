@@ -9,7 +9,7 @@ import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping
-import edu.kit.ipd.sdq.vitruvius.dsls.mirBase.ModelElement
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
 
 /**
  * Customization of the default outline structure.

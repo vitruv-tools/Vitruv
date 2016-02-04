@@ -6,7 +6,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.labeling
 import com.google.inject.Inject
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.mirBase.ModelElement
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
 
 /**
  * Provides labels for EObjects.

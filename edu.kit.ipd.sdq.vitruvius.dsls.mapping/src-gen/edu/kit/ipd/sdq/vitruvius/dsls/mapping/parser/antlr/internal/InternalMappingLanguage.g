@@ -113,7 +113,7 @@ ruleMappingFile returns [EObject current=null]
 						$current,
 						"imports",
 						lv_imports_2_0,
-						"edu.kit.ipd.sdq.vitruvius.dsls.MirBase.MetamodelImport");
+						"edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase.MetamodelImport");
 					afterParserOrEnumRuleCall();
 				}
 			)
@@ -582,7 +582,7 @@ ruleSignature returns [EObject current=null]
 							$current,
 							"elements",
 							lv_elements_2_0,
-							"edu.kit.ipd.sdq.vitruvius.dsls.MirBase.ModelElement");
+							"edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase.ModelElement");
 						afterParserOrEnumRuleCall();
 					}
 				)
@@ -606,7 +606,7 @@ ruleSignature returns [EObject current=null]
 								$current,
 								"elements",
 								lv_elements_4_0,
-								"edu.kit.ipd.sdq.vitruvius.dsls.MirBase.ModelElement");
+								"edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase.ModelElement");
 							afterParserOrEnumRuleCall();
 						}
 					)

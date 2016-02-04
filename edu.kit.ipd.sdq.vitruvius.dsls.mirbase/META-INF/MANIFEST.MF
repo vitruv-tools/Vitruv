@@ -17,15 +17,15 @@ Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtend.lib,
  org.eclipse.emf.common
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.jvmmodel,
- edu.kit.ipd.sdq.vitruvius.dsls.parser.antlr.internal,
- edu.kit.ipd.sdq.vitruvius.dsls.mirBase.util,
- edu.kit.ipd.sdq.vitruvius.dsls.parser.antlr,
- edu.kit.ipd.sdq.vitruvius.dsls.scoping,
- edu.kit.ipd.sdq.vitruvius.dsls.serializer,
- edu.kit.ipd.sdq.vitruvius.dsls.validation,
- edu.kit.ipd.sdq.vitruvius.dsls,
- edu.kit.ipd.sdq.vitruvius.dsls.services,
- edu.kit.ipd.sdq.vitruvius.dsls.mirBase,
- edu.kit.ipd.sdq.vitruvius.dsls.mirBase.impl
+Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.mirbase.jvmmodel,
+ edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl,
+ edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.util,
+ edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase,
+ edu.kit.ipd.sdq.vitruvius.dsls.mirbase.parser.antlr,
+ edu.kit.ipd.sdq.vitruvius.dsls.mirbase.parser.antlr.internal,
+ edu.kit.ipd.sdq.vitruvius.dsls.mirbase.scoping,
+ edu.kit.ipd.sdq.vitruvius.dsls.mirbase.serializer,
+ edu.kit.ipd.sdq.vitruvius.dsls.mirbase.services,
+ edu.kit.ipd.sdq.vitruvius.dsls.mirbase.validation,
+ edu.kit.ipd.sdq.vitruvius.dsls.mirbase
 Import-Package: org.apache.log4j

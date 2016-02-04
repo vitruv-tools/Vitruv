@@ -22,7 +22,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.dsls.mirbase,
  org.eclipse.jdt.debug.ui
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.ui.contentassist,
- edu.kit.ipd.sdq.vitruvius.dsls.ui.quickfix,
- edu.kit.ipd.sdq.vitruvius.dsls.mirbase.ui.internal
+Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.mirbase.ui.internal,
+ edu.kit.ipd.sdq.vitruvius.dsls.mirbase.ui.quickfix,
+ edu.kit.ipd.sdq.vitruvius.dsls.mirbase.ui.contentassist
 Bundle-Activator: edu.kit.ipd.sdq.vitruvius.dsls.mirbase.ui.internal.MirbaseActivator

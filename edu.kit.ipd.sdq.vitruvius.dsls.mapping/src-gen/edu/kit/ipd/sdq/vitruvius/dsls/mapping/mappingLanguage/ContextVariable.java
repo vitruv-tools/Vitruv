@@ -3,7 +3,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mirBase.ModelElement;
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement;
 
 import org.eclipse.emf.ecore.EObject;
 

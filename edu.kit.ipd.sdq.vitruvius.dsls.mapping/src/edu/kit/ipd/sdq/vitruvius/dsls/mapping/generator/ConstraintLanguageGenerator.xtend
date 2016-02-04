@@ -28,8 +28,8 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLa
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
 import static extension java.util.Objects.*
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression
-import edu.kit.ipd.sdq.vitruvius.dsls.mirBase.MetamodelImport
-import edu.kit.ipd.sdq.vitruvius.dsls.mirBase.ModelElement
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
 
 class ConstraintLanguageGenerator {
 	private static final Logger LOGGER = Logger.getLogger(ConstraintLanguageGenerator)

@@ -5,7 +5,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.services;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import edu.kit.ipd.sdq.vitruvius.dsls.services.MirBaseGrammarAccess;
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.services.MirBaseGrammarAccess;
 import java.util.List;
 import org.eclipse.xtext.Action;
 import org.eclipse.xtext.Alternatives;

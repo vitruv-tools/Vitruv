@@ -11,7 +11,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.linking.MappingLanguageLinkingServ
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.postprocessor.MappingLanguageDerivedStateComputer
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping.MappingLanguageQualifiedNameConverter
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping.MappingLanguageScopeProviderDelegate
-import edu.kit.ipd.sdq.vitruvius.dsls.scoping.MirBaseGlobalScopeProvider
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.scoping.MirBaseGlobalScopeProvider
 import org.eclipse.xtext.generator.IGenerator
 import org.eclipse.xtext.naming.IQualifiedNameConverter
 import org.eclipse.xtext.resource.IDerivedStateComputer

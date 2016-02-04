@@ -3,7 +3,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.scoping.MirBaseScopeProvider;
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.scoping.MirBaseScopeProvider;
 
 public abstract class AbstractMappingLanguageScopeProvider extends MirBaseScopeProvider {
 }

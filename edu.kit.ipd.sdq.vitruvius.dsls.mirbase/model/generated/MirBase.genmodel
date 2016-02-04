@@ -4,8 +4,8 @@
     modelPluginID="edu.kit.ipd.sdq.vitruvius.dsls.mirbase" forceOverwrite="true" modelName="MirBase"
     updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     complianceLevel="6.0" copyrightFields="false" runtimeVersion="2.11">
-  <genPackages prefix="MirBase" basePackage="edu.kit.ipd.sdq.vitruvius.dsls" disposableProviderFactory="true"
-      fileExtensions="mirbase" ecorePackage="MirBase.ecore#/">
+  <genPackages prefix="MirBase" basePackage="edu.kit.ipd.sdq.vitruvius.dsls.mirbase"
+      disposableProviderFactory="true" fileExtensions="mirbase" ecorePackage="MirBase.ecore#/">
     <genClasses ecoreClass="MirBase.ecore#//MetamodelImport">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MirBase.ecore#//MetamodelImport/package"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MirBase.ecore#//MetamodelImport/name"/>

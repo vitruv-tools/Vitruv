@@ -3,7 +3,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.contentassist;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.ui.contentassist.MirBaseProposalProvider;
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.ui.contentassist.MirBaseProposalProvider;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.CrossReference;

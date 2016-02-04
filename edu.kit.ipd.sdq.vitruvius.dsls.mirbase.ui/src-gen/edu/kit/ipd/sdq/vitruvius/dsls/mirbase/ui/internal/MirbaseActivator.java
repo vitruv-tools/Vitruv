@@ -7,8 +7,8 @@ import com.google.common.collect.Maps;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import edu.kit.ipd.sdq.vitruvius.dsls.MirBaseRuntimeModule;
-import edu.kit.ipd.sdq.vitruvius.dsls.ui.MirBaseUiModule;
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBaseRuntimeModule;
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.ui.MirBaseUiModule;
 import java.util.Collections;
 import java.util.Map;
 import org.apache.log4j.Logger;
@@ -23,7 +23,7 @@ import org.osgi.framework.BundleContext;
  */
 public class MirbaseActivator extends AbstractUIPlugin {
 
-	public static final String EDU_KIT_IPD_SDQ_VITRUVIUS_DSLS_MIRBASE = "edu.kit.ipd.sdq.vitruvius.dsls.MirBase";
+	public static final String EDU_KIT_IPD_SDQ_VITRUVIUS_DSLS_MIRBASE_MIRBASE = "edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase";
 	
 	private static final Logger logger = Logger.getLogger(MirbaseActivator.class);
 	
@@ -73,14 +73,14 @@ public class MirbaseActivator extends AbstractUIPlugin {
 	}
 	
 	protected Module getRuntimeModule(String grammar) {
-		if (EDU_KIT_IPD_SDQ_VITRUVIUS_DSLS_MIRBASE.equals(grammar)) {
+		if (EDU_KIT_IPD_SDQ_VITRUVIUS_DSLS_MIRBASE_MIRBASE.equals(grammar)) {
 			return new MirBaseRuntimeModule();
 		}
 		throw new IllegalArgumentException(grammar);
 	}
 	
 	protected Module getUiModule(String grammar) {
-		if (EDU_KIT_IPD_SDQ_VITRUVIUS_DSLS_MIRBASE.equals(grammar)) {
+		if (EDU_KIT_IPD_SDQ_VITRUVIUS_DSLS_MIRBASE_MIRBASE.equals(grammar)) {
 			return new MirBaseUiModule(this);
 		}
 		throw new IllegalArgumentException(grammar);

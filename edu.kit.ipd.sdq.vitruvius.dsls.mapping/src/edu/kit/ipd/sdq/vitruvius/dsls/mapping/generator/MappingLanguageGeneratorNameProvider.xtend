@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.StringHelper
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper
-import edu.kit.ipd.sdq.vitruvius.dsls.mirBase.MetamodelImport
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
 
 class MappingLanguageGeneratorNameProvider {
 	new(String pkgName) {

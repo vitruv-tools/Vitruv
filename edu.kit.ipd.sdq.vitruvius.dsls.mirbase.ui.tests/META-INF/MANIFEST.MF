@@ -12,7 +12,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.dsls.mirbase.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.workbench;resolution:=optional
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.ui.tests
+Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.mirbase.ui.tests
 Import-Package: org.hamcrest.core,
  org.junit;version="4.5.0",
  org.junit.runners.model;version="4.5.0",

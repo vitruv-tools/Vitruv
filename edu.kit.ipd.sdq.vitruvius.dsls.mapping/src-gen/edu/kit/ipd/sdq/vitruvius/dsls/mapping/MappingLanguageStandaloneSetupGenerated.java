@@ -5,8 +5,8 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import edu.kit.ipd.sdq.vitruvius.dsls.MirBaseStandaloneSetup;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage;
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBaseStandaloneSetup;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.ISetup;
