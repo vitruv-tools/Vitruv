@@ -2540,21 +2540,21 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__MappingFile__Alternatives_3
+rule__MappingFile__Alternatives_1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getMappingFileAccess().getMappingsAssignment_3_0()); }
-		(rule__MappingFile__MappingsAssignment_3_0)
-		{ after(grammarAccess.getMappingFileAccess().getMappingsAssignment_3_0()); }
+		{ before(grammarAccess.getMappingFileAccess().getMappingsAssignment_1_0()); }
+		(rule__MappingFile__MappingsAssignment_1_0)
+		{ after(grammarAccess.getMappingFileAccess().getMappingsAssignment_1_0()); }
 	)
 	|
 	(
-		{ before(grammarAccess.getMappingFileAccess().getMappingsAssignment_3_1()); }
-		(rule__MappingFile__MappingsAssignment_3_1)
-		{ after(grammarAccess.getMappingFileAccess().getMappingsAssignment_3_1()); }
+		{ before(grammarAccess.getMappingFileAccess().getMappingsAssignment_1_1()); }
+		(rule__MappingFile__MappingsAssignment_1_1)
+		{ after(grammarAccess.getMappingFileAccess().getMappingsAssignment_1_1()); }
 	)
 ;
 finally {
@@ -3758,9 +3758,9 @@ rule__MappingFile__Group__0__Impl
 	}
 :
 (
-	{ before(grammarAccess.getMappingFileAccess().getGeneratesKeyword_0()); }
-	'generates'
-	{ after(grammarAccess.getMappingFileAccess().getGeneratesKeyword_0()); }
+	{ before(grammarAccess.getMappingFileAccess().getImportsAssignment_0()); }
+	(rule__MappingFile__ImportsAssignment_0)*
+	{ after(grammarAccess.getMappingFileAccess().getImportsAssignment_0()); }
 )
 ;
 finally {
@@ -3773,7 +3773,6 @@ rule__MappingFile__Group__1
 	}
 :
 	rule__MappingFile__Group__1__Impl
-	rule__MappingFile__Group__2
 ;
 finally {
 	restoreStackSize(stackSize);
@@ -3785,62 +3784,9 @@ rule__MappingFile__Group__1__Impl
 	}
 :
 (
-	{ before(grammarAccess.getMappingFileAccess().getPluginNameAssignment_1()); }
-	(rule__MappingFile__PluginNameAssignment_1)
-	{ after(grammarAccess.getMappingFileAccess().getPluginNameAssignment_1()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__MappingFile__Group__2
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__MappingFile__Group__2__Impl
-	rule__MappingFile__Group__3
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__MappingFile__Group__2__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getMappingFileAccess().getImportsAssignment_2()); }
-	(rule__MappingFile__ImportsAssignment_2)*
-	{ after(grammarAccess.getMappingFileAccess().getImportsAssignment_2()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__MappingFile__Group__3
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__MappingFile__Group__3__Impl
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__MappingFile__Group__3__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getMappingFileAccess().getAlternatives_3()); }
-	(rule__MappingFile__Alternatives_3)*
-	{ after(grammarAccess.getMappingFileAccess().getAlternatives_3()); }
+	{ before(grammarAccess.getMappingFileAccess().getAlternatives_1()); }
+	(rule__MappingFile__Alternatives_1)*
+	{ after(grammarAccess.getMappingFileAccess().getAlternatives_1()); }
 )
 ;
 finally {
@@ -19029,60 +18975,45 @@ finally {
 }
 
 
-rule__MappingFile__PluginNameAssignment_1
+rule__MappingFile__ImportsAssignment_0
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getMappingFileAccess().getPluginNameQualifiedNameParserRuleCall_1_0()); }
-		ruleQualifiedName
-		{ after(grammarAccess.getMappingFileAccess().getPluginNameQualifiedNameParserRuleCall_1_0()); }
-	)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__MappingFile__ImportsAssignment_2
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	(
-		{ before(grammarAccess.getMappingFileAccess().getImportsMetamodelImportParserRuleCall_2_0()); }
+		{ before(grammarAccess.getMappingFileAccess().getImportsMetamodelImportParserRuleCall_0_0()); }
 		ruleMetamodelImport
-		{ after(grammarAccess.getMappingFileAccess().getImportsMetamodelImportParserRuleCall_2_0()); }
+		{ after(grammarAccess.getMappingFileAccess().getImportsMetamodelImportParserRuleCall_0_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__MappingFile__MappingsAssignment_3_0
+rule__MappingFile__MappingsAssignment_1_0
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getMappingFileAccess().getMappingsMappingParserRuleCall_3_0_0()); }
+		{ before(grammarAccess.getMappingFileAccess().getMappingsMappingParserRuleCall_1_0_0()); }
 		ruleMapping
-		{ after(grammarAccess.getMappingFileAccess().getMappingsMappingParserRuleCall_3_0_0()); }
+		{ after(grammarAccess.getMappingFileAccess().getMappingsMappingParserRuleCall_1_0_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__MappingFile__MappingsAssignment_3_1
+rule__MappingFile__MappingsAssignment_1_1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getMappingFileAccess().getMappingsDefaultMappingParserRuleCall_3_1_0()); }
+		{ before(grammarAccess.getMappingFileAccess().getMappingsDefaultMappingParserRuleCall_1_1_0()); }
 		ruleDefaultMapping
-		{ after(grammarAccess.getMappingFileAccess().getMappingsDefaultMappingParserRuleCall_3_1_0()); }
+		{ after(grammarAccess.getMappingFileAccess().getMappingsDefaultMappingParserRuleCall_1_1_0()); }
 	)
 ;
 finally {

@@ -17,7 +17,6 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile#getPluginName <em>Plugin Name</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile#getImports <em>Imports</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile#getMappings <em>Mappings</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile#getDefaultRequirements <em>Default Requirements</em>}</li>
@@ -29,32 +28,6 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface MappingFile extends MirBaseFile
 {
-  /**
-   * Returns the value of the '<em><b>Plugin Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Plugin Name</em>' attribute isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Plugin Name</em>' attribute.
-   * @see #setPluginName(String)
-   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage#getMappingFile_PluginName()
-   * @model
-   * @generated
-   */
-  String getPluginName();
-
-  /**
-   * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile#getPluginName <em>Plugin Name</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Plugin Name</em>' attribute.
-   * @see #getPluginName()
-   * @generated
-   */
-  void setPluginName(String value);
-
   /**
    * Returns the value of the '<em><b>Imports</b></em>' containment reference list.
    * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport}.

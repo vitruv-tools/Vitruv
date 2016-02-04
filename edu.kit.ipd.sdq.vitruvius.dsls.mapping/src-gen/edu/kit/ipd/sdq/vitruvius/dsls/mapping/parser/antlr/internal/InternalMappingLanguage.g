@@ -76,35 +76,12 @@ ruleMappingFile returns [EObject current=null]
 	leaveRule();
 }:
 	(
-		otherlv_0='generates'
-		{
-			newLeafNode(otherlv_0, grammarAccess.getMappingFileAccess().getGeneratesKeyword_0());
-		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getMappingFileAccess().getPluginNameQualifiedNameParserRuleCall_1_0());
+					newCompositeNode(grammarAccess.getMappingFileAccess().getImportsMetamodelImportParserRuleCall_0_0());
 				}
-				lv_pluginName_1_0=ruleQualifiedName
-				{
-					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getMappingFileRule());
-					}
-					set(
-						$current,
-						"pluginName",
-						lv_pluginName_1_0,
-						"org.eclipse.xtext.xbase.Xbase.QualifiedName");
-					afterParserOrEnumRuleCall();
-				}
-			)
-		)
-		(
-			(
-				{
-					newCompositeNode(grammarAccess.getMappingFileAccess().getImportsMetamodelImportParserRuleCall_2_0());
-				}
-				lv_imports_2_0=ruleMetamodelImport
+				lv_imports_0_0=ruleMetamodelImport
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getMappingFileRule());
@@ -112,7 +89,7 @@ ruleMappingFile returns [EObject current=null]
 					add(
 						$current,
 						"imports",
-						lv_imports_2_0,
+						lv_imports_0_0,
 						"edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase.MetamodelImport");
 					afterParserOrEnumRuleCall();
 				}
@@ -122,9 +99,9 @@ ruleMappingFile returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getMappingFileAccess().getMappingsMappingParserRuleCall_3_0_0());
+						newCompositeNode(grammarAccess.getMappingFileAccess().getMappingsMappingParserRuleCall_1_0_0());
 					}
-					lv_mappings_3_0=ruleMapping
+					lv_mappings_1_0=ruleMapping
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getMappingFileRule());
@@ -132,7 +109,7 @@ ruleMappingFile returns [EObject current=null]
 						add(
 							$current,
 							"mappings",
-							lv_mappings_3_0,
+							lv_mappings_1_0,
 							"edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.Mapping");
 						afterParserOrEnumRuleCall();
 					}
@@ -142,9 +119,9 @@ ruleMappingFile returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getMappingFileAccess().getMappingsDefaultMappingParserRuleCall_3_1_0());
+						newCompositeNode(grammarAccess.getMappingFileAccess().getMappingsDefaultMappingParserRuleCall_1_1_0());
 					}
-					lv_mappings_4_0=ruleDefaultMapping
+					lv_mappings_2_0=ruleDefaultMapping
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getMappingFileRule());
@@ -152,7 +129,7 @@ ruleMappingFile returns [EObject current=null]
 						add(
 							$current,
 							"mappings",
-							lv_mappings_4_0,
+							lv_mappings_2_0,
 							"edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.DefaultMapping");
 						afterParserOrEnumRuleCall();
 					}

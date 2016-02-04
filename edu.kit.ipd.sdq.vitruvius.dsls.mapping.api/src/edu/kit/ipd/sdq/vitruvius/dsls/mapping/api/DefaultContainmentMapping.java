@@ -32,9 +32,4 @@ public class DefaultContainmentMapping extends AbstractMappingRealization {
 	public String getMappingID() {
 		return null;
 	}
-
-	@Override
-	public MappingRealization getInstance() {
-		return null;
-	}
 }

@@ -16,14 +16,15 @@ public interface MappingRealization {
 	 * @param eChange
 	 * @param correspondenceInstance
 	 */
-	public void applyEChange(EChange eChange, Blackboard blackboard, MappingExecutionState state);
+	@Deprecated
+	public default void applyEChange(EChange eChange, Blackboard blackboard, MappingExecutionState state) {
+		throw new UnsupportedOperationException();
+	}
 	
 	/**
 	 * Returns an ID that is unique for all mapping realizations.
 	 * @return
 	 */
 	public String getMappingID();
-	
-	public MappingRealization getInstance();
 }
 

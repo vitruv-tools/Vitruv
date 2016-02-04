@@ -35,7 +35,7 @@ public class MappingLanguageParser extends AbstractContentAssistParser {
 			nameMappings = new HashMap<AbstractElement, String>() {
 				private static final long serialVersionUID = 1L;
 				{
-					put(grammarAccess.getMappingFileAccess().getAlternatives_3(), "rule__MappingFile__Alternatives_3");
+					put(grammarAccess.getMappingFileAccess().getAlternatives_1(), "rule__MappingFile__Alternatives_1");
 					put(grammarAccess.getConstraintBlockAccess().getAlternatives(), "rule__ConstraintBlock__Alternatives");
 					put(grammarAccess.getConstraintExpressionAccess().getAlternatives(), "rule__ConstraintExpression__Alternatives");
 					put(grammarAccess.getSignatureConstraintExpressionAccess().getAlternatives(), "rule__SignatureConstraintExpression__Alternatives");
@@ -308,10 +308,9 @@ public class MappingLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getXImportDeclarationAccess().getGroup(), "rule__XImportDeclaration__Group__0");
 					put(grammarAccess.getXImportDeclarationAccess().getGroup_1_0(), "rule__XImportDeclaration__Group_1_0__0");
 					put(grammarAccess.getQualifiedNameInStaticImportAccess().getGroup(), "rule__QualifiedNameInStaticImport__Group__0");
-					put(grammarAccess.getMappingFileAccess().getPluginNameAssignment_1(), "rule__MappingFile__PluginNameAssignment_1");
-					put(grammarAccess.getMappingFileAccess().getImportsAssignment_2(), "rule__MappingFile__ImportsAssignment_2");
-					put(grammarAccess.getMappingFileAccess().getMappingsAssignment_3_0(), "rule__MappingFile__MappingsAssignment_3_0");
-					put(grammarAccess.getMappingFileAccess().getMappingsAssignment_3_1(), "rule__MappingFile__MappingsAssignment_3_1");
+					put(grammarAccess.getMappingFileAccess().getImportsAssignment_0(), "rule__MappingFile__ImportsAssignment_0");
+					put(grammarAccess.getMappingFileAccess().getMappingsAssignment_1_0(), "rule__MappingFile__MappingsAssignment_1_0");
+					put(grammarAccess.getMappingFileAccess().getMappingsAssignment_1_1(), "rule__MappingFile__MappingsAssignment_1_1");
 					put(grammarAccess.getDefaultMappingAccess().getDefaultAssignment_1(), "rule__DefaultMapping__DefaultAssignment_1");
 					put(grammarAccess.getDefaultMappingAccess().getNameAssignment_2(), "rule__DefaultMapping__NameAssignment_2");
 					put(grammarAccess.getDefaultMappingAccess().getSignaturesAssignment_4_1_0(), "rule__DefaultMapping__SignaturesAssignment_4_1_0");

@@ -29,54 +29,41 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	public class MappingFileElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.MappingFile");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cGeneratesKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cPluginNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cPluginNameQualifiedNameParserRuleCall_1_0 = (RuleCall)cPluginNameAssignment_1.eContents().get(0);
-		private final Assignment cImportsAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cImportsMetamodelImportParserRuleCall_2_0 = (RuleCall)cImportsAssignment_2.eContents().get(0);
-		private final Alternatives cAlternatives_3 = (Alternatives)cGroup.eContents().get(3);
-		private final Assignment cMappingsAssignment_3_0 = (Assignment)cAlternatives_3.eContents().get(0);
-		private final RuleCall cMappingsMappingParserRuleCall_3_0_0 = (RuleCall)cMappingsAssignment_3_0.eContents().get(0);
-		private final Assignment cMappingsAssignment_3_1 = (Assignment)cAlternatives_3.eContents().get(1);
-		private final RuleCall cMappingsDefaultMappingParserRuleCall_3_1_0 = (RuleCall)cMappingsAssignment_3_1.eContents().get(0);
+		private final Assignment cImportsAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cImportsMetamodelImportParserRuleCall_0_0 = (RuleCall)cImportsAssignment_0.eContents().get(0);
+		private final Alternatives cAlternatives_1 = (Alternatives)cGroup.eContents().get(1);
+		private final Assignment cMappingsAssignment_1_0 = (Assignment)cAlternatives_1.eContents().get(0);
+		private final RuleCall cMappingsMappingParserRuleCall_1_0_0 = (RuleCall)cMappingsAssignment_1_0.eContents().get(0);
+		private final Assignment cMappingsAssignment_1_1 = (Assignment)cAlternatives_1.eContents().get(1);
+		private final RuleCall cMappingsDefaultMappingParserRuleCall_1_1_0 = (RuleCall)cMappingsAssignment_1_1.eContents().get(0);
 		
 		//MappingFile:
-		//	'generates' pluginName=QualifiedName
 		//	imports+=MetamodelImport* (mappings+=Mapping | mappings+=DefaultMapping)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'generates' pluginName=QualifiedName imports+=MetamodelImport* (mappings+=Mapping | mappings+=DefaultMapping)*
+		//imports+=MetamodelImport* (mappings+=Mapping | mappings+=DefaultMapping)*
 		public Group getGroup() { return cGroup; }
 		
-		//'generates'
-		public Keyword getGeneratesKeyword_0() { return cGeneratesKeyword_0; }
-		
-		//pluginName=QualifiedName
-		public Assignment getPluginNameAssignment_1() { return cPluginNameAssignment_1; }
-		
-		//QualifiedName
-		public RuleCall getPluginNameQualifiedNameParserRuleCall_1_0() { return cPluginNameQualifiedNameParserRuleCall_1_0; }
-		
 		//imports+=MetamodelImport*
-		public Assignment getImportsAssignment_2() { return cImportsAssignment_2; }
+		public Assignment getImportsAssignment_0() { return cImportsAssignment_0; }
 		
 		//MetamodelImport
-		public RuleCall getImportsMetamodelImportParserRuleCall_2_0() { return cImportsMetamodelImportParserRuleCall_2_0; }
+		public RuleCall getImportsMetamodelImportParserRuleCall_0_0() { return cImportsMetamodelImportParserRuleCall_0_0; }
 		
 		//(mappings+=Mapping | mappings+=DefaultMapping)*
-		public Alternatives getAlternatives_3() { return cAlternatives_3; }
+		public Alternatives getAlternatives_1() { return cAlternatives_1; }
 		
 		//mappings+=Mapping
-		public Assignment getMappingsAssignment_3_0() { return cMappingsAssignment_3_0; }
+		public Assignment getMappingsAssignment_1_0() { return cMappingsAssignment_1_0; }
 		
 		//Mapping
-		public RuleCall getMappingsMappingParserRuleCall_3_0_0() { return cMappingsMappingParserRuleCall_3_0_0; }
+		public RuleCall getMappingsMappingParserRuleCall_1_0_0() { return cMappingsMappingParserRuleCall_1_0_0; }
 		
 		//mappings+=DefaultMapping
-		public Assignment getMappingsAssignment_3_1() { return cMappingsAssignment_3_1; }
+		public Assignment getMappingsAssignment_1_1() { return cMappingsAssignment_1_1; }
 		
 		//DefaultMapping
-		public RuleCall getMappingsDefaultMappingParserRuleCall_3_1_0() { return cMappingsDefaultMappingParserRuleCall_3_1_0; }
+		public RuleCall getMappingsDefaultMappingParserRuleCall_1_1_0() { return cMappingsDefaultMappingParserRuleCall_1_1_0; }
 	}
 	public class DefaultMappingElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.DefaultMapping");
@@ -1241,7 +1228,6 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 
 	
 	//MappingFile:
-	//	'generates' pluginName=QualifiedName
 	//	imports+=MetamodelImport* (mappings+=Mapping | mappings+=DefaultMapping)*;
 	public MappingFileElements getMappingFileAccess() {
 		return pMappingFile;

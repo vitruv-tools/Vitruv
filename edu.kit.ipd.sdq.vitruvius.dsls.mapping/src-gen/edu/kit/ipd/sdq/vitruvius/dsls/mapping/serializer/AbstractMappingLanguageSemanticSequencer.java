@@ -643,7 +643,7 @@ public abstract class AbstractMappingLanguageSemanticSequencer extends MirBaseSe
 	 *     MappingFile returns MappingFile
 	 *
 	 * Constraint:
-	 *     (pluginName=QualifiedName imports+=MetamodelImport* (mappings+=Mapping | mappings+=DefaultMapping)*)
+	 *     (imports+=MetamodelImport+ | (imports+=MetamodelImport+ (mappings+=Mapping | mappings+=DefaultMapping)+))?
 	 */
 	protected void sequence_MappingFile(ISerializationContext context, MappingFile semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

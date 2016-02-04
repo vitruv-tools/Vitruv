@@ -113,7 +113,7 @@ class MappingLanguageGenerator {
 		new(MappingFile file, IFileSystemAccess fsa) {
 			this.responses = newHashSet
 			this.file = file
-			this.pkgName = file.pluginName + ".generated"
+			this.pkgName = "mappings.generated"
 			this.fsa = PreProcessingFileSystemAccess.createJavaFormattingFSA(fsa)
 			this.nameProvider = new MappingLanguageGeneratorNameProvider(pkgName)
 			this.templateGenerator = new TemplateGenerator(this.fsa)
@@ -373,11 +373,6 @@ class MappingLanguageGenerator {
 					private «className»() {}
 					
 					@Override
-					public «className» getInstance() {
-						return INSTANCE;
-					}
-					
-					@Override
 					public String getMappingID() {
 						return "«className»";
 					}
@@ -451,7 +446,7 @@ class MappingLanguageGenerator {
 						«FOR req : allRequires»
 						corr.getDependsOn().add(«req.name.toFirstLower».getCorrespondence());
 						«ENDFOR»
-						mci.registerMappingForCorrespondence(corr, getInstance());
+						mci.registerMappingForCorrespondence(corr, INSTANCE);
 						state.addCreatedCorrespondence(corr);
 						return new «typeRef(mapping.correspondenceWrapperClassName)»(corr);
 					}
@@ -472,7 +467,6 @@ class MappingLanguageGenerator {
 					private «typeRef(MIRUserInteracting)» userInteracting = new «typeRef(EclipseDialogMIRUserInteracting)»();
 					
 					«FOR imp : imports SEPARATOR "\n"»
-					@Override
 					public void applyEChangeFor«imp.toFirstUpperName»(«typeRef(EChange)» eChange, «typeRef(Blackboard)» blackboard, «typeRef(MappingExecutionState)» state) {
 						«typeRef(MappedCorrespondenceInstance)» mci = state.getMci();
 
@@ -525,7 +519,7 @@ class MappingLanguageGenerator {
 					.setTargetChange(second.package)
 					.setExecutionBlock(
 					'''
-						{ «fqn».getInstance().applyEChangeFor«first.toFirstUpperName»(change, blackboard, null); }
+						{ «fqn».INSTANCE.applyEChangeFor«first.toFirstUpperName»(change, blackboard, null); }
 					''')
 					.generateResponse
 			]			
@@ -545,11 +539,6 @@ class MappingLanguageGenerator {
 					public static final «className» INSTANCE = new «className»();
 					
 					private «className»() {}
-					
-					@Override
-					public «className» getInstance() {
-						return INSTANCE;
-					}
 					
 					@Override
 					public String getMappingID() {

@@ -7,7 +7,6 @@
   <genPackages prefix="MappingLanguage" basePackage="edu.kit.ipd.sdq.vitruvius.dsls.mapping"
       disposableProviderFactory="true" fileExtensions="mapping" ecorePackage="MappingLanguage.ecore#/">
     <genClasses ecoreClass="MappingLanguage.ecore#//MappingFile">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MappingLanguage.ecore#//MappingFile/pluginName"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//MappingFile/imports"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//MappingFile/mappings"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//MappingFile/defaultRequirements"/>

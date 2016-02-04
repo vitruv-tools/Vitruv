@@ -4,10 +4,17 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mirbase.validation;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport;
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFile;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.validation.AbstractMirBaseValidator;
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.validation.EclipsePluginHelper;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.validation.Check;
+import org.eclipse.xtext.xbase.lib.Exceptions;
 
 /**
  * This class contains custom validation rules.
@@ -18,10 +25,69 @@ import org.eclipse.xtext.validation.Check;
 public class MirBaseValidator extends AbstractMirBaseValidator {
   public final static String METAMODEL_IMPORT_DEPENDENCY_MISSING = "metamodelImportDependencyMissing";
   
+  public final static String VITRUVIUS_DEPENDENCY_MISSING = "vitruviusDependencyMissing";
+  
   @Check
   public void checkMetamodelImportDependencyMissing(final MetamodelImport metamodelImport) {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("Dependency to plug-in missing.");
-    this.warning(_builder.toString(), metamodelImport, MirBasePackage.Literals.METAMODEL_IMPORT__PACKAGE, MirBaseValidator.METAMODEL_IMPORT_DEPENDENCY_MISSING);
+    try {
+      EPackage _package = metamodelImport.getPackage();
+      String _nsURI = _package.getNsURI();
+      final String contributorName = EclipseBridge.getNameOfContributorOfExtension(
+        "org.eclipse.emf.ecore.generated_package", 
+        "uri", _nsURI);
+      Resource _eResource = metamodelImport.eResource();
+      final IProject project = EclipsePluginHelper.getProject(_eResource);
+      boolean _hasDependency = EclipsePluginHelper.hasDependency(project, contributorName);
+      boolean _not = (!_hasDependency);
+      if (_not) {
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("Dependency to plug-in \'");
+        _builder.append(contributorName, "");
+        _builder.append("\' missing.");
+        this.warning(_builder.toString(), metamodelImport, MirBasePackage.Literals.METAMODEL_IMPORT__PACKAGE, MirBaseValidator.METAMODEL_IMPORT_DEPENDENCY_MISSING);
+      }
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Check
+  public void checkMirBaseFile(final MirBaseFile mirBaseFile) {
+    Resource _eResource = null;
+    if (mirBaseFile!=null) {
+      _eResource=mirBaseFile.eResource();
+    }
+    final IProject project = EclipsePluginHelper.getProject(_eResource);
+    boolean _isPluginProject = EclipsePluginHelper.isPluginProject(project);
+    boolean _not = (!_isPluginProject);
+    if (_not) {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("The resource should be contained in a plug-in project.");
+      this.warning(_builder.toString(), mirBaseFile, null);
+    }
+  }
+  
+  public final static String[] VITRUVIUS_DEPENDENCIES = { "org.eclipse.emf.ecore", "edu.kit.ipd.sdq.vitruvius.framework.util", "edu.kit.ipd.sdq.vitruvius.framework.contracts", "edu.kit.ipd.sdq.vitruvius.dsls.mapping.apidesign", "edu.kit.ipd.sdq.vitruvius.framework.meta.change", "com.google.guava", "org.eclipse.core.resources", "org.apache.log4j", "org.eclipse.xtend.lib", "org.eclipse.xtend.lib.macro", "edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework", "edu.kit.ipd.sdq.vitruvius.dsls.mapping", "edu.kit.ipd.sdq.vitruvius.dsls.mapping.api", "edu.kit.ipd.sdq.vitruvius.dsls.response.api", "edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter", "edu.kit.ipd.sdq.vitruvius.framework.run.userinteractor" };
+  
+  @Check
+  public void checkVitruviusDependencies(final MirBaseFile mirBaseFile) {
+    try {
+      Resource _eResource = mirBaseFile.eResource();
+      final IProject project = EclipsePluginHelper.getProject(_eResource);
+      for (final String dependency : MirBaseValidator.VITRUVIUS_DEPENDENCIES) {
+        boolean _hasDependency = EclipsePluginHelper.hasDependency(project, dependency);
+        boolean _not = (!_hasDependency);
+        if (_not) {
+          StringConcatenation _builder = new StringConcatenation();
+          _builder.append("Plug-in does not declare all needed dependencies for Vitruvius (missing: ");
+          _builder.append(dependency, "");
+          _builder.append(").");
+          this.warning(_builder.toString(), mirBaseFile, null, MirBaseValidator.VITRUVIUS_DEPENDENCY_MISSING);
+          return;
+        }
+      }
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
   }
 }

@@ -6,9 +6,9 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mirbase.validation
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFile
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage
-import org.eclipse.xtext.validation.Check
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge
 import org.eclipse.osgi.container.namespaces.EclipsePlatformNamespace
+import org.eclipse.xtext.validation.Check
 
 import static edu.kit.ipd.sdq.vitruvius.dsls.mirbase.validation.EclipsePluginHelper.*
 
@@ -19,6 +19,7 @@ import static edu.kit.ipd.sdq.vitruvius.dsls.mirbase.validation.EclipsePluginHel
  */
 class MirBaseValidator extends AbstractMirBaseValidator {
 	public static val METAMODEL_IMPORT_DEPENDENCY_MISSING = "metamodelImportDependencyMissing"
+	public static val VITRUVIUS_DEPENDENCY_MISSING = "vitruviusDependencyMissing"
 	
 	@Check
 	def checkMetamodelImportDependencyMissing(MetamodelImport metamodelImport) {
@@ -34,8 +35,42 @@ class MirBaseValidator extends AbstractMirBaseValidator {
 	
 	@Check
 	def checkMirBaseFile(MirBaseFile mirBaseFile) {
-		if (!isPluginProject(getProject(mirBaseFile?.eResource))) {
+		val project = getProject(mirBaseFile?.eResource)
+		
+		if (!isPluginProject(project)) {
 			warning('''The resource should be contained in a plug-in project.''', mirBaseFile, null)
+		}
+	}
+	
+	// TODO DW: move to appropriate plugin
+	public final static String[] VITRUVIUS_DEPENDENCIES = #[
+		"org.eclipse.emf.ecore",
+		"edu.kit.ipd.sdq.vitruvius.framework.util",
+		"edu.kit.ipd.sdq.vitruvius.framework.contracts",
+		"edu.kit.ipd.sdq.vitruvius.dsls.mapping.apidesign",
+		"edu.kit.ipd.sdq.vitruvius.framework.meta.change",
+		"com.google.guava",
+		"org.eclipse.core.resources",
+		"org.apache.log4j",
+		"org.eclipse.xtend.lib",
+ 		"org.eclipse.xtend.lib.macro",
+ 		"edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework",
+ 		"edu.kit.ipd.sdq.vitruvius.dsls.mapping",
+ 		"edu.kit.ipd.sdq.vitruvius.dsls.mapping.api",
+ 		"edu.kit.ipd.sdq.vitruvius.dsls.response.api",
+ 		"edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter",
+ 		"edu.kit.ipd.sdq.vitruvius.framework.run.userinteractor"
+	]
+	
+	@Check
+	def checkVitruviusDependencies(MirBaseFile mirBaseFile) {
+		val project = getProject(mirBaseFile.eResource)
+		
+		for (String dependency : VITRUVIUS_DEPENDENCIES) {
+			if (!hasDependency(project, dependency)) {
+				warning('''Plug-in does not declare all needed dependencies for Vitruvius (missing: «dependency»).''', mirBaseFile, null, VITRUVIUS_DEPENDENCY_MISSING)
+				return
+			}
 		}
 	}
 }
