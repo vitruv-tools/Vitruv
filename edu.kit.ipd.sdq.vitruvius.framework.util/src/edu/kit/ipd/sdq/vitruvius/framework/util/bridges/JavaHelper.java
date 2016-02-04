@@ -1,8 +1,11 @@
 package edu.kit.ipd.sdq.vitruvius.framework.util.bridges;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,6 +32,7 @@ import static org.eclipse.xtext.xbase.lib.IterableExtensions.*;
  */
 public final class JavaHelper {
 	public static <Sub extends Sup, Sup> Sub requireType(Sup object, Class<Sub> type) {
+		Objects.requireNonNull(object);
 		return requireType(object, type, "Cannot cast " + object.toString() + " to " + type.toString());
 	}
 
@@ -378,5 +382,14 @@ public final class JavaHelper {
 			map.put(key, defaultValue);
 		}
 		return map.get(key);
+	}
+	
+	public static <T, S extends T> Integer indexOf(Iterable<T> objs, S obj) {
+		for (Pair<Integer, T> it : withIndex(objs)) {
+			if (it.getSecond() == obj)
+				return it.getFirst();
+		}
+		
+		return null;
 	}
 }
