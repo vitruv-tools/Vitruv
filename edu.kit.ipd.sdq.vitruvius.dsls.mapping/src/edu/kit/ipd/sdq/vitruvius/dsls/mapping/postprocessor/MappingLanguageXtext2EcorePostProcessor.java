@@ -2,10 +2,19 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.postprocessor;
 
 import static edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.requireType;
 
+import java.io.IOException;
+import java.util.Collections;
+
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcoreFactory;
+import org.eclipse.emf.ecore.impl.EClassImpl;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.xtext.GeneratedMetamodel;
 import org.eclipse.xtext.xtext.ecoreInference.IXtext2EcorePostProcessor;
 
@@ -14,6 +23,8 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.FeatureOfContextVa
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping;
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFile;
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage;
 
 @SuppressWarnings("restriction")
 public class MappingLanguageXtext2EcorePostProcessor implements IXtext2EcorePostProcessor {
@@ -35,6 +46,14 @@ public class MappingLanguageXtext2EcorePostProcessor implements IXtext2EcorePost
 		final EClass mappingEClass = getEClass(ePackage, Mapping.class);
 		final EClass constraintExpressionEClass = getEClass(ePackage, ConstraintExpression.class);
 		final EClass featureOfContextVariableEClass = getEClass(ePackage, FeatureOfContextVariable.class);
+		
+		// we need to load the model from the platform, since we can't reference the meta model element that
+		// is available as MirBasePackage.LITERALS.MIR_BASE_FILE to the *workflow*.
+		final ResourceSet rs = new ResourceSetImpl();
+		final Resource baseResource = rs.getResource(URI.createPlatformResourceURI("edu.kit.ipd.sdq.vitruvius.dsls.mirbase/model/generated/MirBase.ecore", true), true);
+		final EPackage mirBasePackage = (EPackage) baseResource.getContents().get(0);
+		final EClass mirBaseFile = getEClass(mirBasePackage, MirBaseFile.class);
+		mappingFileEClass.getESuperTypes().add(mirBaseFile);
 		
 		final EReference newRef = EcoreFactory.eINSTANCE.createEReference();
 		newRef.setName("defaultRequirements");

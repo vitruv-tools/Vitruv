@@ -1052,6 +1052,7 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     // Set bounds for type parameters
 
     // Add supertypes to classes
+    mappingFileEClass.getESuperTypes().add(theMirBasePackage.getMirBaseFile());
     signatureConstraintBlockEClass.getESuperTypes().add(this.getConstraintBlock());
     bodyConstraintBlockEClass.getESuperTypes().add(this.getConstraintBlock());
     variableRefEClass.getESuperTypes().add(this.getConstraintExpression());

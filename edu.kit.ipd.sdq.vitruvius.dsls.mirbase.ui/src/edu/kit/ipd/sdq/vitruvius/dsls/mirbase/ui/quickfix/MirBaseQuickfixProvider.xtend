@@ -8,6 +8,10 @@ import org.eclipse.xtext.ui.editor.quickfix.Fix
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.validation.MirBaseValidator
 import org.eclipse.xtext.validation.Issue
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
+
+import static edu.kit.ipd.sdq.vitruvius.dsls.mirbase.validation.EclipsePluginHelper.*
 
 /**
  * Custom quickfixes.
@@ -17,9 +21,19 @@ import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor
 class MirBaseQuickfixProvider extends XbaseQuickfixProvider {
 	@Fix(MirBaseValidator.METAMODEL_IMPORT_DEPENDENCY_MISSING)
 	def addDependencyToManifest(Issue issue, IssueResolutionAcceptor acceptor) {
-		acceptor.accept(issue, 'Add depdendency to X.', 'Add the dependency', null) [
-			context |
-			println("Fixed")
+		acceptor.accept(issue, 'Add depdendency.', 'Add the dependency', null) [
+			element, context |
+			
+			val metamodelImport = element as MetamodelImport
+			
+			val contributorName = EclipseBridge.getNameOfContributorOfExtension(
+						"org.eclipse.emf.ecore.generated_package",
+						"uri", metamodelImport.package.nsURI)
+						
+			val project = getProject(metamodelImport.eResource)
+			if (!hasDependency(project, contributorName)) {
+				addDependency(project, contributorName)
+			}
 		]		
 	}
 }

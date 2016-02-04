@@ -5,6 +5,8 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.util;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.*;
 
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFile;
+
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 
@@ -189,6 +191,11 @@ public class MappingLanguageAdapterFactory extends AdapterFactoryImpl
       public Adapter caseNotNullExpression(NotNullExpression object)
       {
         return createNotNullExpressionAdapter();
+      }
+      @Override
+      public Adapter caseMirBaseFile(MirBaseFile object)
+      {
+        return createMirBaseFileAdapter();
       }
       @Override
       public Adapter defaultCase(EObject object)
@@ -553,6 +560,21 @@ public class MappingLanguageAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createNotNullExpressionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFile <em>File</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFile
+   * @generated
+   */
+  public Adapter createMirBaseFileAdapter()
   {
     return null;
   }

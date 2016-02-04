@@ -3,10 +3,14 @@
  */
 package edu.kit.ipd.sdq.vitruvius.dsls.mirbase.validation
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.validation.AbstractMirBaseValidator
-import org.eclipse.xtext.validation.Check
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFile
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage
+import org.eclipse.xtext.validation.Check
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge
+import org.eclipse.osgi.container.namespaces.EclipsePlatformNamespace
+
+import static edu.kit.ipd.sdq.vitruvius.dsls.mirbase.validation.EclipsePluginHelper.*
 
 /**
  * This class contains custom validation rules. 
@@ -18,6 +22,20 @@ class MirBaseValidator extends AbstractMirBaseValidator {
 	
 	@Check
 	def checkMetamodelImportDependencyMissing(MetamodelImport metamodelImport) {
-		warning('''Dependency to plug-in missing.''', metamodelImport, MirBasePackage.Literals.METAMODEL_IMPORT__PACKAGE, METAMODEL_IMPORT_DEPENDENCY_MISSING)
+		val contributorName = EclipseBridge.getNameOfContributorOfExtension(
+					"org.eclipse.emf.ecore.generated_package",
+					"uri", metamodelImport.package.nsURI)
+					
+		val project = getProject(metamodelImport.eResource)
+		if (!hasDependency(project, contributorName)) {
+			warning('''Dependency to plug-in '«contributorName»' missing.''', metamodelImport, MirBasePackage.Literals.METAMODEL_IMPORT__PACKAGE, METAMODEL_IMPORT_DEPENDENCY_MISSING)
+		}
+	}
+	
+	@Check
+	def checkMirBaseFile(MirBaseFile mirBaseFile) {
+		if (!isPluginProject(getProject(mirBaseFile?.eResource))) {
+			warning('''The resource should be contained in a plug-in project.''', mirBaseFile, null)
+		}
 	}
 }

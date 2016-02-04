@@ -10,6 +10,8 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport;
 
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBaseFileImpl;
+
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -21,7 +23,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -42,7 +43,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *
  * @generated
  */
-public class MappingFileImpl extends MinimalEObjectImpl.Container implements MappingFile
+public class MappingFileImpl extends MirBaseFileImpl implements MappingFile
 {
   /**
    * The default value of the '{@link #getPluginName() <em>Plugin Name</em>}' attribute.

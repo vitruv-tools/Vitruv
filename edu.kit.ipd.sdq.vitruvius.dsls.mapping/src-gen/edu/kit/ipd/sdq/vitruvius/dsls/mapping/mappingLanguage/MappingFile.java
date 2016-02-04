@@ -4,10 +4,9 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport;
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFile;
 
 import org.eclipse.emf.common.util.EList;
-
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,7 +27,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface MappingFile extends EObject
+public interface MappingFile extends MirBaseFile
 {
   /**
    * Returns the value of the '<em><b>Plugin Name</b></em>' attribute.

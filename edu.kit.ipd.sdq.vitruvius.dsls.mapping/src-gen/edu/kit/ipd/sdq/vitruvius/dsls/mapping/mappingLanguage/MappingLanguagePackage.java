@@ -3,6 +3,8 @@
  */
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage;
 
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage;
+
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
@@ -74,7 +76,7 @@ public interface MappingLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int MAPPING_FILE__PLUGIN_NAME = 0;
+  int MAPPING_FILE__PLUGIN_NAME = MirBasePackage.MIR_BASE_FILE_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Imports</b></em>' containment reference list.
@@ -83,7 +85,7 @@ public interface MappingLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int MAPPING_FILE__IMPORTS = 1;
+  int MAPPING_FILE__IMPORTS = MirBasePackage.MIR_BASE_FILE_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Mappings</b></em>' containment reference list.
@@ -92,7 +94,7 @@ public interface MappingLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int MAPPING_FILE__MAPPINGS = 2;
+  int MAPPING_FILE__MAPPINGS = MirBasePackage.MIR_BASE_FILE_FEATURE_COUNT + 2;
 
   /**
    * The feature id for the '<em><b>Default Requirements</b></em>' containment reference list.
@@ -101,7 +103,7 @@ public interface MappingLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int MAPPING_FILE__DEFAULT_REQUIREMENTS = 3;
+  int MAPPING_FILE__DEFAULT_REQUIREMENTS = MirBasePackage.MIR_BASE_FILE_FEATURE_COUNT + 3;
 
   /**
    * The number of structural features of the '<em>Mapping File</em>' class.
@@ -110,7 +112,7 @@ public interface MappingLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int MAPPING_FILE_FEATURE_COUNT = 4;
+  int MAPPING_FILE_FEATURE_COUNT = MirBasePackage.MIR_BASE_FILE_FEATURE_COUNT + 4;
 
   /**
    * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingImpl <em>Mapping</em>}' class.
