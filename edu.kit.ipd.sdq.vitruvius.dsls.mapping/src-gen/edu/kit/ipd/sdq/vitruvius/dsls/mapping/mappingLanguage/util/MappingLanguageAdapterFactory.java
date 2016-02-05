@@ -143,6 +143,16 @@ public class MappingLanguageAdapterFactory extends AdapterFactoryImpl
         return createConstraintLiteralAdapter();
       }
       @Override
+      public Adapter caseXbaseSignatureConstraintExpression(XbaseSignatureConstraintExpression object)
+      {
+        return createXbaseSignatureConstraintExpressionAdapter();
+      }
+      @Override
+      public Adapter caseXbaseBodyConstraintExpression(XbaseBodyConstraintExpression object)
+      {
+        return createXbaseBodyConstraintExpressionAdapter();
+      }
+      @Override
       public Adapter caseVariableRef(VariableRef object)
       {
         return createVariableRefAdapter();
@@ -410,6 +420,36 @@ public class MappingLanguageAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createConstraintLiteralAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpression <em>Xbase Signature Constraint Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpression
+   * @generated
+   */
+  public Adapter createXbaseSignatureConstraintExpressionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseBodyConstraintExpression <em>Xbase Body Constraint Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseBodyConstraintExpression
+   * @generated
+   */
+  public Adapter createXbaseBodyConstraintExpressionAdapter()
   {
     return null;
   }

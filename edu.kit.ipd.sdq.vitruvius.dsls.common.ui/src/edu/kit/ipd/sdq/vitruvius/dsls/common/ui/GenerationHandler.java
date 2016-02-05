@@ -24,12 +24,13 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.generator.IFileSystemAccess;
+import org.eclipse.xtext.generator.IGenerator;
 import org.eclipse.xtext.ui.resource.IResourceSetProvider;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.MappingLanguageGenerator;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.IMappingLanguageGenerator;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.EclipseFileSystemAccess;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.PrependPathFSA;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.IResponseEnvironmentGenerator;
@@ -54,7 +55,7 @@ public class GenerationHandler extends AbstractHandler {
 
 	private static class MappingScope extends LanguageScope {
 		@Inject
-		public MappingLanguageGenerator mappingLanguageGenerator;
+		public IMappingLanguageGenerator mappingLanguageGenerator;
 	}
 
 	private static class MIRResourceCollectionVisitor implements IResourceVisitor {
@@ -147,7 +148,7 @@ public class GenerationHandler extends AbstractHandler {
 						.createResponseEnvironmentGenerator();
 				
 				for (Resource mappingResource : resourceVisitor.getMappingResources()) {
-					final Collection<Response> generatedResponses = mappingScope.mappingLanguageGenerator.doGenerate(mappingResource, srcGenFSA);
+					final Collection<Response> generatedResponses = mappingScope.mappingLanguageGenerator.generateAndCreateResponses(mappingResource, srcGenFSA);
 					responseEnvironmentGenerator.addResponses(generatedResponses);
 				}
 

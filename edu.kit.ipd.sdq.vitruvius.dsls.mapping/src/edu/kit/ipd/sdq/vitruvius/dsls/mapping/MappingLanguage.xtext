@@ -40,7 +40,7 @@ Mapping returns Mapping:
 
 Signature:
 	{Signature}
-	'[' (elements+=ModelElement (',' elements+=ModelElement)*)? ']'
+	'[' (declaredPackage=MetamodelReference ':')? (elements+=NamedModelElement (',' elements+=NamedModelElement)*)? ']'
 ;
 
 RequiredMapping:
@@ -69,6 +69,19 @@ SignatureConstraintExpression returns ConstraintExpression:
  	InExpression
 	| EqualsLiteralExpression
 	| DefaultContainExpression
+	| XbaseSignatureConstraintExpression
+;
+
+XbaseSignatureConstraintExpression returns ConstraintExpression:
+	{XbaseSignatureConstraintExpression}
+	'xbase'
+		'check' checkBlock=XBlockExpression
+		'enforce' enforceBlock=XBlockExpression
+;
+
+XbaseBodyConstraintExpression returns ConstraintExpression:
+	{XbaseBodyConstraintExpression}
+	'xbase' 'from' metamodel=MetamodelReference 'with' block=XBlockExpression
 ;
 
 BodyConstraintBlock:
@@ -80,6 +93,7 @@ BodyConstraintBlock:
 
 BodyConstraintExpression returns ConstraintExpression:
 	AttributeEquivalenceExpression
+	| XbaseBodyConstraintExpression
 ;
 
 

@@ -30,13 +30,26 @@ import static extension java.util.Objects.*
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpression
+import com.google.inject.Inject
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile
 
 class ConstraintLanguageGenerator {
 	private static final Logger LOGGER = Logger.getLogger(ConstraintLanguageGenerator)
-	private final extension EMFGeneratorHelper emfGeneratorHelper
+	
+	@Inject
+	private extension EMFGeneratorHelper emfGeneratorHelper
 
-	new(EMFGeneratorHelper emfGeneratorHelper) {
-		this.emfGeneratorHelper = emfGeneratorHelper
+	@Inject
+	private extension MappingLanguageGeneratorNameProvider nameProvider
+	
+	@Inject
+	private MappingLanguageGeneratorStateProvider stateProvider
+	
+	private extension MappingLanguageGeneratorState state = null
+
+	def setMappingFile(MappingFile file) {
+		state = stateProvider.get(file)
 	}
 
 	def dispatch restoreBodyConstraintFrom(ImportHelper importHelper, Map<List<?>, String> localContext,
@@ -57,7 +70,6 @@ class ConstraintLanguageGenerator {
 //			«typeRef(target.context.targetClass.type)» target = «getJavaExpressionThatReturns(localContext, target.context, mapping)»;
 //			«eRefSet(importHelper, "target", target.feature, eRefGet(importHelper, "source", source.feature))»;
 //		'''
-
 		'''
 			// «target.context.targetClass.name».«target.feature.name» := «source.context.targetClass.name».«source.feature.name»
 			«eRefSet(importHelper, getJavaExpressionThatReturns(localContext, target.context, mapping), target.feature, eRefGet(importHelper, getJavaExpressionThatReturns(localContext, source.context, mapping), source.feature))»;
@@ -66,9 +78,15 @@ class ConstraintLanguageGenerator {
 	}
 
 	def dispatch checkSignatureConstraint(ImportHelper importHelper, Map<List<?>, String> localContext,
-		ConstraintExpression constraint)
-	{
+		ConstraintExpression constraint) {
 		null
+	}
+
+	def dispatch checkSignatureConstraint(extension ImportHelper importHelper, Map<List<?>, String> localContext,
+		XbaseSignatureConstraintExpression constraint) {
+		val mapping = constraint.getContainerOfType(Mapping)
+		val imp = constraint.getPackage.importsForPackage
+		'''«getMappingConstraintsClassName(mapping)».«getCheckMethodName(constraint)»(«imp.toVarName»)'''
 	}
 
 	def dispatch checkSignatureConstraint(ImportHelper importHelper, Map<List<?>, String> localContext,
@@ -93,7 +111,7 @@ class ConstraintLanguageGenerator {
 		eContainsOrIsEqual(importHelper, getJavaExpressionThatReturns(localContext, target, mapping), feature,
 			getJavaExpressionThatReturns(constraint.value))
 	}
-	
+
 	def dispatch checkSignatureConstraint(ImportHelper importHelper, Map<List<?>, String> localContext,
 		NotNullExpression constraint) {
 		val mapping = constraint.getContainerOfType(Mapping)
@@ -151,7 +169,7 @@ class ConstraintLanguageGenerator {
 			if (reverseIndex >= 0) {
 				el = elementPath.get(reverseIndex)
 				previousElements = elementPath.subList(0, reverseIndex + 1)
-				
+
 				var String nextElement = null
 				for (entry : context.entrySet) {
 					if (entry.key.equals(previousElements)) {
@@ -159,12 +177,12 @@ class ConstraintLanguageGenerator {
 						entryFound = true
 					}
 				}
-				
+
 				nextElement = nextElement ?: '''get«el.tryGetName.toFirstUpper»()'''
-				
+
 				println('''  «el.toString» («previousElements.toString») --> «nextElement.toString»''')
 				pathToElement += nextElement
-				
+
 				reverseIndex--
 			}
 		} while (!entryFound && (reverseIndex >= 0))
@@ -317,7 +335,7 @@ class ConstraintLanguageGenerator {
 
 		return #[targetJava]
 	}
-	
+
 	def dispatch String[] getEObjectsWithPossiblyChangedTUID(extension ImportHelper importHelper,
 		Map<List<?>, String> localContext, InExpression constraint) {
 
@@ -325,7 +343,7 @@ class ConstraintLanguageGenerator {
 
 		val target = constraint.target
 		val targetJava = getJavaExpressionThatReturns(localContext, target, sourceMapping)
-		
+
 		val source = constraint.source.context
 		val sourceJava = getJavaExpressionThatReturns(localContext, source, sourceMapping)
 

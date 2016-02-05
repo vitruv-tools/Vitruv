@@ -3,6 +3,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage;
 
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelReference;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement;
 
 import org.eclipse.emf.common.util.EList;
@@ -18,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Signature#getDeclaredPackage <em>Declared Package</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Signature#getElements <em>Elements</em>}</li>
  * </ul>
  *
@@ -27,6 +29,32 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Signature extends EObject
 {
+  /**
+   * Returns the value of the '<em><b>Declared Package</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Declared Package</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Declared Package</em>' containment reference.
+   * @see #setDeclaredPackage(MetamodelReference)
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage#getSignature_DeclaredPackage()
+   * @model containment="true"
+   * @generated
+   */
+  MetamodelReference getDeclaredPackage();
+
+  /**
+   * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Signature#getDeclaredPackage <em>Declared Package</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Declared Package</em>' containment reference.
+   * @see #getDeclaredPackage()
+   * @generated
+   */
+  void setDeclaredPackage(MetamodelReference value);
+
   /**
    * Returns the value of the '<em><b>Elements</b></em>' containment reference list.
    * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement}.

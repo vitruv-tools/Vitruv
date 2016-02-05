@@ -13,8 +13,8 @@ ModelElement:
 	element=[ecore::EClass|QualifiedName]
 ;
 	
-NamedModelElement:
-	ModelElement ('as' name=ValidID)?
+NamedModelElement returns ModelElement:
+	element=[ecore::EClass|QualifiedName] ('as' name=ValidID)?
 ;
 	
 FeatureOfElement:

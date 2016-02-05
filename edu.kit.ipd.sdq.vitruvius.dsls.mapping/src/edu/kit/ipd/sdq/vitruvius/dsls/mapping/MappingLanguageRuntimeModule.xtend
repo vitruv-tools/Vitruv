@@ -5,14 +5,13 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping
 
 import com.google.inject.Binder
 import com.google.inject.name.Names
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.IMappingLanguageGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.MappingLanguageGenerator
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.NoGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.linking.MappingLanguageLinkingService
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.postprocessor.MappingLanguageDerivedStateComputer
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping.MappingLanguageQualifiedNameConverter
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping.MappingLanguageScopeProviderDelegate
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.scoping.MirBaseGlobalScopeProvider
-import org.eclipse.xtext.generator.IGenerator
 import org.eclipse.xtext.naming.IQualifiedNameConverter
 import org.eclipse.xtext.resource.IDerivedStateComputer
 import org.eclipse.xtext.scoping.IScopeProvider
@@ -40,15 +39,17 @@ class MappingLanguageRuntimeModule extends AbstractMappingLanguageRuntimeModule 
 		return MappingLanguageQualifiedNameConverter
 	}
 	
-	override Class<? extends IGenerator> bindIGenerator() {
-		return NoGenerator
+	override Class<? extends IDerivedStateComputer> bindIDerivedStateComputer() {
+		return MappingLanguageDerivedStateComputer
 	}
 	
-	def Class<MappingLanguageGenerator> bindMappingLanguageGenerator() {
+	def Class<? extends IMappingLanguageGenerator> bindIMappingLanguageGenerator() {
 		return MappingLanguageGenerator
 	}
 	
-	override Class<? extends IDerivedStateComputer> bindIDerivedStateComputer() {
-		return MappingLanguageDerivedStateComputer
+	def void configureGenerator(Binder binder) {
+		binder.bind(String)
+		      .annotatedWith(Names.named(MappingLanguageGenerator.PACKAGE_NAME_FIELD))
+		      .toInstance("mappings.generated")
 	}
 }

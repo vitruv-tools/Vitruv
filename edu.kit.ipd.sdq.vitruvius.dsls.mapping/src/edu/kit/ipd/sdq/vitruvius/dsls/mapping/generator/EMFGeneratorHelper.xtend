@@ -18,19 +18,24 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGener
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
 import java.util.Set
 import org.eclipse.emf.ecore.EDataType
+import com.google.inject.Inject
 
 /**
  * Generates a class that can be used in generated code
  * to reference EClasses, EFactories, EPackages and EStrucutralFeatures
  */
 class EMFGeneratorHelper {
+	@Inject
+	private extension MappingLanguageGeneratorNameProvider nameProvider
+	
 	private Map<EPackage, List<Object>> referencedEMFEntities
 
-	private final String classFQN
-
-	new(String classFQN) {
-		this.classFQN = classFQN
+	new() {
 		this.referencedEMFEntities = newHashMap
+	}
+	
+	private def String classFQN() {
+		nameProvider.constantsClassName
 	}
 	
 	public def String ePackageInstance(extension ImportHelper ih, EPackage ePackage) {

@@ -67,7 +67,6 @@ public class MirBaseFactoryImpl extends EFactoryImpl implements MirBaseFactory
     {
       case MirBasePackage.METAMODEL_IMPORT: return createMetamodelImport();
       case MirBasePackage.MODEL_ELEMENT: return createModelElement();
-      case MirBasePackage.NAMED_MODEL_ELEMENT: return createNamedModelElement();
       case MirBasePackage.FEATURE_OF_ELEMENT: return createFeatureOfElement();
       case MirBasePackage.METAMODEL_REFERENCE: return createMetamodelReference();
       default:
@@ -95,17 +94,6 @@ public class MirBaseFactoryImpl extends EFactoryImpl implements MirBaseFactory
   {
     ModelElementImpl modelElement = new ModelElementImpl();
     return modelElement;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NamedModelElement createNamedModelElement()
-  {
-    NamedModelElementImpl namedModelElement = new NamedModelElementImpl();
-    return namedModelElement;
   }
 
   /**

@@ -11,6 +11,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLa
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.AttributeEquivalenceExpression
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
+import org.eclipse.emf.ecore.resource.Resource
 
 class MappingLanguageDerivedStateComputer extends JvmModelAssociator {
 	override discardDerivedState(DerivedStateAwareResource resource) {
@@ -19,21 +20,25 @@ class MappingLanguageDerivedStateComputer extends JvmModelAssociator {
 
 	override installDerivedState(DerivedStateAwareResource resource, boolean preIndexingPhase) {
 		super.installDerivedState(resource, preIndexingPhase)
-		val defaultMappings = resource.allContents.filter(Mapping).filter[^default].toList
+		val mappingFile = resource.contents.get(0) as MappingFile
+		
+		inferDefaultState(mappingFile)
+	}
+	
+	public def inferDefaultState(MappingFile mappingFile) {
+		val defaultMappings = mappingFile.eAllContents.filter(Mapping).filter[^default].toList
 
-		resource.allContents.filter(MappingFile).forEach [
-			defaultRequirements.clear
-			defaultRequirements +=
-				defaultMappings
-					.map [
-						val newReq = MappingLanguageFactory.eINSTANCE.createRequiredMapping
-						newReq.mapping = it
-						newReq.name = it.name
-						newReq
-					]
-		]
+		mappingFile.defaultRequirements.clear
+		mappingFile.defaultRequirements +=
+			defaultMappings
+				.map [
+					val newReq = MappingLanguageFactory.eINSTANCE.createRequiredMapping
+					newReq.mapping = it
+					newReq.name = it.name
+					newReq
+				]
 
-		resource.allContents.filter(Mapping).filter[parentMapping != null].forEach [
+		mappingFile.eAllContents.filter(Mapping).filter[parentMapping != null].forEach [
 			val parentName = if ((parentMapping.name ?: "").empty)
 					"parent"
 				else
@@ -56,15 +61,15 @@ class MappingLanguageDerivedStateComputer extends JvmModelAssociator {
 			
 		]
 
-		resource.allContents.filter(ModelElement).filter[name == null || name.isEmpty].forEach [
+		mappingFile.eAllContents.filter(ModelElement).filter[name == null || name.isEmpty].forEach [
 			it.name = MappingLanguageHelper.toSensibleDefaultName(it)
 		]
 
-		resource.allContents.filter(RequiredMapping).filter[name == null || name.isEmpty].forEach [
+		mappingFile.eAllContents.filter(RequiredMapping).filter[name == null || name.isEmpty].forEach [
 			it.name = MappingLanguageHelper.toSensibleDefaultName(it)
 		]
 		
-		resource.allContents.filter(Mapping).forEach [ mapping |
+		mappingFile.eAllContents.filter(Mapping).forEach [ mapping |
 			(mapping?.constraintsBody?.expressions ?: #[]).filter(AttributeEquivalenceExpression).forEach [ exp |
 				#[exp.left, exp.right].forEach [
 					val notNullExpression = MappingLanguageFactory.eINSTANCE.createNotNullExpression

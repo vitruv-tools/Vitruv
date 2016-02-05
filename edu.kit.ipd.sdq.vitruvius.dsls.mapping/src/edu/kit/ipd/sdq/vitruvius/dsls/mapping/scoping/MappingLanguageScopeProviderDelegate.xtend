@@ -45,7 +45,10 @@ class MappingLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate 
 
 	def <T extends EObject> IScope createPairScope(IScope parentScope, Iterator<Pair<String, T>> elements) {
 		createScope(parentScope, elements, [
-			EObjectDescription.create(it.first, it.second)
+			if ((it.first != null) && (it.second != null))
+				EObjectDescription.create(it.first, it.second)
+			else
+				null
 		])
 	}
 

@@ -141,6 +141,24 @@ public interface MappingLanguageFactory extends EFactory
   ConstraintLiteral createConstraintLiteral();
 
   /**
+   * Returns a new object of class '<em>Xbase Signature Constraint Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Xbase Signature Constraint Expression</em>'.
+   * @generated
+   */
+  XbaseSignatureConstraintExpression createXbaseSignatureConstraintExpression();
+
+  /**
+   * Returns a new object of class '<em>Xbase Body Constraint Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Xbase Body Constraint Expression</em>'.
+   * @generated
+   */
+  XbaseBodyConstraintExpression createXbaseBodyConstraintExpression();
+
+  /**
    * Returns a new object of class '<em>Variable Ref</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

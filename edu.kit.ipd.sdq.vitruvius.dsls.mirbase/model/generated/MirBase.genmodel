@@ -14,7 +14,6 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MirBase.ecore#//ModelElement/element"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MirBase.ecore#//ModelElement/name"/>
     </genClasses>
-    <genClasses ecoreClass="MirBase.ecore#//NamedModelElement"/>
     <genClasses ecoreClass="MirBase.ecore#//FeatureOfElement">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MirBase.ecore#//FeatureOfElement/element"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MirBase.ecore#//FeatureOfElement/feature"/>

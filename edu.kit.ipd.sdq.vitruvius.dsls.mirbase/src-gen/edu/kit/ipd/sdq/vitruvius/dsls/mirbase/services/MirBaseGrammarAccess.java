@@ -84,21 +84,29 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 	public class NamedModelElementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase.NamedModelElement");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final RuleCall cModelElementParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final Assignment cElementAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final CrossReference cElementEClassCrossReference_0_0 = (CrossReference)cElementAssignment_0.eContents().get(0);
+		private final RuleCall cElementEClassQualifiedNameParserRuleCall_0_0_1 = (RuleCall)cElementEClassCrossReference_0_0.eContents().get(1);
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
 		private final Keyword cAsKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
 		private final Assignment cNameAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
 		private final RuleCall cNameValidIDParserRuleCall_1_1_0 = (RuleCall)cNameAssignment_1_1.eContents().get(0);
 		
-		//NamedModelElement:
-		//	ModelElement ('as' name=ValidID)?;
+		//NamedModelElement ModelElement:
+		//	element=[ecore::EClass|QualifiedName] ('as' name=ValidID)?
 		@Override public ParserRule getRule() { return rule; }
 		
-		//ModelElement ('as' name=ValidID)?
+		//element=[ecore::EClass|QualifiedName] ('as' name=ValidID)?
 		public Group getGroup() { return cGroup; }
 		
-		//ModelElement
-		public RuleCall getModelElementParserRuleCall_0() { return cModelElementParserRuleCall_0; }
+		//element=[ecore::EClass|QualifiedName]
+		public Assignment getElementAssignment_0() { return cElementAssignment_0; }
+		
+		//[ecore::EClass|QualifiedName]
+		public CrossReference getElementEClassCrossReference_0_0() { return cElementEClassCrossReference_0_0; }
+		
+		//QualifiedName
+		public RuleCall getElementEClassQualifiedNameParserRuleCall_0_0_1() { return cElementEClassQualifiedNameParserRuleCall_0_0_1; }
 		
 		//('as' name=ValidID)?
 		public Group getGroup_1() { return cGroup_1; }
@@ -253,8 +261,8 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 		return getModelElementAccess().getRule();
 	}
 	
-	//NamedModelElement:
-	//	ModelElement ('as' name=ValidID)?;
+	//NamedModelElement ModelElement:
+	//	element=[ecore::EClass|QualifiedName] ('as' name=ValidID)?
 	public NamedModelElementElements getNamedModelElementAccess() {
 		return pNamedModelElement;
 	}

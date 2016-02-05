@@ -10,7 +10,6 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFile;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement;
-import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedModelElement;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -40,13 +39,6 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
    * @generated
    */
   private EClass modelElementEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass namedModelElementEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -197,16 +189,6 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getNamedModelElement()
-  {
-    return namedModelElementEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EClass getFeatureOfElement()
   {
     return featureOfElementEClass;
@@ -300,8 +282,6 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
     createEReference(modelElementEClass, MODEL_ELEMENT__ELEMENT);
     createEAttribute(modelElementEClass, MODEL_ELEMENT__NAME);
 
-    namedModelElementEClass = createEClass(NAMED_MODEL_ELEMENT);
-
     featureOfElementEClass = createEClass(FEATURE_OF_ELEMENT);
     createEReference(featureOfElementEClass, FEATURE_OF_ELEMENT__ELEMENT);
     createEReference(featureOfElementEClass, FEATURE_OF_ELEMENT__FEATURE);
@@ -341,7 +321,6 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
     // Set bounds for type parameters
 
     // Add supertypes to classes
-    modelElementEClass.getESuperTypes().add(this.getNamedModelElement());
 
     // Initialize classes and features; add operations and parameters
     initEClass(metamodelImportEClass, MetamodelImport.class, "MetamodelImport", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -351,8 +330,6 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
     initEClass(modelElementEClass, ModelElement.class, "ModelElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getModelElement_Element(), ecorePackage.getEClass(), null, "element", null, 0, 1, ModelElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getModelElement_Name(), ecorePackage.getEString(), "name", null, 0, 1, ModelElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(namedModelElementEClass, NamedModelElement.class, "NamedModelElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(featureOfElementEClass, FeatureOfElement.class, "FeatureOfElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getFeatureOfElement_Element(), ecorePackage.getEClass(), null, "element", null, 0, 1, FeatureOfElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

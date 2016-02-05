@@ -12,6 +12,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHel
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
+import org.eclipse.emf.ecore.EPackage
 
 @Accessors(PUBLIC_GETTER)
 class MappingLanguageGeneratorState {
@@ -62,6 +63,19 @@ class MappingLanguageGeneratorState {
 	
 	public def getImports(Mapping mapping) {
 		return mappingToImports.get(mapping) ?: #[]
+	}
+	
+	public def getImportsForPackage(EPackage ePackage) {
+		return imports.findFirst[it.package.equals(ePackage)]
+	}
+	
+	public def getOtherImport(MetamodelImport imp) {
+		val index = imports.indexOf(imp)
+		if ((index == -1) || (imports.size != 2)) {
+			return null
+		} else {
+			return imports.get(1 - index);
+		}
 	}
 	
 	public def getImportLetter(MetamodelImport imp) {

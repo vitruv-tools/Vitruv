@@ -1,17 +1,22 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator
 
+import com.google.inject.Inject
+import com.google.inject.name.Named
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.StringHelper
-import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseBodyConstraintExpression
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper
+import java.util.Map
+
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.EMFHelper.*
 
 class MappingLanguageGeneratorNameProvider {
-	new(String pkgName) {
-		this.pkgName = pkgName
-	}
-
 	private var anonMappingIndex = 0
-	private final String pkgName
+	
+	@Inject @Named(MappingLanguageGenerator.PACKAGE_NAME_FIELD)
+	private String pkgName
 
 	public def getMappingName(Mapping mapping) {
 		if ((mapping.name == null) || (mapping.name.empty)) {
@@ -44,6 +49,10 @@ class MappingLanguageGeneratorNameProvider {
 	public def getMappingClassName(Mapping mapping) {
 		'''«mapping.pkgName».«mapping.mappingName.toFirstUpper»_Mapping'''.toString
 	}
+	
+	public def getMappingConstraintsClassName(Mapping mapping) {
+		'''«mapping.pkgName».«mapping.mappingName.toFirstUpper»_Mapping_Constraints'''.toString
+	}
 
 	public def getConstantsClassName() {
 		'''«pkgName».EMFWrapper'''.toString
@@ -74,4 +83,30 @@ class MappingLanguageGeneratorNameProvider {
 		
 		return simpleName.toFirstLower
 	}
+	
+	private Map<ConstraintExpression, Integer> constraintExpression2Index = newHashMap
+	def getOrSetIndex(ConstraintExpression constraintExpression) {
+		if (!constraintExpression2Index.containsKey(constraintExpression)) {
+			constraintExpression2Index.put(constraintExpression, constraintExpression2Index.size)
+		}
+		
+		return constraintExpression2Index.get(constraintExpression)
+	}
+	
+	public def String getCheckMethodName(XbaseSignatureConstraintExpression expression) {
+		'''checkConstraint«getOrSetIndex(expression)»'''
+	}
+	
+	public def String getEnforceMethodName(XbaseSignatureConstraintExpression expression) {
+		'''enforceConstraint«getOrSetIndex(expression)»'''
+	}
+	
+	public def String getPropagateMethodName(XbaseBodyConstraintExpression expression) {
+		'''propagateConstraint«getOrSetIndex(expression)»From«expression.metamodel?.model?.toFirstUpperName ?: ''»'''
+	}
+	
+	public def String getResponseName(Mapping mapping, MetamodelImport imp) {
+		'''Mapping«mapping.mappingName.toFirstUpper»ResponseFrom«imp.toFirstUpperName»'''
+	}
+	
 }

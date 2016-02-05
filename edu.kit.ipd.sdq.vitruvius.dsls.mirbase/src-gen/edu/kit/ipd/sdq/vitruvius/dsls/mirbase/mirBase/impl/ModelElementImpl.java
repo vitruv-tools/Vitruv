@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,7 +28,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class ModelElementImpl extends NamedModelElementImpl implements ModelElement
+public class ModelElementImpl extends MinimalEObjectImpl.Container implements ModelElement
 {
   /**
    * The cached value of the '{@link #getElement() <em>Element</em>}' reference.

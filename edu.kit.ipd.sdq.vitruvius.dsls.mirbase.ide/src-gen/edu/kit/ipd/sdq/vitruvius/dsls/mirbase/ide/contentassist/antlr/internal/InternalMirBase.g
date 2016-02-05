@@ -75,31 +75,6 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-// Entry rule entryRuleModelElement
-entryRuleModelElement
-:
-{ before(grammarAccess.getModelElementRule()); }
-	 ruleModelElement
-{ after(grammarAccess.getModelElementRule()); } 
-	 EOF 
-;
-
-// Rule ModelElement
-ruleModelElement 
-	@init {
-		int stackSize = keepStackSize();
-	}
-	:
-	(
-		{ before(grammarAccess.getModelElementAccess().getElementAssignment()); }
-		(rule__ModelElement__ElementAssignment)
-		{ after(grammarAccess.getModelElementAccess().getElementAssignment()); }
-	)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
 // Entry rule entryRuleXExpression
 entryRuleXExpression
 :
@@ -14847,25 +14822,6 @@ rule__MetamodelImport__NameAssignment_3
 		{ before(grammarAccess.getMetamodelImportAccess().getNameValidIDParserRuleCall_3_0()); }
 		ruleValidID
 		{ after(grammarAccess.getMetamodelImportAccess().getNameValidIDParserRuleCall_3_0()); }
-	)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ModelElement__ElementAssignment
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	(
-		{ before(grammarAccess.getModelElementAccess().getElementEClassCrossReference_0()); }
-		(
-			{ before(grammarAccess.getModelElementAccess().getElementEClassQualifiedNameParserRuleCall_0_1()); }
-			ruleQualifiedName
-			{ after(grammarAccess.getModelElementAccess().getElementEClassQualifiedNameParserRuleCall_0_1()); }
-		)
-		{ after(grammarAccess.getModelElementAccess().getElementEClassCrossReference_0()); }
 	)
 ;
 finally {

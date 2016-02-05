@@ -169,6 +169,22 @@ public class MappingLanguageSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case MappingLanguagePackage.XBASE_SIGNATURE_CONSTRAINT_EXPRESSION:
+      {
+        XbaseSignatureConstraintExpression xbaseSignatureConstraintExpression = (XbaseSignatureConstraintExpression)theEObject;
+        T result = caseXbaseSignatureConstraintExpression(xbaseSignatureConstraintExpression);
+        if (result == null) result = caseConstraintExpression(xbaseSignatureConstraintExpression);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case MappingLanguagePackage.XBASE_BODY_CONSTRAINT_EXPRESSION:
+      {
+        XbaseBodyConstraintExpression xbaseBodyConstraintExpression = (XbaseBodyConstraintExpression)theEObject;
+        T result = caseXbaseBodyConstraintExpression(xbaseBodyConstraintExpression);
+        if (result == null) result = caseConstraintExpression(xbaseBodyConstraintExpression);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case MappingLanguagePackage.VARIABLE_REF:
       {
         VariableRef variableRef = (VariableRef)theEObject;
@@ -457,6 +473,38 @@ public class MappingLanguageSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseConstraintLiteral(ConstraintLiteral object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Xbase Signature Constraint Expression</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Xbase Signature Constraint Expression</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseXbaseSignatureConstraintExpression(XbaseSignatureConstraintExpression object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Xbase Body Constraint Expression</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Xbase Body Constraint Expression</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseXbaseBodyConstraintExpression(XbaseBodyConstraintExpression object)
   {
     return null;
   }

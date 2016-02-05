@@ -78,6 +78,8 @@ public class MappingLanguageFactoryImpl extends EFactoryImpl implements MappingL
       case MappingLanguagePackage.REQUIRED_MAPPING_PATH_BASE: return createRequiredMappingPathBase();
       case MappingLanguagePackage.REQUIRED_MAPPING_PATH_TAIL: return createRequiredMappingPathTail();
       case MappingLanguagePackage.CONSTRAINT_LITERAL: return createConstraintLiteral();
+      case MappingLanguagePackage.XBASE_SIGNATURE_CONSTRAINT_EXPRESSION: return createXbaseSignatureConstraintExpression();
+      case MappingLanguagePackage.XBASE_BODY_CONSTRAINT_EXPRESSION: return createXbaseBodyConstraintExpression();
       case MappingLanguagePackage.VARIABLE_REF: return createVariableRef();
       case MappingLanguagePackage.IN_EXPRESSION: return createInExpression();
       case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION: return createDefaultContainExpression();
@@ -234,6 +236,28 @@ public class MappingLanguageFactoryImpl extends EFactoryImpl implements MappingL
   {
     ConstraintLiteralImpl constraintLiteral = new ConstraintLiteralImpl();
     return constraintLiteral;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public XbaseSignatureConstraintExpression createXbaseSignatureConstraintExpression()
+  {
+    XbaseSignatureConstraintExpressionImpl xbaseSignatureConstraintExpression = new XbaseSignatureConstraintExpressionImpl();
+    return xbaseSignatureConstraintExpression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public XbaseBodyConstraintExpression createXbaseBodyConstraintExpression()
+  {
+    XbaseBodyConstraintExpressionImpl xbaseBodyConstraintExpression = new XbaseBodyConstraintExpressionImpl();
+    return xbaseBodyConstraintExpression;
   }
 
   /**

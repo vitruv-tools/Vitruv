@@ -325,20 +325,25 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final Action cSignatureAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cLeftSquareBracketKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
-		private final Assignment cElementsAssignment_2_0 = (Assignment)cGroup_2.eContents().get(0);
-		private final RuleCall cElementsModelElementParserRuleCall_2_0_0 = (RuleCall)cElementsAssignment_2_0.eContents().get(0);
-		private final Group cGroup_2_1 = (Group)cGroup_2.eContents().get(1);
-		private final Keyword cCommaKeyword_2_1_0 = (Keyword)cGroup_2_1.eContents().get(0);
-		private final Assignment cElementsAssignment_2_1_1 = (Assignment)cGroup_2_1.eContents().get(1);
-		private final RuleCall cElementsModelElementParserRuleCall_2_1_1_0 = (RuleCall)cElementsAssignment_2_1_1.eContents().get(0);
-		private final Keyword cRightSquareBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Assignment cDeclaredPackageAssignment_2_0 = (Assignment)cGroup_2.eContents().get(0);
+		private final RuleCall cDeclaredPackageMetamodelReferenceParserRuleCall_2_0_0 = (RuleCall)cDeclaredPackageAssignment_2_0.eContents().get(0);
+		private final Keyword cColonKeyword_2_1 = (Keyword)cGroup_2.eContents().get(1);
+		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
+		private final Assignment cElementsAssignment_3_0 = (Assignment)cGroup_3.eContents().get(0);
+		private final RuleCall cElementsNamedModelElementParserRuleCall_3_0_0 = (RuleCall)cElementsAssignment_3_0.eContents().get(0);
+		private final Group cGroup_3_1 = (Group)cGroup_3.eContents().get(1);
+		private final Keyword cCommaKeyword_3_1_0 = (Keyword)cGroup_3_1.eContents().get(0);
+		private final Assignment cElementsAssignment_3_1_1 = (Assignment)cGroup_3_1.eContents().get(1);
+		private final RuleCall cElementsNamedModelElementParserRuleCall_3_1_1_0 = (RuleCall)cElementsAssignment_3_1_1.eContents().get(0);
+		private final Keyword cRightSquareBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
 		//Signature:
 		//	{Signature}
-		//	'[' (elements+=ModelElement (',' elements+=ModelElement)*)? ']';
+		//	'[' (declaredPackage=MetamodelReference ':')? (elements+=NamedModelElement (',' elements+=NamedModelElement)*)? ']';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Signature} '[' (elements+=ModelElement (',' elements+=ModelElement)*)? ']'
+		//{Signature} '[' (declaredPackage=MetamodelReference ':')? (elements+=NamedModelElement (','
+		//elements+=NamedModelElement)*)? ']'
 		public Group getGroup() { return cGroup; }
 		
 		//{Signature}
@@ -347,29 +352,41 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//'['
 		public Keyword getLeftSquareBracketKeyword_1() { return cLeftSquareBracketKeyword_1; }
 		
-		//(elements+=ModelElement (',' elements+=ModelElement)*)?
+		//(declaredPackage=MetamodelReference ':')?
 		public Group getGroup_2() { return cGroup_2; }
 		
-		//elements+=ModelElement
-		public Assignment getElementsAssignment_2_0() { return cElementsAssignment_2_0; }
+		//declaredPackage=MetamodelReference
+		public Assignment getDeclaredPackageAssignment_2_0() { return cDeclaredPackageAssignment_2_0; }
 		
-		//ModelElement
-		public RuleCall getElementsModelElementParserRuleCall_2_0_0() { return cElementsModelElementParserRuleCall_2_0_0; }
+		//MetamodelReference
+		public RuleCall getDeclaredPackageMetamodelReferenceParserRuleCall_2_0_0() { return cDeclaredPackageMetamodelReferenceParserRuleCall_2_0_0; }
 		
-		//(',' elements+=ModelElement)*
-		public Group getGroup_2_1() { return cGroup_2_1; }
+		//':'
+		public Keyword getColonKeyword_2_1() { return cColonKeyword_2_1; }
+		
+		//(elements+=NamedModelElement (',' elements+=NamedModelElement)*)?
+		public Group getGroup_3() { return cGroup_3; }
+		
+		//elements+=NamedModelElement
+		public Assignment getElementsAssignment_3_0() { return cElementsAssignment_3_0; }
+		
+		//NamedModelElement
+		public RuleCall getElementsNamedModelElementParserRuleCall_3_0_0() { return cElementsNamedModelElementParserRuleCall_3_0_0; }
+		
+		//(',' elements+=NamedModelElement)*
+		public Group getGroup_3_1() { return cGroup_3_1; }
 		
 		//','
-		public Keyword getCommaKeyword_2_1_0() { return cCommaKeyword_2_1_0; }
+		public Keyword getCommaKeyword_3_1_0() { return cCommaKeyword_3_1_0; }
 		
-		//elements+=ModelElement
-		public Assignment getElementsAssignment_2_1_1() { return cElementsAssignment_2_1_1; }
+		//elements+=NamedModelElement
+		public Assignment getElementsAssignment_3_1_1() { return cElementsAssignment_3_1_1; }
 		
-		//ModelElement
-		public RuleCall getElementsModelElementParserRuleCall_2_1_1_0() { return cElementsModelElementParserRuleCall_2_1_1_0; }
+		//NamedModelElement
+		public RuleCall getElementsNamedModelElementParserRuleCall_3_1_1_0() { return cElementsNamedModelElementParserRuleCall_3_1_1_0; }
 		
 		//']'
-		public Keyword getRightSquareBracketKeyword_3() { return cRightSquareBracketKeyword_3; }
+		public Keyword getRightSquareBracketKeyword_4() { return cRightSquareBracketKeyword_4; }
 	}
 	public class RequiredMappingElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.RequiredMapping");
@@ -498,14 +515,16 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cInExpressionParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cEqualsLiteralExpressionParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		private final RuleCall cDefaultContainExpressionParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		private final RuleCall cXbaseSignatureConstraintExpressionParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		
 		//SignatureConstraintExpression ConstraintExpression:
 		//	InExpression
 		//	| EqualsLiteralExpression
 		//	| DefaultContainExpression
+		//	| XbaseSignatureConstraintExpression
 		@Override public ParserRule getRule() { return rule; }
 		
-		//InExpression | EqualsLiteralExpression | DefaultContainExpression
+		//InExpression | EqualsLiteralExpression | DefaultContainExpression | XbaseSignatureConstraintExpression
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//InExpression
@@ -516,6 +535,99 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//DefaultContainExpression
 		public RuleCall getDefaultContainExpressionParserRuleCall_2() { return cDefaultContainExpressionParserRuleCall_2; }
+		
+		//XbaseSignatureConstraintExpression
+		public RuleCall getXbaseSignatureConstraintExpressionParserRuleCall_3() { return cXbaseSignatureConstraintExpressionParserRuleCall_3; }
+	}
+	public class XbaseSignatureConstraintExpressionElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.XbaseSignatureConstraintExpression");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cXbaseSignatureConstraintExpressionAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cXbaseKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Keyword cCheckKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cCheckBlockAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cCheckBlockXBlockExpressionParserRuleCall_3_0 = (RuleCall)cCheckBlockAssignment_3.eContents().get(0);
+		private final Keyword cEnforceKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Assignment cEnforceBlockAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cEnforceBlockXBlockExpressionParserRuleCall_5_0 = (RuleCall)cEnforceBlockAssignment_5.eContents().get(0);
+		
+		//XbaseSignatureConstraintExpression ConstraintExpression:
+		//	{XbaseSignatureConstraintExpression}
+		//	'xbase'
+		//	'check' checkBlock=XBlockExpression
+		//	'enforce' enforceBlock=XBlockExpression
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{XbaseSignatureConstraintExpression} 'xbase' 'check' checkBlock=XBlockExpression 'enforce' enforceBlock=XBlockExpression
+		public Group getGroup() { return cGroup; }
+		
+		//{XbaseSignatureConstraintExpression}
+		public Action getXbaseSignatureConstraintExpressionAction_0() { return cXbaseSignatureConstraintExpressionAction_0; }
+		
+		//'xbase'
+		public Keyword getXbaseKeyword_1() { return cXbaseKeyword_1; }
+		
+		//'check'
+		public Keyword getCheckKeyword_2() { return cCheckKeyword_2; }
+		
+		//checkBlock=XBlockExpression
+		public Assignment getCheckBlockAssignment_3() { return cCheckBlockAssignment_3; }
+		
+		//XBlockExpression
+		public RuleCall getCheckBlockXBlockExpressionParserRuleCall_3_0() { return cCheckBlockXBlockExpressionParserRuleCall_3_0; }
+		
+		//'enforce'
+		public Keyword getEnforceKeyword_4() { return cEnforceKeyword_4; }
+		
+		//enforceBlock=XBlockExpression
+		public Assignment getEnforceBlockAssignment_5() { return cEnforceBlockAssignment_5; }
+		
+		//XBlockExpression
+		public RuleCall getEnforceBlockXBlockExpressionParserRuleCall_5_0() { return cEnforceBlockXBlockExpressionParserRuleCall_5_0; }
+	}
+	public class XbaseBodyConstraintExpressionElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.XbaseBodyConstraintExpression");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cXbaseBodyConstraintExpressionAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cXbaseKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Keyword cFromKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cMetamodelAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cMetamodelMetamodelReferenceParserRuleCall_3_0 = (RuleCall)cMetamodelAssignment_3.eContents().get(0);
+		private final Keyword cWithKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Assignment cBlockAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cBlockXBlockExpressionParserRuleCall_5_0 = (RuleCall)cBlockAssignment_5.eContents().get(0);
+		
+		//XbaseBodyConstraintExpression ConstraintExpression:
+		//	{XbaseBodyConstraintExpression}
+		//	'xbase' 'from' metamodel=MetamodelReference 'with' block=XBlockExpression
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{XbaseBodyConstraintExpression} 'xbase' 'from' metamodel=MetamodelReference 'with' block=XBlockExpression
+		public Group getGroup() { return cGroup; }
+		
+		//{XbaseBodyConstraintExpression}
+		public Action getXbaseBodyConstraintExpressionAction_0() { return cXbaseBodyConstraintExpressionAction_0; }
+		
+		//'xbase'
+		public Keyword getXbaseKeyword_1() { return cXbaseKeyword_1; }
+		
+		//'from'
+		public Keyword getFromKeyword_2() { return cFromKeyword_2; }
+		
+		//metamodel=MetamodelReference
+		public Assignment getMetamodelAssignment_3() { return cMetamodelAssignment_3; }
+		
+		//MetamodelReference
+		public RuleCall getMetamodelMetamodelReferenceParserRuleCall_3_0() { return cMetamodelMetamodelReferenceParserRuleCall_3_0; }
+		
+		//'with'
+		public Keyword getWithKeyword_4() { return cWithKeyword_4; }
+		
+		//block=XBlockExpression
+		public Assignment getBlockAssignment_5() { return cBlockAssignment_5; }
+		
+		//XBlockExpression
+		public RuleCall getBlockXBlockExpressionParserRuleCall_5_0() { return cBlockXBlockExpressionParserRuleCall_5_0; }
 	}
 	public class BodyConstraintBlockElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.BodyConstraintBlock");
@@ -563,14 +675,23 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	public class BodyConstraintExpressionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.BodyConstraintExpression");
-		private final RuleCall cAttributeEquivalenceExpressionParserRuleCall = (RuleCall)rule.eContents().get(1);
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cAttributeEquivalenceExpressionParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cXbaseBodyConstraintExpressionParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
 		//BodyConstraintExpression ConstraintExpression:
 		//	AttributeEquivalenceExpression
+		//	| XbaseBodyConstraintExpression
 		@Override public ParserRule getRule() { return rule; }
 		
+		//AttributeEquivalenceExpression | XbaseBodyConstraintExpression
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
 		//AttributeEquivalenceExpression
-		public RuleCall getAttributeEquivalenceExpressionParserRuleCall() { return cAttributeEquivalenceExpressionParserRuleCall; }
+		public RuleCall getAttributeEquivalenceExpressionParserRuleCall_0() { return cAttributeEquivalenceExpressionParserRuleCall_0; }
+		
+		//XbaseBodyConstraintExpression
+		public RuleCall getXbaseBodyConstraintExpressionParserRuleCall_1() { return cXbaseBodyConstraintExpressionParserRuleCall_1; }
 	}
 	public class VariableRefElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.VariableRef");
@@ -1131,6 +1252,8 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	private final ConstraintExpressionElements pConstraintExpression;
 	private final SignatureConstraintBlockElements pSignatureConstraintBlock;
 	private final SignatureConstraintExpressionElements pSignatureConstraintExpression;
+	private final XbaseSignatureConstraintExpressionElements pXbaseSignatureConstraintExpression;
+	private final XbaseBodyConstraintExpressionElements pXbaseBodyConstraintExpression;
 	private final BodyConstraintBlockElements pBodyConstraintBlock;
 	private final BodyConstraintExpressionElements pBodyConstraintExpression;
 	private final VariableRefElements pVariableRef;
@@ -1174,6 +1297,8 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		this.pConstraintExpression = new ConstraintExpressionElements();
 		this.pSignatureConstraintBlock = new SignatureConstraintBlockElements();
 		this.pSignatureConstraintExpression = new SignatureConstraintExpressionElements();
+		this.pXbaseSignatureConstraintExpression = new XbaseSignatureConstraintExpressionElements();
+		this.pXbaseBodyConstraintExpression = new XbaseBodyConstraintExpressionElements();
 		this.pBodyConstraintBlock = new BodyConstraintBlockElements();
 		this.pBodyConstraintExpression = new BodyConstraintExpressionElements();
 		this.pVariableRef = new VariableRefElements();
@@ -1266,7 +1391,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//Signature:
 	//	{Signature}
-	//	'[' (elements+=ModelElement (',' elements+=ModelElement)*)? ']';
+	//	'[' (declaredPackage=MetamodelReference ':')? (elements+=NamedModelElement (',' elements+=NamedModelElement)*)? ']';
 	public SignatureElements getSignatureAccess() {
 		return pSignature;
 	}
@@ -1320,12 +1445,37 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	//	InExpression
 	//	| EqualsLiteralExpression
 	//	| DefaultContainExpression
+	//	| XbaseSignatureConstraintExpression
 	public SignatureConstraintExpressionElements getSignatureConstraintExpressionAccess() {
 		return pSignatureConstraintExpression;
 	}
 	
 	public ParserRule getSignatureConstraintExpressionRule() {
 		return getSignatureConstraintExpressionAccess().getRule();
+	}
+	
+	//XbaseSignatureConstraintExpression ConstraintExpression:
+	//	{XbaseSignatureConstraintExpression}
+	//	'xbase'
+	//	'check' checkBlock=XBlockExpression
+	//	'enforce' enforceBlock=XBlockExpression
+	public XbaseSignatureConstraintExpressionElements getXbaseSignatureConstraintExpressionAccess() {
+		return pXbaseSignatureConstraintExpression;
+	}
+	
+	public ParserRule getXbaseSignatureConstraintExpressionRule() {
+		return getXbaseSignatureConstraintExpressionAccess().getRule();
+	}
+	
+	//XbaseBodyConstraintExpression ConstraintExpression:
+	//	{XbaseBodyConstraintExpression}
+	//	'xbase' 'from' metamodel=MetamodelReference 'with' block=XBlockExpression
+	public XbaseBodyConstraintExpressionElements getXbaseBodyConstraintExpressionAccess() {
+		return pXbaseBodyConstraintExpression;
+	}
+	
+	public ParserRule getXbaseBodyConstraintExpressionRule() {
+		return getXbaseBodyConstraintExpressionAccess().getRule();
 	}
 	
 	//BodyConstraintBlock:
@@ -1341,6 +1491,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//BodyConstraintExpression ConstraintExpression:
 	//	AttributeEquivalenceExpression
+	//	| XbaseBodyConstraintExpression
 	public BodyConstraintExpressionElements getBodyConstraintExpressionAccess() {
 		return pBodyConstraintExpression;
 	}
@@ -1515,8 +1666,8 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		return getModelElementAccess().getRule();
 	}
 	
-	//NamedModelElement:
-	//	ModelElement ('as' name=ValidID)?;
+	//NamedModelElement ModelElement:
+	//	element=[ecore::EClass|QualifiedName] ('as' name=ValidID)?
 	public MirBaseGrammarAccess.NamedModelElementElements getNamedModelElementAccess() {
 		return gaMirBase.getNamedModelElementAccess();
 	}

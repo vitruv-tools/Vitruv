@@ -24,6 +24,8 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPat
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Signature;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.SignatureConstraintBlock;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.VariableRef;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseBodyConstraintExpression;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpression;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.services.MappingLanguageGrammarAccess;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.FeatureOfElement;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport;
@@ -164,6 +166,12 @@ public abstract class AbstractMappingLanguageSemanticSequencer extends MirBaseSe
 			case MappingLanguagePackage.VARIABLE_REF:
 				sequence_VariableRef(context, (VariableRef) semanticObject); 
 				return; 
+			case MappingLanguagePackage.XBASE_BODY_CONSTRAINT_EXPRESSION:
+				sequence_XbaseBodyConstraintExpression(context, (XbaseBodyConstraintExpression) semanticObject); 
+				return; 
+			case MappingLanguagePackage.XBASE_SIGNATURE_CONSTRAINT_EXPRESSION:
+				sequence_XbaseSignatureConstraintExpression(context, (XbaseSignatureConstraintExpression) semanticObject); 
+				return; 
 			}
 		else if (epackage == MirBasePackage.eINSTANCE)
 			switch (semanticObject.eClass().getClassifierID()) {
@@ -182,7 +190,7 @@ public abstract class AbstractMappingLanguageSemanticSequencer extends MirBaseSe
 					return; 
 				}
 				else if (rule == grammarAccess.getNamedModelElementRule()) {
-					sequence_ModelElement_NamedModelElement(context, (ModelElement) semanticObject); 
+					sequence_NamedModelElement(context, (ModelElement) semanticObject); 
 					return; 
 				}
 				else break;
@@ -721,7 +729,7 @@ public abstract class AbstractMappingLanguageSemanticSequencer extends MirBaseSe
 	 *     Signature returns Signature
 	 *
 	 * Constraint:
-	 *     (elements+=ModelElement elements+=ModelElement*)?
+	 *     (declaredPackage=MetamodelReference? (elements+=NamedModelElement elements+=NamedModelElement*)?)
 	 */
 	protected void sequence_Signature(ISerializationContext context, Signature semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -742,6 +750,52 @@ public abstract class AbstractMappingLanguageSemanticSequencer extends MirBaseSe
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getVariableRefAccess().getTargetContextVariableParserRuleCall_1_0(), semanticObject.getTarget());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ConstraintExpression returns XbaseBodyConstraintExpression
+	 *     XbaseBodyConstraintExpression returns XbaseBodyConstraintExpression
+	 *     BodyConstraintExpression returns XbaseBodyConstraintExpression
+	 *
+	 * Constraint:
+	 *     (metamodel=MetamodelReference block=XBlockExpression)
+	 */
+	protected void sequence_XbaseBodyConstraintExpression(ISerializationContext context, XbaseBodyConstraintExpression semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MappingLanguagePackage.Literals.XBASE_BODY_CONSTRAINT_EXPRESSION__METAMODEL) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingLanguagePackage.Literals.XBASE_BODY_CONSTRAINT_EXPRESSION__METAMODEL));
+			if (transientValues.isValueTransient(semanticObject, MappingLanguagePackage.Literals.XBASE_BODY_CONSTRAINT_EXPRESSION__BLOCK) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingLanguagePackage.Literals.XBASE_BODY_CONSTRAINT_EXPRESSION__BLOCK));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getXbaseBodyConstraintExpressionAccess().getMetamodelMetamodelReferenceParserRuleCall_3_0(), semanticObject.getMetamodel());
+		feeder.accept(grammarAccess.getXbaseBodyConstraintExpressionAccess().getBlockXBlockExpressionParserRuleCall_5_0(), semanticObject.getBlock());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ConstraintExpression returns XbaseSignatureConstraintExpression
+	 *     SignatureConstraintExpression returns XbaseSignatureConstraintExpression
+	 *     XbaseSignatureConstraintExpression returns XbaseSignatureConstraintExpression
+	 *
+	 * Constraint:
+	 *     (checkBlock=XBlockExpression enforceBlock=XBlockExpression)
+	 */
+	protected void sequence_XbaseSignatureConstraintExpression(ISerializationContext context, XbaseSignatureConstraintExpression semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MappingLanguagePackage.Literals.XBASE_SIGNATURE_CONSTRAINT_EXPRESSION__CHECK_BLOCK) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingLanguagePackage.Literals.XBASE_SIGNATURE_CONSTRAINT_EXPRESSION__CHECK_BLOCK));
+			if (transientValues.isValueTransient(semanticObject, MappingLanguagePackage.Literals.XBASE_SIGNATURE_CONSTRAINT_EXPRESSION__ENFORCE_BLOCK) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingLanguagePackage.Literals.XBASE_SIGNATURE_CONSTRAINT_EXPRESSION__ENFORCE_BLOCK));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getXbaseSignatureConstraintExpressionAccess().getCheckBlockXBlockExpressionParserRuleCall_3_0(), semanticObject.getCheckBlock());
+		feeder.accept(grammarAccess.getXbaseSignatureConstraintExpressionAccess().getEnforceBlockXBlockExpressionParserRuleCall_5_0(), semanticObject.getEnforceBlock());
 		feeder.finish();
 	}
 	

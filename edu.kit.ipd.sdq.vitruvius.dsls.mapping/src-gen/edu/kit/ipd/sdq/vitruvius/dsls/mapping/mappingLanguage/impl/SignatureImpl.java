@@ -6,10 +6,12 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Signature;
 
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelReference;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
@@ -17,6 +19,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
@@ -30,6 +33,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.SignatureImpl#getDeclaredPackage <em>Declared Package</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.SignatureImpl#getElements <em>Elements</em>}</li>
  * </ul>
  *
@@ -37,6 +41,16 @@ import org.eclipse.emf.ecore.util.InternalEList;
  */
 public class SignatureImpl extends MinimalEObjectImpl.Container implements Signature
 {
+  /**
+   * The cached value of the '{@link #getDeclaredPackage() <em>Declared Package</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getDeclaredPackage()
+   * @generated
+   * @ordered
+   */
+  protected MetamodelReference declaredPackage;
+
   /**
    * The cached value of the '{@link #getElements() <em>Elements</em>}' containment reference list.
    * <!-- begin-user-doc -->
@@ -73,6 +87,54 @@ public class SignatureImpl extends MinimalEObjectImpl.Container implements Signa
    * <!-- end-user-doc -->
    * @generated
    */
+  public MetamodelReference getDeclaredPackage()
+  {
+    return declaredPackage;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetDeclaredPackage(MetamodelReference newDeclaredPackage, NotificationChain msgs)
+  {
+    MetamodelReference oldDeclaredPackage = declaredPackage;
+    declaredPackage = newDeclaredPackage;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MappingLanguagePackage.SIGNATURE__DECLARED_PACKAGE, oldDeclaredPackage, newDeclaredPackage);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setDeclaredPackage(MetamodelReference newDeclaredPackage)
+  {
+    if (newDeclaredPackage != declaredPackage)
+    {
+      NotificationChain msgs = null;
+      if (declaredPackage != null)
+        msgs = ((InternalEObject)declaredPackage).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MappingLanguagePackage.SIGNATURE__DECLARED_PACKAGE, null, msgs);
+      if (newDeclaredPackage != null)
+        msgs = ((InternalEObject)newDeclaredPackage).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MappingLanguagePackage.SIGNATURE__DECLARED_PACKAGE, null, msgs);
+      msgs = basicSetDeclaredPackage(newDeclaredPackage, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MappingLanguagePackage.SIGNATURE__DECLARED_PACKAGE, newDeclaredPackage, newDeclaredPackage));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EList<ModelElement> getElements()
   {
     if (elements == null)
@@ -92,6 +154,8 @@ public class SignatureImpl extends MinimalEObjectImpl.Container implements Signa
   {
     switch (featureID)
     {
+      case MappingLanguagePackage.SIGNATURE__DECLARED_PACKAGE:
+        return basicSetDeclaredPackage(null, msgs);
       case MappingLanguagePackage.SIGNATURE__ELEMENTS:
         return ((InternalEList<?>)getElements()).basicRemove(otherEnd, msgs);
     }
@@ -108,6 +172,8 @@ public class SignatureImpl extends MinimalEObjectImpl.Container implements Signa
   {
     switch (featureID)
     {
+      case MappingLanguagePackage.SIGNATURE__DECLARED_PACKAGE:
+        return getDeclaredPackage();
       case MappingLanguagePackage.SIGNATURE__ELEMENTS:
         return getElements();
     }
@@ -125,6 +191,9 @@ public class SignatureImpl extends MinimalEObjectImpl.Container implements Signa
   {
     switch (featureID)
     {
+      case MappingLanguagePackage.SIGNATURE__DECLARED_PACKAGE:
+        setDeclaredPackage((MetamodelReference)newValue);
+        return;
       case MappingLanguagePackage.SIGNATURE__ELEMENTS:
         getElements().clear();
         getElements().addAll((Collection<? extends ModelElement>)newValue);
@@ -143,6 +212,9 @@ public class SignatureImpl extends MinimalEObjectImpl.Container implements Signa
   {
     switch (featureID)
     {
+      case MappingLanguagePackage.SIGNATURE__DECLARED_PACKAGE:
+        setDeclaredPackage((MetamodelReference)null);
+        return;
       case MappingLanguagePackage.SIGNATURE__ELEMENTS:
         getElements().clear();
         return;
@@ -160,6 +232,8 @@ public class SignatureImpl extends MinimalEObjectImpl.Container implements Signa
   {
     switch (featureID)
     {
+      case MappingLanguagePackage.SIGNATURE__DECLARED_PACKAGE:
+        return declaredPackage != null;
       case MappingLanguagePackage.SIGNATURE__ELEMENTS:
         return elements != null && !elements.isEmpty();
     }

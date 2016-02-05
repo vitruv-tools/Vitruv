@@ -260,6 +260,7 @@ public class MirBaseParser extends AbstractContentAssistParser {
 					put(grammarAccess.getMetamodelImportAccess().getPackageAssignment_1(), "rule__MetamodelImport__PackageAssignment_1");
 					put(grammarAccess.getMetamodelImportAccess().getNameAssignment_3(), "rule__MetamodelImport__NameAssignment_3");
 					put(grammarAccess.getModelElementAccess().getElementAssignment(), "rule__ModelElement__ElementAssignment");
+					put(grammarAccess.getNamedModelElementAccess().getElementAssignment_0(), "rule__NamedModelElement__ElementAssignment_0");
 					put(grammarAccess.getNamedModelElementAccess().getNameAssignment_1_1(), "rule__NamedModelElement__NameAssignment_1_1");
 					put(grammarAccess.getFeatureOfElementAccess().getElementAssignment_0(), "rule__FeatureOfElement__ElementAssignment_0");
 					put(grammarAccess.getFeatureOfElementAccess().getFeatureAssignment_2(), "rule__FeatureOfElement__FeatureAssignment_2");

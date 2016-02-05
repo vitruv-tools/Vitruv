@@ -95,7 +95,7 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 					return; 
 				}
 				else if (rule == grammarAccess.getNamedModelElementRule()) {
-					sequence_ModelElement_NamedModelElement(context, (ModelElement) semanticObject); 
+					sequence_NamedModelElement(context, (ModelElement) semanticObject); 
 					return; 
 				}
 				else break;
@@ -428,7 +428,7 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 	 * Constraint:
 	 *     (element=[EClass|QualifiedName] name=ValidID?)
 	 */
-	protected void sequence_ModelElement_NamedModelElement(ISerializationContext context, ModelElement semanticObject) {
+	protected void sequence_NamedModelElement(ISerializationContext context, ModelElement semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

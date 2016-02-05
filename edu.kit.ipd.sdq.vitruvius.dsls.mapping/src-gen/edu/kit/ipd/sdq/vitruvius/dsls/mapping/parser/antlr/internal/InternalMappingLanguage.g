@@ -548,9 +548,34 @@ ruleSignature returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getSignatureAccess().getElementsModelElementParserRuleCall_2_0_0());
+						newCompositeNode(grammarAccess.getSignatureAccess().getDeclaredPackageMetamodelReferenceParserRuleCall_2_0_0());
 					}
-					lv_elements_2_0=ruleModelElement
+					lv_declaredPackage_2_0=ruleMetamodelReference
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getSignatureRule());
+						}
+						set(
+							$current,
+							"declaredPackage",
+							lv_declaredPackage_2_0,
+							"edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase.MetamodelReference");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			otherlv_3=':'
+			{
+				newLeafNode(otherlv_3, grammarAccess.getSignatureAccess().getColonKeyword_2_1());
+			}
+		)?
+		(
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getSignatureAccess().getElementsNamedModelElementParserRuleCall_3_0_0());
+					}
+					lv_elements_4_0=ruleNamedModelElement
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getSignatureRule());
@@ -558,23 +583,23 @@ ruleSignature returns [EObject current=null]
 						add(
 							$current,
 							"elements",
-							lv_elements_2_0,
-							"edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase.ModelElement");
+							lv_elements_4_0,
+							"edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase.NamedModelElement");
 						afterParserOrEnumRuleCall();
 					}
 				)
 			)
 			(
-				otherlv_3=','
+				otherlv_5=','
 				{
-					newLeafNode(otherlv_3, grammarAccess.getSignatureAccess().getCommaKeyword_2_1_0());
+					newLeafNode(otherlv_5, grammarAccess.getSignatureAccess().getCommaKeyword_3_1_0());
 				}
 				(
 					(
 						{
-							newCompositeNode(grammarAccess.getSignatureAccess().getElementsModelElementParserRuleCall_2_1_1_0());
+							newCompositeNode(grammarAccess.getSignatureAccess().getElementsNamedModelElementParserRuleCall_3_1_1_0());
 						}
-						lv_elements_4_0=ruleModelElement
+						lv_elements_6_0=ruleNamedModelElement
 						{
 							if ($current==null) {
 								$current = createModelElementForParent(grammarAccess.getSignatureRule());
@@ -582,17 +607,17 @@ ruleSignature returns [EObject current=null]
 							add(
 								$current,
 								"elements",
-								lv_elements_4_0,
-								"edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase.ModelElement");
+								lv_elements_6_0,
+								"edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase.NamedModelElement");
 							afterParserOrEnumRuleCall();
 						}
 					)
 				)
 			)*
 		)?
-		otherlv_5=']'
+		otherlv_7=']'
 		{
-			newLeafNode(otherlv_5, grammarAccess.getSignatureAccess().getRightSquareBracketKeyword_3());
+			newLeafNode(otherlv_7, grammarAccess.getSignatureAccess().getRightSquareBracketKeyword_4());
 		}
 	)
 ;
@@ -759,6 +784,167 @@ ruleSignatureConstraintExpression returns [EObject current=null]
 			$current = $this_DefaultContainExpression_2.current;
 			afterParserOrEnumRuleCall();
 		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getSignatureConstraintExpressionAccess().getXbaseSignatureConstraintExpressionParserRuleCall_3());
+		}
+		this_XbaseSignatureConstraintExpression_3=ruleXbaseSignatureConstraintExpression
+		{
+			$current = $this_XbaseSignatureConstraintExpression_3.current;
+			afterParserOrEnumRuleCall();
+		}
+	)
+;
+
+// Entry rule entryRuleXbaseSignatureConstraintExpression
+entryRuleXbaseSignatureConstraintExpression returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getXbaseSignatureConstraintExpressionRule()); }
+	iv_ruleXbaseSignatureConstraintExpression=ruleXbaseSignatureConstraintExpression
+	{ $current=$iv_ruleXbaseSignatureConstraintExpression.current; }
+	EOF;
+
+// Rule XbaseSignatureConstraintExpression
+ruleXbaseSignatureConstraintExpression returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getXbaseSignatureConstraintExpressionAccess().getXbaseSignatureConstraintExpressionAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='xbase'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getXbaseSignatureConstraintExpressionAccess().getXbaseKeyword_1());
+		}
+		otherlv_2='check'
+		{
+			newLeafNode(otherlv_2, grammarAccess.getXbaseSignatureConstraintExpressionAccess().getCheckKeyword_2());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getXbaseSignatureConstraintExpressionAccess().getCheckBlockXBlockExpressionParserRuleCall_3_0());
+				}
+				lv_checkBlock_3_0=ruleXBlockExpression
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getXbaseSignatureConstraintExpressionRule());
+					}
+					set(
+						$current,
+						"checkBlock",
+						lv_checkBlock_3_0,
+						"org.eclipse.xtext.xbase.Xbase.XBlockExpression");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		otherlv_4='enforce'
+		{
+			newLeafNode(otherlv_4, grammarAccess.getXbaseSignatureConstraintExpressionAccess().getEnforceKeyword_4());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getXbaseSignatureConstraintExpressionAccess().getEnforceBlockXBlockExpressionParserRuleCall_5_0());
+				}
+				lv_enforceBlock_5_0=ruleXBlockExpression
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getXbaseSignatureConstraintExpressionRule());
+					}
+					set(
+						$current,
+						"enforceBlock",
+						lv_enforceBlock_5_0,
+						"org.eclipse.xtext.xbase.Xbase.XBlockExpression");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+	)
+;
+
+// Entry rule entryRuleXbaseBodyConstraintExpression
+entryRuleXbaseBodyConstraintExpression returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getXbaseBodyConstraintExpressionRule()); }
+	iv_ruleXbaseBodyConstraintExpression=ruleXbaseBodyConstraintExpression
+	{ $current=$iv_ruleXbaseBodyConstraintExpression.current; }
+	EOF;
+
+// Rule XbaseBodyConstraintExpression
+ruleXbaseBodyConstraintExpression returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getXbaseBodyConstraintExpressionAccess().getXbaseBodyConstraintExpressionAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='xbase'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getXbaseBodyConstraintExpressionAccess().getXbaseKeyword_1());
+		}
+		otherlv_2='from'
+		{
+			newLeafNode(otherlv_2, grammarAccess.getXbaseBodyConstraintExpressionAccess().getFromKeyword_2());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getXbaseBodyConstraintExpressionAccess().getMetamodelMetamodelReferenceParserRuleCall_3_0());
+				}
+				lv_metamodel_3_0=ruleMetamodelReference
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getXbaseBodyConstraintExpressionRule());
+					}
+					set(
+						$current,
+						"metamodel",
+						lv_metamodel_3_0,
+						"edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase.MetamodelReference");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		otherlv_4='with'
+		{
+			newLeafNode(otherlv_4, grammarAccess.getXbaseBodyConstraintExpressionAccess().getWithKeyword_4());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getXbaseBodyConstraintExpressionAccess().getBlockXBlockExpressionParserRuleCall_5_0());
+				}
+				lv_block_5_0=ruleXBlockExpression
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getXbaseBodyConstraintExpressionRule());
+					}
+					set(
+						$current,
+						"block",
+						lv_block_5_0,
+						"org.eclipse.xtext.xbase.Xbase.XBlockExpression");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
 	)
 ;
 
@@ -840,14 +1026,25 @@ ruleBodyConstraintExpression returns [EObject current=null]
 @after {
 	leaveRule();
 }:
-	{
-		newCompositeNode(grammarAccess.getBodyConstraintExpressionAccess().getAttributeEquivalenceExpressionParserRuleCall());
-	}
-	this_AttributeEquivalenceExpression_0=ruleAttributeEquivalenceExpression
-	{
-		$current = $this_AttributeEquivalenceExpression_0.current;
-		afterParserOrEnumRuleCall();
-	}
+	(
+		{
+			newCompositeNode(grammarAccess.getBodyConstraintExpressionAccess().getAttributeEquivalenceExpressionParserRuleCall_0());
+		}
+		this_AttributeEquivalenceExpression_0=ruleAttributeEquivalenceExpression
+		{
+			$current = $this_AttributeEquivalenceExpression_0.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getBodyConstraintExpressionAccess().getXbaseBodyConstraintExpressionParserRuleCall_1());
+		}
+		this_XbaseBodyConstraintExpression_1=ruleXbaseBodyConstraintExpression
+		{
+			$current = $this_XbaseBodyConstraintExpression_1.current;
+			afterParserOrEnumRuleCall();
+		}
+	)
 ;
 
 // Entry rule entryRuleInExpression
@@ -1766,15 +1963,75 @@ ruleMetamodelImport returns [EObject current=null]
 	)
 ;
 
-// Entry rule entryRuleModelElement
-entryRuleModelElement returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getModelElementRule()); }
-	iv_ruleModelElement=ruleModelElement
-	{ $current=$iv_ruleModelElement.current; }
+// Entry rule entryRuleNamedModelElement
+entryRuleNamedModelElement returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getNamedModelElementRule()); }
+	iv_ruleNamedModelElement=ruleNamedModelElement
+	{ $current=$iv_ruleNamedModelElement.current; }
 	EOF;
 
-// Rule ModelElement
-ruleModelElement returns [EObject current=null]
+// Rule NamedModelElement
+ruleNamedModelElement returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			(
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getNamedModelElementRule());
+					}
+				}
+				{
+					newCompositeNode(grammarAccess.getNamedModelElementAccess().getElementEClassCrossReference_0_0());
+				}
+				ruleQualifiedName
+				{
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		(
+			otherlv_1='as'
+			{
+				newLeafNode(otherlv_1, grammarAccess.getNamedModelElementAccess().getAsKeyword_1_0());
+			}
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getNamedModelElementAccess().getNameValidIDParserRuleCall_1_1_0());
+					}
+					lv_name_2_0=ruleValidID
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getNamedModelElementRule());
+						}
+						set(
+							$current,
+							"name",
+							lv_name_2_0,
+							"org.eclipse.xtext.xbase.Xtype.ValidID");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+		)?
+	)
+;
+
+// Entry rule entryRuleMetamodelReference
+entryRuleMetamodelReference returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getMetamodelReferenceRule()); }
+	iv_ruleMetamodelReference=ruleMetamodelReference
+	{ $current=$iv_ruleMetamodelReference.current; }
+	EOF;
+
+// Rule MetamodelReference
+ruleMetamodelReference returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -1785,15 +2042,12 @@ ruleModelElement returns [EObject current=null]
 		(
 			{
 				if ($current==null) {
-					$current = createModelElement(grammarAccess.getModelElementRule());
+					$current = createModelElement(grammarAccess.getMetamodelReferenceRule());
 				}
 			}
+			otherlv_0=RULE_ID
 			{
-				newCompositeNode(grammarAccess.getModelElementAccess().getElementEClassCrossReference_0());
-			}
-			ruleQualifiedName
-			{
-				afterParserOrEnumRuleCall();
+				newLeafNode(otherlv_0, grammarAccess.getMetamodelReferenceAccess().getModelMetamodelImportCrossReference_0());
 			}
 		)
 	)

@@ -28,6 +28,8 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPat
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Signature;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.SignatureConstraintBlock;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.VariableRef;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseBodyConstraintExpression;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpression;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage;
 
@@ -37,6 +39,8 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+
+import org.eclipse.xtext.xbase.XbasePackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -136,6 +140,20 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    * @generated
    */
   private EClass constraintLiteralEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass xbaseSignatureConstraintExpressionEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass xbaseBodyConstraintExpressionEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -257,6 +275,7 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
 
     // Initialize simple dependencies
     MirBasePackage.eINSTANCE.eClass();
+    XbasePackage.eINSTANCE.eClass();
 
     // Create package meta-data objects
     theMappingLanguagePackage.createPackageContents();
@@ -428,9 +447,19 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getSignature_Elements()
+  public EReference getSignature_DeclaredPackage()
   {
     return (EReference)signatureEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getSignature_Elements()
+  {
+    return (EReference)signatureEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -641,6 +670,66 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
   public EClass getConstraintLiteral()
   {
     return constraintLiteralEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getXbaseSignatureConstraintExpression()
+  {
+    return xbaseSignatureConstraintExpressionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getXbaseSignatureConstraintExpression_CheckBlock()
+  {
+    return (EReference)xbaseSignatureConstraintExpressionEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getXbaseSignatureConstraintExpression_EnforceBlock()
+  {
+    return (EReference)xbaseSignatureConstraintExpressionEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getXbaseBodyConstraintExpression()
+  {
+    return xbaseBodyConstraintExpressionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getXbaseBodyConstraintExpression_Metamodel()
+  {
+    return (EReference)xbaseBodyConstraintExpressionEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getXbaseBodyConstraintExpression_Block()
+  {
+    return (EReference)xbaseBodyConstraintExpressionEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -940,6 +1029,7 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     createEReference(mappingEClass, MAPPING__CONSTRAINT_EXPRESSIONS);
 
     signatureEClass = createEClass(SIGNATURE);
+    createEReference(signatureEClass, SIGNATURE__DECLARED_PACKAGE);
     createEReference(signatureEClass, SIGNATURE__ELEMENTS);
 
     requiredMappingEClass = createEClass(REQUIRED_MAPPING);
@@ -972,6 +1062,14 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     createEReference(requiredMappingPathTailEClass, REQUIRED_MAPPING_PATH_TAIL__TAIL);
 
     constraintLiteralEClass = createEClass(CONSTRAINT_LITERAL);
+
+    xbaseSignatureConstraintExpressionEClass = createEClass(XBASE_SIGNATURE_CONSTRAINT_EXPRESSION);
+    createEReference(xbaseSignatureConstraintExpressionEClass, XBASE_SIGNATURE_CONSTRAINT_EXPRESSION__CHECK_BLOCK);
+    createEReference(xbaseSignatureConstraintExpressionEClass, XBASE_SIGNATURE_CONSTRAINT_EXPRESSION__ENFORCE_BLOCK);
+
+    xbaseBodyConstraintExpressionEClass = createEClass(XBASE_BODY_CONSTRAINT_EXPRESSION);
+    createEReference(xbaseBodyConstraintExpressionEClass, XBASE_BODY_CONSTRAINT_EXPRESSION__METAMODEL);
+    createEReference(xbaseBodyConstraintExpressionEClass, XBASE_BODY_CONSTRAINT_EXPRESSION__BLOCK);
 
     variableRefEClass = createEClass(VARIABLE_REF);
     createEReference(variableRefEClass, VARIABLE_REF__TARGET);
@@ -1035,6 +1133,7 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
 
     // Obtain other dependent packages
     MirBasePackage theMirBasePackage = (MirBasePackage)EPackage.Registry.INSTANCE.getEPackage(MirBasePackage.eNS_URI);
+    XbasePackage theXbasePackage = (XbasePackage)EPackage.Registry.INSTANCE.getEPackage(XbasePackage.eNS_URI);
 
     // Create type parameters
 
@@ -1044,6 +1143,8 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     mappingFileEClass.getESuperTypes().add(theMirBasePackage.getMirBaseFile());
     signatureConstraintBlockEClass.getESuperTypes().add(this.getConstraintBlock());
     bodyConstraintBlockEClass.getESuperTypes().add(this.getConstraintBlock());
+    xbaseSignatureConstraintExpressionEClass.getESuperTypes().add(this.getConstraintExpression());
+    xbaseBodyConstraintExpressionEClass.getESuperTypes().add(this.getConstraintExpression());
     variableRefEClass.getESuperTypes().add(this.getConstraintExpression());
     inExpressionEClass.getESuperTypes().add(this.getConstraintExpression());
     defaultContainExpressionEClass.getESuperTypes().add(this.getConstraintExpression());
@@ -1073,6 +1174,7 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     initEReference(getMapping_ConstraintExpressions(), this.getConstraintExpression(), null, "constraintExpressions", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(signatureEClass, Signature.class, "Signature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSignature_DeclaredPackage(), theMirBasePackage.getMetamodelReference(), null, "declaredPackage", null, 0, 1, Signature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getSignature_Elements(), theMirBasePackage.getModelElement(), null, "elements", null, 0, -1, Signature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(requiredMappingEClass, RequiredMapping.class, "RequiredMapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1105,6 +1207,14 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     initEReference(getRequiredMappingPathTail_Tail(), this.getRequiredMappingPathTail(), null, "tail", null, 0, 1, RequiredMappingPathTail.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(constraintLiteralEClass, ConstraintLiteral.class, "ConstraintLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(xbaseSignatureConstraintExpressionEClass, XbaseSignatureConstraintExpression.class, "XbaseSignatureConstraintExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getXbaseSignatureConstraintExpression_CheckBlock(), theXbasePackage.getXExpression(), null, "checkBlock", null, 0, 1, XbaseSignatureConstraintExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getXbaseSignatureConstraintExpression_EnforceBlock(), theXbasePackage.getXExpression(), null, "enforceBlock", null, 0, 1, XbaseSignatureConstraintExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(xbaseBodyConstraintExpressionEClass, XbaseBodyConstraintExpression.class, "XbaseBodyConstraintExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getXbaseBodyConstraintExpression_Metamodel(), theMirBasePackage.getMetamodelReference(), null, "metamodel", null, 0, 1, XbaseBodyConstraintExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getXbaseBodyConstraintExpression_Block(), theXbasePackage.getXExpression(), null, "block", null, 0, 1, XbaseBodyConstraintExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(variableRefEClass, VariableRef.class, "VariableRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getVariableRef_Target(), this.getContextVariable(), null, "target", null, 0, 1, VariableRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

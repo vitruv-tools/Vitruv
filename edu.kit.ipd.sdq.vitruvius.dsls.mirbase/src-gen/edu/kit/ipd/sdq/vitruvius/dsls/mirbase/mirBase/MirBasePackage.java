@@ -95,25 +95,6 @@ public interface MirBasePackage extends EPackage
   int METAMODEL_IMPORT_FEATURE_COUNT = 2;
 
   /**
-   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.NamedModelElementImpl <em>Named Model Element</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.NamedModelElementImpl
-   * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getNamedModelElement()
-   * @generated
-   */
-  int NAMED_MODEL_ELEMENT = 2;
-
-  /**
-   * The number of structural features of the '<em>Named Model Element</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int NAMED_MODEL_ELEMENT_FEATURE_COUNT = 0;
-
-  /**
    * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.ModelElementImpl <em>Model Element</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -130,7 +111,7 @@ public interface MirBasePackage extends EPackage
    * @generated
    * @ordered
    */
-  int MODEL_ELEMENT__ELEMENT = NAMED_MODEL_ELEMENT_FEATURE_COUNT + 0;
+  int MODEL_ELEMENT__ELEMENT = 0;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -139,7 +120,7 @@ public interface MirBasePackage extends EPackage
    * @generated
    * @ordered
    */
-  int MODEL_ELEMENT__NAME = NAMED_MODEL_ELEMENT_FEATURE_COUNT + 1;
+  int MODEL_ELEMENT__NAME = 1;
 
   /**
    * The number of structural features of the '<em>Model Element</em>' class.
@@ -148,7 +129,7 @@ public interface MirBasePackage extends EPackage
    * @generated
    * @ordered
    */
-  int MODEL_ELEMENT_FEATURE_COUNT = NAMED_MODEL_ELEMENT_FEATURE_COUNT + 2;
+  int MODEL_ELEMENT_FEATURE_COUNT = 2;
 
   /**
    * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.FeatureOfElementImpl <em>Feature Of Element</em>}' class.
@@ -158,7 +139,7 @@ public interface MirBasePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getFeatureOfElement()
    * @generated
    */
-  int FEATURE_OF_ELEMENT = 3;
+  int FEATURE_OF_ELEMENT = 2;
 
   /**
    * The feature id for the '<em><b>Element</b></em>' reference.
@@ -195,7 +176,7 @@ public interface MirBasePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getMetamodelReference()
    * @generated
    */
-  int METAMODEL_REFERENCE = 4;
+  int METAMODEL_REFERENCE = 3;
 
   /**
    * The feature id for the '<em><b>Model</b></em>' reference.
@@ -223,7 +204,7 @@ public interface MirBasePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getMirBaseFile()
    * @generated
    */
-  int MIR_BASE_FILE = 5;
+  int MIR_BASE_FILE = 4;
 
   /**
    * The number of structural features of the '<em>File</em>' class.
@@ -298,16 +279,6 @@ public interface MirBasePackage extends EPackage
    * @generated
    */
   EAttribute getModelElement_Name();
-
-  /**
-   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedModelElement <em>Named Model Element</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Named Model Element</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedModelElement
-   * @generated
-   */
-  EClass getNamedModelElement();
 
   /**
    * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.FeatureOfElement <em>Feature Of Element</em>}'.
@@ -446,16 +417,6 @@ public interface MirBasePackage extends EPackage
      * @generated
      */
     EAttribute MODEL_ELEMENT__NAME = eINSTANCE.getModelElement_Name();
-
-    /**
-     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.NamedModelElementImpl <em>Named Model Element</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.NamedModelElementImpl
-     * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getNamedModelElement()
-     * @generated
-     */
-    EClass NAMED_MODEL_ELEMENT = eINSTANCE.getNamedModelElement();
 
     /**
      * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.FeatureOfElementImpl <em>Feature Of Element</em>}' class.

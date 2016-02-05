@@ -4,6 +4,7 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,7 +23,7 @@ import org.eclipse.emf.ecore.EClass;
  * @model
  * @generated
  */
-public interface ModelElement extends NamedModelElement
+public interface ModelElement extends EObject
 {
   /**
    * Returns the value of the '<em><b>Element</b></em>' reference.

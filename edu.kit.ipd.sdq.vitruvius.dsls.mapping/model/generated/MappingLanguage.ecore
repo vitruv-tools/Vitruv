@@ -30,6 +30,8 @@
         upperBound="-1" eType="#//ConstraintExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Signature">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="declaredPackage" eType="ecore:EClass platform:/resource/edu.kit.ipd.sdq.vitruvius.dsls.mirbase/model/generated/MirBase.ecore#//MetamodelReference"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
         eType="ecore:EClass platform:/resource/edu.kit.ipd.sdq.vitruvius.dsls.mirbase/model/generated/MirBase.ecore#//ModelElement"
         containment="true"/>
@@ -66,6 +68,19 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConstraintLiteral"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XbaseSignatureConstraintExpression"
+      eSuperTypes="#//ConstraintExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="checkBlock" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="enforceBlock" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XbaseBodyConstraintExpression" eSuperTypes="#//ConstraintExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="metamodel" eType="ecore:EClass platform:/resource/edu.kit.ipd.sdq.vitruvius.dsls.mirbase/model/generated/MirBase.ecore#//MetamodelReference"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="block" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VariableRef" eSuperTypes="#//ConstraintExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//ContextVariable"
         containment="true"/>

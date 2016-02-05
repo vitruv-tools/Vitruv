@@ -11,22 +11,17 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
 
-class TemplateGenerator implements IFileSystemAccess {
+class TemplateGenerator {
 	// simple templating mechanism to allow for addition of code
 	private Map<Pair<Object, String>, List<BiFunction<ImportHelper, TemplateGenerator, CharSequence>>> templateKey2content = newHashMap
 	private Collection<Pair<CharSequence, BiFunction<ImportHelper, TemplateGenerator, CharSequence>>> templates = newHashSet
-	@Delegate private IFileSystemAccess fsa
-
-	new(IFileSystemAccess fsa) {
-		this.fsa = fsa
-	}
 
 	public def void addTemplateJavaFile(CharSequence fqn,
 		BiFunction<ImportHelper, TemplateGenerator, CharSequence> generatorFunction) {
 		templates.add(new Pair(fqn, generatorFunction))
 	}
 
-	public def void generateAllTemplates() {
+	public def void generateAllTemplates(IFileSystemAccess fsa) {
 		for (template : templates) {
 			val fqn = template.first
 			val generatorFunction = template.second

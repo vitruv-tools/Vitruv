@@ -216,13 +216,22 @@ public interface MappingLanguagePackage extends EPackage
   int SIGNATURE = 2;
 
   /**
+   * The feature id for the '<em><b>Declared Package</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SIGNATURE__DECLARED_PACKAGE = 0;
+
+  /**
    * The feature id for the '<em><b>Elements</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SIGNATURE__ELEMENTS = 0;
+  int SIGNATURE__ELEMENTS = 1;
 
   /**
    * The number of structural features of the '<em>Signature</em>' class.
@@ -231,7 +240,7 @@ public interface MappingLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int SIGNATURE_FEATURE_COUNT = 1;
+  int SIGNATURE_FEATURE_COUNT = 2;
 
   /**
    * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.RequiredMappingImpl <em>Required Mapping</em>}' class.
@@ -541,6 +550,80 @@ public interface MappingLanguagePackage extends EPackage
   int CONSTRAINT_LITERAL_FEATURE_COUNT = 0;
 
   /**
+   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.XbaseSignatureConstraintExpressionImpl <em>Xbase Signature Constraint Expression</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.XbaseSignatureConstraintExpressionImpl
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getXbaseSignatureConstraintExpression()
+   * @generated
+   */
+  int XBASE_SIGNATURE_CONSTRAINT_EXPRESSION = 13;
+
+  /**
+   * The feature id for the '<em><b>Check Block</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int XBASE_SIGNATURE_CONSTRAINT_EXPRESSION__CHECK_BLOCK = CONSTRAINT_EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Enforce Block</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int XBASE_SIGNATURE_CONSTRAINT_EXPRESSION__ENFORCE_BLOCK = CONSTRAINT_EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Xbase Signature Constraint Expression</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int XBASE_SIGNATURE_CONSTRAINT_EXPRESSION_FEATURE_COUNT = CONSTRAINT_EXPRESSION_FEATURE_COUNT + 2;
+
+  /**
+   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.XbaseBodyConstraintExpressionImpl <em>Xbase Body Constraint Expression</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.XbaseBodyConstraintExpressionImpl
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getXbaseBodyConstraintExpression()
+   * @generated
+   */
+  int XBASE_BODY_CONSTRAINT_EXPRESSION = 14;
+
+  /**
+   * The feature id for the '<em><b>Metamodel</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int XBASE_BODY_CONSTRAINT_EXPRESSION__METAMODEL = CONSTRAINT_EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Block</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int XBASE_BODY_CONSTRAINT_EXPRESSION__BLOCK = CONSTRAINT_EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Xbase Body Constraint Expression</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int XBASE_BODY_CONSTRAINT_EXPRESSION_FEATURE_COUNT = CONSTRAINT_EXPRESSION_FEATURE_COUNT + 2;
+
+  /**
    * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.VariableRefImpl <em>Variable Ref</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -548,7 +631,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getVariableRef()
    * @generated
    */
-  int VARIABLE_REF = 13;
+  int VARIABLE_REF = 15;
 
   /**
    * The feature id for the '<em><b>Target</b></em>' containment reference.
@@ -576,7 +659,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getInExpression()
    * @generated
    */
-  int IN_EXPRESSION = 14;
+  int IN_EXPRESSION = 16;
 
   /**
    * The feature id for the '<em><b>Target</b></em>' containment reference.
@@ -613,7 +696,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getDefaultContainExpression()
    * @generated
    */
-  int DEFAULT_CONTAIN_EXPRESSION = 15;
+  int DEFAULT_CONTAIN_EXPRESSION = 17;
 
   /**
    * The feature id for the '<em><b>Target</b></em>' containment reference.
@@ -668,7 +751,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getEqualsLiteralExpression()
    * @generated
    */
-  int EQUALS_LITERAL_EXPRESSION = 16;
+  int EQUALS_LITERAL_EXPRESSION = 18;
 
   /**
    * The feature id for the '<em><b>Target</b></em>' containment reference.
@@ -705,7 +788,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getAttributeEquivalenceExpression()
    * @generated
    */
-  int ATTRIBUTE_EQUIVALENCE_EXPRESSION = 17;
+  int ATTRIBUTE_EQUIVALENCE_EXPRESSION = 19;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -742,7 +825,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getConstraintBooleanLiteral()
    * @generated
    */
-  int CONSTRAINT_BOOLEAN_LITERAL = 18;
+  int CONSTRAINT_BOOLEAN_LITERAL = 20;
 
   /**
    * The feature id for the '<em><b>Is True</b></em>' attribute.
@@ -770,7 +853,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getConstraintNullLiteral()
    * @generated
    */
-  int CONSTRAINT_NULL_LITERAL = 19;
+  int CONSTRAINT_NULL_LITERAL = 21;
 
   /**
    * The number of structural features of the '<em>Constraint Null Literal</em>' class.
@@ -789,7 +872,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getConstraintNumberLiteral()
    * @generated
    */
-  int CONSTRAINT_NUMBER_LITERAL = 20;
+  int CONSTRAINT_NUMBER_LITERAL = 22;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -817,7 +900,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getConstraintStringLiteral()
    * @generated
    */
-  int CONSTRAINT_STRING_LITERAL = 21;
+  int CONSTRAINT_STRING_LITERAL = 23;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -845,7 +928,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getNotNullExpression()
    * @generated
    */
-  int NOT_NULL_EXPRESSION = 22;
+  int NOT_NULL_EXPRESSION = 24;
 
   /**
    * The feature id for the '<em><b>Feature</b></em>' reference.
@@ -1027,6 +1110,17 @@ public interface MappingLanguagePackage extends EPackage
    * @generated
    */
   EClass getSignature();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Signature#getDeclaredPackage <em>Declared Package</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Declared Package</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Signature#getDeclaredPackage()
+   * @see #getSignature()
+   * @generated
+   */
+  EReference getSignature_DeclaredPackage();
 
   /**
    * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Signature#getElements <em>Elements</em>}'.
@@ -1259,6 +1353,70 @@ public interface MappingLanguagePackage extends EPackage
    * @generated
    */
   EClass getConstraintLiteral();
+
+  /**
+   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpression <em>Xbase Signature Constraint Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Xbase Signature Constraint Expression</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpression
+   * @generated
+   */
+  EClass getXbaseSignatureConstraintExpression();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpression#getCheckBlock <em>Check Block</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Check Block</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpression#getCheckBlock()
+   * @see #getXbaseSignatureConstraintExpression()
+   * @generated
+   */
+  EReference getXbaseSignatureConstraintExpression_CheckBlock();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpression#getEnforceBlock <em>Enforce Block</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Enforce Block</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpression#getEnforceBlock()
+   * @see #getXbaseSignatureConstraintExpression()
+   * @generated
+   */
+  EReference getXbaseSignatureConstraintExpression_EnforceBlock();
+
+  /**
+   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseBodyConstraintExpression <em>Xbase Body Constraint Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Xbase Body Constraint Expression</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseBodyConstraintExpression
+   * @generated
+   */
+  EClass getXbaseBodyConstraintExpression();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseBodyConstraintExpression#getMetamodel <em>Metamodel</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Metamodel</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseBodyConstraintExpression#getMetamodel()
+   * @see #getXbaseBodyConstraintExpression()
+   * @generated
+   */
+  EReference getXbaseBodyConstraintExpression_Metamodel();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseBodyConstraintExpression#getBlock <em>Block</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Block</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseBodyConstraintExpression#getBlock()
+   * @see #getXbaseBodyConstraintExpression()
+   * @generated
+   */
+  EReference getXbaseBodyConstraintExpression_Block();
 
   /**
    * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.VariableRef <em>Variable Ref</em>}'.
@@ -1675,6 +1833,14 @@ public interface MappingLanguagePackage extends EPackage
     EClass SIGNATURE = eINSTANCE.getSignature();
 
     /**
+     * The meta object literal for the '<em><b>Declared Package</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference SIGNATURE__DECLARED_PACKAGE = eINSTANCE.getSignature_DeclaredPackage();
+
+    /**
      * The meta object literal for the '<em><b>Elements</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1869,6 +2035,58 @@ public interface MappingLanguagePackage extends EPackage
      * @generated
      */
     EClass CONSTRAINT_LITERAL = eINSTANCE.getConstraintLiteral();
+
+    /**
+     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.XbaseSignatureConstraintExpressionImpl <em>Xbase Signature Constraint Expression</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.XbaseSignatureConstraintExpressionImpl
+     * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getXbaseSignatureConstraintExpression()
+     * @generated
+     */
+    EClass XBASE_SIGNATURE_CONSTRAINT_EXPRESSION = eINSTANCE.getXbaseSignatureConstraintExpression();
+
+    /**
+     * The meta object literal for the '<em><b>Check Block</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference XBASE_SIGNATURE_CONSTRAINT_EXPRESSION__CHECK_BLOCK = eINSTANCE.getXbaseSignatureConstraintExpression_CheckBlock();
+
+    /**
+     * The meta object literal for the '<em><b>Enforce Block</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference XBASE_SIGNATURE_CONSTRAINT_EXPRESSION__ENFORCE_BLOCK = eINSTANCE.getXbaseSignatureConstraintExpression_EnforceBlock();
+
+    /**
+     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.XbaseBodyConstraintExpressionImpl <em>Xbase Body Constraint Expression</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.XbaseBodyConstraintExpressionImpl
+     * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getXbaseBodyConstraintExpression()
+     * @generated
+     */
+    EClass XBASE_BODY_CONSTRAINT_EXPRESSION = eINSTANCE.getXbaseBodyConstraintExpression();
+
+    /**
+     * The meta object literal for the '<em><b>Metamodel</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference XBASE_BODY_CONSTRAINT_EXPRESSION__METAMODEL = eINSTANCE.getXbaseBodyConstraintExpression_Metamodel();
+
+    /**
+     * The meta object literal for the '<em><b>Block</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference XBASE_BODY_CONSTRAINT_EXPRESSION__BLOCK = eINSTANCE.getXbaseBodyConstraintExpression_Block();
 
     /**
      * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.VariableRefImpl <em>Variable Ref</em>}' class.

@@ -42,15 +42,6 @@ public interface MirBaseFactory extends EFactory
   ModelElement createModelElement();
 
   /**
-   * Returns a new object of class '<em>Named Model Element</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Named Model Element</em>'.
-   * @generated
-   */
-  NamedModelElement createNamedModelElement();
-
-  /**
    * Returns a new object of class '<em>Feature Of Element</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
