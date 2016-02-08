@@ -17,6 +17,7 @@ import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNull
 import static org.junit.Assert.assertTrue
 import allElementTypes.AllElementTypesPackage
+import java.util.function.Supplier
 
 class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 	private static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource";
@@ -25,7 +26,11 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 	private static val FURTHER_TARGET_TEST_MODEL_NAME = "Further_Target_Test_Model"
 	
 	new() {
-		super(new ResponseChange2CommandTransformingProviding());
+		super(new Supplier<SimpleTestsChange2CommandTransformingProviding>() {
+			override get() {
+				return new SimpleTestsChange2CommandTransformingProviding();
+			}
+		})
 	}
 	
 	private String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"];

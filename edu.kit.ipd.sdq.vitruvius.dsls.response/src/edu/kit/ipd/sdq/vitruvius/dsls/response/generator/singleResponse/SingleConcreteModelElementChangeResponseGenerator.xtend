@@ -43,7 +43,7 @@ class SingleConcreteModelElementChangeResponseGenerator extends SingleModelChang
 	protected def generateMethodCheckChangedObject() '''
 		private def boolean checkChangedObject(«ih.typeRef(EChange)» «CHANGE_PARAMETER_NAME») {
 			val typedChange = «CHANGE_PARAMETER_NAME» as «ih.typeRef(change)»«IF !change.instanceClass.equals(EChange)»<?>«ENDIF»;
-			val changedElement = typedChange.«change.EChangeFeatureNameOfChangedObject»;
+			val changedElement = typedChange.«response.trigger.EChangeFeatureNameOfChangedObject»;
 			«IF changeEvent instanceof AtomicFeatureChange»
 				«/* TODO HK We could compare something more safe like <MM>PackageImpl.eINSTANCE.<ELEMENT>_<FEATURE>.*/»
 				if (!typedChange.affectedFeature.name.equals("«changeEvent.changedFeature.feature.name»")) {

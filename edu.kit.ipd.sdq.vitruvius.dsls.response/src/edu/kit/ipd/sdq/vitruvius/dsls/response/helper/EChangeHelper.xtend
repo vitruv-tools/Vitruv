@@ -32,6 +32,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.ChangePackage
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.SingleValuedFeatureReplace
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.SingleValuedFeatureCreate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.SingleValuedFeatureDelete
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 
 final class EChangeHelper {
 	
@@ -51,6 +53,18 @@ final class EChangeHelper {
 		
 		className = className?.convertPrimitiveTypeToClassName;
 		return className;
+	}
+	
+	static def dispatch Class<?> getGenericTypeParameterOfChange(Trigger change) {
+		throw new UnsupportedOperationException();
+	}
+	
+	static def dispatch Class<?> getGenericTypeParameterOfChange(AtomicFeatureChange featureChange) {
+		return featureChange.changedFeature.feature.EType.instanceClass;
+	}
+	
+	static def dispatch Class<?> getGenericTypeParameterOfChange(AtomicRootObjectChange elementChange) {
+		return elementChange.changedElement.element.instanceClass;
 	}
 	
 	static def dispatch String getGenericTypeParameterFQNOfChange(ConcreteModelElementChange change) {
@@ -78,6 +92,14 @@ final class EChangeHelper {
 			case "void": return Void.name
 			default: return className
 		}
+	}
+	
+	static def Class<? extends EChange> generateEChangeInstanceClass(Trigger trigger) {
+		trigger.generateEChange().instanceClass as Class<? extends EChange>;
+	}
+	
+	static def dispatch EClass generateEChange(Trigger trigger) {
+		throw new UnsupportedOperationException();
 	}
 	
 	static def dispatch EClass generateEChange(ModelChange modelChange) {
@@ -181,17 +203,19 @@ final class EChangeHelper {
 		return ObjectPackageImpl.eINSTANCE.EObjectChange;
 	}
 	
-	public static def String getEChangeFeatureNameOfChangedObject(EClass change) {
-		if (EFeatureChange.isAssignableFrom(change.instanceClass)) {
+	public static def String getEChangeFeatureNameOfChangedObject(Trigger change) {
+		val eChange = change.generateEChange()
+		if (EFeatureChange.isAssignableFrom(eChange.instanceClass)) {
 			// TODO HK This is not correct
 			return "oldAffectedEObject";
-		} else if (CreateRootEObject.isAssignableFrom(change.instanceClass)) {
+		} else if (CreateRootEObject.isAssignableFrom(eChange.instanceClass)) {
 			return "newValue"
-		} else if (DeleteRootEObject.isAssignableFrom(change.instanceClass)
-			|| ReplaceRootEObject.isAssignableFrom(change.instanceClass)) {
+		} else if (DeleteRootEObject.isAssignableFrom(eChange.instanceClass)
+			|| ReplaceRootEObject.isAssignableFrom(eChange.instanceClass)) {
 			return "oldValue"
 		} else {
 			throw new IllegalStateException();
 		}
 	}
+	
 }

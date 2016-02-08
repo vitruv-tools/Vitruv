@@ -11,10 +11,13 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import java.util.Collections
 import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseChange2CommandTransforming
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding
+import org.apache.log4j.Logger
+import org.apache.log4j.Level
 
 abstract class AbstractResponseTests extends VitruviusEMFCasestudyTest {
 
-	new(Supplier<ResponseChange2CommandTransformingProviding> change2CommandTransformingProvidingSupplier) {
+	new(Supplier<? extends Change2CommandTransformingProviding> change2CommandTransformingProvidingSupplier) {
 		super(change2CommandTransformingProvidingSupplier);
 	}
 
@@ -31,6 +34,7 @@ abstract class AbstractResponseTests extends VitruviusEMFCasestudyTest {
 	public override void beforeTest(Description description) throws Throwable {
 		super.beforeTest(description);
 		initializeTestModel();
+		Logger.rootLogger.level = Level.DEBUG;
 	}
 	
 	protected abstract def void initializeTestModel();

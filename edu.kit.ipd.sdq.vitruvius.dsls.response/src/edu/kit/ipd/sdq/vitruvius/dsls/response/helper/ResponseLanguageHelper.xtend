@@ -72,7 +72,7 @@ final class ResponseLanguageHelper {
 		return null;
 	}
 	
-	public static def dispatch EClass getChangedModelElementClass(ConcreteModelElementChange change) {
+	public static def dispatch EClass getChangedModelElementClass(Trigger change) {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -106,6 +106,6 @@ final class ResponseLanguageHelper {
 	}
 	
 	public static def dispatch String getXBlockExpressionText(SimpleTextXBlockExpression blockExpression) {
-		blockExpression.text;
+		blockExpression.text.toString;
 	}
 }

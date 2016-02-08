@@ -26,12 +26,8 @@ import java.io.File
 abstract class AbstractAllElementTypesResponseTests extends AbstractResponseTests {
 	private static val MODEL_FILE_EXTENSION = "minimalAllElements";
 	
-	new(Change2CommandTransformingProviding change2CommandTransformingProviding) {
-		super(new Supplier<ResponseChange2CommandTransformingProviding>() {
-			override get() {
-				return new ResponseChange2CommandTransformingProviding();
-			}
-		})
+	new(Supplier<? extends Change2CommandTransformingProviding> change2CommandTransformingProvidingSupplier) {
+		super(change2CommandTransformingProvidingSupplier)
 	}
 	
 	protected override String getPlatformModelPath(String modelName) {
@@ -95,7 +91,7 @@ abstract class AbstractAllElementTypesResponseTests extends AbstractResponseTest
 		val testResourceSet = new ResourceSetImpl();
 		val root = testResourceSet.getResource(modelName1.modelVURI.getEMFUri(), true).contents.get(0) as Root;
 		val root2 = testResourceSet.getResource(modelName2.modelVURI.getEMFUri(), true).contents.get(0) as Root;
-		assertEquals(root.id, root2.id);
+		//assertEquals(root.id, root2.id);
 		assertEquals(root.singleValuedEAttribute, root2.singleValuedEAttribute);
 		assertEquals(root.singleValuedContainmentEReference?.id, root2.singleValuedContainmentEReference?.id);
 		assertEquals(root.singleValuedNonContainmentEReference?.id, root2.singleValuedNonContainmentEReference?.id);

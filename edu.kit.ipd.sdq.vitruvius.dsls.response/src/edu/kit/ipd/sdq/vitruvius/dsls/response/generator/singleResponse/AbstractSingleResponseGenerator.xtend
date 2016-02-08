@@ -130,7 +130,7 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 			changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)» blackboard) {
 			«val createdClassFactoryName = affectedElementClass.EPackage.EFactoryInstance.class.name»
 			val newRoot = «ih.typeRef(createdClassFactoryName)».eINSTANCE.create«affectedElementClass.name»();
-			val sourceElement = «CHANGE_PARAMETER_NAME».«change.EChangeFeatureNameOfChangedObject»;
+			val sourceElement = «CHANGE_PARAMETER_NAME».«response.trigger.EChangeFeatureNameOfChangedObject»;
 			val newModelFileSegments = "«createdModel.relativeToSourcePath»".split("/")
 			«val newModelFileSegments = createdModel.relativeToSourcePath.split("/")»
 			«IF !newModelFileSegments.last.contains(".")»

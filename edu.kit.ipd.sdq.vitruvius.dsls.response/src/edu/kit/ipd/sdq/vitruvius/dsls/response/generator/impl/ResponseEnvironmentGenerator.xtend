@@ -154,9 +154,9 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		}
 		modelCorrespondenceToResponseNameMap.get(sourceTargetPair).add(responseName);
 		val responseGenerator = SingleResponseGeneratorFactory.INSTANCE.createGenerator(response);
-		fsa.generateFile(response.getResponseFilePath(), 
+		/*fsa.generateFile(response.getResponseFilePath(), 
 			responseGenerator.generateResponseClass(response.getSourceTargetPair().packageQualifiedName, responseName)
-		);
+		);*/
 		return getRootDeleteIfCreate(response)
 	}
 	
@@ -172,6 +172,10 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 				val deleteEffects = ResponseLanguageFactory.eINSTANCE.createEffects();
 				val deleteTargetChange = ResponseLanguageFactory.eINSTANCE.createConcreteTargetModelRootDelete();
 				deleteTargetChange.rootModelElement = createTargetChange.rootModelElement;
+				deleteTargetChange.correspondenceSource = ResponseLanguageFactory.eINSTANCE.createCorrespondenceSourceDeterminationBlock();
+				deleteTargetChange.correspondenceSource.code = new SimpleTextXBlockExpression('''{
+					return change.oldValue;
+				}''');
 				deleteEffects.targetChange = deleteTargetChange;
 				deleteResponse.effects = deleteEffects;
 				return #[deleteResponse];

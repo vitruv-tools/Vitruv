@@ -4,32 +4,29 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel
 
 import com.google.inject.Inject
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
-import java.util.ArrayList
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.xtext.common.types.JvmFormalParameter
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
-import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
 
-import static edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.ResponseLanguageGeneratorConstants.*
-
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondenceSourceDeterminationBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
 import java.util.List
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionBlock
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryTargetMetamodelInstanceUpdate
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
+import org.eclipse.xtext.common.types.JvmOperation
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootCreate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MultiValuedFeatureInsertChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguageFactory
+import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.impl.SimpleTextXBlockExpression
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.InsertRootChange
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
+import java.util.Map
+import java.util.HashMap
+import org.apache.log4j.Logger
+import org.eclipse.xtext.common.types.JvmField
+import edu.kit.ipd.sdq.vitruvius.dsls.response.api.interfaces.IResponseRealization
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the response file model.</p> 
@@ -38,132 +35,104 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.Respon
  * 
  * @author Heiko Klare     
  */
-class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer {
+class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer implements IJvmOperationRegistry{
 
-	@Inject extension JvmTypesBuilder
+	@Inject extension JvmTypesBuilderWithoutAssociations _typesBuilder
+	private Map<String, JvmOperation> methodMap;
 	
-	def dispatch void infer(CorrespondenceSourceDeterminationBlock correspondenceSourceBlock, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	def dispatch void infer(Response response, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		if (isPreIndexingPhase) {
 			return;
 		}
-		val response = correspondenceSourceBlock.containingResponse;
-		val methodParameters = createResponseParameters(response,correspondenceSourceBlock, false);
 		
-		acceptor.accept(response.toClass(response.responseQualifiedName + "HelperSourceCorrespondence")) [
-			members += correspondenceSourceBlock.toMethod(RESPONSE_APPLY_METHOD_NAME, typeRef(EObject)) [applyMethod |
-				applyMethod.parameters += methodParameters
-				applyMethod.body = correspondenceSourceBlock.code];
-			it.makeClassStatic(response)
+		acceptor.accept(generateClass(response, response));
+		for (deleteResponse : response.rootDeleteIfCreate) {
+			acceptor.accept(generateClass(deleteResponse, response));
+		}
+	}
+	
+	public def JvmGenericType generateClass(Response response, EObject sourceElement) {
+		this.methodMap = new HashMap<String, JvmOperation>();
+		val methodGenerator = new ResponseMethodGenerator(response, this, _typeReferenceBuilder, _typesBuilder);
+		methodGenerator.generateMethodGetTrigger();
+		methodGenerator.generateMethodApplyChange();
+		
+		sourceElement.toClass(response.responseQualifiedName) [
+			visibility = JvmVisibility.DEFAULT;
+			superTypes += typeRef(IResponseRealization);
+			members += generateLoggerInitialization(it);
+			members += methodMap.values;
+		];
+	}
+	
+	private def JvmField generateLoggerInitialization(JvmGenericType clazz) {
+		generateUnassociatedField("LOGGER", typeRef(Logger)) [
+			visibility = JvmVisibility.PUBLIC;
+			initializer = '''«Logger».getLogger(«clazz».class)'''
 		]
 	}
 	
-	
-	def dispatch void infer(CodeBlock codeBlock, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-		if (isPreIndexingPhase) {
-			return;
-		}
-		val response = codeBlock.containingResponse;
-		val methodParameters = createResponseParameters(response, codeBlock, true);
-		
-		acceptor.accept(response.toClass(response.responseQualifiedName + "Helper" + RESPONSE_APPLY_METHOD_NAME.toFirstUpper)) [
-			members += codeBlock.toMethod(RESPONSE_APPLY_METHOD_NAME, typeRef(Void.TYPE)) [applyMethod |
-				applyMethod.parameters += methodParameters
-				applyMethod.body = codeBlock.code]
-			it.makeClassStatic(response)
-		]
-	}
-		
-	def dispatch void infer(PreconditionBlock preconditionBlock, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-		if (isPreIndexingPhase) {
-			return;
-		}
-		val response = preconditionBlock.containingResponse;
-		val methodParameters = createResponseParameters(response, preconditionBlock, false);
-		
-		acceptor.accept(response.toClass(response.responseQualifiedName + "Helper" +  PRECONDITION_METHOD_NAME.toFirstUpper)) [
-			members += preconditionBlock.toMethod(PRECONDITION_METHOD_NAME, typeRef(Boolean.TYPE)) [applyMethod |
-				applyMethod.parameters += methodParameters
-				applyMethod.body = preconditionBlock.code]
-			it.makeClassStatic(response)
-		]
-	}
-	
-	private def createResponseParameters(Response response, EObject blockContext, boolean includeTargetModel) {
-		val methodParameters = <JvmFormalParameter>newArrayList();
-		if (response?.trigger != null) {
-			methodParameters += generateChangeParameters(response?.trigger, blockContext);	
-		}
-		if (includeTargetModel && response.effects != null) {
-			val targetChange = response.effects.targetChange
-			if (targetChange instanceof ConcreteTargetModelRootChange) {
-				if (targetChange.rootModelElement != null) {
-					methodParameters += generateTargetModelParameters(targetChange, blockContext);
-				}
-			} else if (targetChange instanceof ArbitraryTargetMetamodelInstanceUpdate) {
-				if (targetChange.metamodelReference?.model != null) {
-					methodParameters += generateBlackboardParameter(blockContext);
-				}
+	private def List<Response> getRootDeleteIfCreate(Response response) {
+		val deleteTrigger = response.trigger.deleteTrigger;
+		val targetChange = response.effects.targetChange;
+		if (targetChange instanceof ConcreteTargetModelRootCreate && deleteTrigger != null) {
+			val createTargetChange = targetChange as ConcreteTargetModelRootCreate;
+			if (createTargetChange.autodelete) {
+				val deleteResponse = ResponseLanguageFactory.eINSTANCE.createResponse();
+				deleteResponse.name = "OppositeResponseForDeleteTo" + response.name;
+				deleteResponse.trigger = deleteTrigger;
+				val deleteEffects = ResponseLanguageFactory.eINSTANCE.createEffects();
+				val deleteTargetChange = ResponseLanguageFactory.eINSTANCE.createConcreteTargetModelRootDelete();
+				val targetChangeElement = ResponseLanguageFactory.eINSTANCE.createModelElement();
+				targetChangeElement.element = createTargetChange.rootModelElement.element;
+				deleteTargetChange.rootModelElement = targetChangeElement;
+				deleteTargetChange.correspondenceSource = ResponseLanguageFactory.eINSTANCE.createCorrespondenceSourceDeterminationBlock();
+				deleteTargetChange.correspondenceSource.code = new SimpleTextXBlockExpression('''return change.getOldValue();''');
+				deleteEffects.targetChange = deleteTargetChange;
+				deleteResponse.effects = deleteEffects;
+				return #[deleteResponse];
 			}
 		}
-		return methodParameters;
-	}
-
-	private def dispatch Iterable<JvmFormalParameter> generateChangeParameters(Trigger event, EObject parameterContext) {
 		return #[];
 	}
-
-	private def dispatch Iterable<JvmFormalParameter> generateChangeParameters(ModelChange event, EObject parameterContext) {
-		var eChange = event.generateEChange();
-		if (eChange == null) {
-			return #[];
+	  
+	private def dispatch Trigger getDeleteTrigger(Trigger change) {
+		return null;
+	}
+	
+	private def dispatch Trigger getDeleteTrigger(MultiValuedFeatureInsertChange change) {
+		val deleteTrigger = ResponseLanguageFactory.eINSTANCE.createMultiValuedFeatureRemoveChange();
+		val changedElement = ResponseLanguageFactory.eINSTANCE.createFeatureOfElement();
+		changedElement.element = change.changedFeature.element;
+		changedElement.feature = change.changedFeature.feature;
+		deleteTrigger.changedFeature = changedElement;
+		return deleteTrigger;
+	}
+	
+	private def dispatch Trigger getDeleteTrigger(InsertRootChange change) {
+		val deleteTrigger = ResponseLanguageFactory.eINSTANCE.createRemoveRootChange();
+		val changedElement = ResponseLanguageFactory.eINSTANCE.createModelElement();
+		changedElement.element = change.changedElement.element;
+		deleteTrigger.changedElement = changedElement;
+		return deleteTrigger;
+	}
+		
+	override JvmOperation getOrGenerateMethod(EObject contextObject, String methodName, JvmTypeReference returnType, Procedure1<? super JvmOperation> initializer) {
+		if (!methodMap.containsKey(methodName)) {
+			val operation = contextObject.toMethod(methodName, returnType, initializer);
+			methodMap.put(operation.simpleName, operation);
 		}
-		var List<String> changeTypeParameters = <String>newArrayList;
-		if (event instanceof ConcreteModelElementChange) {
-			changeTypeParameters = #[getGenericTypeParameterFQNOfChange(event)]			
+		
+		return methodMap.get(methodName);
+	}
+	
+	override JvmOperation getOrGenerateMethod(String methodName, JvmTypeReference returnType, Procedure1<? super JvmOperation> initializer) {
+		if (!methodMap.containsKey(methodName)) {
+			val operation = generateUnassociatedMethod(methodName, returnType, initializer);
+			methodMap.put(operation.simpleName, operation);
 		}
-		val changeParameter = parameterContext.generateChangeParameter(eChange.instanceTypeName, changeTypeParameters);
-		if (changeParameter != null) {
-			return #[changeParameter];
-		}
-	}
-	
-	private def Iterable<JvmFormalParameter> generateTargetModelParameters(ConcreteTargetModelRootChange rootChange, EObject parameterContext) {
-		if (rootChange?.rootModelElement?.element != null) {
-			return #[parameterContext.generateAffectedModelParameter(rootChange.rootModelElement.element.instanceTypeName)];
-		}
-		return #[];
-	}
-	
-	private def Iterable<JvmFormalParameter> generateBlackboardParameter(EObject parameterContext) {
-		return #[generateParameter(parameterContext, "blackboard", Blackboard.name)];
-	}
-	
-	private def void makeClassStatic(JvmGenericType type, EObject context) {
-		type.members += context.toConstructor [
-			visibility = JvmVisibility::PRIVATE
-			body = ''''''
-			documentation = "Private constructor since this class is static"
-		]
-	}
-	
-	private def generateAffectedModelParameter(EObject context, String affectedModelClassName) {
-		generateParameter(context, TARGET_MODEL_PARAMETER_NAME, affectedModelClassName);
-	}
-	
-	private def generateChangeParameter(EObject context, String changeClassName, String... typeParameterClassNames) {
-		generateParameter(context, CHANGE_PARAMETER_NAME, changeClassName, typeParameterClassNames);
-	}
-	
-	private def generateParameter(EObject context, String parameterName, String parameterClassName, String... typeParameterClassNames) {
-		if (parameterClassName.nullOrEmpty) {
-			return null;
-		}
-		val typeParameters = new ArrayList<JvmTypeReference>(typeParameterClassNames.size);
-		for (typeParameterClassName : typeParameterClassNames) {
-			typeParameters.add(typeRef(typeParameterClassName));	
-		}		
-		val changeType = typeRef(parameterClassName, typeParameters)
-		return context.toParameter(parameterName, changeType);
+		
+		return methodMap.get(methodName);
 	}
 	
 }

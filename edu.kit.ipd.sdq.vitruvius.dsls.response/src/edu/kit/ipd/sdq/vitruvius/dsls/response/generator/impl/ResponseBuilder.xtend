@@ -5,6 +5,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguageFactory
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelReference
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.IResponseBuilder
+import org.eclipse.xtend2.lib.StringConcatenationClient
 
 public class ResponseBuilder implements IResponseBuilder {
 	private Response response;
@@ -33,7 +34,7 @@ public class ResponseBuilder implements IResponseBuilder {
 		return this;
 	}
 	
-	public override setExecutionBlock(String executionBlockCode) {
+	public override setExecutionBlock(StringConcatenationClient executionBlockCode) {
 		val executionBlock = ResponseLanguageFactory.eINSTANCE.createExecutionBlock();
 		executionBlock.code = new SimpleTextXBlockExpression(executionBlockCode);
 		this.response.effects.codeBlock = executionBlock;

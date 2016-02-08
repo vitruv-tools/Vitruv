@@ -7,5 +7,6 @@ final class ResponseLanguageGeneratorConstants {
 	public static val TARGET_MODEL_PARAMETER_NAME = "targetModel";
 	public static val BLACKBOARD_PARAMETER_NAME = "blackboard";
 	public static val RESPONSE_APPLY_METHOD_NAME = "applyEvent";
+	public static val TRIGGER_PRECONDITION_METHOD_NAME = "checkTriggerPrecondition";
 	public static val PRECONDITION_METHOD_NAME = "checkPrecondition";
 }
