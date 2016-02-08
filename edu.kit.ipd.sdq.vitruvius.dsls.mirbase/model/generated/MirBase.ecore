@@ -2,6 +2,10 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="mirBase" nsURI="http://www.kit.edu/ipd/sdq/vitruvius/dsls/mirbase/MirBase"
     nsPrefix="mirBase">
+  <eClassifiers xsi:type="ecore:EClass" name="MirBaseFile">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="metamodelImports" upperBound="-1"
+        eType="#//MetamodelImport" containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MetamodelImport">
     <eStructuralFeatures xsi:type="ecore:EReference" name="package" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -17,5 +21,4 @@
   <eClassifiers xsi:type="ecore:EClass" name="MetamodelReference">
     <eStructuralFeatures xsi:type="ecore:EReference" name="model" eType="#//MetamodelImport"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="MirBaseFile" abstract="true"/>
 </ecore:EPackage>

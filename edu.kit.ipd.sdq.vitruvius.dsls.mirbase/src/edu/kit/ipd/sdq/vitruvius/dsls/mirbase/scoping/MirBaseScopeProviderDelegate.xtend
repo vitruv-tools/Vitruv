@@ -100,7 +100,7 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 		return resultScope
 	}
 	
-	private def Iterable<IEObjectDescription> collectObjectDescriptions(EPackage pckg, 
+	protected def Iterable<IEObjectDescription> collectObjectDescriptions(EPackage pckg, 
 		boolean includeSubpackages, boolean includeAbstract, boolean useSimpleNames, String packagePrefix) {
 		var classes = collectEClasses(pckg, includeSubpackages);
 		val result = classes.filter[includeAbstract || !abstract].map[it.createEObjectDescription(useSimpleNames, packagePrefix)];
