@@ -33,19 +33,20 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpression
 import com.google.inject.Inject
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseBodyConstraintExpression
 
 class ConstraintLanguageGenerator {
 	private static final Logger LOGGER = Logger.getLogger(ConstraintLanguageGenerator)
-	
+
 	@Inject
 	private extension EMFGeneratorHelper emfGeneratorHelper
 
 	@Inject
 	private extension MappingLanguageGeneratorNameProvider nameProvider
-	
+
 	@Inject
 	private MappingLanguageGeneratorStateProvider stateProvider
-	
+
 	private extension MappingLanguageGeneratorState state = null
 
 	def setMappingFile(MappingFile file) {
@@ -75,6 +76,19 @@ class ConstraintLanguageGenerator {
 			«eRefSet(importHelper, getJavaExpressionThatReturns(localContext, target.context, mapping), target.feature, eRefGet(importHelper, getJavaExpressionThatReturns(localContext, source.context, mapping), source.feature))»;
 		'''
 
+	}
+
+	def dispatch restoreBodyConstraintFrom(ImportHelper importHelper, Map<List<?>, String> localContext,
+		XbaseBodyConstraintExpression constraint, EPackage pkg) {
+		if (!constraint.metamodel.model.package.equals(pkg)) {
+			return null;
+		}
+		
+		val mapping = constraint.getContainerOfType(Mapping)
+		
+		'''
+			«getMappingConstraintsClassName(mapping)».«getPropagateMethodName(constraint)»(«mapping.toVarName»);
+		'''
 	}
 
 	def dispatch checkSignatureConstraint(ImportHelper importHelper, Map<List<?>, String> localContext,
@@ -263,6 +277,13 @@ class ConstraintLanguageGenerator {
 		DefaultContainExpression constraint) '''
 		/* establish «constraint.toString»: do nothing */
 	'''
+
+	def dispatch establishSignatureConstraintOnCreate(extension ImportHelper importHelper,
+		Map<List<?>, String> localContext, XbaseSignatureConstraintExpression constraint) {
+		val mapping = constraint.getContainerOfType(Mapping)
+		val imp = constraint.getPackage.importsForPackage
+		'''«getMappingConstraintsClassName(mapping)».«getEnforceMethodName(constraint)»(«imp.toVarName»)'''
+	}
 
 	def checkAndCreateDefaultContainment(extension ImportHelper importHelper, Map<List<?>, String> localContext,
 		DefaultContainExpression constraint) {

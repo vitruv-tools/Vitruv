@@ -11,7 +11,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper
 import java.util.Map
 
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.EMFHelper.*
+import com.google.inject.Singleton
 
+@Singleton
 class MappingLanguageGeneratorNameProvider {
 	private var anonMappingIndex = 0
 	
@@ -64,6 +66,10 @@ class MappingLanguageGeneratorNameProvider {
 
 	public def toVarName(MetamodelImport imp) {
 		'''«imp.name.toFirstLower»'''.toString
+	}
+	
+	public def toVarName(Mapping mapping) {
+		'''«mapping.name.toFirstLower»'''.toString
 	}
 
 	public def toFirstUpperName(MetamodelImport imp) {

@@ -2,7 +2,9 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator
 
 import java.util.Map
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile
+import com.google.inject.Singleton
 
+@Singleton
 class MappingLanguageGeneratorStateProvider {
 	private Map<MappingFile, MappingLanguageGeneratorState> states
 	

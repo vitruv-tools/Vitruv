@@ -6,6 +6,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.AbstractCorresponde
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.ElementProvider
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.MappingLanguageGeneratorNameProvider
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.MappingLanguageGeneratorState
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.MappingLanguageGeneratorStateProvider
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping
@@ -22,8 +23,6 @@ import java.util.List
 import java.util.function.Supplier
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmVisibility
-import org.eclipse.xtext.xbase.compiler.DisableCodeGenerationAdapter
-import org.eclipse.xtext.xbase.compiler.XbaseCompiler
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
@@ -41,14 +40,14 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHel
  */
  @SuppressWarnings("discouraged")
 class MappingLanguageJvmModelInferrer extends AbstractModelInferrer {
+	@Inject MappingLanguageGeneratorStateProvider stateProvider
 	@Inject extension JvmTypesBuilder
 	@Inject MappingLanguageDerivedStateComputer derivedStateComputer
-	@Inject XbaseCompiler compiler
 
 	private extension MappingLanguageGeneratorState state
 	@Inject private extension MappingLanguageGeneratorNameProvider nameProvider
 	private ClaimableHashMap<MetamodelImport, String> correspondenceGetMethod
-
+	
 	def dispatch void infer(MappingFile mappingFile, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		if (isPreIndexingPhase) {
 			return
@@ -56,7 +55,7 @@ class MappingLanguageJvmModelInferrer extends AbstractModelInferrer {
 
 		derivedStateComputer.inferDefaultState(mappingFile)
 
-		this.state = new MappingLanguageGeneratorState(mappingFile)
+		this.state = stateProvider.get(mappingFile)
 		this.correspondenceGetMethod = new ClaimableHashMap
 		this.correspondenceGetMethod.put(imports.get(0), "getAs()")
 		this.correspondenceGetMethod.put(imports.get(1), "getBs()")
@@ -69,7 +68,7 @@ class MappingLanguageJvmModelInferrer extends AbstractModelInferrer {
 			val className = nameProvider.getMappingConstraintsClassName(mapping)
 
 			if (!signatureConstraints.empty || !bodyConstraints.empty) {
-				val constraintType = mapping.toClass(className) [
+				acceptor.accept(mapping.toClass(className)) [
 					members += signatureConstraints.map [ signatureConstraint |
 						val imp = signatureConstraint.getPackage?.getImportsForPackage
 
@@ -107,9 +106,6 @@ class MappingLanguageJvmModelInferrer extends AbstractModelInferrer {
 							])
 					]
 				]
-
-				acceptor.accept(constraintType)
-//				DisableCodeGenerationAdapter.disableCodeGeneration(constraintType)
 			}
 
 			inferMapping(mapping, acceptor)
