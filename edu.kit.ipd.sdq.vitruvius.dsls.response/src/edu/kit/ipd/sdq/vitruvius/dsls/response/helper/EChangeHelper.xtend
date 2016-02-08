@@ -12,7 +12,6 @@ import org.eclipse.emf.ecore.EClass
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.impl.ReferencePackageImpl
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.impl.ContainmentPackageImpl
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.impl.ObjectPackageImpl
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.FeatureOfElement
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.impl.ChangePackageImpl
@@ -34,6 +33,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.SingleValuedFeat
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.SingleValuedFeatureDelete
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.FeatureOfElement
 
 final class EChangeHelper {
 	

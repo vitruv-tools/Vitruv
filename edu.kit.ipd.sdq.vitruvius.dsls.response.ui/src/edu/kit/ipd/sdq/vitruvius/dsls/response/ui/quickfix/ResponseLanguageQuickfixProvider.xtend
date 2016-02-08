@@ -3,14 +3,14 @@
  */
 package edu.kit.ipd.sdq.vitruvius.dsls.response.ui.quickfix
 
-import org.eclipse.xtext.xbase.ui.quickfix.XbaseQuickfixProvider
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.ui.quickfix.MirBaseQuickfixProvider
 
 /**
  * Custom quickfixes.
  *
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#quick-fixes
  */
-class ResponseLanguageQuickfixProvider extends XbaseQuickfixProvider {
+class ResponseLanguageQuickfixProvider extends MirBaseQuickfixProvider {
 
 //	@Fix(ResponseLanguageValidator.INVALID_NAME)
 //	def capitalizeName(Issue issue, IssueResolutionAcceptor acceptor) {

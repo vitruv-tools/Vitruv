@@ -7,7 +7,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryModelElementChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelImport
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
 
 class SingleArbitraryModelElementChangeResponseGenerator extends SingleModelChangeResponseGenerator {
 	private final ArbitraryModelElementChange changeEvent;

@@ -6,7 +6,6 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.ui.outline
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelImport
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
@@ -22,6 +21,8 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryTargetM
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicRootObjectChange
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage
 
 /**
  * Outline structure definition for a response file.
@@ -31,7 +32,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicRootObject
 class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	protected def void _createChildren(DocumentRootNode root, ResponseFile responseFile) {
 		val importsNode = createEStructuralFeatureNode(root, responseFile, 
-			ResponseLanguagePackage.Literals.RESPONSE_FILE__METAMODEL_IMPORTS,
+			MirBasePackage.Literals.MIR_BASE_FILE__METAMODEL_IMPORTS,
 			imageDispatcher.invoke(responseFile), "imports", false);
 		for (imp : responseFile.metamodelImports) {
 			createChildren(importsNode, imp);
@@ -47,7 +48,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	protected def void _createChildren(EStructuralFeatureNode parentNode, MetamodelImport imp) {
 		val importNode = createEObjectNode(parentNode, imp);
 		createEStructuralFeatureNode(importNode,
-			imp, ResponseLanguagePackage.Literals.METAMODEL_IMPORT__PACKAGE,
+			imp, MirBasePackage.Literals.METAMODEL_IMPORT__PACKAGE,
 			imageDispatcher.invoke(imp.package),
 			imp.package.name, true);
 	}

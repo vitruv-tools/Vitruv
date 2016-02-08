@@ -3,9 +3,10 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.generator.impl;
 import org.eclipse.emf.ecore.EPackage
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguageFactory
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelReference
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.IResponseBuilder
 import org.eclipse.xtend2.lib.StringConcatenationClient
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFactory
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelReference
 
 public class ResponseBuilder implements IResponseBuilder {
 	private Response response;
@@ -42,8 +43,8 @@ public class ResponseBuilder implements IResponseBuilder {
 	}
 	
 	private static def MetamodelReference generateMetamodelReference(EPackage pack) {
-		val metamodelRef = ResponseLanguageFactory.eINSTANCE.createMetamodelReference();
-		val metamodelImport = ResponseLanguageFactory.eINSTANCE.createMetamodelImport();
+		val metamodelRef = MirBaseFactory.eINSTANCE.createMetamodelReference();
+		val metamodelImport = MirBaseFactory.eINSTANCE.createMetamodelImport();
 		metamodelImport.name = pack.name;
 		metamodelImport.package = pack;
 		metamodelRef.model = metamodelImport;

@@ -27,6 +27,7 @@ import java.util.HashMap
 import org.apache.log4j.Logger
 import org.eclipse.xtext.common.types.JvmField
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.interfaces.IResponseRealization
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFactory
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the response file model.</p> 
@@ -83,7 +84,7 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer implements 
 				deleteResponse.trigger = deleteTrigger;
 				val deleteEffects = ResponseLanguageFactory.eINSTANCE.createEffects();
 				val deleteTargetChange = ResponseLanguageFactory.eINSTANCE.createConcreteTargetModelRootDelete();
-				val targetChangeElement = ResponseLanguageFactory.eINSTANCE.createModelElement();
+				val targetChangeElement = MirBaseFactory.eINSTANCE.createModelElement();
 				targetChangeElement.element = createTargetChange.rootModelElement.element;
 				deleteTargetChange.rootModelElement = targetChangeElement;
 				deleteTargetChange.correspondenceSource = ResponseLanguageFactory.eINSTANCE.createCorrespondenceSourceDeterminationBlock();
@@ -102,7 +103,7 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer implements 
 	
 	private def dispatch Trigger getDeleteTrigger(MultiValuedFeatureInsertChange change) {
 		val deleteTrigger = ResponseLanguageFactory.eINSTANCE.createMultiValuedFeatureRemoveChange();
-		val changedElement = ResponseLanguageFactory.eINSTANCE.createFeatureOfElement();
+		val changedElement = MirBaseFactory.eINSTANCE.createFeatureOfElement();
 		changedElement.element = change.changedFeature.element;
 		changedElement.feature = change.changedFeature.feature;
 		deleteTrigger.changedFeature = changedElement;
@@ -111,7 +112,7 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer implements 
 	
 	private def dispatch Trigger getDeleteTrigger(InsertRootChange change) {
 		val deleteTrigger = ResponseLanguageFactory.eINSTANCE.createRemoveRootChange();
-		val changedElement = ResponseLanguageFactory.eINSTANCE.createModelElement();
+		val changedElement = MirBaseFactory.eINSTANCE.createModelElement();
 		changedElement.element = change.changedElement.element;
 		deleteTrigger.changedElement = changedElement;
 		return deleteTrigger;

@@ -6,9 +6,9 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.dsls.response.ide; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.dsls.response,
+ edu.kit.ipd.sdq.vitruvius.dsls.mirbase,
  org.eclipse.xtext.ide,
  org.eclipse.xtext.xbase.ide
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.response.ide.contentassist.antlr.internal,
  edu.kit.ipd.sdq.vitruvius.dsls.response.ide.contentassist.antlr
-

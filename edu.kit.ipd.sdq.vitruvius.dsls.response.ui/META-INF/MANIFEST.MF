@@ -6,7 +6,9 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.dsls.response.ui; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.dsls.response,
- edu.kit.ipd.sdq.vitruvius.dsls.response.ide,
+ edu.kit.ipd.sdq.vitruvius.dsls.response.ide;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.dsls.mirbase,
+ edu.kit.ipd.sdq.vitruvius.dsls.mirbase.ui,
  org.eclipse.xtext.ui,
  org.eclipse.xtext.ui.shared,
  org.eclipse.xtext.ui.codetemplates.ui,

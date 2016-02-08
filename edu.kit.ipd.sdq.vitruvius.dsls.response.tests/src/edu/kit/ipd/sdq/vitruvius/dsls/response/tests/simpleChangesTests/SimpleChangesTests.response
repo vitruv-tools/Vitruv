@@ -1,5 +1,4 @@
 import "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.allElementTypes" as minimal
-import "http://www.emftext.org/java" as jamopp
 //response: DummyForCodeExecutionOnAnyEvent
 //trigger: model change in minimal
 //effect: update any minimal

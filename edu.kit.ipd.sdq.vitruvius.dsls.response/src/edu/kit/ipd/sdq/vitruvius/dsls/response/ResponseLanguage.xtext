@@ -1,18 +1,16 @@
 grammar edu.kit.ipd.sdq.vitruvius.dsls.response.ResponseLanguage 
-	with org.eclipse.xtext.xbase.Xbase hidden(WS, SL_COMMENT)
+	with edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase hidden(WS, SL_COMMENT)
 
 generate responseLanguage "http://www.kit.edu/ipd/sdq/vitruvius/dsls/response/ResponseLanguage"
 
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+import "http://www.kit.edu/ipd/sdq/vitruvius/dsls/mirbase/MirBase" as mirbase
 
-
-ResponseFile:
-	(metamodelImports += MetamodelImport)*
+ResponseFile returns mirbase::MirBaseFile:
+	{ResponseFile}
+	(metamodelImports+=MetamodelImport)*
 	(responses += Response)*
 ;
-
-MetamodelImport:
-	'import' package=[ecore::EPackage|STRING] 'as' name=ValidID;
 
 Response:
 	(documentation=ML_COMMENT)?
@@ -43,9 +41,6 @@ ConcreteTargetModelRootDelete:
 
 ArbitraryTargetMetamodelInstanceUpdate:
 	'update instances of' metamodelReference=MetamodelReference;
-
-ModelElement:
-	element=[ecore::EClass|QualifiedName];
 
 CodeBlock:
 	CorrespondenceSourceDeterminationBlock | PreconditionBlock | ExecutionBlock;
@@ -101,14 +96,3 @@ AtomicSingleValuedFeatureChange returns AtomicSingleValuedFeatureChange:
 ArbitraryModelElementChange:
 	'change in instance of' changedModel=MetamodelReference;
 	
-MetamodelReference:
-	model=[MetamodelImport];
-
-FeatureOfElement:
-	element=[ecore::EClass|QualifiedName] '[' feature=[ecore::EStructuralFeature|ValidID] ']';
-
-/*XBlockExpression returns xbase::XBlockExpression:
-	{XBlockExpressionAsString}
-	'{'
-		(expressions+=XExpressionOrVarDeclaration ';'?)*
-	'}';*/

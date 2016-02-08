@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: edu.kit.ipd.sdq.vitruvius.dsls.response.tests
-Bundle-Vendor: My Company
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.dsls.response.tests;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.dsls.response.tests; singleton:=true
-Bundle-ActivationPolicy: lazy
-Require-Bundle:  org.junit;bundle-version="4.7.0",
+Bundle-Vendor: My Company
+Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.response.tests
+Require-Bundle: org.junit;bundle-version="4.7.0",
  org.eclipse.xtext.junit4,
  org.eclipse.xtext.xbase.junit,
  org.eclipse.xtext.xbase.lib,
@@ -23,7 +23,6 @@ Require-Bundle:  org.junit;bundle-version="4.7.0",
  edu.kit.ipd.sdq.vitruvius.framework.metarepository,
  org.apache.log4j,
  edu.kit.ipd.sdq.vitruvius.dsls.response,
- edu.kit.ipd.sdq.vitruvius.dsls.response.api,
  edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer,
  edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter,
  org.eclipse.core.resources,
@@ -36,13 +35,18 @@ Require-Bundle:  org.junit;bundle-version="4.7.0",
  edu.kit.ipd.sdq.vitruvius.framework.meta.change;bundle-version="1.0.0",
  org.eclipse.emf.ecore.change,
  edu.kit.ipd.sdq.vitruvius.framework.vsum,
+ org.eclipse.emf.ecore,
+ edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework,
+ edu.kit.ipd.sdq.vitruvius.dsls.mapping,
+ edu.kit.ipd.sdq.vitruvius.dsls.mapping.api,
+ edu.kit.ipd.sdq.vitruvius.dsls.response.api,
  org.emftext.language.java
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.response.tests
 Import-Package: org.hamcrest.core,
  org.junit;version="4.5.0",
- org.junit.runners.model;version="4.5.0",
  org.junit.runner;version="4.5.0",
- org.junit.runners;version="4.5.0",
  org.junit.runner.manipulation;version="4.5.0",
- org.junit.runner.notification;version="4.5.0"
+ org.junit.runner.notification;version="4.5.0",
+ org.junit.runners;version="4.5.0",
+ org.junit.runners.model;version="4.5.0"
+Bundle-ActivationPolicy: lazy

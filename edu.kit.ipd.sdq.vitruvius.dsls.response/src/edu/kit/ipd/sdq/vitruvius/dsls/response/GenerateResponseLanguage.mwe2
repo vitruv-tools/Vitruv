@@ -15,6 +15,7 @@ Workflow {
     	// The following two lines can be removed, if Xbase is not used.
     	registerGeneratedEPackage = "org.eclipse.xtext.xbase.XbasePackage"
     	registerGenModelFile = "platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel"
+    	registerGenModelFile = "platform:/resource/edu.kit.ipd.sdq.vitruvius.dsls.mirbase/model/generated/MirBase.genmodel"
     }
     
     component = DirectoryCleaner {
