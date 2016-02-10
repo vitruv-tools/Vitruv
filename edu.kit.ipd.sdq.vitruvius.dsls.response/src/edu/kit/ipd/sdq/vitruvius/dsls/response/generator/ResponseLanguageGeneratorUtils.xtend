@@ -22,7 +22,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.InsertRootChange
 
 final class ResponseLanguageGeneratorUtils {
 	private static val FSA_SEPARATOR = "/";
-	private static val XTEND_FILE_EXTENSION = ".xtend";
+	private static val XTEND_FILE_EXTENSION = ".java";
 	private static val RESPONSES_PACKAGE = "responses";
 	
 	private new() {}

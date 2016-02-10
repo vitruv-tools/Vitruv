@@ -31,6 +31,7 @@ import org.eclipse.xtext.generator.IFileSystemAccess2
 import java.io.File
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils
 import org.eclipse.xtext.generator.IGenerator
+import java.util.Collections
 
 class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 	@Inject
@@ -119,8 +120,8 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 
 		val classImplementation = '''
 		public class «change2CommandTransformingProvidingName» extends «ih.typeRef(AbstractResponseChange2CommandTransformingProviding)» {
-			new() {
-				val transformationExecutingList = new «ih.typeRef(ArrayList)»<«ih.typeRef(Change2CommandTransforming)»>();
+			public «change2CommandTransformingProvidingName»() {
+				«ih.typeRef(List)»<«ih.typeRef(Change2CommandTransforming)»> transformationExecutingList = new «ih.typeRef(ArrayList)»<«ih.typeRef(Change2CommandTransforming)»>();
 				«FOR modelCorrespondence : modelCorrespondences»
 					transformationExecutingList.add(new «ih.typeRef(modelCorrespondence.change2CommandTransformingQualifiedName)»());
 				«ENDFOR»
@@ -151,7 +152,7 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		public class «modelPair.change2CommandTransformingName» extends «ih.typeRef(AbstractResponseChange2CommandTransforming)» {
 			protected «ih.typeRef(UserInteractor)» userInteracting;
 			
-			new() {
+			public «modelPair.change2CommandTransformingName»() {
 				super();
 				this.userInteracting = new «ih.typeRef(UserInteractor)»();
 				
@@ -162,18 +163,18 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 				this.transformationExecuter.setUserInteracting(this.userInteracting);
 			}
 			
-			public def «ih.typeRef(TransformationExecuter)» getTransformationExecutor() {
+			public «ih.typeRef(TransformationExecuter)» getTransformationExecutor() {
 				return transformationExecuter;
 			}
 			
-			public override «ih.typeRef(List)»<«ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)»>> getTransformableMetamodels() {
-				val sourceVURI = «ih.typeRef(VURI)».getInstance("«modelPair.first.EMFUri.toString»");
-				val targetVURI = «ih.typeRef(VURI)».getInstance("«modelPair.second.EMFUri.toString»");
-				val pair = new «ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)»>(sourceVURI, targetVURI);
-				return newArrayList(pair);
+			public «ih.typeRef(List)»<«ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)»>> getTransformableMetamodels() {
+				«ih.typeRef(VURI)» sourceVURI = «ih.typeRef(VURI)».getInstance("«modelPair.first.EMFUri.toString»");
+				«ih.typeRef(VURI)» targetVURI = «ih.typeRef(VURI)».getInstance("«modelPair.second.EMFUri.toString»");
+				«ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)»> pair = new «ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)»>(sourceVURI, targetVURI);
+				return «ih.typeRef(Collections)».singletonList(pair);
 			}
 			
-			protected override setup() {
+			protected void setup() {
 				this.addResponseExecutor(new «modelPair.executorName»());		
 			}
 			
@@ -187,7 +188,7 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		val ih = new XtendImportHelper();	
 		val classImplementation = '''
 		public class «modelPair.executorName» extends «ih.typeRef(AbstractResponseExecutor)» {
-			protected override setup() {
+			protected void setup() {
 				«FOR response : responseNames»
 				this.addResponse(«ih.typeRef(response)».getTrigger(), new «ih.typeRef(response)»());
 				«ENDFOR»
