@@ -37,11 +37,8 @@ import com.google.inject.Provider;
 import com.google.inject.name.Named;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.IMappingLanguageGenerator;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.IResponseBuilder;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.IResponseEnvironmentGenerator;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.ResponseBuilderFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage;
 
 import static com.google.common.collect.Maps.uniqueIndex;
 
@@ -63,13 +60,8 @@ public class GenerationHandler extends AbstractHandler {
 		@Inject
 		private Provider<EclipseResourceFileSystemAccess2> fileSystemAccessProvider;
 
-		private EclipseOutputConfigurationProvider outputConfigurationProvider;
-		
 		@Inject
-		public void setOutputConfigurationProvider(EclipseOutputConfigurationProvider outputConfigurationProvider) {
-			this.outputConfigurationProvider = outputConfigurationProvider;
-		}
-
+		private EclipseOutputConfigurationProvider outputConfigurationProvider;
 	}
 
 	private static class MappingScope extends LanguageScope {
@@ -157,30 +149,22 @@ public class GenerationHandler extends AbstractHandler {
 				final IJavaProject javaProject = (IJavaProject) firstElement;
 				final IProject project = javaProject.getProject();
 				final EclipseResourceFileSystemAccess2 srcGenFSA = generateFSA(project);
+				final IResponseEnvironmentGenerator responseEnvironmentGenerator = responseScope.responseEnvironmentGenerator;
 				
 				MIRResourceCollectionVisitor resourceVisitor = new MIRResourceCollectionVisitor(project, mappingScope,
 						responseScope);
 				acceptForEachSourceClassPathEntry(javaProject, resourceVisitor);
 
-				//final IResponseEnvironmentGenerator responseEnvironmentGenerator = responseScope.responseEnvironmentGeneratorFactory
-					//	.createResponseEnvironmentGenerator();
-				
-				//MIRCommonActivator.getDefault().responseInjector.injectMembers(responseEnvironmentGenerator);
-				
 				for (Resource mappingResource : resourceVisitor.getMappingResources()) {
 					final Collection<Response> generatedResponses = mappingScope.mappingLanguageGenerator.generateAndCreateResponses(mappingResource, srcGenFSA);
-					responseScope.responseEnvironmentGenerator.addResponses(generatedResponses);
+					responseEnvironmentGenerator.addResponses(generatedResponses);
 				}
 				
 				for (Resource responseResource : resourceVisitor.getResponseResources()) {
-					responseScope.responseEnvironmentGenerator.addResponses(responseResource);
+					responseEnvironmentGenerator.addResponses(responseResource);
 				}
 				
-				IResponseBuilder build = new ResponseBuilderFactory().createResponseBuilder();
-				Response resp = build.setName("MyResponse").setTrigger(ResponseLanguagePackage.eINSTANCE).setTargetChange(ResponseLanguagePackage.eINSTANCE).setExecutionBlock(Helper.gimme()).generateResponse();
-				responseScope.responseEnvironmentGenerator.addResponse(resp);
-				responseScope.responseEnvironmentGenerator.generateEnvironment(srcGenFSA, project);
-				
+				responseEnvironmentGenerator.generateEnvironment(srcGenFSA, project);
 			}
 		}
 		return null;
@@ -190,8 +174,6 @@ public class GenerationHandler extends AbstractHandler {
 	private EclipseResourceFileSystemAccess2 generateFSA(IProject project) {
 		EclipseResourceFileSystemAccess2 fsa = responseScope.fileSystemAccessProvider.get();
 		fsa.setMonitor(new NullProgressMonitor());
-		// TODO use real source directory?
-		fsa.setCurrentSource("src");
 		Map<String, OutputConfiguration> outputConfigurations = getOutputConfigurations(project);
 		fsa.setOutputConfigurations(outputConfigurations);
 		fsa.setProject(project);

@@ -12,22 +12,14 @@ import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
-import java.util.List
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
 import org.eclipse.xtext.common.types.JvmOperation
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootCreate
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MultiValuedFeatureInsertChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguageFactory
-import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.impl.SimpleTextXBlockExpression
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.InsertRootChange
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
 import java.util.Map
 import java.util.HashMap
 import org.apache.log4j.Logger
 import org.eclipse.xtext.common.types.JvmField
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.interfaces.IResponseRealization
-import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFactory
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the response file model.</p> 

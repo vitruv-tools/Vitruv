@@ -12,7 +12,6 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.Respon
 import java.util.HashMap
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootDelete
-import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.validation.MirBaseValidator
 
 /**
  * This class contains custom validation rules. 
