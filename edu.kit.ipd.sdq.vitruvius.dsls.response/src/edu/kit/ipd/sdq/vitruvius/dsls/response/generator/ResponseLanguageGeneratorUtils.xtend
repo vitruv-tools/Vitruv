@@ -12,6 +12,13 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryTargetM
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicRootObjectChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootCreate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicConcreteModelElementChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguageFactory
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFactory
+import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.impl.SimpleTextXBlockExpression
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MultiValuedFeatureInsertChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.InsertRootChange
 
 final class ResponseLanguageGeneratorUtils {
 	private static val FSA_SEPARATOR = "/";
@@ -126,5 +133,60 @@ final class ResponseLanguageGeneratorUtils {
 	static def dispatch String getResponseNameForEvent(ArbitraryModelElementChange event) {
 		return '''«event.class.simpleName»In«IF event.changedModel?.model?.name != null»«
 			event.changedModel.model.name.toFirstUpper»«ENDIF»'''
+	}
+	
+	static def boolean hasOppositeResponse(Response response) {
+		val sourceChange = response.trigger;
+		val targetChange = response.effects.targetChange;
+		if (targetChange instanceof ConcreteTargetModelRootCreate && 
+			sourceChange instanceof AtomicConcreteModelElementChange) {
+			val createTargetChange = targetChange as ConcreteTargetModelRootCreate;
+			if (createTargetChange.autodelete) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	static def Response getOppositeResponse(Response response) {
+		if (response.hasOppositeResponse) {
+			val deleteTrigger = response.trigger.deleteTrigger;
+			val createTargetChange = response.effects.targetChange as ConcreteTargetModelRootCreate;
+			val deleteResponse = ResponseLanguageFactory.eINSTANCE.createResponse();
+			deleteResponse.name = "OppositeResponseForDeleteTo" + response.name;
+			deleteResponse.trigger = deleteTrigger;
+			val deleteEffects = ResponseLanguageFactory.eINSTANCE.createEffects();
+			val deleteTargetChange = ResponseLanguageFactory.eINSTANCE.createConcreteTargetModelRootDelete();
+			val targetChangeElement = MirBaseFactory.eINSTANCE.createModelElement();
+			targetChangeElement.element = createTargetChange.rootModelElement.element;
+			deleteTargetChange.rootModelElement = targetChangeElement;
+			deleteTargetChange.correspondenceSource = ResponseLanguageFactory.eINSTANCE.createCorrespondenceSourceDeterminationBlock();
+			deleteTargetChange.correspondenceSource.code = new SimpleTextXBlockExpression('''return change.getOldValue();''');
+			deleteEffects.targetChange = deleteTargetChange;
+			deleteResponse.effects = deleteEffects;
+			return deleteResponse;
+		}
+		return null;
+	}
+	  
+	private static def dispatch Trigger getDeleteTrigger(Trigger change) {
+		return null;
+	}
+	
+	private static def dispatch Trigger getDeleteTrigger(MultiValuedFeatureInsertChange change) {
+		val deleteTrigger = ResponseLanguageFactory.eINSTANCE.createMultiValuedFeatureRemoveChange();
+		val changedElement = MirBaseFactory.eINSTANCE.createFeatureOfElement();
+		changedElement.element = change.changedFeature.element;
+		changedElement.feature = change.changedFeature.feature;
+		deleteTrigger.changedFeature = changedElement;
+		return deleteTrigger;
+	}
+	
+	private static def dispatch Trigger getDeleteTrigger(InsertRootChange change) {
+		val deleteTrigger = ResponseLanguageFactory.eINSTANCE.createRemoveRootChange();
+		val changedElement = MirBaseFactory.eINSTANCE.createModelElement();
+		changedElement.element = change.changedElement.element;
+		deleteTrigger.changedElement = changedElement;
+		return deleteTrigger;
 	}
 }

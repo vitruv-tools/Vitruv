@@ -9,8 +9,6 @@ import com.google.inject.Binder
 import org.eclipse.xtext.naming.IQualifiedNameConverter
 import org.eclipse.xtext.linking.ILinkingService
 import edu.kit.ipd.sdq.vitruvius.dsls.response.linking.ResponseLinkingService
-import org.eclipse.xtext.generator.IGenerator
-import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.scoping.ResponseLanguageScopeProviderDelegate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.scoping.ResponseLanguageGlobalScopeProvider
 import edu.kit.ipd.sdq.vitruvius.dsls.response.scoping.ResponseLanguageQualifiedNameConverter
@@ -35,10 +33,6 @@ class ResponseLanguageRuntimeModule extends AbstractResponseLanguageRuntimeModul
 	
 	public override Class<? extends ILinkingService> bindILinkingService() {
 		return ResponseLinkingService;
-	}
-	
-	public override Class<? extends IGenerator> bindIGenerator() {
-		return ResponseLanguageGenerator;
 	}
 	
 }

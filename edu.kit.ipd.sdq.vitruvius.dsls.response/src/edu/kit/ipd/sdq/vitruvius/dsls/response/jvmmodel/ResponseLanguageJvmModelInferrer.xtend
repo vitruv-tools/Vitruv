@@ -36,7 +36,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFactory
  * 
  * @author Heiko Klare     
  */
-class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer implements IJvmOperationRegistry{
+class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer implements IJvmOperationRegistry {
 
 	@Inject extension JvmTypesBuilderWithoutAssociations _typesBuilder
 	private Map<String, JvmOperation> methodMap;
@@ -47,8 +47,8 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer implements 
 		}
 		
 		acceptor.accept(generateClass(response, response));
-		for (deleteResponse : response.rootDeleteIfCreate) {
-			acceptor.accept(generateClass(deleteResponse, response));
+		if (response.hasOppositeResponse()) {
+			acceptor.accept(generateClass(response.oppositeResponse, response));
 		}
 	}
 	
@@ -72,52 +72,7 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer implements 
 			initializer = '''«Logger».getLogger(«clazz».class)'''
 		]
 	}
-	
-	private def List<Response> getRootDeleteIfCreate(Response response) {
-		val deleteTrigger = response.trigger.deleteTrigger;
-		val targetChange = response.effects.targetChange;
-		if (targetChange instanceof ConcreteTargetModelRootCreate && deleteTrigger != null) {
-			val createTargetChange = targetChange as ConcreteTargetModelRootCreate;
-			if (createTargetChange.autodelete) {
-				val deleteResponse = ResponseLanguageFactory.eINSTANCE.createResponse();
-				deleteResponse.name = "OppositeResponseForDeleteTo" + response.name;
-				deleteResponse.trigger = deleteTrigger;
-				val deleteEffects = ResponseLanguageFactory.eINSTANCE.createEffects();
-				val deleteTargetChange = ResponseLanguageFactory.eINSTANCE.createConcreteTargetModelRootDelete();
-				val targetChangeElement = MirBaseFactory.eINSTANCE.createModelElement();
-				targetChangeElement.element = createTargetChange.rootModelElement.element;
-				deleteTargetChange.rootModelElement = targetChangeElement;
-				deleteTargetChange.correspondenceSource = ResponseLanguageFactory.eINSTANCE.createCorrespondenceSourceDeterminationBlock();
-				deleteTargetChange.correspondenceSource.code = new SimpleTextXBlockExpression('''return change.getOldValue();''');
-				deleteEffects.targetChange = deleteTargetChange;
-				deleteResponse.effects = deleteEffects;
-				return #[deleteResponse];
-			}
-		}
-		return #[];
-	}
-	  
-	private def dispatch Trigger getDeleteTrigger(Trigger change) {
-		return null;
-	}
-	
-	private def dispatch Trigger getDeleteTrigger(MultiValuedFeatureInsertChange change) {
-		val deleteTrigger = ResponseLanguageFactory.eINSTANCE.createMultiValuedFeatureRemoveChange();
-		val changedElement = MirBaseFactory.eINSTANCE.createFeatureOfElement();
-		changedElement.element = change.changedFeature.element;
-		changedElement.feature = change.changedFeature.feature;
-		deleteTrigger.changedFeature = changedElement;
-		return deleteTrigger;
-	}
-	
-	private def dispatch Trigger getDeleteTrigger(InsertRootChange change) {
-		val deleteTrigger = ResponseLanguageFactory.eINSTANCE.createRemoveRootChange();
-		val changedElement = MirBaseFactory.eINSTANCE.createModelElement();
-		changedElement.element = change.changedElement.element;
-		deleteTrigger.changedElement = changedElement;
-		return deleteTrigger;
-	}
-		
+			
 	override JvmOperation getOrGenerateMethod(EObject contextObject, String methodName, JvmTypeReference returnType, Procedure1<? super JvmOperation> initializer) {
 		if (!methodMap.containsKey(methodName)) {
 			val operation = contextObject.toMethod(methodName, returnType, initializer);

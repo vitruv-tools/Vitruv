@@ -395,7 +395,7 @@ class ResponseMethodGenerator {
 		return executionBlock.getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [
 			visibility = JvmVisibility.PRIVATE;
 			parameters += generateChangeParameter;
-			if (hasTargetChange) {
+			if (hasConcreteTargetChange) {
 				parameters += generateTargetModelParameter;
 			}
 			if (isBlackboardAvailable) {
@@ -563,11 +563,18 @@ class ResponseMethodGenerator {
 	 * <p>Methods parameters are:
 	 * <li>1. change: the change event ({@link EChange})
 	 */
-	private def StringConcatenationClient generateMethodExecuteResponseBody(JvmFormalParameter changeParameter, JvmFormalParameter blackboardParameter) '''
-		LOGGER.debug("Execute response " + this.class.name + " with no affected model");
-		«IF hasExecutionBlock»
-			«generateMethodPerformResponse(response.effects.codeBlock).simpleName»(«changeParameter.name», targetModel);
-		«ENDIF»
+	private def StringConcatenationClient generateMethodExecuteResponseBody(JvmFormalParameter changeParameter, JvmFormalParameter blackboardParameter) {
+		val JvmOperation performResponseMethod = if (hasExecutionBlock) {
+			generateMethodPerformResponse(response.effects.codeBlock);
+		} else {
+			null;
+		}
+		return '''
+			LOGGER.debug("Execute response " + this.getClass().getName() + " with no affected model");
+			«IF hasExecutionBlock»
+				«performResponseMethod.simpleName»(«changeParameter.name», «blackboardParameter.name»);
+			«ENDIF»
 		'''
+	}
 	
 }

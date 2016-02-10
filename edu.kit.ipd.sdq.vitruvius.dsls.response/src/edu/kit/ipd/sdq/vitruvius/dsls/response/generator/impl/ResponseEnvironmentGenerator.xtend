@@ -14,23 +14,37 @@ import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInte
 import java.util.Map
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationExecuter
 import java.util.HashMap
-import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.singleResponse.SingleResponseGeneratorFactory
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootCreate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguageFactory
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MultiValuedFeatureInsertChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.InsertRootChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.IResponseEnvironmentGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseChange2CommandTransformingProviding
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseChange2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.DefaultEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseExecutor
+import org.eclipse.emf.ecore.resource.Resource
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
+import com.google.inject.Inject
+import org.eclipse.core.resources.IProject
+import org.eclipse.core.runtime.NullProgressMonitor
+import org.eclipse.xtext.ui.resource.IResourceSetProvider
+import org.eclipse.emf.common.util.URI
+import org.eclipse.xtext.generator.IFileSystemAccess2
+import java.io.File
+import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils
+import org.eclipse.xtext.generator.IGenerator
 
 class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
+	@Inject
+	private IGenerator generator;
+	
+	@Inject
+	private IResourceSetProvider resourceSetProvider;
+		
 	private List<Response> responses;
+	private List<Resource> resources;
 	
 	public new() {
 		this.responses = newArrayList();
+		this.resources = newArrayList();
 	}
 	
 	public override void addResponse(Response response) {
@@ -44,12 +58,62 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		this.responses.addAll(responses);
 	}
 	
-	public override void generateEnvironment(IFileSystemAccess fsa) {
+	public def override addResponses(Resource responseResource) {
+		if (responseResource == null || !(responseResource.contents.get(0) instanceof ResponseFile)) {
+			throw new IllegalArgumentException("The given resource is not a response file");
+		}
+		this.resources.add(responseResource);
+	}
+	
+	public override void generateEnvironment(IFileSystemAccess2 fsa, IProject project) {
+		if (project == null) {
+			throw new IllegalStateException("Project must be set.");
+		}
+		prepareGeneration(project);
 		val modelCorrepondenceToResponseMap = generateResponses(fsa);
 		generateExecutorsAndChange2CommandTransformings(modelCorrepondenceToResponseMap, fsa)
 		generateChange2CommandTransformingProviding(modelCorrepondenceToResponseMap.keySet, fsa);
+		finishGeneration();
 	}
 	
+	private def prepareGeneration(IProject project) {
+		cleanGeneratedFiles(project);
+		generateResourceForSingleResponses(project);
+	}
+	
+	private def cleanGeneratedFiles(IProject project) {
+		project.getFolder("src-gen").getFolder(ResponseLanguageGeneratorUtils.basicResponsesPackageQualifiedName.replace(".", File.separator)).delete(0, new NullProgressMonitor());
+	}
+	
+	private def finishGeneration() {
+		removeResourceForSingleResponses();
+		clearResponsesAndResources();
+	}
+			
+	private def generateResourceForSingleResponses(IProject project) {
+		val responseFile = ResponseLanguageFactory.eINSTANCE.createResponseFile();
+		for (response : responses) {
+			responseFile.responses += response;
+		}
+		val resSet = resourceSetProvider.get(project);
+		val singleResponseResource = resSet.createResource(URI.createFileURI(System.getProperty("java.io.tmpdir") + "tempres.response"));
+		singleResponseResource.contents.add(responseFile);
+		resources += singleResponseResource;
+	}
+
+	private def void removeResourceForSingleResponses() {
+		try {
+			resources.last.delete(emptyMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private def clearResponsesAndResources() {
+		this.resources.clear();
+		this.responses.clear();
+	}
+
 	private def void generateChange2CommandTransformingProviding(Set<Pair<VURI, VURI>> modelCorrespondences, IFileSystemAccess fsa) {
 		val ih = new XtendImportHelper();	
 
@@ -133,71 +197,33 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		
 		return generateClass(modelPair.packageQualifiedName, ih, classImplementation);
 	}
-			
+	
 	private def Map<Pair<VURI, VURI>, List<String>> generateResponses(IFileSystemAccess fsa) {
 		val modelCorrespondenceToResponseNameMap = new HashMap<Pair<VURI, VURI>, List<String>>;
-		val List<Response> deleteResponses = <Response>newArrayList();
-		for (response : responses) {
-			deleteResponses += generateResponse(response, modelCorrespondenceToResponseNameMap, fsa);
+		for (responseResource : resources) {
+			addResponsesToCorrespondenceMap(responseResource, modelCorrespondenceToResponseNameMap);
+			generator.doGenerate(responseResource, fsa);
 		}
-		for (response : deleteResponses) {
-			generateResponse(response, modelCorrespondenceToResponseNameMap, fsa);
-		}
+		
 		return modelCorrespondenceToResponseNameMap;
 	}
 	
-	private def Iterable<Response> generateResponse(Response response, Map<Pair<VURI, VURI>, List<String>> modelCorrespondenceToResponseNameMap, IFileSystemAccess fsa) {
-		val responseName = response.responseName;
-		val sourceTargetPair = response.getSourceTargetPair();
-		if (!modelCorrespondenceToResponseNameMap.containsKey(sourceTargetPair)) {
-			modelCorrespondenceToResponseNameMap.put(sourceTargetPair, new ArrayList<String>());
+	private def void addResponsesToCorrespondenceMap(Resource responseResource, Map<Pair<VURI, VURI>, List<String>> modelCorrespondenceToResponseNameMap) {
+		if (!(responseResource.contents.get(0) instanceof ResponseFile)) {
+			throw new IllegalArgumentException("The given resource is not a response file.");
 		}
-		modelCorrespondenceToResponseNameMap.get(sourceTargetPair).add(responseName);
-		val responseGenerator = SingleResponseGeneratorFactory.INSTANCE.createGenerator(response);
-		/*fsa.generateFile(response.getResponseFilePath(), 
-			responseGenerator.generateResponseClass(response.getSourceTargetPair().packageQualifiedName, responseName)
-		);*/
-		return getRootDeleteIfCreate(response)
-	}
-	
-	private def List<Response> getRootDeleteIfCreate(Response response) {
-		val deleteTrigger = response.trigger.deleteTrigger;
-		val targetChange = response.effects.targetChange;
-		if (targetChange instanceof ConcreteTargetModelRootCreate && deleteTrigger != null) {
-			val createTargetChange = targetChange as ConcreteTargetModelRootCreate;
-			if (createTargetChange.autodelete) {
-				val deleteResponse = ResponseLanguageFactory.eINSTANCE.createResponse();
-				deleteResponse.name = "OppositeResponseForDeleteTo" + response.name;
-				deleteResponse.trigger = deleteTrigger;
-				val deleteEffects = ResponseLanguageFactory.eINSTANCE.createEffects();
-				val deleteTargetChange = ResponseLanguageFactory.eINSTANCE.createConcreteTargetModelRootDelete();
-				deleteTargetChange.rootModelElement = createTargetChange.rootModelElement;
-				deleteTargetChange.correspondenceSource = ResponseLanguageFactory.eINSTANCE.createCorrespondenceSourceDeterminationBlock();
-				deleteTargetChange.correspondenceSource.code = new SimpleTextXBlockExpression('''{
-					return change.oldValue;
-				}''');
-				deleteEffects.targetChange = deleteTargetChange;
-				deleteResponse.effects = deleteEffects;
-				return #[deleteResponse];
+		
+		for (response : (responseResource.contents.get(0) as ResponseFile).responses) {
+			val responseName = response.responseName;
+			val sourceTargetPair = response.getSourceTargetPair();
+			if (!modelCorrespondenceToResponseNameMap.containsKey(sourceTargetPair)) {
+				modelCorrespondenceToResponseNameMap.put(sourceTargetPair, new ArrayList<String>());
+			}
+			modelCorrespondenceToResponseNameMap.get(sourceTargetPair).add(responseName);
+			if (response.hasOppositeResponse) {
+				modelCorrespondenceToResponseNameMap.get(sourceTargetPair).add(response.oppositeResponse.responseName);
 			}
 		}
-		return #[];
-	}
-	
-	private def dispatch Trigger getDeleteTrigger(Trigger change) {
-		return null;
-	}
-	
-	private def dispatch Trigger getDeleteTrigger(MultiValuedFeatureInsertChange change) {
-		val deleteTrigger = ResponseLanguageFactory.eINSTANCE.createMultiValuedFeatureRemoveChange();
-		deleteTrigger.changedFeature = change.changedFeature;
-		return deleteTrigger;
-	}
-	
-	private def dispatch Trigger getDeleteTrigger(InsertRootChange change) {
-		val deleteTrigger = ResponseLanguageFactory.eINSTANCE.createRemoveRootChange();
-		deleteTrigger.changedElement = change.changedElement;
-		return deleteTrigger;
 	}
 	
 }

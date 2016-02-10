@@ -15,6 +15,7 @@ Require-Bundle: org.eclipse.ui,
  edu.kit.ipd.sdq.vitruvius.dsls.mapping.util,
  edu.kit.ipd.sdq.vitruvius.dsls.response,
  edu.kit.ipd.sdq.vitruvius.dsls.response.ui,
- org.eclipse.jdt.core
+ org.eclipse.jdt.core,
+ org.eclipse.xtext.builder
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy

@@ -40,7 +40,10 @@ Require-Bundle: org.junit;bundle-version="4.7.0",
  edu.kit.ipd.sdq.vitruvius.dsls.mapping,
  edu.kit.ipd.sdq.vitruvius.dsls.mapping.api,
  edu.kit.ipd.sdq.vitruvius.dsls.response.api,
- org.emftext.language.java
+ org.emftext.language.java,
+ org.eclipse.xtext.builder,
+ edu.kit.ipd.sdq.vitruvius.dsls.mirbase,
+ edu.kit.ipd.sdq.vitruvius.dsls.response.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.hamcrest.core,
  org.junit;version="4.5.0",
