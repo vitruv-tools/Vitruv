@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  * </ul>
  *
  * @see allElementTypes.AllElementTypesPackage#getIdentified()
- * @model
+ * @model abstract="true"
  * @generated
  */
 public interface Identified extends EObject {
