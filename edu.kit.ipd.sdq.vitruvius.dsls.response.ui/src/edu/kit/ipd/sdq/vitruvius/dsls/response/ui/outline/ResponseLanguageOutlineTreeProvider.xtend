@@ -108,7 +108,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 			var targetChangeIsLeaf = false;
 			val targetChange = effects.targetChange;
 			if (targetChange instanceof ConcreteTargetModelRootChange) {
-				targetChangeIsLeaf = targetChange.rootModelElement?.element == null;
+				targetChangeIsLeaf = targetChange.modelElement?.element == null;
 			} else if (targetChange instanceof ArbitraryTargetMetamodelInstanceUpdate) {
 				targetChangeIsLeaf = targetChange.metamodelReference?.model == null;
 			}
@@ -128,8 +128,8 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, ConcreteTargetModelRootChange targetChange) {
-		if (targetChange.rootModelElement.element != null) {
-			createEObjectNode(parentNode, targetChange.rootModelElement.element);
+		if (targetChange.modelElement.element != null) {
+			createEObjectNode(parentNode, targetChange.modelElement.element);
 		}
 	}
 	

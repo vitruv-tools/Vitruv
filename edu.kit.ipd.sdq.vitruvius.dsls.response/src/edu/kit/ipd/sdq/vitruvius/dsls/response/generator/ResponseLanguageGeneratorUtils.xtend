@@ -97,7 +97,7 @@ final class ResponseLanguageGeneratorUtils {
 			val targetChange = response.effects.targetChange;
 			var targetURI = sourceMetamodel.nsURI;
 			if (targetChange instanceof ConcreteTargetModelRootChange) {
-				targetURI = targetChange.rootModelElement?.element?.EPackage?.nsURI?:sourceMetamodel.nsURI;
+				targetURI = targetChange.modelElement?.element?.EPackage?.nsURI?:sourceMetamodel.nsURI;
 			} else if (targetChange instanceof ArbitraryTargetMetamodelInstanceUpdate) {
 				targetURI = targetChange.metamodelReference?.model?.package?.nsURI?:sourceMetamodel.nsURI;
 			}
@@ -158,8 +158,8 @@ final class ResponseLanguageGeneratorUtils {
 			val deleteEffects = ResponseLanguageFactory.eINSTANCE.createEffects();
 			val deleteTargetChange = ResponseLanguageFactory.eINSTANCE.createConcreteTargetModelRootDelete();
 			val targetChangeElement = MirBaseFactory.eINSTANCE.createModelElement();
-			targetChangeElement.element = createTargetChange.rootModelElement.element;
-			deleteTargetChange.rootModelElement = targetChangeElement;
+			targetChangeElement.element = createTargetChange.modelElement.element;
+			deleteTargetChange.modelElement = targetChangeElement;
 			deleteTargetChange.correspondenceSource = ResponseLanguageFactory.eINSTANCE.createCorrespondenceSourceDeterminationBlock();
 			deleteTargetChange.correspondenceSource.code = new SimpleTextXBlockExpression('''return change.getOldValue();''');
 			deleteEffects.targetChange = deleteTargetChange;

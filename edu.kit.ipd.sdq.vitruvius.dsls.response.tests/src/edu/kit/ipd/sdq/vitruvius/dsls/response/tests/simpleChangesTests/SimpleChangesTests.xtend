@@ -18,6 +18,7 @@ import static org.junit.Assert.assertNull
 import static org.junit.Assert.assertTrue
 import allElementTypes.AllElementTypesPackage
 import java.util.function.Supplier
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding
 
 class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 	private static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource";
@@ -26,9 +27,9 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 	private static val FURTHER_TARGET_TEST_MODEL_NAME = "Further_Target_Test_Model"
 	
 	new() {
-		super(new Supplier<SimpleTestsChange2CommandTransformingProviding>() {
+		super(new Supplier<Change2CommandTransformingProviding>() {
 			override get() {
-				return new SimpleTestsChange2CommandTransformingProviding();
+				return new ResponseChange2CommandTransformingProviding();
 			}
 		})
 	}

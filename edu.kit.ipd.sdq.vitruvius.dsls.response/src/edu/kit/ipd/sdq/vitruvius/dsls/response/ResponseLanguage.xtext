@@ -27,23 +27,39 @@ TargetChange:
 	ConcreteTargetModelRootChange | ArbitraryTargetMetamodelInstanceUpdate;
 
 ConcreteTargetModelRootChange:
-	(ConcreteTargetModelRootUpdate | ConcreteTargetModelRootCreate | ConcreteTargetModelRootDelete)
-	'corresponding to' correspondenceSource=CorrespondenceSourceDeterminationBlock;
+	(ConcreteTargetModelElementUpdate | ConcreteTargetModelRootCreate | ConcreteTargetModelRootDelete);
 	
-ConcreteTargetModelRootUpdate:
-	'update root' rootModelElement=ModelElement;
-	
+ConcreteTargetModelElementUpdate:
+	'update element:'
+		'corresponding to:' correspondenceSource=CorrespondenceSourceDeterminationBlock 
+		'type:' modelElement=ModelElement;
+		
+/*ConcreteTargetModelElementCreate:
+	'create element:'
+		'corresponding to:' correspondenceSource=CorrespondenceSourceDeterminationBlock 
+		'type:' modelElement=ModelElement;
+*/
 ConcreteTargetModelRootCreate:
-	'create root' rootModelElement=ModelElement 'at' relativeToSourcePath=STRING autodelete?='auto-delete'?;
+	'create root:' 
+		'corresponding to:' correspondenceSource=CorrespondenceSourceDeterminationBlock
+		'type:' modelElement=ModelElement
+		'path relative to changed model:' relativeToSourcePath=PathToSourceSpecificationBlock
+		autodelete?='auto-delete'?;
 
 ConcreteTargetModelRootDelete:
-	'delete root' rootModelElement=ModelElement;
+	'delete root:'
+		'corresponding to:' correspondenceSource=CorrespondenceSourceDeterminationBlock
+		'type:' modelElement=ModelElement;
 
 ArbitraryTargetMetamodelInstanceUpdate:
 	'update instances of' metamodelReference=MetamodelReference;
 
 CodeBlock:
-	CorrespondenceSourceDeterminationBlock | PreconditionBlock | ExecutionBlock;
+	PathToSourceSpecificationBlock | CorrespondenceSourceDeterminationBlock | PreconditionBlock | ExecutionBlock;
+
+PathToSourceSpecificationBlock:
+	{PathToSourceSpecificationBlock}
+	code=XExpression;
 
 CorrespondenceSourceDeterminationBlock:
 	{CorrespondenceSourceDeterminationBlock}

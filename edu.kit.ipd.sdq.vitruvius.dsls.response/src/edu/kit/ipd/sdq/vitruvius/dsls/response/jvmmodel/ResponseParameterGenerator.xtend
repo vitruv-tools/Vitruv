@@ -59,8 +59,8 @@ package class ResponseParameterGenerator {
 	protected def JvmFormalParameter generateTargetModelParameter(EObject parameterContext) {
 		if (response.effects.targetChange != null) {
 			val rootChange = response.effects.targetChange as ConcreteTargetModelRootChange;
-			if (rootChange?.rootModelElement?.element != null) {
-				return parameterContext.generateParameter(TARGET_MODEL_PARAMETER_NAME, rootChange.rootModelElement.element.instanceClass);
+			if (rootChange?.modelElement?.element != null) {
+				return parameterContext.generateParameter(TARGET_MODEL_PARAMETER_NAME, rootChange.modelElement.element.instanceClass);
 			}	
 		}
 		return null;

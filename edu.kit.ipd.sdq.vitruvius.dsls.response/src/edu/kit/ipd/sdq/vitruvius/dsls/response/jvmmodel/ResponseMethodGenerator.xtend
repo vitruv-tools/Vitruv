@@ -6,7 +6,6 @@ import org.eclipse.xtext.common.types.JvmVisibility
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import org.eclipse.xtext.common.types.JvmOperation
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootUpdate
 import static edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.ResponseLanguageGeneratorConstants.*;
 import org.eclipse.emf.ecore.EObject
 import java.util.ArrayList
@@ -37,6 +36,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationRes
 import org.apache.log4j.Level
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureChange
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelElementUpdate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PathToSourceSpecificationBlock
 
 class ResponseMethodGenerator {
 	@Extension protected static JvmTypeReferenceBuilder _typeReferenceBuilder;
@@ -198,6 +199,17 @@ class ResponseMethodGenerator {
 		];		
 	}
 	
+	
+	protected def JvmOperation generateMethodGetPathFromSource(PathToSourceSpecificationBlock pathFromSourceBlock) {
+		val methodName = "getPathFromSource";
+		
+		return pathFromSourceBlock.getOrGenerateMethod(methodName, typeRef(String)) [
+			visibility = JvmVisibility.PRIVATE;
+			parameters += generateChangeParameter(pathFromSourceBlock);
+			body = pathFromSourceBlock.code;
+		];		
+	}
+	
 	/**
 	 * Generates method: determineTargetModels
 	 * 
@@ -210,10 +222,10 @@ class ResponseMethodGenerator {
 	 * 
 	 * <p>Precondition: a metamodel element for the target models is specified in the response
 	 */	
-	protected def generateMethodDetermineTargetModels(ConcreteTargetModelRootUpdate updatedModel) {
+	protected def generateMethodDetermineTargetModels(ConcreteTargetModelElementUpdate updatedModel) {
 		val methodName = "determineTargetModels";
 		
-		val affectedElementClass = updatedModel.rootModelElement.element;
+		val affectedElementClass = updatedModel.modelElement.element;
 		return getOrGenerateMethod(methodName, typeRef(Iterable, typeRef(affectedElementClass.instanceClass))) [
 			visibility = JvmVisibility.PRIVATE;
 			val changeParameter = generateChangeParameter(); 
@@ -262,7 +274,7 @@ class ResponseMethodGenerator {
 	 */	
 	protected def generateMethodGenerateTargetModel(ConcreteTargetModelRootCreate createdModel) {
 		val methodName = "generateTargetModel";
-		val affectedElementClass = createdModel.rootModelElement.element;
+		val affectedElementClass = createdModel.modelElement.element;
 		
 		return getOrGenerateMethod(methodName, typeRef(affectedElementClass.instanceClass)) [ 
 			visibility = JvmVisibility.PRIVATE;
@@ -272,18 +284,19 @@ class ResponseMethodGenerator {
 			parameters += blackboardParameter;
 			exceptions += typeRef(IOException);
 			val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(createdModel);
+			val pathFromSourceMethod = generateMethodGetPathFromSource(createdModel.relativeToSourcePath);
 			/* old sourceElement = «changeParameter.name».«change.EChangeFeatureNameOfChangedObject»*/
 			body = '''
 				«val createdClassFactory = affectedElementClass.EPackage.EFactoryInstance.class»
 				«affectedElementClass.instanceClass» newRoot = «createdClassFactory».eINSTANCE.create«affectedElementClass.name»();
 				«EObject» sourceElement = «correspondenceSourceMethod.simpleName»(«changeParameter.name»);
-				«String»[] newModelFileSegments = "«createdModel.relativeToSourcePath»".split("/");
-				«val newModelFileSegments = createdModel.relativeToSourcePath.split("/")»
-				«IF !newModelFileSegments.last.contains(".")»
+				«String» relativeFromSourcePath = «pathFromSourceMethod.simpleName»(«changeParameter.name»);
+				«String»[] newModelFileSegments = relativeFromSourcePath.split("/");
+				if (!newModelFileSegments[newModelFileSegments.length - 1].contains(".")) {
 					// No file extension was specified, add the first one that is the valid for the metamodel
 					newModelFileSegments[newModelFileSegments.length - 1] = newModelFileSegments[newModelFileSegments.length - 1] 
 						+ "." + «blackboardParameter.name».getCorrespondenceInstance().getMapping().getMetamodelB().getFileExtensions()[0];
-				«ENDIF»
+				}
 				«URI» newResourceURI = sourceElement.eResource().getURI().trimSegments(1).appendSegments(newModelFileSegments);
 				«Resource» newModelResource = new «ResourceSetImpl»().createResource(newResourceURI);
 				«/* TODO HK Replace with correct id definition resp. let user declare id in response */»
@@ -307,7 +320,7 @@ class ResponseMethodGenerator {
 	 */	
 	protected def generateMethodDeleteTargetModels(ConcreteTargetModelRootDelete deletedModel) {
 		val methodName = "deleteTargetModels";
-		val affectedElementClass = deletedModel.rootModelElement.element;
+		val affectedElementClass = deletedModel.modelElement.element;
 		
 		return getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [
 			visibility = JvmVisibility.PRIVATE;
@@ -485,7 +498,7 @@ class ResponseMethodGenerator {
 	 * <li>1. change: the change event ({@link EChange})
 	 * <li>2. blackboard: the {@link Blackboard} containing the {@link CorrespondenceInstance}
 	 */
-	private def dispatch StringConcatenationClient generateMethodExecuteResponseBody(ConcreteTargetModelRootUpdate modelRootUpdate, JvmFormalParameter changeParameter, JvmFormalParameter blackboardParameter) {
+	private def dispatch StringConcatenationClient generateMethodExecuteResponseBody(ConcreteTargetModelElementUpdate modelRootUpdate, JvmFormalParameter changeParameter, JvmFormalParameter blackboardParameter) {
 		val determineTargetModelsMethod = generateMethodDetermineTargetModels(modelRootUpdate);
 		val JvmOperation performResponseMethod = if (hasExecutionBlock) {
 			generateMethodPerformResponse(response.effects.codeBlock);
@@ -493,7 +506,7 @@ class ResponseMethodGenerator {
 			null;
 		}
 		return '''
-			«val targetModelElementClass = modelRootUpdate.rootModelElement?.element?.instanceClass»
+			«val targetModelElementClass = modelRootUpdate.modelElement?.element?.instanceClass»
 			«Iterable»<«targetModelElementClass»> targetModels = «determineTargetModelsMethod.simpleName»(«changeParameter.name», «blackboardParameter.name»);
 			for («targetModelElementClass» targetModel : targetModels) {
 				LOGGER.debug("Execute response " + this.getClass().getName() + " for model " + targetModel);
@@ -521,7 +534,7 @@ class ResponseMethodGenerator {
 			null;
 		}
 		return '''
-			«val targetModelElementClass = modelRootCreate.rootModelElement?.element?.instanceClass»
+			«val targetModelElementClass = modelRootCreate.modelElement?.element?.instanceClass»
 			«targetModelElementClass» targetModel = «generateTargetModelMethod.simpleName»(«changeParameter.name», «blackboardParameter.name»);
 			LOGGER.debug("Execute response " + this.getClass().getName() + " for model " + targetModel);
 			«IF hasExecutionBlock»
