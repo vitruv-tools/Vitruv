@@ -5,7 +5,6 @@ class VitruviusDslsCommonConstants {
 		"org.eclipse.emf.ecore",
 		"edu.kit.ipd.sdq.vitruvius.framework.util",
 		"edu.kit.ipd.sdq.vitruvius.framework.contracts",
-		"edu.kit.ipd.sdq.vitruvius.dsls.mapping.apidesign",
 		"edu.kit.ipd.sdq.vitruvius.framework.meta.change",
 		"com.google.guava",
 		"org.eclipse.core.resources",
