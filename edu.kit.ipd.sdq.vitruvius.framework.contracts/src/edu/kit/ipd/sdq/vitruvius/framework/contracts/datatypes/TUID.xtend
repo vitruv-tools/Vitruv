@@ -50,6 +50,9 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.Collect
  * @author kramerm
  */
 class TUID implements Serializable {
+	
+	private static final long serialVersionUID = 5018494116382201707L
+	
 	static val SEGMENTS = generateForwardHashedBackwardLinkedTree()
 	static val LAST_SEGMENT_2_TUID_INSTANCES_MAP = new HashMap<ForwardHashedBackwardLinkedTree<String>.Segment, TUID>()
 	
@@ -82,6 +85,10 @@ class TUID implements Serializable {
 	 */
 	def static synchronized TUID getInstance(String tuidString) {
 		return getInstance(tuidString, false)
+	}
+	
+	def static valueOf(String tuidString) {
+		return getInstance(tuidString)
 	}
 
 	def private static synchronized TUID getInstance(String tuidString, boolean recursively) {
