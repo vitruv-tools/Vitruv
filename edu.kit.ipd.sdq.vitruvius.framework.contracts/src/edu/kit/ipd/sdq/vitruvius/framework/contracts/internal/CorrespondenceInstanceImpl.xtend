@@ -34,6 +34,8 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.Collect
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge.*
 import com.google.common.collect.Sets
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.MutatingListsFixingClaimableHashMap
+import org.eclipse.emf.ecore.resource.Resource.IOWrappedException
+import org.eclipse.core.internal.resources.ResourceException
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class CorrespondenceInstanceImpl extends ModelInstance implements CorrespondenceInstanceDecorator {
@@ -266,10 +268,12 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	def private Correspondences loadAndRegisterCorrespondences(Resource correspondencesResource) {
 		try {
 			correspondencesResource.load(this.saveCorrespondenceOptions)
-		} catch (Exception e) {
-			logger.trace(
-				"Could not load correspondence resource - creating new correspondence instance resource."
-			)
+		} catch (IOWrappedException e) {
+			if (e.cause instanceof ResourceException) {
+				logger.trace(
+					"Could not load correspondence resource - creating new correspondence instance resource."
+				)
+			}
 		}
 		// TODO implement lazy loading for correspondences because they may get really big
 		var Correspondences correspondences = EcoreResourceBridge::getResourceContentRootIfUnique(getResource())?.dynamicCast(Correspondences, "correspondence model")
