@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.dialogs.IOverwriteQuery;
 import org.eclipse.ui.wizards.datatransfer.FileSystemStructureProvider;
 import org.eclipse.ui.wizards.datatransfer.ImportOperation;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,13 +37,24 @@ public class CodeIntegrationTest {
 	private static final String TEST_PROJECT_NAME = "eu.fpetersen.cbs.pc";
 	private static final String META_PROJECT_NAME = "vitruvius.meta";
 	private IProject testProject;
+	private IWorkspace workspace;
 	
 	@Before
 	public void beforeTest() throws InvocationTargetException, InterruptedException, IOException, URISyntaxException {
+		workspace = ResourcesPlugin.getWorkspace();
+		
+		importTestProjectFromBundleData();
+		
+		IProject project = workspace.getRoot().getProject(TEST_PROJECT_NAME);
+		assert(project != null);
+		testProject = project;
+	}
+
+	private void importTestProjectFromBundleData()
+			throws IOException, URISyntaxException, InvocationTargetException, InterruptedException {
 		IOverwriteQuery overwriteQuery = new IOverwriteQuery() {
 		        public String queryOverwrite(String file) { return ALL; }
 		};
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IPath workspacePath = workspace.getRoot().getFullPath().append("/" + TEST_PROJECT_NAME);
 		
 		Bundle bundle = Platform.getBundle(TEST_BUNDLE_NAME);
@@ -62,10 +74,29 @@ public class CodeIntegrationTest {
 		while (!progress.isDone()) {
 			Thread.sleep(100);
 		}
+	}
+	
+	@After
+	public void afterTest() throws CoreException, InterruptedException {
+		//Delete test project
+		IProject testProject = workspace.getRoot().getProject(TEST_PROJECT_NAME);
+		if (testProject.exists()) {
+			DoneFlagProgressMonitor progress = new DoneFlagProgressMonitor();
+			testProject.delete(true, true, progress);
+			while (!progress.isDone()) {
+				Thread.sleep(100);
+			}
+		}
 		
-		IProject project = workspace.getRoot().getProject(TEST_PROJECT_NAME);
-		assert(project != null);
-		testProject = project;
+		//Delete vitruvius.meta project
+		IProject metaProject = workspace.getRoot().getProject(META_PROJECT_NAME);
+		if (metaProject.exists()) {
+			DoneFlagProgressMonitor progress = new DoneFlagProgressMonitor();
+			metaProject.delete(true, true, progress);
+			while (!progress.isDone()) {
+				Thread.sleep(100);
+			}
+		}
 	}
 	
 	@Test
@@ -95,7 +126,7 @@ public class CodeIntegrationTest {
 	}
 	
 	/**
-	 * Thread save simple progress monitor for knowing when a job is done.
+	 * Thread-safe simple progress monitor for knowing when a job is done.
 	 *
 	 */
 	private class DoneFlagProgressMonitor extends NullProgressMonitor {
