@@ -23,7 +23,8 @@ Require-Bundle: org.eclipse.xtend.lib,
  edu.kit.ipd.sdq.vitruvius.external.guice;bundle-version="3.0.0",
  org.eclipse.emf.transaction,
  org.palladiosimulator.pcm;bundle-version="4.0.0",
- edu.kit.ipd.sdq.vitruvius.framework.util
+ edu.kit.ipd.sdq.vitruvius.framework.util,
+ edu.kit.ipd.sdq.vitruvius.codeintegration.deco;bundle-version="1.0.0"
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java,

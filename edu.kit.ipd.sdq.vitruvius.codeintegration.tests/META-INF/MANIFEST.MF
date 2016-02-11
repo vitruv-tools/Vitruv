@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Code Integration Tests
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.codeintegration.tests
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.junit;bundle-version="4.12.0",
+ org.eclipse.ui.workbench,
+ org.eclipse.ui.ide,
+ org.eclipse.core.runtime;bundle-version="3.11.1",
+ org.eclipse.core.resources,
+ edu.kit.ipd.sdq.vitruvius.codeintegration.ui

@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Deco
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.codeintegration.deco;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
+ edu.kit.ipd.sdq.vitruvius.framework.util;bundle-version="1.0.0"
+Export-Package: edu.kit.ipd.sdq.vitruvius.codeintegration.deco

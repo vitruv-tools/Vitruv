@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="ASCII"?>
+<sourcecodedecorator:SourceCodeDecoratorRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:classifiers="http://www.emftext.org/java/classifiers" xmlns:members="http://www.emftext.org/java/members" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1" xmlns:sourcecodedecorator="http://somox.org/SourceCodeDecorator/2.0">
+  <fileLevelSourceCodeLink>
+    <repositoryComponent xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_auu40MWvEeWLAeSW2tt_XQ"/>
+    <file href="../src/eu/fpetersen/cbs/pc/display/Display.java#/"/>
+  </fileLevelSourceCodeLink>
+  <fileLevelSourceCodeLink>
+    <repositoryComponent xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_auzxUMWvEeWLAeSW2tt_XQ"/>
+    <file href="../src/eu/fpetersen/cbs/pc/graphics/GraphicsCard.java#/"/>
+  </fileLevelSourceCodeLink>
+  <methodLevelSourceCodeLink>
+    <repositoryComponent xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_auzxUMWvEeWLAeSW2tt_XQ"/>
+    <file href="pathmap:/javaclass/eu.fpetersen.cbs.pc.graphics.IGraphicsCard.java#/"/>
+    <function xsi:type="members:InterfaceMethod" href="pathmap:/javaclass/eu.fpetersen.cbs.pc.graphics.IGraphicsCard.java#//@classifiers.0/@members.0"/>
+    <operation xsi:type="repository:OperationSignature" href="internal_architecture_model.repository#_auwG8cWvEeWLAeSW2tt_XQ"/>
+  </methodLevelSourceCodeLink>
+  <methodLevelSourceCodeLink>
+    <repositoryComponent xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_auu40MWvEeWLAeSW2tt_XQ"/>
+    <file href="../src/eu/fpetersen/cbs/pc/display/IDisplay.java#/"/>
+    <function xsi:type="members:InterfaceMethod" href="../src/eu/fpetersen/cbs/pc/display/IDisplay.java#//@classifiers.0/@members.0"/>
+    <operation xsi:type="repository:OperationSignature" href="internal_architecture_model.repository#_auxVEcWvEeWLAeSW2tt_XQ"/>
+  </methodLevelSourceCodeLink>
+  <interfaceSourceCodeLink>
+    <interface xsi:type="repository:OperationInterface" href="internal_architecture_model.repository#_auwG8MWvEeWLAeSW2tt_XQ"/>
+    <gastClass xsi:type="classifiers:Interface" href="pathmap:/javaclass/eu.fpetersen.cbs.pc.graphics.IGraphicsCard.java#//@classifiers.0"/>
+  </interfaceSourceCodeLink>
+  <interfaceSourceCodeLink>
+    <interface xsi:type="repository:OperationInterface" href="internal_architecture_model.repository#_auxVEMWvEeWLAeSW2tt_XQ"/>
+    <gastClass xsi:type="classifiers:Interface" href="../src/eu/fpetersen/cbs/pc/display/IDisplay.java#//@classifiers.0"/>
+  </interfaceSourceCodeLink>
+  <interfaceSourceCodeLink>
+    <interface xsi:type="repository:OperationInterface" href="internal_architecture_model.repository#_auwG8MWvEeWLAeSW2tt_XQ"/>
+    <gastClass xsi:type="classifiers:Interface" href="pathmap:/javaclass/eu.fpetersen.cbs.pc.graphics.IGraphicsCard.java#//@classifiers.0"/>
+  </interfaceSourceCodeLink>
+  <interfaceSourceCodeLink>
+    <interface xsi:type="repository:OperationInterface" href="internal_architecture_model.repository#_auxVEMWvEeWLAeSW2tt_XQ"/>
+    <gastClass xsi:type="classifiers:Interface" href="../src/eu/fpetersen/cbs/pc/display/IDisplay.java#//@classifiers.0"/>
+  </interfaceSourceCodeLink>
+  <interfaceSourceCodeLink>
+    <interface xsi:type="repository:OperationInterface" href="internal_architecture_model.repository#_auwG8MWvEeWLAeSW2tt_XQ"/>
+    <gastClass xsi:type="classifiers:Interface" href="pathmap:/javaclass/eu.fpetersen.cbs.pc.graphics.IGraphicsCard.java#//@classifiers.0"/>
+  </interfaceSourceCodeLink>
+  <componentImplementingClassesLink providedInterfaces="//@interfaceSourceCodeLink.1" requiredInterfaces="//@interfaceSourceCodeLink.0">
+    <component xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_auu40MWvEeWLAeSW2tt_XQ"/>
+    <implementingClasses xsi:type="classifiers:Class" href="../src/eu/fpetersen/cbs/pc/display/Display.java#//@classifiers.0"/>
+  </componentImplementingClassesLink>
+  <componentImplementingClassesLink providedInterfaces="//@interfaceSourceCodeLink.2">
+    <component xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_auzxUMWvEeWLAeSW2tt_XQ"/>
+    <implementingClasses xsi:type="classifiers:Class" href="../src/eu/fpetersen/cbs/pc/graphics/GraphicsCard.java#//@classifiers.0"/>
+  </componentImplementingClassesLink>
+  <componentImplementingClassesLink subComponents="//@componentImplementingClassesLink.0 //@componentImplementingClassesLink.1" providedInterfaces="//@interfaceSourceCodeLink.3 //@interfaceSourceCodeLink.4">
+    <component xsi:type="repository:CompositeComponent" href="internal_architecture_model.repository#_av9A0MWvEeWLAeSW2tt_XQ"/>
+  </componentImplementingClassesLink>
+  <dataTypeSourceCodeLink>
+    <file href="../src/eu/fpetersen/cbs/pc/data/Frame.java#/"/>
+    <jaMoPPType xsi:type="classifiers:Class" href="../src/eu/fpetersen/cbs/pc/data/Frame.java#//@classifiers.0"/>
+    <pcmDataType xsi:type="repository:CompositeDataType" href="internal_architecture_model.repository#_auwuAMWvEeWLAeSW2tt_XQ"/>
+  </dataTypeSourceCodeLink>
+  <abstractActionClassMethodLink>
+    <classMethod href="../src/eu/fpetersen/cbs/pc/display/Display.java#//@classifiers.0/@members.2"/>
+    <abstractAction xsi:type="seff:ExternalCallAction" href="internal_architecture_model.repository#_awaT0MWvEeWLAeSW2tt_XQ"/>
+  </abstractActionClassMethodLink>
+  <abstractActionClassMethodLink>
+    <classMethod href="../src/eu/fpetersen/cbs/pc/graphics/GraphicsCard.java#//@classifiers.0/@members.0"/>
+    <abstractAction xsi:type="seff:InternalAction" href="internal_architecture_model.repository#_awa64sWvEeWLAeSW2tt_XQ"/>
+  </abstractActionClassMethodLink>
+</sourcecodedecorator:SourceCodeDecoratorRepository>
