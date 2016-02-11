@@ -20,36 +20,38 @@ Response:
 
 Effects:
 	{Effects}
-	('effect:' targetChange=TargetChange)? 
+	(targetChange=TargetChange)? 
 	('execute:' codeBlock=ExecutionBlock)?;
 
 TargetChange:
-	ConcreteTargetModelRootChange | ArbitraryTargetMetamodelInstanceUpdate;
+	ConcreteTargetModelChange | ArbitraryTargetMetamodelInstanceUpdate;
 
-ConcreteTargetModelRootChange:
-	(ConcreteTargetModelElementUpdate | ConcreteTargetModelRootCreate | ConcreteTargetModelRootDelete);
+ConcreteTargetModelChange:
+	(ConcreteTargetModelUpdate | ConcreteTargetModelCreate | ConcreteTargetModelDelete);
 	
-ConcreteTargetModelElementUpdate:
-	'update element:'
-		'corresponding to:' correspondenceSource=CorrespondenceSourceDeterminationBlock 
-		'type:' modelElement=ModelElement;
-		
-/*ConcreteTargetModelElementCreate:
-	'create element:'
-		'corresponding to:' correspondenceSource=CorrespondenceSourceDeterminationBlock 
-		'type:' modelElement=ModelElement;
-*/
-ConcreteTargetModelRootCreate:
-	'create root:' 
-		'corresponding to:' correspondenceSource=CorrespondenceSourceDeterminationBlock
-		'type:' modelElement=ModelElement
-		'path relative to changed model:' relativeToSourcePath=PathToSourceSpecificationBlock
-		autodelete?='auto-delete'?;
+ConcreteTargetModelUpdate:
+	'update model:' targetElement=CorrespondingModelElementSpecification		
+	(createElements+=CreateModelElement | deleteElements+=DeleteModelElement)*;
 
-ConcreteTargetModelRootDelete:
-	'delete root:'
-		'corresponding to:' correspondenceSource=CorrespondenceSourceDeterminationBlock
-		'type:' modelElement=ModelElement;
+DeleteModelElement:
+	'delete element' element=CorrespondingModelElementSpecification;
+
+CreateModelElement:
+	'create element' element=CorrespondingModelElementSpecification;
+
+CorrespondingModelElementSpecification:
+	name=ValidID
+	'corresponding to:' correspondenceSource=CorrespondenceSourceDeterminationBlock 
+	'type:' elementType=ModelElement;
+
+ConcreteTargetModelCreate:
+	'create model:' targetElement=CorrespondingModelElementSpecification
+		'path relative from changed model:' relativeToSourcePath=PathToSourceSpecificationBlock 
+		//autodelete?='auto-delete'?;
+		(createElements+=CreateModelElement)*;
+		
+ConcreteTargetModelDelete:
+	'delete model:' targetElement=CorrespondingModelElementSpecification;
 
 ArbitraryTargetMetamodelInstanceUpdate:
 	'update instances of' metamodelReference=MetamodelReference;

@@ -7,18 +7,18 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.XtendImportHelper
 import org.eclipse.emf.ecore.EPackage
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryModelElementChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryTargetMetamodelInstanceUpdate
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicRootObjectChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootCreate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicConcreteModelElementChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguageFactory
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFactory
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.impl.SimpleTextXBlockExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MultiValuedFeatureInsertChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.InsertRootChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelCreate
 
 final class ResponseLanguageGeneratorUtils {
 	private static val FSA_SEPARATOR = "/";
@@ -89,24 +89,41 @@ final class ResponseLanguageGeneratorUtils {
 		'''
 
 	static def Pair<VURI, VURI> getSourceTargetPair(Response response) {
-		val event = response.trigger;
-		var EPackage sourceMetamodel = event.sourceMetamodel;
-		
-		if (sourceMetamodel != null) {
-			val sourceURI = sourceMetamodel.nsURI;
-			val targetChange = response.effects.targetChange;
-			var targetURI = sourceMetamodel.nsURI;
-			if (targetChange instanceof ConcreteTargetModelRootChange) {
-				targetURI = targetChange.modelElement?.element?.EPackage?.nsURI?:sourceMetamodel.nsURI;
-			} else if (targetChange instanceof ArbitraryTargetMetamodelInstanceUpdate) {
-				targetURI = targetChange.metamodelReference?.model?.package?.nsURI?:sourceMetamodel.nsURI;
-			}
-			val source = VURI.getInstance(sourceURI);
-			var target = VURI.getInstance(targetURI);
-			val sourceTargetPair = new Pair<VURI, VURI>(source, target);
-			return sourceTargetPair
+		val sourceVURI = response.sourceVURI;
+		val targetVURI = response.targetVURI;
+		if (sourceVURI != null && targetVURI != null) {
+			return new Pair<VURI, VURI>(sourceVURI, targetVURI);
+		} else {
+			return null;
+		}		
+	}
+	
+	private static def VURI getSourceVURI(Response response) {
+		val sourceURI = response?.trigger?.sourceMetamodel;
+		return sourceURI.VURI;
+	}
+	
+	private static def VURI getTargetVURI(Response response) {
+		val targetChange = response?.effects?.targetChange;
+		val targetPackage = if (targetChange instanceof ConcreteTargetModelChange) {
+			targetChange.targetElement?.elementType?.element?.EPackage;
+		} else if (targetChange instanceof ArbitraryTargetMetamodelInstanceUpdate) {
+			targetChange.metamodelReference?.model?.package;
 		}
-		return null;		
+		
+		if (targetPackage == null) {
+			return response.sourceVURI;
+		} else {
+			return targetPackage.VURI;
+		}
+	}
+	
+	private static def VURI getVURI(EPackage pckg) {
+		return if (pckg?.nsURI != null) {
+			VURI.getInstance(pckg.nsURI);
+		} else {
+			null;
+		}
 	}
 	
 	static def String getResponseName(Response response) {
@@ -136,14 +153,15 @@ final class ResponseLanguageGeneratorUtils {
 	}
 	
 	static def boolean hasOppositeResponse(Response response) {
+		// TODO HK does currently always return false
 		val sourceChange = response.trigger;
 		val targetChange = response.effects.targetChange;
-		if (targetChange instanceof ConcreteTargetModelRootCreate && 
+		if (targetChange instanceof ConcreteTargetModelCreate && 
 			sourceChange instanceof AtomicConcreteModelElementChange) {
-			val createTargetChange = targetChange as ConcreteTargetModelRootCreate;
-			if (createTargetChange.autodelete) {
+			val createTargetChange = targetChange as ConcreteTargetModelCreate;
+			/*if (createTargetChange.autodelete) {
 				return true;
-			}
+			}*/
 		}
 		return false;
 	}
@@ -151,17 +169,19 @@ final class ResponseLanguageGeneratorUtils {
 	static def Response getOppositeResponse(Response response) {
 		if (response.hasOppositeResponse) {
 			val deleteTrigger = response.trigger.deleteTrigger;
-			val createTargetChange = response.effects.targetChange as ConcreteTargetModelRootCreate;
+			val createTargetChange = response.effects.targetChange as ConcreteTargetModelCreate;
 			val deleteResponse = ResponseLanguageFactory.eINSTANCE.createResponse();
 			deleteResponse.name = "OppositeResponseForDeleteTo" + response.name;
 			deleteResponse.trigger = deleteTrigger;
 			val deleteEffects = ResponseLanguageFactory.eINSTANCE.createEffects();
-			val deleteTargetChange = ResponseLanguageFactory.eINSTANCE.createConcreteTargetModelRootDelete();
+			val deleteTargetChange = ResponseLanguageFactory.eINSTANCE.createConcreteTargetModelDelete();
 			val targetChangeElement = MirBaseFactory.eINSTANCE.createModelElement();
-			targetChangeElement.element = createTargetChange.modelElement.element;
-			deleteTargetChange.modelElement = targetChangeElement;
-			deleteTargetChange.correspondenceSource = ResponseLanguageFactory.eINSTANCE.createCorrespondenceSourceDeterminationBlock();
-			deleteTargetChange.correspondenceSource.code = new SimpleTextXBlockExpression('''return change.getOldValue();''');
+			targetChangeElement.element = createTargetChange.targetElement.elementType.element;
+			val correspondingModelElementSpecification = ResponseLanguageFactory.eINSTANCE.createCorrespondingModelElementSpecification();
+			correspondingModelElementSpecification.elementType = targetChangeElement;
+			deleteTargetChange.targetElement = correspondingModelElementSpecification;
+			correspondingModelElementSpecification.correspondenceSource = ResponseLanguageFactory.eINSTANCE.createCorrespondenceSourceDeterminationBlock();
+			correspondingModelElementSpecification.correspondenceSource.code = new SimpleTextXBlockExpression('''return change.getOldValue();''');
 			deleteEffects.targetChange = deleteTargetChange;
 			deleteResponse.effects = deleteEffects;
 			return deleteResponse;

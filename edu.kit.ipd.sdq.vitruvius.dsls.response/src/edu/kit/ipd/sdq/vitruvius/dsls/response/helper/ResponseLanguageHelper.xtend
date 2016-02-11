@@ -16,9 +16,11 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryModelEl
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.InvariantViolationEvent
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.eclipse.xtext.xbase.XExpression
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.impl.SimpleTextXBlockExpression
 import org.eclipse.xtext.xbase.XBlockExpression
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
+import org.eclipse.emf.ecore.EObject
 
 final class ResponseLanguageHelper {
 	private new() {}
@@ -40,11 +42,23 @@ final class ResponseLanguageHelper {
 	}
 	
 	public static def Response getContainingResponse(CorrespondenceSourceDeterminationBlock correspondenceSourceBlock) {
-		val modelRootUpdate = correspondenceSourceBlock.eContainer();
-		if (modelRootUpdate instanceof ConcreteTargetModelRootChange) {
-			return getContainingResponse(modelRootUpdate);
+		val correspondingModelElementSpecification = correspondenceSourceBlock.eContainer();
+		if (correspondingModelElementSpecification instanceof CorrespondingModelElementSpecification) {
+			return getContainingResponse(correspondingModelElementSpecification);
 		}
 		return null;
+	}
+	
+	public static def Response getContainingResponse(CorrespondingModelElementSpecification correspondingModelElementSpecification) {
+		var EObject currentObject = correspondingModelElementSpecification;
+		while (!(currentObject instanceof Response) && currentObject != null) {
+			currentObject = currentObject.eContainer();
+		}
+		if (currentObject != null) {
+			currentObject as Response;
+		} else {
+			return null;
+		}
 	}
 	
 	public static def Response getContainingResponse(TargetChange targetChange) {

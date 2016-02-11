@@ -7,13 +7,13 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import org.eclipse.xtext.common.types.JvmTypeReference
 import java.util.ArrayList
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelChange
 
 package class ResponseParameterGenerator {
 	private static val CHANGE_PARAMETER_NAME = "change";
@@ -58,13 +58,23 @@ package class ResponseParameterGenerator {
 	
 	protected def JvmFormalParameter generateTargetModelParameter(EObject parameterContext) {
 		if (response.effects.targetChange != null) {
-			val rootChange = response.effects.targetChange as ConcreteTargetModelRootChange;
-			if (rootChange?.modelElement?.element != null) {
-				return parameterContext.generateParameter(TARGET_MODEL_PARAMETER_NAME, rootChange.modelElement.element.instanceClass);
+			val rootChange = response.effects.targetChange as ConcreteTargetModelChange;
+			if (rootChange?.targetElement?.elementType?.element != null) {
+				return parameterContext.generateParameter(rootChange.targetElement.name, rootChange.targetElement.elementType.element.instanceClass);
 			}	
 		}
 		return null;
 	}
+	
+	/*protected def JvmFormalParameter generateCreatedElementsParameter(EObject parameterContext) {
+		if (response.effects.targetChange != null) {
+			val rootChange = response.effects.targetChange as ConcreteTargetModelChange;
+			if (rootChange?.targetElement?.elementType?.element != null) {
+				return parameterContext.generateParameter(TARGET_MODEL_PARAMETER_NAME, rootChange.targetElement.elementType.element.instanceClass);
+			}	
+		}
+		return null;
+	}*/
 	
 	protected def JvmFormalParameter generateBlackboardParameter(EObject parameterContext) {
 		return generateParameter(parameterContext, BLACKBOARD_PARAMETER_NAME, Blackboard);

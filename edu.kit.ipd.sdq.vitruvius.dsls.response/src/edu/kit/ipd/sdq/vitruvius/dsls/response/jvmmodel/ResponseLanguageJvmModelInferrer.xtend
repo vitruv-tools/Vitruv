@@ -45,6 +45,9 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer implements 
 	}
 	
 	public def JvmGenericType generateClass(Response response, EObject sourceElement) {
+		if (response?.trigger == null || response?.effects == null) {
+			return null;
+		}
 		this.methodMap = new HashMap<String, JvmOperation>();
 		val methodGenerator = new ResponseMethodGenerator(response, this, _typeReferenceBuilder, _typesBuilder);
 		methodGenerator.generateMethodGetTrigger();

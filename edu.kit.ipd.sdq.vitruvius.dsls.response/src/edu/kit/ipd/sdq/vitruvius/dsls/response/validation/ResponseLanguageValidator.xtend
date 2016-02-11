@@ -6,12 +6,12 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.validation
 import org.eclipse.xtext.validation.Check
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootCreate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
 import java.util.HashMap
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootDelete
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelCreate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelDelete
 
 /**
  * This class contains custom validation rules. 
@@ -36,8 +36,8 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 
 	@Check
 	def checkEffects(Effects effects) {
-		if (!(effects.targetChange instanceof ConcreteTargetModelRootCreate ||
-			effects.targetChange instanceof ConcreteTargetModelRootDelete) && effects.codeBlock == null) {
+		if (!(effects.targetChange instanceof ConcreteTargetModelCreate ||
+			effects.targetChange instanceof ConcreteTargetModelDelete) && effects.codeBlock == null) {
 			warning("No code is specified to execute for the models to update.",
 				ResponseLanguagePackage.Literals.EFFECTS__CODE_BLOCK);
 		}

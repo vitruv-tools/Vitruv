@@ -18,11 +18,11 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelEle
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryTargetMetamodelInstanceUpdate
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicRootObjectChange
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelChange
 
 /**
  * Outline structure definition for a response file.
@@ -107,8 +107,8 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		if (effects.targetChange != null) {
 			var targetChangeIsLeaf = false;
 			val targetChange = effects.targetChange;
-			if (targetChange instanceof ConcreteTargetModelRootChange) {
-				targetChangeIsLeaf = targetChange.modelElement?.element == null;
+			if (targetChange instanceof ConcreteTargetModelChange) {
+				targetChangeIsLeaf = targetChange.targetElement?.elementType?.element == null;
 			} else if (targetChange instanceof ArbitraryTargetMetamodelInstanceUpdate) {
 				targetChangeIsLeaf = targetChange.metamodelReference?.model == null;
 			}
@@ -127,9 +127,9 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		}
 	}
 	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, ConcreteTargetModelRootChange targetChange) {
-		if (targetChange.modelElement.element != null) {
-			createEObjectNode(parentNode, targetChange.modelElement.element);
+	protected def void _createChildren(EStructuralFeatureNode parentNode, ConcreteTargetModelChange targetChange) {
+		if (targetChange.targetElement.elementType.element != null) {
+			createEObjectNode(parentNode, targetChange.targetElement.elementType.element);
 		}
 	}
 	

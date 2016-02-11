@@ -8,11 +8,11 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHe
 import static edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.ResponseLanguageGeneratorConstants.*;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootCreate
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelRootDelete
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelElementUpdate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelUpdate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelCreate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelDelete
 
 abstract class SingleModelChangeResponseGenerator extends AbstractSingleResponseGenerator {
 	
@@ -34,13 +34,13 @@ abstract class SingleModelChangeResponseGenerator extends AbstractSingleResponse
 		
 		val targetChange = response.effects?.targetChange;
 		if (hasTargetChange &&
-			targetChange instanceof ConcreteTargetModelRootChange) {
-			methods += generateMethodExecuteResponse(targetChange as ConcreteTargetModelRootChange);
-			if (targetChange instanceof ConcreteTargetModelElementUpdate) {
+			targetChange instanceof ConcreteTargetModelChange) {
+			methods += generateMethodExecuteResponse(targetChange as ConcreteTargetModelChange);
+			if (targetChange instanceof ConcreteTargetModelUpdate) {
 				methods += generateMethodDetermineTargetModels(targetChange);	
-			} else if (targetChange instanceof ConcreteTargetModelRootCreate) {
+			} else if (targetChange instanceof ConcreteTargetModelCreate) {
 				methods += generateMethodGenerateTargetModel(targetChange);
-			} else if (targetChange instanceof ConcreteTargetModelRootDelete) {
+			} else if (targetChange instanceof ConcreteTargetModelDelete) {
 				methods += generateMethodDeleteTargetModels(targetChange);
 			}
 		} else {
@@ -50,8 +50,8 @@ abstract class SingleModelChangeResponseGenerator extends AbstractSingleResponse
 		methods += generateMethodApplyChange();
 		
 		if (hasExecutionBlock) {
-			if (targetChange instanceof ConcreteTargetModelRootChange) {
-				methods += generateMethodPerformResponse(targetChange.modelElement.element);
+			if (targetChange instanceof ConcreteTargetModelChange) {
+				methods += generateMethodPerformResponse(targetChange.targetElement.elementType.element);
 			} else {
 				methods += generateMethodPerformResponse();
 			}
@@ -116,7 +116,7 @@ abstract class SingleModelChangeResponseGenerator extends AbstractSingleResponse
 	 * <li>1. change: the change event ({@link EChange})
 	 * <li>2. blackboard: the {@link Blackboard} containing the {@link CorrespondenceInstance}
 	 */
-	protected def dispatch generateMethodExecuteResponse(ConcreteTargetModelElementUpdate modelRootUpdate) '''
+	protected def dispatch generateMethodExecuteResponse(ConcreteTargetModelUpdate modelRootUpdate) '''
 		private def executeResponse(«changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)» blackboard) {
 			val targetModels = determineTargetModels(«CHANGE_PARAMETER_NAME», blackboard);
 			for (targetModel : targetModels) {
@@ -137,7 +137,7 @@ abstract class SingleModelChangeResponseGenerator extends AbstractSingleResponse
 	 * <li>1. change: the change event ({@link EChange})
 	 * <li>2. blackboard: the {@link Blackboard} containing the {@link CorrespondenceInstance}
 	 */
-	protected def dispatch generateMethodExecuteResponse(ConcreteTargetModelRootCreate modelRootCreate) '''
+	protected def dispatch generateMethodExecuteResponse(ConcreteTargetModelCreate modelRootCreate) '''
 		private def executeResponse(«changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)» blackboard) {
 			val targetModel = generateTargetModel(«CHANGE_PARAMETER_NAME», blackboard);
 			LOGGER.debug("Execute response " + this.class.name + " for new model " + targetModel);
@@ -156,7 +156,7 @@ abstract class SingleModelChangeResponseGenerator extends AbstractSingleResponse
 	 * <li>1. change: the change event ({@link EChange})
 	 * <li>2. blackboard: the {@link Blackboard} containing the {@link CorrespondenceInstance}
 	 */
-	protected def dispatch generateMethodExecuteResponse(ConcreteTargetModelRootDelete modelRootDelete) '''
+	protected def dispatch generateMethodExecuteResponse(ConcreteTargetModelDelete modelRootDelete) '''
 		private def executeResponse(«changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)» blackboard) {
 			deleteTargetModels(«CHANGE_PARAMETER_NAME», blackboard);
 			LOGGER.debug("Execute response " + this.class.name + " with no affected model");

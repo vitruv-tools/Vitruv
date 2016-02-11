@@ -2,7 +2,6 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.tests
 
 import edu.kit.ipd.sdq.vitruvius.tests.VitruviusEMFCasestudyTest
 import org.junit.runner.Description
-import responses.ResponseChange2CommandTransformingProviding
 import java.util.function.Supplier
 import org.eclipse.emf.common.util.URI
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge

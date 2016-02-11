@@ -18,7 +18,6 @@ import static org.junit.Assert.assertArrayEquals
 import java.util.List
 import allElementTypes.Identified
 import java.util.function.Supplier
-import responses.ResponseChange2CommandTransformingProviding
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.core.resources.ResourcesPlugin
 import java.io.File
