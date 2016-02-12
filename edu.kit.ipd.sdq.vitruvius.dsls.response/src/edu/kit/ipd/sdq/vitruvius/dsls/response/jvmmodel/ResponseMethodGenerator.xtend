@@ -30,7 +30,6 @@ import org.eclipse.xtend2.lib.StringConcatenationClient
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExecutionBlock
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
-import org.apache.log4j.Level
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureChange
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PathToSourceSpecificationBlock
@@ -41,8 +40,6 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetMo
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge
 import org.eclipse.emf.ecore.change.ChangeDescription
-import com.google.common.collect.Iterables
-import org.eclipse.xtext.xbase.lib.internal.BooleanFunctionDelegate
 
 class ResponseMethodGenerator {
 	@Extension protected static JvmTypeReferenceBuilder _typeReferenceBuilder;
@@ -229,9 +226,14 @@ class ResponseMethodGenerator {
 	 */	
 	protected def generateMethodGetCorrespondingModelElements(CorrespondingModelElementSpecification correspondingModelElements, boolean claimSizeOne) {
 		val methodName = "getCorrespondingModelElements" + correspondingModelElements.name.toFirstUpper;
+		val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(correspondingModelElements)
 		
-		val affectedElementClass = correspondingModelElements.elementType.element;
-		var returnType = typeRef(affectedElementClass.instanceClass);
+		val affectedElementClass = correspondingModelElements?.elementType?.element?.instanceClass;
+		if (affectedElementClass == null) {
+			return null;
+		}
+		
+		var returnType = typeRef(affectedElementClass);
 		if (!claimSizeOne) {
 			returnType = typeRef(Iterable, returnType);
 		}
@@ -243,19 +245,18 @@ class ResponseMethodGenerator {
 			parameters += changeParameter;
 			parameters += blackboardParameter;
 			parameters += targetModelResourceParameter;
-			val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(correspondingModelElements)
 			body = '''
-				«List»<«affectedElementClass.instanceClass»> targetModels = new «ArrayList»<«affectedElementClass.instanceClass»>();
+				«List»<«affectedElementClass»> targetModels = new «ArrayList»<«affectedElementClass»>();
 				«EObject» objectToGetCorrespondencesFor = «correspondenceSourceMethod.simpleName»(«changeParameter.name»);
-				«Iterable»<«affectedElementClass.instanceClass»> correspondingObjects = null;
+				«Iterable»<«affectedElementClass»> correspondingObjects = null;
 				if (objectToGetCorrespondencesFor.eContainer() instanceof «ChangeDescription») {
 					correspondingObjects = «ResponseRuntimeHelper».getCorrespondingObjectsOfType(
-					«blackboardParameter.name».getCorrespondenceInstance(), objectToGetCorrespondencesFor, «changeParameter.name».getOldAffectedEObject(), «affectedElementClass.instanceClass».class);
+					«blackboardParameter.name».getCorrespondenceInstance(), objectToGetCorrespondencesFor, «changeParameter.name».getOldAffectedEObject(), «affectedElementClass».class);
 				} else {
 					correspondingObjects = «ResponseRuntimeHelper».getCorrespondingObjectsOfType(
-						«blackboardParameter.name».getCorrespondenceInstance(), objectToGetCorrespondencesFor, «affectedElementClass.instanceClass».class);
+						«blackboardParameter.name».getCorrespondenceInstance(), objectToGetCorrespondencesFor, «affectedElementClass».class);
 				}
-				for («affectedElementClass.instanceClass» targetElement : correspondingObjects) {
+				for («affectedElementClass» targetElement : correspondingObjects) {
 					if («targetModelResourceParameter.name» == null || targetElement.eResource().equals(«targetModelResourceParameter.name»)) {
 						targetModels.add(targetElement);
 					}
@@ -276,10 +277,10 @@ class ResponseMethodGenerator {
 	protected def generateMethodGetCorrespondenceSource(CorrespondingModelElementSpecification modelElementSpecification) {
 		val methodName = "getCorrepondenceSource" + modelElementSpecification.name;
 		
-		return  modelElementSpecification.getOrGenerateMethod(methodName, typeRef(EObject)) [
+		return modelElementSpecification.correspondenceSource.getOrGenerateMethod(methodName, typeRef(EObject)) [
 			visibility = JvmVisibility.PRIVATE;
 			parameters += generateChangeParameter(modelElementSpecification);
-			val correspondenceSourceBlock = modelElementSpecification.correspondenceSource.code;
+			val correspondenceSourceBlock = modelElementSpecification.correspondenceSource?.code;
 			if (correspondenceSourceBlock instanceof SimpleTextXBlockExpression) {
 				body = correspondenceSourceBlock.text;
 			} else {
