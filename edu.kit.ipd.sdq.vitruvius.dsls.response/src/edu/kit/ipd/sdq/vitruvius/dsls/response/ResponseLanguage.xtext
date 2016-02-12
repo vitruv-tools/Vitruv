@@ -32,6 +32,7 @@ ConcreteTargetModelChange:
 ConcreteTargetModelUpdate:
 	'update model:' targetElement=CorrespondingModelElementSpecification
 	('create element:' createElements+=CorrespondingModelElementSpecification | 
+		'update element:' updateElements+=CorrespondingModelElementSpecification |
 		'delete element:' deleteElements+=CorrespondingModelElementSpecification
 	)*;
 
@@ -39,12 +40,6 @@ CorrespondingModelElementSpecification:
 	name=ValidID
 	'corresponding to:' correspondenceSource=CorrespondenceSourceDeterminationBlock 
 	'type:' elementType=ModelElement;
-
-CreateModelElement returns CreateModelElement:
-	'create element:' CorrespondingModelElementSpecification;
-
-DeleteModelElement returns DeleteModelElement:
-	'delete element:' CorrespondingModelElementSpecification;
 
 ConcreteTargetModelCreate:
 	'create model:' targetElement=CorrespondingModelElementSpecification

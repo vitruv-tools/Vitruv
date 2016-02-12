@@ -1,11 +1,4 @@
 import "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.allElementTypes" as minimal
-//response: DummyForCodeExecutionOnAnyEvent
-//trigger: model change in minimal
-//effect: update any minimal
-//execute: {
-//	println(change);
-//}
-
 
 /*
  * UpdateSingleValuedEAttribute
@@ -13,9 +6,7 @@ import "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.allElementTypes" as mi
 response: UpdateSingleValuedEAttribute
 trigger: replace value minimal.Root[singleValuedEAttribute] 
 update model: targetElement
-	corresponding to: {
-		edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
-	}
+	corresponding to: change.newAffectedEObject
 	type: minimal.Root
 execute: {
 	if (change.newValue == null) {
@@ -49,9 +40,7 @@ execute: {
 response: CreateNonRootEObjectInList
 trigger: insert in list minimal.Root[multiValuedContainmentEReference] 
 update model: targetElement
-	corresponding to: {
-		edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
-	}
+	corresponding to: change.newAffectedEObject
 	type: minimal.Root
 	create element: newNonRoot
 		corresponding to: change.newValue
@@ -71,12 +60,9 @@ response: DeleteNonRootEObjectInList
 trigger: remove from list minimal.Root[multiValuedContainmentEReference] 
 update model: targetElement
 	corresponding to: change.oldValue
-		//{edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);}
 	type: minimal.NonRoot
 execute: {
 	org.eclipse.emf.ecore.util.EcoreUtil.remove(targetElement);
-	//(targetElement.eContainer() as allElementTypes.Root).multiValuedContainmentEReference.removeIf[it.id == change.oldValue.id];
-	//targetElement.multiValuedContainmentEReference.removeIf[it.id == change.oldValue.id];
 	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
 		edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.
 		DeleteNonRootEObjectInList);
@@ -121,12 +107,15 @@ execute: {
  */
 response: UpdateSingleValuedNonContainmentEReference
 trigger: replace value minimal.Root[singleValuedNonContainmentEReference] 
-update model: targetElement
+update model: targetContainer
 	corresponding to: change.newAffectedEObject
 	type: minimal.Root
+	update element: targetElement
+		corresponding to: change.newValue
+		type: minimal.NonRoot
 execute: {
-	val addedNonRoot = targetElement.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst[it.id == change.newValue.id];
-	targetElement.singleValuedNonContainmentEReference = addedNonRoot;    
+	//val addedNonRoot = targetElement.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst[it.id == change.newValue.id];
+	targetContainer.singleValuedNonContainmentEReference = targetElement;    
 	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
 		edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.
 		UpdateSingleValuedNonContainmentEReference);

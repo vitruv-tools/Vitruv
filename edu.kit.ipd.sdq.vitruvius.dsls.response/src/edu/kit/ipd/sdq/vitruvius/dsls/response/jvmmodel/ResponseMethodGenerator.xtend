@@ -227,11 +227,15 @@ class ResponseMethodGenerator {
 	 * 
 	 * <p>Precondition: a metamodel element for the target models is specified in the response
 	 */	
-	protected def generateMethodGetCorrespondingModelElements(ConcreteTargetModelUpdate updatedModel) {
-		val methodName = "getCorrespondingModelElements";
+	protected def generateMethodGetCorrespondingModelElements(CorrespondingModelElementSpecification correspondingModelElements, boolean claimSizeOne) {
+		val methodName = "getCorrespondingModelElements" + correspondingModelElements.name.toFirstUpper;
 		
-		val affectedElementClass = updatedModel.targetElement.elementType.element;
-		return getOrGenerateMethod(methodName, typeRef(Iterable, typeRef(affectedElementClass.instanceClass))) [
+		val affectedElementClass = correspondingModelElements.elementType.element;
+		var returnType = typeRef(affectedElementClass.instanceClass);
+		if (!claimSizeOne) {
+			returnType = typeRef(Iterable, returnType);
+		}
+		return getOrGenerateMethod(methodName, returnType) [
 			visibility = JvmVisibility.PRIVATE;
 			val changeParameter = generateChangeParameter();	
 			val blackboardParameter = generateBlackboardParameter();
@@ -239,7 +243,7 @@ class ResponseMethodGenerator {
 			parameters += changeParameter;
 			parameters += blackboardParameter;
 			parameters += targetModelResourceParameter;
-			val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(updatedModel.targetElement)
+			val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(correspondingModelElements)
 			body = '''
 				«List»<«affectedElementClass.instanceClass»> targetModels = new «ArrayList»<«affectedElementClass.instanceClass»>();
 				«EObject» objectToGetCorrespondencesFor = «correspondenceSourceMethod.simpleName»(«changeParameter.name»);
@@ -257,7 +261,14 @@ class ResponseMethodGenerator {
 					}
 				}
 				
-				return targetModels;
+				«IF claimSizeOne»
+					if (targetModels.size() != 1) {
+						throw new «IllegalArgumentException»("There hast to be exacty one corresponding element.");
+					}
+					return targetModels.get(0);
+				«ELSE»
+					return targetModels;
+				«ENDIF»
 			'''
 		];
 	}
@@ -564,20 +575,28 @@ class ResponseMethodGenerator {
 	 * <li>2. blackboard: the {@link Blackboard} containing the {@link CorrespondenceInstance}
 	 */
 	private def dispatch StringConcatenationClient generateMethodExecuteResponseBody(ConcreteTargetModelUpdate modelRootUpdate, JvmFormalParameter changeParameter, JvmFormalParameter blackboardParameter) {
-		val determineTargetModelsMethod = generateMethodGetCorrespondingModelElements(modelRootUpdate);
-		val newModelElements = modelRootUpdate.createElements;
-		val elementParametersMap = <CorrespondingModelElementSpecification, JvmFormalParameter>newHashMap();
-		CollectionBridge.mapFixed(newModelElements, 
-				[elementParametersMap.put(it, modelRootUpdate.generateModelElementParameter(it))]);
+		val determineTargetModelsMethod = generateMethodGetCorrespondingModelElements(modelRootUpdate.targetElement, false);
+		val createModelElements = modelRootUpdate.createElements;
+		val updateModelElements = modelRootUpdate.updateElements;
+		val createElementParametersMap = <CorrespondingModelElementSpecification, JvmFormalParameter>newHashMap();
+		CollectionBridge.mapFixed(createModelElements, 
+				[createElementParametersMap.put(it, modelRootUpdate.generateModelElementParameter(it))]);
+		val updateElementParametersMap = <CorrespondingModelElementSpecification, JvmFormalParameter>newHashMap();
+		CollectionBridge.mapFixed(updateModelElements, 
+				[updateElementParametersMap.put(it, modelRootUpdate.generateModelElementParameter(it))]);
+		val getUpdateElementMethodsMap = <JvmFormalParameter, JvmOperation>newHashMap();
+		CollectionBridge.mapFixed(updateModelElements, 
+				[getUpdateElementMethodsMap.put(updateElementParametersMap.get(it), generateMethodGetCorrespondingModelElements(it, true))]);
 		val generationMethodsMap = <JvmFormalParameter, JvmOperation>newHashMap();
-		CollectionBridge.mapFixed(newModelElements, 
-				[generationMethodsMap.put(elementParametersMap.get(it), generateMethodGenerateModelElement(it))]);
+		CollectionBridge.mapFixed(createModelElements, 
+				[generationMethodsMap.put(createElementParametersMap.get(it), generateMethodGenerateModelElement(it))]);
 		val correspondenceMethodMap = <JvmFormalParameter, JvmOperation>newHashMap();
-		CollectionBridge.mapFixed(newModelElements, 
-				[correspondenceMethodMap.put(elementParametersMap.get(it), generateMethodAddModelElementCorrespondence(it))]);
+		CollectionBridge.mapFixed(createModelElements, 
+				[correspondenceMethodMap.put(createElementParametersMap.get(it), generateMethodAddModelElementCorrespondence(it))]);
 		val targetModelParameter = modelRootUpdate.generateModelElementParameter(modelRootUpdate.targetElement);
+		val parameterList = createElementParametersMap.values() + updateElementParametersMap.values();
 		val JvmOperation performResponseMethod = if (hasExecutionBlock) {
-			generateMethodPerformResponse(response.effects.codeBlock, #[targetModelParameter] + elementParametersMap.values());
+			generateMethodPerformResponse(response.effects.codeBlock, #[targetModelParameter] + parameterList);
 		} else {
 			null;
 		}
@@ -587,12 +606,16 @@ class ResponseMethodGenerator {
 			for («targetModelElementClass» «modelRootUpdate.targetElement.name» : targetModels) {
 				LOGGER.debug("Execute response " + this.getClass().getName() + " for model " + «modelRootUpdate.targetElement.name»);
 				«IF hasExecutionBlock»
-					«FOR param : elementParametersMap.values()»
+					«FOR param : createElementParametersMap.values()»
 						«generationMethodsMap.get(param).returnType» «param.name» = «generationMethodsMap.get(param).simpleName»();
 					«ENDFOR»
+					«FOR param : updateElementParametersMap.values()»
+						«getUpdateElementMethodsMap.get(param).returnType» «param.name» = «getUpdateElementMethodsMap.get(param).simpleName»(«
+							changeParameter.name», «blackboardParameter.name», «modelRootUpdate.targetElement.name».eResource());
+					«ENDFOR»
 					«performResponseMethod.simpleName»(«changeParameter.name», «targetModelParameter.name»«
-						FOR param : elementParametersMap.values() BEFORE ', ' SEPARATOR ', '»«param.name»«ENDFOR»);
-					«FOR param : elementParametersMap.values()»
+						FOR param : parameterList BEFORE ', ' SEPARATOR ', '»«param.name»«ENDFOR»);
+					«FOR param : createElementParametersMap.values()»
 						«correspondenceMethodMap.get(param).simpleName»(«changeParameter.name», «param.name», «blackboardParameter.name»);
 					«ENDFOR»
 				«ENDIF»
