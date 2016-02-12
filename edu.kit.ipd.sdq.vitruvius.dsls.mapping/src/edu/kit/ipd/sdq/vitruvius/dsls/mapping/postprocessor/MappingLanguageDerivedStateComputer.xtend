@@ -20,9 +20,7 @@ class MappingLanguageDerivedStateComputer extends JvmModelAssociator {
 
 	override installDerivedState(DerivedStateAwareResource resource, boolean preIndexingPhase) {
 		super.installDerivedState(resource, preIndexingPhase)
-		val mappingFile = resource.contents.get(0) as MappingFile
-		
-		inferDefaultState(mappingFile)
+		resource.contents.filter(MappingFile).forEach[inferDefaultState]
 	}
 	
 	public def inferDefaultState(MappingFile mappingFile) {
@@ -69,7 +67,7 @@ class MappingLanguageDerivedStateComputer extends JvmModelAssociator {
 			it.name = MappingLanguageHelper.toSensibleDefaultName(it)
 		]
 		
-		mappingFile.eAllContents.filter(Mapping).forEach [ mapping |
+		/*mappingFile.eAllContents.filter(Mapping).forEach [ mapping |
 			(mapping?.constraintsBody?.expressions ?: #[]).filter(AttributeEquivalenceExpression).forEach [ exp |
 				#[exp.left, exp.right].forEach [
 					val notNullExpression = MappingLanguageFactory.eINSTANCE.createNotNullExpression
@@ -78,6 +76,6 @@ class MappingLanguageDerivedStateComputer extends JvmModelAssociator {
 					mapping.constraintExpressions += notNullExpression
 				]
 			]
-		]
+		]*/
 	}
 }
