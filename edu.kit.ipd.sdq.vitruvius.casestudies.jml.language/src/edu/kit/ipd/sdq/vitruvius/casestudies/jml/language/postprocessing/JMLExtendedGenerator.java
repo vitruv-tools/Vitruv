@@ -25,7 +25,7 @@ public class JMLExtendedGenerator extends Generator {
             @Override
             public Injector createInjector() {
                 return Guice.createInjector(new XtextRuntimeModule() {
-                    @Override
+//                    @Override
                     public Class<? extends IXtext2EcorePostProcessor> bindIXtext2EcorePostProcessor() {
                         return JMLPostProcessor.class;
                     }

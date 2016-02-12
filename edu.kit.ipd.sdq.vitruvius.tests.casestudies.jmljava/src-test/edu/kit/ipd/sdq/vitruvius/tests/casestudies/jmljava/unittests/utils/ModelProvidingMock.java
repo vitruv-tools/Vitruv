@@ -53,4 +53,10 @@ public class ModelProvidingMock implements ModelProviding {
             final TUID oldTUID) {
         throw new UnsupportedOperationException();
     }
+
+	@Override
+	public void forceReloadModelInstanceOriginalIfExisting(VURI modelURI) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
 }

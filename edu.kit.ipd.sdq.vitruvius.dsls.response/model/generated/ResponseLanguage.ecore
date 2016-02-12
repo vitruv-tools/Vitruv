@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="responseLanguage" nsURI="http://www.kit.edu/ipd/sdq/vitruvius/dsls/response/ResponseLanguage"
+    nsPrefix="responseLanguage">
+  <eClassifiers xsi:type="ecore:EClass" name="Response">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="documentation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="trigger" eType="#//Trigger"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="effects" eType="#//Effects"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Effects">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetChange" eType="#//TargetChange"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="codeBlock" eType="#//ExecutionBlock"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TargetChange"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ConcreteTargetModelChange" eSuperTypes="#//TargetChange">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetElement" eType="#//CorrespondingModelElementSpecification"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConcreteTargetModelUpdate" eSuperTypes="#//ConcreteTargetModelChange">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="createElements" upperBound="-1"
+        eType="#//CreateModelElement" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="deleteElements" upperBound="-1"
+        eType="#//DeleteModelElement" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DeleteModelElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//CorrespondingModelElementSpecification"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CreateModelElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//CorrespondingModelElementSpecification"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CorrespondingModelElementSpecification">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="correspondenceSource" eType="#//CorrespondenceSourceDeterminationBlock"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elementType" eType="ecore:EClass platform:/resource/edu.kit.ipd.sdq.vitruvius.dsls.mirbase/model/generated/MirBase.ecore#//ModelElement"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConcreteTargetModelCreate" eSuperTypes="#//ConcreteTargetModelChange">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="relativeToSourcePath" eType="#//PathToSourceSpecificationBlock"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="createElements" upperBound="-1"
+        eType="#//CreateModelElement" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConcreteTargetModelDelete" eSuperTypes="#//ConcreteTargetModelChange"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ArbitraryTargetMetamodelInstanceUpdate"
+      eSuperTypes="#//TargetChange">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="metamodelReference" eType="ecore:EClass platform:/resource/edu.kit.ipd.sdq.vitruvius.dsls.mirbase/model/generated/MirBase.ecore#//MetamodelReference"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CodeBlock">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="code" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PathToSourceSpecificationBlock" eSuperTypes="#//CodeBlock"/>
+  <eClassifiers xsi:type="ecore:EClass" name="CorrespondenceSourceDeterminationBlock"
+      eSuperTypes="#//CodeBlock"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PreconditionBlock" eSuperTypes="#//CodeBlock"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ExecutionBlock" eSuperTypes="#//CodeBlock"/>
+  <eClassifiers xsi:type="ecore:EClass" name="InvariantViolationEvent" eSuperTypes="#//Trigger">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="violation" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Trigger">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="precondition" eType="#//PreconditionBlock"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ModelChange" eSuperTypes="#//Trigger"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ConcreteModelElementChange" eSuperTypes="#//ModelChange"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AtomicConcreteModelElementChange" eSuperTypes="#//ConcreteModelElementChange"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AtomicRootObjectChange" eSuperTypes="#//AtomicConcreteModelElementChange">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="changedElement" eType="ecore:EClass platform:/resource/edu.kit.ipd.sdq.vitruvius.dsls.mirbase/model/generated/MirBase.ecore#//ModelElement"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AtomicFeatureChange" eSuperTypes="#//AtomicConcreteModelElementChange">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="changedFeature" eType="ecore:EClass platform:/resource/edu.kit.ipd.sdq.vitruvius.dsls.mirbase/model/generated/MirBase.ecore#//FeatureOfElement"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AtomicMultiValuedFeatureChange" eSuperTypes="#//AtomicFeatureChange"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AtomicSingleValuedFeatureChange" eSuperTypes="#//AtomicFeatureChange"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ArbitraryModelElementChange" eSuperTypes="#//ModelChange">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="changedModel" eType="ecore:EClass platform:/resource/edu.kit.ipd.sdq.vitruvius.dsls.mirbase/model/generated/MirBase.ecore#//MetamodelReference"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ResponseFile" eSuperTypes="platform:/resource/edu.kit.ipd.sdq.vitruvius.dsls.mirbase/model/generated/MirBase.ecore#//MirBaseFile">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="responses" upperBound="-1"
+        eType="#//Response" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InsertRootChange" eSuperTypes="#//AtomicRootObjectChange"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RemoveRootChange" eSuperTypes="#//AtomicRootObjectChange"/>
+  <eClassifiers xsi:type="ecore:EClass" name="MultiValuedFeatureInsertChange" eSuperTypes="#//AtomicMultiValuedFeatureChange"/>
+  <eClassifiers xsi:type="ecore:EClass" name="MultiValuedFeatureRemoveChange" eSuperTypes="#//AtomicMultiValuedFeatureChange"/>
+  <eClassifiers xsi:type="ecore:EClass" name="MultiValuedFeaturePermuteChange" eSuperTypes="#//AtomicMultiValuedFeatureChange"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SingleValuedFeatureCreate" eSuperTypes="#//AtomicSingleValuedFeatureChange"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SingleValuedFeatureDelete" eSuperTypes="#//AtomicSingleValuedFeatureChange"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SingleValuedFeatureReplace" eSuperTypes="#//AtomicSingleValuedFeatureChange"/>
+</ecore:EPackage>

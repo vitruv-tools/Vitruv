@@ -10,8 +10,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBrid
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.api.MappedCorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.mir.executor.interfaces.MIRMappingRealization
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl
 import java.util.List
 import java.util.Set
@@ -32,6 +30,9 @@ import static org.junit.Assert.assertTrue
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MappingRealization
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingExecutionState
 
 class CorrespondenceTest extends VSUMTest {
 	static final String interfaceCRefName = "interfaces"
@@ -153,15 +154,15 @@ class CorrespondenceTest extends VSUMTest {
 		// 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		assertNotNull("Correspondence instance is null", corresp)
 		if (corresp instanceof MappedCorrespondenceInstance) {
-			var MIRMappingRealization mapping = new MIRMappingRealization() {
+			var MappingRealization mapping = new MappingRealization() {
 				static final long serialVersionUID = 1L
 
 				override String getMappingID() {
 					return null
 				}
-
-				override TransformationResult applyEChange(EChange eChange, Blackboard blackboard) {
-					return null
+				
+				override applyEChange(EChange eChange, Blackboard blackboard, MappingExecutionState state) {
+					
 				}
 			}
 			(corresp as MappedCorrespondenceInstance).registerMappingForCorrespondence(repo2pkg, mapping)

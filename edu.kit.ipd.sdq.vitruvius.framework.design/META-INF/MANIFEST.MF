@@ -4,9 +4,7 @@ Bundle-Name: Design
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.design
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.design.mir.manager;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.framework.design.metamodelmanager;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.framework.design.viewtype.manager;bundle-version="1.0.0",
+Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.design.metamodelmanager;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.design.projectgenerator;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.projects;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.metarepository;bundle-version="1.0.0"
