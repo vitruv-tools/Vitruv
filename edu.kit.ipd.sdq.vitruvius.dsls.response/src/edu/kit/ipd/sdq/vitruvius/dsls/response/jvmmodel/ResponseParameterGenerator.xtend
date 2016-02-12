@@ -14,6 +14,8 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHe
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
+import org.eclipse.emf.ecore.resource.Resource
 
 package class ResponseParameterGenerator {
 	private static val CHANGE_PARAMETER_NAME = "change";
@@ -56,11 +58,10 @@ package class ResponseParameterGenerator {
 		}
 	}
 	
-	protected def JvmFormalParameter generateTargetModelParameter(EObject parameterContext) {
+	protected def JvmFormalParameter generateModelElementParameter(EObject parameterContext, CorrespondingModelElementSpecification elementSpecification) {
 		if (response.effects.targetChange != null) {
-			val rootChange = response.effects.targetChange as ConcreteTargetModelChange;
-			if (rootChange?.targetElement?.elementType?.element != null) {
-				return parameterContext.generateParameter(rootChange.targetElement.name, rootChange.targetElement.elementType.element.instanceClass);
+			if (elementSpecification?.elementType?.element != null) {
+				return parameterContext.generateParameter(elementSpecification.name, elementSpecification.elementType.element.instanceClass);
 			}	
 		}
 		return null;
@@ -80,7 +81,11 @@ package class ResponseParameterGenerator {
 		return generateParameter(parameterContext, BLACKBOARD_PARAMETER_NAME, Blackboard);
 	}
 	
-	private def generateParameter(EObject context, String parameterName, Class<?> parameterClass, String... typeParameterClassNames) {
+	protected def JvmFormalParameter generateTargetModelResourceParameter(EObject parameterContext) {
+		return generateParameter(parameterContext, "targetModelResource", Resource);
+	}
+	
+	protected def generateParameter(EObject context, String parameterName, Class<?> parameterClass, String... typeParameterClassNames) {
 		if (parameterClass == null) {
 			return null;
 		}

@@ -451,7 +451,7 @@
 			</command>
 		</menuContribution>
 	</extension>
-	<extension point="org.eclipse.core.runtime.adapters">
+	<!--<extension point="org.eclipse.core.runtime.adapters">
 		<factory class="edu.kit.ipd.sdq.vitruvius.dsls.response.ui.ResponseLanguageExecutableExtensionFactory:org.eclipse.xtext.builder.smap.StratumBreakpointAdapterFactory"
 			adaptableType="org.eclipse.xtext.ui.editor.XtextEditor">
 			<adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget"/>
@@ -492,7 +492,7 @@
 				id="edu.kit.ipd.sdq.vitruvius.dsls.response.ResponseLanguage.rulerContextMenu.openBreapointPropertiesAction">
 			</action>
 		</viewerContribution>
-	</extension>
+	</extension>-->
 	<!-- Introduce Local Variable Refactoring -->
 	<extension point="org.eclipse.ui.handlers">
 		<handler 
