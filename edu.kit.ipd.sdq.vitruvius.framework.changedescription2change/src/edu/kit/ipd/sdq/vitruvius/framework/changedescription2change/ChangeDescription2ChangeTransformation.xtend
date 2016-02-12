@@ -128,7 +128,7 @@ class ChangeDescription2ChangeTransformation {
 			val eList = value as EList<?>
 			return eList != null && !eList.isEmpty
 		} else {
-			// TODO MK use equals for feature default value comparison?
+			// TODO MK equals for feature default value comparison okay or identity === needed?
 			return value != feature.defaultValue
 		}
 	}
