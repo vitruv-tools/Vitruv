@@ -9,4 +9,11 @@ Require-Bundle: org.junit;bundle-version="4.12.0",
  org.eclipse.ui.ide,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
- edu.kit.ipd.sdq.vitruvius.codeintegration.ui
+ edu.kit.ipd.sdq.vitruvius.codeintegration.ui,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava,
+ edu.kit.ipd.sdq.vitruvius.casestudies.emf,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts,
+ edu.kit.ipd.sdq.vitruvius.framework.vsum,
+ edu.kit.ipd.sdq.vitruvius.framework.util,
+ org.apache.log4j,
+ edu.kit.ipd.sdq.vitruvius.codeintegration
