@@ -4,18 +4,22 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
 import java.util.List
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
+import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.change.ChangeDescription
-import org.eclipse.emf.ecore.EReference
+import java.util.Map.Entry
+import org.eclipse.emf.ecore.change.FeatureChange
+import org.eclipse.emf.ecore.change.ListChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateEReference
 
 class ChangeDescription2ChangeTransformation {
 	
-	def static List<EChange> transform(ChangeDescription changeDescription) {
-		val eChanges = new BasicEList<EChange>
-		changeDescription.objectChanges 
-		
-		// --shadow bullshit--
+		// BEGIN LONG VERSION OF REVERSE-ENGINEERED OLD MONITOR
+		// --shadow bullshit-- = make the flat attach part of the change description deep by recursively creating changes for all non-default values (and listing the additional objects to attach, but without any effects)
 		// build a global result list that contains all "object changes" that changed a containment feature
 		// for every object to attach: 
 			// recursively find all changes to non default values 
@@ -25,11 +29,11 @@ class ChangeDescription2ChangeTransformation {
 			// add first all containment then all non-containment changes for this single object to attach to the global result list
 		// end-for
 		// add newly created objects to add to the list of "objects to attach" from the change description
-		
+		//
 		// build a second global result list that contains all "object changes" that changed a non-containment feature
 		// remove all newly created non-containment changes from the first list and add them to the second list
 		
-		// --forward bullshit--
+		// --forward bullshit-- = "order" changes by changed objects (and do things without effects: map containers to containees, make a list of objects without containers, addable shit)
 		// build a map m1 from changed objects to changes
 		// copy the list that contains the "objects to attach" and our "objects to add"
 		// for every change in the first list
@@ -40,7 +44,7 @@ class ChangeDescription2ChangeTransformation {
 				// end-if
 			// end-iterate
 		// end-for
-		
+		//		
 		// create an empty result change list
 		// create a new list of addable containers based on the containers mapped in m2
 		// remove all "objects to attach" and our "objects to add" from the addable list
@@ -55,7 +59,7 @@ class ChangeDescription2ChangeTransformation {
 		// add all containment changes to the result
 		// replace the first global list with the result
 		
-		// --deletion bullshit--
+		// --deletion bullshit-- = make a list of changes for the "objects to detach"
 		// create an empty result change list
 		// for every change in the first list
 			// if the object affected by the change is in the list of "objects to detach" from the change description
@@ -64,12 +68,12 @@ class ChangeDescription2ChangeTransformation {
 		// end-for
 		// replace the first global list with the result
 		
-		// --shadow-deletion bullshit--
+		// --shadow-deletion bullshit-- = make the flat deletion part of the change description deep by recursively creating changes for all contained objects (and listing the additional objects to detach, but without any effects)
 		// create a result change list base on the first global list
 		// for every "object to detach" (comefrom recursion)
 			// create a new list for additional changes
 			// create a list for additional objects to detach
-			// for every object referenced from the current object to detach
+			// for every object containment referenced from the current object to detach
 				// if the referenced object is not an "object to detach"
 					// create a change model element for the referenced object
 					// recursively find additional changes for the referenced object ("to detach")
@@ -84,28 +88,52 @@ class ChangeDescription2ChangeTransformation {
 		
 		// perform another --deletion bullshit-- with the SECOND global list but replace the second list with the result
 			
+		// --order-bullshit-- = order changes: first deletions, then containment, then non-containment
 		// make an new list that starts with the elements of the third list and then has the elements of the second list
-				
+		// END LONG VERSION OF REVERSE-ENGINEERED OLD MONITOR
+	
+	
+		// BEGIN SHORT VERSION OF REVERSE-ENGINEERED OLD MONITOR
+		// --shadow bullshit-- = make the flat attach part of the change description deep by recursively creating changes for all non-default values (and listing the additional objects to attach, but without any effects)
+		// --forward bullshit-- = "order" all changes by changed objects (and do things without effects: map containers to containees, make a list of objects without containers, addable shit)
+		// --deletion bullshit-- = make a list of changes for the "objects to detach"
+		// --shadow-deletion bullshit-- = make the flat deletion part of the change description deep by recursively creating changes for all contained objects (and listing the additional objects to detach, but without any effects)
+		// --order-bullshit-- = order changes: first deletions, then containment, then non-containment
+		// END LONG VERSION OF REVERSE-ENGINEERED OLD MONITOR
+		
+	def static List<EChange> transform(ChangeDescription changeDescription) {
+		val List<EChange> eChanges = new BasicEList<EChange>				
+		// make the flat attach part of the change description deep by recursively creating changes for all non-default values
 		val objectsToAttach = changeDescription.getObjectsToAttach
 		objectsToAttach.forEach[recursivelyAddChangesForNonDefaultValues(it, eChanges)]
-		// TODO MK inspire from old transformation
+		// make the flat deletion part of the change description deep by recursively creating changes for all referenced objects
 		val objectsToDetach = changeDescription.getObjectsToDetach
-		val objectAndFeatureChangePairs = changeDescription.getObjectChanges().entrySet
-		
-		return null
+		objectsToDetach.forEach[recursivelyAddChangesForDeletedObjects(it, eChanges)]
+		// add all first level changes
+		changeDescription.objectChanges.forEach[addConvertedChanges(it, eChanges)]
+		// sort changes: first deletions, then additions, then containment, then non-containment
+		val sortedEChanges = sortChanges(eChanges)
+		return sortedEChanges
 	}
 	
 	def static void recursivelyAddChangesForNonDefaultValues(EObject eObject, List<EChange> eChanges) {
 		if (hasNonDefaultValue(eObject)) {
-			for (reference : eObject.eClass.EAllReferences) {
-				if (hasChangeableUnderivedPersistedNotContainingNonDefaultValue(eObject, reference)) {
-					eChanges.add(ChangeBridge.createChangeForReferencedObject(eObject, reference))
-					getReferenceValueList(eObject, reference).forEach[recursivelyAddChangesForNonDefaultValues(it, eChanges)]
+			val metaclass = eObject.eClass
+			for (feature : metaclass.EAllStructuralFeatures) {
+				if (hasChangeableUnderivedPersistedNotContainingNonDefaultValue(eObject, feature)) {
+					eChanges.add(createChangeForValue(eObject, feature))
+					getReferenceValueList(eObject, feature).forEach[recursivelyAddChangesForNonDefaultValues(it, eChanges)]
 				}
 			}
-			// TODO MK attributes
-			
 		}
+	}
+	
+	def static dispatch EChange createChangeForValue(EObject eObject,  EReference reference) {
+		return EChangeBridge.createAdditiveEChangeForReferencedObject(eObject, reference)
+	}
+	
+	def static dispatch EChange createChangeForValue(EObject eObject,  EAttribute attribute) {
+		return EChangeBridge.createAdditiveEChangeForAttributeValue(eObject, attribute)
 	}
 	
 	def static boolean hasNonDefaultValue(EObject eObject) {
@@ -128,7 +156,7 @@ class ChangeDescription2ChangeTransformation {
 			val eList = value as EList<?>
 			return eList != null && !eList.isEmpty
 		} else {
-			// TODO MK equals for feature default value comparison okay or identity === needed?
+			// TODO MK is equals for feature default value comparison okay or is identity (===) needed?
 			return value != feature.defaultValue
 		}
 	}
@@ -137,7 +165,11 @@ class ChangeDescription2ChangeTransformation {
 		return isChangeableUnderivedPersistedNotContainingFeature(eObject, feature) && hasNonDefaultValue(eObject, feature)
 	}
 	
-	def static EList<EObject> getReferenceValueList(EObject eObject, EReference reference) {
+	def static dispatch EList<EObject> getReferenceValueList(EObject eObject, EStructuralFeature feature) {
+		return new BasicEList
+	}
+	
+	def static dispatch EList<EObject> getReferenceValueList(EObject eObject, EReference reference) {
 		return getValueList(eObject, reference) as EList<EObject>
 	}
 	
@@ -154,4 +186,53 @@ class ChangeDescription2ChangeTransformation {
 		// TODO MK move this method and also use it in change metamodel?
     	return feature instanceof EReference && (feature as EReference).isContainment
     }
+    
+	def static void recursivelyAddChangesForDeletedObjects(EObject eObject, List<EChange> eChanges) {
+		for (containmentReference : eObject.eClass.EAllContainments) {
+			eChanges.add(EChangeBridge.createSubtractiveEChangeForReferencedObject(eObject, containmentReference))
+			getReferenceValueList(eObject,containmentReference).forEach[recursivelyAddChangesForDeletedObjects(it, eChanges)]
+		}
+	}
+	
+	def static void addConvertedChanges(Entry<EObject, EList<FeatureChange>> entry, List<EChange> eChanges) {
+		val affectedEObject = entry.key
+		val featureChanges = entry.value
+		featureChanges.forEach[eChanges.addAll(convertChange(affectedEObject, it.feature, it.value, it.referenceValue, it.listChanges))]
+	}
+	
+	def static List<EChange> convertChange(EObject affectedEObject, EStructuralFeature feature, Object object, EObject object2, EList<ListChange> list) {
+		// FIXME MK CONVERSION LOGIC
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+		
+	def static List<EChange> sortChanges(List<EChange> changes) {
+		val deletions = new BasicEList
+		val additions = new BasicEList
+		val containmentChanges = new BasicEList
+		val remainingChanges = new BasicEList
+		for (change : changes) {
+			if (change instanceof SubtractiveEReferenceChange
+				&& (change as SubtractiveEReferenceChange).isDelete
+			) {
+				deletions.add(change)
+			} else if (change instanceof AdditiveEReferenceChange<?>
+				&& (change as AdditiveEReferenceChange<?>).isCreate
+			) {
+				additions.add(change)
+			} else if (change instanceof UpdateEReference<?>
+				&& (change as UpdateEReference<?>).isContainment
+			) {
+				containmentChanges.add(change)
+			} else {
+				remainingChanges.add(change)
+			}
+		}
+		val sortedChanges = new BasicEList(changes.size)
+		sortedChanges.addAll(deletions)
+		sortedChanges.addAll(additions)
+		sortedChanges.addAll(containmentChanges)
+		sortedChanges.addAll(remainingChanges)
+		return sortedChanges
+	}
 }
