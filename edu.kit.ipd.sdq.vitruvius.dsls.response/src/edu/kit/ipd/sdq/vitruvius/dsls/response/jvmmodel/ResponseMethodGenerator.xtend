@@ -107,8 +107,9 @@ class ResponseMethodGenerator {
 				«typedChangeString» «typedChangeName» = («typedChangeString»)«changeParameter.name»;
 				try {
 					«executeResponseMethod.simpleName»(«typedChangeName», «blackboardParameter.name»);
-				} catch («IOException» exception) {
-					LOGGER.error("IOException during execution of response: " + this.getClass().getName());
+				} catch («Exception» exception) {
+					// If an error occured during execution, avoid an application shutdown and print the error.
+					LOGGER.error(exception.getClass().getSimpleName() + " during execution of response: " + this.getClass().getName());
 				}
 				
 				return new «TransformationResult»();'''
