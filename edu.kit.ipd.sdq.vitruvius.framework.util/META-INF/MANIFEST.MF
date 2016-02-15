@@ -6,7 +6,8 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.util.bridges,
- edu.kit.ipd.sdq.vitruvius.framework.util.datatypes
+ edu.kit.ipd.sdq.vitruvius.framework.util.datatypes,
+ edu.kit.ipd.sdq.vitruvius.framework.util.doers
 Require-Bundle: org.eclipse.core.resources,
  org.eclipse.equinox.registry,
  org.eclipse.osgi,

@@ -12,4 +12,5 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  org.eclipse.emf.ecore.change
+Export-Package: edu.kit.ipd.sdq.vitruvius.framework.changedescription2change
 

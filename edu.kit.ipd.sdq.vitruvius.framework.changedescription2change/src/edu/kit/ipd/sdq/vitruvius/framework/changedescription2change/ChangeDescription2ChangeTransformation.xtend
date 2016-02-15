@@ -103,20 +103,29 @@ class ChangeDescription2ChangeTransformation {
 		
 	def static List<EChange> transform(ChangeDescription changeDescription) {
 		val List<EChange> eChanges = new BasicEList<EChange>				
-		// make the flat attach part of the change description deep by recursively creating changes for all non-default values
-		val objectsToAttach = changeDescription.getObjectsToAttach
-		objectsToAttach.forEach[recursivelyAddChangesForNonDefaultValues(it, eChanges)]
-		// make the flat deletion part of the change description deep by recursively creating changes for all referenced objects
-		val objectsToDetach = changeDescription.getObjectsToDetach
-		objectsToDetach.forEach[recursivelyAddChangesForDeletedObjects(it, eChanges)]
-		// add all first level changes
-		changeDescription.objectChanges.forEach[addConvertedChanges(it, eChanges)]
-		// sort changes: first deletions, then additions, then containment, then non-containment
-		val sortedEChanges = sortChanges(eChanges)
-		return sortedEChanges
+		if (changeDescription == null) {
+			return eChanges
+		} else {
+			// FIXME MK turn resource changes into normal changes: nothing else but the change mm will be needed anymore
+//			 changeDescription.resourceChanges?.forEach[...]
+//
+			// make the flat attach part of the change description deep by recursively creating changes for all non-default values
+			val objectsToAttach = changeDescription.getObjectsToAttach
+			objectsToAttach?.forEach[recursivelyAddChangesForNonDefaultValues(it, eChanges)]
+			objectsToAttach?.forEach[addChangeForObjectToAttach(it, eChanges)]
+			// make the flat deletion part of the change description deep by recursively creating changes for all referenced objects
+			val objectsToDetach = changeDescription.getObjectsToDetach
+			objectsToDetach?.forEach[recursivelyAddChangesForDeletedObjects(it, eChanges)]
+			objectsToDetach?.forEach[addChangeForObjectToDetach(it, eChanges)]
+			// add all first level changes
+			changeDescription.objectChanges?.forEach[addConvertedChanges(it, eChanges)]
+			// sort changes: first deletions, then additions, then containment, then non-containment
+			val sortedEChanges = sortChanges(eChanges)
+			return sortedEChanges
+		}
 	}
 	
-	def static void recursivelyAddChangesForNonDefaultValues(EObject eObject, List<EChange> eChanges) {
+	def private static void recursivelyAddChangesForNonDefaultValues(EObject eObject, List<EChange> eChanges) {
 		if (hasNonDefaultValue(eObject)) {
 			val metaclass = eObject.eClass
 			for (feature : metaclass.EAllStructuralFeatures) {
@@ -128,15 +137,15 @@ class ChangeDescription2ChangeTransformation {
 		}
 	}
 	
-	def static dispatch EChange createChangeForValue(EObject eObject,  EReference reference) {
+	def private static dispatch EChange createChangeForValue(EObject eObject,  EReference reference) {
 		return EChangeBridge.createAdditiveEChangeForReferencedObject(eObject, reference)
 	}
 	
-	def static dispatch EChange createChangeForValue(EObject eObject,  EAttribute attribute) {
+	def private static dispatch EChange createChangeForValue(EObject eObject,  EAttribute attribute) {
 		return EChangeBridge.createAdditiveEChangeForAttributeValue(eObject, attribute)
 	}
 	
-	def static boolean hasNonDefaultValue(EObject eObject) {
+	def private static boolean hasNonDefaultValue(EObject eObject) {
 		var hasNonDefaultValue = false
 		for (feature : eObject.eClass.EAllStructuralFeatures) {
 			if (isChangeableUnderivedPersistedNotContainingFeature(eObject, feature)) {
@@ -146,11 +155,11 @@ class ChangeDescription2ChangeTransformation {
 		return hasNonDefaultValue
 	}
 	
-	def static boolean isChangeableUnderivedPersistedNotContainingFeature(EObject eObject, EStructuralFeature feature) {
+	def private static boolean isChangeableUnderivedPersistedNotContainingFeature(EObject eObject, EStructuralFeature feature) {
         return feature.isChangeable() && !feature.isDerived() && !feature.isTransient() && feature != eObject.eContainingFeature();
 	}
 	
-	def static boolean hasNonDefaultValue(EObject eObject, EStructuralFeature feature) {
+	def private static boolean hasNonDefaultValue(EObject eObject, EStructuralFeature feature) {
 		val value = eObject.eGet(feature)
 		if (feature.many) {
 			val eList = value as EList<?>
@@ -161,19 +170,19 @@ class ChangeDescription2ChangeTransformation {
 		}
 	}
 	
-	def static boolean hasChangeableUnderivedPersistedNotContainingNonDefaultValue(EObject eObject, EStructuralFeature feature) {
+	def private static boolean hasChangeableUnderivedPersistedNotContainingNonDefaultValue(EObject eObject, EStructuralFeature feature) {
 		return isChangeableUnderivedPersistedNotContainingFeature(eObject, feature) && hasNonDefaultValue(eObject, feature)
 	}
 	
-	def static dispatch EList<EObject> getReferenceValueList(EObject eObject, EStructuralFeature feature) {
+	def private static dispatch EList<EObject> getReferenceValueList(EObject eObject, EStructuralFeature feature) {
 		return new BasicEList
 	}
 	
-	def static dispatch EList<EObject> getReferenceValueList(EObject eObject, EReference reference) {
+	def private static dispatch EList<EObject> getReferenceValueList(EObject eObject, EReference reference) {
 		return getValueList(eObject, reference) as EList<EObject>
 	}
 	
-	def static EList<?> getValueList(EObject eObject, EStructuralFeature feature) {
+	def private static EList<?> getValueList(EObject eObject, EStructuralFeature feature) {
 		val value = eObject.eGet(feature)
 		if (feature.many && value != null) {
 			return value as EList<?>
@@ -182,31 +191,38 @@ class ChangeDescription2ChangeTransformation {
 		}
 	}
 	
-	def static boolean isContainmentFeature(EStructuralFeature feature) {
+	def private static boolean isContainmentFeature(EStructuralFeature feature) {
 		// TODO MK move this method and also use it in change metamodel?
     	return feature instanceof EReference && (feature as EReference).isContainment
     }
     
-	def static void recursivelyAddChangesForDeletedObjects(EObject eObject, List<EChange> eChanges) {
+	def static addChangeForObjectToAttach(EObject objectToAttach, List<EChange> eChanges) {
+		eChanges.add(EChangeBridge.createAdditiveEChangeForEObject(objectToAttach))
+	}
+    
+	def private static void recursivelyAddChangesForDeletedObjects(EObject eObject, List<EChange> eChanges) {
 		for (containmentReference : eObject.eClass.EAllContainments) {
 			eChanges.add(EChangeBridge.createSubtractiveEChangeForReferencedObject(eObject, containmentReference))
 			getReferenceValueList(eObject,containmentReference).forEach[recursivelyAddChangesForDeletedObjects(it, eChanges)]
 		}
 	}
 	
-	def static void addConvertedChanges(Entry<EObject, EList<FeatureChange>> entry, List<EChange> eChanges) {
+	def private static void addConvertedChanges(Entry<EObject, EList<FeatureChange>> entry, List<EChange> eChanges) {
 		val affectedEObject = entry.key
 		val featureChanges = entry.value
 		featureChanges.forEach[eChanges.addAll(convertChange(affectedEObject, it.feature, it.value, it.referenceValue, it.listChanges))]
 	}
 	
-	def static List<EChange> convertChange(EObject affectedEObject, EStructuralFeature feature, Object object, EObject object2, EList<ListChange> list) {
+	def private static List<EChange> convertChange(EObject affectedEObject, EStructuralFeature feature, Object object, EObject object2, EList<ListChange> list) {
 		// FIXME MK CONVERSION LOGIC
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
+	def static addChangeForObjectToDetach(EObject objectToDetach, List<EChange> eChanges) {
+		eChanges.add(EChangeBridge.createSubtractiveEChangeForEObject(objectToDetach))
+	}
 		
-	def static List<EChange> sortChanges(List<EChange> changes) {
+	def private static List<EChange> sortChanges(List<EChange> changes) {
 		val deletions = new BasicEList
 		val additions = new BasicEList
 		val containmentChanges = new BasicEList

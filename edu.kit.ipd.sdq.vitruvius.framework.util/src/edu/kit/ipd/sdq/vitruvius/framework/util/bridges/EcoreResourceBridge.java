@@ -183,7 +183,7 @@ public final class EcoreResourceBridge {
 	public static Set<EObject> getAllContentsSet(final Resource resource) {
 		return EcoreBridge.getAllContentsSet(resource.getAllContents());
 	}
-
+	
 	/**
 	 * Saves the given eObject as the only content of the model at the given
 	 * URI.<br/>
@@ -193,9 +193,24 @@ public final class EcoreResourceBridge {
 	 *
 	 * @param eObject
 	 *            the new root element
-	 * @param resource
-	 *            the resource of which the content should be replaced or
+	 * @param resourceURI
+	 *            the URI of the resource for which the content should be replaced or
 	 *            created
+	 * @throws IOException
+	 *             if an error occurred during saving
+	 */
+	public static void saveEObjectAsOnlyContent(final EObject eObject, final URI resourceURI, final ResourceSet resourceSet) throws IOException {
+		Resource resource = loadResourceAtURI(resourceURI, resourceSet);
+		saveEObjectAsOnlyContent(eObject, resource);
+	}
+		
+	/**
+	 * Saves the given eObject as the only content of the given resource.
+	 *
+	 * @param eObject
+	 *            the new root element
+	 * @param resource
+	 *            the resource for which the content should be replaced or created
 	 * @throws IOException
 	 *             if an error occurred during saving
 	 */
