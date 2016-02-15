@@ -18,7 +18,6 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguage
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.IResponseEnvironmentGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseChange2CommandTransformingProviding
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseChange2CommandTransforming
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.DefaultEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseExecutor
 import org.eclipse.emf.ecore.resource.Resource
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
@@ -156,8 +155,8 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 				super();
 				this.userInteracting = new «ih.typeRef(UserInteractor)»();
 				
-				// Mapping for EObjects in order to avoid runtime exceptions
-				this.transformationExecuter.addMapping(new «ih.typeRef(DefaultEObjectMappingTransformation)»());
+				«/* TODO HK TransformationExecuter is obsolete. */»
+				// TransformationExecuter does not have any Mapping
 				
 				// set userInteractor
 				this.transformationExecuter.setUserInteracting(this.userInteracting);
