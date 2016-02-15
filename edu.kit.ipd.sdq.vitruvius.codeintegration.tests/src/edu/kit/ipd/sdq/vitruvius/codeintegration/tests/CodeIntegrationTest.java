@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.*;
@@ -31,6 +32,7 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -50,6 +52,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.ResourceLoadingHelper;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.ui.commands.IntegrateProjectHandler;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge;
@@ -162,6 +165,36 @@ public class CodeIntegrationTest {
         
         CorrespondenceInstance ci = getCorrespondenceInstance();
         //TODO check if correspondences are correct
+        Set<Correspondence> correspondences = ci.getAllCorrespondencesWithoutDependencies();
+        Assert.assertNotNull(correspondences);
+        Assert.assertFalse(correspondences.isEmpty());
+        
+        TUID frameCodeTuid = TUID.valueOf("http://www.emftext.org/java#platform:/resource/eu.fpetersen.cbs.pc/src/eu/fpetersen/cbs/pc/data/Frame.java#classifier-_-Frame");
+        List<TUID> frameCodeTuids = Collections.singletonList(frameCodeTuid);
+        Set<Correspondence> frameCodeCorrs = ci.getCorrespondencesForTUIDs(frameCodeTuids);
+        
+        Assert.assertNotNull(frameCodeCorrs);
+        Assert.assertFalse(frameCodeCorrs.isEmpty());
+        Assert.assertEquals(1, frameCodeCorrs.size());
+        
+        Correspondence frameCorr = frameCodeCorrs.iterator().next();
+        if (frameCorr.getATUIDs().contains(frameCodeTuid)) {
+        	EList<TUID> bs = frameCorr.getBTUIDs();
+        	Assert.assertNotNull(bs);
+        	Assert.assertEquals(1, bs.size());
+        	
+        	TUID b = bs.get(0);
+        	Assert.assertEquals(TUID.valueOf("http://palladiosimulator.org/PalladioComponentModel/Repository/5.1#platform:/resource/eu.fpetersen.cbs.pc/model/internal_architecture_model.repository#_auhdcMWvEeWLAeSW2tt_XQ#_auwuAMWvEeWLAeSW2tt_XQ"), b);
+        } else if (frameCorr.getBTUIDs().contains(frameCodeTuid)) {
+        	EList<TUID> as = frameCorr.getATUIDs();
+        	Assert.assertNotNull(as);
+        	Assert.assertEquals(1, as.size());
+        	
+        	TUID a = as.get(0);
+        	Assert.assertEquals(TUID.valueOf("http://palladiosimulator.org/PalladioComponentModel/Repository/5.1#platform:/resource/eu.fpetersen.cbs.pc/model/internal_architecture_model.repository#_auhdcMWvEeWLAeSW2tt_XQ#_auwuAMWvEeWLAeSW2tt_XQ"), a);
+        } else {
+        	Assert.assertTrue(false);
+        }
 		
 	}
 	
