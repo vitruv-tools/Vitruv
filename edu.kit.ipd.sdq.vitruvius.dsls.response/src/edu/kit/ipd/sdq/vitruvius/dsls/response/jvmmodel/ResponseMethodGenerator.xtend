@@ -399,28 +399,28 @@ class ResponseMethodGenerator {
 		
 		return getOrGenerateMethod(methodName, typeRef(Iterable, typeRef(affectedElementClass.instanceClass))) [
 			visibility = JvmVisibility.PRIVATE;
-			val changeParameter = generateChangeParameter(deletedModel);
-			val blackboardParameter = generateBlackboardParameter(deletedModel);
+			val changeParameter = generateChangeParameter();
+			val blackboardParameter = generateBlackboardParameter();
 			parameters += changeParameter;
 			parameters += blackboardParameter;
 			exceptions += typeRef(IOException);
 			val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(deletedModel.targetElement);
 			/* old sourceElement = «changeParameter.name».«change.EChangeFeatureNameOfChangedObject»*/
 			body = '''
-				«EObject» objectToGetCorrespondencesFor =«correspondenceSourceMethod.simpleName»(«changeParameter.name»);
-				«Iterable»<«Correspondence»> correspondences = «ResponseRuntimeHelper».getCorrespondencesWithTargetType(«blackboardParameter.name».getCorrespondenceInstance(),
-					objectToGetCorrespondencesFor, «affectedElementClass.instanceClass».class);
-				«List»<«affectedElementClass.instanceClass»> targetModels = new «ArrayList»<«affectedElementClass.instanceClass»>();
-				for («Correspondence» correspondence : correspondences) {
-					for («affectedElementClass.instanceClass» targetModel : «ResponseRuntimeHelper».getCorrespondingObjectsOfTypeInCorrespondence(correspondence, objectToGetCorrespondencesFor, «affectedElementClass.instanceClass».class)) {
-						targetModels.add(targetModel);
+				«EObject» _objectToGetCorrespondencesFor =«correspondenceSourceMethod.simpleName»(«changeParameter.name»);
+				«Iterable»<«Correspondence»> _correspondences = «ResponseRuntimeHelper».getCorrespondencesWithTargetType(«blackboardParameter.name».getCorrespondenceInstance(),
+					_objectToGetCorrespondencesFor, «affectedElementClass.instanceClass».class);
+				«List»<«affectedElementClass.instanceClass»> _targetModels = new «ArrayList»<«affectedElementClass.instanceClass»>();
+				for («Correspondence» _correspondence : _correspondences) {
+					for («affectedElementClass.instanceClass» _targetModel : «ResponseRuntimeHelper».getCorrespondingObjectsOfTypeInCorrespondence(_correspondence, _objectToGetCorrespondencesFor, «affectedElementClass.instanceClass».class)) {
+						_targetModels.add(_targetModel);
 					}
-					«blackboardParameter.name».getCorrespondenceInstance().removeCorrespondencesAndDependendCorrespondences(correspondence);
+					«blackboardParameter.name».getCorrespondenceInstance().removeCorrespondencesAndDependendCorrespondences(_correspondence);
 				}
-				for («affectedElementClass.instanceClass» targetModel : targetModels) {
-					targetModel.eResource().delete(«Collections».EMPTY_MAP);
+				for («affectedElementClass.instanceClass» _targetModel : _targetModels) {
+					_targetModel.eResource().delete(«Collections».EMPTY_MAP);
 				}
-				return targetModels;
+				return _targetModels;
 			'''
 		];
 	} 
@@ -645,8 +645,8 @@ class ResponseMethodGenerator {
 		val executePerTargetModelMethod = generateMethodExecuteForTargetModel(modelRootUpdate.targetElement, modelRootUpdate.createElements, modelRootUpdate.updateElements, modelRootUpdate.deleteElements);
 		return '''
 			«val targetModelElementClass = modelRootUpdate.targetElement?.elementType?.element?.instanceClass»
-			«Iterable»<«targetModelElementClass»> targetModels = «determineTargetModelsMethod.simpleName»(«changeParameter.name», «blackboardParameter.name»);
-			for («targetModelElementClass» «modelRootUpdate.targetElement.name» : targetModels) {
+			«Iterable»<«targetModelElementClass»> _targetModels = «determineTargetModelsMethod.simpleName»(«changeParameter.name», «blackboardParameter.name»);
+			for («targetModelElementClass» «modelRootUpdate.targetElement.name» : _targetModels) {
 				«executePerTargetModelMethod.simpleName»(«changeParameter.name», «blackboardParameter.name», «modelRootUpdate.targetElement.name»);
 			}
 		'''
@@ -692,11 +692,11 @@ class ResponseMethodGenerator {
 			null;
 		}
 		return '''
-			«Iterable»<«affectedElementClass.instanceClass»> targetModels = «deleteTargetModelsMethod.simpleName»(«changeParameter.name», «blackboardParameter.name»);
+			«Iterable»<«affectedElementClass.instanceClass»> _targetModels = «deleteTargetModelsMethod.simpleName»(«changeParameter.name», «blackboardParameter.name»);
 			LOGGER.debug("Execute response " + this.getClass().getName() + " with no affected model");
 			«IF hasExecutionBlock»
-				for («affectedElementClass.instanceClass» targetModel : targetModels) {
-					«performResponseMethod.simpleName»(«changeParameter.name», targetModel);
+				for («affectedElementClass.instanceClass» _targetModel : _targetModels) {
+					«performResponseMethod.simpleName»(«changeParameter.name», _targetModel);
 				}
 			«ENDIF»
 		'''	

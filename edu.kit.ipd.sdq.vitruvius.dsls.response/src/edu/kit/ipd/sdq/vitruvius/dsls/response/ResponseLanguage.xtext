@@ -45,7 +45,7 @@ ConcreteTargetModelCreate:
 	'create model:' targetElement=CorrespondingModelElementSpecification
 		'path relative from changed model:' relativeToSourcePath=PathToSourceSpecificationBlock 
 		//autodelete?='auto-delete'?;
-		(createElements+=CorrespondingModelElementSpecification)*
+		('create element:' createElements+=CorrespondingModelElementSpecification)*
 		;
 		
 ConcreteTargetModelDelete:
