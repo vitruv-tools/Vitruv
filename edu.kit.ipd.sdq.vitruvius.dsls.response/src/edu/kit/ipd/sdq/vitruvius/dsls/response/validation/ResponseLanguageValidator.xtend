@@ -12,6 +12,7 @@ import java.util.HashMap
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelCreate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelDelete
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
 
 /**
  * This class contains custom validation rules. 
@@ -31,6 +32,13 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 					alreadyCheckedResponses.get(response.responseName), ResponseLanguagePackage.Literals.RESPONSE__NAME);
 			}
 			alreadyCheckedResponses.put(response.responseName, response);
+		}
+	}
+
+	@Check
+	def checkCorrespondingElementSpecification(CorrespondingModelElementSpecification element) {
+		if (!element.name.nullOrEmpty && element.name.startsWith("_")) {
+			error("Element names must not start with an underscore.", ResponseLanguagePackage.Literals.CORRESPONDING_MODEL_ELEMENT_SPECIFICATION__NAME);
 		}
 	}
 
