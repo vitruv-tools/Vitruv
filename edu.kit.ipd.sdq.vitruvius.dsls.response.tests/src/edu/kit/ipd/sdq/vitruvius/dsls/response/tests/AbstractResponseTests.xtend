@@ -13,6 +13,8 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseC
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding
 import org.apache.log4j.Logger
 import org.apache.log4j.Level
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
+import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl
 
 abstract class AbstractResponseTests extends VitruviusEMFCasestudyTest {
 
@@ -60,6 +62,11 @@ abstract class AbstractResponseTests extends VitruviusEMFCasestudyTest {
 		);
 		resource.delete(Collections.EMPTY_MAP);
 		synchronizeFileChange(FileChangeKind.DELETE, VURI.getInstance(resource));
+	}
+	
+	protected override setUserInteractor(UserInteracting newUserInteracting,
+		ChangeSynchronizerImpl changeSynchronizerImpl) throws Throwable {
+		// Do nothing
 	}
 	
 	protected abstract def String getPlatformModelPath(String modelName);

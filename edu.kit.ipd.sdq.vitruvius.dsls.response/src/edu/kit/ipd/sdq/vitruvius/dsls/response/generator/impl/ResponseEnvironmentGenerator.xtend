@@ -10,9 +10,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.Respon
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor
 import java.util.Map
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationExecuter
 import java.util.HashMap
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguageFactory
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.IResponseEnvironmentGenerator
@@ -149,24 +147,10 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 	private def generateChangeToCommandTransforming(Pair<VURI, VURI> modelPair) {
 		val ih = new XtendImportHelper();	
 
-		// TODO HK replace DefaultEObjectMappingTransforming with correct one
 		val classImplementation = '''
 		public class «modelPair.change2CommandTransformingName» extends «ih.typeRef(AbstractResponseChange2CommandTransforming)» {
-			protected «ih.typeRef(UserInteractor)» userInteracting;
-			
 			public «modelPair.change2CommandTransformingName»() {
 				super();
-				this.userInteracting = new «ih.typeRef(UserInteractor)»();
-				
-				«/* TODO HK TransformationExecuter is obsolete. */»
-				// TransformationExecuter does not have any Mapping
-				
-				// set userInteractor
-				this.transformationExecuter.setUserInteracting(this.userInteracting);
-			}
-			
-			public «ih.typeRef(TransformationExecuter)» getTransformationExecutor() {
-				return transformationExecuter;
 			}
 			
 			public «ih.typeRef(List)»<«ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)»>> getTransformableMetamodels() {
