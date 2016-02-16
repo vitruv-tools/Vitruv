@@ -13,6 +13,8 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelCreate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelDelete
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelUpdate
 
 /**
  * This class contains custom validation rules. 
@@ -32,6 +34,22 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 					alreadyCheckedResponses.get(response.responseName), ResponseLanguagePackage.Literals.RESPONSE__NAME);
 			}
 			alreadyCheckedResponses.put(response.responseName, response);
+		}
+	}
+
+	@Check
+	def checkConcreteTargetModelUpdate(ConcreteTargetModelCreate create) {
+		if (create.containingResponse.effects?.codeBlock?.code == null) {
+			error("Created elements must be initialized and inserted into the target model in the execute block.",
+				ResponseLanguagePackage.Literals.CONCRETE_TARGET_MODEL_CREATE__CREATE_ELEMENTS);
+		}
+	}
+
+	@Check
+	def checkConcreteTargetModelUpdate(ConcreteTargetModelUpdate update) {
+		if (!update.createElements.empty && update.containingResponse.effects?.codeBlock?.code == null) {
+			error("Created elements must be initialized and inserted into the target model in the execute block.",
+				ResponseLanguagePackage.Literals.CONCRETE_TARGET_MODEL_CREATE__CREATE_ELEMENTS);
 		}
 	}
 
