@@ -90,7 +90,7 @@ abstract class AbstractAllElementTypesResponseTests extends AbstractResponseTest
 		val testResourceSet = new ResourceSetImpl();
 		val root = testResourceSet.getResource(modelName1.modelVURI.getEMFUri(), true).contents.get(0) as Root;
 		val root2 = testResourceSet.getResource(modelName2.modelVURI.getEMFUri(), true).contents.get(0) as Root;
-		//assertEquals(root.id, root2.id);
+		assertEquals(root.id, root2.id);
 		assertEquals(root.singleValuedEAttribute, root2.singleValuedEAttribute);
 		assertEquals(root.singleValuedContainmentEReference?.id, root2.singleValuedContainmentEReference?.id);
 		assertEquals(root.singleValuedNonContainmentEReference?.id, root2.singleValuedNonContainmentEReference?.id);

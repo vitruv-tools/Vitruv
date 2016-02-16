@@ -114,7 +114,6 @@ update model: targetContainer
 		corresponding to: change.newValue
 		type: minimal.NonRoot
 execute: {
-	//val addedNonRoot = targetElement.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst[it.id == change.newValue.id];
 	targetContainer.singleValuedNonContainmentEReference = targetElement;    
 	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
 		edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.
@@ -235,6 +234,9 @@ create model: newRoot
 	corresponding to: change.newValue
 	type: minimal.Root
 	path relative from changed model: "EachTestModelTarget"
+execute: {
+	newRoot.id = change.newValue.id
+}
 
 response: HelperResponseForDeleteSecondTestModel
 trigger: remove root minimal.Root
@@ -251,8 +253,11 @@ trigger: insert root minimal.Root
 precondition: change.newValue.id == "Further_Source_Test_Model"
 create model: newRoot
 	corresponding to: change.newValue
-	type: minimal.Root
+	type: minimal.Root 
 	path relative from changed model: "Further_Target_Test_Model"
+execute: {
+	newRoot.id = change.newValue.id
+}
 		
 //effect: create root minimal.Root at "Further_Target_Test_Model" auto-delete corresponding to change.newValue
 

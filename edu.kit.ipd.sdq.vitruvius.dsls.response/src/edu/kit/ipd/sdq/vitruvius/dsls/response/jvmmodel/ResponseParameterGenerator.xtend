@@ -13,13 +13,10 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelEle
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
-import org.eclipse.emf.ecore.resource.Resource
 
 package class ResponseParameterGenerator {
 	private static val CHANGE_PARAMETER_NAME = "change";
-	private static val TARGET_MODEL_PARAMETER_NAME = "targetElement";
 	private static val BLACKBOARD_PARAMETER_NAME = "blackboard";
 	
 	protected extension static JvmTypeReferenceBuilder _typeReferenceBuilder;
@@ -67,22 +64,8 @@ package class ResponseParameterGenerator {
 		return null;
 	}
 	
-	/*protected def JvmFormalParameter generateCreatedElementsParameter(EObject parameterContext) {
-		if (response.effects.targetChange != null) {
-			val rootChange = response.effects.targetChange as ConcreteTargetModelChange;
-			if (rootChange?.targetElement?.elementType?.element != null) {
-				return parameterContext.generateParameter(TARGET_MODEL_PARAMETER_NAME, rootChange.targetElement.elementType.element.instanceClass);
-			}	
-		}
-		return null;
-	}*/
-	
 	protected def JvmFormalParameter generateBlackboardParameter(EObject parameterContext) {
 		return generateParameter(parameterContext, BLACKBOARD_PARAMETER_NAME, Blackboard);
-	}
-	
-	protected def JvmFormalParameter generateTargetModelResourceParameter(EObject parameterContext) {
-		return generateParameter(parameterContext, "targetModelResource", Resource);
 	}
 	
 	protected def generateParameter(EObject context, String parameterName, Class<?> parameterClass, String... typeParameterClassNames) {
@@ -93,7 +76,7 @@ package class ResponseParameterGenerator {
 		for (typeParameterClassName : typeParameterClassNames) {
 			typeParameters.add(typeRef(typeParameterClassName));	
 		}		
-		val changeType = typeRef(parameterClass, typeParameters)
+		val changeType = typeRef(parameterClass, typeParameters);
 		return context.toParameter(parameterName, changeType);
 	}
 }
