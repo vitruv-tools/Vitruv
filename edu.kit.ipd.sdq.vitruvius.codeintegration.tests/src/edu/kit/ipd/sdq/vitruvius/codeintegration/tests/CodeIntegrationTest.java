@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.*;
+import java.util.stream.Stream;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.internal.events.BuildCommand;
@@ -33,9 +33,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.ui.dialogs.IOverwriteQuery;
 import org.eclipse.ui.wizards.datatransfer.FileSystemStructureProvider;
 import org.eclipse.ui.wizards.datatransfer.ImportOperation;
@@ -49,7 +46,6 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.VitruviusEmfBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaAddBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder;
-import edu.kit.ipd.sdq.vitruvius.codeintegration.ResourceLoadingHelper;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.ui.commands.IntegrateProjectHandler;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
@@ -60,10 +56,14 @@ import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
 public class CodeIntegrationTest {
 	
-    private static final Logger logger = Logger.getLogger(CodeIntegrationTest.class.getSimpleName());
+    
+
+	private static final Logger logger = Logger.getLogger(CodeIntegrationTest.class.getSimpleName());
 	
 	private static final String TEST_BUNDLE_NAME = "edu.kit.ipd.sdq.vitruvius.codeintegration.tests";
 	private static final String TEST_PROJECT_NAME = "eu.fpetersen.cbs.pc";
+	private static final String SOURCE_CODE_PATH = "example_code/eu.fpetersen.cbs.pc";
+	
 	private static final String META_PROJECT_NAME = "vitruvius.meta";
 	private IProject testProject;
 	private IWorkspace workspace;
@@ -74,20 +74,32 @@ public class CodeIntegrationTest {
 		
 		importTestProjectFromBundleData();
 		
-		IProject project = workspace.getRoot().getProject(TEST_PROJECT_NAME);
+		IProject project = workspace.getRoot().getProject(getTestProjectName());
 		assert(project != null);
 		testProject = project;
 	}
 
+	protected String getTestProjectName() {
+		return TEST_PROJECT_NAME;
+	}
+
+	protected String getTestBundleName() {
+		return TEST_BUNDLE_NAME;
+	}
+	
+	protected String getTestSourceAndModelFolder() {
+		return SOURCE_CODE_PATH;
+	}
+	
 	private void importTestProjectFromBundleData()
 			throws IOException, URISyntaxException, InvocationTargetException, InterruptedException {
 		IOverwriteQuery overwriteQuery = new IOverwriteQuery() {
 		        public String queryOverwrite(String file) { return ALL; }
 		};
-		IPath workspacePath = workspace.getRoot().getFullPath().append("/" + TEST_PROJECT_NAME);
+		IPath workspacePath = workspace.getRoot().getFullPath().append("/" + getTestProjectName());
 		
-		Bundle bundle = Platform.getBundle(TEST_BUNDLE_NAME);
-		URL projectBluePrintBundleURL = bundle.getEntry("example_code/eu.fpetersen.cbs.pc");
+		Bundle bundle = Platform.getBundle(getTestBundleName());
+		URL projectBluePrintBundleURL = bundle.getEntry(getTestSourceAndModelFolder());
 		URL fileURL = FileLocator.resolve(projectBluePrintBundleURL);
 		File file = new File(fileURL.toURI());
 		
@@ -104,11 +116,12 @@ public class CodeIntegrationTest {
 			Thread.sleep(100);
 		}
 	}
-	
+
+
 	@After
 	public void afterTest() throws CoreException, InterruptedException {
 		//Delete test project
-		IProject testProject = workspace.getRoot().getProject(TEST_PROJECT_NAME);
+		IProject testProject = workspace.getRoot().getProject(getTestProjectName());
 		if (testProject.exists()) {
 			DoneFlagProgressMonitor progress = new DoneFlagProgressMonitor();
 			testProject.delete(true, true, progress);

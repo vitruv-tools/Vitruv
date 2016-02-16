@@ -17,3 +17,4 @@ Require-Bundle: org.junit;bundle-version="4.12.0",
  edu.kit.ipd.sdq.vitruvius.framework.util,
  org.apache.log4j,
  edu.kit.ipd.sdq.vitruvius.codeintegration
+Export-Package: edu.kit.ipd.sdq.vitruvius.codeintegration.tests

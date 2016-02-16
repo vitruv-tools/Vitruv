@@ -38,6 +38,10 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.Collect
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator
 import edu.kit.ipd.sdq.vitruvius.codeintegration.deco.IntegratedCorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.IntegrationInfoImpl
+import org.eclipse.xtend.lib.annotations.Accessors
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
+import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants
 
 /**
  * Class that creates correspondences between PCM and JaMopp model elements.
@@ -54,11 +58,13 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 	private String pcmPath; //in, single file
 	private String jamoppPath; //in, root src folder, directory
 
+	@Accessors(PUBLIC_GETTER)
 	private Resource scdm
 	private Resource pcm
+	@Accessors(PUBLIC_GETTER)
 	private ResourceSet jaMoppResourceSet
 	private Repository pcmRepo
-	
+	@Accessors(PUBLIC_GETTER)
 	private CorrespondenceInstanceDecorator cInstance
 
 	private ModelProviding modelProviding
@@ -138,8 +144,17 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 
 		scdmRepo.dataTypeSourceCodeLink.forEach[createDataTypeCorrespondence]
 		
+		findAndExecuteAfterTransformationExtensions()
+				
 		// forces saving of correspondence instance
 		this.modelProviding.saveExistingModelInstanceOriginal(VURI.getInstance(pcmRepo.eResource))
+	}
+	
+	def private findAndExecuteAfterTransformationExtensions() {
+		EclipseBridge.getRegisteredExtensions(
+                PCMJaMoPPIntegrationExtending.ID, VitruviusConstants.getExtensionPropertyName(),
+                PCMJaMoPPIntegrationExtending).forEach[it.afterBasicTransformations(this)];
+
 	}
 
 	private def createRepoPackageCorrespondence() {	
@@ -292,7 +307,7 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 	 * Creates an {@link EObjectCorrespondence} between the given EObjects
 	 * and adds it to the {@link CorrespondenceInstance}
 	 */
-	protected def Correspondence addCorrespondence(EObject objectA, EObject objectB, Correspondence parent) {
+	public def Correspondence addCorrespondence(EObject objectA, EObject objectB, Correspondence parent) {
 		if (objectA == null || objectB == null)
 			throw new IllegalArgumentException("Corresponding elements must not be null!")
 
