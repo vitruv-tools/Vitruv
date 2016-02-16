@@ -31,8 +31,11 @@ import java.io.File
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils
 import org.eclipse.xtext.generator.IGenerator
 import java.util.Collections
+import org.apache.log4j.Logger
 
 class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
+	private static final Logger LOGGER = Logger.getLogger(ResponseEnvironmentGenerator);
+	
 	@Inject
 	private IGenerator generator;
 	
@@ -218,6 +221,9 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 			val sourceTargetPair = response.getSourceTargetPair();
 			if (!modelCorrespondenceToResponseNameMap.containsKey(sourceTargetPair)) {
 				modelCorrespondenceToResponseNameMap.put(sourceTargetPair, new ArrayList<String>());
+			}
+			if (modelCorrespondenceToResponseNameMap.get(sourceTargetPair).contains(responseName)) {
+				LOGGER.error("There are at least two responses with the name " + responseName + " overwriting each other.");
 			}
 			modelCorrespondenceToResponseNameMap.get(sourceTargetPair).add(responseName);
 			if (response.hasOppositeResponse) {
