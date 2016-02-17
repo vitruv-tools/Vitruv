@@ -5,5 +5,6 @@ Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.codeintegration.deco;singleton:=t
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
- edu.kit.ipd.sdq.vitruvius.framework.util;bundle-version="1.0.0"
+ edu.kit.ipd.sdq.vitruvius.framework.util;bundle-version="1.0.0",
+ org.apache.log4j
 Export-Package: edu.kit.ipd.sdq.vitruvius.codeintegration.deco

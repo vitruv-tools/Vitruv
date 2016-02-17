@@ -2,6 +2,11 @@ package edu.kit.ipd.sdq.vitruvius.codeintegration.deco;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.Set;
+
+import org.apache.log4j.Logger;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.AbstractDelegatingCorrespondenceInstanceDecorator;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator;
@@ -11,6 +16,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Corresp
 public class IntegratedCorrespondenceInstance extends 
 		AbstractDelegatingCorrespondenceInstanceDecorator<Map<Correspondence, IntegrationInfo>> {
 	
+	protected Logger logger = Logger.getLogger(IntegratedCorrespondenceInstance.class);
 	private Map<Correspondence, IntegrationInfo> correspondencesWithIntegrationInfo;
 
 	@SuppressWarnings("unchecked")
@@ -33,7 +39,22 @@ public class IntegratedCorrespondenceInstance extends
 
 	@Override
 	protected void initializeFromDecoratorObject(Map<Correspondence, IntegrationInfo> object) {
-		correspondencesWithIntegrationInfo = object;
+		Map<Correspondence, IntegrationInfo> resolvedCorrespondencesWithIntegrationInfo = new HashMap<Correspondence, IntegrationInfo>();
+		Set<Correspondence> allLoadedCorrs = this.getAllCorrespondencesWithoutDependencies();
+		for (Entry<Correspondence, IntegrationInfo> entry : object.entrySet()) {
+			Correspondence corrFromFile = entry.getKey();
+			Optional<Correspondence> opt = allLoadedCorrs.stream().parallel().filter(c -> c.getATUIDs().equals(corrFromFile.getATUIDs()) && c.getBTUIDs().equals(corrFromFile.getBTUIDs())).findFirst();
+			if (opt.isPresent()) {
+				logger.info("Resolved corresponce while loading decorator. " + entry.getKey());
+				Correspondence loadedCorrespondence = opt.get();
+				resolvedCorrespondencesWithIntegrationInfo.put(loadedCorrespondence, entry.getValue());
+			} else {
+				logger.warn("No loaded correspondence was found for decorated correspondence " 
+						+ entry.getKey() + ". Using serialized correspondence from decorator file.");
+				resolvedCorrespondencesWithIntegrationInfo.put(entry.getKey(), entry.getValue());
+			}
+		}
+		correspondencesWithIntegrationInfo = resolvedCorrespondencesWithIntegrationInfo;
 	}
 
 	@Override
