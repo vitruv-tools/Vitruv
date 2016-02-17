@@ -20,6 +20,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.impl.SimpleTextXBlockEx
 import org.eclipse.xtext.xbase.XBlockExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
 import org.eclipse.emf.ecore.EObject
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
 
 final class ResponseLanguageHelper {
 	private new() {}
@@ -119,5 +120,9 @@ final class ResponseLanguageHelper {
 	
 	public static def dispatch String getXBlockExpressionText(SimpleTextXBlockExpression blockExpression) {
 		blockExpression.text.toString;
+	}
+	
+	public static def Class<?> getJavaClass(ModelElement element) {
+		return element.element.instanceClass;
 	}
 }

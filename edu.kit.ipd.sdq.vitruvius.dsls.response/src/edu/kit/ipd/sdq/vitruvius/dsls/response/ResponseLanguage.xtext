@@ -20,36 +20,36 @@ Response:
 
 Effects:
 	{Effects}
-	(targetChange=TargetChange)? 
-	('execute:' codeBlock=ExecutionBlock)?;
+	(targetChange=TargetChange)?
+	(codeBlock=ExecutionBlock)?;
 
 TargetChange:
 	ConcreteTargetModelChange | ArbitraryTargetMetamodelInstanceUpdate;
 
 ConcreteTargetModelChange:
-	(ConcreteTargetModelUpdate | ConcreteTargetModelCreate | ConcreteTargetModelDelete);
+	(ConcreteTargetModelUpdate | ConcreteTargetModelCreate)
+	('create model element:' createElements+=CorrespondingModelElementCreate)*;
 	
 ConcreteTargetModelUpdate:
-	'update model:' targetElement=CorrespondingModelElementSpecification
-	('create element:' createElements+=CorrespondingModelElementSpecification | 
-		'update element:' updateElements+=CorrespondingModelElementSpecification |
-		'delete element:' deleteElements+=CorrespondingModelElementSpecification
-	)*;
-
-CorrespondingModelElementSpecification:
-	name=ValidID
-	'corresponding to:' correspondenceSource=CorrespondenceSourceDeterminationBlock 
-	'type:' elementType=ModelElement;
+	// You could also put the identifying element together with the retrieved elements. 
+	// The generation uses the first element as an identifying element and thus it is easier
+	identifyingElement=CorrespondingModelElementRetrieveOrDelete
+	(retrieveElements+=CorrespondingModelElementRetrieveOrDelete)*;
 
 ConcreteTargetModelCreate:
-	'create model:' targetElement=CorrespondingModelElementSpecification
-		'path relative from changed model:' relativeToSourcePath=PathToSourceSpecificationBlock 
-		//autodelete?='auto-delete'?;
-		('create element:' createElements+=CorrespondingModelElementSpecification)*
-		;
-		
-ConcreteTargetModelDelete:
-	'delete model:' targetElement=CorrespondingModelElementSpecification;
+	'create model:' relativeToSourcePath=PathToSourceSpecificationBlock
+		'with root element:' rootElement=CorrespondingModelElementCreate;
+
+CorrespondingModelElementCreate returns CorrespondingModelElementCreate:
+	{CorrespondingModelElementCreate}
+	CorrespondingModelElementSpecification;
+
+CorrespondingModelElementRetrieveOrDelete returns CorrespondingModelElementRetrieveOrDelete:
+	({CorrespondingModelElementRetrieve} 'retrieve model element:' |
+		{CorrespondingModelElementDelete} 'delete model element:') CorrespondingModelElementSpecification;
+	
+fragment CorrespondingModelElementSpecification:
+	name=ValidID 'of type' elementType=ModelElement correspondenceSource=CorrespondenceSourceDeterminationBlock;
 
 ArbitraryTargetMetamodelInstanceUpdate:
 	'update instances of' metamodelReference=MetamodelReference;
@@ -63,7 +63,7 @@ PathToSourceSpecificationBlock:
 
 CorrespondenceSourceDeterminationBlock:
 	{CorrespondenceSourceDeterminationBlock}
-	code=XExpression;
+	'corresponding to' code=XExpression;
 
 PreconditionBlock:
 	{PreconditionBlock}
@@ -71,7 +71,7 @@ PreconditionBlock:
 
 ExecutionBlock:
 	{ExecutionBlock}
-	code=XExpression;
+	'execute:' code=XExpression;
 
 InvariantViolationEvent:
 	'invariant' violation=[ecore::EClass|QualifiedName];

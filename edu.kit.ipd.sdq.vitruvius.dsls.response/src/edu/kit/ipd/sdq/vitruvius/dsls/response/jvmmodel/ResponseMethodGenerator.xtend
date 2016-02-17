@@ -21,7 +21,6 @@ import java.util.HashMap
 import org.eclipse.emf.common.util.URI
 import java.util.Collections
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.impl.SimpleTextXBlockExpression
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import java.io.IOException
 import org.eclipse.xtend2.lib.StringConcatenationClient
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExecutionBlock
@@ -33,11 +32,15 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PathToSourceSpec
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelUpdate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelCreate
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelDelete
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge
 import org.eclipse.emf.ecore.change.ChangeDescription
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementCreate
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject
+import org.eclipse.emf.ecore.util.EcoreUtil
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementDelete
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementRetrieveOrDelete
 
 class ResponseMethodGenerator {
 	@Extension protected static JvmTypeReferenceBuilder _typeReferenceBuilder;
@@ -55,12 +58,12 @@ class ResponseMethodGenerator {
 	
 	private extension IJvmOperationRegistry _operationRegistry;
 	private extension ResponseParameterGenerator _parameterGenerator;
+	private extension final ResponseElementsCompletionChecker _completionChecker; 
 	
 	new(Response response, IJvmOperationRegistry registry, JvmTypeReferenceBuilder typeReferenceBuilder, JvmTypesBuilderWithoutAssociations jvmTypesBuilder) {
 		this.response = response;
 		this.hasTargetChange = response.effects.targetChange != null;
-		this.hasConcreteTargetChange = this.hasTargetChange && response.effects.targetChange instanceof ConcreteTargetModelChange 
-				&& (response.effects.targetChange as ConcreteTargetModelChange).targetElement?.elementType?.element?.instanceClass != null;
+		this.hasConcreteTargetChange = this.hasTargetChange && response.effects.targetChange instanceof ConcreteTargetModelChange;
 		this.hasPreconditionBlock = response.trigger.precondition != null;
 		this.hasExecutionBlock = response.effects.codeBlock != null;
 		this.isBlackboardAvailable = !hasConcreteTargetChange;
@@ -68,6 +71,7 @@ class ResponseMethodGenerator {
 		this.methodMap = new HashMap<String, JvmOperation>();
 		_operationRegistry = registry;
 		_parameterGenerator = new ResponseParameterGenerator(response, typeReferenceBuilder, jvmTypesBuilder);
+		_completionChecker = new ResponseElementsCompletionChecker();
 		_typesBuilder = jvmTypesBuilder;
 		_typeReferenceBuilder = typeReferenceBuilder;
 	}
@@ -107,7 +111,7 @@ class ResponseMethodGenerator {
 					«executeResponseMethod.simpleName»(«typedChangeName», «blackboardParameter.name»);
 				} catch («Exception» exception) {
 					// If an error occured during execution, avoid an application shutdown and print the error.
-					LOGGER.error(exception.getClass().getSimpleName() + " during execution of response: " + this.getClass().getName());
+					LOGGER.error(exception.getClass().getSimpleName() + " (" + exception.getMessage() + ") during execution of response: " + this.getClass().getName());
 				}
 				
 				return new «TransformationResult»();'''
@@ -223,7 +227,7 @@ class ResponseMethodGenerator {
 	 * 
 	 * <p>Precondition: a metamodel element for the target models is specified in the response
 	 */	
-	protected def generateMethodGetCorrespondingModelElements(CorrespondingModelElementSpecification correspondingModelElements, CorrespondingModelElementSpecification correspondingModel, boolean claimSizeOne) {
+	protected def generateMethodGetCorrespondingModelElements(CorrespondingModelElementSpecification correspondingModelElements, CorrespondingModelElementSpecification correspondingModel, boolean claimSizeOne, boolean removeCorrespondence) {
 		val methodName = "getCorrespondingModelElements" + correspondingModelElements.name.toFirstUpper;
 		val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(correspondingModelElements)
 		
@@ -248,16 +252,20 @@ class ResponseMethodGenerator {
 			parameters += targetModelParameter;
 			body = '''
 				«List»<«affectedElementClass»> _targetModels = new «ArrayList»<«affectedElementClass»>();
-				«EObject» _objectToGetCorrespondencesFor = «correspondenceSourceMethod.simpleName»(«changeParameter.name»);
-				«Iterable»<«affectedElementClass»> _correspondingObjects = null;
-				«/* TODO HK Fix this after the new change MM is implemented */»
-				if (_objectToGetCorrespondencesFor.eContainer() instanceof «ChangeDescription») {
-					_correspondingObjects = «ResponseRuntimeHelper».getCorrespondingObjectsOfType(
-					«blackboardParameter.name».getCorrespondenceInstance(), _objectToGetCorrespondencesFor, «changeParameter.name».getOldAffectedEObject(), «affectedElementClass».class);
-				} else {
-					_correspondingObjects = «ResponseRuntimeHelper».getCorrespondingObjectsOfType(
-						«blackboardParameter.name».getCorrespondenceInstance(), _objectToGetCorrespondencesFor, «affectedElementClass».class);
+				«EObject» _sourceElement = «correspondenceSourceMethod.simpleName»(«changeParameter.name»);
+				«EObject» _sourceParent = null;
+				«/* TODO HK Fix this after the new change MM is implemented:
+				 * Delete objects (except root one) are removed from the model and now contained in the ChangeDescription,
+				 * so correspondences cannot be resolved
+				 */»
+				«IF !(response.trigger instanceof ConcreteModelElementChange && DeleteRootEObject.equals(change))»
+				if (_sourceElement.eContainer() instanceof «ChangeDescription») {
+					_sourceParent = «changeParameter.name».getOldAffectedEObject();
 				}
+				«ENDIF»
+				«Iterable»<«affectedElementClass»> _correspondingObjects = «ResponseRuntimeHelper».getCorrespondingObjectsOfType(
+						«blackboardParameter.name».getCorrespondenceInstance(), _sourceElement, _sourceParent, «affectedElementClass».class);
+				
 				for («affectedElementClass» _potentialTargetElement : _correspondingObjects) {
 					«IF targetModelParameter != null»
 					if («targetModelParameter.name» == null || _potentialTargetElement.eResource().equals(«targetModelParameter.name».eResource())) {
@@ -268,6 +276,12 @@ class ResponseMethodGenerator {
 					«ENDIF»
 				}
 				
+				«IF removeCorrespondence»
+				for («EObject» _targetModel : _targetModels) {
+					«ResponseRuntimeHelper».removeCorrespondence(«blackboardParameter.name».getCorrespondenceInstance(), _sourceElement, _sourceParent, _targetModel, null);
+				}
+				«ENDIF»
+									
 				«IF claimSizeOne»
 					if (_targetModels.size() != 1) {
 						throw new «IllegalArgumentException»("There has to be exacty one corresponding element.");
@@ -313,12 +327,12 @@ class ResponseMethodGenerator {
 			visibility = JvmVisibility.PRIVATE;
 			val changeParameter = generateChangeParameter();
 			val blackboardParameter = generateBlackboardParameter();
-			val rootParameter = generateModelElementParameter(createdModel.targetElement);
+			val rootParameter = generateModelElementParameter(createdModel.rootElement);
 			parameters += changeParameter;
 			parameters += blackboardParameter;
 			parameters += rootParameter;
 			exceptions += typeRef(IOException);
-			val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(createdModel.targetElement);
+			val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(createdModel.rootElement);
 			val pathFromSourceMethod = generateMethodGetPathFromSource(createdModel.relativeToSourcePath);
 			body = '''
 				«EObject» sourceElement = «correspondenceSourceMethod.simpleName»(«changeParameter.name»);
@@ -378,8 +392,8 @@ class ResponseMethodGenerator {
 			val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(elementSpecification);
 			/* old sourceElement = «changeParameter.name».«change.EChangeFeatureNameOfChangedObject»*/
 			body = '''
-				«EObject» sourceElement = «correspondenceSourceMethod.simpleName»(«changeParameter.name»);
-				«blackboardParameter.name».getCorrespondenceInstance().createAndAddCorrespondence(«Collections».singletonList(sourceElement), «Collections».singletonList(«newElementParameter.name»));
+				«EObject» _sourceElement = «correspondenceSourceMethod.simpleName»(«changeParameter.name»);
+				«blackboardParameter.name».getCorrespondenceInstance().createAndAddCorrespondence(«Collections».singletonList(_sourceElement), «Collections».singletonList(«newElementParameter.name»));
 			'''
 		];
 	}
@@ -393,34 +407,22 @@ class ResponseMethodGenerator {
 	 * 	<li>1. change: the change event ({@link EChange})</li>
 	 *  <li>2. blackboard: the blackboard ({@link Blackboard})</li>
 	 */	
-	protected def generateMethodDeleteTargetModels(ConcreteTargetModelDelete deletedModel) {
-		val methodName = "deleteTargetModels";
-		val affectedElementClass = deletedModel.targetElement.elementType.element;
+	protected def generateMethodDeleteElement() {
+		val methodName = "deleteElement";
 		
-		return getOrGenerateMethod(methodName, typeRef(Iterable, typeRef(affectedElementClass.instanceClass))) [
+		return getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [
 			visibility = JvmVisibility.PRIVATE;
-			val changeParameter = generateChangeParameter();
-			val blackboardParameter = generateBlackboardParameter();
-			parameters += changeParameter;
-			parameters += blackboardParameter;
+			val deleteElementParameter = generateEObjectParameter("elementToDelete");
+			parameters += deleteElementParameter;
 			exceptions += typeRef(IOException);
-			val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(deletedModel.targetElement);
-			/* old sourceElement = «changeParameter.name».«change.EChangeFeatureNameOfChangedObject»*/
 			body = '''
-				«EObject» _objectToGetCorrespondencesFor =«correspondenceSourceMethod.simpleName»(«changeParameter.name»);
-				«Iterable»<«Correspondence»> _correspondences = «ResponseRuntimeHelper».getCorrespondencesWithTargetType(«blackboardParameter.name».getCorrespondenceInstance(),
-					_objectToGetCorrespondencesFor, «affectedElementClass.instanceClass».class);
-				«List»<«affectedElementClass.instanceClass»> _targetModels = new «ArrayList»<«affectedElementClass.instanceClass»>();
-				for («Correspondence» _correspondence : _correspondences) {
-					for («affectedElementClass.instanceClass» _targetModel : «ResponseRuntimeHelper».getCorrespondingObjectsOfTypeInCorrespondence(_correspondence, _objectToGetCorrespondencesFor, «affectedElementClass.instanceClass».class)) {
-						_targetModels.add(_targetModel);
-					}
-					«blackboardParameter.name».getCorrespondenceInstance().removeCorrespondencesAndDependendCorrespondences(_correspondence);
-				}
-				for («affectedElementClass.instanceClass» _targetModel : _targetModels) {
-					_targetModel.eResource().delete(«Collections».EMPTY_MAP);
-				}
-				return _targetModels;
+				«IF  DeleteRootEObject.equals(change)»
+				LOGGER.debug("Deleting root object: " + «deleteElementParameter.name»);
+				«deleteElementParameter.name».eResource().delete(«Collections».EMPTY_MAP);	
+				«ELSE»
+				LOGGER.debug("Removing non-root object: " + «deleteElementParameter.name»);
+				«EcoreUtil».remove(«deleteElementParameter.name»);	
+				«ENDIF»
 			'''
 		];
 	} 
@@ -501,54 +503,6 @@ class ResponseMethodGenerator {
 		];	
 	}
 	
-	
-	/**
-	 * Generates method: performResponseTo : void
-	 * 
-	 * <p>Executes the response logic.
-	 * 
-	 * <p>Method parameters are:
-	 * 	<li>1. change: the change event ({@link EChange})</li>
-	 *  <li>2. targetModel: the target model root element if specified and if it is an update operation</li>
-	 * 
-	 * <p>Precondition: Executed codeBlock must exist.
-	 */
-	/*protected def generateMethodPerformResponse(EClass targetModelElement) '''
-		private def performResponseTo(«changeEventTypeString» «CHANGE_PARAMETER_NAME»«
-			IF hasTargetChange», «ih.typeRef(targetModelElement)
-			» «TARGET_MODEL_PARAMETER_NAME»«ENDIF»)«response.effects.codeBlock.code.XBlockExpressionText»
-	'''*/
-	
-	/**
-	 * Generates method: performResponseTo : void
-	 * 
-	 * <p>Executes the response logic.
-	 * 
-	 * <p>Method parameters are:
-	 * 	<li>1. change: the change event ({@link EChange})</li>
-	 *  <li>2. blackboard: the {@link Blackboard} containing the {@link CorrespondenceInstance}</li>
-	 * 
-	 * <p>Precondition: Executed codeBlock must exist.
-	 */
-	/*protected def generateMethodPerformResponse() '''
-		private def performResponseTo(«changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)
-			» blackboard)«response.effects.codeBlock.code.XBlockExpressionText»
-	'''*/
-	
-	/**
-	 * Generates method: checkChangeType : boolean
-	 * 
-	 * <p>Checks if the change type is correct.
-	 * 
-	 * <p>Method parameters are:
-	 *  <li>1. change: the change event ({@link EChange})</li>
-	 */
-	/*protected def generateMethodCheckChangeType() '''
-		private def boolean checkChangeType(«ih.typeRef(EChange)» «CHANGE_PARAMETER_NAME») { 
-			return «CHANGE_PARAMETER_NAME» instanceof «ih.typeRef(change)»«IF !change.instanceClass.equals(EChange)»<?>«ENDIF»;
-		}
-	'''*/
-	
 	protected def generateMethodExecuteResponse() {
 		val methodName = "executeResponse";
 		return getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [
@@ -570,25 +524,25 @@ class ResponseMethodGenerator {
 	
 	private def JvmOperation generateMethodExecuteForTargetModel(
 			CorrespondingModelElementSpecification targetModelElement,
-			Iterable<CorrespondingModelElementSpecification> createElements, 
-			Iterable<CorrespondingModelElementSpecification> updateElements, 
-			Iterable<CorrespondingModelElementSpecification> deleteElements) {
+			Iterable<CorrespondingModelElementCreate> createElements, 
+			Iterable<CorrespondingModelElementRetrieveOrDelete> retrieveElements) {
 		val methodName = "executeForTargetModel";
 		val parametersMap = <CorrespondingModelElementSpecification, JvmFormalParameter>newHashMap();
 		CollectionBridge.mapFixed(createElements, 
 				[parametersMap.put(it, targetModelElement.generateModelElementParameter(it))]);
-		CollectionBridge.mapFixed(updateElements, 
+		CollectionBridge.mapFixed(retrieveElements, 
 				[parametersMap.put(it, targetModelElement.generateModelElementParameter(it))]);
 		val beforeMethodsMap = <JvmFormalParameter, JvmOperation>newHashMap();
-		CollectionBridge.mapFixed(updateElements, 
-				[beforeMethodsMap.put(parametersMap.get(it), generateMethodGetCorrespondingModelElements(it,targetModelElement, true))]);
+		CollectionBridge.mapFixed(retrieveElements, 
+				[beforeMethodsMap.put(parametersMap.get(it), generateMethodGetCorrespondingModelElements(it, targetModelElement, true, it instanceof CorrespondingModelElementDelete))]);
 		CollectionBridge.mapFixed(createElements, 
 				[beforeMethodsMap.put(parametersMap.get(it), generateMethodGenerateModelElement(it))]);
 		val afterMethodsMap = <JvmFormalParameter, JvmOperation>newHashMap();
 		CollectionBridge.mapFixed(createElements, 
 				[afterMethodsMap.put(parametersMap.get(it), generateMethodAddModelElementCorrespondence(it))]);
+		val deleteElementMethod = generateMethodDeleteElement();
 		
-		val modelElementList = #[targetModelElement] + createElements + updateElements;
+		val modelElementList = #[targetModelElement] + createElements + retrieveElements;
 		val changeParameter = targetModelElement.generateChangeParameter();
 		val blackboardParameter = targetModelElement.generateBlackboardParameter();
 		val targetModelParameter = targetModelElement.eContainer().generateModelElementParameter(targetModelElement);
@@ -611,7 +565,7 @@ class ResponseMethodGenerator {
 						«val method = beforeMethodsMap.get(param)»
 						«method.returnType» «param.name» = «method.simpleName»();
 					«ENDFOR»
-					«FOR element : updateElements»
+					«FOR element : retrieveElements»
 						«val param = parametersMap.get(element)»
 						«val method = beforeMethodsMap.get(param)»
 						«method.returnType» «param.name» = «method.simpleName»(«
@@ -623,6 +577,10 @@ class ResponseMethodGenerator {
 						«val param = parametersMap.get(element)»
 						«val method = afterMethodsMap.get(param)»
 						«method.simpleName»(«changeParameter.name», «param.name», «blackboardParameter.name»);
+					«ENDFOR»
+					«FOR element : retrieveElements.filter(CorrespondingModelElementDelete)»
+						«val param = parametersMap.get(element)»
+						«deleteElementMethod.simpleName»(«param.name»);
 					«ENDFOR»
 				«ENDIF»
 			'''
@@ -641,13 +599,25 @@ class ResponseMethodGenerator {
 	 * <li>2. blackboard: the {@link Blackboard} containing the {@link CorrespondenceInstance}
 	 */
 	private def dispatch StringConcatenationClient generateMethodExecuteResponseBody(ConcreteTargetModelUpdate modelRootUpdate, JvmFormalParameter changeParameter, JvmFormalParameter blackboardParameter) {
-		val determineTargetModelsMethod = generateMethodGetCorrespondingModelElements(modelRootUpdate.targetElement, null, false);
-		val executePerTargetModelMethod = generateMethodExecuteForTargetModel(modelRootUpdate.targetElement, modelRootUpdate.createElements, modelRootUpdate.updateElements, modelRootUpdate.deleteElements);
+		if (!modelRootUpdate.identifyingElement.complete) {
+			return '''''';
+		}
+		val deleteIdentifyingElement = modelRootUpdate.identifyingElement instanceof CorrespondingModelElementDelete;
+		val determineTargetModelsMethod = generateMethodGetCorrespondingModelElements(modelRootUpdate.identifyingElement, null, false, deleteIdentifyingElement);
+		val deleteElementMethod = if (deleteIdentifyingElement) {
+			generateMethodDeleteElement();
+		}  else {
+			null;
+		}
+		val executePerTargetModelMethod = generateMethodExecuteForTargetModel(modelRootUpdate.identifyingElement, modelRootUpdate.createElements.filter[complete], modelRootUpdate.retrieveElements.filter[complete]);
 		return '''
-			«val targetModelElementClass = modelRootUpdate.targetElement?.elementType?.element?.instanceClass»
+			«val targetModelElementClass = modelRootUpdate.identifyingElement.elementType.javaClass»
 			«Iterable»<«targetModelElementClass»> _targetModels = «determineTargetModelsMethod.simpleName»(«changeParameter.name», «blackboardParameter.name»);
-			for («targetModelElementClass» «modelRootUpdate.targetElement.name» : _targetModels) {
-				«executePerTargetModelMethod.simpleName»(«changeParameter.name», «blackboardParameter.name», «modelRootUpdate.targetElement.name»);
+			for («targetModelElementClass» _targetElement : _targetModels) {
+				«executePerTargetModelMethod.simpleName»(«changeParameter.name», «blackboardParameter.name», _targetElement);
+				«IF deleteIdentifyingElement»
+					«deleteElementMethod.simpleName»(_targetElement);
+				«ENDIF»
 			}
 		'''
 	}
@@ -662,45 +632,22 @@ class ResponseMethodGenerator {
 	 * <li>2. blackboard: the {@link Blackboard} containing the {@link CorrespondenceInstance}
 	 */
 	private def dispatch StringConcatenationClient generateMethodExecuteResponseBody(ConcreteTargetModelCreate modelRootCreate, JvmFormalParameter changeParameter, JvmFormalParameter blackboardParameter) {
-		val generateRootElementMethod = generateMethodGenerateModelElement(modelRootCreate.targetElement);
+		if (!modelRootCreate.rootElement.complete) {
+			return '''''';
+		}
+		val generateRootElementMethod = generateMethodGenerateModelElement(modelRootCreate.rootElement);
 		val generateTargetModelMethod = generateMethodGenerateTargetModel(modelRootCreate);
-		val executePerTargetModelMethod = generateMethodExecuteForTargetModel(modelRootCreate.targetElement, modelRootCreate.createElements, #[], #[]);
-		val targetModelElementClass = modelRootCreate.targetElement?.elementType?.element?.instanceClass;
-		val targetModelElementName = modelRootCreate.targetElement.name;
+		val executePerTargetModelMethod = generateMethodExecuteForTargetModel(modelRootCreate.rootElement, 
+			modelRootCreate.createElements.filter[complete], #[]
+		);
+		val targetModelElementClass = modelRootCreate.rootElement.elementType.javaClass;
 		return '''
-			«targetModelElementClass» «targetModelElementName» = «generateRootElementMethod.simpleName»();
-			«executePerTargetModelMethod.simpleName»(«changeParameter.name», «blackboardParameter.name», «targetModelElementName»);
-			«generateTargetModelMethod.simpleName»(«changeParameter.name», «blackboardParameter.name», «targetModelElementName»);
+			«targetModelElementClass» _targetModel = «generateRootElementMethod.simpleName»();
+			«executePerTargetModelMethod.simpleName»(«changeParameter.name», «blackboardParameter.name», _targetModel);
+			«generateTargetModelMethod.simpleName»(«changeParameter.name», «blackboardParameter.name», _targetModel);
 		'''
 	}	
 	
-	/**
-	 * Generates: executeResponse
-	 * 
-	 * <p>Calls the response execution after deleting the target model.
-	 * 
-	 * <p>Methods parameters are:
-	 * <li>1. change: the change event ({@link EChange})
-	 * <li>2. blackboard: the {@link Blackboard} containing the {@link CorrespondenceInstance}
-	 */
-	private def dispatch StringConcatenationClient generateMethodExecuteResponseBody(ConcreteTargetModelDelete modelRootDelete, JvmFormalParameter changeParameter, JvmFormalParameter blackboardParameter) {
-		val deleteTargetModelsMethod = generateMethodDeleteTargetModels(modelRootDelete);
-		val affectedElementClass = modelRootDelete.targetElement.elementType.element;
-		val JvmOperation performResponseMethod = if (hasExecutionBlock) {
-			generateMethodPerformResponse(response.effects.codeBlock, modelRootDelete.targetElement);
-		} else {
-			null;
-		}
-		return '''
-			«Iterable»<«affectedElementClass.instanceClass»> _targetModels = «deleteTargetModelsMethod.simpleName»(«changeParameter.name», «blackboardParameter.name»);
-			LOGGER.debug("Execute response " + this.getClass().getName() + " with no affected model");
-			«IF hasExecutionBlock»
-				for («affectedElementClass.instanceClass» _targetModel : _targetModels) {
-					«performResponseMethod.simpleName»(«changeParameter.name», _targetModel);
-				}
-			«ENDIF»
-		'''	
-	}
 	
 	/**
 	 * Generates: executeResponse

@@ -11,10 +11,10 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.Respon
 import java.util.HashMap
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelCreate
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelDelete
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelUpdate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementDelete
 
 /**
  * This class contains custom validation rules. 
@@ -38,22 +38,6 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 	}
 
 	@Check
-	def checkConcreteTargetModelUpdate(ConcreteTargetModelCreate create) {
-		if (create.containingResponse.effects?.codeBlock?.code == null) {
-			error("Created elements must be initialized and inserted into the target model in the execute block.",
-				ResponseLanguagePackage.Literals.CONCRETE_TARGET_MODEL_CREATE__CREATE_ELEMENTS);
-		}
-	}
-
-	@Check
-	def checkConcreteTargetModelUpdate(ConcreteTargetModelUpdate update) {
-		if (!update.createElements.empty && update.containingResponse.effects?.codeBlock?.code == null) {
-			error("Created elements must be initialized and inserted into the target model in the execute block.",
-				ResponseLanguagePackage.Literals.CONCRETE_TARGET_MODEL_CREATE__CREATE_ELEMENTS);
-		}
-	}
-
-	@Check
 	def checkCorrespondingElementSpecification(CorrespondingModelElementSpecification element) {
 		if (!element.name.nullOrEmpty && element.name.startsWith("_")) {
 			error("Element names must not start with an underscore.", ResponseLanguagePackage.Literals.CORRESPONDING_MODEL_ELEMENT_SPECIFICATION__NAME);
@@ -62,17 +46,17 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 
 	@Check
 	def checkEffects(Effects effects) {
-		if (!(effects.targetChange instanceof ConcreteTargetModelCreate ||
-			effects.targetChange instanceof ConcreteTargetModelDelete) && effects.codeBlock == null) {
-			warning("No code is specified to execute for the models to update.",
+		val targetChange = effects.targetChange
+		if (effects.codeBlock == null) {
+			if ((targetChange instanceof ConcreteTargetModelChange && !(targetChange as ConcreteTargetModelChange).createElements.empty) 
+				|| targetChange instanceof ConcreteTargetModelCreate) {
+				error("Created elements must be initialized and inserted into the target model in the execute block.",
+					ResponseLanguagePackage.Literals.EFFECTS__CODE_BLOCK);			
+			} else if (!(targetChange instanceof ConcreteTargetModelUpdate && (targetChange as ConcreteTargetModelUpdate).identifyingElement instanceof CorrespondingModelElementDelete)) {
+				warning("No code is specified to execute for the models to update.",
 				ResponseLanguagePackage.Literals.EFFECTS__CODE_BLOCK);
+			}
 		}
-//		val response = effects.containingResponse;^
-//		if (!(response.trigger instanceof ConcreteModelElementCreate) && 
-//			effects.targetModel instanceof CreatedModel) {
-//			error("A model can only be created in response to the creation of a model element.",
-//				ResponseLanguagePackage.Literals.EFFECTS__TARGET_MODEL);
-//		}
 	}
 	
 }

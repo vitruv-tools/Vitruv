@@ -22,7 +22,8 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureCha
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicRootObjectChange
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelCreate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelUpdate
 
 /**
  * Outline structure definition for a response file.
@@ -107,8 +108,10 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		if (effects.targetChange != null) {
 			var targetChangeIsLeaf = false;
 			val targetChange = effects.targetChange;
-			if (targetChange instanceof ConcreteTargetModelChange) {
-				targetChangeIsLeaf = targetChange.targetElement?.elementType?.element == null;
+			if (targetChange instanceof ConcreteTargetModelCreate) {
+				targetChangeIsLeaf = targetChange.rootElement?.elementType?.element == null;
+			} if (targetChange instanceof ConcreteTargetModelUpdate) {
+				targetChangeIsLeaf = targetChange.identifyingElement?.elementType?.element == null;
 			} else if (targetChange instanceof ArbitraryTargetMetamodelInstanceUpdate) {
 				targetChangeIsLeaf = targetChange.metamodelReference?.model == null;
 			}
@@ -127,9 +130,15 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		}
 	}
 	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, ConcreteTargetModelChange targetChange) {
-		if (targetChange.targetElement.elementType.element != null) {
-			createEObjectNode(parentNode, targetChange.targetElement.elementType.element);
+	protected def void _createChildren(EStructuralFeatureNode parentNode, ConcreteTargetModelCreate targetChange) {
+		if (targetChange.rootElement.elementType.element != null) {
+			createEObjectNode(parentNode, targetChange.rootElement.elementType.element);
+		}
+	}
+	
+	protected def void _createChildren(EStructuralFeatureNode parentNode, ConcreteTargetModelUpdate targetChange) {
+		if (targetChange.identifyingElement.elementType.element != null) {
+			createEObjectNode(parentNode, targetChange.identifyingElement.elementType.element);
 		}
 	}
 	

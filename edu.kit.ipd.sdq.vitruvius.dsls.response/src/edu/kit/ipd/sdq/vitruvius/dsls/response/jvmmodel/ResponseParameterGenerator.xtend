@@ -42,6 +42,10 @@ package class ResponseParameterGenerator {
 	protected def JvmFormalParameter generateUntypedChangeParameter(EObject parameterContext) {
 		return parameterContext.generateParameter(CHANGE_PARAMETER_NAME, EChange);
 	}
+	
+	protected def JvmFormalParameter generateEObjectParameter(EObject parameterContext, String parameterName) {
+		return parameterContext.generateParameter(parameterName, EObject);
+	}
 
 	protected def JvmFormalParameter generateChangeParameter(EObject parameterContext) {
 		var List<String> changeTypeParameters = <String>newArrayList;

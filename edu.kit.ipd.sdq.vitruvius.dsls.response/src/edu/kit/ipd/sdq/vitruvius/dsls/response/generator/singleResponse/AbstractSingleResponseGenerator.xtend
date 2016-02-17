@@ -15,13 +15,11 @@ import java.util.ArrayList
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
-import java.util.Collections
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.interfaces.IResponseRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseRuntimeHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelUpdate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelCreate
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelDelete
 
 abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerator {
 	protected final Response response;
@@ -102,11 +100,11 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 	 * <p>Precondition: a metamodel element for the target models is specified in the response
 	 */	
 	protected def generateMethodDetermineTargetModels(ConcreteTargetModelUpdate updatedModel) '''
-		«val affectedElementClass = updatedModel.targetElement.elementType.element»
+		«val affectedElementClass = updatedModel.identifyingElement.elementType.element»
 		private def «ih.typeRef(List)»<«ih.typeRef(affectedElementClass)»> determineTargetModels(«
 			changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)» blackboard) {
 			val targetModels = new «ih.typeRef(ArrayList)»<«ih.typeRef(affectedElementClass)»>();
-			val objectToGetCorrespondencesFor =«updatedModel.targetElement.correspondenceSource.code.XBlockExpressionText»
+			val objectToGetCorrespondencesFor =«updatedModel.identifyingElement.correspondenceSource.code.XBlockExpressionText»
 			targetModels += blackboard.correspondenceInstance.«ih.callExtensionMethod(ResponseRuntimeHelper,
 				'''getCorrespondingObjectsOfType(objectToGetCorrespondencesFor, «ih.typeRef(affectedElementClass)»)''')»;
 			return targetModels;
@@ -125,7 +123,7 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 	 * <p>Precondition: a metamodel element to be the root of the new model is specified in the response
 	 */	
 	protected def generateMethodGenerateTargetModel(ConcreteTargetModelCreate createdModel) '''
-		«val affectedElementClass = createdModel.targetElement.elementType.element»
+		«val affectedElementClass = createdModel.rootElement.elementType.element»
 		private def «ih.typeRef(affectedElementClass)» generateTargetModel(«
 			changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)» blackboard) {
 			«val createdClassFactoryName = affectedElementClass.EPackage.EFactoryInstance.class.name»
@@ -156,7 +154,7 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 	 * 	<li>1. change: the change event ({@link EChange})</li>
 	 *  <li>2. blackboard: the blackboard ({@link Blackboard})</li>
 	 */	
-	protected def generateMethodDeleteTargetModels(ConcreteTargetModelDelete deletedModel) '''
+	/*protected def generateMethodDeleteTargetModels(ConcreteTargetModelDelete deletedModel) '''
 		«val affectedElementClass = deletedModel.targetElement.elementType.element»
 		private def deleteTargetModels(«
 			changeEventTypeString» «CHANGE_PARAMETER_NAME», «ih.typeRef(Blackboard)» blackboard) {
@@ -171,7 +169,7 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 				}
 			}
 		}
-	'''
+	'''*/
 	
 	protected abstract def CharSequence generateMethodApplyChange();
 	protected abstract def String getChangeEventTypeString();

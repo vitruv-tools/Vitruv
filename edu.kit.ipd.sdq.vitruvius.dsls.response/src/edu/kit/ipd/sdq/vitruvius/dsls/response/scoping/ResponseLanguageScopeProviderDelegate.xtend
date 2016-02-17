@@ -15,8 +15,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicMultiValue
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicSingleValuedFeatureChange
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.FeatureOfElement
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelCreate
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelDelete
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementCreate
 
 class ResponseLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate {
 	override getScope(EObject context, EReference reference) {
@@ -24,8 +23,7 @@ class ResponseLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate
 			return createEStructuralFeatureScope(context as FeatureOfElement)
 		else if (reference.equals(FEATURE_OF_ELEMENT__ELEMENT)
 			|| reference.equals(MODEL_ELEMENT__ELEMENT)) {
-			if (context instanceof ConcreteTargetModelCreate
-				|| context instanceof ConcreteTargetModelDelete) {
+			if (context.eContainer() instanceof CorrespondingModelElementCreate) {
 				return createQualifiedConcreteEClassScope(context.eResource);
 			} else {
 				return createQualifiedEClassScope(context.eResource)

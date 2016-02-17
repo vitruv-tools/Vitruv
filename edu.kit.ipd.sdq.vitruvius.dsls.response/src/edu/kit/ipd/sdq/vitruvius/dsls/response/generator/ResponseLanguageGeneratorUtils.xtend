@@ -17,8 +17,8 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFactory
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.impl.SimpleTextXBlockExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MultiValuedFeatureInsertChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.InsertRootChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelCreate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelUpdate
 
 final class ResponseLanguageGeneratorUtils {
 	private static val FSA_SEPARATOR = "/";
@@ -105,8 +105,10 @@ final class ResponseLanguageGeneratorUtils {
 	
 	private static def VURI getTargetVURI(Response response) {
 		val targetChange = response?.effects?.targetChange;
-		val targetPackage = if (targetChange instanceof ConcreteTargetModelChange) {
-			targetChange.targetElement?.elementType?.element?.EPackage;
+		val targetPackage = if (targetChange instanceof ConcreteTargetModelCreate) {
+			targetChange.rootElement?.elementType?.element?.EPackage;
+		} else if (targetChange instanceof ConcreteTargetModelUpdate) {
+			targetChange.identifyingElement?.elementType?.element?.EPackage;
 		} else if (targetChange instanceof ArbitraryTargetMetamodelInstanceUpdate) {
 			targetChange.metamodelReference?.model?.package;
 		}
@@ -174,12 +176,12 @@ final class ResponseLanguageGeneratorUtils {
 			deleteResponse.name = "OppositeResponseForDeleteTo" + response.name;
 			deleteResponse.trigger = deleteTrigger;
 			val deleteEffects = ResponseLanguageFactory.eINSTANCE.createEffects();
-			val deleteTargetChange = ResponseLanguageFactory.eINSTANCE.createConcreteTargetModelDelete();
+			val deleteTargetChange = ResponseLanguageFactory.eINSTANCE.createConcreteTargetModelUpdate();
 			val targetChangeElement = MirBaseFactory.eINSTANCE.createModelElement();
-			targetChangeElement.element = createTargetChange.targetElement.elementType.element;
-			val correspondingModelElementSpecification = ResponseLanguageFactory.eINSTANCE.createCorrespondingModelElementSpecification();
+			targetChangeElement.element = createTargetChange.rootElement.elementType.element;
+			val correspondingModelElementSpecification = ResponseLanguageFactory.eINSTANCE.createCorrespondingModelElementDelete();
 			correspondingModelElementSpecification.elementType = targetChangeElement;
-			deleteTargetChange.targetElement = correspondingModelElementSpecification;
+			deleteTargetChange.identifyingElement = correspondingModelElementSpecification;
 			correspondingModelElementSpecification.correspondenceSource = ResponseLanguageFactory.eINSTANCE.createCorrespondenceSourceDeterminationBlock();
 			correspondingModelElementSpecification.correspondenceSource.code = new SimpleTextXBlockExpression('''return change.getOldValue();''');
 			deleteEffects.targetChange = deleteTargetChange;

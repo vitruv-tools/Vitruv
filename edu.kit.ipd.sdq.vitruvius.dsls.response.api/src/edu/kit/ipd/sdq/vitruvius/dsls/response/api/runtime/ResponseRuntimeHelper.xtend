@@ -25,16 +25,53 @@ public final class ResponseRuntimeHelper {
 		].flatten
 	}
 	
+	private static def getTUID(CorrespondenceInstance correspondenceInstance, EObject object, EObject parent) {
+		if (parent == null) {
+			return correspondenceInstance.calculateTUIDFromEObject(object);
+		} else {
+			val rootTUID = correspondenceInstance.calculateTUIDFromEObject(parent);
+			val String prefix = rootTUID.toString;
+			return correspondenceInstance.calculateTUIDFromEObject(object, object.eContainer(), prefix);
+		}
+	}
+	
+	public static def removeCorrespondence(CorrespondenceInstance correspondenceInstance, EObject source, EObject sourceParent, EObject target, EObject targetParent) {
+		val sourceTUID = correspondenceInstance.getTUID(source, sourceParent);
+		val targetTUID = correspondenceInstance.getTUID(source, targetParent);
+		val correspondences = correspondenceInstance.getCorrespondencesForTUIDs(#[sourceTUID]);
+		for (correspondence : correspondences) {
+			if ((correspondence.ATUIDs.contains(sourceTUID)
+				&& correspondence.BTUIDs.contains(targetTUID))
+				|| (correspondence.BTUIDs.contains(sourceTUID)
+				&& correspondence.ATUIDs.contains(targetTUID))) {
+				correspondenceInstance.removeCorrespondencesAndDependendCorrespondences(correspondence);		
+			}
+		}
+	}
+	
 	public static def <T> Iterable<T> getCorrespondingObjectsOfType(CorrespondenceInstance correspondenceInstance, EObject source, Class<T> type) {
 		//return correspondenceInstance.getCorrespondingObjectsOfType(source, source.eContainer(), type);
 		return correspondenceInstance.getCorrespondingObjects(source).filter(type);
 	}
 	
+	public static def <T> Iterable<Correspondence> getCorrespondencesWithTargetType(CorrespondenceInstance correspondenceInstance, EObject source, EObject sourceParent,
+			Class<T> type) {
+		val tuid = correspondenceInstance.getTUID(source, sourceParent);
+		val correspondences = correspondenceInstance.getCorrespondencesForTUIDs(#[tuid]); 
+		return correspondences.filter[correspondence |
+			if (correspondence.ATUIDs.contains(tuid)) {
+				return !correspondence.bs.filter(type).empty;
+			}
+			if (correspondence.BTUIDs.contains(tuid)) {
+				return !correspondence.^as.filter(type).empty;
+			}
+			return false;
+		]
+	}
+	
 	public static def <T> Iterable<T> getCorrespondingObjectsOfType(CorrespondenceInstance correspondenceInstance, EObject source, EObject sourceParent,
 			Class<T> type) {
-		val rootTUID = correspondenceInstance.calculateTUIDFromEObject(sourceParent);
-		val String prefix = rootTUID.toString
-		val tuid = correspondenceInstance.calculateTUIDFromEObject(source, source.eContainer(), prefix)
+		val tuid = correspondenceInstance.getTUID(source, sourceParent);
 		return correspondenceInstance.getCorrespondencesForTUIDs(#[tuid]).map[it.getCorrespondingObjectsOfTypeInCorrespondence(tuid, type)].flatten;
 	}
 	
