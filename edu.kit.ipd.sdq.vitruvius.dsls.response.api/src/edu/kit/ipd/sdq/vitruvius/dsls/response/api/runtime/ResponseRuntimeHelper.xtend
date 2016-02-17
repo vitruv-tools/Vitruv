@@ -14,17 +14,6 @@ public final class ResponseRuntimeHelper {
 		return result;
 	}
 	
-	public static def Iterable<? extends EObject> getCorrespondingObjects(CorrespondenceInstance correspondenceInstance, EObject source) {
-		val correspondences = correspondenceInstance.getCorrespondences(#[source])
-		return correspondences.map[correspondence |
-			if (correspondence.^as.contains(source)) {
-				return correspondence.^bs;
-			} else {
-				return correspondence.^as;
-			}
-		].flatten
-	}
-	
 	private static def getTUID(CorrespondenceInstance correspondenceInstance, EObject object, EObject parent) {
 		if (parent == null) {
 			return correspondenceInstance.calculateTUIDFromEObject(object);
@@ -49,24 +38,8 @@ public final class ResponseRuntimeHelper {
 		}
 	}
 	
-	public static def <T> Iterable<T> getCorrespondingObjectsOfType(CorrespondenceInstance correspondenceInstance, EObject source, Class<T> type) {
-		//return correspondenceInstance.getCorrespondingObjectsOfType(source, source.eContainer(), type);
-		return correspondenceInstance.getCorrespondingObjects(source).filter(type);
-	}
-	
-	public static def <T> Iterable<Correspondence> getCorrespondencesWithTargetType(CorrespondenceInstance correspondenceInstance, EObject source, EObject sourceParent,
-			Class<T> type) {
-		val tuid = correspondenceInstance.getTUID(source, sourceParent);
-		val correspondences = correspondenceInstance.getCorrespondencesForTUIDs(#[tuid]); 
-		return correspondences.filter[correspondence |
-			if (correspondence.ATUIDs.contains(tuid)) {
-				return !correspondence.bs.filter(type).empty;
-			}
-			if (correspondence.BTUIDs.contains(tuid)) {
-				return !correspondence.^as.filter(type).empty;
-			}
-			return false;
-		]
+	public static def addCorrespondence(CorrespondenceInstance correspondenceInstance, EObject source, EObject target) {
+		correspondenceInstance.createAndAddCorrespondence(#[source], #[target]);
 	}
 	
 	public static def <T> Iterable<T> getCorrespondingObjectsOfType(CorrespondenceInstance correspondenceInstance, EObject source, EObject sourceParent,
@@ -75,33 +48,9 @@ public final class ResponseRuntimeHelper {
 		return correspondenceInstance.getCorrespondencesForTUIDs(#[tuid]).map[it.getCorrespondingObjectsOfTypeInCorrespondence(tuid, type)].flatten;
 	}
 	
-	public static def <T> Iterable<Correspondence> getCorrespondencesWithTargetType(CorrespondenceInstance correspondenceInstance, EObject source,
-			Class<T> type) {
-		val correspondences = correspondenceInstance.getCorrespondences(#[source])
-		return correspondences.filter[correspondence |
-			if (correspondence.^as.contains(source)) {
-				return !correspondence.bs.filter(type).empty;
-			}
-			if (correspondence.^bs.contains(source)) {
-				return !correspondence.^as.filter(type).empty;
-			}
-			return false;
-		]
-	}
-	
 	private static def <T> Iterable<T> getCorrespondingObjectsOfTypeInCorrespondence(Correspondence correspondence, TUID source, Class<T> type) {
 		var Iterable<T> correspondences = 
 			if (correspondence.ATUIDs.contains(source)) {
-				correspondence.^bs.filter(type);
-			} else {
-				correspondence.^as.filter(type);
-			}
-		return correspondences;
-	}
-	
-	public static def <T> Iterable<T> getCorrespondingObjectsOfTypeInCorrespondence(Correspondence correspondence, EObject source, Class<T> type) {
-		var Iterable<T> correspondences = 
-			if (correspondence.^as.contains(source)) {
 				correspondence.^bs.filter(type);
 			} else {
 				correspondence.^as.filter(type);

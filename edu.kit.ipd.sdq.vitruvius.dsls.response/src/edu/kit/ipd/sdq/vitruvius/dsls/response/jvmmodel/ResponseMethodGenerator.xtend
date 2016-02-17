@@ -393,7 +393,7 @@ class ResponseMethodGenerator {
 			/* old sourceElement = «changeParameter.name».«change.EChangeFeatureNameOfChangedObject»*/
 			body = '''
 				«EObject» _sourceElement = «correspondenceSourceMethod.simpleName»(«changeParameter.name»);
-				«blackboardParameter.name».getCorrespondenceInstance().createAndAddCorrespondence(«Collections».singletonList(_sourceElement), «Collections».singletonList(«newElementParameter.name»));
+				«ResponseRuntimeHelper».addCorrespondence(«blackboardParameter.name».getCorrespondenceInstance(), _sourceElement, «newElementParameter.name»);
 			'''
 		];
 	}
