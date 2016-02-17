@@ -134,10 +134,10 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
 		EObject eObj = null;
 		if (eChange instanceof EFeatureChange<?>) {
 			EFeatureChange<?> featureChange = (EFeatureChange<?>) emfModelChange.getEChange();
-			eObj = featureChange.getOldAffectedEObject();
+			eObj = featureChange.getNewAffectedEObject();
 		} else if (eChange instanceof ReplaceRootEObject<?>) {
 			ReplaceRootEObject<?> replChange = (ReplaceRootEObject<?>) emfModelChange.getEChange();
-			eObj = replChange.getOldValue();
+			eObj = replChange.getNewValue();
 		} else if (eChange instanceof DeleteRootEObject<?>) {
 			DeleteRootEObject<?> delChange = (DeleteRootEObject<?>) emfModelChange.getEChange();
 			eObj = delChange.getOldValue();
