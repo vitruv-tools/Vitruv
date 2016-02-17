@@ -363,39 +363,20 @@ class ResponseMethodGenerator {
 	 * 
 	 * <p>Precondition: a metamodel element to be the root of the new model is specified in the response
 	 */	
-	protected def generateMethodGenerateModelElement(CorrespondingModelElementSpecification elementSpecification) {
-		val methodName = "generateModelElement" + elementSpecification.name.toFirstUpper;
+	protected def StringConcatenationClient generateCodeGenerateModelElement(CorrespondingModelElementSpecification elementSpecification, String assignedVariableName) {
+		if (!elementSpecification.complete) {
+			return '''''';
+		}
 		val affectedElementClass = elementSpecification.elementType.element;
-		
-		return getOrGenerateMethod(methodName, typeRef(affectedElementClass.instanceClass)) [ 
-			visibility = JvmVisibility.PRIVATE;
-			exceptions += typeRef(IOException);
-			val createdClassFactory = affectedElementClass.EPackage.EFactoryInstance.class
-			body = '''
-				return «createdClassFactory».eINSTANCE.create«affectedElementClass.name»();
-			'''
-		];
+		val createdClassFactory = affectedElementClass.EPackage.EFactoryInstance.class;
+		return '''«affectedElementClass.instanceClass» «assignedVariableName» = «createdClassFactory».eINSTANCE.create«affectedElementClass.name»();'''
 	}
 	
-	protected def generateMethodAddModelElementCorrespondence(CorrespondingModelElementSpecification elementSpecification) {
-		val methodName = "addModelElementCorrespondence" + elementSpecification.name.toFirstUpper;
-		
-		return getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [ 
-			visibility = JvmVisibility.PRIVATE;
-			val newElementParameter = generateModelElementParameter(elementSpecification, elementSpecification);
-			val changeParameter = generateChangeParameter(elementSpecification);
-			val blackboardParameter = generateBlackboardParameter(elementSpecification);
-			parameters += changeParameter;
-			parameters += newElementParameter;
-			parameters += blackboardParameter;
-			exceptions += typeRef(IOException);
-			val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(elementSpecification);
-			/* old sourceElement = «changeParameter.name».«change.EChangeFeatureNameOfChangedObject»*/
-			body = '''
-				«EObject» _sourceElement = «correspondenceSourceMethod.simpleName»(«changeParameter.name»);
-				«ResponseRuntimeHelper».addCorrespondence(«blackboardParameter.name».getCorrespondenceInstance(), _sourceElement, «newElementParameter.name»);
-			'''
-		];
+	protected def StringConcatenationClient generateCodeAddModelElementCorrespondence(CorrespondingModelElementSpecification elementSpecification, JvmFormalParameter changeParameter, JvmFormalParameter blackboardParameter, String newElementVariableName) {
+		val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(elementSpecification);
+		return ''' 
+			«ResponseRuntimeHelper».addCorrespondence(«blackboardParameter.name».getCorrespondenceInstance(), 
+				«correspondenceSourceMethod.simpleName»(«changeParameter.name»), «newElementVariableName»);'''
 	}
 	
 	/**
@@ -407,24 +388,16 @@ class ResponseMethodGenerator {
 	 * 	<li>1. change: the change event ({@link EChange})</li>
 	 *  <li>2. blackboard: the blackboard ({@link Blackboard})</li>
 	 */	
-	protected def generateMethodDeleteElement() {
-		val methodName = "deleteElement";
-		
-		return getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [
-			visibility = JvmVisibility.PRIVATE;
-			val deleteElementParameter = generateEObjectParameter("elementToDelete");
-			parameters += deleteElementParameter;
-			exceptions += typeRef(IOException);
-			body = '''
-				«IF  DeleteRootEObject.equals(change)»
-				LOGGER.debug("Deleting root object: " + «deleteElementParameter.name»);
-				«deleteElementParameter.name».eResource().delete(«Collections».EMPTY_MAP);	
-				«ELSE»
-				LOGGER.debug("Removing non-root object: " + «deleteElementParameter.name»);
-				«EcoreUtil».remove(«deleteElementParameter.name»);	
-				«ENDIF»
-			'''
-		];
+	protected def StringConcatenationClient generateCodeDeleteElement(String deleteElementVariableName) {
+		if (DeleteRootEObject.equals(change)) {
+			return '''
+				LOGGER.debug("Deleting root object: " + «deleteElementVariableName»);
+				«deleteElementVariableName».eResource().delete(«Collections».EMPTY_MAP);'''
+		} else {
+			return '''
+				LOGGER.debug("Removing non-root object: " + «deleteElementVariableName»);
+				«EcoreUtil».remove(«deleteElementVariableName»);'''	
+		}
 	} 
 	
 	protected def Iterable<JvmOperation> getPreconditionMethodsBeforeCast() {
@@ -535,12 +508,6 @@ class ResponseMethodGenerator {
 		val beforeMethodsMap = <JvmFormalParameter, JvmOperation>newHashMap();
 		CollectionBridge.mapFixed(retrieveElements, 
 				[beforeMethodsMap.put(parametersMap.get(it), generateMethodGetCorrespondingModelElements(it, targetModelElement, true, it instanceof CorrespondingModelElementDelete))]);
-		CollectionBridge.mapFixed(createElements, 
-				[beforeMethodsMap.put(parametersMap.get(it), generateMethodGenerateModelElement(it))]);
-		val afterMethodsMap = <JvmFormalParameter, JvmOperation>newHashMap();
-		CollectionBridge.mapFixed(createElements, 
-				[afterMethodsMap.put(parametersMap.get(it), generateMethodAddModelElementCorrespondence(it))]);
-		val deleteElementMethod = generateMethodDeleteElement();
 		
 		val modelElementList = #[targetModelElement] + createElements + retrieveElements;
 		val changeParameter = targetModelElement.generateChangeParameter();
@@ -551,6 +518,13 @@ class ResponseMethodGenerator {
 		} else {
 			null;
 		}
+		
+		val afterCodeMap = <JvmFormalParameter, StringConcatenationClient>newHashMap();
+		CollectionBridge.mapFixed(createElements, 
+				[afterCodeMap.put(parametersMap.get(it), generateCodeAddModelElementCorrespondence(it, changeParameter, blackboardParameter, parametersMap.get(it).name))]);
+		CollectionBridge.mapFixed(retrieveElements, 
+				[afterCodeMap.put(parametersMap.get(it), generateCodeDeleteElement(parametersMap.get(it).name))]);
+		
 		return getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [
 			visibility = JvmVisibility.PRIVATE;
 			exceptions += typeRef(IOException);
@@ -561,9 +535,7 @@ class ResponseMethodGenerator {
 				LOGGER.debug("Execute response " + this.getClass().getName() + " for model element " + «targetModelParameter.name» + "(«targetModelElement.elementType.element.name»)");
 				«IF hasExecutionBlock»
 					«FOR element : createElements»
-						«val param = parametersMap.get(element)»
-						«val method = beforeMethodsMap.get(param)»
-						«method.returnType» «param.name» = «method.simpleName»();
+						«generateCodeGenerateModelElement(element, parametersMap.get(element).name)»
 					«ENDFOR»
 					«FOR element : retrieveElements»
 						«val param = parametersMap.get(element)»
@@ -574,13 +546,10 @@ class ResponseMethodGenerator {
 					«performResponseMethod.simpleName»(«changeParameter.name»«
 						FOR modelElement : modelElementList BEFORE ', ' SEPARATOR ', '»«modelElement.name»«ENDFOR»);
 					«FOR element : createElements»
-						«val param = parametersMap.get(element)»
-						«val method = afterMethodsMap.get(param)»
-						«method.simpleName»(«changeParameter.name», «param.name», «blackboardParameter.name»);
+						«afterCodeMap.get(parametersMap.get(element))»
 					«ENDFOR»
 					«FOR element : retrieveElements.filter(CorrespondingModelElementDelete)»
-						«val param = parametersMap.get(element)»
-						«deleteElementMethod.simpleName»(«param.name»);
+						«afterCodeMap.get(parametersMap.get(element))»
 					«ENDFOR»
 				«ENDIF»
 			'''
@@ -604,8 +573,8 @@ class ResponseMethodGenerator {
 		}
 		val deleteIdentifyingElement = modelRootUpdate.identifyingElement instanceof CorrespondingModelElementDelete;
 		val determineTargetModelsMethod = generateMethodGetCorrespondingModelElements(modelRootUpdate.identifyingElement, null, false, deleteIdentifyingElement);
-		val deleteElementMethod = if (deleteIdentifyingElement) {
-			generateMethodDeleteElement();
+		val deleteElementCode = if (deleteIdentifyingElement) {
+			generateCodeDeleteElement("_targetElement");
 		}  else {
 			null;
 		}
@@ -616,7 +585,7 @@ class ResponseMethodGenerator {
 			for («targetModelElementClass» _targetElement : _targetModels) {
 				«executePerTargetModelMethod.simpleName»(«changeParameter.name», «blackboardParameter.name», _targetElement);
 				«IF deleteIdentifyingElement»
-					«deleteElementMethod.simpleName»(_targetElement);
+					«deleteElementCode»
 				«ENDIF»
 			}
 		'''
@@ -635,14 +604,12 @@ class ResponseMethodGenerator {
 		if (!modelRootCreate.rootElement.complete) {
 			return '''''';
 		}
-		val generateRootElementMethod = generateMethodGenerateModelElement(modelRootCreate.rootElement);
 		val generateTargetModelMethod = generateMethodGenerateTargetModel(modelRootCreate);
 		val executePerTargetModelMethod = generateMethodExecuteForTargetModel(modelRootCreate.rootElement, 
 			modelRootCreate.createElements.filter[complete], #[]
 		);
-		val targetModelElementClass = modelRootCreate.rootElement.elementType.javaClass;
 		return '''
-			«targetModelElementClass» _targetModel = «generateRootElementMethod.simpleName»();
+			«generateCodeGenerateModelElement(modelRootCreate.rootElement, "_targetModel")»
 			«executePerTargetModelMethod.simpleName»(«changeParameter.name», «blackboardParameter.name», _targetModel);
 			«generateTargetModelMethod.simpleName»(«changeParameter.name», «blackboardParameter.name», _targetModel);
 		'''
