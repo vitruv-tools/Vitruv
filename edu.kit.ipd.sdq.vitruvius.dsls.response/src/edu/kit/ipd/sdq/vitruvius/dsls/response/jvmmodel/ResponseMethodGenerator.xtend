@@ -227,11 +227,11 @@ class ResponseMethodGenerator {
 	 * 
 	 * <p>Precondition: a metamodel element for the target models is specified in the response
 	 */	
-	protected def generateMethodGetCorrespondingModelElements(CorrespondingModelElementSpecification correspondingModelElements, CorrespondingModelElementSpecification correspondingModel, boolean claimSizeOne, boolean removeCorrespondence) {
-		val methodName = "getCorrespondingModelElements" + correspondingModelElements.name.toFirstUpper;
-		val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(correspondingModelElements)
+	protected def generateMethodGetCorrespondingModelElements(CorrespondingModelElementSpecification correspondingModelElement, CorrespondingModelElementSpecification correspondingModel, boolean claimSizeOne) {
+		val methodName = "getCorrespondingModelElements" + correspondingModelElement.name.toFirstUpper;
+		val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(correspondingModelElement)
 		
-		val affectedElementClass = correspondingModelElements?.elementType?.element?.instanceClass;
+		val affectedElementClass = correspondingModelElement?.elementType.javaClass;
 		if (affectedElementClass == null) {
 			return null;
 		}
@@ -276,7 +276,7 @@ class ResponseMethodGenerator {
 					«ENDIF»
 				}
 				
-				«IF removeCorrespondence»
+				«IF correspondingModelElement instanceof CorrespondingModelElementDelete»
 				for («EObject» _targetModel : _targetModels) {
 					«ResponseRuntimeHelper».removeCorrespondence(«blackboardParameter.name».getCorrespondenceInstance(), _sourceElement, _sourceParent, _targetModel, null);
 				}
@@ -507,7 +507,7 @@ class ResponseMethodGenerator {
 				[parametersMap.put(it, targetModelElement.generateModelElementParameter(it))]);
 		val beforeMethodsMap = <JvmFormalParameter, JvmOperation>newHashMap();
 		CollectionBridge.mapFixed(retrieveElements, 
-				[beforeMethodsMap.put(parametersMap.get(it), generateMethodGetCorrespondingModelElements(it, targetModelElement, true, it instanceof CorrespondingModelElementDelete))]);
+				[beforeMethodsMap.put(parametersMap.get(it), generateMethodGetCorrespondingModelElements(it, targetModelElement, true))]);
 		
 		val modelElementList = #[targetModelElement] + createElements + retrieveElements;
 		val changeParameter = targetModelElement.generateChangeParameter();
@@ -572,15 +572,15 @@ class ResponseMethodGenerator {
 			return '''''';
 		}
 		val deleteIdentifyingElement = modelRootUpdate.identifyingElement instanceof CorrespondingModelElementDelete;
-		val determineTargetModelsMethod = generateMethodGetCorrespondingModelElements(modelRootUpdate.identifyingElement, null, false, deleteIdentifyingElement);
+		val determineTargetModelsMethod = generateMethodGetCorrespondingModelElements(modelRootUpdate.identifyingElement, null, false);
 		val deleteElementCode = if (deleteIdentifyingElement) {
 			generateCodeDeleteElement("_targetElement");
 		}  else {
 			null;
 		}
 		val executePerTargetModelMethod = generateMethodExecuteForTargetModel(modelRootUpdate.identifyingElement, modelRootUpdate.createElements.filter[complete], modelRootUpdate.retrieveElements.filter[complete]);
+		val targetModelElementClass = modelRootUpdate.identifyingElement.elementType.javaClass
 		return '''
-			«val targetModelElementClass = modelRootUpdate.identifyingElement.elementType.javaClass»
 			«Iterable»<«targetModelElementClass»> _targetModels = «determineTargetModelsMethod.simpleName»(«changeParameter.name», «blackboardParameter.name»);
 			for («targetModelElementClass» _targetElement : _targetModels) {
 				«executePerTargetModelMethod.simpleName»(«changeParameter.name», «blackboardParameter.name», _targetElement);

@@ -27,26 +27,35 @@ TargetChange:
 	ConcreteTargetModelChange | ArbitraryTargetMetamodelInstanceUpdate;
 
 ConcreteTargetModelChange:
-	(ConcreteTargetModelUpdate | ConcreteTargetModelCreate)
-	('create model element:' createElements+=CorrespondingModelElementCreate)*;
+	(ConcreteTargetModelUpdate | ConcreteTargetModelCreate);
 	
 ConcreteTargetModelUpdate:
 	// You could also put the identifying element together with the retrieved elements. 
 	// The generation uses the first element as an identifying element and thus it is easier
 	identifyingElement=CorrespondingModelElementRetrieveOrDelete
-	(retrieveElements+=CorrespondingModelElementRetrieveOrDelete)*;
+	(retrieveElements+=CorrespondingModelElementRetrieveOrDelete |
+		'create model element:' createElements+=CorrespondingModelElementCreate)*;
 
 ConcreteTargetModelCreate:
 	'create model:' relativeToSourcePath=PathToSourceSpecificationBlock
-		'with root element:' rootElement=CorrespondingModelElementCreate;
+		'with root element:' rootElement=CorrespondingModelElementCreate
+	('create model element:' createElements+=CorrespondingModelElementCreate)*;
 
 CorrespondingModelElementCreate returns CorrespondingModelElementCreate:
 	{CorrespondingModelElementCreate}
 	CorrespondingModelElementSpecification;
 
 CorrespondingModelElementRetrieveOrDelete returns CorrespondingModelElementRetrieveOrDelete:
-	({CorrespondingModelElementRetrieve} 'retrieve model element:' |
-		{CorrespondingModelElementDelete} 'delete model element:') CorrespondingModelElementSpecification;
+	({CorrespondingModelElementDelete} 'delete model element:' | 
+	{CorrespondingModelElementRetrieve} 'retrieve model element:') CorrespondingModelElementSpecification;
+
+CorrespondingModelElementDelete returns CorrespondingModelElementDelete:
+	{CorrespondingModelElementDelete}
+	'delete model element:' CorrespondingModelElementSpecification;
+	
+CorrespondingModelElementRetrieve returns CorrespondingModelElementRetrieve:
+	{CorrespondingModelElementRetrieve}
+	'retrieve model element:' CorrespondingModelElementSpecification;
 	
 fragment CorrespondingModelElementSpecification:
 	name=ValidID 'of type' elementType=ModelElement correspondenceSource=CorrespondenceSourceDeterminationBlock;
