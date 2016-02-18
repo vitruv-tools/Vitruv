@@ -50,7 +50,7 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 		if (effects.codeBlock == null) {
 			if ((targetChange instanceof ConcreteTargetModelChange && !(targetChange as ConcreteTargetModelChange).createElements.empty) 
 				|| targetChange instanceof ConcreteTargetModelCreate) {
-				error("Created elements must be initialized and inserted into the target model in the execute block.",
+				warning("Created elements must be initialized and inserted into the target model in the execute block.",
 					ResponseLanguagePackage.Literals.EFFECTS__CODE_BLOCK);			
 			} else if (!(targetChange instanceof ConcreteTargetModelUpdate && (targetChange as ConcreteTargetModelUpdate).identifyingElement instanceof CorrespondingModelElementDelete)) {
 				warning("No code is specified to execute for the models to update.",
