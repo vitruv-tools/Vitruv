@@ -32,7 +32,7 @@ class PCMJavaTests extends AbstractPCMJavaTests {
 	
 	@Test
 	public def void testCreateRepository() {
-		assertModelExists(PcmJavaHelper.getCorrespondingJavaHelperQualifiedName(repositoryRootElement).javaClassPathForFQN);	
+		assertModelExists(PCMJavaHelper.getCorrespondingJavaHelperQualifiedName(repositoryRootElement).javaClassPathForFQN);	
 	}
 	
 	@Test
@@ -41,7 +41,7 @@ class PCMJavaTests extends AbstractPCMJavaTests {
 		repositoryRootElement.components__Repository += component;
 		component.entityName = "MyComponent";
 		saveAndSynchronizeChanges(repositoryRootElement);
-		assertModelExists(PcmJavaHelper.getCorrespondingJavaClassQualifiedName(component).javaClassPathForFQN);	
+		assertModelExists(PCMJavaHelper.getCorrespondingJavaClassQualifiedName(component).javaClassPathForFQN);	
 	}
 	
 }
