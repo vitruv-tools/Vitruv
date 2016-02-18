@@ -26,6 +26,10 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 	private static val FURTHER_SOURCE_TEST_MODEL_NAME = "Further_Source_Test_Model";
 	private static val FURTHER_TARGET_TEST_MODEL_NAME = "Further_Target_Test_Model"
 	
+	private def withExtension(String modelName) {
+		return modelName + "." + MODEL_FILE_EXTENSION;
+	}
+	
 	new() {
 		super(new Supplier<Change2CommandTransformingProviding>() {
 			override get() {
@@ -37,17 +41,17 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 	private String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"];
 	
 	private def Root getRootElement() {
-		return edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTests.TEST_SOURCE_MODEL_NAME.root;
+		return TEST_SOURCE_MODEL_NAME.withExtension.root as Root;
 	}
 	
 	private def assertModelsEqual() {
-		assertModelsEqual(TEST_SOURCE_MODEL_NAME, TEST_TARGET_MODEL_NAME);
+		assertModelsEqual(TEST_SOURCE_MODEL_NAME.withExtension, TEST_TARGET_MODEL_NAME.withExtension);
 	}
 	
 	protected override initializeTestModel() {
 		val root = AllElementTypesFactory.eINSTANCE.createRoot();
-		root.setId(edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTests.TEST_SOURCE_MODEL_NAME);
-		createAndSychronizeModel(edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTests.TEST_SOURCE_MODEL_NAME, root);
+		root.setId(TEST_SOURCE_MODEL_NAME);
+		createAndSychronizeModel(TEST_SOURCE_MODEL_NAME.withExtension, root);
 		prepareTestModel();
 		assertModelsEqual();
 	}
@@ -441,29 +445,29 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 	
 	@Test
 	public def void testDeleteEachTestModel() throws Throwable {
-		assertModelExists(TEST_SOURCE_MODEL_NAME);
-		deleteAndSychronizeModel(TEST_SOURCE_MODEL_NAME);
-		assertModelNotExists(TEST_SOURCE_MODEL_NAME);
-		assertModelNotExists(TEST_TARGET_MODEL_NAME);
+		assertModelExists(TEST_SOURCE_MODEL_NAME.withExtension);
+		deleteAndSychronizeModel(TEST_SOURCE_MODEL_NAME.withExtension);
+		assertModelNotExists(TEST_SOURCE_MODEL_NAME.withExtension);
+		assertModelNotExists(TEST_TARGET_MODEL_NAME.withExtension);
 	}
 	
 	@Test
 	public def void testCreateFurtherModel() throws Throwable {
 		val root = AllElementTypesFactory.eINSTANCE.createRoot();
 		root.setId(FURTHER_SOURCE_TEST_MODEL_NAME);
-		createAndSychronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME, root);
-		assertModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME, FURTHER_TARGET_TEST_MODEL_NAME);
+		createAndSychronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.withExtension, root);
+		assertModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.withExtension, FURTHER_TARGET_TEST_MODEL_NAME.withExtension);
 	}
 	
 	@Test
 	public def void testDeleteFurtherModel() throws Throwable {
 		val root = AllElementTypesFactory.eINSTANCE.createRoot();
 		root.setId(FURTHER_SOURCE_TEST_MODEL_NAME);
-		createAndSychronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME, root);
-		assertModelExists(FURTHER_TARGET_TEST_MODEL_NAME);
-		assertModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME, FURTHER_TARGET_TEST_MODEL_NAME);
-		deleteAndSychronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME);
-		assertModelNotExists(FURTHER_SOURCE_TEST_MODEL_NAME);
-		assertModelNotExists(FURTHER_TARGET_TEST_MODEL_NAME);
+		createAndSychronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.withExtension, root);
+		assertModelExists(FURTHER_TARGET_TEST_MODEL_NAME.withExtension);
+		assertModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.withExtension, FURTHER_TARGET_TEST_MODEL_NAME.withExtension);
+		deleteAndSychronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.withExtension);
+		assertModelNotExists(FURTHER_SOURCE_TEST_MODEL_NAME.withExtension);
+		assertModelNotExists(FURTHER_TARGET_TEST_MODEL_NAME.withExtension);
 	}
 }

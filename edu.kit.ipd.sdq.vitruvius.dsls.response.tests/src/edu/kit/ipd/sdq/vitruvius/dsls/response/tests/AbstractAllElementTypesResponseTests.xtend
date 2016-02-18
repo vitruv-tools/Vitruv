@@ -3,7 +3,6 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.tests
 import edu.kit.ipd.sdq.vitruvius.dsls.response.tests.AbstractResponseTests
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import org.eclipse.emf.ecore.resource.Resource
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl
 import java.util.Arrays
 import java.util.HashSet
@@ -19,47 +18,13 @@ import java.util.List
 import allElementTypes.Identified
 import java.util.function.Supplier
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.eclipse.core.resources.ResourcesPlugin
-import java.io.File
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 abstract class AbstractAllElementTypesResponseTests extends AbstractResponseTests {
-	private static val MODEL_FILE_EXTENSION = "minimalAllElements";
+	protected static val MODEL_FILE_EXTENSION = "minimalAllElements";
 	
 	new(Supplier<? extends Change2CommandTransformingProviding> change2CommandTransformingProvidingSupplier) {
 		super(change2CommandTransformingProvidingSupplier)
-	}
-	
-	protected override String getPlatformModelPath(String modelName) {
-		return this.currentTestProjectName + "/model/" + modelName + "." + MODEL_FILE_EXTENSION
-	}
-	
-	protected def String getAbsoluteModelPath(String modelName) {
-		return ResourcesPlugin.workspace.root.location.append("/" + modelName.platformModelPath).toOSString;
-	}
-	
-	protected def Root getRoot(String modelName) {
-		return getRoot(modelName, false);
-	}
-	
-	protected def Root getRoot(String modelName, boolean forceReload) {
-		return modelName.getModelResource(forceReload)?.allContents.next as Root;
-	}
-	
-	protected def VURI getModelVURI(String modelName) {
-		return VURI.getInstance(modelName.platformModelPath);	
-	}
-	
-	protected def Resource getModelResource(String modelName, boolean forceReload) {
-		var resource = this.resourceSet.getResource(modelName.modelVURI.getEMFUri(), false);
-		if (forceReload && resource != null) {
-			resource.unload;
-		}
-		resource = this.resourceSet.getResource(modelName.modelVURI.getEMFUri(), true);
-		return resource;
-	}
-	
-	protected def Resource getModelResource(String modelName) {
-		return getModelResource(modelName, false);
 	}
 	
 	protected override createMetaRepository() {
@@ -78,18 +43,10 @@ abstract class AbstractAllElementTypesResponseTests extends AbstractResponseTest
 		return metarepository;
 	}
 
-	protected def void assertModelExists(String modelName) {
-		assertTrue(new File(modelName.absoluteModelPath).exists());
-	}
-	
-	protected def void assertModelNotExists(String modelName) {
-		assertFalse(new File(modelName.absoluteModelPath).exists());
-	}
-	
-	protected def void assertModelsEqual(String modelName1, String modelName2) {
+	protected override void assertModelsEqual(String modelNameWithExtension1, String modelNameWithExtension2) {
 		val testResourceSet = new ResourceSetImpl();
-		val root = testResourceSet.getResource(modelName1.modelVURI.getEMFUri(), true).contents.get(0) as Root;
-		val root2 = testResourceSet.getResource(modelName2.modelVURI.getEMFUri(), true).contents.get(0) as Root;
+		val root = testResourceSet.getResource(modelNameWithExtension1.modelVURI.getEMFUri(), true).contents.get(0) as Root;
+		val root2 = testResourceSet.getResource(modelNameWithExtension2.modelVURI.getEMFUri(), true).contents.get(0) as Root;
 		assertEquals(root.id, root2.id);
 		assertEquals(root.singleValuedEAttribute, root2.singleValuedEAttribute);
 		assertEquals(root.singleValuedContainmentEReference?.id, root2.singleValuedContainmentEReference?.id);
@@ -97,6 +54,7 @@ abstract class AbstractAllElementTypesResponseTests extends AbstractResponseTest
 		assertArrayEquals(root.multiValuedEAttribute.toArray, root2.multiValuedEAttribute.toArray);
 		assertIdentifableListsEquals(root.multiValuedContainmentEReference, root2.multiValuedContainmentEReference);
 		assertIdentifableListsEquals(root.multiValuedNonContainmentEReference, root2.multiValuedNonContainmentEReference);
+		assertTrue(EcoreUtil.equals(root, root2));
 	}
 	
 	private static def void assertIdentifableListsEquals(List<? extends Identified> list1, List<? extends Identified> list2) {

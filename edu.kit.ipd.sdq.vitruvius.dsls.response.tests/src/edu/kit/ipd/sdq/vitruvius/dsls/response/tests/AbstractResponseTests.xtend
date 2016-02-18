@@ -15,6 +15,13 @@ import org.apache.log4j.Logger
 import org.apache.log4j.Level
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.core.resources.ResourcesPlugin
+import java.io.File
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 abstract class AbstractResponseTests extends VitruviusEMFCasestudyTest {
 
@@ -69,5 +76,51 @@ abstract class AbstractResponseTests extends VitruviusEMFCasestudyTest {
 		// Do nothing
 	}
 	
-	protected abstract def String getPlatformModelPath(String modelName);
+	protected def String getPlatformModelPath(String modelNameWithExtension) {
+		return this.currentTestProjectName + "/model/" + modelNameWithExtension
+	}
+	
+	protected def String getAbsoluteModelPath(String modelNameWithExtension) {
+		return ResourcesPlugin.workspace.root.location.append("/" + modelNameWithExtension.platformModelPath).toOSString;
+	}
+	
+	protected def EObject getRoot(String modelNameWithExtension) {
+		return getRoot(modelNameWithExtension, false);
+	}
+	
+	protected def EObject getRoot(String modelNameWithExtension, boolean forceReload) {
+		return modelNameWithExtension.getModelResource(forceReload)?.allContents.next;
+	}
+	
+	protected def VURI getModelVURI(String modelNameWithExtension) {
+		return VURI.getInstance(modelNameWithExtension.platformModelPath);	
+	}
+	
+	protected def Resource getModelResource(String modelNameWithExtension, boolean forceReload) {
+		var resource = this.resourceSet.getResource(modelNameWithExtension.modelVURI.getEMFUri(), false);
+		if (forceReload && resource != null) {
+			resource.unload;
+		}
+		resource = this.resourceSet.getResource(modelNameWithExtension.modelVURI.getEMFUri(), true);
+		return resource;
+	}
+	
+	protected def Resource getModelResource(String modelNameWithExtension) {
+		return getModelResource(modelNameWithExtension, false);
+	}
+	
+	protected def void assertModelExists(String modelNameWithExtension) {
+		assertTrue(new File(modelNameWithExtension.absoluteModelPath).exists());
+	}
+	
+	protected def void assertModelNotExists(String modelNameWithExtension) {
+		assertFalse(new File(modelNameWithExtension.absoluteModelPath).exists());
+	}
+	
+	protected def void assertModelsEqual(String modelNameWithExtension1, String modelNameWithExtension2) {
+		val testResourceSet = new ResourceSetImpl();
+		val root = testResourceSet.getResource(modelNameWithExtension1.modelVURI.getEMFUri(), true).contents.get(0);
+		val root2 = testResourceSet.getResource(modelNameWithExtension2.modelVURI.getEMFUri(), true).contents.get(0);
+		assertTrue(EcoreUtil.equals(root, root2));
+	}
 }
