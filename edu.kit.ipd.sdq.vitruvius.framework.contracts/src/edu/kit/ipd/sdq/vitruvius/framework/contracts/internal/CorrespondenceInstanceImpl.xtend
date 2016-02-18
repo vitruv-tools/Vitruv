@@ -551,4 +551,8 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		return corrset
 	}
 	
+	override getAllCorrespondences() {
+		return correspondences.correspondences
+	}
+	
 }		
