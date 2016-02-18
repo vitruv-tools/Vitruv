@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.internal
 
+import com.google.common.collect.Sets
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping
@@ -25,17 +26,15 @@ import java.util.List
 import java.util.Map
 import java.util.Set
 import org.apache.log4j.Logger
+import org.eclipse.core.internal.resources.ResourceException
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.ecore.resource.Resource.IOWrappedException
 import org.eclipse.emf.ecore.util.EcoreUtil
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge.*
-import com.google.common.collect.Sets
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.MutatingListsFixingClaimableHashMap
-import org.eclipse.emf.ecore.resource.Resource.IOWrappedException
-import org.eclipse.core.internal.resources.ResourceException
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class CorrespondenceInstanceImpl extends ModelInstance implements CorrespondenceInstanceDecorator {
