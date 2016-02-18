@@ -6,10 +6,7 @@ import allElementTypes.NonRoot
 import allElementTypes.Root
 import edu.kit.ipd.sdq.vitruvius.dsls.response.tests.AbstractAllElementTypesResponseTests
 import edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
 import org.eclipse.emf.common.util.ECollections
-import org.eclipse.emf.ecore.EObject
 import org.junit.Test
 import responses.ResponseChange2CommandTransformingProviding
 
@@ -17,8 +14,6 @@ import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNull
 import static org.junit.Assert.assertTrue
 import allElementTypes.AllElementTypesPackage
-import java.util.function.Supplier
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding
 
 class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 	private static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource";
@@ -26,32 +21,28 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 	private static val FURTHER_SOURCE_TEST_MODEL_NAME = "Further_Source_Test_Model";
 	private static val FURTHER_TARGET_TEST_MODEL_NAME = "Further_Target_Test_Model"
 	
-	private def withExtension(String modelName) {
-		return modelName + "." + MODEL_FILE_EXTENSION;
-	}
-	
 	new() {
-		super(new Supplier<Change2CommandTransformingProviding>() {
-			override get() {
-				return new ResponseChange2CommandTransformingProviding();
-			}
-		})
+		super([| return new ResponseChange2CommandTransformingProviding()]);
 	}
 	
 	private String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"];
 	
 	private def Root getRootElement() {
-		return TEST_SOURCE_MODEL_NAME.withExtension.root as Root;
+		return TEST_SOURCE_MODEL_NAME.projectModelPath.root as Root;
+	}
+	
+	private def String getProjectModelPath(String modelName) {
+		"model/" + modelName + "." + MODEL_FILE_EXTENSION;
 	}
 	
 	private def assertModelsEqual() {
-		assertModelsEqual(TEST_SOURCE_MODEL_NAME.withExtension, TEST_TARGET_MODEL_NAME.withExtension);
+		assertModelsEqual(TEST_SOURCE_MODEL_NAME.projectModelPath, TEST_TARGET_MODEL_NAME.projectModelPath);
 	}
 	
 	protected override initializeTestModel() {
 		val root = AllElementTypesFactory.eINSTANCE.createRoot();
 		root.setId(TEST_SOURCE_MODEL_NAME);
-		createAndSychronizeModel(TEST_SOURCE_MODEL_NAME.withExtension, root);
+		createAndSychronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root);
 		prepareTestModel();
 		assertModelsEqual();
 	}
@@ -203,11 +194,6 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 	private def void setSingleValuedEAttribute(Root root, Integer value) {
 		root.singleValuedEAttribute = value;
 		saveAndSynchronizeChanges(root);
-	}
-	
-	private def void saveAndSynchronizeChanges(EObject object) {
-		EcoreResourceBridge.saveResource(object.eResource());
-		this.triggerSynchronization(VURI.getInstance(object.eResource()));
 	}
 
 	// TODO HK Unset does not produce any change event at the moment
@@ -445,29 +431,29 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 	
 	@Test
 	public def void testDeleteEachTestModel() throws Throwable {
-		assertModelExists(TEST_SOURCE_MODEL_NAME.withExtension);
-		deleteAndSychronizeModel(TEST_SOURCE_MODEL_NAME.withExtension);
-		assertModelNotExists(TEST_SOURCE_MODEL_NAME.withExtension);
-		assertModelNotExists(TEST_TARGET_MODEL_NAME.withExtension);
+		assertModelExists(TEST_SOURCE_MODEL_NAME.projectModelPath);
+		deleteAndSychronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath);
+		assertModelNotExists(TEST_SOURCE_MODEL_NAME.projectModelPath);
+		assertModelNotExists(TEST_TARGET_MODEL_NAME.projectModelPath);
 	}
 	
 	@Test
 	public def void testCreateFurtherModel() throws Throwable {
 		val root = AllElementTypesFactory.eINSTANCE.createRoot();
 		root.setId(FURTHER_SOURCE_TEST_MODEL_NAME);
-		createAndSychronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.withExtension, root);
-		assertModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.withExtension, FURTHER_TARGET_TEST_MODEL_NAME.withExtension);
+		createAndSychronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, root);
+		assertModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
 	}
 	
 	@Test
 	public def void testDeleteFurtherModel() throws Throwable {
 		val root = AllElementTypesFactory.eINSTANCE.createRoot();
 		root.setId(FURTHER_SOURCE_TEST_MODEL_NAME);
-		createAndSychronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.withExtension, root);
-		assertModelExists(FURTHER_TARGET_TEST_MODEL_NAME.withExtension);
-		assertModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.withExtension, FURTHER_TARGET_TEST_MODEL_NAME.withExtension);
-		deleteAndSychronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.withExtension);
-		assertModelNotExists(FURTHER_SOURCE_TEST_MODEL_NAME.withExtension);
-		assertModelNotExists(FURTHER_TARGET_TEST_MODEL_NAME.withExtension);
+		createAndSychronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, root);
+		assertModelExists(FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
+		assertModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
+		deleteAndSychronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath);
+		assertModelNotExists(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath);
+		assertModelNotExists(FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
 	}
 }

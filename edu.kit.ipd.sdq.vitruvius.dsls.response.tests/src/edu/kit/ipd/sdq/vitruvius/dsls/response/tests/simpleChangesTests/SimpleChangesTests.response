@@ -49,8 +49,9 @@ execute: {
 response: DeleteNonRootEObjectInList
 trigger: remove from list minimal.Root[multiValuedContainmentEReference] 
 delete model element: targetElement of type minimal.NonRoot corresponding to change.oldValue
-delete model element: targetElement2 of type minimal.NonRoot corresponding to change.oldValue  
+//delete model element: targetElement2 of type minimal.NonRoot corresponding to change.oldValue  
 execute: {
+	// It works, even if we remove element in the execute block and via effect as well
 	org.eclipse.emf.ecore.util.EcoreUtil.remove(targetElement);
 	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
 		edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.
@@ -201,8 +202,8 @@ execute: {
 response: HelperResponseForCreateSecondTestModel
 trigger: insert root minimal.Root
 precondition: change.newValue.id == "EachTestModelSource"
-create model: "EachTestModelTarget"
-	with root element: newRoot of type minimal.Root	corresponding to change.newValue
+create model: file name relative to project folder: "model/EachTestModelTarget"
+create root element: newRoot of type minimal.Root	corresponding to change.newValue
 execute: {
 	newRoot.id = change.newValue.id
 }
@@ -218,8 +219,8 @@ delete model element: oldModel of type minimal.Root corresponding to change.oldV
 response: CreateRootTest
 trigger: insert root minimal.Root
 precondition: change.newValue.id == "Further_Source_Test_Model"
-create model: "Further_Target_Test_Model"
-	with root element: newRoot of type minimal.Root corresponding to change.newValue
+create model: file name relative to changed model folder: "Further_Target_Test_Model"
+create root element: newRoot of type minimal.Root corresponding to change.newValue
 execute: {
 	newRoot.id = change.newValue.id
 }
@@ -230,6 +231,7 @@ response: DeleteRootTest
 trigger: remove root minimal.Root
 precondition: change.oldValue.id == "Further_Source_Test_Model"
 delete model element: oldModel of type minimal.Root corresponding to change.oldValue
+
 
 response: DuplicateRootDelete
 trigger: remove root minimal.Root

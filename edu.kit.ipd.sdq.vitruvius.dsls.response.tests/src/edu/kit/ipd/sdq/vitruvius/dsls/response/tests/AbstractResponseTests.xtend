@@ -19,8 +19,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.core.resources.ResourcesPlugin
 import java.io.File
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 import org.eclipse.emf.ecore.util.EcoreUtil
 
 abstract class AbstractResponseTests extends VitruviusEMFCasestudyTest {
@@ -42,30 +41,31 @@ abstract class AbstractResponseTests extends VitruviusEMFCasestudyTest {
 	public override void beforeTest(Description description) throws Throwable {
 		super.beforeTest(description);
 		initializeTestModel();
-		Logger.rootLogger.level = Level.DEBUG;
+		Logger.rootLogger.level = Level.ERROR;
 	}
 	
 	protected abstract def void initializeTestModel();
 
-	protected def void createAndSychronizeModel(String modelName, EObject rootElement) {
-		if (modelName.isNullOrEmpty || rootElement == null) {
+	protected def void createAndSychronizeModel(String modelPathInProject, EObject rootElement) {
+		if (modelPathInProject.isNullOrEmpty || rootElement == null) {
 			throw new IllegalArgumentException();
 		}
 		val resource = this.resourceSet.createResource(
-			URI.createPlatformResourceURI(modelName.platformModelPath, true)
+			URI.createPlatformResourceURI(modelPathInProject.platformModelPath, true)
 		);
 		resource.contents.add(rootElement);
 		EcoreResourceBridge.saveResource(resource);
 		synchronizeFileChange(FileChangeKind.CREATE, VURI.getInstance(resource));
-		this.changeRecorder.beginRecording(#[rootElement]);
+		resource.eAdapters.add(changeRecorder);
+		this.changeRecorder.beginRecording(Collections.EMPTY_LIST);
 	}
 	
-	protected def void deleteAndSychronizeModel(String modelName) {
-		if (modelName.isNullOrEmpty) {
+	protected def void deleteAndSychronizeModel(String modelPathInProject) {
+		if (modelPathInProject.isNullOrEmpty) {
 			throw new IllegalArgumentException();
 		}
 		val resource = this.resourceSet.getResource(
-			URI.createPlatformResourceURI(modelName.platformModelPath, true), true
+			URI.createPlatformResourceURI(modelPathInProject.platformModelPath, true), true
 		);
 		resource.delete(Collections.EMPTY_MAP);
 		synchronizeFileChange(FileChangeKind.DELETE, VURI.getInstance(resource));
@@ -76,45 +76,49 @@ abstract class AbstractResponseTests extends VitruviusEMFCasestudyTest {
 		// Do nothing
 	}
 	
-	protected def String getPlatformModelPath(String modelNameWithExtension) {
-		return this.currentTestProjectName + "/model/" + modelNameWithExtension
+	protected def String getPlatformModelPath(String modelPathInProject) {
+		return this.currentTestProjectName + "/" + modelPathInProject
 	}
 	
-	protected def String getAbsoluteModelPath(String modelNameWithExtension) {
-		return ResourcesPlugin.workspace.root.location.append("/" + modelNameWithExtension.platformModelPath).toOSString;
+	protected def String getAbsoluteModelPath(String modelPathInProject) {
+		return ResourcesPlugin.workspace.root.location.append("/" + modelPathInProject.platformModelPath).toOSString;
 	}
 	
-	protected def EObject getRoot(String modelNameWithExtension) {
-		return getRoot(modelNameWithExtension, false);
+	protected def EObject getRoot(String modelPathInProject) {
+		return getRoot(modelPathInProject, false);
 	}
 	
-	protected def EObject getRoot(String modelNameWithExtension, boolean forceReload) {
-		return modelNameWithExtension.getModelResource(forceReload)?.allContents.next;
+	protected def EObject getRoot(String modelPathInProject, boolean forceReload) {
+		return modelPathInProject.getModelResource(forceReload)?.allContents.next;
 	}
 	
-	protected def VURI getModelVURI(String modelNameWithExtension) {
-		return VURI.getInstance(modelNameWithExtension.platformModelPath);	
+	protected def VURI getModelVURI(String modelPathInProject) {
+		return VURI.getInstance(modelPathInProject.platformModelPath);	
 	}
 	
-	protected def Resource getModelResource(String modelNameWithExtension, boolean forceReload) {
-		var resource = this.resourceSet.getResource(modelNameWithExtension.modelVURI.getEMFUri(), false);
+	protected def Resource getModelResource(String modelPathInProject, boolean forceReload) {
+		var resource = this.resourceSet.getResource(modelPathInProject.modelVURI.getEMFUri(), false);
 		if (forceReload && resource != null) {
 			resource.unload;
 		}
-		resource = this.resourceSet.getResource(modelNameWithExtension.modelVURI.getEMFUri(), true);
+		resource = this.resourceSet.getResource(modelPathInProject.modelVURI.getEMFUri(), true);
 		return resource;
 	}
 	
-	protected def Resource getModelResource(String modelNameWithExtension) {
-		return getModelResource(modelNameWithExtension, false);
+	protected def Resource getModelResource(String modelPathInProject) {
+		return getModelResource(modelPathInProject, false);
 	}
 	
-	protected def void assertModelExists(String modelNameWithExtension) {
-		assertTrue(new File(modelNameWithExtension.absoluteModelPath).exists());
+	protected def void assertModelExists(String modelPathInProject) {
+		assertTrue(modelPathInProject.absoluteModelPath + " does not exist bust should", 
+			new File(modelPathInProject.absoluteModelPath).exists()
+		);
 	}
 	
-	protected def void assertModelNotExists(String modelNameWithExtension) {
-		assertFalse(new File(modelNameWithExtension.absoluteModelPath).exists());
+	protected def void assertModelNotExists(String modelPathInProject) {
+		assertFalse(modelPathInProject.absoluteModelPath + " does exist but should not", 
+			new File(modelPathInProject.absoluteModelPath).exists()
+		);
 	}
 	
 	protected def void assertModelsEqual(String modelNameWithExtension1, String modelNameWithExtension2) {
@@ -122,5 +126,10 @@ abstract class AbstractResponseTests extends VitruviusEMFCasestudyTest {
 		val root = testResourceSet.getResource(modelNameWithExtension1.modelVURI.getEMFUri(), true).contents.get(0);
 		val root2 = testResourceSet.getResource(modelNameWithExtension2.modelVURI.getEMFUri(), true).contents.get(0);
 		assertTrue(EcoreUtil.equals(root, root2));
+	}
+	
+	protected def void saveAndSynchronizeChanges(EObject object) {
+		EcoreResourceBridge.saveResource(object.eResource());
+		this.triggerSynchronization(VURI.getInstance(object.eResource()));
 	}
 }
