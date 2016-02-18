@@ -1,0 +1,32 @@
+import "http://www.emftext.org/java" as java
+import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm
+
+response: CreateRepositoryToPackage
+trigger: insert root pcm.repository.Repository
+create model: file name relative to project folder: {
+	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.pcmjava.PCMJavaHelper.getCorrespondingJavaHelperPath(change.newValue);
+}
+create root element: compilationUnit of type java.containers.CompilationUnit corresponding to change.newValue
+create model element: javaClass of type java.classifiers.Class corresponding to change.newValue
+execute: {
+	compilationUnit.namespaces += edu.kit.ipd.sdq.vitruvius.dsls.response.tests.pcmjava.PCMJavaHelper.getCorrespondingJavaHelperPackage(change.newValue);
+	val helperClassName = edu.kit.ipd.sdq.vitruvius.dsls.response.tests.pcmjava.PCMJavaHelper.getCorrespondingJavaHelperClassName(change.newValue);
+	compilationUnit.name = helperClassName;
+	javaClass.name = helperClassName;
+	compilationUnit.classifiers.add(javaClass);
+}
+
+response: CreateBasicComponentToClass
+trigger: insert in list pcm.repository.Repository[components__Repository]
+create model: file name relative to project folder: {
+	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.pcmjava.PCMJavaHelper.getCorrespondingJavaClassPath(change.newValue);
+}
+create root element: compilationUnit of type java.containers.CompilationUnit corresponding to change.newValue
+create model element: javaClass of type java.classifiers.Class corresponding to change.newValue
+execute: {
+	compilationUnit.namespaces += edu.kit.ipd.sdq.vitruvius.dsls.response.tests.pcmjava.PCMJavaHelper.getCorrespondingJavaClassPackage(change.newValue);
+	val componentClassName = edu.kit.ipd.sdq.vitruvius.dsls.response.tests.pcmjava.PCMJavaHelper.getCorrespondingJavaClassName(change.newValue);
+	compilationUnit.name = componentClassName;
+	javaClass.name = componentClassName;
+	compilationUnit.classifiers.add(javaClass);
+}
