@@ -7,6 +7,7 @@ import org.eclipse.emf.common.command.Command;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CheckResult;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
@@ -24,8 +25,8 @@ public class BlackboardImpl implements Blackboard {
     private CheckResult checkResult;
     private CorrespondenceProviding correspondenceProviding;
 
-    public BlackboardImpl(final CorrespondenceInstanceDecorator correspondenceInstance,
-            final ModelProviding modelProviding, final CorrespondenceProviding correspondenceProviding) {
+    public BlackboardImpl(final CorrespondenceInstanceDecorator correspondenceInstance, final ModelProviding modelProviding,
+            final CorrespondenceProviding correspondenceProviding) {
         this.state = BlackboardState.WAITING4CHANGES;
         this.correspondenceInstance = correspondenceInstance;
         this.modelProviding = modelProviding;
