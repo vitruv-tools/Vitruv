@@ -336,16 +336,12 @@ class ResponseMethodGenerator {
 			val pathFromSourceMethod = generateMethodGetPathFromSource(createdModel.relativeToSourcePath);
 			body = '''
 				«EObject» sourceElement = «correspondenceSourceMethod.simpleName»(«changeParameter.name»);
-				«String» relativeFromSourcePath = «pathFromSourceMethod.simpleName»(«changeParameter.name»);
-				«String»[] newModelFileSegments = relativeFromSourcePath.split("/");
-				«String» lastSegment = newModelFileSegments[newModelFileSegments.length - 1];
-				if (!lastSegment.contains(".")) {
-					// No file extension was specified, add the first one that is valid for the metamodel
-					«String» fileExtension = «blackboardParameter.name».getCorrespondenceInstance().getMapping().getMetamodelB().getFileExtensions()[0];
-					newModelFileSegments[newModelFileSegments.length - 1] = lastSegment + "." + fileExtension;
-				}
-				«URI» newResourceURI = sourceElement.eResource().getURI().trimSegments(1).appendSegments(newModelFileSegments);
-				«blackboardParameter.name».getModelProviding().saveModelInstanceOriginalWithEObjectAsOnlyContent(«VURI».getInstance(newResourceURI), «rootParameter.name», null);
+				«String» relativePath = «pathFromSourceMethod.simpleName»(«changeParameter.name»);
+				«URI» resourceURI = «ResponseRuntimeHelper».«
+				IF (createdModel.useRelativeToSource)»getURIFromSourceResourceFolder«
+				ELSEIF (createdModel.useRelativeToProject)»getURIFromSourceProjectFolder«
+				ENDIF»(sourceElement, relativePath, «blackboardParameter.name»); 
+				«blackboardParameter.name».getModelProviding().saveModelInstanceOriginalWithEObjectAsOnlyContent(«VURI».getInstance(resourceURI), «rootParameter.name», null);
 				«blackboardParameter.name».getCorrespondenceInstance().createAndAddCorrespondence(«Collections».singletonList(sourceElement), «Collections».singletonList(«rootParameter.name»));
 			'''
 		];

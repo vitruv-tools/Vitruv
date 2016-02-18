@@ -37,8 +37,9 @@ ConcreteTargetModelUpdate:
 		'create model element:' createElements+=CorrespondingModelElementCreate)*;
 
 ConcreteTargetModelCreate:
-	'create model:' relativeToSourcePath=PathToSourceSpecificationBlock
-		'with root element:' rootElement=CorrespondingModelElementCreate
+	'create model:' (useRelativeToSource?='file name relative to changed model folder:'
+		| useRelativeToProject?='file name relative to project folder:') relativeToSourcePath=PathToSourceSpecificationBlock
+	'create root element:' rootElement=CorrespondingModelElementCreate
 	('create model element:' createElements+=CorrespondingModelElementCreate)*;
 
 CorrespondingModelElementCreate returns CorrespondingModelElementCreate:
