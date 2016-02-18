@@ -6,9 +6,9 @@ import org.apache.log4j.Logger;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceInstance;
 
 public class CompositeChangePreparer extends ConcreteChangePreparer {
 
@@ -28,7 +28,7 @@ public class CompositeChangePreparer extends ConcreteChangePreparer {
             return null;
         }
         final EMFModelChange emfModelChange = (EMFModelChange) compositeChange.getChanges().get(0);
-        final Set<InternalCorrespondenceInstance> correspondenceInstances = this.correspondenceProviding
+        final Set<CorrespondenceInstanceDecorator> correspondenceInstances = this.correspondenceProviding
                 .getOrCreateAllCorrespondenceInstances(emfModelChange.getURI());
         if (null == correspondenceInstances || 0 == correspondenceInstances.size()) {
             logger.info("No correspondenceInstance found for model: " + emfModelChange.getURI()
