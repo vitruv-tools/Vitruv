@@ -2,9 +2,11 @@ package edu.kit.ipd.sdq.vitruvius.framework.changepreparer
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange
+import java.util.concurrent.Callable
 
 package class EMFModelPreparer extends ConcreteChangePreparer {
 	val ModelProviding modelProviding
@@ -27,7 +29,14 @@ package class EMFModelPreparer extends ConcreteChangePreparer {
 				val newEObject = featureChange.newAffectedEObject				
 				val correspondenceInstances = this.correspondenceProviding.getOrCreateAllCorrespondenceInstances(emc.URI)
 				for (correspondenceInstance : correspondenceInstances) {
-					correspondenceInstance.updateTUID(oldEObject,newEObject)
+				    EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
+									
+						override call() throws Exception {
+							correspondenceInstance.updateTUID(oldEObject, newEObject)
+							return null
+						}
+				    	
+				    }, this.modelProviding)
 				}
 			}
 			return emc
