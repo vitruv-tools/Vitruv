@@ -122,7 +122,11 @@ final class ResponseLanguageGeneratorUtils {
 	
 	private static def VURI getVURI(EPackage pckg) {
 		return if (pckg?.nsURI != null) {
-			VURI.getInstance(pckg.nsURI);
+			var topPckg = pckg;
+			while (topPckg.ESuperPackage != null) {
+				topPckg = pckg.ESuperPackage;
+			}
+			VURI.getInstance(topPckg.nsURI);
 		} else {
 			null;
 		}
