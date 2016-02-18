@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration.deco;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
@@ -40,7 +41,8 @@ public class IntegratedCorrespondenceInstance extends
 	@Override
 	protected void initializeFromDecoratorObject(Map<Correspondence, IntegrationInfo> object) {
 		Map<Correspondence, IntegrationInfo> resolvedCorrespondencesWithIntegrationInfo = new HashMap<Correspondence, IntegrationInfo>();
-		Set<Correspondence> allLoadedCorrs = this.getAllCorrespondencesWithoutDependencies();
+		//Set<Correspondence> allLoadedCorrs = this.getAllCorrespondencesWithoutDependencies();
+		List<Correspondence> allLoadedCorrs = this.getAllCorrespondences();
 		for (Entry<Correspondence, IntegrationInfo> entry : object.entrySet()) {
 			Correspondence corrFromFile = entry.getKey();
 			Optional<Correspondence> opt = allLoadedCorrs.stream().parallel().filter(c -> c.getATUIDs().equals(corrFromFile.getATUIDs()) && c.getBTUIDs().equals(corrFromFile.getBTUIDs())).findFirst();
