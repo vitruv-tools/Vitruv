@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.URIHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
@@ -26,7 +27,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.BlackboardImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceInstance;
 
 public class ChangeSynchronizerImpl implements ChangeSynchronizing {
 
@@ -78,15 +78,16 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         }
 
         VURI sourceModelVURI = getSourceModelVURI(changes);
-        Set<InternalCorrespondenceInstance> correspondenceInstances = this.correspondenceProviding
+        Set<CorrespondenceInstanceDecorator> correspondenceInstances = this.correspondenceProviding
                 .getOrCreateAllCorrespondenceInstances(sourceModelVURI);
         List<List<Change>> commandExecutionChanges = new ArrayList<List<Change>>(correspondenceInstances.size());
-        for (InternalCorrespondenceInstance correspondenceInstance : correspondenceInstances) {
+        for (CorrespondenceInstanceDecorator correspondenceInstance : correspondenceInstances) {
             VURI mmURI1 = correspondenceInstance.getMapping().getMetamodelA().getURI();
             VURI mmURI2 = correspondenceInstance.getMapping().getMetamodelB().getURI();
             Change2CommandTransforming change2CommandTransforming = this.change2CommandTransformingProviding
                     .getChange2CommandTransforming(mmURI1, mmURI2);
-            Blackboard blackboard = new BlackboardImpl(correspondenceInstance, this.modelProviding);
+            Blackboard blackboard = new BlackboardImpl(correspondenceInstance, this.modelProviding,
+                    this.correspondenceProviding);
             blackboard.pushChanges(changes);
             this.changePreparing.prepareAllChanges(blackboard);
             this.blackboardHistory.push(blackboard);

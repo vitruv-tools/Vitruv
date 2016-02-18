@@ -14,7 +14,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge;
 
 public class InternalContractsBuilder {
-    public static InternalCorrespondenceInstance createCorrespondenceInstance(final Mapping mapping,
+    public static CorrespondenceInstanceDecorator createCorrespondenceInstance(final Mapping mapping,
             final ModelProviding modelProviding, final VURI correspondencesVURI,
             final Resource correspondencesResource) {
         List<CorrespondenceInstanceDecorating> extensions = EclipseBridge.getRegisteredExtensionsInDescPriority(

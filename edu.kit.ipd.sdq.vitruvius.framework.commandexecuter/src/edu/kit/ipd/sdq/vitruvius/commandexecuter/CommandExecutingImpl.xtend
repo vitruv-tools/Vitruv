@@ -2,28 +2,27 @@ package edu.kit.ipd.sdq.vitruvius.commandexecuter
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusTransformationRecordingCommand
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.ArrayList
 import java.util.Collections
 import java.util.HashSet
 import java.util.List
 import java.util.Set
-import java.util.stream.Collectors
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.command.Command
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.transaction.TransactionalEditingDomain
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences
 
 class CommandExecutingImpl implements CommandExecuting {
 	static final Logger logger = Logger::getLogger(typeof(CommandExecutingImpl).getSimpleName())
@@ -47,6 +46,7 @@ class CommandExecutingImpl implements CommandExecuting {
 		this.executeTransformationResults(transformationResults, blackboard)
 		this.saveAffectedEObjects(affectedObjects, blackboard.getModelProviding())
 		modelProviding.detachTransactionalEditingDomain() // FIXME
+		blackboard.correspondenceProviding.saveCorrespondenceInstanceAndDecorators(blackboard.correspondenceInstance)
 		return Collections::emptyList()
 	}
 
@@ -83,7 +83,7 @@ class CommandExecutingImpl implements CommandExecuting {
 					saveModelInstanceOriginalWithEObjectAsOnlyContent(createdEObjectVURIPair.getSecond(),
 						createdEObjectVURIPair.getFirst(), oldTUID)
 			}
-
+ 
 		}
 
 	}

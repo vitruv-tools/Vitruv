@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.eclipse.emf.common.command.Command;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
@@ -54,9 +55,11 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
  *
  */
 public interface Blackboard {
-    CorrespondenceInstance getCorrespondenceInstance();
+    CorrespondenceInstanceDecorator getCorrespondenceInstance();
 
     ModelProviding getModelProviding();
+
+    CorrespondenceProviding getCorrespondenceProviding();
 
     void pushChanges(List<Change> changes);
 

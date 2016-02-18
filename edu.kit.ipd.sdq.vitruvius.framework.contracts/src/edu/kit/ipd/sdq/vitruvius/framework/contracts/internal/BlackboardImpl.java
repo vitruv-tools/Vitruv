@@ -7,25 +7,29 @@ import org.eclipse.emf.common.command.Command;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CheckResult;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 public class BlackboardImpl implements Blackboard {
 
     private BlackboardState state;
-    private final CorrespondenceInstance correspondenceInstance;
+    private final CorrespondenceInstanceDecorator correspondenceInstance;
     private final ModelProviding modelProviding;
     private List<Change> changes;
     private List<Command> commands;
     private List<Change> archivedChanges;
     private List<Command> archivedCommands;
     private CheckResult checkResult;
+    private CorrespondenceProviding correspondenceProviding;
 
-    public BlackboardImpl(final CorrespondenceInstance correspondenceInstance, final ModelProviding modelProviding) {
+    public BlackboardImpl(final CorrespondenceInstanceDecorator correspondenceInstance,
+            final ModelProviding modelProviding, final CorrespondenceProviding correspondenceProviding) {
         this.state = BlackboardState.WAITING4CHANGES;
         this.correspondenceInstance = correspondenceInstance;
         this.modelProviding = modelProviding;
+        this.correspondenceProviding = correspondenceProviding;
     }
 
     private void checkTransitionFromTo(final BlackboardState expectedSource, final BlackboardState target,
@@ -39,7 +43,7 @@ public class BlackboardImpl implements Blackboard {
     }
 
     @Override
-    public CorrespondenceInstance getCorrespondenceInstance() {
+    public CorrespondenceInstanceDecorator getCorrespondenceInstance() {
         return this.correspondenceInstance;
     }
 
@@ -112,5 +116,10 @@ public class BlackboardImpl implements Blackboard {
                 "unarchive changes and commands for redo");
         this.changes = this.archivedChanges;
         this.commands = this.archivedCommands;
+    }
+
+    @Override
+    public CorrespondenceProviding getCorrespondenceProviding() {
+        return this.correspondenceProviding;
     }
 }
