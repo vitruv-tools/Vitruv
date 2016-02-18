@@ -52,6 +52,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ContractsBuilder;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
@@ -64,6 +65,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.BlackboardImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.unittests.utils.CorrespondingProvidingMock;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.unittests.utils.Initializer;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.unittests.utils.ModelLoader;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.unittests.utils.ModelLoader.IResourceFiles;
@@ -144,9 +146,10 @@ public abstract class TransformationTestsBase {
 
     private static final Mapping MAPPING_JAVA2JML = constructMapping();
     private ModelProvidingMock modelProviding;
+    private CorrespondingProvidingMock correspondingProding;
     private CorrespondenceInstanceProxy correspondenceInstanceUpdateRecorder;
     protected CSSynchronizer synchronizer;
-    protected CorrespondenceInstance correspondenceInstance;
+    protected CorrespondenceInstanceDecorator correspondenceInstance;
     protected UserInteracting userInteracting;
     protected SynchronisationAbortedListener syncAbortedListener;
     private Blackboard blackboard;
@@ -170,14 +173,16 @@ public abstract class TransformationTestsBase {
         this.correspondenceInstance = createCorrespondenceInstance(this.correspondenceInstanceUpdateRecorder);
         this.userInteracting = createUserInteracting();
         this.syncAbortedListener = createSyncAbortedListener();
-        this.blackboard = this.createBlackboard(this.correspondenceInstance, this.modelProviding);
+        this.blackboard = this.createBlackboard(this.correspondenceInstance, this.modelProviding,
+                this.correspondingProding);
         this.synchronizer = createChangeSynchronizer(this.blackboard, this.userInteracting, this.syncAbortedListener,
                 modelInstances);
     }
 
-    private Blackboard createBlackboard(final CorrespondenceInstance correspondenceInstance,
-            final ModelProvidingMock modelProviding) {
-        final Blackboard blackboard = new BlackboardImpl(correspondenceInstance, modelProviding);
+    private Blackboard createBlackboard(final CorrespondenceInstanceDecorator correspondenceInstance,
+            final ModelProvidingMock modelProviding, CorrespondingProvidingMock correspondingProvidingMock) {
+        final Blackboard blackboard = new BlackboardImpl(correspondenceInstance, modelProviding,
+                correspondingProvidingMock);
         return blackboard;
     }
 
@@ -189,9 +194,11 @@ public abstract class TransformationTestsBase {
         return EasyMock.createStrictMock(UserInteracting.class);
     }
 
-    private static CorrespondenceInstance createCorrespondenceInstance(final CorrespondenceInstanceProxy proxy) {
-        return (CorrespondenceInstance) Proxy.newProxyInstance(CorrespondenceInstanceProxy.class.getClassLoader(),
-                new Class[] { CorrespondenceInstance.class }, proxy);
+    private static CorrespondenceInstanceDecorator createCorrespondenceInstance(
+            final CorrespondenceInstanceProxy proxy) {
+        return (CorrespondenceInstanceDecorator) Proxy.newProxyInstance(
+                CorrespondenceInstanceProxy.class.getClassLoader(), new Class[] { CorrespondenceInstance.class },
+                proxy);
     }
 
     private static CorrespondenceInstanceProxy createCorrespondenceInstanceProxy(final ModelProviding modelProviding,
