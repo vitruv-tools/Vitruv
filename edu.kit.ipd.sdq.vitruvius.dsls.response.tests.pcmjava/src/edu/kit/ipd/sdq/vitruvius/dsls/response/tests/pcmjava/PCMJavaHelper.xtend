@@ -5,6 +5,9 @@ import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.repository.Interface
 import org.eclipse.emf.ecore.EObject
 import org.palladiosimulator.pcm.core.entity.Entity
+import org.emftext.language.java.containers.CompilationUnit
+import org.emftext.language.java.modifiers.ModifiersFactory
+import org.emftext.language.java.classifiers.ConcreteClassifier
 
 class PCMJavaHelper {
 	private static def String getQualifiedName(Repository repository) {
@@ -56,6 +59,13 @@ class PCMJavaHelper {
 		override getPackageName(RepositoryComponent object) {
 			return object.repository__RepositoryComponent.qualifiedName + "." + object.entityName;
 		}
+	}
+	
+	public static def void initializeCompilationUnitAndJavaClassifier(CompilationUnit compilationUnit, ConcreteClassifier javaClassifier, String name) {
+		compilationUnit.name = name;
+		javaClassifier.name = name;
+		javaClassifier.addModifier(ModifiersFactory.eINSTANCE.createPublic());
+		compilationUnit.classifiers.add(javaClassifier);
 	}
 	
 }

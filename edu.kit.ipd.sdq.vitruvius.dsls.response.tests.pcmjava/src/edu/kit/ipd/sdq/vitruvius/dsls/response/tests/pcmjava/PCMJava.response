@@ -1,53 +1,34 @@
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.tests.pcmjava.PCMJavaHelper.*;
+
 import "http://www.emftext.org/java" as java
 import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm
 
 response: CreateHelperClassForRepository
 trigger: insert root pcm.repository.Repository
-create model: file name relative to project folder: {
-	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.pcmjava.PCMJavaHelper.repositoryToJavaHelper.getPathInProject(change.newValue);
-}
+create model: file name relative to project folder: repositoryToJavaHelper.getPathInProject(change.newValue)
 create root element: compilationUnit of type java.containers.CompilationUnit corresponding to change.newValue
 create model element: javaClass of type java.classifiers.Class corresponding to change.newValue
 execute: {
-	val helper = edu.kit.ipd.sdq.vitruvius.dsls.response.tests.pcmjava.PCMJavaHelper.repositoryToJavaHelper;
-	compilationUnit.namespaces += helper.getPackageName(change.newValue);
-	val helperClassName = helper.getClassName(change.newValue);
-	compilationUnit.name = helperClassName;
-	javaClass.name = helperClassName;
-	javaClass.addModifier(org.emftext.language.java.modifiers.ModifiersFactory.eINSTANCE.createPublic());
-	compilationUnit.classifiers.add(javaClass);
+	compilationUnit.namespaces += repositoryToJavaHelper.getPackageName(change.newValue);
+	initializeCompilationUnitAndJavaClassifier(compilationUnit, javaClass, repositoryToJavaHelper.getClassName(change.newValue));
 }
 
 response: CreateClassForBasicComponent
 trigger: insert in list pcm.repository.Repository[components__Repository]
-create model: file name relative to project folder: {
-	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.pcmjava.PCMJavaHelper.componentToClass.getPathInProject(change.newValue);
-}
+create model: file name relative to project folder: componentToClass.getPathInProject(change.newValue)
 create root element: compilationUnit of type java.containers.CompilationUnit corresponding to change.newValue
 create model element: javaClass of type java.classifiers.Class corresponding to change.newValue
 execute: {
-	val helper = edu.kit.ipd.sdq.vitruvius.dsls.response.tests.pcmjava.PCMJavaHelper.componentToClass;
-	compilationUnit.namespaces += helper.getPackageName(change.newValue);
-	val componentClassName = helper.getClassName(change.newValue);
-	compilationUnit.name = componentClassName;
-	javaClass.name = componentClassName;
-	javaClass.addModifier(org.emftext.language.java.modifiers.ModifiersFactory.eINSTANCE.createPublic());
-	compilationUnit.classifiers.add(javaClass);
+	compilationUnit.namespaces += componentToClass.getPackageName(change.newValue);
+	initializeCompilationUnitAndJavaClassifier(compilationUnit, javaClass, componentToClass.getClassName(change.newValue));
 }
 
 response: CreateInterfaceForInterface
 trigger: insert in list pcm.repository.Repository[interfaces__Repository]
-create model: file name relative to project folder: {
-	edu.kit.ipd.sdq.vitruvius.dsls.response.tests.pcmjava.PCMJavaHelper.interfaceToInterface.getPathInProject(change.newValue);
-}
+create model: file name relative to project folder: interfaceToInterface.getPathInProject(change.newValue)
 create root element: compilationUnit of type java.containers.CompilationUnit corresponding to change.newValue
 create model element: javaInterface of type java.classifiers.Interface corresponding to change.newValue
 execute: {
-	val helper = edu.kit.ipd.sdq.vitruvius.dsls.response.tests.pcmjava.PCMJavaHelper.interfaceToInterface;
-	compilationUnit.namespaces += helper.getPackageName(change.newValue);
-	val helperClassName = helper.getClassName(change.newValue);
-	compilationUnit.name = helperClassName;
-	javaInterface.name = helperClassName;
-	javaInterface.addModifier(org.emftext.language.java.modifiers.ModifiersFactory.eINSTANCE.createPublic());
-	compilationUnit.classifiers.add(javaInterface);
+	compilationUnit.namespaces += interfaceToInterface.getPackageName(change.newValue);
+	initializeCompilationUnitAndJavaClassifier(compilationUnit, javaInterface, interfaceToInterface.getClassName(change.newValue));
 }
