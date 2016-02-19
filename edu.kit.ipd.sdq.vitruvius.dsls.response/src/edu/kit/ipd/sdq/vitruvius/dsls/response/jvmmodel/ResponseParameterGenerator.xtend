@@ -77,8 +77,8 @@ package class ResponseParameterGenerator {
 			return null;
 		}
 		val typeParameters = new ArrayList<JvmTypeReference>(typeParameterClassNames.size);
-		for (typeParameterClassName : typeParameterClassNames) {
-			typeParameters.add(typeRef(typeParameterClassName));	
+		for (typeParameterClassName : typeParameterClassNames.filter[!nullOrEmpty]) {
+			typeParameters.add(typeRef(typeParameterClassName));
 		}		
 		val changeType = typeRef(parameterClass, typeParameters);
 		return context.toParameter(parameterName, changeType);
