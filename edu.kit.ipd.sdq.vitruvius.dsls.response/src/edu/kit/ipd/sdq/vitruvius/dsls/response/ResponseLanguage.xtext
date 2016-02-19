@@ -8,6 +8,7 @@ import "http://www.kit.edu/ipd/sdq/vitruvius/dsls/mirbase/MirBase" as mirbase
 
 ResponseFile returns mirbase::MirBaseFile:
 	{ResponseFile}
+	(namespaceImports=XImportSection)?
 	(metamodelImports+=MetamodelImport)*
 	(responses += Response)*
 ;
