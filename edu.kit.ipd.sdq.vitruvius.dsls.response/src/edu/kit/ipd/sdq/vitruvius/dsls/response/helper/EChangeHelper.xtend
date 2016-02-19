@@ -72,11 +72,11 @@ final class EChangeHelper {
 	}
 	
 	static def dispatch String getGenericTypeParameterFQNOfChange(AtomicFeatureChange featureChange) {
-		return featureChange.changedFeature.feature.EType.instanceClassName?.convertPrimitiveTypeToClassName;
+		return featureChange.changedFeature?.feature?.EType?.instanceClassName?.convertPrimitiveTypeToClassName;
 	}
 	
 	static def dispatch String getGenericTypeParameterFQNOfChange(AtomicRootObjectChange elementChange) {
-		return elementChange.changedElement.element.instanceClassName?.convertPrimitiveTypeToClassName;
+		return elementChange.changedElement?.element?.instanceClassName?.convertPrimitiveTypeToClassName;
 	}
 	
 	private static def String convertPrimitiveTypeToClassName(String className) {
