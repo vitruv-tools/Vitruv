@@ -4,6 +4,11 @@ import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
+import org.eclipse.core.resources.IFile
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
+import org.eclipse.core.resources.IProject
+import org.eclipse.emf.common.util.URI
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 
 public final class ResponseRuntimeHelper {
 	public static def EObject getModelRoot(EObject modelObject) {
@@ -26,7 +31,7 @@ public final class ResponseRuntimeHelper {
 	
 	public static def removeCorrespondence(CorrespondenceInstance correspondenceInstance, EObject source, EObject sourceParent, EObject target, EObject targetParent) {
 		val sourceTUID = correspondenceInstance.getTUID(source, sourceParent);
-		val targetTUID = correspondenceInstance.getTUID(source, targetParent);
+		val targetTUID = correspondenceInstance.getTUID(target, targetParent);
 		val correspondences = correspondenceInstance.getCorrespondencesForTUIDs(#[sourceTUID]);
 		for (correspondence : correspondences) {
 			if ((correspondence.ATUIDs.contains(sourceTUID)
@@ -58,4 +63,34 @@ public final class ResponseRuntimeHelper {
 		return correspondences;
 	}
 	
+	private static def URI getURIOfElementResourceFolder(EObject element) {
+		return element.eResource().getURI().trimSegments(1);
+	}
+	
+	private static def URI getURIOfElementProject(EObject element) {
+		val IFile sourceModelFile = EMFBridge.getIFileForEMFUri(element.eResource().URI);
+		val IProject projectSourceModel = sourceModelFile.getProject();
+		var String srcFolderPath = projectSourceModel.getFullPath().toString() + "/";
+		return URI.createPlatformResourceURI(srcFolderPath, true);
+	}
+	
+	private static def URI appendPathToURI(URI baseURI, String relativePath, Blackboard blackboard) {
+		val newModelFileSegments = relativePath.split("/");
+		if (!newModelFileSegments.last.contains(".")) {
+			// No file extension was specified, add the first one that is valid for the metamodel
+			val fileExtension = blackboard.getCorrespondenceInstance().getMapping().getMetamodelB().getFileExtensions().get(0);
+			newModelFileSegments.set(newModelFileSegments.size-1, newModelFileSegments.last + "." + fileExtension);
+		}
+		return baseURI.appendSegments(newModelFileSegments);
+	}
+	
+	public static def URI getURIFromSourceResourceFolder(EObject source, String relativePath, Blackboard blackboard) {
+		val baseURI = getURIOfElementResourceFolder(source);
+		return baseURI.appendPathToURI(relativePath, blackboard);
+	}
+	
+	public static def URI getURIFromSourceProjectFolder(EObject source, String relativePath, Blackboard blackboard) {
+		val baseURI = getURIOfElementProject(source);
+		return baseURI.appendPathToURI(relativePath, blackboard);
+	}
 }
