@@ -35,7 +35,7 @@ ConcreteTargetModelUpdate:
 	// You could also put the identifying element together with the retrieved elements. 
 	// The generation uses the first element as an identifying element and thus it is easier
 	identifyingElement=CorrespondingModelElementRetrieveOrDelete
-	('rename model file to:' renamedModelFileName=ModelPathCodeBlock)? 
+	('move model to project-relative location:' renamedModelFileName=ModelPathCodeBlock)? 
 	(retrieveElements+=CorrespondingModelElementRetrieveOrDelete |
 		'create model element:' createElements+=CorrespondingModelElementCreate)*;
 

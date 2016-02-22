@@ -265,7 +265,7 @@ class ResponseMethodGenerator {
 				
 				for («affectedElementClass» _potentialTargetElement : _correspondingObjects) {
 					«IF targetModelParameter != null»
-					if («targetModelParameter.name» == null || _potentialTargetElement.eResource().equals(«targetModelParameter.name».eResource())) {
+					if («targetModelParameter.name» == null || «ResponseRuntimeHelper».getModelRoot(_potentialTargetElement).equals(«ResponseRuntimeHelper».getModelRoot(«targetModelParameter.name»))) {
 						_targetModels.add(_potentialTargetElement);
 					}
 					«ELSE»
@@ -506,6 +506,11 @@ class ResponseMethodGenerator {
 		val modelElementList = #[identifyingElement] + createElements + retrieveElements;
 		val performResponseMethod = generateMethodPerformResponse(response.effects.codeBlock, modelElementList);
 
+		val newModelNameMethod = if (modelRootUpdate.renamedModelFileName != null) {
+			generateMethodGetNewModelName(modelRootUpdate.renamedModelFileName);
+		}
+		
+		val getCorrespondenceSourceMethod = generateMethodGetCorrespondenceSource(identifyingElement);
 		val targetModelElementClass = modelRootUpdate.identifyingElement.elementType.javaClass
 		return '''
 			«Iterable»<«targetModelElementClass»> _targetModels = «determineTargetModelsMethod.simpleName»(«changeParameter.name», «blackboardParameter.name»);
@@ -529,8 +534,24 @@ class ResponseMethodGenerator {
 				«FOR element : (#[identifyingElement] + retrieveElements).filter(CorrespondingModelElementDelete)»
 					deleteElement(«element.name»);
 				«ENDFOR»
+				«IF modelRootUpdate.renamedModelFileName != null»
+					«EObject» _sourceElement = «getCorrespondenceSourceMethod.simpleName»(«changeParameter.name»);
+					String _newModelPath = «newModelNameMethod.simpleName»(«changeParameter.name»);
+					«ResponseRuntimeHelper».renameModel(«blackboardParameter.name», _sourceElement, «identifyingElement.name», _newModelPath, «transformationResultParameter.name»);
+				«ENDIF»
 			}
 		'''
+	}
+	
+	
+	protected def JvmOperation generateMethodGetNewModelName(ModelPathCodeBlock pathCodeBlock) {
+		val methodName = "getNewModelName";
+		
+		return pathCodeBlock.getOrGenerateMethod(methodName, typeRef(String)) [
+			visibility = JvmVisibility.PRIVATE;
+			parameters += generateChangeParameter();
+			body = pathCodeBlock.code;
+		];
 	}
 	
 	/**

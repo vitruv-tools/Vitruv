@@ -59,4 +59,11 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 		}
 	}
 	
+	@Check
+	def checkTargetUpdate(ConcreteTargetModelUpdate update) {
+		if (update.renamedModelFileName != null) {
+			warning("Renaming models is currently discouraged since the correspondences of elements will not get updated.",
+				ResponseLanguagePackage.Literals.CONCRETE_TARGET_MODEL_UPDATE__RENAMED_MODEL_FILE_NAME);
+		}
+	}
 }
