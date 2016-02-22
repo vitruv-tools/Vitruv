@@ -10,6 +10,7 @@ import com.google.inject.Inject
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmField
 import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociator
+import org.eclipse.xtext.common.types.JvmFormalParameter
 
 class JvmTypesBuilderWithoutAssociations extends JvmTypesBuilder {
 	@Inject
@@ -91,5 +92,12 @@ class JvmTypesBuilderWithoutAssociations extends JvmTypesBuilder {
 		if(sourceElement != null && target != null && sourceElement.eResource != null && isValidSource(sourceElement))
 			associator.associate(sourceElement, target);
 		return target;
+	}
+	
+	public def JvmFormalParameter createParameter(String name, JvmTypeReference typeRef) {
+		val result = typesFactory.createJvmFormalParameter();
+		result.setName(name);
+		result.setParameterType(cloneWithProxies(typeRef));
+		return result;
 	}
 }
