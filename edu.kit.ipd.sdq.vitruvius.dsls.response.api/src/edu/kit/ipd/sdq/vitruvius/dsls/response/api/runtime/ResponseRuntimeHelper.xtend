@@ -33,7 +33,7 @@ public final class ResponseRuntimeHelper {
 		val sourceTUID = correspondenceInstance.getTUID(source, sourceParent);
 		val targetTUID = correspondenceInstance.getTUID(target, targetParent);
 		val correspondences = correspondenceInstance.getCorrespondencesForTUIDs(#[sourceTUID]);
-		for (correspondence : correspondences) {
+		for (correspondence : correspondences.toList) {
 			if ((correspondence.ATUIDs.contains(sourceTUID)
 				&& correspondence.BTUIDs.contains(targetTUID))
 				|| (correspondence.BTUIDs.contains(sourceTUID)
@@ -70,6 +70,7 @@ public final class ResponseRuntimeHelper {
 	private static def URI getURIOfElementProject(EObject element) {
 		val IFile sourceModelFile = EMFBridge.getIFileForEMFUri(element.eResource().URI);
 		val IProject projectSourceModel = sourceModelFile.getProject();
+		// TODO HK: Check if the last / is necessary
 		var String srcFolderPath = projectSourceModel.getFullPath().toString() + "/";
 		return URI.createPlatformResourceURI(srcFolderPath, true);
 	}
