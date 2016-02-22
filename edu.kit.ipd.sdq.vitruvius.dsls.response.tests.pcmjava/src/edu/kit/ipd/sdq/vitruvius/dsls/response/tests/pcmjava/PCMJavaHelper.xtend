@@ -11,11 +11,13 @@ import org.emftext.language.java.classifiers.ConcreteClassifier
 
 class PCMJavaHelper {
 	private static def String getQualifiedName(Repository repository) {
-		repository.entityName.toFirstLower;
+		repository.entityName.toFirstLower.trim;
 	}
 	
 	public static final val interfaceToInterface = new CorrespondingInterface();
 	public static final val repositoryToPackageInfo = new CorrespondingRepositoryPackageInfo();
+	public static final val repositoryToContractsPackageInfo = new CorrespondingContractsRepositoryPackageInfo();
+	public static final val repositoryToDatatypesPackageInfo = new CorrespondingDatatypesRepositoryPackageInfo();
 	public static final val componentToPackageInfo = new CorrespondingComponentPackageInfo();
 	public static final val componentToClass = new CorrespondingJavaClass();
 		
@@ -36,19 +38,33 @@ class PCMJavaHelper {
 		}
 	}
 	
+	public abstract static class CorrespondingPackageInfo<E extends Entity> extends CorrespondingToEntityClass<E> {
+		override getClassName(E object) {
+			return "package-info";
+		}
+	}
+	
 	public static class CorrespondingInterface extends CorrespondingToEntityClass<Interface> {
 		override getPackageName(Interface object) {
 			object.repository__Interface.qualifiedName.toFirstLower;
 		}
 	}
 	
-	public static class CorrespondingRepositoryPackageInfo extends CorrespondingToEntityClass<Repository> {
-		override getClassName(Repository object) {
-			return "package-info";
-		}
-		
+	public static class CorrespondingRepositoryPackageInfo extends CorrespondingPackageInfo<Repository> {
 		override getPackageName(Repository object) {
 			object.qualifiedName.toFirstLower;
+		}
+	}
+	
+	public static class CorrespondingContractsRepositoryPackageInfo extends CorrespondingPackageInfo<Repository> {
+		override getPackageName(Repository object) {
+			object.qualifiedName.toFirstLower + ".contracts";
+		}
+	}
+	
+	public static class CorrespondingDatatypesRepositoryPackageInfo extends CorrespondingPackageInfo<Repository> {
+		override getPackageName(Repository object) {
+			object.qualifiedName.toFirstLower + ".datatypes";
 		}
 	}
 	

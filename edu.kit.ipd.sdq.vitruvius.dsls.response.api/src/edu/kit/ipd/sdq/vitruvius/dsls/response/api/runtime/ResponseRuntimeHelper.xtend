@@ -9,6 +9,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
 import org.eclipse.core.resources.IProject
 import org.eclipse.emf.common.util.URI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 public final class ResponseRuntimeHelper {
 	public static def EObject getModelRoot(EObject modelObject) {
@@ -94,4 +97,19 @@ public final class ResponseRuntimeHelper {
 		val baseURI = getURIOfElementProject(source);
 		return baseURI.appendPathToURI(relativePath, blackboard);
 	}
+	
+	public static def renameModel(Blackboard blackboard, EObject elementOfResourceInProject, EObject elementOfRenamedModel, String newModelPath, TransformationResult transformationResult) {
+		if (elementOfResourceInProject.eResource() == null) {
+			throw new IllegalStateException("Element must be in a resource to determine the containing project.");			
+		}
+		val sourceRoot = elementOfRenamedModel.modelRoot;
+		val oldVURI = if (sourceRoot.eResource() != null) {
+			VURI.getInstance(sourceRoot.eResource());
+		}
+		val newVURI = VURI.getInstance(elementOfResourceInProject.getURIFromSourceProjectFolder(newModelPath, blackboard));
+		EcoreUtil.remove(sourceRoot);
+		transformationResult.addRootEObjectToSave(elementOfRenamedModel, newVURI);
+		transformationResult.addVURIToDeleteIfNotNull(oldVURI);
+	}
+	
 }
