@@ -33,7 +33,7 @@ execute: {
  * CreateNonRootEObjectInList
  */
 response: CreateNonRootEObjectInList
-trigger: insert in list minimal.Root[multiValuedContainmentEReference] 
+trigger: insert in list minimal.Root[multiValuedContainmentEReference]
 retrieve model element: targetElement of type minimal.Root corresponding to change.newAffectedEObject
 create model element: newNonRoot of type minimal.NonRoot corresponding to change.newValue
 execute: {
@@ -46,7 +46,7 @@ execute: {
  * DeleteNonRootEObjectInList
  */
 response: DeleteNonRootEObjectInList
-trigger: remove from list minimal.Root[multiValuedContainmentEReference] 
+trigger: remove from list minimal.Root[multiValuedContainmentEReference]
 delete model element: targetElement of type minimal.NonRoot corresponding to change.oldValue
 //delete model element: targetElement2 of type minimal.NonRoot corresponding to change.oldValue  
 execute: {
@@ -185,8 +185,8 @@ execute: {
 response: HelperResponseForCreateSecondTestModel
 trigger: insert root minimal.Root
 precondition: change.newValue.id == "EachTestModelSource"
-create model: file name relative to project folder: "model/EachTestModelTarget"
 create root element: newRoot of type minimal.Root	corresponding to change.newValue
+persist at project-relative location: "model/EachTestModelTarget"
 execute: {
 	newRoot.id = change.newValue.id
 }
@@ -202,8 +202,8 @@ delete model element: oldModel of type minimal.Root corresponding to change.oldV
 response: CreateRootTest
 trigger: insert root minimal.Root
 precondition: change.newValue.id == "Further_Source_Test_Model"
-create model: file name relative to changed model folder: "Further_Target_Test_Model"
 create root element: newRoot of type minimal.Root corresponding to change.newValue
+persist at changed model relative location: "Further_Target_Test_Model"
 execute: {
 	newRoot.id = change.newValue.id
 }

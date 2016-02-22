@@ -15,7 +15,8 @@ class PCMJavaHelper {
 	}
 	
 	public static final val interfaceToInterface = new CorrespondingInterface();
-	public static final val repositoryToJavaHelper = new CorrespondingJavaHelper();
+	public static final val repositoryToPackageInfo = new CorrespondingRepositoryPackageInfo();
+	public static final val componentToPackageInfo = new CorrespondingComponentPackageInfo();
 	public static final val componentToClass = new CorrespondingJavaClass();
 		
 	public abstract static class CorrespondingClass<E extends EObject> {
@@ -37,17 +38,27 @@ class PCMJavaHelper {
 	
 	public static class CorrespondingInterface extends CorrespondingToEntityClass<Interface> {
 		override getPackageName(Interface object) {
-			object.repository__Interface.qualifiedName;
+			object.repository__Interface.qualifiedName.toFirstLower;
 		}
 	}
 	
-	public static class CorrespondingJavaHelper extends CorrespondingToEntityClass<Repository> {
+	public static class CorrespondingRepositoryPackageInfo extends CorrespondingToEntityClass<Repository> {
 		override getClassName(Repository object) {
-			return super.getClassName(object) + "Helper";
+			return "package-info";
 		}
 		
 		override getPackageName(Repository object) {
-			object.qualifiedName;
+			object.qualifiedName.toFirstLower;
+		}
+	}
+	
+	public static class CorrespondingComponentPackageInfo extends CorrespondingToEntityClass<RepositoryComponent> {
+		override getClassName(RepositoryComponent object) {
+			return "package-info";
+		}
+		
+		override getPackageName(RepositoryComponent object) {
+			object.repository__RepositoryComponent.qualifiedName.toFirstLower + "." + object.entityName.toFirstLower;
 		}
 	}
 	
@@ -57,7 +68,7 @@ class PCMJavaHelper {
 		}
 		
 		override getPackageName(RepositoryComponent object) {
-			return object.repository__RepositoryComponent.qualifiedName + "." + object.entityName;
+			return object.repository__RepositoryComponent.qualifiedName.toFirstLower + "." + object.entityName.toFirstLower;
 		}
 	}
 	

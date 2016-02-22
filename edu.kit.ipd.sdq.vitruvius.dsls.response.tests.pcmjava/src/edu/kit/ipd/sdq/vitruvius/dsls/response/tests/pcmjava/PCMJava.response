@@ -1,34 +1,53 @@
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.tests.pcmjava.PCMJavaHelper.*;
+import org.palladiosimulator.pcm.repository.Repository
 
 import "http://www.emftext.org/java" as java
 import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm
 
 response: CreateHelperClassForRepository
 trigger: insert root pcm.repository.Repository
-create model: file name relative to project folder: repositoryToJavaHelper.getPathInProject(change.newValue)
-create root element: compilationUnit of type java.containers.CompilationUnit corresponding to change.newValue
-create model element: javaClass of type java.classifiers.Class corresponding to change.newValue
+create root element: javaPackage of type java.containers.Package corresponding to change.newValue
+persist at project-relative location: repositoryToPackageInfo.getPathInProject(change.newValue)
 execute: {
-	compilationUnit.namespaces += repositoryToJavaHelper.getPackageName(change.newValue);
-	initializeCompilationUnitAndJavaClassifier(compilationUnit, javaClass, repositoryToJavaHelper.getClassName(change.newValue));
+	val newRepository = change.newValue;
+	javaPackage.name = newRepository.entityName
 }
 
 response: CreateClassForBasicComponent
 trigger: insert in list pcm.repository.Repository[components__Repository]
-create model: file name relative to project folder: componentToClass.getPathInProject(change.newValue)
 create root element: compilationUnit of type java.containers.CompilationUnit corresponding to change.newValue
+persist at project-relative location: componentToClass.getPathInProject(change.newValue)
 create model element: javaClass of type java.classifiers.Class corresponding to change.newValue
 execute: {
 	compilationUnit.namespaces += componentToClass.getPackageName(change.newValue);
 	initializeCompilationUnitAndJavaClassifier(compilationUnit, javaClass, componentToClass.getClassName(change.newValue));
 }
 
+response: CreatePackageForBasicComponent
+trigger: insert in list pcm.repository.Repository[components__Repository]
+create root element: javaPackage of type java.containers.Package corresponding to change.newValue
+persist at project-relative location: componentToPackageInfo.getPathInProject(change.newValue)
+execute: {
+	javaPackage.namespaces += repositoryToPackageInfo.getPackageName(change.newAffectedEObject as Repository);
+	javaPackage.name = change.newValue.entityName
+}
+
 response: CreateInterfaceForInterface
 trigger: insert in list pcm.repository.Repository[interfaces__Repository]
-create model: file name relative to project folder: interfaceToInterface.getPathInProject(change.newValue)
 create root element: compilationUnit of type java.containers.CompilationUnit corresponding to change.newValue
+persist at project-relative location: interfaceToInterface.getPathInProject(change.newValue)
 create model element: javaInterface of type java.classifiers.Interface corresponding to change.newValue
 execute: {
 	compilationUnit.namespaces += interfaceToInterface.getPackageName(change.newValue);
 	initializeCompilationUnitAndJavaClassifier(compilationUnit, javaInterface, interfaceToInterface.getClassName(change.newValue));
 }
+
+response: DeleteClassForBasicComponent
+trigger: remove from list pcm.repository.Repository[components__Repository]
+delete model element: compilationUnit of type java.containers.CompilationUnit corresponding to change.oldValue
+delete model element: javaClass of type java.classifiers.Class corresponding to change.oldValue
+
+response: DeletePackageForBasicComponent
+trigger: remove from list pcm.repository.Repository[components__Repository]
+delete model element: javaPackage of type java.containers.Package corresponding to change.oldValue
+

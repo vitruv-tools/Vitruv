@@ -6,6 +6,7 @@ import org.palladiosimulator.pcm.repository.RepositoryFactory
 import org.palladiosimulator.pcm.repository.Repository
 import static org.junit.Assert.*;
 import org.emftext.language.java.containers.CompilationUnit
+import org.emftext.language.java.JavaPackage
 
 class PCMJavaTests extends AbstractPCMJavaTests {
 	private static final String TEST_REPOSITORY_NAME = "testRepo"
@@ -34,9 +35,12 @@ class PCMJavaTests extends AbstractPCMJavaTests {
 	
 	@Test
 	public def void testCreateRepository() {
-		val helper = PCMJavaHelper.repositoryToJavaHelper;
+		val helper = PCMJavaHelper.repositoryToPackageInfo;
 		val repository = repositoryRootElement;
-		checkCompilationUnitConsistencyAndName(helper.getQualifiedClassName(repository).javaClassPathForFQN, helper.getClassName(repository));	
+		val repositoryPath = helper.getQualifiedClassName(repository).javaClassPathForFQN;
+		assertModelExists(repositoryPath);
+		val rootObject = repositoryPath.root;
+		assertTrue(rootObject instanceof org.emftext.language.java.containers.Package);
 	}
 	
 	@Test

@@ -32,3 +32,4 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.dsls.response.tests,
  edu.kit.ipd.sdq.vitruvius.casestudies.java.util,
  org.junit
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.response.tests.pcmjava

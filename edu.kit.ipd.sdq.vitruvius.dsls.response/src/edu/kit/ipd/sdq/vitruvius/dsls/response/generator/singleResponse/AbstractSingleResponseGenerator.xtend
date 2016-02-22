@@ -129,7 +129,7 @@ abstract class AbstractSingleResponseGenerator implements ISingleResponseGenerat
 			«val createdClassFactoryName = affectedElementClass.EPackage.EFactoryInstance.class.name»
 			val newRoot = «ih.typeRef(createdClassFactoryName)».eINSTANCE.create«affectedElementClass.name»();
 			val sourceElement = «CHANGE_PARAMETER_NAME».«response.trigger.EChangeFeatureNameOfChangedObject»;
-			val newModelFileSegments = "«createdModel.relativeToSourcePath»".split("/")
+			val newModelFileSegments = "«createdModel.modelPath»".split("/")
 			if (!newModelFileSegments.last.contains(".")) {
 				// No file extension was specified, add the first one that is the valid for the metamodel
 				newModelFileSegments.set(newModelFileSegments.size - 1, newModelFileSegments.last 

@@ -13,7 +13,6 @@ import org.eclipse.xtext.common.types.JvmFormalParameter
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionBlock
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseRuntimeHelper
 import java.util.Map
@@ -23,12 +22,10 @@ import java.util.Collections
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.impl.SimpleTextXBlockExpression
 import java.io.IOException
 import org.eclipse.xtend2.lib.StringConcatenationClient
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExecutionBlock
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureChange
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PathToSourceSpecificationBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelUpdate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelCreate
@@ -38,6 +35,9 @@ import org.eclipse.emf.ecore.change.ChangeDescription
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementDelete
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelPathCodeBlock
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionCodeBlock
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExecutionCodeBlock
 
 class ResponseMethodGenerator {
 	@Extension protected static JvmTypeReferenceBuilder _typeReferenceBuilder;
@@ -104,14 +104,15 @@ class ResponseMethodGenerator {
 				}
 				
 				«typedChangeString» «typedChangeName» = («typedChangeString»)«changeParameter.name»;
+				«TransformationResult» transformationResult = new «TransformationResult»();
 				try {
-					«executeResponseMethod.simpleName»(«typedChangeName», «blackboardParameter.name»);
+					«executeResponseMethod.simpleName»(«typedChangeName», «blackboardParameter.name», transformationResult);
 				} catch («Exception» exception) {
 					// If an error occured during execution, avoid an application shutdown and print the error.
 					LOGGER.error(exception.getClass().getSimpleName() + " (" + exception.getMessage() + ") during execution of response: " + this.getClass().getName());
 				}
 				
-				return new «TransformationResult»();'''
+				return transformationResult;'''
 		];
 	}
 	
@@ -191,7 +192,7 @@ class ResponseMethodGenerator {
 	 * 
 	 * <p>Precondition: precondition code block must exist.
 	 */
-	protected def JvmOperation generateUserDefinedPreconditionMethod(PreconditionBlock preconditionBlock) {
+	protected def JvmOperation generateUserDefinedPreconditionMethod(PreconditionCodeBlock preconditionBlock) {
 		val methodName = TRIGGER_PRECONDITION_METHOD_NAME;
 		
 		return preconditionBlock.getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
@@ -201,14 +202,13 @@ class ResponseMethodGenerator {
 		];		
 	}
 	
-	
-	protected def JvmOperation generateMethodGetPathFromSource(PathToSourceSpecificationBlock pathFromSourceBlock) {
-		val methodName = "getPathFromSource";
+	protected def JvmOperation generateMethodGetPathFromSource(ModelPathCodeBlock modelPathCodeBlock) {
+		val methodName = "getModelPath";
 		
-		return pathFromSourceBlock.getOrGenerateMethod(methodName, typeRef(String)) [
+		return modelPathCodeBlock.getOrGenerateMethod(methodName, typeRef(String)) [
 			visibility = JvmVisibility.PRIVATE;
-			parameters += generateChangeParameter(pathFromSourceBlock);
-			body = pathFromSourceBlock.code;
+			parameters += generateChangeParameter(modelPathCodeBlock);
+			body = modelPathCodeBlock.code;
 		];		
 	}
 	
@@ -325,20 +325,23 @@ class ResponseMethodGenerator {
 			val changeParameter = generateChangeParameter();
 			val blackboardParameter = generateBlackboardParameter();
 			val rootParameter = generateModelElementParameter(createdModel.rootElement);
+			val transformationResultParameter = generateParameter("transformationResult", TransformationResult);
 			parameters += changeParameter;
 			parameters += blackboardParameter;
 			parameters += rootParameter;
+			parameters += transformationResultParameter;
 			exceptions += typeRef(IOException);
 			val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(createdModel.rootElement);
-			val pathFromSourceMethod = generateMethodGetPathFromSource(createdModel.relativeToSourcePath);
+			val pathFromSourceMethod = generateMethodGetPathFromSource(createdModel.modelPath);
 			body = '''
 				«EObject» sourceElement = «correspondenceSourceMethod.simpleName»(«changeParameter.name»);
 				«String» relativePath = «pathFromSourceMethod.simpleName»(«changeParameter.name»);
 				«URI» resourceURI = «ResponseRuntimeHelper».«
 				IF (createdModel.useRelativeToSource)»getURIFromSourceResourceFolder«
 				ELSEIF (createdModel.useRelativeToProject)»getURIFromSourceProjectFolder«
-				ENDIF»(sourceElement, relativePath, «blackboardParameter.name»); 
-				«blackboardParameter.name».getModelProviding().saveModelInstanceOriginalWithEObjectAsOnlyContent(«VURI».getInstance(resourceURI), «rootParameter.name», null);
+				ENDIF»(sourceElement, relativePath, «blackboardParameter.name»);
+				«transformationResultParameter.name».addRootEObjectToSave(«rootParameter.name», «VURI».getInstance(resourceURI));
+				//«blackboardParameter.name».getModelProviding().saveModelInstanceOriginalWithEObjectAsOnlyContent(«VURI».getInstance(resourceURI), «rootParameter.name», null);
 				«blackboardParameter.name».getCorrespondenceInstance().createAndAddCorrespondence(«Collections».singletonList(sourceElement), «Collections».singletonList(«rootParameter.name»));
 			'''
 		];
@@ -429,7 +432,7 @@ class ResponseMethodGenerator {
 		];
 	}
 	
-	protected def generateMethodPerformResponse(ExecutionBlock executionBlock, CorrespondingModelElementSpecification... modelElements) {
+	protected def generateMethodPerformResponse(ExecutionCodeBlock executionBlock, CorrespondingModelElementSpecification... modelElements) {
 		if (!hasExecutionBlock) {
 			return null;
 		}
@@ -455,9 +458,10 @@ class ResponseMethodGenerator {
 		val methodName = "executeResponse";
 		val changeParameter = response.generateChangeParameter();
 		val blackboardParameter = response.generateBlackboardParameter();
+		val transformationResultParameter = response.generateParameter("_transformationResult", TransformationResult);
 		val methodBody = if (hasConcreteTargetChange) {
 			val modelRootChange = response.effects.targetChange as ConcreteTargetModelChange;
-			generateMethodExecuteResponseBody(modelRootChange, changeParameter, blackboardParameter);
+			generateMethodExecuteResponseBody(modelRootChange, changeParameter, blackboardParameter, transformationResultParameter);
 		} else {
 			generateMethodExecuteResponseBody(changeParameter, blackboardParameter);
 		}
@@ -466,6 +470,7 @@ class ResponseMethodGenerator {
 			exceptions += typeRef(IOException);
 			parameters += changeParameter;
 			parameters += blackboardParameter;
+			parameters += transformationResultParameter;
 			body = methodBody;
 		];	
 	}
@@ -480,7 +485,8 @@ class ResponseMethodGenerator {
 	 * <li>1. change: the change event ({@link EChange})
 	 * <li>2. blackboard: the {@link Blackboard} containing the {@link CorrespondenceInstance}
 	 */
-	private def dispatch StringConcatenationClient generateMethodExecuteResponseBody(ConcreteTargetModelUpdate modelRootUpdate, JvmFormalParameter changeParameter, JvmFormalParameter blackboardParameter) {
+	private def dispatch StringConcatenationClient generateMethodExecuteResponseBody(ConcreteTargetModelUpdate modelRootUpdate, 
+		JvmFormalParameter changeParameter, JvmFormalParameter blackboardParameter, JvmFormalParameter transformationResultParameter) {
 		if (!modelRootUpdate.identifyingElement.complete) {
 			return '''''';
 		}
@@ -536,7 +542,8 @@ class ResponseMethodGenerator {
 	 * <li>1. change: the change event ({@link EChange})
 	 * <li>2. blackboard: the {@link Blackboard} containing the {@link CorrespondenceInstance}
 	 */
-	private def dispatch StringConcatenationClient generateMethodExecuteResponseBody(ConcreteTargetModelCreate modelRootCreate, JvmFormalParameter changeParameter, JvmFormalParameter blackboardParameter) {
+	private def dispatch StringConcatenationClient generateMethodExecuteResponseBody(ConcreteTargetModelCreate modelRootCreate, 
+		JvmFormalParameter changeParameter, JvmFormalParameter blackboardParameter, JvmFormalParameter transformationResultParameter) {
 		if (!modelRootCreate.rootElement.complete) {
 			return '''''';
 		}
@@ -559,10 +566,10 @@ class ResponseMethodGenerator {
 				«performResponseMethod.simpleName»(«changeParameter.name»«
 					FOR modelElement : modelElementList BEFORE ', ' SEPARATOR ', '»«modelElement.name»«ENDFOR»);
 			«ENDIF»
-			«generateTargetModelMethod.simpleName»(«changeParameter.name», «blackboardParameter.name», «modelRootCreate.rootElement.name»);
 			«FOR element : createElements»
 				«addCorrespondenceMethodMap.get(element)»
 			«ENDFOR»
+			«generateTargetModelMethod.simpleName»(«changeParameter.name», «blackboardParameter.name», «modelRootCreate.rootElement.name», «transformationResultParameter.name»);
 		'''
 	}	
 	

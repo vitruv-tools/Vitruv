@@ -15,7 +15,6 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryTargetMetamodelInstanceUpdate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureChange
@@ -24,6 +23,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelCreate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelUpdate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionCodeBlock
 
 /**
  * Outline structure definition for a response file.
@@ -79,7 +79,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		}
 	}
 	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, PreconditionBlock preconditionBlock) {
+	protected def void _createChildren(EStructuralFeatureNode parentNode, PreconditionCodeBlock preconditionBlock) {
 		createEObjectNode(parentNode, preconditionBlock);
 	}
 	
@@ -177,7 +177,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		}
 	}
 	
-	protected def Object _text(PreconditionBlock preconditionBlock) {
+	protected def Object _text(PreconditionCodeBlock preconditionBlock) {
 		return "Precondition Block"
 	}
 	
@@ -185,7 +185,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return "Execution Block"
 	}
 	
-	protected def boolean _isLeaf(PreconditionBlock compareBlock) {
+	protected def boolean _isLeaf(PreconditionCodeBlock compareBlock) {
 		return true;
 	}
 	

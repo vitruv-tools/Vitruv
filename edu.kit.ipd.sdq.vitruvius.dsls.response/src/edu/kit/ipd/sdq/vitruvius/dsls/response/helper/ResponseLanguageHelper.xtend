@@ -3,9 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.helper
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondenceSourceDeterminationBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import org.eclipse.emf.ecore.EClass
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicConcreteModelElementChange
@@ -21,6 +19,8 @@ import org.eclipse.xtext.xbase.XBlockExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
 import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionCodeBlock
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingObjectCodeBlock
 
 final class ResponseLanguageHelper {
 	private new() {}
@@ -33,7 +33,7 @@ final class ResponseLanguageHelper {
 		return null;
 	}
 	
-	public static def Response getContainingResponse(PreconditionBlock preconditionBlock) {
+	public static def Response getContainingResponse(PreconditionCodeBlock preconditionBlock) {
 		val trigger = preconditionBlock.eContainer();
 		if (trigger instanceof Trigger) {
 			return getContainingResponse(trigger);
@@ -41,7 +41,7 @@ final class ResponseLanguageHelper {
 		return null;
 	}
 	
-	public static def Response getContainingResponse(CorrespondenceSourceDeterminationBlock correspondenceSourceBlock) {
+	public static def Response getContainingResponse(CorrespondingObjectCodeBlock correspondenceSourceBlock) {
 		val correspondingModelElementSpecification = correspondenceSourceBlock.eContainer();
 		if (correspondingModelElementSpecification instanceof CorrespondingModelElementSpecification) {
 			return getContainingResponse(correspondingModelElementSpecification);

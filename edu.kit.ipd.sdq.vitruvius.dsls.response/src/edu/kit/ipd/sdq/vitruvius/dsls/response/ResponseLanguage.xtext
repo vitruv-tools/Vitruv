@@ -22,25 +22,27 @@ Response:
 Effects:
 	{Effects}
 	(targetChange=TargetChange)?
-	(codeBlock=ExecutionBlock)?;
+	('execute:' codeBlock=ExecutionCodeBlock)?;
 
 TargetChange:
 	ConcreteTargetModelChange | ArbitraryTargetMetamodelInstanceUpdate;
 
 ConcreteTargetModelChange:
-	(ConcreteTargetModelUpdate | ConcreteTargetModelCreate);
+	ConcreteTargetModelUpdate | 
+	ConcreteTargetModelCreate;
 	
 ConcreteTargetModelUpdate:
 	// You could also put the identifying element together with the retrieved elements. 
 	// The generation uses the first element as an identifying element and thus it is easier
 	identifyingElement=CorrespondingModelElementRetrieveOrDelete
+	('rename model file to:' renamedModelFileName=ModelPathCodeBlock)? 
 	(retrieveElements+=CorrespondingModelElementRetrieveOrDelete |
 		'create model element:' createElements+=CorrespondingModelElementCreate)*;
 
 ConcreteTargetModelCreate:
-	'create model:' (useRelativeToSource?='file name relative to changed model folder:'
-		| useRelativeToProject?='file name relative to project folder:') relativeToSourcePath=PathToSourceSpecificationBlock
 	'create root element:' rootElement=CorrespondingModelElementCreate
+	(useRelativeToSource?='persist at changed model relative location:'
+		| useRelativeToProject?='persist at project-relative location:') modelPath=ModelPathCodeBlock
 	('create model element:' createElements+=CorrespondingModelElementCreate)*;
 
 CorrespondingModelElementCreate returns CorrespondingModelElementCreate:
@@ -60,36 +62,39 @@ CorrespondingModelElementRetrieve returns CorrespondingModelElementRetrieve:
 	'retrieve model element:' CorrespondingModelElementSpecification;
 	
 fragment CorrespondingModelElementSpecification:
-	name=ValidID 'of type' elementType=ModelElement correspondenceSource=CorrespondenceSourceDeterminationBlock;
+	name=ValidID 'of type' elementType=ModelElement 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock;
 
 ArbitraryTargetMetamodelInstanceUpdate:
 	'update instances of' metamodelReference=MetamodelReference;
 
-CodeBlock:
-	PathToSourceSpecificationBlock | CorrespondenceSourceDeterminationBlock | PreconditionBlock | ExecutionBlock;
+/*ChangeAwareCodeBlock returns :
+	StringReturningChangeAwareCodeBlock | EObjectReturningChangeAwareCodeBlock | BooleanReturningChangeAwareCodeBlock;
+*/
+PreconditionCodeBlock returns PreconditionCodeBlock:
+	{PreconditionCodeBlock}
+	CodeBlock;
 
-PathToSourceSpecificationBlock:
-	{PathToSourceSpecificationBlock}
+CorrespondingObjectCodeBlock returns CorrespondingObjectCodeBlock:
+	{CorrespondingObjectCodeBlock}
+	CodeBlock;
+
+ModelPathCodeBlock returns ModelPathCodeBlock:
+	{ModelPathCodeBlock}
+	CodeBlock;
+	
+ExecutionCodeBlock returns ExecutionCodeBlock:
+	{ExecutionCodeBlock}
+	CodeBlock;
+
+fragment CodeBlock:
 	code=XExpression;
-
-CorrespondenceSourceDeterminationBlock:
-	{CorrespondenceSourceDeterminationBlock}
-	'corresponding to' code=XExpression;
-
-PreconditionBlock:
-	{PreconditionBlock}
-	code=XExpression;
-
-ExecutionBlock:
-	{ExecutionBlock}
-	'execute:' code=XExpression;
 
 InvariantViolationEvent:
 	'invariant' violation=[ecore::EClass|QualifiedName];
 
 Trigger:
 	'trigger:' (ModelChange | InvariantViolationEvent)
-	('precondition:' precondition=PreconditionBlock)?;
+	('precondition:' precondition=PreconditionCodeBlock)?;
 	
 ModelChange:
 	ConcreteModelElementChange | ArbitraryModelElementChange;

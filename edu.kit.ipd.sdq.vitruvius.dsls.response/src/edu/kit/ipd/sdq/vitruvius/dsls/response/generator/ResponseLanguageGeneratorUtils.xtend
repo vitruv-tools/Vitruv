@@ -186,7 +186,7 @@ final class ResponseLanguageGeneratorUtils {
 			val correspondingModelElementSpecification = ResponseLanguageFactory.eINSTANCE.createCorrespondingModelElementDelete();
 			correspondingModelElementSpecification.elementType = targetChangeElement;
 			deleteTargetChange.identifyingElement = correspondingModelElementSpecification;
-			correspondingModelElementSpecification.correspondenceSource = ResponseLanguageFactory.eINSTANCE.createCorrespondenceSourceDeterminationBlock();
+			correspondingModelElementSpecification.correspondenceSource = ResponseLanguageFactory.eINSTANCE.createCorrespondingObjectCodeBlock();
 			correspondingModelElementSpecification.correspondenceSource.code = new SimpleTextXBlockExpression('''return change.getOldValue();''');
 			deleteEffects.targetChange = deleteTargetChange;
 			deleteResponse.effects = deleteEffects;

@@ -36,7 +36,7 @@ public class ResponseBuilder implements IResponseBuilder {
 	}
 	
 	public override setExecutionBlock(StringConcatenationClient executionBlockCode) {
-		val executionBlock = ResponseLanguageFactory.eINSTANCE.createExecutionBlock();
+		val executionBlock = ResponseLanguageFactory.eINSTANCE.createExecutionCodeBlock();
 		executionBlock.code = new SimpleTextXBlockExpression(executionBlockCode);
 		this.response.effects.codeBlock = executionBlock;
 		return this;
