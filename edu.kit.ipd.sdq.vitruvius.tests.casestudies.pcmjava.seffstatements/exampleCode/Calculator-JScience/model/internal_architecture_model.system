@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ASCII"?>
+<system:System xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:composition="http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" xmlns:system="http://palladiosimulator.org/PalladioComponentModel/System/5.1" id="_k_m-cNkFEeWaEvTwDH-WDA" entityName="SoMoX Reverse Engineered System">
+  <assemblyContexts__ComposedStructure id="_lCO0oNkFEeWaEvTwDH-WDA" entityName=" &lt;PC No. 0 org.splevo.examples.calculator.CalculatorTool.java.CalculatorTool>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_lAH70NkFEeWaEvTwDH-WDA"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_lCRQ4dkFEeWaEvTwDH-WDA" entityName=" &lt;PC No. 1 org.splevo.examples.calculatorGCD.CalculatorGCD.java.CalculatorGCD>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_lAknwtkFEeWaEvTwDH-WDA"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_lCR38tkFEeWaEvTwDH-WDA" entityName=" &lt;PC No. 2 org.splevo.examples.calculatorGCD.CalculatorGCDHelper.java.CalculatorGCDHelper>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_lAu_09kFEeWaEvTwDH-WDA"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_lCViUdkFEeWaEvTwDH-WDA" entityName="SoMoX Dummy Component Instance">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_lCViUNkFEeWaEvTwDH-WDA"/>
+  </assemblyContexts__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:ProvidedDelegationConnector" id="_lCRQ4NkFEeWaEvTwDH-WDA" entityName="ICalculatorTool.java.CalculatorTool" outerProvidedRole_ProvidedDelegationConnector="_lCQCwNkFEeWaEvTwDH-WDA" assemblyContext_ProvidedDelegationConnector="_lCO0oNkFEeWaEvTwDH-WDA">
+    <innerProvidedRole_ProvidedDelegationConnector href="internal_architecture_model.repository#_lAfvQNkFEeWaEvTwDH-WDA"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:ProvidedDelegationConnector" id="_lCR38dkFEeWaEvTwDH-WDA" entityName="ICalculatorGCD.java.CalculatorGCD" outerProvidedRole_ProvidedDelegationConnector="_lCR38NkFEeWaEvTwDH-WDA" assemblyContext_ProvidedDelegationConnector="_lCRQ4dkFEeWaEvTwDH-WDA">
+    <innerProvidedRole_ProvidedDelegationConnector href="internal_architecture_model.repository#_lAu_0NkFEeWaEvTwDH-WDA"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:ProvidedDelegationConnector" id="_lCR39dkFEeWaEvTwDH-WDA" entityName="ICalculatorGCDHelper.java.CalculatorGCDHelper" outerProvidedRole_ProvidedDelegationConnector="_lCR39NkFEeWaEvTwDH-WDA" assemblyContext_ProvidedDelegationConnector="_lCR38tkFEeWaEvTwDH-WDA">
+    <innerProvidedRole_ProvidedDelegationConnector href="internal_architecture_model.repository#_lAw1ANkFEeWaEvTwDH-WDA"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_lCTGENkFEeWaEvTwDH-WDA" entityName="Assembly Connector from  &lt;PC No. 0 org.splevo.examples.calculator.CalculatorTool.java.CalculatorTool> to  &lt;PC No. 1 org.splevo.examples.calculatorGCD.CalculatorGCD.java.CalculatorGCD>" requiringAssemblyContext_AssemblyConnector="_lCO0oNkFEeWaEvTwDH-WDA" providingAssemblyContext_AssemblyConnector="_lCRQ4dkFEeWaEvTwDH-WDA">
+    <providedRole_AssemblyConnector href="internal_architecture_model.repository#_lAu_0NkFEeWaEvTwDH-WDA"/>
+    <requiredRole_AssemblyConnector href="internal_architecture_model.repository#_lBl7cNkFEeWaEvTwDH-WDA"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_lCTGEdkFEeWaEvTwDH-WDA" entityName="Assembly Connector from  &lt;PC No. 1 org.splevo.examples.calculatorGCD.CalculatorGCD.java.CalculatorGCD> to  &lt;PC No. 2 org.splevo.examples.calculatorGCD.CalculatorGCDHelper.java.CalculatorGCDHelper>" requiringAssemblyContext_AssemblyConnector="_lCRQ4dkFEeWaEvTwDH-WDA" providingAssemblyContext_AssemblyConnector="_lCR38tkFEeWaEvTwDH-WDA">
+    <providedRole_AssemblyConnector href="internal_architecture_model.repository#_lAw1ANkFEeWaEvTwDH-WDA"/>
+    <requiredRole_AssemblyConnector href="internal_architecture_model.repository#_lBnJkNkFEeWaEvTwDH-WDA"/>
+  </connectors__ComposedStructure>
+  <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_lCQCwNkFEeWaEvTwDH-WDA" entityName="CalculatorTool 0 (prov)(sys)">
+    <providedInterface__OperationProvidedRole href="internal_architecture_model.repository#_lATiANkFEeWaEvTwDH-WDA"/>
+  </providedRoles_InterfaceProvidingEntity>
+  <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_lCR38NkFEeWaEvTwDH-WDA" entityName="CalculatorGCD 1 (prov)(sys)">
+    <providedInterface__OperationProvidedRole href="internal_architecture_model.repository#_lAqHUNkFEeWaEvTwDH-WDA"/>
+  </providedRoles_InterfaceProvidingEntity>
+  <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_lCR39NkFEeWaEvTwDH-WDA" entityName="CalculatorGCDHelper 2 (prov)(sys)">
+    <providedInterface__OperationProvidedRole href="internal_architecture_model.repository#_lAvm4NkFEeWaEvTwDH-WDA"/>
+  </providedRoles_InterfaceProvidingEntity>
+</system:System>

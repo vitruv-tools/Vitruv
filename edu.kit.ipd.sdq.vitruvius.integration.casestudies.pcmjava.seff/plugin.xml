@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="edu.kit.ipd.sdq.vitruvius.codeintegration.pcmjamoppintegrationextending.afterbasictransformation">
+      <provides
+            provider="edu.kit.ipd.sdq.vitruvius.integration.casestudies.pcmjava.seff.PCMJaMoPPCorrespondenceModelForSEFFTransformation">
+      </provides>
+   </extension>
+
+</plugin>

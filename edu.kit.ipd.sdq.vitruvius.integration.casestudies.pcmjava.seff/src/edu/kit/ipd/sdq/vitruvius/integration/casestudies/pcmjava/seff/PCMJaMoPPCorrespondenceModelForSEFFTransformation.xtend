@@ -13,19 +13,22 @@ import org.somox.sourcecodedecorator.AbstractActionClassMethodLink
 import org.somox.sourcecodedecorator.MethodLevelResourceDemandingInternalBehaviorLink
 import org.somox.sourcecodedecorator.SourceCodeDecoratorRepository
 import org.somox.sourcecodedecorator.SEFF2MethodMapping
+import edu.kit.ipd.sdq.vitruvius.codeintegration.PCMJaMoPPIntegrationExtending
+import org.emftext.language.java.statements.StatementListContainer
 
 /**
  * this class extends the PCMJaMoPPCorrespondenceModelTransformation to enable the integration of SEFFs and
  *  ResourceDemandingInternalBehaviour as well as the integration of components, interfaces etc.
  */
-class PCMJaMoPPCorrespondenceModelForSEFFTransformation {
+class PCMJaMoPPCorrespondenceModelForSEFFTransformation implements PCMJaMoPPIntegrationExtending{
 
 	private static final Logger logger = Logger.getLogger(PCMJaMoPPCorrespondenceModelForSEFFTransformation.simpleName)
-
-	new() {
+	
+	override afterBasicTransformations(PCMJaMoPPCorrespondenceModelTransformation currentCorrespondences) {
+		createBehaviourCorrespondences(currentCorrespondences)
 	}
 
-	public def createBehaviourCorrespondences(PCMJaMoPPCorrespondenceModelTransformation currentCorrespondences) {
+	private def createBehaviourCorrespondences(PCMJaMoPPCorrespondenceModelTransformation currentCorrespondences) {
 		var scdmRepo = currentCorrespondences.scdm.contents.get(0) as SourceCodeDecoratorRepository
 		// SEFF
 		scdmRepo.seff2MethodMappings.forEach[createSeff2MethodMappings(currentCorrespondences)]
@@ -40,8 +43,9 @@ class PCMJaMoPPCorrespondenceModelForSEFFTransformation {
 	def createSeff2MethodMappings(SEFF2MethodMapping seff2MethodMapping,
 		PCMJaMoPPCorrespondenceModelTransformation currentCorrespondences) {
 		val seff = seff2MethodMapping.seff
-		val statementListContainer = seff2MethodMapping.statementListContainer
-		val parentCorrespondence = findParentCorrespondenceWithType(statementListContainer, currentCorrespondences,
+		var StatementListContainer statementListContainer = currentCorrespondences.resolveJaMoppProxy(seff2MethodMapping.statementListContainer)
+		statementListContainer = currentCorrespondences.deresolveIfNesessary(statementListContainer)
+		val parentCorrespondence = findParentCorrespondenceWithType(statementListContainer.containingConcreteClassifier, currentCorrespondences,
 			BasicComponent)
 		currentCorrespondences.addCorrespondence(seff, statementListContainer, parentCorrespondence)
 	}
@@ -87,5 +91,5 @@ class PCMJaMoPPCorrespondenceModelForSEFFTransformation {
 		}
 		return parentCorrespondence
 	}
-
+	
 }

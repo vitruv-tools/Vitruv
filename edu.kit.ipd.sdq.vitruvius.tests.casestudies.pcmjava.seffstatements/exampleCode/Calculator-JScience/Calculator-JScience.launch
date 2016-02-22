@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.somox.analyzer.simplemodelanalyzer.runconfig.LaunchSimpleModelAnalyzer">
+<intAttribute key="de.uka.ipd.sdq.workflowengine.debuglevel" value="2"/>
+<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
+<listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
+<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
+</listAttribute>
+<booleanAttribute key="org.somox.analyzer.ReverseEngineerInterfacesNotAssignedToComponent" value="true"/>
+<booleanAttribute key="org.somox.analyzer.ReverseEngineerInternalMethodsAsResourceDemandingInternalBehavior" value="true"/>
+<stringAttribute key="org.somox.clusteringThresholdDecrement.Compose" value="10"/>
+<stringAttribute key="org.somox.clusteringThresholdDecrement.Merge" value="10"/>
+<stringAttribute key="org.somox.clusteringThresholdMax.Compose" value="100"/>
+<stringAttribute key="org.somox.clusteringThresholdMax.Merge" value="100"/>
+<stringAttribute key="org.somox.clusteringThresholdMin.Compose" value="25"/>
+<stringAttribute key="org.somox.clusteringThresholdMin.Merge" value="45"/>
+<stringAttribute key="org.somox.directoryMapping.weightDirectoryMapping" value="70"/>
+<stringAttribute key="org.somox.dms.weightDMS" value="5"/>
+<stringAttribute key="org.somox.interfaceViolation.weightInterfaceViolationIrrelevant" value="10"/>
+<stringAttribute key="org.somox.interfaceViolation.weightInterfaceViolationRelevant" value="40"/>
+<stringAttribute key="org.somox.metrics.nameResemblance.excludedPrefixes" value=""/>
+<stringAttribute key="org.somox.metrics.nameResemblance.excludedSuffixes" value=""/>
+<stringAttribute key="org.somox.metrics.wildcards" value="§"/>
+<stringAttribute key="org.somox.metrics.wildcards.additional" value=""/>
+<stringAttribute key="org.somox.nameResemblance.weightHighCoupling" value="15"/>
+<stringAttribute key="org.somox.nameResemblance.weightHighNameResemblance" value="30"/>
+<stringAttribute key="org.somox.nameResemblance.weightHighestNameResemblance" value="45"/>
+<stringAttribute key="org.somox.nameResemblance.weightLowCoupling" value="0"/>
+<stringAttribute key="org.somox.nameResemblance.weightLowNameResemblance" value="5"/>
+<stringAttribute key="org.somox.nameResemblance.weightMidNameResemblance" value="15"/>
+<stringAttribute key="org.somox.packageMapping.weightPackageMapping" value="70"/>
+<stringAttribute key="org.somox.project" value="Calculator-JScience"/>
+<stringAttribute key="org.somox.subsystemComponent.weightHighSLAQ" value="15"/>
+<stringAttribute key="org.somox.subsystemComponent.weightLowSLAQ" value="0"/>
+</launchConfiguration>

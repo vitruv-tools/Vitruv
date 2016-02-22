@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="ASCII"?>
+<sourcecodedecorator:SourceCodeDecoratorRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:classifiers="http://www.emftext.org/java/classifiers" xmlns:members="http://www.emftext.org/java/members" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1" xmlns:sourcecodedecorator="http://somox.org/SourceCodeDecorator/2.0">
+  <fileLevelSourceCodeLink>
+    <repositoryComponent xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_lAH70NkFEeWaEvTwDH-WDA"/>
+    <file href="../src/org/splevo/examples/calculator/CalculatorTool.java#/"/>
+  </fileLevelSourceCodeLink>
+  <fileLevelSourceCodeLink>
+    <repositoryComponent xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_lAknwtkFEeWaEvTwDH-WDA"/>
+    <file href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCD.java#/"/>
+  </fileLevelSourceCodeLink>
+  <fileLevelSourceCodeLink>
+    <repositoryComponent xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_lAu_09kFEeWaEvTwDH-WDA"/>
+    <file href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCDHelper.java#/"/>
+  </fileLevelSourceCodeLink>
+  <methodLevelSourceCodeLink>
+    <repositoryComponent xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_lAH70NkFEeWaEvTwDH-WDA"/>
+    <file href="../src/org/splevo/examples/calculator/CalculatorTool.java#/"/>
+    <function xsi:type="members:ClassMethod" href="../src/org/splevo/examples/calculator/CalculatorTool.java#//@classifiers.0/@members.0"/>
+    <operation xsi:type="repository:OperationSignature" href="internal_architecture_model.repository#_lAUwINkFEeWaEvTwDH-WDA"/>
+  </methodLevelSourceCodeLink>
+  <methodLevelSourceCodeLink>
+    <repositoryComponent xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_lAH70NkFEeWaEvTwDH-WDA"/>
+    <file href="../src/org/splevo/examples/calculator/CalculatorTool.java#/"/>
+    <function xsi:type="members:ClassMethod" href="../src/org/splevo/examples/calculator/CalculatorTool.java#//@classifiers.0/@members.1"/>
+    <operation xsi:type="repository:OperationSignature" href="internal_architecture_model.repository#_lAehINkFEeWaEvTwDH-WDA"/>
+  </methodLevelSourceCodeLink>
+  <methodLevelSourceCodeLink>
+    <repositoryComponent xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_lAH70NkFEeWaEvTwDH-WDA"/>
+    <file href="../src/org/splevo/examples/calculator/CalculatorTool.java#/"/>
+    <function xsi:type="members:ClassMethod" href="../src/org/splevo/examples/calculator/CalculatorTool.java#//@classifiers.0/@members.2"/>
+    <operation xsi:type="repository:OperationSignature" href="internal_architecture_model.repository#_lAehIdkFEeWaEvTwDH-WDA"/>
+  </methodLevelSourceCodeLink>
+  <methodLevelSourceCodeLink>
+    <file href="pathmap:/javaclass/java.lang.AutoCloseable.java#/"/>
+    <function xsi:type="members:InterfaceMethod" href="pathmap:/javaclass/java.lang.AutoCloseable.java#//@classifiers.0/@members.0"/>
+    <operation xsi:type="repository:OperationSignature" href="internal_architecture_model.repository#_lAlO09kFEeWaEvTwDH-WDA"/>
+  </methodLevelSourceCodeLink>
+  <methodLevelSourceCodeLink>
+    <file href="pathmap:/javaclass/java.io.Closeable.java#/"/>
+    <function xsi:type="members:InterfaceMethod" href="pathmap:/javaclass/java.io.Closeable.java#//@classifiers.0/@members.0"/>
+    <operation xsi:type="repository:OperationSignature" href="internal_architecture_model.repository#_lAl14NkFEeWaEvTwDH-WDA"/>
+  </methodLevelSourceCodeLink>
+  <methodLevelSourceCodeLink>
+    <file href="pathmap:/javaclass/java.io.InputStream.java#/"/>
+    <function xsi:type="members:ClassMethod" href="pathmap:/javaclass/java.io.InputStream.java#//@classifiers.0/@members.2"/>
+    <operation xsi:type="repository:OperationSignature" href="internal_architecture_model.repository#_lAl14dkFEeWaEvTwDH-WDA"/>
+  </methodLevelSourceCodeLink>
+  <methodLevelSourceCodeLink>
+    <file href="pathmap:/javaclass/java.io.InputStream.java#/"/>
+    <function xsi:type="members:ClassMethod" href="pathmap:/javaclass/java.io.InputStream.java#//@classifiers.0/@members.3"/>
+    <operation xsi:type="repository:OperationSignature" href="internal_architecture_model.repository#_lAl14tkFEeWaEvTwDH-WDA"/>
+  </methodLevelSourceCodeLink>
+  <methodLevelSourceCodeLink>
+    <file href="pathmap:/javaclass/java.io.InputStream.java#/"/>
+    <function xsi:type="members:ClassMethod" href="pathmap:/javaclass/java.io.InputStream.java#//@classifiers.0/@members.4"/>
+    <operation xsi:type="repository:OperationSignature" href="internal_architecture_model.repository#_lAmc8NkFEeWaEvTwDH-WDA"/>
+  </methodLevelSourceCodeLink>
+  <methodLevelSourceCodeLink>
+    <file href="pathmap:/javaclass/java.io.InputStream.java#/"/>
+    <function xsi:type="members:ClassMethod" href="pathmap:/javaclass/java.io.InputStream.java#//@classifiers.0/@members.5"/>
+    <operation xsi:type="repository:OperationSignature" href="internal_architecture_model.repository#_lAnEANkFEeWaEvTwDH-WDA"/>
+  </methodLevelSourceCodeLink>
+  <methodLevelSourceCodeLink>
+    <file href="pathmap:/javaclass/java.io.InputStream.java#/"/>
+    <function xsi:type="members:ClassMethod" href="pathmap:/javaclass/java.io.InputStream.java#//@classifiers.0/@members.6"/>
+    <operation xsi:type="repository:OperationSignature" href="internal_architecture_model.repository#_lAnrENkFEeWaEvTwDH-WDA"/>
+  </methodLevelSourceCodeLink>
+  <methodLevelSourceCodeLink>
+    <file href="pathmap:/javaclass/java.io.InputStream.java#/"/>
+    <function xsi:type="members:ClassMethod" href="pathmap:/javaclass/java.io.InputStream.java#//@classifiers.0/@members.7"/>
+    <operation xsi:type="repository:OperationSignature" href="internal_architecture_model.repository#_lAnrEdkFEeWaEvTwDH-WDA"/>
+  </methodLevelSourceCodeLink>
+  <methodLevelSourceCodeLink>
+    <file href="pathmap:/javaclass/java.io.InputStream.java#/"/>
+    <function xsi:type="members:ClassMethod" href="pathmap:/javaclass/java.io.InputStream.java#//@classifiers.0/@members.8"/>
+    <operation xsi:type="repository:OperationSignature" href="internal_architecture_model.repository#_lAnrEtkFEeWaEvTwDH-WDA"/>
+  </methodLevelSourceCodeLink>
+  <methodLevelSourceCodeLink>
+    <file href="pathmap:/javaclass/java.io.InputStream.java#/"/>
+    <function xsi:type="members:ClassMethod" href="pathmap:/javaclass/java.io.InputStream.java#//@classifiers.0/@members.9"/>
+    <operation xsi:type="repository:OperationSignature" href="internal_architecture_model.repository#_lAnrE9kFEeWaEvTwDH-WDA"/>
+  </methodLevelSourceCodeLink>
+  <methodLevelSourceCodeLink>
+    <file href="pathmap:/javaclass/java.io.InputStream.java#/"/>
+    <function xsi:type="members:ClassMethod" href="pathmap:/javaclass/java.io.InputStream.java#//@classifiers.0/@members.10"/>
+    <operation xsi:type="repository:OperationSignature" href="internal_architecture_model.repository#_lAnrFNkFEeWaEvTwDH-WDA"/>
+  </methodLevelSourceCodeLink>
+  <methodLevelSourceCodeLink>
+    <repositoryComponent xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_lAknwtkFEeWaEvTwDH-WDA"/>
+    <file href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCD.java#/"/>
+    <function xsi:type="members:ClassMethod" href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCD.java#//@classifiers.0/@members.0"/>
+    <operation xsi:type="repository:OperationSignature" href="internal_architecture_model.repository#_lAqHUdkFEeWaEvTwDH-WDA"/>
+  </methodLevelSourceCodeLink>
+  <methodLevelSourceCodeLink>
+    <repositoryComponent xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_lAknwtkFEeWaEvTwDH-WDA"/>
+    <file href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCD.java#/"/>
+    <function xsi:type="members:ClassMethod" href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCD.java#//@classifiers.0/@members.1"/>
+    <operation xsi:type="repository:OperationSignature" href="internal_architecture_model.repository#_lAuYwNkFEeWaEvTwDH-WDA"/>
+  </methodLevelSourceCodeLink>
+  <methodLevelSourceCodeLink>
+    <repositoryComponent xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_lAu_09kFEeWaEvTwDH-WDA"/>
+    <file href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCDHelper.java#/"/>
+    <function xsi:type="members:ClassMethod" href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCDHelper.java#//@classifiers.0/@members.0"/>
+    <operation xsi:type="repository:OperationSignature" href="internal_architecture_model.repository#_lAvm4dkFEeWaEvTwDH-WDA"/>
+  </methodLevelSourceCodeLink>
+  <interfaceSourceCodeLink>
+    <interface xsi:type="repository:OperationInterface" href="internal_architecture_model.repository#_lATiANkFEeWaEvTwDH-WDA"/>
+    <gastClass xsi:type="classifiers:Class" href="../src/org/splevo/examples/calculator/CalculatorTool.java#//@classifiers.0"/>
+  </interfaceSourceCodeLink>
+  <interfaceSourceCodeLink>
+    <interface xsi:type="repository:OperationInterface" href="internal_architecture_model.repository#_lAlO0NkFEeWaEvTwDH-WDA"/>
+    <gastClass xsi:type="classifiers:Class" href="pathmap:/javaclass/java.io.InputStream.java#//@classifiers.0"/>
+  </interfaceSourceCodeLink>
+  <interfaceSourceCodeLink>
+    <interface xsi:type="repository:OperationInterface" href="internal_architecture_model.repository#_lAqHUNkFEeWaEvTwDH-WDA"/>
+    <gastClass xsi:type="classifiers:Class" href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCD.java#//@classifiers.0"/>
+  </interfaceSourceCodeLink>
+  <interfaceSourceCodeLink>
+    <interface xsi:type="repository:OperationInterface" href="internal_architecture_model.repository#_lAvm4NkFEeWaEvTwDH-WDA"/>
+    <gastClass xsi:type="classifiers:Class" href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCDHelper.java#//@classifiers.0"/>
+  </interfaceSourceCodeLink>
+  <interfaceSourceCodeLink>
+    <interface xsi:type="repository:OperationInterface" href="internal_architecture_model.repository#_lAqHUNkFEeWaEvTwDH-WDA"/>
+    <gastClass xsi:type="classifiers:Class" href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCD.java#//@classifiers.0"/>
+  </interfaceSourceCodeLink>
+  <interfaceSourceCodeLink>
+    <interface xsi:type="repository:OperationInterface" href="internal_architecture_model.repository#_lAvm4NkFEeWaEvTwDH-WDA"/>
+    <gastClass xsi:type="classifiers:Class" href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCDHelper.java#//@classifiers.0"/>
+  </interfaceSourceCodeLink>
+  <componentImplementingClassesLink providedInterfaces="//@interfaceSourceCodeLink.0" requiredInterfaces="//@interfaceSourceCodeLink.4">
+    <component xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_lAH70NkFEeWaEvTwDH-WDA"/>
+    <implementingClasses xsi:type="classifiers:Class" href="../src/org/splevo/examples/calculator/CalculatorTool.java#//@classifiers.0"/>
+  </componentImplementingClassesLink>
+  <componentImplementingClassesLink providedInterfaces="//@interfaceSourceCodeLink.2" requiredInterfaces="//@interfaceSourceCodeLink.1 //@interfaceSourceCodeLink.5">
+    <component xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_lAknwtkFEeWaEvTwDH-WDA"/>
+    <implementingClasses xsi:type="classifiers:Class" href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCD.java#//@classifiers.0"/>
+  </componentImplementingClassesLink>
+  <componentImplementingClassesLink providedInterfaces="//@interfaceSourceCodeLink.3">
+    <component xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_lAu_09kFEeWaEvTwDH-WDA"/>
+    <implementingClasses xsi:type="classifiers:Class" href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCDHelper.java#//@classifiers.0"/>
+  </componentImplementingClassesLink>
+  <abstractActionClassMethodLink>
+    <classMethod href="../src/org/splevo/examples/calculator/CalculatorTool.java#//@classifiers.0/@members.0"/>
+    <abstractAction xsi:type="seff:InternalAction" href="internal_architecture_model.repository#_lCnPINkFEeWaEvTwDH-WDA"/>
+  </abstractActionClassMethodLink>
+  <abstractActionClassMethodLink>
+    <classMethod href="../src/org/splevo/examples/calculator/CalculatorTool.java#//@classifiers.0/@members.0"/>
+    <abstractAction xsi:type="seff:ExternalCallAction" href="internal_architecture_model.repository#_lCprYNkFEeWaEvTwDH-WDA"/>
+  </abstractActionClassMethodLink>
+  <abstractActionClassMethodLink>
+    <classMethod href="../src/org/splevo/examples/calculator/CalculatorTool.java#//@classifiers.0/@members.0"/>
+    <abstractAction xsi:type="seff:InternalAction" href="internal_architecture_model.repository#_lCqScNkFEeWaEvTwDH-WDA"/>
+  </abstractActionClassMethodLink>
+  <abstractActionClassMethodLink>
+    <classMethod href="../src/org/splevo/examples/calculator/CalculatorTool.java#//@classifiers.0/@members.0"/>
+    <abstractAction xsi:type="seff:InternalAction" href="internal_architecture_model.repository#_lCq5gNkFEeWaEvTwDH-WDA"/>
+  </abstractActionClassMethodLink>
+  <abstractActionClassMethodLink>
+    <classMethod href="../src/org/splevo/examples/calculator/CalculatorTool.java#//@classifiers.0/@members.0"/>
+    <abstractAction xsi:type="seff:ExternalCallAction" href="internal_architecture_model.repository#_lCq5gdkFEeWaEvTwDH-WDA"/>
+  </abstractActionClassMethodLink>
+  <abstractActionClassMethodLink>
+    <classMethod href="../src/org/splevo/examples/calculator/CalculatorTool.java#//@classifiers.0/@members.0"/>
+    <abstractAction xsi:type="seff:InternalAction" href="internal_architecture_model.repository#_lCrgkNkFEeWaEvTwDH-WDA"/>
+  </abstractActionClassMethodLink>
+  <abstractActionClassMethodLink>
+    <classMethod href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCD.java#//@classifiers.0/@members.2"/>
+    <abstractAction xsi:type="seff:InternalAction" href="internal_architecture_model.repository#_lCuj4dkFEeWaEvTwDH-WDA"/>
+  </abstractActionClassMethodLink>
+  <abstractActionClassMethodLink>
+    <classMethod href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCD.java#//@classifiers.0/@members.0"/>
+    <abstractAction xsi:type="seff:InternalAction" href="internal_architecture_model.repository#_lCvyAtkFEeWaEvTwDH-WDA"/>
+  </abstractActionClassMethodLink>
+  <abstractActionClassMethodLink>
+    <classMethod href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCD.java#//@classifiers.0/@members.0"/>
+    <abstractAction xsi:type="seff:ExternalCallAction" href="internal_architecture_model.repository#_lCvyA9kFEeWaEvTwDH-WDA"/>
+  </abstractActionClassMethodLink>
+  <abstractActionClassMethodLink>
+    <classMethod href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCD.java#//@classifiers.0/@members.0"/>
+    <abstractAction xsi:type="seff:InternalAction" href="internal_architecture_model.repository#_lCwZENkFEeWaEvTwDH-WDA"/>
+  </abstractActionClassMethodLink>
+  <abstractActionClassMethodLink>
+    <classMethod href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCD.java#//@classifiers.0/@members.1"/>
+    <abstractAction xsi:type="seff:InternalAction" href="internal_architecture_model.repository#_lCxAINkFEeWaEvTwDH-WDA"/>
+  </abstractActionClassMethodLink>
+  <abstractActionClassMethodLink>
+    <classMethod href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCDHelper.java#//@classifiers.0/@members.0"/>
+    <abstractAction xsi:type="seff:InternalAction" href="internal_architecture_model.repository#_lCxAI9kFEeWaEvTwDH-WDA"/>
+  </abstractActionClassMethodLink>
+  <methodLevelResourceDemandingInternalBehaviorLink>
+    <function xsi:type="members:ClassMethod" href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCD.java#//@classifiers.0/@members.2"/>
+    <resourceDemandingInternalBehaviour href="internal_architecture_model.repository#_lCt80NkFEeWaEvTwDH-WDA"/>
+  </methodLevelResourceDemandingInternalBehaviorLink>
+  <seff2MethodMappings>
+    <seff xsi:type="seff:ResourceDemandingSEFF" href="internal_architecture_model.repository#_lAiykNkFEeWaEvTwDH-WDA"/>
+    <statementListContainer xsi:type="members:ClassMethod" href="../src/org/splevo/examples/calculator/CalculatorTool.java#//@classifiers.0/@members.0"/>
+  </seff2MethodMappings>
+  <seff2MethodMappings>
+    <seff xsi:type="seff:ResourceDemandingSEFF" href="internal_architecture_model.repository#_lAknwNkFEeWaEvTwDH-WDA"/>
+    <statementListContainer xsi:type="members:ClassMethod" href="../src/org/splevo/examples/calculator/CalculatorTool.java#//@classifiers.0/@members.1"/>
+  </seff2MethodMappings>
+  <seff2MethodMappings>
+    <seff xsi:type="seff:ResourceDemandingSEFF" href="internal_architecture_model.repository#_lAknwdkFEeWaEvTwDH-WDA"/>
+    <statementListContainer xsi:type="members:ClassMethod" href="../src/org/splevo/examples/calculator/CalculatorTool.java#//@classifiers.0/@members.2"/>
+  </seff2MethodMappings>
+  <seff2MethodMappings>
+    <seff xsi:type="seff:ResourceDemandingSEFF" href="internal_architecture_model.repository#_lAu_0dkFEeWaEvTwDH-WDA"/>
+    <statementListContainer xsi:type="members:ClassMethod" href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCD.java#//@classifiers.0/@members.0"/>
+  </seff2MethodMappings>
+  <seff2MethodMappings>
+    <seff xsi:type="seff:ResourceDemandingSEFF" href="internal_architecture_model.repository#_lAu_0tkFEeWaEvTwDH-WDA"/>
+    <statementListContainer xsi:type="members:ClassMethod" href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCD.java#//@classifiers.0/@members.1"/>
+  </seff2MethodMappings>
+  <seff2MethodMappings>
+    <seff xsi:type="seff:ResourceDemandingSEFF" href="internal_architecture_model.repository#_lAxcENkFEeWaEvTwDH-WDA"/>
+    <statementListContainer xsi:type="members:ClassMethod" href="pathmap:/javaclass/org.splevo.examples.calculatorGCD.CalculatorGCDHelper.java#//@classifiers.0/@members.0"/>
+  </seff2MethodMappings>
+</sourcecodedecorator:SourceCodeDecoratorRepository>

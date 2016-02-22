@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="ASCII"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1" id="_k_tsINkFEeWaEvTwDH-WDA">
+  <components__Repository xsi:type="repository:BasicComponent" id="_lAH70NkFEeWaEvTwDH-WDA" entityName=" &lt;PC No. 0 org.splevo.examples.calculator.CalculatorTool.java.CalculatorTool>">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_lAfvQNkFEeWaEvTwDH-WDA" entityName="CalculatorTool 0 (prov)" providedInterface__OperationProvidedRole="_lATiANkFEeWaEvTwDH-WDA"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_lBl7cNkFEeWaEvTwDH-WDA" entityName="CalculatorGCD 1 (req)" requiredInterface__OperationRequiredRole="_lAqHUNkFEeWaEvTwDH-WDA"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_lAiykNkFEeWaEvTwDH-WDA" describedService__SEFF="_lAUwINkFEeWaEvTwDH-WDA">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_lCYloNkFEeWaEvTwDH-WDA" successor_AbstractAction="_lCnPINkFEeWaEvTwDH-WDA"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_lCnPINkFEeWaEvTwDH-WDA" entityName="IA  @position: org.splevo.examples.calculator.CalculatorTool.java.CalculatorTool.main() at 455" predecessor_AbstractAction="_lCYloNkFEeWaEvTwDH-WDA" successor_AbstractAction="_lCprYNkFEeWaEvTwDH-WDA">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="0"/>
+          <requiredResource_ParametricResourceDemand href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_lCprYNkFEeWaEvTwDH-WDA" entityName="gcd @position: org.splevo.examples.calculator.CalculatorTool.java.CalculatorTool.main() at 640" predecessor_AbstractAction="_lCnPINkFEeWaEvTwDH-WDA" successor_AbstractAction="_lCqScNkFEeWaEvTwDH-WDA" calledService_ExternalService="_lAqHUdkFEeWaEvTwDH-WDA" role_ExternalService="_lBl7cNkFEeWaEvTwDH-WDA"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_lCqScNkFEeWaEvTwDH-WDA" entityName="IA  @position: org.splevo.examples.calculator.CalculatorTool.java.CalculatorTool.main() at 640" predecessor_AbstractAction="_lCprYNkFEeWaEvTwDH-WDA" successor_AbstractAction="_lCq5gNkFEeWaEvTwDH-WDA">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="0"/>
+          <requiredResource_ParametricResourceDemand href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_lCq5gNkFEeWaEvTwDH-WDA" entityName="IA  @position: org.splevo.examples.calculator.CalculatorTool.java.CalculatorTool.main() at 640" predecessor_AbstractAction="_lCqScNkFEeWaEvTwDH-WDA" successor_AbstractAction="_lCq5gdkFEeWaEvTwDH-WDA">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="0"/>
+          <requiredResource_ParametricResourceDemand href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_lCq5gdkFEeWaEvTwDH-WDA" entityName="gcd2 @position: org.splevo.examples.calculator.CalculatorTool.java.CalculatorTool.main() at 711" predecessor_AbstractAction="_lCq5gNkFEeWaEvTwDH-WDA" successor_AbstractAction="_lCrgkNkFEeWaEvTwDH-WDA" calledService_ExternalService="_lAuYwNkFEeWaEvTwDH-WDA" role_ExternalService="_lBl7cNkFEeWaEvTwDH-WDA"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_lCrgkNkFEeWaEvTwDH-WDA" entityName="IA  @position: org.splevo.examples.calculator.CalculatorTool.java.CalculatorTool.main() at 743" predecessor_AbstractAction="_lCq5gdkFEeWaEvTwDH-WDA" successor_AbstractAction="_lCZMsNkFEeWaEvTwDH-WDA">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="0"/>
+          <requiredResource_ParametricResourceDemand href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_lCZMsNkFEeWaEvTwDH-WDA" predecessor_AbstractAction="_lCrgkNkFEeWaEvTwDH-WDA"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_lAknwNkFEeWaEvTwDH-WDA" describedService__SEFF="_lAehINkFEeWaEvTwDH-WDA">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_lCrgkdkFEeWaEvTwDH-WDA" successor_AbstractAction="_lCrgktkFEeWaEvTwDH-WDA"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_lCrgktkFEeWaEvTwDH-WDA" predecessor_AbstractAction="_lCrgkdkFEeWaEvTwDH-WDA"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_lAknwdkFEeWaEvTwDH-WDA" describedService__SEFF="_lAehIdkFEeWaEvTwDH-WDA">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_lCsHoNkFEeWaEvTwDH-WDA" successor_AbstractAction="_lCsHodkFEeWaEvTwDH-WDA"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_lCsHodkFEeWaEvTwDH-WDA" predecessor_AbstractAction="_lCsHoNkFEeWaEvTwDH-WDA"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_lAknwtkFEeWaEvTwDH-WDA" entityName=" &lt;PC No. 1 org.splevo.examples.calculatorGCD.CalculatorGCD.java.CalculatorGCD>">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_lAu_0NkFEeWaEvTwDH-WDA" entityName="CalculatorGCD 1 (prov)" providedInterface__OperationProvidedRole="_lAqHUNkFEeWaEvTwDH-WDA"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_lApgQNkFEeWaEvTwDH-WDA" entityName="InputStream 0 (req)" requiredInterface__OperationRequiredRole="_lAlO0NkFEeWaEvTwDH-WDA"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_lBnJkNkFEeWaEvTwDH-WDA" entityName="CalculatorGCDHelper 2 (req)" requiredInterface__OperationRequiredRole="_lAvm4NkFEeWaEvTwDH-WDA"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_lAu_0dkFEeWaEvTwDH-WDA" describedService__SEFF="_lAqHUdkFEeWaEvTwDH-WDA">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_lCsHotkFEeWaEvTwDH-WDA" successor_AbstractAction="_lCvyANkFEeWaEvTwDH-WDA"/>
+      <steps_Behaviour xsi:type="seff:InternalCallAction" id="_lCvyANkFEeWaEvTwDH-WDA" entityName=" @position: org.splevo.examples.calculatorGCD.CalculatorGCD.java.CalculatorGCD.valueOfHelper() from 1341 to 1446" predecessor_AbstractAction="_lCsHotkFEeWaEvTwDH-WDA" successor_AbstractAction="_lCvyAdkFEeWaEvTwDH-WDA" calledResourceDemandingInternalBehaviour="_lCt80NkFEeWaEvTwDH-WDA"/>
+      <steps_Behaviour xsi:type="seff:InternalCallAction" id="_lCvyAdkFEeWaEvTwDH-WDA" entityName=" @position: org.splevo.examples.calculatorGCD.CalculatorGCD.java.CalculatorGCD.valueOfHelper() from 1341 to 1446" predecessor_AbstractAction="_lCvyANkFEeWaEvTwDH-WDA" successor_AbstractAction="_lCvyAtkFEeWaEvTwDH-WDA" calledResourceDemandingInternalBehaviour="_lCt80NkFEeWaEvTwDH-WDA"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_lCvyAtkFEeWaEvTwDH-WDA" entityName="IA  @position: org.splevo.examples.calculatorGCD.CalculatorGCD.java.CalculatorGCD.gcd() at 922" predecessor_AbstractAction="_lCvyAdkFEeWaEvTwDH-WDA" successor_AbstractAction="_lCvyA9kFEeWaEvTwDH-WDA">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="0"/>
+          <requiredResource_ParametricResourceDemand href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_lCvyA9kFEeWaEvTwDH-WDA" entityName="calculateGCD @position: org.splevo.examples.calculatorGCD.CalculatorGCD.java.CalculatorGCD.gcd() at 1008" predecessor_AbstractAction="_lCvyAtkFEeWaEvTwDH-WDA" successor_AbstractAction="_lCwZENkFEeWaEvTwDH-WDA" calledService_ExternalService="_lAvm4dkFEeWaEvTwDH-WDA" role_ExternalService="_lBnJkNkFEeWaEvTwDH-WDA"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_lCwZENkFEeWaEvTwDH-WDA" entityName="IA  @position: org.splevo.examples.calculatorGCD.CalculatorGCD.java.CalculatorGCD.gcd() from 1009 to 1036" predecessor_AbstractAction="_lCvyA9kFEeWaEvTwDH-WDA" successor_AbstractAction="_lCsHo9kFEeWaEvTwDH-WDA">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="0"/>
+          <requiredResource_ParametricResourceDemand href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_lCsHo9kFEeWaEvTwDH-WDA" predecessor_AbstractAction="_lCwZENkFEeWaEvTwDH-WDA"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_lAu_0tkFEeWaEvTwDH-WDA" describedService__SEFF="_lAuYwNkFEeWaEvTwDH-WDA">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_lCwZEdkFEeWaEvTwDH-WDA" successor_AbstractAction="_lCxAINkFEeWaEvTwDH-WDA"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_lCxAINkFEeWaEvTwDH-WDA" entityName="IA  @position: org.splevo.examples.calculatorGCD.CalculatorGCD.java.CalculatorGCD.gcd2() at 1164" predecessor_AbstractAction="_lCwZEdkFEeWaEvTwDH-WDA" successor_AbstractAction="_lCwZEtkFEeWaEvTwDH-WDA">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="0"/>
+          <requiredResource_ParametricResourceDemand href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_lCwZEtkFEeWaEvTwDH-WDA" predecessor_AbstractAction="_lCxAINkFEeWaEvTwDH-WDA"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <resourceDemandingInternalBehaviours__BasicComponent id="_lCt80NkFEeWaEvTwDH-WDA" entityName="valueOfHelper">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_lCuj4NkFEeWaEvTwDH-WDA" successor_AbstractAction="_lCuj4dkFEeWaEvTwDH-WDA"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_lCuj4dkFEeWaEvTwDH-WDA" entityName="IA  @position: org.splevo.examples.calculatorGCD.CalculatorGCD.java.CalculatorGCD.valueOfHelper() at 1425" predecessor_AbstractAction="_lCuj4NkFEeWaEvTwDH-WDA" successor_AbstractAction="_lCuj4tkFEeWaEvTwDH-WDA"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_lCuj4tkFEeWaEvTwDH-WDA" predecessor_AbstractAction="_lCuj4dkFEeWaEvTwDH-WDA"/>
+    </resourceDemandingInternalBehaviours__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_lAu_09kFEeWaEvTwDH-WDA" entityName=" &lt;PC No. 2 org.splevo.examples.calculatorGCD.CalculatorGCDHelper.java.CalculatorGCDHelper>">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_lAw1ANkFEeWaEvTwDH-WDA" entityName="CalculatorGCDHelper 2 (prov)" providedInterface__OperationProvidedRole="_lAvm4NkFEeWaEvTwDH-WDA"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_lAxcENkFEeWaEvTwDH-WDA" describedService__SEFF="_lAvm4dkFEeWaEvTwDH-WDA">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_lCxAIdkFEeWaEvTwDH-WDA" successor_AbstractAction="_lCxAI9kFEeWaEvTwDH-WDA"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_lCxAI9kFEeWaEvTwDH-WDA" entityName="IA  @position: org.splevo.examples.calculatorGCD.CalculatorGCDHelper.java.CalculatorGCDHelper.calculateGCD() at 280" predecessor_AbstractAction="_lCxAIdkFEeWaEvTwDH-WDA" successor_AbstractAction="_lCxAItkFEeWaEvTwDH-WDA">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="0"/>
+          <requiredResource_ParametricResourceDemand href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_lCxAItkFEeWaEvTwDH-WDA" predecessor_AbstractAction="_lCxAI9kFEeWaEvTwDH-WDA"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_lCViUNkFEeWaEvTwDH-WDA" entityName="SoMoX System-Level Dummy Component"/>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_lATiANkFEeWaEvTwDH-WDA" entityName="ICalculatorTool.java.CalculatorTool">
+    <signatures__OperationInterface id="_lAUwINkFEeWaEvTwDH-WDA" entityName="main">
+      <parameters__OperationSignature dataType__Parameter="_lAdTANkFEeWaEvTwDH-WDA" parameterName="args"/>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_lAehINkFEeWaEvTwDH-WDA" entityName="test"/>
+    <signatures__OperationInterface id="_lAehIdkFEeWaEvTwDH-WDA" entityName="test2"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_lAlO0tkFEeWaEvTwDH-WDA" entityName="AutoCloseable.java.AutoCloseable">
+    <signatures__OperationInterface id="_lAlO09kFEeWaEvTwDH-WDA" entityName="close"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_lAlO0dkFEeWaEvTwDH-WDA" entityName="Closeable.java.Closeable" parentInterfaces__Interface="_lAlO0tkFEeWaEvTwDH-WDA">
+    <signatures__OperationInterface id="_lAl14NkFEeWaEvTwDH-WDA" entityName="close"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_lAlO0NkFEeWaEvTwDH-WDA" entityName="InputStream.java.InputStream" parentInterfaces__Interface="_lAlO0dkFEeWaEvTwDH-WDA _lAlO0tkFEeWaEvTwDH-WDA">
+    <signatures__OperationInterface id="_lAl14dkFEeWaEvTwDH-WDA" entityName="read">
+      <returnType__OperationSignature xsi:type="repository:PrimitiveDataType" href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_lAl14tkFEeWaEvTwDH-WDA" entityName="read_1">
+      <parameters__OperationSignature parameterName="arg0">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/PrimitiveTypes.repository#//@dataTypes__Repository.5"/>
+      </parameters__OperationSignature>
+      <returnType__OperationSignature xsi:type="repository:PrimitiveDataType" href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_lAmc8NkFEeWaEvTwDH-WDA" entityName="read_2">
+      <parameters__OperationSignature dataType__Parameter="_lAmc8dkFEeWaEvTwDH-WDA" parameterName="arg0"/>
+      <parameters__OperationSignature parameterName="arg1">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="arg2">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+      <returnType__OperationSignature xsi:type="repository:PrimitiveDataType" href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_lAnEANkFEeWaEvTwDH-WDA" entityName="skip">
+      <parameters__OperationSignature parameterName="arg0">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+      <returnType__OperationSignature xsi:type="repository:PrimitiveDataType" href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_lAnrENkFEeWaEvTwDH-WDA" entityName="available">
+      <returnType__OperationSignature xsi:type="repository:PrimitiveDataType" href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_lAnrEdkFEeWaEvTwDH-WDA" entityName="close"/>
+    <signatures__OperationInterface id="_lAnrEtkFEeWaEvTwDH-WDA" entityName="mark">
+      <parameters__OperationSignature parameterName="arg0">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_lAnrE9kFEeWaEvTwDH-WDA" entityName="reset"/>
+    <signatures__OperationInterface id="_lAnrFNkFEeWaEvTwDH-WDA" entityName="markSupported">
+      <returnType__OperationSignature xsi:type="repository:PrimitiveDataType" href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/PrimitiveTypes.repository#//@dataTypes__Repository.2"/>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_lAqHUNkFEeWaEvTwDH-WDA" entityName="ICalculatorGCD.java.CalculatorGCD">
+    <signatures__OperationInterface id="_lAqHUdkFEeWaEvTwDH-WDA" entityName="gcd" returnType__OperationSignature="_lAdTANkFEeWaEvTwDH-WDA">
+      <parameters__OperationSignature dataType__Parameter="_lAdTANkFEeWaEvTwDH-WDA" parameterName="value1"/>
+      <parameters__OperationSignature dataType__Parameter="_lAdTANkFEeWaEvTwDH-WDA" parameterName="value2"/>
+      <parameters__OperationSignature dataType__Parameter="_lAtxsNkFEeWaEvTwDH-WDA" parameterName="someInputStream"/>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_lAuYwNkFEeWaEvTwDH-WDA" entityName="gcd2" returnType__OperationSignature="_lAdTANkFEeWaEvTwDH-WDA">
+      <parameters__OperationSignature parameterName="value1">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="value2">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="value">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_lAvm4NkFEeWaEvTwDH-WDA" entityName="ICalculatorGCDHelper.java.CalculatorGCDHelper">
+    <signatures__OperationInterface id="_lAvm4dkFEeWaEvTwDH-WDA" entityName="calculateGCD" returnType__OperationSignature="_lAwN8NkFEeWaEvTwDH-WDA">
+      <parameters__OperationSignature dataType__Parameter="_lAwN8NkFEeWaEvTwDH-WDA" parameterName="integerValue1"/>
+      <parameters__OperationSignature dataType__Parameter="_lAwN8NkFEeWaEvTwDH-WDA" parameterName="integerValue2"/>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <dataTypes__Repository xsi:type="repository:CollectionDataType" id="_lAdTANkFEeWaEvTwDH-WDA" entityName="STRINGList">
+    <innerType_CollectionDataType xsi:type="repository:PrimitiveDataType" href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/PrimitiveTypes.repository#//@dataTypes__Repository.1"/>
+  </dataTypes__Repository>
+  <dataTypes__Repository xsi:type="repository:CollectionDataType" id="_lAmc8dkFEeWaEvTwDH-WDA" entityName="BYTEList">
+    <innerType_CollectionDataType xsi:type="repository:PrimitiveDataType" href="../../../plugin/org.palladiosimulator.pcm.resources/defaultModels/PrimitiveTypes.repository#//@dataTypes__Repository.5"/>
+  </dataTypes__Repository>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_lAtxsNkFEeWaEvTwDH-WDA" entityName="Class"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_lAwN8NkFEeWaEvTwDH-WDA" entityName="LargeInteger"/>
+</repository:Repository>
