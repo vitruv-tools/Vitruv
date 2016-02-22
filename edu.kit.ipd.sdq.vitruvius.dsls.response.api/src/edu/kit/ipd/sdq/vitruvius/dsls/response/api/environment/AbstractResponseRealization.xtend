@@ -11,8 +11,12 @@ abstract class AbstractResponseRealization implements IResponseRealization {
 	
 	protected def void deleteElement(EObject element) {
 		if (element.eContainer() == null) {
-			logger.debug("Deleting root object: " + element);
-			element.eResource().delete(Collections.EMPTY_MAP);
+			if (element.eResource() != null) {
+				logger.debug("Deleting root object: " + element);
+				element.eResource().delete(Collections.EMPTY_MAP);
+			} else {
+				logger.warn("The element to delete was already removed: " + element);
+			}
 		} else {
 			logger.debug("Removing non-root object: " + element);
 			EcoreUtil.remove(element);
