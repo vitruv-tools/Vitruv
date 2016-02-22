@@ -19,7 +19,7 @@ import java.util.Map
 import java.util.HashMap
 import org.apache.log4j.Logger
 import org.eclipse.xtext.common.types.JvmField
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.interfaces.IResponseRealization
+import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseRealization
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the response file model.</p> 
@@ -55,8 +55,9 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer implements 
 		
 		sourceElement.toClass(response.responseQualifiedName) [
 			visibility = JvmVisibility.DEFAULT;
-			superTypes += typeRef(IResponseRealization);
+			superTypes += typeRef(AbstractResponseRealization);
 			members += generateLoggerInitialization(it);
+			members += generateMethodGetLogger();
 			members += methodMap.values;
 		];
 	}
@@ -65,6 +66,13 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer implements 
 		generateUnassociatedField("LOGGER", typeRef(Logger)) [
 			visibility = JvmVisibility.PUBLIC;
 			initializer = '''«Logger».getLogger(«clazz».class)'''
+		]
+	}
+	
+	private def JvmOperation generateMethodGetLogger() {
+		generateUnassociatedMethod("getLogger", typeRef(Logger)) [
+			visibility = JvmVisibility.PUBLIC;
+			body = '''return LOGGER;'''
 		]
 	}
 			
