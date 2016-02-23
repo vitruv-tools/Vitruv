@@ -20,5 +20,6 @@ Require-Bundle: org.eclipse.core.resources,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro
+ org.eclipse.xtend.lib.macro,
+ org.eclipse.emf.common.ui
 
