@@ -13,10 +13,13 @@ class DefaultContainmentGenerator {
 	
 	def generate() {
 		for (mapping : state.mappings) {
-			appendToTemplateExpression(mapping, "mc.checkContainment") [
-			'''
-			'''
-			]
+			for (imp : state.getImports(mapping)) {
+				appendToTemplateExpression(#[mapping, imp, 'applyEChange']) [
+				'''
+					// TEST
+				'''
+				]
+			}
 		}
 	}
 	

@@ -3,13 +3,11 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator
 import com.google.inject.Inject
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.AbstractMappingRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.CandidateGeneratorImpl
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.EclipseDialogMIRUserInteracting
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingExecutionState
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingUtil
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.Candidate
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.CandidateGenerator
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MIRUserInteracting
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MappingRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MatchUpdate
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.TemplateGenerator
@@ -218,8 +216,6 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 						«FOR req : allRequires SEPARATOR ","»«typeRef(req.mapping.mappingClassName)».INSTANCE«ENDFOR»
 					);
 				
-					private «typeRef(MIRUserInteracting)» userInteracting = new «typeRef(EclipseDialogMIRUserInteracting)»();
-					
 					«FOR imp : imports SEPARATOR "\n"»
 					public void applyEChangeFor«imp.toFirstUpperName»(«typeRef(EChange)» eChange, «typeRef(Blackboard)» blackboard, «typeRef(MappingExecutionState)» state) {
 						«typeRef(MappedCorrespondenceInstance)» mci = state.getMci();
@@ -365,8 +361,6 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 						«FOR req : allRequires SEPARATOR ","»«typeRef(req.mapping.mappingClassName)».INSTANCE«ENDFOR»
 					);
 				
-					private «typeRef(MIRUserInteracting)» userInteracting = new «typeRef(EclipseDialogMIRUserInteracting)»();
-					
 					public static «mapping.correspondenceWrapperClassName» getOrCreate(«typeRef(MappingExecutionState)» state) {
 						final «typeRef(MappedCorrespondenceInstance)» mci = state.getMci();
 						«mapping.correspondenceWrapperClassName» result = null;
@@ -398,6 +392,8 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 						System.out.println("«mapping.name.toFirstUpper». EChange, «imp.toFirstUpperName»: " + eChange.toString());
 						
 						getOrCreate(state);
+						
+						«expandTemplate(ih, #[mapping, imp, 'applyEChange'])»
 					}
 				}
 				'''
