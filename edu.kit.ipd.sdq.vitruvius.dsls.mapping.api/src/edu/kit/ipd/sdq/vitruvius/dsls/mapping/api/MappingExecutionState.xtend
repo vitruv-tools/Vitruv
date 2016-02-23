@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
@@ -16,13 +15,12 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtend.lib.annotations.Accessors
 
-import static edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingUtil.*
-
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
+import org.apache.log4j.Logger
 
 @Accessors(PUBLIC_GETTER)
 class MappingExecutionState extends TransformationResult {
-//	private static final Logger LOGGER = Logger.getLogger(MappingExecutionState)
+	private static final Logger LOGGER = Logger.getLogger(MappingExecutionState)
 	private Map<EObject, Map<CorrespondenceInstance, List<TUID>>> oldTUIDMap = newHashMap
 	
 	private final List<EObject> createdEObjects = newArrayList
@@ -35,17 +33,10 @@ class MappingExecutionState extends TransformationResult {
 	
 	private final List<Resource> resourcesToSave = newArrayList
 	
-	new(MappedCorrespondenceInstance mci, Blackboard bb) {
+	new(Blackboard bb) {
 		super()
-		this.mci = mci;
+		this.mci = bb.correspondenceInstance as MappedCorrespondenceInstance;
 		this.bb = bb;
-	}
-	
-	new(MappedCorrespondenceInstance mci) {
-		super()
-		this.mci = mci;
-		this.bb = null;
-		throw new IllegalArgumentException("NO BLACKBOARD PROVIDED - deprecated (temporarily)")
 	}
 	
 	public def addObjectForTuidUpdate(EObject eObject) {
