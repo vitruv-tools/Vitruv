@@ -119,34 +119,22 @@ public abstract class VitruviusCasestudyTest {
     }
 
     protected void setUserInteractor(final UserInteracting newUserInteracting,
-            final ChangeSynchronizerImpl changeSynchronizerImpl) throws Throwable {
-        final Change2CommandTransformingProviding change2CommandProviding = JavaBridge.getFieldFromClass(
-                ChangeSynchronizerImpl.class, "change2CommandTransformingProviding", changeSynchronizerImpl);
-        final ClaimableMap<Pair<VURI, VURI>, Change2CommandTransforming> transformationExecuterMap = JavaBridge.
-        		getFieldFromClassOrSuperClass(syncTransformationProviderSupplier.get().getClass(), "transformationExecuterMap",
-                        change2CommandProviding);
-        final Class<?> change2CommandTransformerClass = this.getChange2CommandTransformerClass();
-        final String nameOfChangeSynchronizerField = this.getNameOfChangeSynchronizerField();
-        Change2CommandTransforming change2CommandTransforming = null;
-        for (final Change2CommandTransforming currentChange2CommandTransforming : transformationExecuterMap.values()) {
-            if (change2CommandTransformerClass.isInstance(currentChange2CommandTransforming)) {
+            final Change2CommandTransformingProviding transformingProviding) throws Throwable {
+    	final Class<?> change2CommandTransformerClass = this.getChange2CommandTransformerClass();
+    	Change2CommandTransforming change2CommandTransforming = null;
+    	for (Change2CommandTransforming currentChange2CommandTransforming : transformingProviding) {
+    		if (change2CommandTransformerClass.isInstance(currentChange2CommandTransforming)) {
                 change2CommandTransforming = currentChange2CommandTransforming;
                 break;
             }
-        }
+    	}
         if (null == change2CommandTransforming) {
             throw new RuntimeException("Could not find a Change2CommandTransforming that is currently active.");
         }
-        final TransformationExecuter transformationExecuter = JavaBridge.getFieldFromClass(
-                change2CommandTransformerClass, nameOfChangeSynchronizerField, change2CommandTransforming);
-        transformationExecuter.setUserInteracting(newUserInteracting);
+        change2CommandTransforming.setUserInteracting(newUserInteracting);
     }
     
     protected abstract Class<?> getChange2CommandTransformerClass();
-
-    protected String getNameOfChangeSynchronizerField() {
-        return "transformationExecuter";
-    }
 
     /**
      * copied from:

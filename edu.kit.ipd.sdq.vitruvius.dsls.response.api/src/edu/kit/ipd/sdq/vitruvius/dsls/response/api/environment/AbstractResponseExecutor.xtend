@@ -47,5 +47,7 @@ abstract class AbstractResponseExecutor  {
 		return this.callRelevantResponses(event, blackboard);
 	}
 
-	protected def void setup();
+	protected abstract def void setup();
+	
+	
 }

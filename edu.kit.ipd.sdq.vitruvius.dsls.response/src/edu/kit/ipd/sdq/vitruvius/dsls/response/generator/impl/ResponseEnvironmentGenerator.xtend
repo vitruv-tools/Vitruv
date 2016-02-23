@@ -122,11 +122,11 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		val classImplementation = '''
 		public class «change2CommandTransformingProvidingName» extends «ih.typeRef(AbstractResponseChange2CommandTransformingProviding)» {
 			public «change2CommandTransformingProvidingName»() {
-				«ih.typeRef(List)»<«ih.typeRef(Change2CommandTransforming)»> transformationExecutingList = new «ih.typeRef(ArrayList)»<«ih.typeRef(Change2CommandTransforming)»>();
+				«ih.typeRef(List)»<«ih.typeRef(Change2CommandTransforming)»> change2CommandTransformings = new «ih.typeRef(ArrayList)»<«ih.typeRef(Change2CommandTransforming)»>();
 				«FOR modelCorrespondence : modelCorrespondences»
-					transformationExecutingList.add(new «ih.typeRef(modelCorrespondence.change2CommandTransformingQualifiedName)»());
+					change2CommandTransformings.add(new «ih.typeRef(modelCorrespondence.change2CommandTransformingQualifiedName)»());
 				«ENDFOR»
-				initializeTransformationExecuterMap(transformationExecutingList);
+				initializeChange2CommandTransformationMap(change2CommandTransformings);
 			}
 			
 		}

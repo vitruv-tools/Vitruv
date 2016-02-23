@@ -9,23 +9,28 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 abstract class AbstractResponseChange2CommandTransformingProviding implements Change2CommandTransformingProviding {
-	protected ClaimableMap<Pair<VURI, VURI>, Change2CommandTransforming> transformationExecuterMap;
+	protected ClaimableMap<Pair<VURI, VURI>, Change2CommandTransforming> change2CommandTransformingsMap;
 	
 	new() {
-		this.transformationExecuterMap = new ClaimableHashMap<Pair<VURI, VURI>, Change2CommandTransforming>();
+		this.change2CommandTransformingsMap = new ClaimableHashMap<Pair<VURI, VURI>, Change2CommandTransforming>();
 	}
 	
-	protected def void initializeTransformationExecuterMap(List<Change2CommandTransforming> transformationExecutingList) {
+	protected def void initializeChange2CommandTransformationMap(List<Change2CommandTransforming> transformationExecutingList) {
 		for (transformationExecuting : transformationExecutingList) {
 			val transformableMetamodels = transformationExecuting.getTransformableMetamodels();
 			for (transformableMetamodel : transformableMetamodels) {
-				this.transformationExecuterMap.put(transformableMetamodel, transformationExecuting);
+				this.change2CommandTransformingsMap.put(transformableMetamodel, transformationExecuting);
 			}
 		}
 	}
 	
 	public override Change2CommandTransforming getChange2CommandTransforming(VURI mmURI1, VURI mmURI2) {
 		val vuriPair = new Pair<VURI, VURI>(mmURI1, mmURI2);
-		return this.transformationExecuterMap.claimValueForKey(vuriPair);
+		return this.change2CommandTransformingsMap.claimValueForKey(vuriPair);
 	}
+	
+	public override iterator() {
+		return change2CommandTransformingsMap.values().iterator();
+	}
+	
 }

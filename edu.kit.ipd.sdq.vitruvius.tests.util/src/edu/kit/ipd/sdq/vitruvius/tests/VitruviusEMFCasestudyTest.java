@@ -26,6 +26,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTr
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
@@ -47,6 +48,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
     protected ChangeRecorder changeRecorder;
     private ChangeDescription2ChangeConverter changeDescrition2ChangeConverter;
     protected CorrespondenceInstance correspondenceInstance;
+    protected Change2CommandTransformingProviding transformingProviding;
     
     /**
      * Initialize a VitruviusEMFCasestudyTest with the default {@link Supplier} for {@link Change2CommandTransformingProvidingImpl}.
@@ -76,13 +78,18 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
         this.vsum = TestUtil.createVSUM(this.metaRepository);
         final CommandExecuting commandExecuter = new CommandExecutingImpl();
         final ChangePreparing changePreparer = new ChangePreparingImpl(this.vsum, this.vsum);
-        this.changeSynchronizer = new ChangeSynchronizerImpl(this.vsum, syncTransformationProviderSupplier.get(), this.vsum,
+        this.transformingProviding = syncTransformationProviderSupplier.get();
+        this.changeSynchronizer = new ChangeSynchronizerImpl(this.vsum, this.transformingProviding, this.vsum,
                 this.metaRepository, this.vsum, this, changePreparer, commandExecuter);
         this.testUserInteractor = new TestUserInteractor();
-        this.setUserInteractor(this.testUserInteractor, this.changeSynchronizer);
+        this.setUserInteractor(this.testUserInteractor, this.transformingProviding);
         this.resourceSet = new ResourceSetImpl();
         this.changeRecorder = new ChangeRecorder();
         this.changeDescrition2ChangeConverter = new ChangeDescription2ChangeConverter();
+    }
+    
+    protected void setUserInteractor(UserInteracting newUserInteracting) throws Throwable {
+    	setUserInteractor(newUserInteracting, transformingProviding);
     }
 
     protected abstract MetaRepositoryImpl createMetaRepository();

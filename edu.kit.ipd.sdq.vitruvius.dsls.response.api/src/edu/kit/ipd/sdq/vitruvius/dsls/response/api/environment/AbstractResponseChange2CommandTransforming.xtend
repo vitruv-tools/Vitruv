@@ -67,9 +67,14 @@ abstract class AbstractResponseChange2CommandTransforming implements Change2Comm
 
 	override setUserInteracting(UserInteracting userInteracting) {
 		this.userInteracting = userInteracting;
-		this.setup();
+		this.cleanAndSetup();
 	}
 
-	protected def abstract void setup();
+	private def void cleanAndSetup() {
+		this.responseExecutors.clear();
+		setup();
+	}
+	
+	protected abstract def void setup();
 	
 }

@@ -485,9 +485,9 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
      */
     private void setUserInteractor(final UserInteracting newUserInteracting) throws Throwable {
         final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
-        final ChangeSynchronizerImpl changeSynchronizerImpl = JavaBridge.getFieldFromClass(VitruviusEmfBuilder.class,
-                "changeSynchronizing", pcmJavaBuilder);
-        this.setUserInteractor(newUserInteracting, changeSynchronizerImpl);
+        //final ChangeSynchronizerImpl changeSynchronizerImpl = JavaBridge.getFieldFromClass(VitruviusEmfBuilder.class,
+                //"changeSynchronizing", pcmJavaBuilder);
+        this.setUserInteractor(newUserInteracting);
     }
 
     protected CompositeComponent addSecondPackageCorrespondsToCompositeComponent() throws Throwable {

@@ -224,5 +224,6 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
     @Override
     public void setUserInteracting(UserInteracting userInteracting) {
     	this.userInteracting = userInteracting;
+    	this.transformationExecuter.setUserInteracting(userInteracting);
     }
 }

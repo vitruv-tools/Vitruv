@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider;
 
+import java.util.Iterator;
 import java.util.List;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
@@ -44,5 +45,10 @@ public class Change2CommandTransformingProvidingImpl implements Change2CommandTr
     public Change2CommandTransforming getChange2CommandTransforming(final VURI mmURI1, final VURI mmURI2) {
         Pair<VURI, VURI> vuriPair = new Pair<VURI, VURI>(mmURI1, mmURI2);
         return this.transformationExecuterMap.claimValueForKey(vuriPair);
+    }
+
+    @Override
+    public Iterator<Change2CommandTransforming> iterator() {
+        return this.transformationExecuterMap.values().iterator();
     }
 }
