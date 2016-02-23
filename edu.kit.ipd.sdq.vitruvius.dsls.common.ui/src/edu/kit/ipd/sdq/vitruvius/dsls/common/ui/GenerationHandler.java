@@ -37,6 +37,7 @@ import com.google.inject.Provider;
 import com.google.inject.name.Named;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.IMappingLanguageGenerator;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.MappingLanguageGeneratorNameProvider;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.IResponseEnvironmentGenerator;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response;
 
@@ -67,6 +68,9 @@ public class GenerationHandler extends AbstractHandler {
 	private static class MappingScope extends LanguageScope {
 		@Inject
 		public IMappingLanguageGenerator mappingLanguageGenerator;
+		
+		@Inject
+		public MappingLanguageGeneratorNameProvider nameProvider;
 	}
 
 	private static class MIRResourceCollectionVisitor implements IResourceVisitor {
@@ -140,6 +144,8 @@ public class GenerationHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		MIRCommonActivator.getDefault().mappingInjector.injectMembers(mappingScope);
 		MIRCommonActivator.getDefault().responseInjector.injectMembers(responseScope);
+		
+		mappingScope.nameProvider.initialize();
 		
 		final ISelection selection = HandlerUtil.getCurrentSelection(event);
 		if (selection instanceof IStructuredSelection) {
