@@ -15,7 +15,6 @@ class DefaultContainmentGenerator {
 		for (mapping : state.mappings) {
 			appendToTemplateExpression(mapping, "mc.checkContainment") [
 			'''
-				// xyz it works
 			'''
 			]
 		}
