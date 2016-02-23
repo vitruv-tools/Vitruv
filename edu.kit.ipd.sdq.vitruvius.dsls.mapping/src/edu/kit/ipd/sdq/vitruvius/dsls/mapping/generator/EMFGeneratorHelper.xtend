@@ -74,12 +74,12 @@ class EMFGeneratorHelper {
 	}
 	
 	public static def String setterName(EStructuralFeature feature) {
-		// TODO DW "is" for boolean attributes
 		'''set«feature.name.toFirstUpper»'''
 	}
 	
 	public def String eRefGet(extension ImportHelper ih, String instance, EStructuralFeature feature) {
-		// TODO DW: repair
+		// TODO DW: this method currently assumes that the getter name for a feature X is getX
+		// and isX for boolean features. This should be tested more thoroughly using reflection.
 /*		try {
 			val c = feature.EContainingClass.instanceTypeName
 			val containingClass = (Class.forName(feature.EContainingClass.instanceTypeName))
@@ -98,7 +98,8 @@ class EMFGeneratorHelper {
 	
 	
 	public def String eRefSet(extension ImportHelper ih, String instance, EStructuralFeature feature, String newValue) {
-		// TODO DW: repair
+		// TODO DW: this method currently assumes that the setter name for a feature X is setX
+		// This should be tested more thoroughly using reflection.
 /*		try {
 			val containingClass = (Class.forName(feature.EContainingClass.instanceTypeName))
 			val setterMethods = containingClass.methods.filter[name.equals(feature.setterName) && (parameters.size == 1)]
