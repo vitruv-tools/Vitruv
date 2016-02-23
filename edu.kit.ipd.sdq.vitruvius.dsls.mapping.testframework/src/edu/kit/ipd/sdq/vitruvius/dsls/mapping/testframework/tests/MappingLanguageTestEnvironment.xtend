@@ -3,7 +3,6 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.tests
 import com.google.inject.Inject
 import edu.kit.ipd.sdq.vitruvius.casestudies.emf.changedescription2change.ChangeDescription2ChangeConverter
 import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.AbstractMappingChange2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.util.ClaimableSingletonContainer
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.EclipseProjectHelper
 import edu.kit.ipd.sdq.vitruvius.framework.changepreparer.ChangePreparingImpl
@@ -24,11 +23,8 @@ import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil
 import java.io.IOException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.Collection
 import java.util.Collections
 import java.util.List
-import java.util.function.Consumer
-import java.util.function.Function
 import java.util.function.Supplier
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
@@ -82,7 +78,6 @@ class MappingLanguageTestEnvironment implements SynchronisationListener {
 
 	    val change2CommandTransformingProvider = new MappingLanguageTestChange2CommandTransformingProvidingImpl();
         for (c2ct : c2cts) {
-			c2ct.requireType(AbstractMappingChange2CommandTransforming).setUserInteracting(userInteracting)
 			change2CommandTransformingProvider.addChange2CommandTransforming(c2ct)
         }
 

@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MIRUserInteracting;
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MappingRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
@@ -18,9 +17,9 @@ public class DefaultContainmentMapping extends AbstractMappingRealization {
 	
 	@Override
 	public void applyEChange(EChange eChange, Blackboard blackboard, MappingExecutionState state) {
-		MIRMappingHelper.ensureContainments(state, state::getAllAffectedEObjects, (objectToCreateContainmentFor) -> {
+		MIRMappingHelper.ensureContainments(state.getTransformationResult(), state::getAllAffectedEObjects, (objectToCreateContainmentFor) -> {
 			state.addObjectForTuidUpdate(objectToCreateContainmentFor);
-			state.addRootEObjectToSave(objectToCreateContainmentFor, VURI.getInstance(
+			state.getTransformationResult().addRootEObjectToSave(objectToCreateContainmentFor, VURI.getInstance(
 					userInteracting.askForNewResource(EcoreBridge.createSensibleString(objectToCreateContainmentFor))));
 		});
 		

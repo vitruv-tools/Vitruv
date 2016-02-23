@@ -24,7 +24,7 @@ public abstract class AbstractMappingRealization implements MappingRealization {
 
 		for (EObject element : elements) {
 			if (EcoreBridge.isRootInResource(element)) {
-				state.addVURIToDeleteIfNotNull(VURI.getInstance(element.eResource()));
+				state.getTransformationResult().addVURIToDeleteIfNotNull(VURI.getInstance(element.eResource()));
 			}
 		}
 

@@ -2,7 +2,6 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.tests
 
 import com.google.inject.Singleton
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.AbstractMappingChange2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants
 import org.eclipse.core.runtime.CoreException
 import org.eclipse.core.runtime.IConfigurationElement

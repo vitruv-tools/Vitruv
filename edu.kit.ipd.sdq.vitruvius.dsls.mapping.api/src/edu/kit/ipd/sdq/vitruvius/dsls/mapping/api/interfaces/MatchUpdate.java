@@ -2,14 +2,19 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple;
 
 /**
+ * Represents all changed mapping states for a set of candidates.
  * 
  * @author dwerle
  *
@@ -19,9 +24,12 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Corresp
  *            The type of the correspondence wrapper
  */
 public class MatchUpdate<W extends ElementProvider, CW> {
-	private Set<W> newCandidates;
-	private Set<CW> currentCorrespondences;
-	private Set<CW> voidedCorrespondences;
+	private Set<Pair<Candidate, W>> newCandidates;
+	private Set<Pair<Candidate, CW>> currentCorrespondences;
+	private Set<Pair<Candidate, CW>> voidedCorrespondences;
+	// candidates that have been rebased from an existing correspondence (second
+	// element)
+	private Set<Triple<Candidate, CW, W>> rebasedCandidates;
 
 	public MatchUpdate() {
 		intialize();
@@ -30,7 +38,7 @@ public class MatchUpdate<W extends ElementProvider, CW> {
 	public MatchUpdate(MappingRealization mapping, MappedCorrespondenceInstance mci, Set<Candidate> candidates,
 			Function<Candidate, W> matchWrapper, Predicate<W> checkFunction,
 			Function<Correspondence, CW> correspondenceWrapper) {
-		
+
 		populate(mapping, mci, candidates, matchWrapper, checkFunction, correspondenceWrapper);
 	}
 
@@ -38,6 +46,7 @@ public class MatchUpdate<W extends ElementProvider, CW> {
 		newCandidates = new HashSet<>();
 		currentCorrespondences = new HashSet<>();
 		voidedCorrespondences = new HashSet<>();
+		rebasedCandidates = new HashSet<>();
 	}
 
 	public void populate(MappingRealization mapping, MappedCorrespondenceInstance mci, Set<Candidate> candidates,
@@ -48,30 +57,49 @@ public class MatchUpdate<W extends ElementProvider, CW> {
 
 		candidates.stream().forEach(candidate -> {
 			W wrapper = matchWrapper.apply(candidate);
-			
-			Correspondence correspondence = mci.getMappedCorrespondence(candidate.getElements(), candidate.getRequiredCorrespondences(), mapping);
+
+			Correspondence correspondence = mci.getMappedCorrespondence(candidate.getElements(),
+					candidate.getRequiredCorrespondences(), mapping);
 			boolean wasMapped = (correspondence != null);
 			boolean isMapped = checkFunction.test(wrapper);
 
-			if (!wasMapped && isMapped)
-				newCandidates.add(wrapper);
-			else if (wasMapped && !isMapped)
-				voidedCorrespondences.add(correspondenceWrapper.apply(correspondence));
-			else if (wasMapped && isMapped)
-				currentCorrespondences.add(correspondenceWrapper.apply(correspondence));
+			if (!wasMapped && isMapped) {
+				// if a candidate with the same elements, but different required
+				// mappings was previously removed,
+				// this is a rebase and saved as such
+				final Optional<Pair<Candidate, CW>> previouslyVoided = voidedCorrespondences.stream()
+						.filter(it -> it.getFirst().getElements().equals(candidate.elements)).findFirst();
+				if (previouslyVoided.isPresent()) {
+					rebasedCandidates.add(new Triple<>(candidate, previouslyVoided.get().getSecond(), wrapper));
+				} else {
+					newCandidates.add(new Pair<>(candidate, wrapper));
+				}
+			} else if (wasMapped && !isMapped) {
+				// see above. TODO: combine
+				final Optional<Pair<Candidate, W>> previouslyCreated = newCandidates.stream()
+						.filter(it -> it.getFirst().getElements().equals(candidate.elements)).findFirst();
+				if (previouslyCreated.isPresent()) {
+					rebasedCandidates.add(new Triple<>(candidate, correspondenceWrapper.apply(correspondence),
+							previouslyCreated.get().getSecond()));
+				} else {
+					voidedCorrespondences.add(new Pair<>(candidate, correspondenceWrapper.apply(correspondence)));
+				}
+			} else if (wasMapped && isMapped) {
+				currentCorrespondences.add(new Pair<>(candidate, correspondenceWrapper.apply(correspondence)));
+			}
 		});
 
 	}
 
 	public Set<W> getNewCandidates() {
-		return Collections.unmodifiableSet(newCandidates);
+		return newCandidates.stream().map(it -> it.getSecond()).collect(Collectors.toSet());
 	}
 
 	public Set<CW> getCurrentCorrespondences() {
-		return Collections.unmodifiableSet(currentCorrespondences);
+		return currentCorrespondences.stream().map(it -> it.getSecond()).collect(Collectors.toSet());
 	}
 
 	public Set<CW> getVoidedCorrespondences() {
-		return Collections.unmodifiableSet(voidedCorrespondences);
+		return voidedCorrespondences.stream().map(it -> it.getSecond()).collect(Collectors.toSet());
 	}
 }

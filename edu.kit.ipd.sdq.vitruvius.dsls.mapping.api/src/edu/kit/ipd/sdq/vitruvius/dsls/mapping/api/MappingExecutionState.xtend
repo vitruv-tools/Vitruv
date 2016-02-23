@@ -17,9 +17,13 @@ import org.eclipse.xtend.lib.annotations.Accessors
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
 import org.apache.log4j.Logger
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 
 @Accessors(PUBLIC_GETTER)
-class MappingExecutionState extends TransformationResult {
+class MappingExecutionState {
+	private final TransformationResult transformationResult
+	private final UserInteracting userInteracting
+	
 	private static final Logger LOGGER = Logger.getLogger(MappingExecutionState)
 	private Map<EObject, Map<CorrespondenceInstance, List<TUID>>> oldTUIDMap = newHashMap
 	
@@ -33,8 +37,10 @@ class MappingExecutionState extends TransformationResult {
 	
 	private final List<Resource> resourcesToSave = newArrayList
 	
-	new(Blackboard bb) {
+	new(TransformationResult transformationResult, UserInteracting userInteracting, Blackboard bb) {
 		super()
+		this.transformationResult = transformationResult
+		this.userInteracting = userInteracting
 		this.mci = bb.correspondenceInstance as MappedCorrespondenceInstance;
 		this.bb = bb;
 	}
