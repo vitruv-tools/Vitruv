@@ -11,4 +11,5 @@ Require-Bundle: org.eclipse.osgi,
  org.eclipse.swt,
  org.eclipse.ui.workbench,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
- org.eclipse.jface
+ org.eclipse.jface,
+ edu.kit.ipd.sdq.vitruvius.framework.util;bundle-version="1.0.0"

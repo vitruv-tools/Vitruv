@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor;
 
 import javax.swing.JOptionPane;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
@@ -9,6 +10,7 @@ import org.eclipse.ui.PlatformUI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseUIBridge;
 
 /**
  * @author messinger
@@ -96,5 +98,10 @@ public class UserInteractor implements UserInteracting {
         // TODO Auto-generated method stub
         return 0;
     }
+
+	@Override
+	public URI selectURI(String message) {
+		return EclipseUIBridge.askForNewResource(message);
+	}
 
 }

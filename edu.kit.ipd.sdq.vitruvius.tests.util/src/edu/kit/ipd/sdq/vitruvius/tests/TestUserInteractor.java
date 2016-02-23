@@ -7,6 +7,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
@@ -24,6 +26,7 @@ public class TestUserInteractor implements UserInteracting {
 
     private final ConcurrentLinkedQueue<Integer> concurrentIntLinkedQueue;
     private final ConcurrentLinkedQueue<String> concurrentStringLinkedQueue;
+    private final ConcurrentLinkedQueue<URI> concurrentURILinkedQueue;
     private final Random random;
     private final int minWaittime;
     private final int maxWaittime;
@@ -39,6 +42,7 @@ public class TestUserInteractor implements UserInteracting {
         this.waitTimeRange = maxWaittime - minWaittime;
         this.concurrentIntLinkedQueue = new ConcurrentLinkedQueue<Integer>();
         this.concurrentStringLinkedQueue = new ConcurrentLinkedQueue<String>();
+        this.concurrentURILinkedQueue = new ConcurrentLinkedQueue<URI>();
         this.random = new Random();
     }
 
@@ -54,6 +58,11 @@ public class TestUserInteractor implements UserInteracting {
     public void addNextSelections(final String... nextSelections) {
         this.concurrentStringLinkedQueue.clear();
         this.concurrentStringLinkedQueue.addAll(Arrays.asList(nextSelections));
+    }
+    
+    public void addNextSelections(final URI... nextSelections) {
+        this.concurrentURILinkedQueue.clear();
+        this.concurrentURILinkedQueue.addAll(Arrays.asList(nextSelections));
     }
 
     @Override
@@ -127,4 +136,19 @@ public class TestUserInteractor implements UserInteracting {
 
     }
 
+	@Override
+	public URI selectURI(String message) {
+		if (this.concurrentURILinkedQueue.isEmpty()) {
+			throw new IllegalStateException("No URI found in " + TestUserInteractor.class.getSimpleName());
+		}
+		
+		final URI result = this.concurrentURILinkedQueue.poll();
+		logger.info(TestUserInteractor.class.getSimpleName() + " selected " + result.toString());
+		return result;
+	}
+	
+	public boolean isResourceQueueEmpty() {
+		return this.concurrentURILinkedQueue.isEmpty();
+	}
+	
 }
