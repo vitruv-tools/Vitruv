@@ -30,6 +30,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGenerat
 import org.eclipse.xtext.generator.IGenerator
 import java.util.Collections
 import org.apache.log4j.Logger
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 
 class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 	private static final Logger LOGGER = Logger.getLogger(ResponseEnvironmentGenerator);
@@ -149,10 +150,6 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 
 		val classImplementation = '''
 		public class «modelPair.change2CommandTransformingName» extends «ih.typeRef(AbstractResponseChange2CommandTransforming)» {
-			public «modelPair.change2CommandTransformingName»() {
-				super();
-			}
-			
 			public «ih.typeRef(List)»<«ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)»>> getTransformableMetamodels() {
 				«ih.typeRef(VURI)» sourceVURI = «ih.typeRef(VURI)».getInstance("«modelPair.first.EMFUri.toString»");
 				«ih.typeRef(VURI)» targetVURI = «ih.typeRef(VURI)».getInstance("«modelPair.second.EMFUri.toString»");
@@ -161,7 +158,7 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 			}
 			
 			protected void setup() {
-				this.addResponseExecutor(new «modelPair.executorName»());		
+				this.addResponseExecutor(new «modelPair.executorName»(userInteracting));		
 			}
 			
 		}
@@ -174,9 +171,13 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		val ih = new XtendImportHelper();	
 		val classImplementation = '''
 		public class «modelPair.executorName» extends «ih.typeRef(AbstractResponseExecutor)» {
+			public «modelPair.executorName»(«ih.typeRef(UserInteracting)» userInteracting) {
+				super(userInteracting);
+			}
+			
 			protected void setup() {
 				«FOR response : responseNames»
-				this.addResponse(«ih.typeRef(response)».getTrigger(), new «ih.typeRef(response)»());
+				this.addResponse(«ih.typeRef(response)».getTrigger(), new «ih.typeRef(response)»(userInteracting));
 				«ENDFOR»
 			}
 		}

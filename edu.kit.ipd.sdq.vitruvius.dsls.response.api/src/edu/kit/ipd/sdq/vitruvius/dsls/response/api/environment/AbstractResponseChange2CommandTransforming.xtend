@@ -10,15 +10,19 @@ import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
+import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor
 
 abstract class AbstractResponseChange2CommandTransforming implements Change2CommandTransforming {
 	private final static val LOGGER = Logger.getLogger(AbstractResponseChange2CommandTransforming);
 	
 	private List<AbstractResponseExecutor> responseExecutors;
 
+	protected UserInteracting userInteracting;
+	
 	new() {
 		this.responseExecutors = new ArrayList<AbstractResponseExecutor>();
-		this.setup();
+		setUserInteracting(new UserInteractor());
 	}
 
 	protected def void addResponseExecutor(AbstractResponseExecutor executor) {
@@ -59,6 +63,11 @@ abstract class AbstractResponseChange2CommandTransforming implements Change2Comm
 			result += executor.generateCommandsForEvent(change, blackboard);
 		}
 		return result;
+	}
+
+	override setUserInteracting(UserInteracting userInteracting) {
+		this.userInteracting = userInteracting;
+		this.setup();
 	}
 
 	protected def abstract void setup();

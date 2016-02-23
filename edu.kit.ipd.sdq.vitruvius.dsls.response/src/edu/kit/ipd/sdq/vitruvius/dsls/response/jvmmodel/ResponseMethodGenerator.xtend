@@ -38,6 +38,8 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingMod
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelPathCodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionCodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExecutionCodeBlock
+import org.eclipse.xtext.common.types.JvmGenericType
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 
 class ResponseMethodGenerator {
 	@Extension protected static JvmTypeReferenceBuilder _typeReferenceBuilder;
@@ -71,6 +73,14 @@ class ResponseMethodGenerator {
 		_completionChecker = new ResponseElementsCompletionChecker();
 		_typesBuilder = jvmTypesBuilder;
 		_typeReferenceBuilder = typeReferenceBuilder;
+	}
+	
+	protected def generateConstructor(JvmGenericType clazz) {
+		clazz.toConstructor [
+			parameters += generateParameter("userInteracting", UserInteracting);
+			visibility = JvmVisibility.PUBLIC;
+			body = '''super(userInteracting);'''
+		]
 	}
 	
 	/**

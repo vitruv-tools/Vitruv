@@ -58,6 +58,7 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer implements 
 			superTypes += typeRef(AbstractResponseRealization);
 			members += generateLoggerInitialization(it);
 			members += generateMethodGetLogger();
+			members += methodGenerator.generateConstructor(it);
 			members += methodMap.values;
 		];
 	}

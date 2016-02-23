@@ -5,8 +5,15 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import java.util.Collections
 import org.eclipse.emf.ecore.util.EcoreUtil
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 
 abstract class AbstractResponseRealization implements IResponseRealization {
+	protected val UserInteracting userInteracting;
+
+	public new(UserInteracting userInteracting) {
+		this.userInteracting = userInteracting;
+	}
+	
 	protected abstract def Logger getLogger();
 	
 	protected def void deleteElement(EObject element) {

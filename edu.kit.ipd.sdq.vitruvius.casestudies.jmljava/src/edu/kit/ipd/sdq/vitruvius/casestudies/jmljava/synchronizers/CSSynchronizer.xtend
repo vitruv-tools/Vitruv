@@ -195,4 +195,8 @@ class CSSynchronizer extends TransformationExecuter implements Change2CommandTra
 		return changes
 	}
 
+	override setUserInteracting(UserInteracting userInteracting) {
+		this.userInteracting = userInteracting;
+	}
+	
 }

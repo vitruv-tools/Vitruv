@@ -8,14 +8,18 @@ import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.interfaces.IResponseRealization
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 
 abstract class AbstractResponseExecutor  {
 	private final static val LOGGER = Logger.getLogger(AbstractResponseExecutor);
 
 	private Change2ResponseMap changeToResponseMap;
 
-	new () {
+	protected UserInteracting userInteracting;
+	
+	new (UserInteracting userInteracting) {
 		this.changeToResponseMap = new Change2ResponseMap();
+		this.userInteracting = userInteracting;
 		this.setup();
 	}
 

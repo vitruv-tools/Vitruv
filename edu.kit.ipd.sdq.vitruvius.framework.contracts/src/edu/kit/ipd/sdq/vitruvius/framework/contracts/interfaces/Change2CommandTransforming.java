@@ -13,4 +13,6 @@ public interface Change2CommandTransforming {
     void transformChanges2Commands(Blackboard blackboard);
 
     List<Pair<VURI, VURI>> getTransformableMetamodels();
+
+    void setUserInteracting(UserInteracting userInteracting);
 }

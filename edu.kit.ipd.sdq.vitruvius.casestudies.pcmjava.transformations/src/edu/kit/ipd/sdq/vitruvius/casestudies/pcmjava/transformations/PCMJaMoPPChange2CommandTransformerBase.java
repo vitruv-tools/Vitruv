@@ -26,6 +26,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
@@ -49,7 +50,7 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
 
     private final List<Pair<VURI, VURI>> pairList;
 
-    protected UserInteractor userInteracting;
+    protected UserInteracting userInteracting;
 
     public PCMJaMoPPChange2CommandTransformerBase() {
         this.transformationExecuter = new TransformationExecuter();
@@ -219,4 +220,9 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
 
     protected abstract VitruviusTransformationRecordingCommand executeChangeRefiner(
             final List<Change> changesForTransformation, final Blackboard blackboard);
+    
+    @Override
+    public void setUserInteracting(UserInteracting userInteracting) {
+    	this.userInteracting = userInteracting;
+    }
 }
