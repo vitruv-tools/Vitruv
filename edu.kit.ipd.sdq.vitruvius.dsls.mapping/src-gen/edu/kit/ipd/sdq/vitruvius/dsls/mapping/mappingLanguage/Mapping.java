@@ -24,7 +24,6 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getConstraintsBody <em>Constraints Body</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getChildMappings <em>Child Mappings</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getParentMapping <em>Parent Mapping</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getConstraintExpressions <em>Constraint Expressions</em>}</li>
  * </ul>
  *
  * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage#getMapping()
@@ -204,21 +203,5 @@ public interface Mapping extends EObject
    * @generated
    */
   void setParentMapping(Mapping value);
-
-  /**
-   * Returns the value of the '<em><b>Constraint Expressions</b></em>' containment reference list.
-   * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintExpression}.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Constraint Expressions</em>' containment reference list isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Constraint Expressions</em>' containment reference list.
-   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage#getMapping_ConstraintExpressions()
-   * @model containment="true"
-   * @generated
-   */
-  EList<ConstraintExpression> getConstraintExpressions();
 
 } // Mapping

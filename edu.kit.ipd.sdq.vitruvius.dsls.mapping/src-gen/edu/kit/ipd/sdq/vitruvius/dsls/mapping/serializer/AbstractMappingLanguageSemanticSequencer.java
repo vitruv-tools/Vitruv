@@ -18,6 +18,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.InExpression;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathBase;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathTail;
@@ -30,6 +31,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.services.MappingLanguageGrammarAcc
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.FeatureOfElement;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelReference;
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFile;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.serializer.MirBaseSemanticSequencer;
@@ -148,6 +150,9 @@ public abstract class AbstractMappingLanguageSemanticSequencer extends MirBaseSe
 			case MappingLanguagePackage.MAPPING_FILE:
 				sequence_MappingFile(context, (MappingFile) semanticObject); 
 				return; 
+			case MappingLanguagePackage.NOT_NULL_EXPRESSION:
+				sequence_NotNullExpression(context, (NotNullExpression) semanticObject); 
+				return; 
 			case MappingLanguagePackage.REQUIRED_MAPPING:
 				sequence_RequiredMapping(context, (RequiredMapping) semanticObject); 
 				return; 
@@ -183,6 +188,9 @@ public abstract class AbstractMappingLanguageSemanticSequencer extends MirBaseSe
 				return; 
 			case MirBasePackage.METAMODEL_REFERENCE:
 				sequence_MetamodelReference(context, (MetamodelReference) semanticObject); 
+				return; 
+			case MirBasePackage.MIR_BASE_FILE:
+				sequence_MirBaseFile(context, (MirBaseFile) semanticObject); 
 				return; 
 			case MirBasePackage.MODEL_ELEMENT:
 				if (rule == grammarAccess.getModelElementRule()) {
@@ -672,6 +680,26 @@ public abstract class AbstractMappingLanguageSemanticSequencer extends MirBaseSe
 	 */
 	protected void sequence_Mapping(ISerializationContext context, Mapping semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ConstraintExpression returns NotNullExpression
+	 *     SignatureConstraintExpression returns NotNullExpression
+	 *     NotNullExpression returns NotNullExpression
+	 *
+	 * Constraint:
+	 *     notNullable=FeatureOfContextVariable
+	 */
+	protected void sequence_NotNullExpression(ISerializationContext context, NotNullExpression semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MappingLanguagePackage.Literals.NOT_NULL_EXPRESSION__NOT_NULLABLE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingLanguagePackage.Literals.NOT_NULL_EXPRESSION__NOT_NULLABLE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getNotNullExpressionAccess().getNotNullableFeatureOfContextVariableParserRuleCall_3_0(), semanticObject.getNotNullable());
+		feeder.finish();
 	}
 	
 	

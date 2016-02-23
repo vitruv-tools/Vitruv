@@ -350,6 +350,31 @@ finally {
 	restoreStackSize(stackSize);
 }
 
+// Entry rule entryRuleNotNullExpression
+entryRuleNotNullExpression
+:
+{ before(grammarAccess.getNotNullExpressionRule()); }
+	 ruleNotNullExpression
+{ after(grammarAccess.getNotNullExpressionRule()); } 
+	 EOF 
+;
+
+// Rule NotNullExpression
+ruleNotNullExpression 
+	@init {
+		int stackSize = keepStackSize();
+	}
+	:
+	(
+		{ before(grammarAccess.getNotNullExpressionAccess().getGroup()); }
+		(rule__NotNullExpression__Group__0)
+		{ after(grammarAccess.getNotNullExpressionAccess().getGroup()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
 // Entry rule entryRuleDefaultContainExpression
 entryRuleDefaultContainExpression
 :
@@ -2648,21 +2673,27 @@ rule__SignatureConstraintExpression__Alternatives
 	)
 	|
 	(
-		{ before(grammarAccess.getSignatureConstraintExpressionAccess().getEqualsLiteralExpressionParserRuleCall_1()); }
+		{ before(grammarAccess.getSignatureConstraintExpressionAccess().getNotNullExpressionParserRuleCall_1()); }
+		ruleNotNullExpression
+		{ after(grammarAccess.getSignatureConstraintExpressionAccess().getNotNullExpressionParserRuleCall_1()); }
+	)
+	|
+	(
+		{ before(grammarAccess.getSignatureConstraintExpressionAccess().getEqualsLiteralExpressionParserRuleCall_2()); }
 		ruleEqualsLiteralExpression
-		{ after(grammarAccess.getSignatureConstraintExpressionAccess().getEqualsLiteralExpressionParserRuleCall_1()); }
+		{ after(grammarAccess.getSignatureConstraintExpressionAccess().getEqualsLiteralExpressionParserRuleCall_2()); }
 	)
 	|
 	(
-		{ before(grammarAccess.getSignatureConstraintExpressionAccess().getDefaultContainExpressionParserRuleCall_2()); }
+		{ before(grammarAccess.getSignatureConstraintExpressionAccess().getDefaultContainExpressionParserRuleCall_3()); }
 		ruleDefaultContainExpression
-		{ after(grammarAccess.getSignatureConstraintExpressionAccess().getDefaultContainExpressionParserRuleCall_2()); }
+		{ after(grammarAccess.getSignatureConstraintExpressionAccess().getDefaultContainExpressionParserRuleCall_3()); }
 	)
 	|
 	(
-		{ before(grammarAccess.getSignatureConstraintExpressionAccess().getXbaseSignatureConstraintExpressionParserRuleCall_3()); }
+		{ before(grammarAccess.getSignatureConstraintExpressionAccess().getXbaseSignatureConstraintExpressionParserRuleCall_4()); }
 		ruleXbaseSignatureConstraintExpression
-		{ after(grammarAccess.getSignatureConstraintExpressionAccess().getXbaseSignatureConstraintExpressionParserRuleCall_3()); }
+		{ after(grammarAccess.getSignatureConstraintExpressionAccess().getXbaseSignatureConstraintExpressionParserRuleCall_4()); }
 	)
 ;
 finally {
@@ -6319,6 +6350,141 @@ rule__InExpression__Group__6__Impl
 	{ before(grammarAccess.getInExpressionAccess().getRightParenthesisKeyword_6()); }
 	')'
 	{ after(grammarAccess.getInExpressionAccess().getRightParenthesisKeyword_6()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+rule__NotNullExpression__Group__0
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__NotNullExpression__Group__0__Impl
+	rule__NotNullExpression__Group__1
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__NotNullExpression__Group__0__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getNotNullExpressionAccess().getNotNullExpressionAction_0()); }
+	()
+	{ after(grammarAccess.getNotNullExpressionAccess().getNotNullExpressionAction_0()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__NotNullExpression__Group__1
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__NotNullExpression__Group__1__Impl
+	rule__NotNullExpression__Group__2
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__NotNullExpression__Group__1__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getNotNullExpressionAccess().getNotnullKeyword_1()); }
+	'notnull'
+	{ after(grammarAccess.getNotNullExpressionAccess().getNotnullKeyword_1()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__NotNullExpression__Group__2
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__NotNullExpression__Group__2__Impl
+	rule__NotNullExpression__Group__3
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__NotNullExpression__Group__2__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getNotNullExpressionAccess().getLeftParenthesisKeyword_2()); }
+	'('
+	{ after(grammarAccess.getNotNullExpressionAccess().getLeftParenthesisKeyword_2()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__NotNullExpression__Group__3
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__NotNullExpression__Group__3__Impl
+	rule__NotNullExpression__Group__4
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__NotNullExpression__Group__3__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getNotNullExpressionAccess().getNotNullableAssignment_3()); }
+	(rule__NotNullExpression__NotNullableAssignment_3)
+	{ after(grammarAccess.getNotNullExpressionAccess().getNotNullableAssignment_3()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__NotNullExpression__Group__4
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__NotNullExpression__Group__4__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__NotNullExpression__Group__4__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getNotNullExpressionAccess().getRightParenthesisKeyword_4()); }
+	')'
+	{ after(grammarAccess.getNotNullExpressionAccess().getRightParenthesisKeyword_4()); }
 )
 ;
 finally {
@@ -20027,6 +20193,21 @@ rule__InExpression__SourceAssignment_5
 		{ before(grammarAccess.getInExpressionAccess().getSourceFeatureOfContextVariableParserRuleCall_5_0()); }
 		ruleFeatureOfContextVariable
 		{ after(grammarAccess.getInExpressionAccess().getSourceFeatureOfContextVariableParserRuleCall_5_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__NotNullExpression__NotNullableAssignment_3
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getNotNullExpressionAccess().getNotNullableFeatureOfContextVariableParserRuleCall_3_0()); }
+		ruleFeatureOfContextVariable
+		{ after(grammarAccess.getNotNullExpressionAccess().getNotNullableFeatureOfContextVariableParserRuleCall_3_0()); }
 	)
 ;
 finally {

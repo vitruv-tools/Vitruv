@@ -4,7 +4,6 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.BodyConstraintBlock;
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintExpression;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping;
@@ -45,7 +44,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingImpl#getConstraintsBody <em>Constraints Body</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingImpl#getChildMappings <em>Child Mappings</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingImpl#getParentMapping <em>Parent Mapping</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingImpl#getConstraintExpressions <em>Constraint Expressions</em>}</li>
  * </ul>
  *
  * @generated
@@ -141,16 +139,6 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
    * @ordered
    */
   protected EList<Mapping> childMappings;
-
-  /**
-   * The cached value of the '{@link #getConstraintExpressions() <em>Constraint Expressions</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getConstraintExpressions()
-   * @generated
-   * @ordered
-   */
-  protected EList<ConstraintExpression> constraintExpressions;
 
   /**
    * <!-- begin-user-doc -->
@@ -373,20 +361,6 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<ConstraintExpression> getConstraintExpressions()
-  {
-    if (constraintExpressions == null)
-    {
-      constraintExpressions = new EObjectContainmentEList<ConstraintExpression>(ConstraintExpression.class, this, MappingLanguagePackage.MAPPING__CONSTRAINT_EXPRESSIONS);
-    }
-    return constraintExpressions;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   @SuppressWarnings("unchecked")
   @Override
   public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs)
@@ -425,8 +399,6 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
         return ((InternalEList<?>)getChildMappings()).basicRemove(otherEnd, msgs);
       case MappingLanguagePackage.MAPPING__PARENT_MAPPING:
         return basicSetParentMapping(null, msgs);
-      case MappingLanguagePackage.MAPPING__CONSTRAINT_EXPRESSIONS:
-        return ((InternalEList<?>)getConstraintExpressions()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -473,8 +445,6 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
         return getChildMappings();
       case MappingLanguagePackage.MAPPING__PARENT_MAPPING:
         return getParentMapping();
-      case MappingLanguagePackage.MAPPING__CONSTRAINT_EXPRESSIONS:
-        return getConstraintExpressions();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -518,10 +488,6 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
       case MappingLanguagePackage.MAPPING__PARENT_MAPPING:
         setParentMapping((Mapping)newValue);
         return;
-      case MappingLanguagePackage.MAPPING__CONSTRAINT_EXPRESSIONS:
-        getConstraintExpressions().clear();
-        getConstraintExpressions().addAll((Collection<? extends ConstraintExpression>)newValue);
-        return;
     }
     super.eSet(featureID, newValue);
   }
@@ -560,9 +526,6 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
       case MappingLanguagePackage.MAPPING__PARENT_MAPPING:
         setParentMapping((Mapping)null);
         return;
-      case MappingLanguagePackage.MAPPING__CONSTRAINT_EXPRESSIONS:
-        getConstraintExpressions().clear();
-        return;
     }
     super.eUnset(featureID);
   }
@@ -593,8 +556,6 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
         return childMappings != null && !childMappings.isEmpty();
       case MappingLanguagePackage.MAPPING__PARENT_MAPPING:
         return getParentMapping() != null;
-      case MappingLanguagePackage.MAPPING__CONSTRAINT_EXPRESSIONS:
-        return constraintExpressions != null && !constraintExpressions.isEmpty();
     }
     return super.eIsSet(featureID);
   }

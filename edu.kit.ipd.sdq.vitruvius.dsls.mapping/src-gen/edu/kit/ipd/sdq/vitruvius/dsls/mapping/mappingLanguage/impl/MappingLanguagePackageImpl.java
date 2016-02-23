@@ -174,6 +174,13 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass notNullExpressionEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass defaultContainExpressionEClass = null;
 
   /**
@@ -217,13 +224,6 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    * @generated
    */
   private EClass constraintStringLiteralEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass notNullExpressionEClass = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -420,16 +420,6 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
   public EReference getMapping_ParentMapping()
   {
     return (EReference)mappingEClass.getEStructuralFeatures().get(7);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getMapping_ConstraintExpressions()
-  {
-    return (EReference)mappingEClass.getEStructuralFeatures().get(8);
   }
 
   /**
@@ -787,6 +777,26 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getNotNullExpression()
+  {
+    return notNullExpressionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getNotNullExpression_NotNullable()
+  {
+    return (EReference)notNullExpressionEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getDefaultContainExpression()
   {
     return defaultContainExpressionEClass;
@@ -967,26 +977,6 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getNotNullExpression()
-  {
-    return notNullExpressionEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getNotNullExpression_Feature()
-  {
-    return (EReference)notNullExpressionEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public MappingLanguageFactory getMappingLanguageFactory()
   {
     return (MappingLanguageFactory)getEFactoryInstance();
@@ -1026,7 +1016,6 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     createEReference(mappingEClass, MAPPING__CONSTRAINTS_BODY);
     createEReference(mappingEClass, MAPPING__CHILD_MAPPINGS);
     createEReference(mappingEClass, MAPPING__PARENT_MAPPING);
-    createEReference(mappingEClass, MAPPING__CONSTRAINT_EXPRESSIONS);
 
     signatureEClass = createEClass(SIGNATURE);
     createEReference(signatureEClass, SIGNATURE__DECLARED_PACKAGE);
@@ -1078,6 +1067,9 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     createEReference(inExpressionEClass, IN_EXPRESSION__TARGET);
     createEReference(inExpressionEClass, IN_EXPRESSION__SOURCE);
 
+    notNullExpressionEClass = createEClass(NOT_NULL_EXPRESSION);
+    createEReference(notNullExpressionEClass, NOT_NULL_EXPRESSION__NOT_NULLABLE);
+
     defaultContainExpressionEClass = createEClass(DEFAULT_CONTAIN_EXPRESSION);
     createEReference(defaultContainExpressionEClass, DEFAULT_CONTAIN_EXPRESSION__TARGET);
     createEReference(defaultContainExpressionEClass, DEFAULT_CONTAIN_EXPRESSION__SOURCE);
@@ -1102,9 +1094,6 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
 
     constraintStringLiteralEClass = createEClass(CONSTRAINT_STRING_LITERAL);
     createEAttribute(constraintStringLiteralEClass, CONSTRAINT_STRING_LITERAL__VALUE);
-
-    notNullExpressionEClass = createEClass(NOT_NULL_EXPRESSION);
-    createEReference(notNullExpressionEClass, NOT_NULL_EXPRESSION__FEATURE);
   }
 
   /**
@@ -1147,6 +1136,7 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     xbaseBodyConstraintExpressionEClass.getESuperTypes().add(this.getConstraintExpression());
     variableRefEClass.getESuperTypes().add(this.getConstraintExpression());
     inExpressionEClass.getESuperTypes().add(this.getConstraintExpression());
+    notNullExpressionEClass.getESuperTypes().add(this.getConstraintExpression());
     defaultContainExpressionEClass.getESuperTypes().add(this.getConstraintExpression());
     equalsLiteralExpressionEClass.getESuperTypes().add(this.getConstraintExpression());
     attributeEquivalenceExpressionEClass.getESuperTypes().add(this.getConstraintExpression());
@@ -1154,7 +1144,6 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     constraintNullLiteralEClass.getESuperTypes().add(this.getConstraintLiteral());
     constraintNumberLiteralEClass.getESuperTypes().add(this.getConstraintLiteral());
     constraintStringLiteralEClass.getESuperTypes().add(this.getConstraintLiteral());
-    notNullExpressionEClass.getESuperTypes().add(this.getConstraintExpression());
 
     // Initialize classes and features; add operations and parameters
     initEClass(mappingFileEClass, MappingFile.class, "MappingFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1171,7 +1160,6 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     initEReference(getMapping_ConstraintsBody(), this.getBodyConstraintBlock(), null, "constraintsBody", null, 0, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMapping_ChildMappings(), this.getMapping(), this.getMapping_ParentMapping(), "childMappings", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMapping_ParentMapping(), this.getMapping(), this.getMapping_ChildMappings(), "parentMapping", null, 0, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMapping_ConstraintExpressions(), this.getConstraintExpression(), null, "constraintExpressions", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(signatureEClass, Signature.class, "Signature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getSignature_DeclaredPackage(), theMirBasePackage.getMetamodelReference(), null, "declaredPackage", null, 0, 1, Signature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1223,6 +1211,9 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
     initEReference(getInExpression_Target(), this.getContextVariable(), null, "target", null, 0, 1, InExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getInExpression_Source(), this.getFeatureOfContextVariable(), null, "source", null, 0, 1, InExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(notNullExpressionEClass, NotNullExpression.class, "NotNullExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getNotNullExpression_NotNullable(), this.getFeatureOfContextVariable(), null, "notNullable", null, 0, 1, NotNullExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(defaultContainExpressionEClass, DefaultContainExpression.class, "DefaultContainExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getDefaultContainExpression_Target(), this.getContextVariable(), null, "target", null, 0, 1, DefaultContainExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getDefaultContainExpression_Source(), this.getFeatureOfContextVariable(), null, "source", null, 0, 1, DefaultContainExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1247,9 +1238,6 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
 
     initEClass(constraintStringLiteralEClass, ConstraintStringLiteral.class, "ConstraintStringLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getConstraintStringLiteral_Value(), ecorePackage.getEString(), "value", null, 0, 1, ConstraintStringLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(notNullExpressionEClass, NotNullExpression.class, "NotNullExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getNotNullExpression_Feature(), this.getFeatureOfContextVariable(), null, "feature", null, 0, 1, NotNullExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Create resource
     createResource(eNS_URI);

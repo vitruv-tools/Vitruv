@@ -75,7 +75,7 @@ public class MappingLanguageXtext2EcorePostProcessor implements IXtext2EcorePost
 		mappingEClass.getEStructuralFeatures().add(parentMappingRef);
 		
 		// add not-null-constraint (that is not manually specifiable)
-		final EClass notNullConstraint = EcoreFactory.eINSTANCE.createEClass();
+/*		final EClass notNullConstraint = EcoreFactory.eINSTANCE.createEClass();
 		notNullConstraint.setName("NotNullExpression");
 		notNullConstraint.getESuperTypes().add(constraintExpressionEClass);
 		ePackage.getEClassifiers().add(notNullConstraint);
@@ -91,6 +91,6 @@ public class MappingLanguageXtext2EcorePostProcessor implements IXtext2EcorePost
 		constraintsRef.setEType(constraintExpressionEClass);
 		constraintsRef.setLowerBound(0);
 		constraintsRef.setUpperBound(-1);
-		mappingEClass.getEStructuralFeatures().add(constraintsRef);
+		mappingEClass.getEStructuralFeatures().add(constraintsRef);*/
 	}
 }

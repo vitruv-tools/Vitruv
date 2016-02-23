@@ -9,21 +9,16 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathBase
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMappingPathTail
-import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
-import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.Iterator
 import java.util.List
 import org.apache.log4j.Logger
-import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EcorePackage
-import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.emf.mwe2.language.mwe2.Import
 import org.eclipse.emf.mwe2.language.scoping.QualifiedNameProvider
-import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.resource.EObjectDescription
 import org.eclipse.xtext.scoping.IScope
 
@@ -32,7 +27,6 @@ import static edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLang
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.EMFHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
 import static extension java.util.Objects.*
-import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
 
 /**
  * @author Dominik Werle
@@ -169,31 +163,5 @@ class MappingLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate 
 		
 		createPairScope(IScope.NULLSCOPE,
 			contextMapping.signatures.filterNull.map[elements].flatten.map[new Pair(it.name, it)].iterator)
-	}
-
-	/**
-	 * Returns all packages that have been imported by import statements
-	 * in the given resource.
-	 */
-	def getImports(Resource res) {
-		var contents = res.getAllContentsOfEClass(MirBasePackage.Literals.METAMODEL_IMPORT, true).toList
-		val validImports = contents.filter(MetamodelImport).filter[package != null].map[it.name = it.name ?: it.package.name; it]
-
-		return validImports
-	}
-
-	/**
-	 * Creates and returns a {@link EObjectDescription} with a
-	 * qualified name that also includes the name of the given
-	 * {@link Import}.
-	 */
-	def createEObjectDescription(EClassifier classifier, MetamodelImport imp) {
-		if (classifier == null) {
-			return null
-		}
-
-		return EObjectDescription.create(
-			QualifiedName.create(imp.name).append(qualifiedNameProvider.getFullyQualifiedName(classifier).skipFirst(1)),
-			classifier)
 	}
 }

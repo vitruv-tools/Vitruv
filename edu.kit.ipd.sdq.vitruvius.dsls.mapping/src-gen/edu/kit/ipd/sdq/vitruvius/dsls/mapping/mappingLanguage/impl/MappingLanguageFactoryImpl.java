@@ -82,6 +82,7 @@ public class MappingLanguageFactoryImpl extends EFactoryImpl implements MappingL
       case MappingLanguagePackage.XBASE_BODY_CONSTRAINT_EXPRESSION: return createXbaseBodyConstraintExpression();
       case MappingLanguagePackage.VARIABLE_REF: return createVariableRef();
       case MappingLanguagePackage.IN_EXPRESSION: return createInExpression();
+      case MappingLanguagePackage.NOT_NULL_EXPRESSION: return createNotNullExpression();
       case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION: return createDefaultContainExpression();
       case MappingLanguagePackage.EQUALS_LITERAL_EXPRESSION: return createEqualsLiteralExpression();
       case MappingLanguagePackage.ATTRIBUTE_EQUIVALENCE_EXPRESSION: return createAttributeEquivalenceExpression();
@@ -89,7 +90,6 @@ public class MappingLanguageFactoryImpl extends EFactoryImpl implements MappingL
       case MappingLanguagePackage.CONSTRAINT_NULL_LITERAL: return createConstraintNullLiteral();
       case MappingLanguagePackage.CONSTRAINT_NUMBER_LITERAL: return createConstraintNumberLiteral();
       case MappingLanguagePackage.CONSTRAINT_STRING_LITERAL: return createConstraintStringLiteral();
-      case MappingLanguagePackage.NOT_NULL_EXPRESSION: return createNotNullExpression();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -287,6 +287,17 @@ public class MappingLanguageFactoryImpl extends EFactoryImpl implements MappingL
    * <!-- end-user-doc -->
    * @generated
    */
+  public NotNullExpression createNotNullExpression()
+  {
+    NotNullExpressionImpl notNullExpression = new NotNullExpressionImpl();
+    return notNullExpression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public DefaultContainExpression createDefaultContainExpression()
   {
     DefaultContainExpressionImpl defaultContainExpression = new DefaultContainExpressionImpl();
@@ -357,17 +368,6 @@ public class MappingLanguageFactoryImpl extends EFactoryImpl implements MappingL
   {
     ConstraintStringLiteralImpl constraintStringLiteral = new ConstraintStringLiteralImpl();
     return constraintStringLiteral;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotNullExpression createNotNullExpression()
-  {
-    NotNullExpressionImpl notNullExpression = new NotNullExpressionImpl();
-    return notNullExpression;
   }
 
   /**

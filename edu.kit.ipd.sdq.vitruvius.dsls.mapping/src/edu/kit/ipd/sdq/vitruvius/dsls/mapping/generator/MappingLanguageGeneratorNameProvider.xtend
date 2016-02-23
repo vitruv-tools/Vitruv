@@ -12,13 +12,24 @@ import java.util.Map
 
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.EMFHelper.*
 import com.google.inject.Singleton
+import org.eclipse.emf.ecore.resource.Resource
 
 @Singleton
 class MappingLanguageGeneratorNameProvider {
-	private var anonMappingIndex = 0
+	private int anonMappingIndex
+	private Map<ConstraintExpression, Integer> constraintExpression2Index
 	
 	@Inject @Named(MappingLanguageGenerator.PACKAGE_NAME_FIELD)
 	private String pkgName
+	
+	public def initialize() {
+		anonMappingIndex = 0
+		constraintExpression2Index = newHashMap
+	}
+	
+	public new() {
+		initialize
+	}
 
 	public def getMappingName(Mapping mapping) {
 		if ((mapping.name == null) || (mapping.name.empty)) {
@@ -90,7 +101,6 @@ class MappingLanguageGeneratorNameProvider {
 		return simpleName.toFirstLower
 	}
 	
-	private Map<ConstraintExpression, Integer> constraintExpression2Index = newHashMap
 	def getOrSetIndex(ConstraintExpression constraintExpression) {
 		if (!constraintExpression2Index.containsKey(constraintExpression)) {
 			constraintExpression2Index.put(constraintExpression, constraintExpression2Index.size)
@@ -111,8 +121,8 @@ class MappingLanguageGeneratorNameProvider {
 		'''propagateConstraint«getOrSetIndex(expression)»From«expression.metamodel?.model?.toFirstUpperName ?: ''»'''
 	}
 	
-	public def String getResponseName(Mapping mapping, MetamodelImport imp) {
-		'''Mapping«mapping.mappingName.toFirstUpper»ResponseFrom«imp.toFirstUpperName»'''
+	public def String getResponseName(MetamodelImport imp, Resource resource) {
+		'''ResponseFrom«imp.toFirstUpperName»And«resource.URI.trimFileExtension.lastSegment.toFirstUpper»'''
 	}
 	
 }

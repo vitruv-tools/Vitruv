@@ -27,7 +27,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.EMFHelper
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
 import static extension java.util.Objects.*
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression
+//import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpression
@@ -126,15 +126,15 @@ class ConstraintLanguageGenerator {
 			getJavaExpressionThatReturns(constraint.value))
 	}
 
-	def dispatch checkSignatureConstraint(ImportHelper importHelper, Map<List<?>, String> localContext,
-		NotNullExpression constraint) {
-		val mapping = constraint.getContainerOfType(Mapping)
-
-		val target = constraint.feature.context
-		val feature = constraint.feature.feature
-
-		'''«eRefGet(importHelper, getJavaExpressionThatReturns(localContext, target, mapping), feature)» != null'''
-	}
+//	def dispatch checkSignatureConstraint(ImportHelper importHelper, Map<List<?>, String> localContext,
+//		NotNullExpression constraint) {
+//		val mapping = constraint.getContainerOfType(Mapping)
+//
+//		val target = constraint.target.context
+//		val feature = constraint.target.feature
+//
+//		'''«eRefGet(importHelper, getJavaExpressionThatReturns(localContext, target, mapping), feature)» != null'''
+//	}
 
 	def dispatch checkSignatureConstraint(ImportHelper importHelper, Map<List<?>, String> localContext,
 		DefaultContainExpression constraint) {
@@ -162,6 +162,13 @@ class ConstraintLanguageGenerator {
 		"«literal.value»"
 	'''
 
+	/**
+	 * Used in the generator to create a Java expression that returns a element.
+	 * <p>
+	 * Since, depending on the current context, elements may be covered by a local variable
+	 * or by a parameter, the <code>localContext</code> can be used to overwrite the default
+	 * mechanism for determining how to reference an element.
+	 */
 	static def getJavaExpressionThatReturns(Map<List<?>, String> localContext, ContextVariable variable,
 		Mapping source) {
 
@@ -170,6 +177,9 @@ class ConstraintLanguageGenerator {
 
 		println(context.toString)
 
+		/*
+		 * 
+		 */
 		val mappingPath = variable.requiredMappingPath?.collectRecursive ?: #[]
 		val elementPath = (#['this'] + mappingPath + #[variable.targetClass.import, variable.targetClass]).toList
 		var reverseIndex = elementPath.size - 1

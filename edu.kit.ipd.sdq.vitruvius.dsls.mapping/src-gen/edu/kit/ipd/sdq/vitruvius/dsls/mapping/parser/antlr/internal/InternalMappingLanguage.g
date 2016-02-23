@@ -768,29 +768,38 @@ ruleSignatureConstraintExpression returns [EObject current=null]
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getSignatureConstraintExpressionAccess().getEqualsLiteralExpressionParserRuleCall_1());
+			newCompositeNode(grammarAccess.getSignatureConstraintExpressionAccess().getNotNullExpressionParserRuleCall_1());
 		}
-		this_EqualsLiteralExpression_1=ruleEqualsLiteralExpression
+		this_NotNullExpression_1=ruleNotNullExpression
 		{
-			$current = $this_EqualsLiteralExpression_1.current;
+			$current = $this_NotNullExpression_1.current;
 			afterParserOrEnumRuleCall();
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getSignatureConstraintExpressionAccess().getDefaultContainExpressionParserRuleCall_2());
+			newCompositeNode(grammarAccess.getSignatureConstraintExpressionAccess().getEqualsLiteralExpressionParserRuleCall_2());
 		}
-		this_DefaultContainExpression_2=ruleDefaultContainExpression
+		this_EqualsLiteralExpression_2=ruleEqualsLiteralExpression
 		{
-			$current = $this_DefaultContainExpression_2.current;
+			$current = $this_EqualsLiteralExpression_2.current;
 			afterParserOrEnumRuleCall();
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getSignatureConstraintExpressionAccess().getXbaseSignatureConstraintExpressionParserRuleCall_3());
+			newCompositeNode(grammarAccess.getSignatureConstraintExpressionAccess().getDefaultContainExpressionParserRuleCall_3());
 		}
-		this_XbaseSignatureConstraintExpression_3=ruleXbaseSignatureConstraintExpression
+		this_DefaultContainExpression_3=ruleDefaultContainExpression
 		{
-			$current = $this_XbaseSignatureConstraintExpression_3.current;
+			$current = $this_DefaultContainExpression_3.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getSignatureConstraintExpressionAccess().getXbaseSignatureConstraintExpressionParserRuleCall_4());
+		}
+		this_XbaseSignatureConstraintExpression_4=ruleXbaseSignatureConstraintExpression
+		{
+			$current = $this_XbaseSignatureConstraintExpression_4.current;
 			afterParserOrEnumRuleCall();
 		}
 	)
@@ -1123,6 +1132,63 @@ ruleInExpression returns [EObject current=null]
 		otherlv_6=')'
 		{
 			newLeafNode(otherlv_6, grammarAccess.getInExpressionAccess().getRightParenthesisKeyword_6());
+		}
+	)
+;
+
+// Entry rule entryRuleNotNullExpression
+entryRuleNotNullExpression returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getNotNullExpressionRule()); }
+	iv_ruleNotNullExpression=ruleNotNullExpression
+	{ $current=$iv_ruleNotNullExpression.current; }
+	EOF;
+
+// Rule NotNullExpression
+ruleNotNullExpression returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getNotNullExpressionAccess().getNotNullExpressionAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='notnull'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getNotNullExpressionAccess().getNotnullKeyword_1());
+		}
+		otherlv_2='('
+		{
+			newLeafNode(otherlv_2, grammarAccess.getNotNullExpressionAccess().getLeftParenthesisKeyword_2());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getNotNullExpressionAccess().getNotNullableFeatureOfContextVariableParserRuleCall_3_0());
+				}
+				lv_notNullable_3_0=ruleFeatureOfContextVariable
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getNotNullExpressionRule());
+					}
+					set(
+						$current,
+						"notNullable",
+						lv_notNullable_3_0,
+						"edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.FeatureOfContextVariable");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		otherlv_4=')'
+		{
+			newLeafNode(otherlv_4, grammarAccess.getNotNullExpressionAccess().getRightParenthesisKeyword_4());
 		}
 	)
 ;

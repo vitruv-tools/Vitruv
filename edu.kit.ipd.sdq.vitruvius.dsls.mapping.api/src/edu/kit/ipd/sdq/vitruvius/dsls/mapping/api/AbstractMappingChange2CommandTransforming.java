@@ -24,6 +24,12 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingExecutionState;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
+/**
+ * The base for the {@link Change2CommandTransforming} generated for the mapping language.
+ * @author Dominik Werle
+ * @deprecated use Responses instead
+ */
+@Deprecated
 public abstract class AbstractMappingChange2CommandTransforming implements Change2CommandTransforming {
 	private final static Logger LOGGER = Logger.getLogger(AbstractMappingChange2CommandTransforming.class);
 
@@ -77,7 +83,7 @@ public abstract class AbstractMappingChange2CommandTransforming implements Chang
 		
 		final Command command = EMFCommandBridge
 				.createVitruviusTransformationRecordingCommand(() -> {
-					final MappingExecutionState state = new MappingExecutionState(mappedCorrespondenceInstance, blackboard);
+					final MappingExecutionState state = null; // new MappingExecutionState(mappedCorrespondenceInstance, blackboard);
 					LOGGER.debug("call relevant mappings");
 					for (final MappingRealization mapping : relevantMappings) {
 						LOGGER.debug(mapping.getMappingID() + " (" + mapping.toString() + ")");

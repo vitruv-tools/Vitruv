@@ -13,7 +13,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression#getFeature <em>Feature</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression#getNotNullable <em>Not Nullable</em>}</li>
  * </ul>
  *
  * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage#getNotNullExpression()
@@ -23,29 +23,29 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage;
 public interface NotNullExpression extends ConstraintExpression
 {
   /**
-   * Returns the value of the '<em><b>Feature</b></em>' reference.
+   * Returns the value of the '<em><b>Not Nullable</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Feature</em>' reference isn't clear,
+   * If the meaning of the '<em>Not Nullable</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Feature</em>' reference.
-   * @see #setFeature(FeatureOfContextVariable)
-   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage#getNotNullExpression_Feature()
-   * @model
+   * @return the value of the '<em>Not Nullable</em>' containment reference.
+   * @see #setNotNullable(FeatureOfContextVariable)
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage#getNotNullExpression_NotNullable()
+   * @model containment="true"
    * @generated
    */
-  FeatureOfContextVariable getFeature();
+  FeatureOfContextVariable getNotNullable();
 
   /**
-   * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression#getFeature <em>Feature</em>}' reference.
+   * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression#getNotNullable <em>Not Nullable</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Feature</em>' reference.
-   * @see #getFeature()
+   * @param value the new value of the '<em>Not Nullable</em>' containment reference.
+   * @see #getNotNullable()
    * @generated
    */
-  void setFeature(FeatureOfContextVariable value);
+  void setNotNullable(FeatureOfContextVariable value);
 
 } // NotNullExpression

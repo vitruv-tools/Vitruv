@@ -52,6 +52,10 @@ class MappingLanguageJvmModelInferrer extends AbstractModelInferrer {
 		if (isPreIndexingPhase) {
 			return
 		}
+		
+		if (mappingFile.imports.size != 2) {
+			return
+		}
 
 		derivedStateComputer.inferDefaultState(mappingFile)
 

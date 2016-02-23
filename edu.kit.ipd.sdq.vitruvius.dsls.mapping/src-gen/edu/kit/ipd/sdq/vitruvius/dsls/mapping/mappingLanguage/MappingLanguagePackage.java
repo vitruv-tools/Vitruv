@@ -70,6 +70,15 @@ public interface MappingLanguagePackage extends EPackage
   int MAPPING_FILE = 0;
 
   /**
+   * The feature id for the '<em><b>Metamodel Imports</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MAPPING_FILE__METAMODEL_IMPORTS = MirBasePackage.MIR_BASE_FILE__METAMODEL_IMPORTS;
+
+  /**
    * The feature id for the '<em><b>Imports</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -188,22 +197,13 @@ public interface MappingLanguagePackage extends EPackage
   int MAPPING__PARENT_MAPPING = 7;
 
   /**
-   * The feature id for the '<em><b>Constraint Expressions</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MAPPING__CONSTRAINT_EXPRESSIONS = 8;
-
-  /**
    * The number of structural features of the '<em>Mapping</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MAPPING_FEATURE_COUNT = 9;
+  int MAPPING_FEATURE_COUNT = 8;
 
   /**
    * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.SignatureImpl <em>Signature</em>}' class.
@@ -689,6 +689,34 @@ public interface MappingLanguagePackage extends EPackage
   int IN_EXPRESSION_FEATURE_COUNT = CONSTRAINT_EXPRESSION_FEATURE_COUNT + 2;
 
   /**
+   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.NotNullExpressionImpl <em>Not Null Expression</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.NotNullExpressionImpl
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getNotNullExpression()
+   * @generated
+   */
+  int NOT_NULL_EXPRESSION = 17;
+
+  /**
+   * The feature id for the '<em><b>Not Nullable</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NOT_NULL_EXPRESSION__NOT_NULLABLE = CONSTRAINT_EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Not Null Expression</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NOT_NULL_EXPRESSION_FEATURE_COUNT = CONSTRAINT_EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
    * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.DefaultContainExpressionImpl <em>Default Contain Expression</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -696,7 +724,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getDefaultContainExpression()
    * @generated
    */
-  int DEFAULT_CONTAIN_EXPRESSION = 17;
+  int DEFAULT_CONTAIN_EXPRESSION = 18;
 
   /**
    * The feature id for the '<em><b>Target</b></em>' containment reference.
@@ -751,7 +779,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getEqualsLiteralExpression()
    * @generated
    */
-  int EQUALS_LITERAL_EXPRESSION = 18;
+  int EQUALS_LITERAL_EXPRESSION = 19;
 
   /**
    * The feature id for the '<em><b>Target</b></em>' containment reference.
@@ -788,7 +816,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getAttributeEquivalenceExpression()
    * @generated
    */
-  int ATTRIBUTE_EQUIVALENCE_EXPRESSION = 19;
+  int ATTRIBUTE_EQUIVALENCE_EXPRESSION = 20;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -825,7 +853,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getConstraintBooleanLiteral()
    * @generated
    */
-  int CONSTRAINT_BOOLEAN_LITERAL = 20;
+  int CONSTRAINT_BOOLEAN_LITERAL = 21;
 
   /**
    * The feature id for the '<em><b>Is True</b></em>' attribute.
@@ -853,7 +881,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getConstraintNullLiteral()
    * @generated
    */
-  int CONSTRAINT_NULL_LITERAL = 21;
+  int CONSTRAINT_NULL_LITERAL = 22;
 
   /**
    * The number of structural features of the '<em>Constraint Null Literal</em>' class.
@@ -872,7 +900,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getConstraintNumberLiteral()
    * @generated
    */
-  int CONSTRAINT_NUMBER_LITERAL = 22;
+  int CONSTRAINT_NUMBER_LITERAL = 23;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -900,7 +928,7 @@ public interface MappingLanguagePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getConstraintStringLiteral()
    * @generated
    */
-  int CONSTRAINT_STRING_LITERAL = 23;
+  int CONSTRAINT_STRING_LITERAL = 24;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -919,34 +947,6 @@ public interface MappingLanguagePackage extends EPackage
    * @ordered
    */
   int CONSTRAINT_STRING_LITERAL_FEATURE_COUNT = CONSTRAINT_LITERAL_FEATURE_COUNT + 1;
-
-  /**
-   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.NotNullExpressionImpl <em>Not Null Expression</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.NotNullExpressionImpl
-   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getNotNullExpression()
-   * @generated
-   */
-  int NOT_NULL_EXPRESSION = 24;
-
-  /**
-   * The feature id for the '<em><b>Feature</b></em>' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int NOT_NULL_EXPRESSION__FEATURE = CONSTRAINT_EXPRESSION_FEATURE_COUNT + 0;
-
-  /**
-   * The number of structural features of the '<em>Not Null Expression</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int NOT_NULL_EXPRESSION_FEATURE_COUNT = CONSTRAINT_EXPRESSION_FEATURE_COUNT + 1;
 
 
   /**
@@ -1089,17 +1089,6 @@ public interface MappingLanguagePackage extends EPackage
    * @generated
    */
   EReference getMapping_ParentMapping();
-
-  /**
-   * Returns the meta object for the containment reference list '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getConstraintExpressions <em>Constraint Expressions</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Constraint Expressions</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping#getConstraintExpressions()
-   * @see #getMapping()
-   * @generated
-   */
-  EReference getMapping_ConstraintExpressions();
 
   /**
    * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Signature <em>Signature</em>}'.
@@ -1472,6 +1461,27 @@ public interface MappingLanguagePackage extends EPackage
   EReference getInExpression_Source();
 
   /**
+   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression <em>Not Null Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Not Null Expression</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression
+   * @generated
+   */
+  EClass getNotNullExpression();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression#getNotNullable <em>Not Nullable</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Not Nullable</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression#getNotNullable()
+   * @see #getNotNullExpression()
+   * @generated
+   */
+  EReference getNotNullExpression_NotNullable();
+
+  /**
    * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression <em>Default Contain Expression</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1663,27 +1673,6 @@ public interface MappingLanguagePackage extends EPackage
   EAttribute getConstraintStringLiteral_Value();
 
   /**
-   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression <em>Not Null Expression</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Not Null Expression</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression
-   * @generated
-   */
-  EClass getNotNullExpression();
-
-  /**
-   * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression#getFeature <em>Feature</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the reference '<em>Feature</em>'.
-   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression#getFeature()
-   * @see #getNotNullExpression()
-   * @generated
-   */
-  EReference getNotNullExpression_Feature();
-
-  /**
    * Returns the factory that creates the instances of the model.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1813,14 +1802,6 @@ public interface MappingLanguagePackage extends EPackage
      * @generated
      */
     EReference MAPPING__PARENT_MAPPING = eINSTANCE.getMapping_ParentMapping();
-
-    /**
-     * The meta object literal for the '<em><b>Constraint Expressions</b></em>' containment reference list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference MAPPING__CONSTRAINT_EXPRESSIONS = eINSTANCE.getMapping_ConstraintExpressions();
 
     /**
      * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.SignatureImpl <em>Signature</em>}' class.
@@ -2133,6 +2114,24 @@ public interface MappingLanguagePackage extends EPackage
     EReference IN_EXPRESSION__SOURCE = eINSTANCE.getInExpression_Source();
 
     /**
+     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.NotNullExpressionImpl <em>Not Null Expression</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.NotNullExpressionImpl
+     * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getNotNullExpression()
+     * @generated
+     */
+    EClass NOT_NULL_EXPRESSION = eINSTANCE.getNotNullExpression();
+
+    /**
+     * The meta object literal for the '<em><b>Not Nullable</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference NOT_NULL_EXPRESSION__NOT_NULLABLE = eINSTANCE.getNotNullExpression_NotNullable();
+
+    /**
      * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.DefaultContainExpressionImpl <em>Default Contain Expression</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2289,24 +2288,6 @@ public interface MappingLanguagePackage extends EPackage
      * @generated
      */
     EAttribute CONSTRAINT_STRING_LITERAL__VALUE = eINSTANCE.getConstraintStringLiteral_Value();
-
-    /**
-     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.NotNullExpressionImpl <em>Not Null Expression</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.NotNullExpressionImpl
-     * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.MappingLanguagePackageImpl#getNotNullExpression()
-     * @generated
-     */
-    EClass NOT_NULL_EXPRESSION = eINSTANCE.getNotNullExpression();
-
-    /**
-     * The meta object literal for the '<em><b>Feature</b></em>' reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference NOT_NULL_EXPRESSION__FEATURE = eINSTANCE.getNotNullExpression_Feature();
 
   }
 

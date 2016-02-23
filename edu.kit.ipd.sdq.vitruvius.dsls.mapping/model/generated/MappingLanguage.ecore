@@ -26,8 +26,6 @@
         eType="#//Mapping" containment="true" eOpposite="#//Mapping/parentMapping"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parentMapping" eType="#//Mapping"
         eOpposite="#//Mapping/childMappings"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="constraintExpressions"
-        upperBound="-1" eType="#//ConstraintExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Signature">
     <eStructuralFeatures xsi:type="ecore:EReference" name="declaredPackage" eType="ecore:EClass platform:/resource/edu.kit.ipd.sdq.vitruvius.dsls.mirbase/model/generated/MirBase.ecore#//MetamodelReference"
@@ -91,6 +89,10 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="source" eType="#//FeatureOfContextVariable"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NotNullExpression" eSuperTypes="#//ConstraintExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="notNullable" eType="#//FeatureOfContextVariable"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DefaultContainExpression" eSuperTypes="#//ConstraintExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//ContextVariable"
         containment="true"/>
@@ -121,8 +123,5 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConstraintStringLiteral" eSuperTypes="#//ConstraintLiteral">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NotNullExpression" eSuperTypes="#//ConstraintExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="#//FeatureOfContextVariable"/>
   </eClassifiers>
 </ecore:EPackage>

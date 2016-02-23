@@ -163,6 +163,11 @@ public class MappingLanguageAdapterFactory extends AdapterFactoryImpl
         return createInExpressionAdapter();
       }
       @Override
+      public Adapter caseNotNullExpression(NotNullExpression object)
+      {
+        return createNotNullExpressionAdapter();
+      }
+      @Override
       public Adapter caseDefaultContainExpression(DefaultContainExpression object)
       {
         return createDefaultContainExpressionAdapter();
@@ -196,11 +201,6 @@ public class MappingLanguageAdapterFactory extends AdapterFactoryImpl
       public Adapter caseConstraintStringLiteral(ConstraintStringLiteral object)
       {
         return createConstraintStringLiteralAdapter();
-      }
-      @Override
-      public Adapter caseNotNullExpression(NotNullExpression object)
-      {
-        return createNotNullExpressionAdapter();
       }
       @Override
       public Adapter caseMirBaseFile(MirBaseFile object)
@@ -485,6 +485,21 @@ public class MappingLanguageAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression <em>Not Null Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression
+   * @generated
+   */
+  public Adapter createNotNullExpressionAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression <em>Default Contain Expression</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -585,21 +600,6 @@ public class MappingLanguageAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createConstraintStringLiteralAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression <em>Not Null Expression</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression
-   * @generated
-   */
-  public Adapter createNotNullExpressionAdapter()
   {
     return null;
   }

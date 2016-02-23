@@ -3,7 +3,9 @@
  */
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.validation
 
-//import org.eclipse.xtext.validation.Check
+import org.eclipse.xtext.validation.Check
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePackage
 
 /**
  * This class contains custom validation rules. 
@@ -11,15 +13,15 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.validation
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 class MappingLanguageValidator extends AbstractMappingLanguageValidator {
-
-//  public static val INVALID_NAME = 'invalidName'
-//
-//	@Check
-//	def checkGreetingStartsWithCapital(Greeting greeting) {
-//		if (!Character.isUpperCase(greeting.name.charAt(0))) {
-//			warning('Name should start with a capital', 
-//					MyDslPackage.Literals.GREETING__NAME,
-//					INVALID_NAME)
-//		}
-//	}
+	public static val NOT_EXACTLY_TWO_IMPORTS = 'notExactlyTwoImports'
+	
+	@Check
+	def checkTwoImports(MappingFile mappingFile) {
+		if (mappingFile.imports.size != 2) {
+			error('Mapping must define exactly two imports.',
+				MappingLanguagePackage.Literals.MAPPING_FILE__IMPORTS,
+				NOT_EXACTLY_TWO_IMPORTS
+			)
+		} 
+	}
 }

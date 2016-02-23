@@ -177,6 +177,15 @@ public interface MappingLanguageFactory extends EFactory
   InExpression createInExpression();
 
   /**
+   * Returns a new object of class '<em>Not Null Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Not Null Expression</em>'.
+   * @generated
+   */
+  NotNullExpression createNotNullExpression();
+
+  /**
    * Returns a new object of class '<em>Default Contain Expression</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -238,15 +247,6 @@ public interface MappingLanguageFactory extends EFactory
    * @generated
    */
   ConstraintStringLiteral createConstraintStringLiteral();
-
-  /**
-   * Returns a new object of class '<em>Not Null Expression</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Not Null Expression</em>'.
-   * @generated
-   */
-  NotNullExpression createNotNullExpression();
 
   /**
    * Returns the package supported by this factory.

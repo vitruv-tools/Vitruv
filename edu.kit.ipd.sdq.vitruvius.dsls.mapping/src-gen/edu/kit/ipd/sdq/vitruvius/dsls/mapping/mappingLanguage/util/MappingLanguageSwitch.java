@@ -201,6 +201,14 @@ public class MappingLanguageSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case MappingLanguagePackage.NOT_NULL_EXPRESSION:
+      {
+        NotNullExpression notNullExpression = (NotNullExpression)theEObject;
+        T result = caseNotNullExpression(notNullExpression);
+        if (result == null) result = caseConstraintExpression(notNullExpression);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case MappingLanguagePackage.DEFAULT_CONTAIN_EXPRESSION:
       {
         DefaultContainExpression defaultContainExpression = (DefaultContainExpression)theEObject;
@@ -254,14 +262,6 @@ public class MappingLanguageSwitch<T> extends Switch<T>
         ConstraintStringLiteral constraintStringLiteral = (ConstraintStringLiteral)theEObject;
         T result = caseConstraintStringLiteral(constraintStringLiteral);
         if (result == null) result = caseConstraintLiteral(constraintStringLiteral);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case MappingLanguagePackage.NOT_NULL_EXPRESSION:
-      {
-        NotNullExpression notNullExpression = (NotNullExpression)theEObject;
-        T result = caseNotNullExpression(notNullExpression);
-        if (result == null) result = caseConstraintExpression(notNullExpression);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -542,6 +542,22 @@ public class MappingLanguageSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Not Null Expression</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Not Null Expression</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseNotNullExpression(NotNullExpression object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Default Contain Expression</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -649,22 +665,6 @@ public class MappingLanguageSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseConstraintStringLiteral(ConstraintStringLiteral object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Not Null Expression</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Not Null Expression</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseNotNullExpression(NotNullExpression object)
   {
     return null;
   }

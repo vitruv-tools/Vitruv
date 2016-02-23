@@ -67,6 +67,7 @@ SignatureConstraintBlock:
 
 SignatureConstraintExpression returns ConstraintExpression:
  	InExpression
+	| NotNullExpression
 	| EqualsLiteralExpression
 	| DefaultContainExpression
 	| XbaseSignatureConstraintExpression
@@ -81,7 +82,9 @@ XbaseSignatureConstraintExpression returns ConstraintExpression:
 
 XbaseBodyConstraintExpression returns ConstraintExpression:
 	{XbaseBodyConstraintExpression}
-	'xbase' 'from' metamodel=MetamodelReference 'with' block=XBlockExpression
+	'xbase'
+		'from' metamodel=MetamodelReference
+		'with' block=XBlockExpression
 ;
 
 BodyConstraintBlock:
@@ -105,6 +108,11 @@ VariableRef returns ConstraintExpression:
 InExpression returns ConstraintExpression:
 	{InExpression}
 	'in' '(' target=ContextVariable ',' source=FeatureOfContextVariable ')'
+;
+
+NotNullExpression returns ConstraintExpression:
+	{NotNullExpression}
+	'notnull' '(' notNullable=FeatureOfContextVariable  ')'
 ;
 
 DefaultContainExpression returns ConstraintExpression:

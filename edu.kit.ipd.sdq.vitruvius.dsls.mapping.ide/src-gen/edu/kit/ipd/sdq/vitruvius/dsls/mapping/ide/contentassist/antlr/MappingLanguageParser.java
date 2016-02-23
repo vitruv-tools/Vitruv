@@ -113,6 +113,7 @@ public class MappingLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getBodyConstraintBlockAccess().getGroup_1_1(), "rule__BodyConstraintBlock__Group_1_1__0");
 					put(grammarAccess.getVariableRefAccess().getGroup(), "rule__VariableRef__Group__0");
 					put(grammarAccess.getInExpressionAccess().getGroup(), "rule__InExpression__Group__0");
+					put(grammarAccess.getNotNullExpressionAccess().getGroup(), "rule__NotNullExpression__Group__0");
 					put(grammarAccess.getDefaultContainExpressionAccess().getGroup(), "rule__DefaultContainExpression__Group__0");
 					put(grammarAccess.getDefaultContainExpressionAccess().getGroup_1_0(), "rule__DefaultContainExpression__Group_1_0__0");
 					put(grammarAccess.getDefaultContainExpressionAccess().getGroup_1_1(), "rule__DefaultContainExpression__Group_1_1__0");
@@ -129,6 +130,7 @@ public class MappingLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getConstraintNullLiteralAccess().getGroup(), "rule__ConstraintNullLiteral__Group__0");
 					put(grammarAccess.getConstraintNumberLiteralAccess().getGroup(), "rule__ConstraintNumberLiteral__Group__0");
 					put(grammarAccess.getConstraintStringLiteralAccess().getGroup(), "rule__ConstraintStringLiteral__Group__0");
+					put(grammarAccess.getMirBaseFileAccess().getGroup(), "rule__MirBaseFile__Group__0");
 					put(grammarAccess.getMetamodelImportAccess().getGroup(), "rule__MetamodelImport__Group__0");
 					put(grammarAccess.getNamedModelElementAccess().getGroup(), "rule__NamedModelElement__Group__0");
 					put(grammarAccess.getNamedModelElementAccess().getGroup_1(), "rule__NamedModelElement__Group_1__0");
@@ -342,6 +344,7 @@ public class MappingLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getVariableRefAccess().getTargetAssignment_1(), "rule__VariableRef__TargetAssignment_1");
 					put(grammarAccess.getInExpressionAccess().getTargetAssignment_3(), "rule__InExpression__TargetAssignment_3");
 					put(grammarAccess.getInExpressionAccess().getSourceAssignment_5(), "rule__InExpression__SourceAssignment_5");
+					put(grammarAccess.getNotNullExpressionAccess().getNotNullableAssignment_3(), "rule__NotNullExpression__NotNullableAssignment_3");
 					put(grammarAccess.getDefaultContainExpressionAccess().getTargetAssignment_1_0_2(), "rule__DefaultContainExpression__TargetAssignment_1_0_2");
 					put(grammarAccess.getDefaultContainExpressionAccess().getSourceAssignment_1_0_4(), "rule__DefaultContainExpression__SourceAssignment_1_0_4");
 					put(grammarAccess.getDefaultContainExpressionAccess().getTargetAssignment_1_1_2(), "rule__DefaultContainExpression__TargetAssignment_1_1_2");
@@ -362,6 +365,7 @@ public class MappingLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getConstraintBooleanLiteralAccess().getIsTrueAssignment_1_1(), "rule__ConstraintBooleanLiteral__IsTrueAssignment_1_1");
 					put(grammarAccess.getConstraintNumberLiteralAccess().getValueAssignment_1(), "rule__ConstraintNumberLiteral__ValueAssignment_1");
 					put(grammarAccess.getConstraintStringLiteralAccess().getValueAssignment_1(), "rule__ConstraintStringLiteral__ValueAssignment_1");
+					put(grammarAccess.getMirBaseFileAccess().getMetamodelImportsAssignment_1(), "rule__MirBaseFile__MetamodelImportsAssignment_1");
 					put(grammarAccess.getMetamodelImportAccess().getPackageAssignment_1(), "rule__MetamodelImport__PackageAssignment_1");
 					put(grammarAccess.getMetamodelImportAccess().getNameAssignment_3(), "rule__MetamodelImport__NameAssignment_3");
 					put(grammarAccess.getModelElementAccess().getElementAssignment(), "rule__ModelElement__ElementAssignment");

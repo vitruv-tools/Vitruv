@@ -23,7 +23,7 @@ class MappingLanguageGeneratorState {
 	private Map<Mapping, Map<MetamodelImport, List<ConstraintExpression>>> mappingToImportToConstraints
 
 	public new(MappingFile file) {
-		this.imports = file.imports.claim[size == 2]
+		this.imports = file.imports
 		this.mappings = file.eAllContents.filter(Mapping).toList.sortWith [ m1, m2 |
 			if(m2.requires.exists[it.mapping.equals(m1)]) (-1) else (1)
 		]

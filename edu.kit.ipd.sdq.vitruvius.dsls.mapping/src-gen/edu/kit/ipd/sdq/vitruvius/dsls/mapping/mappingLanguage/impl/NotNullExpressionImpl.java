@@ -8,6 +8,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingLanguagePac
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -22,7 +23,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.NotNullExpressionImpl#getFeature <em>Feature</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.impl.NotNullExpressionImpl#getNotNullable <em>Not Nullable</em>}</li>
  * </ul>
  *
  * @generated
@@ -30,14 +31,14 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 public class NotNullExpressionImpl extends ConstraintExpressionImpl implements NotNullExpression
 {
   /**
-   * The cached value of the '{@link #getFeature() <em>Feature</em>}' reference.
+   * The cached value of the '{@link #getNotNullable() <em>Not Nullable</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getFeature()
+   * @see #getNotNullable()
    * @generated
    * @ordered
    */
-  protected FeatureOfContextVariable feature;
+  protected FeatureOfContextVariable notNullable;
 
   /**
    * <!-- begin-user-doc -->
@@ -65,19 +66,9 @@ public class NotNullExpressionImpl extends ConstraintExpressionImpl implements N
    * <!-- end-user-doc -->
    * @generated
    */
-  public FeatureOfContextVariable getFeature()
+  public FeatureOfContextVariable getNotNullable()
   {
-    if (feature != null && feature.eIsProxy())
-    {
-      InternalEObject oldFeature = (InternalEObject)feature;
-      feature = (FeatureOfContextVariable)eResolveProxy(oldFeature);
-      if (feature != oldFeature)
-      {
-        if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MappingLanguagePackage.NOT_NULL_EXPRESSION__FEATURE, oldFeature, feature));
-      }
-    }
-    return feature;
+    return notNullable;
   }
 
   /**
@@ -85,22 +76,53 @@ public class NotNullExpressionImpl extends ConstraintExpressionImpl implements N
    * <!-- end-user-doc -->
    * @generated
    */
-  public FeatureOfContextVariable basicGetFeature()
+  public NotificationChain basicSetNotNullable(FeatureOfContextVariable newNotNullable, NotificationChain msgs)
   {
-    return feature;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setFeature(FeatureOfContextVariable newFeature)
-  {
-    FeatureOfContextVariable oldFeature = feature;
-    feature = newFeature;
+    FeatureOfContextVariable oldNotNullable = notNullable;
+    notNullable = newNotNullable;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MappingLanguagePackage.NOT_NULL_EXPRESSION__FEATURE, oldFeature, feature));
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MappingLanguagePackage.NOT_NULL_EXPRESSION__NOT_NULLABLE, oldNotNullable, newNotNullable);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setNotNullable(FeatureOfContextVariable newNotNullable)
+  {
+    if (newNotNullable != notNullable)
+    {
+      NotificationChain msgs = null;
+      if (notNullable != null)
+        msgs = ((InternalEObject)notNullable).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MappingLanguagePackage.NOT_NULL_EXPRESSION__NOT_NULLABLE, null, msgs);
+      if (newNotNullable != null)
+        msgs = ((InternalEObject)newNotNullable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MappingLanguagePackage.NOT_NULL_EXPRESSION__NOT_NULLABLE, null, msgs);
+      msgs = basicSetNotNullable(newNotNullable, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MappingLanguagePackage.NOT_NULL_EXPRESSION__NOT_NULLABLE, newNotNullable, newNotNullable));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case MappingLanguagePackage.NOT_NULL_EXPRESSION__NOT_NULLABLE:
+        return basicSetNotNullable(null, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
   }
 
   /**
@@ -113,9 +135,8 @@ public class NotNullExpressionImpl extends ConstraintExpressionImpl implements N
   {
     switch (featureID)
     {
-      case MappingLanguagePackage.NOT_NULL_EXPRESSION__FEATURE:
-        if (resolve) return getFeature();
-        return basicGetFeature();
+      case MappingLanguagePackage.NOT_NULL_EXPRESSION__NOT_NULLABLE:
+        return getNotNullable();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -130,8 +151,8 @@ public class NotNullExpressionImpl extends ConstraintExpressionImpl implements N
   {
     switch (featureID)
     {
-      case MappingLanguagePackage.NOT_NULL_EXPRESSION__FEATURE:
-        setFeature((FeatureOfContextVariable)newValue);
+      case MappingLanguagePackage.NOT_NULL_EXPRESSION__NOT_NULLABLE:
+        setNotNullable((FeatureOfContextVariable)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -147,8 +168,8 @@ public class NotNullExpressionImpl extends ConstraintExpressionImpl implements N
   {
     switch (featureID)
     {
-      case MappingLanguagePackage.NOT_NULL_EXPRESSION__FEATURE:
-        setFeature((FeatureOfContextVariable)null);
+      case MappingLanguagePackage.NOT_NULL_EXPRESSION__NOT_NULLABLE:
+        setNotNullable((FeatureOfContextVariable)null);
         return;
     }
     super.eUnset(featureID);
@@ -164,8 +185,8 @@ public class NotNullExpressionImpl extends ConstraintExpressionImpl implements N
   {
     switch (featureID)
     {
-      case MappingLanguagePackage.NOT_NULL_EXPRESSION__FEATURE:
-        return feature != null;
+      case MappingLanguagePackage.NOT_NULL_EXPRESSION__NOT_NULLABLE:
+        return notNullable != null;
     }
     return super.eIsSet(featureID);
   }

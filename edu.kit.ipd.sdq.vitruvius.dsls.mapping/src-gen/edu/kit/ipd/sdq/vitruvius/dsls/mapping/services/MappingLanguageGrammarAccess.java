@@ -513,31 +513,37 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.SignatureConstraintExpression");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final RuleCall cInExpressionParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
-		private final RuleCall cEqualsLiteralExpressionParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
-		private final RuleCall cDefaultContainExpressionParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
-		private final RuleCall cXbaseSignatureConstraintExpressionParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
+		private final RuleCall cNotNullExpressionParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cEqualsLiteralExpressionParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		private final RuleCall cDefaultContainExpressionParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
+		private final RuleCall cXbaseSignatureConstraintExpressionParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
 		
 		//SignatureConstraintExpression ConstraintExpression:
 		//	InExpression
+		//	| NotNullExpression
 		//	| EqualsLiteralExpression
 		//	| DefaultContainExpression
 		//	| XbaseSignatureConstraintExpression
 		@Override public ParserRule getRule() { return rule; }
 		
-		//InExpression | EqualsLiteralExpression | DefaultContainExpression | XbaseSignatureConstraintExpression
+		//InExpression | NotNullExpression | EqualsLiteralExpression | DefaultContainExpression |
+		//XbaseSignatureConstraintExpression
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//InExpression
 		public RuleCall getInExpressionParserRuleCall_0() { return cInExpressionParserRuleCall_0; }
 		
+		//NotNullExpression
+		public RuleCall getNotNullExpressionParserRuleCall_1() { return cNotNullExpressionParserRuleCall_1; }
+		
 		//EqualsLiteralExpression
-		public RuleCall getEqualsLiteralExpressionParserRuleCall_1() { return cEqualsLiteralExpressionParserRuleCall_1; }
+		public RuleCall getEqualsLiteralExpressionParserRuleCall_2() { return cEqualsLiteralExpressionParserRuleCall_2; }
 		
 		//DefaultContainExpression
-		public RuleCall getDefaultContainExpressionParserRuleCall_2() { return cDefaultContainExpressionParserRuleCall_2; }
+		public RuleCall getDefaultContainExpressionParserRuleCall_3() { return cDefaultContainExpressionParserRuleCall_3; }
 		
 		//XbaseSignatureConstraintExpression
-		public RuleCall getXbaseSignatureConstraintExpressionParserRuleCall_3() { return cXbaseSignatureConstraintExpressionParserRuleCall_3; }
+		public RuleCall getXbaseSignatureConstraintExpressionParserRuleCall_4() { return cXbaseSignatureConstraintExpressionParserRuleCall_4; }
 	}
 	public class XbaseSignatureConstraintExpressionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.XbaseSignatureConstraintExpression");
@@ -599,7 +605,9 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//XbaseBodyConstraintExpression ConstraintExpression:
 		//	{XbaseBodyConstraintExpression}
-		//	'xbase' 'from' metamodel=MetamodelReference 'with' block=XBlockExpression
+		//	'xbase'
+		//	'from' metamodel=MetamodelReference
+		//	'with' block=XBlockExpression
 		@Override public ParserRule getRule() { return rule; }
 		
 		//{XbaseBodyConstraintExpression} 'xbase' 'from' metamodel=MetamodelReference 'with' block=XBlockExpression
@@ -763,6 +771,42 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//')'
 		public Keyword getRightParenthesisKeyword_6() { return cRightParenthesisKeyword_6; }
+	}
+	public class NotNullExpressionElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.NotNullExpression");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cNotNullExpressionAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cNotnullKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Keyword cLeftParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cNotNullableAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cNotNullableFeatureOfContextVariableParserRuleCall_3_0 = (RuleCall)cNotNullableAssignment_3.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		
+		//NotNullExpression ConstraintExpression:
+		//	{NotNullExpression}
+		//	'notnull' '(' notNullable=FeatureOfContextVariable ')'
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{NotNullExpression} 'notnull' '(' notNullable=FeatureOfContextVariable ')'
+		public Group getGroup() { return cGroup; }
+		
+		//{NotNullExpression}
+		public Action getNotNullExpressionAction_0() { return cNotNullExpressionAction_0; }
+		
+		//'notnull'
+		public Keyword getNotnullKeyword_1() { return cNotnullKeyword_1; }
+		
+		//'('
+		public Keyword getLeftParenthesisKeyword_2() { return cLeftParenthesisKeyword_2; }
+		
+		//notNullable=FeatureOfContextVariable
+		public Assignment getNotNullableAssignment_3() { return cNotNullableAssignment_3; }
+		
+		//FeatureOfContextVariable
+		public RuleCall getNotNullableFeatureOfContextVariableParserRuleCall_3_0() { return cNotNullableFeatureOfContextVariableParserRuleCall_3_0; }
+		
+		//')'
+		public Keyword getRightParenthesisKeyword_4() { return cRightParenthesisKeyword_4; }
 	}
 	public class DefaultContainExpressionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.DefaultContainExpression");
@@ -1258,6 +1302,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	private final BodyConstraintExpressionElements pBodyConstraintExpression;
 	private final VariableRefElements pVariableRef;
 	private final InExpressionElements pInExpression;
+	private final NotNullExpressionElements pNotNullExpression;
 	private final DefaultContainExpressionElements pDefaultContainExpression;
 	private final EqualsLiteralExpressionElements pEqualsLiteralExpression;
 	private final AttributeEquivalenceExpressionElements pAttributeEquivalenceExpression;
@@ -1303,6 +1348,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		this.pBodyConstraintExpression = new BodyConstraintExpressionElements();
 		this.pVariableRef = new VariableRefElements();
 		this.pInExpression = new InExpressionElements();
+		this.pNotNullExpression = new NotNullExpressionElements();
 		this.pDefaultContainExpression = new DefaultContainExpressionElements();
 		this.pEqualsLiteralExpression = new EqualsLiteralExpressionElements();
 		this.pAttributeEquivalenceExpression = new AttributeEquivalenceExpressionElements();
@@ -1443,6 +1489,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//SignatureConstraintExpression ConstraintExpression:
 	//	InExpression
+	//	| NotNullExpression
 	//	| EqualsLiteralExpression
 	//	| DefaultContainExpression
 	//	| XbaseSignatureConstraintExpression
@@ -1469,7 +1516,9 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//XbaseBodyConstraintExpression ConstraintExpression:
 	//	{XbaseBodyConstraintExpression}
-	//	'xbase' 'from' metamodel=MetamodelReference 'with' block=XBlockExpression
+	//	'xbase'
+	//	'from' metamodel=MetamodelReference
+	//	'with' block=XBlockExpression
 	public XbaseBodyConstraintExpressionElements getXbaseBodyConstraintExpressionAccess() {
 		return pXbaseBodyConstraintExpression;
 	}
@@ -1519,6 +1568,17 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getInExpressionRule() {
 		return getInExpressionAccess().getRule();
+	}
+	
+	//NotNullExpression ConstraintExpression:
+	//	{NotNullExpression}
+	//	'notnull' '(' notNullable=FeatureOfContextVariable ')'
+	public NotNullExpressionElements getNotNullExpressionAccess() {
+		return pNotNullExpression;
+	}
+	
+	public ParserRule getNotNullExpressionRule() {
+		return getNotNullExpressionAccess().getRule();
 	}
 	
 	//DefaultContainExpression ConstraintExpression:
@@ -1644,6 +1704,16 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getConstraintStringLiteralRule() {
 		return getConstraintStringLiteralAccess().getRule();
+	}
+	
+	//MirBaseFile:
+	//	{MirBaseFile} metamodelImports+=MetamodelImport*;
+	public MirBaseGrammarAccess.MirBaseFileElements getMirBaseFileAccess() {
+		return gaMirBase.getMirBaseFileAccess();
+	}
+	
+	public ParserRule getMirBaseFileRule() {
+		return getMirBaseFileAccess().getRule();
 	}
 	
 	//MetamodelImport:

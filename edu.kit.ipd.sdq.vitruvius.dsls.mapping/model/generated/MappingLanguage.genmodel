@@ -20,7 +20,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//Mapping/constraintsBody"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//Mapping/childMappings"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference MappingLanguage.ecore#//Mapping/parentMapping"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//Mapping/constraintExpressions"/>
     </genClasses>
     <genClasses ecoreClass="MappingLanguage.ecore#//Signature">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//Signature/declaredPackage"/>
@@ -68,6 +67,9 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//InExpression/target"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//InExpression/source"/>
     </genClasses>
+    <genClasses ecoreClass="MappingLanguage.ecore#//NotNullExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//NotNullExpression/notNullable"/>
+    </genClasses>
     <genClasses ecoreClass="MappingLanguage.ecore#//DefaultContainExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//DefaultContainExpression/target"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//DefaultContainExpression/source"/>
@@ -91,9 +93,6 @@
     </genClasses>
     <genClasses ecoreClass="MappingLanguage.ecore#//ConstraintStringLiteral">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MappingLanguage.ecore#//ConstraintStringLiteral/value"/>
-    </genClasses>
-    <genClasses ecoreClass="MappingLanguage.ecore#//NotNullExpression">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MappingLanguage.ecore#//NotNullExpression/feature"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -22,9 +22,7 @@ import org.eclipse.emf.ecore.EPackage
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.EMFHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
 import static extension java.util.Objects.*
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.NotNullExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.SignatureConstraintBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintExpression
 
@@ -46,8 +44,7 @@ class MappingLanguageHelper {
 	}
 
 	public static def getAllConstraintExpressions(Mapping mapping) {
-		(mapping?.constraints?.map[expressions]?.flatten ?: #[]) + (mapping?.constraintsBody?.expressions ?: #[]) +
-			(mapping?.constraintExpressions ?: #[])
+		(mapping?.constraints?.map[expressions]?.flatten ?: #[]) + (mapping?.constraintsBody?.expressions ?: #[])
 	}
 
 	public static def getAllSignatureConstraints(Mapping mapping) {
@@ -66,24 +63,16 @@ class MappingLanguageHelper {
 		return context.getContainerOfType(MappingFile)?.mappings?.filter[^default] ?: #[]
 	}
 
-	public static def <T> claimExactlyOneInPackage(Iterable<T> elements, EPackage pkg) {
+	public static def <T extends EObject> claimExactlyOneInPackage(Iterable<T> elements, EPackage pkg) {
 		elements.filterWithPackage(pkg).claimIdenticalElements
 	}
 
-	public static def <T> getOneInPackage(Iterable<T> elements, EPackage pkg) {
+	public static def <T extends EObject> getOneInPackage(Iterable<T> elements, EPackage pkg) {
 		elements.filterWithPackage(pkg).getIdenticalElement
 	}
 
-	public static def <T> filterWithPackage(Iterable<T> elements, EPackage pkg) {
+	public static def <T extends EObject> filterWithPackage(Iterable<T> elements, EPackage pkg) {
 		elements.filter[(getPackage ?: pkg).equals(pkg)]
-	}
-
-	public static def dispatch EPackage getPackage(Object obj) {
-		null
-	}
-
-	public static def dispatch EPackage getPackage(NotNullExpression exp) {
-		exp?.feature?.getPackage
 	}
 
 	public static def dispatch EPackage getPackage(DefaultContainExpression defaultContainExpression) {
@@ -198,7 +187,7 @@ class MappingLanguageHelper {
 	}
 
 	public static def dispatch getBaseName(ModelElement object) {
-		object.element.name ?: "eClass"
+		object.element?.name ?: "eClass"
 	}
 
 	public static def dispatch getBaseName(RequiredMapping object) {
