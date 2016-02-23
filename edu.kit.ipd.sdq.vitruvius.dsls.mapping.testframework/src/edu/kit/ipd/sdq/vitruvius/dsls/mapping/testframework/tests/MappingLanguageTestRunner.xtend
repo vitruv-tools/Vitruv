@@ -83,13 +83,13 @@ class MappingLanguageTestRunner extends BlockJUnit4ClassRunner {
 		return result
 	}
 
-	private static def AbstractMappingChange2CommandTransforming getChange2CommandTransforming(
+	private static def Change2CommandTransforming getChange2CommandTransforming(
 		String contributorName) throws CoreException {
 		val config = Platform.getExtensionRegistry().getConfigurationElementsFor(Change2CommandTransforming.ID);
 		for (IConfigurationElement extConfElem : config) {
 			if (contributorName.equals(extConfElem.getContributor().getName())) {
 				return extConfElem.createExecutableExtension(
-					VitruviusConstants.getExtensionPropertyName()) as AbstractMappingChange2CommandTransforming;
+					VitruviusConstants.getExtensionPropertyName()) as Change2CommandTransforming;
 			}
 		}
 		return null;
