@@ -88,11 +88,11 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 				.setTrigger(imp.package)
 				.setTargetChange(imp.otherImport.package)
 				.setExecutionBlock('''
-					{
-						final edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingExecutionState state =
-							new edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingExecutionState(blackboard);
-						«importToAllCalls.get(imp).join("\n")»
-					}
+					final edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingExecutionState state =
+						new edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingExecutionState(transformationResult, this.userInteracting, blackboard);
+					«importToAllCalls.get(imp).join("\n")»
+					edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.DefaultContainmentMapping
+						.INSTANCE.applyEChange(change, blackboard, state);
 				''')
 				.generateResponse
 			responses.add(response)
@@ -252,6 +252,8 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 						for («typeRef(mapping.correspondenceWrapperClassName)» currentCorrespondence : matchUpdate.getCurrentCorrespondences()) {
 							propagateAttributesFrom«imp.toFirstUpperName»(currentCorrespondence, state);
 						}
+						
+						«expandTemplate(ih, #[mapping, imp, 'applyEChange'])»
 					}
 					«ENDFOR»
 				}
