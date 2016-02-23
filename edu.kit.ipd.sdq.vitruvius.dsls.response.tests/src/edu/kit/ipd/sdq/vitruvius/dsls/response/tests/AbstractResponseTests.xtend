@@ -71,11 +71,6 @@ abstract class AbstractResponseTests extends VitruviusEMFCasestudyTest {
 		synchronizeFileChange(FileChangeKind.DELETE, VURI.getInstance(resource));
 	}
 	
-	protected override setUserInteractor(UserInteracting newUserInteracting,
-		ChangeSynchronizerImpl changeSynchronizerImpl) throws Throwable {
-		// Do nothing
-	}
-	
 	protected def String getPlatformModelPath(String modelPathInProject) {
 		return this.currentTestProjectName + "/" + modelPathInProject
 	}
@@ -132,4 +127,5 @@ abstract class AbstractResponseTests extends VitruviusEMFCasestudyTest {
 		EcoreResourceBridge.saveResource(object.eResource());
 		this.triggerSynchronization(VURI.getInstance(object.eResource()));
 	}
+	
 }

@@ -9,7 +9,7 @@ public class SimpleTestsChange2CommandTransformingProviding extends AbstractResp
 	new() {
 		val transformationExecutingList = new ArrayList<Change2CommandTransforming>();
 		transformationExecutingList.add(new ResponseAllElementTypesToAllElementTypesChange2CommandTransforming());
-		initializeTransformationExecuterMap(transformationExecutingList);
+		initializeChange2CommandTransformationMap(transformationExecutingList);
 	}
 	
 }

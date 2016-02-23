@@ -10,7 +10,7 @@ public class PCMJavaChange2CommandTransformingProviding extends AbstractResponse
 	public PCMJavaChange2CommandTransformingProviding() {
 		List<Change2CommandTransforming> transformationExecutingList = new ArrayList<Change2CommandTransforming>();
 		transformationExecutingList.add(new Response5ToJavaChange2CommandTransforming());
-		initializeTransformationExecuterMap(transformationExecutingList);
+		initializeChange2CommandTransformationMap(transformationExecutingList);
 	}
 	
 }
