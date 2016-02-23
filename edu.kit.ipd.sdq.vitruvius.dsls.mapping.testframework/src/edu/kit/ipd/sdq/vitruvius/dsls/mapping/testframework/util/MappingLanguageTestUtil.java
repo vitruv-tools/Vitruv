@@ -1,11 +1,12 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.util;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
-
-import org.eclipse.emf.common.util.URI;
 
 import com.google.inject.Binder;
 import com.google.inject.Guice;
@@ -18,10 +19,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUIDCalculatorAnd
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.AttributeTUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.tests.MappingLanguageTestEnvironment;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
-
-import static org.junit.Assert.*;
 
 /**
  * Utility class for the testing framework for the mapping language.
